@@ -40,6 +40,7 @@ tags:
 # ─── Review ──────────────────────────────────────────────────────
 confidence:                 1.00
 review_status:              reviewed   # awaiting Philip's lock
+knowledge_level:            observed
 
 notes:
   - First-ever baluster component.

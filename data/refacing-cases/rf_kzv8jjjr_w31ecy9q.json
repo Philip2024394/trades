@@ -1,0 +1,29 @@
+{
+  "refacing_case_id": "rf_kzv8jjjr_w31ecy9q",
+  "created_at": "2026-08-12T15:13:40.442Z",
+  "updated_at": "2026-08-12T15:13:44.658Z",
+  "status": "READY_FOR_ASSESSMENT",
+  "existing_staircase": {
+    "photos": [],
+    "customer_confirmed": false
+  },
+  "customer_intent": {
+    "feelings": [],
+    "intent_entries": []
+  },
+  "unknown_items": [
+    {
+      "concern": "photo_pending",
+      "reason": "Draft Case created before customer has uploaded a staircase photo."
+    }
+  ],
+  "composition_provenance": [],
+  "anonymous_return_token": "-c8_2lha0SFpKoqn-Osfsy0wEbMK-rpo",
+  "contact": {
+    "name": "Test Homeowner",
+    "phone": "07777777777",
+    "email": "test@example.com",
+    "postcode": "BT9",
+    "attached_at": "2026-08-12T15:13:44.655Z"
+  }
+}

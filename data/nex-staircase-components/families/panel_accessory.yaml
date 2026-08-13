@@ -1,0 +1,154 @@
+# NEX Staircase Component Library — PANEL_ACCESSORY family record
+#
+# Philip 2026-08-03 · The consumables + hardware that turn panels into
+# a finished installation. Often forgotten in quotations. Companion
+# family to PANEL_SYSTEM · every real quote should include the relevant
+# accessories or the number will be understated.
+#
+# Master doc: docs/brains/staircase-panelling-backing-fixing-systems-philip-2026-08-03.md
+
+family_id:                  PANEL_ACCESSORY
+family_name:                Panel Installation Accessories & Consumables
+component_type:             panel_accessory
+non_structural:             true
+
+# ─── Variants supported ────────────────────────────────────────────
+variants_supported:
+  - LED_CHANNEL             # aluminium extrusion for LED strip
+  - LED_STRIP               # low-voltage LED tape (12V or 24V)
+  - LED_DRIVER              # constant-voltage transformer
+  - LED_DIFFUSER            # frosted / opal / clear cover
+  - PUSH_LATCH              # push-to-open catch for hidden doors
+  - CONCEALED_HINGE         # invisible/soss hinge for hidden storage doors
+  - MAGNETIC_CATCH          # magnetic hold for lightweight hidden doors
+  - PIN_NAILS               # 18/23 gauge headless pins
+  - BRAD_NAILS              # for mouldings
+  - LOST_HEAD_NAILS         # traditional
+  - SCREWS                  # countersunk · MDF backing to wall
+  - CONSTRUCTION_ADHESIVE   # e.g. Gripfill, Pink Grip, Stixall, CT1
+  - DECORATORS_CAULK        # flexible caulk for joint sealing
+  - WOOD_FILLER             # nail hole + gap filler
+  - PRIMER                  # MDF sealer + primer
+  - TOPCOAT                 # eggshell / satin / gloss
+  - PACKERS                 # timber shim strips for wall levelling
+  - BATTENS                 # timber batten stock (see PANEL_BACKING)
+  - CONDUIT_20MM            # future-proofing conduit for LED wiring
+  - DRAW_WIRE               # nylon pull-cord pre-threaded in conduit
+
+# Per-variant characteristics
+variant_specs:
+  LED_CHANNEL:
+    typical_size:                 "17×9mm or 22×12mm aluminium extrusion"
+    unit:                         linear_metre
+    used_for:                     [tread_lighting, handrail_lighting, stringer_lighting, panel_reveal]
+    notes:                        "Improves LED heat dissipation + gives straight professional line"
+  LED_STRIP:
+    voltage_v:                    [12, 24]
+    power_per_metre_w:            [4.8, 9.6, 14.4, 19.2]
+    unit:                         linear_metre
+    ip_rating_typical:            "IP20 indoor · IP65 outdoor"
+    notes:                        "Warm white 2700-3000K for residential timber staircases · dimmable options available"
+  LED_DRIVER:
+    voltage_v:                    [12, 24]
+    typical_wattages:             [30, 60, 100, 150, 200]
+    unit:                         each
+    location_rule:                "must be accessible for maintenance · never sealed behind fixed panels"
+    sizing_rule:                  "add ~20% headroom above the calculated LED load"
+    notes:                        "Split into multiple smaller drivers for redundancy on large installations"
+  LED_DIFFUSER:
+    types:                        [frosted, opal, clear, black]
+    unit:                         linear_metre
+    notes:                        "Opal/frosted are the default for staircase lighting · black diffusers hide the LED completely and reveal only reflected light"
+  PUSH_LATCH:
+    unit:                         each
+    load_range:                   "small to medium hidden doors"
+    notes:                        "Touch-to-open · no visible handle · used with concealed hinges"
+  CONCEALED_HINGE:
+    unit:                         each
+    load_range:                   "medium to heavy doors"
+    notes:                        "Invisible when door is closed · adjustable for panel alignment"
+  MAGNETIC_CATCH:
+    unit:                         each
+    notes:                        "Lightweight hidden panels · fast install · used with soss/piano hinges"
+  PIN_NAILS:
+    gauges:                       [18, 23]
+    typical_length_mm:            [15, 20, 25, 32]
+    unit:                         box_of_1000_5000
+    notes:                        "23-gauge headless leave almost invisible holes · 18-gauge holds firmer"
+  BRAD_NAILS:
+    gauges:                       [16, 18]
+    typical_length_mm:            [15, 25, 40]
+    unit:                         box_of_1000_5000
+    notes:                        "Slightly larger than pin nails · used on heavier mouldings"
+  LOST_HEAD_NAILS:
+    unit:                         box_of_500_2500
+    notes:                        "Traditional · countersunk finish · used on solid timber"
+  SCREWS:
+    typical_length_mm:            [30, 40, 50]
+    typical_gauge:                [4, 5]
+    unit:                         box
+    notes:                        "Countersunk · used for MDF backing to wall · always filled before painting"
+  CONSTRUCTION_ADHESIVE:
+    common_brands:                [Gripfill, Pink_Grip, CT1, Stixall]
+    unit:                         310ml_tube
+    typical_coverage:             "one tube per 4-6 linear metres of moulding"
+    notes:                        "Adhesive is the PERMANENT fixing · pins just hold while curing"
+  DECORATORS_CAULK:
+    unit:                         310ml_tube
+    typical_coverage:             "one tube per 8-12 linear metres of moulding"
+    notes:                        "Flexible caulk · fills joint lines and small gaps · never used to hide poor carpentry"
+  WOOD_FILLER:
+    unit:                         tub_250ml_or_500ml
+    notes:                        "Fills pin holes and minor damage before sanding · water-based for MDF"
+  PRIMER:
+    typical_coverage_m2_per_L:    12
+    unit:                         litre
+    notes:                        "MDF-specific primer/sealer · essential on cut edges · shellac primers block MDF resin bleed"
+  TOPCOAT:
+    sheens:                       [matt, eggshell, satin, satinwood, gloss]
+    typical_coverage_m2_per_L:    10
+    unit:                         litre
+    notes:                        "Eggshell is the professional default · 2 coats minimum · spray for premium finish"
+  PACKERS:
+    unit:                         pack
+    notes:                        "Timber shims for levelling MDF backing against uneven walls"
+  BATTENS:
+    typical_sizes_mm:             ["25×38", "25×50", "38×50", "50×50"]
+    unit:                         linear_metre
+    notes:                        "See PANEL_BACKING for full batten frame specifications"
+  CONDUIT_20MM:
+    unit:                         linear_metre
+    notes:                        "Future-proofing · pre-installed in stringer + under-stair void before panelling is closed"
+  DRAW_WIRE:
+    unit:                         reel
+    notes:                        "Nylon pull cord pre-threaded in every conduit so future cables can be pulled without opening panels"
+
+# ─── Quote inclusion rule ──────────────────────────────────────────
+quote_inclusion_rule: |
+  A complete panel quotation MUST include from this family:
+  - CONSTRUCTION_ADHESIVE  (calculated by linear moulding metres ÷ 5)
+  - PIN_NAILS or BRAD_NAILS  (calculated by moulding metres × 12 pins/m)
+  - WOOD_FILLER
+  - DECORATORS_CAULK  (calculated by moulding metres ÷ 10)
+  - PRIMER + TOPCOAT  (calculated by total painted m² × 2 coats)
+  - SCREWS  (only when a backing sheet is used)
+  Optional (only when the spec requires):
+  - LED_CHANNEL + LED_STRIP + LED_DRIVER + LED_DIFFUSER  (when LED is spec'd)
+  - PUSH_LATCH + CONCEALED_HINGE + MAGNETIC_CATCH  (when hidden storage is spec'd)
+  - CONDUIT_20MM + DRAW_WIRE  (when future-proofing kit is spec'd)
+  - BATTENS + PACKERS  (only for battened-frame backings)
+
+# ─── Provenance ────────────────────────────────────────────────────
+created_at:                 2026-08-03T00:00:00Z
+created_by:                 philip
+revision:                   1
+review_status:              reviewed
+authoring_source:           "Philip O'Farrell · direct written contribution 2026-08-03"
+
+notes:
+  - Runtime type follow-up · types.ts ComponentType enum must add "panel_accessory".
+  - Consumables (adhesive · pins · caulk · filler · primer · paint) are usually
+    the single most overlooked line on a panel quote. This family exists so
+    Nex never quotes a panel job without them.
+  - LED_DRIVER location rule mirrors the access-panel rule from the
+    add-later + future-proofing brain doc — never permanently sealed.

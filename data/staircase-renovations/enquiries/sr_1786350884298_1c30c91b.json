@@ -1,0 +1,45 @@
+{
+  "enquiry_id": "sr_1786350884298_1c30c91b",
+  "source": "staircase-renovations",
+  "source_page": "C:/Program Files/Git/nex-app/staircase-renovations",
+  "submitted_at": "2026-08-10T08:34:44.381Z",
+  "path": "photos",
+  "customer": {
+    "name": "Acceptance Test",
+    "phone": "07700900000",
+    "email": "test-acceptance-1786350883@example.com",
+    "postcode": "SW1A 1AA",
+    "notes": "Testing atomic enquiry submission"
+  },
+  "renovation_context": {
+    "collection_slug": "oak",
+    "image_src": "C:/Program Files/Git/staircase-renovations/oak/hero-1.png",
+    "image_alt": "Oak straight flight",
+    "image_id": "oak:0"
+  },
+  "plan_selection": null,
+  "photos": [
+    {
+      "slot": "photo_bottom",
+      "original_filename": "test-photo-bottom.png",
+      "size_bytes": 68,
+      "mime_type": "image/png",
+      "stored_path": "C:\\Users\\Victus\\trades\\data\\staircase-renovations\\uploads\\sr_1786350884298_1c30c91b\\photo_bottom-test-photo-bottom.png"
+    },
+    {
+      "slot": "photo_side",
+      "original_filename": "test-photo-side.png",
+      "size_bytes": 68,
+      "mime_type": "image/png",
+      "stored_path": "C:\\Users\\Victus\\trades\\data\\staircase-renovations\\uploads\\sr_1786350884298_1c30c91b\\photo_side-test-photo-side.png"
+    }
+  ],
+  "photo_errors": [],
+  "contact_ref": {
+    "contact_id": "6d7e87ac-a0bb-4fb4-b39d-45fbc18e27f5",
+    "created": true
+  },
+  "request_headers": {
+    "user_agent": "curl/8.18.0"
+  }
+}

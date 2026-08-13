@@ -1,0 +1,22 @@
+{
+  "refacing_case_id": "rf_kzv80drc_ma1ytkyw",
+  "created_at": "2026-08-12T15:03:45.831Z",
+  "updated_at": "2026-08-12T15:03:45.831Z",
+  "status": "DRAFT",
+  "existing_staircase": {
+    "photos": [],
+    "customer_confirmed": false
+  },
+  "customer_intent": {
+    "feelings": [],
+    "intent_entries": []
+  },
+  "unknown_items": [
+    {
+      "concern": "photo_pending",
+      "reason": "Draft Case created before customer has uploaded a staircase photo."
+    }
+  ],
+  "composition_provenance": [],
+  "anonymous_return_token": "k3t2XktJU1WFGCC05oRbmAzVRrXa2T6x"
+}

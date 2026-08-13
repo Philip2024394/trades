@@ -21,6 +21,13 @@
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { WorkerType } from "./types";
+// G3-B · Truth Contract 2026-08-10. Warehouse.ts remains client-safe.
+// The KJ-level `in_production` field on WarehouseSnapshot is COMPUTED
+// by the /api/nex/brain/warehouse route (server-only) which pulls the
+// pg-backed helper. See src/app/api/nex/brain/warehouse/route.ts for
+// the pg query. The reason: warehouse.ts is imported by the operations-
+// centre client component for computeJobProgress · a top-level pg
+// import here would poison the browser bundle ("Cannot resolve dns").
 
 export type WarehouseStageKey =
   | "incoming"
@@ -75,6 +82,30 @@ export interface WarehouseSnapshot {
     draft_rejected:        number;   // quality-checker ran + kept status DRAFT
     draft_awaiting_check:  number;   // never had a completed quality-check job
     deprecated:            number;
+  };
+  // G3-B · KJ-level "in production" · NOT a worker stage.
+  //
+  // Answers: "how many real knowledge jobs are genuinely in the pipeline
+  // right now, regardless of which sub-stage each one is in?"
+  //
+  // Source: local Postgres nex.knowledge_dump_jobs (the G1-truthful
+  // KJ lifecycle table). One KJ = one visible entry throughout its
+  // 30-90s pipeline life · unlike stages[] which surface transient
+  // per-worker `assigned` windows of a few seconds each.
+  //
+  // Excludes the 10 preserved fixture KJs per the Truth Contract.
+  in_production: {
+    total:          number;
+    by_status: {
+      queued:      number;
+      claimed:     number;
+      processing:  number;
+    };
+    oldest_at:     string | null;
+    oldest_age_ms: number | null;
+    source:        "local_postgres_knowledge_dump_jobs" | "unavailable";
+    excludes_preserved_kjids: number;   // count of exclusions applied
+    note?:         string;              // populated when source=unavailable
   };
   source: "supabase" | "unavailable";
   note?:  string;
@@ -134,6 +165,17 @@ interface KnowledgeRecordRow { status: string }
 
 // ── Stage definitions · every stage names its (worker_type, status)
 //    tuples so the composition is auditable in one place. ───────────
+//
+// G3-A · Truth Contract cleanup 2026-08-10. Removed every "in-flight"
+// binding · verified with codebase-wide grep that ZERO writers ever
+// emit status='in-flight'. The JobStatus enum (types.ts:105-111)
+// declares 6 states · the Supabase worker_jobs adapter uses only 4:
+// waiting → assigned → completed/failed. The stray "in-flight" strings
+// here were dead code that misled anyone reading the filter into
+// thinking there was an intermediate execution state to observe.
+// Reality: `assigned` IS the "actively working" state throughout the
+// worker's execution · it stays that value until the row moves to
+// completed/failed.
 const STAGE_DEFINITIONS: Record<Exclude<WarehouseStageKey, "stored">, {
   label: string;
   glyph: string;
@@ -148,9 +190,9 @@ const STAGE_DEFINITIONS: Record<Exclude<WarehouseStageKey, "stored">, {
     label: "Context processing",
     glyph: "🔧",
     match: [
-      { worker_type: "knowledge-context", statuses: ["in-flight", "assigned"] },
-      { worker_type: "voice-context",     statuses: ["waiting", "in-flight", "assigned"] },
-      { worker_type: "learning-context",  statuses: ["waiting", "in-flight", "assigned"] },
+      { worker_type: "knowledge-context", statuses: ["assigned"] },
+      { worker_type: "voice-context",     statuses: ["waiting", "assigned"] },
+      { worker_type: "learning-context",  statuses: ["waiting", "assigned"] },
     ],
   },
   waiting_for_ai: {
@@ -165,14 +207,14 @@ const STAGE_DEFINITIONS: Record<Exclude<WarehouseStageKey, "stored">, {
     label: "Being written",
     glyph: "✍️",
     match: [
-      { worker_type: "knowledge-extractor", statuses: ["in-flight", "assigned"] },
-      { worker_type: "image-analyst",       statuses: ["in-flight", "assigned"] },
+      { worker_type: "knowledge-extractor", statuses: ["assigned"] },
+      { worker_type: "image-analyst",       statuses: ["assigned"] },
     ],
   },
   quality_check: {
     label: "Quality check",
     glyph: "🔍",
-    match: [{ worker_type: "quality-checker", statuses: ["waiting", "in-flight", "assigned"] }],
+    match: [{ worker_type: "quality-checker", statuses: ["waiting", "assigned"] }],
   },
 };
 
@@ -213,7 +255,9 @@ export async function computeWarehouseView(): Promise<WarehouseSnapshot> {
     client
       .from("worker_jobs")
       .select("id,worker_type,status,created_at,input_ref,input_payload")
-      .in("status", ["waiting", "in-flight", "assigned"])
+      // G3-A · dead "in-flight" removed · adapter only ever emits
+      // waiting|assigned for in-progress rows.
+      .in("status", ["waiting", "assigned"])
       .limit(10000),
   ]);
 
@@ -325,6 +369,19 @@ export async function computeWarehouseView(): Promise<WarehouseSnapshot> {
       draft_awaiting_check: draftAwaitingCheck,
       deprecated,
     },
+    // G3-B · in_production is populated by the /warehouse route
+    // (server-only · pg-backed). Initialised here as unavailable so
+    // any direct caller of computeWarehouseView (server or otherwise)
+    // sees a well-formed shape · route overwrites before serialising.
+    in_production: {
+      total: 0,
+      by_status: { queued: 0, claimed: 0, processing: 0 },
+      oldest_at: null,
+      oldest_age_ms: null,
+      source: "unavailable",
+      excludes_preserved_kjids: 10,
+      note: "populated by /api/nex/brain/warehouse route",
+    },
     source: "supabase",
   };
 }
@@ -393,6 +450,17 @@ function zeroSnapshot(note: string): WarehouseSnapshot {
       draft_awaiting_check: 0,
       deprecated:           0,
     },
+    // G3-B · zero shape · /warehouse route overwrites with the real
+    // pg-backed value before serialising to the client.
+    in_production: {
+      total: 0,
+      by_status: { queued: 0, claimed: 0, processing: 0 },
+      oldest_at: null,
+      oldest_age_ms: null,
+      source: "unavailable",
+      excludes_preserved_kjids: 10,
+      note: "zero snapshot",
+    },
     source: "unavailable",
     note,
   };
@@ -411,41 +479,37 @@ export interface JobProgressHint {
 // Deterministic mapping · state → percent. Every value is anchored to a
 // real transition observable in worker_jobs. No animation, no time-based
 // interpolation, no random walk.
-const WORKER_PROGRESS_TABLE: Record<WorkerType, { waiting: JobProgressHint; "in-flight": JobProgressHint; assigned: JobProgressHint }> = {
+// G3-A · dead "in-flight" key removed from the type and every entry.
+// Adapter never emits `in-flight` · callers passing it fall through to
+// the generic-status fallback in computeJobProgress below.
+const WORKER_PROGRESS_TABLE: Record<WorkerType, { waiting: JobProgressHint; assigned: JobProgressHint }> = {
   "knowledge-context":   {
     waiting:    { percent:  5, stage_label: "Received · queued for context",  is_deterministic: true  },
     assigned:   { percent: 15, stage_label: "Reading source · building context", is_deterministic: true },
-    "in-flight":{ percent: 15, stage_label: "Reading source · building context", is_deterministic: true },
   },
   "voice-context":       {
     waiting:    { percent: 20, stage_label: "Awaiting voice + brand pass",    is_deterministic: true  },
     assigned:   { percent: 25, stage_label: "Applying voice + brand guide",   is_deterministic: true  },
-    "in-flight":{ percent: 25, stage_label: "Applying voice + brand guide",   is_deterministic: true  },
   },
   "learning-context":    {
     waiting:    { percent: 30, stage_label: "Awaiting learning bundle",       is_deterministic: true  },
     assigned:   { percent: 35, stage_label: "Loading past feedback",          is_deterministic: true  },
-    "in-flight":{ percent: 35, stage_label: "Loading past feedback",          is_deterministic: true  },
   },
   "knowledge-extractor": {
     waiting:    { percent: 40, stage_label: "Awaiting AI capacity",           is_deterministic: false },
     assigned:   { percent: 55, stage_label: "Extracting knowledge",           is_deterministic: false },
-    "in-flight":{ percent: 55, stage_label: "Extracting knowledge",           is_deterministic: false },
   },
   "image-analyst":       {
     waiting:    { percent: 40, stage_label: "Awaiting vision capacity",       is_deterministic: false },
     assigned:   { percent: 55, stage_label: "Analysing image",                is_deterministic: false },
-    "in-flight":{ percent: 55, stage_label: "Analysing image",                is_deterministic: false },
   },
   "quality-checker":     {
     waiting:    { percent: 75, stage_label: "Awaiting quality check",         is_deterministic: false },
     assigned:   { percent: 85, stage_label: "Quality checking against Constitution", is_deterministic: false },
-    "in-flight":{ percent: 85, stage_label: "Quality checking against Constitution", is_deterministic: false },
   },
   "memory-guardian":     {
     waiting:    { percent: null, stage_label: "Idle · runs on schedule",      is_deterministic: true  },
     assigned:   { percent: null, stage_label: "Sweeping memory",              is_deterministic: true  },
-    "in-flight":{ percent: null, stage_label: "Sweeping memory",              is_deterministic: true  },
   },
 };
 

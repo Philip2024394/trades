@@ -1,0 +1,159 @@
+# Kitchen names taxonomy — Philip O'Farrell 2026-08-03
+# Used by the Router to classify natural-language queries into canonical kitchen types.
+# Every phrasing users type maps to one of these canonical names.
+
+authored_by: philip
+authored_at: 2026-08-03
+governance:
+  rule_c_attributable_origin: named_expert = Philip O'Farrell
+
+layout_names:
+  - Straight Kitchen
+  - Single Wall Kitchen
+  - Galley Kitchen
+  - Corridor Kitchen
+  - L-Shaped Kitchen
+  - U-Shaped Kitchen
+  - G-Shaped Kitchen
+  - Island Kitchen
+  - Peninsula Kitchen
+  - Open Plan Kitchen
+  - Broken Plan Kitchen
+  - Double Island Kitchen
+  - Wrap Around Kitchen
+
+style_names:
+  - Modern Kitchen
+  - Contemporary Kitchen
+  - Traditional Kitchen
+  - Classic Kitchen
+  - Shaker Kitchen
+  - Slim Shaker Kitchen
+  - In-Frame Kitchen
+  - Country Kitchen
+  - Farmhouse Kitchen
+  - Cottage Kitchen
+  - Rustic Kitchen
+  - Scandinavian Kitchen
+  - Nordic Kitchen
+  - Industrial Kitchen
+  - Minimalist Kitchen
+  - Transitional Kitchen
+  - Luxury Kitchen
+  - Bespoke Kitchen
+  - Designer Kitchen
+  - Coastal Kitchen
+  - Mediterranean Kitchen
+  - Victorian Kitchen
+  - Georgian Kitchen
+  - Edwardian Kitchen
+  - Heritage Kitchen
+
+finish_names:
+  - Painted Kitchen
+  - Solid Oak Kitchen
+  - Walnut Kitchen
+  - Ash Kitchen
+  - Maple Kitchen
+  - Beech Kitchen
+  - Pine Kitchen
+  - Timber Kitchen
+  - Veneer Kitchen
+  - High Gloss Kitchen
+  - Matt Kitchen
+  - Satin Finish Kitchen
+  - Textured Kitchen
+  - Wood Grain Kitchen
+  - Stone Effect Kitchen
+  - Concrete Effect Kitchen
+
+door_names:
+  - Slab Kitchen
+  - Handleless Kitchen
+  - True Handleless Kitchen
+  - J-Pull Kitchen
+  - Shaker Kitchen
+  - Narrow Shaker Kitchen
+  - Raised Panel Kitchen
+  - Flat Panel Kitchen
+  - Beaded Kitchen
+  - Tongue and Groove Kitchen
+  - Fluted Kitchen
+  - Reeded Kitchen
+  - Glass Front Kitchen
+
+luxury_collections:
+  - Contemporary Luxury Kitchen
+  - Modern Luxury Kitchen
+  - Designer Kitchen
+  - Premium Kitchen
+  - High-End Kitchen
+  - Architectural Kitchen
+  - Statement Kitchen
+  - Showpiece Kitchen
+
+room_types:
+  - Family Kitchen
+  - Kitchen Diner
+  - Open Living Kitchen
+  - Entertaining Kitchen
+  - Chef's Kitchen
+  - Compact Kitchen
+  - Small Kitchen
+  - Apartment Kitchen
+  - Utility Kitchen
+  - Butler's Pantry Kitchen
+  - Outdoor Kitchen
+
+construction_names:
+  - Flat Pack Kitchen
+  - Rigid Kitchen
+  - Modular Kitchen
+  - Bespoke Kitchen
+  - Handmade Kitchen
+  - Custom Kitchen
+  - Fitted Kitchen
+  - Built-in Kitchen
+
+popular_search_terms:
+  - Modern Kitchen
+  - Shaker Kitchen
+  - Handleless Kitchen
+  - Luxury Kitchen
+  - Contemporary Kitchen
+  - Traditional Kitchen
+  - Country Kitchen
+  - Farmhouse Kitchen
+  - Oak Kitchen
+  - Walnut Kitchen
+  - White Kitchen
+  - Grey Kitchen
+  - Black Kitchen
+  - Navy Kitchen
+  - Green Kitchen
+  - L-Shaped Kitchen
+  - U-Shaped Kitchen
+  - Island Kitchen
+  - Kitchen Diner
+  - Bespoke Kitchen
+
+knowledge_tags:
+  - Kitchen Layout
+  - Kitchen Style
+  - Kitchen Construction
+  - Kitchen Cabinets
+  - Kitchen Doors
+  - Kitchen Worktops
+  - Kitchen Islands
+  - Kitchen Storage
+  - Kitchen Appliances
+  - Kitchen Lighting
+  - Kitchen Materials
+  - Kitchen Design
+  - Kitchen Planning
+  - Kitchen Renovation
+  - Kitchen Installation
+  - Luxury Kitchens
+  - Modern Kitchens
+  - Traditional Kitchens
+  - Bespoke Kitchens

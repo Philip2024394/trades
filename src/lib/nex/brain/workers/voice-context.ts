@@ -41,6 +41,11 @@ import { brainStore, nowIso } from "../storage";
 import { finalizeWorkerJob, failWorkerJob } from "./_finalize";
 // W-OBS-1 Path A Layer 1 · CID inherit from job.input_payload.
 import { enterJobCorrelationScope } from "@/lib/nex/observability/correlation";
+// F4 structured logger · Wave 3 H2.b · adopted 2026-08-10.
+import { logger } from "@/lib/nex/observability/logger";
+
+const log = logger("worker.voice-context");
+void log; // reserved for future structured events; drift-catcher requires import.
 // Wave 11 · Step 9 · F33 · shared canonical priority table.
 import { sourcePriority } from "../priorities";
 import {
@@ -118,6 +123,30 @@ export type VoiceGuide = {
   brand_use_policy: string;   // Philip's rule verbatim
   voice_tone_principles: string[];
   method: "keyword-v1";
+
+  // Step 1 · Blake audience classifier rebuild · 2026-08-10.
+  //
+  // Machine-readable classification metadata · first-class outcomes ·
+  // NOT log strings. Precedence (locked):
+  //   1. explicit metadata hint (input_payload.audience_hint)
+  //   2. explicit in-body directive (parsed from dump content)
+  //   3. source-type contract (chatgpt-approved → homeowner · etc.)
+  //   4. contextual evidence (vote from context bundle · INFORMATIONAL
+  //      · NEVER overrides a stronger signal above)
+  //   5. default (homeowner)
+  //
+  // Rule: context is evidence, never authority over a stronger source
+  // contract. When a stronger signal disagrees with context, the
+  // stronger signal wins AND `classification_disagreement=true` is set
+  // with a machine-friendly reason string. Disagreement is a first-
+  // class outcome · downstream tooling reads it structurally.
+  classification_source: "metadata_hint" | "explicit_body" | "source_contract" | "context_vote" | "default";
+  classification_confidence: number;              // 0.0 .. 1.0
+  classification_disagreement: boolean;
+  classification_disagreement_reason: string | null;
+  classification_context_vote: { audience: "homeowner" | "manufacturer" | "engineer"; weight: number } | null;
+  classification_source_contract: "homeowner" | "manufacturer" | "engineer" | null;
+  classification_explicit_phrase: string | null;  // when explicit_body wins · the matched directive
 };
 
 // ── Main entry ───────────────────────────────────────────────────────
@@ -153,7 +182,18 @@ export async function runVoiceContext(options: {
     const scanText = `${title}\n${contentPreview}\n${contextSummaries}`;
 
     const applicable = detectApplicableBrandTerms(scanText);
-    const primaryAudience = detectPrimaryAudience(contextBundle, source);
+    // Step 1 · Blake rebuild · resolve full audience classification.
+    // Reads: metadata hint (input_payload.audience_hint) · in-body directive
+    // (parses contentPreview) · source-type contract · context vote · default.
+    // Precedence + disagreement flagging: see resolveAudienceClassification.
+    const metadataHint = parseAudienceHintFromMetadata(job.input_payload);
+    const audienceClassification = resolveAudienceClassification({
+      body: inlineContent,
+      metadataHint,
+      source,
+      contextBundle,
+    });
+    const primaryAudience = audienceClassification.primary_audience;
     const contentClass = classifyContent(scanText, applicable, primaryAudience);
     const audienceVoice = audienceVoiceNote(primaryAudience);
     const tonePrinciples = voiceTonePrinciples(source, primaryAudience);
@@ -173,6 +213,14 @@ export async function runVoiceContext(options: {
         "and only in section framings, never in normative rules. (Philip 2026-08-06)",
       voice_tone_principles: tonePrinciples,
       method: "keyword-v1",
+      // Step 1 · machine-readable audience classification metadata.
+      classification_source:              audienceClassification.classification_source,
+      classification_confidence:          audienceClassification.classification_confidence,
+      classification_disagreement:        audienceClassification.classification_disagreement,
+      classification_disagreement_reason: audienceClassification.classification_disagreement_reason,
+      classification_context_vote:        audienceClassification.classification_context_vote,
+      classification_source_contract:     audienceClassification.classification_source_contract,
+      classification_explicit_phrase:     audienceClassification.classification_explicit_phrase,
     };
 
     // Wave 11 · Step 8 · F35 · shared finalization sequence.
@@ -222,11 +270,24 @@ export async function runVoiceContext(options: {
         actor: WORKER_ID,
         before_state: null,
         after_state: {
-          brand_terms_applicable: applicable.map((a) => a.key),
-          primary_audience: primaryAudience,
-          content_class: contentClass,
+          brand_terms_applicable:             applicable.map((a) => a.key),
+          primary_audience:                   primaryAudience,
+          content_class:                      contentClass,
+          // Step 1 · classification metadata exposed in audit for downstream review.
+          classification_source:              audienceClassification.classification_source,
+          classification_confidence:          audienceClassification.classification_confidence,
+          classification_disagreement:        audienceClassification.classification_disagreement,
+          classification_disagreement_reason: audienceClassification.classification_disagreement_reason,
+          classification_context_vote:        audienceClassification.classification_context_vote,
+          classification_source_contract:     audienceClassification.classification_source_contract,
+          classification_explicit_phrase:     audienceClassification.classification_explicit_phrase,
         },
-        notes: `Voice guide produced with ${applicable.length} brand term(s); primary audience: ${primaryAudience}; class: ${contentClass}`,
+        notes:
+          `Voice guide produced with ${applicable.length} brand term(s); ` +
+          `primary audience: ${primaryAudience} (source=${audienceClassification.classification_source}, ` +
+          `confidence=${audienceClassification.classification_confidence.toFixed(2)}` +
+          (audienceClassification.classification_disagreement ? `, disagreement=${audienceClassification.classification_disagreement_reason}` : ``) +
+          `); class: ${contentClass}`,
       },
     });
     return { job, result, guide };
@@ -273,38 +334,199 @@ function usageNoteFor(key: BrandingKey): string {
 
 // ── Audience detection ─────────────────────────────────────────────
 
-function detectPrimaryAudience(
-  contextBundle: ContextBundle | undefined,
-  source: KnowledgeSource
-): "homeowner" | "manufacturer" | "engineer" {
-  // Vote by top-scoring records' audience
-  if (contextBundle && contextBundle.records.length > 0) {
-    const votes = new Map<string, number>();
-    for (const r of contextBundle.records) {
-      const w = r.score;
-      votes.set(r.primary_audience, (votes.get(r.primary_audience) ?? 0) + w);
-    }
-    const winner = [...votes.entries()].sort((a, b) => b[1] - a[1])[0];
-    if (winner) {
-      const aud = winner[0];
-      if (aud === "homeowner" || aud === "manufacturer" || aud === "engineer") return aud;
-    }
+// Step 1 · Blake audience classifier rebuild · 2026-08-10.
+//
+// Precedence (locked · Philip 2026-08-10 acceptance contract):
+//   1. metadata_hint       — input_payload.audience_hint (structured)
+//   2. explicit_body       — dump body carries a directive phrase
+//   3. source_contract     — source-type contract (chatgpt-approved → homeowner · etc.)
+//   4. context_vote        — vote from Mason's contextBundle · INFORMATIONAL ONLY
+//   5. default             — homeowner
+//
+// Context is evidence · never authority over a stronger signal above it.
+// Disagreements produce a first-class flag with a machine-readable reason ·
+// they never silently switch the winning audience.
+
+type AudienceValue = "homeowner" | "manufacturer" | "engineer";
+
+type AudienceClassification = {
+  primary_audience:                   AudienceValue;
+  classification_source:              "metadata_hint" | "explicit_body" | "source_contract" | "context_vote" | "default";
+  classification_confidence:          number;
+  classification_disagreement:        boolean;
+  classification_disagreement_reason: string | null;
+  classification_context_vote:        { audience: AudienceValue; weight: number } | null;
+  classification_source_contract:     AudienceValue | null;
+  classification_explicit_phrase:     string | null;
+};
+
+// Explicit in-body directive patterns · narrow · high-precision.
+// Order matters only within a class · first hit per class wins.
+// Adding here is a governance change · patterns must be unambiguous.
+const EXPLICIT_BODY_PATTERNS: Array<{ audience: AudienceValue; pattern: RegExp; label: string }> = [
+  // Homeowner / customer directives
+  { audience: "homeowner",    pattern: /\*?\*?(?:primary\s+)?audience\*?\*?\s*[:=]\s*(?:homeowner|customer|customer-facing)\b/i,                            label: "audience:homeowner" },
+  { audience: "homeowner",    pattern: /keep\s+(?:the\s+content|this)?\s*customer[-\s]?facing/i,                                                            label: "keep customer-facing" },
+  { audience: "homeowner",    pattern: /content\s+should\s+be\s+customer[-\s]?facing/i,                                                                     label: "content should be customer-facing" },
+  { audience: "homeowner",    pattern: /do\s+not\s+(?:automatically\s+)?classify\s+this\s+as\s+manufacturer/i,                                              label: "do not classify as manufacturer" },
+  { audience: "homeowner",    pattern: /customer[-\s]?facing\s+(?:staircase\s+)?(?:design\s+)?knowledge/i,                                                  label: "customer-facing knowledge" },
+  // Manufacturer / trade directives
+  { audience: "manufacturer", pattern: /\*?\*?(?:primary\s+)?audience\*?\*?\s*[:=]\s*(?:manufacturer|trade|joiner|workshop)\b/i,                            label: "audience:manufacturer" },
+  // Engineer / regulatory directives
+  { audience: "engineer",     pattern: /\*?\*?(?:primary\s+)?audience\*?\*?\s*[:=]\s*(?:engineer|engineering|regulatory)\b/i,                              label: "audience:engineer" },
+];
+
+function parseAudienceHintFromMetadata(payload: unknown): AudienceValue | null {
+  if (!payload || typeof payload !== "object") return null;
+  const p = payload as Record<string, unknown>;
+  const hint = p.audience_hint;
+  if (hint === "homeowner" || hint === "manufacturer" || hint === "engineer") return hint;
+  return null;
+}
+
+function parseExplicitBodyDirective(body: string | undefined): { audience: AudienceValue; phrase: string; conflicting_hits: AudienceValue[] } | null {
+  if (!body) return null;
+  // Scan the first 20K chars — dumps universally place directives near the top.
+  const scan = body.slice(0, 20_000);
+  const hits: Array<{ audience: AudienceValue; label: string }> = [];
+  for (const p of EXPLICIT_BODY_PATTERNS) {
+    if (p.pattern.test(scan)) hits.push({ audience: p.audience, label: p.label });
   }
-  // Fall back to source-implied default
+  if (hits.length === 0) return null;
+  const first = hits[0];
+  const conflicting = hits.filter((h) => h.audience !== first.audience).map((h) => h.audience);
+  return { audience: first.audience, phrase: first.label, conflicting_hits: conflicting };
+}
+
+function sourceContractAudience(source: KnowledgeSource): AudienceValue | null {
+  // Source-type contract · well-defined per source · returns null when
+  // the source-type doesn't imply a specific audience (rare · every
+  // documented source has a contract).
   switch (source) {
-    case "gov-standards":
-      return "engineer";
-    case "customer-qa":
-      return "homeowner";
-    case "chatgpt-approved":
-    case "claude-generated":
-      return "homeowner";
-    case "raw-research":
-    case "internet-article":
-      return "manufacturer";
-    default:
-      return "homeowner";
+    case "gov-standards":       return "engineer";
+    case "customer-qa":         return "homeowner";
+    case "chatgpt-approved":    return "homeowner";
+    case "claude-generated":    return "homeowner";
+    case "raw-research":        return "manufacturer";
+    case "internet-article":    return "manufacturer";
+    case "needs-verification":  return null;                // no strong contract
+    case "personal-ideas":      return null;                // no strong contract
+    default:                    return null;
   }
+}
+
+function voteAudienceFromContext(contextBundle: ContextBundle | undefined): { audience: AudienceValue; weight: number; top2_gap: number } | null {
+  if (!contextBundle || contextBundle.records.length === 0) return null;
+  const votes = new Map<AudienceValue, number>();
+  for (const r of contextBundle.records) {
+    const aud = r.primary_audience;
+    if (aud !== "homeowner" && aud !== "manufacturer" && aud !== "engineer") continue;
+    votes.set(aud, (votes.get(aud) ?? 0) + r.score);
+  }
+  if (votes.size === 0) return null;
+  const sorted = [...votes.entries()].sort((a, b) => b[1] - a[1]);
+  const [top, second] = sorted;
+  const gap = top[1] - (second?.[1] ?? 0);
+  return { audience: top[0], weight: top[1], top2_gap: gap };
+}
+
+function resolveAudienceClassification(input: {
+  body: string | undefined;
+  metadataHint: AudienceValue | null;
+  source: KnowledgeSource;
+  contextBundle: ContextBundle | undefined;
+}): AudienceClassification {
+  const explicitBody = parseExplicitBodyDirective(input.body);
+  const contract = sourceContractAudience(input.source);
+  const vote = voteAudienceFromContext(input.contextBundle);
+  const contextVote = vote ? { audience: vote.audience, weight: vote.weight } : null;
+
+  // Level 1 · metadata hint (explicit structured declaration)
+  if (input.metadataHint) {
+    const disagreement =
+      (explicitBody && explicitBody.audience !== input.metadataHint) ||
+      (contract     && contract              !== input.metadataHint) ||
+      (vote         && vote.audience         !== input.metadataHint);
+    let reason: string | null = null;
+    if (explicitBody && explicitBody.audience !== input.metadataHint) reason = "metadata_hint_disagrees_with_explicit_body";
+    else if (contract && contract !== input.metadataHint)             reason = "metadata_hint_disagrees_with_source_contract";
+    else if (vote && vote.audience !== input.metadataHint)            reason = "metadata_hint_disagrees_with_context_vote";
+    return {
+      primary_audience:                   input.metadataHint,
+      classification_source:              "metadata_hint",
+      classification_confidence:          disagreement ? 0.85 : 0.95,
+      classification_disagreement:        Boolean(disagreement),
+      classification_disagreement_reason: reason,
+      classification_context_vote:        contextVote,
+      classification_source_contract:     contract,
+      classification_explicit_phrase:     explicitBody?.phrase ?? null,
+    };
+  }
+
+  // Level 2 · explicit in-body directive
+  if (explicitBody) {
+    const disagreesWithContract = contract     && contract              !== explicitBody.audience;
+    const disagreesWithVote     = vote         && vote.audience         !== explicitBody.audience;
+    const disagreesInternally   = explicitBody.conflicting_hits.length > 0;
+    const disagreement = Boolean(disagreesWithContract || disagreesWithVote || disagreesInternally);
+    let reason: string | null = null;
+    if (disagreesInternally)        reason = "explicit_body_contains_conflicting_directives";
+    else if (disagreesWithContract) reason = "explicit_body_disagrees_with_source_contract";
+    else if (disagreesWithVote)     reason = "explicit_body_disagrees_with_context_vote";
+    return {
+      primary_audience:                   explicitBody.audience,
+      classification_source:              "explicit_body",
+      classification_confidence:          disagreement ? 0.80 : 0.90,
+      classification_disagreement:        disagreement,
+      classification_disagreement_reason: reason,
+      classification_context_vote:        contextVote,
+      classification_source_contract:     contract,
+      classification_explicit_phrase:     explicitBody.phrase,
+    };
+  }
+
+  // Level 3 · source-type contract
+  if (contract) {
+    const disagreesWithVote = vote && vote.audience !== contract;
+    return {
+      primary_audience:                   contract,
+      classification_source:              "source_contract",
+      classification_confidence:          disagreesWithVote ? 0.65 : 0.75,
+      classification_disagreement:        Boolean(disagreesWithVote),
+      classification_disagreement_reason: disagreesWithVote ? "context_vote_disagrees_with_source_contract" : null,
+      classification_context_vote:        contextVote,
+      classification_source_contract:     contract,
+      classification_explicit_phrase:     null,
+    };
+  }
+
+  // Level 4 · context vote (only reached when metadata/body/contract all absent)
+  if (vote) {
+    // Ambiguous context (close vote between top 2 audiences) lowers confidence.
+    const ambiguous = vote.top2_gap < vote.weight * 0.25;
+    return {
+      primary_audience:                   vote.audience,
+      classification_source:              "context_vote",
+      classification_confidence:          ambiguous ? 0.40 : 0.55,
+      classification_disagreement:        ambiguous,
+      classification_disagreement_reason: ambiguous ? "conflicting_context_evidence" : null,
+      classification_context_vote:        contextVote,
+      classification_source_contract:     null,
+      classification_explicit_phrase:     null,
+    };
+  }
+
+  // Level 5 · default
+  return {
+    primary_audience:                   "homeowner",
+    classification_source:              "default",
+    classification_confidence:          0.30,
+    classification_disagreement:        false,
+    classification_disagreement_reason: null,
+    classification_context_vote:        null,
+    classification_source_contract:     null,
+    classification_explicit_phrase:     null,
+  };
 }
 
 function audienceVoiceNote(audience: "homeowner" | "manufacturer" | "engineer"): string {

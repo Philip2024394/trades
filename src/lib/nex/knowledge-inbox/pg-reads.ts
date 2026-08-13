@@ -61,7 +61,14 @@ function validateInboxRow(row: unknown, idx: number): { ok: true; value: InboxIt
   if (typeof r.source !== "string" || !(KNOWLEDGE_SOURCES as Set<string>).has(r.source)) return { ok: false, reason: "invalid-source" };
   if (typeof r.hash !== "string")                             return { ok: false, reason: "hash-missing" };
   if (r.created_at_ms == null)                                return { ok: false, reason: "created_at_ms-missing" };
-  if (typeof r.created_at_iso !== "string")                   return { ok: false, reason: "created_at_iso-missing" };
+  // pg driver returns `timestamptz` as a JS Date object (not a string),
+  // so accept either shape. Same fix pattern as W4-1 in rollup-worker.
+  // Coerce to canonical ISO string below.
+  const createdAtIsoRaw = r.created_at_iso;
+  const createdAtIsoOk = createdAtIsoRaw instanceof Date
+    ? Number.isFinite(createdAtIsoRaw.getTime())
+    : typeof createdAtIsoRaw === "string" && createdAtIsoRaw.length > 0;
+  if (!createdAtIsoOk)                                        return { ok: false, reason: "created_at_iso-missing" };
   const item: InboxItem = {
     id:               r.id,
     title:            r.title,
@@ -69,7 +76,9 @@ function validateInboxRow(row: unknown, idx: number): { ok: true; value: InboxIt
     status:           r.status as InboxStatus,
     source:           r.source as KnowledgeSource,
     createdAt:        Number(r.created_at_ms),
-    createdAtIso:     new Date(r.created_at_iso).toISOString(),
+    createdAtIso:     createdAtIsoRaw instanceof Date
+                        ? createdAtIsoRaw.toISOString()
+                        : new Date(createdAtIsoRaw as string).toISOString(),
     hash:             r.hash,
     meta:             (r.meta          as string | null) ?? undefined,
     previewText:      (r.preview_text  as string | null) ?? undefined,

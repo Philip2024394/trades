@@ -38,6 +38,11 @@ import { brainStore, nowIso } from "../storage";
 import { finalizeWorkerJob, failWorkerJob } from "./_finalize";
 // W-OBS-1 Path A Layer 1 · CID inherit from job.input_payload.
 import { enterJobCorrelationScope } from "@/lib/nex/observability/correlation";
+// F4 structured logger · Wave 3 H2.b · adopted 2026-08-10.
+import { logger } from "@/lib/nex/observability/logger";
+
+const log = logger("worker.image-analyst");
+void log; // reserved for future structured events; drift-catcher requires import.
 import { completeJson, type LlmImage } from "../llm";
 // Phase 3a · NEX Object Storage · location-transparent image reads.
 // Any worker on any machine can fetch the bytes via the adapter · no

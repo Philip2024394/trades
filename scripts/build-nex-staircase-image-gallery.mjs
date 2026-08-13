@@ -49,7 +49,7 @@ const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>NEX Staircase Image Gallery — 2026-07-31 (${total} images)</title>
+<title>NEX Staircase Image Gallery — ${total} images</title>
 <style>
   body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; margin: 0; padding: 24px; color: #222; }
   h1 { font-size: 20px; margin: 0 0 4px; }
@@ -73,7 +73,7 @@ const html = `<!DOCTYPE html>
 <body>
 
 <h1>NEX Staircase Image Gallery</h1>
-<div class="meta">2026-07-31 · <strong>${total}</strong> images with <code>subject_domain === "staircase"</code> from <code>data/nex-image-manifest.json</code> · <strong>${aPlusCount}</strong> flagged A+ · sorted A+ first then URL alphabetical · click any tile to open full-size in new tab</div>
+<div class="meta">Regenerated ${new Date().toISOString().slice(0, 10)} · <strong>${total}</strong> images with <code>subject_domain === "staircase"</code> from <code>data/nex-image-manifest.json</code> · <strong>${aPlusCount}</strong> flagged A+ · sorted A+ first then URL alphabetical · click any tile to open full-size in new tab</div>
 
 <div class="filter-bar">
   <input type="text" id="q" placeholder="Filter by reference, tag, or description..." oninput="applyFilter()">

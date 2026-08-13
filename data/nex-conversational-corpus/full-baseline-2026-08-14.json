@@ -1,0 +1,66 @@
+{
+  "meta": {
+    "computed_at": "2026-08-13T17:45:00.598Z",
+    "corpus": "raw-corpus-2026-08-14.txt",
+    "unique_questions": 837,
+    "ci_dir": "data/nex-reference-brains/staircase-preparation/conversational-intelligence/"
+  },
+  "outcomes": {
+    "correctly_answered": 302,
+    "correctly_routed_to_image_retrieval": 24,
+    "correctly_asked_for_clarification": 64,
+    "correctly_identified_insufficient_evidence": 159,
+    "correctly_routed_to_future_brain": 166,
+    "correctly_identified_out_of_scope": 72,
+    "incorrect_interpretation": 4,
+    "unsupported_answer": 0,
+    "wrong_retrieval": 46,
+    "fabricated_claim": 0
+  },
+  "rates": {
+    "success_rate_pct": 94,
+    "genuine_answer_pct": 36,
+    "honest_gap_pct": 19,
+    "future_brain_routed_pct": 20,
+    "ambiguous_ask_pct": 8,
+    "image_retrieval_pct": 3,
+    "out_of_scope_pct": 9,
+    "fabrication_rate_pct": 0
+  },
+  "by_concept": {
+    "balusters": 32,
+    "layout_types": 52,
+    "unclassified": 106,
+    "design_style": 28,
+    "stringers": 59,
+    "maintenance_repair": 31,
+    "treads_risers": 79,
+    "timber_species": 14,
+    "starting_steps": 15,
+    "handrail": 56,
+    "installation_process": 17,
+    "understair": 11,
+    "outdoor_stairs": 19,
+    "lighting": 39,
+    "landing_railings": 31,
+    "carpet_stepmats": 88,
+    "safety_regs": 35,
+    "carpentry_math": 47,
+    "wayfinding": 26,
+    "ergonomics": 13,
+    "material_science": 22,
+    "newel_caps": 1,
+    "business_estimation": 15,
+    "refacing": 1
+  },
+  "by_routing": {
+    "on_brain": 386,
+    "future_brain:building_codes": 82,
+    "partial_on_brain": 145,
+    "future_brain:wayfinding": 50,
+    "defer": 76,
+    "future_brain:ergonomics": 49,
+    "future_brain:business_estimation": 49
+  },
+  "honest_gap_count_on_brain": 159
+}

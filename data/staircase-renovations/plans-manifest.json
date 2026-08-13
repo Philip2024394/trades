@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-10",
+  "notes": [
+    "Customer-facing catalogue of staircase PLANS the customer can pick when requesting a quote.",
+    "This is a separate seed from the renovation gallery (categories) manifest ·",
+    "renovations = finishes / styles / feature choices · plans = geometry / layout / design.",
+    "To add a plan: drop image into public/staircase-renovations/plans/<slug>.png,",
+    "then add an object below with slug + label + optional description + src.",
+    "Empty array is honest: `Choose a plan` renders an empty state until Philip seeds real plans."
+  ],
+  "plans": []
+}

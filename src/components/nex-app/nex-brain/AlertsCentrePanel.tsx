@@ -145,7 +145,7 @@ export function AlertsCentrePanel() {
         </button>
         {lastEval ? <span className="ml-2 text-[10px]" style={{ color: T.accent }}>{lastEval}</span> : null}
         <span className="ml-auto text-[9.5px] italic" style={{ color: T.textFade }}>
-          Production: cron POSTs /api/nex/alerts/evaluate every 30-60 s.
+          Cron invokes /api/nex/alerts/evaluate each tick only when NEX_ALERTS_DISPATCH_ENABLED=1 (Wave 3 H5). When the gate is off, this button still opens/resolves alerts but outbound notifications are suppressed.
         </span>
       </div>
 

@@ -1,0 +1,263 @@
+# NEX Staircase Component Library — PANEL_SYSTEM family record
+#
+# Philip 2026-08-03 · FIRST-CLASS PANEL COMPONENT FAMILY.
+#
+# For weeks the taxonomy has only had shells / balusters / handrails /
+# newels / shoe_rails. Decorative wall panelling has lived only in
+# authored FAQs + brain docs. This file promotes panels to a real
+# first-class component family, so Nex can specify + quote a complete
+# panel installation the same way it can quote a staircase shell.
+#
+# Runtime note: src/lib/nex/staircase-components/types.ts currently
+# types `component_type` as one of shell/baluster/handrail/newel/
+# shoe_rail. Adding "panel" needs a follow-up type extension. This
+# YAML is authored ahead of that extension per Rule B (human-authored
+# knowledge lands first, runtime typing follows).
+#
+# Master docs: docs/brains/staircase-panelling-knowledge-base-philip-2026-08-03.md
+#              docs/brains/staircase-panelling-professional-standard-philip-2026-08-03.md
+#              docs/brains/staircase-panelling-layout-slip-materials-philip-2026-08-03.md
+#              docs/brains/staircase-panelling-backing-fixing-systems-philip-2026-08-03.md
+
+family_id:                  PANEL_SYSTEM
+family_name:                Decorative Staircase Wall Panel System
+component_type:             panel
+
+# ─── Structural fingerprint ───────────────────────────────────────
+# A panel SYSTEM is a family with several style variants. Each variant
+# (raised-and-fielded / shaker / applied-moulding / flush / T&G /
+# slatted / beaded) uses the same design principles but different
+# mouldings + backing choices.
+non_structural:             true            # decorative finish only · never structural
+requires_backing:           true            # cannot be applied directly to unsound plaster
+
+# ─── Style variants supported by this family ──────────────────────
+panel_styles_supported:
+  - raised_and_fielded      # traditional · deep mouldings · Georgian/Victorian/Edwardian
+  - shaker                  # flat recessed · slim mouldings · contemporary/painted
+  - applied_moulding        # mouldings on flat wall · no recess · fastest retrofit
+  - flush_modern            # square edges · shadow gaps · minimalist
+  - tongue_and_groove       # vertical boards · cottage/farmhouse/Scandinavian/coastal
+  - tg_in_raised_frame      # hybrid · T&G boards INSIDE raised-fielded frames · cottage/heritage
+  - diagonal_tg_in_raised_frame  # hybrid · 45° diagonal T&G INSIDE raised frames · movement pattern mirroring stair pitch
+  - diagonal_tg_full_sheet  # continuous 45° diagonal T&G · NO intermediate framing · contemporary architectural
+  - vertical_tg_full_sheet  # continuous vertical T&G · full-height · Scandinavian/Shaker/minimalist
+  - slatted_acoustic        # vertical timber slats · black backing · concealed LED
+  - beaded                  # softer bead profile · cottage style
+
+# ─── Panel layout variants (orientation + division) ────────────────
+# Independent of the panel_style. A raised-and-fielded system can be
+# executed with 3 vertical panels, 3 horizontal panels, single large
+# panels, etc. Same for T&G in raised frame, diagonal, etc.
+panel_layout_variants:
+  - single_panel             # one large panel per wall section
+  - three_panel_vertical     # three equal vertical panels (staircase specimen 12_28_47 PM)
+  - three_panel_horizontal   # three equal horizontal panels (specimen 12_37_56 PM · best for TALL walls)
+  - two_panel_horizontal     # dado-height division · lower + upper panels
+  - grid_multi_panel         # regular grid · e.g. 3x3 or 2x4 on large feature walls
+  - full_sheet_no_division   # continuous cladding (T&G full-sheet variants)
+  - custom_bespoke           # designer-specified layout for a specific room
+
+# ─── Board orientation for T&G variants ────────────────────────────
+tg_board_orientation_supported:
+  - vertical                 # traditional · reads taller
+  - horizontal               # farmhouse · reads calmer / wider
+  - diagonal_45              # 45° · movement pattern · mirrors stair pitch
+  - herringbone              # premium feature · complex machining
+
+# ─── Backing systems supported ─────────────────────────────────────
+# The physical substrate the decorative mouldings fix onto. Four
+# construction methods are documented in the backing-fixing-systems
+# brain doc; every panel installation picks one of these.
+backing_methods_supported:
+  - direct_to_wall          # method 1 · cheapest · needs flat plaster
+  - mdf_backing_sheet       # method 2 · perfectly flat surface · common for luxury
+  - timber_batten_frame     # method 3 · 25-50mm service void · uneven walls/LED runs
+  - full_joinery_frame      # method 4 · workshop-built modules · highest quality
+
+backing_materials_supported:
+  - mr_mdf                  # moisture-resistant MDF · most common for painted
+  - standard_mdf            # dry rooms only · lower cost
+  - oak_veneered_mdf        # premium · timber finish
+  - walnut_veneered_mdf     # luxury dark
+  - ash_veneered_mdf        # modern / Scandinavian
+  - birch_plywood           # premium alternative
+  - painted_softwood_tg     # tongue-and-groove boards
+  - existing_plasterboard   # method-1 substrate when wall is sound
+
+backing_thicknesses_mm:
+  common:                   [6, 9, 12, 18]
+  most_common:              [9, 12]
+  most_common_for_painting: 9
+
+# ─── Moulding profiles supported ───────────────────────────────────
+moulding_profiles_supported:
+  - square_edge             # modern · minimalist
+  - shaker_profile          # slim square · clean contemporary
+  - chamfered               # subtle traditional
+  - ogee                    # traditional decorative
+  - bolection               # deep raised · Georgian
+  - beaded                  # cottage
+  - torus                   # traditional
+  - lambs_tongue            # traditional
+  - astragal                # decorative bead
+  - shadow_gap              # modern premium
+
+# Commonly stocked slip widths (mm) from timber merchants + joinery
+# workshops. Actual availability varies by supplier + region.
+moulding_slip_widths_mm:
+  - {width: 18, thickness: 9}
+  - {width: 22, thickness: 9}
+  - {width: 25, thickness: 12}
+  - {width: 30, thickness: 12}
+  - {width: 32, thickness: 15}
+  - {width: 38, thickness: 15}
+  - {width: 44, thickness: 18}
+  - {width: 50, thickness: 18}
+  - {width: 63, thickness: 18}
+  - {width: 69, thickness: 18}
+
+# ─── Design envelope ───────────────────────────────────────────────
+# Practical + absolute limits for balanced professional panel layouts.
+# Populated from the layout-slip-materials brain doc.
+design_envelope:
+  panel_width_mm:
+    recommended:
+      min:                  350
+      max:                  500
+    absolute:
+      min:                  250
+      max:                  600
+    minimum_acceptable:     150   # narrower reads awkward · avoid unless matching existing
+  panel_height_mm:
+    typical:
+      min:                  500
+      max:                  1200
+    # No absolute cap — height follows wall
+  border_width_mm:
+    typical:                [50, 60, 75, 90, 100]
+    most_common:            60
+    rule:                   "keep border identical across the whole project"
+  gap_between_mouldings_mm:
+    typical:
+      min:                  40
+      max:                  80
+    most_common:            60
+  build_up_thickness_mm:
+    retrofit_typical:       24   # 6mm MDF + 18mm moulding
+    premium_typical:        34   # 9mm MDF + 25mm moulding
+    direct_only_min:        12
+    direct_only_max:        18
+  golden_ratios_targeted:   ["1:1.5", "1:1.6", "1:1.8", "1:2"]
+
+# ─── Staircase compatibility ───────────────────────────────────────
+staircase_types_supported:
+  - straight_flight
+  - quarter_turn
+  - half_landing
+  - winder
+  - curved                  # requires flexible mouldings + templates
+  - open
+  - enclosed
+  - under_stair
+  - floating
+
+# ─── Finish options ────────────────────────────────────────────────
+finishes_supported:
+  - primed_only             # supplied ready for on-site painting
+  - painted                 # brush · roller · spray
+  - sprayed_furniture_grade # premium · factory or on-site spray booth
+  - stained                 # for veneered variants
+  - clear_lacquered         # for veneered variants
+  - oiled                   # for veneered variants
+
+# ─── LED integration ───────────────────────────────────────────────
+led_integration_supported:  true
+led_locations_supported:
+  - under_handrail
+  - stair_string
+  - panel_reveal
+  - under_tread
+  - newel_post
+  - slatted_backing
+  - wall_wash
+led_colour_temperature_recommended_k:
+  min:                      2700
+  max:                      3000
+  reason:                   "warm-white matches oak timber best · 3500K+ reads clinical"
+led_voltage_supported:      [12, 24]     # DC low-voltage typical for integrated systems
+
+# ─── Hidden storage ────────────────────────────────────────────────
+hidden_storage_supported:   true
+hidden_storage_hardware_supported:
+  - push_to_open
+  - concealed_hinges
+  - magnetic_catches
+  - flush_finger_pull
+storage_rule:               "panel joints must continue across the hidden door · uniform door gaps"
+
+# ─── Skirting + architrave integration ─────────────────────────────
+integrates_with_skirting:   true
+integrates_with_architrave: true
+integrates_with_dado_rail:  true
+integrates_with_picture_rail: true
+
+# ─── Adhesive + fixing options ─────────────────────────────────────
+adhesives_supported:
+  - high_grab_polymer       # e.g. Gripfill · Pink Grip
+  - solvent_free_construction
+  - polyurethane            # PU · where appropriate
+  - hybrid_sealant_adhesive # e.g. CT1 · Stixall
+pins_supported:
+  - pin_18_gauge
+  - pin_23_gauge_headless
+  - brad_nails
+  - lost_head_nails         # traditional
+fixing_rule:                "adhesive is the permanent fixing · pins hold the moulding while adhesive cures"
+
+# ─── Component enums for quoting ───────────────────────────────────
+# These are the atomic choices Nex uses when building a specification
+# or quote for a panel installation. Each real project selects one
+# value from each category (or NONE where appropriate).
+quote_component_enums:
+  backing_sheet:            [MR_MDF_6, MR_MDF_9, MR_MDF_12, MR_MDF_18, DIRECT_TO_WALL, BATTEN_FRAME]
+  panel_style:              [SHAKER, RAISED_FIELDED, MODERN_FLUSH, TONGUE_GROOVE, TG_IN_RAISED_FRAME, DIAGONAL_TG_IN_RAISED_FRAME, DIAGONAL_TG_FULL_SHEET, VERTICAL_TG_FULL_SHEET, SLATTED, BEADED, APPLIED_MOULDING]
+  panel_layout:             [SINGLE, THREE_VERTICAL, THREE_HORIZONTAL, TWO_HORIZONTAL, GRID_MULTI, FULL_SHEET, CUSTOM]
+  tg_orientation:           [VERTICAL, HORIZONTAL, DIAGONAL_45, HERRINGBONE, NONE]
+  moulding:                 [OGEE_22, OGEE_32, SQUARE_18, SQUARE_25, BOLECTION_32, SHADOW_GAP, SHAKER_18, SHAKER_22, CHAMFERED_25]
+  skirting:                 [EXISTING, NEW]
+  dado_rail:                [YES, NO]
+  picture_rail:             [YES, NO]
+  led:                      [NONE, HANDRAIL, STRINGER, PANEL_REVEAL, UNDER_TREAD, NEWEL, SLATTED, WALL_WASH]
+  finish:                   [PRIMED, PAINTED, SPRAYED_FURNITURE_GRADE, STAINED, CLEAR_LACQUER, OILED]
+  access_panel:             [NONE, PUSH_TO_OPEN, HINGED, MAGNETIC]
+  storage:                  [NONE, SHELVES, DRAWERS, CUPBOARD, WINE, SHOE, COAT, UTILITY, PET, ELECTRICAL_ACCESS]
+
+# ─── Waste allowance for quoting ───────────────────────────────────
+waste_allowance_percent:
+  typical:                  10
+  complex_or_curved:        15
+
+# ─── Rendering / recommendation logic hints ────────────────────────
+recommendation_logic:
+  modern_oak_staircase:     [SHAKER, MODERN_FLUSH, oak_veneered_mdf, SHAKER_18, HANDRAIL_LED]
+  georgian_victorian:       [RAISED_FIELDED, BOLECTION_32, hardwood_mouldings, TRADITIONAL_PROPORTIONS]
+  scandinavian:             [SHAKER, TONGUE_GROOVE, MR_MDF, painted_soft, WARM_LED_2700K]
+  luxury_contemporary:      [MODERN_FLUSH, RAISED_FIELDED, veneered_mdf, PANEL_REVEAL_LED, LARGE_GEOMETRIC]
+  cottage_farmhouse:        [BEADED, TONGUE_GROOVE, softwood_or_MDF_TG, painted_soft]
+  ultra_modern_minimalist:  [SLATTED, black_mdf_backing, HANDRAIL_LED_WARM]
+
+# ─── Provenance (Rule C) ───────────────────────────────────────────
+created_at:                 2026-08-03T00:00:00Z
+created_by:                 philip
+revision:                   1
+review_status:              reviewed          # locked pending runtime type extension
+authoring_source:           "Philip O'Farrell · direct written contribution 2026-08-03"
+
+notes:
+  - Runtime typing follow-up needed · src/lib/nex/staircase-components/types.ts
+    ComponentType enum must add "panel" before this family can be consumed by
+    the solver. YAML lands first per Rule B (human-authored knowledge → runtime).
+  - Variants for each panel_style will be authored separately once the type
+    extension lands (e.g. PANEL_SHAKER_01 · PANEL_RAISED_FIELDED_01 etc).
+  - This is a wall-mounted decorative finish · NEVER treat as structural.

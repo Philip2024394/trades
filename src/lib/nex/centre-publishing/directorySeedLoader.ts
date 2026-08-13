@@ -17,7 +17,159 @@ import path from "node:path";
 import type { CentreFeedItem, MerchantVerificationLevel } from "./types";
 import { matchImage, applyCardCrop } from "./imageMatcher";
 
-type DirectorySeed = {
+// ─────────────────────────────────────────────────────────────────────
+// Refacing-specific optional extensions (2026-08-13 · per Philip spec).
+// All additive · existing seeds without these fields keep working.
+// Applies primarily to Staircase Refacing seeds but the shape is generic
+// enough to reuse for other trade categories that need capability tagging
+// + evidence + qualification scoring + email verification + claim lifecycle.
+
+/** Capability answer · one of yes/no/unknown. Absent = unknown by default. */
+export type CapabilityAnswer = "yes" | "no" | "unknown";
+
+/** Refacing-specific capability set. Extendable · unknown keys are ignored.
+ *  Philip 2026-08-13 · added `staircase_manufacture` and `bespoke_joinery`
+ *  so one company record can hold multiple services (a single business may
+ *  manufacture NEW staircases AND refurbish EXISTING ones — never create
+ *  duplicate records for different services offered by the same trade). */
+export type RefacingCapabilityKey =
+  | "staircase_manufacture"
+  | "staircase_refurbishment"
+  | "staircase_refacing"
+  | "staircase_covering"
+  | "staircase_cladding"
+  | "overcladding"
+  | "tread_replacement"
+  | "riser_replacement"
+  | "tread_and_riser_replacement"
+  | "handrail"
+  | "baserail"
+  | "newel"
+  | "baluster"
+  | "spindle"
+  | "glass_balustrade"
+  | "stainless_steel_balustrade"
+  | "metal_balustrade"
+  | "sanding"
+  | "staining"
+  | "painting"
+  | "varnishing"
+  | "restoration"
+  | "repair"
+  | "installation"
+  | "bespoke_joinery";
+
+export type RefacingEvidenceItem = {
+  url: string;
+  type:
+    | "company_website"
+    | "contact_page"
+    | "services_page"
+    | "trade_directory"
+    | "checkatrade"
+    | "yell"
+    | "trustpilot"
+    | "rated_people"
+    | "bark"
+    | "houzz"
+    | "mybuilder"
+    | "google_business_profile"
+    | "other";
+  category:
+    | "staircase_refacing"
+    | "staircase_refurbishment"
+    | "staircase_renovation"
+    | "staircase_restoration"
+    | "staircase_covering"
+    | "staircase_cladding"
+    | "tread_replacement"
+    | "riser_replacement"
+    | "balustrade_replacement"
+    | "component_replacement"
+    | "finishing"
+    | "installation"
+    | "other";
+  summary: string;
+  checked_at: string; // ISO date YYYY-MM-DD
+};
+
+export type RefacingQualification = "A+" | "A" | "B" | "C" | "excluded";
+
+export type LifecycleStatus =
+  | "unclaimed"
+  | "contacted"
+  | "interested"
+  | "claim_requested"
+  | "claim_pending"
+  | "claimed"
+  | "verified_partner";
+
+/**
+ * Tri-state email verification (Philip 2026-08-13).
+ *   verified                   · 🟢 public business email confirmed
+ *   needs_manual_verification  · 🟡 email appears to exist (visible on site or in
+ *                                    directory profile) but couldn't be reliably
+ *                                    extracted — e.g. fetch masked it, JS-rendered,
+ *                                    or displayed as image / mailto-only
+ *   not_found                  · 🔴 no public business email located after search
+ *
+ * `email_verified: boolean` (existing field) remains for backwards compat and is
+ * derived from `email_status === "verified"`. Both are stored on the row so legacy
+ * code paths reading `email_verified` continue to work.
+ */
+export type EmailStatus = "verified" | "needs_manual_verification" | "not_found";
+
+/**
+ * Derive email_status from legacy fields for seeds that predate the tri-state.
+ * Pure function · never mutates the input. Used by the loader to guarantee every
+ * seed exposes a status even before the field is explicitly set.
+ */
+export function deriveEmailStatus(seed: Pick<DirectorySeed, "email" | "email_verified" | "email_status">): EmailStatus {
+  if (seed.email_status) return seed.email_status;
+  if (!seed.email || !seed.email.trim()) return "not_found";
+  return seed.email_verified ? "verified" : "needs_manual_verification";
+}
+
+/**
+ * DirectoryState (Philip 2026-08-13) · fundamental progression a seed moves
+ * through inside the NEX Refacing Trade Exchange model.
+ *
+ *   "listed"       — discovered/imported · basic info stored · NOT independently verified
+ *   "verified"     — NEX has independently verified the directory info (contact accuracy ·
+ *                    evidence of refacing work · currently operating) · still unclaimed
+ *   "claimed"      — business owner has claimed the listing via the shared claim flow
+ *   "paid_member"  — active paying NEX Trade Center member · eligible to receive routed
+ *                    homeowner opportunities from the Refacing Trade Exchange
+ *
+ * DISTINCT FROM:
+ *   · `verified: boolean` (existing seed field) — the verified BADGE on the merchant
+ *     card. Only earned via the claim + verification workflow. Never true just because
+ *     NEX did internal directory verification.
+ *   · `lifecycle_status` — granular 7-step claim funnel (contacted · interested · etc).
+ *     A seed can be `directory_state = "verified"` while `lifecycle_status = "contacted"`.
+ *   · `refacing_qualification` (A+/A/B/C) — evidence-based scoring, independent axis.
+ *
+ * PROGRESSION RULE: forward-only. Never downgrade without an audit trail entry in
+ * `refacing_evidence[]`. Only `paid_member` records are eligible for routed opportunities.
+ */
+export type DirectoryState =
+  | "listed"
+  | "verified"
+  | "claimed"
+  | "paid_member";
+
+export type EmailSource =
+  | "company_website"
+  | "contact_page"
+  | "services_page"
+  | "trade_directory"
+  | "checkatrade"
+  | "yell"
+  | "trustpilot"
+  | "google_business_profile"
+  | "other";
+
+export type DirectorySeed = {
   id: string;
   slug: string;
   business_name: string;
@@ -49,7 +201,52 @@ type DirectorySeed = {
   cover_image: string | null;
   source: string;
   imported_at: string;
+
+  // ── Refacing-specific optional extensions (2026-08-13) ──────────────
+  /** Capability tagging. Keys not listed default to "unknown". */
+  capabilities?: Partial<Record<RefacingCapabilityKey, CapabilityAnswer>>;
+  /** Evidence records for why this trade qualifies · at least 1 recommended for A+/A. */
+  refacing_evidence?: RefacingEvidenceItem[];
+  /** Qualification score · null if not yet assessed. */
+  refacing_qualification?: RefacingQualification;
+  /** Where the email was found · null when email is null. */
+  email_source?: EmailSource | null;
+  /** Whether the email has been human-verified as a working business address. */
+  email_verified?: boolean;
+  /** ISO date the email was last checked. */
+  email_checked_at?: string | null;
+  /** Claim lifecycle · defaults to "unclaimed" on new seeds. */
+  lifecycle_status?: LifecycleStatus;
+  /** When the seed data (services · rating · contact) was last re-verified. */
+  last_verified_at?: string | null;
+  /** Fundamental Refacing-Exchange progression · defaults to "listed" on new seeds.
+   *  Only "paid_member" records are eligible for routed homeowner opportunities. */
+  directory_state?: DirectoryState;
+  /** Tri-state email verification (Philip 2026-08-13). See EmailStatus doc above.
+   *  Optional for backwards compat · deriveEmailStatus() fills in for legacy seeds. */
+  email_status?: EmailStatus;
 };
+
+/**
+ * Routing eligibility helper (Philip 2026-08-13 · updated same-day).
+ *
+ * RULE: `directory_state === "paid_member"` alone = eligible for the normal NEX
+ * trade lead system. Paying for membership gives access to the core service.
+ *
+ * `refacing_qualification` (A+/A/B/C/excluded) is preserved as a separate
+ * quality/evidence field · it may later be used for RANKING, PRIORITY, or
+ * VERIFICATION display · but it must NEVER gate a legitimate paid member's
+ * access to leads (that would let someone pay £14.99 and get nothing).
+ *
+ * Never route to unclaimed listings (`directory_state ∈ {listed, verified,
+ * claimed}`) — those trades have not paid for the service.
+ *
+ * Prior version (deprecated 2026-08-13): required `paid_member AND (A+ OR A)`.
+ * That rule broke the business model · corrected here.
+ */
+export function isEligibleForRefacingRouting(seed: Pick<DirectorySeed, "directory_state" | "refacing_qualification">): boolean {
+  return seed.directory_state === "paid_member";
+}
 
 const SEEDS_ROOT = path.join(process.cwd(), "data", "directory-seeds");
 
@@ -225,12 +422,20 @@ function seedToFeedItem(seed: DirectorySeed): CentreFeedItem {
     (seed.postcode ? seed.postcode.split(" ")[0] : null) ??
     "UK";
 
-  // Seed listings start unverified; the trust pip stays "listed".
-  const verification: MerchantVerificationLevel = seed.verified
-    ? "verified"
-    : seed.claimed
-    ? "claimed"
-    : "listed";
+  // Verification level for the public card (Philip 2026-08-13):
+  //   paid_member → "partner"   (unlocks NEX Chat enquiry CTA, phone shown)
+  //   claimed     → "claimed"   (owned by the trade, discovery only for public)
+  //   verified    → "verified"  (internally verified, discovery only for public)
+  //   listed      → "listed"    (imported, discovery only for public)
+  // Ordering: paid_member wins over verified/claimed since it's the strongest signal.
+  const verification: MerchantVerificationLevel =
+    seed.directory_state === "paid_member"
+      ? "partner"
+      : seed.verified
+      ? "verified"
+      : seed.claimed || seed.directory_state === "claimed"
+      ? "claimed"
+      : "listed";
 
   return {
     kind: "product",
@@ -292,19 +497,65 @@ function seedToFeedItem(seed: DirectorySeed): CentreFeedItem {
 /** Load every directory seed and convert to feed items. Ordered by
  *  imported_at descending for display; admin refs are assigned in
  *  imported_at ASCENDING order so NEX-D-001 = first-imported seed
- *  regardless of display sort. Stable across reloads. */
-export async function loadDirectorySeedsAsFeedItems(): Promise<CentreFeedItem[]> {
-  const files = await collectSeedFiles(SEEDS_ROOT);
+ *  regardless of display sort. Stable across reloads.
+ *
+ *  DATA SOURCE (Philip 2026-08-13 · Option B migration):
+ *  Reads from the Supabase `directory_seeds` table via listDirectorySeeds().
+ *  The JSON files under data/directory-seeds/**​/*.json remain as archive
+ *  but are NOT the runtime source of truth anymore.
+ *
+ *  Fallback: if the DB call returns 0 rows AND the JSON archive has content,
+ *  fall back to file-based read so a mis-configured DB env never wipes the
+ *  public directory. Emits a console warning so the operator notices.
+ */
+export async function loadDirectorySeedsAsFeedItems(
+  opts?: { category?: string },
+): Promise<CentreFeedItem[]> {
+  // Dynamic import to keep this module safe to load in edge / non-server
+  // contexts (the DB module has `import "server-only"`).
+  const {
+    listDirectorySeeds,
+    listDirectorySeedsByCategory,
+    listSeedRefMap,
+  } = await import("./directorySeedsDb");
+
+  // Perf fix (Philip 2026-08-13): when the caller supplies a category, pull
+  // ONLY that category from the DB instead of every seed across every trade.
+  // The previous "pull all + filter later" pattern was loading kitchens seeds
+  // just to render the Refacing page.
+  //
+  // Identity-preservation fix (Philip 2026-08-13): admin_ref (NEX-D-XXX) is
+  // a GLOBAL identifier — the same seed always gets the same NEX-D-XXX
+  // regardless of filter. We fetch a cheap `id + imported_at` map across
+  // ALL seeds in parallel with the filtered feed query · then assign each
+  // filtered seed its stable global admin_ref from that map. Wall time is
+  // max(refmap, filtered-feed) not sum.
+  const [dbSeeds, globalRefMap] = await Promise.all([
+    opts?.category
+      ? listDirectorySeedsByCategory(opts.category)
+      : listDirectorySeeds(),
+    // Only fetch the global ref-map when filtering · unfiltered path can
+    // number in-place from its own ordering.
+    opts?.category ? listSeedRefMap() : Promise.resolve(new Map<string, string>()),
+  ]);
+
   const seedItems: Array<{ seed: DirectorySeed; item: CentreFeedItem }> = [];
-  for (const file of files) {
-    try {
-      const raw = await fs.readFile(file, "utf8");
-      const seed = JSON.parse(raw) as DirectorySeed;
-      seedItems.push({ seed, item: seedToFeedItem(seed) });
-    } catch {
-      // Skip files that fail to parse — ADR-0023 says never invent data
-      // and a corrupt seed should NOT crash the whole feed.
-      continue;
+  for (const seed of dbSeeds) {
+    seedItems.push({ seed, item: seedToFeedItem(seed) });
+  }
+  if (seedItems.length === 0) {
+    // Fallback path — DB empty or unreachable. Read the JSON archive.
+    console.warn("[directorySeedLoader] Supabase returned 0 seeds · falling back to JSON archive read.");
+    const files = await collectSeedFiles(SEEDS_ROOT);
+    for (const file of files) {
+      try {
+        const raw = await fs.readFile(file, "utf8");
+        const seed = JSON.parse(raw) as DirectorySeed;
+        // Honour the category filter for the JSON fallback path too, so a
+        // Refacing request doesn't accidentally render Kitchen archive seeds.
+        if (opts?.category && seed.category !== opts.category) continue;
+        seedItems.push({ seed, item: seedToFeedItem(seed) });
+      } catch { continue; }
     }
   }
 
@@ -317,61 +568,77 @@ export async function loadDirectorySeedsAsFeedItems(): Promise<CentreFeedItem[]>
   //
   // ImageKit smart crop is applied to every matched URL so cards
   // render as clean portraits regardless of source aspect.
+  //
+  // admin_ref sourcing:
+  //   · filtered call → look up in the global ref map (identity preserved).
+  //   · unfiltered call → assign in-place from the current ordering, which
+  //     IS the global ordering because we pulled the whole table.
   const byImportAsc = [...seedItems].sort((a, b) =>
     (a.seed.imported_at ?? "").localeCompare(b.seed.imported_at ?? "")
   );
-  for (let i = 0; i < byImportAsc.length; i++) {
-    const ref = `NEX-D-${String(i + 1).padStart(3, "0")}`;
-    byImportAsc[i].item.admin_ref = ref;
 
-    if (byImportAsc[i].item.hero_image_url) continue; // seed had a real cover
+  // Perf fix (Philip 2026-08-13): resolve hero images in PARALLEL. Previously
+  // this was a for/await loop that awaited matchImage() per seed serially —
+  // at ~20-100ms per seed with a large directory that dominated the whole
+  // request. Promise.all runs them concurrently and cuts wall time to
+  // roughly the slowest single lookup instead of the sum.
+  await Promise.all(
+    byImportAsc.map(async ({ seed, item }, i) => {
+      // Filtered path: seed's stable global NEX-D-XXX from the ref map.
+      // Unfiltered path: derive in-place from local ordering (== global).
+      // Fallback: if the ref map missed this seed (edge case · e.g. JSON
+      // archive read + DB never seen it), assign the local ordinal so the
+      // card still renders — it just won't collide with a curated override
+      // aimed at a different seed.
+      const ref = opts?.category
+        ? (globalRefMap.get(seed.id) ?? `NEX-D-${String(i + 1).padStart(3, "0")}`)
+        : `NEX-D-${String(i + 1).padStart(3, "0")}`;
+      item.admin_ref = ref;
 
-    // 1. Curated Philip override
-    if (CURATED_HERO_OVERRIDES[ref]) {
-      byImportAsc[i].item.hero_image_url = applyCardCrop(
-        CURATED_HERO_OVERRIDES[ref]
-      );
-      continue;
-    }
+      if (item.hero_image_url) return; // seed had a real cover
 
-    // 2. Matcher against the manifest (ADR-0025 · directory-card floor 0.65)
-    const seed = byImportAsc[i].seed;
-    const targetText = [
-      seed.business_name,
-      seed.description ?? "",
-      (seed.services ?? []).join(" · "),
-      (seed.tags ?? []).join(" · "),
-      seed.category ?? "",
-      seed.town ?? "",
-    ]
-      .filter(Boolean)
-      .join(" · ");
-    try {
-      const result = await matchImage(
-        {
-          text: targetText,
-          tags: seed.tags ?? [],
-          subject_domain: "staircase",
-        },
-        { surface: "directory-card", requireAPlus: true }
-      );
-      if (result.url) {
-        byImportAsc[i].item.hero_image_url = applyCardCrop(result.url);
-        continue;
+      // 1. Curated Philip override
+      if (CURATED_HERO_OVERRIDES[ref]) {
+        item.hero_image_url = applyCardCrop(CURATED_HERO_OVERRIDES[ref]);
+        return;
       }
-    } catch {
-      // matcher failure never crashes the feed — fall through to placeholder
-    }
 
-    // 3. Trade-aware pool pick · Philip 2026-08-02 · AI Image Intelligence v1.
-    // Passes the seed context so the pool image is chosen by matching the
-    // merchant's business text against per-image trade tags (glass · oak ·
-    // steel · traditional · commercial · etc.). Falls back to a
-    // deterministic hash pick when nothing scores.
-    byImportAsc[i].item.hero_image_url = applyCardCrop(
-      pickInterimStaircase(byImportAsc[i].seed.id, byImportAsc[i].seed)
-    );
-  }
+      // 2. Matcher against the manifest (ADR-0025 · directory-card floor 0.65)
+      const targetText = [
+        seed.business_name,
+        seed.description ?? "",
+        (seed.services ?? []).join(" · "),
+        (seed.tags ?? []).join(" · "),
+        seed.category ?? "",
+        seed.town ?? "",
+      ]
+        .filter(Boolean)
+        .join(" · ");
+      try {
+        const result = await matchImage(
+          {
+            text: targetText,
+            tags: seed.tags ?? [],
+            subject_domain: "staircase",
+          },
+          { surface: "directory-card", requireAPlus: true }
+        );
+        if (result.url) {
+          item.hero_image_url = applyCardCrop(result.url);
+          return;
+        }
+      } catch {
+        // matcher failure never crashes the feed — fall through to placeholder
+      }
+
+      // 3. Trade-aware pool pick · Philip 2026-08-02 · AI Image Intelligence v1.
+      // Passes the seed context so the pool image is chosen by matching the
+      // merchant's business text against per-image trade tags (glass · oak ·
+      // steel · traditional · commercial · etc.). Falls back to a
+      // deterministic hash pick when nothing scores.
+      item.hero_image_url = applyCardCrop(pickInterimStaircase(seed.id, seed));
+    }),
+  );
 
   // Return in display order — newest first.
   const items = seedItems.map((si) => si.item);

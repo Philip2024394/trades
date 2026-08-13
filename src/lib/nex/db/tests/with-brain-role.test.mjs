@@ -38,6 +38,13 @@ async function loadHelper(mockWithClient) {
     t.code + `\nmodule.exports = { withBrainRole, withBrainRoleStrict };`,
   )(mod, process, mod.exports, (id) => {
     if (id === "@/lib/nex/db") return { withClient: mockWithClient };
+    // Wave 3 · H3 · with-brain-role.ts imports statement_timeout / idle_tx
+    // config values from the shared timeouts module. The tests don't need the
+    // real values · stub to defaults so call-count assertions stay stable.
+    if (id === "@/lib/nex/config/timeouts") return {
+      statementTimeoutMs: () => 30000,
+      idleInTransactionTimeoutMs: () => 60000,
+    };
     return requireFromHere(id);
   });
   return mod.exports;
@@ -72,7 +79,7 @@ function fakeWithClient(fakeClient) {
 
 // ── WBR1-WBR7 · withBrainRole ──────────────────────────────────────
 
-test("WBR1 · BEGIN + SET LOCAL ROLE fire BEFORE fn", async () => {
+test("WBR1 · BEGIN + SET LOCAL ROLE + SET LOCAL timeouts fire BEFORE fn (Wave 3 H3)", async () => {
   const client = makeFakeClient();
   const { withBrainRole } = await loadHelper(fakeWithClient(client));
   let fnRanAtCall = -1;
@@ -80,11 +87,17 @@ test("WBR1 · BEGIN + SET LOCAL ROLE fire BEFORE fn", async () => {
     fnRanAtCall = c.calls.length;
     return 42;
   });
-  // After fn ran, calls[0] = BEGIN, calls[1] = SET LOCAL ROLE
-  // fn ran AFTER those 2, so fnRanAtCall should be 2.
+  // Post-H3 order:
+  //   calls[0] = BEGIN
+  //   calls[1] = SET LOCAL ROLE nex_brain_app
+  //   calls[2] = SET LOCAL statement_timeout = 30000
+  //   calls[3] = SET LOCAL idle_in_transaction_session_timeout = 60000
+  // fn ran AFTER those 4 · fnRanAtCall = 4.
   assert.equal(client.calls[0].text, "BEGIN");
   assert.equal(client.calls[1].text, "SET LOCAL ROLE nex_brain_app");
-  assert.equal(fnRanAtCall, 2, `fn must run after BEGIN + SET LOCAL ROLE · ran at call #${fnRanAtCall}`);
+  assert.match(client.calls[2].text, /^SET LOCAL statement_timeout\s*=\s*30000$/);
+  assert.match(client.calls[3].text, /^SET LOCAL idle_in_transaction_session_timeout\s*=\s*60000$/);
+  assert.equal(fnRanAtCall, 4, `fn must run after BEGIN + SET LOCAL ROLE + 2× SET LOCAL timeouts · ran at call #${fnRanAtCall}`);
 });
 
 test("WBR2 · COMMIT fires after fn resolves · returns fn value", async () => {

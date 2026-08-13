@@ -13,7 +13,12 @@
 assembly_id:                ASSEMBLY_STRAIGHT_CLOSED_3T_RIGHT_HANDRAIL
 mirror_of_assembly_id:      ASSEMBLY_STRAIGHT_CLOSED_3T_LEFT_HANDRAIL   # left-hand canonical this right-hand file mirrors
 assembly_type:              static_reference
-handrail_variant:           right_handrail
+assembly_family:             straight_closed
+shell_variant:               SHELL_STRAIGHT_CLOSED_03
+guarding_configuration:      single_handrail
+handrail_side:               right
+catalog_status:              active
+knowledge_level:             observed
 created_at:                 2026-07-29T19:15:00Z
 created_by:                 philip
 revision:                   1
@@ -26,8 +31,6 @@ supports_mirroring:         true
 
 # ─── Shell (specific variant reference — Assembly Ref today; can
 #     migrate to `{ family_id, tread_count }` for parametric later) ──
-shell:
-  component_id:             SHELL_STRAIGHT_CLOSED_03
 
 # ─── Handrails ───────────────────────────────────────────────────
 handrails:

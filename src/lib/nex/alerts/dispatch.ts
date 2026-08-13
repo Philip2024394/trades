@@ -4,15 +4,29 @@
 // a channel. They do NOT evaluate rules, filter severity, or decide
 // dedup. Those are all handled by the evaluator.
 //
+// Wave 3 · H5 · Q7 reclassification (2026-08-10):
+//   Every adapter below is a VENDOR-NEUTRAL transport, not a
+//   vendor-specific integration:
+//     · dispatchEmail   → NEX Email Runtime (adapter-agnostic)
+//     · dispatchWebhook → generic HTTP POST
+//     · dispatchSlack   → Slack incoming-webhook (generic HTTP · no Slack SDK)
+//   H5 does not introduce new vendor-specific adapters.
+//
 // Channel config lives in env vars for MVP:
 //   NEX_ALERTS_MIN_SEVERITY       'info'|'warning'|'critical'  (default 'warning')
 //   NEX_ALERTS_EMAIL_TO           comma-separated recipient addresses
 //   NEX_ALERTS_EMAIL_FROM         from-address (falls back to NEX Email Runtime default)
 //   NEX_ALERTS_WEBHOOK_URL        POST target
-//   NEX_ALERTS_SLACK_WEBHOOK_URL  Slack incoming webhook
+//   NEX_ALERTS_SLACK_WEBHOOK_URL  Slack incoming webhook (generic transport)
 
 import { withClient } from "@/lib/nex/delivery/db";
 import type { Alert, DispatchChannel, Severity } from "./types";
+// Wave 3 · H5 · fail-closed observability when severity qualifies but
+// no channel has env-configured transport.
+import { incr } from "@/lib/nex/observability/counters";
+import { logger } from "@/lib/nex/observability/logger";
+
+const log = logger("alerts.dispatch");
 
 const SEVERITY_RANK: Record<Severity, number> = { info: 0, warning: 1, critical: 2 };
 
@@ -57,6 +71,22 @@ export async function dispatchAlert(alert: Alert, channels: DispatchChannel[]): 
       out.failed++;
     }
   }
+
+  // Wave 3 · H5 · fail-closed observability. Severity DID clear the min
+  // threshold (we're past the early return above) · every configured
+  // channel was skipped for lack of env-configured transport · the alert
+  // would silently drop otherwise. Emit an observable signal so operators
+  // notice the misconfiguration before a real incident hits.
+  if (channels.length > 0 && out.sent === 0 && out.failed === 0 && out.skipped === channels.length) {
+    incr("alerts.dispatch_no_transport");
+    log.warn("no_transport", {
+      alert_id: alert.alert_id,
+      rule_id: alert.rule_id,
+      severity: alert.severity,
+      channels,
+    });
+  }
+
   return out;
 }
 

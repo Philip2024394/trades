@@ -15,7 +15,10 @@
 
 import "server-only";
 import crypto from "node:crypto";
-import { supabaseAdmin } from "@/lib/supabaseAdmin";
+// ROUTING FIX (Philip 2026-08-13 · Supabase-project audit): nex_materials_*
+// tables live in the NEX project (ijvqdv...). Previously imported the trades
+// supabaseAdmin (msdonk... project) with an empty shell of the same table.
+import { supabaseNexAdmin as supabaseAdmin } from "@/lib/supabaseNexAdmin";
 import { audit } from "./_audit";
 import {
   MaterialsError,

@@ -6,6 +6,14 @@
 //
 // Rate columns (delivery_rate · open_rate · click_rate · ctor) are
 // recomputed on every UPSERT so reads are constant-time.
+//
+// D6 · Optional async mode. When NEX_ANALYTICS_ROLLUP_ASYNC=1 is set,
+// ingestEvent writes the raw event row synchronously (hot-path callers
+// see fast completion) and enqueues one nex.analytics_rollup_queue
+// row. The rollup + recompute work runs in the background worker at
+// src/lib/nex/analytics/rollup-worker.ts, drained on cron-tick.
+// Default (env unset or !== "1") preserves the pre-D6 synchronous
+// behavior.
 
 import { withClient } from "@/lib/nex/delivery/db";
 import type { AnalyticsEvent, EventType } from "./types";
@@ -45,8 +53,25 @@ const SCOPES_FOR: Record<EventType, RollupScope[]> = {
 
 export type IngestResult = { ok: true; event_id: string } | { ok: false; error: string };
 
+/** D6 · true when the rollup work should be deferred to the background worker. */
+export function isRollupAsync(): boolean {
+  return process.env.NEX_ANALYTICS_ROLLUP_ASYNC === "1";
+}
+
 export async function ingestEvent(ev: AnalyticsEvent): Promise<IngestResult> {
   const r = await withClient(async (c) => {
+    // Wave 3 · H4 · fail-closed activation gate for the async rollup path.
+    // When NEX_ANALYTICS_ROLLUP_ASYNC=1 but migration 049 is missing, refuse
+    // the whole event BEFORE any INSERT so the operator sees a clear
+    // "migration 049 not applied" error instead of a cryptic 42P01 on the
+    // downstream queue INSERT. When the flag is off, this is a no-op and
+    // does not touch the 049 schema.
+    // Lazy require avoids introducing a circular import between ingest.ts
+    // (defines isRollupAsync) and rollup-gate.ts (imports isRollupAsync).
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const gate = require("./rollup-gate") as typeof import("./rollup-gate");
+    await gate.assertRollupAsyncReady(c);
+
     const insertRes = await c.query(
       `INSERT INTO nex.analytics_events
        (event_type, event_timestamp, campaign_id, recipient_id, segment_id, provider, country, domain,
@@ -67,53 +92,15 @@ export async function ingestEvent(ev: AnalyticsEvent): Promise<IngestResult> {
     );
     const event_id = String((insertRes.rows[0] as { event_id: string }).event_id);
 
-    // Fan out to rollups
-    const inc = INCREMENTS[ev.event_type] ?? [];
-    const scopes = SCOPES_FOR[ev.event_type] ?? [];
-
-    // Best-effort unique counter — check for prior same-type event by this recipient in this scope
-    const isUniqueEligible = ev.recipient_id && (ev.event_type === "opened" || ev.event_type === "clicked");
-    let firstTime = false;
-    if (isUniqueEligible && ev.campaign_id) {
-      const priorRes = await c.query(
-        `SELECT 1 FROM nex.analytics_events
-         WHERE campaign_id = $1 AND recipient_id = $2 AND event_type = $3 AND event_id <> $4
-         LIMIT 1`,
-        [ev.campaign_id, ev.recipient_id, ev.event_type, event_id],
+    if (isRollupAsync()) {
+      // D6 · defer rollup work · rollup-worker will drain the queue on cron-tick.
+      await c.query(
+        `INSERT INTO nex.analytics_rollup_queue (event_id) VALUES ($1)`,
+        [event_id],
       );
-      firstTime = (priorRes.rows.length === 0);
+    } else {
+      await applyRollupsForEvent(c, ev, event_id);
     }
-    const uniqueCol = ev.event_type === "opened" ? "unique_opens" : ev.event_type === "clicked" ? "unique_clicks" : null;
-    const uniqueIncSql = (firstTime && uniqueCol) ? `, ${uniqueCol} = target.${uniqueCol} + 1` : "";
-
-    // ── Per-scope UPSERTs ──
-    for (const scope of scopes) {
-      const cols = inc.map((c0) => `${c0} = target.${c0} + 1`).join(", ");
-      const setClause = [cols, uniqueIncSql].filter(Boolean).join(" ");
-      if (!setClause) continue;
-
-      if (scope === "campaigns" && ev.campaign_id) {
-        await upsertRollup(c, "nex.rollup_campaigns", "campaign_id", ev.campaign_id, inc, uniqueCol, firstTime, ev.event_timestamp);
-      } else if (scope === "daily") {
-        await upsertRollup(c, "nex.rollup_daily", "day", "DATE(COALESCE($1::timestamptz, NOW()))", inc, uniqueCol, firstTime, ev.event_timestamp, true);
-      } else if (scope === "monthly") {
-        await upsertRollup(c, "nex.rollup_monthly", "month", "DATE_TRUNC('month', COALESCE($1::timestamptz, NOW()))::date", inc, uniqueCol, firstTime, ev.event_timestamp, true);
-      } else if (scope === "country" && ev.country) {
-        await upsertRollup(c, "nex.rollup_country", "country", ev.country, inc, uniqueCol, firstTime, ev.event_timestamp);
-      } else if (scope === "provider" && ev.provider) {
-        await upsertRollup(c, "nex.rollup_provider", "provider", ev.provider, inc, uniqueCol, firstTime, ev.event_timestamp);
-      } else if (scope === "segment" && ev.segment_id) {
-        await upsertRollup(c, "nex.rollup_segment", "segment_id", ev.segment_id, inc, uniqueCol, firstTime, ev.event_timestamp);
-      }
-    }
-
-    // Refresh derived rates on the touched rollup rows.
-    if (ev.campaign_id) await recomputeRates(c, "nex.rollup_campaigns", "campaign_id", ev.campaign_id);
-    await recomputeRates(c, "nex.rollup_daily", "day", "DATE(COALESCE($$::timestamptz, NOW()))", ev.event_timestamp, true);
-    await recomputeRates(c, "nex.rollup_monthly", "month", "DATE_TRUNC('month', COALESCE($$::timestamptz, NOW()))::date", ev.event_timestamp, true);
-    if (ev.country)    await recomputeRates(c, "nex.rollup_country",  "country",  ev.country);
-    if (ev.provider)   await recomputeRates(c, "nex.rollup_provider", "provider", ev.provider);
-    if (ev.segment_id) await recomputeRates(c, "nex.rollup_segment",  "segment_id", ev.segment_id);
 
     return event_id;
   });
@@ -126,6 +113,60 @@ export async function ingestEvent(ev: AnalyticsEvent): Promise<IngestResult> {
   await applyCanonicalEvent(ev, r);
 
   return { ok: true, event_id: r };
+}
+
+// ── D6 · rollup work (extracted so the async worker can call the same code) ──
+/** Run every rollup UPSERT + rate recompute for one already-inserted event.
+ *  Called inline during ingest (sync mode) OR from rollup-worker (async mode). */
+export async function applyRollupsForEvent(
+  c: import("@/lib/nex/delivery/db").PgClientLike,
+  ev: AnalyticsEvent,
+  event_id: string,
+): Promise<void> {
+  const inc = INCREMENTS[ev.event_type] ?? [];
+  const scopes = SCOPES_FOR[ev.event_type] ?? [];
+
+  // Best-effort unique counter — check for prior same-type event by this recipient in this scope
+  const isUniqueEligible = ev.recipient_id && (ev.event_type === "opened" || ev.event_type === "clicked");
+  let firstTime = false;
+  if (isUniqueEligible && ev.campaign_id) {
+    const priorRes = await c.query(
+      `SELECT 1 FROM nex.analytics_events
+       WHERE campaign_id = $1 AND recipient_id = $2 AND event_type = $3 AND event_id <> $4
+       LIMIT 1`,
+      [ev.campaign_id, ev.recipient_id, ev.event_type, event_id],
+    );
+    firstTime = (priorRes.rows.length === 0);
+  }
+  const uniqueCol = ev.event_type === "opened" ? "unique_opens" : ev.event_type === "clicked" ? "unique_clicks" : null;
+  const uniqueIncSql = (firstTime && uniqueCol) ? `, ${uniqueCol} = target.${uniqueCol} + 1` : "";
+
+  for (const scope of scopes) {
+    const cols = inc.map((c0) => `${c0} = target.${c0} + 1`).join(", ");
+    const setClause = [cols, uniqueIncSql].filter(Boolean).join(" ");
+    if (!setClause) continue;
+
+    if (scope === "campaigns" && ev.campaign_id) {
+      await upsertRollup(c, "nex.rollup_campaigns", "campaign_id", ev.campaign_id, inc, uniqueCol, firstTime, ev.event_timestamp);
+    } else if (scope === "daily") {
+      await upsertRollup(c, "nex.rollup_daily", "day", "DATE(COALESCE($1::timestamptz, NOW()))", inc, uniqueCol, firstTime, ev.event_timestamp, true);
+    } else if (scope === "monthly") {
+      await upsertRollup(c, "nex.rollup_monthly", "month", "DATE_TRUNC('month', COALESCE($1::timestamptz, NOW()))::date", inc, uniqueCol, firstTime, ev.event_timestamp, true);
+    } else if (scope === "country" && ev.country) {
+      await upsertRollup(c, "nex.rollup_country", "country", ev.country, inc, uniqueCol, firstTime, ev.event_timestamp);
+    } else if (scope === "provider" && ev.provider) {
+      await upsertRollup(c, "nex.rollup_provider", "provider", ev.provider, inc, uniqueCol, firstTime, ev.event_timestamp);
+    } else if (scope === "segment" && ev.segment_id) {
+      await upsertRollup(c, "nex.rollup_segment", "segment_id", ev.segment_id, inc, uniqueCol, firstTime, ev.event_timestamp);
+    }
+  }
+
+  if (ev.campaign_id) await recomputeRates(c, "nex.rollup_campaigns", "campaign_id", ev.campaign_id);
+  await recomputeRates(c, "nex.rollup_daily", "day", "DATE(COALESCE($$::timestamptz, NOW()))", ev.event_timestamp, true);
+  await recomputeRates(c, "nex.rollup_monthly", "month", "DATE_TRUNC('month', COALESCE($$::timestamptz, NOW()))::date", ev.event_timestamp, true);
+  if (ev.country)    await recomputeRates(c, "nex.rollup_country",  "country",  ev.country);
+  if (ev.provider)   await recomputeRates(c, "nex.rollup_provider", "provider", ev.provider);
+  if (ev.segment_id) await recomputeRates(c, "nex.rollup_segment",  "segment_id", ev.segment_id);
 }
 
 // ── Helpers ────────────────────────────────────────────────────────

@@ -9,6 +9,7 @@
 // doesn't block the image. Close top-right dismisses back to chat.
 
 import { useEffect, useRef, useState } from "react";
+import { StaircaseModelsDrawer, type SharedModelCard } from "./StaircaseModelsDrawer";
 
 type Citation = {
   module:  string;
@@ -86,6 +87,9 @@ type Message = {
   woodsToShow?:    WoodCard[];
   visualBrain?:    VisualBrainAttachment[];   // Philip 2026-08-01 · confirmed staircase designs rendered inline
   status?:         string;
+  // Philip 2026-08-03 · shared-model card posted from the 3D Models drawer.
+  // Describes the model TYPE + regulation rise/going limits (never material).
+  sharedModel?:    SharedModelCard;
 };
 
 const FLAG_EMOJI: Record<string, string> = {
@@ -136,6 +140,9 @@ export function StaircaseChatUI() {
   const [detectedExpertise, setDetectedExpertise] = useState<{ level: "unknown" | "homeowner" | "trade"; confidence: number; signals: string[] }>({ level: "unknown", confidence: 0, signals: [] });
   // Manual override — user can flip if the detection got it wrong
   const [expertiseOverride, setExpertiseOverride] = useState<"unknown" | "homeowner" | "trade" | null>(null);
+  // 3D Models drawer — right-side panel that lists shell types + variants.
+  // Selecting a variant posts a shared-model card into the feed.
+  const [modelsDrawerOpen, setModelsDrawerOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -166,6 +173,22 @@ export function StaircaseChatUI() {
   function openFullscreen(woodId: string) {
     const idx = gallery.findIndex((w) => w.id === woodId);
     if (idx !== -1) setFullscreenIndex(idx);
+  }
+
+  // Post a shared-model card into the feed as a user message. Caption
+  // describes the model TYPE + regulation limits — never the material,
+  // per Philip 2026-08-03. No auto AI reply for now (Fifth Law follow-up).
+  function handleShareModel(card: SharedModelCard) {
+    const summary =
+      `Shared model · ${card.family_name} · ${card.treads} step${card.treads === 1 ? "" : "s"} ` +
+      `(${card.risers} risers). ` +
+      `Rise ${card.regulation.rise_mm.min}–${card.regulation.rise_mm.max} mm · ` +
+      `Going ${card.regulation.going_mm.min}–${card.regulation.going_mm.max} mm ` +
+      `(${card.regulation.document}, ${card.regulation.jurisdiction_display}).`;
+    setMessages((prev) => [
+      ...prev,
+      { role: "user", content: summary, sharedModel: card },
+    ]);
   }
 
   async function send(question: string) {
@@ -268,12 +291,28 @@ export function StaircaseChatUI() {
     <div className="mx-auto max-w-3xl min-h-screen flex flex-col">
       {/* Header */}
       <header className="border-b border-[#e6ddc7] bg-[#FBF6EC] sticky top-0 z-10 px-4 py-4">
-        <div className="flex items-center justify-between">
-          <div>
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0">
             <h1 className="text-2xl font-bold text-[#166534]">Nex Staircases</h1>
             <p className="text-sm text-[#5a6b5a]">Specialist UK staircase knowledge · 1,000+ verified facts</p>
           </div>
-          <div className="text-xs text-[#8a9585]">Admin test · not for public release</div>
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <button
+              onClick={() => setModelsDrawerOpen(true)}
+              aria-label="Open 3D staircase models"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#e6ddc7] text-[#166534] text-sm font-medium hover:border-[#166534] transition-colors"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+                <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/>
+                <line x1="12" y1="22" x2="12" y2="15.5"/>
+                <polyline points="22 8.5 12 15.5 2 8.5"/>
+                <polyline points="2 15.5 12 8.5 22 15.5"/>
+                <line x1="12" y1="2" x2="12" y2="8.5"/>
+              </svg>
+              <span>3D models</span>
+            </button>
+            <div className="text-xs text-[#8a9585] hidden sm:block">Admin test · not for public release</div>
+          </div>
         </div>
         {/* Expertise badge — visible once Nex has picked up signals */}
         {(detectedExpertise.level !== "unknown" || expertiseOverride) && (
@@ -289,6 +328,12 @@ export function StaircaseChatUI() {
       <div className="flex-1 px-4 py-6 space-y-6">
         {messages.map((msg, i) => (
           <div key={i}>
+            {/* Shared-model card replaces the default text bubble when set. */}
+            {msg.sharedModel ? (
+              <div className="flex justify-end">
+                <SharedModelTile card={msg.sharedModel} />
+              </div>
+            ) : (
             <div className={msg.role === "user" ? "flex justify-end" : "flex justify-start"}>
               <div
                 className={
@@ -351,6 +396,7 @@ export function StaircaseChatUI() {
                 })()}
               </div>
             </div>
+            )}
 
             {/* Wood cards inline — shown once per session */}
             {msg.role === "assistant" && msg.woodsToShow && msg.woodsToShow.length > 0 && (
@@ -451,6 +497,65 @@ export function StaircaseChatUI() {
           onNext={() => navigateGallery(1)}
         />
       )}
+
+      {/* 3D Models side drawer — right-side slide-in. Shell type → variants. */}
+      <StaircaseModelsDrawer
+        open={modelsDrawerOpen}
+        onClose={() => setModelsDrawerOpen(false)}
+        onSelectVariant={handleShareModel}
+      />
+    </div>
+  );
+}
+
+// Philip 2026-08-03 · Shared-model card · rendered right-aligned in place of
+// the standard user green bubble when a message carries `sharedModel`. Caption
+// describes the model TYPE + regulation rise/going limits — never the material.
+function SharedModelTile({ card }: { card: SharedModelCard }) {
+  const { regulation } = card;
+  return (
+    <div className="max-w-[85%] rounded-2xl bg-white border border-[#166534] shadow-sm overflow-hidden">
+      <div className="bg-[#166534] text-white px-4 py-2 flex items-center justify-between gap-2">
+        <div className="text-[11px] uppercase tracking-wide opacity-90">Shared 3D model</div>
+        <div className="text-[10px] font-mono opacity-80">{card.component_id}</div>
+      </div>
+      <div className="px-4 py-3 space-y-2">
+        <div>
+          <div className="text-sm font-semibold text-[#2a2a2a]">{card.family_name}</div>
+          <div className="text-xs text-[#5a6b5a] mt-0.5">
+            {card.layout_label} · {card.construction_label}
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center rounded-full bg-[#FBF6EC] border border-[#e6ddc7] px-2.5 py-1 text-xs font-semibold text-[#166534]">
+            {card.treads} step{card.treads === 1 ? "" : "s"}
+          </span>
+          <span className="text-[11px] text-[#8a9585]">{card.risers} risers</span>
+        </div>
+        <div className="pt-2 border-t border-[#f0e8d0]">
+          <div className="text-[10px] uppercase tracking-wide text-[#8a9585]">
+            {regulation.jurisdiction_display} · {regulation.building_type}
+          </div>
+          <div className="text-[11px] text-[#166534] font-medium mt-0.5">{regulation.document}</div>
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            <div className="rounded-lg bg-[#FBF6EC] px-2.5 py-1.5">
+              <div className="text-[10px] uppercase tracking-wide text-[#8a9585]">Rise</div>
+              <div className="text-sm font-semibold text-[#2a2a2a]">
+                {regulation.rise_mm.min}–{regulation.rise_mm.max} mm
+              </div>
+            </div>
+            <div className="rounded-lg bg-[#FBF6EC] px-2.5 py-1.5">
+              <div className="text-[10px] uppercase tracking-wide text-[#8a9585]">Going (run)</div>
+              <div className="text-sm font-semibold text-[#2a2a2a]">
+                {regulation.going_mm.min}–{regulation.going_mm.max} mm
+              </div>
+            </div>
+          </div>
+          <div className="text-[10px] text-[#8a9585] mt-2 leading-relaxed">
+            Rise max &amp; going min are regulation limits. Rise min &amp; going max are workshop convention.
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

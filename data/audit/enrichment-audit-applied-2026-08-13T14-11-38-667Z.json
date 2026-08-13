@@ -1,0 +1,45 @@
+{
+  "dry": false,
+  "ran_at": "2026-08-13T14:11:27.908Z",
+  "images": {
+    "entries": 1285,
+    "changes": 1285,
+    "byDomain": {
+      "STAIRCASE": 383,
+      "MARKETING": 850,
+      "MATERIALS": 4,
+      "NEEDS_REVIEW": 26,
+      "KITCHEN": 22
+    },
+    "byStateBefore": {
+      "raw": 0,
+      "processed": 1026,
+      "enriched": 18,
+      "routable": 241
+    },
+    "byStateAfter": {
+      "raw": 0,
+      "processed": 2,
+      "enriched": 832,
+      "routable": 451
+    }
+  },
+  "seeds": {
+    "entries": 302,
+    "changes": 119,
+    "byStateBefore": {
+      "raw": 0,
+      "processed": 209,
+      "enriched": 93,
+      "verified": 0,
+      "routable": 0
+    },
+    "byStateAfter": {
+      "raw": 0,
+      "processed": 181,
+      "enriched": 121,
+      "verified": 0,
+      "routable": 0
+    }
+  }
+}

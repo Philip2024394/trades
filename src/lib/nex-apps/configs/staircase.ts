@@ -31,6 +31,17 @@ export const staircaseConfig: TradeConfig = {
     { label: "Stairs Library",      target_state: "discover", canvas_variant: "gallery",
       href: "/nex-app/staircase-library",
       chat_intro: "Design ideas to get you thinking — anything catching your eye?" },
+    // Philip 2026-08-04 · Kitchen Library · same shell + functions as Stairs
+    // Library · kitchen specimens sourced from data/nex-image-manifest.json.
+    { label: "Kitchen Library",     target_state: "discover", canvas_variant: "gallery",
+      href: "/nex-app/kitchen-library",
+      chat_intro: "Browse kitchen designs — ask me about materials, layouts, or finishes." },
+    // Philip 2026-08-12 · Staircase Refacing tile · Stage 1 · A2 entry point.
+    // Points to the NEW upload-first entry at /nex-app/refacing (Stage 8 remediated) ·
+    // NOT the parked pre-doctrine bundle at /nex-app/staircase-renovations.
+    { label: "Staircase Refacing",  target_state: "discover", canvas_variant: "gallery",
+      href: "/nex-app/refacing",
+      chat_intro: "Keep your staircase. Change its appearance. Show me the staircase you want to reface." },
     // Was "Building Codes" · staircase-specific regulation reference
     // (regional layer applies · UK Part K, IRC, NCC etc.).
     { label: "Stair Regulations",   target_state: "discover", canvas_variant: "regulations",
@@ -42,10 +53,16 @@ export const staircaseConfig: TradeConfig = {
       chat_intro: "Ask me what a term means — dog-leg, monkey volute, base rail, stringer, balustrade — and I'll explain where the word comes from and what it does." },
     { label: "3D Design",           target_state: "configure", canvas_variant: "visualiser",
       chat_intro: "Let's shape it up in 3D — what style are you thinking of?" },
-    // Was "AI Assistant" · rebranded as the Nex Chat entry point aligned
-    // with the Trade Centre / merchant chat vocabulary.
+    // Was "AI Assistant" · rebranded as the Nex Chat entry point.
+    // Philip 2026-08-03 · this tile now navigates to the CLEAN GENERAL
+    // Nex Chat surface (/nex-app/chat) · NOT the trade-flavoured ChatSurface
+    // slide-up. General chat is user-scoped · staircase questions still work
+    // (routed inside the general chat's intent engine) but the surface is
+    // no longer branded "AI Assistant for Master Carpentry" and does NOT
+    // show the Gallery/Calculator/Materials/Regulations/Contact toolbox.
     { label: "Nex Chat",            target_state: "discover",
-      chat_intro: "Ask me anything about staircases — designs, regulations, timber, materials, installation, or your project." }
+      href: "/nex-app/chat",
+      chat_intro: "Ask Nex anything." }
   ],
 
   featured_projects_title: "Recent staircases",

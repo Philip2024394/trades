@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-01T22:49:32.031Z",
+  "layer": "family",
+  "family_id": "spiral",
+  "label": "Spiral staircase (central-column)",
+  "description": "Full-circular spiral around a central steel column. Every tread supported by the column. Traditional 360° rotation.",
+  "note": "Layer 3 · FAMILY Q&A · applies to every staircase in this family. Author once · every image tagged with this family_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is a spiral staircase?",
+      "a": ""
+    },
+    {
+      "q": "How is a spiral staircase supported?",
+      "a": ""
+    },
+    {
+      "q": "Is a spiral staircase difficult to climb?",
+      "a": ""
+    },
+    {
+      "q": "Are spiral staircases legal under building regulations?",
+      "a": ""
+    },
+    {
+      "q": "Can I carry furniture up a spiral staircase?",
+      "a": ""
+    },
+    {
+      "q": "Can the direction of rotation be reversed?",
+      "a": ""
+    },
+    {
+      "q": "How much floor space does a spiral staircase need?",
+      "a": ""
+    },
+    {
+      "q": "Can the centre column be hidden?",
+      "a": ""
+    }
+  ]
+}

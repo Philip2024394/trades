@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-01T22:49:32.045Z",
+  "layer": "component",
+  "component_id": "handrail",
+  "label": "Handrail",
+  "description": "The continuous graspable rail alongside the flight. Timber, steel, brass, bronze, or leather-wrapped.",
+  "note": "Layer 2 · COMPONENT BRAIN Q&A · applies to every staircase where this component is present. Cross-references the deeper knowledge articles in data/nex-reference-brains/. Author once · every image tagged with this component_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is a handrail?",
+      "a": ""
+    },
+    {
+      "q": "What handrail materials are available?",
+      "a": ""
+    },
+    {
+      "q": "What handrail height is required?",
+      "a": ""
+    },
+    {
+      "q": "How is a curved handrail manufactured?",
+      "a": ""
+    }
+  ]
+}

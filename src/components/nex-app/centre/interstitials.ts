@@ -26,6 +26,12 @@ export type TipTile = {
   body: string;
 };
 
+/** Corner position for the sponsor container's decorative background image
+ *  (Philip 2026-08-13). Used by every sponsored container across NEX so the
+ *  pattern is consistent — Refacing companies, Trade Centre, and any future
+ *  sponsored surface honour the same shape. */
+export type SponsorCornerPosition = "top-right" | "top-left" | "bottom-right" | "bottom-left";
+
 export type AdTile = {
   kind: "ad";
   id: string;
@@ -35,6 +41,10 @@ export type AdTile = {
   cta: string;
   image?: string;
   accent?: string; // hex or tailwind bg-{colour} class fragment
+  /** Optional decorative product image anchored in a specific corner of the
+   *  card. Set both fields together; if only one is set the image is ignored. */
+  backgroundImage?: string;
+  backgroundCorner?: SponsorCornerPosition;
 };
 
 export type Interstitial = CategoryTile | TipTile | AdTile;

@@ -42,6 +42,11 @@ import type {
 } from "../types";
 import type { BrainStore } from "../storage";
 import { withClient, type PgClientLike } from "@/lib/nex/db";
+// Wave 3 · H3 · SET LOCAL statement_timeout + idle_in_transaction_session_timeout
+// mirror the injection added to withBrainRole (this file's private withTx is
+// the "primary Brain PG surface" per WORLD-CLASS-OPS-W-C-TIMEOUT-BUDGETS-DESIGN.md
+// §1.1). F34.b migration to shared withBrainRole is a separate future step.
+import { statementTimeoutMs, idleInTransactionTimeoutMs } from "@/lib/nex/config/timeouts";
 
 export class PostgresBrainStore implements BrainStore {
   // Small transaction helper · every brain operation goes through this
@@ -57,6 +62,11 @@ export class PostgresBrainStore implements BrainStore {
       await c.query("BEGIN");
       try {
         await c.query("SET LOCAL ROLE nex_brain_app");
+        // Wave 3 · H3 · T-1 statement_timeout + T-4 idle_in_transaction
+        // (§4.2 of WAVE-3-H3-TIMEOUT-BUDGETS.md). Values come from the
+        // shared config · env-var overrides · SET LOCAL only.
+        await c.query(`SET LOCAL statement_timeout = ${statementTimeoutMs()}`);
+        await c.query(`SET LOCAL idle_in_transaction_session_timeout = ${idleInTransactionTimeoutMs()}`);
         const r = await fn(c);
         await c.query("COMMIT");
         return { value: r };
@@ -190,14 +200,48 @@ export class PostgresBrainStore implements BrainStore {
   // ── Jobs ───────────────────────────────────────────────────────────
   async enqueueJob(input: Omit<WorkerJob, "id" | "status" | "attempts" | "created_at" | "updated_at">): Promise<WorkerJob> {
     return this.withTx(async (c) => {
-      const r = await c.query(
+      // D1 · migration 046 adds a partial unique index on
+      // (input_ref, worker_type) WHERE status IN ('waiting','assigned','running').
+      // If two dispatch cycles race, the second INSERT hits the index and
+      // ON CONFLICT DO NOTHING returns zero rows. Fall back to selecting
+      // the winner so the caller always gets a WorkerJob back and can
+      // treat the outcome uniformly (silently deduplicated).
+      // DEPLOY DEPENDENCY · migration 046 MUST be applied before this
+      // code path executes. Postgres validates the ON CONFLICT inference
+      // clause at plan time and errors with a clear "no unique or
+      // exclusion constraint matching the ON CONFLICT specification"
+      // message if the partial-unique index is absent.
+      const insertRes = await c.query(
+        `INSERT INTO nex.worker_jobs
+           (worker_type, priority, input_kind, input_ref, input_payload)
+         VALUES ($1,$2,$3,$4,$5::jsonb)
+         ON CONFLICT (input_ref, worker_type)
+           WHERE status IN ('waiting','assigned','running')
+           DO NOTHING
+         RETURNING *`,
+        [input.worker_type, input.priority ?? 5, input.input_kind, input.input_ref,
+         input.input_payload ? JSON.stringify(input.input_payload) : null],
+      );
+      if (insertRes.rows[0]) return insertRes.rows[0] as unknown as WorkerJob;
+      // Deduped by the partial unique index — return the existing active row.
+      const existing = await c.query(
+        `SELECT * FROM nex.worker_jobs
+         WHERE input_ref = $1 AND worker_type = $2
+           AND status IN ('waiting','assigned','running')
+         ORDER BY created_at DESC LIMIT 1`,
+        [input.input_ref, input.worker_type],
+      );
+      if (existing.rows[0]) return existing.rows[0] as unknown as WorkerJob;
+      // Extremely rare: the winner completed/failed between INSERT and SELECT.
+      // Fall through to a plain INSERT so the caller still gets a row.
+      const retry = await c.query(
         `INSERT INTO nex.worker_jobs
            (worker_type, priority, input_kind, input_ref, input_payload)
          VALUES ($1,$2,$3,$4,$5::jsonb) RETURNING *`,
         [input.worker_type, input.priority ?? 5, input.input_kind, input.input_ref,
          input.input_payload ? JSON.stringify(input.input_payload) : null],
       );
-      return r.rows[0] as unknown as WorkerJob;
+      return retry.rows[0] as unknown as WorkerJob;
     });
   }
   async claimNextJob(worker_type: WorkerType, worker_id: string, lease_seconds = 60): Promise<WorkerJob | null> {

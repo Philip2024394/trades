@@ -16,6 +16,7 @@
 
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import {
   brainStats,
   listMemories,
@@ -27,20 +28,37 @@ import {
 // BEFORE touching storage, and surfaces errors via the safe envelope.
 import { assertBrainSlug } from "@/lib/nex/api/validators";
 import { toClientError } from "@/lib/nex/api/error-envelope";
+// V-1b · D9 route-boundary validation adopted 2026-08-10 (schemas cover
+// shape + range; F21 assertBrainSlug still runs for the domain check).
+import { validateSearchParams, validateJsonBody } from "@/lib/nex/brain/http/validate-input";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+const GetQuerySchema = z.object({
+  brain: z.string().min(1).optional(),
+  limit: z.coerce.number().int().min(1).max(500).default(50),
+  since_hours: z.coerce.number().int().min(1).max(8760).default(720),
+});
+
+const PostBodySchema = z.object({
+  job_id: z.string().min(1).optional(),
+  scan: z.boolean().optional(),
+  limit: z.number().int().min(1).max(500).optional(),
+}).refine((d) => d.scan === true || (typeof d.job_id === "string" && d.job_id.length > 0), {
+  message: "either scan: true OR job_id required",
+  path: ["job_id"],
+});
+
 // ── GET · brain stats or per-brain memories ───────────────────────
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const brain = searchParams.get("brain");
-  const limit = Math.min(Math.max(1, Number(searchParams.get("limit") ?? "50") || 50), 500);
-  const hours = Math.min(Math.max(1, Number(searchParams.get("since_hours") ?? "720") || 720), 8760);
+  const parsed = validateSearchParams(req, GetQuerySchema);
+  if (!parsed.ok) return parsed.response;
+  const { brain, limit, since_hours: hours } = parsed.data;
 
   try {
-    if (brain !== null) {
+    if (brain) {
       // Wave 11 · F21 · validate the brain slug BEFORE touching storage.
       // Rejects path-traversal shapes, unknown/typoed brains, and
       // fingerprinting attempts (case/whitespace variants).
@@ -84,16 +102,13 @@ export async function GET(req: NextRequest) {
 // ── POST · route one job OR scan every unrouted completed job ─────
 
 export async function POST(req: NextRequest) {
-  let body: { job_id?: unknown; scan?: unknown; limit?: unknown };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ ok: false, error: "invalid_json" }, { status: 400 });
-  }
+  const parsed = await validateJsonBody(req, PostBodySchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
 
   try {
     if (body.scan === true) {
-      const limit = typeof body.limit === "number" ? Math.min(Math.max(1, body.limit), 500) : 100;
+      const limit = typeof body.limit === "number" ? body.limit : 100;
       const result = await routeAllCompleted(limit);
       const routed_count = result.results.reduce((n, r) => n + r.routed.length, 0);
       return NextResponse.json({
@@ -107,7 +122,9 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const job_id = typeof body.job_id === "string" ? body.job_id.trim() : "";
+    const job_id = (body.job_id ?? "").trim();
+    // zod refine already guarantees job_id when scan !== true, but the
+    // trim() may reduce a whitespace-only value to "" · keep the guard.
     if (!job_id) {
       return NextResponse.json({ ok: false, error: "job_id_or_scan_required" }, { status: 400 });
     }

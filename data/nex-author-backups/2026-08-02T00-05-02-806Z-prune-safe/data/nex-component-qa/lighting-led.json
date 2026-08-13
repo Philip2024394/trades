@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-01T22:49:32.046Z",
+  "layer": "component",
+  "component_id": "lighting-led",
+  "label": "LED tread / accent lighting",
+  "description": "Integrated LED strip lighting under treads, along stringers, or in handrails.",
+  "note": "Layer 2 · COMPONENT BRAIN Q&A · applies to every staircase where this component is present. Cross-references the deeper knowledge articles in data/nex-reference-brains/. Author once · every image tagged with this component_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What LED lighting is used in staircases?",
+      "a": ""
+    },
+    {
+      "q": "Can LED tread lights be dimmed?",
+      "a": ""
+    },
+    {
+      "q": "Can LEDs be replaced?",
+      "a": ""
+    },
+    {
+      "q": "How is the wiring concealed?",
+      "a": ""
+    }
+  ]
+}

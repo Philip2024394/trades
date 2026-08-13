@@ -1,0 +1,164 @@
+{"phrasing":"design my logo","layer1_verb":"Create","layer2_domain":"Design","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"build my website","layer1_verb":"Create","layer2_domain":"Website","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"create my homepage","layer1_verb":"Create","layer2_domain":"Website","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"make me a banner","layer1_verb":"Create","layer2_domain":"Design","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"create a facebook banner","layer1_verb":"Create","layer2_domain":"Marketing","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"design a facebook cover","layer1_verb":"Create","layer2_domain":"Marketing","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"create today's facebook post","layer1_verb":"Create","layer2_domain":"Marketing","layer3_capability":"Generate","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"write an instagram post","layer1_verb":"Create","layer2_domain":"Marketing","layer3_capability":"Generate","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"create a tiktok caption","layer1_verb":"Create","layer2_domain":"Marketing","layer3_capability":"Generate","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"write a blog","layer1_verb":"Create","layer2_domain":"Marketing","layer3_capability":"Generate","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"create a business plan","layer1_verb":"Create","layer2_domain":"Business","layer3_capability":"Generate","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"design my staircase","layer1_verb":"Create","layer2_domain":"Staircase","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"design my kitchen","layer1_verb":"Create","layer2_domain":"Kitchen","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"design my bedroom","layer1_verb":"Create","layer2_domain":"Interior Design","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"design my restaurant","layer1_verb":"Create","layer2_domain":"Interior Design","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"design my hallway","layer1_verb":"Create","layer2_domain":"Interior Design","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"design my extension","layer1_verb":"Create","layer2_domain":"Construction","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"build a garden shed","layer1_verb":"Create","layer2_domain":"Home","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"design my garden","layer1_verb":"Create","layer2_domain":"Home","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"create a landing page","layer1_verb":"Create","layer2_domain":"Website","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"create a quote","layer1_verb":"Create","layer2_domain":"Sales","layer3_capability":"Quote","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"write a proposal","layer1_verb":"Create","layer2_domain":"Sales","layer3_capability":"Generate","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"create an invoice","layer1_verb":"Create","layer2_domain":"Finance","layer3_capability":"Generate","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"design product packaging","layer1_verb":"Create","layer2_domain":"Design","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"design business cards","layer1_verb":"Create","layer2_domain":"Design","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"create a brochure","layer1_verb":"Create","layer2_domain":"Design","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"design a menu","layer1_verb":"Create","layer2_domain":"Design","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"write today's dinner","layer1_verb":"Create","layer2_domain":"Personal","layer3_capability":"Generate","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"create a meal plan","layer1_verb":"Create","layer2_domain":"Personal","layer3_capability":"Generate","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"reply to this customer","layer1_verb":"Communicate","layer2_domain":"Customer Service","layer3_capability":"Generate","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"write a follow-up email","layer1_verb":"Communicate","layer2_domain":"Sales","layer3_capability":"Generate","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"translate this","layer1_verb":"Communicate","layer2_domain":"Communication","layer3_capability":"Generate","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"send appointment reminders","layer1_verb":"Communicate","layer2_domain":"Customer Service","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"write a thank you","layer1_verb":"Communicate","layer2_domain":"Customer Service","layer3_capability":"Generate","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"send my newsletter","layer1_verb":"Communicate","layer2_domain":"Marketing","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"write a professional email","layer1_verb":"Communicate","layer2_domain":"Communication","layer3_capability":"Generate","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"reply to comments","layer1_verb":"Communicate","layer2_domain":"Marketing","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"answer customer emails","layer1_verb":"Communicate","layer2_domain":"Customer Service","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"handle complaints","layer1_verb":"Communicate","layer2_domain":"Customer Service","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"send delivery updates","layer1_verb":"Communicate","layer2_domain":"Customer Service","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"oak or pine","layer1_verb":"Decide","layer2_domain":"Staircase","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"glass or timber balustrades","layer1_verb":"Decide","layer2_domain":"Staircase","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"closed string or cut string","layer1_verb":"Decide","layer2_domain":"Staircase","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"which handrail should i choose","layer1_verb":"Decide","layer2_domain":"Staircase","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"which is best","layer1_verb":"Decide","layer2_domain":"General","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"compare these products","layer1_verb":"Decide","layer2_domain":"Sales","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"compare these quotes","layer1_verb":"Decide","layer2_domain":"Sales","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"compare suppliers","layer1_verb":"Decide","layer2_domain":"Purchasing","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"help me decide","layer1_verb":"Decide","layer2_domain":"General","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"is this worth the money","layer1_verb":"Decide","layer2_domain":"Finance","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"which supplier should i choose","layer1_verb":"Decide","layer2_domain":"Purchasing","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"which timber lasts longest","layer1_verb":"Decide","layer2_domain":"Staircase","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"oak vs walnut","layer1_verb":"Decide","layer2_domain":"Staircase","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"plan my renovation","layer1_verb":"Plan","layer2_domain":"Home","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"plan my extension","layer1_verb":"Plan","layer2_domain":"Home","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"plan my loft conversion","layer1_verb":"Plan","layer2_domain":"Home","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"plan my project","layer1_verb":"Plan","layer2_domain":"Projects","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"plan my holiday","layer1_verb":"Plan","layer2_domain":"Personal","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"plan my business","layer1_verb":"Plan","layer2_domain":"Business","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"plan my marketing","layer1_verb":"Plan","layer2_domain":"Marketing","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"plan my product launch","layer1_verb":"Plan","layer2_domain":"Marketing","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"plan my year","layer1_verb":"Plan","layer2_domain":"Business","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"organise my day","layer1_verb":"Plan","layer2_domain":"Personal","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"organise my calendar","layer1_verb":"Plan","layer2_domain":"Personal","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"schedule staff","layer1_verb":"Plan","layer2_domain":"HR","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"schedule installations","layer1_verb":"Plan","layer2_domain":"Operations","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"create a project schedule","layer1_verb":"Plan","layer2_domain":"Projects","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"track my customers","layer1_verb":"Manage","layer2_domain":"CRM","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"manage staff","layer1_verb":"Manage","layer2_domain":"HR","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"manage inventory","layer1_verb":"Manage","layer2_domain":"Operations","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"manage my orders","layer1_verb":"Manage","layer2_domain":"Sales","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"track my expenses","layer1_verb":"Manage","layer2_domain":"Finance","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"organise my files","layer1_verb":"Manage","layer2_domain":"Personal","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"add a customer","layer1_verb":"Manage","layer2_domain":"CRM","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"add a new product","layer1_verb":"Manage","layer2_domain":"Products","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"update prices","layer1_verb":"Manage","layer2_domain":"Products","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"update stock","layer1_verb":"Manage","layer2_domain":"Operations","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"organise my inbox","layer1_verb":"Manage","layer2_domain":"Communication","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"track my income","layer1_verb":"Manage","layer2_domain":"Finance","layer3_capability":"Report","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"organise my documents","layer1_verb":"Manage","layer2_domain":"Personal","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"post every monday at 9am","layer1_verb":"Automate","layer2_domain":"Marketing","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"auto reply to facebook","layer1_verb":"Automate","layer2_domain":"Marketing","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"schedule six months of content","layer1_verb":"Automate","layer2_domain":"Marketing","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"chase overdue invoices","layer1_verb":"Automate","layer2_domain":"Finance","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"post automatically","layer1_verb":"Automate","layer2_domain":"Marketing","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"auto reply to comments","layer1_verb":"Automate","layer2_domain":"Marketing","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"automate my marketing","layer1_verb":"Automate","layer2_domain":"Marketing","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"automate quotations","layer1_verb":"Automate","layer2_domain":"Sales","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"automate invoices","layer1_verb":"Automate","layer2_domain":"Finance","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"automate follow ups","layer1_verb":"Automate","layer2_domain":"Sales","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"automate customer replies","layer1_verb":"Automate","layer2_domain":"Customer Service","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"why are my sales dropping","layer1_verb":"Analyse","layer2_domain":"Sales","layer3_capability":"Report","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"which posts performed best","layer1_verb":"Analyse","layer2_domain":"Marketing","layer3_capability":"Report","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"show my dashboard","layer1_verb":"Analyse","layer2_domain":"Business","layer3_capability":"Report","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"compare this month with last month","layer1_verb":"Analyse","layer2_domain":"Business","layer3_capability":"Report","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"show follower growth","layer1_verb":"Analyse","layer2_domain":"Marketing","layer3_capability":"Report","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"which products sell best","layer1_verb":"Analyse","layer2_domain":"Sales","layer3_capability":"Report","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"which page gets the most visitors","layer1_verb":"Analyse","layer2_domain":"Website","layer3_capability":"Report","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"whats my conversion rate","layer1_verb":"Analyse","layer2_domain":"Marketing","layer3_capability":"Report","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"why isnt my advert working","layer1_verb":"Analyse","layer2_domain":"Marketing","layer3_capability":"Report","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"which supplier is cheapest","layer1_verb":"Analyse","layer2_domain":"Purchasing","layer3_capability":"Report","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"predict next quarter","layer1_verb":"Analyse","layer2_domain":"Finance","layer3_capability":"Report","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"where am i losing money","layer1_verb":"Analyse","layer2_domain":"Finance","layer3_capability":"Report","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"teach me marketing","layer1_verb":"Learn","layer2_domain":"Marketing","layer3_capability":"Answer","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"teach me sales","layer1_verb":"Learn","layer2_domain":"Sales","layer3_capability":"Answer","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"teach me seo","layer1_verb":"Learn","layer2_domain":"Marketing","layer3_capability":"Answer","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"teach me carpentry","layer1_verb":"Learn","layer2_domain":"Trade","layer3_capability":"Answer","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"teach me cad","layer1_verb":"Learn","layer2_domain":"Design","layer3_capability":"Answer","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"explain building regs","layer1_verb":"Learn","layer2_domain":"Construction","layer3_capability":"Answer","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"how do i measure a staircase","layer1_verb":"Learn","layer2_domain":"Staircase","layer3_capability":"Answer","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"how do i install a handrail","layer1_verb":"Learn","layer2_domain":"Staircase","layer3_capability":"Answer","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"whats the difference between mdf and mr mdf","layer1_verb":"Learn","layer2_domain":"Materials","layer3_capability":"Answer","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"whats the best staircase for a small hallway","layer1_verb":"Learn","layer2_domain":"Staircase","layer3_capability":"Answer","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"help with homework","layer1_verb":"Learn","layer2_domain":"Education","layer3_capability":"Answer","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"explain this contract","layer1_verb":"Learn","layer2_domain":"Legal","layer3_capability":"Answer","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"summarise this pdf","layer1_verb":"Learn","layer2_domain":"Documents","layer3_capability":"Answer","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"improve my seo","layer1_verb":"Improve","layer2_domain":"Marketing","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"make my website faster","layer1_verb":"Improve","layer2_domain":"Website","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"increase my profits","layer1_verb":"Improve","layer2_domain":"Finance","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"reduce my expenses","layer1_verb":"Improve","layer2_domain":"Finance","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"improve my website","layer1_verb":"Improve","layer2_domain":"Website","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"improve my branding","layer1_verb":"Improve","layer2_domain":"Design","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"reduce advertising costs","layer1_verb":"Improve","layer2_domain":"Marketing","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"improve conversions","layer1_verb":"Improve","layer2_domain":"Marketing","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"improve customer retention","layer1_verb":"Improve","layer2_domain":"Sales","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"grow my business","layer1_verb":"Improve","layer2_domain":"Business","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"get more customers","layer1_verb":"Improve","layer2_domain":"Business","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"increase enquiries","layer1_verb":"Improve","layer2_domain":"Marketing","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"generate more leads","layer1_verb":"Improve","layer2_domain":"Marketing","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"help me sell more","layer1_verb":"Improve","layer2_domain":"Sales","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"remind me tomorrow","layer1_verb":"Monitor","layer2_domain":"Personal","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"remind me before every quote expires","layer1_verb":"Monitor","layer2_domain":"Sales","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"alert me to negative reviews","layer1_verb":"Monitor","layer2_domain":"Marketing","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"watch competitors","layer1_verb":"Monitor","layer2_domain":"Marketing","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"remind me about deadlines","layer1_verb":"Monitor","layer2_domain":"Projects","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"track deliveries","layer1_verb":"Monitor","layer2_domain":"Operations","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"track parcels","layer1_verb":"Monitor","layer2_domain":"Operations","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"low stock warning","layer1_verb":"Monitor","layer2_domain":"Operations","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"schedule maintenance","layer1_verb":"Monitor","layer2_domain":"Operations","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"predict service intervals","layer1_verb":"Monitor","layer2_domain":"Operations","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"birthday reminders","layer1_verb":"Monitor","layer2_domain":"Personal","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"renewal reminders","layer1_verb":"Monitor","layer2_domain":"CRM","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"i want to start a business","layer1_verb":"Create","layer2_domain":"Business","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"help me start my company","layer1_verb":"Create","layer2_domain":"Business","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"i want to open a coffee shop","layer1_verb":"Create","layer2_domain":"Business","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"i own a cake business","layer1_verb":"Manage","layer2_domain":"Business","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"i own a window company","layer1_verb":"Manage","layer2_domain":"Business","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"i manufacture staircases","layer1_verb":"Manage","layer2_domain":"Manufacturing","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"ask marketing to launch a campaign","layer1_verb":"Create","layer2_domain":"Marketing","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"ask design to make a banner","layer1_verb":"Create","layer2_domain":"Design","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"ask sales to follow up customers","layer1_verb":"Communicate","layer2_domain":"Sales","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"ask finance to prepare invoices","layer1_verb":"Create","layer2_domain":"Finance","layer3_capability":"Generate","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"ask support to answer messages","layer1_verb":"Communicate","layer2_domain":"Customer Service","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"run todays marketing","layer1_verb":"Automate","layer2_domain":"Marketing","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"build me a website","layer1_verb":"Create","layer2_domain":"Website","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"prepare tomorrows appointments","layer1_verb":"Plan","layer2_domain":"Personal","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"nex build my business","layer1_verb":"Create","layer2_domain":"Business","layer3_capability":"Design","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"nex organise my life","layer1_verb":"Plan","layer2_domain":"Personal","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"nex prepare tomorrow","layer1_verb":"Plan","layer2_domain":"Personal","layer3_capability":"Schedule","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"nex answer everything while im away","layer1_verb":"Automate","layer2_domain":"Communication","layer3_capability":"Execute","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"nex what should i focus on","layer1_verb":"Analyse","layer2_domain":"Business","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"what should i do today","layer1_verb":"Analyse","layer2_domain":"Business","layer3_capability":"Recommend","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"whats overdue","layer1_verb":"Monitor","layer2_domain":"Projects","layer3_capability":"Report","authored_by":"philip","captured_at":"2026-08-03"}
+{"phrasing":"whats urgent","layer1_verb":"Monitor","layer2_domain":"Projects","layer3_capability":"Report","authored_by":"philip","captured_at":"2026-08-03"}

@@ -1,0 +1,9 @@
+Building offline
+Cloud workforce
+Dumped
+Local workforce
+NEX Knowledge Factory
+Queue Depth
+Reception
+Standby
+Worker Roster

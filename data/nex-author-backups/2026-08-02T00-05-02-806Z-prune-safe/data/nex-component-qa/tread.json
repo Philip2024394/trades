@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-01T22:49:32.042Z",
+  "layer": "component",
+  "component_id": "tread",
+  "label": "Tread",
+  "description": "The horizontal step surface. Timber, stone or glass depending on design.",
+  "note": "Layer 2 · COMPONENT BRAIN Q&A · applies to every staircase where this component is present. Cross-references the deeper knowledge articles in data/nex-reference-brains/. Author once · every image tagged with this component_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is a tread?",
+      "a": ""
+    },
+    {
+      "q": "How thick are staircase treads?",
+      "a": ""
+    },
+    {
+      "q": "What timber is used for staircase treads?",
+      "a": ""
+    },
+    {
+      "q": "Can treads be replaced individually?",
+      "a": ""
+    },
+    {
+      "q": "Can treads be sanded and refinished?",
+      "a": ""
+    }
+  ]
+}

@@ -95,6 +95,14 @@ export type LlmCallOptions = {
   // if the preferred / capable one is down.
   prefer_provider?: LlmProvider;
   requires_capability?: LlmCapability;
+  // D2 · per-consumer LLM budget isolation. Naming the consumer (usually
+  // the worker_type · e.g. "knowledge-extractor") lets budget accounting
+  // track per-consumer slices. When set, the per-consumer counter is
+  // incremented alongside the global counter AND the per-consumer budget
+  // (`<PROVIDER>_<CONSUMER>_DAILY_CALL_BUDGET` env) is enforced first.
+  // If no per-consumer budget is configured, the shared budget applies.
+  // Unset consumer preserves the pre-D2 shared-bucket behaviour.
+  consumer?: string;
 };
 
 export type LlmCallResult = {
@@ -189,6 +197,19 @@ function dailyBudget(p: LlmProvider): number {
   return DAILY_CALL_BUDGET_DEFAULTS[p];
 }
 
+// D2 · per-consumer budget. Env pattern
+// `<PROVIDER>_<CONSUMER>_DAILY_CALLS` overrides. Consumer is normalised
+// to uppercase with hyphens/dots turned into underscores.
+// Returns -1 to mean "no per-consumer budget configured — use shared".
+function consumerBudget(p: LlmProvider, consumer: string): number {
+  const key = `${p.toUpperCase()}_${consumer.replace(/[-.]/g, "_").toUpperCase()}_DAILY_CALLS`;
+  const override = process.env[key];
+  if (override === undefined || override === "") return -1;
+  const n = Number(override);
+  if (Number.isFinite(n) && n >= 0) return n;
+  return -1;
+}
+
 type DailyUsage = { utc_date: string; calls: number; tokens_in: number; tokens_out: number };
 function freshUsage(): DailyUsage {
   return { utc_date: currentUtcDate(), calls: 0, tokens_in: 0, tokens_out: 0 };
@@ -216,27 +237,92 @@ const USAGE: Record<LlmProvider, DailyUsage> = RUNTIME.usage ??= {
   anthropic: freshUsage(), mock: freshUsage(),
 };
 
+// D2 · per-consumer usage slices · optional (caller opts in via `consumer`).
+// Map<providerName, Map<consumerName, DailyUsage>>. Anchored on globalThis
+// so Next.js dev mode (Turbopack) sees a single view.
+type ConsumerUsageMap = Map<LlmProvider, Map<string, DailyUsage>>;
+const CONSUMER_USAGE: ConsumerUsageMap =
+  ((globalThis as unknown as { __nexBrainLlmConsumer__?: ConsumerUsageMap }).__nexBrainLlmConsumer__ ??= new Map());
+
+function consumerBucket(p: LlmProvider, consumer: string): DailyUsage {
+  let byConsumer = CONSUMER_USAGE.get(p);
+  if (!byConsumer) { byConsumer = new Map(); CONSUMER_USAGE.set(p, byConsumer); }
+  let bucket = byConsumer.get(consumer);
+  const today = currentUtcDate();
+  if (!bucket || bucket.utc_date !== today) {
+    bucket = freshUsage();
+    byConsumer.set(consumer, bucket);
+  }
+  return bucket;
+}
+
 function rollDayIfNeeded(p: LlmProvider): void {
   const today = currentUtcDate();
   if (USAGE[p].utc_date !== today) USAGE[p] = freshUsage();
 }
 
-function isBudgetExhausted(p: LlmProvider): boolean {
+function isBudgetExhausted(p: LlmProvider, consumer?: string): boolean {
+  rollDayIfNeeded(p);
+  // Per-consumer check first (if configured). This makes one worker's
+  // exhaustion visible without poisoning the shared bucket for others.
+  if (consumer) {
+    const perConsumer = consumerBudget(p, consumer);
+    if (perConsumer > 0) {
+      const b = consumerBucket(p, consumer);
+      if (b.calls >= perConsumer) return true;
+    }
+  }
   const budget = dailyBudget(p);
   if (budget === 0) return false; // 0 = unlimited
-  rollDayIfNeeded(p);
   return USAGE[p].calls >= budget;
 }
 
-function recordUsage(p: LlmProvider, tokens_in: number, tokens_out: number): void {
+function recordUsage(p: LlmProvider, tokens_in: number, tokens_out: number, consumer?: string): void {
   rollDayIfNeeded(p);
   USAGE[p].calls += 1;
   USAGE[p].tokens_in += tokens_in;
   USAGE[p].tokens_out += tokens_out;
+  if (consumer) {
+    const b = consumerBucket(p, consumer);
+    b.calls += 1;
+    b.tokens_in += tokens_in;
+    b.tokens_out += tokens_out;
+  }
+}
+
+/** D2 · snapshot of per-consumer usage · for /brain-health + dashboards. */
+export function consumerUsageSnapshot(): Array<{
+  provider: LlmProvider;
+  consumer: string;
+  utc_date: string;
+  calls: number;
+  tokens_in: number;
+  tokens_out: number;
+  per_consumer_budget: number;   // -1 if none configured
+  per_consumer_exhausted: boolean;
+}> {
+  const out: ReturnType<typeof consumerUsageSnapshot> = [];
+  for (const [p, byConsumer] of CONSUMER_USAGE.entries()) {
+    for (const [consumer, b] of byConsumer.entries()) {
+      const budget = consumerBudget(p, consumer);
+      out.push({
+        provider: p,
+        consumer,
+        utc_date: b.utc_date,
+        calls: b.calls,
+        tokens_in: b.tokens_in,
+        tokens_out: b.tokens_out,
+        per_consumer_budget: budget,
+        per_consumer_exhausted: budget > 0 && b.calls >= budget,
+      });
+    }
+  }
+  return out;
 }
 
 /** Public snapshot of today's per-provider call usage vs daily budget.
- *  Consumed by /api/nex/brain/llm-health, dashboards, and probe scripts. */
+ *  Consumed by /api/nex/brain/llm-health, dashboards, and probe scripts.
+ *  D7 (2026-08-10) · adds `usd_spend_today` computed from the cost model. */
 export function dailyUsageSnapshot(): Record<
   LlmProvider,
   {
@@ -247,8 +333,12 @@ export function dailyUsageSnapshot(): Record<
     exhausted: boolean;
     tokens_in: number;
     tokens_out: number;
+    usd_spend_today: number;
   }
 > {
+  // Lazy import avoids circular-dep risk (cost model imports LlmProvider from this file)
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { estimateUsdSpend } = require("./llm-cost-model") as typeof import("./llm-cost-model");
   const out = {} as ReturnType<typeof dailyUsageSnapshot>;
   for (const p of Object.keys(USAGE) as LlmProvider[]) {
     rollDayIfNeeded(p);
@@ -261,6 +351,7 @@ export function dailyUsageSnapshot(): Record<
       exhausted: budget !== 0 && USAGE[p].calls >= budget,
       tokens_in: USAGE[p].tokens_in,
       tokens_out: USAGE[p].tokens_out,
+      usd_spend_today: estimateUsdSpend(p, USAGE[p].tokens_in, USAGE[p].tokens_out),
     };
   }
   return out;
@@ -513,9 +604,9 @@ export async function complete(
       });
       continue;
     }
-    if (isBudgetExhausted(provider)) {
+    if (isBudgetExhausted(provider, options.consumer)) {
       errors.push(
-        `${provider}: daily-budget-exhausted (${USAGE[provider].calls}/${dailyBudget(provider)})`
+        `${provider}: daily-budget-exhausted (${USAGE[provider].calls}/${dailyBudget(provider)}${options.consumer ? ` · consumer=${options.consumer}` : ""})`
       );
       emitAuditEvent({
         worker_type: auditContext.worker_type as never,
@@ -525,7 +616,7 @@ export async function complete(
         outcome: "budget_exhausted",
         job_id: auditContext.job_id,
         input_ref: auditContext.input_ref,
-        details: { calls: USAGE[provider].calls, budget: dailyBudget(provider) },
+        details: { calls: USAGE[provider].calls, budget: dailyBudget(provider), consumer: options.consumer ?? null },
       });
       continue;
     }
@@ -547,7 +638,7 @@ export async function complete(
       try {
         const result = await dispatchToProvider(provider, messages, model, options, start);
         recordSuccess(provider, result.ms, result.tokens_in + result.tokens_out);
-        recordUsage(provider, result.tokens_in, result.tokens_out);
+        recordUsage(provider, result.tokens_in, result.tokens_out, options.consumer);
         emitAuditEvent({
           worker_type: auditContext.worker_type as never,
           event_type: "provider_response_ok",

@@ -20,7 +20,12 @@
 
 import { brainStore, nowIso } from "../storage";
 import { complete } from "../llm";
+// F4 structured logger · Wave 3 H2.b · adopted 2026-08-10.
+import { logger } from "@/lib/nex/observability/logger";
 import type { LlmRetryEntry } from "../types";
+
+const log = logger("worker.llm-retry");
+void log; // reserved for future structured events; drift-catcher requires import.
 
 const WORKER_ID = `llm-retry@${process.pid}`;
 

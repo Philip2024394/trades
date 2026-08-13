@@ -66,6 +66,21 @@ const LAYER1_ADOPTED = new Set([
   "src/app/api/nex/knowledge-inbox/dump/route.ts",
   "src/app/api/nex/knowledge-inbox/process/route.ts",
   "src/app/api/nex/storage/gates/route.ts",
+  // Wave 2 · Phase 6 · W-C-COMPANION supervisor entrypoint.
+  // Design §16.5 explicitly authorises this addition (Philip 2026-08-10).
+  "src/app/api/nex/brain/supervisor-sweep/route.ts",
+  // Wave 3 · H2.a · CID adoption broadened (Philip 2026-08-10).
+  // cron-tick is the pipeline entrypoint · every worker chain from cron
+  // inherits its CID via enterJobCorrelationScope in each worker.
+  "src/app/api/nex/brain/cron-tick/route.ts",
+  // The 4 D9-migrated brain routes explicitly named in
+  // WORLD-CLASS-OPS-REMEDIATION-PLAN.md §3.2 (H2.a).
+  "src/app/api/nex/brain/records/route.ts",
+  "src/app/api/nex/brain/jobs/route.ts",
+  "src/app/api/nex/brain/timeline/route.ts",
+  "src/app/api/nex/brain/feedback/route.ts",
+  // Wave 3 · H5 · alert evaluate/dispatch entrypoint (Philip 2026-08-10).
+  "src/app/api/nex/alerts/evaluate/route.ts",
 ]);
 
 // ── CADP1 · adopted routes wrap in runFromRequest ───────────────────

@@ -1,0 +1,94 @@
+[2026-08-10T08:08:32Z] scheduler-start · T0_EPOCH=1786349191 · PID=3878
+[2026-08-10T08:08:32Z] sleeping 21479 s until T+6h (target 2026-08-10T14:06:31Z)
+[2026-08-11T00:33:40Z] firing T+6h snapshot
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>[burnin-snapshot] wrote C:\Users\Victus\trades\data\burnin\snapshot-burnin-2026-08-11T00-33-42-634Z.json
+─── burn-in snapshot preview · 2026-08-11T00:33:42.634Z ───
+preserved-10 invariant : OK (10/10 claimed/0/null)
+stuck-claimed KJs      : 0 (excluding preserved 10 · threshold >30 min claimed)
+KJ terminal states     : claimed=10 · completed=47 · failed=2 · queued=4
+audit_log rows         : 5
+scheduler LOCAL        : not_firing · fired=0 · last=— · age@snap=—ms
+scheduler VERCEL       : not_firing · fired=0 · last=—
+warehouse in_production: total=4 q=4 c=0 p=0 oldest=2026-08-08T17:24:10.164Z
+warehouse vault_records: auth=144 review=389
+warehouse stages       : incoming=0 · context_processing=0 · waiting_for_ai=0 · being_written=0 · quality_check=0 · stored=144
+kj-live-work           : active=4 counts={"working":0,"stalled":0,"unknown_worker":4,"unknown":0}
+cloud (Fly)            : any_online=false cloud_hb=0 non_cloud_hb=6
+providers by status    : degraded=6 · healthy=2 · unconfigured=1 · idle=1
+inbox status counts    : waiting=0 processing=107 processed=34 review=3 total=144
+workforce waiting/inflight/done24/failed24: 0/0/132/1
+LLM calls / tokens 24h : 132 / 136905
+worker pool activity   : knowledge-context=0/0 · voice-context=0/0 · learning-context=0/0 · knowledge-extractor=0/0 · image-analyst=0/0 · quality-checker=0/0 · memory-guardian=0/0
+UI labels present      : UNKNOWN=4 · no evidence yet=7 · Local workforce=1 · Cloud workforce \(Fly\)=1 · Local scheduler=1 · Vercel Cron=1 · Inbox waiting=1 · KJ in production=1 · Records stored=1 · Historical events=1
+UI forbidden present   : (none · good)
+Next server RSS        : 0 MB (pid 19656)
+worker script RSS      : 18.5 MB (pid 4668)
+jobs.jsonl             : 190495 bytes · 461 lines
+errors captured        : 0
+───
+NOTE · this preview shows raw observations only. No health verdict.
+Verdicts (pass/fail/inconclusive) are derived at analysis time from comparing snapshots against the Truth Contract · not by this script.
+[2026-08-11T00:33:53Z] T+6h · snapshot exit 0
+[2026-08-11T00:33:53Z] firing T+12h snapshot
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>[burnin-snapshot] wrote C:\Users\Victus\trades\data\burnin\snapshot-burnin-2026-08-11T00-33-53-396Z.json
+─── burn-in snapshot preview · 2026-08-11T00:33:53.396Z ───
+preserved-10 invariant : OK (10/10 claimed/0/null)
+stuck-claimed KJs      : 0 (excluding preserved 10 · threshold >30 min claimed)
+KJ terminal states     : claimed=10 · completed=47 · failed=2 · queued=4
+audit_log rows         : 5
+scheduler LOCAL        : not_firing · fired=0 · last=— · age@snap=—ms
+scheduler VERCEL       : not_firing · fired=0 · last=—
+warehouse in_production: total=4 q=4 c=0 p=0 oldest=2026-08-08T17:24:10.164Z
+warehouse vault_records: auth=144 review=389
+warehouse stages       : incoming=0 · context_processing=0 · waiting_for_ai=0 · being_written=0 · quality_check=0 · stored=144
+kj-live-work           : active=4 counts={"working":0,"stalled":0,"unknown_worker":4,"unknown":0}
+cloud (Fly)            : any_online=false cloud_hb=0 non_cloud_hb=6
+providers by status    : degraded=6 · healthy=2 · unconfigured=1 · idle=1
+inbox status counts    : waiting=0 processing=107 processed=34 review=3 total=144
+workforce waiting/inflight/done24/failed24: 0/0/132/1
+LLM calls / tokens 24h : 132 / 136905
+worker pool activity   : knowledge-context=0/0 · voice-context=0/0 · learning-context=0/0 · knowledge-extractor=0/0 · image-analyst=0/0 · quality-checker=0/0 · memory-guardian=0/0
+UI labels present      : UNKNOWN=4 · no evidence yet=7 · Local workforce=1 · Cloud workforce \(Fly\)=1 · Local scheduler=1 · Vercel Cron=1 · Inbox waiting=1 · KJ in production=1 · Records stored=1 · Historical events=1
+UI forbidden present   : (none · good)
+Next server RSS        : 0 MB (pid 19656)
+worker script RSS      : 19.2 MB (pid 4668)
+jobs.jsonl             : 190495 bytes · 461 lines
+errors captured        : 0
+───
+NOTE · this preview shows raw observations only. No health verdict.
+Verdicts (pass/fail/inconclusive) are derived at analysis time from comparing snapshots against the Truth Contract · not by this script.
+[2026-08-11T00:33:59Z] T+12h · snapshot exit 0
+[2026-08-11T00:33:59Z] sleeping 27152 s until T+24h (target 2026-08-11T08:06:31Z)
+[2026-08-11T08:06:31Z] firing T+24h snapshot
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>[burnin-snapshot] wrote C:\Users\Victus\trades\data\burnin\snapshot-burnin-2026-08-11T08-06-34-930Z.json
+─── burn-in snapshot preview · 2026-08-11T08:06:34.930Z ───
+preserved-10 invariant : OK (10/10 claimed/0/null)
+stuck-claimed KJs      : 0 (excluding preserved 10 · threshold >30 min claimed)
+KJ terminal states     : claimed=10 · completed=56 · failed=2 · queued=4
+audit_log rows         : 5
+scheduler LOCAL        : running · fired=476 · last=2026-08-11T08:06:27.269Z · age@snap=16523ms
+scheduler VERCEL       : not_firing · fired=0 · last=—
+warehouse in_production: total=4 q=4 c=0 p=0 oldest=2026-08-08T17:24:10.164Z
+warehouse vault_records: auth=197 review=282
+warehouse stages       : incoming=0 · context_processing=0 · waiting_for_ai=0 · being_written=0 · quality_check=0 · stored=197
+kj-live-work           : active=4 counts={"working":0,"stalled":0,"unknown_worker":4,"unknown":0}
+cloud (Fly)            : any_online=false cloud_hb=0 non_cloud_hb=6
+providers by status    : degraded=5 · healthy=3 · unconfigured=1 · idle=1
+inbox status counts    : waiting=0 processing=107 processed=43 review=3 total=153
+workforce waiting/inflight/done24/failed24: 0/0/120/1
+LLM calls / tokens 24h : 120 / 153006
+worker pool activity   : knowledge-context=0/0 · voice-context=0/0 · learning-context=0/0 · knowledge-extractor=0/0 · image-analyst=0/0 · quality-checker=0/0 · memory-guardian=0/0
+UI labels present      : UNKNOWN=4 · no evidence yet=7 · Local workforce=1 · Cloud workforce \(Fly\)=1 · Local scheduler=1 · Vercel Cron=1 · Inbox waiting=1 · KJ in production=1 · Records stored=1 · Historical events=1
+UI forbidden present   : (none · good)
+Next server RSS        : 0 MB (pid 19656)
+worker script RSS      : 15.4 MB (pid 4668)
+jobs.jsonl             : 203277 bytes · 497 lines
+errors captured        : 0
+───
+NOTE · this preview shows raw observations only. No health verdict.
+Verdicts (pass/fail/inconclusive) are derived at analysis time from comparing snapshots against the Truth Contract · not by this script.
+[2026-08-11T08:06:47Z] T+24h · snapshot exit 0
+[2026-08-11T08:06:47Z] scheduler-complete · all 3 checkpoints fired

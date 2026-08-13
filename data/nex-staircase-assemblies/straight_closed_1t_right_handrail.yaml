@@ -23,7 +23,12 @@
 assembly_id:                ASSEMBLY_STRAIGHT_CLOSED_1T_RIGHT_HANDRAIL
 mirror_of_assembly_id:      ASSEMBLY_STRAIGHT_CLOSED_1T_LEFT_HANDRAIL   # left-hand canonical this right-hand file mirrors
 assembly_type:              static_reference
-handrail_variant:           right_handrail
+assembly_family:             straight_closed
+shell_variant:               SHELL_STRAIGHT_CLOSED_01
+guarding_configuration:      single_handrail
+handrail_side:               right
+catalog_status:              active
+knowledge_level:             observed
 golden_reference:           true
 created_at:                 2026-07-29T18:00:00Z
 created_by:                 philip
@@ -34,8 +39,6 @@ verified_at:                2026-07-30
 verification_note:          Right-hand mirror visually verified. ImageKit tr:fl-h transform confirmed correct across all 14 assemblies in the batch.
 
 # ─── Shell ───────────────────────────────────────────────────────
-shell:
-  component_id:             SHELL_STRAIGHT_CLOSED_01
 
 # ─── Handrails ───────────────────────────────────────────────────
 handrails:

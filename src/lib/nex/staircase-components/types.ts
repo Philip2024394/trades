@@ -3,6 +3,28 @@
 // Master doc: docs/nex/staircase-component-library.md
 //
 // Schema evolution log (add newest at top):
+//   2026-08-05 · Master AI Engineer schema refinement (Philip 2026-08-05):
+//     - Reference Assembly schema: replaced `handrail_variant` (single field)
+//       with explicit semantic fields `assembly_family` · `shell_variant` (flat
+//       string) · `guarding_configuration` · `handrail_side` — filename-parsing
+//       is out, structured querying is in.
+//     - Added `catalog_status: active|planned|deprecated|experimental|internal`
+//       to every Reference Assembly (lifecycle · customer-surface visibility ·
+//       lets us retire without deleting).
+//     - Added `knowledge_level: observed|verified|production` to every
+//       ComponentBase and every Reference Assembly (distinct from
+//       `review_status` — review = file eyeballed · knowledge = design
+//       trustworthy in real world). Under-declaring is safe; over-declaring
+//       corrupts the trust signal.
+//     - Category error corrected: `open_string` REMOVED from the guarding enum
+//       (it was HandrailVariantKind) — it's a shell construction type, not a
+//       guarding configuration. Lives in `StructuralFamilyKind` only.
+//     - HandrailVariantKind + HANDRAIL_VARIANT_PRIORITY removed. Replaced by
+//       GuardingConfiguration + HandrailSide (two orthogonal axes).
+//     - AssemblyShellReference removed. `shell_variant: string` on the
+//       assembly is the single source of truth. Parametric shell references
+//       (family_id + tread_count) will return as a separate type in Phase D
+//       when the customer configurator/render engine actually needs them.
 //   2026-07-29 · Shell 2 revealed the Family/Variant architecture:
 //     - `ShellFamily` — shared engineering properties (layout, construction,
 //       string_configuration, top_landing_connection, materials_supported, etc.)
@@ -41,8 +63,44 @@ export type ComponentType =
   | "material";
 
 /** Classification lifecycle. Only `locked` records become source-of-truth
- *  for downstream modules. */
+ *  for downstream modules. Tracks whether the YAML has been reviewed —
+ *  distinct from `KnowledgeLevel` which tracks whether the underlying
+ *  design is trustworthy in the real world. */
 export type ReviewStatus = "draft" | "reviewed" | "locked";
+
+/** Design trustworthiness. Added 2026-08-05 (Philip). Separates
+ *  "the file has been reviewed" (ReviewStatus) from "the design has been
+ *  confirmed in the real world" (this). Customer configurator filters to
+ *  {verified, production}; manufacturing planner prefers production and
+ *  blocks observed. Promotion is one-way (observed → verified → production);
+ *  regression means a new revision, not editing the field backwards.
+ *
+ *    observed   — extracted from renders / AI outputs / photos. The design
+ *                 exists in pixels but has NOT been checked against physical
+ *                 or manufacturing reality. Default for backfilled records.
+ *    verified   — confirmed against workshop drawings, manufacturer specs,
+ *                 Approved Doc K citations, or supplier data. Requires a
+ *                 `knowledge_evidence` string.
+ *    production — validated through real manufacturing OR real installation.
+ *                 This exact spec has been built and stood up in a real
+ *                 staircase. Requires production evidence.
+ */
+export type KnowledgeLevel = "observed" | "verified" | "production";
+
+/** Customer-surface catalogue lifecycle. Added 2026-08-05 (Philip).
+ *  Orthogonal to ReviewStatus + KnowledgeLevel. Lets the app filter what
+ *  customers see and lets us retire products without deleting them.
+ *
+ *    active       — customer-visible, currently offered
+ *    planned      — approved but not yet released to customers
+ *    deprecated   — hidden from NEW configurations, preserved for existing
+ *                   customer references so their historical projects still
+ *                   resolve
+ *    experimental — internal testing only, never customer-visible
+ *    internal    — permanently internal (test fixtures, reference-only)
+ */
+export type CatalogStatus =
+  | "active" | "planned" | "deprecated" | "experimental" | "internal";
 
 /** Joinery + visual profile of the strings. Manufacturing Module reads this. */
 export type ConstructionType =
@@ -261,6 +319,11 @@ export interface ShellFamily {
   readonly created_by: string;   // Rule C — attributable origin
   readonly revision: number;
   readonly review_status: ReviewStatus;
+
+  /** Design trustworthiness (Philip 2026-08-05). See KnowledgeLevel doc. */
+  readonly knowledge_level?: KnowledgeLevel;
+  readonly knowledge_evidence?: string;
+
   readonly notes?: readonly string[];
 }
 
@@ -307,6 +370,11 @@ export interface ShellVariant {
   // ─── Review ───────────────────────────────────────────────────
   readonly confidence: number;
   readonly review_status: ReviewStatus;
+
+  /** Design trustworthiness (Philip 2026-08-05). See KnowledgeLevel doc. */
+  readonly knowledge_level?: KnowledgeLevel;
+  readonly knowledge_evidence?: string;
+
   readonly notes?: readonly string[];
 }
 
@@ -334,6 +402,24 @@ export interface ComponentBase {
   readonly source_image_refs: readonly string[];
   readonly confidence: number;
   readonly review_status: ReviewStatus;
+
+  /** Design trustworthiness (Philip 2026-08-05). Distinct from
+   *  `review_status` — this measures whether the design has been confirmed
+   *  in the real world, not whether the file has been reviewed. Default
+   *  on backfill is `observed`. Advancing to `verified` requires
+   *  `knowledge_evidence`. Advancing to `production` requires a real
+   *  installation reference (documented in notes for now, dedicated
+   *  `production_evidence` object added when first production spec ships).
+   *  Optional today to keep existing YAML valid; new components should
+   *  ship with it. */
+  readonly knowledge_level?: KnowledgeLevel;
+
+  /** Citation backing a knowledge_level of `verified`. Free-form string:
+   *  workshop drawing reference · manufacturer spec sheet URL ·
+   *  Approved Doc K clause · supplier data URL. Required when
+   *  knowledge_level = verified; absence + verified = downgrade to
+   *  observed at validation time. */
+  readonly knowledge_evidence?: string;
 
   /** Semantic tags for search — Philip Principle 10.
    *  e.g. ["timber", "oak", "domestic", "traditional", "square", "uk"]. */
@@ -456,47 +542,41 @@ export interface ShoeRailComponent extends ComponentBase {
 // `AssemblyType` remains for backward compat; new code should discriminate
 // by type rather than by field.
 //
-// ─── Handrail variant priority (Philip 2026-08-05) ───────────────
+// ─── Guarding configuration + hand (Philip 2026-08-05) ───────────
 //
-// Directive: for EVERY shell family, generate the Reference Assemblies in
-// this order — earlier variants unlock more render value per hour of work.
+// Master AI Engineer refactor 2026-08-05: replaced the single
+// `handrail_variant` field with two ORTHOGONAL axes so the assembly
+// catalogue can be queried semantically without parsing filenames:
 //
-//   1 · bare              — shell only, no rail (fastest ROI)
-//   2 · left_handrail     — left-side handrail + shoe rail + balusters + newels
-//   3 · right_handrail    — mirror of left (ImageKit tr:fl-h, no new render)
-//   4 · double_handrail   — both sides (composed from left + right)
-//   5 · glass_one_side    — glass balustrade one side, timber rail other
-//   6 · glass_both_sides  — glass balustrade both sides
-//   7 · open_string       — open-string shell variant (new construction type)
+//   guarding_configuration ∈ { bare · single_handrail · double_handrail ·
+//                              glass_one_side · glass_both_sides }
+//   handrail_side          ∈ { left · right · both · null }
 //
-// Do NOT jump to open string before double_handrail + glass variants land.
+// Categorical clean-up: `open_string` was previously in HandrailVariantKind
+// but it's a SHELL CONSTRUCTION TYPE (Phase A structural family), not a
+// guarding configuration. It lives only in `StructuralFamilyKind` now.
 
 export type AssemblyType = "static_reference" | "customer_configuration";
 
-/** Handrail-variant progression per shell (Philip 2026-08-05). Every
- *  reference assembly declares which variant it is so the roadmap can
- *  track coverage per (family_id, tread_count) cell. */
-export type HandrailVariantKind =
+/** Guarding configuration on the assembly. Orthogonal to `HandrailSide`
+ *  (which specifies WHICH side when there's exactly one rail). */
+export type GuardingConfiguration =
   | "bare"
-  | "left_handrail"
-  | "right_handrail"
+  | "single_handrail"
   | "double_handrail"
   | "glass_one_side"
-  | "glass_both_sides"
-  | "open_string";
+  | "glass_both_sides";
 
-/** Order in which handrail variants should ship per shell — priority is
- *  wide coverage (many shells × many variants) before depth (exotic
- *  variants on one shell). */
-export const HANDRAIL_VARIANT_PRIORITY: readonly HandrailVariantKind[] = [
-  "bare",
-  "left_handrail",
-  "right_handrail",
-  "double_handrail",
-  "glass_one_side",
-  "glass_both_sides",
-  "open_string",
-];
+/** Which side a single-handrail assembly is on. `null` when the
+ *  guarding_configuration is `bare` or `double_handrail` (symmetry
+ *  makes side meaningless). `both` reserved for glass-both-sides. */
+export type HandrailSide = "left" | "right" | "both" | null;
+
+/** Shell family identifier (lower-case). Free-form string today because
+ *  new families arrive continuously; kept typed as a string so the
+ *  compiler doesn't block new family additions. The Phase A roadmap
+ *  names the near-term set (straight_closed · quarter_landing · etc.). */
+export type AssemblyFamily = string;
 
 /** Structural family roadmap (Philip 2026-08-05). Once every existing shell
  *  has variants 1–6 above, growth moves HERE — new construction types
@@ -570,23 +650,62 @@ export interface AssemblyBalusterSpec {
  *  measures against + the marketing gallery renders from.
  *
  *  Renamed 2026-08-05 (was `StaircaseAssembly`) — see the Reference /
- *  Configuration split doctrine above. `StaircaseAssembly` remains as a
- *  deprecated alias below so nothing breaks. */
+ *  Configuration split doctrine above.
+ *
+ *  Master AI Engineer schema refinement 2026-08-05 (Philip): replaced
+ *  filename-parsing with explicit semantic fields (assembly_family ·
+ *  shell_variant · guarding_configuration · handrail_side) · added
+ *  catalog_status (customer-surface lifecycle) · added knowledge_level
+ *  (design trustworthiness) · flattened the nested shell reference into
+ *  a top-level shell_variant string. */
 export interface StaircaseReferenceAssembly {
   readonly assembly_id: string;
   /** Always `"static_reference"` on this type. Kept for backwards compat
    *  with existing YAML that carries the field explicitly. */
   readonly assembly_type: AssemblyType;
-  /** Which handrail-variant slot this assembly fills for its shell.
-   *  Optional today (existing YAML predates the enum) — required on new
-   *  assemblies going forward. */
-  readonly handrail_variant?: HandrailVariantKind;
+
+  // ─── Semantic identity (Philip 2026-08-05) ─────────────────────
+  // Explicit fields for querying — never parse filenames.
+
+  /** Shell family this assembly belongs to (lower-case snake_case).
+   *  e.g. "straight_closed". Query anchor for grouping. */
+  readonly assembly_family: AssemblyFamily;
+
+  /** FK to the shell variant this assembly composes over. Full component
+   *  id string, e.g. "SHELL_STRAIGHT_CLOSED_07". Replaces the nested
+   *  `shell: { component_id }` object from pre-2026-08-05 YAML. */
+  readonly shell_variant: string;
+
+  /** How the assembly is guarded (bare · single_handrail · double_handrail
+   *  · glass_one_side · glass_both_sides). Orthogonal to `handrail_side`. */
+  readonly guarding_configuration: GuardingConfiguration;
+
+  /** Which side the handrail is on when guarding_configuration is
+   *  `single_handrail`. `null` when guarding is `bare` (no rail) or
+   *  `double_handrail` (both sides — symmetry makes side meaningless).
+   *  `both` for glass-both-sides. */
+  readonly handrail_side: HandrailSide;
+
+  // ─── Lifecycle (Philip 2026-08-05) ─────────────────────────────
+
+  /** Customer-surface visibility. Lets the app filter what customers see
+   *  and lets NEX retire products without deleting them. */
+  readonly catalog_status: CatalogStatus;
+
+  // ─── Provenance ────────────────────────────────────────────────
   readonly created_at: string;
   readonly created_by: string;
   readonly revision: number;
   readonly review_status: ReviewStatus;
 
-  readonly shell:       AssemblyShellReference;   // component_id OR family_id+tread_count
+  /** Design trustworthiness (Philip 2026-08-05). See KnowledgeLevel doc.
+   *  Distinct from `review_status`. Customer configurator filters to
+   *  `verified+production`. Optional here to match ComponentBase — new
+   *  assemblies should ship with it. */
+  readonly knowledge_level?: KnowledgeLevel;
+  readonly knowledge_evidence?: string;
+
+  // ─── Composition ───────────────────────────────────────────────
   readonly handrails?:  readonly AssemblyHandrailAttachment[];
   readonly newels?:     readonly AssemblyNewelAttachment[];
   readonly shoe_rails?: readonly AssemblyShoeRailAttachment[];
@@ -772,18 +891,6 @@ export interface MaterialComponent extends ComponentBase {
   /** Rule C — every material value should trace to a source. */
   readonly source_notes?: string;
 }
-
-// ─── Assembly extension: parametric shell reference ──────────────
-//
-// Philip Principle 3 direction — assemblies can eventually reference
-// families + parameters instead of specific variant IDs. Backward-
-// compatible today: `component_id` still works; `family_id +
-// tread_count` opens the parametric path for the future Render Module.
-
-/** A shell reference on an assembly. Two forms — either works. */
-export type AssemblyShellReference =
-  | { readonly component_id: string }                            // specific variant (locked)
-  | { readonly family_id: string; readonly tread_count: number }; // parametric — resolved at render time
 
 // ─── Deferred (component types) ──────────────────────────────────
 // StringComponent · TreadComponent · RiserComponent · LandingComponent

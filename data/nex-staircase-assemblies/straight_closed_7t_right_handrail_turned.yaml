@@ -19,7 +19,12 @@
 assembly_id:                ASSEMBLY_STRAIGHT_CLOSED_7T_RIGHT_HANDRAIL_TURNED
 mirror_of_assembly_id:      ASSEMBLY_STRAIGHT_CLOSED_7T_LEFT_HANDRAIL_TURNED   # left-hand canonical this right-hand file mirrors
 assembly_type:              static_reference
-handrail_variant:           right_handrail
+assembly_family:             straight_closed
+shell_variant:               SHELL_STRAIGHT_CLOSED_07
+guarding_configuration:      single_handrail
+handrail_side:               right
+catalog_status:              active
+knowledge_level:             observed
 golden_reference:           false
 created_at:                 2026-07-30T10:00:00Z
 created_by:                 philip
@@ -35,8 +40,6 @@ supports_mirroring:         true
 # SHELL_STRAIGHT_CLOSED_07 carries treads=7, risers=8 per the
 # engineering invariant (risers = treads + 1 · every single flight
 # terminates on a riser against the trimmer · Philip 2026-07-30).
-shell:
-  component_id:             SHELL_STRAIGHT_CLOSED_07
 
 # ─── Handrails ───────────────────────────────────────────────────
 handrails:

@@ -31,6 +31,7 @@ import {
   ChevronRight,
   DoorOpen,
   Grid3x3,
+  Hammer,
   LayoutGrid,
   Layers,
   MapPin,
@@ -563,6 +564,12 @@ export function NexCentreLiveFeed() {
               label="Staircase"
               active={filters.category === "Staircase"}
               onClick={() => toggleHeroChip("Staircase")}
+            />
+            <HeroChip
+              icon={Hammer}
+              label="Refacing"
+              active={filters.category === "Staircase Refacing"}
+              onClick={() => toggleHeroChip("Staircase Refacing")}
             />
             <HeroChip
               icon={UtensilsCrossed}
@@ -1202,31 +1209,52 @@ function NexTipCard({ tile }: { tile: TipTile }) {
 
 function AdCard({ tile }: { tile: AdTile }) {
   const accent = tile.accent ?? "bg-neutral-50";
+  const bgCorner = tile.backgroundCorner ?? "bottom-right";
+  const cornerPos =
+    bgCorner === "top-right"    ? "top-0 right-0" :
+    bgCorner === "top-left"     ? "top-0 left-0" :
+    bgCorner === "bottom-left"  ? "bottom-0 left-0" :
+                                  "bottom-0 right-0";
   return (
     <a
       href="#"
       onClick={(e) => e.preventDefault()}
-      className={`mb-3 block break-inside-avoid overflow-hidden rounded-2xl border border-black/5 ${accent} p-3 shadow-sm transition-shadow hover:shadow-md`}
+      className={`relative mb-3 block break-inside-avoid overflow-hidden rounded-2xl border border-black/5 ${accent} p-3 shadow-sm transition-shadow hover:shadow-md`}
     >
-      <div className="flex items-center justify-between">
-        <span className="inline-flex items-center gap-1 rounded-full bg-white/70 px-1.5 py-0.5 text-[8.5px] font-semibold uppercase tracking-wider text-black/50">
-          <Megaphone className="h-2 w-2" />
-          Sponsored
-        </span>
-        <span className="text-[9px] font-medium text-black/40">Ad</span>
-      </div>
-      <div className="mt-2 text-[10px] font-semibold uppercase tracking-wider text-black/50">
-        {tile.brand}
-      </div>
-      <div className="mt-0.5 text-[12.5px] font-bold leading-tight text-black">
-        {tile.headline}
-      </div>
-      <div className="mt-1 text-[10.5px] leading-relaxed text-black/60">
-        {tile.sub}
-      </div>
-      <div className="mt-2 inline-flex items-center gap-0.5 text-[10px] font-semibold text-black">
-        {tile.cta}
-        <ChevronRight className="h-3 w-3" />
+      {/* Decorative corner product image (Philip 2026-08-13 · shared sponsored
+          container pattern). Renders when a backgroundImage is configured on
+          the tile · sponsor copy sits on top via relative z-index. */}
+      {tile.backgroundImage && (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src={tile.backgroundImage}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          className={`pointer-events-none absolute ${cornerPos} h-24 w-24 object-contain opacity-90 sm:h-28 sm:w-28`}
+        />
+      )}
+      <div className="relative z-10">
+        <div className="flex items-center justify-between">
+          <span className="inline-flex items-center gap-1 rounded-full bg-white/70 px-1.5 py-0.5 text-[8.5px] font-semibold uppercase tracking-wider text-black/50">
+            <Megaphone className="h-2 w-2" />
+            Sponsored
+          </span>
+          <span className="text-[9px] font-medium text-black/40">Ad</span>
+        </div>
+        <div className="mt-2 text-[10px] font-semibold uppercase tracking-wider text-black/50">
+          {tile.brand}
+        </div>
+        <div className="mt-0.5 text-[12.5px] font-bold leading-tight text-black">
+          {tile.headline}
+        </div>
+        <div className="mt-1 text-[10.5px] leading-relaxed text-black/60">
+          {tile.sub}
+        </div>
+        <div className="mt-2 inline-flex items-center gap-0.5 text-[10px] font-semibold text-black">
+          {tile.cta}
+          <ChevronRight className="h-3 w-3" />
+        </div>
       </div>
     </a>
   );

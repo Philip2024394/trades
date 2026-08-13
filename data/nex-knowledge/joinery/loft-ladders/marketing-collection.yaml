@@ -1,0 +1,123 @@
+# Loft Ladder Marketing Collection · Philip 2026-08-04
+# Doctrine: docs/brains/nex-loft-ladder-marketing-collection-philip-2026-08-04.md
+# Composes with the Visual Learning Platform + Object Library.
+
+collection_id: loft_ladder_collection
+product_family: loft_ladders
+industry: joinery
+layout_family: premium_trade_banner_v1
+cta_architecture: bottom_right_contact_box
+
+named_expert: Philip O'Farrell
+authored: 2026-08-04
+
+banners:
+  - banner_id: loft_ladder_banner_001
+    theme_pack: industrial_black_gold
+    hero_product_type: timber_folding_loft_ladder
+    marketing_tone: performance
+    brand_personality: premium
+    audience: luxury_homeowner
+    image_asset: https://ik.imagekit.io/5vv5pw26q/dsdddsddssdasdasdsdddsdasdddsd.png
+
+  - banner_id: loft_ladder_banner_002
+    theme_pack: modern_blue
+    hero_product_type: timber_folding_loft_ladder
+    marketing_tone: professional
+    brand_personality: professional
+    audience: modern_family
+    image_asset: https://ik.imagekit.io/5vv5pw26q/dsdddsddssdasdasdsdddsdasdddsddsd.png
+
+  - banner_id: loft_ladder_banner_003
+    theme_pack: industrial_black_red
+    hero_product_type: heavy_duty_steel_loft_ladder
+    marketing_tone: performance
+    brand_personality: industrial_professional
+    audience: builder_trade
+    image_asset: https://ik.imagekit.io/5vv5pw26q/dsdddsddssdasdasdsdddsdasdddsddsdsd.png
+
+  - banner_id: loft_ladder_banner_004
+    theme_pack: nature_green
+    hero_product_type: aluminium_loft_ladder
+    marketing_tone: family
+    brand_personality: family
+    audience: general_homeowner
+    image_asset: https://ik.imagekit.io/5vv5pw26q/dsdddsddssdasdasdsdddsdasdddsddsdsdsd.png
+
+theme_matrix:
+  # Nex learns that these pairings recur across the collection.
+  - theme: industrial_black_gold
+    audience: luxury_homeowner
+    personality: premium
+  - theme: modern_blue
+    audience: modern_family
+    personality: professional
+  - theme: industrial_black_red
+    audience: builder_trade
+    personality: industrial
+  - theme: nature_green
+    audience: general_homeowner
+    personality: family
+
+shared_layout_grammar:
+  left_column:
+    order: [headline, subheadline, feature_list, phone_cta]
+  right_column:
+    contains: [hero_product]
+    hero_width_pct: 60
+  bottom_strip:
+    left: phone_cta
+    right: editable_contact_panel
+
+editable_regions:
+  - id: headline
+    max_lines: 2
+    style: extra_bold_sans_uppercase
+  - id: subheadline
+    max_lines: 4
+    style: medium_weight
+  - id: features
+    max_items: 6
+    icon_style: themed_circular
+  - id: phone_number
+    position: bottom_left_inside_cta_strip
+  - id: website
+    position: bottom_right_contact_box
+  - id: email
+    position: below_website
+    optional: true
+  - id: social_media
+    position: below_website
+    multi_channel: true
+  - id: qr_code
+    position: bottom_right_corner_inside_contact_box
+    size_px: [72, 72]
+    padding_px: 16
+    optional: true
+
+safe_areas:
+  never_place_content_over:
+    - loft_ladder
+    - loft_hatch
+    - ceiling_opening
+    - handrail
+    - folding_mechanism
+    - wall_lights
+    - picture_frame
+    - furniture
+    - indoor_plant
+    - headline
+    - feature_icons
+
+object_seeds:
+  # These map to ObjectDNA entries registered by scripts/seed-loft-ladder-collection.mjs
+  - object_id_pattern: LOFT_LADDER_timber_folding_natural
+    variants: [industrial_black_gold, modern_blue]
+  - object_id_pattern: LOFT_LADDER_heavy_duty_steel_black_red
+    variants: [industrial_black_red]
+  - object_id_pattern: LOFT_LADDER_aluminium_brushed
+    variants: [nature_green]
+  - object_id_pattern: OTHER_loft_hatch_white_insulated
+    used_by_all_variants: true
+  - object_id_pattern: OTHER_handrail_steel
+    used_by_all_variants: true

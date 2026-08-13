@@ -18,26 +18,41 @@
 
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { brainStore } from "@/lib/nex/brain/storage";
+import { validateSearchParams } from "@/lib/nex/brain/http/validate-input";
+import { logger } from "@/lib/nex/observability/logger";
+// W-OBS-1 Path A Layer 1 · Wave 3 H2.a · adopted 2026-08-10.
+import { runFromRequest } from "@/lib/nex/observability/correlation";
+
+const log = logger("api.brain.timeline");
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+const QuerySchema = z.object({
+  limit: z.coerce.number().int().min(1).max(200).default(50),
+  // `since` accepts ISO datetime; the literal string "null" is also
+  // ignored (kept as backward-compat: some legacy callers pass "null"
+  // as a stringified placeholder for absent value).
+  since: z.string().datetime().optional().or(z.literal("null").transform(() => undefined)),
+  entity_id: z.string().min(1).optional().or(z.literal("null").transform(() => undefined)),
+});
+
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const limit = Math.min(Math.max(1, Number(searchParams.get("limit") ?? "50")), 200);
-  const since = searchParams.get("since") ?? undefined;
-  const entity_id = searchParams.get("entity_id") ?? undefined;
+  return runFromRequest(req, () => timelineHandler(req));
+}
+
+async function timelineHandler(req: NextRequest) {
+  const parsed = validateSearchParams(req, QuerySchema);
+  if (!parsed.ok) return parsed.response;
+  const { limit, since, entity_id } = parsed.data;
 
   try {
-    const events = await brainStore().listAudit({
-      limit,
-      since: since && since !== "null" ? since : undefined,
-      entity_id: entity_id && entity_id !== "null" ? entity_id : undefined,
-    });
+    const events = await brainStore().listAudit({ limit, since, entity_id });
     return NextResponse.json({ ok: true, events });
   } catch (err) {
-    console.error("[api.brain.timeline] failed:", err);
+    log.error("timeline_failed", { error: err instanceof Error ? err.message : String(err) });
     return NextResponse.json({ ok: false, error: "timeline_failed" }, { status: 500 });
   }
 }

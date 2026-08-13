@@ -30,6 +30,8 @@
 //   - Constitution 5% sample re-validation
 
 import { brainStore, nowIso } from "../storage";
+// F4 structured logger · Wave 3 H2.b · adopted 2026-08-10.
+import { logger } from "@/lib/nex/observability/logger";
 import type {
   ConfidenceScore,
   Contradiction,
@@ -37,6 +39,9 @@ import type {
   KnowledgeRecord,
   WorkerJob,
 } from "../types";
+
+const log = logger("worker.memory-guardian");
+void log; // reserved for future structured events; drift-catcher requires import.
 
 const WORKER_ID = `memory-guardian@${process.pid}`;
 

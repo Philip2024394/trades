@@ -75,6 +75,13 @@ export type CentreFeedItem = {
   // specific card and say "this one should get image X". Undefined
   // for non-seed items (real merchant products).
   admin_ref?: string;
+  // Philip 2026-08-02 · Freshness Rule scaffold (Big Win #3).
+  // Populated by merchant-side confirmation flow (not yet shipped · needs
+  // merchant auth). MerchantProfileSheet renders a subtle "Confirmed X ago"
+  // chip when populated · silently omits when null. Adding the field now
+  // so the display code is ready when the write side ships.
+  merchant_last_confirmed_at?: string | null;
+  merchant_next_confirmation_due?: string | null;
 };
 
 export type CentreFeedFilters = {

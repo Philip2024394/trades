@@ -1,0 +1,22 @@
+knowledge_id: _shared/trade-business
+knowledge_version: 1.0
+last_updated: 2026-08-03
+maturity_level: bronze
+schema_version: domain_template_v1.1
+authored_by: philip
+governance:
+  rule_a_anti_fabrication: pass
+  rule_c_attributable_origin: named_expert = Philip O'Farrell
+purpose: >
+  Shared trade business foundation inherited by every install trade domain.
+  Contains the 18 universal business processes (Initial Enquiry through
+  Materials Ordering) that apply broadly to kitchen fitters, staircase
+  makers, window installers, flooring contractors, bespoke joiners, and
+  every other install trade. Domain-specific processes override these
+  when needed via the override rule.
+inheritable_by: [staircase, kitchen, windows, flooring, bathrooms, fitted_furniture, doors, roofing, extensions, loft_conversions, conservatories, decking, garden_rooms, interior_design, carpentry, plumbing, electrical, heating, painting, decorating]
+sources:
+  articles: articles/
+  faqs: faqs.jsonl
+retrieval_config:
+  full_text_fields: [title, body, questions_answered]

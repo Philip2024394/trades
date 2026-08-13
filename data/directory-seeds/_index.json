@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "generated_at": "2026-07-27T12:00:36Z",
-  "count": 37,
+  "generated_at": "2026-08-05T13:03:24.374Z",
+  "count": 218,
   "listings": [
     {
       "id": "018f0a1c-3b1e-4d5a-a2c1-7e5b8f3d9a10",
@@ -335,6 +335,1635 @@
       "postcode": "S2 2SP",
       "path": "sheffield/3d-joinery-ltd-sheffield.json",
       "imported_at": "2026-07-27T12:00:36Z"
+    },
+    {
+      "id": "1f21ca0b-e29f-4cbc-bb8d-b281f45fa231",
+      "slug": "the-london-bespoke-kitchens-london",
+      "business_name": "The London Bespoke Kitchens",
+      "town": "London",
+      "postcode": null,
+      "path": "london/the-london-bespoke-kitchens-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "72c240ab-c100-4da4-a3cd-155d6e12ac9d",
+      "slug": "k-and-i-kitchens-london",
+      "business_name": "K&I Kitchens",
+      "town": "London",
+      "postcode": null,
+      "path": "london/k-and-i-kitchens-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "7e82d636-ae36-430b-b31c-c8205980204e",
+      "slug": "jasper-alexander-kitchens-london",
+      "business_name": "Jasper Alexander Kitchens",
+      "town": "London",
+      "postcode": null,
+      "path": "london/jasper-alexander-kitchens-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "662139a0-1fee-4e55-b645-a203eb111747",
+      "slug": "ray-munn-kitchens-london",
+      "business_name": "Ray Munn Kitchens",
+      "town": "London",
+      "postcode": null,
+      "path": "london/ray-munn-kitchens-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "f58e342b-a4ef-4290-88ed-f9709f4024f3",
+      "slug": "leicht-kitchen-showroom-elan-kitchens-london",
+      "business_name": "LEICHT Kitchen Showroom (Elan Kitchens)",
+      "town": "London",
+      "postcode": null,
+      "path": "london/leicht-kitchen-showroom-elan-kitchens-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "54b61e37-d751-4c17-b96b-098ef04af558",
+      "slug": "kochwerk-kitchen-showroom-london",
+      "business_name": "Kochwerk Kitchen Showroom",
+      "town": "London",
+      "postcode": null,
+      "path": "london/kochwerk-kitchen-showroom-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "10edc440-09bc-497f-8c7a-6d97dc7273bc",
+      "slug": "ebstone-kitchens-london",
+      "business_name": "Ebstone Kitchens",
+      "town": "London",
+      "postcode": null,
+      "path": "london/ebstone-kitchens-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "513a5638-7f2d-488e-b371-48125b096b38",
+      "slug": "the-london-kitchen-company-london",
+      "business_name": "The London Kitchen Company",
+      "town": "London",
+      "postcode": null,
+      "path": "london/the-london-kitchen-company-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "b96f9fd7-126d-45fa-82c1-3dbd8757c046",
+      "slug": "london-kitchen-designer-london",
+      "business_name": "London Kitchen Designer",
+      "town": "London",
+      "postcode": null,
+      "path": "london/london-kitchen-designer-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "82faff4d-d0e9-4288-b6e5-1f5b98abf309",
+      "slug": "london-koncepts-london",
+      "business_name": "London Koncepts",
+      "town": "London",
+      "postcode": null,
+      "path": "london/london-koncepts-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "5c3442c0-6bd2-4b7b-95d8-484864a49793",
+      "slug": "pad-london-london",
+      "business_name": "PAD London",
+      "town": "London",
+      "postcode": null,
+      "path": "london/pad-london-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "13de7376-6cc9-4bae-aef9-55b712f730ec",
+      "slug": "glam-kitchens-limited-london",
+      "business_name": "Glam Kitchens Limited",
+      "town": "London",
+      "postcode": null,
+      "path": "london/glam-kitchens-limited-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "260e21a8-5021-4ce7-968c-5a3fb49a5683",
+      "slug": "openplan-design-london",
+      "business_name": "Openplan Design",
+      "town": "London",
+      "postcode": null,
+      "path": "london/openplan-design-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "88fcb5d4-6a2a-4fac-b437-7a2e02aaca37",
+      "slug": "kitchen-doors-london-london",
+      "business_name": "Kitchen Doors London",
+      "town": "London",
+      "postcode": null,
+      "path": "london/kitchen-doors-london-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "060e4415-1bb5-4889-b6fc-a80d69ab0b47",
+      "slug": "trade-kitchens-and-baths-london",
+      "business_name": "Trade Kitchens & Baths",
+      "town": "London",
+      "postcode": null,
+      "path": "london/trade-kitchens-and-baths-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "255f1144-ba29-4b7a-9648-05cf849def5f",
+      "slug": "howdens-london-london",
+      "business_name": "Howdens London",
+      "town": "London",
+      "postcode": null,
+      "path": "london/howdens-london-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "90922111-d9c0-4733-a8e9-b323758f1326",
+      "slug": "magnet-kitchens-london-london",
+      "business_name": "Magnet Kitchens London",
+      "town": "London",
+      "postcode": null,
+      "path": "london/magnet-kitchens-london-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "4ed88d1b-3bd8-4091-b723-cd5530deb67b",
+      "slug": "wren-kitchens-london-london",
+      "business_name": "Wren Kitchens London",
+      "town": "London",
+      "postcode": null,
+      "path": "london/wren-kitchens-london-london.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "cba0354a-a906-4d2d-9b09-dd2aae4f5225",
+      "slug": "kutchenhaus-manchester-manchester",
+      "business_name": "Kutchenhaus Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/kutchenhaus-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "62e64670-9c14-4c98-9175-ea6824f76ce3",
+      "slug": "kutchenhaus-altrincham-altrincham",
+      "business_name": "Kutchenhaus Altrincham",
+      "town": "Altrincham",
+      "postcode": null,
+      "path": "altrincham/kutchenhaus-altrincham-altrincham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "c2844cd5-bde2-4522-891d-9a99cb2a4e37",
+      "slug": "kutchenhaus-sale-sale",
+      "business_name": "Kutchenhaus Sale",
+      "town": "Sale",
+      "postcode": null,
+      "path": "sale/kutchenhaus-sale-sale.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "2175446a-748e-41d6-a66f-b92ad379c5f1",
+      "slug": "schmidt-kitchens-manchester-manchester",
+      "business_name": "Schmidt Kitchens Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/schmidt-kitchens-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "43ba731c-239e-44ec-a344-29f170c88cae",
+      "slug": "nolte-kitchens-manchester-manchester",
+      "business_name": "Nolte Kitchens Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/nolte-kitchens-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "615d2639-0c12-4b17-bead-a2142bafcff1",
+      "slug": "kutchenhaus-stockport-stockport",
+      "business_name": "Kutchenhaus Stockport",
+      "town": "Stockport",
+      "postcode": null,
+      "path": "stockport/kutchenhaus-stockport-stockport.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "966f4ee0-e2c1-45e2-981d-7e8ba2201237",
+      "slug": "hacker-kitchens-manchester-manchester",
+      "business_name": "Hacker Kitchens Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/hacker-kitchens-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "bace0afb-9892-4364-a88c-37d7d8eecb79",
+      "slug": "kitchen-architecture-manchester",
+      "business_name": "Kitchen Architecture",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/kitchen-architecture-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "6dff6ae2-22f2-419e-86f4-c341240281fe",
+      "slug": "diane-berry-kitchens-manchester",
+      "business_name": "Diane Berry Kitchens",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/diane-berry-kitchens-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "72f734e2-74d7-4dc2-a2b5-4eafae6d89d6",
+      "slug": "the-main-company-manchester",
+      "business_name": "The Main Company",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/the-main-company-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "f67e7f0d-b985-4ed8-9677-7ce75415b7b7",
+      "slug": "tom-howley-manchester-manchester",
+      "business_name": "Tom Howley Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/tom-howley-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "fc1d4759-2ec3-4c46-ba03-cd3104fa1ad3",
+      "slug": "harvey-jones-manchester-manchester",
+      "business_name": "Harvey Jones Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/harvey-jones-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "97e98d76-8447-4e19-90a7-ff5aef839c68",
+      "slug": "neptune-manchester-manchester",
+      "business_name": "Neptune Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/neptune-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "aa3cad99-cc71-40cb-8fd8-7e51c190e46f",
+      "slug": "john-lewis-of-hungerford-manchester-manchester",
+      "business_name": "John Lewis of Hungerford Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/john-lewis-of-hungerford-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "c72e0700-b70f-441b-96d8-eefb1a2549d9",
+      "slug": "wren-kitchens-manchester-manchester",
+      "business_name": "Wren Kitchens Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/wren-kitchens-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "ab0f6355-92e9-4f38-8340-c7b36e747fb4",
+      "slug": "magnet-kitchens-manchester-manchester",
+      "business_name": "Magnet Kitchens Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/magnet-kitchens-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "dedf2066-b916-4de7-886e-c0a5623d1fbf",
+      "slug": "howdens-manchester-manchester",
+      "business_name": "Howdens Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/howdens-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "45d8876f-5e45-4c34-878a-9124eb1aac91",
+      "slug": "benchmarx-kitchens-manchester-manchester",
+      "business_name": "Benchmarx Kitchens Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/benchmarx-kitchens-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "89cfa9ab-b95e-4d40-b5d7-276e034036e6",
+      "slug": "diy-kitchens-wakefield",
+      "business_name": "DIY Kitchens",
+      "town": "Wakefield",
+      "postcode": null,
+      "path": "wakefield/diy-kitchens-wakefield.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "a7887afc-bc50-4518-bbab-c6f2f9a14b39",
+      "slug": "ramsbottom-kitchens-ramsbottom",
+      "business_name": "Ramsbottom Kitchens",
+      "town": "Ramsbottom",
+      "postcode": null,
+      "path": "ramsbottom/ramsbottom-kitchens-ramsbottom.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "16f94da6-fe47-4362-9d49-7f074ccff0f7",
+      "slug": "used-kitchen-exchange-manchester-manchester",
+      "business_name": "Used Kitchen Exchange Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/used-kitchen-exchange-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "15daa6c4-b0a9-4fe0-8715-e17b041c6b2f",
+      "slug": "ashley-ann-manchester-manchester",
+      "business_name": "Ashley Ann Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/ashley-ann-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "31af89f8-c4af-40ee-8a1b-90835579c94e",
+      "slug": "keller-kitchens-manchester-manchester",
+      "business_name": "Keller Kitchens Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/keller-kitchens-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "ed474e3e-c813-45a3-9451-1d665093de0a",
+      "slug": "leicht-kitchens-manchester-manchester",
+      "business_name": "Leicht Kitchens Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/leicht-kitchens-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "da8ccf56-866f-42d8-96b2-6e5e9085c217",
+      "slug": "pronorm-kitchens-manchester-manchester",
+      "business_name": "Pronorm Kitchens Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/pronorm-kitchens-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "7c5ab640-460e-46f4-a2bb-d938497b478a",
+      "slug": "german-kitchens-manchester-manchester",
+      "business_name": "German Kitchens Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/german-kitchens-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "758115bb-66e0-4c1f-b15e-c69d794cbf04",
+      "slug": "express-in-the-home-manchester-manchester",
+      "business_name": "Express in the Home Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/express-in-the-home-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "d75e9b29-afbb-462e-88cd-124532186bc1",
+      "slug": "the-kitchen-studio-manchester-manchester",
+      "business_name": "The Kitchen Studio Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/the-kitchen-studio-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "b398e136-9178-4bd6-8381-159ce14fb6a9",
+      "slug": "moda-kitchens-manchester-manchester",
+      "business_name": "Moda Kitchens Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/moda-kitchens-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "95a36ae7-9d04-48ee-bfe3-2d788f81fd84",
+      "slug": "kitchen-emporium-manchester-manchester",
+      "business_name": "Kitchen Emporium Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/kitchen-emporium-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "b26f5617-ffdb-4687-a120-82e988925432",
+      "slug": "elite-kitchens-manchester-manchester",
+      "business_name": "Elite Kitchens Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/elite-kitchens-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "3305a1a3-9275-47eb-905e-2a6ea872ac5d",
+      "slug": "lifestyle-kitchens-manchester-manchester",
+      "business_name": "Lifestyle Kitchens Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/lifestyle-kitchens-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "1ceaacc9-b346-41af-a1c9-4fb29b46f95e",
+      "slug": "manchester-kitchen-fitters-manchester",
+      "business_name": "Manchester Kitchen Fitters",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/manchester-kitchen-fitters-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "1f09ad49-99bc-41f5-9591-d29ce08f1f93",
+      "slug": "manchester-kitchen-centre-manchester",
+      "business_name": "Manchester Kitchen Centre",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/manchester-kitchen-centre-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "64e57e47-719c-460d-b7af-99412968bf1e",
+      "slug": "kitchen-design-house-manchester-manchester",
+      "business_name": "Kitchen Design House Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/kitchen-design-house-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "5973ebf6-1906-458e-80e9-d39bfc48bdc4",
+      "slug": "premier-kitchens-manchester-manchester",
+      "business_name": "Premier Kitchens Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/premier-kitchens-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "f7b6afbc-1c0f-4be4-80a8-bb4faf7854a3",
+      "slug": "designer-kitchens-manchester-manchester",
+      "business_name": "Designer Kitchens Manchester",
+      "town": "Manchester",
+      "postcode": null,
+      "path": "manchester/designer-kitchens-manchester-manchester.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "5786bfda-ecb1-470e-ad9f-6ec8cb848620",
+      "slug": "kutchenhaus-birmingham-birmingham",
+      "business_name": "Kutchenhaus Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/kutchenhaus-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "6bbb97bf-5d77-4cd6-b453-63751a38e329",
+      "slug": "kutchenhaus-solihull-solihull",
+      "business_name": "Kutchenhaus Solihull",
+      "town": "Solihull",
+      "postcode": null,
+      "path": "solihull/kutchenhaus-solihull-solihull.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "9060c06c-2134-49cd-acb6-d8b6e126096a",
+      "slug": "kutchenhaus-sutton-coldfield-sutton-coldfield",
+      "business_name": "Kutchenhaus Sutton Coldfield",
+      "town": "Sutton Coldfield",
+      "postcode": null,
+      "path": "sutton-coldfield/kutchenhaus-sutton-coldfield-sutton-coldfield.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "1e49f1c6-d7fa-4da2-a843-c4fbf8941431",
+      "slug": "wren-kitchens-birmingham-birmingham",
+      "business_name": "Wren Kitchens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/wren-kitchens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "b9a7f03f-ea1d-4236-a607-7fa3f081ce7d",
+      "slug": "magnet-kitchens-birmingham-birmingham",
+      "business_name": "Magnet Kitchens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/magnet-kitchens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "32c14c0d-a4a2-4c26-82e2-f83994cab721",
+      "slug": "howdens-birmingham-birmingham",
+      "business_name": "Howdens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/howdens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "b1a7fe2b-1019-457f-835a-b4cc964116db",
+      "slug": "benchmarx-kitchens-birmingham-birmingham",
+      "business_name": "Benchmarx Kitchens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/benchmarx-kitchens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "3fc74c4a-1603-4ff1-b739-846196271399",
+      "slug": "tom-howley-birmingham-birmingham",
+      "business_name": "Tom Howley Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/tom-howley-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "21e134a5-f110-41e0-937a-bcc5b8bd6050",
+      "slug": "harvey-jones-birmingham-birmingham",
+      "business_name": "Harvey Jones Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/harvey-jones-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "b709110d-7182-43c5-a7c5-025cb310f08b",
+      "slug": "neptune-birmingham-birmingham",
+      "business_name": "Neptune Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/neptune-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "89de9144-6c31-424d-b56e-095e981708e5",
+      "slug": "john-lewis-of-hungerford-birmingham-birmingham",
+      "business_name": "John Lewis of Hungerford Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/john-lewis-of-hungerford-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "1398da44-e024-46da-895a-ef7efae0bf38",
+      "slug": "nolte-kitchens-birmingham-birmingham",
+      "business_name": "Nolte Kitchens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/nolte-kitchens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "34540007-ce07-473b-8021-11c6749d63d2",
+      "slug": "schmidt-kitchens-birmingham-birmingham",
+      "business_name": "Schmidt Kitchens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/schmidt-kitchens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "f8163551-fc01-4ce9-bb22-d8d7c4019457",
+      "slug": "leicht-kitchens-birmingham-birmingham",
+      "business_name": "Leicht Kitchens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/leicht-kitchens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "958ce76a-d42c-4b51-891e-91b517d242cf",
+      "slug": "pronorm-kitchens-birmingham-birmingham",
+      "business_name": "Pronorm Kitchens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/pronorm-kitchens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "acc35be9-b079-43b6-91fc-592cdbd735a1",
+      "slug": "hacker-kitchens-birmingham-birmingham",
+      "business_name": "Häcker Kitchens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/hacker-kitchens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "3c084a08-562c-47df-bf63-581c5bb30b59",
+      "slug": "keller-kitchens-birmingham-birmingham",
+      "business_name": "Keller Kitchens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/keller-kitchens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "8a7c4a61-3526-460c-9a97-e833665ace2e",
+      "slug": "german-kitchens-birmingham-birmingham",
+      "business_name": "German Kitchens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/german-kitchens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "5ae26b62-d970-4384-a696-a603ba4d2e43",
+      "slug": "kitchen-gallery-birmingham-birmingham",
+      "business_name": "Kitchen Gallery Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/kitchen-gallery-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "9ee96158-578d-4462-bf69-b32d1a005390",
+      "slug": "the-kitchen-factory-birmingham-birmingham",
+      "business_name": "The Kitchen Factory Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/the-kitchen-factory-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "96ffbaef-7fe5-4398-bd48-45195f2fa182",
+      "slug": "the-kitchen-depot-birmingham-birmingham",
+      "business_name": "The Kitchen Depot Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/the-kitchen-depot-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "d1d06660-43e3-4277-a190-77b74a4c69a8",
+      "slug": "kitchen-warehouse-birmingham-birmingham",
+      "business_name": "Kitchen Warehouse Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/kitchen-warehouse-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "1f53a251-413f-4f00-9b3e-013c9d26e3db",
+      "slug": "the-gallery-birmingham-birmingham",
+      "business_name": "The Gallery Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/the-gallery-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "341c3906-d87a-4852-9adb-c23ee8940052",
+      "slug": "cooke-and-lewis-kitchen-centre-birmingham-birmingham",
+      "business_name": "Cooke & Lewis Kitchen Centre Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/cooke-and-lewis-kitchen-centre-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "ed09b898-116f-489f-91d6-bd72bddf7e8b",
+      "slug": "lifestyle-kitchens-birmingham-birmingham",
+      "business_name": "Lifestyle Kitchens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/lifestyle-kitchens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "ae27622a-db15-4e90-9cbd-670c4313818c",
+      "slug": "classic-interiors-birmingham-birmingham",
+      "business_name": "Classic Interiors Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/classic-interiors-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "25ee6ed4-0b46-4149-8d98-d669a682b501",
+      "slug": "premier-kitchens-birmingham-birmingham",
+      "business_name": "Premier Kitchens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/premier-kitchens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "950717aa-5448-4074-94e4-81b7154dfd60",
+      "slug": "designer-kitchens-birmingham-birmingham",
+      "business_name": "Designer Kitchens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/designer-kitchens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "a9042b4b-0429-4519-83d8-6fee88f23711",
+      "slug": "inhouse-inspired-room-design-birmingham",
+      "business_name": "InHouse Inspired Room Design",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/inhouse-inspired-room-design-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "943ddc4a-1d77-4be8-ad72-b03d08b6fc60",
+      "slug": "appleton-kitchens-birmingham",
+      "business_name": "Appleton Kitchens",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/appleton-kitchens-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "c169b2e5-720b-4ab8-81c2-5d372f096019",
+      "slug": "sheraton-interiors-birmingham",
+      "business_name": "Sheraton Interiors",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/sheraton-interiors-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "729f8b4c-537b-458b-9b15-52e6751ebdfd",
+      "slug": "aspire-kitchens-birmingham",
+      "business_name": "Aspire Kitchens",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/aspire-kitchens-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "2296600e-d4e8-46c8-83a7-066b6544ba21",
+      "slug": "bespoke-kitchens-by-broadway-birmingham",
+      "business_name": "Bespoke Kitchens by Broadway",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/bespoke-kitchens-by-broadway-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "0586f7e0-7233-444a-8b2d-3a2810a22ec0",
+      "slug": "creative-kitchens-birmingham-birmingham",
+      "business_name": "Creative Kitchens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/creative-kitchens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "219b8981-f950-404d-ac33-b1f89e4f7fdc",
+      "slug": "elite-kitchens-birmingham-birmingham",
+      "business_name": "Elite Kitchens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/elite-kitchens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "f1991e0c-9060-4b17-a58c-453c44cdd5fc",
+      "slug": "kitchen-solutions-birmingham-birmingham",
+      "business_name": "Kitchen Solutions Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/kitchen-solutions-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "4f6016f6-138a-41b9-a1ca-bf4a36594f2c",
+      "slug": "kitchen-design-centre-birmingham-birmingham",
+      "business_name": "Kitchen Design Centre Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/kitchen-design-centre-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "7ca885ba-fa45-4566-ba35-7d3a01113f5d",
+      "slug": "moda-kitchens-birmingham-birmingham",
+      "business_name": "Moda Kitchens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/moda-kitchens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "1ef23171-bfaf-4a0a-90c8-0882281909b0",
+      "slug": "urban-kitchen-and-joinery-birmingham-birmingham",
+      "business_name": "Urban Kitchen & Joinery Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/urban-kitchen-and-joinery-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "30120f43-a0f2-4d9f-8fa0-1a29b1eb4cc5",
+      "slug": "oakwood-kitchens-birmingham-birmingham",
+      "business_name": "Oakwood Kitchens Birmingham",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/oakwood-kitchens-birmingham-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "d66461c4-218b-421e-a54f-035f6778c4b0",
+      "slug": "symphony-kitchens-birmingham-dealer-birmingham",
+      "business_name": "Symphony Kitchens Birmingham Dealer",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/symphony-kitchens-birmingham-dealer-birmingham.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "dc8ab478-008a-4b84-9eb0-edb54d3c4a1b",
+      "slug": "tom-howley-leeds-leeds",
+      "business_name": "Tom Howley Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/tom-howley-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "e130fa74-5b93-4ec9-9049-6062be8ff131",
+      "slug": "harvey-jones-leeds-leeds",
+      "business_name": "Harvey Jones Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/harvey-jones-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "ecc834df-6fd9-4737-b5cc-093b15d55f50",
+      "slug": "neptune-leeds-leeds",
+      "business_name": "Neptune Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/neptune-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "0ecce1a2-5a31-41be-81aa-ae953cd9afa1",
+      "slug": "john-lewis-of-hungerford-leeds-leeds",
+      "business_name": "John Lewis of Hungerford Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/john-lewis-of-hungerford-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "59f0c11b-d40a-442a-8c17-5203889900b8",
+      "slug": "kutchenhaus-leeds-leeds",
+      "business_name": "Kutchenhaus Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/kutchenhaus-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "67fa228f-5d42-47f9-95ef-df0ee1bde0ac",
+      "slug": "kutchenhaus-harrogate-harrogate",
+      "business_name": "Kutchenhaus Harrogate",
+      "town": "Harrogate",
+      "postcode": null,
+      "path": "harrogate/kutchenhaus-harrogate-harrogate.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "9811c81a-2311-4ebf-a123-2446d69be40e",
+      "slug": "kutchenhaus-wakefield-wakefield",
+      "business_name": "Kutchenhaus Wakefield",
+      "town": "Wakefield",
+      "postcode": null,
+      "path": "wakefield/kutchenhaus-wakefield-wakefield.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "e0f4f567-8083-4dd6-b0b7-7754d4791c95",
+      "slug": "schmidt-kitchens-leeds-leeds",
+      "business_name": "Schmidt Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/schmidt-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "0cfe27a9-8630-4edb-baf1-543727d3a25e",
+      "slug": "nolte-kitchens-leeds-leeds",
+      "business_name": "Nolte Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/nolte-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "6c2f0ece-a8d4-42f5-9159-ef823e28d530",
+      "slug": "leicht-kitchens-leeds-leeds",
+      "business_name": "Leicht Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/leicht-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "3af692ec-d947-4ed5-b043-6a31373047cf",
+      "slug": "pronorm-kitchens-leeds-leeds",
+      "business_name": "Pronorm Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/pronorm-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "b8002909-cfa1-4f32-b024-3f20e70ba7dd",
+      "slug": "hacker-kitchens-leeds-leeds",
+      "business_name": "Häcker Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/hacker-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "54fe865e-b53e-425f-8b6f-9b0e79cfd3f7",
+      "slug": "keller-kitchens-leeds-leeds",
+      "business_name": "Keller Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/keller-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "4cd07dce-3972-4900-aff8-4dd374e7a5d6",
+      "slug": "german-kitchens-leeds-leeds",
+      "business_name": "German Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/german-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "284f3faa-a5b5-4bae-a1e4-bc84eb43804e",
+      "slug": "wren-kitchens-leeds-leeds",
+      "business_name": "Wren Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/wren-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "553ff594-5be2-446a-8134-689af4b24a96",
+      "slug": "magnet-kitchens-leeds-leeds",
+      "business_name": "Magnet Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/magnet-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "a9a06cb6-1b1e-4115-8c57-84b5f25b9251",
+      "slug": "howdens-leeds-leeds",
+      "business_name": "Howdens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/howdens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "1d57b7c7-359c-4aec-9ad0-3ca98b7392cc",
+      "slug": "benchmarx-kitchens-leeds-leeds",
+      "business_name": "Benchmarx Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/benchmarx-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "0a61f48a-c527-4c9a-a553-3bafa74d41b8",
+      "slug": "kitchen-design-house-leeds-leeds",
+      "business_name": "Kitchen Design House Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/kitchen-design-house-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "23a4e2a6-701e-46ff-a770-4199a8a691fe",
+      "slug": "kitchen-studio-leeds-leeds",
+      "business_name": "Kitchen Studio Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/kitchen-studio-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "e19efbce-d950-4033-af00-a8e9e94349a6",
+      "slug": "the-main-company-yorkshire-leeds",
+      "business_name": "The Main Company Yorkshire",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/the-main-company-yorkshire-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "c4a100c0-9e76-4185-aa50-d3ab096e97bd",
+      "slug": "yorkshire-design-kitchens-leeds",
+      "business_name": "Yorkshire Design Kitchens",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/yorkshire-design-kitchens-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "012489a7-af9f-43f8-b1b8-90b1fc20f292",
+      "slug": "the-kitchen-yard-leeds-leeds",
+      "business_name": "The Kitchen Yard Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/the-kitchen-yard-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "9bcfb031-3ffa-448f-b3a0-6e20613e35e2",
+      "slug": "the-kitchen-centre-leeds-leeds",
+      "business_name": "The Kitchen Centre Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/the-kitchen-centre-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "ccbd26f9-fa88-48b6-99eb-f26d9b0a0d70",
+      "slug": "the-kitchen-factory-leeds-leeds",
+      "business_name": "The Kitchen Factory Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/the-kitchen-factory-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "4a993b29-6eb0-4031-9507-6720a06d51af",
+      "slug": "the-kitchen-works-leeds-leeds",
+      "business_name": "The Kitchen Works Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/the-kitchen-works-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "acae47dd-c82a-4d3d-b618-69daf54f48c7",
+      "slug": "kitchen-warehouse-leeds-leeds",
+      "business_name": "Kitchen Warehouse Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/kitchen-warehouse-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "ecbca018-1844-4bf3-8164-22b0db9fba4f",
+      "slug": "inspired-kitchen-design-leeds-leeds",
+      "business_name": "Inspired Kitchen Design Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/inspired-kitchen-design-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "f05fbc51-536c-4d5d-b80a-9372501f3f30",
+      "slug": "designer-kitchens-leeds-leeds",
+      "business_name": "Designer Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/designer-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "1a9c33a9-d58b-4afa-ab87-b3ff0d8b44cd",
+      "slug": "lifestyle-kitchens-leeds-leeds",
+      "business_name": "Lifestyle Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/lifestyle-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "aba7d8d5-c4c9-4402-863b-edd4933398f5",
+      "slug": "elite-kitchens-leeds-leeds",
+      "business_name": "Elite Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/elite-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "2daa9600-0f49-4ae5-86cc-e64b464b49f5",
+      "slug": "premier-kitchens-leeds-leeds",
+      "business_name": "Premier Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/premier-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "be21194d-79d4-4721-b333-5dabc0a7e90d",
+      "slug": "oakwood-kitchens-leeds-leeds",
+      "business_name": "Oakwood Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/oakwood-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "d633924f-8594-4e1d-9919-192c29599fe1",
+      "slug": "moda-kitchens-leeds-leeds",
+      "business_name": "Moda Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/moda-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "44037ab0-4404-4b10-a8b4-a12b2552b1b0",
+      "slug": "concept-kitchens-leeds-leeds",
+      "business_name": "Concept Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/concept-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "589155ff-19ca-4378-bfcd-cf4e8e5144c6",
+      "slug": "urban-kitchens-leeds-leeds",
+      "business_name": "Urban Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/urban-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "7b7c4244-fb98-4ed2-bb57-c1791688cbd1",
+      "slug": "sheraton-interiors-leeds-leeds",
+      "business_name": "Sheraton Interiors Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/sheraton-interiors-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "97279e95-006b-4208-b296-a719c69f1aeb",
+      "slug": "appleton-kitchens-leeds-leeds",
+      "business_name": "Appleton Kitchens Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/appleton-kitchens-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "e4996fe5-fed5-444c-a0c9-dc8b54b3ff71",
+      "slug": "symphony-kitchens-dealer-leeds-leeds",
+      "business_name": "Symphony Kitchens Dealer Leeds",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/symphony-kitchens-dealer-leeds-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "bf058a2c-45cd-46f5-a7ee-d9cc6c716058",
+      "slug": "kitchens-direct-yorkshire-leeds",
+      "business_name": "Kitchens Direct Yorkshire",
+      "town": "Leeds",
+      "postcode": null,
+      "path": "leeds/kitchens-direct-yorkshire-leeds.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "92889e15-064b-4cce-b9d0-720e1da2018e",
+      "slug": "kutchenhaus-plymouth-plymouth",
+      "business_name": "Kutchenhaus Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/kutchenhaus-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "0c19ef37-cafd-4cfa-87f4-ec0cd1a59d19",
+      "slug": "kutchenhaus-tavistock-tavistock",
+      "business_name": "Kutchenhaus Tavistock",
+      "town": "Tavistock",
+      "postcode": null,
+      "path": "tavistock/kutchenhaus-tavistock-tavistock.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "b4a1f8b1-f36a-4031-b659-507ddacd0c70",
+      "slug": "kutchenhaus-ivybridge-ivybridge",
+      "business_name": "Kutchenhaus Ivybridge",
+      "town": "Ivybridge",
+      "postcode": null,
+      "path": "ivybridge/kutchenhaus-ivybridge-ivybridge.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "20f03df6-b057-4a2a-b4ee-2d50522b2d1b",
+      "slug": "schmidt-kitchens-plymouth-plymouth",
+      "business_name": "Schmidt Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/schmidt-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "f9121113-9584-4491-93cb-5c10737d5f24",
+      "slug": "nolte-kitchens-plymouth-plymouth",
+      "business_name": "Nolte Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/nolte-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "d317efb0-48bd-4c86-b4dd-32765745c47d",
+      "slug": "leicht-kitchens-plymouth-plymouth",
+      "business_name": "Leicht Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/leicht-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "0a69ee9a-303c-416f-8138-5047c1070fca",
+      "slug": "pronorm-kitchens-plymouth-plymouth",
+      "business_name": "Pronorm Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/pronorm-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "94dd29a0-1ea9-4875-9bee-478bf520647d",
+      "slug": "hacker-kitchens-plymouth-plymouth",
+      "business_name": "Häcker Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/hacker-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "fc67e521-f801-40c1-933d-50aec65904d1",
+      "slug": "keller-kitchens-plymouth-plymouth",
+      "business_name": "Keller Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/keller-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "ffb73632-23cd-41d7-b179-deb482f4772f",
+      "slug": "german-kitchens-plymouth-plymouth",
+      "business_name": "German Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/german-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "bdb279b3-5f35-4da4-b1eb-ab0b6da40bab",
+      "slug": "tom-howley-plymouth-plymouth",
+      "business_name": "Tom Howley Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/tom-howley-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "1f9d9686-9fb7-49b0-ba8e-5626aa6a1d54",
+      "slug": "harvey-jones-plymouth-plymouth",
+      "business_name": "Harvey Jones Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/harvey-jones-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "0e890ac4-7b43-470d-aaca-49a75e8ecfc2",
+      "slug": "neptune-plymouth-plymouth",
+      "business_name": "Neptune Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/neptune-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "0bb5e0a8-77e2-411e-ab0f-0202ff76054b",
+      "slug": "john-lewis-of-hungerford-plymouth-plymouth",
+      "business_name": "John Lewis of Hungerford Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/john-lewis-of-hungerford-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "d1f023e4-bfb1-4885-8219-8e951df80227",
+      "slug": "wren-kitchens-plymouth-plymouth",
+      "business_name": "Wren Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/wren-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "b0e0c950-8042-4cfc-a22c-32c1807b7eb4",
+      "slug": "magnet-kitchens-plymouth-plymouth",
+      "business_name": "Magnet Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/magnet-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "f4c86092-8615-44f5-8027-d89e31d88bc4",
+      "slug": "howdens-plymouth-plymouth",
+      "business_name": "Howdens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/howdens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "b1801421-1d16-4821-9335-034e0296975a",
+      "slug": "benchmarx-kitchens-plymouth-plymouth",
+      "business_name": "Benchmarx Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/benchmarx-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "bdbc5b7d-86c5-4c13-b96e-9bc7caf73f9c",
+      "slug": "the-plymouth-kitchen-company-plymouth",
+      "business_name": "The Plymouth Kitchen Company",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/the-plymouth-kitchen-company-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "2e5750e8-8721-417f-87c7-62bee15ad97a",
+      "slug": "the-kitchen-centre-plymouth-plymouth",
+      "business_name": "The Kitchen Centre Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/the-kitchen-centre-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "a590ffeb-edcf-4fcc-b4f3-e413567cf20e",
+      "slug": "the-kitchen-studio-plymouth-plymouth",
+      "business_name": "The Kitchen Studio Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/the-kitchen-studio-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "ee18272a-cfec-45c3-80ea-9d714274c636",
+      "slug": "kitchen-design-centre-plymouth-plymouth",
+      "business_name": "Kitchen Design Centre Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/kitchen-design-centre-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "a558be54-ee6e-47fa-9106-2c2f329bff43",
+      "slug": "kitchen-factory-plymouth-plymouth",
+      "business_name": "Kitchen Factory Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/kitchen-factory-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "c257ac23-0285-4fed-9b69-577177646b61",
+      "slug": "kitchen-warehouse-plymouth-plymouth",
+      "business_name": "Kitchen Warehouse Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/kitchen-warehouse-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "efe271e3-bb0b-43e4-80a8-440e736e5d0d",
+      "slug": "kitchen-world-plymouth-plymouth",
+      "business_name": "Kitchen World Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/kitchen-world-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "d7305fc0-3d55-4a1a-8747-debff28e9d2e",
+      "slug": "kitchen-solutions-plymouth-plymouth",
+      "business_name": "Kitchen Solutions Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/kitchen-solutions-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "90b92b44-be4f-42e9-8312-46958104972b",
+      "slug": "designer-kitchens-plymouth-plymouth",
+      "business_name": "Designer Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/designer-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "1c3a5e5b-02a2-46f4-83e6-0c4e357ff6ec",
+      "slug": "lifestyle-kitchens-plymouth-plymouth",
+      "business_name": "Lifestyle Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/lifestyle-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "7e209a6d-81be-47aa-a989-cf320145d161",
+      "slug": "premier-kitchens-plymouth-plymouth",
+      "business_name": "Premier Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/premier-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "5269b076-8a15-4337-838b-84d4ad3ffd19",
+      "slug": "elite-kitchens-plymouth-plymouth",
+      "business_name": "Elite Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/elite-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "0968c3d0-3ffd-45bd-8f53-861f40f1c24b",
+      "slug": "concept-kitchens-plymouth-plymouth",
+      "business_name": "Concept Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/concept-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "19cabfc3-5f82-4774-9489-b78835d4a0d6",
+      "slug": "urban-kitchens-plymouth-plymouth",
+      "business_name": "Urban Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/urban-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "82460110-03b8-4f1f-9349-680868b3d3e8",
+      "slug": "symphony-kitchens-dealer-plymouth-plymouth",
+      "business_name": "Symphony Kitchens Dealer Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/symphony-kitchens-dealer-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "bab573fb-1b96-4e9c-82e5-f7be8f6cc944",
+      "slug": "ashley-ann-plymouth-plymouth",
+      "business_name": "Ashley Ann Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/ashley-ann-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "3af92d63-9b5d-4509-b96b-6550c1ecbb3d",
+      "slug": "devon-kitchen-company-plymouth",
+      "business_name": "Devon Kitchen Company",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/devon-kitchen-company-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "579e3355-7e65-4e05-b16a-2eafbcd95b9e",
+      "slug": "plymouth-kitchen-and-bedroom-studio-plymouth",
+      "business_name": "Plymouth Kitchen & Bedroom Studio",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/plymouth-kitchen-and-bedroom-studio-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "de25dee9-bca9-4722-b483-51bf8dff0f88",
+      "slug": "kitchen-gallery-plymouth-plymouth",
+      "business_name": "Kitchen Gallery Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/kitchen-gallery-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "08ddd83e-b500-4b72-a4ae-de85c0ec8daf",
+      "slug": "kitchen-emporium-plymouth-plymouth",
+      "business_name": "Kitchen Emporium Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/kitchen-emporium-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "d75b2e97-e3b7-4686-93b0-759179238f49",
+      "slug": "the-kitchen-works-plymouth-plymouth",
+      "business_name": "The Kitchen Works Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/the-kitchen-works-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "27a41f33-38cd-4afb-83e9-05b023acdade",
+      "slug": "classic-kitchens-plymouth-plymouth",
+      "business_name": "Classic Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/classic-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "ff83f16c-7362-4b33-acff-8f20658c552e",
+      "slug": "bespoke-kitchens-plymouth-plymouth",
+      "business_name": "Bespoke Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/bespoke-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "5240df2f-1a12-4acf-92c0-ce3bf14c6a43",
+      "slug": "south-west-kitchens-plymouth",
+      "business_name": "South West Kitchens",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/south-west-kitchens-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "1b151cf8-d71a-400a-a1e7-d512298dcaa5",
+      "slug": "cornwall-and-devon-kitchens-plymouth",
+      "business_name": "Cornwall & Devon Kitchens",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/cornwall-and-devon-kitchens-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "d8ac8778-be35-43fc-8197-6d7670551460",
+      "slug": "kitchen-creations-plymouth-plymouth",
+      "business_name": "Kitchen Creations Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/kitchen-creations-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
+    },
+    {
+      "id": "74a2f028-2a18-4e69-952f-c626af595f2a",
+      "slug": "oakwood-kitchens-plymouth-plymouth",
+      "business_name": "Oakwood Kitchens Plymouth",
+      "town": "Plymouth",
+      "postcode": null,
+      "path": "plymouth/oakwood-kitchens-plymouth-plymouth.json",
+      "imported_at": "2026-08-04T03:30:00Z"
     }
   ]
 }

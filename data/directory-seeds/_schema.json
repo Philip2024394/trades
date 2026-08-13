@@ -32,6 +32,27 @@
 
     "business_name": { "type": "string", "minLength": 1 },
     "category": { "type": ["string", "null"] },
+    "primary_trade": {
+      "type": ["string", "null"],
+      "description": "Machine-readable trade slug (e.g. staircase_manufacturer · kitchen_manufacturer · kitchen_designer · kitchen_retailer · kitchen_supplier · kitchen_fitter). Enables filtering the directory by trade."
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": [],
+      "description": "Kebab-case tags for cross-cut queries (e.g. bespoke-kitchens · german-kitchens · shaker-kitchens). Never fabricated — set by the enrichment pipeline from published business text."
+    },
+    "enrichment_status": {
+      "type": ["string", "null"],
+      "enum": ["stub", "partial", "verified", null],
+      "default": "stub",
+      "description": "Phase marker per Philip's phased-directory rule (2026-08-04). stub = seed name+city+category only · partial = some website fields extracted · verified = every field on record confirmed against the official source. Never skips ahead — enrichment moves forward one step at a time."
+    },
+    "last_verified_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "ISO timestamp of the last enrichment pass that confirmed the record against the official website. Null until Phase 3."
+    },
 
     "address_line_1": { "type": ["string", "null"] },
     "address_line_2": { "type": ["string", "null"] },
@@ -94,12 +115,68 @@
 
     "source": {
       "type": "string",
-      "const": "google_business_manual_paste",
-      "description": "Fixed for this pipeline. Enables downstream provenance filtering."
+      "enum": ["google_business_manual_paste", "philip_manual_seed", "refacing_discovery"],
+      "description": "Provenance of the initial record. `google_business_manual_paste` = imported from Google Business Profile text (staircase pipeline, ADR-0023). `philip_manual_seed` = Philip-authored trade-directory stub (kitchen pipeline · 2026-08-04). `refacing_discovery` = trade discovered via the UK Staircase Refacing discovery pipeline (2026-08-13) — an acquisition channel into the existing NEX Trade Center membership system."
     },
     "imported_at": {
       "type": "string",
       "format": "date-time"
+    },
+
+    "capabilities": {
+      "type": "object",
+      "description": "Per-capability answer for refacing trades. Absent keys default to \"unknown\". Never inferred.",
+      "additionalProperties": {
+        "type": "string",
+        "enum": ["yes", "no", "unknown"]
+      }
+    },
+    "refacing_evidence": {
+      "type": "array",
+      "description": "Evidence records explaining why this trade qualifies as a refacing/refurbishment/covering/cladding company. At least one required for A+ and A qualifications.",
+      "items": {
+        "type": "object",
+        "required": ["url", "type", "category", "summary", "checked_at"],
+        "additionalProperties": false,
+        "properties": {
+          "url":        { "type": "string" },
+          "type":       { "type": "string", "enum": ["company_website","contact_page","services_page","trade_directory","checkatrade","yell","trustpilot","rated_people","bark","houzz","mybuilder","google_business_profile","other"] },
+          "category":   { "type": "string", "enum": ["staircase_refacing","staircase_refurbishment","staircase_renovation","staircase_restoration","staircase_covering","staircase_cladding","tread_replacement","riser_replacement","balustrade_replacement","component_replacement","finishing","installation","other"] },
+          "summary":    { "type": "string" },
+          "checked_at": { "type": "string", "format": "date" }
+        }
+      }
+    },
+    "refacing_qualification": {
+      "type": ["string", "null"],
+      "enum": ["A+", "A", "B", "C", "excluded", null],
+      "description": "A+ = explicit existing-staircase refacing/refurbishment/covering/cladding · A = strong existing-staircase renovation evidence · B = possible, needs verification · C = primarily new staircase work · excluded = does not qualify."
+    },
+    "email_source": {
+      "type": ["string", "null"],
+      "enum": ["company_website","contact_page","services_page","trade_directory","checkatrade","yell","trustpilot","google_business_profile","other", null],
+      "description": "Where the public business email was found. Null when email is null."
+    },
+    "email_verified": {
+      "type": ["boolean", "null"],
+      "description": "Human-verified as a working, publicly-published business address. Never true for an inferred email."
+    },
+    "email_checked_at": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "ISO date the email was last checked."
+    },
+    "lifecycle_status": {
+      "type": ["string", "null"],
+      "enum": ["unclaimed","contacted","interested","claim_requested","claim_pending","claimed","verified_partner", null],
+      "default": "unclaimed",
+      "description": "Claim lifecycle inside the shared NEX Trade Center membership system. Refacing is an acquisition channel · once claimed the record follows the same paid-member funnel as every other trade. Never invented · flipped only by the shared claim/payment flow."
+    },
+    "directory_state": {
+      "type": ["string", "null"],
+      "enum": ["listed", "verified", "claimed", "paid_member", null],
+      "default": "listed",
+      "description": "Fundamental Refacing Trade Exchange progression (Philip 2026-08-13): listed = discovered/imported · verified = NEX independently verified the directory info (contact accuracy + evidence + operating) but still unclaimed · claimed = business owner claimed via shared claim flow · paid_member = active paying NEX Trade Center member eligible to receive routed homeowner opportunities. Distinct from the `verified` badge (earned via claim workflow) and from `lifecycle_status` (7-step claim funnel). Forward-only progression · never downgrade without an audit entry in refacing_evidence[]."
     }
   }
 }

@@ -33,6 +33,7 @@ compatible_shell_families:
 # ─── Review ──────────────────────────────────────────────────────
 confidence:                 1.00
 review_status:              reviewed   # awaiting Philip's lock
+knowledge_level:            observed
 
 notes:
   - Square-section newel post, flat cap treatment.

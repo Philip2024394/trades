@@ -6,7 +6,11 @@
 import { validateAndTouchWorkerToken } from "@/apps/materials/_services/worker_links";
 import { getPack } from "@/apps/materials/_services/packs";
 import { errorResponse, okResponse } from "@/apps/materials/_services/_route_helpers";
-import { supabaseAdmin } from "@/lib/supabaseAdmin";
+// ROUTING FIX (Philip 2026-08-13 · Supabase-project audit): nex_materials_*
+// tables live in the NEX project (ijvqdv...). Previously imported the trades
+// supabaseAdmin (msdonk... project) which held an empty shell of the same
+// table — reads silently returned 0 rows. Now points at the correct client.
+import { supabaseNexAdmin as supabaseAdmin } from "@/lib/supabaseNexAdmin";
 import { MaterialsError } from "@/apps/materials/_schema/types";
 
 export const runtime = "nodejs";

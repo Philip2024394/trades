@@ -1,0 +1,147 @@
+{
+  "refacing_case_id": "rf_kzvedags_7stbhedw",
+  "created_at": "2026-08-12T16:55:39.801Z",
+  "updated_at": "2026-08-12T17:24:42.639Z",
+  "status": "CONCEPT_READY",
+  "existing_staircase": {
+    "photos": [
+      {
+        "image_id": "img_case_rf_kzvedags_7stbhedw_a948b2b2",
+        "captured_at": "2026-08-12T16:55:40.189Z"
+      },
+      {
+        "image_id": "img_case_rf_kzvedags_7stbhedw_84c60b54",
+        "captured_at": "2026-08-12T17:20:46.349Z"
+      },
+      {
+        "image_id": "img_case_rf_kzvedags_7stbhedw_f7af87f2",
+        "captured_at": "2026-08-12T17:24:06.027Z"
+      }
+    ],
+    "customer_confirmed": true
+  },
+  "customer_intent": {
+    "feelings": [
+      "more-dramatic"
+    ],
+    "intent_entries": []
+  },
+  "unknown_items": [
+    {
+      "concern": "exact_dimensions",
+      "reason": "Exact tread/riser dimensions cannot be confirmed from a photograph · to be captured during survey."
+    },
+    {
+      "concern": "timber_species_confirmation",
+      "reason": "Species can be inferred visually but the confirmed species requires a physical sample or survey."
+    },
+    {
+      "concern": "structural_conditions",
+      "reason": "Structural condition · fixings · load capacity · not visible in a photograph."
+    },
+    {
+      "concern": "exact_dimensions",
+      "reason": "Exact tread/riser dimensions cannot be confirmed from a photograph · to be captured during survey."
+    },
+    {
+      "concern": "timber_species_confirmation",
+      "reason": "Species can be inferred visually but the confirmed species requires a physical sample or survey."
+    },
+    {
+      "concern": "structural_conditions",
+      "reason": "Structural condition · fixings · load capacity · not visible in a photograph."
+    },
+    {
+      "concern": "exact_dimensions",
+      "reason": "Exact tread/riser dimensions cannot be confirmed from a photograph · to be captured during survey."
+    },
+    {
+      "concern": "timber_species_confirmation",
+      "reason": "Species can be inferred visually but the confirmed species requires a physical sample or survey."
+    },
+    {
+      "concern": "structural_conditions",
+      "reason": "Structural condition · fixings · load capacity · not visible in a photograph."
+    }
+  ],
+  "composition_provenance": [
+    {
+      "component_role": "baluster",
+      "image_id": "img_traditional_full-carpeted-staircase-with-oak-newel",
+      "source": "reference_library"
+    },
+    {
+      "component_role": "newel",
+      "image_id": "img_traditional_full-carpeted-staircase-with-oak-newel",
+      "source": "reference_library"
+    },
+    {
+      "component_role": "handrail",
+      "image_id": "img_traditional_full-carpeted-staircase-with-oak-newel",
+      "source": "reference_library"
+    }
+  ],
+  "anonymous_return_token": "fJjc73wrlhCBrsomu0I7AOXIxFF_qViq",
+  "selected_design": {
+    "direction": "stretch-statement",
+    "name": "Statement Unknown",
+    "reason_for_existing": "For a stronger architectural transformation",
+    "key_materials_description": "white + oak",
+    "canonical_profile_ids": [
+      "traditional_cosy"
+    ],
+    "canonical_profile_ids_confidence": "observed",
+    "style": [
+      "traditional",
+      "classic"
+    ],
+    "mood": [
+      "cosy"
+    ],
+    "material_composition": [
+      {
+        "component_role": "baluster",
+        "material": "painted",
+        "sub_material": "white",
+        "confidence": "observed"
+      },
+      {
+        "component_role": "newel",
+        "material": "wood",
+        "sub_material": "oak",
+        "confidence": "observed"
+      },
+      {
+        "component_role": "handrail",
+        "material": "wood",
+        "sub_material": "oak",
+        "confidence": "observed"
+      }
+    ],
+    "reference_image_ids": [
+      "img_traditional_full-carpeted-staircase-with-oak-newel"
+    ],
+    "component_selections": [
+      {
+        "component_role": "baluster",
+        "image_id": "img_traditional_full-carpeted-staircase-with-oak-newel"
+      },
+      {
+        "component_role": "newel",
+        "image_id": "img_traditional_full-carpeted-staircase-with-oak-newel"
+      },
+      {
+        "component_role": "handrail",
+        "image_id": "img_traditional_full-carpeted-staircase-with-oak-newel"
+      }
+    ]
+  },
+  "requested_work": {
+    "areas": [
+      "balustrade",
+      "newels",
+      "handrail"
+    ],
+    "quote_requirement": "supply_plus_installation"
+  }
+}

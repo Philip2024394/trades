@@ -8,12 +8,14 @@
 // Never website pages — always operating-system areas.
 
 import { Home, FolderOpen, Wrench, User, Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useConversationState } from "../state/ConversationStateProvider";
 
 type NavItem = { id: string; label: string; icon: typeof Home; active: boolean; onClick: () => void };
 
 export function BottomNav() {
-  const { state, transitionTo, openChat } = useConversationState();
+  const { state, transitionTo } = useConversationState();
+  const router = useRouter();
 
   const items: NavItem[] = [
     {
@@ -58,10 +60,14 @@ export function BottomNav() {
     >
       {items.slice(0, 2).map((item) => <BottomNavItem key={item.id} item={item} />)}
 
-      {/* Center + FAB */}
+      {/* Center + FAB · Philip 2026-08-03 · routes to the CLEAN general
+          Nex Chat surface (/nex-app/chat) · NOT the trade-flavoured
+          slide-up ChatSurface. Consistent with the "Nex Chat" tile
+          on the landing so the two entry points open the same clean
+          assistant. */}
       <button
         type="button"
-        onClick={() => { openChat(); transitionTo("discover"); }}
+        onClick={() => router.push("/nex-app/chat")}
         aria-label="Start a new conversation with Nex"
         className="grid h-14 w-14 place-items-center rounded-full transition-transform active:scale-95"
         style={{

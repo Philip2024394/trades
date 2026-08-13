@@ -29,6 +29,7 @@ confidence:                 1.00
 review_status:              locked
 locked_at:                  2026-07-29T15:45:00Z
 locked_by:                  philip
+knowledge_level:            observed
 
 notes:
   - Single walking tread. Two risers (bottom leading up, top against trimmer).

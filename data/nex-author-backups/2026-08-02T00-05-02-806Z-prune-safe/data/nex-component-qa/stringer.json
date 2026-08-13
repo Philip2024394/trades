@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-01T22:49:32.044Z",
+  "layer": "component",
+  "component_id": "stringer",
+  "label": "Stringer",
+  "description": "The structural side or centre support carrying the treads. Mono, twin, cut, closed, or box variants.",
+  "note": "Layer 2 · COMPONENT BRAIN Q&A · applies to every staircase where this component is present. Cross-references the deeper knowledge articles in data/nex-reference-brains/. Author once · every image tagged with this component_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is a stringer?",
+      "a": ""
+    },
+    {
+      "q": "What is the difference between a mono-stringer and twin stringers?",
+      "a": ""
+    },
+    {
+      "q": "What is a cut string vs a closed string?",
+      "a": ""
+    },
+    {
+      "q": "How thick is the steel in a mono-stringer?",
+      "a": ""
+    }
+  ]
+}

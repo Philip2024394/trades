@@ -1,0 +1,2859 @@
+{
+  "version": "1",
+  "created_at": "2026-08-13",
+  "scene_constants": {
+    "scenario": "NEX Trade Center · same person + pose + backdrop across every image",
+    "geometry": "straight-flight going up-right with bullnose starting step + first-floor balcony",
+    "camera": "eye-level portrait aspect looking up the staircase from the base",
+    "starting_step_default": "bullnose (rounded left edge)",
+    "string_default_left": "painted-white closed string",
+    "string_default_right": "painted-white closed string against wall",
+    "baserail_default": "painted-white matching string"
+  },
+  "observations": [
+    {
+      "seq": 1,
+      "file": "intake-001-870c3504222a13d5.png",
+      "tread": {
+        "material": "wood",
+        "sub": "oak"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "glass-panel-decorated",
+        "material": "glass",
+        "sub": "clear-with-bronze-leaf-motif"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "oak"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "decorative bronze-leaf glass balustrade panels",
+      "style": [
+        "warm-natural",
+        "luxury",
+        "statement"
+      ],
+      "mood": [
+        "expressive"
+      ]
+    },
+    {
+      "seq": 2,
+      "file": "intake-002-dac9004d6fc3bb0d.png",
+      "tread": {
+        "material": "wood",
+        "sub": "oak"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "thin-metal-spindles",
+        "material": "metal",
+        "sub": "chrome"
+      },
+      "newel": {
+        "style": "square-minimal-capped",
+        "material": "wood",
+        "sub": "oak"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "chrome thin metal spindle balustrade",
+      "style": [
+        "modern",
+        "warm-natural"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 3,
+      "file": "intake-003-1b74df3818ae9e42.png",
+      "tread": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "riser": {
+        "material": "metal",
+        "sub": "brushed-stainless"
+      },
+      "baluster": {
+        "style": "thin-metal-spindles",
+        "material": "metal",
+        "sub": "chrome"
+      },
+      "newel": {
+        "style": "square-minimal-capped",
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "brushed stainless steel risers with walnut treads",
+      "style": [
+        "modern",
+        "luxury",
+        "signature"
+      ],
+      "mood": [
+        "expressive"
+      ],
+      "corrected_at": "2026-08-13T02:32:30.100Z",
+      "correction_reason": "Visual audit: tread + newel + handrail tone is distinctly reddish (mahogany), not chocolate (walnut)."
+    },
+    {
+      "seq": 4,
+      "file": "intake-004-77b8869a40e4a56e.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "cream"
+      },
+      "baluster": {
+        "style": "perforated-metal-panel",
+        "material": "metal",
+        "sub": "brushed-silver"
+      },
+      "newel": {
+        "style": "square-minimal",
+        "material": "wood",
+        "sub": "oak"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "perforated brushed silver metal panel balustrade (acoustic-panel style)",
+      "style": [
+        "modern",
+        "industrial",
+        "minimal"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 5,
+      "file": "intake-005-74fae2dd51c3834f.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "riser": {
+        "material": "metal",
+        "sub": "perforated-brushed-silver"
+      },
+      "baluster": {
+        "style": "perforated-metal-panel",
+        "material": "metal",
+        "sub": "brushed-silver"
+      },
+      "newel": {
+        "style": "square-minimal",
+        "material": "wood",
+        "sub": "oak"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "perforated silver on BOTH risers AND balustrade (matching)",
+      "style": [
+        "modern",
+        "industrial",
+        "luxury"
+      ],
+      "mood": [
+        "expressive"
+      ]
+    },
+    {
+      "seq": 6,
+      "file": "intake-006-81ccfad802a6d990.png",
+      "tread": {
+        "material": "wood",
+        "sub": "oak"
+      },
+      "riser": {
+        "material": "metal",
+        "sub": "perforated-black"
+      },
+      "baluster": {
+        "style": "perforated-metal-panel",
+        "material": "metal",
+        "sub": "black"
+      },
+      "newel": {
+        "style": "square-minimal",
+        "material": "wood",
+        "sub": "oak"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "black perforated metal risers + balustrade (industrial-statement)",
+      "style": [
+        "modern",
+        "industrial",
+        "statement"
+      ],
+      "mood": [
+        "expressive"
+      ]
+    },
+    {
+      "seq": 7,
+      "file": "intake-007-6013022096d9419a.png",
+      "tread": {
+        "material": "wood",
+        "sub": "oak",
+        "feature": "two-tone-inlay"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "cream",
+        "pattern": "arched-wood-inset",
+        "inset_species": "oak"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "two-tone oak tread with half-moon walnut inlay accent",
+      "style": [
+        "warm-natural",
+        "luxury",
+        "statement"
+      ],
+      "mood": [
+        "expressive"
+      ],
+      "corrected_at": "2026-08-13T02:55:07.359Z",
+      "correction_reason": "Philip confirmed: this is the OAK arched-wood-inset reference (cream painted riser frame with oak arched panel inset)."
+    },
+    {
+      "seq": 8,
+      "file": "intake-008-9d48558b7d0d0fb6.png",
+      "tread": {
+        "material": "wood",
+        "sub": "walnut",
+        "feature": "two-tone-inlay"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "full-walnut with darker walnut tread inlay",
+      "style": [
+        "warm-natural",
+        "luxury",
+        "signature"
+      ],
+      "mood": [
+        "expressive"
+      ]
+    },
+    {
+      "seq": 9,
+      "file": "intake-009-73e7d323121f1e44.png",
+      "tread": {
+        "material": "wood",
+        "sub": "maple",
+        "feature": "two-tone-inlay"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "cream",
+        "pattern": "arched-wood-inset",
+        "inset_species": "maple"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "maple"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "maple"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "blonde maple with subtle inlay accent (very light overall)",
+      "style": [
+        "warm-natural",
+        "minimal",
+        "luxury"
+      ],
+      "mood": [
+        "restrained"
+      ],
+      "corrected_at": "2026-08-13T02:55:07.359Z",
+      "correction_reason": "Philip confirmed: this is the MAPLE arched-wood-inset reference (cream painted riser frame with maple arched panel inset)."
+    },
+    {
+      "seq": 10,
+      "file": "intake-010-59ddda5a21daa8d1.png",
+      "tread": {
+        "material": "wood",
+        "sub": "oak",
+        "feature": "two-tone-inlay"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "cream"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "oak"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "oak with matching-oak subtle tread inlay",
+      "style": [
+        "warm-natural",
+        "classic"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 11,
+      "file": "intake-011-fd85b1526a180b12.png",
+      "tread": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "cream",
+        "pattern": "arched-wood-inset",
+        "inset_species": "walnut"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "full walnut treads+risers with white turned balusters (traditional-warm)",
+      "style": [
+        "warm-natural",
+        "classic",
+        "traditional"
+      ],
+      "mood": [
+        "restrained"
+      ],
+      "corrected_at": "2026-08-13T02:55:07.359Z",
+      "correction_reason": "Philip confirmed: this is the WALNUT arched-wood-inset reference. Previous mahogany reclassification was wrong · reverted to walnut."
+    },
+    {
+      "seq": 12,
+      "file": "intake-012-69765c7864681f5d.png",
+      "tread": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "mahogany treads + white risers + white turned balusters (heritage two-tone)",
+      "style": [
+        "classic",
+        "warm-natural",
+        "luxury"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 13,
+      "file": "intake-013-f140f4acf7de2c9e.png",
+      "tread": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "full mahogany treads+risers with white turned balusters (traditional-heritage)",
+      "style": [
+        "classic",
+        "warm-natural",
+        "luxury",
+        "traditional"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 14,
+      "file": "intake-014-1df6a131e0d3ab8d.png",
+      "tread": {
+        "material": "carpet",
+        "sub": "grey-full-cover"
+      },
+      "riser": {
+        "material": "carpet",
+        "sub": "grey-full-cover"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "grey wall-to-wall carpet covering treads+risers with oak newel+handrail (family-warm)",
+      "style": [
+        "classic",
+        "warm-natural",
+        "cozy"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 15,
+      "file": "intake-015-52eb97e0ad4e2f0a.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak",
+        "feature": "beige-carpet-runner-brass-rods"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "turned-classic-ball-topped",
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "oak treads with beige diamond-weave carpet runner + brass stair rods (english-heritage)",
+      "style": [
+        "classic",
+        "warm-natural",
+        "luxury",
+        "traditional"
+      ],
+      "mood": [
+        "expressive"
+      ]
+    },
+    {
+      "seq": 16,
+      "file": "intake-016-b00217906246ac91.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak",
+        "feature": "tan-carpet-runner-brass-rods"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "thin-square-spindles",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "oak treads with tan diamond-weave carpet runner + brass rods (modern-english-heritage · square spindles)",
+      "style": [
+        "classic",
+        "warm-natural",
+        "luxury"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 17,
+      "file": "intake-017-ff16356609cc560c.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak",
+        "feature": "beige-woven-carpet-runner-brass-rods"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "thin-square-spindles",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "oak treads with beige woven carpet runner + brass rods + square spindles (near-identical variant of intake-016)",
+      "style": [
+        "classic",
+        "warm-natural",
+        "luxury"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 18,
+      "file": "intake-018-337494e61b5946df.png",
+      "tread": {
+        "material": "wood",
+        "sub": "mid-oak"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "mid-oak"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "mid-oak",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "mid-oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "full mid-oak treads+risers with white turned balusters and oak ball-capped newel (traditional)",
+      "style": [
+        "classic",
+        "warm-natural",
+        "traditional"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 19,
+      "file": "intake-019-2b4589f78906654b.png",
+      "tread": {
+        "material": "wood",
+        "sub": "mid-oak"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "cream"
+      },
+      "baluster": {
+        "style": "thin-square-spindles",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "mid-oak"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "mid-oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "mid-oak treads + cream risers + white square spindles (transitional modern-classic)",
+      "style": [
+        "warm-natural",
+        "modern",
+        "classic"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 20,
+      "file": "intake-020-de4629c86f62640a.png",
+      "tread": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "baluster": {
+        "style": "thin-metal-spindles",
+        "material": "metal",
+        "sub": "chrome"
+      },
+      "newel": {
+        "style": "square-minimal-capped",
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "full walnut treads+risers with chrome spindles",
+      "style": [
+        "warm-natural",
+        "modern",
+        "luxury"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 21,
+      "file": "intake-021-37f829a7ea3293ff.png",
+      "tread": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "baluster": {
+        "style": "art-nouveau-branch-panel",
+        "material": "metal",
+        "sub": "black"
+      },
+      "newel": {
+        "style": "turned-classic-ball-topped",
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "string_L": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "black metal art-nouveau branch-motif balustrade panels with walnut treads+risers+newel",
+      "style": [
+        "luxury",
+        "statement",
+        "warm-natural"
+      ],
+      "mood": [
+        "expressive"
+      ]
+    },
+    {
+      "seq": 22,
+      "file": "intake-022-7223c37ab496f87a.png",
+      "tread": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "baluster": {
+        "style": "art-nouveau-branch-panel",
+        "material": "metal",
+        "sub": "black"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "painted",
+        "sub": "white",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "black metal art-nouveau branch panels with WHITE newel + handrail against walnut treads (contrast variant)",
+      "style": [
+        "luxury",
+        "statement",
+        "classic"
+      ],
+      "mood": [
+        "expressive"
+      ]
+    },
+    {
+      "seq": 23,
+      "file": "intake-023-8c1847a7b815bcd5.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak",
+        "feature": "grey-runner-brass-rods"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "glass-panel-clear",
+        "material": "glass",
+        "sub": "clear-frameless"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "light-oak",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "clear frameless glass balustrade + oak handrail + grey carpet runner with brass rods",
+      "style": [
+        "modern",
+        "luxury",
+        "warm-natural"
+      ],
+      "mood": [
+        "expressive"
+      ]
+    },
+    {
+      "seq": 24,
+      "file": "intake-024-16b4746d392799cd.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak",
+        "feature": "grey-runner-brass-rods"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "light-oak",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "grey diamond-weave carpet runner + brass rods + white turned balusters + oak handrail (english-classic)",
+      "style": [
+        "classic",
+        "warm-natural",
+        "luxury"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 25,
+      "file": "intake-025-bab49c3bb155f2cb.png",
+      "tread": {
+        "material": "wood",
+        "sub": "mahogany",
+        "feature": "grey-runner-brass-rods"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "turned-classic-ball-topped",
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "string_L": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "mahogany treads+risers+newel with grey carpet runner + brass rods + white turned balusters (heritage-luxury)",
+      "style": [
+        "classic",
+        "warm-natural",
+        "luxury",
+        "traditional"
+      ],
+      "mood": [
+        "expressive"
+      ]
+    },
+    {
+      "seq": 26,
+      "file": "intake-026-a5e5ef80054203a0.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "twisted-iron-spindles",
+        "material": "metal",
+        "sub": "black"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "light-oak",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "black wrought-iron twisted spindles with oak handrail + white risers (traditional-country)",
+      "style": [
+        "classic",
+        "warm-natural",
+        "traditional"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 27,
+      "file": "intake-027-1ff8afdf2c06f8b5.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "cream"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "light-oak",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "all-oak balustrade (turned oak spindles + oak newel + oak handrail) with white risers (warm-monochrome)",
+      "style": [
+        "warm-natural",
+        "classic",
+        "traditional"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 28,
+      "file": "intake-028-968979229490f40f.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "light-oak",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "oak turned balusters + oak newel + oak handrail + white risers (near-identical variant of intake-027)",
+      "style": [
+        "warm-natural",
+        "classic",
+        "traditional"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 29,
+      "file": "intake-029-59a3eda3da3bfd41.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak",
+        "feature": "beige-runner-brass-rods"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "cream"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "light-oak",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "all-oak balustrade with beige woven carpet runner + brass rods (english-country)",
+      "style": [
+        "classic",
+        "warm-natural",
+        "luxury"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 30,
+      "file": "intake-030-f1f799c717bc9214.png",
+      "tread": {
+        "material": "wood",
+        "sub": "walnut",
+        "feature": "beige-runner-brass-rods"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "walnut",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "string_L": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "full walnut balustrade + walnut treads+risers + beige herringbone runner + brass rods (rich-heritage)",
+      "style": [
+        "luxury",
+        "warm-natural",
+        "classic",
+        "traditional"
+      ],
+      "mood": [
+        "expressive"
+      ]
+    },
+    {
+      "seq": 31,
+      "file": "intake-031-fbfebf5e09437eb2.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "walnut",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "string_L": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "light-oak treads+risers+balusters with dark-walnut newel+handrail+string (two-tone-classic)",
+      "style": [
+        "classic",
+        "warm-natural",
+        "luxury"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 32,
+      "file": "intake-032-0eaf05907cb316eb.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "walnut",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "string_L": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "near-identical variant of intake-031 with slightly slimmer newel (two-tone-classic)",
+      "style": [
+        "classic",
+        "warm-natural",
+        "luxury"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 33,
+      "file": "intake-033-0c37d69059ad39ec.png",
+      "tread": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "light-oak",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "string_L": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "mahogany treads+risers+balusters+handrail with LIGHT-OAK newel+string (contrast two-tone)",
+      "style": [
+        "classic",
+        "luxury",
+        "statement"
+      ],
+      "mood": [
+        "expressive"
+      ]
+    },
+    {
+      "seq": 34,
+      "file": "intake-034-fbb3f59b25abe05a.png",
+      "tread": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "mahogany",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "string_L": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "all-white staircase with mahogany newel+handrail+string accent (english-heritage-classic)",
+      "style": [
+        "classic",
+        "luxury",
+        "traditional"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 35,
+      "file": "intake-035-601cac0da65d9052.png",
+      "tread": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "turned-classic-ball-topped",
+        "material": "wood",
+        "sub": "oak"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "all-painted-white staircase with oak turned newel accent",
+      "style": [
+        "classic",
+        "traditional"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 36,
+      "file": "intake-036-a34a951cc7acca59.png",
+      "tread": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "mahogany",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "string_L": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "near-identical variant of intake-034 all-white+mahogany-accent (heritage-classic)",
+      "style": [
+        "classic",
+        "luxury",
+        "traditional"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 37,
+      "file": "intake-037-8da58d7cd9668df5.png",
+      "tread": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "light-oak",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "all-white staircase with LIGHT-OAK newel accent only (minimal-classic)",
+      "style": [
+        "classic",
+        "minimal",
+        "warm-natural"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 38,
+      "file": "intake-038-a5e57c14bbc1b4d7.png",
+      "tread": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "mahogany",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "all-white staircase with MAHOGANY newel accent only (minimal-heritage)",
+      "style": [
+        "classic",
+        "minimal",
+        "luxury"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 39,
+      "file": "intake-039-e7f441b5c2a4bab3.png",
+      "tread": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "light-oak",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "near-identical variant of intake-037 all-white with oak newel (minimal-classic)",
+      "style": [
+        "classic",
+        "minimal",
+        "warm-natural"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 40,
+      "file": "intake-040-fbff06791b308bf0.png",
+      "tread": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "walnut",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "all-white staircase with WALNUT newel accent only (minimal-warm)",
+      "style": [
+        "classic",
+        "minimal",
+        "warm-natural"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 41,
+      "file": "intake-041-0743f13e45bd0b54.png",
+      "tread": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "walnut",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "all-white staircase with WALNUT newel + walnut top-rail highlight (variant of intake-040)",
+      "style": [
+        "classic",
+        "minimal",
+        "warm-natural"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 42,
+      "file": "intake-042-204dca9e4f5cf1f4.png",
+      "tread": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "all-white staircase with slim square walnut newel (no ball-top)",
+      "style": [
+        "classic",
+        "minimal",
+        "modern"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 43,
+      "file": "intake-043-30102a4969edc8dc.png",
+      "tread": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "painted",
+        "sub": "white"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "pure all-white staircase (monochrome-classic · no wood accent)",
+      "style": [
+        "classic",
+        "minimal",
+        "traditional"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 44,
+      "file": "intake-044-4bb1d7c3517f0587.png",
+      "tread": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-minimal",
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "all-white staircase with tall slim walnut newel (near-variant of intake-042)",
+      "style": [
+        "classic",
+        "minimal",
+        "modern"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 45,
+      "file": "intake-045-9f9f5a7408c7c7f2.png",
+      "tread": {
+        "material": "wood",
+        "sub": "rustic-knotty-oak"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "rustic-knotty-oak"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "painted",
+        "sub": "white",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "rustic knotty-oak treads+risers with white ball-topped newel + white balusters + oak handrail (farmhouse-warm)",
+      "style": [
+        "warm-natural",
+        "rustic",
+        "classic"
+      ],
+      "mood": [
+        "expressive"
+      ]
+    },
+    {
+      "seq": 46,
+      "file": "intake-046-b4e156a596044c18.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "painted",
+        "sub": "white",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "clean light-oak treads+risers with all-white balustrade (nordic-warm)",
+      "style": [
+        "warm-natural",
+        "minimal",
+        "classic"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 47,
+      "file": "intake-047-d979395a66aabb64.png",
+      "tread": {
+        "material": "wood",
+        "sub": "dark-rustic-oak"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "dark-rustic-oak"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "painted",
+        "sub": "white",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "dark-stained rustic oak treads+risers with all-white balustrade (rustic-manor)",
+      "style": [
+        "warm-natural",
+        "rustic",
+        "luxury"
+      ],
+      "mood": [
+        "expressive"
+      ]
+    },
+    {
+      "seq": 48,
+      "file": "intake-048-df8ea08f5d557f3a.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "painted",
+        "sub": "white",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "near-identical variant of intake-046 (light-oak treads+risers · all-white balustrade)",
+      "style": [
+        "warm-natural",
+        "minimal",
+        "classic"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 49,
+      "file": "intake-049-af52f49c9d73fff5.png",
+      "tread": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "painted",
+        "sub": "white",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "walnut treads+risers with all-white balustrade (contrast-classic)",
+      "style": [
+        "warm-natural",
+        "luxury",
+        "classic"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 50,
+      "file": "intake-050-49f64577b1e2d42a.png",
+      "tread": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "painted",
+        "sub": "white",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "walnut treads + WHITE risers + all-white balustrade (two-tone-classic-luxury)",
+      "style": [
+        "warm-natural",
+        "luxury",
+        "classic"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 51,
+      "file": "intake-051-85e5f04004d9c580.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "painted",
+        "sub": "white",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "light-oak treads + white risers + all-white balustrade (nordic-warm two-tone)",
+      "style": [
+        "warm-natural",
+        "minimal",
+        "classic"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 52,
+      "file": "intake-052-1f526fbbc9ce19ea.png",
+      "tread": {
+        "material": "wood",
+        "sub": "mid-oak"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "cream"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "painted",
+        "sub": "white",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "mid-oak treads + cream risers + all-white balustrade (warm-two-tone-classic)",
+      "style": [
+        "warm-natural",
+        "minimal",
+        "classic"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 53,
+      "file": "intake-053-94bc2f61aa807dce.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "painted",
+        "sub": "white",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "near-identical variant of intake-051 (light-oak tread + white risers + white balustrade)",
+      "style": [
+        "warm-natural",
+        "minimal",
+        "classic"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 54,
+      "file": "intake-054-94ac6518a13172fb.png",
+      "tread": {
+        "material": "wood",
+        "sub": "mahogany"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "painted",
+        "sub": "white",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "mahogany treads + white risers + all-white balustrade (heritage-two-tone-classic)",
+      "style": [
+        "warm-natural",
+        "luxury",
+        "classic"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 55,
+      "file": "intake-055-443fe3dbbd160771.png",
+      "tread": {
+        "material": "wood",
+        "sub": "light-oak"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "cream"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "painted",
+        "sub": "white",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "near-identical variant of intake-051/053 with cream risers (nordic-warm)",
+      "style": [
+        "warm-natural",
+        "minimal",
+        "classic"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 56,
+      "file": "intake-056-50b8fbb85408c455.png",
+      "tread": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "riser": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "painted",
+        "sub": "white",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "near-identical variant of intake-050 (walnut treads + white risers + all-white balustrade)",
+      "style": [
+        "warm-natural",
+        "luxury",
+        "classic"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 57,
+      "file": "intake-057-def2fde30a372db7.png",
+      "tread": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "square-capped",
+        "material": "wood",
+        "sub": "walnut",
+        "feature": "ball-top"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "string_L": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "full walnut treads+risers+newel+handrail+string with white turned balusters (heritage-warm)",
+      "style": [
+        "warm-natural",
+        "luxury",
+        "classic",
+        "traditional"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    },
+    {
+      "seq": 58,
+      "file": "intake-058-adac264933fe1d48.png",
+      "tread": {
+        "material": "wood",
+        "sub": "oak"
+      },
+      "riser": {
+        "material": "wood",
+        "sub": "oak"
+      },
+      "baluster": {
+        "style": "turned-traditional",
+        "material": "painted",
+        "sub": "white"
+      },
+      "newel": {
+        "style": "turned-ball-topped",
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "handrail": {
+        "material": "wood",
+        "sub": "walnut"
+      },
+      "string_L": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "string_R": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "baserail": {
+        "material": "painted",
+        "sub": "white"
+      },
+      "starting_step": "bullnose",
+      "distinctive": "oak treads+risers with walnut ball-topped newel + white turned balusters",
+      "style": [
+        "classic",
+        "warm-natural",
+        "traditional"
+      ],
+      "mood": [
+        "restrained"
+      ]
+    }
+  ]
+}

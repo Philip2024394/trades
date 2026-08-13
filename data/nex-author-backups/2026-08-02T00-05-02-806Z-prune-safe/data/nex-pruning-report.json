@@ -1,0 +1,5008 @@
+{
+  "generated_at": "2026-08-01T23:12:23.951Z",
+  "rule": "Prune by moving · never delete authored knowledge · Philip 2026-08-02",
+  "applied": false,
+  "note": "Every image-layer Q is proposed for exactly one destination. Nothing is deleted. Philip reviews then approves. A separate apply script performs the moves with backups + audit log.",
+  "designs": [
+    {
+      "design_id": "NEX-DESIGN-000005",
+      "families": [
+        "spiral",
+        "open-riser",
+        "steel-balustrade",
+        "feature-lighting"
+      ],
+      "components": [
+        "stringer",
+        "tread",
+        "handrail",
+        "baluster",
+        "lighting-led"
+      ],
+      "moves": [
+        {
+          "q": "What type of staircase is this?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is this a spiral staircase?",
+          "a_authored": false,
+          "dest": "family:spiral",
+          "reason": "family-keyword match: /spiral staircase/i"
+        },
+        {
+          "q": "Is it a helical staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What style is this staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can this design fit my house?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Would this work in a small space?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is this suitable for a luxury home?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Would this suit an open-plan kitchen/living area?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What supports this staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is everything supported by the centre column?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the outside steel structural or decorative?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the staircase self-supporting?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How strong is the centre column?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it require wall support?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the handrail strengthen the staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Why doesn't it wobble?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What weight can it carry?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can several people stand on it at once?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What timber is used?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is this oak or walnut?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I have oak instead?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I have walnut?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I use ash or maple?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I use engineered timber?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the steel be white, bronze or stainless instead of black?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I combine oak and black steel?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What steel thickness is normally used?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the handrail solid timber?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How is the curved handrail made?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the handrail laminated or steam-bent?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I have LED lighting in the handrail?",
+          "a_authored": false,
+          "dest": "component:handrail",
+          "reason": "component-keyword match: /led lighting.*handrail/i"
+        },
+        {
+          "q": "Can the handrail be metal instead of timber?",
+          "a_authored": false,
+          "dest": "component:handrail",
+          "reason": "component-keyword match: /can the handrail be (thinner|square|stainless|timber|metal|leather)/i"
+        },
+        {
+          "q": "Can the handrail profile be changed?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I replace the metal rails with glass?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I use cable balustrades instead?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I use vertical balusters instead of horizontal rods?",
+          "a_authored": false,
+          "dest": "component:baluster",
+          "reason": "component-keyword match: /vertical (bars|balusters)/i"
+        },
+        {
+          "q": "Can I remove the outer guard?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are the horizontal rails safe for children?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can children climb through the balustrade?",
+          "a_authored": false,
+          "dest": "component:baluster",
+          "reason": "component-keyword match: /children climb.*balustrade/i"
+        },
+        {
+          "q": "Are the treads solid oak?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How thick are the treads?",
+          "a_authored": false,
+          "dest": "component:tread",
+          "reason": "component-keyword match: /how thick (are|is) (the )?tread/i"
+        },
+        {
+          "q": "Can the treads be thicker?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the treads float more?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I have closed risers?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I fit carpet on the treads afterwards?",
+          "a_authored": false,
+          "dest": "component:tread",
+          "reason": "component-keyword match: /can i (fit|add) carpet/i"
+        },
+        {
+          "q": "Can damaged treads be replaced individually?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are the LEDs built in?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the lighting change colour or use RGB?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the lighting be dimmed?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are the LEDs replaceable if one fails?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How are the LED cables hidden?",
+          "a_authored": false,
+          "dest": "component:lighting-led",
+          "reason": "component-keyword match: /how are the (led )?cables hidden/i"
+        },
+        {
+          "q": "Can the lights be motion-activated?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What minimum floor opening is required?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How much floor space does this staircase need?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What ceiling height is suitable?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How many treads will I need?",
+          "a_authored": false,
+          "dest": "component:tread",
+          "reason": "component-keyword match: /how many treads/i"
+        },
+        {
+          "q": "Can it fit in a loft conversion?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it fit into an existing ceiling opening?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What headroom is required?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the ceiling opening have to be circular, or can it be square?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can this be installed after the house is built?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the floor need strengthening?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How is the centre column fixed?",
+          "a_authored": false,
+          "dest": "family:spiral",
+          "reason": "family-keyword match: /how is the (centre|center) column/i"
+        },
+        {
+          "q": "How long does installation take?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How many installers are needed?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /how (many|long) installers/i"
+        },
+        {
+          "q": "Does it arrive in one piece or sections?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How is it transported? Will it fit through my front door?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will walls need to be removed to install it?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be dismantled and moved later?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is this safe for children?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can elderly people use it?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are spiral staircases difficult to climb?",
+          "a_authored": false,
+          "dest": "family:spiral",
+          "reason": "family-keyword match: /spiral staircase/i"
+        },
+        {
+          "q": "Does the spiral make people dizzy?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can anti-slip strips be fitted?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does this meet UK building regulations?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does this comply with California / US regulations?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What handrail height is required?",
+          "a_authored": false,
+          "dest": "component:handrail",
+          "reason": "component-keyword match: /handrail height/i"
+        },
+        {
+          "q": "What balustrade spacing is allowed?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can this be made wider or narrower?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I reduce the diameter?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it turn the opposite way?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I remove the centre column?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the outer string be timber instead of steel?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I add storage underneath?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I add a landing?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can Nex generate similar designs with different materials or layouts?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Approximately how much does this staircase cost?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /how much (does|do|would)/i"
+        },
+        {
+          "q": "Which part costs the most?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is curved steel expensive to manufacture?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is oak more expensive than ash?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Would walnut increase the price significantly?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Would glass balustrade increase the price?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How long is the lead time?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How is this manufactured?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is this made in one piece or sections?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How is the curved steel produced?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it CNC manufactured?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How long does manufacture take?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can this be shipped internationally?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "already exists in universal-qa · duplicate · will be merged"
+        },
+        {
+          "q": "How do I clean and maintain the timber?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How often should the timber be refinished or re-oiled?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can scratched treads be repaired?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How do I maintain the powder coating?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will the timber shrink or move over time?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /timber move|timber shrink|does timber move|will timber crack/i"
+        },
+        {
+          "q": "Can the steel rust?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What happens if an LED strip fails?",
+          "a_authored": false,
+          "dest": "component:lighting-led",
+          "reason": "component-keyword match: /led (lighting|strips?|tread)/i"
+        },
+        {
+          "q": "Is this a real installation or a concept image?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can this exact staircase be built?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What would need to change for my house?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can Nex find someone who builds this?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "already exists in universal-qa · duplicate · will be merged"
+        },
+        {
+          "q": "Can Nex recommend a manufacturer?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "already exists in universal-qa · duplicate · will be merged"
+        },
+        {
+          "q": "Can Nex prepare an enquiry brief for me?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Can I compare manufacturers?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        }
+      ]
+    },
+    {
+      "design_id": "NEX-DESIGN-000020",
+      "families": [
+        "helical",
+        "open-riser",
+        "glass-balustrade",
+        "feature-lighting"
+      ],
+      "components": [
+        "stringer",
+        "tread",
+        "handrail",
+        "balustrade-glass",
+        "fixings-glass",
+        "lighting-led",
+        "landing"
+      ],
+      "moves": [
+        {
+          "q": "What style of staircase is this?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What is this type of staircase called?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is this a real staircase or an AI concept?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "already exists in universal-qa · duplicate · will be merged"
+        },
+        {
+          "q": "Can this exact staircase be built?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be customised?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I make it larger?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I make it smaller?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I change the shape?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it turn the opposite direction?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I remove one of the curves?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I make it more modern?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I make it more traditional?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I add lighting?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I remove the lighting?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it have open risers?",
+          "a_authored": false,
+          "dest": "family:open-riser",
+          "reason": "family-keyword match: /open[- ]?riser/i"
+        },
+        {
+          "q": "Can it have closed risers?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it have to look exactly like this?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who can build this staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is this handmade?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it machine made?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it manufactured in sections?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be assembled on site?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be delivered fully built?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be built inside an existing house?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be built while I am living in the house?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How long does it take to manufacture?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How long does installation take?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is every staircase made to order?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can this be prefabricated?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be flat packed?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What parts are manufactured in the factory?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What work is completed on site?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What holds this staircase up?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it self-supporting?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it need a central support?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it need steel inside?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the steel hidden?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How strong is it?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How much weight can it carry?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can several people stand on it?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it move when you walk?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will it wobble?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will the handrails move?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it squeak?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How is it fixed to the floor?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How is it fixed upstairs?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it need extra structural supports?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the house need strengthening?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be installed in my home?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "My doors are too narrow. Can it still be installed?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it come in pieces?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it fit through a window?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be craned in?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the ceiling opening need enlarging?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will installers cut the floor opening?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will builders need to modify my house?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it replace my existing staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be installed after decorating?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How disruptive is installation?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How many installers are needed?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /how (many|long) installers/i"
+        },
+        {
+          "q": "Do I need a concrete floor?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it sit on timber flooring?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is a timber joist floor suitable?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it need special foundations?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it sit on suspended timber floors?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be fixed to steel beams?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the upstairs floor need reinforcing?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What materials are used?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I have oak instead?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I use walnut?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I use ash?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I use glass treads?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I use stone treads?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I change the steel colour?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /can i (change|choose) (the )?(timber|paint|colour|finish|steel)/i"
+        },
+        {
+          "q": "Can the steel be powder coated?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be stainless steel?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the sides be covered with timber?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can they be wrapped in stone?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can they be clad in brass?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can they be upholstered?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can they be painted?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the glass safe?",
+          "a_authored": false,
+          "dest": "component:balustrade-glass",
+          "reason": "component-keyword match: /^is the glass (safe|toughened|laminated|shatterproof)/i"
+        },
+        {
+          "q": "Is it toughened?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it laminated?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How thick is the glass?",
+          "a_authored": false,
+          "dest": "component:balustrade-glass",
+          "reason": "component-keyword match: /how thick is the glass/i"
+        },
+        {
+          "q": "Can the glass be tinted?",
+          "a_authored": false,
+          "dest": "component:balustrade-glass",
+          "reason": "component-keyword match: /can (the )?glass be (tinted|smoked|frosted|curved|replaced)/i"
+        },
+        {
+          "q": "Can it be frosted?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I have bronze glass?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I have smoked glass?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the glass scratch?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can broken glass be replaced?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can glass shatter?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What happens if glass breaks?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is low-iron glass worth the extra cost?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I change the handrail?",
+          "a_authored": false,
+          "dest": "component:handrail",
+          "reason": "component-keyword match: /can i (change|remove|add) (a |the )?handrail/i"
+        },
+        {
+          "q": "Can it be timber?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be metal?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be leather wrapped?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Do I need a handrail?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the handrail have lighting?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will the handrail feel solid?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How is the handrail fixed?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Which handrail feels most comfortable?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can handrails wrap around corners seamlessly?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I change the steps?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I replace the treads later?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I use thicker treads?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I add anti-slip inserts?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I change the timber species?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "already exists in universal-qa · duplicate · will be merged"
+        },
+        {
+          "q": "Can I stain them darker?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I refinish them later?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can treads overhang or float?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the underside be finished?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can tread lighting be recessed?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I add risers?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I remove the risers?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can risers be glass?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can they be timber?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can risers have lighting?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Which is safer, open or closed risers?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can LED lighting be built in?",
+          "a_authored": false,
+          "dest": "component:lighting-led",
+          "reason": "component-keyword match: /led (lighting|strips?|tread)/i"
+        },
+        {
+          "q": "Can lighting be changed later?",
+          "a_authored": false,
+          "dest": "component:lighting-led",
+          "reason": "component-keyword match: /can lighting be (dimmed|added|changed)/i"
+        },
+        {
+          "q": "Is the wiring hidden?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What happens if the LEDs fail?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the lights be dimmed?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can lighting be motion activated?",
+          "a_authored": false,
+          "dest": "component:lighting-led",
+          "reason": "component-keyword match: /motion (sensor|activated)/i"
+        },
+        {
+          "q": "Can I choose different colours?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can smart home systems control the lights?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the staircase be made without lighting?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is this staircase safe?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it safe for children?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it safe for elderly people?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it safe for pets?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it slippery?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can anti-slip strips be fitted?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it comply with regulations?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can balusters be added?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is glass safer than balusters?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it noisy? Does it echo?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are open risers intimidating to some users?",
+          "a_authored": false,
+          "dest": "family:open-riser",
+          "reason": "family-keyword match: /open[- ]?riser/i"
+        },
+        {
+          "q": "Is it difficult to clean?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How do I clean the glass?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the steel rust?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does timber require oiling?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can damaged treads be replaced?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can scratches be repaired?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How long does it last?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What warranty is offered?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does this increase house value?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it worth the investment?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Do buyers like feature staircases?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it make a home easier to sell?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it considered luxury?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will this comply with building regulations?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it comply where I live?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will I need approval?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will an engineer be required?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the manufacturer advise on regulations?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How much would something like this cost?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /how much (does|do|would)/i"
+        },
+        {
+          "q": "Can you give me a rough estimate?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "already exists in universal-qa · duplicate · will be merged"
+        },
+        {
+          "q": "Why can't you tell me the price?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "already exists in universal-qa · duplicate · will be merged"
+        },
+        {
+          "q": "What affects the price?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is glass more expensive?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is curved steel expensive?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I reduce the cost?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is installation included?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can you work within my budget?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is my budget realistic?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /budget realistic/i"
+        },
+        {
+          "q": "What budget should I allow?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I build it in stages?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Why is one staircase more expensive than another?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Why are curved staircases more expensive?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Why does glass increase the price?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Why do bespoke staircases cost more?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How can I reduce the cost?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What changes would make it cheaper?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I install it myself to save money?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I buy the staircase without installation?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How many quotations should I get?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can you help me compare quotations?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What should be included in a quotation?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Should engineering be included?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Should installation be included?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Should delivery be included?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Should VAT or sales tax be included?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Do manufacturers require a deposit?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "When do I normally pay?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is staged payment common?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I finance a staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are there hidden costs?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are structural alterations extra?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is crane hire included?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are surveys included?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are engineer's fees included?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does a faster lead time cost more?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will ordering early save money?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Do commercial staircases cost more?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Why won't you give me a price?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are you hiding the cost?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "already exists in universal-qa · duplicate · will be merged"
+        },
+        {
+          "q": "Can you at least give me a ballpark figure?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "already exists in universal-qa · duplicate · will be merged"
+        },
+        {
+          "q": "Why do you ask so many questions before discussing price?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "already exists in universal-qa · duplicate · will be merged"
+        },
+        {
+          "q": "Who makes staircases like this?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is there a manufacturer near me?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /is there a manufacturer near/i"
+        },
+        {
+          "q": "Can Nex recommend someone?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Can Nex introduce me to a supplier?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Can I get multiple quotations?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I visit a showroom?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /can i visit (a|the) (showroom|factory)/i"
+        },
+        {
+          "q": "Can I see one before buying?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /can i see one before/i"
+        },
+        {
+          "q": "Can I visit a factory?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /can i visit (a|the) (showroom|factory)/i"
+        },
+        {
+          "q": "Can I speak to a manufacturer directly?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /can i speak.*manufacturer/i"
+        },
+        {
+          "q": "How do I choose the right manufacturer?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /how do i choose (the right )?manufacturer/i"
+        },
+        {
+          "q": "Can I see previous projects?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I speak to previous customers?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Do they manufacture in-house or outsource?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are they insured?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who is responsible if something goes wrong?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is this an AI image?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /is this an? (ai|artificial)/i"
+        },
+        {
+          "q": "Has this staircase actually been built?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is this based on a real project?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can someone manufacture this exact design?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What would need changing before it could be built?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can you show me similar staircases?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can you show me a cheaper version?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can you show me one in oak?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can you show me one with glass?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can you show me a straight version?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can you show me one for a smaller house?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How is it packaged?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is insurance included?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What if something arrives damaged?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be shipped internationally?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /can (this|it) be shipped international/i"
+        },
+        {
+          "q": "Who pays shipping?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Do I need a site survey?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who carries out the survey?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How accurate do measurements need to be?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I measure it myself?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What happens if measurements are wrong?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can plans be used instead?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Do I need architectural drawings?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Do I need structural drawings?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "already exists in universal-qa · duplicate · will be merged"
+        },
+        {
+          "q": "What photographs should I provide?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the survey free?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can my old staircase be removed?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who removes it?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How long does removal take?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it messy?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will walls or floors be damaged?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I use my old staircase until installation day?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Do I need temporary access upstairs?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will my walls support this staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it need load-bearing walls?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can hidden steel be added?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the engineer design the supports?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What if my floor is not level?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will the staircase settle over time?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does my ceiling opening need changing?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who cuts the opening?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will dust be created?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the opening be enlarged or made smaller?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What shape should the opening be?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can lighting be built into the opening?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is solid timber better?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is engineered timber better?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will oak change colour?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does walnut fade?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can timber crack?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will knots appear?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is every tread unique?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I choose the grain?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I match my flooring, doors or kitchen?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What humidity is recommended?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What thickness is the steel?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it welded or bolted?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can welds be hidden?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does powder coating scratch?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can damaged powder coating be repaired?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will the steel rust near the sea?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is marine-grade stainless available?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it comfortable barefoot?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does timber feel warm?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is steel cold underfoot?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will high heels damage timber?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can dogs and pets climb it comfortably?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it suitable for everyday family use?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is timber treated for fire?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does steel require fire protection?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does glass resist fire?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can acoustic insulation be added?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is this suitable in earthquake zones?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be installed outdoors?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is UV protection needed?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it cope with coastal environments?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can this be installed in hotels?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can offices use this design?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are commercial regulations different?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can heavier-duty versions be built?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can manufacturers quote for large developments?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can my architect modify the design?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can CAD or BIM files be supplied?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will I receive drawings before production?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /will i receive drawings/i"
+        },
+        {
+          "q": "When is the design final?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is there a warranty?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What does the warranty cover?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What voids the warranty?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the timber FSC certified?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the steel recyclable?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What is the carbon footprint?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can Nex estimate the likely cost?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Can Nex compare staircase styles?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Can Nex explain the pros and cons?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Can Nex tell me what questions I should ask a manufacturer?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Can Nex prepare my enquiry?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Can Nex recommend a staircase style for my home?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Can Nex explain the installation process?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Can Nex find similar staircases?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Can Nex save my favourite designs?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Can Nex compare two staircase images?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Can Nex generate a specification from an image?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Can Nex prepare questions for my architect?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Can Nex connect me with a manufacturer?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Can Nex remember my project?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        },
+        {
+          "q": "Can Nex help me through the whole staircase journey?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /^can nex/i"
+        }
+      ]
+    },
+    {
+      "design_id": "NEX-DESIGN-000025",
+      "families": [
+        "mono-stringer-curved",
+        "open-riser",
+        "steel-balustrade"
+      ],
+      "components": [
+        "stringer",
+        "tread",
+        "handrail",
+        "baluster"
+      ],
+      "moves": [
+        {
+          "q": "Can this staircase fit my home?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be made smaller?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be made wider?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be mirrored?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it turn the opposite direction?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it have a landing?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it continue to another floor?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I add glass later?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I remove the balusters?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I change the timber?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /can i (change|choose) (the )?(timber|paint|colour|finish|steel)/i"
+        },
+        {
+          "q": "Can the curve be tighter or more open?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it become an oval shape instead of circular?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I reduce the number of steps?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I increase the width?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the first step be made larger?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I have a feature starting step?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the landing be changed?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the staircase continue to a third floor?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the staircase become the centrepiece of my home?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will this suit a modern home?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will this suit a traditional home?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will this staircase make my entrance look bigger?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I combine two different staircase designs?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I copy this staircase exactly?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How is the steel stringer made?",
+          "a_authored": false,
+          "dest": "component:stringer",
+          "reason": "component-keyword match: /steel stringer/i"
+        },
+        {
+          "q": "How are the treads fixed?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be assembled on site?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it arrive fully welded?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will it fit through my front door?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be installed before the roof is finished?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What if access is restricted?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be manufactured in sections?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is this staircase fixed to the wall?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is this staircase free standing?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What actually holds this staircase up?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it made from metal or wood?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the steel hidden?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What supports the staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it need a concrete floor?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be installed onto timber joists?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will extra steelwork be required?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How much does the staircase weigh?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /how much (does|do|would)/i"
+        },
+        {
+          "q": "Is the staircase engineered?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it carry heavy loads?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it wobble?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will it vibrate?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it squeak?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the staircase rigid?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will the treads bounce?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How much weight can one tread carry?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can several people stand on it together?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it suitable for commercial use?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it safe for children?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are open risers allowed?",
+          "a_authored": false,
+          "dest": "family:open-riser",
+          "reason": "family-keyword match: /open[- ]?riser/i"
+        },
+        {
+          "q": "Will the staircase move?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will the handrail flex?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the steel slippery?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can anti-slip inserts be fitted?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the staircase meet local building regulations?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it safe for pets?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can dogs use open risers?",
+          "a_authored": false,
+          "dest": "family:open-riser",
+          "reason": "family-keyword match: /open[- ]?riser/i"
+        },
+        {
+          "q": "Can elderly people use this safely?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can extra handrails be fitted?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can child gates be fitted?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can glass make it safer?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How long does installation take?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does installation create much mess?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the ceiling opening need enlarging?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the installer create the floor opening?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who measures the staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who checks the structure?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who signs off the installation?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How many installers are required?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /how (many|long) installers/i"
+        },
+        {
+          "q": "Is a crane required?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be carried upstairs?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it fit through standard doors?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the staircase arrive painted?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will welding happen inside my house?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is everything bolted together?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How much noise will installation create?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I stay in the house during installation?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the steel require maintenance?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the timber be refinished?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can damaged treads be replaced?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can lighting be upgraded?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the staircase be repainted?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How do I clean the steel?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How do I clean the timber?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the staircase need servicing?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Should bolts be checked?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How often should finishes be maintained?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How thick is the steel?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What grade of steel is normally used?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the steel fabricated from plate or box section?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are the welds visible?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are the welds polished?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How is the curved steel manufactured?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can aluminium be used instead?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can stainless steel be used?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the steel be galvanised?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is powder coating better than paint?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the steel rust?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How long should the steel last?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is solid timber better than engineered timber?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will oak crack?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will walnut fade?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the timber colour match my flooring?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can reclaimed timber be used?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are thicker treads stronger?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the glass toughened?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it laminated?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How thick is the glass?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the glass be tinted?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be smoked or bronze?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the glass be curved?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can glass be replaced if broken?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the handrail comfortable?",
+          "a_authored": false,
+          "dest": "component:handrail",
+          "reason": "component-keyword match: /is the handrail comfortable/i"
+        },
+        {
+          "q": "Can I remove the handrail?",
+          "a_authored": false,
+          "dest": "component:handrail",
+          "reason": "component-keyword match: /can i (change|remove|add) (a |the )?handrail/i"
+        },
+        {
+          "q": "Is one handrail enough?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I have two handrails?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the handrail be thinner?",
+          "a_authored": false,
+          "dest": "component:handrail",
+          "reason": "component-keyword match: /can the handrail be (thinner|square|stainless|timber|metal|leather)/i"
+        },
+        {
+          "q": "Can the handrail be square?",
+          "a_authored": false,
+          "dest": "component:handrail",
+          "reason": "component-keyword match: /can the handrail be (thinner|square|stainless|timber|metal|leather)/i"
+        },
+        {
+          "q": "Can the handrail be stainless steel?",
+          "a_authored": false,
+          "dest": "component:handrail",
+          "reason": "component-keyword match: /can the handrail be (thinner|square|stainless|timber|metal|leather)/i"
+        },
+        {
+          "q": "Can LED lighting be built into the handrail?",
+          "a_authored": false,
+          "dest": "component:handrail",
+          "reason": "component-keyword match: /led lighting.*handrail/i"
+        },
+        {
+          "q": "Are vertical bars safer?",
+          "a_authored": false,
+          "dest": "component:baluster",
+          "reason": "component-keyword match: /vertical (bars|balusters)/i"
+        },
+        {
+          "q": "Can I use horizontal rails?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I replace the bars with glass?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can children climb this balustrade?",
+          "a_authored": false,
+          "dest": "component:baluster",
+          "reason": "component-keyword match: /children climb.*balustrade/i"
+        },
+        {
+          "q": "Can the balustrade be removed later?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can decorative metal panels be fitted?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can timber balusters be fitted?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the builder need to prepare anything?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the opening need trimming?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the staircase be installed before plastering?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Should it be installed after flooring?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who installs it first — electrician, plasterer, decorator or flooring?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How heavy is the staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can my floor support it?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it require extra foundations?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the base need strengthening?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will it damage suspended timber floors?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it sit directly on floor tiles?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the base need concrete?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it sit on engineered timber flooring?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will this staircase fit in my house?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How much floor space will it need?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How much headroom is required?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it fit into an existing stairwell?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it replace my current staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be installed without changing the layout?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will I lose much living space?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I move walls to fit it?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the staircase become smaller without looking cramped?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be designed around my windows?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will it block natural light?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be installed in a loft conversion?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it work in a narrow hallway?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it fit into a townhouse?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it fit inside an apartment?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does my architect need to redesign the opening?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can you work from my architect's plans?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can you work from hand sketches?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can you work from BIM models?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Do I need structural calculations?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who provides the engineering drawings?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the builder build around the staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Should the staircase be measured before plastering?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Should it be measured after flooring?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who coordinates the installation?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How long does manufacturing normally take?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "already exists in universal-qa · duplicate · will be merged"
+        },
+        {
+          "q": "Is every staircase made from scratch?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is anything kept in stock?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can you make an exact copy?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can you improve this design?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I combine ideas from several staircases?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I send inspiration photos?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I approve drawings before manufacture?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will I receive 3D drawings?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will I receive shop drawings?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Has this staircase been engineered?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will it meet local building regulations?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it structurally certified?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can calculations be supplied?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can my engineer review the design?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can changes be made after engineering?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What safety factors are used?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the staircase be earthquake engineered?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be designed for hurricane zones?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be designed for coastal environments?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I change the colour later?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /can i (change|choose) (the )?(timber|paint|colour|finish|steel)/i"
+        },
+        {
+          "q": "Can powder coating be repaired?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can scratches be touched up?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will sunlight change the timber colour?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does oak darken with age?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I choose any paint colour?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I match my kitchen, flooring or doors?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will it squeak?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does steel creak?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are open risers noisy?",
+          "a_authored": false,
+          "dest": "family:open-riser",
+          "reason": "family-keyword match: /open[- ]?riser/i"
+        },
+        {
+          "q": "Can rubber isolation pads be fitted?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will footsteps echo?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the staircase be made quieter?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will children running upstairs make lots of noise?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it suitable for young children?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can dogs use open risers safely?",
+          "a_authored": false,
+          "dest": "family:open-riser",
+          "reason": "family-keyword match: /open[- ]?riser/i"
+        },
+        {
+          "q": "Can elderly people use this safely?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can anti-slip strips be added?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I change the balustrade later?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I upgrade to glass later?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I replace timber with stone?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I replace the handrail?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can lighting be added later?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I remove the lighting?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I repaint the steel?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I relocate the staircase if I renovate?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is there a structural warranty?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the paint guaranteed?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the timber guaranteed?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What happens if something moves?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What happens if timber shrinks?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /timber move|timber shrink|does timber move|will timber crack/i"
+        },
+        {
+          "q": "Who do I contact if I have a problem?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How is the staircase delivered?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /how (is|does).*delivered/i"
+        },
+        {
+          "q": "Does it arrive fully assembled?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it wrapped?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it insured during transport?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be delivered internationally?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be transported to an island?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What if access is difficult?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Do I need scaffolding?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /do i need scaffolding/i"
+        },
+        {
+          "q": "Will roads need closing?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does a crane need planning permission?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can installation happen over a weekend?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will electricity be required?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will flooring need protecting?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who manages the project?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who orders materials?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who arranges installation?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who checks quality?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who is responsible if dimensions are wrong?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will this increase my property's value?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /increase (my )?(property|home).*value/i"
+        },
+        {
+          "q": "Does a feature staircase make a house easier to sell?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /make a house easier to sell/i"
+        },
+        {
+          "q": "Is it worth spending more on the staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Which timber holds its value best?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is black steel going out of fashion?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the timber sustainably sourced?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is FSC timber available?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can recycled steel be used?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is powder coating environmentally friendly?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can reclaimed timber be incorporated?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What is the expected lifespan?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the staircase be recycled?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will my home insurance change?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /home insurance/i"
+        },
+        {
+          "q": "Do I need to tell my insurer?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /tell my insurer/i"
+        },
+        {
+          "q": "Is the staircase covered during installation?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is public liability included?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I see one before ordering?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /can i see one before/i"
+        },
+        {
+          "q": "Do you have completed projects nearby?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I visit a previous installation?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I visit a showroom?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /can i visit (a|the) (showroom|factory)/i"
+        },
+        {
+          "q": "Can I tour the factory?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I meet the people making it?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Do you have customer testimonials?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I see different timber samples?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who specialises in this type of staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Which manufacturers build curved staircases?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Which companies work with architects?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Which suppliers work nationwide?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can you recommend someone near me?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are there manufacturers in my country?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are there installers in my city?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who can survey my property?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who can provide a quotation?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can you introduce me to multiple companies?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I compare different manufacturers?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is this an expensive staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Why is this staircase expensive?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Why does a curved staircase cost more?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is there a cheaper version?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I make it more affordable?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I build it in stages?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What affects the price?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How long before manufacture starts?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What is the manufacturing lead time?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be exported overseas?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be shipped in containers?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is there a warranty?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What maintenance is recommended?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How often should timber be treated?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can scratches be repaired?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the finish be changed later?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What if I move house?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        }
+      ]
+    },
+    {
+      "design_id": "NEX-DESIGN-000026",
+      "families": [
+        "floating-cantilever",
+        "straight-flight",
+        "open-riser",
+        "glass-balustrade",
+        "feature-lighting"
+      ],
+      "components": [
+        "stringer",
+        "tread",
+        "balustrade-glass",
+        "fixings-glass",
+        "lighting-led",
+        "landing"
+      ],
+      "moves": [
+        {
+          "q": "Is the glass shatterproof?",
+          "a_authored": false,
+          "dest": "component:balustrade-glass",
+          "reason": "component-keyword match: /^is the glass (safe|toughened|laminated|shatterproof)/i"
+        },
+        {
+          "q": "Is the glass safe?",
+          "a_authored": false,
+          "dest": "component:balustrade-glass",
+          "reason": "component-keyword match: /^is the glass (safe|toughened|laminated|shatterproof)/i"
+        },
+        {
+          "q": "Will the glass wobble?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the glass break?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the glass scratch?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the glass be replaced?",
+          "a_authored": false,
+          "dest": "component:balustrade-glass",
+          "reason": "component-keyword match: /can (the )?glass be (tinted|smoked|frosted|curved|replaced)/i"
+        },
+        {
+          "q": "Is the glass clear or low-iron?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I have tinted glass?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the glass have no visible bolts?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will fingerprints show?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the glass need polishing?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can children damage the glass?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How do I clean the glass?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are the steps really floating?",
+          "a_authored": false,
+          "dest": "family:floating-cantilever",
+          "reason": "family-keyword match: /really floating/i"
+        },
+        {
+          "q": "Are the treads solid wood?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I change the timber?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /can i (change|choose) (the )?(timber|paint|colour|finish|steel)/i"
+        },
+        {
+          "q": "Can I make the treads thicker?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How thick are the treads?",
+          "a_authored": false,
+          "dest": "component:tread",
+          "reason": "component-keyword match: /how thick (are|is) (the )?tread/i"
+        },
+        {
+          "q": "Can one step be replaced?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does every tread support weight on its own?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I have live-edge timber?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the lighting built into the staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does lighting make a big difference?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can lighting be added later?",
+          "a_authored": false,
+          "dest": "component:lighting-led",
+          "reason": "component-keyword match: /can lighting be (dimmed|added|changed)/i"
+        },
+        {
+          "q": "Can I have LED strips under each tread?",
+          "a_authored": false,
+          "dest": "component:lighting-led",
+          "reason": "component-keyword match: /led (lighting|strips?|tread)/i"
+        },
+        {
+          "q": "Can lighting be motion-activated?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can lighting be controlled by smart home systems?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What holds this staircase up?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it fixed to the wall?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does it need a structural wall?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I suspend the staircase from the ceiling?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be built without a wall?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the staircase carry furniture upstairs?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What timber is best?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will the timber shrink?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /timber move|timber shrink|does timber move|will timber crack/i"
+        },
+        {
+          "q": "Will the timber crack?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I have thicker treads?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does timber require maintenance?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can damaged treads be refinished?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is the steel painted?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the steel rust?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I choose stainless steel instead?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can the steel be hidden completely?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will the steel require maintenance?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does this staircase need engineering drawings?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will I receive drawings before it's built?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /will i receive drawings/i"
+        },
+        {
+          "q": "Can I approve the design first?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /can i approve the design/i"
+        },
+        {
+          "q": "Can changes be made after drawings are approved?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does my floor need strengthening?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Does the upstairs floor need strengthening?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is an open-riser staircase legal?",
+          "a_authored": false,
+          "dest": "family:open-riser",
+          "reason": "family-keyword match: /open[- ]?riser/i"
+        },
+        {
+          "q": "Can someone slip through the open risers?",
+          "a_authored": false,
+          "dest": "family:open-riser",
+          "reason": "family-keyword match: /open[- ]?riser/i"
+        },
+        {
+          "q": "Is this staircase suitable for children?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can pets use it?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can anti-slip finishes be added?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be installed in an existing house?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will my walls be damaged?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will builders need to remove windows?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be installed before the house is finished?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How long does installation take?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will there be a lot of dust?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will the installer measure my house?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "What if my measurements are wrong?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will the staircase arrive fully assembled?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be dismantled in the future?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can this staircase be built?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can it be customised?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is every staircase made to order?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Are there standard sizes?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is it handmade?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Where is it manufactured?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will this style go out of fashion?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I match my interior?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will this staircase suit a modern home?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will this staircase suit a traditional home?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will this staircase add value to my home?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is this considered a luxury staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will it become the focal point of my house?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can this replace my existing staircase?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Will I lose floor space?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I remove the glass later?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I add a handrail later?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I change from open risers to closed risers?",
+          "a_authored": false,
+          "dest": "family:open-riser",
+          "reason": "family-keyword match: /open[- ]?riser/i"
+        },
+        {
+          "q": "Can the staircase be painted later?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Who builds staircases like this?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /who builds staircases/i"
+        },
+        {
+          "q": "Is there a manufacturer near me?",
+          "a_authored": false,
+          "dest": "universal",
+          "reason": "universal-keyword match: /is there a manufacturer near/i"
+        },
+        {
+          "q": "Can you introduce me to a manufacturer?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can I send this image to a manufacturer?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Is this an actual staircase or an AI image?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can this exact staircase actually be built?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "Can someone really make this?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        },
+        {
+          "q": "How do I know if this design is realistic?",
+          "a_authored": false,
+          "dest": "image-keep",
+          "reason": "no higher-layer match · genuinely image-specific"
+        }
+      ]
+    }
+  ],
+  "rollup": {
+    "total": 818,
+    "universal": 66,
+    "component": {
+      "handrail": 10,
+      "baluster": 4,
+      "tread": 4,
+      "lighting-led": 7,
+      "balustrade-glass": 6,
+      "stringer": 1
+    },
+    "family": {
+      "spiral": 3,
+      "open-riser": 9,
+      "floating-cantilever": 1
+    },
+    "image_keep": 707
+  }
+}

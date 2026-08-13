@@ -31,6 +31,10 @@ import { brainStore, nowIso } from "../storage";
 import { finalizeWorkerJob, failWorkerJob } from "./_finalize";
 // W-OBS-1 Path A Layer 1 · CID inherit from job.input_payload.
 import { enterJobCorrelationScope } from "@/lib/nex/observability/correlation";
+// F4 structured logger · Wave 3 H2.b · adopted 2026-08-10.
+import { logger } from "@/lib/nex/observability/logger";
+
+const log = logger("worker.knowledge-extractor");
 import { complete, completeJson } from "../llm";
 import type {
   Audience,
@@ -51,6 +55,13 @@ import { updateJob as updateKnowledgeJob } from "@/lib/nex/jobs/fs-store";
 //     WORLD-CLASS-OPS-W-C-STORAGE-CONTRACT-EXTENSION-DESIGN.md §3.5
 //     WORLD-CLASS-OPS-W-C-COMPANION-SUPERVISOR-DESIGN-V2.md §4.3
 import { applyTerminalKnowledgeJobTransition } from "@/lib/nex/jobs/terminal-transition";
+// Step 2 · prompt-size telemetry · 2026-08-10. Uses the existing
+// enterprise event bus (see src/lib/nex/events/fs-store.ts). Every
+// LLM call attempt emits `extractor_prompt_assembled` BEFORE the call
+// with the exact per-block character counts and estimated tokens ·
+// so failures like the Groq 413 are diagnosable via database query
+// rather than code inspection.
+import { emitEventSafe } from "@/lib/nex/events/fs-store";
 
 // ── Structured output shape expected from the LLM ────────────────────
 
@@ -95,6 +106,16 @@ type ExtractorOutput = {
 
 // ── The system prompt ────────────────────────────────────────────────
 
+// Step 5 · Avery SYSTEM_PROMPT reduction · 2026-08-10 (Philip GO).
+// Applied the audited diff · no governance/schema/Truth-Law rule removed.
+// Removals:
+//   · S5 rule 1  (role duplicated with S1)
+//   · S5 rule 9  (duplicated with S2 "good outcome" line)
+//   · S3 tail paragraph "Weight past decisions heavily…" (Rowan renderLearning header carries this)
+//   · S5 rule 12 (duplicated with removed S3 tail + Rowan header)
+//   · S4 brand-use policy paragraph → replaced by one-line pointer to Voice Guide (Blake voice.brand_use_policy is authoritative)
+//   · S5 rule 10 shortened to reference the Voice Guide (Blake voice.audience_voice_note is authoritative)
+// Remaining rules renumbered 1-9. Rule 11 (nex_concepts vs industry_concepts array mechanic) retained per audit.
 const SYSTEM_PROMPT = `You are the NEX Knowledge Extractor — a specialist worker in the NEX AI-managed knowledge system for the UK trades industry (staircases, kitchens, doors, flooring). Your ONE job is to extract structured, governed knowledge from raw source material and emit valid JSON that conforms exactly to the schema below.
 
 CRITICAL — NEX ALREADY KNOWS THINGS (Knowledge Context):
@@ -113,8 +134,6 @@ You will be given a LEARNING BUNDLE listing recent decisions Philip made on prio
   · corrections → specific factual fixes to remember
   · voice_drift → tone/audience mismatches to avoid repeating
 
-Weight past decisions heavily. If Philip corrected a similar record last week, your new record MUST reflect that correction. The learning bundle is how NEX compounds — every past decision informs the next author.
-
 CRITICAL — NEX HAS A VOICE (Voice & Brand Guide):
 You will be given a VOICE GUIDE listing:
   · Applicable NEX brand terms (NexString™, Nex Newel™ Split Base Design, Connected Staircase™, NEX Premium™)
@@ -122,25 +141,18 @@ You will be given a VOICE GUIDE listing:
   · Content class (customer-facing / technical / regulatory / mixed)
   · Voice tone principles
 
-The BRAND-USE POLICY (Philip 2026-08-06): Brand language enhances the explanation — it never overrides factual accuracy.
-  · CUSTOMER-FACING content → use brand form first (with the ™ symbol), plain form subsequently, bridge to technical term on first mention.
-  · TECHNICAL or REGULATORY content → use the industry term throughout. Brand terms are optional and only in section framings, never in normative rules or load figures.
-  · MIXED content → apply per section: customer intros can use brand terms, technical sections stay precise.
-  · Never force brand terminology into content where it doesn't naturally fit.
+See the BRAND-USE POLICY delivered in the VOICE GUIDE (user message below).
 
 RULES:
-1. You are NOT answering the user. You are authoring knowledge records.
-2. Never fabricate. If a fact is not clearly established, mark it "design_opinion" or "experimental_concept" with low confidence.
-3. Every claim gets: classification, confidence_band (high/medium/low), confidence_score (0.0-1.0), source_type, rationale.
-4. Every edge must be typed. Valid edge types include: composes_material, composes_with, composes_from, regulated_by, used_for, part_of, references, extends, becomes, alternative_to, alternative_for, compared_with, replaces, sustainability_alert_from.
-5. Industry concepts stay separate from NEX concepts (never mix in the same claim).
-6. Never use "At NEX, we…" phrasing (HARD LAW).
-7. Prefer splitting into multiple focused records over one giant record.
-8. Sustainability alerts (ash dieback, CITES status, etc.) must be surfaced when relevant.
-9. When CONTEXT records exist, aim for MORE typed edges than new claims. That is the healthy authoring ratio.
-10. Follow the voice tone principles for the given primary audience. Match the audience — homeowner content is warm and conversational, engineer content is expert-defensible.
-11. Add brand terms to the record's nex_concepts array WHERE they are applicable per the guide. Add industry equivalents to industry_concepts. Never mix these.
-12. When the LEARNING BUNDLE contains relevant edits or corrections, your output MUST reflect what Philip changed. Do not repeat a pattern Philip already rejected. Do not re-word a phrase Philip already rewrote.
+1. Never fabricate. If a fact is not clearly established, mark it "design_opinion" or "experimental_concept" with low confidence.
+2. Every claim gets: classification, confidence_band (high/medium/low), confidence_score (0.0-1.0), source_type, rationale.
+3. Every edge must be typed. Valid edge types include: composes_material, composes_with, composes_from, regulated_by, used_for, part_of, references, extends, becomes, alternative_to, alternative_for, compared_with, replaces, sustainability_alert_from.
+4. Industry concepts stay separate from NEX concepts (never mix in the same claim).
+5. Never use "At NEX, we…" phrasing (HARD LAW).
+6. Prefer splitting into multiple focused records over one giant record.
+7. Sustainability alerts (ash dieback, CITES status, etc.) must be surfaced when relevant.
+8. Follow the voice tone principles delivered in the VOICE GUIDE for the given primary audience.
+9. Add brand terms to the record's nex_concepts array WHERE they are applicable per the guide. Add industry equivalents to industry_concepts. Never mix these.
 
 OUTPUT SCHEMA (return this JSON, nothing else):
 {
@@ -211,7 +223,7 @@ export async function runKnowledgeExtractor(options: {
     try {
       await updateKnowledgeJob(knowledgeJobId, { status: "processing", progress: 50 });
     } catch (e) {
-      console.warn("[knowledge-extractor] KnowledgeJob processing sync failed:", e instanceof Error ? e.message : e);
+      log.warn("kjob_processing_sync_failed", { kjid: knowledgeJobId, error: e instanceof Error ? e.message : String(e) });
     }
   }
 
@@ -255,7 +267,7 @@ export async function runKnowledgeExtractor(options: {
         }>; gaps: string[]; keywords: string[] }
       | undefined;
     if (!contextBundle) {
-      console.warn(`[knowledge-extractor] no context bundle attached for inbox item ${inboxItemId}`);
+      log.warn("no_context_bundle", { inbox_item_id: inboxItemId });
     }
 
     const voiceGuide = job.input_payload?.voice_guide as
@@ -276,7 +288,7 @@ export async function runKnowledgeExtractor(options: {
         }
       | undefined;
     if (!voiceGuide) {
-      console.warn(`[knowledge-extractor] no voice guide attached for inbox item ${inboxItemId}`);
+      log.warn("no_voice_guide", { inbox_item_id: inboxItemId });
     }
 
     const learningBundle = job.input_payload?.learning_bundle as
@@ -298,11 +310,11 @@ export async function runKnowledgeExtractor(options: {
         }
       | undefined;
     if (!learningBundle) {
-      console.warn(`[knowledge-extractor] no learning bundle attached for inbox item ${inboxItemId}`);
+      log.warn("no_learning_bundle", { inbox_item_id: inboxItemId });
     }
 
     // 3 · Call the LLM with the Golden Rule system prompt + all three bundles
-    const userMessage = buildUserMessage({
+    const { userMessage, block_chars } = buildUserMessage({
       inbox_id: inboxItemId,
       source,
       title: inboxTitle,
@@ -310,6 +322,61 @@ export async function runKnowledgeExtractor(options: {
       context: contextBundle,
       voice: voiceGuide,
       learning: learningBundle,
+    });
+
+    // ── Step 2 · prompt-size telemetry ─────────────────────────────
+    // Emit BEFORE the LLM call so telemetry is captured regardless of
+    // whether the call succeeds or fails (e.g. Groq 413). Payload is
+    // machine-friendly · no personal data · no source body content ·
+    // just per-block character counts + estimated tokens + provider.
+    //
+    // Token estimate is char/3.5 (Llama-family rough) · NOT tokenizer
+    // output. When a tokenizer library lands, replace estimator only.
+    const CHARS_PER_TOKEN_ESTIMATE = 3.5;
+    const MAX_OUTPUT_TOKENS = 8192;
+    const PREFER_PROVIDER = "groq" as const;
+    const REQUIRES_CAPABILITY = "json_mode" as const;
+    const system_chars = SYSTEM_PROMPT.length;
+    const total_input_chars = system_chars + block_chars.total_user_message_chars;
+    const promptTelemetry = {
+      kj_id:                            knowledgeJobId ?? null,
+      inbox_item_id:                    inboxItemId,
+      source:                           source,
+      // Per-block character counts (VERIFIED · measured from strings actually composed)
+      system_chars,
+      context_chars:                    block_chars.context_chars,
+      voice_chars:                      block_chars.voice_chars,
+      learning_chars:                   block_chars.learning_chars,
+      raw_content_chars:                block_chars.raw_content_chars,
+      raw_content_original_chars:       block_chars.raw_content_original_chars,
+      raw_content_truncated:            block_chars.raw_content_truncated,
+      user_message_chars:               block_chars.total_user_message_chars,
+      total_input_chars,
+      // Estimated tokens (rough · char-based estimator · not tokenizer)
+      estimator_kind:                   "chars_per_token_ratio",
+      estimator_chars_per_token:        CHARS_PER_TOKEN_ESTIMATE,
+      estimated_input_tokens:           Math.round(total_input_chars / CHARS_PER_TOKEN_ESTIMATE),
+      max_output_tokens:                MAX_OUTPUT_TOKENS,
+      estimated_total_tokens:           Math.round(total_input_chars / CHARS_PER_TOKEN_ESTIMATE) + MAX_OUTPUT_TOKENS,
+      // Provider preference (actual selected provider recorded post-call via worker_result.llm_provider)
+      prefer_provider:                  PREFER_PROVIDER,
+      requires_capability:              REQUIRES_CAPABILITY,
+      // Bundle presence signals (for quick filtering in analysis)
+      context_records_count:            contextBundle?.records?.length ?? 0,
+      context_gap_keywords_count:       (contextBundle?.gaps?.length ?? 0),
+      voice_brand_terms_count:          voiceGuide?.applicable_brand_terms?.length ?? 0,
+      voice_primary_audience:           voiceGuide?.primary_audience ?? null,
+      learning_examples_count:          learningBundle?.examples?.length ?? 0,
+      // Emit metadata
+      assembled_at:                     nowIso(),
+    };
+    emitEventSafe({
+      event_type:          "extractor_prompt_assembled",
+      source:              "knowledge-extractor",
+      related_job:         knowledgeJobId ?? null,
+      related_department:  "brain",
+      outcome:             "pending",
+      payload:             promptTelemetry,
     });
 
     // Provider preference: Groq is best at fast structured JSON at
@@ -322,9 +389,9 @@ export async function runKnowledgeExtractor(options: {
       ],
       {
         temperature: 0.3,
-        max_tokens: 8192,
-        prefer_provider: "groq",
-        requires_capability: "json_mode",
+        max_tokens: MAX_OUTPUT_TOKENS,
+        prefer_provider: PREFER_PROVIDER,
+        requires_capability: REQUIRES_CAPABILITY,
       }
     );
 
@@ -527,7 +594,7 @@ export async function runKnowledgeExtractor(options: {
           },
         });
       } catch (e) {
-        console.warn("[knowledge-extractor] KnowledgeJob completion sync failed:", e instanceof Error ? e.message : e);
+        log.warn("kjob_completion_sync_failed", { kjid: knowledgeJobId, error: e instanceof Error ? e.message : String(e) });
       }
     }
 
@@ -555,7 +622,7 @@ export async function runKnowledgeExtractor(options: {
           metadata: { error_head: message.slice(0, 200) },
         });
       } catch (e) {
-        console.warn("[knowledge-extractor] KnowledgeJob failure sync failed:", e instanceof Error ? e.message : e);
+        log.warn("kjob_failure_sync_failed", { kjid: knowledgeJobId, error: e instanceof Error ? e.message : String(e) });
       }
     }
 
@@ -615,20 +682,21 @@ function buildUserMessage(input: {
     candidates_scanned: number;
     window_days: number;
   };
-}): string {
+}): { userMessage: string; block_chars: PromptBlockChars } {
   // Truncate very long content to keep within reasonable token budgets.
   const CONTENT_LIMIT = 80_000;
-  const content =
-    input.content.length > CONTENT_LIMIT
-      ? input.content.slice(0, CONTENT_LIMIT) +
-        `\n\n[…truncated at ${CONTENT_LIMIT.toLocaleString()} chars — Manager will re-enqueue remainder]`
-      : input.content;
+  const contentOriginalChars = input.content.length;
+  const contentTruncated = input.content.length > CONTENT_LIMIT;
+  const content = contentTruncated
+    ? input.content.slice(0, CONTENT_LIMIT) +
+      `\n\n[…truncated at ${CONTENT_LIMIT.toLocaleString()} chars — Manager will re-enqueue remainder]`
+    : input.content;
 
   const contextBlock = renderContext(input.context);
   const voiceBlock = renderVoiceGuide(input.voice);
   const learningBlock = renderLearning(input.learning);
 
-  return `INBOX ITEM METADATA
+  const userMessage = `INBOX ITEM METADATA
 inbox_id: ${input.inbox_id}
 source:   ${input.source}
 title:    ${input.title}
@@ -652,7 +720,33 @@ RAW CONTENT:
 ${content}
 
 TASK: Extract structured knowledge records per the schema. When CONTEXT records above cover the same ground as the RAW CONTENT, LINK to them via typed edges rather than re-authoring. Apply the VOICE GUIDE — use NEX brand terms where the content class permits, use industry terms where it demands precision. Apply the LEARNING BUNDLE — never repeat a pattern Philip corrected, always emulate patterns Philip approved. Author focused new records ONLY for genuinely new information or for the gap keywords listed. Aim for MORE typed edges than new records. Respond with ONLY the JSON object.`;
+
+  // Step 2 · block-size telemetry · zero effect on the assembled string.
+  // Computed from the exact strings that were composed into userMessage above.
+  const block_chars: PromptBlockChars = {
+    context_chars:                contextBlock.length,
+    voice_chars:                  voiceBlock.length,
+    learning_chars:               learningBlock.length,
+    raw_content_chars:            content.length,           // post-truncation
+    raw_content_original_chars:   contentOriginalChars,     // pre-truncation
+    raw_content_truncated:        contentTruncated,
+    total_user_message_chars:     userMessage.length,       // authoritative sum of all above + template overhead
+  };
+  return { userMessage, block_chars };
 }
+
+// Step 2 · shape of the per-block character counts emitted with every
+// prompt-assembly event. Consumed by the extractor's telemetry emit
+// below · not exposed to the LLM.
+export type PromptBlockChars = {
+  context_chars:              number;
+  voice_chars:                number;
+  learning_chars:             number;
+  raw_content_chars:          number;
+  raw_content_original_chars: number;
+  raw_content_truncated:      boolean;
+  total_user_message_chars:   number;
+};
 
 function renderLearning(
   learning?: {
@@ -676,6 +770,17 @@ function renderLearning(
     return `LEARNING BUNDLE — past decisions by Philip:
   (no relevant prior feedback yet — author from scratch using the other bundles)`;
   }
+  // Step 7 · Rowan render reduction · 2026-08-10 (Philip GO · post-Step-6).
+  // Bundle shape, DB storage, audit fields, and selection metadata are all
+  // unchanged · this reduction is ONLY at the point where Rowan's output
+  // is projected into Avery's prompt. Removed fields are Rowan's internal
+  // selection metadata that Avery has no rule keyed against:
+  //   · severity  · scoring-only boost inside Rowan's scoreFeedback
+  //   · date      · Rowan already applies age decay before selection
+  //   · Domain    · duplicated by Mason's context bundle
+  //   · Topics    · duplicated by Mason's context bundle
+  // Question and NEX-said trims narrowed 300→200 · correction (300) and
+  // lesson (240) are the highest-signal fields · kept at full length.
   const lines: string[] = [];
   lines.push(`LEARNING BUNDLE — past decisions by Philip (${learning.examples.length} example${learning.examples.length === 1 ? "" : "s"}):`);
   lines.push(``);
@@ -685,14 +790,9 @@ function renderLearning(
   lines.push(`DO emulate patterns Philip approved.`);
   lines.push(``);
   for (const ex of learning.examples) {
-    const date = ex.created_at.slice(0, 10);
-    lines.push(`━━━ ${ex.kind.toUpperCase()} (severity: ${ex.severity}, ${date}) ━━━`);
-    if (ex.domain) lines.push(`Domain: ${ex.domain}`);
-    if (ex.topic_tags && ex.topic_tags.length > 0) {
-      lines.push(`Topics: ${ex.topic_tags.slice(0, 6).join(", ")}`);
-    }
-    if (ex.question) lines.push(`Question: ${trim(ex.question, 300)}`);
-    if (ex.nex_answer) lines.push(`NEX said: ${trim(ex.nex_answer, 300)}`);
+    lines.push(`━━━ ${ex.kind.toUpperCase()} ━━━`);
+    if (ex.question) lines.push(`Question: ${trim(ex.question, 200)}`);
+    if (ex.nex_answer) lines.push(`NEX said: ${trim(ex.nex_answer, 200)}`);
     if (ex.correction) lines.push(`Philip corrected to: ${trim(ex.correction, 300)}`);
     if (ex.lesson) lines.push(`Lesson: ${trim(ex.lesson, 240)}`);
     lines.push(``);
@@ -779,13 +879,23 @@ function renderContext(
   lines.push("");
   lines.push("You MUST NOT re-author these. Use typed edges to link to them instead.");
   lines.push("");
+  // Step 8 · Mason render reduction · 2026-08-10 (Philip GO · post-Step-7).
+  // Presentation-only trims · ContextBundle shape, selection logic, record
+  // count (10), gap keyword count (20), and record filter (AUTH/UR only)
+  // are all unchanged. Three trims:
+  //   · fold Category + Audience onto one line (label overhead only)
+  //   · Summary cap 300 → 220 (Truth-Law regression-verified · content preserved
+  //     under 220 · captured for over-220 truncations)
+  //   · Sample edges 5 → 3 (edge_type whitelist authoritative in SYSTEM_PROMPT ·
+  //     3 samples still demonstrate current edge topology per record)
+  // Preserved verbatim: record_id header · Title · NEX/Industry concepts ·
+  // imperative "MUST NOT re-author" · GAP KEYWORDS section.
   for (const r of ctx.records) {
     lines.push(`━━━ ${r.record_id} ━━━`);
     lines.push(`Title:            ${r.title}`);
-    lines.push(`Category:         ${r.category}`);
-    lines.push(`Primary audience: ${r.primary_audience}`);
-    const summary = r.summary.replace(/\s+/g, " ").slice(0, 300);
-    lines.push(`Summary:          ${summary}${r.summary.length > 300 ? "…" : ""}`);
+    lines.push(`Category: ${r.category} · Audience: ${r.primary_audience}`);
+    const summary = r.summary.replace(/\s+/g, " ").slice(0, 220);
+    lines.push(`Summary:          ${summary}${r.summary.length > 220 ? "…" : ""}`);
     if (r.nex_concepts.length > 0) {
       lines.push(`NEX concepts:     ${r.nex_concepts.slice(0, 8).join(", ")}`);
     }
@@ -795,6 +905,7 @@ function renderContext(
     if (r.sample_edges.length > 0) {
       lines.push(
         `Sample edges:     ${r.sample_edges
+          .slice(0, 3)
           .map((e) => `${e.edge_type}→${e.to}`)
           .join(", ")}`
       );

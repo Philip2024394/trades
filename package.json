@@ -29,7 +29,16 @@
     "nex:verify-roundtrip": "tsx scripts/verify-storage-roundtrip.ts",
     "nex:verify-objects": "tsx scripts/verify-object-storage.ts",
     "nex:prove-retry-recovery": "tsx --env-file=.env.local scripts/prove-brain-retry-recovery.ts",
-    "nex:prove-retry-recovery:keep": "tsx --env-file=.env.local scripts/prove-brain-retry-recovery.ts --keep-evidence"
+    "nex:prove-retry-recovery:keep": "tsx --env-file=.env.local scripts/prove-brain-retry-recovery.ts --keep-evidence",
+    "nex:schema-diff": "node scripts/schema-diff-supabase-vs-postgres.mjs",
+    "nex:schema-diff:json": "node scripts/schema-diff-supabase-vs-postgres.mjs --json",
+    "nex:verify-migration-state": "node scripts/verify-migration-state.mjs",
+    "nex:check-migration-declarations": "node scripts/check-migration-declarations.mjs",
+    "nex:check-migration-declarations:strict": "node scripts/check-migration-declarations.mjs --strict",
+    "nex:verify-timeout-coverage": "node scripts/verify-timeout-coverage.mjs",
+    "nex:verify-supabase-legacy-rls-coverage": "node scripts/verify-supabase-legacy-rls-coverage.mjs",
+    "nex:audit-supabase-routing": "node scripts/nex-brain/audit-supabase-client-usage.mjs",
+    "nex:audit-supabase-projects": "node scripts/nex-brain/audit-supabase-projects-truth.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

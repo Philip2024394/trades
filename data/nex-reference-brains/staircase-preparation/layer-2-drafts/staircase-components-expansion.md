@@ -67,9 +67,10 @@ Note: this module **extends** the 11 canonical Terminology terms (baluster · ha
 - **Dowel** — source lists dowels among direct-fix baluster fixing methods: "Dowels · Screws · Concealed fixing kits · Glue." *(L368)*
   - **type:** classification
   - **verification note (C5 fixed):** deleted invented framing ("a fixing method used in direct-fix baluster systems"). Source classifies · keeping only that classification.
-- **Handrail bracket** — named in source at L464 in a measuring-for-cladding context. Description not provided.
+- **Handrail bracket** — named in source at L464 in a measuring-for-cladding context. Description not provided in the original source.
   - **type:** classification
   - **verification note (C6 fixed):** deleted invented description ("a bracket used to attach a wall-mounted handrail or to support a handrail where required"). Source names but does not define. Preserved as gap.
+  - **gap closure (2026-08-13):** the description gap has since been filled by a dedicated Layer 2 draft — see `layer-2-drafts/staircase-handrail-brackets.md` (Philip 2026-08-13 verbatim article · 8-type classification · materials · selection criteria · positioning · design system · common warnings). The gap-preservation stance was correct at the time — this cross-link supersedes it now that first-party knowledge is available.
 - Screw heads are often hidden with timber plugs. *(L373)*
   - **type:** factual
   - **verification note (C7 fixed):** restored source verbatim. Removed the reframe "a plug used to hide screw heads on visible timber fixings" — the source states a practice, not a definition.

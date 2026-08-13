@@ -1,0 +1,967 @@
+{
+  "snapshot_id": "burnin-2026-08-11T08-06-34-930Z",
+  "captured_at": "2026-08-11T08:06:34.930Z",
+  "captured_at_ms": 1786435607310,
+  "base_url": "http://localhost:3008",
+  "workforce": {
+    "backend": "supabase",
+    "jobs_waiting": 0,
+    "jobs_in_flight": 0,
+    "jobs_completed_24h": 120,
+    "jobs_failed_24h": 1,
+    "records_authoritative": 197,
+    "records_under_review": 282,
+    "records_draft": 2886,
+    "contradictions_open": 8,
+    "gap_markers_open": 898,
+    "llm_tokens_24h": 153006,
+    "llm_calls_24h": 120,
+    "feedback_total_lifetime": 402,
+    "feedback_last_7d": 402,
+    "feedback_unapplied": 250,
+    "worker_pool": [
+      {
+        "worker_type": "knowledge-context",
+        "jobs_waiting": 0,
+        "jobs_in_flight": 0,
+        "jobs_completed_24h": 20,
+        "jobs_failed_24h": 0,
+        "last_activity_at": "2026-08-11T05:38:37.912+00:00",
+        "current_job_ref": null,
+        "current_job_since": null,
+        "avg_ms_last_24h": null,
+        "last_result_summary": "10 related · 20 gaps"
+      },
+      {
+        "worker_type": "voice-context",
+        "jobs_waiting": 0,
+        "jobs_in_flight": 0,
+        "jobs_completed_24h": 20,
+        "jobs_failed_24h": 0,
+        "last_activity_at": "2026-08-11T05:38:40.559+00:00",
+        "current_job_ref": null,
+        "current_job_since": null,
+        "avg_ms_last_24h": null,
+        "last_result_summary": "2 brand · homeowner"
+      },
+      {
+        "worker_type": "learning-context",
+        "jobs_waiting": 0,
+        "jobs_in_flight": 0,
+        "jobs_completed_24h": 20,
+        "jobs_failed_24h": 0,
+        "last_activity_at": "2026-08-11T05:38:44.24+00:00",
+        "current_job_ref": null,
+        "current_job_since": null,
+        "avg_ms_last_24h": null,
+        "last_result_summary": "8 lessons · 100 scanned"
+      },
+      {
+        "worker_type": "knowledge-extractor",
+        "jobs_waiting": 0,
+        "jobs_in_flight": 0,
+        "jobs_completed_24h": 19,
+        "jobs_failed_24h": 1,
+        "last_activity_at": "2026-08-11T05:38:57.952+00:00",
+        "current_job_ref": null,
+        "current_job_since": null,
+        "avg_ms_last_24h": 6230,
+        "last_result_summary": "2 drafts authored"
+      },
+      {
+        "worker_type": "image-analyst",
+        "jobs_waiting": 0,
+        "jobs_in_flight": 0,
+        "jobs_completed_24h": 0,
+        "jobs_failed_24h": 0,
+        "last_activity_at": "2026-08-08T21:24:40.654+00:00",
+        "current_job_ref": null,
+        "current_job_since": null,
+        "avg_ms_last_24h": null,
+        "last_result_summary": null
+      },
+      {
+        "worker_type": "quality-checker",
+        "jobs_waiting": 0,
+        "jobs_in_flight": 0,
+        "jobs_completed_24h": 41,
+        "jobs_failed_24h": 0,
+        "last_activity_at": "2026-08-11T05:39:07.816+00:00",
+        "current_job_ref": null,
+        "current_job_since": null,
+        "avg_ms_last_24h": null,
+        "last_result_summary": "under_review · 71%"
+      },
+      {
+        "worker_type": "memory-guardian",
+        "jobs_waiting": 0,
+        "jobs_in_flight": 0,
+        "jobs_completed_24h": 0,
+        "jobs_failed_24h": 0,
+        "last_activity_at": null,
+        "current_job_ref": null,
+        "current_job_since": null,
+        "avg_ms_last_24h": null,
+        "last_result_summary": null
+      }
+    ],
+    "manager": {
+      "ready": true,
+      "last_dispatch_at": "2026-08-11T08:06:39.683Z"
+    }
+  },
+  "postgres": {
+    "preserved_10": {
+      "expected": 10,
+      "found": 10,
+      "missing_ids": [],
+      "all_valid": true,
+      "violations": [],
+      "details": [
+        {
+          "job_id": "1e09c119-f9ed-4400-9dc7-722fc7ae223d",
+          "status": "claimed",
+          "progress": 0,
+          "completion_result": null,
+          "updated_at": "2026-08-09T23:28:08.907Z",
+          "valid": true
+        },
+        {
+          "job_id": "270865e6-f2ca-4fc0-8648-151417c85f64",
+          "status": "claimed",
+          "progress": 0,
+          "completion_result": null,
+          "updated_at": "2026-08-09T23:28:08.364Z",
+          "valid": true
+        },
+        {
+          "job_id": "46a8eb51-617c-404b-8237-6a515ad6125a",
+          "status": "claimed",
+          "progress": 0,
+          "completion_result": null,
+          "updated_at": "2026-08-09T23:28:05.886Z",
+          "valid": true
+        },
+        {
+          "job_id": "47e0cf43-5e4c-4d69-a509-59e232e141f1",
+          "status": "claimed",
+          "progress": 0,
+          "completion_result": null,
+          "updated_at": "2026-08-09T23:28:07.710Z",
+          "valid": true
+        },
+        {
+          "job_id": "56e1da78-6a97-461a-bc38-cc505d25e00a",
+          "status": "claimed",
+          "progress": 0,
+          "completion_result": null,
+          "updated_at": "2026-08-09T23:28:07.208Z",
+          "valid": true
+        },
+        {
+          "job_id": "6381641c-eb29-4007-8f3c-2942933cb62d",
+          "status": "claimed",
+          "progress": 0,
+          "completion_result": null,
+          "updated_at": "2026-08-09T23:28:09.207Z",
+          "valid": true
+        },
+        {
+          "job_id": "7e1fc4f9-efb5-4892-8d55-51b347babe1c",
+          "status": "claimed",
+          "progress": 0,
+          "completion_result": null,
+          "updated_at": "2026-08-09T23:28:09.576Z",
+          "valid": true
+        },
+        {
+          "job_id": "7fc668ef-cbbc-42a4-b2ef-16e1cde41680",
+          "status": "claimed",
+          "progress": 0,
+          "completion_result": null,
+          "updated_at": "2026-08-09T23:28:08.020Z",
+          "valid": true
+        },
+        {
+          "job_id": "ab5835b8-05c8-485e-b1ef-399fe9a48b0a",
+          "status": "claimed",
+          "progress": 0,
+          "completion_result": null,
+          "updated_at": "2026-08-09T23:28:07.435Z",
+          "valid": true
+        },
+        {
+          "job_id": "b1772902-7348-49cd-aed4-48d221ea2d69",
+          "status": "claimed",
+          "progress": 0,
+          "completion_result": null,
+          "updated_at": "2026-08-09T23:28:08.654Z",
+          "valid": true
+        }
+      ]
+    },
+    "stuck_claimed_kjs": {
+      "count": 0,
+      "sample": []
+    },
+    "terminal_state_histogram": [
+      {
+        "status": "claimed",
+        "count": 10
+      },
+      {
+        "status": "completed",
+        "count": 56
+      },
+      {
+        "status": "failed",
+        "count": 2
+      },
+      {
+        "status": "queued",
+        "count": 4
+      }
+    ],
+    "high_attempt_worker_jobs": {
+      "threshold": 5,
+      "count": 0
+    },
+    "worker_jobs_status_histogram": [],
+    "audit_log_row_count": 5
+  },
+  "processes": {
+    "ok": true,
+    "node_processes": [
+      {
+        "pid": 11100,
+        "rss_bytes": 4096,
+        "rss_mb": 0,
+        "cmd_hint": "other"
+      },
+      {
+        "pid": 19656,
+        "rss_bytes": 4096,
+        "rss_mb": 0,
+        "cmd_hint": "next-server-dev"
+      },
+      {
+        "pid": 4668,
+        "rss_bytes": 16146432,
+        "rss_mb": 15.4,
+        "cmd_hint": "worker-script"
+      },
+      {
+        "pid": 20120,
+        "rss_bytes": 1188749312,
+        "rss_mb": 1133.7,
+        "cmd_hint": "next-server-prod"
+      },
+      {
+        "pid": 10684,
+        "rss_bytes": 4096,
+        "rss_mb": 0,
+        "cmd_hint": "next-server-dev"
+      },
+      {
+        "pid": 15100,
+        "rss_bytes": 62722048,
+        "rss_mb": 59.8,
+        "cmd_hint": "burnin-snapshot-self"
+      }
+    ]
+  },
+  "filesystem": {
+    "jobs_jsonl": {
+      "path": "C:\\Users\\Victus\\trades\\data\\nex-jobs\\jobs.jsonl",
+      "exists": true,
+      "size_bytes": 203277,
+      "mtime": "2026-08-11T05:38:58.212Z",
+      "line_count": 497
+    },
+    "log_files": [
+      {
+        "path": "C:\\Users\\Victus\\trades\\data\\burnin\\worker.log",
+        "exists": true,
+        "size_bytes": 30064,
+        "mtime": "2026-08-11T08:06:06.170Z"
+      }
+    ]
+  },
+  "scheduler_evidence": {
+    "local": {
+      "state": "running",
+      "last_fired_at": "2026-08-11T08:06:27.269Z",
+      "age_ms": 16515,
+      "fired_count": 476,
+      "failed_count": 0,
+      "source": "counter:run_once.fired",
+      "evidence_route": "/api/nex/brain/run-once",
+      "age_ms_at_snapshot": 16523
+    },
+    "vercel": {
+      "state": "not_firing",
+      "last_fired_at": null,
+      "age_ms": null,
+      "fired_count": 0,
+      "failed_count": 0,
+      "source": "counter:cron_tick.fired",
+      "evidence_route": "/api/nex/brain/cron-tick",
+      "age_ms_at_snapshot": null
+    },
+    "freshness_budget_ms": 90000,
+    "endpoint": "/api/nex/brain/scheduler-status",
+    "ok": true,
+    "http_status": 200,
+    "generated_at": "2026-08-11T08:06:43.784Z",
+    "any_scheduler_running": true
+  },
+  "kj_live_work_evidence": {
+    "items": [
+      {
+        "kj_job_id": "6e16ff06-bb5d-4d02-b8cf-940a075e0d66",
+        "inbox_item_id": "nx_mskne4zm_055dcf17",
+        "kj_status": "queued",
+        "kj_updated_at": "2026-08-08T17:28:49.895Z",
+        "current_worker": null,
+        "current_actor": null,
+        "last_event_action": null,
+        "last_event_at": null,
+        "last_event_age_ms": null,
+        "state": "unknown_worker",
+        "evidence_source": "no audit event for inbox_item_id · cannot say"
+      },
+      {
+        "kj_job_id": "262ce991-ffc2-4f40-bdf8-85f330133129",
+        "inbox_item_id": "nx_mskn85sy_6928f07a",
+        "kj_status": "queued",
+        "kj_updated_at": "2026-08-08T17:24:10.989Z",
+        "current_worker": null,
+        "current_actor": null,
+        "last_event_action": null,
+        "last_event_at": null,
+        "last_event_age_ms": null,
+        "state": "unknown_worker",
+        "evidence_source": "no audit event for inbox_item_id · cannot say"
+      },
+      {
+        "kj_job_id": "d32e9bf4-622a-4846-8b9e-877242e78506",
+        "inbox_item_id": "nx_mskn85i7_233bc32e",
+        "kj_status": "queued",
+        "kj_updated_at": "2026-08-08T17:24:10.610Z",
+        "current_worker": null,
+        "current_actor": null,
+        "last_event_action": null,
+        "last_event_at": null,
+        "last_event_age_ms": null,
+        "state": "unknown_worker",
+        "evidence_source": "no audit event for inbox_item_id · cannot say"
+      },
+      {
+        "kj_job_id": "8c579e3a-bc3e-44f4-a4ff-9d3a96b6509e",
+        "inbox_item_id": "nx_mskn855w_4859bb86",
+        "kj_status": "queued",
+        "kj_updated_at": "2026-08-08T17:24:10.164Z",
+        "current_worker": null,
+        "current_actor": null,
+        "last_event_action": null,
+        "last_event_at": null,
+        "last_event_age_ms": null,
+        "state": "unknown_worker",
+        "evidence_source": "no audit event for inbox_item_id · cannot say"
+      }
+    ],
+    "counts": {
+      "working": 0,
+      "stalled": 0,
+      "unknown_worker": 4,
+      "unknown": 0
+    },
+    "active_kj_count": 4,
+    "freshness_budget_ms": 60000,
+    "endpoint": "/api/nex/brain/kj-live-work",
+    "ok": true,
+    "http_status": 200,
+    "generated_at": "2026-08-11T08:06:43.255Z",
+    "excludes_preserved_kjids": 10,
+    "sources": {
+      "active_kjs": "local_postgres_knowledge_dump_jobs",
+      "workers": "supabase.audit_log via brainStore().listAudit"
+    }
+  },
+  "warehouse_evidence": {
+    "in_production": {
+      "total": 4,
+      "by_status": {
+        "queued": 4,
+        "claimed": 0,
+        "processing": 0
+      },
+      "oldest_at": "2026-08-08T17:24:10.164Z",
+      "oldest_age_ms": 225754559,
+      "source": "local_postgres_knowledge_dump_jobs",
+      "excludes_preserved_kjids": 10
+    },
+    "vault_records": {
+      "authoritative": 197,
+      "awaiting_review": 282,
+      "draft_rejected": 2884,
+      "draft_awaiting_check": 2,
+      "deprecated": 262
+    },
+    "stages": [
+      {
+        "key": "incoming",
+        "label": "New material",
+        "glyph": "📦",
+        "count": 0,
+        "oldest_at": null,
+        "oldest_age_ms": null,
+        "items": [],
+        "entries": []
+      },
+      {
+        "key": "context_processing",
+        "label": "Context processing",
+        "glyph": "🔧",
+        "count": 0,
+        "oldest_at": null,
+        "oldest_age_ms": null,
+        "items": [],
+        "entries": []
+      },
+      {
+        "key": "waiting_for_ai",
+        "label": "Waiting for AI",
+        "glyph": "🧠",
+        "count": 0,
+        "oldest_at": null,
+        "oldest_age_ms": null,
+        "items": [],
+        "entries": []
+      },
+      {
+        "key": "being_written",
+        "label": "Being written",
+        "glyph": "✍️",
+        "count": 0,
+        "oldest_at": null,
+        "oldest_age_ms": null,
+        "items": [],
+        "entries": []
+      },
+      {
+        "key": "quality_check",
+        "label": "Quality check",
+        "glyph": "🔍",
+        "count": 0,
+        "oldest_at": null,
+        "oldest_age_ms": null,
+        "items": [],
+        "entries": []
+      },
+      {
+        "key": "stored",
+        "label": "Stored in Brain",
+        "glyph": "🧠",
+        "count": 197,
+        "oldest_at": null,
+        "oldest_age_ms": null,
+        "items": [
+          {
+            "worker_type": "knowledge-extractor",
+            "status": "AUTHORITATIVE",
+            "count": 197,
+            "oldest_at": null,
+            "oldest_age_ms": null
+          }
+        ]
+      }
+    ],
+    "endpoint": "/api/nex/brain/warehouse",
+    "ok": true,
+    "http_status": 200,
+    "computed_at": "2026-08-11T08:06:43.277Z",
+    "source": "supabase"
+  },
+  "cloud_evidence": {
+    "any_online": false,
+    "workers": [],
+    "diagnostics": {
+      "total_heartbeats_in_window": 6,
+      "cloud_heartbeats": 0,
+      "non_cloud_heartbeats": 6,
+      "window_start": "2026-08-11T08:01:43.369Z",
+      "heartbeat_sample": [
+        {
+          "host_id": "quality-checker@20120",
+          "last_seen_at": "2026-08-11T08:06:35.955+00:00",
+          "runtime_kind": "local",
+          "age_ms": 9000
+        },
+        {
+          "host_id": "image-analyst@20120",
+          "last_seen_at": "2026-08-11T08:06:34.758+00:00",
+          "runtime_kind": "local",
+          "age_ms": 10197
+        },
+        {
+          "host_id": "knowledge-extractor@20120",
+          "last_seen_at": "2026-08-11T08:06:34.095+00:00",
+          "runtime_kind": "local",
+          "age_ms": 10860
+        },
+        {
+          "host_id": "learning-context@20120",
+          "last_seen_at": "2026-08-11T08:06:33.439+00:00",
+          "runtime_kind": "local",
+          "age_ms": 11516
+        },
+        {
+          "host_id": "voice-context@20120",
+          "last_seen_at": "2026-08-11T08:06:32.761+00:00",
+          "runtime_kind": "local",
+          "age_ms": 12194
+        },
+        {
+          "host_id": "knowledge-context@20120",
+          "last_seen_at": "2026-08-11T08:06:32.076+00:00",
+          "runtime_kind": "local",
+          "age_ms": 12879
+        }
+      ]
+    },
+    "endpoint": "/api/nex/brain/cloud-status",
+    "ok": true,
+    "http_status": 200
+  },
+  "provider_evidence": {
+    "providers": [
+      {
+        "provider": "openrouter",
+        "status": "degraded",
+        "configured": true,
+        "capabilities": [
+          "text",
+          "json_mode",
+          "tool_use",
+          "long_context"
+        ],
+        "consecutive_failures": 2,
+        "circuit_open_ms_remaining": null,
+        "last_success_at": null,
+        "last_failure_at": 1786375646495,
+        "last_error": "OpenRouter upstream: {\"message\":\"Upstream error from Nvidia: ResourceExhausted: Worker local total request limit reached (32/32)\",\"code\":502}",
+        "calls_24h": 2,
+        "successes_24h": 0,
+        "success_rate_24h": 0,
+        "avg_ms_24h": 30275,
+        "tokens_24h": 0
+      },
+      {
+        "provider": "sambanova",
+        "status": "healthy",
+        "configured": true,
+        "capabilities": [
+          "text",
+          "json_mode",
+          "tool_use",
+          "long_context"
+        ],
+        "consecutive_failures": 0,
+        "circuit_open_ms_remaining": null,
+        "last_success_at": 1786426733966,
+        "last_failure_at": 1786423778334,
+        "last_error": null,
+        "calls_24h": 13,
+        "successes_24h": 3,
+        "success_rate_24h": 0.23076923076923078,
+        "avg_ms_24h": 3510,
+        "tokens_24h": 28301
+      },
+      {
+        "provider": "mistral",
+        "status": "degraded",
+        "configured": true,
+        "capabilities": [
+          "text",
+          "vision",
+          "json_mode",
+          "tool_use",
+          "long_context"
+        ],
+        "consecutive_failures": 3,
+        "circuit_open_ms_remaining": 0,
+        "last_success_at": 1786380598314,
+        "last_failure_at": 1786423843381,
+        "last_error": "This operation was aborted",
+        "calls_24h": 16,
+        "successes_24h": 6,
+        "success_rate_24h": 0.375,
+        "avg_ms_24h": 23949,
+        "tokens_24h": 34952
+      },
+      {
+        "provider": "groq",
+        "status": "healthy",
+        "configured": true,
+        "capabilities": [
+          "text",
+          "json_mode",
+          "tool_use"
+        ],
+        "consecutive_failures": 0,
+        "circuit_open_ms_remaining": null,
+        "last_success_at": 1786426746595,
+        "last_failure_at": 1786426727728,
+        "last_error": null,
+        "calls_24h": 71,
+        "successes_24h": 46,
+        "success_rate_24h": 0.647887323943662,
+        "avg_ms_24h": 780,
+        "tokens_24h": 68889
+      },
+      {
+        "provider": "gemini",
+        "status": "healthy",
+        "configured": true,
+        "capabilities": [
+          "text",
+          "vision",
+          "audio",
+          "json_mode",
+          "long_context",
+          "tool_use"
+        ],
+        "consecutive_failures": 0,
+        "circuit_open_ms_remaining": null,
+        "last_success_at": 1786423863502,
+        "last_failure_at": 1786375585441,
+        "last_error": null,
+        "calls_24h": 7,
+        "successes_24h": 5,
+        "success_rate_24h": 0.7142857142857143,
+        "avg_ms_24h": 16080,
+        "tokens_24h": 43740
+      },
+      {
+        "provider": "cerebras",
+        "status": "degraded",
+        "configured": true,
+        "capabilities": [
+          "text",
+          "json_mode",
+          "tool_use"
+        ],
+        "consecutive_failures": 3,
+        "circuit_open_ms_remaining": 0,
+        "last_success_at": null,
+        "last_failure_at": 1786423781645,
+        "last_error": "Cerebras 402: {\"message\":\"Payment required to access this resource. Visit your billing tab.\",\"type\":\"payment_required_error\",\"param\":\"quota\",\"code\":\"payment_required\"}",
+        "calls_24h": 10,
+        "successes_24h": 0,
+        "success_rate_24h": 0,
+        "avg_ms_24h": 1866,
+        "tokens_24h": 0
+      },
+      {
+        "provider": "cloudflare",
+        "status": "degraded",
+        "configured": true,
+        "capabilities": [
+          "text",
+          "json_mode",
+          "tool_use"
+        ],
+        "consecutive_failures": 3,
+        "circuit_open_ms_remaining": 0,
+        "last_success_at": 1786348535614,
+        "last_failure_at": 1786423811687,
+        "last_error": "This operation was aborted",
+        "calls_24h": 11,
+        "successes_24h": 0,
+        "success_rate_24h": 0,
+        "avg_ms_24h": 30023,
+        "tokens_24h": 0
+      },
+      {
+        "provider": "huggingface",
+        "status": "degraded",
+        "configured": true,
+        "capabilities": [
+          "text",
+          "json_mode",
+          "tool_use",
+          "long_context"
+        ],
+        "consecutive_failures": 3,
+        "circuit_open_ms_remaining": 0,
+        "last_success_at": null,
+        "last_failure_at": 1786423813359,
+        "last_error": "HuggingFace 402: {\"error\":\"You have depleted your monthly included credits. Purchase pre-paid credits to continue using Inference Providers. Alternatively, subscribe to PRO to get 20x more included usage.\"}",
+        "calls_24h": 11,
+        "successes_24h": 0,
+        "success_rate_24h": 0,
+        "avg_ms_24h": 1586,
+        "tokens_24h": 0
+      },
+      {
+        "provider": "anthropic",
+        "status": "unconfigured",
+        "configured": false,
+        "capabilities": [
+          "text",
+          "vision",
+          "json_mode",
+          "tool_use",
+          "long_context"
+        ],
+        "consecutive_failures": 0,
+        "circuit_open_ms_remaining": null,
+        "last_success_at": null,
+        "last_failure_at": null,
+        "last_error": null,
+        "calls_24h": 0,
+        "successes_24h": 0,
+        "success_rate_24h": null,
+        "avg_ms_24h": null,
+        "tokens_24h": 0
+      },
+      {
+        "provider": "mock",
+        "status": "idle",
+        "configured": true,
+        "capabilities": [
+          "text",
+          "vision",
+          "audio",
+          "json_mode",
+          "tool_use",
+          "long_context"
+        ],
+        "consecutive_failures": 0,
+        "circuit_open_ms_remaining": null,
+        "last_success_at": null,
+        "last_failure_at": null,
+        "last_error": null,
+        "calls_24h": 0,
+        "successes_24h": 0,
+        "success_rate_24h": null,
+        "avg_ms_24h": null,
+        "tokens_24h": 0
+      }
+    ],
+    "endpoint": "/api/nex/brain/llm-health",
+    "ok": true,
+    "http_status": 200,
+    "chain": [
+      "sambanova",
+      "cerebras",
+      "cloudflare",
+      "huggingface",
+      "mistral",
+      "groq",
+      "gemini",
+      "openrouter"
+    ],
+    "active": "sambanova",
+    "per_consumer_usage": [],
+    "observability": {
+      "counters": {
+        "shadow.mirror_failed": {
+          "count": 0,
+          "last_at": null
+        },
+        "shadow.mirror_success": {
+          "count": 0,
+          "last_at": null
+        },
+        "manager.inbox_writeback_failed": {
+          "count": 0,
+          "last_at": null
+        },
+        "manager.inbox_read_degraded": {
+          "count": 0,
+          "last_at": null
+        },
+        "router.route_failed": {
+          "count": 0,
+          "last_at": null
+        },
+        "inbox.enqueue_failed": {
+          "count": 0,
+          "last_at": null
+        },
+        "jobs.create_failed": {
+          "count": 0,
+          "last_at": null
+        },
+        "audit.emit_failed": {
+          "count": 273,
+          "last_at": "2026-08-11T05:39:08.492Z"
+        },
+        "audit.emit_retried": {
+          "count": 0,
+          "last_at": null
+        },
+        "audit.emit_dropped": {
+          "count": 0,
+          "last_at": null
+        },
+        "inbox.pg_read_fallback": {
+          "count": 0,
+          "last_at": null
+        },
+        "jobs.pg_read_fallback": {
+          "count": 0,
+          "last_at": null
+        },
+        "validate.row_dropped": {
+          "count": 0,
+          "last_at": null
+        },
+        "validate.line_dropped": {
+          "count": 0,
+          "last_at": null
+        },
+        "cron_tick.fired": {
+          "count": 0,
+          "last_at": null
+        },
+        "cron_tick.failed": {
+          "count": 0,
+          "last_at": null
+        },
+        "run_once.fired": {
+          "count": 476,
+          "last_at": "2026-08-11T08:06:27.269Z"
+        },
+        "run_once.failed": {
+          "count": 0,
+          "last_at": null
+        },
+        "analytics.rollup_failed": {
+          "count": 0,
+          "last_at": null
+        },
+        "analytics.rollup_batch_drained": {
+          "count": 0,
+          "last_at": null
+        },
+        "analytics.rollup_missing_table": {
+          "count": 0,
+          "last_at": null
+        },
+        "alerts.dispatch_no_transport": {
+          "count": 0,
+          "last_at": null
+        },
+        "supervisor.sweep_started": {
+          "count": 0,
+          "last_at": null
+        },
+        "supervisor.sweep_completed": {
+          "count": 0,
+          "last_at": null
+        },
+        "supervisor.kj_attested": {
+          "count": 0,
+          "last_at": null
+        },
+        "supervisor.kj_review_queued": {
+          "count": 0,
+          "last_at": null
+        },
+        "supervisor.path_a_fallthrough": {
+          "count": 0,
+          "last_at": null
+        },
+        "supervisor.cascade_terminal": {
+          "count": 0,
+          "last_at": null
+        },
+        "supervisor.error": {
+          "count": 0,
+          "last_at": null
+        },
+        "timeout.statement": {
+          "count": 0,
+          "last_at": null
+        },
+        "timeout.pool_acquire": {
+          "count": 0,
+          "last_at": null
+        },
+        "timeout.idle_transaction": {
+          "count": 0,
+          "last_at": null
+        },
+        "timeout.worker_cycle": {
+          "count": 0,
+          "last_at": null
+        },
+        "timeout.job_budget": {
+          "count": 0,
+          "last_at": null
+        }
+      },
+      "cron": {
+        "last_fired": null,
+        "age_ms": null,
+        "stale": "unknown",
+        "threshold_ms": 180000
+      },
+      "alerts": {
+        "evaluated_at": "2026-08-11T08:06:44.718Z",
+        "rules_total": 14,
+        "rules_enabled": 13,
+        "fires": []
+      }
+    }
+  },
+  "inbox_status_evidence": {
+    "endpoint": "/api/nex/knowledge-inbox/list",
+    "ok": true,
+    "http_status": 200,
+    "total_items": 153,
+    "counts": {
+      "waiting": 0,
+      "processing": 107,
+      "processed": 43,
+      "review": 3,
+      "other": 0
+    }
+  },
+  "ui_truth_probe": {
+    "endpoint": "http://localhost:3008/nex-app/nex-brain",
+    "ok": true,
+    "http_status": 200,
+    "html_bytes": 164402,
+    "labels_present": {
+      "RUNNING": 0,
+      "IDLE": 0,
+      "NOT FIRING": 0,
+      "UNKNOWN": 4,
+      "OFFLINE / NOT DEPLOYED": 0,
+      "no evidence yet": 7,
+      "Local workforce": 1,
+      "Cloud workforce \\(Fly\\)": 1,
+      "Local scheduler": 1,
+      "Vercel Cron": 1,
+      "Inbox waiting": 1,
+      "KJ in production": 1,
+      "Records stored": 1,
+      "Historical events": 1,
+      "Recent success": 0,
+      "Standing by": 0,
+      "Degraded": 0,
+      "Unavailable": 0,
+      "On KJ:": 0
+    },
+    "forbidden_present": {
+      "Dumped 1XX (workload counter)": 0,
+      "Cloud Workers.*Running": 0,
+      "Working (as provider label)": 0
+    }
+  },
+  "errors": []
+}

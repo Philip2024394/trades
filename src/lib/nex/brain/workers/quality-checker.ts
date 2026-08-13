@@ -23,6 +23,10 @@ import { brainStore, nowIso } from "../storage";
 import { finalizeWorkerJob, failWorkerJob } from "./_finalize";
 // W-OBS-1 Path A Layer 1 · CID inherit from job.input_payload.
 import { enterJobCorrelationScope } from "@/lib/nex/observability/correlation";
+// F4 structured logger · Wave 3 H2.b · adopted 2026-08-10.
+import { logger } from "@/lib/nex/observability/logger";
+
+const log = logger("worker.quality-checker");
 import { completeJson } from "../llm";
 import type {
   KnowledgeRecord,
@@ -392,10 +396,10 @@ REVIEW INSTRUCTION: assess voice, tone-audience match, plausibility, and any con
       // Table may not exist yet (migration 002 not applied) — silent.
       const m = (queueErr as Error).message;
       if (!/does not exist|relation .*llm_retry_queue/i.test(m)) {
-        console.warn("[quality-checker] retry-queue enqueue failed:", m);
+        log.warn("retry_queue_enqueue_failed", { error: m });
       }
     }
-    console.warn("[quality-checker] LLM editorial check unavailable, structural check still runs:", (err as Error).message);
+    log.warn("llm_editorial_unavailable", { message: (err as Error).message });
     return null; // structural-only check still runs
   }
 }

@@ -7,7 +7,7 @@
 import { useRouter } from "next/navigation";
 import {
   Box, PencilRuler, Calculator, Layers, Puzzle, ClipboardCheck, FileText,
-  Lightbulb, MessageSquare, ShoppingCart, Images, Store, BookOpen,
+  Lightbulb, MessageSquare, ShoppingCart, Images, Store, BookOpen, Paintbrush,
   type LucideIcon
 } from "lucide-react";
 import { useConversationState } from "../state/ConversationStateProvider";
@@ -24,6 +24,8 @@ const ICON_MAP: Record<string, LucideIcon> = {
   // Active v3 labels
   "Trade Centre":       Store,
   "Stairs Library":     Images,
+  "Kitchen Library":    Images,
+  "Staircase Refacing": Paintbrush,        // change-appearance semantic · Stage 1 · A2 entry
   "Stair Regulations":  ClipboardCheck,
   "Stair Terminology":  BookOpen,          // book icon · glossary/terminology reference
   "3D Design":          Box,
@@ -51,6 +53,8 @@ const DESCRIPTION_MAP: Record<string, string> = {
   // Active v3 labels
   "Trade Centre":       "Browse verified trades & products",
   "Stairs Library":     "Swipe through the full gallery",
+  "Kitchen Library":    "Swipe through kitchen designs",
+  "Staircase Refacing": "Keep your stairs. Change the look.",
   "Stair Regulations":  "Rules, heights & safety by region",
   "Stair Terminology":  "What every stair term really means",
   "3D Design":          "Visualize in 3D",

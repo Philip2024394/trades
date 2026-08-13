@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-01T22:49:32.038Z",
+  "layer": "family",
+  "family_id": "open-riser",
+  "label": "Open-riser staircase",
+  "description": "No solid riser between treads · lets light through · modern appearance · regulatory considerations vary by country.",
+  "note": "Layer 3 · FAMILY Q&A · applies to every staircase in this family. Author once · every image tagged with this family_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is an open-riser staircase?",
+      "a": ""
+    },
+    {
+      "q": "Are open-riser staircases legal?",
+      "a": ""
+    },
+    {
+      "q": "Are open risers safe for children?",
+      "a": ""
+    },
+    {
+      "q": "Can pets use open-riser staircases?",
+      "a": ""
+    },
+    {
+      "q": "Can I convert open risers to closed risers later?",
+      "a": ""
+    }
+  ]
+}

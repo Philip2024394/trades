@@ -28,6 +28,7 @@ compatible_shell_families:
 # ─── Review ──────────────────────────────────────────────────────
 confidence:                 1.00
 review_status:              reviewed   # awaiting Philip's lock
+knowledge_level:            observed
 
 notes:
   - Standard grooved shoe rail — the bottom rail balusters plug into.

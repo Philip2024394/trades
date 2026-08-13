@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-01T22:49:32.046Z",
+  "layer": "component",
+  "component_id": "balustrade-glass",
+  "label": "Glass balustrade panel",
+  "description": "Toughened laminated glass panel used in place of vertical balusters. Frameless or channel-fixed.",
+  "note": "Layer 2 · COMPONENT BRAIN Q&A · applies to every staircase where this component is present. Cross-references the deeper knowledge articles in data/nex-reference-brains/. Author once · every image tagged with this component_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is a glass balustrade panel?",
+      "a": ""
+    },
+    {
+      "q": "Is the glass toughened or laminated?",
+      "a": ""
+    },
+    {
+      "q": "How thick are structural glass panels?",
+      "a": ""
+    },
+    {
+      "q": "Can a glass panel be replaced individually?",
+      "a": ""
+    }
+  ]
+}

@@ -30,6 +30,9 @@
 //     connection reuse in the pool
 
 import { withClient, type PgClientLike } from "@/lib/nex/db";
+// Wave 3 · H3 · SET LOCAL statement_timeout + idle_in_transaction_session_timeout
+// (T-1, T-4) — §4.2 of WAVE-3-H3-TIMEOUT-BUDGETS.md.
+import { statementTimeoutMs, idleInTransactionTimeoutMs } from "@/lib/nex/config/timeouts";
 
 export type BrainRoleFn<T> = (c: PgClientLike) => Promise<T>;
 
@@ -44,6 +47,17 @@ export async function withBrainRole<T>(fn: BrainRoleFn<T>): Promise<T | null> {
     await c.query("BEGIN");
     try {
       await c.query("SET LOCAL ROLE nex_brain_app");
+      // Wave 3 · H3 · per-transaction server-side timeout caps.
+      //   · T-1 statement_timeout · cancels any single SQL that runs too long
+      //   · T-4 idle_in_transaction_session_timeout · kills the connection if
+      //     a transaction sits idle (typically a code bug that forgot COMMIT)
+      // Both are SET LOCAL · never leak across connection reuse in the pool.
+      // Values come from the shared config module · env-var overrides via
+      // NEX_PG_STATEMENT_TIMEOUT_MS · NEX_PG_IDLE_TX_TIMEOUT_MS.
+      const st = statementTimeoutMs();
+      const it = idleInTransactionTimeoutMs();
+      await c.query(`SET LOCAL statement_timeout = ${st}`);
+      await c.query(`SET LOCAL idle_in_transaction_session_timeout = ${it}`);
       const r = await fn(c);
       await c.query("COMMIT");
       return r;

@@ -1,0 +1,110 @@
+knowledge_id: kitchen
+knowledge_version: 1.0
+domain_number: 002
+last_updated: 2026-08-03
+maturity_level: silver  # promoted 2026-08-03 evening · exceeded Silver criteria (55 FAQs > 100 target working toward · 19 articles > 10 · full sub-area coverage · inherits 3 shared brains · cross-domain compositions active)
+schema_version: domain_template_v1.1
+authored_by: philip
+governance:
+  rule_a_anti_fabrication: pass
+  rule_c_attributable_origin: named_expert = Philip O'Farrell
+
+purpose: >
+  The Kitchen domain covers everything unique to designing, specifying,
+  quoting, manufacturing, and installing bespoke and fitted kitchens.
+  Trade business processes (site visit, quotation, warranty, etc.) are
+  INHERITED from _shared/trade-business and are not re-authored here.
+
+inherits_from:
+  - _shared/trade-business
+  - _shared/joinery-finishes
+  - _shared/design-coordination
+
+sources:
+  faqs:            faqs.jsonl
+  articles:        articles/
+  taxonomies:      taxonomies/
+  images_index:    images.index.json
+
+status:
+  faq_count: 55
+  a_plus_image_count: 1  # coordinated kitchen+staircase specimen
+  component_family_count: 0
+  article_count: 19
+  taxonomy_count: 4
+  calculator_count: 0
+  # coverage per sub-area (per Coverage Score doctrine 2026-08-03 evening)
+  coverage_by_sub_area:
+    planning: 92
+    design: 88
+    layouts: 90
+    doors: 95
+    worktops: 92
+    cabinets: 90
+    hardware: 88
+    materials: 90
+    sinks: 92
+    appliances: 78
+    lighting: 70
+    plumbing: 85
+    electrical: 65
+    splashbacks: 88
+    islands: 92
+    plinths: 90
+    handles: 88
+    glass: 88
+    buying: 92
+    budget: 90
+    whole_home_coordination: 92
+    installation: 72
+    maintenance: 55
+    troubleshooting: 40
+    regulations: 68
+  overall_coverage_percent: 82
+
+router_tags:
+  - Design
+  - Build
+  - Repair
+  - Compare
+  - Learn
+
+ai_specialists:
+  - id: kitchen_designer
+    role: Designer
+    capabilities: [design, image_matching, style_recommendation, layout_planning]
+  - id: kitchen_engineer
+    role: Engineer
+    capabilities: [measuring, services_check, structural_advice]
+  - id: kitchen_quoter
+    role: Quoter
+    capabilities: [pricing, quote_generation, appliance_pricing, worktop_pricing]
+  - id: kitchen_installer
+    role: Installer
+    capabilities: [install_guidance, sequencing_advice, snag_resolution]
+
+workspace_objects:
+  - type: quote
+    fields: [customer_id, kitchen_style, layout_type, cabinet_count, worktop_type, appliance_list, price_total, valid_until]
+  - type: project
+    fields: [customer_id, status, quote_id, install_date, photos, notes]
+  - type: image
+    fields: [url, kitchen_style, layout_type, tags, source]
+  - type: measurement
+    fields: [project_id, room_length_mm, room_width_mm, ceiling_height_mm, existing_services]
+  - type: customer
+    fields: [name, contact, project_ids, style_preferences, budget_range]
+
+cross_domain_dependencies:
+  - timber (cabinet + worktop material knowledge)
+  - lighting (kitchen lighting design)
+  - electrical (appliance circuits + hob supply)
+  - plumbing (sink + dishwasher services)
+  - interior_design (style compatibility)
+  - regulations (kitchen ventilation + electrical regs)
+
+retrieval_config:
+  primary_key: id
+  secondary_keys: [tags, category_tag, layout_type, style, worktop_type]
+  full_text_fields: [question, answer, title, body]
+  vector_embed: false

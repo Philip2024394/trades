@@ -1,0 +1,184 @@
+# NEX Staircase Component Library — PANEL_MOULDING family record
+#
+# Philip 2026-08-03 · Decorative moulding profiles ("slips") applied
+# onto backing to form panel frames. Companion family to PANEL_SYSTEM.
+#
+# Every real panel installation selects one primary moulding profile
+# and applies it uniformly across the whole project. Consistency
+# matters more than absolute panel dimension.
+#
+# Master docs: docs/brains/staircase-panelling-layout-slip-materials-philip-2026-08-03.md
+
+family_id:                  PANEL_MOULDING
+family_name:                Decorative Panel Mouldings (Slips)
+component_type:             panel_moulding
+non_structural:             true
+
+# ─── Variants supported ────────────────────────────────────────────
+variants_supported:
+  - OGEE_18
+  - OGEE_22
+  - OGEE_32
+  - BOLECTION_32
+  - BOLECTION_45
+  - ASTRAGAL
+  - BEAD
+  - LAMBS_TONGUE
+  - CHAMFER
+  - SQUARE_EDGE
+  - SHADOW_GAP
+  - SHAKER_18
+  - SHAKER_22
+  - SHAKER_25
+
+# Per-variant characteristics
+variant_specs:
+  OGEE_18:
+    width_mm:                     18
+    projection_mm:                9
+    profile_type:                 ogee
+    style_era:                    traditional
+    paint_grade:                  true
+    hardwood_compatible:          true
+    recommended_mitre_deg:        45
+    typical_use:                  "small panels · mid-tier traditional look"
+  OGEE_22:
+    width_mm:                     22
+    projection_mm:                12
+    profile_type:                 ogee
+    style_era:                    traditional
+    paint_grade:                  true
+    hardwood_compatible:          true
+    recommended_mitre_deg:        45
+    typical_use:                  "standard traditional panelling · Victorian sympathetic"
+  OGEE_32:
+    width_mm:                     32
+    projection_mm:                15
+    profile_type:                 ogee
+    style_era:                    traditional
+    paint_grade:                  true
+    hardwood_compatible:          true
+    recommended_mitre_deg:        45
+    typical_use:                  "wider ogee · reads richer · pairs with 9-12mm backing"
+  BOLECTION_32:
+    width_mm:                     32
+    projection_mm:                20
+    profile_type:                 bolection
+    style_era:                    georgian_victorian
+    paint_grade:                  true
+    hardwood_compatible:          true
+    recommended_mitre_deg:        45
+    typical_use:                  "deep raised moulding · Georgian interiors · projects proud of the wall"
+  BOLECTION_45:
+    width_mm:                     45
+    projection_mm:                25
+    profile_type:                 bolection
+    style_era:                    georgian_victorian
+    paint_grade:                  true
+    hardwood_compatible:          true
+    recommended_mitre_deg:        45
+    typical_use:                  "heritage grade · deep shadow lines · pairs with 12mm backing"
+  ASTRAGAL:
+    width_mm:                     22
+    projection_mm:                10
+    profile_type:                 astragal
+    style_era:                    traditional
+    paint_grade:                  true
+    hardwood_compatible:          true
+    recommended_mitre_deg:        45
+    typical_use:                  "decorative bead detail · classical trim"
+  BEAD:
+    width_mm:                     18
+    projection_mm:                8
+    profile_type:                 bead
+    style_era:                    cottage_traditional
+    paint_grade:                  true
+    hardwood_compatible:          true
+    recommended_mitre_deg:        45
+    typical_use:                  "beaded panelling · cottage/farmhouse"
+  LAMBS_TONGUE:
+    width_mm:                     22
+    projection_mm:                12
+    profile_type:                 lambs_tongue
+    style_era:                    traditional
+    paint_grade:                  true
+    hardwood_compatible:          true
+    recommended_mitre_deg:        45
+    typical_use:                  "traditional British profile · softer than ogee"
+  CHAMFER:
+    width_mm:                     25
+    projection_mm:                12
+    profile_type:                 chamfered
+    style_era:                    subtle_traditional
+    paint_grade:                  true
+    hardwood_compatible:          true
+    recommended_mitre_deg:        45
+    typical_use:                  "subtle traditional · reads modern-friendly"
+  SQUARE_EDGE:
+    width_mm:                     18
+    projection_mm:                9
+    profile_type:                 square_edge
+    style_era:                    modern
+    paint_grade:                  true
+    hardwood_compatible:          true
+    recommended_mitre_deg:        45
+    typical_use:                  "modern · minimalist · flat panel systems"
+  SHADOW_GAP:
+    width_mm:                     10
+    projection_mm:                6
+    profile_type:                 shadow_gap
+    style_era:                    modern_premium
+    paint_grade:                  true
+    hardwood_compatible:          true
+    recommended_mitre_deg:        45
+    typical_use:                  "premium modern · reveal creates shadow · high spec finish"
+  SHAKER_18:
+    width_mm:                     18
+    projection_mm:                9
+    profile_type:                 shaker
+    style_era:                    modern_contemporary
+    paint_grade:                  true
+    hardwood_compatible:          false
+    recommended_mitre_deg:        45
+    typical_use:                  "modern Shaker · slim square profile · easy to fit"
+  SHAKER_22:
+    width_mm:                     22
+    projection_mm:                12
+    profile_type:                 shaker
+    style_era:                    modern_contemporary
+    paint_grade:                  true
+    hardwood_compatible:          false
+    recommended_mitre_deg:        45
+    typical_use:                  "modern Shaker mid-tier · most common"
+  SHAKER_25:
+    width_mm:                     25
+    projection_mm:                15
+    profile_type:                 shaker
+    style_era:                    modern_contemporary
+    paint_grade:                  true
+    hardwood_compatible:          false
+    recommended_mitre_deg:        45
+    typical_use:                  "modern Shaker premium · reads bolder · pairs with 12mm backing"
+
+# ─── Sourcing hints ────────────────────────────────────────────────
+common_sources:
+  - builders_merchants
+  - timber_merchants
+  - joinery_workshops
+  - staircase_manufacturers
+  - specialist_moulding_manufacturers
+
+custom_machining_supported:  true   # workshops can machine custom profiles to match existing period details
+
+# ─── Provenance ────────────────────────────────────────────────────
+created_at:                 2026-08-03T00:00:00Z
+created_by:                 philip
+revision:                   1
+review_status:              reviewed
+authoring_source:           "Philip O'Farrell · direct written contribution 2026-08-03"
+
+notes:
+  - Runtime type follow-up · types.ts ComponentType enum must add "panel_moulding".
+  - Consistency across a project matters more than exact dimensions.
+  - Custom profiles for period matching can be machined by joinery workshops
+    for a small tooling charge · linear metre pricing then applies.

@@ -16,40 +16,42 @@
 
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { brainStore } from "@/lib/nex/brain/storage";
 import type { KnowledgeRecord } from "@/lib/nex/brain/types";
+import { validateSearchParams } from "@/lib/nex/brain/http/validate-input";
+import { logger } from "@/lib/nex/observability/logger";
+// W-OBS-1 Path A Layer 1 · Wave 3 H2.a · adopted 2026-08-10.
+import { runFromRequest } from "@/lib/nex/observability/correlation";
+
+const log = logger("api.brain.records");
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const VALID_STATUSES: KnowledgeRecord["status"][] = [
-  "DRAFT",
-  "UNDER_REVIEW",
-  "AUTHORITATIVE",
-  "DEPRECATED",
-  "SUPERSEDED",
-];
+// D9 · route-boundary schema. Zod owns coercion/enum-check/limits;
+// prior code did the same by hand plus an untyped fall-through for
+// unrecognised statuses.
+const QuerySchema = z.object({
+  status: z.enum(["DRAFT", "UNDER_REVIEW", "AUTHORITATIVE", "DEPRECATED", "SUPERSEDED"]).optional(),
+  limit: z.coerce.number().int().min(1).max(200).default(50),
+  include_mock: z.coerce.boolean().default(false),
+});
 
 function isMockRecord(r: KnowledgeRecord): boolean {
-  // Mock-adapter records identify themselves via the `record_id` field
-  // (e.g. "mock_door_oak_msh9mlug") — the primary key `id` is a UUID
-  // and not diagnostic. The summary also contains "Mock adapter extracted"
-  // — checked as a secondary signal.
   if (typeof r.record_id === "string" && r.record_id.startsWith("mock_")) return true;
   if (typeof r.summary === "string" && r.summary.includes("Mock adapter extracted")) return true;
   return false;
 }
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const statusParam = searchParams.get("status");
-  const limitParam = Number(searchParams.get("limit") ?? "50");
-  const includeMock = searchParams.get("include_mock") === "true";
-  const requestedLimit = Math.min(Math.max(1, limitParam || 50), 200);
-  const status =
-    statusParam && (VALID_STATUSES as string[]).includes(statusParam)
-      ? (statusParam as KnowledgeRecord["status"])
-      : undefined;
+  return runFromRequest(req, () => recordsHandler(req));
+}
+
+async function recordsHandler(req: NextRequest) {
+  const parsed = validateSearchParams(req, QuerySchema);
+  if (!parsed.ok) return parsed.response;
+  const { status, limit: requestedLimit, include_mock: includeMock } = parsed.data;
 
   try {
     // Fetch extra when the mock filter is active so post-filter we still
@@ -71,7 +73,7 @@ export async function GET(req: NextRequest) {
       mock_hidden_in_this_page: includeMock ? 0 : mockCount,
     });
   } catch (err) {
-    console.error("[api.brain.records] failed:", err);
+    log.error("list_failed", { error: err instanceof Error ? err.message : String(err) });
     return NextResponse.json({ ok: false, error: "list_failed" }, { status: 500 });
   }
 }

@@ -1,0 +1,181 @@
+# NEX Conversational Intelligence · Pilot Test Suite
+# Every test is scored against the conversational-intelligence files, not against a live NEX runtime.
+# Scoring dimensions per test:
+#   1. Interpretation — customer phrase mapped in customer-language-glossary.md
+#   2. Intent tier — intent-patterns.md classifies to expected tier (Clear/Likely/Ambiguous)
+#   3. Retrieval — expected Reference Brain sources cited in intent-patterns.md OR customer-intent-scenarios.md
+#   4. Response-shape — matching response shape available (direct / hedged+follow-up / ask-first)
+# Coverage % = (tests scoring 4/4) / total tests
+
+meta:
+  suite: pilot-starting-steps
+  version: 1.0
+  created: 2026-08-14
+  provenance: philip-approved-2026-08-14 (12 example customer phrases + derived)
+
+tests:
+  # === Philip's 12 example customer phrases (2026-08-14) ===
+
+  - id: pilot-01
+    input: "Can I put mats just on the steps?"
+    expected_interpretation: [step_mats]
+    expected_tier: Clear
+    expected_retrieval:
+      - step-mats-knowledge-2026-08-14.md#1
+    expected_shape: direct
+
+  - id: pilot-02
+    input: "What's the difference between a stair runner and step mats?"
+    expected_interpretation: [step_mats_vs_runner_vs_full_carpet]
+    expected_tier: Clear
+    expected_retrieval:
+      - step-mats-knowledge-2026-08-14.md#1
+    expected_shape: direct
+
+  - id: pilot-03
+    input: "I want to refurb my stairs but keep some of the timber showing."
+    expected_interpretation: [refacing_scope, partial_timber_retention]
+    expected_tier: Likely
+    expected_retrieval:
+      - refacing-before-after-cards-and-trade-content-taxonomy-2026-08-14.md#1
+      - starting-steps-knowledge-2026-08-14.md#16
+    expected_shape: hedged_with_follow_up
+
+  - id: pilot-04
+    input: "What can I do under my stairs?"
+    expected_interpretation:
+      - understair_storage
+      - understair_workspace
+      - understair_feature
+    expected_tier: Ambiguous
+    expected_retrieval: []  # DO NOT retrieve for ambiguous
+    expected_shape: ask_first
+
+  - id: pilot-05
+    input: "I want a nice first step because I'm carpeting the rest."
+    expected_interpretation: [feature_starting_step, carpeted_flight, carpet_starting_step_design_tendency]
+    expected_tier: Likely
+    expected_retrieval:
+      - starting-steps-types-carpet-and-design-2026-08-14.md#part-3
+    expected_shape: hedged_with_follow_up
+
+  - id: pilot-06
+    input: "Can I have the same railing around the landing?"
+    expected_interpretation: [landing_balustrade_continuity_principle]
+    expected_tier: Clear
+    expected_retrieval:
+      - landing-railings-continuity-and-construction-2026-08-14.md#1
+    expected_shape: direct
+
+  - id: pilot-07
+    input: "How do I connect the landing rail to the top newel?"
+    expected_interpretation: [top_newel_transition]
+    expected_tier: Clear
+    expected_retrieval:
+      - landing-railings-continuity-and-construction-2026-08-14.md#3
+    expected_shape: direct
+
+  - id: pilot-08
+    input: "What brackets do I need for the handrail?"
+    expected_interpretation: [wall_mounted_handrail_kit_brackets]
+    expected_tier: Likely
+    expected_retrieval:
+      - staircase-handrail-components-2026-08-14.md#6
+    expected_shape: hedged_with_follow_up
+
+  - id: pilot-09
+    input: "What's that metal thing that holds the handrail to the wall?"
+    expected_interpretation: [wall_mounted_handrail_bracket]
+    expected_tier: Clear
+    expected_retrieval:
+      - staircase-handrail-components-2026-08-14.md#6
+    expected_shape: direct
+
+  - id: pilot-10
+    input: "Can I make the first step wider?"
+    expected_interpretation: [extended_tread_starting_step]
+    expected_tier: Clear
+    expected_retrieval:
+      - starting-steps-types-carpet-and-design-2026-08-14.md#part-1-11
+    expected_shape: direct
+
+  - id: pilot-11
+    input: "Why does the landing need a baserail?"
+    expected_interpretation: [three_way_base_rail_construction_relationship]
+    expected_tier: Clear
+    expected_retrieval:
+      - landing-railings-continuity-and-construction-2026-08-14.md#2
+    expected_shape: direct
+
+  - id: pilot-12
+    input: "I've got a staircase against a wall — what starting-step options do I have?"
+    expected_interpretation: [starting_step_options, wall_fixed_construction_type]
+    expected_tier: Clear
+    expected_retrieval:
+      - starting-steps-knowledge-2026-08-14.md#1
+      - starting-steps-types-carpet-and-design-2026-08-14.md#part-1
+    expected_shape: direct
+
+  # === Additional pilot tests derived from Philip's flagship examples ===
+
+  - id: pilot-13
+    input: "I want something fancy at the bottom of the stairs."
+    expected_interpretation: [ambiguous_feature_starting_step]
+    expected_tier: Ambiguous
+    expected_retrieval: []  # DO NOT retrieve for ambiguous
+    expected_shape: ask_first
+
+  - id: pilot-14
+    input: "Can you make the bottom look more open?"
+    expected_interpretation: [ambiguous_balustrade_or_first_tread_or_understair]
+    expected_tier: Ambiguous
+    expected_retrieval: []
+    expected_shape: ask_first
+
+  - id: pilot-15
+    input: "Can I have two balusters per step?"
+    expected_interpretation: [balusters_per_tread_typical]
+    expected_tier: Clear
+    expected_retrieval:
+      - landing-railings-continuity-and-construction-2026-08-14.md#8-2
+    expected_shape: direct
+
+  - id: pilot-16
+    input: "I want the railing to look less crowded."
+    expected_interpretation: [balustrade_less_crowded_slimmer_or_metal_or_glass]
+    expected_tier: Likely
+    expected_retrieval:
+      - landing-railings-continuity-and-construction-2026-08-14.md#12
+    expected_shape: hedged_with_follow_up
+
+  - id: pilot-17
+    input: "Can I have a curved starting step if the stairs are against a wall?"
+    expected_interpretation: [curved_starting_step, wall_fixed_construction_type]
+    expected_tier: Clear
+    expected_retrieval:
+      - starting-steps-knowledge-2026-08-14.md#1
+    expected_shape: direct
+
+  - id: pilot-18
+    input: "What's that rounded first step called?"
+    expected_interpretation: [starting_step_terminology_bullnose_or_half_round_or_curtail]
+    expected_tier: Likely
+    expected_retrieval:
+      - starting-steps-types-carpet-and-design-2026-08-14.md#part-1-2
+      - starting-steps-types-carpet-and-design-2026-08-14.md#part-1-4
+    expected_shape: hedged_with_follow_up
+
+  - id: pilot-19
+    input: "The step that sticks out — what's it called?"
+    expected_interpretation: [projecting_starting_step_terminology]
+    expected_tier: Likely
+    expected_retrieval:
+      - starting-steps-types-carpet-and-design-2026-08-14.md#part-1
+    expected_shape: hedged_with_follow_up
+
+  - id: pilot-20
+    input: "I don't know what I want, but the stairs need work."
+    expected_interpretation: [open_ended_refurbishment_exploration]
+    expected_tier: Ambiguous
+    expected_retrieval: []
+    expected_shape: ask_first

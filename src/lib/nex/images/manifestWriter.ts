@@ -31,6 +31,49 @@ export const BACKUP_DIR = path.join(
 );
 export const BACKUP_KEEP = 50;
 
+/**
+ * NEX Storage Boundary Rule (2026-08-14 · permanent).
+ * New NEX images MUST use ImageKit or a host explicitly approved via
+ * NEX_APPROVED_STORAGE_HOSTS (comma-separated). Any manifest write that
+ * ADDS a URL hosted at the TRADES Supabase project is rejected. See
+ * memory/project_nex_storage_boundary_rule_2026_08_14.md.
+ *
+ * Legacy rows already in the manifest are NOT touched — they migrate
+ * away separately. This guard only fires on NEW keys added by a write.
+ */
+const NEX_STORAGE_BOUNDARY_TRADES_HOST = "msdonkkechxzgagyguoe.supabase.co";
+const NEX_STORAGE_BOUNDARY_APPROVED = new Set<string>([
+  "ik.imagekit.io",
+  ...(process.env.NEX_APPROVED_STORAGE_HOSTS ?? "")
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean),
+]);
+function hostOf(url: string): string | null {
+  try { return new URL(url).host.toLowerCase(); } catch { return null; }
+}
+function isApprovedHost(host: string): boolean {
+  if (NEX_STORAGE_BOUNDARY_APPROVED.has(host)) return true;
+  for (const approved of NEX_STORAGE_BOUNDARY_APPROVED) {
+    if (host.endsWith("." + approved)) return true;
+  }
+  return false;
+}
+
+export class NexStorageBoundaryError extends Error {
+  code = "NEX_STORAGE_BOUNDARY";
+  violations: { url: string; host: string; reason: string }[];
+  constructor(violations: { url: string; host: string; reason: string }[]) {
+    super(
+      `NEX Storage Boundary violation · ${violations.length} new manifest URL(s) blocked. ` +
+        `New NEX images must use ImageKit or an explicitly approved NEX-owned storage provider ` +
+        `(see project_nex_storage_boundary_rule_2026_08_14.md).`
+    );
+    this.name = "NexStorageBoundaryError";
+    this.violations = violations;
+  }
+}
+
 export type ManifestFile = {
   version: number;
   generated_at?: string;
@@ -112,7 +155,28 @@ export function withManifestWrite<T>(
   return runSerialized(async () => {
     const backup_path = await backupCurrent();
     const manifest = await readManifest();
+    const beforeKeys = new Set(Object.keys(manifest.images));
     const result = await mutator(manifest);
+
+    // NEX Storage Boundary Rule · reject NEW keys with disallowed hosts.
+    const violations: { url: string; host: string; reason: string }[] = [];
+    for (const key of Object.keys(manifest.images)) {
+      if (beforeKeys.has(key)) continue; // legacy row · untouched
+      const host = hostOf(key);
+      if (!host) {
+        violations.push({ url: key, host: "(unparsed)", reason: "url_not_parseable" });
+        continue;
+      }
+      if (host === NEX_STORAGE_BOUNDARY_TRADES_HOST) {
+        violations.push({ url: key, host, reason: "trades_supabase_host_blocked" });
+        continue;
+      }
+      if (!isApprovedHost(host)) {
+        violations.push({ url: key, host, reason: "host_not_in_approved_list" });
+      }
+    }
+    if (violations.length) throw new NexStorageBoundaryError(violations);
+
     manifest.generated_at = new Date().toISOString();
     await atomicWrite(manifest);
     return { result, backup_path };

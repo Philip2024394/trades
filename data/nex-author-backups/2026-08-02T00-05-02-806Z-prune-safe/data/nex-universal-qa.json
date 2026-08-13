@@ -1,0 +1,576 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-01T23:55:11.956Z",
+  "layer": "universal",
+  "note": "Layer 1 · UNIVERSAL Q&A · applies to every staircase in the world regardless of type / family / manufacturer. Author each answer ONCE · every design gets it automatically. Do NOT put design-specific or family-specific answers here. When a question is authored, Nex uses this answer whenever no more specific (image · family · component) match exists. Empty `a` slots are skipped by the matcher.",
+  "qa": [
+    {
+      "q": "Is a staircase structural?",
+      "a": ""
+    },
+    {
+      "q": "Can a staircase be assembled on site?",
+      "a": ""
+    },
+    {
+      "q": "How long does manufacturing normally take?",
+      "a": ""
+    },
+    {
+      "q": "Can this be shipped internationally?",
+      "a": ""
+    },
+    {
+      "q": "Can I install a staircase myself?",
+      "a": ""
+    },
+    {
+      "q": "Can I change the timber species?",
+      "a": ""
+    },
+    {
+      "q": "Can I paint the steel later?",
+      "a": ""
+    },
+    {
+      "q": "What maintenance is required?",
+      "a": ""
+    },
+    {
+      "q": "Does timber move naturally?",
+      "a": ""
+    },
+    {
+      "q": "Will timber crack over time?",
+      "a": ""
+    },
+    {
+      "q": "Can staircases be dismantled?",
+      "a": ""
+    },
+    {
+      "q": "Can the staircase be modified later?",
+      "a": ""
+    },
+    {
+      "q": "What is oak?",
+      "a": ""
+    },
+    {
+      "q": "What is walnut?",
+      "a": ""
+    },
+    {
+      "q": "What is toughened glass?",
+      "a": ""
+    },
+    {
+      "q": "What is laminated glass?",
+      "a": ""
+    },
+    {
+      "q": "What is powder-coated steel?",
+      "a": ""
+    },
+    {
+      "q": "Are open-riser staircases legal?",
+      "a": ""
+    },
+    {
+      "q": "Is a staircase safe for children?",
+      "a": ""
+    },
+    {
+      "q": "Is a staircase safe for elderly people?",
+      "a": ""
+    },
+    {
+      "q": "Can pets use the staircase?",
+      "a": ""
+    },
+    {
+      "q": "How long does a staircase last?",
+      "a": ""
+    },
+    {
+      "q": "Will my house insurance change?",
+      "a": ""
+    },
+    {
+      "q": "Do I need building regulations approval?",
+      "a": ""
+    },
+    {
+      "q": "Do I need structural drawings?",
+      "a": ""
+    },
+    {
+      "q": "Will I receive drawings before manufacture?",
+      "a": ""
+    },
+    {
+      "q": "How is a bespoke staircase delivered?",
+      "a": ""
+    },
+    {
+      "q": "What happens if a staircase arrives damaged?",
+      "a": ""
+    },
+    {
+      "q": "Is a warranty provided?",
+      "a": ""
+    },
+    {
+      "q": "How much does this staircase cost?",
+      "a": ""
+    },
+    {
+      "q": "Can you give me a rough estimate?",
+      "a": ""
+    },
+    {
+      "q": "Why can't you tell me the price?",
+      "a": ""
+    },
+    {
+      "q": "Are you hiding the cost?",
+      "a": ""
+    },
+    {
+      "q": "Can you at least give me a ballpark figure?",
+      "a": ""
+    },
+    {
+      "q": "Can you tell me if my budget is realistic?",
+      "a": ""
+    },
+    {
+      "q": "Why do you ask so many questions before discussing price?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex help me get a quotation?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex find someone who builds this?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex recommend a manufacturer?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex prepare an enquiry for me?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex introduce me to multiple manufacturers?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex negotiate prices?",
+      "a": ""
+    },
+    {
+      "q": "Are you an AI?",
+      "a": ""
+    },
+    {
+      "q": "Is this a real staircase or an AI concept?",
+      "a": ""
+    },
+    {
+      "q": "Can you guarantee this staircase will be built exactly?",
+      "a": ""
+    },
+    {
+      "q": "Can this staircase actually be made?",
+      "a": "Yes. The images in the Nex Library are design concepts and inspiration, but they are based on real staircase construction methods. Many of these staircases can be manufactured by experienced bespoke staircase companies. Some designs may need small engineering adjustments to suit your home, local building regulations or manufacturing methods, but the overall style and appearance can usually be achieved. If specialist engineering is required, Nex can — with your permission — help connect you with a suitable staircase manufacturer to review the design."
+    },
+    {
+      "q": "Is this just an AI picture?",
+      "a": "The image is a visual design concept, not a photograph of an existing installation. Its purpose is to help you explore styles, materials and layouts that could be suitable for your home. Many modern staircase manufacturers regularly build staircases inspired by design concepts like these."
+    },
+    {
+      "q": "Can someone really build this staircase?",
+      "a": "In many cases, yes. Professional staircase manufacturers build bespoke staircases every day. Every project is individually designed, engineered and manufactured for the customer's property. The final staircase may include engineering adjustments to meet structural requirements and building regulations while keeping the same overall appearance."
+    },
+    {
+      "q": "Is this impossible to manufacture?",
+      "a": "Not necessarily. Some concepts are straightforward to manufacture. Others may require more advanced engineering, specialist fabrication or custom materials. Rather than guessing, Nex can help have the design reviewed by an experienced staircase manufacturer if technical confirmation is needed."
+    },
+    {
+      "q": "Why doesn't the finished staircase look exactly like the image?",
+      "a": "Every home is different. Factors such as floor-to-floor height, room size, ceiling opening, structural supports, local building regulations and customer preferences all influence the final design. The aim is normally to capture the same overall style while adapting it for your property."
+    },
+    {
+      "q": "Can I build exactly what I see?",
+      "a": "Sometimes yes. Sometimes small changes are needed. The closer the image is to practical construction methods, the closer the finished staircase can usually be to the concept. If changes are required, they are normally structural rather than visual."
+    },
+    {
+      "q": "How do I know if this design is possible?",
+      "a": "Some designs can be assessed immediately. More complex designs may need review by an experienced staircase designer or structural engineer. If required, Nex can — with your permission — prepare your project information and connect you with a suitable specialist for confirmation."
+    },
+    {
+      "q": "What if no company has built one like this before?",
+      "a": "That doesn't necessarily mean it cannot be built. Many bespoke staircase companies create completely new designs every year. Experienced manufacturers often combine proven engineering with new architectural styles to produce unique staircases."
+    },
+    {
+      "q": "Is Nex guaranteeing this staircase can be built?",
+      "a": "No. Nex does not guarantee that every design can be manufactured exactly as shown. Nex explains what is generally possible based on staircase construction principles. Where specialist engineering or manufacturer confirmation is needed, Nex will say so honestly rather than guess."
+    },
+    {
+      "q": "Who decides if the staircase is structurally safe?",
+      "a": "The staircase manufacturer and, where required, qualified engineers. They are responsible for ensuring the staircase is suitable for manufacture and complies with the relevant structural and building requirements for your location."
+    },
+    {
+      "q": "Can Nex speak to a manufacturer for me?",
+      "a": "Yes. With your permission, Nex can prepare your project brief and connect you with a suitable staircase manufacturer or specialist to discuss your design and answer technical questions."
+    },
+    {
+      "q": "What if the manufacturer says changes are needed?",
+      "a": "That is completely normal. Small adjustments may be recommended to improve strength, safety, installation, manufacturing efficiency, or compliance with local regulations. The overall appearance can often remain very close to the original concept."
+    },
+    {
+      "q": "Has this exact staircase been built before?",
+      "a": "Not always. Some library designs are inspired by existing staircase styles, while others explore new design ideas. Even if an identical staircase has not been built before, experienced bespoke manufacturers may still be able to produce a very similar result."
+    },
+    {
+      "q": "Why does Nex show designs that haven't been built yet?",
+      "a": "The purpose of the Nex Library is to inspire homeowners and help them explore possibilities. Many architectural projects begin as concepts before becoming real buildings or products. The library helps customers communicate their ideas clearly before a manufacturer develops the final engineered design."
+    },
+    {
+      "q": "What if I'm worried it's only AI?",
+      "a": "That's a sensible question. Nex is designed to separate design inspiration from engineering reality. If a question can be answered confidently, Nex will answer it. If a question requires manufacturer-specific engineering or construction confirmation, Nex will say: \"I don't want to guess. With your permission, I can help prepare your project and ask a suitable staircase manufacturer to confirm the technical details.\" That approach keeps the advice accurate while helping you turn a concept into a real staircase."
+    },
+    {
+      "q": "Can this design really be built?",
+      "a": "Many people look at a staircase like this and assume it's \"just AI.\" In reality, every staircase begins as an idea. Before it exists, it is simply a drawing, a sketch or a digital concept. The difference between an idea and a real staircase is the knowledge, engineering and craftsmanship used to build it. With the right design team and experienced manufacturers, many concept staircases can become real projects."
+    },
+    {
+      "q": "This looks impossible.",
+      "a": "It may look unusual, but unusual does not always mean impossible. Modern staircase manufacturers use advanced engineering, CNC machining, laser cutting, 3D modelling and precision fabrication to build designs that would have been extremely difficult to produce many years ago. Some concepts can be built exactly as shown, while others may need small engineering changes to suit your home and local building regulations. If specialist confirmation is needed, Nex can help connect you with an experienced manufacturer."
+    },
+    {
+      "q": "People say AI designs can't be built.",
+      "a": "That is a common misunderstanding. AI can generate ideas, but it does not manufacture staircases. Experienced designers, engineers and skilled craftsmen turn ideas into real products. Many of the world's most impressive buildings, bridges and staircases started as concepts long before they became reality."
+    },
+    {
+      "q": "Has anything like this ever happened before?",
+      "a": "Yes. Throughout history, many designs were once considered impossible until new skills, materials and technology made them practical. Curved glass buildings, floating staircases, long-span bridges and complex architectural roofs all began as ambitious ideas before becoming everyday construction projects. Innovation happens because skilled people find solutions."
+    },
+    {
+      "q": "Could this become a real staircase?",
+      "a": "In many cases, yes. The image represents a design vision. The manufacturer then determines the safest and most practical engineering solution to achieve that vision. Sometimes the staircase can be built almost exactly as shown. Sometimes small structural adjustments are recommended while keeping the same overall appearance."
+    },
+    {
+      "q": "What if nobody has built this exact staircase before?",
+      "a": "That doesn't automatically mean it cannot be built. Every year, bespoke staircase companies create designs they have never built before. Experienced manufacturers often enjoy challenging projects because they allow them to demonstrate their design and engineering capabilities."
+    },
+    {
+      "q": "How does an idea become a real staircase?",
+      "a": "The process usually follows these stages: (1) a design concept or inspiration · (2) measurements taken from your property · (3) structural engineering where required · (4) detailed manufacturing drawings · (5) customer approval · (6) precision manufacturing · (7) delivery and installation. Every bespoke staircase in the world started somewhere along this journey."
+    },
+    {
+      "q": "Is Nex promising every AI image can be built?",
+      "a": "No. Nex will never promise something it cannot verify. If a staircase uses recognised construction methods, Nex can explain how it would normally be manufactured. If a design contains features that require specialist engineering or manufacturer confirmation, Nex will tell you honestly. Rather than guessing, Nex can — with your permission — prepare your project and ask an experienced staircase manufacturer to review the concept."
+    },
+    {
+      "q": "Why does Nex show ambitious designs?",
+      "a": "Because imagination drives innovation. Many of today's iconic staircases would once have been considered too difficult or too expensive to build. As manufacturing technology improves, new materials become available and skilled craftspeople develop better techniques, more ambitious designs become achievable. The purpose of the Nex Library is to inspire possibilities while remaining honest about what still requires expert engineering."
+    },
+    {
+      "q": "Can skilled manufacturers build things that seem impossible?",
+      "a": "Often, yes. History shows that many remarkable structures were once thought to be beyond reach until experienced designers and engineers developed the knowledge to build them. Nex believes great design begins with imagination, but every successful project also depends on skilled people, careful engineering and quality workmanship. That's why, whenever technical confirmation is needed, Nex prefers to involve experienced manufacturers rather than make assumptions."
+    },
+    {
+      "q": "Can a one-off staircase really be manufactured?",
+      "a": "Yes. Every bespoke staircase starts as a one-off project. Unlike mass-produced products, bespoke staircases are designed around a specific property and customer. Manufacturers regularly produce staircases they have never built before."
+    },
+    {
+      "q": "Has anyone built this exact staircase?",
+      "a": "Possibly, but not necessarily. Many staircases are unique and built only once for a particular home. The important question is not whether an identical staircase exists, but whether experienced designers and manufacturers have the skills to build it safely. If confirmation is required, Nex can prepare your project for review by a specialist."
+    },
+    {
+      "q": "What if the design needs changing?",
+      "a": "That is perfectly normal. During the design process a manufacturer may recommend changes to improve strength, installation, comfort or compliance with local building regulations. Their goal is to keep the appearance as close as possible to your chosen design while ensuring it performs correctly."
+    },
+    {
+      "q": "Why doesn't Nex simply say yes or no?",
+      "a": "Because honesty matters. Some questions require engineering calculations, structural assessment or knowledge of manufacturing methods that depend on your property. Rather than guessing, Nex prefers to involve qualified professionals whenever specialist advice is needed."
+    },
+    {
+      "q": "Can modern manufacturing produce shapes like this?",
+      "a": "Yes. Today's staircase manufacturers can use CNC machining, laser cutting, robotic welding, curved timber laminating, precision glass processing and advanced CAD software to manufacture designs that were once extremely difficult to produce. The final solution always depends on the project's engineering requirements."
+    },
+    {
+      "q": "What if the manufacturer says something needs changing?",
+      "a": "That doesn't mean your idea has failed. It simply means they have found a safer or more practical way to achieve the same overall appearance. Many successful bespoke staircases go through several design revisions before manufacturing begins."
+    },
+    {
+      "q": "Does every staircase have to follow the image exactly?",
+      "a": "No. The image is your inspiration. The finished staircase can usually be customised to suit your room, measurements, preferred materials and budget while keeping the same overall style."
+    },
+    {
+      "q": "Could future technology make even more designs possible?",
+      "a": "Absolutely. Construction methods continue to improve every year. New materials, stronger glass, better steel fabrication, improved timber engineering and more advanced manufacturing techniques allow designers to create staircases that would have been difficult to build in the past. Innovation never stands still."
+    },
+    {
+      "q": "Why do manufacturers enjoy challenging staircases?",
+      "a": "Complex projects allow skilled companies to demonstrate their experience and craftsmanship. Many specialist staircase manufacturers take pride in producing unique designs that showcase their engineering capabilities."
+    },
+    {
+      "q": "What happens if no manufacturer wants the project?",
+      "a": "That is uncommon, but it can happen if a design is outside a company's capabilities or current workload. Nex can continue looking for manufacturers with different skills or experience until suitable specialists are found, where available."
+    },
+    {
+      "q": "Can Nex guarantee the staircase will be built?",
+      "a": "No. Only the manufacturer responsible for the project can confirm what they are prepared to manufacture. Nex helps explain designs, prepare project information and connect you with suitable specialists, but it never guarantees engineering decisions."
+    },
+    {
+      "q": "Can a manufacturer improve my idea?",
+      "a": "Very often. Customers usually arrive with an inspiration image. Experienced staircase designers frequently suggest improvements that make the staircase stronger, easier to build, more comfortable to use or more visually striking."
+    },
+    {
+      "q": "Does every manufacturer build the same way?",
+      "a": "No. Two experienced companies may produce a staircase that looks almost identical while using different internal structures, fixing methods or manufacturing techniques. There is often more than one correct engineering solution."
+    },
+    {
+      "q": "Why do experienced staircase makers matter?",
+      "a": "A staircase combines structural engineering, precision manufacturing and fine joinery. Experience helps manufacturers solve challenges before they become problems, resulting in a safer installation and a better finished product."
+    },
+    {
+      "q": "Could this become a signature feature of my home?",
+      "a": "Many bespoke staircases become the focal point of a property. A well-designed staircase can transform an entrance hall, improve first impressions and become one of the most memorable architectural features in the home."
+    },
+    {
+      "q": "Is Nex replacing staircase designers?",
+      "a": "No. Nex is designed to help you explore ideas, understand options and prepare your project. Professional designers, engineers and manufacturers remain an essential part of creating a real staircase."
+    },
+    {
+      "q": "What if experts disagree?",
+      "a": "That can happen. Different manufacturers sometimes recommend different engineering approaches based on their experience. Nex encourages customers to compare professional opinions before making a final decision."
+    },
+    {
+      "q": "Can something beautiful also be practical?",
+      "a": "Yes. The best staircase designs combine appearance with everyday usability. Good design considers comfort, safety, maintenance, durability and long-term performance — not just how the staircase looks."
+    },
+    {
+      "q": "Why does Nex ask questions before introducing a manufacturer?",
+      "a": "Because good preparation saves time. The more information you provide about your home, measurements, preferred materials and design goals, the easier it is for manufacturers to understand your project and provide meaningful advice."
+    },
+    {
+      "q": "What if my dream staircase seems impossible?",
+      "a": "Many remarkable projects began as ambitious ideas. The purpose of Nex is not to dismiss creative designs, but to explore them responsibly. If a concept appears technically challenging, Nex can help gather the right information and, with your permission, involve experienced manufacturers to assess what is possible."
+    },
+    {
+      "q": "Can I use my own builder to install the staircase?",
+      "a": "Yes, some manufacturers will supply the staircase only, allowing your own builder or carpenter to install it. Others prefer their own installation teams to ensure the staircase is fitted correctly and to maintain any warranty. Always confirm this before ordering."
+    },
+    {
+      "q": "Do I have to buy the staircase from the company that designed it?",
+      "a": "Not necessarily. Some customers obtain drawings and quotations from several manufacturers before deciding who to use. Always check who owns the design and whether drawings can be shared with another company."
+    },
+    {
+      "q": "Can one company design it and another company build it?",
+      "a": "Sometimes yes. However, responsibility should be clearly agreed. If one company designs the staircase and another manufactures it, make sure everyone is working from the latest approved drawings."
+    },
+    {
+      "q": "What information will the staircase company need from me?",
+      "a": "They may ask for: floor-to-floor height, ceiling height, structural opening size, building plans, photographs, videos, site address, access information, preferred style, budget guidance and desired completion date."
+    },
+    {
+      "q": "Do I need planning permission for a new staircase?",
+      "a": "In many situations, replacing or installing an internal staircase does not require planning permission, but building regulations or local approval may still apply. Requirements vary by location."
+    },
+    {
+      "q": "Who checks that the staircase meets regulations?",
+      "a": "Normally this is handled by the staircase designer, structural engineer where required, and the relevant building control authority according to local regulations."
+    },
+    {
+      "q": "Can my staircase be built before the house is finished?",
+      "a": "Yes. Many staircases are manufactured while the building work is progressing, although final dimensions are often confirmed during a site survey before production."
+    },
+    {
+      "q": "Should decorating be finished before the staircase is installed?",
+      "a": "Many people install the staircase before final decorating so any minor marks or adjustments can be completed first. Every project is different."
+    },
+    {
+      "q": "Can the staircase be removed years later?",
+      "a": "Most staircases can be removed, although this often requires dismantling and may involve building work because the staircase forms part of the home's structure."
+    },
+    {
+      "q": "Can I move the staircase to another house?",
+      "a": "Usually not without significant redesign. A staircase is normally manufactured specifically for one property and one set of measurements."
+    },
+    {
+      "q": "Will the staircase be numbered for installation?",
+      "a": "Many bespoke staircase manufacturers label individual components to simplify assembly on site."
+    },
+    {
+      "q": "Does the staircase arrive fully assembled?",
+      "a": "That depends on its size. Smaller staircases may arrive largely assembled. Large bespoke staircases often arrive in sections that are assembled inside the property."
+    },
+    {
+      "q": "Can bad weather delay delivery?",
+      "a": "Yes. Transport schedules can occasionally change due to severe weather, traffic restrictions or access issues."
+    },
+    {
+      "q": "Should I inspect the staircase before signing for delivery?",
+      "a": "Yes. If possible, check for visible transport damage and report any concerns immediately according to the supplier's delivery procedure."
+    },
+    {
+      "q": "What if something is damaged during delivery?",
+      "a": "Notify the supplier as soon as possible and follow their reporting process. Photographs are often helpful."
+    },
+    {
+      "q": "Should I insure the staircase before it is installed?",
+      "a": "Some home insurance policies may not cover building materials before installation. It is worth checking with your insurer if the staircase will be stored on site."
+    },
+    {
+      "q": "Can I choose a local staircase company?",
+      "a": "Many customers prefer local manufacturers because site visits and after-sales support may be easier. Others are happy to use specialist companies that travel nationally."
+    },
+    {
+      "q": "How far will staircase companies travel?",
+      "a": "Some work within a single region, while others undertake projects across the country or internationally. Nex can help identify companies that serve your location."
+    },
+    {
+      "q": "What if I don't know which staircase style is best?",
+      "a": "That is exactly what Nex is designed to help with. By understanding your home, available space, lifestyle and preferences, Nex can narrow the options before introducing you to suitable manufacturers."
+    },
+    {
+      "q": "Can Nex recommend one manufacturer over another?",
+      "a": "Nex aims to help you find suitable manufacturers based on your project and location. The final choice is always yours."
+    },
+    {
+      "q": "Can Nex tell me if something is technically possible?",
+      "a": "Nex can explain known construction principles and recognised staircase designs. If your project involves unusual engineering or bespoke structural details, Nex will clearly say when specialist confirmation is needed and, with your permission, connect you with an experienced manufacturer or engineer rather than guessing."
+    },
+    {
+      "q": "Why doesn't Nex just give me a fixed answer?",
+      "a": "Because every home is different. Dimensions, structure, local regulations, engineering requirements and manufacturing methods all vary. Nex would rather provide honest guidance and connect you with the right expert than give an answer that could be inaccurate."
+    },
+    {
+      "q": "What is OSB?",
+      "a": "OSB (Oriented Strand Board) is made from large wood strands arranged in layers and compressed with resin. The strands are oriented in different directions to improve strength. Common grades are OSB/1 (general indoor use), OSB/2 (dry structural use), OSB/3 (moisture-resistant structural board) and OSB/4 (heavy-duty structural use). OSB is stronger than MDF in many structural situations because the long wood strands handle shear forces, structural loading and fixings better than MDF. It is a construction board, not usually a finishing board."
+    },
+    {
+      "q": "Can OSB be used for a staircase?",
+      "a": "OSB is well suited to hidden staircase work — structural boxing, temporary stair construction, under-stair structures, wall panels and hidden supports. It is not suited to painted risers (unless heavily prepared), handrails, or any visible premium staircase parts because the surface is rough and shows chips and texture. Edges can also swell if wet."
+    },
+    {
+      "q": "What is acrylic?",
+      "a": "Acrylic is a plastic sheet made from polymethyl methacrylate (PMMA). It is a transparent or coloured alternative to glass, is around 10–20 times more impact resistant than glass, lightweight, and UV-resistant grades are available. It can be laser cut, CNC machined and polished."
+    },
+    {
+      "q": "Can acrylic be used for a stair balustrade?",
+      "a": "Yes. Acrylic balustrade panels are very popular — clear, frosted or coloured — and can be used for decorative stair inserts and lighting features. Acrylic is not suitable for stair treads, structural strings, or any load-bearing parts."
+    },
+    {
+      "q": "What is HPL?",
+      "a": "HPL stands for High Pressure Laminate. Products like Formica and compact laminate are common examples. HPL is normally used as a surface layer over MDF, plywood or particle board. It is very hard, scratch-resistant, water-resistant and available in a huge colour range. Typical uses are kitchen doors, worktops and stair side panels."
+    },
+    {
+      "q": "What is compact laminate?",
+      "a": "Compact laminate is a premium solid laminate sheet, typically 6mm, 8mm, 10mm or 12mm thick. It is waterproof, extremely durable and self-supporting. Common uses include toilet partitions, commercial interiors and high-use areas."
+    },
+    {
+      "q": "Will MDF paint the same as solid wood?",
+      "a": "MDF usually produces a very smooth painted finish because it has no visible grain. Solid timber has a natural grain pattern that can sometimes show through paint, depending on the species and finish. When both are professionally prepared and painted in the same colour, many people cannot tell the difference from a normal viewing distance. Up close, solid timber may still show subtle grain texture, while MDF generally appears smoother."
+    },
+    {
+      "q": "Why do many painted staircases use MDF?",
+      "a": "Many painted staircases use MDF for selected painted components because it offers a very smooth painted finish, a consistent surface, no knots, no grain raising, stable flat panels and excellent machining quality. It is common to find MDF used for painted risers, painted strings, painted fascia panels, decorative mouldings and wall panelling. This is an established practice within the staircase industry."
+    },
+    {
+      "q": "Is MDF suitable for a staircase?",
+      "a": "Yes, when used appropriately. MDF has been used successfully in staircases for many years, particularly for painted components. The suitability depends on which component it is used for, the grade of MDF, the design, the environment and the manufacturer's construction methods. Many high-quality painted staircases include MDF alongside solid timber."
+    },
+    {
+      "q": "Should treads be MDF?",
+      "a": "Solid timber or engineered timber treads are generally preferred because they receive the greatest wear from foot traffic. While MDF may be suitable for some decorative parts of a staircase, walking surfaces are commonly manufactured from stronger timber-based materials designed for repeated use."
+    },
+    {
+      "q": "Are MDF risers acceptable?",
+      "a": "Yes. Painted MDF risers are very common. Because risers are not normally walked on, they experience much less wear than treads, making MDF a practical choice in many staircase designs."
+    },
+    {
+      "q": "Can staircase strings be made from MDF?",
+      "a": "Yes. Many painted closed-string staircases use MDF strings successfully. The choice depends on staircase design, span, loading, construction method and the manufacturer's engineering. Where structural performance is critical, manufacturers may use engineered timber, plywood or solid timber instead."
+    },
+    {
+      "q": "Will an MDF bullnose step wear out?",
+      "a": "The answer depends on how it is constructed. If the bullnose is manufactured correctly using suitable materials and finishes, it can provide many years of service. However, the front edge of any staircase receives frequent contact from shoes, vacuum cleaners and everyday use. Over time, all materials — including timber — may show signs of wear. If you are considering an MDF bullnose, ask the manufacturer how it is constructed and finished."
+    },
+    {
+      "q": "Can MDF chip?",
+      "a": "Like many manufactured boards, MDF edges can be damaged by heavy impacts. Good painting systems and careful everyday use help protect the surface, but no painted material is completely immune to knocks."
+    },
+    {
+      "q": "How are MDF edges sealed?",
+      "a": "Professional manufacturers normally prepare MDF edges carefully before painting. Typical preparation may include sanding, edge sealing, priming, filling where required, additional primer coats, and a final paint finish. The exact process varies between manufacturers, but proper edge preparation is important for achieving a durable painted finish."
+    },
+    {
+      "q": "Does MDF absorb moisture?",
+      "a": "Standard MDF is generally more sensitive to prolonged moisture exposure than many hardwoods. However, interior staircases are normally installed in dry indoor environments, moisture-resistant grades of MDF are available for appropriate applications, and good sealing and painting help protect MDF surfaces. If your staircase is for an unusually humid environment, discuss suitable materials with the manufacturer."
+    },
+    {
+      "q": "Will MDF swell if it gets wet?",
+      "a": "Excessive water exposure can damage many building materials, including MDF. A professionally painted interior staircase should not normally be exposed to prolonged moisture. If flooding or significant water damage occurs, affected components should be inspected."
+    },
+    {
+      "q": "Is solid oak always better than MDF?",
+      "a": "Not necessarily. Each material has strengths. Solid timber offers natural grain, traditional appearance, refinishing potential and high durability. MDF offers a smooth painted finish, stable flat panels, no knots and a consistent appearance. The best choice depends on the component, the desired finish and the design."
+    },
+    {
+      "q": "Can you tell if a staircase is MDF?",
+      "a": "Not always. A professionally manufactured and painted MDF component can be very difficult to distinguish from painted timber once installed."
+    },
+    {
+      "q": "Will my staircase company mix materials?",
+      "a": "Yes. Many bespoke staircases combine different materials to achieve the best balance of appearance, strength and cost. A common combination is oak treads, oak handrails, MDF painted strings, MDF painted risers, hardwood newel posts and hardwood balusters. Using different materials for different components is common practice."
+    },
+    {
+      "q": "Should I insist on solid timber everywhere on my staircase?",
+      "a": "Not necessarily. Rather than focusing on one material throughout, it is often more useful to ask why a particular material has been chosen for each component. A reputable manufacturer should be able to explain the reasoning behind their specification."
+    },
+    {
+      "q": "What if I'm unsure about the material specification of my staircase?",
+      "a": "Nex will explain the general advantages and limitations of common staircase materials, but it won't guess whether one manufacturer's specification is better than another without evidence. If you would like independent clarification, Nex can, with your permission, help prepare your questions and connect you with an experienced staircase manufacturer to explain why a particular material has been recommended for your project."
+    },
+    {
+      "q": "Can I buy MDF stair risers from a building supplier?",
+      "a": "Usually yes for risers. Most building suppliers sell MDF sheets that can be cut into stair risers — 9mm, 12mm, 15mm or 18mm thickness in 2440×1220mm sheets. MDF stair TREADS are not normally sold as a finished product because MDF is not ideal as a walking surface. A tread receives foot impact, point loading from heels, dirt and moisture, and edge wear. Better tread materials are oak, beech, ash, engineered timber and laminated hardwood."
+    },
+    {
+      "q": "Will glue stick to MDF?",
+      "a": "Yes. MDF actually has very good glue adhesion. Common adhesives include PVA wood glue (D3 or D4 waterproof), PU glue (very strong and moisture resistant) and construction adhesive (for fixing risers and decorative panels). Preparation matters: clean the surface, remove dust, apply the correct adhesive, clamp or hold firmly and allow full curing time. The face of MDF bonds extremely well; the edges are more absorbent and may need sealing first."
+    },
+    {
+      "q": "Why do some people say MDF is a cheap material?",
+      "a": "For three main reasons. First, MDF has no natural wood value — solid oak has grain, character, natural variation and premium appearance, whereas MDF is made from wood fibres, so people associate it with flat-pack furniture and budget cabinets. Second, cheap MDF products give it a bad reputation — low-quality MDF furniture often fails because thin MDF is used with poor edge sealing, cheap screws and poor assembly, and people remember failures. Third, traditional joiners prefer timber because it feels natural, can be repaired and shows visible craftsmanship. In reality MDF is a specialised engineered material — a well-designed staircase using MDF in the correct places can last decades."
+    },
+    {
+      "q": "Can MDF be used as a landing board?",
+      "a": "Generally no, not as the structural landing board. A landing board carries people standing on it, turning loads, furniture movement and long-term weight, so it needs structural strength. Better materials are solid timber, glulam or engineered timber, structural-grade plywood, timber floor boards or structural panels designed for flooring. MDF can be used as a decorative finished surface over a structural landing, but not as the load-carrying board itself."
+    },
+    {
+      "q": "Can MDF be used to cover the back of stairs?",
+      "a": "Yes, MDF is commonly used for the staircase underside — covering the underside of stair flights, creating a smooth painted ceiling underneath stairs, or closing the rear of open risers. Typical thicknesses are 9mm, 12mm or 18mm. The MDF is only a covering panel, not carrying the stairs. The structure should still be timber strings, steel frame or concrete."
+    },
+    {
+      "q": "Can MDF be used for a staircase well trimmer?",
+      "a": "No. A staircase well trimmer is a structural component supporting the floor opening, joists, landing structure and stair loads. MDF is not suitable because it has lower structural strength, does not hold heavy fixings as well as timber, moisture can weaken it, and it is not designed for structural framing. Use C24 structural timber, laminated timber, glulam or steel sections instead."
+    },
+    {
+      "q": "How does MDF compare to plywood in cost and strength?",
+      "a": "Plywood is stronger than MDF, but MDF is significantly cheaper. As an approximate 18mm sheet (2440×1220mm) comparison: standard MDF is the base price, moisture-resistant MDF 120–160% of that, plywood 180–300%, birch plywood 250–400%, OSB 120–180%, chipboard 70–100%, solid timber board 250–600%+, laminated timber panel 200–400%. These are typical industry ranges, not fixed prices — actual cost depends on country, thickness, grade and supplier."
+    },
+    {
+      "q": "What is the professional rule for choosing staircase materials?",
+      "a": "Use MDF where you want beauty and a painted finish. Use plywood, timber or steel where you need strength. That is why many expensive staircases still contain MDF — it is not because they are cheap, it is because MDF performs extremely well in the correct location."
+    }
+  ]
+}

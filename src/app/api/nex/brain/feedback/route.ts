@@ -13,80 +13,95 @@
 
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { brainStore } from "@/lib/nex/brain/storage";
-import type {
-  FeedbackKind,
-  FeedbackSeverity,
-  FeedbackSource,
-} from "@/lib/nex/brain/types";
+import { validateSearchParams, validateJsonBody } from "@/lib/nex/brain/http/validate-input";
+import { logger } from "@/lib/nex/observability/logger";
+// W-OBS-1 Path A Layer 1 · Wave 3 H2.a · adopted 2026-08-10.
+import { runFromRequest } from "@/lib/nex/observability/correlation";
+
+const log = logger("api.brain.feedback");
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const VALID_KINDS: FeedbackKind[] = [
-  "correction", "approval", "edit", "rejection", "gap", "contradiction", "voice_drift",
-];
-const VALID_SEVERITIES: FeedbackSeverity[] = ["minor", "moderate", "critical"];
-const VALID_SOURCES: FeedbackSource[] = ["philip", "customer", "worker-audit", "automated-check"];
+const FEEDBACK_KINDS = ["correction", "approval", "edit", "rejection", "gap", "contradiction", "voice_drift"] as const;
+const SEVERITIES     = ["minor", "moderate", "critical"] as const;
+const SOURCES        = ["philip", "customer", "worker-audit", "automated-check"] as const;
 
-function coerce<T extends string>(input: unknown, valid: T[], fallback: T): T {
-  return typeof input === "string" && (valid as string[]).includes(input) ? (input as T) : fallback;
-}
+const PostBodySchema = z.object({
+  question:        z.string().nullable().optional(),
+  nex_answer:      z.string().nullable().optional(),
+  correction:      z.string().nullable().optional(),
+  lesson:          z.string().nullable().optional(),
+  record_id:       z.string().nullable().optional(),
+  domain:          z.string().nullable().optional(),
+  topic_tags:      z.array(z.string()).default([]),
+  feedback_kind:   z.enum(FEEDBACK_KINDS).default("correction"),
+  severity:        z.enum(SEVERITIES).default("moderate"),
+  feedback_source: z.enum(SOURCES).default("philip"),
+  submitted_by:    z.string().nullable().optional(),
+  context:         z.record(z.string(), z.unknown()).nullable().optional(),
+});
+
+const GetQuerySchema = z.object({
+  unapplied_only: z.enum(["1", "true"]).optional().transform((v) => v !== undefined),
+  limit:          z.coerce.number().int().min(1).max(500).default(50),
+  record_id:      z.string().min(1).optional(),
+});
 
 export async function POST(req: NextRequest) {
-  let body: Record<string, unknown> = {};
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ ok: false, error: "invalid_json" }, { status: 400 });
-  }
+  return runFromRequest(req, () => feedbackPostHandler(req));
+}
 
-  const feedback_kind = coerce(body.feedback_kind, VALID_KINDS, "correction");
-  const severity = coerce(body.severity, VALID_SEVERITIES, "moderate");
-  const feedback_source = coerce(body.feedback_source, VALID_SOURCES, "philip");
+async function feedbackPostHandler(req: NextRequest) {
+  const parsed = await validateJsonBody(req, PostBodySchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
 
   try {
     const row = await brainStore().insertFeedback({
-      question: typeof body.question === "string" ? body.question : null,
-      nex_answer: typeof body.nex_answer === "string" ? body.nex_answer : null,
-      correction: typeof body.correction === "string" ? body.correction : null,
-      lesson: typeof body.lesson === "string" ? body.lesson : null,
-      record_id: typeof body.record_id === "string" ? body.record_id : null,
-      domain: typeof body.domain === "string" ? body.domain : null,
-      topic_tags: Array.isArray(body.topic_tags) ? (body.topic_tags as unknown[]).map(String) : [],
-      feedback_kind,
-      severity,
-      feedback_source,
-      submitted_by: typeof body.submitted_by === "string" ? body.submitted_by : null,
-      context: typeof body.context === "object" && body.context !== null
-        ? (body.context as Record<string, unknown>)
-        : null,
+      question:        body.question        ?? null,
+      nex_answer:      body.nex_answer      ?? null,
+      correction:      body.correction      ?? null,
+      lesson:          body.lesson          ?? null,
+      record_id:       body.record_id       ?? null,
+      domain:          body.domain          ?? null,
+      topic_tags:      body.topic_tags,
+      feedback_kind:   body.feedback_kind,
+      severity:        body.severity,
+      feedback_source: body.feedback_source,
+      submitted_by:    body.submitted_by    ?? null,
+      context:         body.context         ?? null,
       applied_at: null,
       triggered_worker_proposal: null,
       resulted_in_record: null,
     });
     return NextResponse.json({ ok: true, feedback: row });
   } catch (err) {
-    console.error("[api.brain.feedback] insert failed:", err);
+    log.error("insert_failed", { error: err instanceof Error ? err.message : String(err) });
     return NextResponse.json({ ok: false, error: "insert_failed" }, { status: 500 });
   }
 }
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const unappliedOnly = searchParams.get("unapplied_only") === "1";
-  const limit = Math.min(Math.max(1, Number(searchParams.get("limit") ?? "50")), 500);
-  const record_id = searchParams.get("record_id") ?? undefined;
+  return runFromRequest(req, () => feedbackGetHandler(req));
+}
+
+async function feedbackGetHandler(req: NextRequest) {
+  const parsed = validateSearchParams(req, GetQuerySchema);
+  if (!parsed.ok) return parsed.response;
+  const { unapplied_only: unappliedOnly, limit, record_id } = parsed.data;
 
   try {
     const rows = await brainStore().listFeedback({
-      record_id: record_id ?? undefined,
+      record_id,
       unapplied_only: unappliedOnly,
       limit,
     });
     return NextResponse.json({ ok: true, feedback: rows, count: rows.length });
   } catch (err) {
-    console.error("[api.brain.feedback.get] failed:", err);
+    log.error("list_failed", { error: err instanceof Error ? err.message : String(err) });
     return NextResponse.json({ ok: false, error: "list_failed" }, { status: 500 });
   }
 }

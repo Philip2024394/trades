@@ -1,0 +1,390 @@
+{
+  "meta": {
+    "computed_at": "2026-08-13T17:11:55.313Z",
+    "corpus_file": "data/nex-conversational-corpus/raw-corpus-2026-08-14.txt",
+    "provenance": "philip-supplied 2026-08-14"
+  },
+  "raw_counts": {
+    "raw_questions": 894,
+    "unique_questions": 837,
+    "duplicate_groups": 52,
+    "duplicate_question_instances": 57
+  },
+  "by_section": {
+    "Architecture, Aesthetics & Design Styles": 50,
+    "Building Codes, Safety & Accessibility Standards": 49,
+    "Carpentry, Mathematics & Structural Framing": 49,
+    "Stair Runner Carpets & Textile Selection": 50,
+    "Map Layouts, Floor Plans & Spatial Wayfinding": 50,
+    "Maintenance, Renovation & DIY Repair": 49,
+    "Material Science, Fabrication & Manufacturing": 50,
+    "Ergonomics, Biomechanics & Injury Prevention": 49,
+    "Dimensional Math & Structural Planning": 50,
+    "Building Codes, Safety & Standards (duplicate section)": 49,
+    "Layout Types & Spatial Optimization": 50,
+    "Railings, Balustrades & Handrails": 50,
+    "Staircase Steps, Treads & Risers": 50,
+    "Carpentry, Framework & Engineering": 50,
+    "Carpets, Runners & Textiles (duplicate section)": 50,
+    "Lighting, Smart Automation & Storage": 50,
+    "Material Selection & Fabrication (duplicate section)": 49,
+    "Business, Estimating & Project Management": 50
+  },
+  "query_type_distribution": {
+    "text_answer": 786,
+    "image_retrieval": 51,
+    "image_pct": 6
+  },
+  "brain_routing_distribution": {
+    "on_brain": 386,
+    "future_brain:building_codes": 82,
+    "partial_on_brain": 145,
+    "future_brain:wayfinding": 50,
+    "defer": 76,
+    "future_brain:ergonomics": 49,
+    "future_brain:business_estimation": 49
+  },
+  "evidence_estimate_crude": {
+    "with_reference_brain_source": 188,
+    "without_reference_brain_source_on_brain": 392,
+    "coverage_pct_on_brain": 32
+  },
+  "evidence_by_source_cluster": {
+    "handrail_components + memory": 45,
+    "staircase-timbers": 10,
+    "starting-steps-knowledge + types-carpet-and-design": 13,
+    "staircase-handrail-components": 62,
+    "under_stair_scenes (batches 7/10)": 12,
+    "batch_8_landing_railings_gallery": 24,
+    "landing-railings-continuity-and-construction": 31
+  },
+  "most_repeated_top25": [
+    {
+      "text": "Explain the load-bearing differences between solid wood and laminated treads.",
+      "count": 3,
+      "sections": [
+        "Material Science, Fabrication & Manufacturing",
+        "Staircase Steps, Treads & Risers",
+        "Material Selection & Fabrication (duplicate section)"
+      ]
+    },
+    {
+      "text": "How is precast concrete manufactured for commercial architectural staircases?",
+      "count": 3,
+      "sections": [
+        "Material Science, Fabrication & Manufacturing",
+        "Staircase Steps, Treads & Risers",
+        "Material Selection & Fabrication (duplicate section)"
+      ]
+    },
+    {
+      "text": "What are the non-slip ratings for commercial terrazzo stair finishes?",
+      "count": 3,
+      "sections": [
+        "Material Science, Fabrication & Manufacturing",
+        "Staircase Steps, Treads & Risers",
+        "Material Selection & Fabrication (duplicate section)"
+      ]
+    },
+    {
+      "text": "What is the wear resistance of exotic hardwoods versus domestic oak?",
+      "count": 3,
+      "sections": [
+        "Material Science, Fabrication & Manufacturing",
+        "Staircase Steps, Treads & Risers",
+        "Material Selection & Fabrication (duplicate section)"
+      ]
+    },
+    {
+      "text": "What is the slip coefficient of polished granite steps when wet?",
+      "count": 3,
+      "sections": [
+        "Material Science, Fabrication & Manufacturing",
+        "Staircase Steps, Treads & Risers",
+        "Material Selection & Fabrication (duplicate section)"
+      ]
+    },
+    {
+      "text": "What is a split-level staircase and how does it save space?",
+      "count": 2,
+      "sections": [
+        "Architecture, Aesthetics & Design Styles",
+        "Layout Types & Spatial Optimization"
+      ]
+    },
+    {
+      "text": "How can I use dark charcoal paint to modernize stair spindles?",
+      "count": 2,
+      "sections": [
+        "Architecture, Aesthetics & Design Styles",
+        "Railings, Balustrades & Handrails"
+      ]
+    },
+    {
+      "text": "How do I choose between round and square wooden balusters?",
+      "count": 2,
+      "sections": [
+        "Architecture, Aesthetics & Design Styles",
+        "Railings, Balustrades & Handrails"
+      ]
+    },
+    {
+      "text": "What is a winder staircase and how does it turn corners?",
+      "count": 2,
+      "sections": [
+        "Architecture, Aesthetics & Design Styles",
+        "Layout Types & Spatial Optimization"
+      ]
+    },
+    {
+      "text": "What is a box stringer staircase design and its structural layout?",
+      "count": 2,
+      "sections": [
+        "Architecture, Aesthetics & Design Styles",
+        "Carpentry, Framework & Engineering"
+      ]
+    },
+    {
+      "text": "What is the standard residential building code for stair riser height?",
+      "count": 2,
+      "sections": [
+        "Building Codes, Safety & Accessibility Standards",
+        "Building Codes, Safety & Standards (duplicate section)"
+      ]
+    },
+    {
+      "text": "What is the standard measurement rule for stair tread depth?",
+      "count": 2,
+      "sections": [
+        "Building Codes, Safety & Accessibility Standards",
+        "Building Codes, Safety & Standards (duplicate section)"
+      ]
+    },
+    {
+      "text": "What are the OSHA requirements for commercial building exit stairs?",
+      "count": 2,
+      "sections": [
+        "Building Codes, Safety & Accessibility Standards",
+        "Building Codes, Safety & Standards (duplicate section)"
+      ]
+    },
+    {
+      "text": "How high must a residential staircase handrail be installed legally?",
+      "count": 2,
+      "sections": [
+        "Building Codes, Safety & Accessibility Standards",
+        "Building Codes, Safety & Standards (duplicate section)"
+      ]
+    },
+    {
+      "text": "What is the maximum allowed gap between staircase railing balusters?",
+      "count": 2,
+      "sections": [
+        "Building Codes, Safety & Accessibility Standards",
+        "Building Codes, Safety & Standards (duplicate section)"
+      ]
+    },
+    {
+      "text": "What are the ADA requirements for public accessibility ramp stairs?",
+      "count": 2,
+      "sections": [
+        "Building Codes, Safety & Accessibility Standards",
+        "Building Codes, Safety & Standards (duplicate section)"
+      ]
+    },
+    {
+      "text": "What are the lighting requirements for indoor stairs according to code?",
+      "count": 2,
+      "sections": [
+        "Building Codes, Safety & Accessibility Standards",
+        "Building Codes, Safety & Standards (duplicate section)"
+      ]
+    },
+    {
+      "text": "What is the 4-inch sphere rule for staircase balustrades?",
+      "count": 2,
+      "sections": [
+        "Building Codes, Safety & Accessibility Standards",
+        "Building Codes, Safety & Standards (duplicate section)"
+      ]
+    },
+    {
+      "text": "What are the fire rating requirements for commercial stairwell doors?",
+      "count": 2,
+      "sections": [
+        "Building Codes, Safety & Accessibility Standards",
+        "Building Codes, Safety & Standards (duplicate section)"
+      ]
+    },
+    {
+      "text": "How do building codes regulate stairs in earthquake-prone zones?",
+      "count": 2,
+      "sections": [
+        "Building Codes, Safety & Accessibility Standards",
+        "Building Codes, Safety & Standards (duplicate section)"
+      ]
+    },
+    {
+      "text": "What is the maximum variation allowed between individual riser heights?",
+      "count": 2,
+      "sections": [
+        "Building Codes, Safety & Accessibility Standards",
+        "Building Codes, Safety & Standards (duplicate section)"
+      ]
+    },
+    {
+      "text": "What are the code restrictions for alternating tread space-saving stairs?",
+      "count": 2,
+      "sections": [
+        "Building Codes, Safety & Accessibility Standards",
+        "Building Codes, Safety & Standards (duplicate section)"
+      ]
+    },
+    {
+      "text": "What are the specific safety codes for glass stair balustrades?",
+      "count": 2,
+      "sections": [
+        "Building Codes, Safety & Accessibility Standards",
+        "Building Codes, Safety & Standards (duplicate section)"
+      ]
+    },
+    {
+      "text": "What are the regulations for lighting switches at both stair ends?",
+      "count": 2,
+      "sections": [
+        "Building Codes, Safety & Accessibility Standards",
+        "Building Codes, Safety & Standards (duplicate section)"
+      ]
+    },
+    {
+      "text": "What are the code requirements for exterior concrete step foundations?",
+      "count": 2,
+      "sections": [
+        "Building Codes, Safety & Accessibility Standards",
+        "Building Codes, Safety & Standards (duplicate section)"
+      ]
+    }
+  ],
+  "on_brain_evidence_gap_examples": [
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "Show me minimal modern floating staircases featuring thin black wire cable rails."
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "What are the best design styles for a grand curved entryway staircase?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "How do I choose between a glass or wrought iron staircase railing?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "Show me examples of industrial style steel and concrete staircase steps."
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "How do I make a narrow wooden staircase look wider using paint?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "What is the visual impact of an open riser staircase design layout?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "How can I integrate an asymmetrical staircase into a minimalist luxury home?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "What are the most durable hardwoods used for elegant custom steps?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "Show me mid-century modern staircase designs featuring brass accent railings."
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "What are the design benefits of a custom carved stone staircase?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "How do I design a staircase that hugs a curved masonry wall?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "How do I design a safe staircase for a steep hillside?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "What are the best color combinations for painting a rustic staircase?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "How can I make an old concrete outdoor step look modern?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "What is a split-level staircase and how does it save space?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "Show me examples of creative geometric metal patterned stair railing panels."
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "How do I design a freestanding staircase requiring minimal wall support?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "What are the design considerations for an outdoor pool-facing staircase?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "What is an alternating tread staircase and when is it practical?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "Show me artistic mosaic tile designs for outdoor courtyard concrete steps."
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "How do I design a safe but stylish staircase for libraries?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "What are the aesthetic benefits of seamless micro-cement staircase steps?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "What is a winder staircase and how does it turn corners?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "Show me coastal style staircase designs using white and light timber."
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "How do you style a large double staircase in mansions?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "How can I blend modern metal railings into traditional house designs?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "How do I design steps transitioning fluidly into built-in seating?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "What is a quarter-turn staircase layout and how does it function?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "What are the key features of Victorian style ornate staircases?"
+    },
+    {
+      "section": "Architecture, Aesthetics & Design Styles",
+      "text": "How does a wraparound staircase layout affect home foot traffic?"
+    }
+  ]
+}

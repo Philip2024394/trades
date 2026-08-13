@@ -29,6 +29,10 @@ import type { AuditEntry, WorkerJob, WorkerResult } from "../types";
 // W-OBS-1 Path A Layer 1 · read parent worker's CID from ALS so child
 // job inherits automatically at enqueue time (§7 of Path A plan).
 import { getCorrelationId } from "@/lib/nex/observability/correlation";
+// F4 structured logger · Wave 3 H2.b · adopted 2026-08-10.
+import { logger } from "@/lib/nex/observability/logger";
+
+const log = logger("worker.finalize");
 
 // Reuse the exact input shape the store expects · never re-derive it.
 export type ResultInput = Omit<WorkerResult, "id" | "created_at">;
@@ -121,8 +125,7 @@ export async function finalizeWorkerJob(store: BrainStore, input: FinalizeInput)
  */
 export async function failWorkerJob(store: BrainStore, job: WorkerJob, err: unknown, tag: string): Promise<string> {
   const message = err instanceof Error ? err.message : String(err);
-  // eslint-disable-next-line no-console
-  console.error(`[${tag}] failed:`, message);
+  log.error("failed", { tag, message, job_id: job.id });
   await store.failJob(job.id, message);
   // Return the extracted message so callers that need it for downstream
   // side-effects (e.g. knowledge-extractor's KnowledgeJob failure sync)

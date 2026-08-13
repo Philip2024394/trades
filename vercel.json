@@ -30,7 +30,6 @@
     { "path": "/api/cron/yard-release-queued", "schedule": "*/10 * * * *" },
     { "path": "/api/cron/yard-expire-notifications", "schedule": "0 3 * * *" },
     { "path": "/api/reviews/publish-pending", "schedule": "*/15 * * * *" },
-    { "path": "/api/canteens/recalc-metrics", "schedule": "0 * * * *" },
     { "path": "/api/cron/free-slug-expiry", "schedule": "0 3 * * *" },
     { "path": "/api/cron/beacon-sla-sweep", "schedule": "*/5 * * * *" },
     { "path": "/api/cron/monthly-washer-replenish", "schedule": "0 3 1 * *" },

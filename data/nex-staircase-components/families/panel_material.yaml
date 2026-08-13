@@ -1,0 +1,204 @@
+# NEX Staircase Component Library — PANEL_MATERIAL family record
+#
+# Philip 2026-08-03 · Separates decorative panel STYLE from MATERIAL.
+# Same style (e.g. Shaker) can be executed in different materials —
+# painted MR-MDF, oak veneer, or solid hardwood — with very different
+# finish, cost + labour outcomes. Companion family to PANEL_SYSTEM.
+#
+# Master docs: docs/brains/staircase-panelling-layout-slip-materials-philip-2026-08-03.md
+
+family_id:                  PANEL_MATERIAL
+family_name:                Decorative Panel Materials
+component_type:             panel_material
+non_structural:             true
+
+# ─── Variants supported ────────────────────────────────────────────
+variants_supported:
+  - MR_MDF
+  - STANDARD_MDF
+  - OAK_VENEER_MDF
+  - ASH_VENEER_MDF
+  - WALNUT_VENEER_MDF
+  - BIRCH_PLY
+  - OAK                     # solid hardwood
+  - ASH                     # solid hardwood
+  - WALNUT                  # solid hardwood
+  - PINE                    # softwood
+  - TULIPWOOD               # softwood alt · paint-grade
+  - SAPELE                  # tropical hardwood
+  - FLEXIBLE_MDF            # bendable board for curved staircases
+
+# Per-variant properties
+variant_specs:
+  MR_MDF:
+    paintable:                    true
+    stainable:                    false
+    moisture_resistant:           true
+    bend_radius_mm:               null       # not designed to bend
+    sheet_sizes_mm:               [[2440, 1220], [3050, 1220], [3660, 1220]]
+    common_thicknesses_mm:        [6, 9, 12, 15, 18, 25]
+    sheet_weight_kg_typical:      "18mm 2440×1220 ≈ 45kg"
+    cost_relative:                1.0        # baseline
+    typical_finish:               painted_eggshell_or_satin
+    edge_sealing_required:        true       # cut edges must be sealed before painting
+    notes:                        "Default choice for painted staircase panelling · best value"
+  STANDARD_MDF:
+    paintable:                    true
+    stainable:                    false
+    moisture_resistant:           false
+    bend_radius_mm:               null
+    sheet_sizes_mm:               [[2440, 1220], [3050, 1220], [3660, 1220]]
+    common_thicknesses_mm:        [6, 9, 12, 15, 18, 25]
+    sheet_weight_kg_typical:      "18mm 2440×1220 ≈ 40kg"
+    cost_relative:                0.9
+    typical_finish:               painted
+    edge_sealing_required:        true
+    notes:                        "Dry rooms only · never near external doors or bathrooms"
+  OAK_VENEER_MDF:
+    paintable:                    false
+    stainable:                    true
+    moisture_resistant:           true       # usually on MR-MDF core
+    bend_radius_mm:               null
+    sheet_sizes_mm:               [[2440, 1220], [3050, 1220]]
+    common_thicknesses_mm:        [9, 12, 15, 18]
+    sheet_weight_kg_typical:      "18mm ≈ 46kg"
+    cost_relative:                2.5
+    typical_finish:               stained_and_lacquered
+    edge_sealing_required:        false      # veneered edges lipped or edge-banded
+    notes:                        "Modern oak finish · matches oak stairs · warmer than paint"
+  ASH_VENEER_MDF:
+    paintable:                    false
+    stainable:                    true
+    moisture_resistant:           true
+    bend_radius_mm:               null
+    sheet_sizes_mm:               [[2440, 1220], [3050, 1220]]
+    common_thicknesses_mm:        [9, 12, 15, 18]
+    sheet_weight_kg_typical:      "18mm ≈ 46kg"
+    cost_relative:                2.6
+    typical_finish:               clear_lacquered_or_light_stain
+    edge_sealing_required:        false
+    notes:                        "Pale modern · Scandinavian palette · popular with light-oak floors"
+  WALNUT_VENEER_MDF:
+    paintable:                    false
+    stainable:                    true
+    moisture_resistant:           true
+    bend_radius_mm:               null
+    sheet_sizes_mm:               [[2440, 1220], [3050, 1220]]
+    common_thicknesses_mm:        [9, 12, 15, 18]
+    sheet_weight_kg_typical:      "18mm ≈ 47kg"
+    cost_relative:                3.2
+    typical_finish:               oiled_or_lacquered
+    edge_sealing_required:        false
+    notes:                        "Luxury dark contemporary · pairs with matte black metalwork"
+  BIRCH_PLY:
+    paintable:                    true       # but usually left clear-finished to show grain
+    stainable:                    true
+    moisture_resistant:           false      # standard birch ply is not MR
+    bend_radius_mm:               null
+    sheet_sizes_mm:               [[2440, 1220], [3050, 1500]]
+    common_thicknesses_mm:        [9, 12, 15, 18]
+    sheet_weight_kg_typical:      "18mm ≈ 40kg"
+    cost_relative:                3.0
+    typical_finish:               clear_lacquered_edge_visible
+    edge_sealing_required:        false
+    notes:                        "Premium alternative · clean edge · popular in contemporary interiors"
+  OAK:
+    paintable:                    false      # solid oak is not painted in this context
+    stainable:                    true
+    moisture_resistant:           true       # naturally durable
+    bend_radius_mm:               null
+    sheet_sizes_mm:               null       # supplied as boards not sheets
+    common_thicknesses_mm:        [18, 22, 27, 32]
+    sheet_weight_kg_typical:      "22mm oak board ≈ 15kg/m²"
+    cost_relative:                5.0
+    typical_finish:               oiled_or_stained
+    edge_sealing_required:        false
+    notes:                        "Solid hardwood · reserved for premium/traditional · heavier + moves with humidity"
+  ASH:
+    paintable:                    false
+    stainable:                    true
+    moisture_resistant:           true
+    bend_radius_mm:               null
+    sheet_sizes_mm:               null
+    common_thicknesses_mm:        [18, 22, 27]
+    sheet_weight_kg_typical:      "22mm ash board ≈ 14kg/m²"
+    cost_relative:                4.5
+    typical_finish:               clear_lacquered
+    edge_sealing_required:        false
+    notes:                        "Solid pale hardwood · Scandinavian"
+  WALNUT:
+    paintable:                    false
+    stainable:                    true
+    moisture_resistant:           true
+    bend_radius_mm:               null
+    sheet_sizes_mm:               null
+    common_thicknesses_mm:        [18, 22, 27]
+    sheet_weight_kg_typical:      "22mm walnut board ≈ 15kg/m²"
+    cost_relative:                6.5
+    typical_finish:               oiled
+    edge_sealing_required:        false
+    notes:                        "Luxury dark hardwood · heritage or contemporary"
+  PINE:
+    paintable:                    true
+    stainable:                    true
+    moisture_resistant:           false      # untreated
+    bend_radius_mm:               null
+    sheet_sizes_mm:               null       # boards / T&G packs
+    common_thicknesses_mm:        [12, 15, 18, 22]
+    sheet_weight_kg_typical:      "T&G pack varies"
+    cost_relative:                0.8
+    typical_finish:               painted_or_stained
+    edge_sealing_required:        false
+    notes:                        "Economical softwood · T&G boards · cottage/farmhouse"
+  TULIPWOOD:
+    paintable:                    true
+    stainable:                    false      # stains badly · always painted
+    moisture_resistant:           true
+    bend_radius_mm:               null
+    sheet_sizes_mm:               null       # boards
+    common_thicknesses_mm:        [18, 22, 27]
+    sheet_weight_kg_typical:      "22mm tulipwood board ≈ 11kg/m²"
+    cost_relative:                2.0
+    typical_finish:               painted
+    edge_sealing_required:        false
+    notes:                        "Paint-grade hardwood · smooth · stable · alternative to solid oak when painting"
+  SAPELE:
+    paintable:                    false
+    stainable:                    true
+    moisture_resistant:           true       # naturally durable
+    bend_radius_mm:               null
+    sheet_sizes_mm:               null
+    common_thicknesses_mm:        [18, 22, 27]
+    sheet_weight_kg_typical:      "22mm sapele board ≈ 14kg/m²"
+    cost_relative:                4.0
+    typical_finish:               oiled_or_lacquered
+    edge_sealing_required:        false
+    notes:                        "Reddish tropical hardwood · similar to mahogany · heritage look"
+  FLEXIBLE_MDF:
+    paintable:                    true
+    stainable:                    false
+    moisture_resistant:           false
+    bend_radius_mm:               400        # nominal minimum bend radius · check with supplier
+    sheet_sizes_mm:               [[2440, 1220]]
+    common_thicknesses_mm:        [6, 9, 12]
+    sheet_weight_kg_typical:      "12mm 2440×1220 ≈ 25kg"
+    cost_relative:                2.0
+    typical_finish:               painted
+    edge_sealing_required:        true
+    notes:                        "Bendable MDF for curved staircases · usually combined with rigid MDF face"
+
+# ─── Provenance ────────────────────────────────────────────────────
+created_at:                 2026-08-03T00:00:00Z
+created_by:                 philip
+revision:                   1
+review_status:              reviewed
+authoring_source:           "Philip O'Farrell · direct written contribution 2026-08-03"
+
+notes:
+  - Runtime type follow-up · types.ts ComponentType enum must add "panel_material".
+  - cost_relative is a RATIO to painted MR-MDF (baseline 1.0), not an absolute
+    price. Absolute pricing varies by supplier + region + spec.
+  - MDF must always have cut edges sealed before painting (top of the "common
+    mistakes" list · unsealed edges swell).
+  - Solid hardwoods MOVE with humidity · allow expansion gaps + prefer stable
+    veneered options for wide flat panels.

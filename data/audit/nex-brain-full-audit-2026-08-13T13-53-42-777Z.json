@@ -1,0 +1,240 @@
+{
+  "sections": {
+    "A · NEX Supabase table inventory (NEX project only)": {
+      "tables": [
+        {
+          "table": "directory_seeds",
+          "exists": true,
+          "rows": 302
+        },
+        {
+          "table": "nex_collection_url_queue",
+          "exists": true,
+          "rows": 301
+        },
+        {
+          "table": "nex_collection_fetch_errors",
+          "exists": true,
+          "rows": 170
+        },
+        {
+          "table": "nex_materials_boards",
+          "exists": true,
+          "rows": 0
+        },
+        {
+          "table": "nex_materials_measurements",
+          "exists": true,
+          "rows": 0
+        },
+        {
+          "table": "nex_materials_packs",
+          "exists": true,
+          "rows": 0
+        },
+        {
+          "table": "nex_materials_stock",
+          "exists": true,
+          "rows": 0
+        },
+        {
+          "table": "nex_materials_worker_links",
+          "exists": true,
+          "rows": 0
+        },
+        {
+          "table": "nex_events",
+          "exists": true,
+          "rows": 0
+        },
+        {
+          "table": "nex_contacts",
+          "exists": true,
+          "rows": 0
+        },
+        {
+          "table": "nex_refacing_cases",
+          "exists": true,
+          "rows": 0
+        },
+        {
+          "table": "nex_reference_images",
+          "exists": true,
+          "rows": 0
+        },
+        {
+          "table": "nex_membership_activations",
+          "exists": true,
+          "rows": 0
+        },
+        {
+          "table": "nex_chat_threads",
+          "exists": true,
+          "rows": 0
+        },
+        {
+          "table": "images_v3",
+          "exists": true,
+          "rows": 0
+        }
+      ]
+    },
+    "B · directory_seeds detail": {
+      "error": "column directory_seeds.admin_ref does not exist"
+    },
+    "C · nex_collection_url_queue detail (per campaign)": {
+      "campaigns": {
+        "staircase_refacing": {
+          "total": 301,
+          "byStatus": {
+            "completed": 65,
+            "duplicate": 25,
+            "failed": 170,
+            "needs_review": 36,
+            "discovery_bookmark": 5
+          },
+          "byKind": {
+            "candidate": 296,
+            "discovery": 5
+          },
+          "byClass": {
+            "MANUFACTURE": 45,
+            "BOTH": 56,
+            "unclassified": 175,
+            "NEEDS_REVIEW": 16,
+            "INSTALLER": 6,
+            "REFACING": 3
+          },
+          "candidateNonFailed": 126,
+          "verifiedReachablePool": 126,
+          "completedWithoutClass": 0,
+          "completedWithoutListing": 0,
+          "stuckProcessing": 0
+        },
+        "staircase_manufacture": {
+          "total": 0,
+          "byStatus": {},
+          "byKind": {},
+          "byClass": {},
+          "candidateNonFailed": 0,
+          "verifiedReachablePool": 0,
+          "completedWithoutClass": 0,
+          "completedWithoutListing": 0,
+          "stuckProcessing": 0
+        }
+      }
+    },
+    "D · nex_collection_fetch_errors detail": {
+      "total": 170,
+      "byCategory": {
+        "http_error": 23,
+        "other": 143,
+        "timeout": 2,
+        "ssl_error": 1,
+        "dns_error": 1
+      },
+      "dead": 0
+    },
+    "E · Image Brain · nex-image-manifest.json": {
+      "total": 1285,
+      "hosts": {
+        "ik": 1158,
+        "trades": 127,
+        "nex": 0,
+        "other": 0
+      },
+      "byBrain": {
+        "(null)": 1026,
+        "garden_staircase_brain": 5,
+        "staircase_brain": 211,
+        "timber_brain": 5,
+        "marketing_design_brain": 27,
+        "kitchen_brain": 11
+      },
+      "aPlus": 213,
+      "missingPrimaryBrain": 1026,
+      "missingDnaScore": 1127,
+      "missingTags": 892,
+      "notAStaircase": 798,
+      "anyValidationFlag": 1013,
+      "criticalFlag": 956
+    },
+    "F · Reference Brain · data/nex-reference-brains": {
+      "totalMarkdown": 270,
+      "byTopDir": {
+        "nex-knowledge-decomposition-model.md": 1,
+        "staircase-preparation": 269
+      },
+      "totalBytes": 3716630
+    },
+    "G · data/directory-seeds/ file cache": {
+      "byCategory": {
+        "altrincham": 1,
+        "basildon": 1,
+        "birmingham": 42,
+        "bromsgrove": 1,
+        "cradley-heath": 1,
+        "crawley": 1,
+        "dorking": 1,
+        "enfield": 1,
+        "harlow": 1,
+        "harrogate": 1,
+        "hayes": 1,
+        "ilford": 1,
+        "ivybridge": 1,
+        "leeds": 38,
+        "london": 28,
+        "manchester": 32,
+        "otley": 1,
+        "oxted": 1,
+        "plymouth": 43,
+        "ramsbottom": 1,
+        "sale": 1,
+        "sheffield": 4,
+        "solihull": 1,
+        "stockport": 2,
+        "stoke-on-trent": 2,
+        "sutton-coldfield": 1,
+        "tamworth": 1,
+        "tavistock": 1,
+        "wakefield": 2,
+        "walsall": 2,
+        "warrington": 1,
+        "wickford": 1,
+        "woodmansey": 1,
+        "_refacing": 5
+      }
+    },
+    "H · Supabase-client-routing audit (existing script)": {
+      "note": "run npm run nex:audit-supabase-routing to see live output"
+    },
+    "I · TRADES-project · check any NEX table still hosts data there": {
+      "contamination": []
+    },
+    "J · Cross-check · seeds without any Brain images vs manifest coverage": {}
+  },
+  "B": [
+    {
+      "item": "Image manifest rows with primary_brain=null",
+      "reason": "1026 row(s)",
+      "action": "cannot route via ADR-0033 Rule #6 — must be classified into a specific Brain before intelligence retrieval"
+    },
+    {
+      "item": "Image manifest rows with critical validation flags",
+      "reason": "956 row(s)",
+      "action": "resolve missing DNA / low confidence per ADR-0027"
+    },
+    {
+      "item": "Image manifest rows without tags",
+      "reason": "892 row(s)",
+      "action": "matcher relies on tag intersection · rows without tags won't surface in tag-based retrieval (still may via primary_brain)"
+    }
+  ],
+  "C": [
+    {
+      "item": "Image manifest URLs on TRADES Supabase",
+      "reason": "127 url(s)",
+      "action": "run scripts/nex-brain/migrate-127-to-imagekit.mjs (needs ImageKit credentials in .env.local)"
+    }
+  ]
+}

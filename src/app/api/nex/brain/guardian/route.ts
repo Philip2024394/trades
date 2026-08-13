@@ -10,19 +10,24 @@
 
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { runMemoryGuardian } from "@/lib/nex/brain/workers/memory-guardian";
+// V-1b · D9 route-boundary validation adopted 2026-08-10.
+import { validateJsonBody } from "@/lib/nex/brain/http/validate-input";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 120;
 
+const BodySchema = z.object({
+  create_contradictions: z.boolean().optional(),
+  create_audit_entries: z.boolean().optional(),
+});
+
 export async function POST(req: NextRequest) {
-  let body: { create_contradictions?: boolean; create_audit_entries?: boolean } = {};
-  try {
-    body = await req.json();
-  } catch {
-    /* body optional */
-  }
+  const parsed = await validateJsonBody(req, BodySchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
   try {
     const report = await runMemoryGuardian({
       create_contradictions: body.create_contradictions,

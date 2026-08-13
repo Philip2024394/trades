@@ -1,0 +1,12 @@
+{
+  "ran_at": "2026-08-13T13:24:13.392Z",
+  "run_id": "2026-08-13T13-24-08-333Z",
+  "dry_run": true,
+  "totals": {
+    "processed": 3,
+    "migrated": 3,
+    "skipped": 0,
+    "failed": 0
+  },
+  "exceptions": []
+}

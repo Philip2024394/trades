@@ -32,6 +32,8 @@
 // WorkerJob-side critical section.
 
 import { getJob, updateJob, type KnowledgeJob, type JobStatus, type UpdateJobInput } from "./fs-store";
+import { shadowTerminalTie } from "./pg-shadow";
+import { setItemStatus } from "@/lib/nex/knowledge-inbox/storage";
 import type { BrainStore } from "@/lib/nex/brain/storage";
 import type { KnowledgeJobStatus } from "@/lib/nex/brain/types";
 
@@ -77,9 +79,59 @@ export async function applyTerminalKnowledgeJobTransition(
   if (from_status === to_status) {
     return { changed: false, snapshot: current };
   }
+  // G1 · Truth Contract · atomic pg tie MUST commit BEFORE the fs-store
+  // append. Order matters:
+  //   · If we appended to fs-store first, `updateJob` would immediately
+  //     fire its own `void shadowUpsertJob(next)` which writes KJ but
+  //     NOT the inbox · HQ polling in that window would observe the
+  //     exact half-state {KJ=completed · inbox=processing} Philip
+  //     warned about (see §6 gap G1 in the Truth Contract).
+  //   · Doing the pg tie first, atomically, closes that window · HQ can
+  //     only observe {both old} or {both new}, never a mix.
+  // Compute the next KJ snapshot in memory (mirrors updateJob's compute).
+  const nextSnapshot: KnowledgeJob = {
+    ...current,
+    status: patch.status ?? current.status,
+    progress: patch.progress ?? current.progress,
+    completion_result: patch.completion_result ?? current.completion_result,
+    updated_at: new Date().toISOString(),
+  };
+  const tie = await shadowTerminalTie(nextSnapshot);
+  if (!tie.ok) {
+    // Hard error · pg rolled back · do NOT proceed to fs-store because
+    // the subsequent `void shadowUpsertJob` inside updateJob would leave
+    // pg in a half-state (KJ=completed · inbox unchanged). Caller sees
+    // {changed: false} · worker will retry via the normal lease loop.
+    console.error(
+      `[terminal-transition] pg atomic tie FAILED for kjid=${kjid} · aborting to preserve invariant · error: ${tie.error}`,
+    );
+    return { changed: false, snapshot: current };
+  }
+  // Pg is now consistent {KJ terminal · inbox processed}. Safe to update
+  // fs-store · its own `void shadowUpsertJob` will re-upsert the same
+  // KJ snapshot (idempotent, harmless).
   const next = await updateJob(kjid, patch);
   if (!next) {
-    return { changed: false, snapshot: null };
+    // Fs-store failed after pg succeeded. Pg is authoritative for HQ ·
+    // fs will be corrected on the next updateJob call. Log loudly so
+    // the discrepancy is investigable.
+    console.error(
+      `[terminal-transition] fs-store updateJob returned null AFTER pg tie succeeded for kjid=${kjid} · pg is authoritative`,
+    );
+    return { changed: true, snapshot: nextSnapshot };
+  }
+  // Mirror the inbox terminal state into fs-store · keeps the two
+  // stores aligned even though pg is the HQ source of truth. Best-
+  // effort · never rolls back the (already committed) pg tie.
+  if (next.inbox_item_id) {
+    try {
+      await setItemStatus(next.inbox_item_id, "processed");
+    } catch (e) {
+      console.warn(
+        `[terminal-transition] fs-store inbox status mirror failed for inbox_item_id=${next.inbox_item_id}:`,
+        e instanceof Error ? e.message : e,
+      );
+    }
   }
   try {
     await store.writeKnowledgeJobTransitionAudit({

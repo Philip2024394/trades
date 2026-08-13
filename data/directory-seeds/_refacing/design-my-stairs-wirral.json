@@ -1,0 +1,93 @@
+{
+  "id": "96cfe551-439a-4d87-8fc9-5f621193ef25",
+  "slug": "design-my-stairs-wirral",
+  "business_name": "Design My Stairs",
+  "category": "Staircase Refacing",
+  "primary_trade": "staircase_refacing",
+  "tags": [
+    "staircase-renovation",
+    "bannister-renovation",
+    "staircase-refurbishment",
+    "diy-kits",
+    "glass",
+    "metal",
+    "wooden",
+    "oak",
+    "steel",
+    "bespoke",
+    "handcrafted-uk"
+  ],
+  "enrichment_status": "partial",
+  "last_verified_at": "2026-08-13T00:00:00.000Z",
+
+  "address_line_1": null,
+  "address_line_2": null,
+  "town": "Wirral",
+  "county": "Merseyside",
+  "postcode": null,
+  "country": "United Kingdom",
+
+  "telephone": "0151 203 9153",
+  "website": "https://designmystairs.co.uk/",
+  "email": "admin@designmystairs.co.uk",
+
+  "opening_hours": null,
+  "description": "Staircase and bannister renovation specialists. Bespoke stair renovation service handcrafted in the UK, delivered in 2-3 days. Wirral primary office plus service coverage in Liverpool, Chester, Milton Keynes and North Wales. Also offer DIY staircase kits for self-installation. Second office phone: 01908 046805 (Milton Keynes).",
+  "services": [
+    "Staircase renovation",
+    "Bannister renovation",
+    "Glass staircase renovations",
+    "Glass bracket staircases",
+    "Embedded glass staircases",
+    "Glass balustrade designs",
+    "Metal staircase renovations",
+    "Wooden staircase renovations",
+    "Glass and oak staircase renovations",
+    "Glass and steel staircase renovations",
+    "DIY staircase kits"
+  ],
+
+  "google_rating": null,
+  "google_review_count": null,
+  "google_maps_url": null,
+
+  "latitude": null,
+  "longitude": null,
+
+  "status": "listed",
+  "claimed": false,
+  "verified": false,
+  "visibility": "public",
+
+  "photos": [],
+  "cover_image": null,
+
+  "source": "refacing_discovery",
+  "imported_at": "2026-08-13T00:00:00.000Z",
+
+  "capabilities": {
+    "staircase_refurbishment": "yes",
+    "staircase_refacing":      "yes",
+    "handrail":                "yes",
+    "baserail":                "yes",
+    "baluster":                "yes",
+    "glass_balustrade":        "yes",
+    "metal_balustrade":        "yes",
+    "installation":            "yes"
+  },
+  "refacing_evidence": [
+    {
+      "url":        "https://designmystairs.co.uk/",
+      "type":       "company_website",
+      "category":   "staircase_renovation",
+      "summary":    "Company explicitly self-describes as 'Staircase / Bannister Renovation Specialists' offering 'completely bespoke stair renovation service' with '2-3 day' quick renovation. Multiple renovation product lines (glass, metal, wooden, oak, steel).",
+      "checked_at": "2026-08-13"
+    }
+  ],
+  "refacing_qualification": "A+",
+  "email_source":     "company_website",
+  "email_verified":   true,
+  "email_checked_at": "2026-08-13",
+  "lifecycle_status": "unclaimed",
+  "directory_state":  "listed"
+}

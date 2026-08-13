@@ -39,7 +39,38 @@ export type CounterName =
   | "jobs.pg_read_fallback"
   // Type-safety at boundaries (F17, F18, F19)
   | "validate.row_dropped"
-  | "validate.line_dropped";
+  | "validate.line_dropped"
+  // Cron liveness (F12 · stale-cron detection · Vercel Cron path)
+  | "cron_tick.fired"
+  | "cron_tick.failed"
+  // G4 · Local script scheduler liveness (nex-brain-worker.mjs → /run-once).
+  // Same shape as cron_tick.fired but distinguishes the LOCAL script
+  // path from the Vercel Cron path. Truth Contract §5 R12 requires
+  // both signals to be independently observable · a heartbeat alone
+  // MUST NOT be inferred as "scheduler firing".
+  | "run_once.fired"
+  | "run_once.failed"
+  // D6 · analytics rollup worker
+  | "analytics.rollup_failed"
+  | "analytics.rollup_batch_drained"
+  // Wave 3 · H4 · Migration 049 activation gate
+  | "analytics.rollup_missing_table"
+  // Wave 3 · H5 · Alert dispatch fail-closed observability
+  | "alerts.dispatch_no_transport"
+  // Wave 2 · W-C-COMPANION supervisor (Phase 6)
+  | "supervisor.sweep_started"
+  | "supervisor.sweep_completed"
+  | "supervisor.kj_attested"
+  | "supervisor.kj_review_queued"
+  | "supervisor.path_a_fallthrough"
+  | "supervisor.cascade_terminal"
+  | "supervisor.error"
+  // Wave 3 · H3 · timeout budgets (T-1 · T-3 · T-4 · T-6 · T-7)
+  | "timeout.statement"
+  | "timeout.pool_acquire"
+  | "timeout.idle_transaction"
+  | "timeout.worker_cycle"
+  | "timeout.job_budget";
 
 export type CounterSnapshot = {
   count: number;
@@ -94,6 +125,17 @@ export function snapshot(): Record<CounterName, CounterSnapshot> {
     "audit.emit_failed", "audit.emit_retried", "audit.emit_dropped",
     "inbox.pg_read_fallback", "jobs.pg_read_fallback",
     "validate.row_dropped", "validate.line_dropped",
+    "cron_tick.fired", "cron_tick.failed",
+    "run_once.fired", "run_once.failed",
+    "analytics.rollup_failed", "analytics.rollup_batch_drained",
+    "analytics.rollup_missing_table",
+    "alerts.dispatch_no_transport",
+    "supervisor.sweep_started", "supervisor.sweep_completed",
+    "supervisor.kj_attested", "supervisor.kj_review_queued",
+    "supervisor.path_a_fallthrough", "supervisor.cascade_terminal",
+    "supervisor.error",
+    "timeout.statement", "timeout.pool_acquire", "timeout.idle_transaction",
+    "timeout.worker_cycle", "timeout.job_budget",
   ];
   for (const n of names) out[n] = read(n);
   return out as Record<CounterName, CounterSnapshot>;

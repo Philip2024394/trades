@@ -12,6 +12,8 @@
 // detection that this file previously did not.
 
 import { getPostgresUrlOrNull } from "./config/pg";
+// Wave 3 · H3 · T-3 pool-acquire timeout (§4.1 of WAVE-3-H3-TIMEOUT-BUDGETS.md).
+import { connectionTimeoutMs } from "./config/timeouts";
 
 export type PgClientLike = {
   query: (text: string, params?: unknown[]) => Promise<{ rows: Record<string, unknown>[]; rowCount: number | null }>;
@@ -29,10 +31,18 @@ async function getPool(): Promise<PgPoolLike | null> {
     let pg: unknown;
     try { pg = await import("pg" as string); } catch { return null; }
     const { Pool } = ((pg as { default?: unknown }).default ?? pg) as {
-      Pool: new (c: { connectionString: string; max?: number; ssl?: { rejectUnauthorized: boolean } | boolean }) => PgPoolLike;
+      Pool: new (c: { connectionString: string; max?: number; ssl?: { rejectUnauthorized: boolean } | boolean; connectionTimeoutMillis?: number }) => PgPoolLike;
     };
     const needsSsl = /supabase\.co|render\.com|neon\.tech|amazonaws\.com/.test(url);
-    return new Pool({ connectionString: url, max: 3, ssl: needsSsl ? { rejectUnauthorized: false } : undefined });
+    return new Pool({
+      connectionString: url,
+      max: 3,
+      ssl: needsSsl ? { rejectUnauthorized: false } : undefined,
+      // T-3 · fail-fast on pool exhaustion · env-var override via
+      // NEX_PG_CONNECTION_TIMEOUT_MS (default 10s). Prevents blocked
+      // callers from stacking indefinitely when the pool is empty.
+      connectionTimeoutMillis: connectionTimeoutMs(),
+    });
   })();
   return poolPromise;
 }

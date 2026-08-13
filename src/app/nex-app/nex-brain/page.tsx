@@ -1,25 +1,21 @@
-// NEX Brain monitor — live dashboard for the manager + worker pool.
+// NEX Headquarters · single front door.
 //
 // Route: /nex-app/nex-brain
 //
-// Composes: pool health cards, corpus breakdown, LLM budget consumed,
-// contradictions surfaced, "Run one cycle" button for manual testing,
-// and a live records list. Reads /api/nex/brain/status on mount and
-// after every action.
+// Renders the Reception experience directly. Reception itself is the
+// operations-centre page (rooms · roster · living timeline · providers ·
+// worker floor). This route aliases that component so users landing at
+// /nex-app/nex-brain arrive at Reception without a redirect hop.
+//
+// The /nex-app/nex-brain/operations-centre URL still works (same file,
+// same rendering). Every other centre — Knowledge, Storage, Data Platform,
+// Review, Journal, Audit, Comms Social — is reachable from the shared
+// HQ sidebar (see components/nex-app/nex-brain/HQShell.tsx).
 
-import { NexBrainShell } from "@/components/nex-app/nex-brain/NexBrainShell";
-import "../nex-app.css";
+export { default } from "./operations-centre/page";
 
 export const dynamic = "force-dynamic";
 export const metadata = {
-  title: "NEX Brain · Monitor",
+  title: "NEX Headquarters · Reception",
   robots: { index: false },
 };
-
-export default function NexBrainPage() {
-  return (
-    <div className="nex-app-root">
-      <NexBrainShell />
-    </div>
-  );
-}

@@ -121,7 +121,10 @@ export async function GET(req: NextRequest) {
         limit,
         offset,
       }),
-      loadDirectorySeedsAsFeedItems(),
+      // Perf fix (Philip 2026-08-13): pass the category filter down so the
+      // directory loader pulls ONLY the requested trade from Supabase.
+      // Previously loaded every seed across every category on every request.
+      loadDirectorySeedsAsFeedItems({ category }),
     ]);
 
     // Merge: directory seeds first (they're the seeded UK trade

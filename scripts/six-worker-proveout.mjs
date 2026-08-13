@@ -1,69 +1,87 @@
 #!/usr/bin/env node
-// six-worker-proveout.mjs · Wave 8 evidence-gathering runner
+// six-worker-proveout.mjs · Wave 8 evidence-gathering runner · v2
 //
 // PURPOSE
-// Per Philip 2026-08-09: "the production worker should be rebuilt against
-// [the new stack] · then prove all six: Mason → Blake → Rowan →
-// Avery/Harper → Iris in the actual production execution environment."
+// Per Philip 2026-08-09: "the production worker should be rebuilt
+// against [the new stack] · then prove all six: Mason → Blake → Rowan
+// → Avery/Harper → Iris in the actual production execution
+// environment."
 //
 // This runner captures the EVIDENCE required for Wave 8 sign-off. It
 // runs against WHATEVER worker topology is live (currently local dev
 // on port 3008). When production topology is deployed, the same runner
 // runs against that endpoint · same criteria · same evidence format.
 //
-// Every criterion is either:
-//   · STATIC   · asserted from code inspection (worker files exist etc.)
-//   · LIVE     · read from worker_results / worker_heartbeats / audit_log
-//   · FUNCTIONAL · exercises the pipeline with a disposable fresh input
-//
-// Runner does NOT authorize production migration. It only measures the
-// CURRENT execution environment against the Wave 8 acceptance criteria.
-// Run it AFTER production topology is deployed to gather the sign-off
-// evidence · run it NOW to see the gap.
+// v2 CHANGES (Philip 2026-08-09 corrections):
+//   1. Four-state result model: PASS · FAIL · BLOCKED · TEST-HARNESS-ERROR
+//      · PASS   · criterion met with fresh evidence
+//      · FAIL   · criterion measurable but not met
+//      · BLOCKED · criterion cannot be measured (missing dependency,
+//                  outside this environment · e.g. real provider
+//                  failure requires a controlled fault injection)
+//      · TEST-HARNESS-ERROR · runner itself broke measuring (bug or
+//                  network error) · does NOT reflect on worker
+//   2. Fresh-evidence rule: proof requires activity in the last N
+//      minutes, not historical rows alone. Runner fires a fresh
+//      end-to-end cycle FIRST · then measures heartbeats + audit +
+//      results against a FRESH_WINDOW_MS window.
+//   3. Iris criterion recognises Part-B llm-checked marker
+//      (provider="llm-checked" with ms=null is a valid completion).
+//   4. audit_log queries hit Supabase (where the brain still lives),
+//      not our Postgres (empty until Wave 5 backfill).
+//   5. Object-storage flag grep tolerates line-wrap in the source.
 //
 // USAGE:
 //   node scripts/six-worker-proveout.mjs
 //   NEX_APP_URL=https://your-prod-url node scripts/six-worker-proveout.mjs
+//   NEX_PROVEOUT_FRESH_MINUTES=5 node scripts/six-worker-proveout.mjs
 //
 // EXIT CODES:
-//   0 · all criteria pass · Wave 8 sign-off evidence complete
-//   2 · at least one criterion failed · evidence gap identified
-//   1 · fatal error running the runner
+//   0 · every criterion PASS or BLOCKED (with reason) · sign-off ready
+//   2 · at least one FAIL · gaps present · not ready
+//   1 · TEST-HARNESS-ERROR count > 0 OR fatal · runner needs fix
 //
 // GUARDRAILS:
-//   · READ-ONLY against production data
-//   · Only new writes are the disposable inbox item + the resulting
+//   · READ-ONLY against production data (Supabase never modified)
+//   · Only new writes are ONE disposable inbox item + resulting
 //     knowledge_record (both tagged so they can be manually removed)
 //   · No env-var mutations · no deployments · no fly commands
-//   · No Supabase deletions
 
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
+import { basename } from "node:path";
 import pg from "pg";
 const { Pool } = pg;
 
 const ENV = readFileSync(".env.local", "utf8");
-const APP_URL = process.env.NEX_APP_URL || "http://localhost:3008";
+const APP_URL     = process.env.NEX_APP_URL || "http://localhost:3008";
 const CRON_SECRET = (ENV.match(/^CRON_SECRET=(\S+)/m) || [])[1] || "";
-const NEX_URL = (ENV.match(/^NEXT_PUBLIC_NEX_SUPABASE_URL=(\S+)/m) || [])[1];
-const NEX_KEY = (ENV.match(/^NEX_SUPABASE_SERVICE_ROLE_KEY=(\S+)/m) || [])[1];
-const PG_URL  = (ENV.match(/^NEX_POSTGRES_URL=(\S+)/m) || [])[1]
-              || "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const NEX_URL     = (ENV.match(/^NEXT_PUBLIC_NEX_SUPABASE_URL=(\S+)/m) || [])[1];
+const NEX_KEY     = (ENV.match(/^NEX_SUPABASE_SERVICE_ROLE_KEY=(\S+)/m) || [])[1];
+const PG_URL      = (ENV.match(/^NEX_POSTGRES_URL=(\S+)/m) || [])[1]
+                  || "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const FRESH_MIN   = Number(process.env.NEX_PROVEOUT_FRESH_MINUTES ?? 5);
+const FRESH_MS    = FRESH_MIN * 60 * 1000;
 
 const pool = new Pool({ connectionString: PG_URL, max: 2 });
 
 const WORKERS = [
-  { type: "knowledge-context",   persona: "Mason",  llm: false, expectsInputRef: true },
-  { type: "voice-context",       persona: "Blake",  llm: false, expectsInputRef: true },
-  { type: "learning-context",    persona: "Rowan",  llm: false, expectsInputRef: true },
-  { type: "knowledge-extractor", persona: "Avery",  llm: true,  expectsInputRef: true },
-  { type: "image-analyst",       persona: "Harper", llm: true,  expectsInputRef: true },
-  { type: "quality-checker",     persona: "Iris",   llm: "conditional", expectsInputRef: true },
+  { type: "knowledge-context",   persona: "Mason",  llm: "no-llm",       expectsInputRef: true },
+  { type: "voice-context",       persona: "Blake",  llm: "no-llm",       expectsInputRef: true },
+  { type: "learning-context",    persona: "Rowan",  llm: "no-llm",       expectsInputRef: true },
+  { type: "knowledge-extractor", persona: "Avery",  llm: "real",         expectsInputRef: true },
+  { type: "image-analyst",       persona: "Harper", llm: "real",         expectsInputRef: true },
+  { type: "quality-checker",     persona: "Iris",   llm: "llm-checked",  expectsInputRef: true },
 ];
 
 const results = [];
-function record(id, pass, note = "") {
-  results.push({ id, pass, note });
-  process.stdout.write(`  ${pass ? "PASS" : "FAIL"} ${id}${note ? " · " + note : ""}\n`);
+function record(id, state, note = "") {
+  results.push({ id, state, note });
+  const marker =
+    state === "PASS"     ? "✅ PASS " :
+    state === "FAIL"     ? "❌ FAIL " :
+    state === "BLOCKED"  ? "⏸ BLOCK " :
+                            "⚠ TEST-HARNESS-ERROR ";
+  process.stdout.write(`  ${marker} ${id}${note ? " · " + note : ""}\n`);
 }
 function section(name) {
   process.stdout.write(`\n─── ${name} ───\n`);
@@ -73,234 +91,406 @@ async function supaRest(path) {
   const r = await fetch(`${NEX_URL}/rest/v1/${path}`, {
     headers: { "apikey": NEX_KEY, "Authorization": `Bearer ${NEX_KEY}` },
   });
-  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  if (!r.ok) throw new Error(`HTTP ${r.status}: ${await r.text().catch(() => "")}`);
   return r.json();
 }
 
 async function main() {
   process.stdout.write("═══════════════════════════════════════════════════════════════\n");
-  process.stdout.write("  SIX-WORKER PROVE-OUT · Wave 8 evidence gathering\n");
-  process.stdout.write(`  app:    ${APP_URL}\n`);
-  process.stdout.write(`  supa:   ${NEX_URL ? NEX_URL.replace(/https:\/\//, "").slice(0, 40) : "(unset)"}\n`);
-  process.stdout.write(`  pg:     ${PG_URL.replace(/:[^:@]+@/, ":****@")}\n`);
+  process.stdout.write("  SIX-WORKER PROVE-OUT · Wave 8 · v2 · fresh-evidence rule\n");
+  process.stdout.write(`  app:            ${APP_URL}\n`);
+  process.stdout.write(`  supa (brain):   ${NEX_URL ? NEX_URL.replace(/https:\/\//, "").slice(0, 40) : "(unset)"}\n`);
+  process.stdout.write(`  pg (nex.*):     ${PG_URL.replace(/:[^:@]+@/, ":****@")}\n`);
+  process.stdout.write(`  fresh window:   ${FRESH_MIN} minute(s)\n`);
   process.stdout.write("═══════════════════════════════════════════════════════════════\n");
 
   // ═══════════════════════════════════════════════════════════════════
-  // SECTION A · Per-worker recent-completion evidence (LIVE)
+  // SECTION 0 · Fire fresh end-to-end BEFORE measuring
+  //             (heartbeats + audit + results all need fresh data)
   // ═══════════════════════════════════════════════════════════════════
-  section("A · Per-worker recent-completion evidence (LIVE · worker_results)");
+  section("0 · Fire fresh end-to-end cycle FIRST (creates the evidence)");
 
-  const since24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const stamp = Date.now();
+  let e2eItemId = null;
+  let e2eOk = false;
+  let e2eImageItemId = null;
+  let e2eImageOk = false;
+
+  // --- 0a · Text E2E (exercises Mason/Blake/Rowan/Avery/Iris)
+  try {
+    const content = `six-worker-proveout v2 · text E2E · ${stamp} · Baluster spacing on staircases must not permit a 100mm sphere to pass through per BS 6180. Unique nonce: ${stamp}.`;
+    const upload = await fetch(`${APP_URL}/api/nex/knowledge-inbox/dump`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ source: "chatgpt-approved", title: `proveout-v2-${stamp}`, content }),
+    }).then((r) => r.json());
+    e2eItemId = upload.item?.id;
+    if (!e2eItemId) {
+      record("0.text-upload", "TEST-HARNESS-ERROR", `dump route returned no item: ${JSON.stringify(upload).slice(0, 200)}`);
+    } else {
+      record("0.text-upload", "PASS", `inbox item ${e2eItemId}`);
+    }
+  } catch (err) {
+    record("0.text-upload", "TEST-HARNESS-ERROR", `text E2E upload failed: ${err.message}`);
+  }
+
+  // --- 0b · Image E2E (exercises Harper) via multipart upload
+  //          Append a unique trailing marker (past PNG IEND · decoders
+  //          ignore it) so the sha256 hash changes each run and the
+  //          upload isn't rejected as duplicate.
+  const testImage = "data/knowledge-inbox/files/nx_msktgg7n_1d2da8e3-badge-04.png";
+  try {
+    if (!existsSync(testImage)) {
+      record("0.image-upload", "BLOCKED", `test image not present at ${testImage} · Harper freshness will be BLOCKED`);
+    } else {
+      const basePng = readFileSync(testImage);
+      const uniqueTrailer = Buffer.from(`NEX-PROVEOUT-V2-STAMP-${stamp}`, "utf8");
+      const bytes = Buffer.concat([basePng, uniqueTrailer]);
+      const fd = new FormData();
+      const blob = new Blob([bytes], { type: "image/png" });
+      fd.append("source", "personal-ideas");
+      fd.append("forcedKind", "image");
+      fd.append("files", blob, `proveout-v2-${stamp}-${basename(testImage)}`);
+      const uploadRes = await fetch(`${APP_URL}/api/nex/knowledge-inbox/upload`, { method: "POST", body: fd });
+      const uploadJson = await uploadRes.json().catch(() => ({}));
+      const created = uploadJson?.created?.[0] || uploadJson?.item;
+      const duplicated = uploadJson?.duplicates?.[0];
+      if (created?.id) {
+        e2eImageItemId = created.id;
+        record("0.image-upload", "PASS", `image inbox item ${e2eImageItemId}`);
+      } else if (duplicated?.id) {
+        record("0.image-upload", "TEST-HARNESS-ERROR",
+          `hash still deduplicated despite unique trailer · dup=${duplicated.id}`);
+      } else {
+        record("0.image-upload", "TEST-HARNESS-ERROR",
+          `upload route returned no item · status=${uploadRes.status} body=${JSON.stringify(uploadJson).slice(0, 200)}`);
+      }
+    }
+  } catch (err) {
+    record("0.image-upload", "TEST-HARNESS-ERROR", `image E2E upload failed: ${err.message}`);
+  }
+
+  // --- 0c · Fire cron-tick ONCE to process both items
+  //          (may need multiple ticks because pipeline stages are async)
+  try {
+    if (!e2eItemId && !e2eImageItemId) {
+      record("0.cron", "BLOCKED", "no items uploaded · nothing to tick for");
+    } else {
+      const cronRuns = 3;  // three ticks to give staged pipeline time
+      let lastDt = 0, lastDuration = 0;
+      for (let i = 0; i < cronRuns; i++) {
+        const t0 = Date.now();
+        const tick = await fetch(`${APP_URL}/api/nex/brain/cron-tick`, {
+          headers: { "Authorization": `Bearer ${CRON_SECRET}` },
+        }).then((r) => r.json());
+        lastDt = Date.now() - t0;
+        lastDuration = tick.cycle?.duration_ms ?? 0;
+        if (!tick.ok) {
+          record(`0.cron[${i}]`, "FAIL", `cron-tick returned ok:false · ${JSON.stringify(tick).slice(0, 200)}`);
+          break;
+        }
+      }
+      record("0.cron", "PASS", `${cronRuns} ticks · last=${lastDt}ms · last-duration_ms=${lastDuration}`);
+      e2eOk = !!e2eItemId;
+      e2eImageOk = !!e2eImageItemId;
+    }
+  } catch (err) {
+    record("0.cron", "TEST-HARNESS-ERROR", `cron-tick failed: ${err.message}`);
+  }
+
+  const freshCutoff = new Date(Date.now() - FRESH_MS).toISOString();
+
+  // ═══════════════════════════════════════════════════════════════════
+  // SECTION A · Per-worker recent-completion · MUST be within fresh window
+  // ═══════════════════════════════════════════════════════════════════
+  section(`A · Per-worker completion evidence · MUST be within last ${FRESH_MIN} minutes`);
+
   for (const w of WORKERS) {
     try {
-      const rows = await supaRest(`worker_results?worker_type=eq.${w.type}&created_at=gte.${since24h}&select=llm_provider,llm_model,llm_ms,llm_tokens_in,llm_tokens_out,created_at&order=created_at.desc&limit=1`);
+      const rows = await supaRest(`worker_results?worker_type=eq.${w.type}&created_at=gte.${freshCutoff}&select=llm_provider,llm_model,llm_ms,llm_tokens_in,llm_tokens_out,created_at,output_kind,flags&order=created_at.desc&limit=1`);
       const latest = rows[0];
       if (!latest) {
-        record(`A.${w.persona}`, false, `no worker_result in last 24h`);
+        record(`A.${w.persona}`, "FAIL", `no worker_result within fresh window · pipeline did not exercise this worker`);
         continue;
       }
-      const hasReal = w.llm === false
-        ? latest.llm_provider === "no-llm"
-        : (latest.llm_provider && latest.llm_provider !== "no-llm" && latest.llm_ms > 0);
-      record(`A.${w.persona}`, hasReal,
-        `last=${latest.created_at.slice(0, 19)} · provider=${latest.llm_provider} · ms=${latest.llm_ms} · tokens=${latest.llm_tokens_in ?? 0}→${latest.llm_tokens_out ?? 0}`);
-    } catch (e) { record(`A.${w.persona}`, false, `query failed: ${e.message}`); }
+      // Per-worker LLM expectation
+      let hasCorrectShape = false;
+      let reason = "";
+      if (w.llm === "no-llm") {
+        hasCorrectShape = latest.llm_provider === "no-llm";
+        reason = `provider=${latest.llm_provider}` + (hasCorrectShape ? "" : " (expected no-llm)");
+      } else if (w.llm === "real") {
+        hasCorrectShape = latest.llm_provider && latest.llm_provider !== "no-llm" && Number(latest.llm_ms) > 0;
+        reason = `provider=${latest.llm_provider} · ms=${latest.llm_ms} · tokens=${latest.llm_tokens_in ?? 0}→${latest.llm_tokens_out ?? 0}`;
+      } else if (w.llm === "llm-checked") {
+        // Iris · Part-B marker · ms may be null · what matters is
+        // provider="llm-checked" AND output_kind="quality_report"
+        hasCorrectShape = latest.llm_provider === "llm-checked" && latest.output_kind === "quality_report";
+        reason = `provider=${latest.llm_provider} · output=${latest.output_kind}` + (hasCorrectShape ? " (Part-B marker correct)" : "");
+      }
+      record(`A.${w.persona}`, hasCorrectShape ? "PASS" : "FAIL",
+        `at=${latest.created_at.slice(11, 19)} · ${reason}`);
+    } catch (err) {
+      record(`A.${w.persona}`, "TEST-HARNESS-ERROR", `Supabase query failed: ${err.message}`);
+    }
   }
 
   // ═══════════════════════════════════════════════════════════════════
-  // SECTION B · Heartbeat freshness (LIVE · worker_heartbeats)
+  // SECTION B · Heartbeat freshness · after H fired · must be fresh
   // ═══════════════════════════════════════════════════════════════════
-  section("B · Heartbeat freshness (LIVE · <60s = healthy · <300s = stale · >300s = offline)");
+  section(`B · Heartbeat freshness · MUST be within last ${FRESH_MIN} minutes`);
 
   try {
-    const beats = await supaRest("worker_heartbeats?select=host_id,last_seen_at,cycles_total,last_cycle_summary");
+    const beats = await supaRest("worker_heartbeats?select=host_id,last_seen_at,cycles_total,last_cycle_summary&order=last_seen_at.desc&limit=50");
     const now = Date.now();
     for (const w of WORKERS) {
-      // Match host_id patterns: `<worker_type>@<pid>` (12.3 format · local dev)
-      // OR any legacy Fly hex-only host that has last_cycle_summary hinting at this worker
       const matching = beats.filter((b) =>
         b.host_id.startsWith(`${w.type}@`)
         || (b.last_cycle_summary && b.last_cycle_summary.worker_type === w.type)
       );
       if (matching.length === 0) {
-        record(`B.${w.persona}`, false, "no heartbeat found");
+        record(`B.${w.persona}`, "FAIL", "no heartbeat found · worker not observed");
         continue;
       }
       matching.sort((a, b) => new Date(b.last_seen_at) - new Date(a.last_seen_at));
       const latest = matching[0];
-      const ageSec = Math.round((now - new Date(latest.last_seen_at).getTime()) / 1000);
-      const state = ageSec < 60 ? "healthy" : ageSec < 300 ? "stale" : "OFFLINE";
-      const pass = ageSec < 300; // stale is a warning · offline is a failure
-      record(`B.${w.persona}`, pass,
-        `host=${latest.host_id.slice(0, 30)} · age=${ageSec}s · ${state} · cycles=${latest.cycles_total}`);
+      const ageMs = now - new Date(latest.last_seen_at).getTime();
+      const ageSec = Math.round(ageMs / 1000);
+      // Fresh window for heartbeats specifically · a healthy worker
+      // heartbeats every cycle (~5s) so freshness threshold is TIGHT
+      const state = ageMs < FRESH_MS ? "PASS" : "FAIL";
+      record(`B.${w.persona}`, state,
+        `host=${latest.host_id.slice(0, 30)} · age=${ageSec}s · cycles=${latest.cycles_total}`);
     }
-  } catch (e) { record("B.*", false, `heartbeats query failed: ${e.message}`); }
+  } catch (err) {
+    for (const w of WORKERS) record(`B.${w.persona}`, "TEST-HARNESS-ERROR", `heartbeat query failed: ${err.message}`);
+  }
 
   // ═══════════════════════════════════════════════════════════════════
-  // SECTION C · Audit trail per worker (LIVE · audit_log · last 24h)
+  // SECTION C · Audit trail per worker · Supabase (brain still lives there)
   // ═══════════════════════════════════════════════════════════════════
-  section("C · Audit trail evidence (LIVE · nex.audit_log · last 24h)");
+  section(`C · Audit trail evidence · Supabase audit_log · last ${FRESH_MIN} minutes`);
 
-  try {
-    // audit_log uses actor field like "knowledge-context@<pid>"
-    for (const w of WORKERS) {
-      const c = await pool.query(
-        `SELECT COUNT(*)::int AS n FROM nex.audit_log
-          WHERE actor LIKE $1 AND created_at >= NOW() - INTERVAL '24 hours'`,
-        [`${w.type}%`],
-      );
-      const n = c.rows[0].n;
-      record(`C.${w.persona}`, n > 0, `${n} audit events in last 24h`);
+  for (const w of WORKERS) {
+    try {
+      const rows = await supaRest(`audit_log?actor=like.${w.type}%25&created_at=gte.${freshCutoff}&select=action,created_at&order=created_at.desc&limit=1`);
+      if (rows.length === 0) {
+        record(`C.${w.persona}`, "FAIL", `0 audit events in fresh window`);
+      } else {
+        record(`C.${w.persona}`, "PASS", `latest: ${rows[0].action} at ${rows[0].created_at.slice(11, 19)}`);
+      }
+    } catch (err) {
+      record(`C.${w.persona}`, "TEST-HARNESS-ERROR", `audit query failed: ${err.message}`);
     }
-  } catch (e) { record("C.*", false, `audit query failed: ${e.message}`); }
+  }
 
   // ═══════════════════════════════════════════════════════════════════
-  // SECTION D · Duplicate-prevention semantic (STATIC + LIVE)
+  // SECTION D · Duplicate prevention · static + live
   // ═══════════════════════════════════════════════════════════════════
-  section("D · Duplicate prevention (STATIC + LIVE)");
+  section("D · Duplicate prevention (STATIC grep + LIVE resubmit)");
 
-  // STATIC · findByHash present in inbox storage
   try {
     const store = readFileSync("src/lib/nex/knowledge-inbox/storage.ts", "utf8");
     const hasFind = /export async function findByHash/.test(store)
                  && /if \(existing\) return \{ item: existing, deduplicated: true \}/.test(store);
-    record("D.static", hasFind, "findByHash + deduplicated:true shape present in storage.ts");
-  } catch (e) { record("D.static", false, `read failed: ${e.message}`); }
+    record("D.static", hasFind ? "PASS" : "FAIL", "findByHash + deduplicated:true shape in storage.ts");
+  } catch (err) { record("D.static", "TEST-HARNESS-ERROR", `read failed: ${err.message}`); }
 
-  // LIVE · re-submit an existing hash · confirm deduplicated flag returns
   try {
-    const uploadUrl = `${APP_URL}/api/nex/knowledge-inbox/dump`;
-    const uniqueContent = "six-worker-proveout · duplicate test · fixed content · 2026-08-09";
-    // First submission
-    const r1 = await fetch(uploadUrl, {
+    const uniqueContent = `six-worker-proveout · v2 dedup test · ${Date.now()}`;
+    const r1 = await fetch(`${APP_URL}/api/nex/knowledge-inbox/dump`, {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ source: "personal-ideas", title: "proveout-dup-test", content: uniqueContent }),
+      body: JSON.stringify({ source: "personal-ideas", title: "proveout-dup-v2", content: uniqueContent }),
     }).then((r) => r.json());
-    // Second submission · same content
-    const r2 = await fetch(uploadUrl, {
+    const r2 = await fetch(`${APP_URL}/api/nex/knowledge-inbox/dump`, {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ source: "personal-ideas", title: "proveout-dup-test", content: uniqueContent }),
+      body: JSON.stringify({ source: "personal-ideas", title: "proveout-dup-v2", content: uniqueContent }),
     }).then((r) => r.json());
     const deduped = r2.deduplicated === true && r1.item?.id === r2.item?.id;
-    record("D.live", deduped,
-      deduped ? `dedup works · id=${r1.item?.id}` : `dedup failed · r1.id=${r1.item?.id} r2.id=${r2.item?.id} dedup=${r2.deduplicated}`);
-  } catch (e) { record("D.live", false, `dedup live test failed: ${e.message}`); }
+    record("D.live", deduped ? "PASS" : "FAIL",
+      deduped ? `dedup returns same id (${r1.item?.id})` : `dedup broken · r1=${r1.item?.id} r2=${r2.item?.id}`);
+  } catch (err) { record("D.live", "TEST-HARNESS-ERROR", `dedup live test: ${err.message}`); }
 
   // ═══════════════════════════════════════════════════════════════════
-  // SECTION E · Retry queue lifecycle (LIVE · nex.llm_retry_queue)
+  // SECTION E · Retry lifecycle · pg + supa
   // ═══════════════════════════════════════════════════════════════════
-  section("E · Retry lifecycle (LIVE · nex.llm_retry_queue)");
+  section("E · Retry lifecycle (LIVE)");
 
   try {
-    const total = await pool.query(`SELECT COUNT(*)::int AS n FROM nex.llm_retry_queue`);
-    const byStatus = await pool.query(`SELECT status, COUNT(*)::int AS n FROM nex.llm_retry_queue GROUP BY status`);
-    const succeeded = byStatus.rows.find((r) => r.status === "succeeded")?.n ?? 0;
-    record("E.total", total.rows[0].n >= 0, `total=${total.rows[0].n} · by status=${JSON.stringify(Object.fromEntries(byStatus.rows.map((r) => [r.status, r.n])))}`);
-    record("E.lifecycle", succeeded > 0, succeeded > 0 ? `${succeeded} retries have completed lifecycle` : "no retries observed reaching succeeded · lifecycle unproven");
-  } catch (e) { record("E.*", false, `retry queue query failed: ${e.message}`); }
+    // Brain is on Supabase currently · retry queue lives there
+    const supaRetries = await supaRest("llm_retry_queue?select=status");
+    const byStatus = {};
+    for (const r of supaRetries) byStatus[r.status] = (byStatus[r.status] ?? 0) + 1;
+    const succeeded = byStatus.succeeded ?? 0;
+    record("E.supa-lifecycle", succeeded > 0 ? "PASS" : "BLOCKED",
+      `Supabase llm_retry_queue: ${JSON.stringify(byStatus)}${succeeded > 0 ? "" : " (no succeeded rows yet)"}`);
+  } catch (err) { record("E.supa-lifecycle", "TEST-HARNESS-ERROR", `supa query failed: ${err.message}`); }
+
+  try {
+    // Also check our pg (post-backfill this becomes primary)
+    const r = await pool.query(`SELECT status, COUNT(*)::int AS n FROM nex.llm_retry_queue GROUP BY status`);
+    const byStatus = Object.fromEntries(r.rows.map((x) => [x.status, x.n]));
+    const succeeded = byStatus.succeeded ?? 0;
+    record("E.pg-lifecycle", succeeded > 0 ? "PASS" : "BLOCKED",
+      `pg nex.llm_retry_queue: ${JSON.stringify(byStatus)}${succeeded > 0 ? "" : " (empty · will populate at Wave 5 backfill)"}`);
+  } catch (err) { record("E.pg-lifecycle", "TEST-HARNESS-ERROR", `pg query failed: ${err.message}`); }
 
   // ═══════════════════════════════════════════════════════════════════
-  // SECTION F · Object retrieval (STATIC + LIVE)
+  // SECTION F · Object storage retrieval
   // ═══════════════════════════════════════════════════════════════════
   section("F · Object storage retrieval (STATIC + LIVE)");
 
   try {
     const worker = readFileSync("src/lib/nex/brain/workers/image-analyst.ts", "utf8");
-    const usesAdapter = /getObjectStorage\(\)\.get\(objectBucket, objectKey\)/.test(worker);
-    const emitsFlag = /bytes:nex-object-storage/.test(worker) && /bytes:filesystem-legacy/.test(worker);
-    record("F.static", usesAdapter && emitsFlag,
-      `image-analyst uses getObjectStorage().get + emits bytes: flag`);
-  } catch (e) { record("F.static", false, `read failed: ${e.message}`); }
+    // The runtime flag is built via template literal `bytes:${byteSource}`
+    // where byteSource is assigned in two branches. Validate the SOURCE
+    // shape, not the concatenated literal.
+    const usesAdapter      = /getObjectStorage\(\)\.get\(objectBucket, objectKey\)/.test(worker);
+    const assignsObjSource = /byteSource\s*=\s*["`]nex-object-storage["`]/.test(worker);
+    const assignsFsSource  = /byteSource\s*=\s*["`]filesystem-legacy["`]/.test(worker);
+    const emitsBytesFlag   = /`bytes:\$\{byteSource\}`/.test(worker);
+    const allFour = usesAdapter && assignsObjSource && assignsFsSource && emitsBytesFlag;
+    record("F.static", allFour ? "PASS" : "FAIL",
+      `adapter=${usesAdapter} · obj-assign=${assignsObjSource} · fs-assign=${assignsFsSource} · flag-template=${emitsBytesFlag}`);
+  } catch (err) { record("F.static", "TEST-HARNESS-ERROR", `read failed: ${err.message}`); }
 
   try {
-    const rows = await supaRest(`worker_results?worker_type=eq.image-analyst&flags=cs.%7B%22bytes%3Anex-object-storage%22%7D&select=created_at,flags&order=created_at.desc&limit=3`);
-    // Some Supabase deployments don't support cs. easily · fallback query
-    let latestObj = rows[0];
-    if (!latestObj) {
-      const rows2 = await supaRest(`worker_results?worker_type=eq.image-analyst&select=flags,created_at&order=created_at.desc&limit=5`);
-      latestObj = rows2.find((r) => (r.flags || []).some((f) => String(f).startsWith("bytes:nex-object-storage")));
+    const rows = await supaRest(`worker_results?worker_type=eq.image-analyst&created_at=gte.${freshCutoff}&select=flags,created_at&order=created_at.desc&limit=5`);
+    const objRun = rows.find((r) => (r.flags || []).some((f) => String(f).startsWith("bytes:nex-object-storage")));
+    if (objRun) {
+      record("F.live", "PASS", `fresh object-storage read at ${objRun.created_at.slice(11, 19)}`);
+    } else if (rows.length === 0) {
+      if (e2eImageOk) {
+        record("F.live", "FAIL", `image E2E fired but no image-analyst worker_result appeared in fresh window · Harper pipeline broken`);
+      } else {
+        record("F.live", "BLOCKED", `image E2E fire did not queue · Harper freshness cannot be measured`);
+      }
+    } else {
+      record("F.live", "FAIL", `image-analyst ran but bytes: flag not present · ${rows.length} rows checked · flags=${JSON.stringify(rows.map((r) => r.flags))}`);
     }
-    record("F.live", !!latestObj,
-      latestObj ? `latest object-storage read: ${latestObj.created_at?.slice(0, 19) ?? "?"}` : "no worker_result with bytes:nex-object-storage flag");
-  } catch (e) { record("F.live", false, `object-storage evidence query failed: ${e.message}`); }
+  } catch (err) { record("F.live", "TEST-HARNESS-ERROR", `object-storage evidence query failed: ${err.message}`); }
 
   // ═══════════════════════════════════════════════════════════════════
-  // SECTION G · Concurrency + queue integrity (STATIC + LIVE)
+  // SECTION G · Concurrency + SKIP LOCKED + retry-recovery
   // ═══════════════════════════════════════════════════════════════════
-  section("G · Concurrency + queue integrity (STATIC + LIVE)");
+  section("G · Concurrency + SKIP LOCKED + retry-recovery (STATIC + LIVE)");
 
-  // STATIC · SKIP LOCKED helper exists in the schema
   try {
     const migration = readFileSync("deploy/postgres/init/041_nex_brain_schema.sql", "utf8");
-    const hasSkip = /FOR UPDATE SKIP LOCKED/i.test(migration);
-    record("G.skip-locked", hasSkip, "nex.claim_next_job uses FOR UPDATE SKIP LOCKED");
-  } catch (e) { record("G.skip-locked", false, `read failed: ${e.message}`); }
-
-  // LIVE · verify no worker_job has attempts > 1 completed successfully AFTER a failure
-  //         (evidence that retries actually happened when providers failed)
-  try {
-    const r = await supaRest(`worker_jobs?attempts=gt.1&status=eq.completed&select=id,worker_type,attempts,last_error,created_at&order=created_at.desc&limit=5`);
-    record("G.retry-recovery", r.length > 0,
-      r.length > 0
-        ? `${r.length} jobs completed after attempts>1 · retry-recovery works`
-        : "no completed jobs with attempts>1 · retry-recovery not yet exercised (waiting for provider failure to test)");
-  } catch (e) { record("G.retry-recovery", false, `query failed: ${e.message}`); }
-
-  // ═══════════════════════════════════════════════════════════════════
-  // SECTION H · Full end-to-end fresh trace (FUNCTIONAL)
-  // ═══════════════════════════════════════════════════════════════════
-  section("H · Full end-to-end fresh text trace (FUNCTIONAL)");
+    record("G.skip-locked", /FOR UPDATE SKIP LOCKED/i.test(migration) ? "PASS" : "FAIL",
+      "nex.claim_next_job uses FOR UPDATE SKIP LOCKED");
+  } catch (err) { record("G.skip-locked", "TEST-HARNESS-ERROR", `read failed: ${err.message}`); }
 
   try {
-    const stamp = Date.now();
-    const content = `six-worker-proveout · text E2E · ${stamp} · Handrail height on a domestic staircase must be between 900mm and 1000mm per BS 5395-1:2010. Unique nonce: ${stamp}.`;
-    const upload = await fetch(`${APP_URL}/api/nex/knowledge-inbox/dump`, {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ source: "chatgpt-approved", title: `proveout-e2e-${stamp}`, content }),
-    }).then((r) => r.json());
-    const itemId = upload.item?.id;
-    if (!itemId) { record("H.upload", false, `upload failed: ${JSON.stringify(upload).slice(0, 200)}`); }
-    else {
-      record("H.upload", true, `inbox item ${itemId}`);
-      // Fire cron-tick
-      const t0 = Date.now();
-      const tick = await fetch(`${APP_URL}/api/nex/brain/cron-tick`, {
-        headers: { "Authorization": `Bearer ${CRON_SECRET}` },
-      }).then((r) => r.json());
-      const dtMs = Date.now() - t0;
-      const cycle = tick.cycle || {};
-      const hitMason  = (cycle.contexts_assembled  ?? []).some((x) => x.inbox_item_id === itemId);
-      const hitBlake  = (cycle.voice_guides         ?? []).some((x) => x.inbox_item_id === itemId);
-      const hitRowan  = (cycle.learning_bundles     ?? []).some((x) => x.inbox_item_id === itemId);
-      const hitAvery  = (cycle.extracted_record_ids ?? []).length > 0;
-      const hitIris   = (cycle.checked_records      ?? []).length > 0;
-      record("H.mason", hitMason,  hitMason  ? "context bundle assembled" : "no context observed for this item");
-      record("H.blake", hitBlake,  hitBlake  ? "voice guide assembled"    : "no voice guide observed");
-      record("H.rowan", hitRowan,  hitRowan  ? "learning bundle assembled": "no learning bundle observed");
-      record("H.avery", hitAvery,  hitAvery  ? `extracted ${cycle.extracted_record_ids.length} record(s)` : "no record extracted");
-      record("H.iris",  hitIris,   hitIris   ? `checked ${cycle.checked_records.length} record(s)` : "no quality check observed");
-      process.stdout.write(`  · cron-tick wall=${dtMs}ms · duration_ms=${cycle.duration_ms}\n`);
+    // Fresh evidence of retry-recovery is hard without inducing a fault.
+    // Check whether any recovery has been observed EVER · flag as BLOCKED
+    // if only historical (matches Philip's rule: don't mark proven from
+    // historical rows alone).
+    const rows = await supaRest(`worker_jobs?attempts=gt.1&status=eq.completed&created_at=gte.${freshCutoff}&select=id,worker_type,attempts&limit=5`);
+    if (rows.length > 0) {
+      record("G.retry-recovery", "PASS", `${rows.length} fresh jobs completed after attempts>1`);
+    } else {
+      // Fall back to historical evidence · BLOCKED (not FAIL) because
+      // proving fresh retry-recovery requires a controlled fault
+      const hist = await supaRest("worker_jobs?attempts=gt.1&status=eq.completed&select=id&limit=1");
+      if (hist.length > 0) {
+        record("G.retry-recovery", "BLOCKED",
+          "historical retry-recovery exists but no fresh evidence · requires controlled provider-failure test");
+      } else {
+        record("G.retry-recovery", "BLOCKED",
+          "no retry-recovery ever observed · requires provider-failure test to prove");
+      }
     }
-  } catch (e) { record("H.*", false, `E2E trace failed: ${e.message}`); }
+  } catch (err) { record("G.retry-recovery", "TEST-HARNESS-ERROR", `retry query failed: ${err.message}`); }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // SECTION H · Full end-to-end fresh trace (evidence for A + B + C)
+  // ═══════════════════════════════════════════════════════════════════
+  section("H · Full end-to-end fresh trace (composite · reuses SECTION 0's fires)");
+
+  // Text-item worker chain
+  if (!e2eOk || !e2eItemId) {
+    record("H.mason",  "BLOCKED", "text E2E fire failed · downstream cannot be scored");
+    record("H.blake",  "BLOCKED", "text E2E fire failed · downstream cannot be scored");
+    record("H.rowan",  "BLOCKED", "text E2E fire failed · downstream cannot be scored");
+    record("H.avery",  "BLOCKED", "text E2E fire failed · downstream cannot be scored");
+    record("H.iris",   "BLOCKED", "text E2E fire failed · downstream cannot be scored");
+  } else {
+    try {
+      const rows = await supaRest(`worker_jobs?input_ref=eq.${e2eItemId}&select=worker_type,status,attempts,last_error&order=created_at.asc`);
+      const byType = Object.fromEntries(rows.map((r) => [r.worker_type, r]));
+      const check = (persona, type) => {
+        const r = byType[type];
+        if (!r) return record(`H.${persona}`, "FAIL", `no worker_job row for ${type} · pipeline did not queue this stage`);
+        if (r.status !== "completed") return record(`H.${persona}`, "FAIL", `${type} status=${r.status}${r.last_error ? " err=" + r.last_error.slice(0, 60) : ""}`);
+        return record(`H.${persona}`, "PASS", `${type} completed · attempts=${r.attempts}`);
+      };
+      check("mason", "knowledge-context");
+      check("blake", "voice-context");
+      check("rowan", "learning-context");
+      check("avery", "knowledge-extractor");
+      // Iris uses record_id as input_ref (not inbox item) · verify via audit
+      const irisAudit = await supaRest(`audit_log?actor=like.quality-checker%25&created_at=gte.${freshCutoff}&select=action,created_at&order=created_at.desc&limit=1`);
+      record("H.iris", irisAudit.length > 0 ? "PASS" : "FAIL",
+        irisAudit.length > 0 ? `quality-checker fired: ${irisAudit[0].action} at ${irisAudit[0].created_at.slice(11, 19)}` : "no quality-checker audit in fresh window");
+    } catch (err) {
+      record("H.text-chain", "TEST-HARNESS-ERROR", `text-chain query failed: ${err.message}`);
+    }
+  }
+
+  // Image-item worker chain (Harper)
+  if (!e2eImageOk || !e2eImageItemId) {
+    record("H.harper", "BLOCKED", "image E2E fire did not queue · Harper cannot be scored");
+  } else {
+    try {
+      const rows = await supaRest(`worker_jobs?input_ref=eq.${e2eImageItemId}&select=worker_type,status,attempts,last_error&order=created_at.asc`);
+      const harper = rows.find((r) => r.worker_type === "image-analyst");
+      if (!harper) {
+        record("H.harper", "FAIL", `no image-analyst worker_job for input_ref=${e2eImageItemId} · dispatch did not queue Harper`);
+      } else if (harper.status !== "completed") {
+        record("H.harper", "FAIL", `image-analyst status=${harper.status}${harper.last_error ? " err=" + harper.last_error.slice(0, 60) : ""}`);
+      } else {
+        record("H.harper", "PASS", `image-analyst completed · attempts=${harper.attempts}`);
+      }
+    } catch (err) {
+      record("H.harper", "TEST-HARNESS-ERROR", `image-chain query failed: ${err.message}`);
+    }
+  }
 
   // ═══════════════════════════════════════════════════════════════════
   // SUMMARY
   // ═══════════════════════════════════════════════════════════════════
-  const passed = results.filter((r) => r.pass).length;
-  const total  = results.length;
+  const pass = results.filter((r) => r.state === "PASS").length;
+  const fail = results.filter((r) => r.state === "FAIL").length;
+  const blocked = results.filter((r) => r.state === "BLOCKED").length;
+  const harness = results.filter((r) => r.state === "TEST-HARNESS-ERROR").length;
+  const total = results.length;
+
   process.stdout.write("\n═══════════════════════════════════════════════════════════════\n");
-  process.stdout.write(`  Wave 8 evidence · ${passed}/${total} criteria passed\n`);
-  process.stdout.write(`  Verdict: ${passed === total ? "SIX-WORKER PROVE-OUT PASSES on this topology" : "GAPS PRESENT · not ready for Wave 8 sign-off"}\n`);
+  process.stdout.write(`  Wave 8 · ${total} criteria total\n`);
+  process.stdout.write(`    ✅ PASS:               ${pass}\n`);
+  process.stdout.write(`    ❌ FAIL:               ${fail}\n`);
+  process.stdout.write(`    ⏸  BLOCKED (reason):   ${blocked}\n`);
+  process.stdout.write(`    ⚠  TEST-HARNESS-ERROR: ${harness}\n`);
+  const verdict =
+    harness > 0 ? "RUNNER-BROKEN · fix test-harness errors first" :
+    fail > 0    ? "GAPS PRESENT · specific criteria failed" :
+    blocked > 0 ? "PARTIAL · every measurable criterion passed · BLOCKED items need controlled tests to close" :
+                  "SIX-WORKER PROVE-OUT PASSES on this topology";
+  process.stdout.write(`  Verdict: ${verdict}\n`);
   process.stdout.write("═══════════════════════════════════════════════════════════════\n");
-  process.stdout.write("\nWhat this proves (or doesn't):\n");
-  process.stdout.write("  · This runner measures the CURRENT execution environment.\n");
-  process.stdout.write("  · A pass on local dev does NOT constitute a pass on production.\n");
-  process.stdout.write("  · Re-run against production URL (NEX_APP_URL=...) once the new worker\n");
-  process.stdout.write("    topology is deployed to gather the Gate H sign-off evidence.\n");
-  process.stdout.write("  · Failures below signal gaps that must close before Gate H.\n");
+  process.stdout.write("\nSemantics:\n");
+  process.stdout.write("  · PASS    = criterion met with fresh evidence in last " + FRESH_MIN + " min\n");
+  process.stdout.write("  · FAIL    = criterion measurable but not met\n");
+  process.stdout.write("  · BLOCKED = cannot be measured in this environment (needs controlled test)\n");
+  process.stdout.write("  · TEST-HARNESS-ERROR = runner itself broke · not a worker failure\n");
+  process.stdout.write("\n  A pass on local dev does NOT constitute a pass on production. Re-run\n");
+  process.stdout.write("  against production URL once the new worker topology is deployed.\n");
 
   await pool.end();
-  process.exit(passed === total ? 0 : 2);
+  // Exit code: 0 only if all PASS or BLOCKED-with-reason · 1 if harness broke · 2 if FAIL
+  if (harness > 0) process.exit(1);
+  if (fail > 0) process.exit(2);
+  process.exit(0);
 }
 
 main().catch(async (err) => {

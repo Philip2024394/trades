@@ -1,0 +1,33 @@
+{
+  "enquiry_id": "sr_1786350918814_1f05f65f",
+  "source": "staircase-renovations",
+  "source_page": "C:/Program Files/Git/nex-app/staircase-renovations",
+  "submitted_at": "2026-08-10T08:35:18.818Z",
+  "path": "plan",
+  "customer": {
+    "name": "Acceptance Plan Path",
+    "phone": "07700900001",
+    "email": "plan-test-1786350918@example.com",
+    "postcode": null,
+    "notes": null
+  },
+  "renovation_context": {
+    "collection_slug": "modern",
+    "image_src": "C:/Program Files/Git/staircase-renovations/modern/foo.png",
+    "image_alt": "Modern L-shape",
+    "image_id": "modern:2"
+  },
+  "plan_selection": {
+    "plan_slug": "demo-plan-1",
+    "plan_label": "Straight closed 13 tread"
+  },
+  "photos": [],
+  "photo_errors": [],
+  "contact_ref": {
+    "contact_id": "7a9ab462-3c3f-4ac6-b175-4136afd28e47",
+    "created": true
+  },
+  "request_headers": {
+    "user_agent": "curl/8.18.0"
+  }
+}

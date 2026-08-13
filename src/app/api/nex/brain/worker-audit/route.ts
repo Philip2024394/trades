@@ -13,7 +13,14 @@
 
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { createClient } from "@supabase/supabase-js";
+// V-1b · D9 route-boundary validation adopted 2026-08-10.
+import { validateSearchParams } from "@/lib/nex/brain/http/validate-input";
+
+const QuerySchema = z.object({
+  hours: z.coerce.number().int().min(1).max(720).default(24),
+});
 import {
   computeWorkerActivityAudit,
   type AuditInputs,
@@ -49,9 +56,9 @@ const WORKER_TYPES: WorkerType[] = [
 const HEARTBEAT_ONLINE_MS = 60 * 1000;
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const hoursParam = Number(searchParams.get("hours") ?? "24");
-  const hours = Math.min(Math.max(1, hoursParam || 24), 720); // 1h to 30d
+  const parsed = validateSearchParams(req, QuerySchema);
+  if (!parsed.ok) return parsed.response;
+  const { hours } = parsed.data;
   const now = Date.now();
   const to = new Date(now).toISOString();
   const from = new Date(now - hours * 60 * 60 * 1000).toISOString();

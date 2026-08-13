@@ -27,7 +27,11 @@
 // Stop with Ctrl+C. Graceful shutdown drains in-flight requests.
 
 const BASE_URL = process.env.NEX_BRAIN_URL || "http://localhost:3008";
-const CRON_TOKEN = process.env.NEX_BRAIN_CRON_TOKEN || "";
+// Server auth (src/lib/nex/brain/auth/require-cron-token.ts) accepts a
+// bearer of either NEX_BRAIN_CRON_TOKEN OR CRON_SECRET · this script
+// sends whichever env var is present so it works against both local
+// dev (CRON_SECRET set in .env.local) and Fly/Vercel deploys.
+const CRON_TOKEN = process.env.NEX_BRAIN_CRON_TOKEN || process.env.CRON_SECRET || "";
 const INTERVAL_MS = Number(process.env.NEX_BRAIN_INTERVAL) || 30_000;
 const BATCH = Number(process.env.NEX_BRAIN_BATCH) || 5;
 const START = Date.now();
@@ -57,7 +61,13 @@ console.log("");
 
 async function runOne() {
   const headers = { "content-type": "application/json" };
-  if (CRON_TOKEN) headers["x-brain-cron-token"] = CRON_TOKEN;
+  if (CRON_TOKEN) {
+    // Send both header shapes · x-brain-cron-token satisfies servers
+    // configured with NEX_BRAIN_CRON_TOKEN, Authorization: Bearer
+    // satisfies servers configured with CRON_SECRET (Vercel default).
+    headers["x-brain-cron-token"] = CRON_TOKEN;
+    headers["authorization"] = `Bearer ${CRON_TOKEN}`;
+  }
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 90_000);

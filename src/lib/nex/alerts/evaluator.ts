@@ -20,6 +20,15 @@ import { CATALOGUE, findRule, type RuleDefinition } from "./catalogue";
 import { buildPlatformSnapshot } from "./snapshot";
 import { dispatchAlert } from "./dispatch";
 import type { Alert, AlertRule, DispatchChannel, PlatformSnapshot, Severity } from "./types";
+// Wave 3 · H5 · structured logging + fail-closed gate observability.
+import { logger } from "@/lib/nex/observability/logger";
+
+const log = logger("alerts.evaluator");
+
+/** Wave 3 · H5 · dispatch is off by default until an operator opts in. */
+export function isDispatchEnabled(): boolean {
+  return process.env.NEX_ALERTS_DISPATCH_ENABLED === "1";
+}
 
 // ── Seed catalogue ────────────────────────────────────────────────
 let seeded = false;
@@ -199,18 +208,31 @@ export async function evaluate(): Promise<EvaluateResult> {
   }) ?? outcomes;
 
   // ── Dispatch new + non-suppressed alerts ────────────────────────
+  // Wave 3 · H5 · gated behind NEX_ALERTS_DISPATCH_ENABLED. When the gate
+  // is off (default), alerts still open/resolve in the DB and are visible
+  // in AlertsCentrePanel; only the outbound notification is suppressed.
+  // When on, dispatch fires per rule's notify_channels; fail-closed
+  // observability (alerts/dispatch.ts) surfaces missing-transport cases.
+  const gateEnabled = isDispatchEnabled();
+  let dispatch_skipped_gate = 0;
   for (const o of client_r) {
     if (!o.alert) continue;
     if (o.suppressed) continue;
+    if (!gateEnabled) { dispatch_skipped_gate++; continue; }
     const channels = o.rule.notify_channels;
     const dr = await dispatchAlert(o.alert, channels);
     dispatched      += dr.sent;
     dispatch_failed += dr.failed;
   }
+  if (!gateEnabled && dispatch_skipped_gate > 0) {
+    log.info("dispatch_skipped_gate_off", { skipped: dispatch_skipped_gate });
+  }
 
   return {
     ok: true, timestamp: snapshot.timestamp, ran_rules, fired,
-    suppressed_by_dedup, new_alerts, auto_resolved, dispatched, dispatch_failed, snapshot,
+    suppressed_by_dedup, new_alerts, auto_resolved,
+    dispatched, dispatch_failed, dispatch_skipped_gate,
+    snapshot,
   };
 }
 

@@ -1,0 +1,44 @@
+{
+  "refacing_case_id": "rf_kzvdyp5n_82mbejkt",
+  "created_at": "2026-08-12T16:47:40.229Z",
+  "updated_at": "2026-08-12T16:47:42.590Z",
+  "status": "CONCEPT_READY",
+  "existing_staircase": {
+    "photos": [
+      {
+        "image_id": "img_case_rf_kzvdyp5n_82mbejkt_ced3d40c",
+        "captured_at": "2026-08-12T16:47:41.113Z"
+      }
+    ],
+    "customer_confirmed": true
+  },
+  "customer_intent": {
+    "feelings": [
+      "more-natural",
+      "more-modern"
+    ],
+    "intent_entries": [
+      {
+        "item": "newel",
+        "treatment": "MUST_NOT_CHANGE",
+        "customer_confirmed": true
+      }
+    ]
+  },
+  "unknown_items": [
+    {
+      "concern": "exact_dimensions",
+      "reason": "Exact tread/riser dimensions cannot be confirmed from a photograph · to be captured during survey."
+    },
+    {
+      "concern": "timber_species_confirmation",
+      "reason": "Species can be inferred visually but the confirmed species requires a physical sample or survey."
+    },
+    {
+      "concern": "structural_conditions",
+      "reason": "Structural condition · fixings · load capacity · not visible in a photograph."
+    }
+  ],
+  "composition_provenance": [],
+  "anonymous_return_token": "OvksEUJolMX5t2MPMDSJrZBJeIGLeM1v"
+}

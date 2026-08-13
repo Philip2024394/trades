@@ -1,0 +1,564 @@
+[nex-brain-worker] starting
+  target : http://localhost:3008
+  every  : 30000ms
+  batch  : 5 items per cycle per worker
+  token  : configured
+
+[nex-brain-worker] 2026-08-10T05:34:08.035Z · uptime 0m · cycles ok 1 · failed 0
+  last cycle: 0 drafted, 0 checked in 4678ms
+[nex-brain-worker] 2026-08-10T05:39:02.818Z · ctx 1 · voice 1 · learn 1 · draft 1 · check 1 · 57764ms
+[nex-brain-worker] 2026-08-10T05:39:11.499Z · uptime 5m · cycles ok 10 · failed 0
+  last cycle: 0 drafted, 0 checked in 4962ms
+[nex-brain-worker] 2026-08-10T05:44:15.315Z · uptime 10m · cycles ok 20 · failed 0
+  last cycle: 0 drafted, 0 checked in 6151ms
+[nex-brain-worker] 2026-08-10T05:49:17.778Z · uptime 15m · cycles ok 30 · failed 0
+  last cycle: 0 drafted, 0 checked in 4692ms
+[nex-brain-worker] 2026-08-10T05:54:39.749Z · ctx 1 · voice 1 · learn 1 · draft 1 · check 1 · 54949ms
+[nex-brain-worker] 2026-08-10T05:54:39.762Z · uptime 21m · cycles ok 39 · failed 0
+  last cycle: 1 drafted, 1 checked in 54949ms
+[nex-brain-worker] 2026-08-10T05:59:51.076Z · uptime 26m · cycles ok 50 · failed 0
+  last cycle: 0 drafted, 0 checked in 4853ms
+[nex-brain-worker] 2026-08-10T06:05:36.150Z · ctx 1 · voice 1 · learn 1 · draft 1 · check 1 · 45793ms
+[nex-brain-worker] 2026-08-10T06:05:36.151Z · uptime 32m · cycles ok 60 · failed 0
+  last cycle: 1 drafted, 1 checked in 45793ms
+[nex-brain-worker] 2026-08-10T06:10:48.664Z · uptime 37m · cycles ok 71 · failed 0
+  last cycle: 0 drafted, 0 checked in 4546ms
+[nex-brain-worker] 2026-08-10T06:15:54.720Z · uptime 42m · cycles ok 81 · failed 0
+  last cycle: 0 drafted, 0 checked in 7439ms
+[nex-brain-worker] 2026-08-10T06:21:17.655Z · ctx 1 · voice 1 · learn 1 · draft 1 · check 1 · 58840ms
+[nex-brain-worker] 2026-08-10T06:21:17.656Z · uptime 47m · cycles ok 90 · failed 0
+  last cycle: 1 drafted, 1 checked in 58840ms
+[nex-brain-worker] 2026-08-10T06:26:33.122Z · uptime 53m · cycles ok 101 · failed 0
+  last cycle: 0 drafted, 0 checked in 8832ms
+[nex-brain-worker] 2026-08-10T06:31:58.164Z · ctx 1 · voice 1 · learn 1 · draft 1 · check 1 · 62516ms
+[nex-brain-worker] 2026-08-10T06:31:58.165Z · uptime 58m · cycles ok 110 · failed 0
+  last cycle: 1 drafted, 1 checked in 62516ms
+[nex-brain-worker] 2026-08-10T06:37:09.235Z · uptime 63m · cycles ok 121 · failed 0
+  last cycle: 0 drafted, 0 checked in 5329ms
+[nex-brain-worker] 2026-08-10T06:38:27.088Z · ctx 1 · voice 1 · learn 1 · draft 1 · check 1 · 52537ms
+[nex-brain-worker] 2026-08-10T06:42:38.945Z · uptime 69m · cycles ok 131 · failed 0
+  last cycle: 0 drafted, 0 checked in 6552ms
+[nex-brain-worker] cycle failed: HTTP 500: <!DOCTYPE html><html><head><meta charSet="utf-8" data-next-head=""/><meta name="viewport" content="width=device-width" data-next-head=""/><style data-next-hide-fouc="true">body{display:none}</style><n
+[nex-brain-worker] cycle failed: HTTP 500: <!DOCTYPE html><html><head><meta charSet="utf-8" data-next-head=""/><meta name="viewport" content="width=device-width" data-next-head=""/><style data-next-hide-fouc="true">body{display:none}</style><n
+[nex-brain-worker] 2026-08-10T06:48:08.268Z · uptime 74m · cycles ok 140 · failed 2
+[nex-brain-worker] cycle failed: HTTP 500: <!DOCTYPE html><html><head><meta charSet="utf-8" data-next-head=""/><meta name="viewport" content="width=device-width" data-next-head=""/><style data-next-hide-fouc="true">body{display:none}</style><n
+[nex-brain-worker] cycle failed: HTTP 500: <!DOCTYPE html><html><head><meta charSet="utf-8" data-next-head=""/><meta name="viewport" content="width=device-width" data-next-head=""/><style data-next-hide-fouc="true">body{display:none}</style><n
+[nex-brain-worker] cycle failed: HTTP 500: <!DOCTYPE html><html><head><meta charSet="utf-8" data-next-head=""/><meta name="viewport" content="width=device-width" data-next-head=""/><style data-next-hide-fouc="true">body{display:none}</style><n
+[nex-brain-worker] cycle failed: This operation was aborted
+[nex-brain-worker] 2026-08-10T06:53:45.364Z · uptime 80m · cycles ok 144 · failed 6
+[nex-brain-worker] 2026-08-10T06:58:59.272Z · uptime 85m · cycles ok 155 · failed 6
+  last cycle: 0 drafted, 0 checked in 5789ms
+[nex-brain-worker] 2026-08-10T07:02:25.772Z · ctx 1 · voice 1 · learn 1 · draft 1 · check 1 · 60292ms
+[nex-brain-worker] 2026-08-10T07:04:05.268Z · uptime 90m · cycles ok 164 · failed 6
+  last cycle: 0 drafted, 0 checked in 4649ms
+[nex-brain-worker] 2026-08-10T07:08:31.969Z · ctx 1 · voice 1 · learn 1 · draft 1 · check 1 · 51553ms
+[nex-brain-worker] 2026-08-10T07:09:12.357Z · uptime 95m · cycles ok 173 · failed 6
+  last cycle: 0 drafted, 0 checked in 4656ms
+[nex-brain-worker] 2026-08-10T07:14:14.941Z · uptime 100m · cycles ok 183 · failed 6
+  last cycle: 0 drafted, 0 checked in 6856ms
+[nex-brain-worker] 2026-08-10T07:19:20.319Z · uptime 105m · cycles ok 193 · failed 6
+  last cycle: 0 drafted, 0 checked in 8130ms
+[nex-brain-worker] 2026-08-10T07:24:24.896Z · uptime 110m · cycles ok 201 · failed 6
+  last cycle: 0 drafted, 0 checked in 6567ms
+[nex-brain-worker] 2026-08-10T07:29:41.904Z · uptime 116m · cycles ok 212 · failed 6
+  last cycle: 0 drafted, 0 checked in 4699ms
+[nex-brain-worker] 2026-08-10T07:34:45.195Z · uptime 121m · cycles ok 222 · failed 6
+  last cycle: 0 drafted, 0 checked in 5276ms
+[nex-brain-worker] 2026-08-10T07:39:49.317Z · uptime 126m · cycles ok 232 · failed 6
+  last cycle: 0 drafted, 0 checked in 6627ms
+[nex-brain-worker] 2026-08-10T07:41:18.991Z · ctx 1 · voice 1 · learn 1 · draft 1 · check 1 · 66125ms
+[nex-brain-worker] 2026-08-10T07:45:02.926Z · uptime 131m · cycles ok 241 · failed 6
+  last cycle: 0 drafted, 0 checked in 6201ms
+[nex-brain-worker] cycle failed: fetch failed
+[nex-brain-worker] 2026-08-10T07:50:14.813Z · uptime 136m · cycles ok 249 · failed 7
+  last cycle: 0 drafted, 0 checked in 6486ms
+[nex-brain-worker] 2026-08-10T07:51:19.749Z · ctx 1 · voice 1 · learn 1 · draft 1 · check 1 · 60372ms
+[nex-brain-worker] 2026-08-10T07:55:52.598Z · ctx 1 · voice 1 · learn 1 · draft 1 · check 1 · 56687ms
+[nex-brain-worker] 2026-08-10T07:55:52.599Z · uptime 142m · cycles ok 258 · failed 7
+  last cycle: 1 drafted, 1 checked in 56687ms
+[nex-brain-worker] 2026-08-10T08:01:08.832Z · uptime 147m · cycles ok 269 · failed 7
+  last cycle: 0 drafted, 0 checked in 8069ms
+[nex-brain-worker] 2026-08-10T08:06:37.748Z · uptime 153m · cycles ok 280 · failed 7
+  last cycle: 0 drafted, 0 checked in 5680ms
+[nex-brain-worker] 2026-08-10T08:11:40.966Z · uptime 158m · cycles ok 290 · failed 7
+  last cycle: 0 drafted, 0 checked in 5905ms
+[nex-brain-worker] 2026-08-10T08:17:11.967Z · uptime 163m · cycles ok 301 · failed 7
+  last cycle: 0 drafted, 0 checked in 4502ms
+[nex-brain-worker] 2026-08-10T08:22:15.532Z · uptime 168m · cycles ok 311 · failed 7
+  last cycle: 0 drafted, 0 checked in 4981ms
+[nex-brain-worker] 2026-08-10T08:27:18.498Z · uptime 173m · cycles ok 321 · failed 7
+  last cycle: 0 drafted, 0 checked in 5764ms
+[nex-brain-worker] 2026-08-10T08:32:21.041Z · uptime 178m · cycles ok 331 · failed 7
+  last cycle: 0 drafted, 0 checked in 4951ms
+[nex-brain-worker] 2026-08-10T08:37:22.871Z · uptime 183m · cycles ok 341 · failed 7
+  last cycle: 0 drafted, 0 checked in 5532ms
+[nex-brain-worker] 2026-08-10T13:28:22.148Z · uptime 474m · cycles ok 344 · failed 7
+  last cycle: 0 drafted, 0 checked in 6697ms
+[nex-brain-worker] 2026-08-10T14:29:29.225Z · uptime 536m · cycles ok 348 · failed 7
+  last cycle: 0 drafted, 0 checked in 6344ms
+[nex-brain-worker] 2026-08-10T14:35:03.169Z · uptime 541m · cycles ok 359 · failed 7
+  last cycle: 0 drafted, 0 checked in 12892ms
+[nex-brain-worker] 2026-08-10T14:40:28.274Z · uptime 547m · cycles ok 370 · failed 7
+  last cycle: 0 drafted, 0 checked in 4692ms
+[nex-brain-worker] 2026-08-10T14:45:30.792Z · uptime 552m · cycles ok 380 · failed 7
+  last cycle: 0 drafted, 0 checked in 4950ms
+[nex-brain-worker] cycle failed: This operation was aborted
+[nex-brain-worker] 2026-08-10T14:50:33.431Z · uptime 557m · cycles ok 387 · failed 8
+  last cycle: 0 drafted, 0 checked in 5953ms
+[nex-brain-worker] 2026-08-10T14:55:36.629Z · uptime 562m · cycles ok 397 · failed 8
+  last cycle: 0 drafted, 0 checked in 8158ms
+[nex-brain-worker] 2026-08-10T15:01:05.953Z · uptime 567m · cycles ok 408 · failed 8
+  last cycle: 0 drafted, 0 checked in 4903ms
+[nex-brain-worker] cycle failed: This operation was aborted
+[nex-brain-worker] 2026-08-10T15:07:13.833Z · ctx 2 · voice 2 · learn 2 · draft 5 · check 5 · 70237ms
+[nex-brain-worker] 2026-08-10T15:07:13.833Z · uptime 573m · cycles ok 415 · failed 9
+  last cycle: 5 drafted, 5 checked in 70237ms
+[nex-brain-worker] 2026-08-10T15:07:56.416Z · ctx 1 · voice 1 · learn 1 · draft 2 · check 2 · 37682ms
+[nex-brain-worker] 2026-08-10T15:12:37.233Z · uptime 579m · cycles ok 426 · failed 9
+  last cycle: 0 drafted, 0 checked in 4932ms
+[nex-brain-worker] 2026-08-10T15:17:41.261Z · uptime 584m · cycles ok 436 · failed 9
+  last cycle: 0 drafted, 0 checked in 6197ms
+[nex-brain-worker] 2026-08-10T15:22:46.262Z · uptime 589m · cycles ok 446 · failed 9
+  last cycle: 0 drafted, 0 checked in 7356ms
+[nex-brain-worker] cycle failed: This operation was aborted
+[nex-brain-worker] 2026-08-10T15:28:14.432Z · uptime 594m · cycles ok 454 · failed 10
+  last cycle: 0 drafted, 0 checked in 5445ms
+[nex-brain-worker] 2026-08-10T15:33:18.458Z · uptime 599m · cycles ok 464 · failed 10
+  last cycle: 0 drafted, 0 checked in 8113ms
+[nex-brain-worker] 2026-08-10T15:38:47.744Z · uptime 605m · cycles ok 475 · failed 10
+  last cycle: 0 drafted, 0 checked in 4721ms
+[nex-brain-worker] 2026-08-10T15:43:50.009Z · uptime 610m · cycles ok 485 · failed 10
+  last cycle: 0 drafted, 0 checked in 4602ms
+[nex-brain-worker] 2026-08-10T15:48:52.732Z · uptime 615m · cycles ok 495 · failed 10
+  last cycle: 0 drafted, 0 checked in 4832ms
+[nex-brain-worker] 2026-08-10T15:53:55.240Z · uptime 620m · cycles ok 505 · failed 10
+  last cycle: 0 drafted, 0 checked in 4751ms
+[nex-brain-worker] 2026-08-10T15:58:57.582Z · uptime 625m · cycles ok 515 · failed 10
+  last cycle: 0 drafted, 0 checked in 4622ms
+[nex-brain-worker] 2026-08-10T16:04:02.960Z · uptime 630m · cycles ok 525 · failed 10
+  last cycle: 0 drafted, 0 checked in 4922ms
+[nex-brain-worker] 2026-08-10T16:08:15.636Z · ctx 1 · voice 1 · learn 1 · draft 2 · check 2 · 77982ms
+[nex-brain-worker] 2026-08-10T16:09:25.256Z · uptime 635m · cycles ok 534 · failed 10
+  last cycle: 0 drafted, 0 checked in 4946ms
+[nex-brain-worker] 2026-08-10T16:14:28.058Z · uptime 641m · cycles ok 544 · failed 10
+  last cycle: 0 drafted, 0 checked in 4625ms
+[nex-brain-worker] 2026-08-10T16:19:32.760Z · uptime 646m · cycles ok 554 · failed 10
+  last cycle: 0 drafted, 0 checked in 5145ms
+[nex-brain-worker] 2026-08-10T16:22:48.175Z · ctx 1 · voice 1 · learn 1 · draft 2 · check 2 · 79895ms
+[nex-brain-worker] 2026-08-10T16:24:57.767Z · uptime 651m · cycles ok 563 · failed 10
+  last cycle: 0 drafted, 0 checked in 4517ms
+[nex-brain-worker] 2026-08-10T16:30:01.335Z · uptime 656m · cycles ok 573 · failed 10
+  last cycle: 0 drafted, 0 checked in 4752ms
+[nex-brain-worker] 2026-08-10T16:35:05.926Z · uptime 661m · cycles ok 583 · failed 10
+  last cycle: 0 drafted, 0 checked in 5101ms
+[nex-brain-worker] 2026-08-10T16:40:08.307Z · uptime 666m · cycles ok 593 · failed 10
+  last cycle: 0 drafted, 0 checked in 4964ms
+[nex-brain-worker] 2026-08-10T16:45:11.914Z · uptime 671m · cycles ok 603 · failed 10
+  last cycle: 0 drafted, 0 checked in 4794ms
+[nex-brain-worker] cycle failed: This operation was aborted
+[nex-brain-worker] 2026-08-10T16:50:13.903Z · uptime 676m · cycles ok 610 · failed 11
+  last cycle: 0 drafted, 0 checked in 4787ms
+[nex-brain-worker] 2026-08-10T16:55:17.287Z · uptime 681m · cycles ok 620 · failed 11
+  last cycle: 0 drafted, 0 checked in 5031ms
+[nex-brain-worker] 2026-08-10T17:00:21.973Z · uptime 686m · cycles ok 630 · failed 11
+  last cycle: 0 drafted, 0 checked in 5485ms
+[nex-brain-worker] cycle failed: This operation was aborted
+[nex-brain-worker] 2026-08-10T17:05:23.939Z · uptime 691m · cycles ok 637 · failed 12
+  last cycle: 0 drafted, 0 checked in 5819ms
+[nex-brain-worker] 2026-08-10T17:10:25.907Z · uptime 696m · cycles ok 647 · failed 12
+  last cycle: 0 drafted, 0 checked in 4879ms
+[nex-brain-worker] cycle failed: This operation was aborted
+[nex-brain-worker] 2026-08-10T17:15:28.076Z · uptime 702m · cycles ok 654 · failed 13
+  last cycle: 0 drafted, 0 checked in 4538ms
+[nex-brain-worker] 2026-08-10T17:20:30.980Z · uptime 707m · cycles ok 664 · failed 13
+  last cycle: 0 drafted, 0 checked in 4692ms
+[nex-brain-worker] 2026-08-10T17:25:34.843Z · uptime 712m · cycles ok 674 · failed 13
+  last cycle: 0 drafted, 0 checked in 4867ms
+[nex-brain-worker] 2026-08-10T17:30:38.285Z · uptime 717m · cycles ok 684 · failed 13
+  last cycle: 0 drafted, 0 checked in 4876ms
+[nex-brain-worker] 2026-08-10T17:35:41.698Z · uptime 722m · cycles ok 694 · failed 13
+  last cycle: 0 drafted, 0 checked in 5455ms
+[nex-brain-worker] cycle failed: This operation was aborted
+[nex-brain-worker] 2026-08-10T20:27:36.318Z · uptime 894m · cycles ok 695 · failed 14
+[nex-brain-worker] 2026-08-10T22:16:03.859Z · uptime 1002m · cycles ok 697 · failed 14
+  last cycle: 0 drafted, 0 checked in 5147ms
+[nex-brain-worker] 2026-08-10T22:21:25.248Z · uptime 1007m · cycles ok 708 · failed 14
+  last cycle: 0 drafted, 0 checked in 4952ms
+[nex-brain-worker] 2026-08-10T22:26:27.879Z · uptime 1012m · cycles ok 718 · failed 14
+  last cycle: 0 drafted, 0 checked in 4417ms
+[nex-brain-worker] 2026-08-10T22:31:30.471Z · uptime 1018m · cycles ok 728 · failed 14
+  last cycle: 0 drafted, 0 checked in 5063ms
+[nex-brain-worker] 2026-08-10T22:36:32.660Z · uptime 1023m · cycles ok 738 · failed 14
+  last cycle: 0 drafted, 0 checked in 4707ms
+[nex-brain-worker] 2026-08-10T22:41:35.327Z · uptime 1028m · cycles ok 748 · failed 14
+  last cycle: 0 drafted, 0 checked in 4536ms
+[nex-brain-worker] 2026-08-10T22:46:38.653Z · uptime 1033m · cycles ok 758 · failed 14
+  last cycle: 0 drafted, 0 checked in 4795ms
+[nex-brain-worker] 2026-08-10T22:51:41.258Z · uptime 1038m · cycles ok 768 · failed 14
+  last cycle: 0 drafted, 0 checked in 4687ms
+[nex-brain-worker] 2026-08-10T22:56:43.574Z · uptime 1043m · cycles ok 778 · failed 14
+  last cycle: 0 drafted, 0 checked in 4496ms
+[nex-brain-worker] 2026-08-10T23:01:46.580Z · uptime 1048m · cycles ok 788 · failed 14
+  last cycle: 0 drafted, 0 checked in 4499ms
+[nex-brain-worker] 2026-08-10T23:06:49.501Z · uptime 1053m · cycles ok 798 · failed 14
+  last cycle: 0 drafted, 0 checked in 4569ms
+[nex-brain-worker] 2026-08-10T23:11:53.281Z · uptime 1058m · cycles ok 808 · failed 14
+  last cycle: 0 drafted, 0 checked in 4655ms
+[nex-brain-worker] 2026-08-10T23:16:55.691Z · uptime 1063m · cycles ok 818 · failed 14
+  last cycle: 0 drafted, 0 checked in 5025ms
+[nex-brain-worker] 2026-08-10T23:21:57.716Z · uptime 1068m · cycles ok 828 · failed 14
+  last cycle: 0 drafted, 0 checked in 4530ms
+[nex-brain-worker] 2026-08-10T23:26:59.695Z · uptime 1073m · cycles ok 838 · failed 14
+  last cycle: 0 drafted, 0 checked in 4532ms
+[nex-brain-worker] 2026-08-10T23:32:03.068Z · uptime 1078m · cycles ok 848 · failed 14
+  last cycle: 0 drafted, 0 checked in 4853ms
+[nex-brain-worker] 2026-08-10T23:37:05.896Z · uptime 1083m · cycles ok 858 · failed 14
+  last cycle: 0 drafted, 0 checked in 4719ms
+[nex-brain-worker] 2026-08-10T23:42:09.621Z · uptime 1088m · cycles ok 868 · failed 14
+  last cycle: 0 drafted, 0 checked in 4921ms
+[nex-brain-worker] 2026-08-10T23:47:11.976Z · uptime 1093m · cycles ok 878 · failed 14
+  last cycle: 0 drafted, 0 checked in 4852ms
+[nex-brain-worker] 2026-08-10T23:52:13.986Z · uptime 1098m · cycles ok 888 · failed 14
+  last cycle: 0 drafted, 0 checked in 4575ms
+[nex-brain-worker] 2026-08-10T23:57:17.137Z · uptime 1103m · cycles ok 898 · failed 14
+  last cycle: 0 drafted, 0 checked in 4779ms
+[nex-brain-worker] 2026-08-11T00:02:19.498Z · uptime 1108m · cycles ok 908 · failed 14
+  last cycle: 0 drafted, 0 checked in 4770ms
+[nex-brain-worker] 2026-08-11T00:07:21.854Z · uptime 1113m · cycles ok 918 · failed 14
+  last cycle: 0 drafted, 0 checked in 4737ms
+[nex-brain-worker] 2026-08-11T00:12:24.260Z · uptime 1118m · cycles ok 928 · failed 14
+  last cycle: 0 drafted, 0 checked in 4750ms
+[nex-brain-worker] 2026-08-11T00:17:27.696Z · uptime 1123m · cycles ok 938 · failed 14
+  last cycle: 0 drafted, 0 checked in 5978ms
+[nex-brain-worker] 2026-08-11T00:22:31.137Z · uptime 1129m · cycles ok 948 · failed 14
+  last cycle: 0 drafted, 0 checked in 4902ms
+[nex-brain-worker] 2026-08-11T00:27:35.459Z · uptime 1134m · cycles ok 958 · failed 14
+  last cycle: 0 drafted, 0 checked in 5036ms
+[nex-brain-worker] 2026-08-11T00:33:04.753Z · uptime 1139m · cycles ok 969 · failed 14
+  last cycle: 0 drafted, 0 checked in 4529ms
+[nex-brain-worker] 2026-08-11T00:38:07.267Z · uptime 1144m · cycles ok 979 · failed 14
+  last cycle: 0 drafted, 0 checked in 4552ms
+[nex-brain-worker] 2026-08-11T00:43:09.831Z · uptime 1149m · cycles ok 989 · failed 14
+  last cycle: 0 drafted, 0 checked in 4900ms
+[nex-brain-worker] 2026-08-11T00:48:12.282Z · uptime 1154m · cycles ok 999 · failed 14
+  last cycle: 0 drafted, 0 checked in 4740ms
+[nex-brain-worker] 2026-08-11T00:53:14.627Z · uptime 1159m · cycles ok 1009 · failed 14
+  last cycle: 0 drafted, 0 checked in 4447ms
+[nex-brain-worker] 2026-08-11T00:58:17.800Z · uptime 1164m · cycles ok 1019 · failed 14
+  last cycle: 0 drafted, 0 checked in 4455ms
+[nex-brain-worker] 2026-08-11T01:03:20.520Z · uptime 1169m · cycles ok 1029 · failed 14
+  last cycle: 0 drafted, 0 checked in 4618ms
+[nex-brain-worker] 2026-08-11T01:08:25.423Z · uptime 1174m · cycles ok 1039 · failed 14
+  last cycle: 0 drafted, 0 checked in 5151ms
+[nex-brain-worker] 2026-08-11T01:13:25.910Z · uptime 1179m · cycles ok 1049 · failed 14
+  last cycle: 0 drafted, 0 checked in 4493ms
+[nex-brain-worker] 2026-08-11T01:18:28.509Z · uptime 1185m · cycles ok 1059 · failed 14
+  last cycle: 0 drafted, 0 checked in 4518ms
+[nex-brain-worker] 2026-08-11T01:23:30.880Z · uptime 1190m · cycles ok 1069 · failed 14
+  last cycle: 0 drafted, 0 checked in 4633ms
+[nex-brain-worker] 2026-08-11T01:28:34.448Z · uptime 1195m · cycles ok 1079 · failed 14
+  last cycle: 0 drafted, 0 checked in 4660ms
+[nex-brain-worker] 2026-08-11T01:33:38.207Z · uptime 1200m · cycles ok 1089 · failed 14
+  last cycle: 0 drafted, 0 checked in 4867ms
+[nex-brain-worker] 2026-08-11T01:38:41.168Z · uptime 1205m · cycles ok 1099 · failed 14
+  last cycle: 0 drafted, 0 checked in 4591ms
+[nex-brain-worker] 2026-08-11T01:43:45.058Z · uptime 1210m · cycles ok 1109 · failed 14
+  last cycle: 0 drafted, 0 checked in 4909ms
+[nex-brain-worker] 2026-08-11T01:48:47.956Z · uptime 1215m · cycles ok 1119 · failed 14
+  last cycle: 0 drafted, 0 checked in 4565ms
+[nex-brain-worker] 2026-08-11T01:53:52.031Z · uptime 1220m · cycles ok 1129 · failed 14
+  last cycle: 0 drafted, 0 checked in 5121ms
+[nex-brain-worker] 2026-08-11T01:58:56.177Z · uptime 1225m · cycles ok 1139 · failed 14
+  last cycle: 0 drafted, 0 checked in 4580ms
+[nex-brain-worker] 2026-08-11T02:03:59.304Z · uptime 1230m · cycles ok 1149 · failed 14
+  last cycle: 0 drafted, 0 checked in 4852ms
+[nex-brain-worker] 2026-08-11T02:09:01.841Z · uptime 1235m · cycles ok 1159 · failed 14
+  last cycle: 0 drafted, 0 checked in 4875ms
+[nex-brain-worker] 2026-08-11T02:14:05.086Z · uptime 1240m · cycles ok 1169 · failed 14
+  last cycle: 0 drafted, 0 checked in 4638ms
+[nex-brain-worker] 2026-08-11T02:19:08.547Z · uptime 1245m · cycles ok 1179 · failed 14
+  last cycle: 0 drafted, 0 checked in 4817ms
+[nex-brain-worker] 2026-08-11T02:24:11.662Z · uptime 1250m · cycles ok 1189 · failed 14
+  last cycle: 0 drafted, 0 checked in 4585ms
+[nex-brain-worker] 2026-08-11T02:29:14.648Z · uptime 1255m · cycles ok 1199 · failed 14
+  last cycle: 0 drafted, 0 checked in 4564ms
+[nex-brain-worker] 2026-08-11T02:34:17.708Z · uptime 1260m · cycles ok 1209 · failed 14
+  last cycle: 0 drafted, 0 checked in 4716ms
+[nex-brain-worker] 2026-08-11T02:39:21.453Z · uptime 1265m · cycles ok 1219 · failed 14
+  last cycle: 0 drafted, 0 checked in 5434ms
+[nex-brain-worker] 2026-08-11T02:44:25.305Z · uptime 1270m · cycles ok 1229 · failed 14
+  last cycle: 0 drafted, 0 checked in 5523ms
+[nex-brain-worker] 2026-08-11T02:49:28.124Z · uptime 1276m · cycles ok 1239 · failed 14
+  last cycle: 0 drafted, 0 checked in 4916ms
+[nex-brain-worker] 2026-08-11T02:54:30.423Z · uptime 1281m · cycles ok 1249 · failed 14
+  last cycle: 0 drafted, 0 checked in 4627ms
+[nex-brain-worker] 2026-08-11T02:59:34.080Z · uptime 1286m · cycles ok 1259 · failed 14
+  last cycle: 0 drafted, 0 checked in 5176ms
+[nex-brain-worker] 2026-08-11T03:04:35.852Z · uptime 1291m · cycles ok 1269 · failed 14
+  last cycle: 0 drafted, 0 checked in 4743ms
+[nex-brain-worker] 2026-08-11T03:09:38.424Z · uptime 1296m · cycles ok 1279 · failed 14
+  last cycle: 0 drafted, 0 checked in 4870ms
+[nex-brain-worker] 2026-08-11T03:14:41.991Z · uptime 1301m · cycles ok 1289 · failed 14
+  last cycle: 0 drafted, 0 checked in 4878ms
+[nex-brain-worker] 2026-08-11T03:19:44.110Z · uptime 1306m · cycles ok 1299 · failed 14
+  last cycle: 0 drafted, 0 checked in 4620ms
+[nex-brain-worker] 2026-08-11T03:24:46.400Z · uptime 1311m · cycles ok 1309 · failed 14
+  last cycle: 0 drafted, 0 checked in 4616ms
+[nex-brain-worker] 2026-08-11T03:29:49.651Z · uptime 1316m · cycles ok 1319 · failed 14
+  last cycle: 0 drafted, 0 checked in 4843ms
+[nex-brain-worker] 2026-08-11T03:34:52.507Z · uptime 1321m · cycles ok 1329 · failed 14
+  last cycle: 0 drafted, 0 checked in 5227ms
+[nex-brain-worker] 2026-08-11T03:39:55.860Z · uptime 1326m · cycles ok 1339 · failed 14
+  last cycle: 0 drafted, 0 checked in 5242ms
+[nex-brain-worker] 2026-08-11T03:45:01.203Z · uptime 1331m · cycles ok 1349 · failed 14
+  last cycle: 0 drafted, 0 checked in 4759ms
+[nex-brain-worker] 2026-08-11T03:50:01.820Z · uptime 1336m · cycles ok 1359 · failed 14
+  last cycle: 0 drafted, 0 checked in 5140ms
+[nex-brain-worker] 2026-08-11T03:55:06.873Z · uptime 1341m · cycles ok 1369 · failed 14
+  last cycle: 0 drafted, 0 checked in 5229ms
+[nex-brain-worker] 2026-08-11T04:00:24.905Z · uptime 1346m · cycles ok 1379 · failed 14
+  last cycle: 0 drafted, 0 checked in 5666ms
+[nex-brain-worker] 2026-08-11T04:05:40.975Z · uptime 1352m · cycles ok 1390 · failed 14
+  last cycle: 0 drafted, 0 checked in 4675ms
+[nex-brain-worker] 2026-08-11T04:10:44.701Z · uptime 1357m · cycles ok 1400 · failed 14
+  last cycle: 0 drafted, 0 checked in 4954ms
+[nex-brain-worker] 2026-08-11T04:15:52.752Z · uptime 1362m · cycles ok 1410 · failed 14
+  last cycle: 0 drafted, 0 checked in 8814ms
+[nex-brain-worker] 2026-08-11T04:20:54.450Z · uptime 1367m · cycles ok 1420 · failed 14
+  last cycle: 0 drafted, 0 checked in 4710ms
+[nex-brain-worker] 2026-08-11T04:26:27.063Z · uptime 1372m · cycles ok 1431 · failed 14
+  last cycle: 0 drafted, 0 checked in 7752ms
+[nex-brain-worker] 2026-08-11T04:31:27.952Z · uptime 1377m · cycles ok 1441 · failed 14
+  last cycle: 0 drafted, 0 checked in 4644ms
+[nex-brain-worker] 2026-08-11T04:36:30.629Z · uptime 1383m · cycles ok 1451 · failed 14
+  last cycle: 0 drafted, 0 checked in 5043ms
+[nex-brain-worker] cycle failed: This operation was aborted
+[nex-brain-worker] 2026-08-11T04:41:54.282Z · uptime 1388m · cycles ok 1458 · failed 15
+[nex-brain-worker] 2026-08-11T04:43:45.134Z · ctx 1 · voice 1 · learn 1 · draft 3 · check 3 · 44574ms
+[nex-brain-worker] 2026-08-11T04:46:56.627Z · uptime 1393m · cycles ok 1468 · failed 15
+  last cycle: 0 drafted, 0 checked in 5158ms
+[nex-brain-worker] cycle failed: This operation was aborted
+[nex-brain-worker] 2026-08-11T04:51:59.029Z · uptime 1398m · cycles ok 1475 · failed 16
+  last cycle: 0 drafted, 0 checked in 5431ms
+[nex-brain-worker] 2026-08-11T04:54:00.527Z · ctx 1 · voice 1 · learn 1 · draft 2 · check 2 · 34730ms
+[nex-brain-worker] 2026-08-11T04:57:10.937Z · uptime 1403m · cycles ok 1485 · failed 16
+  last cycle: 0 drafted, 0 checked in 4643ms
+[nex-brain-worker] 2026-08-11T05:02:14.213Z · uptime 1408m · cycles ok 1495 · failed 16
+  last cycle: 0 drafted, 0 checked in 5274ms
+[nex-brain-worker] 2026-08-11T05:04:53.357Z · ctx 1 · voice 1 · learn 1 · draft 3 · check 3 · 43318ms
+[nex-brain-worker] 2026-08-11T05:07:35.006Z · uptime 1414m · cycles ok 1505 · failed 16
+  last cycle: 0 drafted, 0 checked in 5191ms
+[nex-brain-worker] 2026-08-11T05:13:05.489Z · uptime 1419m · cycles ok 1516 · failed 16
+  last cycle: 0 drafted, 0 checked in 4993ms
+[nex-brain-worker] 2026-08-11T05:18:07.248Z · uptime 1424m · cycles ok 1526 · failed 16
+  last cycle: 0 drafted, 0 checked in 4621ms
+[nex-brain-worker] 2026-08-11T05:21:58.208Z · ctx 1 · voice 1 · learn 1 · draft 2 · check 2 · 53242ms
+[nex-brain-worker] 2026-08-11T05:23:10.229Z · uptime 1429m · cycles ok 1535 · failed 16
+  last cycle: 0 drafted, 0 checked in 5346ms
+[nex-brain-worker] 2026-08-11T05:24:47.438Z · ctx 1 · voice 1 · learn 1 · draft 3 · check 3 · 43442ms
+[nex-brain-worker] 2026-08-11T05:26:48.463Z · ctx 1 · voice 1 · learn 1 · draft 3 · check 3 · 53395ms
+[nex-brain-worker] 2026-08-11T05:28:28.065Z · uptime 1435m · cycles ok 1544 · failed 16
+  last cycle: 0 drafted, 0 checked in 5063ms
+[nex-brain-worker] 2026-08-11T05:33:30.136Z · uptime 1440m · cycles ok 1554 · failed 16
+  last cycle: 0 drafted, 0 checked in 4622ms
+[nex-brain-worker] 2026-08-11T05:39:09.243Z · ctx 1 · voice 1 · learn 1 · draft 2 · check 2 · 36471ms
+[nex-brain-worker] 2026-08-11T05:39:09.250Z · uptime 1445m · cycles ok 1564 · failed 16
+  last cycle: 2 drafted, 2 checked in 36471ms
+[nex-brain-worker] 2026-08-11T05:44:21.317Z · uptime 1450m · cycles ok 1575 · failed 16
+  last cycle: 0 drafted, 0 checked in 5357ms
+[nex-brain-worker] 2026-08-11T05:49:23.406Z · uptime 1455m · cycles ok 1585 · failed 16
+  last cycle: 0 drafted, 0 checked in 5420ms
+[nex-brain-worker] 2026-08-11T05:54:25.477Z · uptime 1460m · cycles ok 1595 · failed 16
+  last cycle: 0 drafted, 0 checked in 4770ms
+[nex-brain-worker] 2026-08-11T05:59:29.054Z · uptime 1466m · cycles ok 1605 · failed 16
+  last cycle: 0 drafted, 0 checked in 4734ms
+[nex-brain-worker] 2026-08-11T06:04:34.376Z · uptime 1471m · cycles ok 1615 · failed 16
+  last cycle: 0 drafted, 0 checked in 4814ms
+[nex-brain-worker] 2026-08-11T06:10:04.259Z · uptime 1476m · cycles ok 1626 · failed 16
+  last cycle: 0 drafted, 0 checked in 5242ms
+[nex-brain-worker] 2026-08-11T06:15:06.357Z · uptime 1481m · cycles ok 1636 · failed 16
+  last cycle: 0 drafted, 0 checked in 5274ms
+[nex-brain-worker] 2026-08-11T06:20:09.506Z · uptime 1486m · cycles ok 1646 · failed 16
+  last cycle: 0 drafted, 0 checked in 6228ms
+[nex-brain-worker] 2026-08-11T06:25:10.519Z · uptime 1491m · cycles ok 1656 · failed 16
+  last cycle: 0 drafted, 0 checked in 4806ms
+[nex-brain-worker] 2026-08-11T06:30:14.586Z · uptime 1496m · cycles ok 1666 · failed 16
+  last cycle: 0 drafted, 0 checked in 6280ms
+[nex-brain-worker] 2026-08-11T06:35:14.747Z · uptime 1501m · cycles ok 1676 · failed 16
+  last cycle: 0 drafted, 0 checked in 4694ms
+[nex-brain-worker] 2026-08-11T06:40:17.535Z · uptime 1506m · cycles ok 1686 · failed 16
+  last cycle: 0 drafted, 0 checked in 4596ms
+[nex-brain-worker] 2026-08-11T06:45:20.824Z · uptime 1511m · cycles ok 1696 · failed 16
+  last cycle: 0 drafted, 0 checked in 5124ms
+[nex-brain-worker] 2026-08-11T06:50:24.300Z · uptime 1516m · cycles ok 1706 · failed 16
+  last cycle: 0 drafted, 0 checked in 5584ms
+[nex-brain-worker] 2026-08-11T06:55:27.066Z · uptime 1521m · cycles ok 1716 · failed 16
+  last cycle: 0 drafted, 0 checked in 4736ms
+[nex-brain-worker] 2026-08-11T07:00:30.234Z · uptime 1527m · cycles ok 1726 · failed 16
+  last cycle: 0 drafted, 0 checked in 4781ms
+[nex-brain-worker] 2026-08-11T07:05:32.398Z · uptime 1532m · cycles ok 1736 · failed 16
+  last cycle: 0 drafted, 0 checked in 5350ms
+[nex-brain-worker] 2026-08-11T07:10:34.737Z · uptime 1537m · cycles ok 1746 · failed 16
+  last cycle: 0 drafted, 0 checked in 4665ms
+[nex-brain-worker] 2026-08-11T07:15:37.621Z · uptime 1542m · cycles ok 1756 · failed 16
+  last cycle: 0 drafted, 0 checked in 4709ms
+[nex-brain-worker] 2026-08-11T07:20:40.353Z · uptime 1547m · cycles ok 1766 · failed 16
+  last cycle: 0 drafted, 0 checked in 4671ms
+[nex-brain-worker] 2026-08-11T07:25:42.771Z · uptime 1552m · cycles ok 1776 · failed 16
+  last cycle: 0 drafted, 0 checked in 4724ms
+[nex-brain-worker] 2026-08-11T07:30:46.165Z · uptime 1557m · cycles ok 1786 · failed 16
+  last cycle: 0 drafted, 0 checked in 4784ms
+[nex-brain-worker] 2026-08-11T07:35:48.909Z · uptime 1562m · cycles ok 1796 · failed 16
+  last cycle: 0 drafted, 0 checked in 4607ms
+[nex-brain-worker] 2026-08-11T07:40:52.736Z · uptime 1567m · cycles ok 1806 · failed 16
+  last cycle: 0 drafted, 0 checked in 5043ms
+[nex-brain-worker] 2026-08-11T07:45:55.108Z · uptime 1572m · cycles ok 1816 · failed 16
+  last cycle: 0 drafted, 0 checked in 4915ms
+[nex-brain-worker] 2026-08-11T07:50:58.580Z · uptime 1577m · cycles ok 1826 · failed 16
+  last cycle: 0 drafted, 0 checked in 5046ms
+[nex-brain-worker] 2026-08-11T07:56:00.845Z · uptime 1582m · cycles ok 1836 · failed 16
+  last cycle: 0 drafted, 0 checked in 4890ms
+[nex-brain-worker] 2026-08-11T08:01:03.072Z · uptime 1587m · cycles ok 1846 · failed 16
+  last cycle: 0 drafted, 0 checked in 4895ms
+[nex-brain-worker] 2026-08-11T08:06:06.152Z · uptime 1592m · cycles ok 1856 · failed 16
+  last cycle: 0 drafted, 0 checked in 4707ms
+[nex-brain-worker] 2026-08-11T08:11:08.219Z · uptime 1597m · cycles ok 1866 · failed 16
+  last cycle: 0 drafted, 0 checked in 4711ms
+[nex-brain-worker] 2026-08-11T08:16:12.536Z · uptime 1602m · cycles ok 1876 · failed 16
+  last cycle: 0 drafted, 0 checked in 4997ms
+[nex-brain-worker] 2026-08-11T08:21:13.309Z · uptime 1607m · cycles ok 1886 · failed 16
+  last cycle: 0 drafted, 0 checked in 4710ms
+[nex-brain-worker] 2026-08-11T08:26:15.857Z · uptime 1612m · cycles ok 1896 · failed 16
+  last cycle: 0 drafted, 0 checked in 4830ms
+[nex-brain-worker] 2026-08-11T08:31:18.087Z · uptime 1617m · cycles ok 1906 · failed 16
+  last cycle: 0 drafted, 0 checked in 5107ms
+[nex-brain-worker] 2026-08-11T08:36:21.075Z · uptime 1622m · cycles ok 1916 · failed 16
+  last cycle: 0 drafted, 0 checked in 5233ms
+[nex-brain-worker] 2026-08-11T08:41:23.617Z · uptime 1627m · cycles ok 1926 · failed 16
+  last cycle: 0 drafted, 0 checked in 5432ms
+[nex-brain-worker] 2026-08-11T08:46:27.063Z · uptime 1632m · cycles ok 1936 · failed 16
+  last cycle: 0 drafted, 0 checked in 4901ms
+[nex-brain-worker] 2026-08-11T08:51:29.160Z · uptime 1638m · cycles ok 1946 · failed 16
+  last cycle: 0 drafted, 0 checked in 4697ms
+[nex-brain-worker] 2026-08-11T08:56:29.467Z · uptime 1643m · cycles ok 1956 · failed 16
+  last cycle: 0 drafted, 0 checked in 4740ms
+[nex-brain-worker] 2026-08-11T09:01:31.667Z · uptime 1648m · cycles ok 1966 · failed 16
+  last cycle: 0 drafted, 0 checked in 5102ms
+[nex-brain-worker] 2026-08-11T09:06:33.250Z · uptime 1653m · cycles ok 1976 · failed 16
+  last cycle: 0 drafted, 0 checked in 4693ms
+[nex-brain-worker] 2026-08-11T09:11:36.175Z · uptime 1658m · cycles ok 1986 · failed 16
+  last cycle: 0 drafted, 0 checked in 4924ms
+[nex-brain-worker] 2026-08-11T09:16:37.675Z · uptime 1663m · cycles ok 1996 · failed 16
+  last cycle: 0 drafted, 0 checked in 4612ms
+[nex-brain-worker] 2026-08-11T09:21:40.067Z · uptime 1668m · cycles ok 2006 · failed 16
+  last cycle: 0 drafted, 0 checked in 4876ms
+[nex-brain-worker] 2026-08-11T09:26:41.905Z · uptime 1673m · cycles ok 2016 · failed 16
+  last cycle: 0 drafted, 0 checked in 4885ms
+[nex-brain-worker] 2026-08-11T09:31:44.774Z · uptime 1678m · cycles ok 2026 · failed 16
+  last cycle: 0 drafted, 0 checked in 4625ms
+[nex-brain-worker] 2026-08-11T09:36:45.785Z · uptime 1683m · cycles ok 2036 · failed 16
+  last cycle: 0 drafted, 0 checked in 4610ms
+[nex-brain-worker] 2026-08-11T09:41:48.854Z · uptime 1688m · cycles ok 2046 · failed 16
+  last cycle: 0 drafted, 0 checked in 4688ms
+[nex-brain-worker] 2026-08-11T09:46:50.680Z · uptime 1693m · cycles ok 2056 · failed 16
+  last cycle: 0 drafted, 0 checked in 4709ms
+[nex-brain-worker] 2026-08-11T09:51:54.891Z · uptime 1698m · cycles ok 2066 · failed 16
+  last cycle: 0 drafted, 0 checked in 5697ms
+[nex-brain-worker] 2026-08-11T09:56:55.819Z · uptime 1703m · cycles ok 2076 · failed 16
+  last cycle: 0 drafted, 0 checked in 4756ms
+[nex-brain-worker] 2026-08-11T10:01:58.978Z · uptime 1708m · cycles ok 2086 · failed 16
+  last cycle: 0 drafted, 0 checked in 4811ms
+[nex-brain-worker] 2026-08-11T10:07:00.322Z · uptime 1713m · cycles ok 2096 · failed 16
+  last cycle: 0 drafted, 0 checked in 4520ms
+[nex-brain-worker] 2026-08-11T10:12:03.661Z · uptime 1718m · cycles ok 2106 · failed 16
+  last cycle: 0 drafted, 0 checked in 4751ms
+[nex-brain-worker] 2026-08-11T10:17:05.727Z · uptime 1723m · cycles ok 2116 · failed 16
+  last cycle: 0 drafted, 0 checked in 4577ms
+[nex-brain-worker] 2026-08-11T10:22:08.649Z · uptime 1728m · cycles ok 2126 · failed 16
+  last cycle: 0 drafted, 0 checked in 4804ms
+[nex-brain-worker] 2026-08-11T10:27:11.089Z · uptime 1733m · cycles ok 2136 · failed 16
+  last cycle: 0 drafted, 0 checked in 4948ms
+[nex-brain-worker] 2026-08-11T10:32:12.915Z · uptime 1738m · cycles ok 2146 · failed 16
+  last cycle: 0 drafted, 0 checked in 4664ms
+[nex-brain-worker] 2026-08-11T10:37:16.127Z · uptime 1743m · cycles ok 2156 · failed 16
+  last cycle: 0 drafted, 0 checked in 4884ms
+[nex-brain-worker] 2026-08-11T10:42:19.096Z · uptime 1748m · cycles ok 2166 · failed 16
+  last cycle: 0 drafted, 0 checked in 4885ms
+[nex-brain-worker] 2026-08-11T10:47:21.695Z · uptime 1753m · cycles ok 2176 · failed 16
+  last cycle: 0 drafted, 0 checked in 4991ms
+[nex-brain-worker] 2026-08-11T10:52:23.990Z · uptime 1758m · cycles ok 2186 · failed 16
+  last cycle: 0 drafted, 0 checked in 5116ms
+[nex-brain-worker] 2026-08-11T10:57:26.698Z · uptime 1763m · cycles ok 2196 · failed 16
+  last cycle: 0 drafted, 0 checked in 4898ms
+[nex-brain-worker] 2026-08-11T11:02:28.582Z · uptime 1769m · cycles ok 2206 · failed 16
+  last cycle: 0 drafted, 0 checked in 4582ms
+[nex-brain-worker] 2026-08-11T11:07:31.246Z · uptime 1774m · cycles ok 2216 · failed 16
+  last cycle: 0 drafted, 0 checked in 4732ms
+[nex-brain-worker] 2026-08-11T11:12:33.775Z · uptime 1779m · cycles ok 2226 · failed 16
+  last cycle: 0 drafted, 0 checked in 5054ms
+[nex-brain-worker] 2026-08-11T11:17:36.638Z · uptime 1784m · cycles ok 2236 · failed 16
+  last cycle: 0 drafted, 0 checked in 4534ms
+[nex-brain-worker] 2026-08-11T11:22:39.920Z · uptime 1789m · cycles ok 2246 · failed 16
+  last cycle: 0 drafted, 0 checked in 5307ms
+[nex-brain-worker] 2026-08-11T11:27:43.616Z · uptime 1794m · cycles ok 2256 · failed 16
+  last cycle: 0 drafted, 0 checked in 5184ms
+[nex-brain-worker] 2026-08-11T11:32:43.618Z · uptime 1799m · cycles ok 2266 · failed 16
+  last cycle: 0 drafted, 0 checked in 4711ms
+[nex-brain-worker] 2026-08-11T11:37:46.663Z · uptime 1804m · cycles ok 2276 · failed 16
+  last cycle: 0 drafted, 0 checked in 4708ms
+[nex-brain-worker] 2026-08-11T11:43:02.852Z · uptime 1809m · cycles ok 2286 · failed 16
+  last cycle: 0 drafted, 0 checked in 15531ms
+[nex-brain-worker] 2026-08-11T11:48:22.816Z · uptime 1814m · cycles ok 2297 · failed 16
+  last cycle: 0 drafted, 0 checked in 5783ms
+[nex-brain-worker] 2026-08-11T11:53:25.482Z · uptime 1819m · cycles ok 2307 · failed 16
+  last cycle: 0 drafted, 0 checked in 5748ms
+[nex-brain-worker] 2026-08-11T11:58:37.863Z · uptime 1825m · cycles ok 2317 · failed 16
+  last cycle: 0 drafted, 0 checked in 6340ms
+[nex-brain-worker] 2026-08-11T12:04:02.432Z · uptime 1830m · cycles ok 2328 · failed 16
+  last cycle: 0 drafted, 0 checked in 4737ms
+[nex-brain-worker] 2026-08-11T12:09:09.839Z · uptime 1835m · cycles ok 2338 · failed 16
+  last cycle: 0 drafted, 0 checked in 7277ms
+[nex-brain-worker] 2026-08-11T12:14:13.567Z · uptime 1840m · cycles ok 2348 · failed 16
+  last cycle: 0 drafted, 0 checked in 5016ms
+[nex-brain-worker] 2026-08-11T12:19:16.103Z · uptime 1845m · cycles ok 2358 · failed 16
+  last cycle: 0 drafted, 0 checked in 5077ms
+[nex-brain-worker] 2026-08-11T12:24:19.087Z · uptime 1850m · cycles ok 2368 · failed 16
+  last cycle: 0 drafted, 0 checked in 4973ms
+[nex-brain-worker] 2026-08-11T12:29:24.602Z · uptime 1855m · cycles ok 2378 · failed 16
+  last cycle: 0 drafted, 0 checked in 6380ms
+[nex-brain-worker] 2026-08-11T12:34:25.058Z · uptime 1860m · cycles ok 2388 · failed 16
+  last cycle: 0 drafted, 0 checked in 4859ms
+[nex-brain-worker] 2026-08-11T12:39:32.213Z · uptime 1866m · cycles ok 2398 · failed 16
+  last cycle: 0 drafted, 0 checked in 5634ms
+[nex-brain-worker] 2026-08-11T12:44:34.386Z · uptime 1871m · cycles ok 2408 · failed 16
+  last cycle: 0 drafted, 0 checked in 7912ms
+[nex-brain-worker] 2026-08-11T12:50:03.866Z · uptime 1876m · cycles ok 2419 · failed 16
+  last cycle: 0 drafted, 0 checked in 4777ms
+[nex-brain-worker] 2026-08-11T12:55:08.362Z · uptime 1881m · cycles ok 2429 · failed 16
+  last cycle: 0 drafted, 0 checked in 4788ms
+[nex-brain-worker] 2026-08-11T13:00:13.461Z · uptime 1886m · cycles ok 2439 · failed 16
+  last cycle: 0 drafted, 0 checked in 5588ms
+[nex-brain-worker] 2026-08-11T13:05:16.724Z · uptime 1891m · cycles ok 2449 · failed 16
+  last cycle: 0 drafted, 0 checked in 6530ms
+[nex-brain-worker] 2026-08-11T13:10:19.744Z · uptime 1896m · cycles ok 2459 · failed 16
+  last cycle: 0 drafted, 0 checked in 5983ms
+[nex-brain-worker] 2026-08-11T13:15:22.878Z · uptime 1901m · cycles ok 2469 · failed 16
+  last cycle: 0 drafted, 0 checked in 5576ms
+[nex-brain-worker] 2026-08-11T13:20:24.670Z · uptime 1906m · cycles ok 2479 · failed 16
+  last cycle: 0 drafted, 0 checked in 4760ms
+[nex-brain-worker] 2026-08-11T13:25:26.761Z · uptime 1911m · cycles ok 2489 · failed 16
+  last cycle: 0 drafted, 0 checked in 4825ms
+[nex-brain-worker] 2026-08-11T13:30:30.605Z · uptime 1917m · cycles ok 2499 · failed 16
+  last cycle: 0 drafted, 0 checked in 5006ms
+[nex-brain-worker] 2026-08-11T13:35:33.615Z · uptime 1922m · cycles ok 2509 · failed 16
+  last cycle: 0 drafted, 0 checked in 5740ms
+[nex-brain-worker] 2026-08-11T17:33:26.927Z · uptime 2159m · cycles ok 2510 · failed 16
+  last cycle: 0 drafted, 0 checked in 11880ms
+[nex-brain-worker] 2026-08-11T17:38:48.889Z · uptime 2165m · cycles ok 2521 · failed 16
+  last cycle: 0 drafted, 0 checked in 5253ms
+[nex-brain-worker] 2026-08-11T17:43:51.577Z · uptime 2170m · cycles ok 2531 · failed 16
+  last cycle: 0 drafted, 0 checked in 4707ms
+[nex-brain-worker] cycle failed: This operation was aborted
+[nex-brain-worker] 2026-08-11T17:49:28.624Z · uptime 2176m · cycles ok 2532 · failed 17
+[nex-brain-worker] cycle failed: This operation was aborted
+[nex-brain-worker] 2026-08-12T00:30:39.429Z · uptime 2577m · cycles ok 2539 · failed 18

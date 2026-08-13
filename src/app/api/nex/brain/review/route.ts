@@ -26,14 +26,33 @@
 
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { createClient } from "@supabase/supabase-js";
 import { brainStore } from "@/lib/nex/brain/storage";
 import type { FeedbackSeverity, KnowledgeRecord } from "@/lib/nex/brain/types";
+// V-1b · D9 route-boundary validation adopted 2026-08-10.
+import { validateSearchParams, validateJsonBody } from "@/lib/nex/brain/http/validate-input";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const VALID_SEVERITY: FeedbackSeverity[] = ["minor", "moderate", "critical"];
+
+const GetQuerySchema = z.object({
+  limit: z.coerce.number().int().min(1).max(100).default(25),
+  offset: z.coerce.number().int().min(0).default(0),
+});
+
+const PostBodySchema = z.object({
+  record_id: z.string().min(1),
+  action: z.enum(["approve", "reject", "edit"]),
+  correction: z.string().nullable().optional().transform((v) => v ?? null),
+  lesson: z.string().nullable().optional().transform((v) => v ?? null),
+  severity: z.enum(["minor", "moderate", "critical"]).optional().default("moderate"),
+}).refine((data) => !(data.action === "edit" && !data.correction), {
+  message: "edit action requires correction text",
+  path: ["correction"],
+});
 
 // ── GET /api/nex/brain/review · Phase 10.8 ──────────────────────────
 //
@@ -115,9 +134,9 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  const { searchParams } = new URL(req.url);
-  const limit  = Math.min(Math.max(1, Number(searchParams.get("limit") ?? "25") || 25), 100);
-  const offset = Math.max(0, Number(searchParams.get("offset") ?? "0") || 0);
+  const parsed = validateSearchParams(req, GetQuerySchema);
+  if (!parsed.ok) return parsed.response;
+  const { limit, offset } = parsed.data;
 
   // 1 · exact count of UNDER_REVIEW records so the UI can page honestly
   const countRes = await client
@@ -217,40 +236,12 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  let body: {
-    record_id?: unknown;
-    action?: unknown;
-    correction?: unknown;
-    lesson?: unknown;
-    severity?: unknown;
-  } = {};
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ ok: false, error: "invalid_json" }, { status: 400 });
-  }
-
-  const recordId = typeof body.record_id === "string" ? body.record_id : "";
-  const action = body.action;
-  const correction = typeof body.correction === "string" ? body.correction : null;
-  const lesson = typeof body.lesson === "string" ? body.lesson : null;
-  const severity: FeedbackSeverity =
-    typeof body.severity === "string" && (VALID_SEVERITY as string[]).includes(body.severity)
-      ? (body.severity as FeedbackSeverity)
-      : "moderate";
-
-  if (!recordId) {
-    return NextResponse.json({ ok: false, error: "record_id required" }, { status: 400 });
-  }
-  if (action !== "approve" && action !== "reject" && action !== "edit") {
-    return NextResponse.json({ ok: false, error: "invalid_action" }, { status: 400 });
-  }
-  if (action === "edit" && !correction) {
-    return NextResponse.json(
-      { ok: false, error: "edit action requires correction text" },
-      { status: 400 }
-    );
-  }
+  const parsed = await validateJsonBody(req, PostBodySchema);
+  if (!parsed.ok) return parsed.response;
+  const { record_id: recordId, action, correction, lesson, severity } = parsed.data;
+  // Keep the type-narrowing that downstream code expects; VALID_SEVERITY
+  // still references the canonical list even though zod now enforces it.
+  void VALID_SEVERITY;
 
   const store = brainStore();
   const record = await store.getRecord(recordId);

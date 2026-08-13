@@ -54,6 +54,49 @@ export function workerHostId(worker_type: WorkerType): string {
   return `${worker_type}@${process.pid}`;
 }
 
+// G2 · Truth Contract · runtime identity for every heartbeat.
+//
+// Philip 2026-08-10 · required to make LOCAL vs CLOUD reportable from
+// live evidence. Before G2 the /api/nex/brain/cloud-status endpoint
+// counted EVERY heartbeat as "cloud" · so local worker heartbeats
+// (host_id `<type>@<local-pid>`) were mis-classified as Fly workers.
+//
+// Rule: "cloud" requires POSITIVE evidence that we are running on
+// Fly · never inferred from heartbeat existence alone.
+//
+// Detection sources (any one sufficient · Fly sets these on every machine):
+//   · FLY_MACHINE_ID   — machine identifier
+//   · FLY_APP_NAME     — app name
+//   · FLY_REGION       — datacenter region
+//   · NEX_RUNTIME_KIND — explicit override (test/audit only)
+//
+// Absence of ALL of the above → "local". No third state · every
+// running process is one or the other. Future runtime types
+// (e.g. "aws-lambda") get added here explicitly with their own
+// positive-evidence env var · never by inference.
+export type RuntimeKind = "local" | "cloud";
+
+export function detectRuntimeKind(env: NodeJS.ProcessEnv = process.env): RuntimeKind {
+  const override = env.NEX_RUNTIME_KIND;
+  if (override === "local" || override === "cloud") return override;
+  const flyPresent =
+    (typeof env.FLY_MACHINE_ID === "string" && env.FLY_MACHINE_ID.length > 0) ||
+    (typeof env.FLY_APP_NAME   === "string" && env.FLY_APP_NAME.length   > 0) ||
+    (typeof env.FLY_REGION     === "string" && env.FLY_REGION.length     > 0);
+  return flyPresent ? "cloud" : "local";
+}
+
+// Read-side helper · /api/nex/brain/cloud-status uses this to enforce
+// the "a heartbeat alone is not cloud" rule. If metadata.runtime_kind
+// is anything other than the literal string "cloud", the heartbeat is
+// NOT cloud. Legacy rows (written before G2 · missing runtime_kind)
+// return false — safe default is local, never cloud.
+export function isCloudHeartbeat(hb: { metadata?: Record<string, unknown> | null }): boolean {
+  const m = hb.metadata;
+  if (!m || typeof m !== "object") return false;
+  return m.runtime_kind === "cloud";
+}
+
 export interface HeartbeatUpdate {
   worker_type: WorkerType;
   status: WorkerLiveness;
@@ -93,6 +136,10 @@ export async function writeHeartbeat(update: HeartbeatUpdate): Promise<void> {
       metadata: {
         pid: process.pid,
         node_env: process.env.NODE_ENV ?? "unknown",
+        // G2 · positive-evidence runtime identity · required so
+        // /cloud-status can distinguish real Fly workers from local
+        // dev heartbeats. See detectRuntimeKind() above.
+        runtime_kind: detectRuntimeKind(),
       },
     };
     await store.upsertHeartbeat(row);

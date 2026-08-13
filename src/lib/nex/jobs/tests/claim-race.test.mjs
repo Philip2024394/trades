@@ -214,22 +214,53 @@ test("CR4b · ATOMIC INVARIANT · two concurrent Promise.all claims on same job_
   });
   // Provide a real db module that connects to the configured PG.
   process.env.NEX_POSTGRES_URL = PG_URL;
+  // Wave 11 · Step 11 (F28) split NEX_POSTGRES_URL resolution into
+  // ./config/pg.ts; Wave 3 · H3 added ./config/timeouts.ts. Both are
+  // relative imports of db.ts and neither exists as a package require
+  // path — so the constructed db.ts needs stubs for them. Same pattern
+  // as with-brain-role.test.mjs (post-H3) and finalize.test.mjs (post-H2).
+  const dbSharedShim = (id) => {
+    if (id === "./config/pg") return {
+      getPostgresUrl: () => PG_URL,
+      getPostgresUrlOrNull: () => PG_URL,
+      hasPostgresUrl: () => true,
+    };
+    if (id === "./config/timeouts") return {
+      statementTimeoutMs: () => 30000,
+      connectionTimeoutMs: () => 10000,
+      idleInTransactionTimeoutMs: () => 60000,
+      workerCycleDeadlineMs: () => 0,
+      jobBudgetMs: () => 0,
+    };
+    return requireFromHere(id);
+  };
   const dbSrc = _readFile(join(REPO, "src/lib/nex/db.ts"), "utf8");
   const dbStripped = dbSrc.replace(/^export\s+/gm, "");
   const dbTransformed = await esbuild.transform(dbStripped, { loader: "ts", format: "cjs", target: "node20" });
   const dbMod = { exports: {} };
   new Function("module", "process", "exports", "require",
     dbTransformed.code + `\nmodule.exports = { withClient };`,
-  )(dbMod, process, dbMod.exports, requireFromHere);
+  )(dbMod, process, dbMod.exports, dbSharedShim);
 
   // Wave 11 · Step 7 · load shared withBrainRole helper for the shim.
+  // Post-H3 the helper imports ./config/timeouts (relative to db/ subdir),
+  // but the require shim's id will be "@/lib/nex/config/timeouts" (path
+  // alias · not relative) since with-brain-role.ts uses that form. Handle
+  // both path-alias and relative forms defensively.
   const wbrSrc = _readFile(join(REPO, "src/lib/nex/db/with-brain-role.ts"), "utf8");
   const wbrStripped = wbrSrc.replace(/^export\s+/gm, "");
   const wbrTransformed = await esbuild.transform(wbrStripped, { loader: "ts", format: "cjs", target: "node20" });
   const wbrMod = { exports: {} };
   new Function("module", "process", "exports", "require",
     wbrTransformed.code + `\nmodule.exports = { withBrainRole, withBrainRoleStrict };`,
-  )(wbrMod, process, wbrMod.exports, (id) => id === "@/lib/nex/db" ? dbMod.exports : requireFromHere(id));
+  )(wbrMod, process, wbrMod.exports, (id) => {
+    if (id === "@/lib/nex/db") return dbMod.exports;
+    if (id === "@/lib/nex/config/timeouts" || id === "./config/timeouts") return {
+      statementTimeoutMs: () => 30000,
+      idleInTransactionTimeoutMs: () => 60000,
+    };
+    return requireFromHere(id);
+  });
 
   const claimMod = { exports: {} };
   const claimShim = (id) => {
@@ -316,14 +347,39 @@ test("CR4c · ATOMIC INVARIANT · a job cannot be processed twice (10× concurre
   const dbT  = await esbuild.transform(dbSrc.replace(/^export\s+/gm, ""),      { loader: "ts", format: "cjs", target: "node20" });
   const wbrT = await esbuild.transform(wbrSrc.replace(/^export\s+/gm, ""),     { loader: "ts", format: "cjs", target: "node20" });
   process.env.NEX_POSTGRES_URL = PG_URL;
+  // Same shim shape as CR4b post-fix: db.ts imports ./config/pg (F28) and
+  // ./config/timeouts (H3) as RELATIVE paths; neither resolves via the
+  // test's require. Stub both.
+  const dbSharedShim = (id) => {
+    if (id === "./config/pg") return {
+      getPostgresUrl: () => PG_URL,
+      getPostgresUrlOrNull: () => PG_URL,
+      hasPostgresUrl: () => true,
+    };
+    if (id === "./config/timeouts") return {
+      statementTimeoutMs: () => 30000,
+      connectionTimeoutMs: () => 10000,
+      idleInTransactionTimeoutMs: () => 60000,
+      workerCycleDeadlineMs: () => 0,
+      jobBudgetMs: () => 0,
+    };
+    return requireFromHere(id);
+  };
   const dbMod = { exports: {} };
   new Function("module", "process", "exports", "require",
     dbT.code + `\nmodule.exports = { withClient };`,
-  )(dbMod, process, dbMod.exports, requireFromHere);
+  )(dbMod, process, dbMod.exports, dbSharedShim);
   const wbrMod = { exports: {} };
   new Function("module", "process", "exports", "require",
     wbrT.code + `\nmodule.exports = { withBrainRole, withBrainRoleStrict };`,
-  )(wbrMod, process, wbrMod.exports, (id) => id === "@/lib/nex/db" ? dbMod.exports : requireFromHere(id));
+  )(wbrMod, process, wbrMod.exports, (id) => {
+    if (id === "@/lib/nex/db") return dbMod.exports;
+    if (id === "@/lib/nex/config/timeouts" || id === "./config/timeouts") return {
+      statementTimeoutMs: () => 30000,
+      idleInTransactionTimeoutMs: () => 60000,
+    };
+    return requireFromHere(id);
+  });
   const claimMod = { exports: {} };
   const claimShim = (id) => {
     if (id === "@/lib/nex/db") return dbMod.exports;

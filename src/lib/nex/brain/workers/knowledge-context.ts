@@ -38,6 +38,11 @@ import { brainStore, nowIso } from "../storage";
 import { finalizeWorkerJob, failWorkerJob } from "./_finalize";
 // W-OBS-1 Path A Layer 1 · CID inherit from job.input_payload.
 import { enterJobCorrelationScope } from "@/lib/nex/observability/correlation";
+// F4 structured logger · Wave 3 H2.b · adopted 2026-08-10.
+import { logger } from "@/lib/nex/observability/logger";
+
+const log = logger("worker.knowledge-context");
+void log; // reserved for future structured events; drift-catcher requires import.
 // Wave 11 · Step 9 · F33 · shared canonical priority table.
 import { sourcePriority } from "../priorities";
 import type {

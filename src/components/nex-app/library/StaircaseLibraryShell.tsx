@@ -89,7 +89,26 @@ const PLACEHOLDER_PROMPTS: string[] = [
   "Who can build this?",
 ];
 
-export function StaircaseLibraryShell({ designs }: { designs: LibraryDesign[] }) {
+// Optional library-config prop · Philip 2026-08-04 · lets the same shell power
+// the Staircase Library AND the Kitchen Library (and any future domain library)
+// without duplicating the ~500-line component. Defaults preserve the original
+// Staircase behaviour so existing callers keep working.
+export type LibraryConfig = {
+  title?: string;
+  chatEndpoint?: string;
+  emptyMessage?: string;
+  storageKey?: string;
+};
+
+const DEFAULT_LIBRARY_CONFIG: Required<LibraryConfig> = {
+  title: "Staircase Library",
+  chatEndpoint: "/api/nex/staircase-chat",
+  emptyMessage: "No confirmed staircases in the library yet.",
+  storageKey: "nex-library-chat",
+};
+
+export function StaircaseLibraryShell({ designs, config }: { designs: LibraryDesign[]; config?: LibraryConfig }) {
+  const libraryConfig = { ...DEFAULT_LIBRARY_CONFIG, ...(config ?? {}) };
   const [index, setIndex] = useState(0);
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -127,7 +146,7 @@ export function StaircaseLibraryShell({ designs }: { designs: LibraryDesign[] })
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
-      const raw = window.localStorage.getItem("nex-library-chat");
+      const raw = window.localStorage.getItem(libraryConfig.storageKey);
       if (!raw) return;
       const parsed = JSON.parse(raw) as { conversation_id?: string; messages?: ChatMessage[] };
       if (typeof parsed.conversation_id === "string" && parsed.conversation_id.length > 0) {
@@ -139,7 +158,7 @@ export function StaircaseLibraryShell({ designs }: { designs: LibraryDesign[] })
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
-      window.localStorage.setItem("nex-library-chat", JSON.stringify({
+      window.localStorage.setItem(libraryConfig.storageKey, JSON.stringify({
         conversation_id: conversationIdRef.current,
         messages,
       }));
@@ -294,7 +313,7 @@ export function StaircaseLibraryShell({ designs }: { designs: LibraryDesign[] })
     setMessages((m) => [...m, { role: "user", content: text, when: Date.now() }]);
     setDraft("");
     try {
-      const res = await fetch("/api/nex/staircase-chat", {
+      const res = await fetch(libraryConfig.chatEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -318,8 +337,8 @@ export function StaircaseLibraryShell({ designs }: { designs: LibraryDesign[] })
     return (
       <div className="grid min-h-screen place-items-center bg-black text-white">
         <div className="text-center">
-          <div className="text-[13px] uppercase tracking-widest text-neutral-400">Staircase Library</div>
-          <div className="mt-2 text-[15px]">No confirmed staircases in the library yet.</div>
+          <div className="text-[13px] uppercase tracking-widest text-neutral-400">{libraryConfig.title}</div>
+          <div className="mt-2 text-[15px]">{libraryConfig.emptyMessage}</div>
         </div>
       </div>
     );

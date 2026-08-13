@@ -1,0 +1,17 @@
+knowledge_id: _shared/joinery-finishes
+knowledge_version: 1.0
+last_updated: 2026-08-03
+maturity_level: bronze
+schema_version: domain_template_v1.1
+authored_by: philip
+governance:
+  rule_a_anti_fabrication: pass
+  rule_c_attributable_origin: named_expert = Philip O'Farrell
+purpose: >
+  Shared timber finishes knowledge inherited by every domain that specifies
+  timber products — staircases, kitchens, doors, wall panelling, furniture,
+  and bespoke joinery all use the same finishing systems and selection
+  principles. Authored once here; consulted by every inheriting domain.
+inheritable_by: [staircase, kitchen, doors, windows, wall_panelling, furniture_design, fitted_furniture, bedrooms, bathrooms, interior_design]
+sources:
+  articles: articles/

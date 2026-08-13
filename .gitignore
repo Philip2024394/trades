@@ -57,3 +57,8 @@ data/knowledge-inbox/files/
 # Once NEX_BRAIN_BACKEND=supabase is set, this directory stays empty
 # and everything lives in the Supabase Postgres instead.
 data/nex-brain/*.json
+
+# Temp forensic + scratch audit artifacts — never committed
+tmp-forensic/
+tmp-imgaudit.json
+backups/

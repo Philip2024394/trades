@@ -34,6 +34,19 @@ new Function("module", "process", "exports", "require",
   if (id === "@/lib/nex/observability/correlation") {
     return { getCorrelationId: () => null };
   }
+  // Wave 3 · H2.b · _finalize.ts adopts the F4 logger. Loader stub emits
+  // real JSON envelopes via console.[log|warn|error] so FZ8's monkey-patch
+  // still captures the payload for assertion.
+  if (id === "@/lib/nex/observability/logger") {
+    return {
+      logger: (subsystem) => ({
+        debug: (msg, fields) => console.log(JSON.stringify({ ts: new Date().toISOString(), level: "debug", subsystem, msg, correlation_id: null, ...(fields ? { fields } : {}) })),
+        info:  (msg, fields) => console.log(JSON.stringify({ ts: new Date().toISOString(), level: "info",  subsystem, msg, correlation_id: null, ...(fields ? { fields } : {}) })),
+        warn:  (msg, fields) => console.warn(JSON.stringify({ ts: new Date().toISOString(), level: "warn", subsystem, msg, correlation_id: null, ...(fields ? { fields } : {}) })),
+        error: (msg, fields) => console.error(JSON.stringify({ ts: new Date().toISOString(), level: "error", subsystem, msg, correlation_id: null, ...(fields ? { fields } : {}) })),
+      }),
+    };
+  }
   return {};
 });
 const { finalizeWorkerJob, failWorkerJob } = mod.exports;
@@ -191,7 +204,7 @@ test("FZ7 · caller must NOT pass job_id in resultInput (helper injects it)", as
 
 // ── FZ8-FZ10 · failWorkerJob contract ──────────────────────────────
 
-test("FZ8 · failWorkerJob calls store.failJob with err.message · returns the message", async () => {
+test("FZ8 · failWorkerJob calls store.failJob with err.message · emits structured log · returns the message", async () => {
   const s = makeFakeStore();
   const captured = [];
   const orig = console.error; console.error = (...a) => captured.push(a.join(" "));
@@ -201,7 +214,17 @@ test("FZ8 · failWorkerJob calls store.failJob with err.message · returns the m
   assert.equal(s.calls[0].method, "failJob");
   assert.equal(s.calls[0].jobId, "fake-job-1");
   assert.equal(s.calls[0].message, "boom");
-  assert.match(captured[0], /\[test-worker\] failed:/);
+  // Wave 3 H2.b · failWorkerJob now emits via the F4 logger (JSON envelope
+  // routed to console.error at level=error). The monkey-patched console.error
+  // captures the serialised line.
+  assert.equal(captured.length, 1, "exactly one structured log line expected");
+  const line = JSON.parse(captured[0]);
+  assert.equal(line.level, "error");
+  assert.equal(line.subsystem, "worker.finalize");
+  assert.equal(line.msg, "failed");
+  assert.equal(line.fields.tag, "test-worker");
+  assert.equal(line.fields.message, "boom");
+  assert.equal(line.fields.job_id, "fake-job-1");
 });
 
 test("FZ9 · failWorkerJob handles non-Error input via String(err) coercion", async () => {

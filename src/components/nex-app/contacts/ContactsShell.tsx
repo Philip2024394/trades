@@ -1,9 +1,12 @@
 "use client";
 
 // ContactsShell — NEX relationship dashboard. Design brief: premium
-// AI relationship platform, not a chat app. Deep charcoal base ·
-// warm ambient glow · yellow NEX accent · glass floating cards ·
-// spacious layout · smart tabs · natural-language search.
+// AI relationship platform, not a chat app.
+//
+// Philip 2026-08-03 · repainted to match the Nex Chat app theme
+// (cream base · orange accent · warm ambient glow) instead of the
+// previous deep-charcoal + amber palette. Feels like a first-class
+// part of Nex rather than a separate app-within-app.
 //
 // The whole surface is a "relationship dashboard" not a phone
 // contacts list. No WhatsApp rows. No basic list ticks. Every card
@@ -33,24 +36,28 @@ import type { PersonalContact, BusinessContact, ContactGroup, ContactsTab } from
 import { MOCK_PERSONAL_CONTACTS, MOCK_BUSINESS_CONTACTS, MOCK_GROUPS } from "@/lib/nex/contacts/_mock";
 
 // Export name kept as DARK for import-stability across contacts
-// components. Palette is deep-charcoal + warm yellow NEX accent.
+// components (BusinessContactsSection · PersonalContactsSection ·
+// GroupsSection · ContactProfileSheet · CreateGroupModal all import
+// this constant). Palette is the Nex Chat cream + orange theme.
+// Philip 2026-08-03 · repainted from charcoal/amber to match the
+// rest of the Nex app.
 export const DARK = {
-  bg:            "#08080D",                                              // near-black cool base
-  bgSoft:        "#0F0F16",                                              // slight elevation
-  surface:       "rgba(22, 22, 32, 0.72)",                               // glass card
-  surfaceSolid:  "#161620",                                              // solid card
-  surfaceElev:   "rgba(34, 34, 48, 0.82)",                               // higher elevation glass
-  border:        "rgba(255, 255, 255, 0.06)",                            // hairline
-  borderStrong:  "rgba(251, 191, 36, 0.28)",                             // yellow-tinted for focus
-  text:          "#F5F5FA",
-  textMuted:     "#8E8E9E",
-  textFaint:     "#5A5A6A",
-  accent:        "#FBBF24",                                              // NEX yellow (amber-400)
-  accentDeep:    "#F59E0B",                                              // amber-500 for gradient
-  accentGrad:    "linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%)",
-  accentSoft:    "rgba(251, 191, 36, 0.12)",
-  online:        "#22C55E",
-  favourite:     "#FBBF24"
+  bg:            "#faf7f2",                                              // nex cream base
+  bgSoft:        "#f5f0e8",                                              // slight elevation
+  surface:       "rgba(255, 255, 255, 0.78)",                            // glass card
+  surfaceSolid:  "#ffffff",                                              // solid card
+  surfaceElev:   "rgba(255, 255, 255, 0.92)",                            // higher elevation glass
+  border:        "rgba(0, 0, 0, 0.06)",                                  // hairline
+  borderStrong:  "rgba(249, 115, 22, 0.30)",                             // orange-tinted for focus
+  text:          "#1a1a1a",
+  textMuted:     "#6b6b73",
+  textFaint:     "#9a9aa5",
+  accent:        "#F97316",                                              // nex orange (orange-500)
+  accentDeep:    "#EA580C",                                              // orange-600 for gradient
+  accentGrad:    "linear-gradient(135deg, #F97316 0%, #EA580C 100%)",
+  accentSoft:    "rgba(249, 115, 22, 0.10)",
+  online:        "#10B981",
+  favourite:     "#F97316"
 };
 
 const TABS: { id: ContactsTab; label: string }[] = [
@@ -94,43 +101,43 @@ export function ContactsShell() {
       className="relative mx-auto flex min-h-screen max-w-md flex-col overflow-hidden"
       style={{ background: DARK.bg, color: DARK.text }}
     >
-      {/* Ambient warm glow — soft yellow orbs give the deep charcoal
-          scene a candle-lit premium feel. */}
+      {/* Ambient warm glow — soft orange orbs on cream give the scene
+          the same premium feel the rest of Nex Chat has. Lower opacity
+          than the old dark version because glows read stronger on cream. */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div
-          className="absolute -left-24 -top-32 h-[420px] w-[420px] rounded-full opacity-40"
-          style={{ background: "radial-gradient(circle, #F59E0B 0%, transparent 65%)", filter: "blur(80px)" }}
+          className="absolute -left-24 -top-32 h-[420px] w-[420px] rounded-full opacity-25"
+          style={{ background: "radial-gradient(circle, #F97316 0%, transparent 65%)", filter: "blur(90px)" }}
         />
         <div
-          className="absolute -right-32 top-1/2 h-[380px] w-[380px] rounded-full opacity-25"
-          style={{ background: "radial-gradient(circle, #FBBF24 0%, transparent 65%)", filter: "blur(90px)" }}
+          className="absolute -right-32 top-1/2 h-[380px] w-[380px] rounded-full opacity-15"
+          style={{ background: "radial-gradient(circle, #FB923C 0%, transparent 65%)", filter: "blur(100px)" }}
         />
         <div
-          className="absolute bottom-0 left-1/4 h-[320px] w-[320px] rounded-full opacity-20"
-          style={{ background: "radial-gradient(circle, #FCD34D 0%, transparent 65%)", filter: "blur(90px)" }}
+          className="absolute bottom-0 left-1/4 h-[320px] w-[320px] rounded-full opacity-12"
+          style={{ background: "radial-gradient(circle, #FDBA74 0%, transparent 65%)", filter: "blur(100px)" }}
         />
       </div>
 
-      {/* Fine grid overlay — barely visible, spatial UI feel */}
+      {/* Fine grid overlay — barely visible, spatial UI feel. Dark ink
+          on cream instead of white on charcoal. */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.035]"
+        className="pointer-events-none absolute inset-0 opacity-[0.028]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.35) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.35) 1px, transparent 1px)",
+            "linear-gradient(rgba(0,0,0,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.5) 1px, transparent 1px)",
           backgroundSize: "56px 56px"
         }}
       />
 
       <div className="relative z-10 flex flex-col">
-        <div style={{ filter: "invert(1)" }}>
-          <StatusBar />
-        </div>
+        <StatusBar />
 
         {/* Header */}
         <header
           className="sticky top-0 z-30 flex items-center justify-between px-5 pt-3 pb-3"
           style={{
-            background: "rgba(8, 8, 13, 0.72)",
+            background: "rgba(250, 247, 242, 0.78)",
             backdropFilter: "blur(24px) saturate(180%)",
             WebkitBackdropFilter: "blur(24px) saturate(180%)",
             borderBottom: `1px solid ${DARK.border}`
@@ -159,10 +166,10 @@ export function ContactsShell() {
           <button
             type="button"
             aria-label="Add contact"
-            className="flex items-center gap-1 rounded-full px-3 py-1.5 text-[11.5px] font-black text-[#141416] transition-transform active:scale-95"
+            className="flex items-center gap-1 rounded-full px-3 py-1.5 text-[11.5px] font-black text-white transition-transform active:scale-95"
             style={{
               background: DARK.accentGrad,
-              boxShadow: "0 6px 20px -4px rgba(251, 191, 36, 0.55)"
+              boxShadow: "0 6px 20px -4px rgba(249, 115, 22, 0.45)"
             }}
           >
             <UserPlus size={14} strokeWidth={2.5} />
@@ -187,10 +194,10 @@ export function ContactsShell() {
               boxShadow: "0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(251,191,36,0.04)"
             }}
           >
-            <span className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-full text-[#141416]"
+            <span className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-full text-white"
                   style={{
                     background: DARK.accentGrad,
-                    boxShadow: "0 4px 14px -4px rgba(251, 191, 36, 0.55)"
+                    boxShadow: "0 4px 14px -4px rgba(249, 115, 22, 0.45)"
                   }}>
               <Sparkles size={14} strokeWidth={2.5} />
             </span>
@@ -230,8 +237,8 @@ export function ContactsShell() {
                   className="flex-1 rounded-full py-2 text-[11.5px] font-bold transition-all"
                   style={{
                     background: active ? DARK.accentGrad : "transparent",
-                    color: active ? "#141416" : DARK.textMuted,
-                    boxShadow: active ? "0 6px 20px -6px rgba(251, 191, 36, 0.55)" : "none"
+                    color: active ? "white" : DARK.textMuted,
+                    boxShadow: active ? "0 6px 20px -6px rgba(249, 115, 22, 0.45)" : "none"
                   }}
                   aria-pressed={active}
                 >
@@ -264,11 +271,11 @@ export function ContactsShell() {
         <button
           type="button"
           onClick={() => setOpenCreate(true)}
-          className="fixed bottom-6 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 rounded-full px-5 py-3 text-[12px] font-black uppercase tracking-[0.18em] text-[#141416] transition-transform active:scale-95"
+          className="fixed bottom-6 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 rounded-full px-5 py-3 text-[12px] font-black uppercase tracking-[0.18em] text-white transition-transform active:scale-95"
           style={{
             background: DARK.accentGrad,
             boxShadow:
-              "0 0 0 1px rgba(255,255,255,0.10) inset, 0 12px 40px -8px rgba(251, 191, 36, 0.55), 0 20px 60px -12px rgba(245, 158, 11, 0.35)"
+              "0 0 0 1px rgba(255,255,255,0.10) inset, 0 12px 40px -8px rgba(249, 115, 22, 0.45), 0 20px 60px -12px rgba(234, 88, 12, 0.30)"
           }}
         >
           <Plus size={16} strokeWidth={2.75} />
