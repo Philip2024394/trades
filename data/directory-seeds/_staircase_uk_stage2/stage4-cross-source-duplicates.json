@@ -1,0 +1,1924 @@
+[
+  {
+    "business_name": "Transform Staircases",
+    "website": "https://www.transformstaircases.co.uk/",
+    "town": "Wigan",
+    "county": "Greater Manchester",
+    "region": "NW",
+    "postcode": "WN6 7DS",
+    "telephone": "01942 323980",
+    "email": "info@transformstaircases.co.uk",
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": true,
+      "glass": true,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Homepage promotes 'STAIRCASE RENOVATIONS', 'STAIRCASES BOLTON', 'STAIRCASES MANCHESTER', 'STAIRCASES WIGAN'. Text: 'Get ideas for your home by visiting our staircase showroom in person... Choose from a wide range of designs to create your dream bespoke staircase.' Wigan area 01942 dialling code. · Family-owned specialist established 1992 delivering staircase design, renovation and installation across the North West (Wigan, Manchester, Liverpool). Company name and site framing explicitly built around transforming existing staircases.",
+    "source_query": "staircase manufacturer Manchester bespoke",
+    "source_url": "https://www.transformstaircases.co.uk/",
+    "discovered_at": "2026-08-15",
+    "_agent": "agent-1-england-north",
+    "source_queries": [
+      "staircase manufacturer Manchester bespoke",
+      "staircase transformation makeover specialist UK"
+    ],
+    "source_urls": [
+      "https://www.transformstaircases.co.uk/"
+    ],
+    "discovered_by_agents": [
+      "agent-1-england-north",
+      "agent-8-refurbishment-refacing"
+    ],
+    "refurbishment_specialism": "full_refurbishment",
+    "_stage4": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.transformstaircases.co.uk/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 214881
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "manufacture",
+            "explicit_negation": null
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installation",
+            "explicit_negation": null
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "refurbishing",
+            "explicit_negation": null
+          },
+          "refacing": {
+            "present": true,
+            "matched_phrase": "Cover STAIR",
+            "explicit_negation": null
+          },
+          "balustrade": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "handrail": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "GLASS STAIR",
+            "explicit_negation": null
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "METAL STAIR",
+            "explicit_negation": null
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Bespoke",
+            "explicit_negation": null
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "design",
+            "explicit_negation": null
+          },
+          "kit_or_product_supplier": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          }
+        },
+        "materials_mentioned": [
+          "oak",
+          "maple",
+          "glass"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "MULTI_SERVICE_COMPANY",
+      "cross_source_matches": [
+        {
+          "signal": "domain",
+          "existing": "_refacing/transform-staircases-wigan.json"
+        }
+      ],
+      "is_duplicate_of_existing": true,
+      "capability_comparison": {
+        "manufacture": "CONFIRMED",
+        "installation": "CONFIRMED",
+        "refurbishment": "CONFIRMED",
+        "refacing": "NEWLY_EVIDENCED",
+        "balustrade": "NOT_CONFIRMED",
+        "handrail": "NOT_CONFIRMED",
+        "glass": "CONFIRMED",
+        "metal": "CONFIRMED"
+      }
+    }
+  },
+  {
+    "business_name": "Abbott-Wade",
+    "website": "https://www.abbottwade.co.uk/",
+    "town": "Culcheth (Warrington)",
+    "county": "Cheshire",
+    "region": "NW",
+    "postcode": "WA3 3UL",
+    "telephone": "01744 634 442",
+    "email": "info@abbottwade.co.uk",
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": true,
+      "balustrade": true,
+      "handrail": true,
+      "glass": true,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Long-standing staircase specialist covering the North West (Bolton, Chester, York, Blackpool, Cumbria) and beyond. Services page describes 'recladding treads and risers with oak, cladding over structural parts, replacing balustrades with new rails and glass panels, and swapping old spindles for new ones' — that is refacing/overlay + balustrade + glass. Head office/postcode WA3 3UL. · Established 1996; one of the first UK companies specialising in bespoke staircase renovations. Award-winning family-run business now nationwide - designers/installers visit throughout England, Scotland and Wales. Uses CNC technology and pre-finished construction. FHIO member. · Family-run staircase manufacturer with dedicated staircase renovation service; explicitly renovates existing staircases (spindle/balustrade replacement, handrail upgrades, hardwood treads, glass balustrades) and completes most renovations in a single day. Nationwide operation since 1996.",
+    "source_query": "staircase refacing Manchester Bolton Wigan",
+    "source_url": "https://www.abbottwade.co.uk/",
+    "discovered_at": "2026-08-15",
+    "_agent": "agent-1-england-north",
+    "source_queries": [
+      "staircase refacing Manchester Bolton Wigan",
+      "Abbott-Wade staircase renovation UK manufacturer",
+      "staircase refacing UK company specialist"
+    ],
+    "source_urls": [
+      "https://www.abbottwade.co.uk/",
+      "https://www.abbottwade.co.uk/contact-us/",
+      "https://www.abbottwade.co.uk/staircase-renovations/"
+    ],
+    "discovered_by_agents": [
+      "agent-1-england-north",
+      "agent-7-national-manufacturers",
+      "agent-8-refurbishment-refacing"
+    ],
+    "national_indicators": [
+      "multi-site",
+      "industry-press-listed"
+    ],
+    "refurbishment_specialism": "full_refurbishment",
+    "_stage4": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.abbottwade.co.uk/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 387933
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Manufacture",
+            "explicit_negation": null
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installers",
+            "explicit_negation": null
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "renovation",
+            "explicit_negation": null
+          },
+          "refacing": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "balustrade": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "handrail": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "Glass Stair",
+            "explicit_negation": null
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "Metal Stair",
+            "explicit_negation": null
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Bespoke",
+            "explicit_negation": null
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Design",
+            "explicit_negation": null
+          },
+          "kit_or_product_supplier": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          }
+        },
+        "materials_mentioned": [
+          "glass",
+          "stainless steel"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "MULTI_SERVICE_COMPANY",
+      "cross_source_matches": [
+        {
+          "signal": "domain",
+          "existing": "warrington/abbott-wade-staircases-warrington.json"
+        }
+      ],
+      "is_duplicate_of_existing": true,
+      "capability_comparison": {
+        "manufacture": "CONFIRMED",
+        "installation": "CONFIRMED",
+        "refurbishment": "CONFIRMED",
+        "refacing": "NOT_CONFIRMED",
+        "balustrade": "NOT_CONFIRMED",
+        "handrail": "NOT_CONFIRMED",
+        "glass": "CONFIRMED",
+        "metal": "CONFIRMED"
+      }
+    }
+  },
+  {
+    "business_name": "The Stair Shop Ltd",
+    "website": "https://www.stairshop.co.uk/",
+    "town": "Stockport",
+    "county": "Cheshire (Greater Manchester)",
+    "region": "NW",
+    "postcode": "SK4 1NU",
+    "telephone": "0161 477 8077",
+    "email": "office@stairshop.co.uk",
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": true,
+      "glass": true,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Site describes 'a family-run, bespoke staircase manufacturer and staircase renovation specialist based in the heart of Cheshire'. Offers 'New Stairs and Staircase Renovations Cheshire'. Address SK4 1NU. · Family-run bespoke timber staircase manufacturer AND renovation specialist based in Stockport, Cheshire. Advertises revamping existing staircases in under 48 hours with oak, pine, glass and walnut renovation options.",
+    "source_query": "staircase Chester Cheshire manufacturer bespoke",
+    "source_url": "https://www.stairshop.co.uk/",
+    "discovered_at": "2026-08-15",
+    "_agent": "agent-1-england-north",
+    "source_queries": [
+      "staircase Chester Cheshire manufacturer bespoke",
+      "staircase renovation specialist UK existing stairs"
+    ],
+    "source_urls": [
+      "https://www.stairshop.co.uk/",
+      "https://www.stairshop.co.uk/what-we-do/staircase-renovations"
+    ],
+    "discovered_by_agents": [
+      "agent-1-england-north",
+      "agent-8-refurbishment-refacing"
+    ],
+    "refurbishment_specialism": "full_refurbishment",
+    "_stage4": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.stairshop.co.uk/",
+        "content_type": "text/html; charset=utf-8",
+        "size_bytes": 55767
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "manufacturer",
+            "explicit_negation": null
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "Installation",
+            "explicit_negation": null
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "renovation",
+            "explicit_negation": null
+          },
+          "refacing": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "Balustrade",
+            "explicit_negation": null
+          },
+          "handrail": {
+            "present": true,
+            "matched_phrase": "handrail",
+            "explicit_negation": null
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "Glass Balustrad",
+            "explicit_negation": null
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "stainless steel",
+            "explicit_negation": null
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "bespoke",
+            "explicit_negation": null
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "design",
+            "explicit_negation": null
+          },
+          "kit_or_product_supplier": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          }
+        },
+        "materials_mentioned": [
+          "oak",
+          "pine",
+          "glass",
+          "stainless steel",
+          "wrought iron"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "MULTI_SERVICE_COMPANY",
+      "cross_source_matches": [
+        {
+          "signal": "postcode+name",
+          "existing": "stockport/the-stair-shop-stockport.json"
+        }
+      ],
+      "is_duplicate_of_existing": true,
+      "capability_comparison": {
+        "manufacture": "CONFIRMED",
+        "installation": "CONFIRMED",
+        "refurbishment": "CONFIRMED",
+        "refacing": "NOT_CLAIMED_NOT_EVIDENCED",
+        "balustrade": "CONFIRMED",
+        "handrail": "CONFIRMED",
+        "glass": "CONFIRMED",
+        "metal": "NEWLY_EVIDENCED"
+      }
+    }
+  },
+  {
+    "business_name": "TK Stairs",
+    "website": "https://www.tkstairs.com/",
+    "town": "Beverley",
+    "county": "East Riding of Yorkshire",
+    "region": "Yorkshire",
+    "postcode": "HU17 0TB",
+    "telephone": "01482 426388",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": false,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": true,
+      "glass": true,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Site describes 'A staircase manufacturer... offering staircase design, loft conversion stairs, and loft stairs. They have been manufacturing stairs since 2004 and have manufactured and delivered over 50,000 staircases throughout the UK.' Beverley HU17 0TB address. · 20 years' experience as a UK stair manufacturer with online stair designer. Made-to-measure timber staircases and stair parts shipped nationwide from Tokenspire Business Park, Woodmansey.",
+    "source_query": "staircase manufacturer Hull East Yorkshire",
+    "source_url": "https://www.tkstairs.com/",
+    "discovered_at": "2026-08-15",
+    "_agent": "agent-1-england-north",
+    "source_queries": [
+      "staircase manufacturer Hull East Yorkshire",
+      "TKstairs staircase manufacturer address UK"
+    ],
+    "source_urls": [
+      "https://www.tkstairs.com/",
+      "https://www.tkstairs.com/about"
+    ],
+    "discovered_by_agents": [
+      "agent-1-england-north",
+      "agent-7-national-manufacturers"
+    ],
+    "national_indicators": [
+      "industry-press-listed"
+    ],
+    "_stage4": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.tkstairs.com/",
+        "content_type": "text/html; charset=utf-8",
+        "size_bytes": 497139
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Manufacturer",
+            "explicit_negation": null
+          },
+          "installation": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "refurbishment": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "refacing": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "balustrade",
+            "explicit_negation": null
+          },
+          "handrail": {
+            "present": true,
+            "matched_phrase": "handrail",
+            "explicit_negation": null
+          },
+          "glass": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "metal": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Made to measure",
+            "explicit_negation": null
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Design",
+            "explicit_negation": null
+          },
+          "kit_or_product_supplier": {
+            "present": true,
+            "matched_phrase": "Shop Stair",
+            "explicit_negation": null
+          }
+        },
+        "materials_mentioned": [
+          "oak",
+          "glass"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "cross_source_matches": [
+        {
+          "signal": "domain",
+          "existing": "woodmansey/tkstairs-woodmansey.json"
+        }
+      ],
+      "is_duplicate_of_existing": true,
+      "capability_comparison": {
+        "manufacture": "CONFIRMED",
+        "installation": "NOT_CLAIMED_NOT_EVIDENCED",
+        "refurbishment": "NOT_CLAIMED_NOT_EVIDENCED",
+        "refacing": "NOT_CLAIMED_NOT_EVIDENCED",
+        "balustrade": "CONFIRMED",
+        "handrail": "CONFIRMED",
+        "glass": "NOT_CONFIRMED",
+        "metal": "NOT_CLAIMED_NOT_EVIDENCED"
+      }
+    }
+  },
+  {
+    "business_name": "South Yorkshire Joinery",
+    "website": "https://southyorkshirejoinery.co.uk/",
+    "town": "Sheffield",
+    "county": "South Yorkshire",
+    "region": "Yorkshire",
+    "postcode": "S3 8JL",
+    "telephone": "0114 279 5071",
+    "email": "info@syjoinery.co.uk",
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": false,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": false,
+      "handrail": false,
+      "glass": false,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Site describes 'a family run business first established in 1988 and based in Sheffield, South Yorkshire, specialising in the design & manufacture of quality, purpose-made timber staircases.' Address S3 8JL.",
+    "source_query": "staircase installer Sheffield South Yorkshire",
+    "source_url": "https://southyorkshirejoinery.co.uk/",
+    "discovered_at": "2026-08-15",
+    "_agent": "agent-1-england-north",
+    "_stage4": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://southyorkshirejoinery.co.uk/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 33209
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "manufacturer",
+            "explicit_negation": null
+          },
+          "installation": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "refurbishment": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "refacing": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "balustrade": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "handrail": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "glass": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "metal": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "bespoke",
+            "explicit_negation": null
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "design",
+            "explicit_negation": null
+          },
+          "kit_or_product_supplier": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          }
+        },
+        "materials_mentioned": [
+          "oak"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "STAIRCASE_MANUFACTURER",
+      "cross_source_matches": [
+        {
+          "signal": "postcode+name",
+          "existing": "sheffield/south-yorkshire-joinery-ltd-sheffield.json"
+        }
+      ],
+      "is_duplicate_of_existing": true,
+      "capability_comparison": {
+        "manufacture": "CONFIRMED",
+        "installation": "NOT_CLAIMED_NOT_EVIDENCED",
+        "refurbishment": "NOT_CLAIMED_NOT_EVIDENCED",
+        "refacing": "NOT_CLAIMED_NOT_EVIDENCED",
+        "balustrade": "NOT_CLAIMED_NOT_EVIDENCED",
+        "handrail": "NOT_CLAIMED_NOT_EVIDENCED",
+        "glass": "NOT_CLAIMED_NOT_EVIDENCED",
+        "metal": "NOT_CLAIMED_NOT_EVIDENCED"
+      }
+    }
+  },
+  {
+    "business_name": "UK Stair Parts",
+    "website": "https://www.ukstairparts.co.uk/",
+    "town": "Basildon",
+    "county": "Essex",
+    "region": "E",
+    "postcode": null,
+    "telephone": "01268 284000",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": false,
+      "refurbishment": true,
+      "refacing": true,
+      "balustrade": true,
+      "handrail": true,
+      "glass": false,
+      "metal": false,
+      "bespoke": false,
+      "design": false
+    },
+    "evidence_notes": "UK Stair Parts is a family-run business with over three decades supplying quality stair parts and accessories: handrails, baserails, spindles, newel posts and caps, banisters, balustrades, treads, risers and iron-on veneers. Deliveries direct to all UK addresses.",
+    "source_query": "\"UK Stair Parts\" ukstairparts family run manufacturer contact",
+    "source_url": "https://www.ukstairparts.co.uk/contact/",
+    "discovered_at": "2026-08-15",
+    "component_types": [
+      "spindles",
+      "balusters",
+      "handrails",
+      "newel_caps",
+      "stringers",
+      "treads",
+      "risers"
+    ],
+    "_agent": "agent-11-components-parts",
+    "_stage4": {
+      "fetch": {
+        "ok": true,
+        "status": 403,
+        "final_url": "https://www.ukstairparts.co.uk/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 5733
+      },
+      "identity_confirmed": false,
+      "evidence": null,
+      "verification": "SEARCH_DISCOVERED",
+      "quality_band": "D",
+      "business_group": "MULTI_SERVICE_COMPANY",
+      "cross_source_matches": [
+        {
+          "signal": "domain",
+          "existing": "basildon/uk-stairparts-ltd-basildon.json"
+        }
+      ],
+      "is_duplicate_of_existing": true,
+      "capability_comparison": {
+        "manufacture": "NOT_CHECKABLE",
+        "installation": "NOT_CHECKABLE",
+        "refurbishment": "NOT_CHECKABLE",
+        "refacing": "NOT_CHECKABLE",
+        "balustrade": "NOT_CHECKABLE",
+        "handrail": "NOT_CHECKABLE",
+        "glass": "NOT_CHECKABLE",
+        "metal": "NOT_CHECKABLE"
+      }
+    }
+  },
+  {
+    "business_name": "StairFurb (Homespace Installations Ltd)",
+    "website": "https://stairfurb.co.uk/",
+    "town": "Barton under Needwood",
+    "county": "Staffordshire",
+    "region": "W Mids",
+    "postcode": "DE13 8AJ",
+    "telephone": "0800 699 0021",
+    "email": "office@stairfurb.co.uk",
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": true,
+      "balustrade": true,
+      "handrail": true,
+      "glass": true,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "StairFurb offers bespoke, UK-made spindle balustrade kits, glass staircase kits, fixing kits and oak tread & riser cladding for DIY stair refurbishment. Kits meet UK building regulations and combine steel spindles with solid oak or pine rails. · StairFurb (trading name of Homespace Installations Ltd) manufactures made-to-measure oak veneer cladding kits to cover existing stair stringers, newel posts, treads and risers without replacing the underlying staircase. Kits are handcrafted in their UK factory and delivered for DIY installation over a weekend. · UK manufacturer/supplier of stair refurbishment kits including oak stair tread & riser cladding, stair stringer / newel post cladding and glass balustrade refurbishment systems designed to be fitted over existing staircases. Founded 2001; Staffordshire base.",
+    "source_query": "StairFurb.co.uk UK stair renovation kits company address",
+    "source_url": "https://stairfurb.co.uk/contact-us/",
+    "discovered_at": "2026-08-15",
+    "component_types": [
+      "spindles",
+      "balusters",
+      "handrails",
+      "kits",
+      "treads",
+      "risers",
+      "brackets"
+    ],
+    "_agent": "agent-11-components-parts",
+    "source_queries": [
+      "StairFurb.co.uk UK stair renovation kits company address",
+      "\"StairFurb\" UK staircase overlay",
+      "'StairFurb' or 'Stairfurb' staircase refurbishment UK contact"
+    ],
+    "source_urls": [
+      "https://stairfurb.co.uk/contact-us/",
+      "https://stairfurb.co.uk/product-category/stair-stringer-newel-post-cladding/",
+      "https://stairfurb.co.uk/stair-refurbishment-kits/"
+    ],
+    "discovered_by_agents": [
+      "agent-11-components-parts",
+      "agent-12-refacing-deep",
+      "agent-8-refurbishment-refacing"
+    ],
+    "refurbishment_specialism": "refacing_only",
+    "_stage4": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://stairfurb.co.uk/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 474684
+      },
+      "identity_confirmed": false,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "manufacture",
+            "explicit_negation": "We do not manufactur"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "Installation",
+            "explicit_negation": null
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "Refurbishment",
+            "explicit_negation": null
+          },
+          "refacing": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "Balustrade",
+            "explicit_negation": null
+          },
+          "handrail": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "Glass Stair",
+            "explicit_negation": null
+          },
+          "metal": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Bespoke",
+            "explicit_negation": null
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Designs",
+            "explicit_negation": null
+          },
+          "kit_or_product_supplier": {
+            "present": true,
+            "matched_phrase": "Kits",
+            "explicit_negation": null
+          }
+        },
+        "materials_mentioned": [
+          "oak",
+          "pine",
+          "glass"
+        ]
+      },
+      "verification": "SEARCH_DISCOVERED",
+      "quality_band": "D",
+      "business_group": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "cross_source_matches": [
+        {
+          "signal": "domain",
+          "existing": "_refacing/stairfurb-uk.json"
+        }
+      ],
+      "is_duplicate_of_existing": true,
+      "capability_comparison": {
+        "manufacture": "NOT_CHECKABLE",
+        "installation": "NOT_CHECKABLE",
+        "refurbishment": "NOT_CHECKABLE",
+        "refacing": "NOT_CHECKABLE",
+        "balustrade": "NOT_CHECKABLE",
+        "handrail": "NOT_CHECKABLE",
+        "glass": "NOT_CHECKABLE",
+        "metal": "NOT_CHECKABLE"
+      }
+    }
+  },
+  {
+    "business_name": "StairBox",
+    "website": "https://www.stairbox.com/",
+    "town": "Stoke-on-Trent",
+    "county": "Staffordshire",
+    "region": "W Mids",
+    "postcode": "ST4 4TW",
+    "telephone": "01782 832555",
+    "email": "sales@stairbox.com",
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": false,
+      "refurbishment": true,
+      "refacing": true,
+      "balustrade": true,
+      "handrail": true,
+      "glass": true,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "StairBox sells oak stair cladding kits (Stair Klad) that create a finished-looking staircase without needing to replace the existing staircase. Kits are quick and easy to install and can be added to almost any standard staircase. · Own site describes StairBox as one of the UK's leading staircase manufacturers, operating from a 200,000 sq ft factory at Stairbox House, Gordon Banks Drive, Trentham Lakes, Stoke-on-Trent ST4 4TW. Combines joinery tradition with CNC technology. · UK manufacturer and supplier of bespoke timber staircases operating from state-of-the-art facility in Stoke-on-Trent. Founded by the Hancock family with 30+ years experience. Trading as A & A Joinery AVC Ltd; listed as BWF Stair Scheme member. 7-10 day UK-wide delivery.",
+    "source_query": "\"stairbox\" stair cladding UK",
+    "source_url": "https://www.stairbox.com/oak-stair-cladding.html",
+    "discovered_at": "2026-08-15",
+    "refacing_model": "overlay_kit",
+    "_agent": "agent-12-refacing-deep",
+    "source_queries": [
+      "\"stairbox\" stair cladding UK",
+      "staircase company Stoke-on-Trent Staffordshire",
+      "Stairbox bespoke staircase manufacturer UK"
+    ],
+    "source_urls": [
+      "https://www.stairbox.com/oak-stair-cladding.html",
+      "https://www.stairbox.com/",
+      "https://www.stairbox.com/contact"
+    ],
+    "discovered_by_agents": [
+      "agent-12-refacing-deep",
+      "agent-3-england-midlands",
+      "agent-7-national-manufacturers"
+    ],
+    "national_indicators": [
+      "trade-body-member: BWF",
+      "industry-press-listed"
+    ],
+    "_stage4": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.stairbox.com/",
+        "content_type": "text/html; charset=utf-8",
+        "size_bytes": 53549
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Manufacturer",
+            "explicit_negation": null
+          },
+          "installation": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "renovation",
+            "explicit_negation": null
+          },
+          "refacing": {
+            "present": true,
+            "matched_phrase": "Stair Cladding",
+            "explicit_negation": null
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "Balustrade",
+            "explicit_negation": null
+          },
+          "handrail": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "Glass Balustrad",
+            "explicit_negation": null
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "Metal Stair",
+            "explicit_negation": null
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Bespoke",
+            "explicit_negation": null
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Designing",
+            "explicit_negation": null
+          },
+          "kit_or_product_supplier": {
+            "present": true,
+            "matched_phrase": "buy online",
+            "explicit_negation": null
+          }
+        },
+        "materials_mentioned": [
+          "oak",
+          "glass"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "cross_source_matches": [
+        {
+          "signal": "domain",
+          "existing": "stoke-on-trent/stairbox-stoke-on-trent.json"
+        }
+      ],
+      "is_duplicate_of_existing": true,
+      "capability_comparison": {
+        "manufacture": "CONFIRMED",
+        "installation": "NOT_CLAIMED_NOT_EVIDENCED",
+        "refurbishment": "CONFIRMED",
+        "refacing": "CONFIRMED",
+        "balustrade": "CONFIRMED",
+        "handrail": "NOT_CONFIRMED",
+        "glass": "CONFIRMED",
+        "metal": "NEWLY_EVIDENCED"
+      }
+    }
+  },
+  {
+    "business_name": "MrStairs",
+    "website": "https://www.mrstairs.com/",
+    "town": "London",
+    "county": null,
+    "region": "London",
+    "postcode": null,
+    "telephone": "0208 004 8656",
+    "email": "sales@mrstairs.com",
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": false,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": false,
+      "handrail": false,
+      "glass": false,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Homepage: \"Outstanding Wooden Staircases From The UK's #1 Staircase Manufacturer. Design & Order Your Custom Timber Staircase Using Our Online 3D Builder Tool\". Site is presented as a London-based staircase manufacturer with an online design tool. Contact number 0208 004 8656 (London 020 dialling code).",
+    "source_query": "bespoke staircase manufacturer London",
+    "source_url": "https://www.mrstairs.com/",
+    "discovered_at": "2026-08-15",
+    "_agent": "agent-2-england-south",
+    "_stage4": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.mrstairs.com/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 76081
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "manufacture",
+            "explicit_negation": null
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installation",
+            "explicit_negation": null
+          },
+          "refurbishment": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "refacing": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "balustrade": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "handrail": {
+            "present": true,
+            "matched_phrase": "handrail",
+            "explicit_negation": null
+          },
+          "glass": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "metal": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "bespoke",
+            "explicit_negation": null
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Design",
+            "explicit_negation": null
+          },
+          "kit_or_product_supplier": {
+            "present": true,
+            "matched_phrase": "kit",
+            "explicit_negation": null
+          }
+        },
+        "materials_mentioned": [
+          "oak",
+          "pine",
+          "sapele"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "STAIRCASE_MANUFACTURER",
+      "cross_source_matches": [
+        {
+          "signal": "fuzzy-name",
+          "existing": "wickford/mrstairs-wickford.json"
+        }
+      ],
+      "is_duplicate_of_existing": true,
+      "capability_comparison": {
+        "manufacture": "CONFIRMED",
+        "installation": "NEWLY_EVIDENCED",
+        "refurbishment": "NOT_CLAIMED_NOT_EVIDENCED",
+        "refacing": "NOT_CLAIMED_NOT_EVIDENCED",
+        "balustrade": "NOT_CLAIMED_NOT_EVIDENCED",
+        "handrail": "NEWLY_EVIDENCED",
+        "glass": "NOT_CLAIMED_NOT_EVIDENCED",
+        "metal": "NOT_CLAIMED_NOT_EVIDENCED"
+      }
+    }
+  },
+  {
+    "business_name": "Timber Staircases (Kent)",
+    "website": "https://www.timberstaircases.com/",
+    "town": null,
+    "county": "Kent",
+    "region": "SE",
+    "postcode": null,
+    "telephone": null,
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": false,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": false,
+      "handrail": false,
+      "glass": false,
+      "metal": false,
+      "bespoke": true,
+      "design": false
+    },
+    "evidence_notes": "Country blocker returned a 403 to my request, but WebSearch summary quotes their site: \"The biggest manufacturer of bespoke, hand crafted, made to measure traditional timber staircases in Kent\" with 80 staircase carpenters. Marked here with minimal capability set given only the search-result quote could be verified.",
+    "source_query": "staircase manufacturer Kent UK",
+    "source_url": "https://www.timberstaircases.com/staircase-manufacturer-kent/",
+    "discovered_at": "2026-08-15",
+    "_agent": "agent-2-england-south",
+    "_stage4": {
+      "fetch": {
+        "ok": true,
+        "status": 403,
+        "final_url": "https://www.timberstaircases.com/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 32175
+      },
+      "identity_confirmed": false,
+      "evidence": null,
+      "verification": "SEARCH_DISCOVERED",
+      "quality_band": "D",
+      "business_group": "STAIRCASE_MANUFACTURER",
+      "cross_source_matches": [
+        {
+          "signal": "domain",
+          "existing": "harlow/timber-staircases-harlow.json"
+        }
+      ],
+      "is_duplicate_of_existing": true,
+      "capability_comparison": {
+        "manufacture": "NOT_CHECKABLE",
+        "installation": "NOT_CHECKABLE",
+        "refurbishment": "NOT_CHECKABLE",
+        "refacing": "NOT_CHECKABLE",
+        "balustrade": "NOT_CHECKABLE",
+        "handrail": "NOT_CHECKABLE",
+        "glass": "NOT_CHECKABLE",
+        "metal": "NOT_CHECKABLE"
+      }
+    }
+  },
+  {
+    "business_name": "Staircase Joinery Ltd",
+    "website": "https://www.staircasejoinery.co.uk/",
+    "town": null,
+    "county": "Berkshire",
+    "region": "SE",
+    "postcode": "RG7 6SN",
+    "telephone": "01635 871664",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": false,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": true,
+      "glass": false,
+      "metal": false,
+      "bespoke": true,
+      "design": false
+    },
+    "evidence_notes": "Site: \"We are specialist makers of hand built curved staircases with hand carved handrails. We work with clients in Surrey, London, Berkshire and throughout the UK.\" Postcode RG7 6SN (Berkshire).",
+    "source_query": "staircase specialist Berkshire Reading Windsor UK",
+    "source_url": "https://www.staircasejoinery.co.uk/staircases",
+    "discovered_at": "2026-08-15",
+    "_agent": "agent-2-england-south",
+    "_stage4": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.staircasejoinery.co.uk/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 17364
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "installation": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "refurbishment": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "refacing": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "balustrade": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "handrail": {
+            "present": true,
+            "matched_phrase": "handrails",
+            "explicit_negation": null
+          },
+          "glass": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "metal": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "bespoke",
+            "explicit_negation": null
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Designs",
+            "explicit_negation": null
+          },
+          "kit_or_product_supplier": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          }
+        },
+        "materials_mentioned": []
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "STAIRCASE_MANUFACTURER",
+      "cross_source_matches": [
+        {
+          "signal": "fuzzy-name",
+          "existing": "london/craft-bespoke-staircase-joinery-london.json"
+        }
+      ],
+      "is_duplicate_of_existing": true,
+      "capability_comparison": {
+        "manufacture": "NOT_CONFIRMED",
+        "installation": "NOT_CLAIMED_NOT_EVIDENCED",
+        "refurbishment": "NOT_CLAIMED_NOT_EVIDENCED",
+        "refacing": "NOT_CLAIMED_NOT_EVIDENCED",
+        "balustrade": "NOT_CONFIRMED",
+        "handrail": "CONFIRMED",
+        "glass": "NOT_CLAIMED_NOT_EVIDENCED",
+        "metal": "NOT_CLAIMED_NOT_EVIDENCED"
+      }
+    }
+  },
+  {
+    "business_name": "A & T Stairs (A & T Carpentry)",
+    "website": "https://at-stairs.co.uk/",
+    "town": "Bromsgrove",
+    "county": "Worcestershire",
+    "region": "W Mids",
+    "postcode": null,
+    "telephone": "01527 535193",
+    "email": "info@at-stairs.co.uk",
+    "capabilities_claimed": {
+      "manufacture": null,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": true,
+      "balustrade": true,
+      "handrail": true,
+      "glass": true,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Own site: staircase refurbishment and installation specialists in Bromsgrove with 25+ years' experience, City & Guilds certified; oak-and-glass renovations across Worcestershire and Midlands. · Bromsgrove (Worcestershire) staircase installation and refurbishment specialist, 20+ years experience, City & Guilds certified. Portfolio pages document box-newel renovations and oak-and-glass refurbishments of existing staircases across the Midlands.",
+    "source_query": "glass staircase Worcester Worcestershire",
+    "source_url": "https://at-stairs.co.uk/",
+    "discovered_at": "2026-08-15",
+    "_agent": "agent-3-england-midlands",
+    "source_queries": [
+      "glass staircase Worcester Worcestershire",
+      "staircase refurbishment 'we specialise' Wales Midlands"
+    ],
+    "source_urls": [
+      "https://at-stairs.co.uk/"
+    ],
+    "discovered_by_agents": [
+      "agent-3-england-midlands",
+      "agent-8-refurbishment-refacing"
+    ],
+    "refurbishment_specialism": "full_refurbishment",
+    "_stage4": {
+      "fetch": {
+        "ok": true,
+        "status": 202,
+        "final_url": "https://at-stairs.co.uk/",
+        "content_type": "text/html",
+        "size_bytes": 168
+      },
+      "identity_confirmed": false,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "installation": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "refurbishment": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "refacing": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "balustrade": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "handrail": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "glass": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "metal": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "bespoke": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "design": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "kit_or_product_supplier": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          }
+        },
+        "materials_mentioned": []
+      },
+      "verification": "SEARCH_DISCOVERED",
+      "quality_band": "D",
+      "business_group": "REFACING_SERVICE_SPECIALIST",
+      "cross_source_matches": [
+        {
+          "signal": "fuzzy-name",
+          "existing": "bromsgrove/a-and-t-stairs-ltd-bromsgrove.json"
+        }
+      ],
+      "is_duplicate_of_existing": true,
+      "capability_comparison": {
+        "manufacture": "NOT_CHECKABLE",
+        "installation": "NOT_CHECKABLE",
+        "refurbishment": "NOT_CHECKABLE",
+        "refacing": "NOT_CHECKABLE",
+        "balustrade": "NOT_CHECKABLE",
+        "handrail": "NOT_CHECKABLE",
+        "glass": "NOT_CHECKABLE",
+        "metal": "NOT_CHECKABLE"
+      }
+    }
+  },
+  {
+    "business_name": "Higginson Staircases Ltd (E A Higginson & Company Ltd)",
+    "website": "https://www.higginson.co.uk",
+    "town": "London",
+    "county": "Greater London",
+    "region": "London",
+    "postcode": "NW2 7HJ",
+    "telephone": "020 8200 4848",
+    "email": "sales@higginson.co.uk",
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": true,
+      "glass": false,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Family-run timber stair specialist established 1985 (older company origins to 1931). Manufactures bespoke timber stairs for domestic and larger commercial developments. BWF Stair Scheme early member; also BWF Firedoor Alliance member.",
+    "source_query": "Higginson Staircases BWF stair scheme address telephone",
+    "source_url": "https://www.higginson.co.uk/contact/",
+    "discovered_at": "2026-08-15",
+    "national_indicators": [
+      "trade-body-member: BWF",
+      "long-history"
+    ],
+    "_agent": "agent-7-national-manufacturers",
+    "_stage4": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.higginson.co.uk/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 112582
+      },
+      "identity_confirmed": false,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Manufacture",
+            "explicit_negation": null
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "Installation",
+            "explicit_negation": null
+          },
+          "refurbishment": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "refacing": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "Balustrading",
+            "explicit_negation": null
+          },
+          "handrail": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "glass": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "metal": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "bespoke",
+            "explicit_negation": null
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "design",
+            "explicit_negation": null
+          },
+          "kit_or_product_supplier": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          }
+        },
+        "materials_mentioned": []
+      },
+      "verification": "SEARCH_DISCOVERED",
+      "quality_band": "D",
+      "business_group": "STAIRCASE_MANUFACTURER",
+      "cross_source_matches": [
+        {
+          "signal": "postcode+name",
+          "existing": "london/higginson-staircases-ltd-london.json"
+        }
+      ],
+      "is_duplicate_of_existing": true,
+      "capability_comparison": {
+        "manufacture": "NOT_CHECKABLE",
+        "installation": "NOT_CHECKABLE",
+        "refurbishment": "NOT_CHECKABLE",
+        "refacing": "NOT_CHECKABLE",
+        "balustrade": "NOT_CHECKABLE",
+        "handrail": "NOT_CHECKABLE",
+        "glass": "NOT_CHECKABLE",
+        "metal": "NOT_CHECKABLE"
+      }
+    }
+  },
+  {
+    "business_name": "Renovate Your Staircase",
+    "website": "https://renovateyourstaircase.com",
+    "town": "Manchester",
+    "county": null,
+    "region": "NW",
+    "postcode": null,
+    "telephone": "0800 488 00047",
+    "email": "info@RenovateYourStaircase.com",
+    "capabilities_claimed": {
+      "manufacture": false,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": true,
+      "glass": true,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Specialises in renovating existing staircases in a few days without building work. Options include walnut, stainless steel & glass, LED lighting on stairs; serves the North West and across the UK from a Manchester base (showroom by appointment).",
+    "source_query": "staircase renovation specialist UK existing stairs",
+    "source_url": "https://renovateyourstaircase.com/",
+    "discovered_at": "2026-08-15",
+    "refurbishment_specialism": "full_refurbishment",
+    "_agent": "agent-8-refurbishment-refacing",
+    "_stage4": {
+      "fetch": {
+        "ok": true,
+        "status": 202,
+        "final_url": "https://renovateyourstaircase.com/",
+        "content_type": "text/html",
+        "size_bytes": 168
+      },
+      "identity_confirmed": false,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "installation": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "refurbishment": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "refacing": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "balustrade": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "handrail": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "glass": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "metal": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "bespoke": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "design": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "kit_or_product_supplier": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          }
+        },
+        "materials_mentioned": []
+      },
+      "verification": "SEARCH_DISCOVERED",
+      "quality_band": "D",
+      "business_group": "REFURBISHMENT_SERVICE_SPECIALIST",
+      "cross_source_matches": [
+        {
+          "signal": "domain",
+          "existing": "_refacing/renovate-your-staircase-bury.json"
+        }
+      ],
+      "is_duplicate_of_existing": true,
+      "capability_comparison": {
+        "manufacture": "NOT_CHECKABLE",
+        "installation": "NOT_CHECKABLE",
+        "refurbishment": "NOT_CHECKABLE",
+        "refacing": "NOT_CHECKABLE",
+        "balustrade": "NOT_CHECKABLE",
+        "handrail": "NOT_CHECKABLE",
+        "glass": "NOT_CHECKABLE",
+        "metal": "NOT_CHECKABLE"
+      }
+    }
+  },
+  {
+    "business_name": "Design My Stairs",
+    "website": "https://designmystairs.co.uk",
+    "town": "Wirral",
+    "county": "Merseyside",
+    "region": "NW",
+    "postcode": null,
+    "telephone": "0151 203 9153",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": true,
+      "glass": true,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Family business on the Wirral specialising in stair renovations and bespoke manufacture throughout England and Wales. Positions as glass staircase renovation specialists capable of refurbishing an existing staircase in 48 hours.",
+    "source_query": "staircase refacing UK company specialist",
+    "source_url": "https://designmystairs.co.uk/",
+    "discovered_at": "2026-08-15",
+    "refurbishment_specialism": "full_refurbishment",
+    "_agent": "agent-8-refurbishment-refacing",
+    "_stage4": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://designmystairs.co.uk/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 282977
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "manufacture",
+            "explicit_negation": null
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installers",
+            "explicit_negation": null
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "refurbish",
+            "explicit_negation": null
+          },
+          "refacing": {
+            "present": true,
+            "matched_phrase": "Stair Kits",
+            "explicit_negation": null
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "Balustrade",
+            "explicit_negation": null
+          },
+          "handrail": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "Glass Stair",
+            "explicit_negation": null
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "Metal Stair",
+            "explicit_negation": null
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "bespoke",
+            "explicit_negation": null
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Design",
+            "explicit_negation": null
+          },
+          "kit_or_product_supplier": {
+            "present": true,
+            "matched_phrase": "Kits",
+            "explicit_negation": null
+          }
+        },
+        "materials_mentioned": [
+          "oak",
+          "glass"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "cross_source_matches": [
+        {
+          "signal": "domain",
+          "existing": "_refacing/design-my-stairs-wirral.json"
+        }
+      ],
+      "is_duplicate_of_existing": true,
+      "capability_comparison": {
+        "manufacture": "CONFIRMED",
+        "installation": "CONFIRMED",
+        "refurbishment": "CONFIRMED",
+        "refacing": "NEWLY_EVIDENCED",
+        "balustrade": "CONFIRMED",
+        "handrail": "NOT_CONFIRMED",
+        "glass": "CONFIRMED",
+        "metal": "NEWLY_EVIDENCED"
+      }
+    }
+  },
+  {
+    "business_name": "First Step Designs",
+    "website": "https://www.firststepdesigns.com",
+    "town": "Stoke-on-Trent",
+    "county": "Staffordshire",
+    "region": "W Mids",
+    "postcode": "ST6 2LA",
+    "telephone": "01782 959300",
+    "email": "hello@firststepdesigns.com",
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": true,
+      "glass": true,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "UK-wide staircase renovation specialists based in Stoke-on-Trent; design, craft and install bespoke feature staircases and renovate worn or dated staircases into focal points. Coverage includes Cheshire, North Wales and beyond.",
+    "source_query": "staircase renovation specialist UK existing stairs",
+    "source_url": "https://www.firststepdesigns.com/staircase-renovations",
+    "discovered_at": "2026-08-15",
+    "refurbishment_specialism": "full_refurbishment",
+    "_agent": "agent-8-refurbishment-refacing",
+    "_stage4": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.firststepdesigns.com/",
+        "content_type": "text/html; charset=utf-8",
+        "size_bytes": 170627
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Bespoke Stair",
+            "explicit_negation": null
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installation",
+            "explicit_negation": null
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "Renovation",
+            "explicit_negation": null
+          },
+          "refacing": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "balustrade": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "handrail": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "Glass Stair",
+            "explicit_negation": null
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "Metal Stair",
+            "explicit_negation": null
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Bespoke",
+            "explicit_negation": null
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Designer",
+            "explicit_negation": null
+          },
+          "kit_or_product_supplier": {
+            "present": false,
+            "matched_phrase": null,
+            "explicit_negation": null
+          }
+        },
+        "materials_mentioned": [
+          "oak",
+          "glass"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "MULTI_SERVICE_COMPANY",
+      "cross_source_matches": [
+        {
+          "signal": "domain",
+          "existing": "stoke-on-trent/first-step-designs-stoke-on-trent.json"
+        }
+      ],
+      "is_duplicate_of_existing": true,
+      "capability_comparison": {
+        "manufacture": "CONFIRMED",
+        "installation": "CONFIRMED",
+        "refurbishment": "CONFIRMED",
+        "refacing": "NOT_CLAIMED_NOT_EVIDENCED",
+        "balustrade": "NOT_CONFIRMED",
+        "handrail": "NOT_CONFIRMED",
+        "glass": "CONFIRMED",
+        "metal": "CONFIRMED"
+      }
+    }
+  }
+]

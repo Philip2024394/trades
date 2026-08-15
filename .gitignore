@@ -62,3 +62,7 @@ data/nex-brain/*.json
 tmp-forensic/
 tmp-imgaudit.json
 backups/
+
+# UK Staircase Trade Market · temp HTML dumps from Agent 1 curl fallback
+# (Agent 1 lacked permission to delete them from its sandbox; JSON deliverables live alongside)
+data/directory-seeds/_staircase_uk_stage2/*.html

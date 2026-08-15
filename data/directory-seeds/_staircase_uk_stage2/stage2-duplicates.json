@@ -1,0 +1,332 @@
+[
+  {
+    "into": 38,
+    "incoming_agent": "agent-10-glass-metal-lighting",
+    "incoming_name": "HGW Solutions (Yorkshire Glass Tech)",
+    "signal": "phone"
+  },
+  {
+    "into": 26,
+    "incoming_agent": "agent-10-glass-metal-lighting",
+    "incoming_name": "Chrisand Fabrications Ltd",
+    "signal": "domain"
+  },
+  {
+    "into": 68,
+    "incoming_agent": "agent-11-components-parts",
+    "incoming_name": "Wonkee Donkee Richard Burbidge (Boys & Boden Ltd)",
+    "signal": "fuzzy-name"
+  },
+  {
+    "into": 79,
+    "incoming_agent": "agent-12-refacing-deep",
+    "incoming_name": "StairFurb",
+    "signal": "domain"
+  },
+  {
+    "into": 69,
+    "incoming_agent": "agent-12-refacing-deep",
+    "incoming_name": "Cheshire Mouldings (Stair Klad)",
+    "signal": "domain"
+  },
+  {
+    "into": 76,
+    "incoming_agent": "agent-12-refacing-deep",
+    "incoming_name": "Jackson Woodturners",
+    "signal": "phone"
+  },
+  {
+    "into": 68,
+    "incoming_agent": "agent-12-refacing-deep",
+    "incoming_name": "Richard Burbidge Ltd (StepUp Oak Stair Cladding)",
+    "signal": "domain"
+  },
+  {
+    "into": 83,
+    "incoming_agent": "agent-12-refacing-deep",
+    "incoming_name": "Fiximer",
+    "signal": "domain"
+  },
+  {
+    "into": 53,
+    "incoming_agent": "agent-2-england-south",
+    "incoming_name": "Continox Modern Staircase & Glass Components",
+    "signal": "domain"
+  },
+  {
+    "into": 96,
+    "incoming_agent": "agent-3-england-midlands",
+    "incoming_name": "StairBox",
+    "signal": "domain"
+  },
+  {
+    "into": 54,
+    "incoming_agent": "agent-3-england-midlands",
+    "incoming_name": "M-Tech Engineering Ltd",
+    "signal": "domain"
+  },
+  {
+    "into": 59,
+    "incoming_agent": "agent-4-scotland",
+    "incoming_name": "UK Structural Systems",
+    "signal": "domain"
+  },
+  {
+    "into": 61,
+    "incoming_agent": "agent-4-scotland",
+    "incoming_name": "Northstar Balustrades",
+    "signal": "domain"
+  },
+  {
+    "into": 65,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "Complete Stair Systems Ltd",
+    "signal": "domain"
+  },
+  {
+    "into": 69,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "Cheshire Mouldings & Woodturnings Ltd",
+    "signal": "domain"
+  },
+  {
+    "into": 68,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "Richard Burbidge Ltd",
+    "signal": "domain"
+  },
+  {
+    "into": 96,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "StairBox",
+    "signal": "domain"
+  },
+  {
+    "into": 144,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "Stairplan Ltd",
+    "signal": "domain"
+  },
+  {
+    "into": 56,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "Spiral UK",
+    "signal": "domain"
+  },
+  {
+    "into": 143,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "Staircraft Group",
+    "signal": "domain"
+  },
+  {
+    "into": 11,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "Abbott-Wade",
+    "signal": "domain"
+  },
+  {
+    "into": 9,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "Northern Joinery Limited",
+    "signal": "domain"
+  },
+  {
+    "into": 178,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "Haldane (UK) Ltd",
+    "signal": "domain"
+  },
+  {
+    "into": 103,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "Blueprint Joinery Ltd",
+    "signal": "domain"
+  },
+  {
+    "into": 157,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "Stairways (Midlands) Limited",
+    "signal": "domain"
+  },
+  {
+    "into": 25,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "TKstairs",
+    "signal": "domain"
+  },
+  {
+    "into": 124,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "APEX Staircases",
+    "signal": "domain"
+  },
+  {
+    "into": 150,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "Meer End Staircases & Joinery",
+    "signal": "domain"
+  },
+  {
+    "into": 106,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "James Steel Ltd",
+    "signal": "domain"
+  },
+  {
+    "into": 54,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "M-Tech Engineering Ltd",
+    "signal": "domain"
+  },
+  {
+    "into": 55,
+    "incoming_agent": "agent-7-national-manufacturers",
+    "incoming_name": "Elite Metalcraft Co. Limited",
+    "signal": "domain"
+  },
+  {
+    "into": 11,
+    "incoming_agent": "agent-8-refurbishment-refacing",
+    "incoming_name": "Abbott-Wade",
+    "signal": "domain"
+  },
+  {
+    "into": 209,
+    "incoming_agent": "agent-8-refurbishment-refacing",
+    "incoming_name": "Jarrods Staircases",
+    "signal": "domain"
+  },
+  {
+    "into": 119,
+    "incoming_agent": "agent-8-refurbishment-refacing",
+    "incoming_name": "Hampshire Staircase Refurbishments Ltd",
+    "signal": "domain"
+  },
+  {
+    "into": 16,
+    "incoming_agent": "agent-8-refurbishment-refacing",
+    "incoming_name": "The Stair Shop Ltd",
+    "signal": "domain"
+  },
+  {
+    "into": 2,
+    "incoming_agent": "agent-8-refurbishment-refacing",
+    "incoming_name": "Transform Staircases",
+    "signal": "domain"
+  },
+  {
+    "into": 1,
+    "incoming_agent": "agent-8-refurbishment-refacing",
+    "incoming_name": "Modernise Your Stairs",
+    "signal": "postcode+name"
+  },
+  {
+    "into": 183,
+    "incoming_agent": "agent-8-refurbishment-refacing",
+    "incoming_name": "Staircase Renovations Scotland (Alex Duncan Bespoke Staircases)",
+    "signal": "domain"
+  },
+  {
+    "into": 38,
+    "incoming_agent": "agent-8-refurbishment-refacing",
+    "incoming_name": "Yorkshire Glass Tech (Harrogate Glass Solutions)",
+    "signal": "phone"
+  },
+  {
+    "into": 101,
+    "incoming_agent": "agent-8-refurbishment-refacing",
+    "incoming_name": "Devon Wood Floors Ltd",
+    "signal": "domain"
+  },
+  {
+    "into": 79,
+    "incoming_agent": "agent-8-refurbishment-refacing",
+    "incoming_name": "StairFurb (Homespace Installations Ltd)",
+    "signal": "domain"
+  },
+  {
+    "into": 171,
+    "incoming_agent": "agent-8-refurbishment-refacing",
+    "incoming_name": "Robert McVey Staircases & Joinery",
+    "signal": "domain"
+  },
+  {
+    "into": 172,
+    "incoming_agent": "agent-8-refurbishment-refacing",
+    "incoming_name": "A & T Stairs (A & T Carpentry)",
+    "signal": "domain"
+  },
+  {
+    "into": 196,
+    "incoming_agent": "agent-8-refurbishment-refacing",
+    "incoming_name": "CAAN Design",
+    "signal": "domain"
+  },
+  {
+    "into": 191,
+    "incoming_agent": "agent-8-refurbishment-refacing",
+    "incoming_name": "Cloud Nine Installs",
+    "signal": "domain"
+  },
+  {
+    "into": 178,
+    "incoming_agent": "agent-9-handrail-balustrade-newel",
+    "incoming_name": "Haldane UK",
+    "signal": "domain"
+  },
+  {
+    "into": 164,
+    "incoming_agent": "agent-9-handrail-balustrade-newel",
+    "incoming_name": "BPI Handrails & Balustrades (Bespoke Product Installation Ltd)",
+    "signal": "domain"
+  },
+  {
+    "into": 78,
+    "incoming_agent": "agent-9-handrail-balustrade-newel",
+    "incoming_name": "Stair Bits (Richman UK Ltd)",
+    "signal": "domain"
+  },
+  {
+    "into": 71,
+    "incoming_agent": "agent-9-handrail-balustrade-newel",
+    "incoming_name": "Traditional Products Ltd",
+    "signal": "domain"
+  },
+  {
+    "into": 69,
+    "incoming_agent": "agent-9-handrail-balustrade-newel",
+    "incoming_name": "Cheshire Mouldings & Woodturnings Ltd",
+    "signal": "domain"
+  },
+  {
+    "into": 68,
+    "incoming_agent": "agent-9-handrail-balustrade-newel",
+    "incoming_name": "Richard Burbidge Ltd",
+    "signal": "domain"
+  },
+  {
+    "into": 55,
+    "incoming_agent": "agent-9-handrail-balustrade-newel",
+    "incoming_name": "Metalcraft Ltd",
+    "signal": "fuzzy-name"
+  },
+  {
+    "into": 26,
+    "incoming_agent": "agent-9-handrail-balustrade-newel",
+    "incoming_name": "Chrisand Fabrications Ltd",
+    "signal": "domain"
+  },
+  {
+    "into": 27,
+    "incoming_agent": "agent-9-handrail-balustrade-newel",
+    "incoming_name": "Thorndell Engineering",
+    "signal": "domain"
+  },
+  {
+    "into": 86,
+    "incoming_agent": "agent-9-handrail-balustrade-newel",
+    "incoming_name": "Spindlewood Woodturning",
+    "signal": "domain"
+  }
+]

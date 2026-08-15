@@ -21,6 +21,7 @@ export function ClaimForm({
   const [ownerName,  setOwnerName]  = useState("");
   const [ownerEmail, setOwnerEmail] = useState(defaultEmail ?? "");
   const [ownerPhone, setOwnerPhone] = useState("");
+  const [ownerRole,  setOwnerRole]  = useState("");
   const [note,       setNote]       = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error,      setError]      = useState<string | null>(null);
@@ -39,6 +40,7 @@ export function ClaimForm({
           owner_email: ownerEmail,
           owner_name:  ownerName || undefined,
           owner_phone: ownerPhone || undefined,
+          owner_role:  ownerRole || undefined,
           note:        note || undefined,
         }),
       });
@@ -84,11 +86,23 @@ export function ClaimForm({
           <label className="mb-2 block text-[11px] font-semibold uppercase tracking-wider text-black/70">Your email <span className="text-orange-600">*</span></label>
           <input required type="email" value={ownerEmail} onChange={(e) => setOwnerEmail(e.target.value)} placeholder="you@yourbusiness.co.uk" className="mb-3 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm" />
 
+          <label className="mb-2 block text-[11px] font-semibold uppercase tracking-wider text-black/70">Your role in the business</label>
+          <select value={ownerRole} onChange={(e) => setOwnerRole(e.target.value)} className="mb-3 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm">
+            <option value="">Select your role…</option>
+            <option value="Owner">Owner</option>
+            <option value="Director">Director</option>
+            <option value="Manager">Manager</option>
+            <option value="Marketing">Marketing / Sales</option>
+            <option value="Employee">Employee</option>
+            <option value="Authorised representative">Authorised representative</option>
+            <option value="Other">Other</option>
+          </select>
+
           <label className="mb-2 block text-[11px] font-semibold uppercase tracking-wider text-black/70">Your phone (optional)</label>
           <input value={ownerPhone} onChange={(e) => setOwnerPhone(e.target.value)} placeholder="0800 ..." className="mb-3 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm" />
 
           <label className="mb-2 block text-[11px] font-semibold uppercase tracking-wider text-black/70">Anything else NEX should know? (optional)</label>
-          <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={2} placeholder="e.g. best time to contact, your role in the business" className="w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm" />
+          <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={2} placeholder="e.g. best time to contact, why you should be considered as the claimant" className="w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm" />
 
           {error && <div className="mt-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">{error}</div>}
           {success && <div className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-800">Claim request received. NEX will be in touch.</div>}

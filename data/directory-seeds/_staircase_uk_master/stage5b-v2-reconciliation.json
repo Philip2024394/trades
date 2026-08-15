@@ -1,0 +1,1600 @@
+{
+  "generated_at": "2026-08-15T11:42:01.204Z",
+  "distribution": {
+    "INSERTED": 169,
+    "AMBIGUOUS_REVIEW": 12,
+    "DEFERRED": 84
+  },
+  "records": [
+    {
+      "business_name": "Darcy Joinery Ltd",
+      "slug": "darcy-joinery-ltd-middleton",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Greenbank Joinery",
+      "slug": "greenbank-joinery-liverpool",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Northern Joinery Ltd",
+      "slug": "northern-joinery-ltd-whitworth-rochdale",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ash Timber (Manchester)",
+      "slug": "ash-timber-manchester-middleton",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Preston Staircases",
+      "slug": "preston-staircases-preston",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "NHJ Staircases Ltd",
+      "slug": "nhj-staircases-ltd-preston-area-covers-bolton-manchester-wigan",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "R Foden Joinery",
+      "slug": "r-foden-joinery-chester",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Cubby Joinery",
+      "slug": "cubby-joinery-longtown-carlisle",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Metalwork Solutions UK Ltd",
+      "slug": "metalwork-solutions-uk-ltd-carlisle",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "SB Staircases",
+      "slug": "sb-staircases-leeds",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "GP Sheet Metals",
+      "slug": "gp-sheet-metals-holmfirth-huddersfield",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Leon Woodhead Joinery",
+      "slug": "leon-woodhead-joinery-wetherby-harrogate-area",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "DC & Sons Joinery",
+      "slug": "dc-sons-joinery-wakefield",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Beverley Joinery",
+      "slug": "beverley-joinery-leven-beverley-area",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Thorndell Engineering",
+      "slug": "thorndell-engineering-doncaster",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Lynthorpe Woodworks",
+      "slug": "lynthorpe-woodworks-sheffield",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Grange Fabrications",
+      "slug": "grange-fabrications-sheffield",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Fusion Glass Ltd",
+      "slug": "fusion-glass-ltd-kippax-leeds",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Contempo Glass Design",
+      "slug": "contempo-glass-design-bradford",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "S & T Glazing",
+      "slug": "s-t-glazing-keighley-branches-bradford-huddersfield-leeds-harrogate",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "SJ Yorkshire Fabrications Ltd",
+      "slug": "sj-yorkshire-fabrications-ltd-bradford",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Eclipse Engineering",
+      "slug": "eclipse-engineering-keighley",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Binks Balustrades",
+      "slug": "binks-balustrades-harrogate-nidderdale-area",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Balmoral Joinery Ltd",
+      "slug": "balmoral-joinery-ltd-whickham-gateshead",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "JPC Joinery",
+      "slug": "jpc-joinery-newcastle-upon-tyne",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Taylorhood Metalworks Ltd",
+      "slug": "taylorhood-metalworks-ltd-washington-sunderland",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "G&N Joinery",
+      "slug": "g-n-joinery-middlesbrough",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Driftwood Joinery Services",
+      "slug": "driftwood-joinery-services-middlesbrough-teesside",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Cantifix",
+      "slug": "cantifix-london",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Sky Glass London",
+      "slug": "sky-glass-london-london",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "abc Glass Processing",
+      "slug": "abc-glass-processing-portsmouth",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Visage Glass and Steel Limited",
+      "slug": "visage-glass-and-steel-limited",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Manchester Balustrades Ltd",
+      "slug": "manchester-balustrades-ltd-stockport",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Precision Glassworks",
+      "slug": "precision-glassworks-manchester",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Continox Ltd",
+      "slug": "continox-ltd-portsmouth",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Steelgram Fabrications Ltd",
+      "slug": "steelgram-fabrications-ltd-sheffield",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "UK Structural Systems Ltd",
+      "slug": "uk-structural-systems-ltd-east-kilbride",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Blake Group",
+      "slug": "blake-group-edinburgh",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "DioMet Fabrications Ltd",
+      "slug": "diomet-fabrications-ltd-sheffield",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "R & P Engineering Ltd",
+      "slug": "r-p-engineering-ltd-swindon",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Formost Fabrications",
+      "slug": "formost-fabrications",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "LED Lighthouse",
+      "slug": "led-lighthouse-halifax",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Richard Burbidge",
+      "slug": "richard-burbidge-oswestry",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Traditional Products Ltd",
+      "slug": "traditional-products-ltd-oswestry",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "J&J Stairparts",
+      "slug": "j-j-stairparts-oswestry",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Midland Stairparts",
+      "slug": "midland-stairparts-wolverhampton",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stair Crazy",
+      "slug": "stair-crazy-golborne",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "WRP Timber Mouldings Ltd",
+      "slug": "wrp-timber-mouldings-ltd-saffron-walden",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Oak Store Direct Ltd",
+      "slug": "oak-store-direct-ltd-shipley",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "British Hardwoods",
+      "slug": "british-hardwoods-keighley",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "QStairs",
+      "slug": "qstairs",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Spindlewood Ltd",
+      "slug": "spindlewood-ltd-bridgwater",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "UK Timber Ltd",
+      "slug": "uk-timber-ltd-corby",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Atlantic Timber Co Ltd",
+      "slug": "atlantic-timber-co-ltd-altrincham",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "AYNTREE",
+      "slug": "ayntree-atherstone",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Mr Steps",
+      "slug": "mr-steps-stockport",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Oak4You",
+      "slug": "oak4you-stoke-on-trent",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "P&L Joinery Ltd",
+      "slug": "p-l-joinery-ltd-talke",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Hoff Parquet",
+      "slug": "hoff-parquet-edinburgh",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Premier Parquet",
+      "slug": "premier-parquet",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bann Joinery",
+      "slug": "bann-joinery-edinburgh",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Hardwood Dimensions",
+      "slug": "hardwood-dimensions-manchester",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Blueprint Joinery Ltd",
+      "slug": "blueprint-joinery-ltd-oswestry",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Barnsbury Joinery",
+      "slug": "barnsbury-joinery-london",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "W.C. Evans & Sons",
+      "slug": "w-c-evans-sons-penge",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Metric Fabrications",
+      "slug": "metric-fabrications-london",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "North Kent Joinery Ltd",
+      "slug": "north-kent-joinery-ltd-chatham",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Southern Bespoke Staircases",
+      "slug": "southern-bespoke-staircases-southampton",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Raymond Good (Joiners) Ltd",
+      "slug": "raymond-good-joiners-ltd-high-wycombe",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Henley Fabrication Limited",
+      "slug": "henley-fabrication-limited-walton-on-thames",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Wyvern Joinery Ltd",
+      "slug": "wyvern-joinery-ltd-yeovil",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Corbel Joinery",
+      "slug": "corbel-joinery",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bath Bespoke",
+      "slug": "bath-bespoke-bath",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bath City Joinery",
+      "slug": "bath-city-joinery-bath",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stairway Joinery Ltd",
+      "slug": "stairway-joinery-ltd",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Celtic Cross Joinery Ltd",
+      "slug": "celtic-cross-joinery-ltd-penzance",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Perkins Engineering LTD",
+      "slug": "perkins-engineering-ltd-south-brent",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Gloucester Street Forge",
+      "slug": "gloucester-street-forge-stroud",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "C Lewis Fabrications",
+      "slug": "c-lewis-fabrications-staverton",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Boyes Design",
+      "slug": "boyes-design-nottingham",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Michael Pepper Joinery Ltd",
+      "slug": "michael-pepper-joinery-ltd-derby",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Nicholson Carpentry & Joinery Ltd",
+      "slug": "nicholson-carpentry-joinery-ltd-redditch-serving-worcestershire-warwickshire",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "R & G Fabrications Ltd",
+      "slug": "r-g-fabrications-ltd-birmingham",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Lauren Industries Limited",
+      "slug": "lauren-industries-limited-uttoxeter-loxley-green",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Rockingham Joinery",
+      "slug": "rockingham-joinery-corby",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Cardington Joinery Ltd",
+      "slug": "cardington-joinery-ltd-bedford",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Oak Hill Joinery Ltd",
+      "slug": "oak-hill-joinery-ltd-pulloxhill",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Parallel Fabrication",
+      "slug": "parallel-fabrication-catfield-near-norwich",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stair Group Ltd",
+      "slug": "stair-group-ltd-sculthorpe-fakenham",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Nightingale Joinery Limited",
+      "slug": "nightingale-joinery-limited-earls-colne-colchester",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "FOL Design Ltd",
+      "slug": "fol-design-ltd-ipswich-serving",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "GLW Engineering",
+      "slug": "glw-engineering-peterborough-serving-cambridge-fakenham-norfolk",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Truswells Joinery Limited",
+      "slug": "truswells-joinery-limited-lincoln",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "M.G. Dales Joinery Limited",
+      "slug": "m-g-dales-joinery-limited-leverton-boston",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Jack Hyams",
+      "slug": "jack-hyams-east-kilbride",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Cowan Carpentry",
+      "slug": "cowan-carpentry-hollybush",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Haldane UK",
+      "slug": "haldane-uk-glenrothes",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "The Glasgow Staircase Company",
+      "slug": "the-glasgow-staircase-company-glasgow",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "S.Y Install",
+      "slug": "s-y-install-airdrie",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Staircase Renovations Scotland (Alex Duncan)",
+      "slug": "staircase-renovations-scotland-alex-duncan",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bill Johnston Joinery Ltd",
+      "slug": "bill-johnston-joinery-ltd-aberdeen",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Graham MacRae Joinery Ltd",
+      "slug": "graham-macrae-joinery-ltd-croy-inverness",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Cloud Nine Installs",
+      "slug": "cloud-nine-installs-edinburgh",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Top Level Systems",
+      "slug": "top-level-systems-east-kilbride",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Clyde Balustrades",
+      "slug": "clyde-balustrades-kilbirnie",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Quality Joiners",
+      "slug": "quality-joiners-newton-mearns-glasgow",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Mark Lundie Bespoke Joinery",
+      "slug": "mark-lundie-bespoke-joinery-dundee",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Robbie Millar Joinery Ltd",
+      "slug": "robbie-millar-joinery-ltd-broughty-ferry-dundee",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "KR Group (Scotland) Ltd",
+      "slug": "kr-group-scotland-ltd-newburgh-ellon",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "MRB Joinery Ltd",
+      "slug": "mrb-joinery-ltd-ayr",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Cutwood Joinery",
+      "slug": "cutwood-joinery-kilmarnock",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "M. Westwater Joinery",
+      "slug": "m-westwater-joinery-kirkcaldy",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bruce McGarva Joiners",
+      "slug": "bruce-mcgarva-joiners-dumfries",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "John Anderson Joinery",
+      "slug": "john-anderson-joinery-dumfries",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "D J Hill Engineering Services Ltd",
+      "slug": "d-j-hill-engineering-services-ltd-cardiff",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "G & L Staircases Ltd",
+      "slug": "g-l-staircases-ltd-neath",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "BB Engineering Solutions",
+      "slug": "bb-engineering-solutions-rhyl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Superior Joinery Ltd",
+      "slug": "superior-joinery-ltd-swansea",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Greg Phillips Joinery",
+      "slug": "greg-phillips-joinery-clydach-swansea",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "CHT Joinery",
+      "slug": "cht-joinery-newport",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Metron Wrought Ironwork Ltd",
+      "slug": "metron-wrought-ironwork-ltd-penarth",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "TJS Construct Ltd",
+      "slug": "tjs-construct-ltd-cardiff",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "S.P.O Joinery Limited",
+      "slug": "s-p-o-joinery-limited-wrexham",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "R M Jones Joinery Ltd",
+      "slug": "r-m-jones-joinery-ltd-ruthin",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Colin Lewis Joinery",
+      "slug": "colin-lewis-joinery-talgarth-brecon",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Rhys Williams Joinery",
+      "slug": "rhys-williams-joinery-blaenycoed-carmarthen",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "WR Carpentry & Joinery Services",
+      "slug": "wr-carpentry-joinery-services-carmarthen",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Harpers Restorations",
+      "slug": "harpers-restorations-cardiff",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Colin Ramage Joinery",
+      "slug": "colin-ramage-joinery-bushmills",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "McAreavey Joinery Ltd",
+      "slug": "mcareavey-joinery-ltd-moira",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "McManus Joinery",
+      "slug": "mcmanus-joinery-enniskillen",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stairco Ltd",
+      "slug": "stairco-ltd-newtownabbey",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "LM Joinery",
+      "slug": "lm-joinery-belfast",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "JJ Garvey Joinery Works",
+      "slug": "jj-garvey-joinery-works-portadown",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Auswood Joinery",
+      "slug": "auswood-joinery-magherafelt",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "S Christie Joinery",
+      "slug": "s-christie-joinery-armoy",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Laganville Joinery",
+      "slug": "laganville-joinery-portadown",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Mourne Craft Ltd",
+      "slug": "mourne-craft-ltd-kilkeel",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "McBride Glass Balustrades",
+      "slug": "mcbride-glass-balustrades-armagh",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stile Glass",
+      "slug": "stile-glass-newcastle",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "B Wilson & Sons Ltd",
+      "slug": "b-wilson-sons-ltd-newry",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Farrell Joinery Ltd",
+      "slug": "farrell-joinery-ltd-ballygawley",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "McKernan Joinery Works",
+      "slug": "mckernan-joinery-works-warrenpoint",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Spiers Joinery Works",
+      "slug": "spiers-joinery-works-kilkeel",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Excel Glass Ltd",
+      "slug": "excel-glass-ltd-belfast",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Sinox Glass Solutions",
+      "slug": "sinox-glass-solutions-tandragee",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Farrell Brothers Specialist Joinery",
+      "slug": "farrell-brothers-specialist-joinery-markethill",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "T J Joinery",
+      "slug": "t-j-joinery-ballynahinch",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "One Step Joinery Ltd",
+      "slug": "one-step-joinery-ltd-swindon",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Build to Transform Limited",
+      "slug": "build-to-transform-limited-hemel-hempstead",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Axton's Staircases",
+      "slug": "axton-s-staircases-gravesend",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "You Say We Spray",
+      "slug": "you-say-we-spray",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ashton Decorators Ltd",
+      "slug": "ashton-decorators-ltd-belfast",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Midland Furniture Spraying",
+      "slug": "midland-furniture-spraying-birmingham",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Mr Sander",
+      "slug": "mr-sander-london",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "The Natural Floor Co.",
+      "slug": "the-natural-floor-co-london",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Handrail Creations Ltd",
+      "slug": "handrail-creations-ltd-bolton",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "The Handrail People Ltd",
+      "slug": "the-handrail-people-ltd-worthing",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Delta Balustrades Ltd",
+      "slug": "delta-balustrades-ltd-sandbach",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Neaco Ltd",
+      "slug": "neaco-ltd-malton",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "S3i Group",
+      "slug": "s3i-group-barnsley",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bespoke Handrails & Staircases Ltd",
+      "slug": "bespoke-handrails-staircases-ltd-wickford",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Nichols Bros (Wood Turners) Ltd",
+      "slug": "nichols-bros-wood-turners-ltd-walthamstow-london",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "SMART Balustrades Ltd",
+      "slug": "smart-balustrades-ltd-burntwood",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bradfabs Ltd",
+      "slug": "bradfabs-ltd-bradford",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Glassedge Ltd",
+      "slug": "glassedge-ltd-birmingham",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Elite Balustrade Systems Ltd",
+      "slug": "elite-balustrade-systems-ltd-clitheroe",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Trade Balustrade Ltd",
+      "slug": "trade-balustrade-ltd-milton-keynes",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "WPS Handrails",
+      "slug": "wps-handrails",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "ATG Contracts Ltd",
+      "slug": "atg-contracts-ltd-blackpool",
+      "state": "AMBIGUOUS_REVIEW",
+      "reason": "collision on domain with different-name live row"
+    },
+    {
+      "business_name": "Complete Stair Systems Ltd",
+      "slug": "complete-stair-systems-ltd-romsey",
+      "state": "AMBIGUOUS_REVIEW",
+      "reason": "collision on domain,phone,email with different-name live row"
+    },
+    {
+      "business_name": "Spittlywood Ltd",
+      "slug": "spittlywood-ltd-hamstreet-ashford",
+      "state": "AMBIGUOUS_REVIEW",
+      "reason": "collision on fuzzy-name with different-name live row"
+    },
+    {
+      "business_name": "Brighton Stairs",
+      "slug": "brighton-stairs-ringmer",
+      "state": "AMBIGUOUS_REVIEW",
+      "reason": "collision on phone with different-name live row"
+    },
+    {
+      "business_name": "Hampshire Staircase Refurbishments",
+      "slug": "hampshire-staircase-refurbishments-yateley",
+      "state": "AMBIGUOUS_REVIEW",
+      "reason": "collision on domain,phone,email with different-name live row"
+    },
+    {
+      "business_name": "Brian R Homes Joinery",
+      "slug": "brian-r-homes-joinery-east-cowes",
+      "state": "AMBIGUOUS_REVIEW",
+      "reason": "collision on fuzzy-name with different-name live row"
+    },
+    {
+      "business_name": "Stairplan Ltd",
+      "slug": "stairplan-ltd-telford",
+      "state": "AMBIGUOUS_REVIEW",
+      "reason": "collision on phone,email with different-name live row"
+    },
+    {
+      "business_name": "Central Joinery Group Ltd",
+      "slug": "central-joinery-group-ltd-swadlincote",
+      "state": "AMBIGUOUS_REVIEW",
+      "reason": "collision on domain,phone,email with different-name live row"
+    },
+    {
+      "business_name": "White's Staircases",
+      "slug": "white-s-staircases-hethersett-norwich",
+      "state": "AMBIGUOUS_REVIEW",
+      "reason": "collision on domain,phone,email with different-name live row"
+    },
+    {
+      "business_name": "Pettitt Joinery Company Ltd",
+      "slug": "pettitt-joinery-company-ltd-peterborough",
+      "state": "AMBIGUOUS_REVIEW",
+      "reason": "collision on fuzzy-name with different-name live row"
+    },
+    {
+      "business_name": "Jason Gittus Carpentry & Joinery",
+      "slug": "jason-gittus-carpentry-joinery-godrergraig-swansea",
+      "state": "AMBIGUOUS_REVIEW",
+      "reason": "collision on fuzzy-name with different-name live row"
+    },
+    {
+      "business_name": "Bisca",
+      "slug": "bisca-helmsley",
+      "state": "AMBIGUOUS_REVIEW",
+      "reason": "collision on domain with different-name live row"
+    },
+    {
+      "business_name": "Joinery Limited (joinery.co.uk)",
+      "slug": "joinery-limited-joinery-co-uk-preston",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Chrisand Fabrications Ltd",
+      "slug": "chrisand-fabrications-ltd-rotherham",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Steel Line Ltd",
+      "slug": "steel-line-ltd-sheffield",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "The Oak Workshop",
+      "slug": "the-oak-workshop-doncaster",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "GL Joinery Ltd (Gary Lamming Joinery)",
+      "slug": "gl-joinery-ltd-gary-lamming-joinery-stockton-on-tees",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Finepoint Glass London Ltd",
+      "slug": "finepoint-glass-london-ltd-watford",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Fineline Balustrades Ltd",
+      "slug": "fineline-balustrades-ltd-stockport",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Elite Metalcraft Co. Ltd",
+      "slug": "elite-metalcraft-co-ltd-london",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Northstar Balustrades & Metalwork",
+      "slug": "northstar-balustrades-metalwork-glasgow",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Cheshire Mouldings & Woodturnings Ltd",
+      "slug": "cheshire-mouldings-woodturnings-ltd-st-helens",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Trade Stair Parts (H.R.P. Trading Ltd)",
+      "slug": "trade-stair-parts-h-r-p-trading-ltd-braintree",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Stair Parts Online (Jackson Woodturners Ltd)",
+      "slug": "stair-parts-online-jackson-woodturners-ltd-sheffield",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Stair Bits (Richman UK Ltd)",
+      "slug": "stair-bits-richman-uk-ltd-halstead",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Loft Centre Products Ltd",
+      "slug": "loft-centre-products-ltd-arundel",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "KwikClad (Kwikstairs Ltd)",
+      "slug": "kwikclad-kwikstairs-ltd-bromham",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Fin Wood Ltd (Finwood)",
+      "slug": "fin-wood-ltd-finwood-london",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "The Heritage Collection (Heritage Doors & Floors Ltd)",
+      "slug": "the-heritage-collection-heritage-doors-floors-ltd-sheffield",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Devon Wood Floors",
+      "slug": "devon-wood-floors-farringdon",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Academy Hardwood Flooring",
+      "slug": "academy-hardwood-flooring-bexhill-on-sea",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "House of Worktops",
+      "slug": "house-of-worktops-london-colney",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "James Steel Staircases",
+      "slug": "james-steel-staircases-borehamwood",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Kings Cross Joinery",
+      "slug": "kings-cross-joinery-london",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Creative Ironworks Limited",
+      "slug": "creative-ironworks-limited-ashford",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Brighton Balustrade (Brighton Balustrades)",
+      "slug": "brighton-balustrade-brighton-balustrades-ringmer",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Apex Staircases and Oak Frames",
+      "slug": "apex-staircases-and-oak-frames-whitelackington",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Buscott Woodworking",
+      "slug": "buscott-woodworking",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "A W Joinery (Bristol)",
+      "slug": "a-w-joinery-bristol-bristol",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Rawlings Joinery",
+      "slug": "rawlings-joinery-plymouth",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Radford Joinery Ltd",
+      "slug": "radford-joinery-ltd-exeter",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Crescent of Cambridge Ltd",
+      "slug": "crescent-of-cambridge-ltd-st-ives",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Meer-End Staircases & Joinery",
+      "slug": "meer-end-staircases-joinery-kenilworth",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Roger Coe Joinery Limited",
+      "slug": "roger-coe-joinery-limited-northampton",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Stairways",
+      "slug": "stairways-southam",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "SG System Products Limited",
+      "slug": "sg-system-products-limited-ipswich",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "SG Engineering Ipswich Ltd",
+      "slug": "sg-engineering-ipswich-ltd-ipswich",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Neil Gladwyn Joinery (County Joinery)",
+      "slug": "neil-gladwyn-joinery-county-joinery-malvern",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "JBC (Joiners Building Contractors)",
+      "slug": "jbc-joiners-building-contractors-broxburn",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Highland Balustrades",
+      "slug": "highland-balustrades-inverness",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Gilchrist Steels Ltd",
+      "slug": "gilchrist-steels-ltd-glasgow",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Bill Pitt Manufacturing Joinery Ltd",
+      "slug": "bill-pitt-manufacturing-joinery-ltd-kirriemuir",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Paton Joinery",
+      "slug": "paton-joinery-inverness",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Clerwood Building Company",
+      "slug": "clerwood-building-company-edinburgh",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "SG Joinery Glass (SGJ Group)",
+      "slug": "sg-joinery-glass-sgj-group-lochgelly",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Caan Design",
+      "slug": "caan-design-ayr",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Wood Kraft Moray",
+      "slug": "wood-kraft-moray-elgin",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Jarrods Bespoke Staircases",
+      "slug": "jarrods-bespoke-staircases-barry",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "AML Joiners (The Welsh Joinery Workshop)",
+      "slug": "aml-joiners-the-welsh-joinery-workshop-treforest",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "O'Sullivans Joinery Ltd",
+      "slug": "o-sullivans-joinery-ltd-swansea",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "IDT Carpentry",
+      "slug": "idt-carpentry-swansea",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Apex Joinery & Shopfitting (Wales) Ltd",
+      "slug": "apex-joinery-shopfitting-wales-ltd-newport",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Regional Joinery",
+      "slug": "regional-joinery-cardiff",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Golding Joinery Ltd",
+      "slug": "golding-joinery-ltd-crumlin-newport",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Woodside Joinery (Staircases) Ltd",
+      "slug": "woodside-joinery-staircases-ltd-cwmbran",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Aacme Glass",
+      "slug": "aacme-glass-newport",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Wynnstay Joinery",
+      "slug": "wynnstay-joinery-ruabon-wrexham",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Custom Precision Joinery Ltd (CP Joinery)",
+      "slug": "custom-precision-joinery-ltd-cp-joinery-buckley",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Carl Hughes Carpenter & Joiner (Bespoke Joinery Solutions)",
+      "slug": "carl-hughes-carpenter-joiner-bespoke-joinery-solutions-colwyn-bay",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "North Wales Stairs",
+      "slug": "north-wales-stairs-llandudno",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "iBuild (Wales) Ltd",
+      "slug": "ibuild-wales-ltd-st-clears-carmarthen",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "RJH Joinery",
+      "slug": "rjh-joinery-carmarthen",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Northern Windows and Joinery",
+      "slug": "northern-windows-and-joinery-belfast",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "William G Crawford Joinery Ltd",
+      "slug": "william-g-crawford-joinery-ltd-antrim",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "J & S Staircases",
+      "slug": "j-s-staircases-dunloy",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Turner Engineering",
+      "slug": "turner-engineering-hillsborough",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Peter Meehan Stairs Limited",
+      "slug": "peter-meehan-stairs-limited-derry",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Euroscroll Engineering",
+      "slug": "euroscroll-engineering-cookstown",
+      "state": "DEFERRED",
+      "reason": "DIRECTLY_REACHABLE · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Presley Joinery Ltd",
+      "slug": "presley-joinery-ltd-enniskillen",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Mastercraft Joinery",
+      "slug": "mastercraft-joinery-mayobridge",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Neville Johnson Staircases",
+      "slug": "neville-johnson-staircases-manchester-trafford-park",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Pear Stairs",
+      "slug": "pear-stairs-welshpool",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Canal Engineering (Canal Architectural)",
+      "slug": "canal-engineering-canal-architectural-nottingham",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Multi-Turn",
+      "slug": "multi-turn-winchester",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "SprayBusters",
+      "slug": "spraybusters-manchester",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Wundercoat Ltd",
+      "slug": "wundercoat-ltd-manchester",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Respray It (The Kitchen Respray Group Ltd)",
+      "slug": "respray-it-the-kitchen-respray-group-ltd-higher-whitley",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "JLA Joinery",
+      "slug": "jla-joinery-chichester",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Simons Furniture and Staircase Restoration",
+      "slug": "simons-furniture-and-staircase-restoration-stockport",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "SHS Products (Stainless Handrail Systems)",
+      "slug": "shs-products-stainless-handrail-systems-aldridge-walsall",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Balustrade UK Ltd",
+      "slug": "balustrade-uk-ltd-dudley",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "SHP - Stainless Handrail Products",
+      "slug": "shp-stainless-handrail-products-warrington",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Precision Timber Handrails (by Clive Durose)",
+      "slug": "precision-timber-handrails-by-clive-durose-stoke-on-trent",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Handrail Systems (Dryad)",
+      "slug": "handrail-systems-dryad-sheffield",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "DC Iron (DC Handrails & Ironwork Parts Ltd)",
+      "slug": "dc-iron-dc-handrails-ironwork-parts-ltd-newcastle-upon-tyne",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "West Country Blacksmiths",
+      "slug": "west-country-blacksmiths-minehead-allerford",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    }
+  ]
+}

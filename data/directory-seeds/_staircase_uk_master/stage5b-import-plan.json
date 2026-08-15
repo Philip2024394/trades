@@ -1,0 +1,3085 @@
+{
+  "generated_at": "2026-08-15T00:00:00.000Z",
+  "dry_run": true,
+  "inserts": [
+    {
+      "slug": "darcy-joinery-ltd-middleton",
+      "business_name": "Darcy Joinery Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "modernise-your-stairs-wigan",
+      "business_name": "Modernise Your Stairs",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "alpine-stairs-liverpool",
+      "business_name": "Alpine Stairs",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "edwards-hampson-ltd-liverpool",
+      "business_name": "Edwards & Hampson Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "tailor-made-stairs-and-storage-solutions-liverpool",
+      "business_name": "Tailor Made Stairs and Storage Solutions",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "greenbank-joinery-liverpool",
+      "business_name": "Greenbank Joinery",
+      "business_type": "STAIRCASE_INSTALLER",
+      "category": "Staircase Installer",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 2
+    },
+    {
+      "slug": "northwest-staircases-ltd-manchester-droylsden",
+      "business_name": "Northwest Staircases Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "a-d-stairs-ltd-rochdale",
+      "business_name": "A.D. Stairs Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "northern-joinery-ltd-whitworth-rochdale",
+      "business_name": "Northern Joinery Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "ash-timber-manchester-middleton",
+      "business_name": "Ash Timber (Manchester)",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "atg-contracts-ltd-blackpool",
+      "business_name": "ATG Contracts Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "preston-staircases-preston",
+      "business_name": "Preston Staircases",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "nhj-staircases-ltd-preston-area-covers-bolton-manchester-wigan",
+      "business_name": "NHJ Staircases Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "r-foden-joinery-chester",
+      "business_name": "R Foden Joinery",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3
+    },
+    {
+      "slug": "cubby-joinery-longtown-carlisle",
+      "business_name": "Cubby Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "metalwork-solutions-uk-ltd-carlisle",
+      "business_name": "Metalwork Solutions UK Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "sb-staircases-leeds",
+      "business_name": "SB Staircases",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "gp-sheet-metals-holmfirth-huddersfield",
+      "business_name": "GP Sheet Metals",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "leon-woodhead-joinery-wetherby-harrogate-area",
+      "business_name": "Leon Woodhead Joinery",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "dc-sons-joinery-wakefield",
+      "business_name": "DC & Sons Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "beverley-joinery-leven-beverley-area",
+      "business_name": "Beverley Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "thorndell-engineering-doncaster",
+      "business_name": "Thorndell Engineering",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "lynthorpe-woodworks-sheffield",
+      "business_name": "Lynthorpe Woodworks",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "grange-fabrications-sheffield",
+      "business_name": "Grange Fabrications",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "fusion-glass-ltd-kippax-leeds",
+      "business_name": "Fusion Glass Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "contempo-glass-design-bradford",
+      "business_name": "Contempo Glass Design",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "s-t-glazing-keighley-branches-bradford-huddersfield-leeds-harrogate",
+      "business_name": "S & T Glazing",
+      "business_type": "REFURBISHMENT_SERVICE_SPECIALIST",
+      "category": "Staircase Refurbishment",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "sj-yorkshire-fabrications-ltd-bradford",
+      "business_name": "SJ Yorkshire Fabrications Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "eclipse-engineering-keighley",
+      "business_name": "Eclipse Engineering",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "binks-balustrades-harrogate-nidderdale-area",
+      "business_name": "Binks Balustrades",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 10
+    },
+    {
+      "slug": "balmoral-joinery-ltd-whickham-gateshead",
+      "business_name": "Balmoral Joinery Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "jpc-joinery-newcastle-upon-tyne",
+      "business_name": "JPC Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "taylorhood-metalworks-ltd-washington-sunderland",
+      "business_name": "Taylorhood Metalworks Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "g-n-joinery-middlesbrough",
+      "business_name": "G&N Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "driftwood-joinery-services-middlesbrough-teesside",
+      "business_name": "Driftwood Joinery Services",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "cantifix-london",
+      "business_name": "Cantifix",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "sky-glass-london-london",
+      "business_name": "Sky Glass London",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "abc-glass-processing-portsmouth",
+      "business_name": "abc Glass Processing",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "visage-glass-and-steel-limited",
+      "business_name": "Visage Glass and Steel Limited",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "manchester-balustrades-ltd-stockport",
+      "business_name": "Manchester Balustrades Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "precision-glassworks-manchester",
+      "business_name": "Precision Glassworks",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "continox-ltd-portsmouth",
+      "business_name": "Continox Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "m-tech-engineering-ltd-hucknall",
+      "business_name": "M-Tech Engineering Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "spiral-uk-st-ives",
+      "business_name": "Spiral UK",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "elite-spiral-stairs-ltd-southam",
+      "business_name": "Elite Spiral Stairs Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "steelgram-fabrications-ltd-sheffield",
+      "business_name": "Steelgram Fabrications Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "uk-structural-systems-ltd-east-kilbride",
+      "business_name": "UK Structural Systems Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "blake-group-edinburgh",
+      "business_name": "Blake Group",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "diomet-fabrications-ltd-sheffield",
+      "business_name": "DioMet Fabrications Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "r-p-engineering-ltd-swindon",
+      "business_name": "R & P Engineering Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "formost-fabrications",
+      "business_name": "Formost Fabrications",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "complete-stair-systems-ltd-romsey",
+      "business_name": "Complete Stair Systems Ltd",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 10
+    },
+    {
+      "slug": "grand-design-stairs-london",
+      "business_name": "Grand Design Stairs",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "led-lighthouse-halifax",
+      "business_name": "LED Lighthouse",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "richard-burbidge-oswestry",
+      "business_name": "Richard Burbidge",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 10
+    },
+    {
+      "slug": "stairparts-direct-stanley",
+      "business_name": "Stairparts Direct",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 11
+    },
+    {
+      "slug": "traditional-products-ltd-oswestry",
+      "business_name": "Traditional Products Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "j-j-stairparts-oswestry",
+      "business_name": "J&J Stairparts",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 10
+    },
+    {
+      "slug": "midland-stairparts-wolverhampton",
+      "business_name": "Midland Stairparts",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "stair-crazy-golborne",
+      "business_name": "Stair Crazy",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "wrp-timber-mouldings-ltd-saffron-walden",
+      "business_name": "WRP Timber Mouldings Ltd",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "oak-store-direct-ltd-shipley",
+      "business_name": "Oak Store Direct Ltd",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "british-hardwoods-keighley",
+      "business_name": "British Hardwoods",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "fiximer-ltd-doncaster",
+      "business_name": "Fiximer Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "qstairs",
+      "business_name": "QStairs",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "spindlewood-ltd-bridgwater",
+      "business_name": "Spindlewood Ltd",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "uk-timber-ltd-corby",
+      "business_name": "UK Timber Ltd",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "atlantic-timber-co-ltd-altrincham",
+      "business_name": "Atlantic Timber Co Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "ayntree-atherstone",
+      "business_name": "AYNTREE",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "mr-steps-stockport",
+      "business_name": "Mr Steps",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 10
+    },
+    {
+      "slug": "oak4you-stoke-on-trent",
+      "business_name": "Oak4You",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "p-l-joinery-ltd-talke",
+      "business_name": "P&L Joinery Ltd",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 11
+    },
+    {
+      "slug": "hoff-parquet-edinburgh",
+      "business_name": "Hoff Parquet",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "premier-parquet",
+      "business_name": "Premier Parquet",
+      "business_type": "REFACING_SERVICE_SPECIALIST",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "bann-joinery-edinburgh",
+      "business_name": "Bann Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "hardwood-dimensions-manchester",
+      "business_name": "Hardwood Dimensions",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "blueprint-joinery-ltd-oswestry",
+      "business_name": "Blueprint Joinery Ltd",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 10
+    },
+    {
+      "slug": "london-stairs-ltd-london",
+      "business_name": "London Stairs Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "heritage-stairs-london",
+      "business_name": "Heritage Stairs",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "barnsbury-joinery-london",
+      "business_name": "Barnsbury Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "w-c-evans-sons-penge",
+      "business_name": "W.C. Evans & Sons",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "metric-fabrications-london",
+      "business_name": "Metric Fabrications",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "spittlywood-ltd-hamstreet-ashford",
+      "business_name": "Spittlywood Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "north-kent-joinery-ltd-chatham",
+      "business_name": "North Kent Joinery Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "brighton-stairs-ringmer",
+      "business_name": "Brighton Stairs",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "hampshire-staircase-refurbishments-yateley",
+      "business_name": "Hampshire Staircase Refurbishments",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 10
+    },
+    {
+      "slug": "southern-bespoke-staircases-southampton",
+      "business_name": "Southern Bespoke Staircases",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "raymond-good-joiners-ltd-high-wycombe",
+      "business_name": "Raymond Good (Joiners) Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "henley-fabrication-limited-walton-on-thames",
+      "business_name": "Henley Fabrication Limited",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "wyvern-joinery-ltd-yeovil",
+      "business_name": "Wyvern Joinery Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "corbel-joinery",
+      "business_name": "Corbel Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "bath-bespoke-bath",
+      "business_name": "Bath Bespoke",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "bath-city-joinery-bath",
+      "business_name": "Bath City Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "stairway-joinery-ltd",
+      "business_name": "Stairway Joinery Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3
+    },
+    {
+      "slug": "lucas-kane-carpentry",
+      "business_name": "Lucas Kane Carpentry",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "hambledon-staircases",
+      "business_name": "Hambledon Staircases",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 10
+    },
+    {
+      "slug": "county-stairs-wimborne",
+      "business_name": "County Stairs",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "cornwall-stairs-limited-hayle",
+      "business_name": "Cornwall Stairs Limited",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "celtic-cross-joinery-ltd-penzance",
+      "business_name": "Celtic Cross Joinery Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "perkins-engineering-ltd-south-brent",
+      "business_name": "Perkins Engineering LTD",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "gloucester-street-forge-stroud",
+      "business_name": "Gloucester Street Forge",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "c-lewis-fabrications-staverton",
+      "business_name": "C Lewis Fabrications",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "brian-r-homes-joinery-east-cowes",
+      "business_name": "Brian R Homes Joinery",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "staircraft-group-coventry",
+      "business_name": "Staircraft Group",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "stairplan-ltd-telford",
+      "business_name": "Stairplan Ltd",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 10
+    },
+    {
+      "slug": "skyline-joinery-ltd-nottingham",
+      "business_name": "Skyline Joinery Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "boyes-design-nottingham",
+      "business_name": "Boyes Design",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "michael-pepper-joinery-ltd-derby",
+      "business_name": "Michael Pepper Joinery Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3
+    },
+    {
+      "slug": "central-joinery-group-ltd-swadlincote",
+      "business_name": "Central Joinery Group Ltd",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "nicholson-carpentry-joinery-ltd-redditch-serving-worcestershire-warwickshire",
+      "business_name": "Nicholson Carpentry & Joinery Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "lyndale-stairs-limited-burntwood",
+      "business_name": "Lyndale Stairs Limited",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "r-g-fabrications-ltd-birmingham",
+      "business_name": "R & G Fabrications Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "lauren-industries-limited-uttoxeter-loxley-green",
+      "business_name": "Lauren Industries Limited",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "rockingham-joinery-corby",
+      "business_name": "Rockingham Joinery",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3
+    },
+    {
+      "slug": "cardington-joinery-ltd-bedford",
+      "business_name": "Cardington Joinery Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "oak-hill-joinery-ltd-pulloxhill",
+      "business_name": "Oak Hill Joinery Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "white-s-staircases-hethersett-norwich",
+      "business_name": "White's Staircases",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "parallel-fabrication-catfield-near-norwich",
+      "business_name": "Parallel Fabrication",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "stair-group-ltd-sculthorpe-fakenham",
+      "business_name": "Stair Group Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "nightingale-joinery-limited-earls-colne-colchester",
+      "business_name": "Nightingale Joinery Limited",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "fol-design-ltd-ipswich-serving",
+      "business_name": "FOL Design Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "pettitt-joinery-company-ltd-peterborough",
+      "business_name": "Pettitt Joinery Company Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3
+    },
+    {
+      "slug": "glw-engineering-peterborough-serving-cambridge-fakenham-norfolk",
+      "business_name": "GLW Engineering",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "truswells-joinery-limited-lincoln",
+      "business_name": "Truswells Joinery Limited",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "m-g-dales-joinery-limited-leverton-boston",
+      "business_name": "M.G. Dales Joinery Limited",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "robert-mcvey-staircases-joinery-croft-leicester",
+      "business_name": "Robert McVey Staircases & Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "jack-hyams-east-kilbride",
+      "business_name": "Jack Hyams",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "cowan-carpentry-hollybush",
+      "business_name": "Cowan Carpentry",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "stairs-scotland",
+      "business_name": "Stairs Scotland",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "haldane-uk-glenrothes",
+      "business_name": "Haldane UK",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "a-j-stairs-airdrie",
+      "business_name": "A & J Stairs",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "the-glasgow-staircase-company-glasgow",
+      "business_name": "The Glasgow Staircase Company",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "s-y-install-airdrie",
+      "business_name": "S.Y Install",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "staircase-renovations-scotland-alex-duncan",
+      "business_name": "Staircase Renovations Scotland (Alex Duncan)",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 10
+    },
+    {
+      "slug": "continental-stairs-bellshill",
+      "business_name": "Continental Stairs",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "bill-johnston-joinery-ltd-aberdeen",
+      "business_name": "Bill Johnston Joinery Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "graham-macrae-joinery-ltd-croy-inverness",
+      "business_name": "Graham MacRae Joinery Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "cloud-nine-installs-edinburgh",
+      "business_name": "Cloud Nine Installs",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "top-level-systems-east-kilbride",
+      "business_name": "Top Level Systems",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "clyde-balustrades-kilbirnie",
+      "business_name": "Clyde Balustrades",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "quality-joiners-newton-mearns-glasgow",
+      "business_name": "Quality Joiners",
+      "business_type": "STAIRCASE_INSTALLER",
+      "category": "Staircase Installer",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "john-dement-stairs-and-joinery-prestwick",
+      "business_name": "John Dement Stairs and Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "mark-lundie-bespoke-joinery-dundee",
+      "business_name": "Mark Lundie Bespoke Joinery",
+      "business_type": "REFURBISHMENT_SERVICE_SPECIALIST",
+      "category": "Staircase Refurbishment",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "robbie-millar-joinery-ltd-broughty-ferry-dundee",
+      "business_name": "Robbie Millar Joinery Ltd",
+      "business_type": "REFURBISHMENT_SERVICE_SPECIALIST",
+      "category": "Staircase Refurbishment",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "kr-group-scotland-ltd-newburgh-ellon",
+      "business_name": "KR Group (Scotland) Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "mrb-joinery-ltd-ayr",
+      "business_name": "MRB Joinery Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "cutwood-joinery-kilmarnock",
+      "business_name": "Cutwood Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "m-westwater-joinery-kirkcaldy",
+      "business_name": "M. Westwater Joinery",
+      "business_type": "REFURBISHMENT_SERVICE_SPECIALIST",
+      "category": "Staircase Refurbishment",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "bruce-mcgarva-joiners-dumfries",
+      "business_name": "Bruce McGarva Joiners",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "john-anderson-joinery-dumfries",
+      "business_name": "John Anderson Joinery",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "d-j-hill-engineering-services-ltd-cardiff",
+      "business_name": "D J Hill Engineering Services Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "g-l-staircases-ltd-neath",
+      "business_name": "G & L Staircases Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "bb-engineering-solutions-rhyl",
+      "business_name": "BB Engineering Solutions",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "superior-joinery-ltd-swansea",
+      "business_name": "Superior Joinery Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "greg-phillips-joinery-clydach-swansea",
+      "business_name": "Greg Phillips Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "jason-gittus-carpentry-joinery-godrergraig-swansea",
+      "business_name": "Jason Gittus Carpentry & Joinery",
+      "business_type": "REFURBISHMENT_SERVICE_SPECIALIST",
+      "category": "Staircase Refurbishment",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3
+    },
+    {
+      "slug": "cht-joinery-newport",
+      "business_name": "CHT Joinery",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3
+    },
+    {
+      "slug": "metron-wrought-ironwork-ltd-penarth",
+      "business_name": "Metron Wrought Ironwork Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "tjs-construct-ltd-cardiff",
+      "business_name": "TJS Construct Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "s-p-o-joinery-limited-wrexham",
+      "business_name": "S.P.O Joinery Limited",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "r-m-jones-joinery-ltd-ruthin",
+      "business_name": "R M Jones Joinery Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "colin-lewis-joinery-talgarth-brecon",
+      "business_name": "Colin Lewis Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "rhys-williams-joinery-blaenycoed-carmarthen",
+      "business_name": "Rhys Williams Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "wr-carpentry-joinery-services-carmarthen",
+      "business_name": "WR Carpentry & Joinery Services",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "harpers-restorations-cardiff",
+      "business_name": "Harpers Restorations",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 2
+    },
+    {
+      "slug": "ac-stairs-limavady",
+      "business_name": "AC Stairs",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "colin-ramage-joinery-bushmills",
+      "business_name": "Colin Ramage Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "mcareavey-joinery-ltd-moira",
+      "business_name": "McAreavey Joinery Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3
+    },
+    {
+      "slug": "mcmanus-joinery-enniskillen",
+      "business_name": "McManus Joinery",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3
+    },
+    {
+      "slug": "stairco-ltd-newtownabbey",
+      "business_name": "Stairco Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "lm-joinery-belfast",
+      "business_name": "LM Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "jj-garvey-joinery-works-portadown",
+      "business_name": "JJ Garvey Joinery Works",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "auswood-joinery-magherafelt",
+      "business_name": "Auswood Joinery",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "s-christie-joinery-armoy",
+      "business_name": "S Christie Joinery",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "laganville-joinery-portadown",
+      "business_name": "Laganville Joinery",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3
+    },
+    {
+      "slug": "metalcraft-engineering-ltd-belfast",
+      "business_name": "Metalcraft Engineering Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "mourne-craft-ltd-kilkeel",
+      "business_name": "Mourne Craft Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "mcbride-glass-balustrades-armagh",
+      "business_name": "McBride Glass Balustrades",
+      "business_type": "REFURBISHMENT_SERVICE_SPECIALIST",
+      "category": "Staircase Refurbishment",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "stile-glass-newcastle",
+      "business_name": "Stile Glass",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "b-wilson-sons-ltd-newry",
+      "business_name": "B Wilson & Sons Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "iconic-stairs-ltd-omagh",
+      "business_name": "Iconic Stairs Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "farrell-joinery-ltd-ballygawley",
+      "business_name": "Farrell Joinery Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "mckernan-joinery-works-warrenpoint",
+      "business_name": "McKernan Joinery Works",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "spiers-joinery-works-kilkeel",
+      "business_name": "Spiers Joinery Works",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3
+    },
+    {
+      "slug": "excel-glass-ltd-belfast",
+      "business_name": "Excel Glass Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "sinox-glass-solutions-tandragee",
+      "business_name": "Sinox Glass Solutions",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "farrell-brothers-specialist-joinery-markethill",
+      "business_name": "Farrell Brothers Specialist Joinery",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "t-j-joinery-ballynahinch",
+      "business_name": "T J Joinery",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "bisca-helmsley",
+      "business_name": "Bisca",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "british-spirals-castings-chapel-en-le-frith",
+      "business_name": "British Spirals & Castings",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "one-step-joinery-ltd-swindon",
+      "business_name": "One Step Joinery Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "build-to-transform-limited-hemel-hempstead",
+      "business_name": "Build to Transform Limited",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "axton-s-staircases-gravesend",
+      "business_name": "Axton's Staircases",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "you-say-we-spray",
+      "business_name": "You Say We Spray",
+      "business_type": "REFURBISHMENT_SERVICE_SPECIALIST",
+      "category": "Staircase Refurbishment",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5
+    },
+    {
+      "slug": "ashton-decorators-ltd-belfast",
+      "business_name": "Ashton Decorators Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 2
+    },
+    {
+      "slug": "midland-furniture-spraying-birmingham",
+      "business_name": "Midland Furniture Spraying",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "mr-sander-london",
+      "business_name": "Mr Sander",
+      "business_type": "REFURBISHMENT_SERVICE_SPECIALIST",
+      "category": "Staircase Refurbishment",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4
+    },
+    {
+      "slug": "the-natural-floor-co-london",
+      "business_name": "The Natural Floor Co.",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3
+    },
+    {
+      "slug": "handrail-creations-ltd-bolton",
+      "business_name": "Handrail Creations Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "the-handrail-people-ltd-worthing",
+      "business_name": "The Handrail People Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7
+    },
+    {
+      "slug": "delta-balustrades-ltd-sandbach",
+      "business_name": "Delta Balustrades Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "neaco-ltd-malton",
+      "business_name": "Neaco Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "s3i-group-barnsley",
+      "business_name": "S3i Group",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "bespoke-handrails-staircases-ltd-wickford",
+      "business_name": "Bespoke Handrails & Staircases Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "nichols-bros-wood-turners-ltd-walthamstow-london",
+      "business_name": "Nichols Bros (Wood Turners) Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "smart-balustrades-ltd-burntwood",
+      "business_name": "SMART Balustrades Ltd",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "bradfabs-ltd-bradford",
+      "business_name": "Bradfabs Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "glassedge-ltd-birmingham",
+      "business_name": "Glassedge Ltd",
+      "business_type": "REFURBISHMENT_SERVICE_SPECIALIST",
+      "category": "Staircase Refurbishment",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6
+    },
+    {
+      "slug": "elite-balustrade-systems-ltd-clitheroe",
+      "business_name": "Elite Balustrade Systems Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    },
+    {
+      "slug": "trade-balustrade-ltd-milton-keynes",
+      "business_name": "Trade Balustrade Ltd",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 8
+    },
+    {
+      "slug": "wps-handrails",
+      "business_name": "WPS Handrails",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 9
+    }
+  ],
+  "merges": [
+    {
+      "existing_source": "_refacing/transform-staircases-wigan.json",
+      "incoming_business_name": "Transform Staircases",
+      "match_signals": [
+        {
+          "signal": "domain",
+          "existing": "_refacing/transform-staircases-wigan.json"
+        }
+      ],
+      "existing_qualification": "A+",
+      "incoming_qualification": "A",
+      "merged_business_type": "MULTI_SERVICE_COMPANY",
+      "merged_capabilities_yes": 15,
+      "existing_evidence_count": 1,
+      "merged_evidence_count": 3
+    },
+    {
+      "existing_source": "warrington/abbott-wade-staircases-warrington.json",
+      "incoming_business_name": "Abbott-Wade",
+      "match_signals": [
+        {
+          "signal": "domain",
+          "existing": "warrington/abbott-wade-staircases-warrington.json"
+        }
+      ],
+      "incoming_qualification": "A",
+      "merged_business_type": "MULTI_SERVICE_COMPANY",
+      "merged_capabilities_yes": 10,
+      "existing_evidence_count": 0,
+      "merged_evidence_count": 4
+    },
+    {
+      "existing_source": "stockport/the-stair-shop-stockport.json",
+      "incoming_business_name": "The Stair Shop Ltd",
+      "match_signals": [
+        {
+          "signal": "postcode+name",
+          "existing": "stockport/the-stair-shop-stockport.json"
+        }
+      ],
+      "incoming_qualification": "A",
+      "merged_business_type": "MULTI_SERVICE_COMPANY",
+      "merged_capabilities_yes": 9,
+      "existing_evidence_count": 0,
+      "merged_evidence_count": 3
+    },
+    {
+      "existing_source": "woodmansey/tkstairs-woodmansey.json",
+      "incoming_business_name": "TK Stairs",
+      "match_signals": [
+        {
+          "signal": "domain",
+          "existing": "woodmansey/tkstairs-woodmansey.json"
+        }
+      ],
+      "incoming_qualification": "A",
+      "merged_business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "merged_capabilities_yes": 7,
+      "existing_evidence_count": 0,
+      "merged_evidence_count": 3
+    },
+    {
+      "existing_source": "sheffield/south-yorkshire-joinery-ltd-sheffield.json",
+      "incoming_business_name": "South Yorkshire Joinery",
+      "match_signals": [
+        {
+          "signal": "postcode+name",
+          "existing": "sheffield/south-yorkshire-joinery-ltd-sheffield.json"
+        }
+      ],
+      "incoming_qualification": "A",
+      "merged_business_type": "STAIRCASE_MANUFACTURER",
+      "merged_capabilities_yes": 3,
+      "existing_evidence_count": 0,
+      "merged_evidence_count": 1
+    },
+    {
+      "existing_source": "basildon/uk-stairparts-ltd-basildon.json",
+      "incoming_business_name": "UK Stair Parts",
+      "match_signals": [
+        {
+          "signal": "domain",
+          "existing": "basildon/uk-stairparts-ltd-basildon.json"
+        }
+      ],
+      "incoming_qualification": null,
+      "merged_business_type": "MULTI_SERVICE_COMPANY",
+      "merged_capabilities_yes": 5,
+      "existing_evidence_count": 0,
+      "merged_evidence_count": 1
+    },
+    {
+      "existing_source": "_refacing/stairfurb-uk.json",
+      "incoming_business_name": "StairFurb (Homespace Installations Ltd)",
+      "match_signals": [
+        {
+          "signal": "domain",
+          "existing": "_refacing/stairfurb-uk.json"
+        }
+      ],
+      "existing_qualification": "A+",
+      "incoming_qualification": null,
+      "merged_business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "merged_capabilities_yes": 15,
+      "existing_evidence_count": 1,
+      "merged_evidence_count": 5
+    },
+    {
+      "existing_source": "stoke-on-trent/stairbox-stoke-on-trent.json",
+      "incoming_business_name": "StairBox",
+      "match_signals": [
+        {
+          "signal": "domain",
+          "existing": "stoke-on-trent/stairbox-stoke-on-trent.json"
+        }
+      ],
+      "incoming_qualification": "A",
+      "merged_business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "merged_capabilities_yes": 10,
+      "existing_evidence_count": 0,
+      "merged_evidence_count": 4
+    },
+    {
+      "existing_source": "wickford/mrstairs-wickford.json",
+      "incoming_business_name": "MrStairs",
+      "match_signals": [
+        {
+          "signal": "fuzzy-name",
+          "existing": "wickford/mrstairs-wickford.json"
+        }
+      ],
+      "incoming_qualification": "A",
+      "merged_business_type": "STAIRCASE_MANUFACTURER",
+      "merged_capabilities_yes": 6,
+      "existing_evidence_count": 0,
+      "merged_evidence_count": 1
+    },
+    {
+      "existing_source": "harlow/timber-staircases-harlow.json",
+      "incoming_business_name": "Timber Staircases (Kent)",
+      "match_signals": [
+        {
+          "signal": "domain",
+          "existing": "harlow/timber-staircases-harlow.json"
+        }
+      ],
+      "incoming_qualification": null,
+      "merged_business_type": "STAIRCASE_MANUFACTURER",
+      "merged_capabilities_yes": 2,
+      "existing_evidence_count": 0,
+      "merged_evidence_count": 1
+    },
+    {
+      "existing_source": "london/craft-bespoke-staircase-joinery-london.json",
+      "incoming_business_name": "Staircase Joinery Ltd",
+      "match_signals": [
+        {
+          "signal": "fuzzy-name",
+          "existing": "london/craft-bespoke-staircase-joinery-london.json"
+        }
+      ],
+      "incoming_qualification": "A",
+      "merged_business_type": "STAIRCASE_MANUFACTURER",
+      "merged_capabilities_yes": 5,
+      "existing_evidence_count": 0,
+      "merged_evidence_count": 1
+    },
+    {
+      "existing_source": "bromsgrove/a-and-t-stairs-ltd-bromsgrove.json",
+      "incoming_business_name": "A & T Stairs (A & T Carpentry)",
+      "match_signals": [
+        {
+          "signal": "fuzzy-name",
+          "existing": "bromsgrove/a-and-t-stairs-ltd-bromsgrove.json"
+        }
+      ],
+      "incoming_qualification": null,
+      "merged_business_type": "REFACING_SERVICE_SPECIALIST",
+      "merged_capabilities_yes": 9,
+      "existing_evidence_count": 0,
+      "merged_evidence_count": 2
+    },
+    {
+      "existing_source": "london/higginson-staircases-ltd-london.json",
+      "incoming_business_name": "Higginson Staircases Ltd (E A Higginson & Company Ltd)",
+      "match_signals": [
+        {
+          "signal": "postcode+name",
+          "existing": "london/higginson-staircases-ltd-london.json"
+        }
+      ],
+      "incoming_qualification": null,
+      "merged_business_type": "STAIRCASE_MANUFACTURER",
+      "merged_capabilities_yes": 6,
+      "existing_evidence_count": 0,
+      "merged_evidence_count": 1
+    },
+    {
+      "existing_source": "_refacing/renovate-your-staircase-bury.json",
+      "incoming_business_name": "Renovate Your Staircase",
+      "match_signals": [
+        {
+          "signal": "domain",
+          "existing": "_refacing/renovate-your-staircase-bury.json"
+        }
+      ],
+      "existing_qualification": "A+",
+      "incoming_qualification": null,
+      "merged_business_type": "REFURBISHMENT_SERVICE_SPECIALIST",
+      "merged_capabilities_yes": 18,
+      "existing_evidence_count": 1,
+      "merged_evidence_count": 2
+    },
+    {
+      "existing_source": "_refacing/design-my-stairs-wirral.json",
+      "incoming_business_name": "Design My Stairs",
+      "match_signals": [
+        {
+          "signal": "domain",
+          "existing": "_refacing/design-my-stairs-wirral.json"
+        }
+      ],
+      "existing_qualification": "A+",
+      "incoming_qualification": "A",
+      "merged_business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "merged_capabilities_yes": 17,
+      "existing_evidence_count": 1,
+      "merged_evidence_count": 2
+    },
+    {
+      "existing_source": "stoke-on-trent/first-step-designs-stoke-on-trent.json",
+      "incoming_business_name": "First Step Designs",
+      "match_signals": [
+        {
+          "signal": "domain",
+          "existing": "stoke-on-trent/first-step-designs-stoke-on-trent.json"
+        }
+      ],
+      "incoming_qualification": "A",
+      "merged_business_type": "MULTI_SERVICE_COMPANY",
+      "merged_capabilities_yes": 9,
+      "existing_evidence_count": 0,
+      "merged_evidence_count": 1
+    }
+  ],
+  "deferred_review": [
+    {
+      "slug": "joinery-limited-joinery-co-uk-preston",
+      "business_name": "Joinery Limited (joinery.co.uk)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "chrisand-fabrications-ltd-rotherham",
+      "business_name": "Chrisand Fabrications Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "steel-line-ltd-sheffield",
+      "business_name": "Steel Line Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "the-oak-workshop-doncaster",
+      "business_name": "The Oak Workshop",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "gl-joinery-ltd-gary-lamming-joinery-stockton-on-tees",
+      "business_name": "GL Joinery Ltd (Gary Lamming Joinery)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "finepoint-glass-london-ltd-watford",
+      "business_name": "Finepoint Glass London Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "fineline-balustrades-ltd-stockport",
+      "business_name": "Fineline Balustrades Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "elite-metalcraft-co-ltd-london",
+      "business_name": "Elite Metalcraft Co. Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "northstar-balustrades-metalwork-glasgow",
+      "business_name": "Northstar Balustrades & Metalwork",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "cheshire-mouldings-woodturnings-ltd-st-helens",
+      "business_name": "Cheshire Mouldings & Woodturnings Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "trade-stair-parts-h-r-p-trading-ltd-braintree",
+      "business_name": "Trade Stair Parts (H.R.P. Trading Ltd)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "stair-parts-online-jackson-woodturners-ltd-sheffield",
+      "business_name": "Stair Parts Online (Jackson Woodturners Ltd)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "stair-bits-richman-uk-ltd-halstead",
+      "business_name": "Stair Bits (Richman UK Ltd)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "loft-centre-products-ltd-arundel",
+      "business_name": "Loft Centre Products Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "kwikclad-kwikstairs-ltd-bromham",
+      "business_name": "KwikClad (Kwikstairs Ltd)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "fin-wood-ltd-finwood-london",
+      "business_name": "Fin Wood Ltd (Finwood)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "the-heritage-collection-heritage-doors-floors-ltd-sheffield",
+      "business_name": "The Heritage Collection (Heritage Doors & Floors Ltd)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "devon-wood-floors-farringdon",
+      "business_name": "Devon Wood Floors",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "academy-hardwood-flooring-bexhill-on-sea",
+      "business_name": "Academy Hardwood Flooring",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "house-of-worktops-london-colney",
+      "business_name": "House of Worktops",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "james-steel-staircases-borehamwood",
+      "business_name": "James Steel Staircases",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "kings-cross-joinery-london",
+      "business_name": "Kings Cross Joinery",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "creative-ironworks-limited-ashford",
+      "business_name": "Creative Ironworks Limited",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "brighton-balustrade-brighton-balustrades-ringmer",
+      "business_name": "Brighton Balustrade (Brighton Balustrades)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "apex-staircases-and-oak-frames-whitelackington",
+      "business_name": "Apex Staircases and Oak Frames",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "buscott-woodworking",
+      "business_name": "Buscott Woodworking",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "a-w-joinery-bristol-bristol",
+      "business_name": "A W Joinery (Bristol)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "rawlings-joinery-plymouth",
+      "business_name": "Rawlings Joinery",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "radford-joinery-ltd-exeter",
+      "business_name": "Radford Joinery Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "crescent-of-cambridge-ltd-st-ives",
+      "business_name": "Crescent of Cambridge Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "meer-end-staircases-joinery-kenilworth",
+      "business_name": "Meer-End Staircases & Joinery",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "roger-coe-joinery-limited-northampton",
+      "business_name": "Roger Coe Joinery Limited",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "stairways-southam",
+      "business_name": "Stairways",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "sg-system-products-limited-ipswich",
+      "business_name": "SG System Products Limited",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "sg-engineering-ipswich-ltd-ipswich",
+      "business_name": "SG Engineering Ipswich Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "neil-gladwyn-joinery-county-joinery-malvern",
+      "business_name": "Neil Gladwyn Joinery (County Joinery)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "jbc-joiners-building-contractors-broxburn",
+      "business_name": "JBC (Joiners Building Contractors)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "highland-balustrades-inverness",
+      "business_name": "Highland Balustrades",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "gilchrist-steels-ltd-glasgow",
+      "business_name": "Gilchrist Steels Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "bill-pitt-manufacturing-joinery-ltd-kirriemuir",
+      "business_name": "Bill Pitt Manufacturing Joinery Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "paton-joinery-inverness",
+      "business_name": "Paton Joinery",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "clerwood-building-company-edinburgh",
+      "business_name": "Clerwood Building Company",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "sg-joinery-glass-sgj-group-lochgelly",
+      "business_name": "SG Joinery Glass (SGJ Group)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "caan-design-ayr",
+      "business_name": "Caan Design",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "wood-kraft-moray-elgin",
+      "business_name": "Wood Kraft Moray",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "jarrods-bespoke-staircases-barry",
+      "business_name": "Jarrods Bespoke Staircases",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "aml-joiners-the-welsh-joinery-workshop-treforest",
+      "business_name": "AML Joiners (The Welsh Joinery Workshop)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "o-sullivans-joinery-ltd-swansea",
+      "business_name": "O'Sullivans Joinery Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "idt-carpentry-swansea",
+      "business_name": "IDT Carpentry",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "apex-joinery-shopfitting-wales-ltd-newport",
+      "business_name": "Apex Joinery & Shopfitting (Wales) Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "regional-joinery-cardiff",
+      "business_name": "Regional Joinery",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "golding-joinery-ltd-crumlin-newport",
+      "business_name": "Golding Joinery Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "woodside-joinery-staircases-ltd-cwmbran",
+      "business_name": "Woodside Joinery (Staircases) Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "aacme-glass-newport",
+      "business_name": "Aacme Glass",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "wynnstay-joinery-ruabon-wrexham",
+      "business_name": "Wynnstay Joinery",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "custom-precision-joinery-ltd-cp-joinery-buckley",
+      "business_name": "Custom Precision Joinery Ltd (CP Joinery)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "carl-hughes-carpenter-joiner-bespoke-joinery-solutions-colwyn-bay",
+      "business_name": "Carl Hughes Carpenter & Joiner (Bespoke Joinery Solutions)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "north-wales-stairs-llandudno",
+      "business_name": "North Wales Stairs",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "ibuild-wales-ltd-st-clears-carmarthen",
+      "business_name": "iBuild (Wales) Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "rjh-joinery-carmarthen",
+      "business_name": "RJH Joinery",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "northern-windows-and-joinery-belfast",
+      "business_name": "Northern Windows and Joinery",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "william-g-crawford-joinery-ltd-antrim",
+      "business_name": "William G Crawford Joinery Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "j-s-staircases-dunloy",
+      "business_name": "J & S Staircases",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "turner-engineering-hillsborough",
+      "business_name": "Turner Engineering",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "peter-meehan-stairs-limited-derry",
+      "business_name": "Peter Meehan Stairs Limited",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "euroscroll-engineering-cookstown",
+      "business_name": "Euroscroll Engineering",
+      "internal_verification_state": "DIRECTLY_REACHABLE",
+      "reason": "no_capability_evidence_on_homepage"
+    },
+    {
+      "slug": "presley-joinery-ltd-enniskillen",
+      "business_name": "Presley Joinery Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "mastercraft-joinery-mayobridge",
+      "business_name": "Mastercraft Joinery",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "neville-johnson-staircases-manchester-trafford-park",
+      "business_name": "Neville Johnson Staircases",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "pear-stairs-welshpool",
+      "business_name": "Pear Stairs",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "canal-engineering-canal-architectural-nottingham",
+      "business_name": "Canal Engineering (Canal Architectural)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "multi-turn-winchester",
+      "business_name": "Multi-Turn",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "spraybusters-manchester",
+      "business_name": "SprayBusters",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "wundercoat-ltd-manchester",
+      "business_name": "Wundercoat Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "respray-it-the-kitchen-respray-group-ltd-higher-whitley",
+      "business_name": "Respray It (The Kitchen Respray Group Ltd)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "jla-joinery-chichester",
+      "business_name": "JLA Joinery",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "simons-furniture-and-staircase-restoration-stockport",
+      "business_name": "Simons Furniture and Staircase Restoration",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "shs-products-stainless-handrail-systems-aldridge-walsall",
+      "business_name": "SHS Products (Stainless Handrail Systems)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "balustrade-uk-ltd-dudley",
+      "business_name": "Balustrade UK Ltd",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "shp-stainless-handrail-products-warrington",
+      "business_name": "SHP - Stainless Handrail Products",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "precision-timber-handrails-by-clive-durose-stoke-on-trent",
+      "business_name": "Precision Timber Handrails (by Clive Durose)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "handrail-systems-dryad-sheffield",
+      "business_name": "Handrail Systems (Dryad)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "dc-iron-dc-handrails-ironwork-parts-ltd-newcastle-upon-tyne",
+      "business_name": "DC Iron (DC Handrails & Ironwork Parts Ltd)",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    },
+    {
+      "slug": "west-country-blacksmiths-minehead-allerford",
+      "business_name": "West Country Blacksmiths",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed_on_page"
+    }
+  ],
+  "totals": {
+    "insert_count": 211,
+    "merge_count": 16,
+    "deferred_review_count": 84,
+    "total_covered": 311
+  }
+}

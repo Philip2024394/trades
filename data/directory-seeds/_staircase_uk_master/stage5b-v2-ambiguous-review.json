@@ -1,0 +1,1525 @@
+[
+  {
+    "slug": "atg-contracts-ltd-blackpool",
+    "business_name": "ATG Contracts Ltd",
+    "verdict": "LIVE_AMBIGUOUS_REVIEW",
+    "matches": [
+      {
+        "signal": "domain",
+        "other_id": "ecb3160e-1bcc-4df7-bdeb-4343ba691133",
+        "other_slug": "staircase-design-blackpool-atgcontractsltd",
+        "other_name": "Staircase Design Blackpool"
+      }
+    ],
+    "primary_match": {
+      "signal": "domain",
+      "other_id": "ecb3160e-1bcc-4df7-bdeb-4343ba691133",
+      "other_slug": "staircase-design-blackpool-atgcontractsltd",
+      "other_name": "Staircase Design Blackpool"
+    },
+    "_record": {
+      "id": "6fc062e6-96c3-4faf-9991-5154242a0ddf",
+      "slug": "atg-contracts-ltd-blackpool",
+      "business_name": "ATG Contracts Ltd",
+      "category": "Multi-Service Staircase Company",
+      "primary_trade": "staircase_manufacture",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "capabilities": {
+        "manufacture": "yes",
+        "installation": "yes",
+        "refurbishment": "yes",
+        "refacing": "unknown",
+        "balustrade": "unknown",
+        "handrail": "yes",
+        "glass": "unknown",
+        "metal": "unknown",
+        "bespoke": "yes",
+        "design": "yes",
+        "kit_or_product_supplier": "unknown"
+      },
+      "tags": [
+        "staircase-manufacture",
+        "staircase-installation",
+        "staircase-refurbishment",
+        "handrail",
+        "bespoke",
+        "design"
+      ],
+      "enrichment_status": "enriched",
+      "last_verified_at": "2026-08-15T00:00:00.000Z",
+      "address_line_1": null,
+      "address_line_2": null,
+      "town": "Blackpool",
+      "county": "Lancashire",
+      "postcode": "FY4 4EF",
+      "country": "United Kingdom",
+      "telephone": "01772 463010",
+      "website": "https://www.atgcontractsltd.co.uk/",
+      "email": null,
+      "opening_hours": null,
+      "description": "Site says they offer 'design, planning, manufacture, refurbishment, and installation of hand-crafted staircases in all types of wood.' Blackpool address 77 Vicarage Lane, FY4 4EF (registered) and Lancashire Preston PR4 2BB workshop.",
+      "services": [],
+      "google_rating": null,
+      "google_review_count": null,
+      "google_maps_url": null,
+      "latitude": null,
+      "longitude": null,
+      "status": "listed",
+      "claimed": false,
+      "verified": false,
+      "visibility": "public",
+      "photos": [],
+      "cover_image": null,
+      "source": "uk_staircase_market_stage_2_4_5",
+      "imported_at": "2026-08-15T00:00:00.000Z",
+      "refacing_evidence": [
+        {
+          "url": "https://www.atgcontractsltd.co.uk/",
+          "type": "company_website",
+          "category": "stage4_direct_fetch",
+          "summary": "Direct-fetch HTTP 200 · identity confirmed · capabilities on page: manufacture(“Manufacture”), installation(“Installation”), refurbishment(“Refurbishment”), handrail(“handrails”), design(“Design”). Materials mentioned: (none).",
+          "checked_at": "2026-08-15",
+          "http_status": 200,
+          "size_bytes": 23441
+        }
+      ],
+      "refacing_qualification": "A",
+      "email_source": null,
+      "email_verified": false,
+      "email_checked_at": null,
+      "lifecycle_status": "unclaimed",
+      "directory_state": "listed",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "region": "NW",
+      "discovered_by_agents": [],
+      "stage2_source_queries": [],
+      "stage2_source_urls": [],
+      "stage4_direct_fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.atgcontractsltd.co.uk/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 23441
+      },
+      "stage4_identity_confirmed": true,
+      "stage4_page_evidence_summary": {
+        "manufacture": "Manufacture",
+        "installation": "Installation",
+        "refurbishment": "Refurbishment",
+        "handrail": "handrails",
+        "design": "Design"
+      }
+    }
+  },
+  {
+    "slug": "complete-stair-systems-ltd-romsey",
+    "business_name": "Complete Stair Systems Ltd",
+    "verdict": "LIVE_AMBIGUOUS_REVIEW",
+    "matches": [
+      {
+        "signal": "domain",
+        "other_id": "002f1a9e-346f-4542-96f1-ad6f6349d87f",
+        "other_slug": "spiral-staircases-uk-completestairsystems",
+        "other_name": "Spiral Staircases UK"
+      },
+      {
+        "signal": "phone",
+        "other_id": "002f1a9e-346f-4542-96f1-ad6f6349d87f",
+        "other_slug": "spiral-staircases-uk-completestairsystems",
+        "other_name": "Spiral Staircases UK",
+        "corroborating": true
+      },
+      {
+        "signal": "email",
+        "other_id": "002f1a9e-346f-4542-96f1-ad6f6349d87f",
+        "other_slug": "spiral-staircases-uk-completestairsystems",
+        "other_name": "Spiral Staircases UK",
+        "corroborating": true
+      }
+    ],
+    "primary_match": {
+      "signal": "domain",
+      "other_id": "002f1a9e-346f-4542-96f1-ad6f6349d87f",
+      "other_slug": "spiral-staircases-uk-completestairsystems",
+      "other_name": "Spiral Staircases UK"
+    },
+    "_record": {
+      "id": "7dd35530-472b-4646-952f-86b8824c5c43",
+      "slug": "complete-stair-systems-ltd-romsey",
+      "business_name": "Complete Stair Systems Ltd",
+      "category": "Staircase Refacing",
+      "primary_trade": "staircase_refacing",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "capabilities": {
+        "manufacture": "yes",
+        "installation": "yes",
+        "refurbishment": "yes",
+        "refacing": "unknown",
+        "balustrade": "yes",
+        "handrail": "yes",
+        "glass": "yes",
+        "metal": "yes",
+        "bespoke": "yes",
+        "design": "yes",
+        "kit_or_product_supplier": "yes"
+      },
+      "tags": [
+        "staircase-manufacture",
+        "staircase-installation",
+        "staircase-refurbishment",
+        "balustrade",
+        "handrail",
+        "glass-staircase",
+        "metal-staircase",
+        "bespoke",
+        "design",
+        "kit-or-product-supplier",
+        "material-oak",
+        "material-walnut",
+        "material-beech",
+        "material-glass"
+      ],
+      "enrichment_status": "enriched",
+      "last_verified_at": "2026-08-15T00:00:00.000Z",
+      "address_line_1": null,
+      "address_line_2": null,
+      "town": "Romsey",
+      "county": "Hampshire",
+      "postcode": "SO51 7JF",
+      "country": "United Kingdom",
+      "telephone": "01794 522444",
+      "website": "https://www.completestairsystems.co.uk",
+      "email": "info@completestairsystems.co.uk",
+      "opening_hours": null,
+      "description": "Complete Stair Systems is a UK specialist in bespoke spiral staircases and modern statement stairs including steel and glass configurations, delivering precision-engineered designs nationwide from Romsey. · UK specialist in bespoke spiral and modern staircases; supplies nationwide and across Europe. Staircases in timber, steel and glass with customisable diameter, height and finish. Incorporated 2005, based in Romsey with showroom.",
+      "services": [],
+      "google_rating": null,
+      "google_review_count": null,
+      "google_maps_url": null,
+      "latitude": null,
+      "longitude": null,
+      "status": "listed",
+      "claimed": false,
+      "verified": false,
+      "visibility": "public",
+      "photos": [],
+      "cover_image": null,
+      "source": "uk_staircase_market_stage_2_4_5",
+      "imported_at": "2026-08-15T00:00:00.000Z",
+      "refacing_evidence": [
+        {
+          "url": "https://completestairsystems.co.uk/",
+          "type": "discovery_source",
+          "category": "stage2_discovery",
+          "summary": "Complete Stair Systems is a UK specialist in bespoke spiral staircases and modern statement stairs including steel and glass configurations, delivering precision-engineered designs nationwide from Romsey. · UK specialist in bespoke spiral and modern staircases; supplies nationwide and across Europe. Staircases in timber, steel and glass with customisable diameter, height and finish. Incorporated 2",
+          "checked_at": "2026-08-15"
+        },
+        {
+          "url": "https://completestairsystems.co.uk/contact-us/",
+          "type": "discovery_source",
+          "category": "stage2_discovery",
+          "summary": "Complete Stair Systems is a UK specialist in bespoke spiral staircases and modern statement stairs including steel and glass configurations, delivering precision-engineered designs nationwide from Romsey. · UK specialist in bespoke spiral and modern staircases; supplies nationwide and across Europe. Staircases in timber, steel and glass with customisable diameter, height and finish. Incorporated 2",
+          "checked_at": "2026-08-15"
+        },
+        {
+          "url": "https://completestairsystems.co.uk/",
+          "type": "company_website",
+          "category": "stage4_direct_fetch",
+          "summary": "Direct-fetch HTTP 200 · identity confirmed · capabilities on page: manufacture(“manufactured”), installation(“installed”), refurbishment(“Refurb”), balustrade(“balustrades”), glass(“glass balustrad”), bespoke(“Bespoke”), design(“designs”), kit_or_product_supplier(“Kit”). Materials mentioned: oak, walnut, beech, glass.",
+          "checked_at": "2026-08-15",
+          "http_status": 200,
+          "size_bytes": 224817
+        }
+      ],
+      "refacing_qualification": "A",
+      "email_source": null,
+      "email_verified": false,
+      "email_checked_at": null,
+      "lifecycle_status": "unclaimed",
+      "directory_state": "listed",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "region": "SE",
+      "discovered_by_agents": [
+        "agent-10-glass-metal-lighting",
+        "agent-7-national-manufacturers"
+      ],
+      "stage2_source_queries": [
+        "\"Complete Stair Systems\" UK Hampshire contact bespoke",
+        "Complete Stair Systems UK"
+      ],
+      "stage2_source_urls": [
+        "https://completestairsystems.co.uk/",
+        "https://completestairsystems.co.uk/contact-us/"
+      ],
+      "stage4_direct_fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://completestairsystems.co.uk/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 224817
+      },
+      "stage4_identity_confirmed": true,
+      "stage4_page_evidence_summary": {
+        "manufacture": "manufactured",
+        "installation": "installed",
+        "refurbishment": "Refurb",
+        "balustrade": "balustrades",
+        "glass": "glass balustrad",
+        "bespoke": "Bespoke",
+        "design": "designs",
+        "kit_or_product_supplier": "Kit"
+      }
+    }
+  },
+  {
+    "slug": "spittlywood-ltd-hamstreet-ashford",
+    "business_name": "Spittlywood Ltd",
+    "verdict": "LIVE_AMBIGUOUS_REVIEW",
+    "matches": [
+      {
+        "signal": "fuzzy-name",
+        "other_id": "bfcce52c-7527-4293-8bc7-617b1a367d1f",
+        "other_slug": "tt-new-ross",
+        "other_name": "tt"
+      }
+    ],
+    "primary_match": {
+      "signal": "fuzzy-name",
+      "other_id": "bfcce52c-7527-4293-8bc7-617b1a367d1f",
+      "other_slug": "tt-new-ross",
+      "other_name": "tt"
+    },
+    "_record": {
+      "id": "73705c92-ee35-4105-8be6-cd73bd2e6fdd",
+      "slug": "spittlywood-ltd-hamstreet-ashford",
+      "business_name": "Spittlywood Ltd",
+      "category": "Staircase Manufacturer",
+      "primary_trade": "staircase_manufacture",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "capabilities": {
+        "manufacture": "yes",
+        "installation": "yes",
+        "refurbishment": "unknown",
+        "refacing": "unknown",
+        "balustrade": "yes",
+        "handrail": "unknown",
+        "glass": "yes",
+        "metal": "unknown",
+        "bespoke": "yes",
+        "design": "yes",
+        "kit_or_product_supplier": "unknown"
+      },
+      "tags": [
+        "staircase-manufacture",
+        "staircase-installation",
+        "balustrade",
+        "glass-staircase",
+        "bespoke",
+        "design",
+        "material-glass"
+      ],
+      "enrichment_status": "enriched",
+      "last_verified_at": "2026-08-15T00:00:00.000Z",
+      "address_line_1": null,
+      "address_line_2": null,
+      "town": "Hamstreet, Ashford",
+      "county": "Kent",
+      "postcode": "TN26 2QW",
+      "country": "United Kingdom",
+      "telephone": "01233 730816",
+      "website": "https://spittlywood.com/",
+      "email": null,
+      "opening_hours": null,
+      "description": "Site JSON-LD PostalAddress: Ham Leas Farm, Marsh Road, Hamstreet, Ashford, Kent TN26 2QW. Page title: \"Handmade Bespoke Wooden Staircases in Kent | Spittlywood Ltd\" — design, manufacture and installation of bespoke wooden staircases for customers in and around London and the South East.",
+      "services": [],
+      "google_rating": null,
+      "google_review_count": null,
+      "google_maps_url": null,
+      "latitude": null,
+      "longitude": null,
+      "status": "listed",
+      "claimed": false,
+      "verified": false,
+      "visibility": "public",
+      "photos": [],
+      "cover_image": null,
+      "source": "uk_staircase_market_stage_2_4_5",
+      "imported_at": "2026-08-15T00:00:00.000Z",
+      "refacing_evidence": [
+        {
+          "url": "https://spittlywood.com/",
+          "type": "company_website",
+          "category": "stage4_direct_fetch",
+          "summary": "Direct-fetch HTTP 200 · identity confirmed · capabilities on page: manufacture(“manufacturer”), installation(“installation”), balustrade(“balustrades”), glass(“glass balustrad”), bespoke(“Bespoke”), design(“design”). Materials mentioned: glass.",
+          "checked_at": "2026-08-15",
+          "http_status": 200,
+          "size_bytes": 270814
+        }
+      ],
+      "refacing_qualification": "A",
+      "email_source": null,
+      "email_verified": false,
+      "email_checked_at": null,
+      "lifecycle_status": "unclaimed",
+      "directory_state": "listed",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "region": "SE",
+      "discovered_by_agents": [],
+      "stage2_source_queries": [],
+      "stage2_source_urls": [],
+      "stage4_direct_fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://spittlywood.com/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 270814
+      },
+      "stage4_identity_confirmed": true,
+      "stage4_page_evidence_summary": {
+        "manufacture": "manufacturer",
+        "installation": "installation",
+        "balustrade": "balustrades",
+        "glass": "glass balustrad",
+        "bespoke": "Bespoke",
+        "design": "design"
+      }
+    }
+  },
+  {
+    "slug": "brighton-stairs-ringmer",
+    "business_name": "Brighton Stairs",
+    "verdict": "LIVE_AMBIGUOUS_REVIEW",
+    "matches": [
+      {
+        "signal": "phone",
+        "other_id": "53bd3a4f-64ec-4c7b-9066-a5c8ab187b69",
+        "other_slug": "south-coast-steel-southcoaststeel",
+        "other_name": "South Coast Steel"
+      }
+    ],
+    "primary_match": {
+      "signal": "phone",
+      "other_id": "53bd3a4f-64ec-4c7b-9066-a5c8ab187b69",
+      "other_slug": "south-coast-steel-southcoaststeel",
+      "other_name": "South Coast Steel"
+    },
+    "_record": {
+      "id": "ddaa5fc2-0dde-41e5-99fc-9e55614d4a59",
+      "slug": "brighton-stairs-ringmer",
+      "business_name": "Brighton Stairs",
+      "category": "Staircase Manufacturer",
+      "primary_trade": "staircase_manufacture",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "capabilities": {
+        "manufacture": "yes",
+        "installation": "yes",
+        "refurbishment": "unknown",
+        "refacing": "unknown",
+        "balustrade": "unknown",
+        "handrail": "yes",
+        "glass": "yes",
+        "metal": "yes",
+        "bespoke": "yes",
+        "design": "yes",
+        "kit_or_product_supplier": "unknown"
+      },
+      "tags": [
+        "staircase-manufacture",
+        "staircase-installation",
+        "handrail",
+        "glass-staircase",
+        "metal-staircase",
+        "bespoke",
+        "design",
+        "material-oak",
+        "material-glass",
+        "material-stainless-steel"
+      ],
+      "enrichment_status": "enriched",
+      "last_verified_at": "2026-08-15T00:00:00.000Z",
+      "address_line_1": null,
+      "address_line_2": null,
+      "town": "Ringmer",
+      "county": "East Sussex",
+      "postcode": "BN8 5SD",
+      "country": "United Kingdom",
+      "telephone": "01273 815964",
+      "website": "https://www.brightonstairs.co.uk/",
+      "email": null,
+      "opening_hours": null,
+      "description": "Site title/H1: \"Brighton Stairs – Sussex Staircase Manufacturers – Leading Staircase manufactures\". Products page mentions design and installation from Broyle Place Farm, Ringmer, East Sussex BN8 5SD (address surfaced in body content).",
+      "services": [],
+      "google_rating": null,
+      "google_review_count": null,
+      "google_maps_url": null,
+      "latitude": null,
+      "longitude": null,
+      "status": "listed",
+      "claimed": false,
+      "verified": false,
+      "visibility": "public",
+      "photos": [],
+      "cover_image": null,
+      "source": "uk_staircase_market_stage_2_4_5",
+      "imported_at": "2026-08-15T00:00:00.000Z",
+      "refacing_evidence": [
+        {
+          "url": "https://www.brightonstairs.co.uk/",
+          "type": "company_website",
+          "category": "stage4_direct_fetch",
+          "summary": "Direct-fetch HTTP 200 · identity confirmed · capabilities on page: manufacture(“manufactures”), installation(“installation”), handrail(“Handrails”), glass(“Glass Stair”), metal(“stainless steel”), bespoke(“bespoke”), design(“design”). Materials mentioned: oak, glass, stainless steel.",
+          "checked_at": "2026-08-15",
+          "http_status": 200,
+          "size_bytes": 172525
+        }
+      ],
+      "refacing_qualification": "A",
+      "email_source": null,
+      "email_verified": false,
+      "email_checked_at": null,
+      "lifecycle_status": "unclaimed",
+      "directory_state": "listed",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "region": "SE",
+      "discovered_by_agents": [],
+      "stage2_source_queries": [],
+      "stage2_source_urls": [],
+      "stage4_direct_fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.brightonstairs.co.uk/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 172525
+      },
+      "stage4_identity_confirmed": true,
+      "stage4_page_evidence_summary": {
+        "manufacture": "manufactures",
+        "installation": "installation",
+        "handrail": "Handrails",
+        "glass": "Glass Stair",
+        "metal": "stainless steel",
+        "bespoke": "bespoke",
+        "design": "design"
+      }
+    }
+  },
+  {
+    "slug": "hampshire-staircase-refurbishments-yateley",
+    "business_name": "Hampshire Staircase Refurbishments",
+    "verdict": "LIVE_AMBIGUOUS_REVIEW",
+    "matches": [
+      {
+        "signal": "domain",
+        "other_id": "3adafe7d-3fb3-4e44-85c6-e1f16f0d7e4c",
+        "other_slug": "staircase-refurbishment-and-understairs-storage-hampshire-hampshirestaircase",
+        "other_name": "Staircase Refurbishment & Understairs Storage Hampshire"
+      },
+      {
+        "signal": "phone",
+        "other_id": "3adafe7d-3fb3-4e44-85c6-e1f16f0d7e4c",
+        "other_slug": "staircase-refurbishment-and-understairs-storage-hampshire-hampshirestaircase",
+        "other_name": "Staircase Refurbishment & Understairs Storage Hampshire",
+        "corroborating": true
+      },
+      {
+        "signal": "email",
+        "other_id": "3adafe7d-3fb3-4e44-85c6-e1f16f0d7e4c",
+        "other_slug": "staircase-refurbishment-and-understairs-storage-hampshire-hampshirestaircase",
+        "other_name": "Staircase Refurbishment & Understairs Storage Hampshire",
+        "corroborating": true
+      }
+    ],
+    "primary_match": {
+      "signal": "domain",
+      "other_id": "3adafe7d-3fb3-4e44-85c6-e1f16f0d7e4c",
+      "other_slug": "staircase-refurbishment-and-understairs-storage-hampshire-hampshirestaircase",
+      "other_name": "Staircase Refurbishment & Understairs Storage Hampshire"
+    },
+    "_record": {
+      "id": "01988732-4622-4cc4-bb30-c5be994396bb",
+      "slug": "hampshire-staircase-refurbishments-yateley",
+      "business_name": "Hampshire Staircase Refurbishments",
+      "category": "Multi-Service Staircase Company",
+      "primary_trade": "staircase_manufacture",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "capabilities": {
+        "manufacture": "yes",
+        "installation": "yes",
+        "refurbishment": "yes",
+        "refacing": "yes",
+        "balustrade": "yes",
+        "handrail": "yes",
+        "glass": "yes",
+        "metal": "yes",
+        "bespoke": "yes",
+        "design": "yes",
+        "kit_or_product_supplier": "unknown"
+      },
+      "tags": [
+        "staircase-manufacture",
+        "staircase-installation",
+        "staircase-refurbishment",
+        "staircase-refacing",
+        "balustrade",
+        "handrail",
+        "glass-staircase",
+        "metal-staircase",
+        "bespoke",
+        "design",
+        "material-oak",
+        "material-glass"
+      ],
+      "enrichment_status": "enriched",
+      "last_verified_at": "2026-08-15T00:00:00.000Z",
+      "address_line_1": null,
+      "address_line_2": null,
+      "town": "Yateley",
+      "county": "Hampshire",
+      "postcode": "GU46 7UW",
+      "country": "United Kingdom",
+      "telephone": "01252 860784",
+      "website": "https://hampshirestaircase.co.uk/",
+      "email": "enquiries@hampshirestaircase.co.uk",
+      "opening_hours": null,
+      "description": "Site schema description: \"Staircase Renovation, New, Replacement & Understairs Storage. Hampshire's specialists with 40+ years in bespoke timber, glass, & metal. Visit our Yateley showroom.\" Postcode GU46 7UW. · Company name and website hampshirestaircase.co.uk explicitly built around staircase refurbishment. Offers wood, glass and metal staircase renovation from a Yateley showroom, covering Hampshire and the south of England.",
+      "services": [],
+      "google_rating": null,
+      "google_review_count": null,
+      "google_maps_url": null,
+      "latitude": null,
+      "longitude": null,
+      "status": "listed",
+      "claimed": false,
+      "verified": false,
+      "visibility": "public",
+      "photos": [],
+      "cover_image": null,
+      "source": "uk_staircase_market_stage_2_4_5",
+      "imported_at": "2026-08-15T00:00:00.000Z",
+      "refacing_evidence": [
+        {
+          "url": "https://hampshirestaircase.co.uk/",
+          "type": "discovery_source",
+          "category": "stage2_discovery",
+          "summary": "Site schema description: \"Staircase Renovation, New, Replacement & Understairs Storage. Hampshire's specialists with 40+ years in bespoke timber, glass, & metal. Visit our Yateley showroom.\" Postcode GU46 7UW. · Company name and website hampshirestaircase.co.uk explicitly built around staircase refurbishment. Offers wood, glass and metal staircase renovation from a Yateley showroom, covering Hamps",
+          "checked_at": "2026-08-15"
+        },
+        {
+          "url": "https://hampshirestaircase.co.uk/",
+          "type": "company_website",
+          "category": "stage4_direct_fetch",
+          "summary": "Direct-fetch HTTP 200 · identity confirmed · capabilities on page: installation(“installed”), refurbishment(“Refurbishment”), balustrade(“Balustrades”), glass(“Glass Stair”), bespoke(“BESPOKE”), design(“designed”). Materials mentioned: oak, glass.",
+          "checked_at": "2026-08-15",
+          "http_status": 200,
+          "size_bytes": 102951
+        }
+      ],
+      "refacing_qualification": "A",
+      "email_source": null,
+      "email_verified": false,
+      "email_checked_at": null,
+      "lifecycle_status": "unclaimed",
+      "directory_state": "listed",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "region": "SE",
+      "discovered_by_agents": [
+        "agent-2-england-south",
+        "agent-8-refurbishment-refacing"
+      ],
+      "stage2_source_queries": [
+        "staircase refurbishment Surrey UK",
+        "staircase refacing UK company specialist"
+      ],
+      "stage2_source_urls": [
+        "https://hampshirestaircase.co.uk/"
+      ],
+      "stage4_direct_fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://hampshirestaircase.co.uk/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 102951
+      },
+      "stage4_identity_confirmed": true,
+      "stage4_page_evidence_summary": {
+        "installation": "installed",
+        "refurbishment": "Refurbishment",
+        "balustrade": "Balustrades",
+        "glass": "Glass Stair",
+        "bespoke": "BESPOKE",
+        "design": "designed"
+      }
+    }
+  },
+  {
+    "slug": "brian-r-homes-joinery-east-cowes",
+    "business_name": "Brian R Homes Joinery",
+    "verdict": "LIVE_AMBIGUOUS_REVIEW",
+    "matches": [
+      {
+        "signal": "fuzzy-name",
+        "other_id": "3e44b76f-2d89-4436-98ad-51363c5e83d8",
+        "other_slug": "home-yeovalleyjoinery",
+        "other_name": "Home"
+      }
+    ],
+    "primary_match": {
+      "signal": "fuzzy-name",
+      "other_id": "3e44b76f-2d89-4436-98ad-51363c5e83d8",
+      "other_slug": "home-yeovalleyjoinery",
+      "other_name": "Home"
+    },
+    "_record": {
+      "id": "b58f35af-5457-49c6-bdfa-8808198d201e",
+      "slug": "brian-r-homes-joinery-east-cowes",
+      "business_name": "Brian R Homes Joinery",
+      "category": "Staircase Manufacturer",
+      "primary_trade": "staircase_manufacture",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "capabilities": {
+        "manufacture": "yes",
+        "installation": "yes",
+        "refurbishment": "unknown",
+        "refacing": "unknown",
+        "balustrade": "yes",
+        "handrail": "unknown",
+        "glass": "unknown",
+        "metal": "unknown",
+        "bespoke": "yes",
+        "design": "yes",
+        "kit_or_product_supplier": "unknown"
+      },
+      "tags": [
+        "staircase-manufacture",
+        "staircase-installation",
+        "balustrade",
+        "bespoke",
+        "design"
+      ],
+      "enrichment_status": "enriched",
+      "last_verified_at": "2026-08-15T00:00:00.000Z",
+      "address_line_1": null,
+      "address_line_2": null,
+      "town": "East Cowes",
+      "county": "Isle of Wight",
+      "postcode": "PO32 6LU",
+      "country": "United Kingdom",
+      "telephone": "01983 723055",
+      "website": "https://www.brianhomesjoinery.co.uk/",
+      "email": null,
+      "opening_hours": null,
+      "description": "Staircases & Balustrades page: \"Brian R Homes Joinery are a long established and articulate Joinery company offering staircases and balustrades on the Isle of Wight covering Newport, Cowes, East Cowes, Ryde, Bembridge, Shanklin, Yarmouth and Freshwater.\" Address: Unit 1, Vectis Storage, Whippingham Road, East Cowes, Isle of Wight PO32 6LU.",
+      "services": [],
+      "google_rating": null,
+      "google_review_count": null,
+      "google_maps_url": null,
+      "latitude": null,
+      "longitude": null,
+      "status": "listed",
+      "claimed": false,
+      "verified": false,
+      "visibility": "public",
+      "photos": [],
+      "cover_image": null,
+      "source": "uk_staircase_market_stage_2_4_5",
+      "imported_at": "2026-08-15T00:00:00.000Z",
+      "refacing_evidence": [
+        {
+          "url": "https://www.brianhomesjoinery.co.uk/",
+          "type": "company_website",
+          "category": "stage4_direct_fetch",
+          "summary": "Direct-fetch HTTP 200 · identity confirmed · capabilities on page: installation(“installation”), balustrade(“Balustrades”), bespoke(“Bespoke”), design(“designed”). Materials mentioned: (none).",
+          "checked_at": "2026-08-15",
+          "http_status": 200,
+          "size_bytes": 78436
+        }
+      ],
+      "refacing_qualification": "A",
+      "email_source": null,
+      "email_verified": false,
+      "email_checked_at": null,
+      "lifecycle_status": "unclaimed",
+      "directory_state": "listed",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "region": "SE",
+      "discovered_by_agents": [],
+      "stage2_source_queries": [],
+      "stage2_source_urls": [],
+      "stage4_direct_fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.brianhomesjoinery.co.uk/",
+        "content_type": "text/html",
+        "size_bytes": 78436
+      },
+      "stage4_identity_confirmed": true,
+      "stage4_page_evidence_summary": {
+        "installation": "installation",
+        "balustrade": "Balustrades",
+        "bespoke": "Bespoke",
+        "design": "designed"
+      }
+    }
+  },
+  {
+    "slug": "stairplan-ltd-telford",
+    "business_name": "Stairplan Ltd",
+    "verdict": "LIVE_AMBIGUOUS_REVIEW",
+    "matches": [
+      {
+        "signal": "phone",
+        "other_id": "4ac95073-c490-4ed6-a258-54e092b1f7fc",
+        "other_slug": "staircases-made-to-measure-uk-staircase-manufacturers-stairplan",
+        "other_name": "Staircases made to measure UK Staircase Manufacturers"
+      },
+      {
+        "signal": "email",
+        "other_id": "4ac95073-c490-4ed6-a258-54e092b1f7fc",
+        "other_slug": "staircases-made-to-measure-uk-staircase-manufacturers-stairplan",
+        "other_name": "Staircases made to measure UK Staircase Manufacturers",
+        "corroborating": true
+      }
+    ],
+    "primary_match": {
+      "signal": "phone",
+      "other_id": "4ac95073-c490-4ed6-a258-54e092b1f7fc",
+      "other_slug": "staircases-made-to-measure-uk-staircase-manufacturers-stairplan",
+      "other_name": "Staircases made to measure UK Staircase Manufacturers"
+    },
+    "_record": {
+      "id": "7f765d01-86ab-49e0-9125-174fc49bd779",
+      "slug": "stairplan-ltd-telford",
+      "business_name": "Stairplan Ltd",
+      "category": "Staircase Refacing",
+      "primary_trade": "staircase_refacing",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "capabilities": {
+        "manufacture": "yes",
+        "installation": "yes",
+        "refurbishment": "yes",
+        "refacing": "yes",
+        "balustrade": "yes",
+        "handrail": "yes",
+        "glass": "yes",
+        "metal": "unknown",
+        "bespoke": "yes",
+        "design": "yes",
+        "kit_or_product_supplier": "yes"
+      },
+      "tags": [
+        "staircase-manufacture",
+        "staircase-installation",
+        "staircase-refurbishment",
+        "staircase-refacing",
+        "balustrade",
+        "handrail",
+        "glass-staircase",
+        "bespoke",
+        "design",
+        "kit-or-product-supplier",
+        "material-oak",
+        "material-walnut",
+        "material-pine",
+        "material-iroko",
+        "material-glass"
+      ],
+      "enrichment_status": "enriched",
+      "last_verified_at": "2026-08-15T00:00:00.000Z",
+      "address_line_1": null,
+      "address_line_2": null,
+      "town": "Telford",
+      "county": "Shropshire",
+      "postcode": "TF1 7GN",
+      "country": "United Kingdom",
+      "telephone": "01952 608853",
+      "website": "https://www.stairplan.com/",
+      "email": "sales@stairplan.com",
+      "opening_hours": null,
+      "description": "Own site says Stairplan is 'one of the UK's leading staircase manufacturers offering a nationwide service supplying made-to-measure wooden staircases', operating from Hortonwood 1, Telford, Shropshire. · Family-owned staircase manufacturer founded 1977; one of the UK's leading staircase manufacturers offering nationwide service supplying made-to-measure wooden staircases. Modern facility in Hortonwood, Telford with dedicated showroom.",
+      "services": [],
+      "google_rating": null,
+      "google_review_count": null,
+      "google_maps_url": null,
+      "latitude": null,
+      "longitude": null,
+      "status": "listed",
+      "claimed": false,
+      "verified": false,
+      "visibility": "public",
+      "photos": [],
+      "cover_image": null,
+      "source": "uk_staircase_market_stage_2_4_5",
+      "imported_at": "2026-08-15T00:00:00.000Z",
+      "refacing_evidence": [
+        {
+          "url": "https://www.stairplan.com/contact.htm",
+          "type": "discovery_source",
+          "category": "stage2_discovery",
+          "summary": "Own site says Stairplan is 'one of the UK's leading staircase manufacturers offering a nationwide service supplying made-to-measure wooden staircases', operating from Hortonwood 1, Telford, Shropshire. · Family-owned staircase manufacturer founded 1977; one of the UK's leading staircase manufacturers offering nationwide service supplying made-to-measure wooden staircases. Modern facility in Horton",
+          "checked_at": "2026-08-15"
+        },
+        {
+          "url": "https://www.stairplan.com/",
+          "type": "company_website",
+          "category": "stage4_direct_fetch",
+          "summary": "Direct-fetch HTTP 200 · identity confirmed · capabilities on page: manufacture(“Manufacturing”), installation(“installation”), refurbishment(“existing staircase”), refacing(“Staircase Kits”), balustrade(“Balustrade”), handrail(“handrails”), glass(“Glass Balustrad”), bespoke(“bespoke”), design(“designed”), kit_or_product_supplier(“Kits”). Materials mentioned: oak, walnut, pine, iroko, glass.",
+          "checked_at": "2026-08-15",
+          "http_status": 200,
+          "size_bytes": 24276
+        }
+      ],
+      "refacing_qualification": "A",
+      "email_source": null,
+      "email_verified": false,
+      "email_checked_at": null,
+      "lifecycle_status": "unclaimed",
+      "directory_state": "listed",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "region": "W Mids",
+      "discovered_by_agents": [
+        "agent-3-england-midlands",
+        "agent-7-national-manufacturers"
+      ],
+      "stage2_source_queries": [
+        "staircase Shropshire Shrewsbury Telford",
+        "Stairplan Telford staircase manufacturer UK"
+      ],
+      "stage2_source_urls": [
+        "https://www.stairplan.com/contact.htm"
+      ],
+      "stage4_direct_fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.stairplan.com/",
+        "content_type": "text/html",
+        "size_bytes": 24276
+      },
+      "stage4_identity_confirmed": true,
+      "stage4_page_evidence_summary": {
+        "manufacture": "Manufacturing",
+        "installation": "installation",
+        "refurbishment": "existing staircase",
+        "refacing": "Staircase Kits",
+        "balustrade": "Balustrade",
+        "handrail": "handrails",
+        "glass": "Glass Balustrad",
+        "bespoke": "bespoke",
+        "design": "designed",
+        "kit_or_product_supplier": "Kits"
+      }
+    }
+  },
+  {
+    "slug": "central-joinery-group-ltd-swadlincote",
+    "business_name": "Central Joinery Group Ltd",
+    "verdict": "LIVE_AMBIGUOUS_REVIEW",
+    "matches": [
+      {
+        "signal": "domain",
+        "other_id": "1498bba3-9277-44eb-af4c-ad47145a1dc1",
+        "other_slug": "bespoke-staircases-and-specialist-joinery-manufacturers-uk-centraljoinerygroup",
+        "other_name": "Bespoke Staircases & Specialist Joinery Manufacturers UK"
+      },
+      {
+        "signal": "phone",
+        "other_id": "1498bba3-9277-44eb-af4c-ad47145a1dc1",
+        "other_slug": "bespoke-staircases-and-specialist-joinery-manufacturers-uk-centraljoinerygroup",
+        "other_name": "Bespoke Staircases & Specialist Joinery Manufacturers UK",
+        "corroborating": true
+      },
+      {
+        "signal": "email",
+        "other_id": "1498bba3-9277-44eb-af4c-ad47145a1dc1",
+        "other_slug": "bespoke-staircases-and-specialist-joinery-manufacturers-uk-centraljoinerygroup",
+        "other_name": "Bespoke Staircases & Specialist Joinery Manufacturers UK",
+        "corroborating": true
+      }
+    ],
+    "primary_match": {
+      "signal": "domain",
+      "other_id": "1498bba3-9277-44eb-af4c-ad47145a1dc1",
+      "other_slug": "bespoke-staircases-and-specialist-joinery-manufacturers-uk-centraljoinerygroup",
+      "other_name": "Bespoke Staircases & Specialist Joinery Manufacturers UK"
+    },
+    "_record": {
+      "id": "53482244-3975-4d97-8e48-718d748d7fe1",
+      "slug": "central-joinery-group-ltd-swadlincote",
+      "business_name": "Central Joinery Group Ltd",
+      "category": "Staircase Refacing",
+      "primary_trade": "staircase_refacing",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "capabilities": {
+        "manufacture": "yes",
+        "installation": "yes",
+        "refurbishment": "yes",
+        "refacing": "unknown",
+        "balustrade": "yes",
+        "handrail": "yes",
+        "glass": "yes",
+        "metal": "unknown",
+        "bespoke": "yes",
+        "design": "yes",
+        "kit_or_product_supplier": "yes"
+      },
+      "tags": [
+        "staircase-manufacture",
+        "staircase-installation",
+        "staircase-refurbishment",
+        "balustrade",
+        "handrail",
+        "glass-staircase",
+        "bespoke",
+        "design",
+        "kit-or-product-supplier",
+        "material-glass"
+      ],
+      "enrichment_status": "enriched",
+      "last_verified_at": "2026-08-15T00:00:00.000Z",
+      "address_line_1": null,
+      "address_line_2": null,
+      "town": "Swadlincote",
+      "county": "Derbyshire",
+      "postcode": "DE11 9EU",
+      "country": "United Kingdom",
+      "telephone": "01283 212142",
+      "website": "https://www.centraljoinerygroup.co.uk/",
+      "email": "enquiries@centraljoinerygroup.co.uk",
+      "opening_hours": null,
+      "description": "Own site describes 30+ years of joinery experience, designing and manufacturing bespoke traditional oak, glass balustrade and open tread staircases; head office at Cadley Hill Industrial Estate, Ryder Close, Swadlincote, Derbyshire DE11 9EU.",
+      "services": [],
+      "google_rating": null,
+      "google_review_count": null,
+      "google_maps_url": null,
+      "latitude": null,
+      "longitude": null,
+      "status": "listed",
+      "claimed": false,
+      "verified": false,
+      "visibility": "public",
+      "photos": [],
+      "cover_image": null,
+      "source": "uk_staircase_market_stage_2_4_5",
+      "imported_at": "2026-08-15T00:00:00.000Z",
+      "refacing_evidence": [
+        {
+          "url": "https://www.centraljoinerygroup.co.uk/",
+          "type": "company_website",
+          "category": "stage4_direct_fetch",
+          "summary": "Direct-fetch HTTP 200 · identity confirmed · capabilities on page: manufacture(“Manufacturing”), installation(“Installation”), refurbishment(“Renovation”), balustrade(“Balustrade”), handrail(“Handrails”), glass(“Glass Balustrad”), bespoke(“Bespoke”), design(“Designer”), kit_or_product_supplier(“Shop Parts”). Materials mentioned: glass.",
+          "checked_at": "2026-08-15",
+          "http_status": 200,
+          "size_bytes": 278195
+        }
+      ],
+      "refacing_qualification": "A",
+      "email_source": null,
+      "email_verified": false,
+      "email_checked_at": null,
+      "lifecycle_status": "unclaimed",
+      "directory_state": "listed",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "region": "E Mids",
+      "discovered_by_agents": [],
+      "stage2_source_queries": [],
+      "stage2_source_urls": [],
+      "stage4_direct_fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.centraljoinerygroup.co.uk/",
+        "content_type": "text/html;charset=utf-8",
+        "size_bytes": 278195
+      },
+      "stage4_identity_confirmed": true,
+      "stage4_page_evidence_summary": {
+        "manufacture": "Manufacturing",
+        "installation": "Installation",
+        "refurbishment": "Renovation",
+        "balustrade": "Balustrade",
+        "handrail": "Handrails",
+        "glass": "Glass Balustrad",
+        "bespoke": "Bespoke",
+        "design": "Designer",
+        "kit_or_product_supplier": "Shop Parts"
+      }
+    }
+  },
+  {
+    "slug": "white-s-staircases-hethersett-norwich",
+    "business_name": "White's Staircases",
+    "verdict": "LIVE_AMBIGUOUS_REVIEW",
+    "matches": [
+      {
+        "signal": "domain",
+        "other_id": "248c6d35-fad5-424e-bc9f-0ad37f228f1c",
+        "other_slug": "versatile-handmade-staircases-whites-staircases",
+        "other_name": "Versatile handmade staircases"
+      },
+      {
+        "signal": "phone",
+        "other_id": "248c6d35-fad5-424e-bc9f-0ad37f228f1c",
+        "other_slug": "versatile-handmade-staircases-whites-staircases",
+        "other_name": "Versatile handmade staircases",
+        "corroborating": true
+      },
+      {
+        "signal": "email",
+        "other_id": "248c6d35-fad5-424e-bc9f-0ad37f228f1c",
+        "other_slug": "versatile-handmade-staircases-whites-staircases",
+        "other_name": "Versatile handmade staircases",
+        "corroborating": true
+      }
+    ],
+    "primary_match": {
+      "signal": "domain",
+      "other_id": "248c6d35-fad5-424e-bc9f-0ad37f228f1c",
+      "other_slug": "versatile-handmade-staircases-whites-staircases",
+      "other_name": "Versatile handmade staircases"
+    },
+    "_record": {
+      "id": "19a5cab5-6ce0-46dc-8507-2146d8a8cbe9",
+      "slug": "white-s-staircases-hethersett-norwich",
+      "business_name": "White's Staircases",
+      "category": "Staircase Manufacturer",
+      "primary_trade": "staircase_manufacture",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "capabilities": {
+        "manufacture": "yes",
+        "installation": "yes",
+        "refurbishment": "unknown",
+        "refacing": "unknown",
+        "balustrade": "yes",
+        "handrail": "yes",
+        "glass": "yes",
+        "metal": "unknown",
+        "bespoke": "yes",
+        "design": "yes",
+        "kit_or_product_supplier": "yes"
+      },
+      "tags": [
+        "staircase-manufacture",
+        "staircase-installation",
+        "balustrade",
+        "handrail",
+        "glass-staircase",
+        "bespoke",
+        "design",
+        "kit-or-product-supplier",
+        "material-glass"
+      ],
+      "enrichment_status": "enriched",
+      "last_verified_at": "2026-08-15T00:00:00.000Z",
+      "address_line_1": null,
+      "address_line_2": null,
+      "town": "Hethersett (Norwich)",
+      "county": "Norfolk",
+      "postcode": "NR9 3AZ",
+      "country": "United Kingdom",
+      "telephone": "01603 812005",
+      "website": "https://www.whites-staircases.co.uk/",
+      "email": "whites.stairs@hotmail.co.uk",
+      "opening_hours": null,
+      "description": "Own site: versatile handmade staircases - design, manufacture and installation - including bespoke, off-the-peg and open tread staircases. Unit 1 SNDC Ketteringham Depot, Station Lane, Hethersett, Norwich NR9 3AZ.",
+      "services": [],
+      "google_rating": null,
+      "google_review_count": null,
+      "google_maps_url": null,
+      "latitude": null,
+      "longitude": null,
+      "status": "listed",
+      "claimed": false,
+      "verified": false,
+      "visibility": "public",
+      "photos": [],
+      "cover_image": null,
+      "source": "uk_staircase_market_stage_2_4_5",
+      "imported_at": "2026-08-15T00:00:00.000Z",
+      "refacing_evidence": [
+        {
+          "url": "https://www.whites-staircases.co.uk/",
+          "type": "company_website",
+          "category": "stage4_direct_fetch",
+          "summary": "Direct-fetch HTTP 200 · identity confirmed · capabilities on page: manufacture(“manufacture”), installation(“installation”), balustrade(“Balustrades”), handrail(“Handrails”), glass(“Glass Balustrad”), bespoke(“Bespoke”), design(“design”), kit_or_product_supplier(“catalogue”). Materials mentioned: glass.",
+          "checked_at": "2026-08-15",
+          "http_status": 200,
+          "size_bytes": 108242
+        }
+      ],
+      "refacing_qualification": "A",
+      "email_source": null,
+      "email_verified": false,
+      "email_checked_at": null,
+      "lifecycle_status": "unclaimed",
+      "directory_state": "listed",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "region": "E",
+      "discovered_by_agents": [],
+      "stage2_source_queries": [],
+      "stage2_source_urls": [],
+      "stage4_direct_fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.whites-staircases.co.uk/",
+        "content_type": "text/html;charset=utf-8",
+        "size_bytes": 108242
+      },
+      "stage4_identity_confirmed": true,
+      "stage4_page_evidence_summary": {
+        "manufacture": "manufacture",
+        "installation": "installation",
+        "balustrade": "Balustrades",
+        "handrail": "Handrails",
+        "glass": "Glass Balustrad",
+        "bespoke": "Bespoke",
+        "design": "design",
+        "kit_or_product_supplier": "catalogue"
+      }
+    }
+  },
+  {
+    "slug": "pettitt-joinery-company-ltd-peterborough",
+    "business_name": "Pettitt Joinery Company Ltd",
+    "verdict": "LIVE_AMBIGUOUS_REVIEW",
+    "matches": [
+      {
+        "signal": "fuzzy-name",
+        "other_id": "bfcce52c-7527-4293-8bc7-617b1a367d1f",
+        "other_slug": "tt-new-ross",
+        "other_name": "tt"
+      }
+    ],
+    "primary_match": {
+      "signal": "fuzzy-name",
+      "other_id": "bfcce52c-7527-4293-8bc7-617b1a367d1f",
+      "other_slug": "tt-new-ross",
+      "other_name": "tt"
+    },
+    "_record": {
+      "id": "076a07b1-76d3-4a08-97c5-a9f29a27bd0a",
+      "slug": "pettitt-joinery-company-ltd-peterborough",
+      "business_name": "Pettitt Joinery Company Ltd",
+      "category": "Staircase Manufacturer",
+      "primary_trade": "staircase_manufacture",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "capabilities": {
+        "manufacture": "yes",
+        "installation": "unknown",
+        "refurbishment": "unknown",
+        "refacing": "unknown",
+        "balustrade": "unknown",
+        "handrail": "unknown",
+        "glass": "unknown",
+        "metal": "unknown",
+        "bespoke": "yes",
+        "design": "yes",
+        "kit_or_product_supplier": "unknown"
+      },
+      "tags": [
+        "staircase-manufacture",
+        "bespoke",
+        "design"
+      ],
+      "enrichment_status": "enriched",
+      "last_verified_at": "2026-08-15T00:00:00.000Z",
+      "address_line_1": null,
+      "address_line_2": null,
+      "town": "Peterborough",
+      "county": "Cambridgeshire",
+      "postcode": "PE1 5YB",
+      "country": "United Kingdom",
+      "telephone": "01733 567742",
+      "website": "https://www.pettitt-joinery.co.uk/",
+      "email": null,
+      "opening_hours": null,
+      "description": "Own site: 40+ years of hand-made joinery in Peterborough, producing bespoke wood staircases plus windows, doors, garden rooms and furniture. 18 Royce Road, Carr Road Industrial Estate, Peterborough PE1 5YB.",
+      "services": [],
+      "google_rating": null,
+      "google_review_count": null,
+      "google_maps_url": null,
+      "latitude": null,
+      "longitude": null,
+      "status": "listed",
+      "claimed": false,
+      "verified": false,
+      "visibility": "public",
+      "photos": [],
+      "cover_image": null,
+      "source": "uk_staircase_market_stage_2_4_5",
+      "imported_at": "2026-08-15T00:00:00.000Z",
+      "refacing_evidence": [
+        {
+          "url": "https://www.pettitt-joinery.co.uk/",
+          "type": "company_website",
+          "category": "stage4_direct_fetch",
+          "summary": "Direct-fetch HTTP 200 · identity confirmed · capabilities on page: manufacture(“manufacture”), bespoke(“Bespoke”), design(“design”). Materials mentioned: (none).",
+          "checked_at": "2026-08-15",
+          "http_status": 200,
+          "size_bytes": 134641
+        }
+      ],
+      "refacing_qualification": "A",
+      "email_source": null,
+      "email_verified": false,
+      "email_checked_at": null,
+      "lifecycle_status": "unclaimed",
+      "directory_state": "listed",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "region": "E",
+      "discovered_by_agents": [],
+      "stage2_source_queries": [],
+      "stage2_source_urls": [],
+      "stage4_direct_fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.pettitt-joinery.co.uk/",
+        "content_type": "text/html;charset=utf-8",
+        "size_bytes": 134641
+      },
+      "stage4_identity_confirmed": true,
+      "stage4_page_evidence_summary": {
+        "manufacture": "manufacture",
+        "bespoke": "Bespoke",
+        "design": "design"
+      }
+    }
+  },
+  {
+    "slug": "jason-gittus-carpentry-joinery-godrergraig-swansea",
+    "business_name": "Jason Gittus Carpentry & Joinery",
+    "verdict": "LIVE_AMBIGUOUS_REVIEW",
+    "matches": [
+      {
+        "signal": "fuzzy-name",
+        "other_id": "bfcce52c-7527-4293-8bc7-617b1a367d1f",
+        "other_slug": "tt-new-ross",
+        "other_name": "tt"
+      }
+    ],
+    "primary_match": {
+      "signal": "fuzzy-name",
+      "other_id": "bfcce52c-7527-4293-8bc7-617b1a367d1f",
+      "other_slug": "tt-new-ross",
+      "other_name": "tt"
+    },
+    "_record": {
+      "id": "f85f0489-c42f-4e01-9e76-9e82697e6e0b",
+      "slug": "jason-gittus-carpentry-joinery-godrergraig-swansea",
+      "business_name": "Jason Gittus Carpentry & Joinery",
+      "category": "Staircase Refurbishment",
+      "primary_trade": "staircase_refurbishment",
+      "business_type": "REFURBISHMENT_SERVICE_SPECIALIST",
+      "capabilities": {
+        "manufacture": "unknown",
+        "installation": "yes",
+        "refurbishment": "yes",
+        "refacing": "unknown",
+        "balustrade": "unknown",
+        "handrail": "unknown",
+        "glass": "unknown",
+        "metal": "unknown",
+        "bespoke": "yes",
+        "design": "unknown",
+        "kit_or_product_supplier": "unknown"
+      },
+      "tags": [
+        "staircase-installation",
+        "staircase-refurbishment",
+        "bespoke",
+        "material-oak"
+      ],
+      "enrichment_status": "partial",
+      "last_verified_at": "2026-08-15T00:00:00.000Z",
+      "address_line_1": null,
+      "address_line_2": null,
+      "town": "Godrergraig, Swansea",
+      "county": "Neath Port Talbot",
+      "postcode": null,
+      "country": "United Kingdom",
+      "telephone": "07720 286623",
+      "website": "https://www.jgcarpentryjoinery.co.uk",
+      "email": "jasongittus@btinternet.com",
+      "opening_hours": null,
+      "description": "Over 28 years of experience in internal carpentry and joinery services. Specialises in professional staircase renovations. Services cover all aspects of internal carpentry and joinery from staircase renovation to panelling and dado rails.",
+      "services": [],
+      "google_rating": null,
+      "google_review_count": null,
+      "google_maps_url": null,
+      "latitude": null,
+      "longitude": null,
+      "status": "listed",
+      "claimed": false,
+      "verified": false,
+      "visibility": "public",
+      "photos": [],
+      "cover_image": null,
+      "source": "uk_staircase_market_stage_2_4_5",
+      "imported_at": "2026-08-15T00:00:00.000Z",
+      "refacing_evidence": [
+        {
+          "url": "https://www.jgcarpentryjoinery.co.uk/",
+          "type": "company_website",
+          "category": "stage4_direct_fetch",
+          "summary": "Direct-fetch HTTP 200 · identity confirmed · capabilities on page: refurbishment(“renovation”), bespoke(“Bespoke”). Materials mentioned: oak.",
+          "checked_at": "2026-08-15",
+          "http_status": 200,
+          "size_bytes": 124224
+        }
+      ],
+      "refacing_qualification": "B",
+      "email_source": null,
+      "email_verified": false,
+      "email_checked_at": null,
+      "lifecycle_status": "unclaimed",
+      "directory_state": "listed",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "region": "Wales",
+      "discovered_by_agents": [],
+      "stage2_source_queries": [],
+      "stage2_source_urls": [],
+      "stage4_direct_fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.jgcarpentryjoinery.co.uk/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 124224
+      },
+      "stage4_identity_confirmed": true,
+      "stage4_page_evidence_summary": {
+        "refurbishment": "renovation",
+        "bespoke": "Bespoke"
+      }
+    }
+  },
+  {
+    "slug": "bisca-helmsley",
+    "business_name": "Bisca",
+    "verdict": "LIVE_AMBIGUOUS_REVIEW",
+    "matches": [
+      {
+        "signal": "domain",
+        "other_id": "8a3fe682-5ccd-4158-8a87-b6c627484770",
+        "other_slug": "bisca-staircase-design-bisca",
+        "other_name": "Bisca Staircase Design"
+      }
+    ],
+    "primary_match": {
+      "signal": "domain",
+      "other_id": "8a3fe682-5ccd-4158-8a87-b6c627484770",
+      "other_slug": "bisca-staircase-design-bisca",
+      "other_name": "Bisca Staircase Design"
+    },
+    "_record": {
+      "id": "5c7a3a3a-88e8-4d00-a92e-b58572ac4840",
+      "slug": "bisca-helmsley",
+      "business_name": "Bisca",
+      "category": "Multi-Service Staircase Company",
+      "primary_trade": "staircase_manufacture",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "capabilities": {
+        "manufacture": "yes",
+        "installation": "yes",
+        "refurbishment": "yes",
+        "refacing": "unknown",
+        "balustrade": "yes",
+        "handrail": "yes",
+        "glass": "yes",
+        "metal": "yes",
+        "bespoke": "yes",
+        "design": "yes",
+        "kit_or_product_supplier": "unknown"
+      },
+      "tags": [
+        "staircase-manufacture",
+        "staircase-installation",
+        "staircase-refurbishment",
+        "balustrade",
+        "handrail",
+        "glass-staircase",
+        "metal-staircase",
+        "bespoke",
+        "design",
+        "material-oak",
+        "material-ash",
+        "material-glass",
+        "material-carpet"
+      ],
+      "enrichment_status": "enriched",
+      "last_verified_at": "2026-08-15T00:00:00.000Z",
+      "address_line_1": null,
+      "address_line_2": null,
+      "town": "Helmsley",
+      "county": "North Yorkshire",
+      "postcode": "YO62 5DQ",
+      "country": "United Kingdom",
+      "telephone": "01439 771702",
+      "website": "https://www.bisca.co.uk",
+      "email": null,
+      "opening_hours": null,
+      "description": "Multi-award winning bespoke staircase designer and manufacturer founded 1995. Craftsmen skilled in metalwork, cabinet-making, blacksmithing, welding. Delivered projects nationally (Devon to Orkney) and internationally. Won Best Staircase at 2023 Build It Awards.",
+      "services": [],
+      "google_rating": null,
+      "google_review_count": null,
+      "google_maps_url": null,
+      "latitude": null,
+      "longitude": null,
+      "status": "listed",
+      "claimed": false,
+      "verified": false,
+      "visibility": "public",
+      "photos": [],
+      "cover_image": null,
+      "source": "uk_staircase_market_stage_2_4_5",
+      "imported_at": "2026-08-15T00:00:00.000Z",
+      "refacing_evidence": [
+        {
+          "url": "https://www.bisca.co.uk/",
+          "type": "company_website",
+          "category": "stage4_direct_fetch",
+          "summary": "Direct-fetch HTTP 200 · identity confirmed · capabilities on page: manufacture(“manufacture”), installation(“Installation”), refurbishment(“Renovation”), balustrade(“Balustrade”), handrail(“handrails”), bespoke(“Bespoke”), design(“Design”). Materials mentioned: oak, ash, glass, carpet.",
+          "checked_at": "2026-08-15",
+          "http_status": 200,
+          "size_bytes": 93129
+        }
+      ],
+      "refacing_qualification": "A",
+      "email_source": null,
+      "email_verified": false,
+      "email_checked_at": null,
+      "lifecycle_status": "unclaimed",
+      "directory_state": "listed",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "region": "Yorkshire",
+      "discovered_by_agents": [],
+      "stage2_source_queries": [],
+      "stage2_source_urls": [],
+      "stage4_direct_fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.bisca.co.uk/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 93129
+      },
+      "stage4_identity_confirmed": true,
+      "stage4_page_evidence_summary": {
+        "manufacture": "manufacture",
+        "installation": "Installation",
+        "refurbishment": "Renovation",
+        "balustrade": "Balustrade",
+        "handrail": "handrails",
+        "bespoke": "Bespoke",
+        "design": "Design"
+      }
+    }
+  }
+]

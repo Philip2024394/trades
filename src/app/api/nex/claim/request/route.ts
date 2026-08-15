@@ -1,17 +1,22 @@
 // POST /api/nex/claim/request
 //
-// Lightweight interim claim endpoint. Records that the business owner has
-// requested to claim their listing so an admin can verify + attach later.
+// M6.2 · admin-only claim flow (Philip 2026-08-15 · Path Y).
 //
-// This is NOT the full self-service claim workflow — that requires owner
-// email verification + merchant account creation + attach-to-existing-seed
-// per ADR-0023. Until that ships, this endpoint just flips
-// `lifecycle_status` from "unclaimed" → "claim_requested" and stores the
-// requester's contact so a NEX admin can follow up manually.
+// Owner submits form → row inserted into `claim_requests` audit table +
+// listing lifecycle_status flipped to "claim_requested". Admin reviews the
+// request in /nex-app/nex-brain/claim-review and clicks Approve / Reject,
+// which invokes /api/nex/claim/admin-action.
 //
-// Never flips `directory_state = "claimed"` — that is a separate commercial
-// event only the full verification flow can trigger (per Philip's rule that
-// promotion is a commercial event never a derivation).
+// Rules preserved:
+//   · Never touches directory_state = "claimed" (that's the admin-action endpoint)
+//   · Never sets verified = true (reserved for claimed+ AND commercial event)
+//   · Never charges anything (Stripe not yet built)
+//   · Full audit trail in claim_requests table
+//
+// If the claim_requests table doesn't exist yet (migration 052 not applied),
+// the request still succeeds and flips lifecycle_status, but the audit row
+// won't be created. Admin queue then falls back to lifecycle_status='claim_requested'
+// rows in directory_seeds.
 
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
@@ -25,6 +30,7 @@ type Body = {
   owner_email: string;
   owner_name?: string;
   owner_phone?: string;
+  owner_role?: string;    // NEW · M6.2 · e.g. "Owner", "Director", "Marketing Manager"
   note?: string;
 };
 
@@ -38,26 +44,59 @@ export async function POST(req: NextRequest) {
   }
 
   // Resolve listing by slug OR uuid
-  const bySlug = await supabaseNexAdmin.from("directory_seeds").select("id, slug, business_name, lifecycle_status").eq("slug", body.listing_id).maybeSingle();
-  const listing = bySlug.data ?? (await supabaseNexAdmin.from("directory_seeds").select("id, slug, business_name, lifecycle_status").eq("id", body.listing_id).maybeSingle()).data;
+  const bySlug = await supabaseNexAdmin.from("directory_seeds").select("id, slug, business_name, lifecycle_status, directory_state").eq("slug", body.listing_id).maybeSingle();
+  const listing = bySlug.data ?? (await supabaseNexAdmin.from("directory_seeds").select("id, slug, business_name, lifecycle_status, directory_state").eq("id", body.listing_id).maybeSingle()).data;
   if (!listing) return NextResponse.json({ ok: false, error: "listing_not_found" }, { status: 404 });
 
-  // Move lifecycle forward but never past claim_requested — the shared verification
-  // flow owns the transitions to claim_pending / claimed / paid_member.
+  // Guard · don't accept claim requests for already-claimed / member listings
+  if (listing.directory_state === "claimed" || listing.directory_state === "paid_member") {
+    return NextResponse.json({ ok: false, error: "listing_already_claimed" }, { status: 409 });
+  }
+
+  // Write claim_requests audit row (best-effort · falls back gracefully if table missing)
+  let claimRequestId: string | null = null;
+  const claimInsert = await supabaseNexAdmin
+    .from("claim_requests")
+    .insert({
+      listing_id: listing.id,
+      company_name_snapshot: listing.business_name,
+      claimant_name: body.owner_name ?? null,
+      claimant_email: body.owner_email,
+      claimant_role: body.owner_role ?? null,
+      reason: body.note ?? null,
+      status: "pending",
+    })
+    .select("id")
+    .maybeSingle();
+
+  if (claimInsert.error) {
+    // Table might not exist yet (migration 052 not applied) or another schema issue.
+    // Log loudly · do NOT block the claim · fall back to server-log audit.
+    console.warn("[claim.request] claim_requests insert failed · falling back to server-log:", claimInsert.error.message);
+    console.info("[claim.request:fallback]", {
+      listing_id: listing.id, slug: listing.slug, business_name: listing.business_name,
+      owner_email: body.owner_email, owner_name: body.owner_name ?? null,
+      owner_phone: body.owner_phone ?? null, owner_role: body.owner_role ?? null,
+      note: body.note ?? null, at: new Date().toISOString(),
+    });
+  } else {
+    claimRequestId = claimInsert.data?.id ?? null;
+  }
+
+  // Move lifecycle forward but never past claim_requested — the admin-action
+  // endpoint owns the transitions to claimed. Payment (paid_member) is Stripe's
+  // job when M6.3 lands.
   const update = await supabaseNexAdmin
     .from("directory_seeds")
     .update({ lifecycle_status: "claim_requested" })
     .eq("id", listing.id);
   if (update.error) return NextResponse.json({ ok: false, error: update.error.message }, { status: 500 });
 
-  // In future: append to a `claim_requests` audit table with owner_email/name/phone/note.
-  // For now, log server-side so an admin can grep it out until the audit table exists.
-  console.info("[claim.request]", {
-    listing_id: listing.id, slug: listing.slug, business_name: listing.business_name,
-    owner_email: body.owner_email, owner_name: body.owner_name ?? null,
-    owner_phone: body.owner_phone ?? null, note: body.note ?? null,
-    at: new Date().toISOString(),
+  return NextResponse.json({
+    ok: true,
+    listing_id: listing.id,
+    slug: listing.slug,
+    lifecycle_status: "claim_requested",
+    claim_request_id: claimRequestId,
   });
-
-  return NextResponse.json({ ok: true, listing_id: listing.id, slug: listing.slug, lifecycle_status: "claim_requested" });
 }
