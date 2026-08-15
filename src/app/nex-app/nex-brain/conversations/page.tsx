@@ -100,11 +100,16 @@ export default function NexConversationsPage() {
 
   return (
     <div style={{ padding: "32px 48px", fontFamily: "'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif", background: "#0f0d0a", color: "#e6dfd1", minHeight: "100vh" }}>
-      <header style={{ marginBottom: 24 }}>
-        <h1 style={{ fontSize: 28, fontWeight: 600, letterSpacing: -0.5, margin: 0 }}>NEX Brain · Conversations</h1>
-        <p style={{ fontSize: 14, color: "#a79c8e", marginTop: 6 }}>
-          Live conversations the NEX pipeline has processed. Read-only. Click a row for per-turn detail.
-        </p>
+      <header style={{ marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+        <div>
+          <h1 style={{ fontSize: 28, fontWeight: 600, letterSpacing: -0.5, margin: 0 }}>NEX Brain · Conversations</h1>
+          <p style={{ fontSize: 14, color: "#a79c8e", marginTop: 6 }}>
+            Live conversations the NEX pipeline has processed. Read-only. Click a row for per-turn detail.
+          </p>
+        </div>
+        <a href="/nex-app/nex-brain/draft-review" style={{ padding: "8px 16px", background: "#b58f5e", color: "#0f0d0a", borderRadius: 4, textDecoration: "none", fontSize: 13, fontWeight: 500 }}>
+          Draft Review →
+        </a>
       </header>
 
       {loading && <p>Loading…</p>}
