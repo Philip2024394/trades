@@ -241,7 +241,41 @@ export function updateStateFromNex(state, { text, entities = [], usedItemIds = [
   if (!state.recent_closer_patterns) state.recent_closer_patterns = [];
   state.recent_closer_patterns.push({ pattern: closerPattern, sentence: lastSentence });
   if (state.recent_closer_patterns.length > 3) state.recent_closer_patterns = state.recent_closer_patterns.slice(-3);
+
+  // M1-3: also track the OPENING pattern of each NEX reply so we can
+  // ban a repeated opener next turn ("Given the ...", "For a ...",
+  // "Sure, ...", "Understood — ..." all become tells if used back-to-back).
+  const opener = extractOpener(text);
+  const openerPattern = classifyOpener(opener);
+  if (!state.recent_opener_patterns) state.recent_opener_patterns = [];
+  state.recent_opener_patterns.push({ pattern: openerPattern, opener });
+  if (state.recent_opener_patterns.length > 3) state.recent_opener_patterns = state.recent_opener_patterns.slice(-3);
   return state;
+}
+
+function extractOpener(text) {
+  const trimmed = (text || '').trim();
+  if (!trimmed) return '';
+  // First 40 chars, up to first punctuation
+  const uptoPunct = trimmed.split(/[,.!?—:]/)[0] ?? trimmed;
+  return uptoPunct.slice(0, 60).trim();
+}
+
+function classifyOpener(opener) {
+  const s = (opener || '').toLowerCase();
+  if (!s) return 'none';
+  if (/^given (the|your|that)/.test(s)) return 'given_x';
+  if (/^for (the|your|a|an) /.test(s)) return 'for_x';
+  if (/^(sure|absolutely|of course|no problem)\b/.test(s)) return 'sure_x';
+  if (/^understood\b/.test(s)) return 'understood';
+  if (/^got it\b/.test(s)) return 'got_it';
+  if (/^(hi|hello|hey)\b/.test(s)) return 'greeting';
+  if (/^take your time/.test(s)) return 'take_time';
+  if (/^you'?re welcome/.test(s)) return 'youre_welcome';
+  if (/^i\b/.test(s)) return 'i_start';
+  if (/^would you\b/.test(s)) return 'would_you';
+  if (/^that (sounds|works|makes sense)/.test(s)) return 'that_x';
+  return 'other';
 }
 
 /**

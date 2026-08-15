@@ -24,7 +24,7 @@
           ],
           "handoff": false,
           "condensed_summary": null,
-          "reply": "I don't have a firm figure yet — pricing depends on the specific details of your staircase. Installation times can vary, but a typical three-storey staircase might take around 2-3 days, depending on the complexity. Would",
+          "reply": "For a rough estimate, the installation time can vary depending on the complexity of your staircase. A three-storey escape typically takes around 5 to 6 days for fitting. Would you like to explore a similar example or dis",
           "failures": []
         }
       ]
@@ -45,7 +45,7 @@
           ],
           "handoff": false,
           "condensed_summary": null,
-          "reply": "For your oak preference, a closed string staircase is often a great choice, giving a smooth look without visible tread ends. Would you like to see more examples of this design or perhaps a cut string staircase with visib",
+          "reply": "Given your preference for oak, a closed string staircase is often a popular choice, offering a smooth diagonal look without showing tread ends. Would you like to see more details on this option or explore other types of ",
           "failures": []
         },
         {
@@ -59,7 +59,7 @@
           ],
           "handoff": false,
           "condensed_summary": null,
-          "reply": "Walnut, or a walnut-look stain on a workable hardwood. The rich chocolate tone with darker grain marks it as walnut rather than oak. Would you like to see how a walnut staircase might look in your Victorian house?",
+          "reply": "For a staircase with walnut, a closed string option is often the best choice, providing a smooth diagonal side without showing tread ends. Would you prefer this option or consider a cut string with tread ends visible?",
           "failures": []
         },
         {
@@ -77,7 +77,7 @@
           ],
           "handoff": false,
           "condensed_summary": null,
-          "reply": "Given the oak you mentioned, the standard handrail height for a staircase is typically around 900mm from the floor to the top of the handrail. Would you like to see some examples of oak handrails at that height?",
+          "reply": "Given the oak you mentioned, the standard handrail height for a staircase is typically around 900mm from the ground to the top of the handrail. Would you like to see examples of different handrail heights or perhaps a co",
           "failures": []
         }
       ]
@@ -96,7 +96,7 @@
           "entities_in_focus": [],
           "handoff": false,
           "condensed_summary": null,
-          "reply": "No problem — it sounds like you're looking for clarity. Would you like to narrow down the type of staircase by specifying whether you prefer a closed string or an open string, given your Victorian oak staircase against a",
+          "reply": "Given your apologetic tone, it sounds like you might be reconsidering your initial request. Would you like to explore price, installation, or a comparison?",
           "failures": []
         }
       ]
@@ -117,7 +117,7 @@
           ],
           "handoff": false,
           "condensed_summary": null,
-          "reply": "Given your preference for oak, a closed string staircase would be a common choice, offering that smooth diagonal side without the tread ends showing. Would you like to see more information on this option or perhaps a dif",
+          "reply": "Given your preference for oak, a closed string staircase is often the natural choice, providing a smooth diagonal side without the tread ends showing. If you prefer the tread ends to step down as a feature, a cut string ",
           "failures": []
         }
       ]
@@ -139,7 +139,7 @@
           ],
           "handoff": false,
           "condensed_summary": null,
-          "reply": "Given your preference for a closed string, it's a classic choice that provides a smooth, diagonal look without the tread ends showing. If you prefer a stepped look where the treads step down into the string, a cut string",
+          "reply": "Given that you're leaning towards a closed string, it’s a solid choice for a smooth, seamless look. The closed string has its treads and risers hidden within the string itself, creating a clean, uninterrupted appearance.",
           "failures": []
         }
       ]
@@ -158,12 +158,12 @@
           "entities_in_focus": [
             "renovation",
             "traditional",
-            "hallway",
-            "terrace_house"
+            "terrace_house",
+            "hallway"
           ],
           "handoff": false,
           "condensed_summary": null,
-          "reply": "Given your Victorian terrace hallway renovation, a traditional closed string staircase against the wall would often be a fitting choice. It provides a smooth, seamless look without the tread ends showing. Would you prefe",
+          "reply": "Given your Victorian terrace hallway, a traditional Victorian staircase with a closed string would be a classic choice, providing that current staircase is in good structural shape. Would you like to explore a traditiona",
           "failures": []
         }
       ]
@@ -184,7 +184,7 @@
           ],
           "handoff": false,
           "condensed_summary": null,
-          "reply": "I understand you're uncertain about the cost. Pricing can vary widely based on the specific details of your staircase. Would you like to explore the straight flights or cut strings, or perhaps we could show you some simi",
+          "reply": "Given the current state, I understand you're uncertain about the cost. Let me show you a couple of examples to help you visualize the different options and their typical pricing ranges. Would you like to see those?",
           "failures": []
         },
         {
@@ -197,7 +197,7 @@
           ],
           "handoff": true,
           "condensed_summary": null,
-          "reply": "For a rough figure, a Victorian oak staircase with a closed string against a wall could cost around £2,000 to £3,000, depending on the exact details and materials used. Would you like to explore a cut string on the open ",
+          "reply": "I don't have a firm figure yet — pricing depends on the specific details of your staircase. What sort of size is your staircase, roughly? If it's easier, one of the team can ring you tomorrow and walk you through this pr",
           "failures": []
         }
       ]
@@ -230,7 +230,7 @@
           ],
           "handoff": false,
           "condensed_summary": null,
-          "reply": "Given your preference for oak, a closed string staircase would be a classic choice, offering a smooth, diagonal look without the tread ends showing. Would you like to see more options, or is this the direction you're lea",
+          "reply": "For an oak staircase, we often recommend a closed string design, which gives a smooth diagonal look without showing the tread ends. Would you prefer a more open look with a cut string instead?",
           "failures": []
         },
         {
@@ -245,7 +245,7 @@
           ],
           "handoff": false,
           "condensed_summary": null,
-          "reply": "Given the oak staircase you mentioned, a closed string is often the natural choice for a staircase against a wall, providing that smooth diagonal look without the tread ends showing. Would you prefer this option or consi",
+          "reply": "Given the oak you mentioned, a closed string staircase against a wall is often the most suitable option, providing that smooth diagonal look without the tread ends showing. Would you like to explore this further or is th",
           "failures": []
         },
         {
@@ -262,7 +262,7 @@
           ],
           "handoff": false,
           "condensed_summary": null,
-          "reply": "A closed string staircase against a wall is a smooth, straight-edged option where the treads and risers are hidden within the string. If you prefer a more open look with visible treads and risers, a cut string might be a",
+          "reply": "A closed string staircase is a smooth, straight-running board that hides the treads and risers, perfect for an against-wall staircase. If you prefer a stepped look, a cut string might be more suitable. Which one appeals ",
           "failures": []
         },
         {
@@ -281,7 +281,7 @@
           ],
           "handoff": false,
           "condensed_summary": "Earlier in this conversation (through turn 10): established facts — material_primary=oak · construct",
-          "reply": "With a bullnose, you might want to consider using a step mat for the curved edge, which can be shaped to fit the curve without the hassle of a continuous carpet runner. Would you like to see some examples of different bu",
+          "reply": "Given your preference for a bullnose, a cut string against the wall would be a good option, as it allows for the rounded end without the need for carpeting. Would you like to see some examples of cut string staircases?",
           "failures": []
         },
         {
@@ -301,7 +301,7 @@
           ],
           "handoff": false,
           "condensed_summary": "Earlier in this conversation (through turn 10): established facts — material_primary=oak · construct",
-          "reply": "Given the oak you mentioned, a full carpet on the flight with the bullnose starting step left in exposed timber is the common recommendation. Would you prefer a rounded bullnose for a traditional look?",
+          "reply": "Given the oak you mentioned, carpeting the bullnose would create a cohesive look with the rest of the staircase. Would you prefer a rounded bullnose to complement the traditional style?",
           "failures": []
         },
         {
@@ -323,7 +323,7 @@
           ],
           "handoff": false,
           "condensed_summary": "Earlier in this conversation (through turn 14): established facts — material_primary=oak · construct",
-          "reply": "For a staircase with a handrail height of 900mm, a standard 42mm bracket is often used. Would you like to see more details on different handrail finishes or materials?",
+          "reply": "Given your preference for a 900mm handrail, a closed string staircase would be a good choice, providing a smooth diagonal look without showing the tread ends. Would you prefer the closed string or consider an open string",
           "failures": []
         },
         {
@@ -367,7 +367,7 @@
           ],
           "handoff": false,
           "condensed_summary": "Earlier in this conversation (through turn 18): established facts — material_primary=oak · construct",
-          "reply": "Take your time — I'm here when you're ready.",
+          "reply": "Take your time. I'm here when you're ready.",
           "failures": []
         }
       ]

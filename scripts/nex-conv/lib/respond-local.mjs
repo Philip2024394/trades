@@ -18,6 +18,8 @@
 //     Later we can replace this file with respond-llamacpp.mjs or
 //     respond-vllm.mjs behind the same dispatcher.
 
+import { findLockedTerms } from './terminology.mjs';
+
 const DEFAULT_MODEL = process.env.NEX_RESPONSE_MODEL ?? 'qwen2.5:3b';
 const DEFAULT_URL = process.env.NEX_LOCAL_LLM_URL ?? 'http://localhost:11434';
 const CHAT_PATH = '/api/chat';
@@ -187,7 +189,21 @@ export async function renderReply({ state, customerMessage, topK, responseFrame,
     throw new Error(errMsg);
   }
 
-  const text = j.message?.content?.trim() ?? '(empty reply)';
+  let text = j.message?.content?.trim() ?? '(empty reply)';
+
+  // M1-6: post-generation length trim if Qwen overshoots the mode's shape.
+  // Backchannel <=120c · meta <=200c · close <=100c · normal <=400c.
+  const modeCap = intent?.slug === 'backchannel' ? 120
+                : intent?.slug === 'close' ? 100
+                : intent?.slug?.startsWith('meta_') ? 200
+                : 400;
+  if (text.length > modeCap) {
+    // Trim at last sentence-ending punctuation before the cap
+    const window = text.slice(0, modeCap);
+    const lastEnd = Math.max(window.lastIndexOf('.'), window.lastIndexOf('?'), window.lastIndexOf('!'));
+    text = lastEnd > modeCap * 0.5 ? window.slice(0, lastEnd + 1) : window.trim() + '…';
+  }
+
   // Ollama returns duration nanoseconds — convert to ms for parity with hosted API shapes
   const load_ms = Math.round((j.load_duration ?? 0) / 1e6);
   const prompt_ms = Math.round((j.prompt_eval_duration ?? 0) / 1e6);
@@ -269,11 +285,14 @@ Write the reply now.`;
   }
 
   // Assemble PACKET FLAGS the LLM should read before writing.
-  const priceQueried = /price|cost|how\s+much|expensive|cheap|cheaper|budget/i.test(customerMessage);
-  // Only count as "having price data" if a SPECIFIC £ or $ NUMBER is in the packet.
-  // The word "price" alone is not enough — many items mention "cost varies" etc.
+  const priceQueried = /price|cost|how\s+much|expensive|cheap|cheaper|budget|figure|ballpark|estimate|quote/i.test(customerMessage);
+  // Only count as "having price data" if a SPECIFIC £ or $ NUMBER appears in
+  // one of the TOP-3 retrieved items (peripheral £ mentions in a training
+  // example like "Never quote a specific cost ('£2,500')" would otherwise
+  // falsely disable the anti-fabrication flag · same class of bug we fixed
+  // for the handoff strike counter).
   const packetHasSpecificPrice = /£\s*\d|\$\s*\d|\d+\s*(pounds|gbp)/i.test(
-    (topK || []).map(k => k.answer_head || '').join(' ')
+    (topK || []).slice(0, 3).map(k => k.answer_head || '').join(' ')
   );
   const flags = {
     PACKET_HAS_NO_PRICE_DATA: priceQueried && !packetHasSpecificPrice,
@@ -287,12 +306,16 @@ Write the reply now.`;
   const recentCloserSentences = recentClosers.map(c => c.sentence).filter(Boolean);
 
   // Callback anchors · 2-3 earlier facts NEX can naturally reference.
-  // Only offered every-3rd-turn AND past turn 4. Rate-gating is important —
-  // referencing back EVERY turn becomes its own AI tell ("Given the oak you
-  // mentioned..." appearing 18/30 times · that's not human, that's a bot too).
+  // M1-1: also SUPPRESS anchors if the last 2 NEX turns already used a
+  // callback pattern ("Given the X you mentioned"). Even every-3rd-turn
+  // rate-gating wasn't enough because the model latched onto the pattern.
   const anchors = [];
-  const turnMod = ((state?.turn_count ?? 0) % 3 === 0);  // roughly 1 in 3 turns
-  if (turnMod && (state?.turn_count ?? 0) >= 4) {
+  const turnMod = ((state?.turn_count ?? 0) % 3 === 0);
+  const recentReplies = (state?.recent_turn_summaries ?? []).filter(s => s.speaker === 'nex').slice(-2);
+  const recentUsedCallback = recentReplies.some(r =>
+    /(given|for|since|back to|as you)\s+(the|your|that)\s+[a-z]+\s+you\s+(mentioned|said|noted|chose|described|picked)/i.test(r.text_head || '')
+  );
+  if (turnMod && !recentUsedCallback && (state?.turn_count ?? 0) >= 4) {
     const f = state.established_facts ?? {};
     if (f.material_primary?.value) anchors.push(`the ${f.material_primary.value} you mentioned`);
     if (f.style_intent?.value) anchors.push(`the ${f.style_intent.value} direction`);
@@ -307,6 +330,31 @@ Write the reply now.`;
   // SKELETON HINT section removed 2026-08-15 (A5): Qwen 3B now ignores it
   // after the anti-echo prompt lock, so it was only noise in the packet.
   const secondaryList = (secondaryIntents ?? []).map(si => `${si.slug}${si.source_part ? ` ("${si.source_part.slice(0, 60)}")` : ''}`).join(' · ') || '(none · single intent)';
+
+  // M1-4: LOCKED_TERMINOLOGY block · injected when the customer is asking
+  // for a definition of a load-bearing term (base rail, closed vs cut,
+  // open riser, handrail height, etc.).
+  let lockedTermBlock = '';
+  if (intent?.slug === 'ask_definition') {
+    const hits = findLockedTerms(customerMessage);
+    if (hits.length) {
+      lockedTermBlock = `\nLOCKED_TERMINOLOGY (canonical · MUST paraphrase · NEVER contradict):\n` +
+        hits.map(h => `- ${h.slug} ("${h.alias_matched}"):\n    DEFINITION: ${h.definition}\n    COMMON WRONG: ${h.common_wrong}`).join('\n');
+    }
+  }
+
+  // M1-5: SUMMARY_COMPARISON block · injected when the customer just gave
+  // a multi-item spec summary and wants us to confirm. Pair their items
+  // against state; list matches vs mismatches vs unknowns.
+  let summaryComparisonBlock = '';
+  if (intent?.slug === 'confirm_summary') {
+    const cmp = compareSummaryAgainstState(customerMessage, state);
+    summaryComparisonBlock = `\nSUMMARY_COMPARISON (customer just recapped their spec · here's what state agrees / disagrees with):\n` +
+      `MATCHES (state confirms): ${cmp.matches.join(' · ') || '(none)'}\n` +
+      `MISMATCHES (state has a different value): ${cmp.mismatches.join(' · ') || '(none)'}\n` +
+      `UNTRACKED (state has no fact for these · confirm verbally): ${cmp.untracked.join(' · ') || '(none)'}\n\n` +
+      `REPLY SHAPE: acknowledge what matches ("yes on the oak and the wall constraint"), gently flag any mismatch, and check anything in untracked. DO NOT restart discovery.`;
+  }
   return `CUSTOMER MESSAGE (respond to THIS):
 "${customerMessage}"
 
@@ -320,6 +368,7 @@ PACKET FLAGS (read before writing):
 - HANDOFF_RECOMMENDED: ${state?.handoff_recommended === true}
 ${referenceHint ? `- REFERENCE_HINT: ${referenceHint}` : '- REFERENCE_HINT: (none)'}
 ${state?.condensed_history ? `\nEARLIER IN THIS CONVERSATION (condensed): ${state.condensed_history.summary}` : ''}
+${lockedTermBlock}${summaryComparisonBlock}
 
 ESTABLISHED FACTS (already known · do NOT ask about these again):
 ${facts || '  (none yet · you may ask discovery questions)'}
@@ -340,8 +389,18 @@ ${(() => {
   - If acknowledging: "switching from ${c.previous} to ${c.new}"`;
 })()}
 
-KNOWLEDGE PACKET (top ${topK.length} retrieved · use ONLY these):
-${knowledge || '  (empty · trigger THIN PACKET PLAYBOOK — honest "I don\'t have that yet" + a real next-action)'}
+${state?.handoff_recommended ? `KNOWLEDGE PACKET (SUPPRESSED · HANDOFF MODE):
+  This is the second consecutive turn NEX couldn't answer specifically. Do NOT dip
+  back into staircase advice — the customer has now had two hedges in a row and
+  needs a real out. Reply with EXACTLY this shape:
+    - Brief acknowledgement of the specific question they asked
+    - Honest "I don't want to guess figures — let me get you the right answer"
+    - Concrete handoff offer using ONE of: "one of the team can ring you tomorrow morning" · "shall I book a quick call with a designer" · "I can pass this straight to Summit and they'll come back with a firm quote today"
+    - Ask for the ONE piece of info needed to make the handoff (name + phone, or best time to call)
+  Do NOT ask for wall/material/string type details — that's more hedging.
+  Do NOT invent a price to fill the gap.
+` : `KNOWLEDGE PACKET (top ${topK.length} retrieved · use ONLY these):
+${knowledge || '  (empty · trigger THIN PACKET PLAYBOOK — honest "I don\'t have that yet" + a real next-action)'}`}
 
 ${anchors.length ? `RECENT_ANCHORS · earlier facts you can naturally reference back to:
 - ${anchors.join('\n- ')}
@@ -352,11 +411,103 @@ RECENT_NEX_CLOSERS (patterns you already used · MUST vary this turn):
 ${closerBanList.length ? closerBanList.map(p => `- ${p}`).join('\n') : '- (none · anything appropriate)'}
 ${recentCloserSentences.length ? `Recent NEX closing sentences to NOT repeat:\n${recentCloserSentences.map(s => `  · "${s}"`).join('\n')}` : ''}
 
+RECENT_NEX_OPENERS (opening patterns you already used · MUST NOT repeat this turn):
+${(() => {
+  const recentOpeners = (state?.recent_opener_patterns ?? []).slice(-2);
+  const bans = recentOpeners.map(o => o.pattern).filter(p => p && p !== 'other' && p !== 'none');
+  if (!bans.length) return '- (none · any opener fine)';
+  const openerExamples = recentOpeners.map(o => `  · "${o.opener}"`).join('\n');
+  return bans.map(p => `- ${p}`).join('\n') + '\nAvoid re-using these exact opening phrases:\n' + openerExamples;
+})()}
+
 Write ONE short British-English NEX reply now.
 Do NOT reproduce any recent closer pattern above.
 Do NOT ask about any ESTABLISHED FACT already listed.
-Do NOT invent a price if PACKET_HAS_NO_PRICE_DATA is true.
-If KNOWLEDGE_PACKET_EMPTY is true, use the thin-packet playbook (honest "don't have that yet" + real next-action, not "would you like to explore ...").`;
+${flags.PACKET_HAS_NO_PRICE_DATA ? `!!! ABSOLUTE RULE FOR THIS TURN !!!  PACKET_HAS_NO_PRICE_DATA=true. Your reply MUST NOT contain any £ figure, any $ figure, any "around £", any "starts from", any "£X to £Y" range, or any number-plus-currency. If you feel yourself about to write a price · STOP · replace it with: "I don't want to guess figures — I can get you an accurate quote once we've talked through the specifics. What sort of size is your staircase, roughly?" This is non-negotiable.
+` : ''}${state?.handoff_recommended ? `!!! HANDOFF MODE THIS TURN !!!  Use the HANDOFF-shape reply exactly as specified in the packet above · brief acknowledge + honest "let me get you the right answer" + concrete handoff offer + ask for name/phone. Do NOT dip back into staircase advice.
+` : ''}If KNOWLEDGE_PACKET_EMPTY is true, use the thin-packet playbook (honest "don't have that yet" + real next-action, not "would you like to explore ...").`;
 }
 
-export const _internals = { DEFAULT_MODEL, DEFAULT_URL, SYSTEM_PROMPT, buildPacket };
+/**
+ * Compare the customer's summary text against the state's established facts.
+ * Returns { matches, mismatches, untracked } string arrays.
+ * matches = summary item that state confirms
+ * mismatches = state has a DIFFERENT value for the same field
+ * untracked = state has no fact for this field · verbally check
+ */
+function compareSummaryAgainstState(summaryText, state) {
+  const matches = [];
+  const mismatches = [];
+  const untracked = [];
+  const facts = state?.established_facts ?? {};
+  const lower = (summaryText || '').toLowerCase();
+
+  // Material
+  const materialWords = ['oak', 'walnut', 'ash', 'pine', 'beech', 'maple', 'sapele', 'iroko', 'glass', 'metal'];
+  const mentionedMaterials = materialWords.filter(m => new RegExp(`\\b${m}\\b`, 'i').test(lower));
+  if (mentionedMaterials.length) {
+    const stateMat = facts.material_primary?.value;
+    for (const m of mentionedMaterials) {
+      if (stateMat === m) matches.push(`material=${m}`);
+      else if (stateMat && stateMat !== m) mismatches.push(`customer said ${m}, state has ${stateMat}`);
+    }
+    if (!stateMat) untracked.push(`material (${mentionedMaterials.join('/')})`);
+  }
+
+  // Construction constraint
+  if (/against (a |the )?wall/i.test(lower)) {
+    if ((state?.constraints || []).includes('against_wall')) matches.push('against_wall');
+    else if ((state?.constraints || []).some(c => c === 'both_sides_open')) mismatches.push('customer said against wall, state has both sides open');
+    else untracked.push('against_wall constraint');
+  }
+  if (/both sides open|freestanding/i.test(lower)) {
+    if ((state?.constraints || []).includes('both_sides_open')) matches.push('both_sides_open');
+    else if ((state?.constraints || []).includes('against_wall')) mismatches.push('customer said both sides open, state has against_wall');
+    else untracked.push('both_sides_open constraint');
+  }
+
+  // Style
+  const styleWords = ['traditional', 'contemporary', 'modern', 'transitional'];
+  const mentionedStyles = styleWords.filter(s => new RegExp(`\\b${s}\\b`, 'i').test(lower));
+  if (mentionedStyles.length) {
+    const stateStyle = facts.style_intent?.value;
+    for (const s of mentionedStyles) {
+      const norm = s === 'modern' ? 'contemporary' : s;
+      if (stateStyle === norm) matches.push(`style=${norm}`);
+      else if (stateStyle && stateStyle !== norm) mismatches.push(`customer said ${s}, state has ${stateStyle}`);
+    }
+    if (!stateStyle) untracked.push(`style (${mentionedStyles.join('/')})`);
+  }
+
+  // String type · closed / cut
+  if (/\bclosed string\b/i.test(lower)) {
+    const focus = state?.entities_in_focus || [];
+    if (focus.includes('closed_string')) matches.push('closed_string');
+    else untracked.push('closed_string mention');
+  }
+  if (/\bcut string\b|\bopen string\b/i.test(lower)) {
+    const focus = state?.entities_in_focus || [];
+    if (focus.includes('cut_string')) matches.push('cut_string');
+    else untracked.push('cut_string mention');
+  }
+
+  // Any specific mm handrail height
+  const hrMatch = lower.match(/(\d{3,4})\s*(mm|millim)/i);
+  if (hrMatch) {
+    const value = parseInt(hrMatch[1], 10);
+    if (value >= 900 && value <= 1000) matches.push(`handrail height ${value}mm (within UK Approved Doc K)`);
+    else mismatches.push(`handrail height ${value}mm is outside UK Approved Doc K 900-1000mm range`);
+  }
+
+  // Starting-step feature
+  for (const feat of ['bullnose', 'curtail', 'volute']) {
+    if (new RegExp(`\\b${feat}\\b`, 'i').test(lower)) {
+      if ((state?.entities_in_focus || []).includes(feat)) matches.push(`starting_step=${feat}`);
+      else untracked.push(`${feat} starting step`);
+    }
+  }
+
+  return { matches, mismatches, untracked };
+}
+
+export const _internals = { DEFAULT_MODEL, DEFAULT_URL, SYSTEM_PROMPT, buildPacket, compareSummaryAgainstState };

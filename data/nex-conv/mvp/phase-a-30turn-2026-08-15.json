@@ -2,7 +2,7 @@
   "summary": {
     "fixture": "natural-30turn-phase-a-2026-08-15",
     "turns": 30,
-    "avg_latency_ms": 1885.5,
+    "avg_latency_ms": 8144.9,
     "probes": [
       {
         "name": "no_repetitive_closer",
@@ -27,7 +27,7 @@
       {
         "name": "callback_used_somewhere",
         "pass": true,
-        "detail": "6 NEX turns reference an earlier fact by name"
+        "detail": "8 NEX turns reference an earlier fact by name"
       }
     ]
   },
@@ -37,27 +37,27 @@
       "customer": "hi",
       "intent": "meta_greeting",
       "state_facts": {},
-      "reply": "Hi there — how can I help with your staircase queries today?",
-      "reply_chars": 60,
-      "latency_ms": 2030
+      "reply": "Hi there — how can I help you today?",
+      "reply_chars": 36,
+      "latency_ms": 24597
     },
     {
       "n": 2,
       "customer": "u there?",
       "intent": "meta_presence",
       "state_facts": {},
-      "reply": "Hi there — I'm here and ready to help with any questions you might have about staircases. How can I assist you today?",
-      "reply_chars": 117,
-      "latency_ms": 1452
+      "reply": "Hi there — how can I help?",
+      "reply_chars": 26,
+      "latency_ms": 2408
     },
     {
       "n": 3,
       "customer": "im looking to redo my staircase",
       "intent": "statement",
       "state_facts": {},
-      "reply": "Sure, for your staircase refurbishment with some timber showing, we can look at options like a cut string or a closed string staircase. A cut string would keep the tread ends visible as a feature, while a closed string gives a smoother look without showing the tread ends. Which direction do you lean towards?",
-      "reply_chars": 309,
-      "latency_ms": 2313
+      "reply": "Got it. So you want to refurbish your stairs while keeping some of the timber visible. Would you like to explore open string or closed string options?",
+      "reply_chars": 150,
+      "latency_ms": 7641
     },
     {
       "n": 4,
@@ -70,9 +70,9 @@
           "confidence": 0.78
         }
       },
-      "reply": "Given that your staircase is against a wall on one side, a closed string is often the natural choice. This gives a smooth diagonal side without the tread ends showing. Would you prefer this option, or is there something else you have in mind?",
-      "reply_chars": 242,
-      "latency_ms": 2114
+      "reply": "For a staircase against a wall, a closed string is often used as it keeps the tread ends hidden and provides a smooth look. If you'd like the tread ends to be visible, a cut string might be a better option. Which one do you prefer?",
+      "reply_chars": 231,
+      "latency_ms": 11855
     },
     {
       "n": 5,
@@ -85,9 +85,9 @@
           "confidence": 0.78
         }
       },
-      "reply": "Take your time. I'm here when you're ready.",
-      "reply_chars": 43,
-      "latency_ms": 1022
+      "reply": "Take your time.",
+      "reply_chars": 15,
+      "latency_ms": 1978
     },
     {
       "n": 6,
@@ -105,9 +105,9 @@
           "confidence": 0.72
         }
       },
-      "reply": "Given the oak you mentioned, oak is a popular choice for stairs due to its durability and aesthetic appeal. Would you like to explore a closed string staircase against the wall, which gives a smooth diagonal look without showing tread ends?",
-      "reply_chars": 240,
-      "latency_ms": 1996
+      "reply": "Given the oak you mentioned, a closed string could be a classic choice, providing a smooth look with a base rail. Alternatively, a cut string might add a more traditional feel with the tread ends visible. Which style do you prefer?",
+      "reply_chars": 231,
+      "latency_ms": 10781
     },
     {
       "n": 7,
@@ -125,9 +125,9 @@
           "confidence": 0.72
         }
       },
-      "reply": "Take your time. I'm here when you're ready.",
-      "reply_chars": 43,
-      "latency_ms": 1178
+      "reply": "Take your time.",
+      "reply_chars": 15,
+      "latency_ms": 1976
     },
     {
       "n": 8,
@@ -145,9 +145,9 @@
           "confidence": 0.72
         }
       },
-      "reply": "For a staircase against a wall, a closed string is smooth and hidden, while a cut string shows the tread ends. Which one appeals more to you?",
-      "reply_chars": 141,
-      "latency_ms": 1737
+      "reply": "Closed string keeps the tread ends hidden with a base rail, while cut string has a stepped top edge, making the tread ends visible. Which style suits your design better?",
+      "reply_chars": 169,
+      "latency_ms": 7996
     },
     {
       "n": 9,
@@ -165,9 +165,9 @@
           "confidence": 0.72
         }
       },
-      "reply": "Take your time. I'm here when you're ready.",
-      "reply_chars": 43,
-      "latency_ms": 995
+      "reply": "Say the word when you're ready.",
+      "reply_chars": 31,
+      "latency_ms": 2416
     },
     {
       "n": 10,
@@ -185,9 +185,9 @@
           "confidence": 0.72
         }
       },
-      "reply": "Given your concerns about an open-riser staircase for a toddler, it's important to consider the safety implications. Open risers can indeed pose a fall risk, so it's crucial to consult a professional and ensure the staircase is safe. Would you like to explore other options that might better suit your needs?",
-      "reply_chars": 308,
-      "latency_ms": 2481
+      "reply": "Open risers can be a concern with young children, so it's important to ensure the staircase is designed safely. Would you like to see how we can incorporate open risers while keeping safety in mind?",
+      "reply_chars": 198,
+      "latency_ms": 11825
     },
     {
       "n": 11,
@@ -205,9 +205,9 @@
           "confidence": 0.72
         }
       },
-      "reply": "Take your time, I'm here when you're ready.",
-      "reply_chars": 43,
-      "latency_ms": 1001
+      "reply": "Take your time.",
+      "reply_chars": 15,
+      "latency_ms": 1828
     },
     {
       "n": 12,
@@ -230,9 +230,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "Given the oak you mentioned and the traditional direction, a closed string staircase would often be the go-to choice in a Victorian house, offering that smooth diagonal look without the tread ends showing. Would you prefer this option or consider an open riser staircase instead?",
-      "reply_chars": 279,
-      "latency_ms": 2264
+      "reply": "Given the oak you mentioned, a traditional closed string staircase often works well in a Victorian house. It provides a smooth, elegant look with hidden tread ends, perfect for a classic setting. Does this direction appeal to you?",
+      "reply_chars": 230,
+      "latency_ms": 13369
     },
     {
       "n": 13,
@@ -255,9 +255,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "Given the established facts and the current focus on pricing, I can provide some general information. For a traditional oak staircase against a wall, the usable depth typically starts at around 800mm at the shallow end. This one has been widened by a curved recess into the neighbouring wall, giving it more comfort than a straight under-stair alcove. Pricing usually depends on the specific details like the number of flights and the materials used. Want me to show you a couple of similar examples in our gallery?",
-      "reply_chars": 515,
-      "latency_ms": 3245
+      "reply": "I don't have a firm figure yet — pricing depends on the size of your staircase, the number of treads, and other details. What sort of size is your staircase, roughly?",
+      "reply_chars": 166,
+      "latency_ms": 11307
     },
     {
       "n": 14,
@@ -280,9 +280,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "For an open-riser staircase, delivery times can vary depending on the supplier and your location. Typically, they can be arranged within a week to a month. What specific date are you looking to have it installed by?",
-      "reply_chars": 215,
-      "latency_ms": 2067
+      "reply": "I don't have a firm figure yet — pricing depends on the staircase's size and complexity. Could you give me the floor space available at the base of the staircase in square metres?",
+      "reply_chars": 179,
+      "latency_ms": 11015
     },
     {
       "n": 15,
@@ -305,9 +305,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "Given the oak staircase you mentioned earlier, the base rail is a common feature that runs along the underside of the handrail, providing support and stability. It's typically made of timber and is an integral part of the staircase structure. Does that help clarify?",
-      "reply_chars": 266,
-      "latency_ms": 2248
+      "reply": "A base rail is a horizontal timber piece found on the top of a closed-string flight, where it supports the balusters. It's not present on cut-string flights, where the balusters land directly into the treads. Does this help clarify things?",
+      "reply_chars": 239,
+      "latency_ms": 11594
     },
     {
       "n": 16,
@@ -330,9 +330,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "Take your time — I'm here when you're ready.",
-      "reply_chars": 44,
-      "latency_ms": 980
+      "reply": "Say the word when you're ready.",
+      "reply_chars": 31,
+      "latency_ms": 2778
     },
     {
       "n": 17,
@@ -356,9 +356,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "Sure, with the staircase now featuring walnut, it offers a smoother, more refined look compared to oak. If you prefer a traditional style, walnut can be a great choice. Would you like to see more examples of walnut staircases or perhaps we can move on to discussing the base rail options?",
-      "reply_chars": 288,
-      "latency_ms": 2476
+      "reply": "Switching to walnut makes sense. Walnut is more figured and can add a warmer, more luxurious feel to your traditional staircase. Which aspect of walnut are you most excited about for your project?",
+      "reply_chars": 196,
+      "latency_ms": 8278
     },
     {
       "n": 18,
@@ -382,9 +382,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "Given the walnut you mentioned, the difference between oak and walnut for stairs is that walnut is a softer, more subtle wood that can complement traditional styles without being as bold as oak. Does that change the recommendation?",
-      "reply_chars": 231,
-      "latency_ms": 2220
+      "reply": "Given the walnut you mentioned, a traditional staircase against the wall often features a closed string, which gives a smooth appearance. Would you prefer to see the treads with a stepped edge instead?",
+      "reply_chars": 201,
+      "latency_ms": 8857
     },
     {
       "n": 19,
@@ -408,9 +408,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "Given that you've switched from walnut to oak, a closed string staircase would be a natural choice for your Victorian-style staircase against a wall. It gives that smooth diagonal side without the tread ends showing. Would you prefer this option or is there something else you're thinking of?",
-      "reply_chars": 292,
-      "latency_ms": 2296
+      "reply": "Switching from walnut to oak is a good choice for a traditional staircase. Oak is known for its durability and classic look. Would you like to explore the difference between a closed string and a cut string design?",
+      "reply_chars": 214,
+      "latency_ms": 9257
     },
     {
       "n": 20,
@@ -434,9 +434,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "Sure, no problem — let me try that again more clearly. Is one side of your staircase against a wall, or is it open on both sides?",
-      "reply_chars": 129,
-      "latency_ms": 1872
+      "reply": "No problem at all — happens all the time. Let's focus on the oak staircase against the wall. A closed string might suit well, or a cut string could add a nice feature. Which do you prefer?",
+      "reply_chars": 188,
+      "latency_ms": 8750
     },
     {
       "n": 21,
@@ -460,9 +460,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "Given the oak you mentioned and the against-wall constraint, a curved starting step is often an option, especially if the staircase is open on one side. Would you like to explore a curved starting step for your oak staircase against a wall?",
-      "reply_chars": 240,
-      "latency_ms": 2105
+      "reply": "Given the traditional direction and oak you mentioned, a curved starting step can add a elegant touch. Would you like to see examples of how this could work?",
+      "reply_chars": 157,
+      "latency_ms": 7143
     },
     {
       "n": 22,
@@ -486,9 +486,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "Sure, with the bullnose feature, having a curved starting step against the wall is a common and appealing design choice. Would you like to see an example of this option with carpeting for the bullnose, or do you prefer the exposed timber look?",
-      "reply_chars": 243,
-      "latency_ms": 2275
+      "reply": "Got it. For a traditional oak staircase with a bullnose starting step against the wall, the step often stands out as a feature. Would you like to see how the carpeting could complement this design?",
+      "reply_chars": 197,
+      "latency_ms": 9251
     },
     {
       "n": 23,
@@ -512,9 +512,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "Given that you want to keep the oak step, a rounded bullnose would be a common choice to maintain the traditional look while keeping the oak feature. Would you prefer the bullnose to wrap around the free-side newel or stay in place?",
-      "reply_chars": 232,
-      "latency_ms": 2209
+      "reply": "Got it. So the oak step will stay as is, and the rest will be carpeted. Does this look right for your staircase?",
+      "reply_chars": 112,
+      "latency_ms": 6608
     },
     {
       "n": 24,
@@ -538,9 +538,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "Given the oak you mentioned and the traditional direction, a typical installation process for an oak staircase can take around 4-6 weeks from order to installation, depending on the complexity and size of the project. Would you like to see some examples of similar projects in our gallery?",
-      "reply_chars": 289,
-      "latency_ms": 2376
+      "reply": "Given the traditional direction and oak you mentioned, the installation timeline typically ranges from 4 to 6 weeks from order to installation. Would you like to explore the design further or have any other questions?",
+      "reply_chars": 217,
+      "latency_ms": 8957
     },
     {
       "n": 25,
@@ -564,9 +564,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "Hi there — I'm the Summit staircase assistant, here to help with your queries. How can I assist you today?",
-      "reply_chars": 106,
-      "latency_ms": 1139
+      "reply": "I'm here to help with your staircase needs, whether you're just getting started or looking for more details. How can I assist you today?",
+      "reply_chars": 136,
+      "latency_ms": 5929
     },
     {
       "n": 26,
@@ -590,9 +590,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "Take your time — I'm here when you're ready.",
-      "reply_chars": 44,
-      "latency_ms": 960
+      "reply": "Say the word when you're ready.",
+      "reply_chars": 31,
+      "latency_ms": 2592
     },
     {
       "n": 27,
@@ -616,9 +616,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "Given the oak you mentioned and the traditional direction, a common rule for handrail height on a staircase is around 900mm from the ground to the top of the handrail. Would you like to explore this further?",
-      "reply_chars": 207,
-      "latency_ms": 2198
+      "reply": "Given the oak you mentioned, the UK building regulations require the handrail to be at least 900mm high, measured from the pitch line of the staircase. Would you like to explore the style of handrail brackets that might suit your staircase?",
+      "reply_chars": 240,
+      "latency_ms": 12637
     },
     {
       "n": 28,
@@ -642,9 +642,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "Great, so we have a staircase against the wall made of oak with a closed string and a cut string on the open side, with a bullnose bottom step and carpeted flights. Would you like to see some examples of similar staircases to visualize this?",
-      "reply_chars": 241,
-      "latency_ms": 2360
+      "reply": "Great choice! A closed string with a cut wall option will give a sleek look, and the exposed bullnose bottom step will be a nice feature. The carpeted flight above will complement the traditional oak well. Does this arrangement work for your space?",
+      "reply_chars": 248,
+      "latency_ms": 12204
     },
     {
       "n": 29,
@@ -668,9 +668,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "Perfect. It sounds like you're envisioning a modern staircase with oak treads, a glass balustrade, and a cut string design against the wall. Would you like to explore any other details or have any specific questions?",
-      "reply_chars": 216,
-      "latency_ms": 2083
+      "reply": "Makes sense. Do you want to see how the closed string looks in more detail?",
+      "reply_chars": 75,
+      "latency_ms": 5525
     },
     {
       "n": 30,
@@ -694,9 +694,9 @@
           "confidence": 0.49500000000000005
         }
       },
-      "reply": "You're welcome — anything else I can help with?",
-      "reply_chars": 47,
-      "latency_ms": 874
+      "reply": "You're welcome. Is there anything else I can help with?",
+      "reply_chars": 55,
+      "latency_ms": 2996
     }
   ]
 }

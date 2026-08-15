@@ -128,4 +128,8 @@ export const STAIRCASE_INTENTS = [
   // acknowledging. NEX must NOT restart reasoning or dump options; short reply,
   // stay in current thread. No full retrieval refresh.
   { slug: 'backchannel', class: 'discover', display_name: 'Backchannel / thinking noise', example_phrases: ['hmm', 'hm', 'mhm', 'ok', 'okay', 'yeah', 'yep', 'right', 'sure', 'i see', 'ah', 'oh', 'huh', 'well', 'go on'] },
+  // M1-5 · summary confirmation · customer recapped multi-item spec + wants
+  // us to confirm each item matches what state has, and flag anything that
+  // doesn't. Distinct from a bare "confirm" which is a yes to a single thing.
+  { slug: 'confirm_summary', class: 'confirm', display_name: 'Multi-item summary confirmation', example_phrases: ['to summarise', 'to summarize', 'summary:', 'so we have', 'to recap', 'let me summarise', 'sound right', 'sound about right', 'am I on the right track', 'is that all correct', 'confirm this'] },
 ];

@@ -155,6 +155,14 @@ export function extractIntent(text, store) {
   if (/\b(which .* (better|best|recommend)|what do you (think|recommend))\b/i.test(lower)) {
     return { slug: 'ask_recommendation', class: 'decide', confidence: 0.85, reason: 'recommendation cue' };
   }
+  // Summary-confirmation (multi-item recap · check BEFORE plain confirm)
+  // Fires when the message contains BOTH a summary opener AND multiple
+  // comma-separated items (indicating a real recap, not a bare "ok").
+  const looksLikeMultiItem = (lower.match(/[,·]/g) || []).length >= 3 || (lower.split(/\s+/).length >= 15);
+  if (/\b(to (summarise|summarize|recap)|summary:|so we have|let me (summarise|summarize|recap)|(does this|sound about right|sound right|am i on the right track|is that all (correct|right)))\b/i.test(lower) && looksLikeMultiItem) {
+    return { slug: 'confirm_summary', class: 'confirm', confidence: 0.9, reason: 'multi-item summary confirmation cue' };
+  }
+
   // Close · check BEFORE confirm so "great thanks" isn't captured as confirm.
   // Matches "thanks" anywhere in a short polite closer (leading adjective allowed).
   if (/\b(thanks|thank you|cheers|thanx)\b/i.test(lower) && lower.length < 80) {
