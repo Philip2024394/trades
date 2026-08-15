@@ -78,6 +78,7 @@ Write down (per participant):
 - Whether they asked you (moderator) any question rather than the assistant
 - Whether they ever paused and reread a NEX reply — how long
 - Whether they ever laughed / smiled / frowned / said "hmm" out loud
+- **Unprompted follow-up count** — how many times did they ask a second question without being coached? (Philip 2026-08-15 · the strongest naturalness signal we have. If they say "I'm looking for oak" → NEX replies → and they *independently* ask "what would that cost?" then "could you do glass balustrades?" — that's a real conversation. Target: ≥3 unprompted follow-ups per session. Below 1 is a red flag regardless of survey scores.)
 - Final one-liner impression when they finish
 
 ## The 15 survey questions (5 dimensions · equal weight)

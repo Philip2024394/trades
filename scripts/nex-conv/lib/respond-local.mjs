@@ -41,6 +41,41 @@ const SYSTEM_PROMPT = `You are NEX, an advisor for a UK staircase business. The 
 
 LANGUAGE: Reply in British English only. Never any other language.
 
+═══════════════════════════════════════════════════════════════════
+RULE 0 · CONSTITUTIONAL (Philip 2026-08-15) — top priority · overrides all others
+═══════════════════════════════════════════════════════════════════
+
+YOU ARE AN ADVISOR, NOT AN ENCYCLOPEDIA.
+
+Answer the customer's question FIRST. Explanation is SECONDARY.
+
+Every packet contains INTENT_MODE (see PACKET FLAGS). Serve THAT intent:
+
+  ask_options       → LIST available choices in general terms · do NOT recommend one · do NOT explain construction
+  ask_material_opts → LIST wood/material choices (oak, walnut, mahogany, ash, pine) · pick NONE
+  ask_definition    → EXPLAIN the term concisely · this IS the time for encyclopedia
+  ask_price         → ANSWER price · or honestly say what info is needed
+  compare           → COMPARE only the specific things asked · not the whole domain
+  ask_recommendation→ RECOMMEND a specific choice · this IS the time to have an opinion
+  ask_installation  → ANSWER about install · not about materials/style
+  specify_material  → ACKNOWLEDGE + narrow to next question (style or constraint) · do NOT restart discovery
+  specify_style     → ACKNOWLEDGE + narrow to next question (material or constraint)
+  specify_constraint→ ACKNOWLEDGE + narrow to next question
+  correct           → ACKNOWLEDGE the switch · move on with the new value
+  deny_attribution  → APOLOGISE briefly · reset · one open discovery question
+  confirm_summary   → REFLECT the summary back · check any mismatches
+  discover_open     → ONE open discovery question · list nothing specific
+  statement         → treat as discover_open unless entities suggest a specify
+
+FORBIDDEN: replacing an options/material/price/comparison ask with unsolicited
+technical explanation. "The customer asked what wood options they have" and
+you replied "Well, oak has an open grain structure..." — that's an encyclopedia
+answer to an advisor question. Wrong shape.
+
+Before writing, ask yourself: "What did the customer ACTUALLY ask for?" Then answer THAT.
+
+═══════════════════════════════════════════════════════════════════
+
 HARD OUTPUT RULES (top priority — a violation is a failed reply):
 
 1. NEVER copy the RESPONSE_FRAME labels verbatim.
@@ -114,11 +149,26 @@ HARD OUTPUT RULES (top priority — a violation is a failed reply):
 
 13. HANDOFF — if HANDOFF_RECOMMENDED=true, this is the second turn NEX has been thin on. Offer a real handoff: "If it'd be easier, one of the team can ring you tomorrow and walk you through this properly." Do NOT hedge again.
 
-14. NEVER FALSELY ATTRIBUTE (top-priority — this is the M4-BUG-01 rule).
+14. NEVER FALSELY ATTRIBUTE (top-priority — this is the M4-BUG-01+02 rule).
    You may ONLY phrase a fact as "you said X" / "you mentioned X" / "given your X" / "your staircase is X" / "for your X" / "since you're going with X" / "the X you're after" IF the ESTABLISHED FACT for X has SOURCE=customer_stated (or SOURCE=confirmed).
    If SOURCE=inferred: use hedged / checking language — "if I've understood correctly", "would you say", "leaning towards", "based on what you've said so far". NEVER assert.
    If a fact is not in ESTABLISHED FACTS at all (empty state on turn 1, or the fact was never captured): DO NOT invent it. Do not narrate ANY staircase specifics ("against a wall", "closed string", "with oak") on turn 1 with empty state — you know NOTHING about the customer's project yet.
    If the customer says "i didn't say X" / "that's not what I meant" (intent=deny_attribution): apologise briefly ("apologies — I got ahead of myself"), then ask an open discovery question. Do NOT re-assert the denied claim in any form.
+   ALSO FORBIDDEN — the sneaky-recommendation pattern (M4-BUG-02):
+     "A closed string with oak treads would be a common choice for your straight staircase."
+     Wrong: presents a specific recommendation as if it applies to this customer, when oak / closed string are NOT in state as customer_stated. Even without the word "your", it treats domain knowledge as customer state.
+     Correct alternatives depending on intent: LIST options ("materials commonly include oak, walnut, mahogany") · or ASK ("what look are you drawn to?").
+
+16. KNOWLEDGE PACKET IS FOR ANSWERING, NOT FOR ATTRIBUTING (M4-BUG-02).
+   The KNOWLEDGE PACKET contains what NEX knows about staircases in GENERAL —
+   materials that exist, constructions that are common, constraints that
+   sometimes apply. It is NOT what NEX knows about THIS customer.
+   Read the three-way fact separation in the packet:
+     CUSTOMER_STATED_FACTS  — you may attribute ("your oak", "you mentioned traditional")
+     INFERRED_ABOUT_CUSTOMER — you may hedge-CHECK ("if I've understood, you're leaning traditional?")
+     DOMAIN_KNOWLEDGE_AVAILABLE — you may USE for the answer, but NEVER phrase as customer's fact
+   Wrong: DOMAIN_KNOWLEDGE contains "oak" → reply "for your oak staircase"
+   Right: DOMAIN_KNOWLEDGE contains "oak, walnut, mahogany" → reply "common wood options include oak, walnut, and mahogany — the look and budget usually drive the pick".
 
 15. TURN-1 EMPTY-STATE PROTOCOL.
    If turn_count=1 AND ESTABLISHED FACTS is empty AND the customer said something short like "i need a staircase" / "help with a staircase" / "advice on a staircase": your reply MUST be an open discovery question. Choose ONE:
@@ -278,6 +328,51 @@ function buildPacket({ state, customerMessage, topK, responseFrame, nextLikelyIn
     .filter(([, v]) => v?.value != null)
     .map(([k, v]) => `${k}: ${v.value} [SOURCE: ${v.provenance ?? 'customer_stated'}] (turn ${v.turn_established}, confidence ${v.confidence?.toFixed?.(2) ?? v.confidence})`)
     .join('\n');
+
+  // M4-BUG-02: three-way fact separation · CUSTOMER_STATED / INFERRED_ABOUT_CUSTOMER
+  // / DOMAIN_KNOWLEDGE. The LLM previously conflated all three, presenting
+  // KNOWLEDGE PACKET material mentions ("oak", "closed string") as if they
+  // were the customer's choices. This block makes the boundary explicit.
+  const customerStatedFacts = Object.entries(state?.established_facts ?? {})
+    .filter(([, v]) => v?.value != null && (v.provenance === 'customer_stated' || v.provenance === 'confirmed'))
+    .map(([k, v]) => `- ${k} = ${v.value}`)
+    .join('\n') || '- (none · customer has not stated a specific fact yet)';
+  const inferredFacts = Object.entries(state?.established_facts ?? {})
+    .filter(([, v]) => v?.value != null && v.provenance === 'inferred')
+    .map(([k, v]) => `- ${k} = ${v.value} (may hedge-check · never assert)`)
+    .join('\n') || '- (none)';
+
+  // Categorise KNOWLEDGE PACKET entity mentions by class so the LLM sees
+  // what's DOMAIN vs what's CUSTOMER. We look at each top-K item's entities
+  // and bucket them.
+  const packetEnts = new Map(); // slug → count
+  for (const k of (topK || []).slice(0, 6)) {
+    for (const e of (k.entities || [])) packetEnts.set(e, (packetEnts.get(e) || 0) + 1);
+  }
+  const customerFactValues = new Set(
+    Object.values(state?.established_facts ?? {}).map(v => v?.value).filter(Boolean)
+  );
+  const domainMaterials = [];
+  const domainConstructions = [];
+  const domainConstraints = [];
+  const domainStyles = [];
+  const MAT = new Set(['oak','walnut','ash','pine','beech','maple','sapele','iroko','glass','metal','concrete','timber','carpet']);
+  const CON = new Set(['closed_string','cut_string','open_riser','string','riser','tread','handrail','balustrade','newel','starting_step','bullnose','curtail','volute','base_rail']);
+  const CST = new Set(['against_wall','both_sides_open','interior','garden']);
+  const STY = new Set(['traditional','contemporary','transitional','floating_stair','spiral','quarter_turn','half_turn','straight_flight']);
+  for (const slug of packetEnts.keys()) {
+    if (customerFactValues.has(slug)) continue; // it's a customer fact · not domain
+    if (MAT.has(slug)) domainMaterials.push(slug);
+    else if (CON.has(slug)) domainConstructions.push(slug);
+    else if (CST.has(slug)) domainConstraints.push(slug);
+    else if (STY.has(slug)) domainStyles.push(slug);
+  }
+  const domainKnowledge = [
+    domainMaterials.length ? `- materials available in the domain: ${domainMaterials.join(', ')}` : '',
+    domainStyles.length ? `- styles available: ${domainStyles.join(', ')}` : '',
+    domainConstructions.length ? `- constructions available: ${domainConstructions.join(', ')}` : '',
+    domainConstraints.length ? `- constraints commonly considered: ${domainConstraints.join(', ')}` : '',
+  ].filter(Boolean).join('\n') || '- (packet contains no strong entity signals)';
   const focus = (state?.entities_in_focus ?? []).join(', ') || '(none yet)';
   const constraints = (state?.constraints ?? []).join(', ') || '(none)';
   const summaries = (state?.recent_turn_summaries ?? []).slice(-5).map((t) => `  ${t.turn_index}. ${t.speaker}: "${t.text_head}"`).join('\n') || '  (this is turn 1)';
@@ -409,10 +504,39 @@ Write the reply now.`;
       `UNTRACKED (state has no fact for these · confirm verbally): ${cmp.untracked.join(' · ') || '(none)'}\n\n` +
       `REPLY SHAPE: acknowledge what matches ("yes on the oak and the wall constraint"), gently flag any mismatch, and check anything in untracked. DO NOT restart discovery.`;
   }
+  // M4-BUG-02 · INTENT_MODE · tells the LLM what SHAPE of answer to produce.
+  // See Rule 0 in SYSTEM_PROMPT for the full mapping.
+  const intentModeMap = {
+    ask_options: 'enumerate_options',
+    ask_definition: 'define',
+    ask_price: 'answer_price',
+    compare: 'compare_two',
+    ask_recommendation: 'recommend',
+    ask_installation: 'answer_install',
+    ask_what_about: 'answer_within_context',
+    specify_material: 'ack_and_narrow',
+    specify_style: 'ack_and_narrow',
+    specify_constraint: 'ack_and_narrow',
+    correct: 'ack_switch',
+    deny_attribution: 'apologise_reset',
+    confirm_summary: 'reflect_summary',
+    confirm: 'ack_confirm',
+    close: 'close_softly',
+    backchannel: 'brief_nudge',
+    meta_greeting: 'greet_warmly',
+    meta_presence: 'confirm_presence',
+    meta_identity: 'identify_as_summit',
+    meta_smalltalk: 'smalltalk_return',
+    statement: 'discover_open',
+    clarify_customer: 'ask_one_clarification',
+  };
+  const intentMode = intentModeMap[intent?.slug] ?? 'discover_open';
+
   return `CUSTOMER MESSAGE (respond to THIS):
 "${customerMessage}"
 
 PACKET FLAGS (read before writing):
+- INTENT_MODE: ${intentMode}  ← Rule 0 · serve THIS shape
 - PACKET_HAS_NO_PRICE_DATA: ${flags.PACKET_HAS_NO_PRICE_DATA}
 - KNOWLEDGE_PACKET_EMPTY: ${packetIsThin}
 - STATE_DELTA.changes: ${JSON.stringify(stateDelta.changes)}
@@ -424,7 +548,15 @@ ${referenceHint ? `- REFERENCE_HINT: ${referenceHint}` : '- REFERENCE_HINT: (non
 ${state?.condensed_history ? `\nEARLIER IN THIS CONVERSATION (condensed): ${state.condensed_history.summary}` : ''}
 ${lockedTermBlock}${summaryComparisonBlock}
 
-ESTABLISHED FACTS (already known · do NOT ask about these again):
+FACT SEPARATION (M4-BUG-02 · read this before writing):
+CUSTOMER_STATED_FACTS (you may attribute · "your X" is allowed for these ONLY):
+${customerStatedFacts}
+INFERRED_ABOUT_CUSTOMER (you may hedge-CHECK · never assert as "your X"):
+${inferredFacts}
+DOMAIN_KNOWLEDGE_AVAILABLE (from staircase corpus · use to ANSWER · NEVER phrase as customer's fact):
+${domainKnowledge}
+
+ESTABLISHED FACTS (full detail with SOURCE labels · read the source):
 ${facts || '  (none yet · you may ask discovery questions)'}
 Entities in focus: ${focus}
 Constraints: ${constraints}
@@ -501,6 +633,26 @@ ${flags.PACKET_HAS_NO_PRICE_DATA ? `!!! ABSOLUTE RULE FOR THIS TURN !!!  PACKET_
   - "Of course. Roughly where in the house is the staircase going — hallway, extension, loft?"
   - "Sure. What sort of look are you going for — traditional, contemporary, or something in between?"
 This is non-negotiable. If you feel yourself about to name a material or a wall · STOP · use one of the shapes above instead.
+` : ''}${intent?.slug === 'ask_options' ? (() => {
+  const nCustomerFacts = Object.values(state?.established_facts ?? {}).filter(v => v?.provenance === 'customer_stated' || v?.provenance === 'confirmed').length;
+  const askedAboutSpecificCategory = /\b(wood|timber|material|handrail|balustrade|finish|colour|style|shape|layout|price|cost)/i.test(customerMessage);
+  // Early state · vague ask ("what options have i") → CATEGORY-LEVEL enumeration
+  // (shape, wood, handrail, balustrade, finish) · give customer agency to pick axis
+  const useCategoryLevel = nCustomerFacts <= 2 && !askedAboutSpecificCategory;
+  return `!!! ABSOLUTE RULE — INTENT_MODE=enumerate_options !!!
+The customer is asking WHAT ARE MY OPTIONS. Your reply MUST NOT recommend a specific configuration, MUST NOT phrase any option as "your X", MUST NOT explain construction, and MUST end with ONE narrowing question.
+${useCategoryLevel ? `SHAPE = CATEGORY-LEVEL (state is thin · customer hasn't picked axes yet):
+  List the CATEGORIES that can be configured (shape, wood, handrail, balustrade, finish) NOT specific combinations. Give the customer agency to pick which axis to explore.
+  Correct: "You've got a few directions — the staircase shape, the wood, handrail, balustrade, and finish. Where would you like to start?"
+  Wrong:   "Options are: a closed string with oak treads, an open string with glass panels, or a floating staircase." (These are configurations, not category-level options. Bounces the customer into picking a full spec before they've had a chance to explore.)`
+: `SHAPE = SPECIFIC-CATEGORY ENUMERATION (customer named a category like wood/handrail):
+  List 3+ specific options WITHIN that category · do NOT pair them with other categories.
+  Correct: "For wood specifically, common choices are oak, walnut, mahogany and pine — the look and budget usually drive the pick. Any of those catch your eye?"
+  Wrong:   "A closed string with oak treads would be a good fit." (Recommends a configuration · attributes to customer.)`}
+` })() : ''}${intent?.slug === 'ask_definition' ? `!!! INTENT_MODE=define !!!
+The customer wants a TERM EXPLAINED. Define the specific term concisely (use LOCKED_TERMINOLOGY if provided). Do NOT introduce material/style specifics as if they were this customer's. End with ONE small clarification or next-step question.
+` : ''}${(intent?.slug === 'specify_material' || intent?.slug === 'specify_style' || intent?.slug === 'specify_constraint') ? `!!! INTENT_MODE=ack_and_narrow !!!
+The customer just added a piece of their spec. Acknowledge briefly (one short clause), then narrow to the NEXT missing piece of state (not something already CUSTOMER_STATED). Do NOT restart discovery. Do NOT dump domain knowledge about the choice they just made.
 ` : ''}If KNOWLEDGE_PACKET_EMPTY is true, use the thin-packet playbook (honest "don't have that yet" + real next-action, not "would you like to explore ...").`;
 }
 

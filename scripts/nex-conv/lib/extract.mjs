@@ -201,9 +201,30 @@ export function extractIntent(text, store) {
   if (/^(what is|what are|what does|define|meaning of|whats)\b/i.test(lower)) {
     return { slug: 'ask_definition', class: 'discover', confidence: 0.88, reason: 'definition cue' };
   }
-  // Options / discovery
-  if (/^(what|which|show me|tell me)\b.*(options|choices|types|kinds|styles)/i.test(lower)) {
-    return { slug: 'ask_options', class: 'discover', confidence: 0.88, reason: 'options cue' };
+  // Options / discovery · expanded for M4-BUG-02
+  // Catches: "what options have i" · "what options do i have" · "what have i got" ·
+  // "what can i choose from" · "what are my options" · "what wood" · "what timber"
+  // · "what material(s)" · "show/tell me [options|choices|types|kinds|styles]"
+  if (/^(what|which|show me|tell me)\b.*(options|choices|types|kinds|styles)/i.test(lower)
+      || /\bwhat\s+(options|choices|styles|materials?|woods?|timbers?|finishes?|colours?|handrails?|balustrades?|prices?)\s+(have|do|are)\s+(i|we|you)\b/i.test(lower)
+      || /\bwhat\s+(have|do)\s+i\s+(got|have)\b/i.test(lower)
+      || /\bwhat\s+(are|is)\s+(my|the)\s+(options|choices|possibilities)\b/i.test(lower)
+      || /\bwhat\s+can\s+i\s+(choose|pick|have|get|do)\b/i.test(lower)
+      || /^what\s+(wood|timber|material)\b/i.test(lower)) {
+    return { slug: 'ask_options', class: 'discover', confidence: 0.9, reason: 'options cue (expanded)' };
+  }
+  // M4-BUG-02 · bare-noun-plural category queries — "wood materials" · "materials"
+  // · "prices" · "types" · "styles" · "handrails" · "balustrades" · "finishes"
+  // Short 1-3 word plural noun that names a category is a category-listing ask,
+  // NOT a specify. This runs BEFORE the bare-material-specify rule below so
+  // "wood" alone or "wood materials" doesn't get mis-labelled as specify_material.
+  const wordCount = lower.split(/\s+/).length;
+  if (wordCount <= 3 && /\b(materials?|options?|choices?|types?|kinds?|styles?|prices?|costs?|handrails?|balustrades?|finishes?|colours?|woods?|timbers?|constructions?)\b/i.test(lower)) {
+    // Only fire if there's no specific material choice being made (e.g. "walnut please")
+    const hasSpecificMaterial = /\b(oak|walnut|ash|pine|beech|maple|sapele|iroko|glass|metal|concrete)\b/i.test(lower);
+    if (!hasSpecificMaterial) {
+      return { slug: 'ask_options', class: 'discover', confidence: 0.85, reason: 'bare category-plural query' };
+    }
   }
   // Recommendation ask
   if (/\b(which .* (better|best|recommend)|what do you (think|recommend))\b/i.test(lower)) {
@@ -242,6 +263,15 @@ export function extractIntent(text, store) {
     // Any declarative sentence mentioning a location entity (against_wall, both_sides_open, etc.)
     return { slug: 'specify_constraint', class: 'specify', confidence: 0.78, reason: 'declarative with location entity' };
   }
+  // M4-BUG-02 · Specify STYLE — has a style entity + short-ish text.
+  // Fires on "straight staircase" / "traditional" / "contemporary look".
+  const styles = ents.filter(e => {
+    const ent = store.allEntities().find(x => x.slug === e);
+    return ent && ent.entity_class === 'style';
+  });
+  if (styles.length && lower.length < 60) {
+    return { slug: 'specify_style', class: 'specify', confidence: 0.82, reason: 'style entity + short reply' };
+  }
   // Specify material (has a material entity + short-ish text + first-person)
   const materials = ents.filter(e => {
     const ent = store.allEntities().find(x => x.slug === e);
@@ -250,9 +280,14 @@ export function extractIntent(text, store) {
   if (materials.length && /\b(i want|i'd like|in\s|make it|make one|use)\b/i.test(lower)) {
     return { slug: 'specify_material', class: 'specify', confidence: 0.85, reason: 'material + specify cue' };
   }
-  if (materials.length && lower.length < 40) {
-    // Bare material name in short reply → specify (with lower confidence)
-    return { slug: 'specify_material', class: 'specify', confidence: 0.72, reason: 'bare material short reply' };
+  // M4-BUG-02 · Bare material name in a SHORT reply → specify, but ONLY if
+  // the material is SPECIFIC (oak, walnut...), NOT a generic category word
+  // like "wood" or "timber". "wood" alone should be ask_options (handled by
+  // the bare-plural rule above).
+  const GENERIC_MATERIALS = new Set(['timber', 'wood', 'material', 'carpet']);
+  const specificMaterials = materials.filter(m => !GENERIC_MATERIALS.has(m));
+  if (specificMaterials.length && lower.length < 40) {
+    return { slug: 'specify_material', class: 'specify', confidence: 0.72, reason: 'bare specific-material short reply' };
   }
   // Question mark generic
   if (lower.endsWith('?')) {

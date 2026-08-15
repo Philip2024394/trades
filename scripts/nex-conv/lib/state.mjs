@@ -184,12 +184,30 @@ export function updateStateFromCustomer(state, args) {
   const provenanceForIntent = (intentSlug, expectedSpecify) =>
     intentSlug === expectedSpecify ? 'customer_stated' : 'inferred';
 
+  // M4-BUG-02 · intents where entities in the QUESTION should NOT become
+  // customer facts. When the customer says "wood materials" they are ASKING
+  // about wood, not specifying it. When they say "compare oak vs walnut"
+  // they haven't picked either. When they ask "what is a closed string" the
+  // word "string" mustn't become their construction context.
+  const PURE_QUESTION_INTENTS = new Set([
+    'ask_options', 'ask_definition', 'ask_recommendation', 'ask_installation',
+    'ask_price', 'compare', 'ask_what_about',
+    'meta_greeting', 'meta_presence', 'meta_identity', 'meta_smalltalk',
+    'backchannel', 'close', 'confirm', 'confirm_summary', 'clarify_customer',
+    'deny_attribution',
+  ]);
+  const isPureQuestion = PURE_QUESTION_INTENTS.has(intent.slug);
+
   // Specify material → establish or update fact.
   // Secondary capture: also fires when a material entity is present in any
   // specify/discover intent (so "I like oak" without a strong specify cue
   // still captures oak as the material fact). Mirrors the style rule below.
-  const materialEnts = entities.filter(e => isMaterial(e));
-  if (intent.slug !== 'correct' && intent.slug !== 'deny_attribution' && materialEnts.length && (intent.slug === 'specify_material' || intent.class === 'specify' || intent.class === 'discover')) {
+  //
+  // M4-BUG-02 GUARD: PURE_QUESTION_INTENTS never write facts. And even for
+  // non-question intents, generic material words ("timber", "wood") never
+  // become customer facts — only specific choices (oak, walnut, ...).
+  const materialEnts = entities.filter(e => isMaterial(e) && !['timber', 'wood', 'material', 'carpet'].includes(e));
+  if (!isPureQuestion && intent.slug !== 'correct' && materialEnts.length && (intent.slug === 'specify_material' || intent.class === 'specify' || intent.class === 'discover')) {
     for (const mat of materialEnts) {
       state.established_facts.material_primary = state.established_facts.material_primary ?? {
         value: mat,
@@ -202,7 +220,7 @@ export function updateStateFromCustomer(state, args) {
   // Style — set if either the intent is specify_style OR a style entity is
   // present in any specify/discover intent (secondary intent capture).
   const styleEnts = entities.filter(e => isStyle(e));
-  if (intent.slug !== 'deny_attribution' && styleEnts.length && (intent.slug === 'specify_style' || intent.class === 'specify' || intent.class === 'discover')) {
+  if (!isPureQuestion && styleEnts.length && (intent.slug === 'specify_style' || intent.class === 'specify' || intent.class === 'discover')) {
     for (const style of styleEnts) {
       state.established_facts.style_intent = state.established_facts.style_intent ?? {
         value: style,
@@ -214,7 +232,7 @@ export function updateStateFromCustomer(state, args) {
   }
   // Constraint — same pattern as material/style secondary capture.
   const constraintEnts = entities.filter(e => isLocation(e));
-  if (intent.slug !== 'deny_attribution' && constraintEnts.length && (intent.slug === 'specify_constraint' || intent.class === 'specify' || intent.class === 'discover')) {
+  if (!isPureQuestion && constraintEnts.length && (intent.slug === 'specify_constraint' || intent.class === 'specify' || intent.class === 'discover')) {
     for (const c of constraintEnts) {
       state.established_facts.construction_context = state.established_facts.construction_context ?? {
         value: c,

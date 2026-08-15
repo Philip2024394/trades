@@ -1,0 +1,98 @@
+{
+  "id": "m4-bug-02-knowledge-leak-2026-08-15",
+  "purpose": "M4-BUG-02 · Knowledge-packet leakage into customer state. NEX must be an ADVISOR (answer the question) not an ENCYCLOPEDIA (dump domain knowledge). Domain-knowledge in retrieval must not be phrased as customer state.",
+  "brain": "staircase_brain",
+  "conversations": [
+    {
+      "id": "m4bug02-straight-must-not-leak-oak-wall-closedstring",
+      "purpose": "Customer says only 'straight staircase' · reply may mention that layout is one option, must NOT invent oak/wall/closed string as if this customer's.",
+      "turns": [
+        {
+          "customer": "straight staircase",
+          "expect_intent": "specify_style",
+          "expect_reply_no_phrase": [
+            "your oak",
+            "your wall",
+            "your victorian",
+            "your closed string",
+            "your cut string",
+            "for your oak",
+            "given your staircase against",
+            "against a wall",
+            "against the wall",
+            "closed string with oak"
+          ],
+          "expect_reply_no_regex": [
+            "for\\s+(a|your)\\s+(victorian|edwardian)\\s+oak",
+            "given\\s+your\\s+staircase\\s+is\\s+straight\\s*,?\\s*a?\\s*closed"
+          ],
+          "expect_no_fact_field": ["material_primary", "construction_context"]
+        }
+      ]
+    },
+    {
+      "id": "m4bug02-what-options-must-enumerate-not-recommend",
+      "purpose": "Customer asks 'what options have i' · reply must LIST at least 2 categories or 2 options, must NOT recommend a specific single choice, must NOT lecture.",
+      "turns": [
+        { "customer": "straight staircase" },
+        {
+          "customer": "what options have i",
+          "expect_intent": "ask_options",
+          "expect_reply_no_phrase": [
+            "your oak",
+            "your closed string",
+            "your wall",
+            "closed string with oak",
+            "for your oak staircase"
+          ],
+          "expect_reply_no_regex": [
+            "a\\s+closed\\s+string\\s+with\\s+oak\\s+(treads|for)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m4bug02-wood-materials-must-list-not-pick",
+      "purpose": "Customer says 'wood materials' · reply must LIST at least 2 wood options, must NOT pick oak (or any single wood) for them.",
+      "turns": [
+        { "customer": "straight staircase" },
+        {
+          "customer": "wood materials",
+          "expect_intent": "ask_options",
+          "expect_no_fact_field": ["material_primary"],
+          "expect_reply_no_phrase": [
+            "your oak",
+            "for your oak",
+            "given your interest in oak",
+            "have you considered oak",
+            "oak for its"
+          ],
+          "expect_reply_no_regex": [
+            "^[^.]*\\boak\\b(?![^.]*\\b(walnut|mahogany|ash|pine|beech|maple)\\b)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m4bug02-what-material-choices",
+      "purpose": "Same shape · different phrasing · 'what material choices do I have'.",
+      "turns": [
+        {
+          "customer": "what material choices do I have",
+          "expect_intent": "ask_options"
+        }
+      ]
+    },
+    {
+      "id": "m4bug02-bare-materials-word",
+      "purpose": "Bare 'materials' should route to ask_options not specify.",
+      "turns": [
+        {
+          "customer": "materials",
+          "expect_intent": "ask_options",
+          "expect_no_fact_field": ["material_primary"]
+        }
+      ]
+    }
+  ]
+}
