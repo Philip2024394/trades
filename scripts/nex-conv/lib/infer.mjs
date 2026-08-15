@@ -130,12 +130,13 @@ export async function processTurn({ store, state, brain, text, speaker = 'custom
     packetIsThin,
     secondaryIntents,
   });
-  // Reflect a synthetic "NEX turn" in the state so multi-turn convos advance.
-  updateStateFromNex(state, {
-    text: responseFrame.core_answer_head ?? responseFrame.acknowledge,
-    entities: retrieval.topK.flatMap(x => x.item.entities ?? []).slice(0, 5),
-    usedItemIds: retrieval.topK.map(x => x.item.id),
-  });
+  // M4-BUG-01: the synthetic updateStateFromNex previously called here was
+  // TOXIC. It pushed the top-K knowledge item's text into RECENT TURNS as
+  // if NEX had said it, poisoning the LLM's context ("your staircase against
+  // a wall..." was really a KNOWLEDGE PACKET item, not a prior NEX reply).
+  // It also double-incremented turn_count per customer message, which broke
+  // the turn-1 empty-state suppression flag. The real NEX turn is now
+  // recorded AFTER renderReply below, using the actual prose text.
   timings.state_ms = Date.now() - t_st;
 
   const topKPayload = retrieval.topK.map(x => ({
@@ -180,6 +181,19 @@ export async function processTurn({ store, state, brain, text, speaker = 'custom
       prose = { error: String(e?.message ?? e), latency_ms: Date.now() - t_pr };
       timings.prose_ms = Date.now() - t_pr;
     }
+  }
+
+  // M4-BUG-01: record the REAL NEX turn (using actual prose text) AFTER
+  // rendering. This is the only correct place · advances turn_count once
+  // per full customer/nex exchange, records real closer/opener patterns,
+  // and puts the real NEX text (not a knowledge-item stub) into RECENT TURNS.
+  const nexReplyText = prose?.text ?? responseFrame.acknowledge ?? '';
+  if (nexReplyText) {
+    updateStateFromNex(state, {
+      text: nexReplyText,
+      entities: retrieval.topK.flatMap(x => x.item.entities ?? []).slice(0, 5),
+      usedItemIds: retrieval.topK.map(x => x.item.id),
+    });
   }
 
   const total_ms = Date.now() - t0;

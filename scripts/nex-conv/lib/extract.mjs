@@ -46,14 +46,57 @@ const IMPLIED_PARENTS = {
   base_rail: 'string',
 };
 
+// M4-BUG-01 · negated-attribution mask.
+// The M4 test surfaced this failure: customer says "i didient say against
+// the wall" · extractEntities used to find "wall" and write against_wall
+// into state as an established fact, then the LLM would double down
+// claiming the customer said it.
+//
+// This helper masks the character range from an explicit denial-of-attribution
+// cue ("i didn't say", "i never mentioned", "that's not what I said", etc.)
+// through the end of that clause. Only these targeted patterns — a general
+// "not X" mask would clobber corrections like "no I meant oak" which are
+// legitimate specify_material turns.
+const NEGATED_ATTRIBUTION_PATTERNS = [
+  /\bi\s+didn'?t\s+(say|mention|mean|state|tell\s+you)\b/gi,
+  /\bi\s+did\s*ient\s+(say|mention|mean|state|tell\s+you)\b/gi,   // common misspell
+  /\bi\s+did\s+not\s+(say|mention|mean|state|tell\s+you)\b/gi,
+  /\bi\s+never\s+(said|mentioned|meant|stated|told\s+you)\b/gi,
+  /\bi\s+haven'?t\s+(said|mentioned|meant|stated|told\s+you)\b/gi,
+  /\bi\s+wasn'?t\s+(saying|mentioning|meaning|stating|telling\s+you)\b/gi,
+  /\bthat'?s\s+not\s+what\s+i\s+(said|meant|mentioned)\b/gi,
+  /\byou\s+(just\s+)?assumed\b/gi,
+  /\byou'?re\s+putting\s+words\b/gi,
+];
+export function maskNegatedAttributions(text) {
+  if (!text) return text;
+  let out = text;
+  for (const rx of NEGATED_ATTRIBUTION_PATTERNS) {
+    rx.lastIndex = 0;
+    let m;
+    while ((m = rx.exec(text)) !== null) {
+      const start = m.index;
+      const restStart = start + m[0].length;
+      const rest = text.slice(restStart);
+      const punct = rest.match(/[.,;!?]/);
+      const end = punct ? restStart + punct.index : text.length;
+      out = out.slice(0, start) + ' '.repeat(end - start) + out.slice(end);
+    }
+  }
+  return out;
+}
+
 /** Extract entity slugs mentioned in a text. Returns unique slug array. */
 export function extractEntities(text, store) {
   if (!text || typeof text !== 'string') return [];
   const pairs = aliasesForStore(store);
   const found = new Set();
   const consumed = []; // char ranges to skip after longer-match wins
+  // M4-BUG-01: strip the payload of "i didn't say X" style denials before
+  // scanning, so we don't extract X as a positive entity from a denial.
+  const masked = maskNegatedAttributions(text);
   // Normalise hyphens between word chars to spaces so "starting-step" matches "starting step"
-  const lower = text.toLowerCase().replace(/(\w)-(\w)/g, '$1 $2');
+  const lower = masked.toLowerCase().replace(/(\w)-(\w)/g, '$1 $2');
   for (const { alias, slug } of pairs) {
     const rx = makeRegex(alias);
     let m; const searchable = lower;
@@ -105,6 +148,17 @@ export function extractIntent(text, store) {
     || /^(ok(ay)?|yeah|yep|right|alright|hmm+|hm+|sure)[\s,]+(cool|nice|great|sweet|brilliant|good|ok(ay)?)[.!?\s]*$/i.test(lower)
   )) {
     return { slug: 'backchannel', class: 'discover', confidence: 0.9, reason: 'backchannel cue' };
+  }
+
+  // M4-BUG-01 · deny_attribution intent — the customer is explicitly rejecting
+  // something NEX (or the packet) implied they'd said. Fires BEFORE correct so
+  // "i didn't say against the wall" isn't misread as a positive correction.
+  // Handler in state.mjs uses this to clear any wrongly-set fact.
+  if (/\b(i\s+didn'?t|i\s+did\s*ient|i\s+did\s+not|i\s+never|i\s+haven'?t|i\s+wasn'?t)\s+(say|said|mean|meant|mention|mentioned|state|stated|tell\s+you|told\s+you|saying|meaning|mentioning|stating|telling\s+you)\b/i.test(lower)
+      || /\bthat'?s\s+not\s+what\s+i\s+(said|meant|mentioned)\b/i.test(lower)
+      || /\byou\s+(just\s+)?assumed\b/i.test(lower)
+      || /\byou'?re\s+putting\s+words\b/i.test(lower)) {
+    return { slug: 'deny_attribution', class: 'correct', confidence: 0.92, reason: 'explicit denial of attribution' };
   }
 
   // A question-shaped message ("wait sorry, what does X mean?") should NOT be

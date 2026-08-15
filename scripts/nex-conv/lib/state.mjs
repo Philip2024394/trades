@@ -112,6 +112,40 @@ export function updateStateFromCustomer(state, args) {
     }
   }
 
+  // M4-BUG-01 · deny_attribution — customer is explicitly rejecting a fact
+  // they were falsely attributed. Clear any fact whose value matches the
+  // denied entity so we stop repeating the false claim. Log the denial so
+  // response layer can acknowledge honestly ("apologies — I misread you").
+  if (intent.slug === 'deny_attribution') {
+    const deniedEnts = new Set(entities);
+    const clearedFields = [];
+    for (const [field, fact] of Object.entries(state.established_facts)) {
+      if (fact && deniedEnts.has(fact.value)) {
+        state.corrections_log.push({
+          field,
+          previous: fact.value,
+          new: null,
+          turn: state.turn_count,
+          via: 'deny_attribution',
+          at: nowIso(),
+        });
+        delete state.established_facts[field];
+        if (field === 'construction_context') {
+          state.constraints = state.constraints.filter(c => c !== fact.value);
+        }
+        clearedFields.push({ field, cleared: fact.value });
+      }
+    }
+    if (clearedFields.length) {
+      delta.changes.push({ field: 'denial_clear', cleared: clearedFields });
+    } else {
+      // No matching fact — customer denied something we hadn't even set.
+      // Response layer needs to know: apologise for the implication, don't ask
+      // for what they denied.
+      delta.noops.push({ field: 'denial_clear', reason: 'nothing to clear · was never in state' });
+    }
+  }
+
   // Correction flow — REPLACE facts, preserve old value in corrections_log.
   // Also records what actually changed vs was a no-op so the response layer
   // knows whether to acknowledge a change (Fix 3).
@@ -136,33 +170,58 @@ export function updateStateFromCustomer(state, args) {
         turn_established: state.turn_count,
         confidence: intent.confidence,
         via: 'correction',
+        provenance: 'customer_stated', // M4-BUG-01
       };
     }
   }
+
+  // M4-BUG-01 · fact provenance labels
+  // customer_stated = customer explicitly specified in this turn (intent.slug === specify_*)
+  // inferred        = present as a secondary entity in a discover-class turn (weaker signal)
+  // The response layer uses these to decide whether to phrase a fact as
+  // "you said X" (only if customer_stated) vs "if I've understood correctly"
+  // (if inferred). Anything else is a rule violation.
+  const provenanceForIntent = (intentSlug, expectedSpecify) =>
+    intentSlug === expectedSpecify ? 'customer_stated' : 'inferred';
 
   // Specify material → establish or update fact.
   // Secondary capture: also fires when a material entity is present in any
   // specify/discover intent (so "I like oak" without a strong specify cue
   // still captures oak as the material fact). Mirrors the style rule below.
   const materialEnts = entities.filter(e => isMaterial(e));
-  if (intent.slug !== 'correct' && materialEnts.length && (intent.slug === 'specify_material' || intent.class === 'specify' || intent.class === 'discover')) {
+  if (intent.slug !== 'correct' && intent.slug !== 'deny_attribution' && materialEnts.length && (intent.slug === 'specify_material' || intent.class === 'specify' || intent.class === 'discover')) {
     for (const mat of materialEnts) {
-      state.established_facts.material_primary = state.established_facts.material_primary ?? { value: mat, turn_established: state.turn_count, confidence: intent.confidence * (intent.slug === 'specify_material' ? 1 : 0.9) };
+      state.established_facts.material_primary = state.established_facts.material_primary ?? {
+        value: mat,
+        turn_established: state.turn_count,
+        confidence: intent.confidence * (intent.slug === 'specify_material' ? 1 : 0.9),
+        provenance: provenanceForIntent(intent.slug, 'specify_material'), // M4-BUG-01
+      };
     }
   }
   // Style — set if either the intent is specify_style OR a style entity is
   // present in any specify/discover intent (secondary intent capture).
   const styleEnts = entities.filter(e => isStyle(e));
-  if (styleEnts.length && (intent.slug === 'specify_style' || intent.class === 'specify' || intent.class === 'discover')) {
+  if (intent.slug !== 'deny_attribution' && styleEnts.length && (intent.slug === 'specify_style' || intent.class === 'specify' || intent.class === 'discover')) {
     for (const style of styleEnts) {
-      state.established_facts.style_intent = state.established_facts.style_intent ?? { value: style, turn_established: state.turn_count, confidence: intent.confidence * 0.9 };
+      state.established_facts.style_intent = state.established_facts.style_intent ?? {
+        value: style,
+        turn_established: state.turn_count,
+        confidence: intent.confidence * 0.9,
+        provenance: provenanceForIntent(intent.slug, 'specify_style'), // M4-BUG-01
+      };
     }
   }
   // Constraint — same pattern as material/style secondary capture.
   const constraintEnts = entities.filter(e => isLocation(e));
-  if (constraintEnts.length && (intent.slug === 'specify_constraint' || intent.class === 'specify' || intent.class === 'discover')) {
+  if (intent.slug !== 'deny_attribution' && constraintEnts.length && (intent.slug === 'specify_constraint' || intent.class === 'specify' || intent.class === 'discover')) {
     for (const c of constraintEnts) {
-      state.established_facts.construction_context = state.established_facts.construction_context ?? { value: c, turn_established: state.turn_count, confidence: intent.confidence * (intent.slug === 'specify_constraint' ? 1 : 0.9) };
+      state.established_facts.construction_context = state.established_facts.construction_context ?? {
+        value: c,
+        turn_established: state.turn_count,
+        confidence: intent.confidence * (intent.slug === 'specify_constraint' ? 1 : 0.9),
+        provenance: provenanceForIntent(intent.slug, 'specify_constraint'), // M4-BUG-01
+      };
       if (!state.constraints.includes(c)) state.constraints.push(c);
     }
   }

@@ -48,7 +48,19 @@ async function main() {
           }
         }
       }
-      perTurn.push({ customer: t.customer, intent: out.understood_intent.slug, reply, failures });
+      // M4-BUG-01: state-shape assertions
+      if (Array.isArray(t.expect_no_fact_field)) {
+        for (const field of t.expect_no_fact_field) {
+          if (state.established_facts?.[field]?.value != null) {
+            failures.push(`state.established_facts.${field} MUST be unset · got value="${state.established_facts[field].value}" provenance=${state.established_facts[field].provenance ?? '(none)'}`);
+          }
+        }
+      }
+      if (Array.isArray(t.expect_entities_after_contains)) {
+        const missing = t.expect_entities_after_contains.filter(e => !state.entities_in_focus.includes(e));
+        if (missing.length) failures.push(`entities missing from focus: ${missing.join(',')} (got: ${state.entities_in_focus.join(',')})`);
+      }
+      perTurn.push({ customer: t.customer, intent: out.understood_intent.slug, reply, facts: { ...state.established_facts }, failures });
       console.log(`  ${failures.length ? '✗' : '✓'} ${conv.id} · "${t.customer.slice(0, 60)}" · ${out.understood_intent.slug}${failures.length ? ' · ' + failures.join('; ') : ''}`);
     }
     const passed = perTurn.reduce((n, p) => n + (p.failures.length === 0 ? 1 : 0), 0);

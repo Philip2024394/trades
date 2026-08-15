@@ -1,0 +1,89 @@
+{
+  "id": "m4-bug-01-false-attribution-2026-08-15",
+  "purpose": "M4-BUG-01 · false customer-attribution provenance fix. Turn-1 empty-state must not fabricate wall/oak/string. Denial (i didn't say X) must not extract X into state and must not have NEX double down.",
+  "brain": "staircase_brain",
+  "conversations": [
+    {
+      "id": "m4bug01-turn1-empty-state-must-not-fabricate",
+      "purpose": "Turn 1 · state is empty · reply must NOT contain any invented specifics.",
+      "turns": [
+        {
+          "customer": "i need staircase",
+          "expect_reply_no_phrase": [
+            "against a wall",
+            "against the wall",
+            "one side is against",
+            "opens onto",
+            "closed string",
+            "cut string",
+            "with oak",
+            "in oak",
+            "your oak",
+            "the oak you"
+          ],
+          "expect_reply_no_regex": [
+            "given\\s+(your|the|that)\\s+\\w+",
+            "for\\s+(your|the|that)\\s+(oak|walnut|traditional|contemporary|victorian|edwardian|glass|closed|cut)",
+            "since\\s+you\\s+(said|mentioned|noted)",
+            "your\\s+(oak|walnut|victorian|edwardian|traditional|contemporary|closed|cut)"
+          ],
+          "expect_no_fact_field": ["construction_context", "material_primary", "style_intent"]
+        }
+      ]
+    },
+    {
+      "id": "m4bug01-turn2-denial-must-not-write-state-must-not-double-down",
+      "purpose": "Turn 2 · customer denies attribution · state must NOT gain the denied fact · reply must apologise and reset.",
+      "turns": [
+        { "customer": "i need staircase" },
+        {
+          "customer": "i didient say against the wall",
+          "expect_intent": "deny_attribution",
+          "expect_no_fact_field": ["construction_context"],
+          "expect_reply_no_phrase": [
+            "against a wall",
+            "against the wall",
+            "one side is against",
+            "for your victorian oak",
+            "the wall"
+          ],
+          "expect_reply_no_regex": [
+            "given\\s+that\\s+you\\s+(mentioned|said|noted)",
+            "since\\s+you\\s+(mentioned|said|noted)",
+            "you\\s+(mentioned|said|noted)\\s+one\\s+side",
+            "your\\s+(oak|walnut|victorian|edwardian|closed|cut|glass)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m4bug01-turn2-correction-still-works-not-broken-by-mask",
+      "purpose": "Correction flow must still work — 'no I meant oak' remains a positive correction, not masked away.",
+      "turns": [
+        { "customer": "i want a walnut staircase" },
+        {
+          "customer": "no I meant oak",
+          "expect_intent": "correct",
+          "expect_entities_after_contains": ["oak"]
+        }
+      ]
+    },
+    {
+      "id": "m4bug01-inferred-fact-must-be-hedged",
+      "purpose": "A fact captured as inferred (from discover-class intent) must NOT be asserted as customer_stated in the reply.",
+      "turns": [
+        {
+          "customer": "oak looks nice"
+        },
+        {
+          "customer": "what would suit that?",
+          "expect_reply_no_regex": [
+            "for\\s+your\\s+oak",
+            "the\\s+oak\\s+you'?re\\s+(going|leaning|after)",
+            "since\\s+you'?re\\s+going\\s+with\\s+oak"
+          ]
+        }
+      ]
+    }
+  ]
+}
