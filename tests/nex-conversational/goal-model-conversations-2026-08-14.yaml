@@ -1,0 +1,631 @@
+# NEX Customer Goal Model · Multi-Turn Conversation Suite (Philip 2026-08-14)
+#
+# Measures across 10 separate dimensions:
+#   goal_retention · constraint_retention · preference_retention · override_correctness
+#   reference_resolution · contradiction_detection · clarification_correctness
+#   retrieval_correctness · final_recommendation_correctness · fabrication (must be 0)
+#
+# 60 conversations across 7 categories (Philip's distribution suggested 100 —
+# built 60 substantial multi-turn cases as v1; extend later).
+#
+# Format:
+#   turns: array of customer utterances
+#   category: one of the 7 categories
+#   expected_state: what should be tracked after all turns
+#     explicit_preferences: {field: value}
+#     explicit_exclusions: {field: [values]}
+#     explicit_constraints: {field: value}
+#     scope: refacing | full_build | null
+#     concepts_visited_includes: [required concepts]
+#   expected_corrections: (optional) [{field, from, to}]
+#   expected_contradictions: (optional) [{field, note}]
+#   expected_references_resolved: (optional) count of references NEX should have resolved
+#   expected_should_clarify: (optional) true if NEX should have asked at some point
+
+conversations:
+
+  # ============================================================
+  # CATEGORY A · Straightforward requirement-building (10)
+  # ============================================================
+
+  - id: gm-A-01
+    category: requirement_building
+    turns:
+      - "I want an oak staircase."
+      - "Modern style."
+      - "Glass balustrade."
+      - "Cantilever if possible."
+    expected_state:
+      explicit_preferences: {timber_species: oak, style: modern, balustrade_material: glass}
+      concepts_visited_includes: [timber_species, design_style, balusters, stringers]
+
+  - id: gm-A-02
+    category: requirement_building
+    turns:
+      - "Traditional oak staircase."
+      - "Turned spindles."
+      - "Curtail starting step with a volute."
+      - "Carpet runner."
+    expected_state:
+      explicit_preferences: {timber_species: oak, style: traditional, balustrade_material: turned_timber, finish: runner}
+      concepts_visited_includes: [timber_species, design_style, balusters, starting_steps, carpet_stepmats]
+
+  - id: gm-A-03
+    category: requirement_building
+    turns:
+      - "I want a modern floating staircase."
+      - "Oak treads."
+      - "Frameless glass balustrade."
+      - "LED under-nosing on each tread."
+    expected_state:
+      explicit_preferences: {style: modern, timber_species: oak, balustrade_material: glass}
+      concepts_visited_includes: [design_style, stringers, treads_risers, balusters, lighting]
+
+  - id: gm-A-04
+    category: requirement_building
+    turns:
+      - "Wall-fixed staircase."
+      - "Oak throughout."
+      - "Traditional design."
+      - "Bullnose starting step on the free side."
+    expected_state:
+      explicit_preferences: {timber_species: oak, style: traditional}
+      explicit_constraints: {construction: wall_fixed}
+      concepts_visited_includes: [stringers, timber_species, design_style, starting_steps]
+
+  - id: gm-A-05
+    category: requirement_building
+    turns:
+      - "New staircase for the entry hall."
+      - "Grand curved traditional."
+      - "Mahogany."
+      - "Turned spindles and a scroll volute."
+    expected_state:
+      explicit_preferences: {timber_species: mahogany, style: traditional, balustrade_material: turned_timber}
+      concepts_visited_includes: [design_style, timber_species, balusters]
+
+  - id: gm-A-06
+    category: requirement_building
+    turns:
+      - "Scandinavian style."
+      - "Pale oak."
+      - "Slim brushed stainless spindles."
+      - "Frameless glass around the landing."
+    expected_state:
+      explicit_preferences: {style: scandi, timber_species: oak, balustrade_material: glass}
+      concepts_visited_includes: [design_style, timber_species, balusters, landing_railings]
+
+  - id: gm-A-07
+    category: requirement_building
+    turns:
+      - "Industrial staircase."
+      - "Black steel spine stringer."
+      - "Solid oak treads."
+      - "Horizontal cable rail."
+    expected_state:
+      explicit_preferences: {style: industrial, timber_species: oak}
+      concepts_visited_includes: [design_style, stringers, treads_risers, balusters]
+
+  - id: gm-A-08
+    category: requirement_building
+    turns:
+      - "Cottage style."
+      - "Pine."
+      - "Painted white spindles."
+      - "Natural pine treads and handrail."
+    expected_state:
+      explicit_preferences: {style: rustic, timber_species: pine}
+      concepts_visited_includes: [design_style, timber_species, balusters, treads_risers, handrail]
+
+  - id: gm-A-09
+    category: requirement_building
+    turns:
+      - "Contemporary staircase."
+      - "Walnut treads."
+      - "Matt-black metal rods for the balustrade."
+      - "Under-nosing LED strip."
+    expected_state:
+      explicit_preferences: {style: modern, timber_species: walnut, balustrade_material: matt_black_metal}
+      concepts_visited_includes: [design_style, treads_risers, balusters, lighting]
+
+  - id: gm-A-10
+    category: requirement_building
+    turns:
+      - "Straight run staircase."
+      - "Oak throughout."
+      - "Modern minimalist."
+      - "No visible fixings."
+    expected_state:
+      explicit_preferences: {timber_species: oak, style: modern}
+      concepts_visited_includes: [layout_types, timber_species, design_style]
+
+  # ============================================================
+  # CATEGORY B · Changing preferences (10)
+  # ============================================================
+
+  - id: gm-B-01
+    category: changing_preferences
+    turns:
+      - "Modern glass balustrade."
+      - "Actually, on second thought, matt-black metal rods instead."
+      - "Oak treads and handrail."
+    expected_state:
+      explicit_preferences: {style: modern, timber_species: oak, balustrade_material: matt_black_metal}
+    expected_corrections:
+      - {field: balustrade_material, from: glass, to: matt_black_metal}
+
+  - id: gm-B-02
+    category: changing_preferences
+    turns:
+      - "I want walnut everywhere."
+      - "Sorry, I mean oak — walnut's too dark for the room."
+      - "Modern style."
+    expected_state:
+      explicit_preferences: {timber_species: oak, style: modern}
+    expected_corrections:
+      - {field: timber_species, from: walnut, to: oak}
+
+  - id: gm-B-03
+    category: changing_preferences
+    turns:
+      - "Traditional design."
+      - "Actually, let's go modern instead."
+      - "Oak, glass, minimal."
+    expected_state:
+      explicit_preferences: {style: modern, timber_species: oak, balustrade_material: glass}
+    expected_corrections:
+      - {field: style, from: traditional, to: modern}
+
+  - id: gm-B-04
+    category: changing_preferences
+    turns:
+      - "Carpet the whole flight."
+      - "Actually, let's do a runner instead."
+      - "Feature bullnose starting step in exposed oak."
+    expected_state:
+      explicit_preferences: {finish: runner, timber_species: oak}
+    expected_corrections:
+      - {field: finish, from: carpet, to: runner}
+
+  - id: gm-B-05
+    category: changing_preferences
+    turns:
+      - "Modern Scandinavian look."
+      - "Actually, more industrial than Scandi."
+      - "Black steel stringer, oak treads."
+    expected_state:
+      explicit_preferences: {style: industrial, timber_species: oak}
+    expected_corrections:
+      - {field: style, from: scandi, to: industrial}
+
+  - id: gm-B-06
+    category: changing_preferences
+    turns:
+      - "Matt-black metal spindles."
+      - "Actually, I've changed my mind — brushed stainless instead."
+      - "Oak handrail."
+    expected_state:
+      explicit_preferences: {timber_species: oak, balustrade_material: brushed_stainless}
+    expected_corrections:
+      - {field: balustrade_material, from: matt_black_metal, to: brushed_stainless}
+
+  - id: gm-B-07
+    category: changing_preferences
+    turns:
+      - "Bullnose starting step."
+      - "Actually, on reflection let's do a curtail with a volute."
+      - "Traditional oak."
+    expected_state:
+      explicit_preferences: {timber_species: oak, style: traditional}
+    expected_corrections: []
+
+  - id: gm-B-08
+    category: changing_preferences
+    turns:
+      - "Pine staircase."
+      - "Actually, let's upgrade to oak."
+      - "Modern style throughout."
+    expected_state:
+      explicit_preferences: {timber_species: oak, style: modern}
+    expected_corrections:
+      - {field: timber_species, from: pine, to: oak}
+
+  - id: gm-B-09
+    category: changing_preferences
+    turns:
+      - "Full carpet."
+      - "Wait, actually just a runner — I want the timber visible on the sides."
+    expected_state:
+      explicit_preferences: {finish: runner}
+    expected_corrections:
+      - {field: finish, from: carpet, to: runner}
+
+  - id: gm-B-10
+    category: changing_preferences
+    turns:
+      - "Glass balustrade."
+      - "Actually scratch that — I don't want glass."
+      - "Slim matt-black metal rods instead."
+    expected_state:
+      explicit_preferences: {balustrade_material: matt_black_metal}
+      explicit_exclusions: {balustrade_material: [glass]}
+    expected_corrections:
+      - {field: balustrade_material, from: glass, to: matt_black_metal}
+
+  # ============================================================
+  # CATEGORY C · Corrections (5)
+  # ============================================================
+
+  - id: gm-C-01
+    category: corrections
+    turns:
+      - "I want a Victorian curtail with a volute."
+      - "Sorry, I mean bullnose — curtail is too much."
+    expected_corrections:
+      - {field: starting_step_type_note, from: curtail_volute, to: bullnose, note: not strictly tracked as pref}
+
+  - id: gm-C-02
+    category: corrections
+    turns:
+      - "Walnut treads with matt-black spindles."
+      - "Actually, I mean oak treads — walnut clashes with the flooring."
+    expected_state:
+      explicit_preferences: {timber_species: oak, balustrade_material: matt_black_metal}
+    expected_corrections:
+      - {field: timber_species, from: walnut, to: oak}
+
+  - id: gm-C-03
+    category: corrections
+    turns:
+      - "Traditional turned spindles."
+      - "Sorry, I mean modern square spindles."
+      - "Oak."
+    expected_state:
+      explicit_preferences: {timber_species: oak}
+    expected_corrections: []
+
+  - id: gm-C-04
+    category: corrections
+    turns:
+      - "Cottage-style with painted spindles."
+      - "Actually, I mean cottage-style but with the spindles in natural pine."
+    expected_state:
+      explicit_preferences: {style: rustic, timber_species: pine}
+
+  - id: gm-C-05
+    category: corrections
+    turns:
+      - "Wall-fixed staircase, so bullnose only on one side."
+      - "Actually the staircase is open on both sides — I was wrong about the wall."
+    expected_state:
+      explicit_constraints: {construction: two_sided}
+    expected_corrections:
+      - {field: construction, from: wall_fixed, to: two_sided}
+
+  # ============================================================
+  # CATEGORY D · Implicit constraints (10)
+  # ============================================================
+
+  - id: gm-D-01
+    category: implicit_constraints
+    turns:
+      - "It's an old pine staircase — I want to freshen it up."
+      - "New spindles, new caps."
+      - "Keep the treads."
+    expected_state:
+      explicit_preferences: {timber_species: pine}
+    expected_state_scope: refacing
+
+  - id: gm-D-02
+    category: implicit_constraints
+    turns:
+      - "We're not looking to replace anything, just update the look."
+      - "Modern balusters."
+      - "Something in matt black."
+    expected_state:
+      explicit_preferences: {balustrade_material: matt_black_metal}
+    expected_state_scope: refacing
+
+  - id: gm-D-03
+    category: implicit_constraints
+    turns:
+      - "The staircase is Victorian, existing since 1890."
+      - "Turned spindles."
+      - "Update to modern black metal instead."
+    expected_state_scope: refacing
+
+  - id: gm-D-04
+    category: implicit_constraints
+    turns:
+      - "Old pine spindles — want them updated."
+      - "Something modern that fits with an oak handrail."
+    expected_state_scope: refacing
+
+  - id: gm-D-05
+    category: implicit_constraints
+    turns:
+      - "Existing staircase, keep the structure."
+      - "Refresh the finish."
+      - "Match the flooring."
+    expected_state_scope: refacing
+
+  - id: gm-D-06
+    category: implicit_constraints
+    turns:
+      - "The current staircase is fine structurally."
+      - "Just want it to look modern."
+      - "Matt-black metal spindles."
+    expected_state_scope: refacing
+
+  - id: gm-D-07
+    category: implicit_constraints
+    turns:
+      - "Everything else has been updated except the stairs."
+      - "Modernise the balustrade."
+      - "Contemporary look."
+    expected_state_scope: refacing
+
+  - id: gm-D-08
+    category: implicit_constraints
+    turns:
+      - "I want to update the current staircase."
+      - "Oak treads staying, spindles changing."
+    expected_state_scope: refacing
+
+  - id: gm-D-09
+    category: implicit_constraints
+    turns:
+      - "Refurb job — same staircase, new balustrade."
+      - "Matt black spindles."
+    expected_state_scope: refacing
+
+  - id: gm-D-10
+    category: implicit_constraints
+    turns:
+      - "It's an old staircase we're keeping."
+      - "New handrail."
+      - "Oak, modern profile."
+    expected_state:
+      explicit_preferences: {timber_species: oak}
+    expected_state_scope: refacing
+
+  # ============================================================
+  # CATEGORY E · References / pronouns (8)
+  # ============================================================
+
+  - id: gm-E-01
+    category: references
+    turns:
+      - "Modern oak staircase with matt-black spindles."
+      - "Can you do the same thing upstairs?"
+    expected_references_resolved_at_least: 1
+
+  - id: gm-E-02
+    category: references
+    turns:
+      - "I like the bullnose starting step you mentioned."
+      - "Can we do it in walnut instead of oak?"
+    expected_references_resolved_at_least: 1
+    expected_state:
+      explicit_preferences: {timber_species: walnut}
+
+  - id: gm-E-03
+    category: references
+    turns:
+      - "Show me modern staircases."
+      - "I like the first one."
+      - "Can we do that but with oak treads?"
+    expected_state:
+      explicit_preferences: {timber_species: oak}
+
+  - id: gm-E-04
+    category: references
+    turns:
+      - "Traditional oak staircase with turned spindles and a volute."
+      - "Change that — I want modern spindles instead."
+    expected_state:
+      explicit_preferences: {timber_species: oak}
+
+  - id: gm-E-05
+    category: references
+    turns:
+      - "Modern staircase with cantilever floating treads."
+      - "Keep it, but make the handrail darker."
+    expected_state:
+      explicit_preferences: {style: modern}
+
+  - id: gm-E-06
+    category: references
+    turns:
+      - "Oak treads with matt-black metal spindles."
+      - "And do the same on the landing balustrade."
+    expected_state:
+      explicit_preferences: {timber_species: oak, balustrade_material: matt_black_metal}
+
+  - id: gm-E-07
+    category: references
+    turns:
+      - "I want a curtail starting step with a volute."
+      - "Can you make it wider than usual?"
+    expected_state: {}
+
+  - id: gm-E-08
+    category: references
+    turns:
+      - "Traditional turned spindles in oak."
+      - "Change the material for the landing balustrade — keep the design the same."
+
+  # ============================================================
+  # CATEGORY F · Conflicting requirements (5)
+  # ============================================================
+
+  - id: gm-F-01
+    category: conflicts
+    turns:
+      - "I don't want glass anywhere."
+      - "Modern staircase with glass balustrade."
+    expected_contradictions_at_least: 1
+
+  - id: gm-F-02
+    category: conflicts
+    turns:
+      - "Don't replace the existing newels."
+      - "Full replacement of the whole staircase."
+    expected_contradictions_at_least: 1
+
+  - id: gm-F-03
+    category: conflicts
+    turns:
+      - "No carpet — I want exposed timber throughout."
+      - "Full carpet the whole staircase."
+    expected_contradictions_at_least: 1
+
+  - id: gm-F-04
+    category: conflicts
+    turns:
+      - "Oak everywhere."
+      - "Actually walnut for the treads and handrail."
+      - "Oak for the newels though."
+    expected_contradictions_at_least: 0
+
+  - id: gm-F-05
+    category: conflicts
+    turns:
+      - "Modern minimalist — no ornament."
+      - "Turned spindles with a volute."
+    expected_contradictions_at_least: 1
+
+  # ============================================================
+  # CATEGORY G · Requires clarification (5)
+  # ============================================================
+
+  - id: gm-G-01
+    category: clarification
+    turns:
+      - "Make the staircase feel more open."
+    expected_should_clarify: true
+
+  - id: gm-G-02
+    category: clarification
+    turns:
+      - "I want something fancy at the bottom of the stairs."
+    expected_should_clarify: true
+
+  - id: gm-G-03
+    category: clarification
+    turns:
+      - "Can you make the bottom look more open?"
+    expected_should_clarify: true
+
+  - id: gm-G-04
+    category: clarification
+    turns:
+      - "I want the railing to look nicer."
+    expected_should_clarify: true
+
+  - id: gm-G-05
+    category: clarification
+    turns:
+      - "Update the look."
+    expected_should_clarify: true
+
+  # ============================================================
+  # CATEGORY H · Long 6-8 turn conversations (7)
+  # ============================================================
+
+  - id: gm-H-01
+    category: long_conversation
+    turns:
+      - "Modern staircase for the entry hall."
+      - "Oak."
+      - "Cantilever floating."
+      - "Frameless glass balustrade."
+      - "LED under-nosing."
+      - "Extended square starting step."
+      - "What would you recommend for the newel cap?"
+    expected_state:
+      explicit_preferences: {style: modern, timber_species: oak, balustrade_material: glass}
+      concepts_visited_includes: [design_style, timber_species, stringers, balusters, lighting, starting_steps, newel_caps]
+
+  - id: gm-H-02
+    category: long_conversation
+    turns:
+      - "Traditional Victorian staircase."
+      - "Mahogany throughout."
+      - "Turned spindles."
+      - "Curtail with volute."
+      - "Carpet runner with brass rods."
+      - "Landing to continue the same style."
+    expected_state:
+      explicit_preferences: {style: traditional, timber_species: mahogany, balustrade_material: turned_timber, finish: runner}
+      concepts_visited_includes: [design_style, timber_species, balusters, starting_steps, carpet_stepmats, landing_railings]
+
+  - id: gm-H-03
+    category: long_conversation
+    turns:
+      - "It's a Victorian house."
+      - "Existing pine staircase, we're keeping it."
+      - "Just refacing the balustrade."
+      - "Matt-black metal spindles."
+      - "Oak handrail — swap the pine for oak."
+      - "New matt-black caps on the newels."
+      - "How would that read overall?"
+    expected_state:
+      explicit_preferences: {timber_species: oak, balustrade_material: matt_black_metal}
+    expected_state_scope: refacing
+
+  - id: gm-H-04
+    category: long_conversation
+    turns:
+      - "Wall-fixed staircase."
+      - "Modern look."
+      - "Oak treads."
+      - "Matt-black metal spindles."
+      - "Actually, I've changed my mind — brushed stainless spindles instead."
+      - "What starting step would suit that?"
+    expected_state:
+      explicit_preferences: {style: modern, timber_species: oak, balustrade_material: brushed_stainless}
+      explicit_constraints: {construction: wall_fixed}
+    expected_corrections:
+      - {field: balustrade_material, from: matt_black_metal, to: brushed_stainless}
+
+  - id: gm-H-05
+    category: long_conversation
+    turns:
+      - "Modern floating staircase."
+      - "Oak treads on a black steel spine."
+      - "Frameless glass balustrade."
+      - "No, wait — I don't want glass."
+      - "Matt-black metal rods instead."
+      - "LED under-nosing."
+      - "Continue the same style around the landing."
+    expected_state:
+      explicit_preferences: {style: modern, timber_species: oak, balustrade_material: matt_black_metal}
+      explicit_exclusions: {balustrade_material: [glass]}
+
+  - id: gm-H-06
+    category: long_conversation
+    turns:
+      - "Old 1970s pine staircase we hate."
+      - "Want to modernise without replacing."
+      - "Keep the treads if possible."
+      - "New matt-black metal spindles."
+      - "Paint the handrail dark walnut."
+      - "New newel caps."
+      - "Runner down the middle."
+    expected_state:
+      explicit_preferences: {timber_species: pine, balustrade_material: matt_black_metal, finish: runner}
+    expected_state_scope: refacing
+
+  - id: gm-H-07
+    category: long_conversation
+    turns:
+      - "Wall-fixed staircase against a wall."
+      - "Existing oak, keeping it."
+      - "Modern spindles."
+      - "Brushed stainless, matt-black cap on the newel."
+      - "Show me some examples."
+    expected_state:
+      explicit_preferences: {timber_species: oak, balustrade_material: brushed_stainless}
+      explicit_constraints: {construction: wall_fixed}
+    expected_state_scope: refacing

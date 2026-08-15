@@ -1,0 +1,759 @@
+# NEX Layer 4 · Advisor Reasoning Test Suite (Philip 2026-08-14)
+#
+# Measures whether NEX makes the RIGHT DECISION given a conversation.
+# For each test: what action + response_shape should the AdvisorDecision return?
+#
+# 100 conversations across 15 categories.
+# Format per test:
+#   turns: array of customer utterances
+#   category: one of the 15 categories
+#   expected_action: Answer | Ask | Recommend | Compare | RetrieveImages | Route | Refuse
+#   expected_response_shape: Explain | Options | Recommendation | Clarification
+#   expected_confidence: Clear | Likely | Ambiguous (optional)
+#   expected_missing_includes: [required missing-info items] (optional)
+#   expected_evidence_covers: [required covered concepts] (optional)
+#   expected_evidence_routes: [required routed concepts] (optional)
+
+tests:
+
+  # =====================================================
+  # A · Sufficient evidence (10) — should Answer or Recommend
+  # =====================================================
+  - id: adv-A-01
+    category: sufficient_evidence
+    turns:
+      - "What is a bullnose starting step?"
+    expected_action: Answer
+    expected_response_shape: Explain
+    expected_confidence: Clear
+    expected_evidence_covers: [starting_steps]
+
+  - id: adv-A-02
+    category: sufficient_evidence
+    turns:
+      - "What is a mono-stringer staircase?"
+    expected_action: Answer
+    expected_response_shape: Explain
+    expected_confidence: Clear
+    expected_evidence_covers: [stringers]
+
+  - id: adv-A-03
+    category: sufficient_evidence
+    turns:
+      - "Wall-fixed staircase, traditional oak, carpeted flight."
+      - "What starting step do you recommend?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+    expected_confidence: Clear
+    expected_evidence_covers: [starting_steps, timber_species, carpet_stepmats]
+
+  - id: adv-A-04
+    category: sufficient_evidence
+    turns:
+      - "What is a curtail starting step?"
+    expected_action: Answer
+    expected_response_shape: Explain
+    expected_evidence_covers: [starting_steps]
+
+  - id: adv-A-05
+    category: sufficient_evidence
+    turns:
+      - "How do I connect the landing rail to the top newel?"
+    expected_action: Answer
+    expected_response_shape: Explain
+    expected_evidence_covers: [landing_railings]
+
+  - id: adv-A-06
+    category: sufficient_evidence
+    turns:
+      - "What's a volute?"
+    expected_action: Answer
+    expected_response_shape: Explain
+    expected_evidence_covers: [handrail]
+
+  - id: adv-A-07
+    category: sufficient_evidence
+    turns:
+      - "What newel cap options work with a traditional oak staircase?"
+    expected_action: Answer
+    expected_response_shape: Explain
+    expected_evidence_covers: [newel_caps, timber_species]
+
+  - id: adv-A-08
+    category: sufficient_evidence
+    turns:
+      - "Modern oak floating staircase, glass balustrade — what would you recommend for the landing?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+    expected_evidence_covers: [design_style, timber_species, balusters, landing_railings]
+
+  - id: adv-A-09
+    category: sufficient_evidence
+    turns:
+      - "Can I have step mats instead of a runner?"
+    expected_action: Answer
+    expected_response_shape: Explain
+    expected_evidence_covers: [carpet_stepmats]
+
+  - id: adv-A-10
+    category: sufficient_evidence
+    turns:
+      - "What's the difference between open and closed risers?"
+    expected_action: Answer
+    expected_response_shape: Explain
+    expected_evidence_covers: [treads_risers]
+
+  # =====================================================
+  # B · Insufficient evidence (10) — should Ask honestly
+  # =====================================================
+  - id: adv-B-01
+    category: insufficient_evidence
+    turns:
+      - "What's the exact bolt sizing for anchoring a mono-stringer to concrete?"
+    expected_action: Answer  # NEX will honestly answer with the principle + limit
+    expected_response_shape: Explain
+    expected_evidence_covers: [stringers]
+
+  - id: adv-B-02
+    category: insufficient_evidence
+    turns:
+      - "What's the moisture content threshold for stair oak per the timber engineering standard?"
+    expected_action: Route
+    expected_response_shape: Clarification
+    expected_evidence_routes: [material_science]
+
+  - id: adv-B-03
+    category: insufficient_evidence
+    turns:
+      - "What's the thermal expansion coefficient of hot-dip galvanized steel for outdoor stairs?"
+    expected_action: Route
+    expected_response_shape: Clarification
+
+  - id: adv-B-04
+    category: insufficient_evidence
+    turns:
+      - "How many cycles of stress before a laminated stair tread fails?"
+    expected_action: Route
+    expected_response_shape: Clarification
+
+  - id: adv-B-05
+    category: insufficient_evidence
+    turns:
+      - "What deflection do BS-standard formulas predict for a 3m timber stringer?"
+    expected_action: Route
+    expected_response_shape: Clarification
+
+  - id: adv-B-06
+    category: insufficient_evidence
+    turns:
+      - "What SPF cure temperature does a two-part polymer stair overlay need?"
+    expected_action: Route
+    expected_response_shape: Clarification
+
+  - id: adv-B-07
+    category: insufficient_evidence
+    turns:
+      - "Which specific brand of matt-black metal spindles do you recommend?"
+    expected_action: Answer
+    expected_response_shape: Explain
+    expected_evidence_covers: [balusters]
+
+  - id: adv-B-08
+    category: insufficient_evidence
+    turns:
+      - "What structural formulas do engineers use for cantilever tread wall-brackets?"
+    expected_action: Route
+    expected_response_shape: Clarification
+
+  - id: adv-B-09
+    category: insufficient_evidence
+    turns:
+      - "What specific chemical anchor for masonry wall staircases?"
+    expected_action: Route
+    expected_response_shape: Clarification
+
+  - id: adv-B-10
+    category: insufficient_evidence
+    turns:
+      - "What's the max shear load on a housed-stringer mortise glue joint?"
+    expected_action: Route
+    expected_response_shape: Clarification
+
+  # =====================================================
+  # C · Ambiguous input (10) — should Ask
+  # =====================================================
+  - id: adv-C-01
+    category: ambiguous
+    turns:
+      - "Make the staircase feel more open."
+    expected_action: Ask
+    expected_response_shape: Clarification
+    expected_confidence: Ambiguous
+
+  - id: adv-C-02
+    category: ambiguous
+    turns:
+      - "I want something fancy at the bottom."
+    expected_action: Ask
+    expected_response_shape: Clarification
+    expected_confidence: Ambiguous
+
+  - id: adv-C-03
+    category: ambiguous
+    turns:
+      - "Can you make the railing nicer?"
+    expected_action: Ask
+    expected_response_shape: Clarification
+    expected_confidence: Ambiguous
+
+  - id: adv-C-04
+    category: ambiguous
+    turns:
+      - "I want to modernise the staircase."
+    expected_action: Ask
+    expected_response_shape: Clarification
+    expected_confidence: Ambiguous
+
+  - id: adv-C-05
+    category: ambiguous
+    turns:
+      - "Update the look."
+    expected_action: Ask
+    expected_response_shape: Clarification
+    expected_confidence: Ambiguous
+
+  - id: adv-C-06
+    category: ambiguous
+    turns:
+      - "The stairs feel dated — help?"
+    expected_action: Ask
+    expected_response_shape: Clarification
+    expected_confidence: Ambiguous
+
+  - id: adv-C-07
+    category: ambiguous
+    turns:
+      - "Something more impressive."
+    expected_action: Ask
+    expected_response_shape: Clarification
+    expected_confidence: Ambiguous
+
+  - id: adv-C-08
+    category: ambiguous
+    turns:
+      - "Can you make the bottom look more open?"
+    expected_action: Ask
+    expected_response_shape: Clarification
+    expected_confidence: Ambiguous
+
+  - id: adv-C-09
+    category: ambiguous
+    turns:
+      - "I don't know what I want."
+    expected_action: Ask
+    expected_response_shape: Clarification
+    expected_confidence: Ambiguous
+
+  - id: adv-C-10
+    category: ambiguous
+    turns:
+      - "Nicer."
+    expected_action: Ask
+    expected_response_shape: Clarification
+    expected_confidence: Ambiguous
+
+  # =====================================================
+  # D · Multiple valid options (5) — should give Options
+  # =====================================================
+  - id: adv-D-01
+    category: multiple_options
+    turns:
+      - "I've got a modern oak staircase with a matt-black balustrade — what starting step options work?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-D-02
+    category: multiple_options
+    turns:
+      - "Traditional oak staircase, carpet runner — starting step choices?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-D-03
+    category: multiple_options
+    turns:
+      - "Wall-fixed staircase — what starting-step options do I have?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+    expected_evidence_covers: [starting_steps]
+
+  - id: adv-D-04
+    category: multiple_options
+    turns:
+      - "Modern floating oak staircase — what balustrade options?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-D-05
+    category: multiple_options
+    turns:
+      - "Traditional Victorian mahogany staircase — what newel cap options?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  # =====================================================
+  # E · Strong preference respected (5)
+  # =====================================================
+  - id: adv-E-01
+    category: preference_respected
+    turns:
+      - "Oak throughout, definitely."
+      - "Modern glass balustrade."
+      - "Recommend the newel cap."
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-E-02
+    category: preference_respected
+    turns:
+      - "Walnut treads and handrail."
+      - "Modern minimalist."
+      - "Starting step recommendation?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-E-03
+    category: preference_respected
+    turns:
+      - "Traditional turned pine spindles."
+      - "Cottage look."
+      - "What newel cap suits?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-E-04
+    category: preference_respected
+    turns:
+      - "Frameless glass balustrade."
+      - "Oak top handrail."
+      - "Cantilever floating treads."
+      - "What starting step?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-E-05
+    category: preference_respected
+    turns:
+      - "Matt-black metal rods, no glass."
+      - "Oak handrail."
+      - "Recommend the newel."
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  # =====================================================
+  # F · Constraint respected (5)
+  # =====================================================
+  - id: adv-F-01
+    category: constraint_respected
+    turns:
+      - "Staircase against a wall on one side."
+      - "What starting step options?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-F-02
+    category: constraint_respected
+    turns:
+      - "Wall-fixed, oak, traditional — recommend a starting step."
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-F-03
+    category: constraint_respected
+    turns:
+      - "Two-sided cut-string open staircase — starting step options."
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-F-04
+    category: constraint_respected
+    turns:
+      - "The narrow hallway means the first step can't project — what alternatives?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-F-05
+    category: constraint_respected
+    turns:
+      - "Cut-string flight, wall-fixed on the wall side — starting step options for the free side."
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  # =====================================================
+  # G · Exclusion respected (5) — must NOT sneak excluded back in
+  # =====================================================
+  - id: adv-G-01
+    category: exclusion_respected
+    turns:
+      - "I don't want glass anywhere."
+      - "Modern staircase — balustrade options?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-G-02
+    category: exclusion_respected
+    turns:
+      - "No carpet — exposed timber everywhere."
+      - "Traditional oak — starting step recommendation?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-G-03
+    category: exclusion_respected
+    turns:
+      - "Don't replace the existing newels."
+      - "What refacing scope do I have?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-G-04
+    category: exclusion_respected
+    turns:
+      - "No walnut — too dark for the room."
+      - "Modern oak instead."
+      - "Recommend the balustrade."
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-G-05
+    category: exclusion_respected
+    turns:
+      - "Don't want ornament of any kind."
+      - "Minimal modern staircase."
+      - "What starting step?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  # =====================================================
+  # H · Conflict identified (5)
+  # =====================================================
+  - id: adv-H-01
+    category: conflict
+    turns:
+      - "I don't want glass anywhere."
+      - "Modern staircase with glass balustrade."
+    expected_action: Ask
+    expected_response_shape: Clarification
+
+  - id: adv-H-02
+    category: conflict
+    turns:
+      - "No carpet — exposed timber only."
+      - "Full carpet the whole staircase."
+    expected_action: Ask
+    expected_response_shape: Clarification
+
+  - id: adv-H-03
+    category: conflict
+    turns:
+      - "Minimal modern — no ornament."
+      - "Turned spindles with a volute."
+    expected_action: Ask
+    expected_response_shape: Clarification
+
+  - id: adv-H-04
+    category: conflict
+    turns:
+      - "Don't remove the existing newels."
+      - "Complete replacement of the whole staircase."
+    expected_action: Ask
+    expected_response_shape: Clarification
+
+  - id: adv-H-05
+    category: conflict
+    turns:
+      - "Industrial style."
+      - "With traditional turned oak spindles."
+    expected_action: Ask
+    expected_response_shape: Clarification
+
+  # =====================================================
+  # I · Future brain routing (5)
+  # =====================================================
+  - id: adv-I-01
+    category: future_brain
+    turns:
+      - "How high should the handrail be per building regs?"
+    expected_action: Route
+    expected_response_shape: Clarification
+
+  - id: adv-I-02
+    category: future_brain
+    turns:
+      - "How much does a modern glass staircase cost?"
+    expected_action: Route
+    expected_response_shape: Clarification
+
+  - id: adv-I-03
+    category: future_brain
+    turns:
+      - "Is my staircase safe for elderly users per accessibility standards?"
+    expected_action: Route
+    expected_response_shape: Clarification
+
+  - id: adv-I-04
+    category: future_brain
+    turns:
+      - "How do I show the staircase on a floor plan blueprint?"
+    expected_action: Route
+    expected_response_shape: Clarification
+
+  - id: adv-I-05
+    category: future_brain
+    turns:
+      - "What's the going labour rate for a stair install?"
+    expected_action: Route
+    expected_response_shape: Clarification
+
+  # =====================================================
+  # J · Image request (5)
+  # =====================================================
+  - id: adv-J-01
+    category: image_request
+    turns:
+      - "Show me modern staircases with glass balustrade."
+    expected_action: RetrieveImages
+    expected_response_shape: Options
+
+  - id: adv-J-02
+    category: image_request
+    turns:
+      - "Pictures of traditional starting steps with volutes."
+    expected_action: RetrieveImages
+    expected_response_shape: Options
+
+  - id: adv-J-03
+    category: image_request
+    turns:
+      - "Show me examples of cantilever oak staircases."
+    expected_action: RetrieveImages
+    expected_response_shape: Options
+
+  - id: adv-J-04
+    category: image_request
+    turns:
+      - "Give me some ideas for a Victorian refacing."
+    expected_action: RetrieveImages
+    expected_response_shape: Options
+
+  - id: adv-J-05
+    category: image_request
+    turns:
+      - "What would a modern staircase look like with oak treads and matt-black spindles?"
+    expected_action: RetrieveImages
+    expected_response_shape: Options
+
+  # =====================================================
+  # K · Existing staircase must not silently assume replacement (5)
+  # =====================================================
+  - id: adv-K-01
+    category: retention_respect
+    turns:
+      - "We have an old pine staircase, want to freshen it up."
+      - "What can I change?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-K-02
+    category: retention_respect
+    turns:
+      - "Existing oak staircase, keeping the structure."
+      - "Recommend the balustrade update."
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-K-03
+    category: retention_respect
+    turns:
+      - "Current staircase is fine structurally — just want a modern look."
+      - "What refacing options?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-K-04
+    category: retention_respect
+    turns:
+      - "Everything else has been updated except the stairs."
+      - "Modernise the balustrade only."
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-K-05
+    category: retention_respect
+    turns:
+      - "We're not looking to replace anything, just refresh."
+      - "Modern balusters?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  # =====================================================
+  # L · Customer changes mind — latest decision wins (5)
+  # =====================================================
+  - id: adv-L-01
+    category: mind_change
+    turns:
+      - "Walnut for everything."
+      - "Actually, oak instead — walnut's too dark."
+      - "What newel cap works with oak?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-L-02
+    category: mind_change
+    turns:
+      - "Modern glass balustrade."
+      - "On second thought, matt-black metal instead."
+      - "Recommend the handrail."
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-L-03
+    category: mind_change
+    turns:
+      - "Traditional look."
+      - "Actually, let's go modern instead."
+      - "Recommend the starting step."
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-L-04
+    category: mind_change
+    turns:
+      - "Full carpet on the flight."
+      - "Actually a runner, I want timber visible."
+      - "What about the first step?"
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  - id: adv-L-05
+    category: mind_change
+    turns:
+      - "Cottage style."
+      - "Actually more architect-modern."
+      - "Recommend the balustrade."
+    expected_action: Recommend
+    expected_response_shape: Recommendation
+
+  # =====================================================
+  # M · "Which is best?" — reasoned recommendation (5)
+  # =====================================================
+  - id: adv-M-01
+    category: which_is_best
+    turns:
+      - "Modern oak staircase — which balustrade material is best?"
+    expected_action: Compare
+    expected_response_shape: Options
+
+  - id: adv-M-02
+    category: which_is_best
+    turns:
+      - "Which timber lasts longest for family stairs?"
+    expected_action: Answer
+    expected_response_shape: Explain
+
+  - id: adv-M-03
+    category: which_is_best
+    turns:
+      - "Which is better — bullnose or curtail starting step?"
+    expected_action: Compare
+    expected_response_shape: Options
+
+  - id: adv-M-04
+    category: which_is_best
+    turns:
+      - "Oak or walnut for a modern staircase?"
+    expected_action: Compare
+    expected_response_shape: Options
+
+  - id: adv-M-05
+    category: which_is_best
+    turns:
+      - "Glass or matt-black metal for a contemporary balustrade?"
+    expected_action: Compare
+    expected_response_shape: Options
+
+  # =====================================================
+  # N · "Why?" — must explain reasoning (5)
+  # =====================================================
+  - id: adv-N-01
+    category: why_explanation
+    turns:
+      - "Why does the landing need a base rail?"
+    expected_action: Answer
+    expected_response_shape: Explain
+
+  - id: adv-N-02
+    category: why_explanation
+    turns:
+      - "Why can't I have a bullnose on both sides if the staircase is against a wall?"
+    expected_action: Answer
+    expected_response_shape: Explain
+
+  - id: adv-N-03
+    category: why_explanation
+    turns:
+      - "Why do modern staircases usually leave the timber exposed?"
+    expected_action: Answer
+    expected_response_shape: Explain
+
+  - id: adv-N-04
+    category: why_explanation
+    turns:
+      - "Why are turned spindles typically paired with curtail starting steps?"
+    expected_action: Answer
+    expected_response_shape: Explain
+
+  - id: adv-N-05
+    category: why_explanation
+    turns:
+      - "Why does a cut-string flight sometimes not have a sloping base rail?"
+    expected_action: Answer
+    expected_response_shape: Explain
+
+  # =====================================================
+  # O · "I don't know" — help narrow (5)
+  # =====================================================
+  - id: adv-O-01
+    category: i_dont_know
+    turns:
+      - "I don't know what starting step to have."
+    expected_action: Ask
+    expected_response_shape: Clarification
+
+  - id: adv-O-02
+    category: i_dont_know
+    turns:
+      - "Not sure what balustrade fits."
+    expected_action: Ask
+    expected_response_shape: Clarification
+
+  - id: adv-O-03
+    category: i_dont_know
+    turns:
+      - "No idea about newel caps — what should I think about?"
+    expected_action: Ask
+    expected_response_shape: Clarification
+
+  - id: adv-O-04
+    category: i_dont_know
+    turns:
+      - "Help me choose between traditional and modern."
+    expected_action: Ask
+    expected_response_shape: Clarification
+
+  - id: adv-O-05
+    category: i_dont_know
+    turns:
+      - "I don't know where to start with refacing."
+    expected_action: Ask
+    expected_response_shape: Clarification

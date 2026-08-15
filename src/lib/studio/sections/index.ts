@@ -10,7 +10,7 @@
 
 // ─── Hero library ──────────────────────────────────────────────────
 import "./hero/plantHireBold";
-import "./hero/splitPhotoLeft";
+import "./hero/splitPhotoLeft.meta";
 import "./hero/minimalCentred";
 // State-of-the-art heroes — trade-focused, theme-aware, mobile-first.
 // Each is designed for a specific merchant intent (trust / emergency /
@@ -21,7 +21,7 @@ import "./hero/emergency247.meta";
 import "./hero/portfolioMosaic.meta";
 import "./hero/statHero.meta";
 import "./hero/postcodeLocal.meta";
-import "./hero/productShowroom";
+import "./hero/productShowroom.meta";
 import "./hero/reviewWave";
 // Second wave — unique UI patterns, one hero per pattern to keep the
 // library discoverable rather than a wall of near-duplicates.

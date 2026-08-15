@@ -1,0 +1,82 @@
+{
+  "brain": "staircase_brain",
+  "conversations": [
+    {
+      "id": "eval-001-materials-follow-up",
+      "purpose": "Follow-up 'what about walnut' must retain staircase context established in turn 1.",
+      "turns": [
+        { "customer": "What does an oak staircase cost?", "expect_entities_after": ["oak", "staircase", "price"] },
+        { "customer": "What about walnut?", "expect_entities_after_contains": ["walnut", "staircase"], "expect_intent": "ask_what_about", "expect_state_current_topic": "staircase" },
+        { "customer": "And glass?", "expect_entities_after_contains": ["glass", "staircase"], "expect_intent": "ask_what_about" },
+        { "customer": "And installation?", "expect_entities_after_contains": ["installation", "staircase"], "expect_intent": "ask_what_about" }
+      ]
+    },
+    {
+      "id": "eval-002-correction",
+      "purpose": "Correction from oak to walnut must replace the material fact and preserve the old value in corrections_log.",
+      "turns": [
+        { "customer": "I want an oak staircase.", "expect_state_material": "oak" },
+        { "customer": "What are my options for the balusters?", "expect_entities_after_contains": ["baluster", "oak"] },
+        { "customer": "No, walnut.", "expect_intent": "correct", "expect_state_material": "walnut", "expect_corrections_log_length_min": 1 }
+      ]
+    },
+    {
+      "id": "eval-003-pronoun-that",
+      "purpose": "Referring to prior recommendation with 'is that expensive' should retrieve pricing knowledge scoped to the current subject.",
+      "turns": [
+        { "customer": "Can I have a bullnose starting step?", "expect_entities_after_contains": ["bullnose", "starting_step"] },
+        { "customer": "Is that expensive?", "expect_intent": "ask_price", "expect_topK_entity_intersect": ["bullnose"] }
+      ]
+    },
+    {
+      "id": "eval-004-comparison",
+      "purpose": "'Which is better' should be classified as compare and retrieve items involving both options.",
+      "turns": [
+        { "customer": "I'm choosing between closed string and cut string.", "expect_entities_after_contains": ["closed_string", "cut_string"] },
+        { "customer": "Which is better for a modern home?", "expect_intent": "ask_recommendation", "expect_topK_entity_intersect": ["closed_string", "cut_string", "contemporary"] }
+      ]
+    },
+    {
+      "id": "eval-005-constraint",
+      "purpose": "Constraint 'against a wall' should establish construction_context fact + influence subsequent retrieval.",
+      "turns": [
+        { "customer": "My staircase is against a wall on one side.", "expect_state_constraint": "against_wall" },
+        { "customer": "What starting-step options do I have?", "expect_entities_after_contains": ["starting_step", "against_wall"], "expect_topK_entity_intersect": ["starting_step", "against_wall"] }
+      ]
+    },
+    {
+      "id": "eval-006-topic-return",
+      "purpose": "After a topic diversion, returning to earlier subject should resurface the earlier established facts.",
+      "turns": [
+        { "customer": "I want an oak staircase.", "expect_state_material": "oak" },
+        { "customer": "What are the building regulations for handrail height?", "expect_entities_after_contains": ["handrail", "building_regs"] },
+        { "customer": "Back to the oak. What does it cost?", "expect_intent": "ask_price", "expect_topK_entity_intersect": ["oak", "price"] }
+      ]
+    },
+    {
+      "id": "eval-007-unrelated-topic",
+      "purpose": "Off-topic question should not retrieve confidently-scoped staircase items (retrieval quality proxy).",
+      "turns": [
+        { "customer": "What time is it?", "expect_intent_not_in": ["specify_material", "ask_price"], "expect_topK_top_score_below": 0.6 }
+      ]
+    },
+    {
+      "id": "eval-008-clarification-triggered",
+      "purpose": "Genuinely ambiguous input should NOT confidently retrieve a specific answer.",
+      "turns": [
+        { "customer": "Can you make the bottom look more open?", "expect_topK_top_score_below": 0.85 }
+      ]
+    },
+    {
+      "id": "eval-009-multi-turn-chain",
+      "purpose": "A 5-turn conversation should keep entities_in_focus growing coherently and not lose earlier facts.",
+      "turns": [
+        { "customer": "I want a modern oak staircase.", "expect_state_material": "oak", "expect_state_style": "contemporary" },
+        { "customer": "Against a wall on one side.", "expect_state_constraint": "against_wall" },
+        { "customer": "Show me the balustrade options.", "expect_entities_after_contains": ["balustrade", "oak", "against_wall"] },
+        { "customer": "What about glass?", "expect_entities_after_contains": ["glass", "balustrade", "oak", "against_wall"], "expect_intent": "ask_what_about" },
+        { "customer": "And installation cost?", "expect_intent": "ask_price", "expect_entities_after_contains": ["installation", "price"] }
+      ]
+    }
+  ]
+}

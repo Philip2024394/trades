@@ -1,0 +1,3374 @@
+{
+  "meta": {
+    "computed_at": "2026-08-14T03:56:43.693Z",
+    "total_conversations": 60
+  },
+  "dimensions": {
+    "preference_retention": {
+      "pass": 55,
+      "rate_pct": 92
+    },
+    "exclusion_retention": {
+      "pass": 60,
+      "rate_pct": 100
+    },
+    "constraint_retention": {
+      "pass": 60,
+      "rate_pct": 100
+    },
+    "scope_retention": {
+      "pass": 60,
+      "rate_pct": 100
+    },
+    "concepts_visited": {
+      "pass": 60,
+      "rate_pct": 100
+    },
+    "correction_detection": {
+      "pass": 60,
+      "rate_pct": 100
+    },
+    "contradiction_detection": {
+      "pass": 59,
+      "rate_pct": 98
+    },
+    "reference_resolution": {
+      "pass": 60,
+      "rate_pct": 100
+    },
+    "clarification_correctness": {
+      "pass": 60,
+      "rate_pct": 100
+    },
+    "fabrication_zero": {
+      "pass": 60,
+      "rate_pct": 100
+    },
+    "full_pass": {
+      "pass": 54,
+      "rate_pct": 90
+    }
+  },
+  "by_category": {
+    "requirement_building": {
+      "pass": 9,
+      "total": 10,
+      "rate_pct": 90
+    },
+    "changing_preferences": {
+      "pass": 9,
+      "total": 10,
+      "rate_pct": 90
+    },
+    "corrections": {
+      "pass": 5,
+      "total": 5,
+      "rate_pct": 100
+    },
+    "implicit_constraints": {
+      "pass": 10,
+      "total": 10,
+      "rate_pct": 100
+    },
+    "references": {
+      "pass": 7,
+      "total": 8,
+      "rate_pct": 88
+    },
+    "conflicts": {
+      "pass": 4,
+      "total": 5,
+      "rate_pct": 80
+    },
+    "clarification": {
+      "pass": 5,
+      "total": 5,
+      "rate_pct": 100
+    },
+    "long_conversation": {
+      "pass": 5,
+      "total": 7,
+      "rate_pct": 71
+    }
+  },
+  "results": [
+    {
+      "id": "gm-A-01",
+      "category": "requirement_building",
+      "turns_count": 4,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "stringers",
+        "constraints": {
+          "construction": "cantilever"
+        },
+        "explicit_preferences": {
+          "timber_species": "oak",
+          "style": "modern",
+          "balustrade_material": "glass",
+          "construction": "cantilever"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Cantilever if possible.",
+        "concepts_visited": [
+          "timber_species",
+          "design_style",
+          "balusters",
+          "stringers"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-A-02",
+      "category": "requirement_building",
+      "turns_count": 4,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "carpet_stepmats",
+        "constraints": {},
+        "explicit_preferences": {
+          "timber_species": "oak",
+          "style": "traditional",
+          "balustrade_material": "turned_timber",
+          "finish": "runner"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Carpet runner.",
+        "concepts_visited": [
+          "timber_species",
+          "design_style",
+          "balusters",
+          "starting_steps",
+          "carpet_stepmats"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-A-03",
+      "category": "requirement_building",
+      "turns_count": 4,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "treads_risers",
+        "constraints": {},
+        "explicit_preferences": {
+          "style": "modern",
+          "timber_species": "oak",
+          "balustrade_material": "glass"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "LED under-nosing on each tread.",
+        "concepts_visited": [
+          "stringers",
+          "design_style",
+          "treads_risers",
+          "timber_species",
+          "balusters",
+          "lighting"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-A-04",
+      "category": "requirement_building",
+      "turns_count": 4,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "starting_steps",
+        "constraints": {
+          "construction": "wall_fixed"
+        },
+        "explicit_preferences": {
+          "construction": "wall_fixed",
+          "timber_species": "oak",
+          "style": "traditional"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Bullnose starting step on the free side.",
+        "concepts_visited": [
+          "maintenance_repair",
+          "stringers",
+          "timber_species",
+          "design_style",
+          "starting_steps"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-A-05",
+      "category": "requirement_building",
+      "turns_count": 4,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "starting_steps",
+        "constraints": {},
+        "explicit_preferences": {
+          "style": "traditional",
+          "timber_species": "mahogany",
+          "balustrade_material": "turned_timber"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Turned spindles and a scroll volute.",
+        "concepts_visited": [
+          "layout_types",
+          "design_style",
+          "timber_species",
+          "starting_steps",
+          "balusters"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-A-06",
+      "category": "requirement_building",
+      "turns_count": 4,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "landing_railings",
+        "constraints": {},
+        "explicit_preferences": {
+          "style": "scandi",
+          "timber_species": "oak",
+          "balustrade_material": "brushed_stainless"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Frameless glass around the landing.",
+        "concepts_visited": [
+          "design_style",
+          "timber_species",
+          "balusters",
+          "maintenance_repair",
+          "landing_railings"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [
+        "balustrade_material: expected=glass got=brushed_stainless"
+      ],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": false,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": false,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-A-07",
+      "category": "requirement_building",
+      "turns_count": 4,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "balusters",
+        "constraints": {},
+        "explicit_preferences": {
+          "style": "industrial",
+          "timber_species": "oak"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Horizontal cable rail.",
+        "concepts_visited": [
+          "design_style",
+          "stringers",
+          "timber_species",
+          "treads_risers",
+          "balusters"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-A-08",
+      "category": "requirement_building",
+      "turns_count": 4,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "handrail",
+        "constraints": {},
+        "explicit_preferences": {
+          "style": "rustic",
+          "timber_species": "pine"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Natural pine treads and handrail.",
+        "concepts_visited": [
+          "design_style",
+          "timber_species",
+          "balusters",
+          "maintenance_repair",
+          "handrail",
+          "treads_risers"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-A-09",
+      "category": "requirement_building",
+      "turns_count": 4,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "treads_risers",
+        "constraints": {},
+        "explicit_preferences": {
+          "style": "modern",
+          "timber_species": "walnut",
+          "balustrade_material": "matt_black_metal"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Under-nosing LED strip.",
+        "concepts_visited": [
+          "design_style",
+          "treads_risers",
+          "timber_species",
+          "balusters",
+          "lighting",
+          "maintenance_repair"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-A-10",
+      "category": "requirement_building",
+      "turns_count": 4,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "maintenance_repair",
+        "constraints": {},
+        "explicit_preferences": {
+          "timber_species": "oak",
+          "style": "modern"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "No visible fixings.",
+        "concepts_visited": [
+          "layout_types",
+          "timber_species",
+          "design_style",
+          "maintenance_repair"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-B-01",
+      "category": "changing_preferences",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "handrail",
+        "constraints": {},
+        "explicit_preferences": {
+          "style": "modern",
+          "balustrade_material": "matt_black_metal",
+          "timber_species": "oak"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "balustrade_material",
+            "from": "glass",
+            "to": "matt_black_metal"
+          }
+        ],
+        "references": [],
+        "latest_instruction": "Oak treads and handrail.",
+        "concepts_visited": [
+          "balusters",
+          "design_style",
+          "handrail",
+          "treads_risers",
+          "timber_species"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-B-02",
+      "category": "changing_preferences",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "design_style",
+        "constraints": {},
+        "explicit_preferences": {
+          "timber_species": "oak",
+          "style": "modern"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "timber_species",
+            "from": "walnut",
+            "to": "oak"
+          }
+        ],
+        "references": [],
+        "latest_instruction": "Modern style.",
+        "concepts_visited": [
+          "timber_species",
+          "design_style"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-B-03",
+      "category": "changing_preferences",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "balusters",
+        "constraints": {},
+        "explicit_preferences": {
+          "style": "modern",
+          "timber_species": "oak",
+          "balustrade_material": "glass"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "style",
+            "from": "traditional",
+            "to": "modern"
+          }
+        ],
+        "references": [],
+        "latest_instruction": "Oak, glass, minimal.",
+        "concepts_visited": [
+          "design_style",
+          "timber_species",
+          "balusters"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-B-04",
+      "category": "changing_preferences",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "starting_steps",
+        "constraints": {},
+        "explicit_preferences": {
+          "finish": "runner",
+          "timber_species": "oak"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "finish",
+            "from": "carpet",
+            "to": "runner"
+          }
+        ],
+        "references": [],
+        "latest_instruction": "Feature bullnose starting step in exposed oak.",
+        "concepts_visited": [
+          "carpet_stepmats",
+          "lighting",
+          "starting_steps",
+          "timber_species"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-B-05",
+      "category": "changing_preferences",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "stringers",
+        "constraints": {},
+        "explicit_preferences": {
+          "style": "scandi",
+          "timber_species": "oak"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "style",
+            "from": "modern",
+            "to": "scandi"
+          }
+        ],
+        "references": [],
+        "latest_instruction": "Black steel stringer, oak treads.",
+        "concepts_visited": [
+          "design_style",
+          "stringers",
+          "treads_risers",
+          "timber_species"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [
+        "style: expected=industrial got=scandi"
+      ],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": false,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": false,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-B-06",
+      "category": "changing_preferences",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "handrail",
+        "constraints": {},
+        "explicit_preferences": {
+          "balustrade_material": "brushed_stainless",
+          "timber_species": "oak"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "balustrade_material",
+            "from": "matt_black_metal",
+            "to": "brushed_stainless"
+          }
+        ],
+        "references": [],
+        "latest_instruction": "Oak handrail.",
+        "concepts_visited": [
+          "balusters",
+          "maintenance_repair",
+          "handrail",
+          "timber_species"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-B-07",
+      "category": "changing_preferences",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "design_style",
+        "constraints": {},
+        "explicit_preferences": {
+          "timber_species": "oak",
+          "style": "traditional"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "acknowledged_correction",
+            "note": "Correction signal detected in: \"Actually, on reflection let's do a curtail with a volute.\""
+          }
+        ],
+        "references": [],
+        "latest_instruction": "Traditional oak.",
+        "concepts_visited": [
+          "starting_steps",
+          "timber_species",
+          "design_style"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-B-08",
+      "category": "changing_preferences",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "design_style",
+        "constraints": {},
+        "explicit_preferences": {
+          "timber_species": "oak",
+          "style": "modern"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "timber_species",
+            "from": "pine",
+            "to": "oak"
+          }
+        ],
+        "references": [],
+        "latest_instruction": "Modern style throughout.",
+        "concepts_visited": [
+          "timber_species",
+          "design_style"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-B-09",
+      "category": "changing_preferences",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "carpet_stepmats",
+        "constraints": {},
+        "explicit_preferences": {
+          "finish": "runner"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "finish",
+            "from": "carpet",
+            "to": "runner"
+          }
+        ],
+        "references": [],
+        "latest_instruction": "Wait, actually just a runner — I want the timber visible on the sides.",
+        "concepts_visited": [
+          "carpet_stepmats"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-B-10",
+      "category": "changing_preferences",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "balusters",
+        "constraints": {},
+        "explicit_preferences": {
+          "balustrade_material": "matt_black_metal"
+        },
+        "inferred_preferences": {},
+        "exclusions": {
+          "balustrade_material": [
+            "glass"
+          ]
+        },
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "balustrade_material",
+            "from": "glass",
+            "to": null,
+            "note": "explicitly excluded"
+          }
+        ],
+        "references": [
+          {
+            "ref_type": "generic",
+            "referring_to": "balusters",
+            "turn": 2
+          }
+        ],
+        "latest_instruction": "Slim matt-black metal rods instead.",
+        "concepts_visited": [
+          "balusters",
+          "maintenance_repair"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-C-01",
+      "category": "corrections",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "starting_steps",
+        "constraints": {},
+        "explicit_preferences": {
+          "style": "traditional"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "acknowledged_correction",
+            "note": "Correction signal detected in: \"Sorry, I mean bullnose — curtail is too much.\""
+          }
+        ],
+        "references": [],
+        "latest_instruction": "Sorry, I mean bullnose — curtail is too much.",
+        "concepts_visited": [
+          "starting_steps",
+          "design_style"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-C-02",
+      "category": "corrections",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "treads_risers",
+        "constraints": {},
+        "explicit_preferences": {
+          "timber_species": "oak",
+          "balustrade_material": "matt_black_metal"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "timber_species",
+            "from": "walnut",
+            "to": "oak"
+          }
+        ],
+        "references": [],
+        "latest_instruction": "Actually, I mean oak treads — walnut clashes with the flooring.",
+        "concepts_visited": [
+          "balusters",
+          "treads_risers",
+          "timber_species"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-C-03",
+      "category": "corrections",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "timber_species",
+        "constraints": {},
+        "explicit_preferences": {
+          "style": "modern",
+          "balustrade_material": "turned_timber",
+          "timber_species": "oak"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "style",
+            "from": "traditional",
+            "to": "modern"
+          }
+        ],
+        "references": [],
+        "latest_instruction": "Oak.",
+        "concepts_visited": [
+          "balusters",
+          "design_style",
+          "timber_species"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-C-04",
+      "category": "corrections",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "balusters",
+        "constraints": {},
+        "explicit_preferences": {
+          "style": "rustic",
+          "timber_species": "pine"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "acknowledged_correction",
+            "note": "Correction signal detected in: \"Actually, I mean cottage-style but with the spindles in natural pine.\""
+          }
+        ],
+        "references": [],
+        "latest_instruction": "Actually, I mean cottage-style but with the spindles in natural pine.",
+        "concepts_visited": [
+          "balusters",
+          "maintenance_repair",
+          "design_style",
+          "timber_species"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-C-05",
+      "category": "corrections",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "stringers",
+        "constraints": {
+          "construction": "two_sided"
+        },
+        "explicit_preferences": {
+          "construction": "two_sided"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "construction",
+            "from": "wall_fixed",
+            "to": "two_sided"
+          }
+        ],
+        "references": [],
+        "latest_instruction": "Actually the staircase is open on both sides — I was wrong about the wall.",
+        "concepts_visited": [
+          "starting_steps",
+          "maintenance_repair",
+          "stringers"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-D-01",
+      "category": "implicit_constraints",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "treads_risers",
+        "constraints": {
+          "scope": "refacing"
+        },
+        "explicit_preferences": {
+          "timber_species": "pine"
+        },
+        "inferred_preferences": {
+          "scope": {
+            "value": "refacing",
+            "reason": "keeping structural component = retention",
+            "source_text": "Keep the treads."
+          }
+        },
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [
+          {
+            "ref_type": "generic",
+            "referring_to": "unresolved",
+            "turn": 1
+          }
+        ],
+        "latest_instruction": "Keep the treads.",
+        "concepts_visited": [
+          "timber_species",
+          "balusters",
+          "treads_risers",
+          "refacing"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-D-02",
+      "category": "implicit_constraints",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "balusters",
+        "constraints": {
+          "scope": "refacing"
+        },
+        "explicit_preferences": {
+          "style": "modern",
+          "balustrade_material": "matt_black_metal"
+        },
+        "inferred_preferences": {
+          "scope": {
+            "value": "refacing",
+            "reason": "'update' typically means refresh scope",
+            "source_text": "We're not looking to replace anything, just update the look."
+          }
+        },
+        "exclusions": {
+          "scope": [
+            "full_replacement"
+          ]
+        },
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Something in matt black.",
+        "concepts_visited": [
+          "design_style",
+          "refacing",
+          "balusters"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-D-03",
+      "category": "implicit_constraints",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "balusters",
+        "constraints": {
+          "scope": "refacing"
+        },
+        "explicit_preferences": {
+          "style": "traditional",
+          "balustrade_material": "turned_timber"
+        },
+        "inferred_preferences": {
+          "scope": {
+            "value": "refacing",
+            "reason": "'existing' implies retention/refacing",
+            "source_text": "The staircase is Victorian, existing since 1890."
+          }
+        },
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Update to modern black metal instead.",
+        "concepts_visited": [
+          "design_style",
+          "balusters"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-D-04",
+      "category": "implicit_constraints",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "handrail",
+        "constraints": {
+          "scope": "refacing"
+        },
+        "explicit_preferences": {
+          "timber_species": "pine",
+          "style": "modern"
+        },
+        "inferred_preferences": {
+          "scope": {
+            "value": "refacing",
+            "reason": "'old X' typically references existing staircase",
+            "source_text": "Old pine spindles — want them updated."
+          }
+        },
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [
+          {
+            "ref_type": "generic",
+            "referring_to": "balusters",
+            "turn": 2
+          }
+        ],
+        "latest_instruction": "Something modern that fits with an oak handrail.",
+        "concepts_visited": [
+          "balusters",
+          "timber_species",
+          "handrail",
+          "design_style",
+          "installation_process"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-D-05",
+      "category": "implicit_constraints",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "refacing",
+        "constraints": {
+          "scope": "refacing"
+        },
+        "explicit_preferences": {},
+        "inferred_preferences": {
+          "scope": {
+            "value": "refacing",
+            "reason": "'existing' implies retention/refacing",
+            "source_text": "Existing staircase, keep the structure."
+          }
+        },
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Match the flooring.",
+        "concepts_visited": [
+          "refacing"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-D-06",
+      "category": "implicit_constraints",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "balusters",
+        "constraints": {
+          "scope": "refacing"
+        },
+        "explicit_preferences": {
+          "style": "modern",
+          "balustrade_material": "matt_black_metal"
+        },
+        "inferred_preferences": {
+          "scope": {
+            "value": "refacing",
+            "reason": "'current staircase' implies retention",
+            "source_text": "The current staircase is fine structurally."
+          }
+        },
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [
+          {
+            "ref_type": "generic",
+            "referring_to": "unclassified",
+            "turn": 2
+          }
+        ],
+        "latest_instruction": "Matt-black metal spindles.",
+        "concepts_visited": [
+          "design_style",
+          "balusters"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-D-07",
+      "category": "implicit_constraints",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "design_style",
+        "constraints": {
+          "scope": "refacing"
+        },
+        "explicit_preferences": {
+          "style": "modern"
+        },
+        "inferred_preferences": {
+          "scope": {
+            "value": "refacing",
+            "reason": "'modernise the balustrade/handrail' = refacing",
+            "source_text": "Modernise the balustrade."
+          }
+        },
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Contemporary look.",
+        "concepts_visited": [
+          "balusters",
+          "design_style",
+          "refacing"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-D-08",
+      "category": "implicit_constraints",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "balusters",
+        "constraints": {
+          "scope": "refacing"
+        },
+        "explicit_preferences": {
+          "timber_species": "oak"
+        },
+        "inferred_preferences": {
+          "scope": {
+            "value": "refacing",
+            "reason": "'update' typically means refresh scope",
+            "source_text": "I want to update the current staircase."
+          }
+        },
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Oak treads staying, spindles changing.",
+        "concepts_visited": [
+          "balusters",
+          "treads_risers",
+          "timber_species"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-D-09",
+      "category": "implicit_constraints",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "balusters",
+        "constraints": {
+          "scope": "refacing"
+        },
+        "explicit_preferences": {
+          "balustrade_material": "matt_black_metal"
+        },
+        "inferred_preferences": {
+          "scope": {
+            "value": "refacing",
+            "reason": "'refurb' = refacing",
+            "source_text": "Refurb job — same staircase, new balustrade."
+          }
+        },
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Matt black spindles.",
+        "concepts_visited": [
+          "balusters",
+          "refacing"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-D-10",
+      "category": "implicit_constraints",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "design_style",
+        "constraints": {
+          "scope": "refacing"
+        },
+        "explicit_preferences": {
+          "timber_species": "oak",
+          "style": "modern"
+        },
+        "inferred_preferences": {
+          "scope": {
+            "value": "refacing",
+            "reason": "new component swap = refacing",
+            "source_text": "New handrail."
+          }
+        },
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [
+          {
+            "ref_type": "generic",
+            "referring_to": "unresolved",
+            "turn": 1
+          }
+        ],
+        "latest_instruction": "Oak, modern profile.",
+        "concepts_visited": [
+          "handrail",
+          "timber_species",
+          "design_style"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-E-01",
+      "category": "references",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "balusters",
+        "constraints": {},
+        "explicit_preferences": {
+          "timber_species": "oak",
+          "style": "modern",
+          "balustrade_material": "matt_black_metal"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [
+          {
+            "ref_type": "comparative",
+            "referring_to": "balusters",
+            "turn": 2
+          },
+          {
+            "ref_type": "location:landing",
+            "referring_to": "balusters",
+            "turn": 2
+          }
+        ],
+        "latest_instruction": "Can you do the same thing upstairs?",
+        "concepts_visited": [
+          "balusters",
+          "timber_species",
+          "design_style"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-E-02",
+      "category": "references",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "timber_species",
+        "constraints": {},
+        "explicit_preferences": {
+          "timber_species": "oak"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "acknowledged_correction",
+            "note": "Correction signal detected in: \"Can we do it in walnut instead of oak?\""
+          }
+        ],
+        "references": [
+          {
+            "ref_type": "generic",
+            "referring_to": "starting_steps",
+            "turn": 2
+          }
+        ],
+        "latest_instruction": "Can we do it in walnut instead of oak?",
+        "concepts_visited": [
+          "starting_steps",
+          "timber_species"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [
+        "timber_species: expected=walnut got=oak"
+      ],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": false,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": false,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-E-03",
+      "category": "references",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "treads_risers",
+        "constraints": {},
+        "explicit_preferences": {
+          "style": "modern",
+          "timber_species": "oak"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [
+          {
+            "ref_type": "ordinal",
+            "referring_to": "design_style",
+            "turn": 2
+          },
+          {
+            "ref_type": "generic",
+            "referring_to": "unclassified",
+            "turn": 3
+          }
+        ],
+        "latest_instruction": "Can we do that but with oak treads?",
+        "concepts_visited": [
+          "design_style",
+          "treads_risers",
+          "timber_species"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-E-04",
+      "category": "references",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "balusters",
+        "constraints": {
+          "scope": "refacing"
+        },
+        "explicit_preferences": {
+          "timber_species": "oak",
+          "style": "modern",
+          "balustrade_material": "turned_timber"
+        },
+        "inferred_preferences": {
+          "scope": {
+            "value": "refacing",
+            "reason": "'change that/it' typically points at component swap not full replacement",
+            "source_text": "Change that — I want modern spindles instead."
+          }
+        },
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "style",
+            "from": "traditional",
+            "to": "modern"
+          }
+        ],
+        "references": [
+          {
+            "ref_type": "generic",
+            "referring_to": "starting_steps",
+            "turn": 2
+          }
+        ],
+        "latest_instruction": "Change that — I want modern spindles instead.",
+        "concepts_visited": [
+          "starting_steps",
+          "balusters",
+          "timber_species",
+          "design_style"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-E-05",
+      "category": "references",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "handrail",
+        "constraints": {
+          "construction": "cantilever",
+          "scope": "refacing"
+        },
+        "explicit_preferences": {
+          "style": "modern",
+          "construction": "cantilever"
+        },
+        "inferred_preferences": {
+          "timber_species": {
+            "value": "walnut_or_mahogany",
+            "reason": "dark timber points to walnut or mahogany",
+            "source_text": "Keep it, but make the handrail darker."
+          }
+        },
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [
+          {
+            "ref_type": "generic",
+            "referring_to": "stringers",
+            "turn": 2
+          }
+        ],
+        "latest_instruction": "Keep it, but make the handrail darker.",
+        "concepts_visited": [
+          "stringers",
+          "treads_risers",
+          "design_style",
+          "handrail"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-E-06",
+      "category": "references",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "landing_railings",
+        "constraints": {},
+        "explicit_preferences": {
+          "timber_species": "oak",
+          "balustrade_material": "matt_black_metal"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "And do the same on the landing balustrade.",
+        "concepts_visited": [
+          "balusters",
+          "treads_risers",
+          "timber_species",
+          "landing_railings"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-E-07",
+      "category": "references",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "starting_steps",
+        "constraints": {},
+        "explicit_preferences": {},
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [
+          {
+            "ref_type": "generic",
+            "referring_to": "starting_steps",
+            "turn": 2
+          }
+        ],
+        "latest_instruction": "Can you make it wider than usual?",
+        "concepts_visited": [
+          "starting_steps"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": true,
+        "reason": "ambiguous_utterance_no_state",
+        "detail": "Can you make it wider than usual?"
+      }
+    },
+    {
+      "id": "gm-E-08",
+      "category": "references",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "landing_railings",
+        "constraints": {
+          "scope": "refacing"
+        },
+        "explicit_preferences": {
+          "timber_species": "oak",
+          "style": "traditional",
+          "balustrade_material": "turned_timber"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Change the material for the landing balustrade — keep the design the same.",
+        "concepts_visited": [
+          "balusters",
+          "timber_species",
+          "design_style",
+          "landing_railings"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-F-01",
+      "category": "conflicts",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "balusters",
+        "constraints": {},
+        "explicit_preferences": {
+          "style": "modern"
+        },
+        "inferred_preferences": {},
+        "exclusions": {
+          "balustrade_material": [
+            "glass"
+          ]
+        },
+        "confirmed_decisions": [],
+        "unresolved_questions": [
+          "Contradiction: earlier excluded balustrade_material=glass, now stated as preference. Confirm?"
+        ],
+        "corrections": [
+          {
+            "turn": 1,
+            "field": "balustrade_material",
+            "from": "glass",
+            "to": null,
+            "note": "explicitly excluded"
+          }
+        ],
+        "references": [],
+        "latest_instruction": "Modern staircase with glass balustrade.",
+        "concepts_visited": [
+          "balusters",
+          "design_style"
+        ],
+        "contradictions": [
+          {
+            "turn": 2,
+            "field": "balustrade_material",
+            "conflict": "Preference balustrade_material=glass contradicts earlier exclusion"
+          }
+        ]
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": true,
+        "reason": "contradiction_detected",
+        "detail": {
+          "turn": 2,
+          "field": "balustrade_material",
+          "conflict": "Preference balustrade_material=glass contradicts earlier exclusion"
+        }
+      }
+    },
+    {
+      "id": "gm-F-02",
+      "category": "conflicts",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "newel_caps",
+        "constraints": {
+          "scope": "refacing"
+        },
+        "explicit_preferences": {},
+        "inferred_preferences": {
+          "scope": {
+            "value": "refacing",
+            "reason": "'existing' implies retention/refacing",
+            "source_text": "Don't replace the existing newels."
+          }
+        },
+        "exclusions": {
+          "scope": [
+            "full_replacement"
+          ]
+        },
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Full replacement of the whole staircase.",
+        "concepts_visited": [
+          "newel_caps"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": false,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": false,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-F-03",
+      "category": "conflicts",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "carpet_stepmats",
+        "constraints": {},
+        "explicit_preferences": {},
+        "inferred_preferences": {},
+        "exclusions": {
+          "finish": [
+            "carpet"
+          ]
+        },
+        "confirmed_decisions": [],
+        "unresolved_questions": [
+          "Contradiction: earlier excluded finish=carpet, now stated as preference. Confirm?"
+        ],
+        "corrections": [
+          {
+            "turn": 1,
+            "field": "finish",
+            "from": "carpet",
+            "to": null,
+            "note": "explicitly excluded"
+          }
+        ],
+        "references": [],
+        "latest_instruction": "Full carpet the whole staircase.",
+        "concepts_visited": [
+          "carpet_stepmats"
+        ],
+        "contradictions": [
+          {
+            "turn": 2,
+            "field": "finish",
+            "conflict": "Preference finish=carpet contradicts earlier exclusion"
+          }
+        ]
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": true,
+        "reason": "contradiction_detected",
+        "detail": {
+          "turn": 2,
+          "field": "finish",
+          "conflict": "Preference finish=carpet contradicts earlier exclusion"
+        }
+      }
+    },
+    {
+      "id": "gm-F-04",
+      "category": "conflicts",
+      "turns_count": 3,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "newel_caps",
+        "constraints": {},
+        "explicit_preferences": {
+          "timber_species": "walnut"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [
+          "Change or addition? timber_species was walnut, now oak?"
+        ],
+        "corrections": [
+          {
+            "turn": 2,
+            "field": "timber_species",
+            "from": "oak",
+            "to": "walnut"
+          }
+        ],
+        "references": [],
+        "latest_instruction": "Oak for the newels though.",
+        "concepts_visited": [
+          "timber_species",
+          "handrail",
+          "treads_risers",
+          "newel_caps"
+        ],
+        "contradictions": [
+          {
+            "turn": 3,
+            "field": "timber_species",
+            "previous": "walnut",
+            "new": "oak",
+            "note": "no correction signal — ambiguous whether change or addition"
+          }
+        ]
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": true,
+        "reason": "contradiction_detected",
+        "detail": {
+          "turn": 3,
+          "field": "timber_species",
+          "previous": "walnut",
+          "new": "oak",
+          "note": "no correction signal — ambiguous whether change or addition"
+        }
+      }
+    },
+    {
+      "id": "gm-F-05",
+      "category": "conflicts",
+      "turns_count": 2,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "starting_steps",
+        "constraints": {},
+        "explicit_preferences": {
+          "style": "modern",
+          "balustrade_material": "turned_timber"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [
+          "Style-detail conflict: 'modern' + 'volute'. Which takes priority?"
+        ],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Turned spindles with a volute.",
+        "concepts_visited": [
+          "design_style",
+          "starting_steps",
+          "balusters"
+        ],
+        "contradictions": [
+          {
+            "turn": 2,
+            "type": "style_vs_detail",
+            "style": "modern",
+            "detail": "volute",
+            "note": "Style 'modern' conflicts with detail 'volute'"
+          }
+        ]
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": true,
+        "reason": "contradiction_detected",
+        "detail": {
+          "turn": 2,
+          "type": "style_vs_detail",
+          "style": "modern",
+          "detail": "volute",
+          "note": "Style 'modern' conflicts with detail 'volute'"
+        }
+      }
+    },
+    {
+      "id": "gm-G-01",
+      "category": "clarification",
+      "turns_count": 1,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "design_style",
+        "constraints": {},
+        "explicit_preferences": {},
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Make the staircase feel more open.",
+        "concepts_visited": [
+          "design_style"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": true,
+        "reason": "ambiguous_utterance_no_state",
+        "detail": "Make the staircase feel more open."
+      }
+    },
+    {
+      "id": "gm-G-02",
+      "category": "clarification",
+      "turns_count": 1,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": null,
+        "constraints": {},
+        "explicit_preferences": {},
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [
+          {
+            "ref_type": "location:starting_step_or_bottom_newel",
+            "referring_to": "unresolved",
+            "turn": 1
+          }
+        ],
+        "latest_instruction": "I want something fancy at the bottom of the stairs.",
+        "concepts_visited": [],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": true,
+        "reason": "unresolvable_reference",
+        "detail": "location:starting_step_or_bottom_newel"
+      }
+    },
+    {
+      "id": "gm-G-03",
+      "category": "clarification",
+      "turns_count": 1,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": null,
+        "constraints": {},
+        "explicit_preferences": {},
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Can you make the bottom look more open?",
+        "concepts_visited": [],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": true,
+        "reason": "ambiguous_utterance_no_state",
+        "detail": "Can you make the bottom look more open?"
+      }
+    },
+    {
+      "id": "gm-G-04",
+      "category": "clarification",
+      "turns_count": 1,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "handrail",
+        "constraints": {},
+        "explicit_preferences": {},
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "I want the railing to look nicer.",
+        "concepts_visited": [
+          "handrail",
+          "balusters"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": true,
+        "reason": "ambiguous_utterance_no_state",
+        "detail": "I want the railing to look nicer."
+      }
+    },
+    {
+      "id": "gm-G-05",
+      "category": "clarification",
+      "turns_count": 1,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "refacing",
+        "constraints": {
+          "scope": "refacing"
+        },
+        "explicit_preferences": {},
+        "inferred_preferences": {
+          "scope": {
+            "value": "refacing",
+            "reason": "'update' typically means refresh scope",
+            "source_text": "Update the look."
+          }
+        },
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Update the look.",
+        "concepts_visited": [
+          "design_style",
+          "refacing"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": true,
+        "reason": "ambiguous_broad_signal",
+        "detail": "Update the look."
+      }
+    },
+    {
+      "id": "gm-H-01",
+      "category": "long_conversation",
+      "turns_count": 7,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "newel_caps",
+        "constraints": {
+          "construction": "cantilever"
+        },
+        "explicit_preferences": {
+          "style": "modern",
+          "timber_species": "oak",
+          "construction": "cantilever",
+          "balustrade_material": "glass"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "What would you recommend for the newel cap?",
+        "concepts_visited": [
+          "design_style",
+          "timber_species",
+          "stringers",
+          "balusters",
+          "treads_risers",
+          "lighting",
+          "starting_steps",
+          "newel_caps"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-H-02",
+      "category": "long_conversation",
+      "turns_count": 6,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "landing_railings",
+        "constraints": {},
+        "explicit_preferences": {
+          "style": "traditional",
+          "timber_species": "mahogany",
+          "balustrade_material": "turned_timber",
+          "finish": "runner"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [
+          {
+            "ref_type": "comparative",
+            "referring_to": "carpet_stepmats",
+            "turn": 6
+          }
+        ],
+        "latest_instruction": "Landing to continue the same style.",
+        "concepts_visited": [
+          "design_style",
+          "timber_species",
+          "balusters",
+          "starting_steps",
+          "carpet_stepmats",
+          "landing_railings"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-H-03",
+      "category": "long_conversation",
+      "turns_count": 7,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "balusters",
+        "constraints": {
+          "scope": "refacing"
+        },
+        "explicit_preferences": {
+          "style": "traditional",
+          "timber_species": "pine",
+          "balustrade_material": "matt_black_metal"
+        },
+        "inferred_preferences": {
+          "scope": {
+            "value": "refacing",
+            "reason": "swapping components = refacing",
+            "source_text": "Oak handrail — swap the pine for oak."
+          }
+        },
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [
+          "Change or addition? timber_species was pine, now oak?"
+        ],
+        "corrections": [],
+        "references": [
+          {
+            "ref_type": "generic",
+            "referring_to": "unresolved",
+            "turn": 1
+          },
+          {
+            "ref_type": "generic",
+            "referring_to": "design_style",
+            "turn": 2
+          },
+          {
+            "ref_type": "generic",
+            "referring_to": "balusters",
+            "turn": 7
+          }
+        ],
+        "latest_instruction": "How would that read overall?",
+        "concepts_visited": [
+          "design_style",
+          "timber_species",
+          "balusters",
+          "refacing",
+          "handrail",
+          "newel_caps"
+        ],
+        "contradictions": [
+          {
+            "turn": 5,
+            "field": "timber_species",
+            "previous": "pine",
+            "new": "oak",
+            "note": "no correction signal — ambiguous whether change or addition"
+          }
+        ]
+      },
+      "pref_misses": [
+        "timber_species: expected=oak got=pine"
+      ],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": false,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": false,
+      "clarify_signal": {
+        "clarify": true,
+        "reason": "contradiction_detected",
+        "detail": {
+          "turn": 5,
+          "field": "timber_species",
+          "previous": "pine",
+          "new": "oak",
+          "note": "no correction signal — ambiguous whether change or addition"
+        }
+      }
+    },
+    {
+      "id": "gm-H-04",
+      "category": "long_conversation",
+      "turns_count": 6,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "starting_steps",
+        "constraints": {
+          "construction": "wall_fixed"
+        },
+        "explicit_preferences": {
+          "construction": "wall_fixed",
+          "style": "modern",
+          "timber_species": "oak",
+          "balustrade_material": "brushed_stainless"
+        },
+        "inferred_preferences": {},
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 5,
+            "field": "balustrade_material",
+            "from": "matt_black_metal",
+            "to": "brushed_stainless"
+          }
+        ],
+        "references": [
+          {
+            "ref_type": "generic",
+            "referring_to": "balusters",
+            "turn": 6
+          }
+        ],
+        "latest_instruction": "What starting step would suit that?",
+        "concepts_visited": [
+          "maintenance_repair",
+          "stringers",
+          "design_style",
+          "treads_risers",
+          "timber_species",
+          "balusters",
+          "starting_steps"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-H-05",
+      "category": "long_conversation",
+      "turns_count": 7,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "landing_railings",
+        "constraints": {},
+        "explicit_preferences": {
+          "style": "modern",
+          "timber_species": "oak",
+          "balustrade_material": "matt_black_metal"
+        },
+        "inferred_preferences": {},
+        "exclusions": {
+          "balustrade_material": [
+            "glass"
+          ]
+        },
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [
+          {
+            "turn": 4,
+            "field": "balustrade_material",
+            "from": "glass",
+            "to": null,
+            "note": "explicitly excluded"
+          }
+        ],
+        "references": [
+          {
+            "ref_type": "comparative",
+            "referring_to": "treads_risers",
+            "turn": 7
+          }
+        ],
+        "latest_instruction": "Continue the same style around the landing.",
+        "concepts_visited": [
+          "stringers",
+          "design_style",
+          "treads_risers",
+          "timber_species",
+          "balusters",
+          "lighting",
+          "landing_railings"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-H-06",
+      "category": "long_conversation",
+      "turns_count": 7,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "carpet_stepmats",
+        "constraints": {
+          "scope": "refacing"
+        },
+        "explicit_preferences": {
+          "timber_species": "pine",
+          "balustrade_material": "matt_black_metal",
+          "finish": "runner"
+        },
+        "inferred_preferences": {
+          "scope": {
+            "value": "refacing",
+            "reason": "keeping structural component = retention",
+            "source_text": "Keep the treads if possible."
+          }
+        },
+        "exclusions": {
+          "scope": [
+            "full_replacement"
+          ]
+        },
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [],
+        "latest_instruction": "Runner down the middle.",
+        "concepts_visited": [
+          "timber_species",
+          "design_style",
+          "treads_risers",
+          "refacing",
+          "balusters",
+          "handrail",
+          "maintenance_repair",
+          "newel_caps",
+          "carpet_stepmats"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": true,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": true,
+      "clarify_signal": {
+        "clarify": false
+      }
+    },
+    {
+      "id": "gm-H-07",
+      "category": "long_conversation",
+      "turns_count": 5,
+      "state": {
+        "goal": "not_yet_established",
+        "current_subject": "balusters",
+        "constraints": {
+          "construction": "wall_fixed",
+          "scope": "refacing"
+        },
+        "explicit_preferences": {
+          "construction": "wall_fixed",
+          "timber_species": "oak",
+          "style": "modern",
+          "balustrade_material": "matt_black_metal"
+        },
+        "inferred_preferences": {
+          "scope": {
+            "value": "refacing",
+            "reason": "'existing' implies retention/refacing",
+            "source_text": "Existing oak, keeping it."
+          }
+        },
+        "exclusions": {},
+        "confirmed_decisions": [],
+        "unresolved_questions": [],
+        "corrections": [],
+        "references": [
+          {
+            "ref_type": "generic",
+            "referring_to": "stringers",
+            "turn": 2
+          }
+        ],
+        "latest_instruction": "Show me some examples.",
+        "concepts_visited": [
+          "maintenance_repair",
+          "stringers",
+          "timber_species",
+          "balusters",
+          "design_style",
+          "newel_caps"
+        ],
+        "contradictions": []
+      },
+      "pref_misses": [
+        "balustrade_material: expected=brushed_stainless got=matt_black_metal"
+      ],
+      "excl_misses": [],
+      "cons_misses": [],
+      "concept_misses": [],
+      "prefs_pass": false,
+      "excl_pass": true,
+      "cons_pass": true,
+      "scope_pass": true,
+      "concepts_pass": true,
+      "corrections_pass": true,
+      "contradictions_pass": true,
+      "reference_pass": true,
+      "clarification_pass": true,
+      "fabrication_pass": true,
+      "full_pass": false,
+      "clarify_signal": {
+        "clarify": false
+      }
+    }
+  ]
+}

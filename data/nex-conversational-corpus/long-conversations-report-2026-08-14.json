@@ -1,0 +1,1161 @@
+{
+  "meta": {
+    "computed_at": "2026-08-14T03:57:03.824Z",
+    "total_conversations": 15,
+    "total_turns": 159
+  },
+  "dimensions": {
+    "goal_understood": {
+      "pass": 14,
+      "rate_pct": 93
+    },
+    "exclusions_retained": {
+      "pass": 14,
+      "rate_pct": 93
+    },
+    "corrections_reflected": {
+      "pass": 15,
+      "rate_pct": 100
+    },
+    "uncertainty_surfaced": {
+      "pass": 13,
+      "rate_pct": 87
+    },
+    "evidence_traceable": {
+      "pass": 15,
+      "rate_pct": 100
+    },
+    "next_action_appropriate": {
+      "pass": 10,
+      "rate_pct": 67
+    },
+    "fabrication_zero": {
+      "pass": 15,
+      "rate_pct": 100
+    },
+    "concepts_covered": {
+      "pass": 13,
+      "rate_pct": 87
+    },
+    "contradictions_expected": {
+      "pass": 15,
+      "rate_pct": 100
+    },
+    "full_pass": {
+      "pass": 7,
+      "rate_pct": 47
+    }
+  },
+  "results": [
+    {
+      "id": "long-01",
+      "description": "Philip's flagship scenario · scope-change + correction + reconsider + image + retention",
+      "turns_count": 11,
+      "final_state_summary": {
+        "preferences": {
+          "style": "modern",
+          "timber_species": "oak",
+          "balustrade_material": "glass"
+        },
+        "constraints": {
+          "scope": "refacing"
+        },
+        "exclusions": {
+          "balustrade_material": [
+            "metal"
+          ]
+        },
+        "corrections_count": 1,
+        "contradictions_count": 0,
+        "concepts_visited": [
+          "balusters",
+          "refacing",
+          "design_style",
+          "timber_species",
+          "newel_caps",
+          "starting_steps",
+          "installation_process",
+          "treads_risers"
+        ]
+      },
+      "last_decision_action": "Recommend",
+      "last_voice_snippet": "Given style=modern · timber_species=oak · balustrade_material=glass · scope=refacing, for unclassified the common direct",
+      "dimensions": {
+        "goal_understood": {
+          "pass": true,
+          "misses": []
+        },
+        "exclusions_retained": {
+          "pass": true,
+          "misses": []
+        },
+        "corrections_reflected": {
+          "pass": true,
+          "expected": 1,
+          "got": 1
+        },
+        "uncertainty_surfaced": {
+          "pass": true,
+          "misses": []
+        },
+        "evidence_traceable": {
+          "pass": true
+        },
+        "next_action_appropriate": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "fabrication_zero": {
+          "pass": true
+        },
+        "concepts_covered": {
+          "pass": true,
+          "misses": []
+        },
+        "contradictions_expected": {
+          "pass": true,
+          "expected_at_least": null,
+          "got": 0
+        }
+      },
+      "full_pass": true
+    },
+    {
+      "id": "long-02",
+      "description": "Long build with multiple preference changes and one hard exclusion",
+      "turns_count": 11,
+      "final_state_summary": {
+        "preferences": {
+          "style": "modern",
+          "timber_species": "oak",
+          "balustrade_material": "matt_black_metal",
+          "construction": "cantilever"
+        },
+        "constraints": {
+          "construction": "cantilever"
+        },
+        "exclusions": {
+          "balustrade_material": [
+            "glass"
+          ]
+        },
+        "corrections_count": 1,
+        "contradictions_count": 0,
+        "concepts_visited": [
+          "design_style",
+          "timber_species",
+          "balusters",
+          "treads_risers",
+          "lighting",
+          "stringers",
+          "installation_process",
+          "starting_steps",
+          "newel_caps"
+        ]
+      },
+      "last_decision_action": "Recommend",
+      "last_voice_snippet": "Given style=modern · timber_species=oak · balustrade_material=matt_black_metal · construction=cantilever · construction=",
+      "dimensions": {
+        "goal_understood": {
+          "pass": true,
+          "misses": []
+        },
+        "exclusions_retained": {
+          "pass": true,
+          "misses": []
+        },
+        "corrections_reflected": {
+          "pass": true,
+          "expected": 1,
+          "got": 1
+        },
+        "uncertainty_surfaced": {
+          "pass": true,
+          "misses": []
+        },
+        "evidence_traceable": {
+          "pass": true
+        },
+        "next_action_appropriate": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "fabrication_zero": {
+          "pass": true
+        },
+        "concepts_covered": {
+          "pass": true,
+          "misses": []
+        },
+        "contradictions_expected": {
+          "pass": true,
+          "expected_at_least": null,
+          "got": 0
+        }
+      },
+      "full_pass": true
+    },
+    {
+      "id": "long-03",
+      "description": "Refacing scope + material change mid-way + reconsider excluded item",
+      "turns_count": 11,
+      "final_state_summary": {
+        "preferences": {
+          "timber_species": "oak",
+          "balustrade_material": "brushed_stainless",
+          "finish": "runner"
+        },
+        "constraints": {
+          "scope": "refacing"
+        },
+        "exclusions": {
+          "scope": [
+            "full_replacement"
+          ],
+          "newel_caps_action": [
+            "remove"
+          ]
+        },
+        "corrections_count": 2,
+        "contradictions_count": 0,
+        "concepts_visited": [
+          "timber_species",
+          "refacing",
+          "design_style",
+          "balusters",
+          "handrail",
+          "maintenance_repair",
+          "carpet_stepmats",
+          "newel_caps"
+        ]
+      },
+      "last_decision_action": "RetrieveImages",
+      "last_voice_snippet": "For oak · brushed_stainless · runner · refacing: here are the closest matches from the reference library.",
+      "dimensions": {
+        "goal_understood": {
+          "pass": true,
+          "misses": []
+        },
+        "exclusions_retained": {
+          "pass": true,
+          "misses": []
+        },
+        "corrections_reflected": {
+          "pass": true,
+          "expected": 1,
+          "got": 2
+        },
+        "uncertainty_surfaced": {
+          "pass": true,
+          "misses": []
+        },
+        "evidence_traceable": {
+          "pass": true
+        },
+        "next_action_appropriate": {
+          "pass": true,
+          "expected": "RetrieveImages",
+          "got": "RetrieveImages"
+        },
+        "fabrication_zero": {
+          "pass": true
+        },
+        "concepts_covered": {
+          "pass": true,
+          "misses": []
+        },
+        "contradictions_expected": {
+          "pass": true,
+          "expected_at_least": null,
+          "got": 0
+        }
+      },
+      "full_pass": true
+    },
+    {
+      "id": "long-04",
+      "description": "Grand traditional with exclusion + late correction",
+      "turns_count": 11,
+      "final_state_summary": {
+        "preferences": {
+          "timber_species": "oak",
+          "style": "traditional",
+          "balustrade_material": "turned_timber",
+          "finish": "runner"
+        },
+        "constraints": {},
+        "exclusions": {
+          "style": [
+            "modern"
+          ]
+        },
+        "corrections_count": 1,
+        "contradictions_count": 0,
+        "concepts_visited": [
+          "timber_species",
+          "design_style",
+          "balusters",
+          "starting_steps",
+          "carpet_stepmats",
+          "landing_railings",
+          "newel_caps"
+        ]
+      },
+      "last_decision_action": "Recommend",
+      "last_voice_snippet": "Given timber_species=oak · style=traditional · balustrade_material=turned_timber · finish=runner, for unclassified the c",
+      "dimensions": {
+        "goal_understood": {
+          "pass": true,
+          "misses": []
+        },
+        "exclusions_retained": {
+          "pass": true,
+          "misses": []
+        },
+        "corrections_reflected": {
+          "pass": true,
+          "expected": 1,
+          "got": 1
+        },
+        "uncertainty_surfaced": {
+          "pass": true,
+          "misses": []
+        },
+        "evidence_traceable": {
+          "pass": true
+        },
+        "next_action_appropriate": {
+          "pass": false,
+          "expected": "Ask",
+          "got": "Recommend"
+        },
+        "fabrication_zero": {
+          "pass": true
+        },
+        "concepts_covered": {
+          "pass": true,
+          "misses": []
+        },
+        "contradictions_expected": {
+          "pass": true,
+          "expected_at_least": null,
+          "got": 0
+        }
+      },
+      "full_pass": false
+    },
+    {
+      "id": "long-05",
+      "description": "Wall-fixed with cumulative constraints + image request at the end",
+      "turns_count": 10,
+      "final_state_summary": {
+        "preferences": {
+          "construction": "wall_fixed",
+          "timber_species": "oak",
+          "balustrade_material": "matt_black_metal",
+          "style": "modern"
+        },
+        "constraints": {
+          "construction": "wall_fixed",
+          "scope": "refacing"
+        },
+        "exclusions": {
+          "style": [
+            "traditional"
+          ]
+        },
+        "corrections_count": 0,
+        "contradictions_count": 0,
+        "concepts_visited": [
+          "stringers",
+          "timber_species",
+          "balusters",
+          "design_style",
+          "refacing",
+          "starting_steps",
+          "newel_caps",
+          "landing_railings"
+        ]
+      },
+      "last_decision_action": "RetrieveImages",
+      "last_voice_snippet": "For wall_fixed · oak · matt_black_metal · modern · wall_fixed · refacing: here are the closest matches from the referenc",
+      "dimensions": {
+        "goal_understood": {
+          "pass": true,
+          "misses": []
+        },
+        "exclusions_retained": {
+          "pass": true,
+          "misses": []
+        },
+        "corrections_reflected": {
+          "pass": true,
+          "expected": 0,
+          "got": 0
+        },
+        "uncertainty_surfaced": {
+          "pass": true,
+          "misses": []
+        },
+        "evidence_traceable": {
+          "pass": true
+        },
+        "next_action_appropriate": {
+          "pass": true,
+          "expected": "RetrieveImages",
+          "got": "RetrieveImages"
+        },
+        "fabrication_zero": {
+          "pass": true
+        },
+        "concepts_covered": {
+          "pass": true,
+          "misses": []
+        },
+        "contradictions_expected": {
+          "pass": true,
+          "expected_at_least": null,
+          "got": 0
+        }
+      },
+      "full_pass": true
+    },
+    {
+      "id": "long-06",
+      "description": "Cottage refacing with material shift and honest limit acknowledgment",
+      "turns_count": 11,
+      "final_state_summary": {
+        "preferences": {
+          "timber_species": "pine",
+          "style": "rustic",
+          "finish": "runner"
+        },
+        "constraints": {
+          "scope": "refacing"
+        },
+        "exclusions": {},
+        "corrections_count": 0,
+        "contradictions_count": 1,
+        "concepts_visited": [
+          "timber_species",
+          "design_style",
+          "balusters",
+          "maintenance_repair",
+          "refacing",
+          "handrail",
+          "treads_risers",
+          "carpet_stepmats",
+          "newel_caps"
+        ]
+      },
+      "last_decision_action": "Ask",
+      "last_voice_snippet": "Tell me a bit more.",
+      "dimensions": {
+        "goal_understood": {
+          "pass": true,
+          "misses": []
+        },
+        "exclusions_retained": {
+          "pass": true,
+          "misses": []
+        },
+        "corrections_reflected": {
+          "pass": true,
+          "expected": 0,
+          "got": 0
+        },
+        "uncertainty_surfaced": {
+          "pass": true,
+          "misses": []
+        },
+        "evidence_traceable": {
+          "pass": true
+        },
+        "next_action_appropriate": {
+          "pass": false,
+          "expected": "Recommend",
+          "got": "Ask"
+        },
+        "fabrication_zero": {
+          "pass": true
+        },
+        "concepts_covered": {
+          "pass": true,
+          "misses": []
+        },
+        "contradictions_expected": {
+          "pass": true,
+          "expected_at_least": null,
+          "got": 1
+        }
+      },
+      "full_pass": false
+    },
+    {
+      "id": "long-07",
+      "description": "Modern floating with technical detail + honest limit",
+      "turns_count": 10,
+      "final_state_summary": {
+        "preferences": {
+          "style": "modern",
+          "timber_species": "oak",
+          "construction": "cantilever",
+          "balustrade_material": "glass"
+        },
+        "constraints": {
+          "construction": "cantilever"
+        },
+        "exclusions": {},
+        "corrections_count": 0,
+        "contradictions_count": 0,
+        "concepts_visited": [
+          "stringers",
+          "design_style",
+          "treads_risers",
+          "timber_species",
+          "balusters",
+          "lighting",
+          "starting_steps",
+          "newel_caps"
+        ]
+      },
+      "last_decision_action": "Recommend",
+      "last_voice_snippet": "Given style=modern · timber_species=oak · construction=cantilever · balustrade_material=glass · construction=cantilever,",
+      "dimensions": {
+        "goal_understood": {
+          "pass": true,
+          "misses": []
+        },
+        "exclusions_retained": {
+          "pass": true,
+          "misses": []
+        },
+        "corrections_reflected": {
+          "pass": true,
+          "expected": 0,
+          "got": 0
+        },
+        "uncertainty_surfaced": {
+          "pass": false,
+          "misses": [
+            "uncertainty_not_surfaced:structural_thickness",
+            "uncertainty_not_surfaced:steel_channel_size"
+          ]
+        },
+        "evidence_traceable": {
+          "pass": true
+        },
+        "next_action_appropriate": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "fabrication_zero": {
+          "pass": true
+        },
+        "concepts_covered": {
+          "pass": true,
+          "misses": []
+        },
+        "contradictions_expected": {
+          "pass": true,
+          "expected_at_least": null,
+          "got": 0
+        }
+      },
+      "full_pass": false
+    },
+    {
+      "id": "long-08",
+      "description": "Contradiction detection during long conversation",
+      "turns_count": 9,
+      "final_state_summary": {
+        "preferences": {
+          "timber_species": "oak",
+          "style": "modern",
+          "balustrade_material": "turned_timber"
+        },
+        "constraints": {
+          "scope": "refacing"
+        },
+        "exclusions": {
+          "starting_step_action": [
+            "remove"
+          ]
+        },
+        "corrections_count": 1,
+        "contradictions_count": 2,
+        "concepts_visited": [
+          "timber_species",
+          "design_style",
+          "balusters",
+          "starting_steps",
+          "newel_caps",
+          "landing_railings"
+        ]
+      },
+      "last_decision_action": "Ask",
+      "last_voice_snippet": "Tell me a bit more.",
+      "dimensions": {
+        "goal_understood": {
+          "pass": false,
+          "misses": [
+            "balustrade_material: expected=matt_black_metal got=turned_timber"
+          ]
+        },
+        "exclusions_retained": {
+          "pass": true,
+          "misses": []
+        },
+        "corrections_reflected": {
+          "pass": true,
+          "expected": 0,
+          "got": 1
+        },
+        "uncertainty_surfaced": {
+          "pass": true,
+          "misses": []
+        },
+        "evidence_traceable": {
+          "pass": true
+        },
+        "next_action_appropriate": {
+          "pass": true,
+          "expected": "Ask",
+          "got": "Ask"
+        },
+        "fabrication_zero": {
+          "pass": true
+        },
+        "concepts_covered": {
+          "pass": true,
+          "misses": []
+        },
+        "contradictions_expected": {
+          "pass": true,
+          "expected_at_least": 1,
+          "got": 2
+        }
+      },
+      "full_pass": false
+    },
+    {
+      "id": "long-09",
+      "description": "Cost + design + code compound routed cleanly",
+      "turns_count": 10,
+      "final_state_summary": {
+        "preferences": {
+          "style": "modern",
+          "construction": "cantilever",
+          "timber_species": "oak",
+          "balustrade_material": "matt_black_metal"
+        },
+        "constraints": {
+          "construction": "cantilever"
+        },
+        "exclusions": {},
+        "corrections_count": 0,
+        "contradictions_count": 0,
+        "concepts_visited": [
+          "design_style",
+          "stringers",
+          "timber_species",
+          "business_estimation",
+          "maintenance_repair",
+          "balusters",
+          "handrail",
+          "safety_regs"
+        ]
+      },
+      "last_decision_action": "Recommend",
+      "last_voice_snippet": "Given style=modern · construction=cantilever · timber_species=oak · balustrade_material=matt_black_metal · construction=",
+      "dimensions": {
+        "goal_understood": {
+          "pass": true,
+          "misses": []
+        },
+        "exclusions_retained": {
+          "pass": true,
+          "misses": []
+        },
+        "corrections_reflected": {
+          "pass": true,
+          "expected": 0,
+          "got": 0
+        },
+        "uncertainty_surfaced": {
+          "pass": true,
+          "misses": []
+        },
+        "evidence_traceable": {
+          "pass": true
+        },
+        "next_action_appropriate": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "fabrication_zero": {
+          "pass": true
+        },
+        "concepts_covered": {
+          "pass": true,
+          "misses": []
+        },
+        "contradictions_expected": {
+          "pass": true,
+          "expected_at_least": null,
+          "got": 0
+        }
+      },
+      "full_pass": true
+    },
+    {
+      "id": "long-10",
+      "description": "Customer with unclear intent walking through discovery",
+      "turns_count": 10,
+      "final_state_summary": {
+        "preferences": {
+          "timber_species": "pine",
+          "balustrade_material": "glass",
+          "style": "traditional"
+        },
+        "constraints": {
+          "scope": "refacing"
+        },
+        "exclusions": {
+          "style": [
+            "modern"
+          ]
+        },
+        "corrections_count": 1,
+        "contradictions_count": 1,
+        "concepts_visited": [
+          "timber_species",
+          "design_style",
+          "balusters"
+        ]
+      },
+      "last_decision_action": "Ask",
+      "last_voice_snippet": "Tell me a bit more.",
+      "dimensions": {
+        "goal_understood": {
+          "pass": true,
+          "misses": []
+        },
+        "exclusions_retained": {
+          "pass": false,
+          "misses": [
+            "style: expected excludes matt_black got=modern",
+            "style: expected excludes glass got=modern"
+          ]
+        },
+        "corrections_reflected": {
+          "pass": true,
+          "expected": 0,
+          "got": 1
+        },
+        "uncertainty_surfaced": {
+          "pass": true,
+          "misses": []
+        },
+        "evidence_traceable": {
+          "pass": true
+        },
+        "next_action_appropriate": {
+          "pass": false,
+          "expected": "Recommend",
+          "got": "Ask"
+        },
+        "fabrication_zero": {
+          "pass": true
+        },
+        "concepts_covered": {
+          "pass": false,
+          "misses": [
+            "refacing"
+          ]
+        },
+        "contradictions_expected": {
+          "pass": true,
+          "expected_at_least": null,
+          "got": 1
+        }
+      },
+      "full_pass": false
+    },
+    {
+      "id": "long-11",
+      "description": "Image-driven conversation · customer refines by referencing images",
+      "turns_count": 10,
+      "final_state_summary": {
+        "preferences": {
+          "style": "modern",
+          "balustrade_material": "glass",
+          "timber_species": "oak",
+          "construction": "wall_fixed"
+        },
+        "constraints": {
+          "construction": "wall_fixed"
+        },
+        "exclusions": {},
+        "corrections_count": 0,
+        "contradictions_count": 0,
+        "concepts_visited": [
+          "design_style",
+          "balusters",
+          "timber_species",
+          "maintenance_repair",
+          "stringers",
+          "starting_steps",
+          "newel_caps"
+        ]
+      },
+      "last_decision_action": "Recommend",
+      "last_voice_snippet": "Given style=modern · balustrade_material=glass · timber_species=oak · construction=wall_fixed · construction=wall_fixed,",
+      "dimensions": {
+        "goal_understood": {
+          "pass": true,
+          "misses": []
+        },
+        "exclusions_retained": {
+          "pass": true,
+          "misses": []
+        },
+        "corrections_reflected": {
+          "pass": true,
+          "expected": 0,
+          "got": 0
+        },
+        "uncertainty_surfaced": {
+          "pass": true,
+          "misses": []
+        },
+        "evidence_traceable": {
+          "pass": true
+        },
+        "next_action_appropriate": {
+          "pass": false,
+          "expected": "Ask",
+          "got": "Recommend"
+        },
+        "fabrication_zero": {
+          "pass": true
+        },
+        "concepts_covered": {
+          "pass": true,
+          "misses": []
+        },
+        "contradictions_expected": {
+          "pass": true,
+          "expected_at_least": null,
+          "got": 0
+        }
+      },
+      "full_pass": false
+    },
+    {
+      "id": "long-12",
+      "description": "Long refacing conversation with material reconsideration",
+      "turns_count": 11,
+      "final_state_summary": {
+        "preferences": {
+          "timber_species": "oak",
+          "balustrade_material": "brushed_stainless"
+        },
+        "constraints": {
+          "scope": "refacing"
+        },
+        "exclusions": {},
+        "corrections_count": 1,
+        "contradictions_count": 0,
+        "concepts_visited": [
+          "timber_species",
+          "refacing",
+          "design_style",
+          "balusters",
+          "maintenance_repair",
+          "newel_caps",
+          "handrail",
+          "treads_risers",
+          "lighting"
+        ]
+      },
+      "last_decision_action": "Recommend",
+      "last_voice_snippet": "Given timber_species=oak · balustrade_material=brushed_stainless · scope=refacing, for unclassified the common direction",
+      "dimensions": {
+        "goal_understood": {
+          "pass": true,
+          "misses": []
+        },
+        "exclusions_retained": {
+          "pass": true,
+          "misses": []
+        },
+        "corrections_reflected": {
+          "pass": true,
+          "expected": 1,
+          "got": 1
+        },
+        "uncertainty_surfaced": {
+          "pass": true,
+          "misses": []
+        },
+        "evidence_traceable": {
+          "pass": true
+        },
+        "next_action_appropriate": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "fabrication_zero": {
+          "pass": true
+        },
+        "concepts_covered": {
+          "pass": true,
+          "misses": []
+        },
+        "contradictions_expected": {
+          "pass": true,
+          "expected_at_least": null,
+          "got": 0
+        }
+      },
+      "full_pass": true
+    },
+    {
+      "id": "long-13",
+      "description": "Compound utterance-heavy conversation",
+      "turns_count": 11,
+      "final_state_summary": {
+        "preferences": {
+          "timber_species": "oak",
+          "style": "scandi",
+          "balustrade_material": "glass",
+          "construction": "cantilever"
+        },
+        "constraints": {
+          "construction": "cantilever"
+        },
+        "exclusions": {},
+        "corrections_count": 0,
+        "contradictions_count": 0,
+        "concepts_visited": [
+          "balusters",
+          "treads_risers",
+          "timber_species",
+          "lighting",
+          "design_style",
+          "stringers",
+          "starting_steps",
+          "landing_railings",
+          "maintenance_repair",
+          "installation_process",
+          "handrail",
+          "newel_caps"
+        ]
+      },
+      "last_decision_action": "Recommend",
+      "last_voice_snippet": "Given timber_species=oak · style=scandi · balustrade_material=glass · construction=cantilever · construction=cantilever,",
+      "dimensions": {
+        "goal_understood": {
+          "pass": true,
+          "misses": []
+        },
+        "exclusions_retained": {
+          "pass": true,
+          "misses": []
+        },
+        "corrections_reflected": {
+          "pass": true,
+          "expected": 0,
+          "got": 0
+        },
+        "uncertainty_surfaced": {
+          "pass": true,
+          "misses": []
+        },
+        "evidence_traceable": {
+          "pass": true
+        },
+        "next_action_appropriate": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "fabrication_zero": {
+          "pass": true
+        },
+        "concepts_covered": {
+          "pass": true,
+          "misses": []
+        },
+        "contradictions_expected": {
+          "pass": true,
+          "expected_at_least": null,
+          "got": 0
+        }
+      },
+      "full_pass": true
+    },
+    {
+      "id": "long-14",
+      "description": "Refacing with explicit retention constraint and multiple exclusions",
+      "turns_count": 10,
+      "final_state_summary": {
+        "preferences": {
+          "timber_species": "oak",
+          "style": "traditional",
+          "balustrade_material": "turned_timber",
+          "finish": "runner"
+        },
+        "constraints": {
+          "scope": "refacing"
+        },
+        "exclusions": {
+          "style": [
+            "modern"
+          ]
+        },
+        "corrections_count": 1,
+        "contradictions_count": 0,
+        "concepts_visited": [
+          "timber_species",
+          "design_style",
+          "newel_caps",
+          "starting_steps",
+          "balusters",
+          "refacing",
+          "maintenance_repair",
+          "treads_risers",
+          "carpet_stepmats"
+        ]
+      },
+      "last_decision_action": "Recommend",
+      "last_voice_snippet": "Given timber_species=oak · style=traditional · balustrade_material=turned_timber · finish=runner · scope=refacing, for c",
+      "dimensions": {
+        "goal_understood": {
+          "pass": true,
+          "misses": []
+        },
+        "exclusions_retained": {
+          "pass": true,
+          "misses": []
+        },
+        "corrections_reflected": {
+          "pass": true,
+          "expected": 0,
+          "got": 1
+        },
+        "uncertainty_surfaced": {
+          "pass": true,
+          "misses": []
+        },
+        "evidence_traceable": {
+          "pass": true
+        },
+        "next_action_appropriate": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "fabrication_zero": {
+          "pass": true
+        },
+        "concepts_covered": {
+          "pass": false,
+          "misses": [
+            "handrail"
+          ]
+        },
+        "contradictions_expected": {
+          "pass": true,
+          "expected_at_least": null,
+          "got": 0
+        }
+      },
+      "full_pass": false
+    },
+    {
+      "id": "long-15",
+      "description": "Discovery + gradual refinement + honest gap acknowledgment",
+      "turns_count": 13,
+      "final_state_summary": {
+        "preferences": {
+          "style": "modern",
+          "timber_species": "oak",
+          "balustrade_material": "matt_black_metal"
+        },
+        "constraints": {
+          "construction": "cantilever"
+        },
+        "exclusions": {
+          "balustrade_material": [
+            "glass"
+          ],
+          "construction": [
+            "cantilever"
+          ]
+        },
+        "corrections_count": 2,
+        "contradictions_count": 0,
+        "concepts_visited": [
+          "design_style",
+          "timber_species",
+          "balusters",
+          "stringers",
+          "lighting",
+          "starting_steps",
+          "business_estimation"
+        ]
+      },
+      "last_decision_action": "Recommend",
+      "last_voice_snippet": "Given style=modern · timber_species=oak · balustrade_material=matt_black_metal · construction=cantilever, for business e",
+      "dimensions": {
+        "goal_understood": {
+          "pass": true,
+          "misses": []
+        },
+        "exclusions_retained": {
+          "pass": true,
+          "misses": []
+        },
+        "corrections_reflected": {
+          "pass": true,
+          "expected": 0,
+          "got": 2
+        },
+        "uncertainty_surfaced": {
+          "pass": false,
+          "misses": [
+            "uncertainty_not_surfaced:floor_space_at_starting_step"
+          ]
+        },
+        "evidence_traceable": {
+          "pass": true
+        },
+        "next_action_appropriate": {
+          "pass": false,
+          "expected": "Ask",
+          "got": "Recommend"
+        },
+        "fabrication_zero": {
+          "pass": true
+        },
+        "concepts_covered": {
+          "pass": true,
+          "misses": []
+        },
+        "contradictions_expected": {
+          "pass": true,
+          "expected_at_least": null,
+          "got": 0
+        }
+      },
+      "full_pass": false
+    }
+  ]
+}

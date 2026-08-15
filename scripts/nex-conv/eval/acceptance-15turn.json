@@ -1,0 +1,39 @@
+{
+  "id": "acceptance-15turn-oak-staircase-2026-08-15",
+  "purpose": "Philip's V1 acceptance test: can a normal person have a 15-20 turn staircase conversation without repeatedly correcting NEX or reminding her what they're discussing?",
+  "brain": "staircase_brain",
+  "customer_persona": "First-time buyer renovating a Victorian terrace hallway. Doesn't know trade terminology. Feels their way through the choice.",
+  "turns": [
+    { "n": 1,  "customer": "Hi, I'm renovating my hallway and I think I want a new staircase. Where do we start?" },
+    { "n": 2,  "customer": "The current one is against a wall on one side and open on the other. It's a straight run up to the first floor." },
+    { "n": 3,  "customer": "I like oak. The house is Victorian so I don't want it to look too modern." },
+    { "n": 4,  "customer": "What about the balusters? I hear that word a lot and I'm not sure what looks good with oak." },
+    { "n": 5,  "customer": "Something in between traditional and modern would be nice. My partner wants it to feel light." },
+    { "n": 6,  "customer": "What is a base rail? I keep seeing it mentioned." },
+    { "n": 7,  "customer": "Ok so do I need one? Depends on the string type?" },
+    { "n": 8,  "customer": "What's the difference between closed string and cut string?" },
+    { "n": 9,  "customer": "Is that the same as open riser?" },
+    { "n": 10, "customer": "Got it. For our staircase (against a wall one side, oak, Victorian) which string type would you recommend?" },
+    { "n": 11, "customer": "What about the bottom step? Can we do something a bit special there?" },
+    { "n": 12, "customer": "And can I carpet the flight but keep the bottom step in exposed oak?" },
+    { "n": 13, "customer": "How much roughly?" },
+    { "n": 14, "customer": "And installation — is that separate?" },
+    { "n": 15, "customer": "Actually wait, let's switch to walnut. Does that change anything?" },
+    { "n": 16, "customer": "Ok back to oak. Sorry. What about the handrail height — is there a rule?" },
+    { "n": 17, "customer": "Between two balusters per tread and one, which do you recommend for our set-up?" },
+    { "n": 18, "customer": "Perfect. To summarise: oak, closed string with cut wall option, bullnose starting step, exposed timber, carpeted flight above, matt-black slim metal balusters, 900mm handrail. Sound right?" }
+  ],
+  "success_signals": [
+    "NEX never asks the customer to repeat facts already established (material, construction, style intent, constraint)",
+    "NEX correctly handles the correction at T15 (walnut) and the revert at T16 (back to oak) without confusion",
+    "NEX preserves hedging language throughout — no 'always/must/requires'",
+    "NEX distinguishes cut string from open riser when asked (T9)",
+    "NEX never fabricates a specific price, product name, or specification not present in the retrieved packet",
+    "NEX correctly recalls constraint (against_wall) at T10 without being reminded",
+    "NEX summary confirmation at T18 lands or corrects — either is fine as long as it references the state, not fresh guesses"
+  ],
+  "faithfulness_probes": [
+    { "phrase_never_expected_in_replies": ["£", "$", "GBP"], "reason": "the ingested corpus doesn't carry specific prices — Haiku must not fabricate them" },
+    { "phrase_never_expected_in_replies": ["must have", "always requires", "you have to"], "reason": "language rule — commonly/often/one option only" }
+  ]
+}

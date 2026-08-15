@@ -1,0 +1,1867 @@
+{
+  "meta": {
+    "computed_at": "2026-08-14T03:57:12.363Z"
+  },
+  "compound": {
+    "total_tests": 50,
+    "full_pass": 30,
+    "full_pass_rate_pct": 60,
+    "concepts_recall_pass": 42,
+    "concepts_recall_rate_pct": 84,
+    "primary_identification_pass": 37,
+    "primary_identification_rate_pct": 74,
+    "preferences_extraction_pass": 45,
+    "preferences_extraction_rate_pct": 90,
+    "query_type_correct_pass": 50,
+    "query_type_correct_rate_pct": 100
+  },
+  "multi_turn": {
+    "total_conversations": 15,
+    "full_pass": 9,
+    "full_pass_rate_pct": 60,
+    "state_retention_pass": 9,
+    "state_retention_rate_pct": 60,
+    "critical_constraints_pass": 12,
+    "critical_constraints_rate_pct": 80
+  },
+  "compound_results": [
+    {
+      "id": "cu-01",
+      "text": "We're carpeting the stairs but I want the first step wider and the wood visible.",
+      "detected_concepts": [
+        "starting_steps",
+        "carpet_stepmats"
+      ],
+      "detected_primary": "carpet_stepmats",
+      "detected_preferences": {
+        "finish": "carpet"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 67,
+      "concepts_pass": false,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [
+        "treads_risers"
+      ],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-02",
+      "text": "I'm carpeting the flight but keep the bullnose in oak.",
+      "detected_concepts": [
+        "starting_steps",
+        "carpet_stepmats",
+        "timber_species",
+        "lighting"
+      ],
+      "detected_primary": "carpet_stepmats",
+      "detected_preferences": {
+        "timber_species": "oak",
+        "finish": "carpet"
+      },
+      "detected_retention": true,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": false,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-03",
+      "text": "Full carpet on the flight, exposed timber bullnose starting step.",
+      "detected_concepts": [
+        "starting_steps",
+        "carpet_stepmats",
+        "lighting"
+      ],
+      "detected_primary": "carpet_stepmats",
+      "detected_preferences": {
+        "finish": "carpet"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-04",
+      "text": "Runner down the middle, keep the first step wood.",
+      "detected_concepts": [
+        "starting_steps",
+        "carpet_stepmats"
+      ],
+      "detected_primary": "carpet_stepmats",
+      "detected_preferences": {
+        "finish": "runner"
+      },
+      "detected_retention": true,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": false,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-05",
+      "text": "Carpet the stairs, but I want the bottom step to look really nice.",
+      "detected_concepts": [
+        "starting_steps",
+        "carpet_stepmats"
+      ],
+      "detected_primary": "carpet_stepmats",
+      "detected_preferences": {
+        "finish": "carpet"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-06",
+      "text": "The staircase is against a wall, but I'd like the first step to curve out.",
+      "detected_concepts": [
+        "starting_steps",
+        "stringers"
+      ],
+      "detected_primary": "starting_steps",
+      "detected_preferences": {
+        "construction": "wall_fixed"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-07",
+      "text": "Open on both sides — can I have a curtail starting step on both sides?",
+      "detected_concepts": [
+        "starting_steps",
+        "stringers"
+      ],
+      "detected_primary": "starting_steps",
+      "detected_preferences": {
+        "construction": "two_sided"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-08",
+      "text": "Wall-fixed staircase, want a bullnose on the free side.",
+      "detected_concepts": [
+        "starting_steps",
+        "maintenance_repair",
+        "stringers"
+      ],
+      "detected_primary": "starting_steps",
+      "detected_preferences": {
+        "construction": "wall_fixed"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-09",
+      "text": "Cut-string design, curtail with volute at the bottom.",
+      "detected_concepts": [
+        "starting_steps"
+      ],
+      "detected_primary": "starting_steps",
+      "detected_preferences": {},
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 50,
+      "concepts_pass": false,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [
+        "stringers"
+      ],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-10",
+      "text": "Wall on the left, want the bottom step to project out.",
+      "detected_concepts": [
+        "starting_steps"
+      ],
+      "detected_primary": "starting_steps",
+      "detected_preferences": {},
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": false,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [],
+      "wrong_prefs": [
+        "construction expected=wall_fixed got=undefined"
+      ]
+    },
+    {
+      "id": "cu-11",
+      "text": "I want the landing railing to continue around the top newel but I don't want a long unsupported handrail.",
+      "detected_concepts": [
+        "landing_railings",
+        "handrail",
+        "newel_caps"
+      ],
+      "detected_primary": "landing_railings",
+      "detected_preferences": {},
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-12",
+      "text": "Same handrail throughout — how does it join at the top?",
+      "detected_concepts": [
+        "handrail"
+      ],
+      "detected_primary": "handrail",
+      "detected_preferences": {},
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 50,
+      "concepts_pass": false,
+      "primary_pass": false,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [
+        "landing_railings"
+      ],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-13",
+      "text": "Continue the oak handrail from the stairs onto the landing.",
+      "detected_concepts": [
+        "landing_railings",
+        "handrail",
+        "timber_species"
+      ],
+      "detected_primary": "landing_railings",
+      "detected_preferences": {
+        "timber_species": "oak"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-14",
+      "text": "Landing railing needs to feel like part of the staircase, oak throughout.",
+      "detected_concepts": [
+        "landing_railings",
+        "balusters",
+        "timber_species"
+      ],
+      "detected_primary": "landing_railings",
+      "detected_preferences": {
+        "timber_species": "oak"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-15",
+      "text": "How does the handrail get from the stairs to the landing balustrade?",
+      "detected_concepts": [
+        "landing_railings",
+        "handrail",
+        "balusters"
+      ],
+      "detected_primary": "landing_railings",
+      "detected_preferences": {},
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-16",
+      "text": "Modern matt-black metal spindles, wider spacing for that airy look.",
+      "detected_concepts": [
+        "balusters",
+        "design_style"
+      ],
+      "detected_primary": "balusters",
+      "detected_preferences": {
+        "style": "modern",
+        "balustrade_material": "matt_black_metal"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-17",
+      "text": "Traditional turned oak spindles two per tread.",
+      "detected_concepts": [
+        "balusters",
+        "treads_risers",
+        "timber_species",
+        "design_style"
+      ],
+      "detected_primary": "balusters",
+      "detected_preferences": {
+        "timber_species": "oak",
+        "style": "traditional",
+        "balustrade_material": "turned_timber"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-18",
+      "text": "Slim brushed stainless verticals modernise the balustrade.",
+      "detected_concepts": [
+        "balusters",
+        "maintenance_repair",
+        "design_style",
+        "refacing"
+      ],
+      "detected_primary": "balusters",
+      "detected_preferences": {
+        "balustrade_material": "brushed_stainless"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-19",
+      "text": "Glass panels instead of spindles for a cleaner modern look.",
+      "detected_concepts": [
+        "balusters",
+        "maintenance_repair",
+        "design_style"
+      ],
+      "detected_primary": "balusters",
+      "detected_preferences": {
+        "style": "modern",
+        "balustrade_material": "glass"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-20",
+      "text": "Contemporary balustrade with square oak spindles.",
+      "detected_concepts": [
+        "balusters",
+        "timber_species",
+        "design_style"
+      ],
+      "detected_primary": "balusters",
+      "detected_preferences": {
+        "timber_species": "oak",
+        "style": "modern"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-21",
+      "text": "Can we refurbish the existing stairs, keep the newel posts, and change the spindles?",
+      "detected_concepts": [
+        "newel_caps",
+        "balusters",
+        "refacing"
+      ],
+      "detected_primary": "balusters",
+      "detected_preferences": {},
+      "detected_retention": true,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": false,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-22",
+      "text": "I have an old pine staircase, want to keep it but make it modern with black spindles.",
+      "detected_concepts": [
+        "balusters",
+        "timber_species",
+        "design_style"
+      ],
+      "detected_primary": "balusters",
+      "detected_preferences": {
+        "timber_species": "pine",
+        "style": "modern",
+        "balustrade_material": "matt_black_metal"
+      },
+      "detected_retention": true,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 75,
+      "concepts_pass": false,
+      "primary_pass": false,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [
+        "refacing"
+      ],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-23",
+      "text": "Existing staircase, don't rip it out, swap the balustrade for glass.",
+      "detected_concepts": [
+        "balusters",
+        "refacing"
+      ],
+      "detected_primary": "balusters",
+      "detected_preferences": {
+        "balustrade_material": "glass"
+      },
+      "detected_retention": true,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": false,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-24",
+      "text": "Refresh the current staircase — new spindles, new caps, keep the treads.",
+      "detected_concepts": [
+        "balusters",
+        "treads_risers",
+        "refacing"
+      ],
+      "detected_primary": "balusters",
+      "detected_preferences": {},
+      "detected_retention": true,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 75,
+      "concepts_pass": false,
+      "primary_pass": false,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [
+        "newel_caps"
+      ],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-25",
+      "text": "Refacing scope — keep the structure, modernise the visible components.",
+      "detected_concepts": [
+        "refacing",
+        "design_style"
+      ],
+      "detected_primary": "refacing",
+      "detected_preferences": {},
+      "detected_retention": true,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-26",
+      "text": "Oak handrail from the stairs continues to the landing.",
+      "detected_concepts": [
+        "landing_railings",
+        "handrail",
+        "timber_species"
+      ],
+      "detected_primary": "landing_railings",
+      "detected_preferences": {
+        "timber_species": "oak"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-27",
+      "text": "Dark walnut handrail with brushed stainless brackets on the wall side.",
+      "detected_concepts": [
+        "handrail",
+        "timber_species",
+        "maintenance_repair",
+        "balusters"
+      ],
+      "detected_primary": "handrail",
+      "detected_preferences": {
+        "timber_species": "walnut",
+        "balustrade_material": "brushed_stainless"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-28",
+      "text": "Matt-black metal handrail throughout the flight and the landing.",
+      "detected_concepts": [
+        "landing_railings",
+        "handrail",
+        "lighting",
+        "balusters"
+      ],
+      "detected_primary": "landing_railings",
+      "detected_preferences": {
+        "balustrade_material": "matt_black_metal"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-29",
+      "text": "Timber handrail with a volute at the bottom newel.",
+      "detected_concepts": [
+        "starting_steps",
+        "handrail",
+        "newel_caps"
+      ],
+      "detected_primary": "starting_steps",
+      "detected_preferences": {},
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": false,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-30",
+      "text": "Handrail material — oak for the stairs, glass for the landing balustrade.",
+      "detected_concepts": [
+        "landing_railings",
+        "handrail",
+        "balusters",
+        "timber_species"
+      ],
+      "detected_primary": "landing_railings",
+      "detected_preferences": {
+        "timber_species": "oak",
+        "balustrade_material": "glass"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-31",
+      "text": "I want a modern staircase with glass but keep the oak handrail.",
+      "detected_concepts": [
+        "handrail",
+        "timber_species",
+        "design_style",
+        "balusters"
+      ],
+      "detected_primary": "handrail",
+      "detected_preferences": {
+        "timber_species": "oak",
+        "style": "modern",
+        "balustrade_material": "glass"
+      },
+      "detected_retention": true,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": false,
+      "prefs_pass": true,
+      "retention_pass": false,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-32",
+      "text": "Modern staircase, oak treads, matt-black spindles, glass panels around the landing.",
+      "detected_concepts": [
+        "landing_railings",
+        "balusters",
+        "treads_risers",
+        "timber_species",
+        "design_style"
+      ],
+      "detected_primary": "landing_railings",
+      "detected_preferences": {
+        "timber_species": "oak",
+        "style": "modern",
+        "balustrade_material": "glass"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": false,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [],
+      "wrong_prefs": [
+        "balustrade_material expected=matt_black_metal got=glass"
+      ]
+    },
+    {
+      "id": "cu-33",
+      "text": "Traditional oak staircase but modern glass balustrade.",
+      "detected_concepts": [
+        "balusters",
+        "timber_species",
+        "design_style"
+      ],
+      "detected_primary": "balusters",
+      "detected_preferences": {
+        "timber_species": "oak",
+        "style": "modern",
+        "balustrade_material": "glass"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": false,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [],
+      "wrong_prefs": [
+        "style expected=traditional got=modern"
+      ]
+    },
+    {
+      "id": "cu-34",
+      "text": "Scandinavian light oak with slim brushed stainless spindles.",
+      "detected_concepts": [
+        "balusters",
+        "timber_species",
+        "lighting",
+        "maintenance_repair",
+        "design_style"
+      ],
+      "detected_primary": "balusters",
+      "detected_preferences": {
+        "timber_species": "oak",
+        "style": "scandi",
+        "balustrade_material": "brushed_stainless"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-35",
+      "text": "Industrial look — steel stringer, oak treads, black metal spindles.",
+      "detected_concepts": [
+        "balusters",
+        "stringers",
+        "treads_risers",
+        "timber_species",
+        "design_style"
+      ],
+      "detected_primary": "stringers",
+      "detected_preferences": {
+        "timber_species": "oak",
+        "style": "industrial",
+        "balustrade_material": "matt_black_metal"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-36",
+      "text": "Modern staircase with LED under-nosing on every tread.",
+      "detected_concepts": [
+        "treads_risers",
+        "lighting",
+        "design_style"
+      ],
+      "detected_primary": "treads_risers",
+      "detected_preferences": {
+        "style": "modern"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-37",
+      "text": "LED cove wash under the bullnose starting step.",
+      "detected_concepts": [
+        "starting_steps",
+        "timber_species",
+        "lighting"
+      ],
+      "detected_primary": "starting_steps",
+      "detected_preferences": {},
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-38",
+      "text": "Motion-sensor step lights for the whole staircase.",
+      "detected_concepts": [
+        "lighting",
+        "treads_risers"
+      ],
+      "detected_primary": "treads_risers",
+      "detected_preferences": {},
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": false,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-39",
+      "text": "Recessed wall lights along the flight, warm colour temperature.",
+      "detected_concepts": [
+        "lighting"
+      ],
+      "detected_primary": "lighting",
+      "detected_preferences": {},
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-40",
+      "text": "Modern floating staircase with hidden LED strips in the treads.",
+      "detected_concepts": [
+        "stringers",
+        "treads_risers",
+        "lighting",
+        "maintenance_repair",
+        "design_style"
+      ],
+      "detected_primary": "stringers",
+      "detected_preferences": {
+        "style": "modern"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-41",
+      "text": "The staircase creaks and looks dated — repair and modernise?",
+      "detected_concepts": [
+        "maintenance_repair",
+        "design_style"
+      ],
+      "detected_primary": "design_style",
+      "detected_preferences": {},
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 67,
+      "concepts_pass": false,
+      "primary_pass": false,
+      "prefs_pass": true,
+      "retention_pass": false,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [
+        "refacing"
+      ],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-42",
+      "text": "Fix the wobbly newel and swap the caps to matt black.",
+      "detected_concepts": [
+        "newel_caps",
+        "maintenance_repair",
+        "balusters"
+      ],
+      "detected_primary": "balusters",
+      "detected_preferences": {
+        "balustrade_material": "matt_black_metal"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": false,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-43",
+      "text": "Sand the treads and refinish, then update the spindles.",
+      "detected_concepts": [
+        "balusters",
+        "treads_risers",
+        "maintenance_repair",
+        "refacing"
+      ],
+      "detected_primary": "balusters",
+      "detected_preferences": {},
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": false,
+      "prefs_pass": true,
+      "retention_pass": false,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-44",
+      "text": "Stop the creaking and change the handrail to match a modern look.",
+      "detected_concepts": [
+        "handrail",
+        "maintenance_repair",
+        "design_style"
+      ],
+      "detected_primary": "handrail",
+      "detected_preferences": {
+        "style": "modern"
+      },
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-45",
+      "text": "Old staircase — fix the loose bits and modernise the whole thing.",
+      "detected_concepts": [
+        "maintenance_repair",
+        "design_style"
+      ],
+      "detected_primary": "design_style",
+      "detected_preferences": {},
+      "detected_retention": false,
+      "detected_query_type": "text_answer",
+      "concepts_recall_pct": 67,
+      "concepts_pass": false,
+      "primary_pass": false,
+      "prefs_pass": false,
+      "retention_pass": false,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [
+        "refacing"
+      ],
+      "wrong_prefs": [
+        "style expected=modern got=undefined"
+      ]
+    },
+    {
+      "id": "cu-46",
+      "text": "Show me modern staircases with glass balustrade and oak treads.",
+      "detected_concepts": [
+        "balusters",
+        "treads_risers",
+        "timber_species",
+        "design_style"
+      ],
+      "detected_primary": "balusters",
+      "detected_preferences": {
+        "timber_species": "oak",
+        "style": "modern",
+        "balustrade_material": "glass"
+      },
+      "detected_retention": false,
+      "detected_query_type": "image_retrieval",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-47",
+      "text": "Pictures of traditional staircases with curtail starting steps.",
+      "detected_concepts": [
+        "starting_steps",
+        "design_style"
+      ],
+      "detected_primary": "starting_steps",
+      "detected_preferences": {
+        "style": "traditional"
+      },
+      "detected_retention": false,
+      "detected_query_type": "image_retrieval",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-48",
+      "text": "What would a modern staircase look like with glass and oak?",
+      "detected_concepts": [
+        "timber_species",
+        "design_style",
+        "balusters"
+      ],
+      "detected_primary": "balusters",
+      "detected_preferences": {
+        "timber_species": "oak",
+        "style": "modern",
+        "balustrade_material": "glass"
+      },
+      "detected_retention": false,
+      "detected_query_type": "hybrid",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    },
+    {
+      "id": "cu-49",
+      "text": "Give me examples of modernising an old Victorian staircase.",
+      "detected_concepts": [
+        "design_style"
+      ],
+      "detected_primary": "design_style",
+      "detected_preferences": {
+        "style": "traditional"
+      },
+      "detected_retention": false,
+      "detected_query_type": "image_retrieval",
+      "concepts_recall_pct": 50,
+      "concepts_pass": false,
+      "primary_pass": false,
+      "prefs_pass": false,
+      "retention_pass": false,
+      "query_type_pass": true,
+      "full_pass": false,
+      "missing_concepts": [
+        "refacing"
+      ],
+      "wrong_prefs": [
+        "style expected=modern got=traditional"
+      ]
+    },
+    {
+      "id": "cu-50",
+      "text": "Show me some starting step ideas for a wall-fixed staircase.",
+      "detected_concepts": [
+        "starting_steps",
+        "maintenance_repair",
+        "stringers"
+      ],
+      "detected_primary": "starting_steps",
+      "detected_preferences": {
+        "construction": "wall_fixed"
+      },
+      "detected_retention": false,
+      "detected_query_type": "image_retrieval",
+      "concepts_recall_pct": 100,
+      "concepts_pass": true,
+      "primary_pass": true,
+      "prefs_pass": true,
+      "retention_pass": true,
+      "query_type_pass": true,
+      "full_pass": true,
+      "missing_concepts": [],
+      "wrong_prefs": []
+    }
+  ],
+  "multi_turn_results": [
+    {
+      "id": "mt-01",
+      "description": "Classic modern-oak-carpet-feature-step conversation (Philip's flagship example)",
+      "turns_count": 4,
+      "final_state": {
+        "timber_species": "oak",
+        "style": null,
+        "finish": "carpet",
+        "balustrade_material": null,
+        "construction": null,
+        "scope": "refacing",
+        "concepts_visited": {}
+      },
+      "concepts_visited": [
+        "timber_species",
+        "newel_caps",
+        "refacing",
+        "carpet_stepmats",
+        "starting_steps"
+      ],
+      "state_errors": [],
+      "critical_notes": [
+        {
+          "constraint": "timber_species=oak (from turn 1)",
+          "pass": true
+        },
+        {
+          "constraint": "scope=refacing (from turn 2 \"keep the existing newels\")",
+          "pass": true
+        },
+        {
+          "constraint": "finish=carpet (from turn 3)",
+          "pass": true
+        },
+        {
+          "constraint": "starting_step concept invoked (turn 4)",
+          "pass": true
+        }
+      ],
+      "state_pass": true,
+      "critical_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "mt-02",
+      "description": "Traditional refacing conversation with material preference",
+      "turns_count": 4,
+      "final_state": {
+        "timber_species": "oak",
+        "style": "traditional",
+        "finish": null,
+        "balustrade_material": "turned_timber",
+        "construction": null,
+        "scope": "refacing",
+        "concepts_visited": {}
+      },
+      "concepts_visited": [
+        "refacing",
+        "timber_species",
+        "balusters",
+        "treads_risers",
+        "lighting",
+        "design_style",
+        "starting_steps"
+      ],
+      "state_errors": [],
+      "critical_notes": [
+        {
+          "constraint": "scope=refacing (from turns 1-2)",
+          "pass": true
+        },
+        {
+          "constraint": "style=traditional (from turn 3)",
+          "pass": true
+        },
+        {
+          "constraint": "balustrade_material=turned_timber (from turn 4)",
+          "pass": true
+        }
+      ],
+      "state_pass": true,
+      "critical_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "mt-03",
+      "description": "Wall-fixed staircase with cumulative constraints",
+      "turns_count": 4,
+      "final_state": {
+        "timber_species": "oak",
+        "style": null,
+        "finish": "carpet",
+        "balustrade_material": null,
+        "construction": "wall_fixed",
+        "scope": null,
+        "concepts_visited": {}
+      },
+      "concepts_visited": [
+        "stringers",
+        "timber_species",
+        "starting_steps",
+        "carpet_stepmats",
+        "lighting"
+      ],
+      "state_errors": [],
+      "critical_notes": [
+        {
+          "constraint": "construction=wall_fixed (from turn 1)",
+          "pass": true
+        },
+        {
+          "constraint": "timber_species=oak (from turn 2)",
+          "pass": true
+        },
+        {
+          "constraint": "finish=carpet (from turn 4)",
+          "pass": true
+        }
+      ],
+      "state_pass": true,
+      "critical_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "mt-04",
+      "description": "Design change mid-conversation (customer changes their mind)",
+      "turns_count": 4,
+      "final_state": {
+        "timber_species": "oak",
+        "style": "modern",
+        "finish": null,
+        "balustrade_material": "glass",
+        "construction": null,
+        "scope": null,
+        "concepts_visited": {}
+      },
+      "concepts_visited": [
+        "balusters",
+        "design_style",
+        "handrail",
+        "treads_risers",
+        "timber_species",
+        "landing_railings"
+      ],
+      "state_errors": [
+        "balustrade_material expected=matt_black_metal got=glass"
+      ],
+      "critical_notes": [
+        {
+          "constraint": "style=modern (from turn 1, retained)",
+          "pass": true
+        },
+        {
+          "constraint": "balustrade_material=matt_black_metal (from turn 2, overriding glass)",
+          "pass": false,
+          "got": "glass"
+        },
+        {
+          "constraint": "timber_species=oak (from turn 3)",
+          "pass": true
+        }
+      ],
+      "state_pass": false,
+      "critical_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "mt-05",
+      "description": "Adding constraints incrementally (short turns)",
+      "turns_count": 6,
+      "final_state": {
+        "timber_species": "oak",
+        "style": "modern",
+        "finish": null,
+        "balustrade_material": "glass",
+        "construction": "cantilever",
+        "scope": null,
+        "concepts_visited": {}
+      },
+      "concepts_visited": [
+        "design_style",
+        "timber_species",
+        "balusters",
+        "stringers",
+        "lighting",
+        "starting_steps"
+      ],
+      "state_errors": [],
+      "critical_notes": [
+        {
+          "constraint": "style=modern (from turn 1)",
+          "pass": true
+        },
+        {
+          "constraint": "timber_species=oak (from turn 2)",
+          "pass": true
+        },
+        {
+          "constraint": "balustrade_material=glass (from turn 3)",
+          "pass": true
+        },
+        {
+          "constraint": "stringers concept invoked (turn 4 cantilever)",
+          "pass": true
+        },
+        {
+          "constraint": "lighting concept invoked (turn 5)",
+          "pass": true
+        },
+        {
+          "constraint": "starting_steps concept invoked (turn 6)",
+          "pass": true
+        }
+      ],
+      "state_pass": true,
+      "critical_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "mt-06",
+      "description": "Compound utterance then follow-up refinement",
+      "turns_count": 3,
+      "final_state": {
+        "timber_species": "oak",
+        "style": "modern",
+        "finish": "runner",
+        "balustrade_material": "glass",
+        "construction": null,
+        "scope": null,
+        "concepts_visited": {}
+      },
+      "concepts_visited": [
+        "starting_steps",
+        "design_style",
+        "balusters",
+        "timber_species",
+        "carpet_stepmats"
+      ],
+      "state_errors": [
+        "concept-not-visited:treads_risers"
+      ],
+      "critical_notes": [
+        {
+          "constraint": "style=modern (turn 1)",
+          "pass": true
+        },
+        {
+          "constraint": "balustrade_material=glass (turn 1)",
+          "pass": true
+        },
+        {
+          "constraint": "timber_species=oak (turn 2)",
+          "pass": true
+        },
+        {
+          "constraint": "carpet_stepmats concept invoked (turn 3)",
+          "pass": true
+        }
+      ],
+      "state_pass": false,
+      "critical_pass": true,
+      "full_pass": false
+    },
+    {
+      "id": "mt-07",
+      "description": "Traditional with modernise-existing constraint",
+      "turns_count": 4,
+      "final_state": {
+        "timber_species": null,
+        "style": "traditional",
+        "finish": null,
+        "balustrade_material": "matt_black_metal",
+        "construction": null,
+        "scope": null,
+        "concepts_visited": {}
+      },
+      "concepts_visited": [
+        "design_style",
+        "starting_steps",
+        "newel_caps",
+        "maintenance_repair",
+        "balusters"
+      ],
+      "state_errors": [
+        "scope expected=refacing got=null",
+        "concept-not-visited:refacing"
+      ],
+      "critical_notes": [
+        {
+          "constraint": "style=traditional (turn 1 Victorian)",
+          "pass": true
+        },
+        {
+          "constraint": "scope=refacing (turn 1 \"update it\")",
+          "pass": false,
+          "got": null
+        },
+        {
+          "constraint": "balustrade_material=matt_black_metal (turn 3)",
+          "pass": true
+        }
+      ],
+      "state_pass": false,
+      "critical_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "mt-08",
+      "description": "Constraint added AFTER an earlier answer",
+      "turns_count": 4,
+      "final_state": {
+        "timber_species": "oak",
+        "style": null,
+        "finish": "carpet",
+        "balustrade_material": null,
+        "construction": "wall_fixed",
+        "scope": null,
+        "concepts_visited": {}
+      },
+      "concepts_visited": [
+        "starting_steps",
+        "stringers",
+        "carpet_stepmats",
+        "timber_species"
+      ],
+      "state_errors": [],
+      "critical_notes": [
+        {
+          "constraint": "construction=wall_fixed (turn 2 — the constraint added AFTER the initial question)",
+          "pass": true
+        },
+        {
+          "constraint": "timber_species=oak (turn 3)",
+          "pass": true
+        },
+        {
+          "constraint": "finish=carpet (turn 3)",
+          "pass": true
+        },
+        {
+          "constraint": "starting_steps still in scope (turn 4)",
+          "pass": null
+        }
+      ],
+      "state_pass": true,
+      "critical_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "mt-09",
+      "description": "Customer corrects themselves",
+      "turns_count": 4,
+      "final_state": {
+        "timber_species": "oak",
+        "style": "modern",
+        "finish": null,
+        "balustrade_material": null,
+        "construction": null,
+        "scope": null,
+        "concepts_visited": {}
+      },
+      "concepts_visited": [
+        "timber_species",
+        "balusters",
+        "design_style"
+      ],
+      "state_errors": [],
+      "critical_notes": [
+        {
+          "constraint": "timber_species=oak (turn 2 correction, NOT walnut from turn 1)",
+          "pass": true
+        },
+        {
+          "constraint": "style=modern (turn 3)",
+          "pass": true
+        }
+      ],
+      "state_pass": true,
+      "critical_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "mt-10",
+      "description": "Image request with cumulative constraints",
+      "turns_count": 3,
+      "final_state": {
+        "timber_species": "oak",
+        "style": "modern",
+        "finish": null,
+        "balustrade_material": "glass",
+        "construction": null,
+        "scope": null,
+        "concepts_visited": {}
+      },
+      "concepts_visited": [
+        "design_style",
+        "balusters",
+        "treads_risers",
+        "timber_species"
+      ],
+      "state_errors": [],
+      "critical_notes": [
+        {
+          "constraint": "style=modern (turn 1)",
+          "pass": true
+        },
+        {
+          "constraint": "timber_species=oak (turn 2)",
+          "pass": true
+        },
+        {
+          "constraint": "balustrade_material=glass (turn 2)",
+          "pass": true
+        },
+        {
+          "constraint": "image_retrieval routing on turn 3",
+          "pass": null
+        }
+      ],
+      "state_pass": true,
+      "critical_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "mt-11",
+      "description": "Landing conversation with construction constraint from earlier",
+      "turns_count": 4,
+      "final_state": {
+        "timber_species": "oak",
+        "style": null,
+        "finish": null,
+        "balustrade_material": null,
+        "construction": "wall_fixed",
+        "scope": null,
+        "concepts_visited": {}
+      },
+      "concepts_visited": [
+        "maintenance_repair",
+        "stringers",
+        "landing_railings",
+        "timber_species",
+        "lighting"
+      ],
+      "state_errors": [
+        "concept-not-visited:handrail"
+      ],
+      "critical_notes": [
+        {
+          "constraint": "construction=wall_fixed (turn 1)",
+          "pass": true
+        },
+        {
+          "constraint": "timber_species=oak (turn 3)",
+          "pass": true
+        },
+        {
+          "constraint": "landing_railings concept invoked (turn 2)",
+          "pass": true
+        }
+      ],
+      "state_pass": false,
+      "critical_pass": true,
+      "full_pass": false
+    },
+    {
+      "id": "mt-12",
+      "description": "Multi-turn refacing scope buildup",
+      "turns_count": 5,
+      "final_state": {
+        "timber_species": "pine",
+        "style": null,
+        "finish": null,
+        "balustrade_material": "matt_black_metal",
+        "construction": null,
+        "scope": "refacing",
+        "concepts_visited": {}
+      },
+      "concepts_visited": [
+        "timber_species",
+        "refacing",
+        "balusters",
+        "design_style",
+        "newel_caps"
+      ],
+      "state_errors": [],
+      "critical_notes": [
+        {
+          "constraint": "timber_species=pine (turn 1)",
+          "pass": true
+        },
+        {
+          "constraint": "scope=refacing (turn 2)",
+          "pass": true
+        },
+        {
+          "constraint": "balustrade_material=matt_black_metal (turn 4)",
+          "pass": true
+        },
+        {
+          "constraint": "newel_caps concept invoked (turn 5)",
+          "pass": true
+        }
+      ],
+      "state_pass": true,
+      "critical_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "mt-13",
+      "description": "Traditional to modern shift with retention",
+      "turns_count": 4,
+      "final_state": {
+        "timber_species": "mahogany",
+        "style": "traditional",
+        "finish": null,
+        "balustrade_material": null,
+        "construction": null,
+        "scope": "refacing",
+        "concepts_visited": {}
+      },
+      "concepts_visited": [
+        "timber_species",
+        "design_style",
+        "handrail",
+        "balusters",
+        "maintenance_repair"
+      ],
+      "state_errors": [
+        "concept-not-visited:refacing"
+      ],
+      "critical_notes": [
+        {
+          "constraint": "timber_species=mahogany (turn 1)",
+          "pass": true
+        },
+        {
+          "constraint": "style=traditional (turn 1-2, \"classical feel\")",
+          "pass": true
+        },
+        {
+          "constraint": "scope=refacing (turn 2 \"freshen it\")",
+          "pass": true
+        }
+      ],
+      "state_pass": false,
+      "critical_pass": true,
+      "full_pass": false
+    },
+    {
+      "id": "mt-14",
+      "description": "Cascade change (customer opens up more scope)",
+      "turns_count": 4,
+      "final_state": {
+        "timber_species": null,
+        "style": null,
+        "finish": null,
+        "balustrade_material": null,
+        "construction": null,
+        "scope": null,
+        "concepts_visited": {}
+      },
+      "concepts_visited": [
+        "balusters",
+        "newel_caps",
+        "handrail"
+      ],
+      "state_errors": [
+        "scope expected=refacing got=null"
+      ],
+      "critical_notes": [
+        {
+          "constraint": "scope=refacing (implied by \"change\" language)",
+          "pass": false,
+          "got": null
+        },
+        {
+          "constraint": "balusters + newel_caps + handrail all in scope",
+          "pass": null
+        }
+      ],
+      "state_pass": false,
+      "critical_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "mt-15",
+      "description": "Preference given late (final turn adds most information)",
+      "turns_count": 4,
+      "final_state": {
+        "timber_species": "oak",
+        "style": null,
+        "finish": null,
+        "balustrade_material": null,
+        "construction": null,
+        "scope": null,
+        "concepts_visited": {}
+      },
+      "concepts_visited": [
+        "understair",
+        "treads_risers",
+        "timber_species"
+      ],
+      "state_errors": [],
+      "critical_notes": [
+        {
+          "constraint": "understair concept invoked (turn 1)",
+          "pass": true
+        },
+        {
+          "constraint": "timber_species=oak (turn 3)",
+          "pass": true
+        },
+        {
+          "constraint": "understair still in scope on turn 4",
+          "pass": null
+        }
+      ],
+      "state_pass": true,
+      "critical_pass": true,
+      "full_pass": true
+    }
+  ]
+}

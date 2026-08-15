@@ -1,0 +1,1868 @@
+{
+  "started_at": "2026-08-14T21:21:10.300Z",
+  "brain": "staircase_brain",
+  "per_conversation": [
+    {
+      "id": "eval-001-materials-follow-up",
+      "purpose": "Follow-up 'what about walnut' must retain staircase context established in turn 1.",
+      "turns": [
+        {
+          "turn_index": 1,
+          "customer": "What does an oak staircase cost?",
+          "latency_ms": 34,
+          "understood_intent": {
+            "slug": "ask_price",
+            "class": "price",
+            "confidence": 0.9,
+            "reason": "price cue (priority over ellipsis)"
+          },
+          "understood_entities": [
+            "staircase",
+            "price",
+            "oak"
+          ],
+          "top_k_top": {
+            "id": "6848d20e-b225-40d8-95a0-0778c7fda53c",
+            "score": 0.469,
+            "semantic": 0.724,
+            "entityOverlap": 0.5,
+            "graphHopBonus": 0,
+            "topicContinuity": 0.5,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "compare",
+            "entities": [
+              "walnut",
+              "staircase",
+              "oak"
+            ],
+            "answer_head": "\"What's the difference between oak and walnut for stairs?\"",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.469,
+            0.425,
+            0.377,
+            0.364,
+            0.355,
+            0.355,
+            0.355,
+            0.307
+          ],
+          "state_facts": {},
+          "state_entities_in_focus": [
+            "staircase",
+            "price",
+            "oak"
+          ],
+          "assertions": [
+            {
+              "name": "entities_in_focus == oak,staircase,price",
+              "pass": true,
+              "detail": {
+                "missing": [],
+                "got": [
+                  "staircase",
+                  "price",
+                  "oak"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "turn_index": 2,
+          "customer": "What about walnut?",
+          "latency_ms": 28,
+          "understood_intent": {
+            "slug": "ask_what_about",
+            "class": "revisit",
+            "confidence": 0.92,
+            "reason": "elliptical follow-up cue"
+          },
+          "understood_entities": [
+            "walnut"
+          ],
+          "top_k_top": {
+            "id": "6848d20e-b225-40d8-95a0-0778c7fda53c",
+            "score": 0.546,
+            "semantic": 0.696,
+            "entityOverlap": 0.75,
+            "graphHopBonus": 0,
+            "topicContinuity": 0.75,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "compare",
+            "entities": [
+              "walnut",
+              "staircase",
+              "oak"
+            ],
+            "answer_head": "\"What's the difference between oak and walnut for stairs?\"",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.546,
+            0.459,
+            0.412,
+            0.375,
+            0.364,
+            0.354,
+            0.33,
+            0.317
+          ],
+          "state_facts": {},
+          "state_entities_in_focus": [
+            "staircase",
+            "price",
+            "oak",
+            "walnut"
+          ],
+          "assertions": [
+            {
+              "name": "intent==ask_what_about",
+              "pass": true,
+              "detail": {
+                "got": "ask_what_about"
+              }
+            },
+            {
+              "name": "entities_in_focus contains walnut,staircase",
+              "pass": true,
+              "detail": {
+                "missing": [],
+                "got": [
+                  "staircase",
+                  "price",
+                  "oak",
+                  "walnut"
+                ]
+              }
+            },
+            {
+              "name": "state.current_topic == staircase",
+              "pass": true,
+              "detail": {
+                "got": "staircase"
+              }
+            }
+          ]
+        },
+        {
+          "turn_index": 3,
+          "customer": "And glass?",
+          "latency_ms": 14,
+          "understood_intent": {
+            "slug": "ask_what_about",
+            "class": "revisit",
+            "confidence": 0.92,
+            "reason": "elliptical follow-up cue"
+          },
+          "understood_entities": [
+            "glass"
+          ],
+          "top_k_top": {
+            "id": "2d38dd7e-f364-4421-a45f-d6c752320f5d",
+            "score": 0.36,
+            "semantic": 0.54,
+            "entityOverlap": 0.375,
+            "graphHopBonus": 0,
+            "topicContinuity": 0.375,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "ask_price",
+            "entities": [
+              "glass",
+              "staircase",
+              "handrail",
+              "contemporary",
+              "building_regs",
+              "price"
+            ],
+            "answer_head": "Customer: \"Modern glass balustrade staircase — what will it cost and what does the code say about the handrail?\"",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.36,
+            0.359,
+            0.349,
+            0.334,
+            0.334,
+            0.334,
+            0.318,
+            0.316
+          ],
+          "state_facts": {},
+          "state_entities_in_focus": [
+            "staircase",
+            "price",
+            "oak",
+            "walnut",
+            "glass"
+          ],
+          "assertions": [
+            {
+              "name": "intent==ask_what_about",
+              "pass": true,
+              "detail": {
+                "got": "ask_what_about"
+              }
+            },
+            {
+              "name": "entities_in_focus contains glass,staircase",
+              "pass": true,
+              "detail": {
+                "missing": [],
+                "got": [
+                  "staircase",
+                  "price",
+                  "oak",
+                  "walnut",
+                  "glass"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "turn_index": 4,
+          "customer": "And installation?",
+          "latency_ms": 16,
+          "understood_intent": {
+            "slug": "ask_what_about",
+            "class": "revisit",
+            "confidence": 0.92,
+            "reason": "elliptical follow-up cue"
+          },
+          "understood_entities": [
+            "installation"
+          ],
+          "top_k_top": {
+            "id": "6de23782-adfa-482d-b4a4-53836a5dce35",
+            "score": 0.454,
+            "semantic": 0.547,
+            "entityOverlap": 0,
+            "graphHopBonus": 1,
+            "topicContinuity": 0.222,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "specify_material",
+            "entities": [
+              "starting_step",
+              "staircase",
+              "landing",
+              "contemporary",
+              "glass"
+            ],
+            "answer_head": "Turn 1: > Customer: \"I want a modern staircase with a nice big first step, glass above it and something modern around the landing.\"",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.454,
+            0.348,
+            0.332,
+            0.325,
+            0.319,
+            0.318,
+            0.265,
+            0.246
+          ],
+          "state_facts": {},
+          "state_entities_in_focus": [
+            "staircase",
+            "price",
+            "oak",
+            "walnut",
+            "glass",
+            "installation"
+          ],
+          "assertions": [
+            {
+              "name": "intent==ask_what_about",
+              "pass": true,
+              "detail": {
+                "got": "ask_what_about"
+              }
+            },
+            {
+              "name": "entities_in_focus contains installation,staircase",
+              "pass": true,
+              "detail": {
+                "missing": [],
+                "got": [
+                  "staircase",
+                  "price",
+                  "oak",
+                  "walnut",
+                  "glass",
+                  "installation"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "passed": 8,
+      "total": 8,
+      "pass_rate": 100
+    },
+    {
+      "id": "eval-002-correction",
+      "purpose": "Correction from oak to walnut must replace the material fact and preserve the old value in corrections_log.",
+      "turns": [
+        {
+          "turn_index": 1,
+          "customer": "I want an oak staircase.",
+          "latency_ms": 17,
+          "understood_intent": {
+            "slug": "specify_material",
+            "class": "specify",
+            "confidence": 0.85,
+            "reason": "material + specify cue"
+          },
+          "understood_entities": [
+            "staircase",
+            "oak"
+          ],
+          "top_k_top": {
+            "id": "6848d20e-b225-40d8-95a0-0778c7fda53c",
+            "score": 0.517,
+            "semantic": 0.697,
+            "entityOverlap": 0.667,
+            "graphHopBonus": 0,
+            "topicContinuity": 0.667,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "compare",
+            "entities": [
+              "walnut",
+              "staircase",
+              "oak"
+            ],
+            "answer_head": "\"What's the difference between oak and walnut for stairs?\"",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.517,
+            0.506,
+            0.453,
+            0.413,
+            0.406,
+            0.403,
+            0.376,
+            0.315
+          ],
+          "state_facts": {
+            "material_primary": {
+              "value": "walnut",
+              "turn_established": 5,
+              "confidence": 0.95,
+              "via": "correction"
+            }
+          },
+          "state_entities_in_focus": [
+            "staircase",
+            "oak"
+          ],
+          "assertions": [
+            {
+              "name": "state.material == oak",
+              "pass": true,
+              "detail": {
+                "got": "oak"
+              }
+            }
+          ]
+        },
+        {
+          "turn_index": 2,
+          "customer": "What are my options for the balusters?",
+          "latency_ms": 21,
+          "understood_intent": {
+            "slug": "ask_definition",
+            "class": "discover",
+            "confidence": 0.88,
+            "reason": "definition cue"
+          },
+          "understood_entities": [
+            "baluster"
+          ],
+          "top_k_top": {
+            "id": "f141a768-ea6b-40ad-a566-c5b1e4194d48",
+            "score": 0.384,
+            "semantic": 0.584,
+            "entityOverlap": 0.4,
+            "graphHopBonus": 0,
+            "topicContinuity": 0.4,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "ask_installation",
+            "entities": [
+              "installation",
+              "baluster",
+              "landing",
+              "staircase"
+            ],
+            "answer_head": "Example: > \"This varies by manufacturer — 900 mm supplied length for stair balusters and 1100 mm for landing balusters is a common supply convention, but the exact stock lengths an",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.384,
+            0.379,
+            0.353,
+            0.293,
+            0.285,
+            0.285,
+            0.274,
+            0.266
+          ],
+          "state_facts": {
+            "material_primary": {
+              "value": "walnut",
+              "turn_established": 5,
+              "confidence": 0.95,
+              "via": "correction"
+            }
+          },
+          "state_entities_in_focus": [
+            "staircase",
+            "oak",
+            "baluster"
+          ],
+          "assertions": [
+            {
+              "name": "entities_in_focus contains baluster,oak",
+              "pass": true,
+              "detail": {
+                "missing": [],
+                "got": [
+                  "staircase",
+                  "oak",
+                  "baluster"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "turn_index": 3,
+          "customer": "No, walnut.",
+          "latency_ms": 30,
+          "understood_intent": {
+            "slug": "correct",
+            "class": "correct",
+            "confidence": 0.95,
+            "reason": "negation cue at start"
+          },
+          "understood_entities": [
+            "walnut"
+          ],
+          "top_k_top": {
+            "id": "6848d20e-b225-40d8-95a0-0778c7fda53c",
+            "score": 0.529,
+            "semantic": 0.619,
+            "entityOverlap": 0.75,
+            "graphHopBonus": 0,
+            "topicContinuity": 0.75,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "compare",
+            "entities": [
+              "walnut",
+              "staircase",
+              "oak"
+            ],
+            "answer_head": "\"What's the difference between oak and walnut for stairs?\"",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.529,
+            0.435,
+            0.4,
+            0.349,
+            0.348,
+            0.348,
+            0.339,
+            0.318
+          ],
+          "state_facts": {
+            "material_primary": {
+              "value": "walnut",
+              "turn_established": 5,
+              "confidence": 0.95,
+              "via": "correction"
+            }
+          },
+          "state_entities_in_focus": [
+            "staircase",
+            "oak",
+            "baluster",
+            "walnut"
+          ],
+          "assertions": [
+            {
+              "name": "intent==correct",
+              "pass": true,
+              "detail": {
+                "got": "correct"
+              }
+            },
+            {
+              "name": "state.material == walnut",
+              "pass": true,
+              "detail": {
+                "got": "walnut"
+              }
+            },
+            {
+              "name": "corrections_log length >= 1",
+              "pass": true,
+              "detail": {
+                "got": 1
+              }
+            }
+          ]
+        }
+      ],
+      "passed": 5,
+      "total": 5,
+      "pass_rate": 100
+    },
+    {
+      "id": "eval-003-pronoun-that",
+      "purpose": "Referring to prior recommendation with 'is that expensive' should retrieve pricing knowledge scoped to the current subject.",
+      "turns": [
+        {
+          "turn_index": 1,
+          "customer": "Can I have a bullnose starting step?",
+          "latency_ms": 41,
+          "understood_intent": {
+            "slug": "ask_definition",
+            "class": "discover",
+            "confidence": 0.6,
+            "reason": "trailing question mark"
+          },
+          "understood_entities": [
+            "bullnose",
+            "starting_step"
+          ],
+          "top_k_top": {
+            "id": "3ef86ccf-c8f4-49e4-9e22-aa6888def325",
+            "score": 0.518,
+            "semantic": 0.7,
+            "entityOverlap": 0.667,
+            "graphHopBonus": 0,
+            "topicContinuity": 0.667,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "specify_material",
+            "entities": [
+              "bullnose",
+              "carpet",
+              "starting_step"
+            ],
+            "answer_head": "\"Do I have to carpet the bullnose too?\"",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.518,
+            0.498,
+            0.443,
+            0.443,
+            0.414,
+            0.405,
+            0.383,
+            0.377
+          ],
+          "state_facts": {},
+          "state_entities_in_focus": [
+            "bullnose",
+            "starting_step"
+          ],
+          "assertions": [
+            {
+              "name": "entities_in_focus contains bullnose,starting_step",
+              "pass": true,
+              "detail": {
+                "missing": [],
+                "got": [
+                  "bullnose",
+                  "starting_step"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "turn_index": 2,
+          "customer": "Is that expensive?",
+          "latency_ms": 45,
+          "understood_intent": {
+            "slug": "ask_price",
+            "class": "price",
+            "confidence": 0.9,
+            "reason": "price cue (priority over ellipsis)"
+          },
+          "understood_entities": [
+            "price"
+          ],
+          "top_k_top": {
+            "id": "3ef86ccf-c8f4-49e4-9e22-aa6888def325",
+            "score": 0.394,
+            "semantic": 0.513,
+            "entityOverlap": 0.5,
+            "graphHopBonus": 0,
+            "topicContinuity": 0.5,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "specify_material",
+            "entities": [
+              "bullnose",
+              "carpet",
+              "starting_step"
+            ],
+            "answer_head": "\"Do I have to carpet the bullnose too?\"",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.394,
+            0.331,
+            0.328,
+            0.286,
+            0.266,
+            0.251,
+            0.243,
+            0.243
+          ],
+          "state_facts": {},
+          "state_entities_in_focus": [
+            "bullnose",
+            "starting_step",
+            "price"
+          ],
+          "assertions": [
+            {
+              "name": "intent==ask_price",
+              "pass": true,
+              "detail": {
+                "got": "ask_price"
+              }
+            },
+            {
+              "name": "topK ∩ bullnose > 0",
+              "pass": true,
+              "detail": {
+                "hits": 2,
+                "targets": [
+                  "bullnose"
+                ],
+                "top_entities": [
+                  [
+                    "bullnose",
+                    "carpet",
+                    "starting_step"
+                  ],
+                  [
+                    "quote",
+                    "price"
+                  ],
+                  [
+                    "bullnose",
+                    "carpet",
+                    "timber",
+                    "staircase",
+                    "starting_step"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "passed": 3,
+      "total": 3,
+      "pass_rate": 100
+    },
+    {
+      "id": "eval-004-comparison",
+      "purpose": "'Which is better' should be classified as compare and retrieve items involving both options.",
+      "turns": [
+        {
+          "turn_index": 1,
+          "customer": "I'm choosing between closed string and cut string.",
+          "latency_ms": 25,
+          "understood_intent": {
+            "slug": "statement",
+            "class": "discover",
+            "confidence": 0.55,
+            "reason": "fallback statement"
+          },
+          "understood_entities": [
+            "closed_string",
+            "cut_string",
+            "string"
+          ],
+          "top_k_top": {
+            "id": "40b8e5c2-d6f9-4aee-a35c-9a83fdecf19d",
+            "score": 0.497,
+            "semantic": 0.705,
+            "entityOverlap": 0.6,
+            "graphHopBonus": 0,
+            "topicContinuity": 0.6,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "compare",
+            "entities": [
+              "closed_string",
+              "cut_string",
+              "base_rail",
+              "landing",
+              "string"
+            ],
+            "answer_head": "Use when: explaining the three-way base-rail rule (closed-string vs cut-string vs landing).",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.497,
+            0.454,
+            0.433,
+            0.422,
+            0.394,
+            0.374,
+            0.367,
+            0.355
+          ],
+          "state_facts": {},
+          "state_entities_in_focus": [
+            "closed_string",
+            "cut_string",
+            "string"
+          ],
+          "assertions": [
+            {
+              "name": "entities_in_focus contains closed_string,cut_string",
+              "pass": true,
+              "detail": {
+                "missing": [],
+                "got": [
+                  "closed_string",
+                  "cut_string",
+                  "string"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "turn_index": 2,
+          "customer": "Which is better for a modern home?",
+          "latency_ms": 23,
+          "understood_intent": {
+            "slug": "ask_recommendation",
+            "class": "decide",
+            "confidence": 0.88,
+            "reason": "recommendation cue (better for ...)"
+          },
+          "understood_entities": [
+            "contemporary"
+          ],
+          "top_k_top": {
+            "id": "8a638dc3-1353-4c6e-9d56-ae0e9dc7c9cf",
+            "score": 0.376,
+            "semantic": 0.56,
+            "entityOverlap": 0.4,
+            "graphHopBonus": 0,
+            "topicContinuity": 0.4,
+            "brain": "staircase_brain",
+            "kind": "qa_pair",
+            "canonical_intent": "ask_price",
+            "entities": [
+              "closed_string",
+              "price",
+              "string"
+            ],
+            "answer_head": "Slightly — a cut wall string can be quicker to fit against an existing plaster wall than a full closed wall string that has to be housed against irregular plaster. Details vary by ",
+            "source_batch": "staircase-string-types-2026-08-15"
+          },
+          "top_k_scores": [
+            0.376,
+            0.326,
+            0.316,
+            0.283,
+            0.283,
+            0.267,
+            0.266,
+            0.266
+          ],
+          "state_facts": {},
+          "state_entities_in_focus": [
+            "closed_string",
+            "cut_string",
+            "string",
+            "contemporary"
+          ],
+          "assertions": [
+            {
+              "name": "intent==ask_recommendation",
+              "pass": true,
+              "detail": {
+                "got": "ask_recommendation"
+              }
+            },
+            {
+              "name": "topK ∩ closed_string|cut_string|contemporary > 0",
+              "pass": true,
+              "detail": {
+                "hits": 6,
+                "targets": [
+                  "closed_string",
+                  "cut_string",
+                  "contemporary"
+                ],
+                "top_entities": [
+                  [
+                    "closed_string",
+                    "price",
+                    "string"
+                  ],
+                  [
+                    "contemporary"
+                  ],
+                  [
+                    "glass",
+                    "cut_string",
+                    "starting_step",
+                    "floating_stair",
+                    "staircase",
+                    "handrail",
+                    "balustrade",
+                    "landing",
+                    "carpet",
+                    "timber",
+                    "tread",
+                    "contemporary",
+                    "string"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "passed": 3,
+      "total": 3,
+      "pass_rate": 100
+    },
+    {
+      "id": "eval-005-constraint",
+      "purpose": "Constraint 'against a wall' should establish construction_context fact + influence subsequent retrieval.",
+      "turns": [
+        {
+          "turn_index": 1,
+          "customer": "My staircase is against a wall on one side.",
+          "latency_ms": 25,
+          "understood_intent": {
+            "slug": "specify_constraint",
+            "class": "specify",
+            "confidence": 0.85,
+            "reason": "location entity in possessive frame"
+          },
+          "understood_entities": [
+            "against_wall",
+            "staircase"
+          ],
+          "top_k_top": {
+            "id": "46ba587a-6187-43aa-8d67-9e7e22cb171b",
+            "score": 0.699,
+            "semantic": 0.882,
+            "entityOverlap": 1,
+            "graphHopBonus": 0,
+            "topicContinuity": 1,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "specify_constraint",
+            "entities": [
+              "against_wall",
+              "staircase"
+            ],
+            "answer_head": "\"I've got a staircase against a wall",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.699,
+            0.534,
+            0.525,
+            0.504,
+            0.401,
+            0.388,
+            0.382,
+            0.364
+          ],
+          "state_facts": {
+            "construction_context": {
+              "value": "against_wall",
+              "turn_established": 1,
+              "confidence": 0.85
+            }
+          },
+          "state_entities_in_focus": [
+            "against_wall",
+            "staircase"
+          ],
+          "assertions": [
+            {
+              "name": "state.constraint contains against_wall",
+              "pass": true,
+              "detail": {
+                "got": [
+                  "against_wall"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "turn_index": 2,
+          "customer": "What starting-step options do I have?",
+          "latency_ms": 15,
+          "understood_intent": {
+            "slug": "ask_options",
+            "class": "discover",
+            "confidence": 0.88,
+            "reason": "options cue"
+          },
+          "understood_entities": [
+            "starting_step"
+          ],
+          "top_k_top": {
+            "id": "5700c154-d168-4aea-b9dc-3bfc2238c9e3",
+            "score": 0.625,
+            "semantic": 0.67,
+            "entityOverlap": 1,
+            "graphHopBonus": 0,
+            "topicContinuity": 1,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "specify_constraint",
+            "entities": [
+              "against_wall",
+              "starting_step",
+              "staircase"
+            ],
+            "answer_head": "\"Can I have a curved starting step if the stairs are against a wall?\"",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.625,
+            0.39,
+            0.365,
+            0.365,
+            0.364,
+            0.358,
+            0.34,
+            0.334
+          ],
+          "state_facts": {
+            "construction_context": {
+              "value": "against_wall",
+              "turn_established": 1,
+              "confidence": 0.85
+            }
+          },
+          "state_entities_in_focus": [
+            "against_wall",
+            "staircase",
+            "starting_step"
+          ],
+          "assertions": [
+            {
+              "name": "entities_in_focus contains starting_step,against_wall",
+              "pass": true,
+              "detail": {
+                "missing": [],
+                "got": [
+                  "against_wall",
+                  "staircase",
+                  "starting_step"
+                ]
+              }
+            },
+            {
+              "name": "topK ∩ starting_step|against_wall > 0",
+              "pass": true,
+              "detail": {
+                "hits": 8,
+                "targets": [
+                  "starting_step",
+                  "against_wall"
+                ],
+                "top_entities": [
+                  [
+                    "against_wall",
+                    "starting_step",
+                    "staircase"
+                  ],
+                  [
+                    "against_wall",
+                    "starting_step",
+                    "staircase"
+                  ],
+                  [
+                    "bullnose",
+                    "starting_step",
+                    "carpet",
+                    "timber",
+                    "staircase"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "passed": 3,
+      "total": 3,
+      "pass_rate": 100
+    },
+    {
+      "id": "eval-006-topic-return",
+      "purpose": "After a topic diversion, returning to earlier subject should resurface the earlier established facts.",
+      "turns": [
+        {
+          "turn_index": 1,
+          "customer": "I want an oak staircase.",
+          "latency_ms": 33,
+          "understood_intent": {
+            "slug": "specify_material",
+            "class": "specify",
+            "confidence": 0.85,
+            "reason": "material + specify cue"
+          },
+          "understood_entities": [
+            "staircase",
+            "oak"
+          ],
+          "top_k_top": {
+            "id": "6848d20e-b225-40d8-95a0-0778c7fda53c",
+            "score": 0.517,
+            "semantic": 0.697,
+            "entityOverlap": 0.667,
+            "graphHopBonus": 0,
+            "topicContinuity": 0.667,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "compare",
+            "entities": [
+              "walnut",
+              "staircase",
+              "oak"
+            ],
+            "answer_head": "\"What's the difference between oak and walnut for stairs?\"",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.517,
+            0.506,
+            0.453,
+            0.413,
+            0.406,
+            0.403,
+            0.376,
+            0.315
+          ],
+          "state_facts": {
+            "material_primary": {
+              "value": "oak",
+              "turn_established": 1,
+              "confidence": 0.85
+            }
+          },
+          "state_entities_in_focus": [
+            "staircase",
+            "oak"
+          ],
+          "assertions": [
+            {
+              "name": "state.material == oak",
+              "pass": true,
+              "detail": {
+                "got": "oak"
+              }
+            }
+          ]
+        },
+        {
+          "turn_index": 2,
+          "customer": "What are the building regulations for handrail height?",
+          "latency_ms": 21,
+          "understood_intent": {
+            "slug": "ask_definition",
+            "class": "discover",
+            "confidence": 0.88,
+            "reason": "definition cue"
+          },
+          "understood_entities": [
+            "building_regs",
+            "handrail_height",
+            "handrail"
+          ],
+          "top_k_top": {
+            "id": "3495a658-acb5-473d-834f-788fdcc36eb3",
+            "score": 0.501,
+            "semantic": 0.817,
+            "entityOverlap": 0.5,
+            "graphHopBonus": 0,
+            "topicContinuity": 0.5,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "ask_installation",
+            "entities": [
+              "building_regs",
+              "handrail_height",
+              "installation",
+              "staircase",
+              "handrail",
+              "quote"
+            ],
+            "answer_head": "Customer: How high should the handrail be? NEX: Great question. Handrail height on a staircase is an important consideration that affects both safety and comfort. The exact figure ",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.501,
+            0.491,
+            0.373,
+            0.352,
+            0.343,
+            0.343,
+            0.341,
+            0.34
+          ],
+          "state_facts": {
+            "material_primary": {
+              "value": "oak",
+              "turn_established": 1,
+              "confidence": 0.85
+            }
+          },
+          "state_entities_in_focus": [
+            "staircase",
+            "oak",
+            "building_regs",
+            "handrail_height",
+            "handrail"
+          ],
+          "assertions": [
+            {
+              "name": "entities_in_focus contains handrail,building_regs",
+              "pass": true,
+              "detail": {
+                "missing": [],
+                "got": [
+                  "staircase",
+                  "oak",
+                  "building_regs",
+                  "handrail_height",
+                  "handrail"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "turn_index": 3,
+          "customer": "Back to the oak. What does it cost?",
+          "latency_ms": 13,
+          "understood_intent": {
+            "slug": "ask_price",
+            "class": "price",
+            "confidence": 0.9,
+            "reason": "price cue (priority over ellipsis)"
+          },
+          "understood_entities": [
+            "price",
+            "oak"
+          ],
+          "top_k_top": {
+            "id": "2d38dd7e-f364-4421-a45f-d6c752320f5d",
+            "score": 0.414,
+            "semantic": 0.567,
+            "entityOverlap": 0.5,
+            "graphHopBonus": 0,
+            "topicContinuity": 0.5,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "ask_price",
+            "entities": [
+              "glass",
+              "staircase",
+              "handrail",
+              "contemporary",
+              "building_regs",
+              "price"
+            ],
+            "answer_head": "Customer: \"Modern glass balustrade staircase — what will it cost and what does the code say about the handrail?\"",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.414,
+            0.366,
+            0.342,
+            0.338,
+            0.32,
+            0.312,
+            0.308,
+            0.307
+          ],
+          "state_facts": {
+            "material_primary": {
+              "value": "oak",
+              "turn_established": 1,
+              "confidence": 0.85
+            }
+          },
+          "state_entities_in_focus": [
+            "staircase",
+            "oak",
+            "building_regs",
+            "handrail_height",
+            "handrail",
+            "price"
+          ],
+          "assertions": [
+            {
+              "name": "intent==ask_price",
+              "pass": true,
+              "detail": {
+                "got": "ask_price"
+              }
+            },
+            {
+              "name": "topK ∩ oak|price > 0",
+              "pass": true,
+              "detail": {
+                "hits": 7,
+                "targets": [
+                  "oak",
+                  "price"
+                ],
+                "top_entities": [
+                  [
+                    "glass",
+                    "staircase",
+                    "handrail",
+                    "contemporary",
+                    "building_regs",
+                    "price"
+                  ],
+                  [
+                    "floating_stair",
+                    "staircase",
+                    "contemporary",
+                    "building_regs",
+                    "price"
+                  ],
+                  [
+                    "staircase",
+                    "timber",
+                    "oak"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "passed": 4,
+      "total": 4,
+      "pass_rate": 100
+    },
+    {
+      "id": "eval-007-unrelated-topic",
+      "purpose": "Off-topic question should not retrieve confidently-scoped staircase items (retrieval quality proxy).",
+      "turns": [
+        {
+          "turn_index": 1,
+          "customer": "What time is it?",
+          "latency_ms": 8,
+          "understood_intent": {
+            "slug": "ask_definition",
+            "class": "discover",
+            "confidence": 0.6,
+            "reason": "trailing question mark"
+          },
+          "understood_entities": [],
+          "top_k_top": {
+            "id": "466d9f87-4415-4d17-b887-bd370235122f",
+            "score": 0.228,
+            "semantic": 0.537,
+            "entityOverlap": 0,
+            "graphHopBonus": 0,
+            "topicContinuity": 0,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "ask_price",
+            "entities": [
+              "floating_stair",
+              "staircase",
+              "contemporary",
+              "building_regs",
+              "price"
+            ],
+            "answer_head": "Turn 1: > Customer: \"Modern cantilever staircase — what will it cost and does it meet code?\"",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.228,
+            0.22,
+            0.219,
+            0.216,
+            0.207,
+            0.206,
+            0.205,
+            0.203
+          ],
+          "state_facts": {},
+          "state_entities_in_focus": [],
+          "assertions": [
+            {
+              "name": "intent not in specify_material|ask_price",
+              "pass": true,
+              "detail": {
+                "got": "ask_definition"
+              }
+            },
+            {
+              "name": "topK[0].score < 0.6",
+              "pass": true,
+              "detail": {
+                "got": 0.228
+              }
+            }
+          ]
+        }
+      ],
+      "passed": 2,
+      "total": 2,
+      "pass_rate": 100
+    },
+    {
+      "id": "eval-008-clarification-triggered",
+      "purpose": "Genuinely ambiguous input should NOT confidently retrieve a specific answer.",
+      "turns": [
+        {
+          "turn_index": 1,
+          "customer": "Can you make the bottom look more open?",
+          "latency_ms": 21,
+          "understood_intent": {
+            "slug": "ask_definition",
+            "class": "discover",
+            "confidence": 0.6,
+            "reason": "trailing question mark"
+          },
+          "understood_entities": [],
+          "top_k_top": {
+            "id": "fa9a9ea1-dd65-46e5-9d02-ca7245f6a1ad",
+            "score": 0.291,
+            "semantic": 0.717,
+            "entityOverlap": 0,
+            "graphHopBonus": 0,
+            "topicContinuity": 0,
+            "brain": "staircase_brain",
+            "kind": "qa_pair",
+            "canonical_intent": "compare",
+            "entities": [
+              "metal",
+              "building_regs",
+              "glass",
+              "traditional",
+              "balustrade",
+              "baluster",
+              "timber",
+              "contemporary",
+              "tread"
+            ],
+            "answer_head": "Customer: Can you make the bottom look more open? NEX: Yes — I'd recommend a flush first tread with no projection, combined with matt-black metal spindles instead of turned timber.",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.291,
+            0.268,
+            0.252,
+            0.252,
+            0.25,
+            0.25,
+            0.25,
+            0.244
+          ],
+          "state_facts": {},
+          "state_entities_in_focus": [],
+          "assertions": [
+            {
+              "name": "topK[0].score < 0.85",
+              "pass": true,
+              "detail": {
+                "got": 0.291
+              }
+            }
+          ]
+        }
+      ],
+      "passed": 1,
+      "total": 1,
+      "pass_rate": 100
+    },
+    {
+      "id": "eval-009-multi-turn-chain",
+      "purpose": "A 5-turn conversation should keep entities_in_focus growing coherently and not lose earlier facts.",
+      "turns": [
+        {
+          "turn_index": 1,
+          "customer": "I want a modern oak staircase.",
+          "latency_ms": 19,
+          "understood_intent": {
+            "slug": "specify_material",
+            "class": "specify",
+            "confidence": 0.85,
+            "reason": "material + specify cue"
+          },
+          "understood_entities": [
+            "staircase",
+            "contemporary",
+            "oak"
+          ],
+          "top_k_top": {
+            "id": "75555537-36d7-4e9d-b406-3c142a88a50c",
+            "score": 0.453,
+            "semantic": 0.679,
+            "entityOverlap": 0.5,
+            "graphHopBonus": 0,
+            "topicContinuity": 0.5,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "specify_material",
+            "entities": [
+              "staircase",
+              "timber",
+              "oak"
+            ],
+            "answer_head": "How they might describe it: - \"I want to refurb my stairs but keep some of the timber showing.\" - \"Can I redo the staircase without covering all the wood?\" - \"New look but keep the",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.453,
+            0.452,
+            0.435,
+            0.431,
+            0.421,
+            0.418,
+            0.416,
+            0.406
+          ],
+          "state_facts": {
+            "material_primary": {
+              "value": "oak",
+              "turn_established": 1,
+              "confidence": 0.85
+            },
+            "style_intent": {
+              "value": "contemporary",
+              "turn_established": 1,
+              "confidence": 0.765
+            },
+            "construction_context": {
+              "value": "against_wall",
+              "turn_established": 3,
+              "confidence": 0.75
+            }
+          },
+          "state_entities_in_focus": [
+            "staircase",
+            "contemporary",
+            "oak"
+          ],
+          "assertions": [
+            {
+              "name": "state.material == oak",
+              "pass": true,
+              "detail": {
+                "got": "oak"
+              }
+            },
+            {
+              "name": "state.style == contemporary",
+              "pass": true,
+              "detail": {
+                "got": "contemporary"
+              }
+            }
+          ]
+        },
+        {
+          "turn_index": 2,
+          "customer": "Against a wall on one side.",
+          "latency_ms": 14,
+          "understood_intent": {
+            "slug": "specify_constraint",
+            "class": "specify",
+            "confidence": 0.75,
+            "reason": "bare location statement"
+          },
+          "understood_entities": [
+            "against_wall"
+          ],
+          "top_k_top": {
+            "id": "46ba587a-6187-43aa-8d67-9e7e22cb171b",
+            "score": 0.463,
+            "semantic": 0.709,
+            "entityOverlap": 0.5,
+            "graphHopBonus": 0,
+            "topicContinuity": 0.5,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "specify_constraint",
+            "entities": [
+              "against_wall",
+              "staircase"
+            ],
+            "answer_head": "\"I've got a staircase against a wall",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.463,
+            0.41,
+            0.406,
+            0.4,
+            0.397,
+            0.37,
+            0.354,
+            0.34
+          ],
+          "state_facts": {
+            "material_primary": {
+              "value": "oak",
+              "turn_established": 1,
+              "confidence": 0.85
+            },
+            "style_intent": {
+              "value": "contemporary",
+              "turn_established": 1,
+              "confidence": 0.765
+            },
+            "construction_context": {
+              "value": "against_wall",
+              "turn_established": 3,
+              "confidence": 0.75
+            }
+          },
+          "state_entities_in_focus": [
+            "staircase",
+            "contemporary",
+            "oak",
+            "against_wall"
+          ],
+          "assertions": [
+            {
+              "name": "state.constraint contains against_wall",
+              "pass": true,
+              "detail": {
+                "got": [
+                  "against_wall"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "turn_index": 3,
+          "customer": "Show me the balustrade options.",
+          "latency_ms": 12,
+          "understood_intent": {
+            "slug": "ask_options",
+            "class": "discover",
+            "confidence": 0.88,
+            "reason": "options cue"
+          },
+          "understood_entities": [
+            "balustrade"
+          ],
+          "top_k_top": {
+            "id": "600c2192-3db2-43a9-8b51-638bf34c2e96",
+            "score": 0.405,
+            "semantic": 0.679,
+            "entityOverlap": 0.364,
+            "graphHopBonus": 0,
+            "topicContinuity": 0.364,
+            "brain": "staircase_brain",
+            "kind": "statement",
+            "canonical_intent": "specify_material",
+            "entities": [
+              "glass",
+              "starting_step",
+              "handrail",
+              "balustrade",
+              "landing",
+              "contemporary",
+              "design",
+              "staircase",
+              "tread",
+              "oak"
+            ],
+            "answer_head": "Example: > Customer: \"I want a wide first step in oak with glass balustrade above and a matching landing rail.\" > NEX: \"That maps cleanly to three linked choices: (1) extended-trea",
+            "source_batch": "conv-intel-2026-08-14"
+          },
+          "top_k_scores": [
+            0.405,
+            0.4,
+            0.394,
+            0.374,
+            0.311,
+            0.311,
+            0.308,
+            0.3
+          ],
+          "state_facts": {
+            "material_primary": {
+              "value": "oak",
+              "turn_established": 1,
+              "confidence": 0.85
+            },
+            "style_intent": {
+              "value": "contemporary",
+              "turn_established": 1,
+              "confidence": 0.765
+            },
+            "construction_context": {
+              "value": "against_wall",
+              "turn_established": 3,
+              "confidence": 0.75
+            }
+          },
+          "state_entities_in_focus": [
+            "staircase",
+            "contemporary",
+            "oak",
+            "against_wall",
+            "balustrade"
+          ],
+          "assertions": [
+            {
+              "name": "entities_in_focus contains balustrade,oak,against_wall",
+              "pass": true,
+              "detail": {
+                "missing": [],
+                "got": [
+                  "staircase",
+                  "contemporary",
+                  "oak",
+                  "against_wall",
+                  "balustrade"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "turn_index": 4,
+          "customer": "What about glass?",
+          "latency_ms": 11,
+          "understood_intent": {
+            "slug": "ask_what_about",
+            "class": "revisit",
+            "confidence": 0.92,
+            "reason": "elliptical follow-up cue"
+          },
+          "understood_entities": [
+            "glass"
+          ],
+          "top_k_top": {
+            "id": "aa2bc113-c820-42d0-8000-327cb7da1181",
+            "score": 0.484,
+            "semantic": 0.601,
+            "entityOverlap": 0.667,
+            "graphHopBonus": 0,
+            "topicContinuity": 0.667,
+            "brain": "staircase_brain",
+            "kind": "qa_pair",
+            "canonical_intent": "specify_material",
+            "entities": [
+              "balustrade",
+              "contemporary",
+              "glass",
+              "oak"
+            ],
+            "answer_head": "Yes — full glass infill panels with an oak top rail. Common for modern homes that want maximum natural light and a see-through stairwell.",
+            "source_batch": "staircase-multi-2026-08-15"
+          },
+          "top_k_scores": [
+            0.484,
+            0.361,
+            0.355,
+            0.351,
+            0.348,
+            0.348,
+            0.338,
+            0.338
+          ],
+          "state_facts": {
+            "material_primary": {
+              "value": "oak",
+              "turn_established": 1,
+              "confidence": 0.85
+            },
+            "style_intent": {
+              "value": "contemporary",
+              "turn_established": 1,
+              "confidence": 0.765
+            },
+            "construction_context": {
+              "value": "against_wall",
+              "turn_established": 3,
+              "confidence": 0.75
+            }
+          },
+          "state_entities_in_focus": [
+            "staircase",
+            "contemporary",
+            "oak",
+            "against_wall",
+            "balustrade",
+            "glass"
+          ],
+          "assertions": [
+            {
+              "name": "intent==ask_what_about",
+              "pass": true,
+              "detail": {
+                "got": "ask_what_about"
+              }
+            },
+            {
+              "name": "entities_in_focus contains glass,balustrade,oak,against_wall",
+              "pass": true,
+              "detail": {
+                "missing": [],
+                "got": [
+                  "staircase",
+                  "contemporary",
+                  "oak",
+                  "against_wall",
+                  "balustrade",
+                  "glass"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "turn_index": 5,
+          "customer": "And installation cost?",
+          "latency_ms": 9,
+          "understood_intent": {
+            "slug": "ask_price",
+            "class": "price",
+            "confidence": 0.9,
+            "reason": "price cue (priority over ellipsis)"
+          },
+          "understood_entities": [
+            "installation",
+            "price"
+          ],
+          "top_k_top": {
+            "id": "99c62323-5137-4916-932f-8132c7607f29",
+            "score": 0.564,
+            "semantic": 0.497,
+            "entityOverlap": 1,
+            "graphHopBonus": 0,
+            "topicContinuity": 1,
+            "brain": "staircase_brain",
+            "kind": "qa_pair",
+            "canonical_intent": "ask_price",
+            "entities": [
+              "price",
+              "installation"
+            ],
+            "answer_head": "Fire escapes are heavily specification-dependent — number of storeys, load rating, finish, fixing method. A three-storey escape typically ranges from mid-five to low-six figures fi",
+            "source_batch": "staircase-multi-2026-08-15"
+          },
+          "top_k_scores": [
+            0.564,
+            0.344,
+            0.333,
+            0.308,
+            0.307,
+            0.306,
+            0.3,
+            0.298
+          ],
+          "state_facts": {
+            "material_primary": {
+              "value": "oak",
+              "turn_established": 1,
+              "confidence": 0.85
+            },
+            "style_intent": {
+              "value": "contemporary",
+              "turn_established": 1,
+              "confidence": 0.765
+            },
+            "construction_context": {
+              "value": "against_wall",
+              "turn_established": 3,
+              "confidence": 0.75
+            }
+          },
+          "state_entities_in_focus": [
+            "staircase",
+            "contemporary",
+            "oak",
+            "against_wall",
+            "balustrade",
+            "glass",
+            "installation",
+            "price"
+          ],
+          "assertions": [
+            {
+              "name": "intent==ask_price",
+              "pass": true,
+              "detail": {
+                "got": "ask_price"
+              }
+            },
+            {
+              "name": "entities_in_focus contains installation,price",
+              "pass": true,
+              "detail": {
+                "missing": [],
+                "got": [
+                  "staircase",
+                  "contemporary",
+                  "oak",
+                  "against_wall",
+                  "balustrade",
+                  "glass",
+                  "installation",
+                  "price"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "passed": 8,
+      "total": 8,
+      "pass_rate": 100
+    }
+  ],
+  "aggregate": {
+    "conversations": 9,
+    "total_assertions": 37,
+    "passed_assertions": 37,
+    "total_turns": 23,
+    "avg_turn_latency_ms": 21.5,
+    "conversations_full_pass": 9,
+    "p95_turn_latency_ms": 41,
+    "overall_pass_rate": 100
+  },
+  "finished_at": "2026-08-14T21:21:10.803Z"
+}

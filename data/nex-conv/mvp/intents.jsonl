@@ -1,0 +1,16 @@
+{"slug":"ask_options","display_name":"Ask what options exist","class":"discover","example_phrases":["what options do i have","what can i choose","what types are there","show me options"],"created_at":"2026-08-14T21:20:34.678Z"}
+{"slug":"ask_definition","display_name":"Ask what something is","class":"discover","example_phrases":["what is","what does","define","meaning of"],"created_at":"2026-08-14T21:20:34.680Z"}
+{"slug":"specify_material","display_name":"State a material choice","class":"specify","example_phrases":["i want oak","walnut please","in glass","make it in"],"created_at":"2026-08-14T21:20:34.681Z"}
+{"slug":"specify_style","display_name":"State a style preference","class":"specify","example_phrases":["traditional","modern","contemporary","somewhere in between"],"created_at":"2026-08-14T21:20:34.683Z"}
+{"slug":"specify_constraint","display_name":"State a constraint","class":"specify","example_phrases":["against a wall","under budget","both sides open"],"created_at":"2026-08-14T21:20:34.684Z"}
+{"slug":"ask_price","display_name":"Ask price","class":"price","example_phrases":["how much","what does it cost","what would it cost","price","cost","budget"],"created_at":"2026-08-14T21:20:34.685Z"}
+{"slug":"ask_installation","display_name":"Ask about installation","class":"discover","example_phrases":["installation","installed","fitting","fitted","delivery"],"created_at":"2026-08-14T21:20:34.686Z"}
+{"slug":"compare","display_name":"Compare two things","class":"compare","example_phrases":["compared to","versus","vs","difference between","or","better"],"created_at":"2026-08-14T21:20:34.688Z"}
+{"slug":"ask_what_about","display_name":"Elliptical follow-up (what about X)","class":"revisit","example_phrases":["what about","and if","how about"],"created_at":"2026-08-14T21:20:34.689Z"}
+{"slug":"correct","display_name":"Correct a prior assumption","class":"correct","example_phrases":["no i meant","actually","wait no","sorry i meant"],"created_at":"2026-08-14T21:20:34.690Z"}
+{"slug":"confirm","display_name":"Confirm","class":"confirm","example_phrases":["yes","that sounds right","sounds good","ok","okay"],"created_at":"2026-08-14T21:20:34.691Z"}
+{"slug":"ask_recommendation","display_name":"Ask NEX to recommend","class":"decide","example_phrases":["which is better","what do you recommend","which would you"],"created_at":"2026-08-14T21:20:34.692Z"}
+{"slug":"clarify_customer","display_name":"Customer asks NEX to clarify","class":"clarify","example_phrases":["what do you mean","huh","i dont understand"],"created_at":"2026-08-14T21:20:34.693Z"}
+{"slug":"clarify_nex","display_name":"NEX asks customer to clarify","class":"clarify","example_phrases":[],"created_at":"2026-08-14T21:20:34.694Z"}
+{"slug":"close","display_name":"End conversation","class":"close","example_phrases":["thanks","thank you","thats all","bye"],"created_at":"2026-08-14T21:20:34.695Z"}
+{"slug":"statement","display_name":"Generic statement (default)","class":"discover","example_phrases":[],"created_at":"2026-08-14T21:20:34.695Z"}

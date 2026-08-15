@@ -1,0 +1,1275 @@
+{
+  "regression": [
+    {
+      "id": "reg-fix-4-hello-meta",
+      "purpose": "Fix 4 — meta greetings must NOT force staircase advice",
+      "turns": [
+        {
+          "customer": "hello",
+          "intent": "meta_greeting",
+          "reply": "Hi there — how can I help with your staircase queries today?",
+          "failures": []
+        },
+        {
+          "customer": "hi there",
+          "intent": "meta_greeting",
+          "reply": "Hi there — how can I help with your staircase queries today?",
+          "failures": []
+        }
+      ],
+      "passed": 2,
+      "total": 2
+    },
+    {
+      "id": "reg-fix-4-presence-check",
+      "purpose": "Fix 4 — presence checks must confirm you're there, not talk staircases",
+      "turns": [
+        {
+          "customer": "Is anyone online?",
+          "intent": "meta_presence",
+          "reply": "Hi there — I'm here and ready to help with any questions you have about staircases. How can I assist you today?",
+          "failures": []
+        },
+        {
+          "customer": "are you there?",
+          "intent": "meta_presence",
+          "reply": "Hi there — I'm here, ready to help. How can I assist you today?",
+          "failures": []
+        }
+      ],
+      "passed": 2,
+      "total": 2
+    },
+    {
+      "id": "reg-fix-4-identity",
+      "purpose": "Fix 4 — 'who are you' should identify as Summit assistant, not reveal AI model",
+      "turns": [
+        {
+          "customer": "who are you?",
+          "intent": "meta_identity",
+          "reply": "Hi there — I'm the Summit staircase assistant, here to help with any questions you have about staircases. How can I assist you today?",
+          "failures": []
+        }
+      ],
+      "passed": 1,
+      "total": 1
+    },
+    {
+      "id": "reg-fix-1-price-no-fabrication",
+      "purpose": "Fix 1 — asking for a price when NO price is in the packet must NOT invent a £ figure",
+      "turns": [
+        {
+          "customer": "I'm looking for an oak staircase",
+          "intent": "specify_material",
+          "reply": "For your oak staircase, we can look at a closed string design, which gives a smooth diagonal look without showing tread ends. Would you prefer this option or consider a cut string with tread ends visible?",
+          "failures": []
+        },
+        {
+          "customer": "How much would that cost?",
+          "intent": "ask_price",
+          "reply": "Given that oak is your preferred material, a typical Victorian oak staircase can vary in cost depending on the complexity and size. One option is a closed string, which gives a smooth diagonal side without tread ends showing. If you prefer tread ends to step down as a feature, a cut string on the open side is another option. Which of these directions appeals more?",
+          "failures": []
+        }
+      ],
+      "passed": 2,
+      "total": 2
+    },
+    {
+      "id": "reg-fix-1-price-range-no-fabrication",
+      "purpose": "Fix 1 — invented price RANGES also count as fabrication",
+      "turns": [
+        {
+          "customer": "I want a walnut staircase",
+          "intent": "specify_material",
+          "reply": "For a walnut staircase, you'll want to consider the durability and wear and tear. Oak is often the safer choice for heavy daily use, but walnut can be a beautiful option that hides marks and dents better. Would you like to see some examples of walnut staircases against a wall?",
+          "failures": []
+        },
+        {
+          "customer": "roughly what's the price?",
+          "intent": "ask_price",
+          "reply": "For a walnut staircase, the price can vary depending on the design and materials used. Typically, a walnut staircase might range from £2,000 to £5,000, but this can vary. Would you like to explore a specific design or do you have any other questions?",
+          "failures": []
+        }
+      ],
+      "passed": 2,
+      "total": 2
+    },
+    {
+      "id": "reg-fix-3-no-op-correction",
+      "purpose": "Fix 3 — correcting to the CURRENT value should not narrate a state change",
+      "turns": [
+        {
+          "customer": "I'd like an oak staircase",
+          "intent": "specify_material",
+          "reply": "For an oak staircase, you can opt for a closed string, which keeps the wood visible and smooth, perfect for keeping the natural look of the oak. Would you prefer a closed string staircase?",
+          "failures": []
+        },
+        {
+          "customer": "No, I meant oak",
+          "intent": "correct",
+          "reply": "Given that you've specified oak, a closed string staircase is often the natural choice for a smooth diagonal side without the tread ends showing. Would you like to see an example of a Victorian oak staircase with this feature?",
+          "failures": []
+        }
+      ],
+      "passed": 2,
+      "total": 2
+    },
+    {
+      "id": "reg-fix-2-pronoun-that",
+      "purpose": "Fix 2 — 'is that expensive?' must resolve 'that' from state, not ask what",
+      "turns": [
+        {
+          "customer": "Can I have a bullnose starting step in oak?",
+          "intent": "specify_material",
+          "reply": "For your oak staircase, a bullnose starting step is a popular choice, giving a smooth and refined look at the entrance. Would you prefer this option or consider a different style?",
+          "failures": []
+        },
+        {
+          "customer": "Is that expensive?",
+          "intent": "ask_price",
+          "reply": "Given that oak is the primary timber and you're considering a bullnose starting step, a traditional closed string staircase often works well with this material. It gives a smooth diagonal side without the tread ends showing, which is a popular choice. Would you prefer this option or are you leaning towards a cut string with the tread ends visible?",
+          "failures": []
+        }
+      ],
+      "passed": 2,
+      "total": 2
+    },
+    {
+      "id": "reg-fix-2-pronoun-the-other-one",
+      "purpose": "Fix 2 — 'the other one' must resolve to prior alternative from state",
+      "turns": [
+        {
+          "customer": "Closed string or cut string for a Victorian oak staircase?",
+          "intent": "ask_definition",
+          "reply": "For a Victorian oak staircase, a closed string is often the classic choice, providing a smooth diagonal look without showing tread ends. If you prefer a more open feel with stepped treads, a cut string would be the alternative. Which one appeals more to you?",
+          "failures": []
+        },
+        {
+          "customer": "Tell me more about the other one",
+          "intent": "statement",
+          "reply": "Given that you're leaning towards a cut string, let's explore how it works in a Victorian setting. The cut string has a stepped top edge, which can be a feature in traditional designs. Would you prefer to see more details on how this would look in your Victorian staircase?",
+          "failures": []
+        }
+      ],
+      "passed": 2,
+      "total": 2
+    }
+  ],
+  "natural": {
+    "fixture": "natural-25turn-2026-08-15",
+    "total_turns": 25,
+    "avg_latency_ms": 2009.7,
+    "final_state": {
+      "turn_count": 50,
+      "material": "oak",
+      "style": "traditional",
+      "constraints": [
+        "against_wall"
+      ],
+      "corrections_logged": 2
+    },
+    "turns": [
+      {
+        "n": 1,
+        "customer": "hi",
+        "intent": "meta_greeting",
+        "entities": [],
+        "state_facts": {},
+        "state_focus": [],
+        "state_constraints": [],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 0,
+        "reply": "Hi there — how can I help today?",
+        "latency_ms": 922
+      },
+      {
+        "n": 2,
+        "customer": "u there?",
+        "intent": "meta_presence",
+        "entities": [],
+        "state_facts": {},
+        "state_focus": [],
+        "state_constraints": [],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 0,
+        "reply": "Hi there — I'm here and ready to help with any questions you have about staircases. How can I assist you today?",
+        "latency_ms": 1422
+      },
+      {
+        "n": 3,
+        "customer": "im looking to redo my staircase",
+        "intent": "statement",
+        "entities": [
+          "staircase"
+        ],
+        "state_facts": {},
+        "state_focus": [
+          "staircase"
+        ],
+        "state_constraints": [],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 0,
+        "reply": "Sure, how about this: \"I understand you're looking to refurb your staircase while keeping some of the timber visible. Would you like to explore a closed string staircase for a smooth look, or perhaps a cut string with visible treads?\"",
+        "latency_ms": 2040
+      },
+      {
+        "n": 4,
+        "customer": "its against a wall on one side",
+        "intent": "specify_constraint",
+        "entities": [
+          "against_wall"
+        ],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 0,
+        "reply": "Given that your staircase is against a wall on one side, a closed string would be a common choice as it provides that smooth diagonal side without the tread ends showing. Would you prefer this option or consider a cut string on the open side?",
+        "latency_ms": 2015
+      },
+      {
+        "n": 5,
+        "customer": "oak i think",
+        "intent": "specify_material",
+        "entities": [
+          "oak"
+        ],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 9,
+            "confidence": 0.72
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 0,
+        "reply": "Given your preference for oak, a staircase with the tread ends hidden, such as a closed string, is often the better choice. It gives that smooth diagonal look without the tread ends showing. Would you prefer this option or consider a cut string with tread ends visible on one side?",
+        "latency_ms": 2116
+      },
+      {
+        "n": 6,
+        "customer": "what abt closed vs cut?",
+        "intent": "compare",
+        "entities": [],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 9,
+            "confidence": 0.72
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 0,
+        "reply": "Given the oak you mentioned, a closed string staircase is often the natural choice for a smooth diagonal side without showing tread ends. If you prefer the tread ends to step down as a feature, a cut string on the open side is the alternative. Which of these two directions appeals more?",
+        "latency_ms": 2336
+      },
+      {
+        "n": 7,
+        "customer": "and open riser too?",
+        "intent": "ask_what_about",
+        "entities": [
+          "open_riser",
+          "riser"
+        ],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 9,
+            "confidence": 0.72
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 0,
+        "reply": "Given the open riser option, it's important to consider safety, especially with a toddler in the house. A closed string staircase would hide the riser, making it safer for young children. Would you prefer a closed string staircase for this setup?",
+        "latency_ms": 2199
+      },
+      {
+        "n": 8,
+        "customer": "hmm",
+        "intent": "backchannel",
+        "entities": [],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 9,
+            "confidence": 0.72
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 0,
+        "reply": "Take your time. I'm here when you're ready.",
+        "latency_ms": 989
+      },
+      {
+        "n": 9,
+        "customer": "which would you go for in a Victorian house",
+        "intent": "statement",
+        "entities": [
+          "traditional"
+        ],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 9,
+            "confidence": 0.72
+          },
+          "style_intent": {
+            "value": "traditional",
+            "turn_established": 17,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser",
+          "traditional"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 0,
+        "reply": "Given the oak you mentioned and the traditional direction, a closed string staircase is often the preferred choice in a Victorian house, offering that smooth diagonal look without the tread ends showing. Would you prefer this option or consider a cut string for a more stepped look?",
+        "latency_ms": 2208
+      },
+      {
+        "n": 10,
+        "customer": "how much roughly",
+        "intent": "ask_price",
+        "entities": [
+          "price"
+        ],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 9,
+            "confidence": 0.72
+          },
+          "style_intent": {
+            "value": "traditional",
+            "turn_established": 17,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser",
+          "traditional",
+          "price"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 0,
+        "reply": "Given the established facts and the current state, a traditional Victorian staircase with oak treads and a closed string is often the way to go. The usable depth will depend on the space available, typically starting at around 800mm. Would you like to explore a couple of similar examples in our gallery?",
+        "latency_ms": 2424
+      },
+      {
+        "n": 11,
+        "customer": "and installation - separate?",
+        "intent": "ask_what_about",
+        "entities": [
+          "installation"
+        ],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 9,
+            "confidence": 0.72
+          },
+          "style_intent": {
+            "value": "traditional",
+            "turn_established": 17,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser",
+          "traditional",
+          "price",
+          "installation"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 0,
+        "reply": "For a traditional staircase, installation can be done separately from the design. Would you prefer the treads to float on a steel spine or have side-stringers?",
+        "latency_ms": 1816
+      },
+      {
+        "n": 12,
+        "customer": "wait sorry, what does 'base rail' mean",
+        "intent": "statement",
+        "entities": [
+          "base_rail",
+          "string"
+        ],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 9,
+            "confidence": 0.72
+          },
+          "style_intent": {
+            "value": "traditional",
+            "turn_established": 17,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser",
+          "traditional",
+          "price",
+          "installation",
+          "base_rail",
+          "string"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 0,
+        "reply": "Given the oak you mentioned, the base rail is a common feature used when the staircase is against a wall. It provides a continuous railing system from the tread to the landing. Would you like to see more details on the different types of strings we offer?",
+        "latency_ms": 2274
+      },
+      {
+        "n": 13,
+        "customer": "does that apply to cut string too",
+        "intent": "statement",
+        "entities": [
+          "cut_string",
+          "string"
+        ],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 9,
+            "confidence": 0.72
+          },
+          "style_intent": {
+            "value": "traditional",
+            "turn_established": 17,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser",
+          "traditional",
+          "price",
+          "installation",
+          "base_rail",
+          "string",
+          "cut_string"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 0,
+        "reply": "For a cut string staircase, the tread ends are visible, with balusters landing into the treads. In a closed string, the treads and risers slot into routed grooves inside the string, keeping the ends hidden. Does that help clarify, or is there another aspect you'd like to explore?",
+        "latency_ms": 2505
+      },
+      {
+        "n": 14,
+        "customer": "actually let's switch to walnut",
+        "intent": "correct",
+        "entities": [
+          "walnut"
+        ],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "walnut",
+            "turn_established": 27,
+            "confidence": 0.95,
+            "via": "correction"
+          },
+          "style_intent": {
+            "value": "traditional",
+            "turn_established": 17,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser",
+          "traditional",
+          "price",
+          "installation",
+          "base_rail",
+          "string",
+          "cut_string",
+          "walnut"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [
+            {
+              "field": "material_primary",
+              "previous": "oak",
+              "new": "walnut"
+            }
+          ],
+          "noops": []
+        },
+        "corrections_log_len": 1,
+        "reply": "Sure, given your preference for walnut, a cut string staircase would be a good choice here. It allows the tread ends to step down, which can be a feature in a traditional setting. Would you like to see some examples of this?",
+        "latency_ms": 2103
+      },
+      {
+        "n": 15,
+        "customer": "does that change the recommendation",
+        "intent": "statement",
+        "entities": [],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "walnut",
+            "turn_established": 27,
+            "confidence": 0.95,
+            "via": "correction"
+          },
+          "style_intent": {
+            "value": "traditional",
+            "turn_established": 17,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser",
+          "traditional",
+          "price",
+          "installation",
+          "base_rail",
+          "string",
+          "cut_string",
+          "walnut"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 1,
+        "reply": "Given the walnut you mentioned, the difference between a closed string and a cut string in a traditional staircase against a wall would be that a cut string will have visible tread ends, while a closed string will have a smooth diagonal side. Which direction do you prefer?",
+        "latency_ms": 2321
+      },
+      {
+        "n": 16,
+        "customer": "no back to oak",
+        "intent": "correct",
+        "entities": [
+          "oak"
+        ],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 31,
+            "confidence": 0.95,
+            "via": "correction"
+          },
+          "style_intent": {
+            "value": "traditional",
+            "turn_established": 17,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser",
+          "traditional",
+          "price",
+          "installation",
+          "base_rail",
+          "string",
+          "cut_string",
+          "walnut"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [
+            {
+              "field": "material_primary",
+              "previous": "walnut",
+              "new": "oak"
+            }
+          ],
+          "noops": []
+        },
+        "corrections_log_len": 2,
+        "reply": "Given that you've switched from walnut to oak, an interior residential straight-flight staircase in oak with a mixed string configuration would feature a CLOSED string (smooth diagonal plank with a straight top edge). Would you prefer the OUTER string to be a CLOSED string or a CUT string instead?",
+        "latency_ms": 2327
+      },
+      {
+        "n": 17,
+        "customer": "sorry for the flip flopping",
+        "intent": "correct",
+        "entities": [],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 31,
+            "confidence": 0.95,
+            "via": "correction"
+          },
+          "style_intent": {
+            "value": "traditional",
+            "turn_established": 17,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser",
+          "traditional",
+          "price",
+          "installation",
+          "base_rail",
+          "string",
+          "cut_string",
+          "walnut"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 2,
+        "reply": "Understood, let’s keep this focused. Given your apology, it sounds like you might be reconsidering the style or configuration. Would you like to explore a different direction, perhaps a cut string instead of a closed one?",
+        "latency_ms": 2063
+      },
+      {
+        "n": 18,
+        "customer": "what about the bottom step - can it be something special?",
+        "intent": "ask_what_about",
+        "entities": [
+          "starting_step"
+        ],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 31,
+            "confidence": 0.95,
+            "via": "correction"
+          },
+          "style_intent": {
+            "value": "traditional",
+            "turn_established": 17,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser",
+          "traditional",
+          "price",
+          "installation",
+          "base_rail",
+          "string",
+          "cut_string",
+          "walnut",
+          "starting_step"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 2,
+        "reply": "Given the oak you mentioned and the traditional direction you're leaning towards, a rounded bullnose starting step would be a common and fitting choice for your staircase. Would that work for you, or do you have a preference for something else?",
+        "latency_ms": 2195
+      },
+      {
+        "n": 19,
+        "customer": "bullnose yes",
+        "intent": "statement",
+        "entities": [
+          "bullnose",
+          "starting_step"
+        ],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 31,
+            "confidence": 0.95,
+            "via": "correction"
+          },
+          "style_intent": {
+            "value": "traditional",
+            "turn_established": 17,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser",
+          "traditional",
+          "price",
+          "installation",
+          "base_rail",
+          "string",
+          "cut_string",
+          "walnut",
+          "starting_step",
+          "bullnose"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 2,
+        "reply": "Given your preference for a bullnose starting step, it's common to leave it in exposed timber for a modern look. Would you like to see an example of a staircase with a full carpet on the flight and the bullnose in exposed timber?",
+        "latency_ms": 2181
+      },
+      {
+        "n": 20,
+        "customer": "and can i carpet the rest but keep that step in oak",
+        "intent": "ask_what_about",
+        "entities": [
+          "carpet",
+          "tread",
+          "oak"
+        ],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 31,
+            "confidence": 0.95,
+            "via": "correction"
+          },
+          "style_intent": {
+            "value": "traditional",
+            "turn_established": 17,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser",
+          "traditional",
+          "price",
+          "installation",
+          "base_rail",
+          "string",
+          "cut_string",
+          "walnut",
+          "starting_step",
+          "bullnose",
+          "carpet",
+          "tread"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 2,
+        "reply": "Given that you want to keep the first step in oak while carpeting the rest, a rounded bullnose is often the most traditional choice. It complements an oak staircase and works well with carpeting. Would you prefer this option?",
+        "latency_ms": 2151
+      },
+      {
+        "n": 21,
+        "customer": "who am i actually talking to btw",
+        "intent": "meta_identity",
+        "entities": [],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 31,
+            "confidence": 0.95,
+            "via": "correction"
+          },
+          "style_intent": {
+            "value": "traditional",
+            "turn_established": 17,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser",
+          "traditional",
+          "price",
+          "installation",
+          "base_rail",
+          "string",
+          "cut_string",
+          "walnut",
+          "starting_step",
+          "bullnose",
+          "carpet",
+          "tread"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 2,
+        "reply": "Hi there — I'm the Summit staircase assistant here to help with your queries. How can I assist you today?",
+        "latency_ms": 1164
+      },
+      {
+        "n": 22,
+        "customer": "cool, thanks",
+        "intent": "close",
+        "entities": [],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 31,
+            "confidence": 0.95,
+            "via": "correction"
+          },
+          "style_intent": {
+            "value": "traditional",
+            "turn_established": 17,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser",
+          "traditional",
+          "price",
+          "installation",
+          "base_rail",
+          "string",
+          "cut_string",
+          "walnut",
+          "starting_step",
+          "bullnose",
+          "carpet",
+          "tread"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 2,
+        "reply": "You're welcome. Anything else I can help with?",
+        "latency_ms": 960
+      },
+      {
+        "n": 23,
+        "customer": "one more - is there a rule for handrail height?",
+        "intent": "ask_definition",
+        "entities": [
+          "handrail_height",
+          "handrail"
+        ],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 31,
+            "confidence": 0.95,
+            "via": "correction"
+          },
+          "style_intent": {
+            "value": "traditional",
+            "turn_established": 17,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser",
+          "traditional",
+          "price",
+          "installation",
+          "base_rail",
+          "string",
+          "cut_string",
+          "walnut",
+          "starting_step",
+          "bullnose",
+          "carpet",
+          "tread",
+          "handrail_height",
+          "handrail"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 2,
+        "reply": "Great question. For a traditional staircase, the recommended handrail height is typically between 900mm to 920mm from the floor to the top of the handrail. Would you like to see more details on this or explore other aspects of your staircase?",
+        "latency_ms": 2312
+      },
+      {
+        "n": 24,
+        "customer": "perfect. summary: oak, against wall, closed string with cut wall option, bullnose bottom step exposed, carpeted flight above, 900mm handrail",
+        "intent": "confirm",
+        "entities": [
+          "closed_string",
+          "against_wall",
+          "starting_step",
+          "carpet",
+          "handrail",
+          "bullnose",
+          "staircase",
+          "handrail_height",
+          "oak",
+          "string"
+        ],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 31,
+            "confidence": 0.95,
+            "via": "correction"
+          },
+          "style_intent": {
+            "value": "traditional",
+            "turn_established": 17,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser",
+          "traditional",
+          "price",
+          "installation",
+          "base_rail",
+          "string",
+          "cut_string",
+          "walnut",
+          "starting_step",
+          "bullnose",
+          "carpet",
+          "tread",
+          "handrail_height",
+          "handrail",
+          "closed_string"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 2,
+        "reply": "Given the oak you mentioned and the traditional direction, a closed string with a cut string option on the open side is often the best choice for a staircase like yours. The 900mm handrail height is within the typical range for residential use. Would you like to see a couple of similar examples in our gallery?",
+        "latency_ms": 2737
+      },
+      {
+        "n": 25,
+        "customer": "sound right?",
+        "intent": "ask_definition",
+        "entities": [],
+        "state_facts": {
+          "construction_context": {
+            "value": "against_wall",
+            "turn_established": 7,
+            "confidence": 0.78
+          },
+          "material_primary": {
+            "value": "oak",
+            "turn_established": 31,
+            "confidence": 0.95,
+            "via": "correction"
+          },
+          "style_intent": {
+            "value": "traditional",
+            "turn_established": 17,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "state_focus": [
+          "staircase",
+          "against_wall",
+          "oak",
+          "open_riser",
+          "riser",
+          "traditional",
+          "price",
+          "installation",
+          "base_rail",
+          "string",
+          "cut_string",
+          "walnut",
+          "starting_step",
+          "bullnose",
+          "carpet",
+          "tread",
+          "handrail_height",
+          "handrail",
+          "closed_string"
+        ],
+        "state_constraints": [
+          "against_wall"
+        ],
+        "state_delta": {
+          "changes": [],
+          "noops": []
+        },
+        "corrections_log_len": 2,
+        "reply": "Perfect, the staircase you have in mind with an oak outer string is a classic choice. It’s a smooth diagonal plank with the treads and risers hidden inside, which gives a sleek look. Would you prefer a cut string with stepped treads on the visible side?",
+        "latency_ms": 2463
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "internal://nex/design-catalogue/wallpaper-manifest.v1",
+  "audience": "customer-users-non-trade",
+  "vertical": null,
+  "supplied_by": "philip",
+  "supplied_at": "2026-08-15",
+  "hosting": "ImageKit (5vv5pw26q) · NEX-owned storage",
+  "rules": {
+    "never_shown_as_gallery": true,
+    "surface_note": "Customer asks NEX for a wallpaper via chat. NEX matches request to one image from this manifest (or nearest match if exact isn't available). NEVER show the full list.",
+    "no_nex_branding_allowed": "Any image containing the NEX brand or name MUST be excluded. Reviewer audits each image before it becomes selectable.",
+    "fallback_search": "If no wallpaper in this manifest matches the request, NEX may offer the nearest match from this pool, or suggest the customer uploads their own.",
+    "customer_uploads": "Customer can attach their own image. NEX advises on required dimensions before upload.",
+    "mutual_visibility": "Per-conversation. When a customer sets a wallpaper, the OWNER sees THAT wallpaper when chatting with THAT customer only. Doesn't affect other conversations."
+  },
+  "tagging_status": "raw · reviewer must tag each entry with the four-axis taxonomy before it becomes selectable",
+  "entries": [
+    { "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%203,%202026,%2006_13_08%20AM.png?updatedAt=1785712407269", "tags_todo": true },
+    { "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%203,%202026,%2006_16_47%20AM.png?updatedAt=1785712625857", "tags_todo": true },
+    { "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%203,%202026,%2006_20_04%20AM.png?updatedAt=1785712823379", "tags_todo": true },
+    { "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%203,%202026,%2006_22_48%20AM.png?updatedAt=1785712990525", "tags_todo": true },
+    { "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%203,%202026,%2006_58_45%20AM.png?updatedAt=1785715144320", "tags_todo": true },
+    { "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%203,%202026,%2006_26_31%20PM.png?updatedAt=1785756699951", "tags_todo": true }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "id": "natural-25turn-2026-08-15",
+  "purpose": "Broader 25-turn natural conversation test · typos, short replies, corrections, references, topic changes, price questions, greetings and meta-questions all in one flow.",
+  "brain": "staircase_brain",
+  "turns": [
+    { "n": 1,  "customer": "hi" },
+    { "n": 2,  "customer": "u there?" },
+    { "n": 3,  "customer": "im looking to redo my staircase" },
+    { "n": 4,  "customer": "its against a wall on one side" },
+    { "n": 5,  "customer": "oak i think" },
+    { "n": 6,  "customer": "what abt closed vs cut?" },
+    { "n": 7,  "customer": "and open riser too?" },
+    { "n": 8,  "customer": "hmm" },
+    { "n": 9,  "customer": "which would you go for in a Victorian house" },
+    { "n": 10, "customer": "how much roughly" },
+    { "n": 11, "customer": "and installation - separate?" },
+    { "n": 12, "customer": "wait sorry, what does 'base rail' mean" },
+    { "n": 13, "customer": "does that apply to cut string too" },
+    { "n": 14, "customer": "actually let's switch to walnut" },
+    { "n": 15, "customer": "does that change the recommendation" },
+    { "n": 16, "customer": "no back to oak" },
+    { "n": 17, "customer": "sorry for the flip flopping" },
+    { "n": 18, "customer": "what about the bottom step - can it be something special?" },
+    { "n": 19, "customer": "bullnose yes" },
+    { "n": 20, "customer": "and can i carpet the rest but keep that step in oak" },
+    { "n": 21, "customer": "who am i actually talking to btw" },
+    { "n": 22, "customer": "cool, thanks" },
+    { "n": 23, "customer": "one more - is there a rule for handrail height?" },
+    { "n": 24, "customer": "perfect. summary: oak, against wall, closed string with cut wall option, bullnose bottom step exposed, carpeted flight above, 900mm handrail" },
+    { "n": 25, "customer": "sound right?" }
+  ],
+  "success_signals": [
+    "T1 (hi) · T2 (u there?) · T21 (who am i talking to) MUST NOT get staircase advice replies",
+    "T10 (how much roughly) MUST NOT invent a £ figure",
+    "T13 (does that apply to cut string) MUST resolve 'that' to base rail from state",
+    "T14 (switch to walnut) MUST be detected as correct + state updated",
+    "T16 (back to oak) MUST be detected as correct + state updated back",
+    "T17 (sorry for the flip flopping) MUST NOT trigger a state change narration",
+    "T25 (sound right?) MUST confirm or gently correct the T24 summary using state, not pivot to new suggestions"
+  ]
+}

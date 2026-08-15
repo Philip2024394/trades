@@ -1,0 +1,7100 @@
+{
+  "meta": {
+    "computed_at": "2026-08-14T03:56:43.928Z",
+    "total_tests": 90
+  },
+  "gates": {
+    "state_fidelity": {
+      "pass": 90,
+      "rate_pct": 100
+    },
+    "evidence_fidelity": {
+      "pass": 90,
+      "rate_pct": 100
+    },
+    "constraint_fidelity": {
+      "pass": 90,
+      "rate_pct": 100
+    },
+    "preference_fidelity": {
+      "pass": 90,
+      "rate_pct": 100
+    },
+    "uncertainty_fidelity": {
+      "pass": 90,
+      "rate_pct": 100
+    },
+    "reasoning_order": {
+      "pass": 90,
+      "rate_pct": 100
+    },
+    "action_suitability": {
+      "pass": 61,
+      "rate_pct": 68
+    },
+    "explanation_quality": {
+      "pass": 90,
+      "rate_pct": 100
+    },
+    "alternatives": {
+      "pass": 90,
+      "rate_pct": 100
+    },
+    "fabrication": {
+      "pass": 90,
+      "rate_pct": 100
+    }
+  },
+  "action_pass": {
+    "pass": 61,
+    "rate_pct": 68
+  },
+  "shape_pass": {
+    "pass": 67,
+    "rate_pct": 74
+  },
+  "full_pass": {
+    "pass": 61,
+    "rate_pct": 68
+  },
+  "by_category": {
+    "sufficient_evidence": {
+      "pass": 7,
+      "action_pass": 7,
+      "total": 10,
+      "full_rate_pct": 70,
+      "action_rate_pct": 70
+    },
+    "insufficient_evidence": {
+      "pass": 1,
+      "action_pass": 1,
+      "total": 10,
+      "full_rate_pct": 10,
+      "action_rate_pct": 10
+    },
+    "ambiguous": {
+      "pass": 9,
+      "action_pass": 9,
+      "total": 10,
+      "full_rate_pct": 90,
+      "action_rate_pct": 90
+    },
+    "multiple_options": {
+      "pass": 5,
+      "action_pass": 5,
+      "total": 5,
+      "full_rate_pct": 100,
+      "action_rate_pct": 100
+    },
+    "preference_respected": {
+      "pass": 4,
+      "action_pass": 4,
+      "total": 5,
+      "full_rate_pct": 80,
+      "action_rate_pct": 80
+    },
+    "constraint_respected": {
+      "pass": 3,
+      "action_pass": 3,
+      "total": 5,
+      "full_rate_pct": 60,
+      "action_rate_pct": 60
+    },
+    "exclusion_respected": {
+      "pass": 2,
+      "action_pass": 2,
+      "total": 5,
+      "full_rate_pct": 40,
+      "action_rate_pct": 40
+    },
+    "conflict": {
+      "pass": 3,
+      "action_pass": 3,
+      "total": 5,
+      "full_rate_pct": 60,
+      "action_rate_pct": 60
+    },
+    "future_brain": {
+      "pass": 2,
+      "action_pass": 2,
+      "total": 5,
+      "full_rate_pct": 40,
+      "action_rate_pct": 40
+    },
+    "image_request": {
+      "pass": 5,
+      "action_pass": 5,
+      "total": 5,
+      "full_rate_pct": 100,
+      "action_rate_pct": 100
+    },
+    "retention_respect": {
+      "pass": 4,
+      "action_pass": 4,
+      "total": 5,
+      "full_rate_pct": 80,
+      "action_rate_pct": 80
+    },
+    "mind_change": {
+      "pass": 4,
+      "action_pass": 4,
+      "total": 5,
+      "full_rate_pct": 80,
+      "action_rate_pct": 80
+    },
+    "which_is_best": {
+      "pass": 3,
+      "action_pass": 3,
+      "total": 5,
+      "full_rate_pct": 60,
+      "action_rate_pct": 60
+    },
+    "why_explanation": {
+      "pass": 5,
+      "action_pass": 5,
+      "total": 5,
+      "full_rate_pct": 100,
+      "action_rate_pct": 100
+    },
+    "i_dont_know": {
+      "pass": 4,
+      "action_pass": 4,
+      "total": 5,
+      "full_rate_pct": 80,
+      "action_rate_pct": 80
+    }
+  },
+  "results": [
+    {
+      "id": "adv-A-01",
+      "category": "sufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Likely",
+        "reason": "Utterance function = factual_query + evidence available",
+        "missing": [
+          "construction_type (wall-fixed vs two-sided — affects what starting-step projections are physically possible)",
+          "style_lean (traditional / modern — affects starting-step recommendation)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "starting_steps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Answer",
+      "expected_response_shape": "Explain",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Answer",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-A-02",
+      "category": "sufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Clear",
+        "reason": "Utterance function = factual_query + evidence available",
+        "missing": [],
+        "evidence_covered": [
+          "stringers"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Answer",
+      "expected_response_shape": "Explain",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Answer",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-A-03",
+      "category": "sufficient_evidence",
+      "turns_count": 2,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Clear",
+        "reason": "Recommendation request · readiness=9 (goal=3 · constraint=1 · evidence=3 · bias=2 · unresolved=0)",
+        "missing": [],
+        "evidence_covered": [
+          "carpet_stepmats",
+          "timber_species",
+          "design_style",
+          "stringers",
+          "starting_steps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": [
+          "lighting",
+          "maintenance_repair"
+        ]
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-A-04",
+      "category": "sufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Likely",
+        "reason": "Utterance function = factual_query + evidence available",
+        "missing": [
+          "construction_type (wall-fixed vs two-sided — affects what starting-step projections are physically possible)",
+          "style_lean (traditional / modern — affects starting-step recommendation)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "starting_steps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Answer",
+      "expected_response_shape": "Explain",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Answer",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-A-05",
+      "category": "sufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Likely",
+        "reason": "Exploration · readiness=2 · need to narrow",
+        "missing": [],
+        "evidence_covered": [
+          "landing_railings",
+          "newel_caps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": [
+          "installation_process"
+        ]
+      },
+      "expected_action": "Answer",
+      "expected_response_shape": "Explain",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Answer",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-A-06",
+      "category": "sufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Likely",
+        "reason": "Utterance function = factual_query + evidence available",
+        "missing": [
+          "construction_type (wall-fixed vs two-sided — affects what starting-step projections are physically possible)",
+          "style_lean (traditional / modern — affects starting-step recommendation)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "starting_steps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Answer",
+      "expected_response_shape": "Explain",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Answer",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-A-07",
+      "category": "sufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Clear",
+        "reason": "Options request · readiness=7 (goal=2 · constraint=0 · evidence=3 · bias=2 · unresolved=0)",
+        "missing": [],
+        "evidence_covered": [
+          "newel_caps",
+          "timber_species",
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Answer",
+      "expected_response_shape": "Explain",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Answer",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-A-08",
+      "category": "sufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Clear",
+        "reason": "Recommendation request · readiness=7 (goal=2 · constraint=0 · evidence=3 · bias=2 · unresolved=0)",
+        "missing": [],
+        "evidence_covered": [
+          "landing_railings",
+          "balusters",
+          "stringers",
+          "timber_species",
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-A-09",
+      "category": "sufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Likely",
+        "reason": "Exploration · readiness=3 · direct answer from evidence",
+        "missing": [],
+        "evidence_covered": [
+          "carpet_stepmats"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Answer",
+      "expected_response_shape": "Explain",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Answer",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-A-10",
+      "category": "sufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Compare",
+        "response_shape": "Options",
+        "confidence": "Likely",
+        "reason": "Utterance function = comparison_request",
+        "missing": [],
+        "evidence_covered": [
+          "treads_risers"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Answer",
+      "expected_response_shape": "Explain",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Answer",
+          "got": "Compare"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-B-01",
+      "category": "insufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Clear",
+        "reason": "Utterance function = factual_query + evidence available",
+        "missing": [],
+        "evidence_covered": [
+          "stringers"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": [
+          "installation_process"
+        ]
+      },
+      "expected_action": "Answer",
+      "expected_response_shape": "Explain",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Answer",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-B-02",
+      "category": "insufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Likely",
+        "reason": "Utterance function = factual_query + evidence available",
+        "missing": [],
+        "evidence_covered": [
+          "timber_species"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Route",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Route",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-B-03",
+      "category": "insufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Refuse",
+        "response_shape": "Clarification",
+        "confidence": "Likely",
+        "reason": "All concepts outside NEX scope with no future brain",
+        "missing": [],
+        "evidence_covered": [],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Route",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Route",
+          "got": "Refuse"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-B-04",
+      "category": "insufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Likely",
+        "reason": "Exploration · readiness=2 · need to narrow",
+        "missing": [],
+        "evidence_covered": [
+          "treads_risers"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Route",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Route",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-B-05",
+      "category": "insufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Likely",
+        "reason": "Exploration · readiness=2 · need to narrow",
+        "missing": [],
+        "evidence_covered": [
+          "stringers"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": [
+          "carpentry_math"
+        ]
+      },
+      "expected_action": "Route",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Route",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-B-06",
+      "category": "insufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Likely",
+        "reason": "Exploration · readiness=0 · need to narrow",
+        "missing": [],
+        "evidence_covered": [],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Route",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Route",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-B-07",
+      "category": "insufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Likely",
+        "reason": "Recommendation request · readiness=5 (goal=1 · constraint=0 · evidence=2 · bias=2 · unresolved=0)",
+        "missing": [
+          "style_lean (traditional / modern — affects baluster family recommendation)"
+        ],
+        "evidence_covered": [
+          "balusters"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Answer",
+      "expected_response_shape": "Explain",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Answer",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-B-08",
+      "category": "insufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Clear",
+        "reason": "Exploration · readiness=4 · direct answer from evidence",
+        "missing": [],
+        "evidence_covered": [
+          "stringers",
+          "treads_risers"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": [
+          "carpentry_math"
+        ]
+      },
+      "expected_action": "Route",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Route",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-B-09",
+      "category": "insufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Likely",
+        "reason": "Exploration · readiness=1 · need to narrow",
+        "missing": [],
+        "evidence_covered": [],
+        "evidence_routed": [],
+        "evidence_partial": [
+          "installation_process"
+        ]
+      },
+      "expected_action": "Route",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Route",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-B-10",
+      "category": "insufficient_evidence",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Likely",
+        "reason": "Utterance function = factual_query + evidence available",
+        "missing": [],
+        "evidence_covered": [
+          "stringers"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Route",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Route",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-C-01",
+      "category": "ambiguous",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Ambiguous",
+        "reason": "ambiguous_utterance_no_state",
+        "missing": [],
+        "evidence_covered": [
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Ask",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-C-02",
+      "category": "ambiguous",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Ambiguous",
+        "reason": "Preference statement · readiness=1 · acknowledge + narrow next",
+        "missing": [],
+        "evidence_covered": [],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Ask",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-C-03",
+      "category": "ambiguous",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Ambiguous",
+        "reason": "ambiguous_utterance_no_state",
+        "missing": [],
+        "evidence_covered": [
+          "handrail",
+          "balusters"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Ask",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-C-04",
+      "category": "ambiguous",
+      "turns_count": 1,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Clear",
+        "reason": "Preference statement · readiness=4 · natural to recommend",
+        "missing": [],
+        "evidence_covered": [
+          "design_style",
+          "refacing"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Ask",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-C-05",
+      "category": "ambiguous",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Ambiguous",
+        "reason": "ambiguous_broad_signal",
+        "missing": [],
+        "evidence_covered": [
+          "design_style",
+          "refacing"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Ask",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-C-06",
+      "category": "ambiguous",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Likely",
+        "reason": "Exploration · readiness=0 · need to narrow",
+        "missing": [],
+        "evidence_covered": [],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Ask",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-C-07",
+      "category": "ambiguous",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Ambiguous",
+        "reason": "ambiguous_utterance_no_state",
+        "missing": [],
+        "evidence_covered": [],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Ask",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-C-08",
+      "category": "ambiguous",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Ambiguous",
+        "reason": "ambiguous_utterance_no_state",
+        "missing": [],
+        "evidence_covered": [],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Ask",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-C-09",
+      "category": "ambiguous",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Ambiguous",
+        "reason": "ambiguous_utterance_no_state",
+        "missing": [],
+        "evidence_covered": [],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Ask",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-C-10",
+      "category": "ambiguous",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Ambiguous",
+        "reason": "ambiguous_utterance_no_state",
+        "missing": [],
+        "evidence_covered": [],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Ask",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-D-01",
+      "category": "multiple_options",
+      "turns_count": 1,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Likely",
+        "reason": "Options request · readiness=6 (goal=2 · constraint=0 · evidence=3 · bias=2 · unresolved=1)",
+        "missing": [
+          "construction_type (wall-fixed vs two-sided — affects what starting-step projections are physically possible)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "starting_steps",
+          "balusters",
+          "timber_species",
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-D-02",
+      "category": "multiple_options",
+      "turns_count": 1,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Clear",
+        "reason": "Exploration · readiness=5 · lean available",
+        "missing": [],
+        "evidence_covered": [
+          "starting_steps",
+          "carpet_stepmats",
+          "timber_species",
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-D-03",
+      "category": "multiple_options",
+      "turns_count": 1,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Clear",
+        "reason": "Options request · readiness=6 (goal=1 · constraint=1 · evidence=2 · bias=2 · unresolved=0)",
+        "missing": [],
+        "evidence_covered": [
+          "stringers"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": [
+          "maintenance_repair"
+        ]
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-D-04",
+      "category": "multiple_options",
+      "turns_count": 1,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Clear",
+        "reason": "Options request · readiness=7 (goal=2 · constraint=0 · evidence=3 · bias=2 · unresolved=0)",
+        "missing": [],
+        "evidence_covered": [
+          "balusters",
+          "timber_species",
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-D-05",
+      "category": "multiple_options",
+      "turns_count": 1,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Clear",
+        "reason": "Options request · readiness=7 (goal=2 · constraint=0 · evidence=3 · bias=2 · unresolved=0)",
+        "missing": [],
+        "evidence_covered": [
+          "newel_caps",
+          "timber_species",
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-E-01",
+      "category": "preference_respected",
+      "turns_count": 3,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Clear",
+        "reason": "Recommendation request · readiness=7 (goal=2 · constraint=0 · evidence=3 · bias=2 · unresolved=0)",
+        "missing": [],
+        "evidence_covered": [
+          "timber_species",
+          "balusters",
+          "design_style",
+          "newel_caps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-E-02",
+      "category": "preference_respected",
+      "turns_count": 3,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Likely",
+        "reason": "Exploration · readiness=4 · direct answer from evidence",
+        "missing": [
+          "construction_type (wall-fixed vs two-sided — affects what starting-step projections are physically possible)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "handrail",
+          "treads_risers",
+          "timber_species",
+          "design_style",
+          "starting_steps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Recommend",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-E-03",
+      "category": "preference_respected",
+      "turns_count": 3,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Clear",
+        "reason": "Options request · readiness=7 (goal=2 · constraint=0 · evidence=3 · bias=2 · unresolved=0)",
+        "missing": [],
+        "evidence_covered": [
+          "balusters",
+          "timber_species",
+          "design_style",
+          "newel_caps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-E-04",
+      "category": "preference_respected",
+      "turns_count": 4,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Likely",
+        "reason": "Options request · readiness=8 (goal=2 · constraint=1 · evidence=3 · bias=2 · unresolved=0)",
+        "missing": [
+          "style_lean (traditional / modern — affects starting-step recommendation)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "balusters",
+          "handrail",
+          "timber_species",
+          "stringers",
+          "treads_risers",
+          "starting_steps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-E-05",
+      "category": "preference_respected",
+      "turns_count": 3,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Likely",
+        "reason": "Recommendation request · readiness=6 (goal=1 · constraint=0 · evidence=3 · bias=2 · unresolved=0)",
+        "missing": [],
+        "evidence_covered": [
+          "balusters",
+          "handrail",
+          "timber_species",
+          "newel_caps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-F-01",
+      "category": "constraint_respected",
+      "turns_count": 2,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Likely",
+        "reason": "Options request · readiness=6 (goal=1 · constraint=1 · evidence=2 · bias=2 · unresolved=0)",
+        "missing": [
+          "style_lean (traditional / modern — affects starting-step recommendation)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "stringers",
+          "starting_steps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-F-02",
+      "category": "constraint_respected",
+      "turns_count": 1,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Likely",
+        "reason": "Recommendation request · readiness=8 (goal=2 · constraint=1 · evidence=3 · bias=2 · unresolved=0)",
+        "missing": [
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "starting_steps",
+          "timber_species",
+          "design_style",
+          "stringers"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": [
+          "maintenance_repair"
+        ]
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-F-03",
+      "category": "constraint_respected",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Likely",
+        "reason": "Exploration · readiness=4 · direct answer from evidence",
+        "missing": [
+          "style_lean (traditional / modern — affects starting-step recommendation)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "starting_steps",
+          "stringers"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Recommend",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-F-04",
+      "category": "constraint_respected",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Likely",
+        "reason": "Exploration · readiness=1 · need to narrow",
+        "missing": [
+          "construction_type (wall-fixed vs two-sided — affects what starting-step projections are physically possible)",
+          "style_lean (traditional / modern — affects starting-step recommendation)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "starting_steps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Recommend",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-F-05",
+      "category": "constraint_respected",
+      "turns_count": 1,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Likely",
+        "reason": "Options request · readiness=6 (goal=1 · constraint=1 · evidence=2 · bias=2 · unresolved=0)",
+        "missing": [
+          "style_lean (traditional / modern — affects starting-step recommendation)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "starting_steps",
+          "stringers"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": [
+          "lighting",
+          "maintenance_repair"
+        ]
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-G-01",
+      "category": "exclusion_respected",
+      "turns_count": 2,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Likely",
+        "reason": "Exploration · readiness=3 · direct answer from evidence",
+        "missing": [],
+        "evidence_covered": [
+          "balusters",
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Recommend",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-G-02",
+      "category": "exclusion_respected",
+      "turns_count": 2,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Likely",
+        "reason": "Exploration · readiness=4 · direct answer from evidence",
+        "missing": [
+          "construction_type (wall-fixed vs two-sided — affects what starting-step projections are physically possible)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "carpet_stepmats",
+          "starting_steps",
+          "timber_species",
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Recommend",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-G-03",
+      "category": "exclusion_respected",
+      "turns_count": 2,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Clear",
+        "reason": "Exploration · readiness=3 · direct answer from evidence",
+        "missing": [],
+        "evidence_covered": [
+          "newel_caps",
+          "refacing"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Recommend",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-G-04",
+      "category": "exclusion_respected",
+      "turns_count": 3,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Clear",
+        "reason": "Recommendation request · readiness=7 (goal=2 · constraint=0 · evidence=3 · bias=2 · unresolved=0)",
+        "missing": [],
+        "evidence_covered": [
+          "timber_species",
+          "design_style",
+          "balusters"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-G-05",
+      "category": "exclusion_respected",
+      "turns_count": 3,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Likely",
+        "reason": "Options request · readiness=4 (goal=1 · constraint=0 · evidence=2 · bias=2 · unresolved=1)",
+        "missing": [
+          "construction_type (wall-fixed vs two-sided — affects what starting-step projections are physically possible)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "design_style",
+          "starting_steps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-H-01",
+      "category": "conflict",
+      "turns_count": 2,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Ambiguous",
+        "reason": "Contradiction in state — need to resolve before answering",
+        "missing": [
+          "contradiction_resolution (customer has contradictory statements pending)"
+        ],
+        "evidence_covered": [
+          "balusters",
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Ask",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-H-02",
+      "category": "conflict",
+      "turns_count": 2,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Ambiguous",
+        "reason": "Contradiction in state — need to resolve before answering",
+        "missing": [
+          "contradiction_resolution (customer has contradictory statements pending)"
+        ],
+        "evidence_covered": [
+          "carpet_stepmats"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Ask",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-H-03",
+      "category": "conflict",
+      "turns_count": 2,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Ambiguous",
+        "reason": "Contradiction in state — need to resolve before answering",
+        "missing": [
+          "construction_type (wall-fixed vs two-sided — affects what starting-step projections are physically possible)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)",
+          "contradiction_resolution (customer has contradictory statements pending)"
+        ],
+        "evidence_covered": [
+          "design_style",
+          "starting_steps",
+          "balusters"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Ask",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-H-04",
+      "category": "conflict",
+      "turns_count": 2,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Clear",
+        "reason": "Exploration · readiness=3 · direct answer from evidence",
+        "missing": [],
+        "evidence_covered": [
+          "newel_caps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Ask",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-H-05",
+      "category": "conflict",
+      "turns_count": 2,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Clear",
+        "reason": "Exploration · readiness=5 · lean available",
+        "missing": [],
+        "evidence_covered": [
+          "design_style",
+          "balusters",
+          "timber_species"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Ask",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-I-01",
+      "category": "future_brain",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Likely",
+        "reason": "Exploration · readiness=2 · need to narrow",
+        "missing": [],
+        "evidence_covered": [
+          "handrail"
+        ],
+        "evidence_routed": [
+          "safety_regs"
+        ],
+        "evidence_partial": []
+      },
+      "expected_action": "Route",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Route",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-I-02",
+      "category": "future_brain",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Clear",
+        "reason": "Exploration · readiness=4 · direct answer from evidence",
+        "missing": [],
+        "evidence_covered": [
+          "design_style",
+          "balusters"
+        ],
+        "evidence_routed": [
+          "business_estimation"
+        ],
+        "evidence_partial": []
+      },
+      "expected_action": "Route",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Route",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-I-03",
+      "category": "future_brain",
+      "turns_count": 1,
+      "decision": {
+        "action": "Route",
+        "response_shape": "Clarification",
+        "confidence": "Clear",
+        "reason": "Question belongs to a future brain — no in-scope evidence to draw on",
+        "missing": [],
+        "evidence_covered": [],
+        "evidence_routed": [
+          "ergonomics"
+        ],
+        "evidence_partial": []
+      },
+      "expected_action": "Route",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Route",
+          "got": "Route"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-I-04",
+      "category": "future_brain",
+      "turns_count": 1,
+      "decision": {
+        "action": "Route",
+        "response_shape": "Clarification",
+        "confidence": "Likely",
+        "reason": "Question belongs to a future brain — no in-scope evidence to draw on",
+        "missing": [],
+        "evidence_covered": [],
+        "evidence_routed": [
+          "wayfinding"
+        ],
+        "evidence_partial": []
+      },
+      "expected_action": "Route",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Route",
+          "got": "Route"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-I-05",
+      "category": "future_brain",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Likely",
+        "reason": "Utterance function = factual_query + evidence available",
+        "missing": [],
+        "evidence_covered": [],
+        "evidence_routed": [],
+        "evidence_partial": [
+          "installation_process"
+        ]
+      },
+      "expected_action": "Route",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Route",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-J-01",
+      "category": "image_request",
+      "turns_count": 1,
+      "decision": {
+        "action": "RetrieveImages",
+        "response_shape": "Options",
+        "confidence": "Clear",
+        "reason": "Utterance function = image_request",
+        "missing": [],
+        "evidence_covered": [
+          "balusters",
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "RetrieveImages",
+      "expected_response_shape": "Options",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "RetrieveImages",
+          "got": "RetrieveImages"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-J-02",
+      "category": "image_request",
+      "turns_count": 1,
+      "decision": {
+        "action": "RetrieveImages",
+        "response_shape": "Options",
+        "confidence": "Likely",
+        "reason": "Utterance function = image_request",
+        "missing": [
+          "construction_type (wall-fixed vs two-sided — affects what starting-step projections are physically possible)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "starting_steps",
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "RetrieveImages",
+      "expected_response_shape": "Options",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "RetrieveImages",
+          "got": "RetrieveImages"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-J-03",
+      "category": "image_request",
+      "turns_count": 1,
+      "decision": {
+        "action": "RetrieveImages",
+        "response_shape": "Options",
+        "confidence": "Clear",
+        "reason": "Utterance function = image_request",
+        "missing": [],
+        "evidence_covered": [
+          "stringers",
+          "timber_species"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "RetrieveImages",
+      "expected_response_shape": "Options",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "RetrieveImages",
+          "got": "RetrieveImages"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-J-04",
+      "category": "image_request",
+      "turns_count": 1,
+      "decision": {
+        "action": "RetrieveImages",
+        "response_shape": "Options",
+        "confidence": "Clear",
+        "reason": "Utterance function = image_request",
+        "missing": [],
+        "evidence_covered": [
+          "refacing",
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "RetrieveImages",
+      "expected_response_shape": "Options",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "RetrieveImages",
+          "got": "RetrieveImages"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-J-05",
+      "category": "image_request",
+      "turns_count": 1,
+      "decision": {
+        "action": "RetrieveImages",
+        "response_shape": "Options",
+        "confidence": "Clear",
+        "reason": "Utterance function = image_request",
+        "missing": [],
+        "evidence_covered": [
+          "balusters",
+          "treads_risers",
+          "timber_species",
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "RetrieveImages",
+      "expected_response_shape": "Options",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "RetrieveImages",
+          "got": "RetrieveImages"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-K-01",
+      "category": "retention_respect",
+      "turns_count": 2,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Clear",
+        "reason": "Options request · readiness=6 (goal=1 · constraint=1 · evidence=2 · bias=2 · unresolved=0)",
+        "missing": [],
+        "evidence_covered": [
+          "timber_species"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-K-02",
+      "category": "retention_respect",
+      "turns_count": 2,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Likely",
+        "reason": "Recommendation request · readiness=7 (goal=1 · constraint=1 · evidence=3 · bias=2 · unresolved=0)",
+        "missing": [
+          "style_lean (traditional / modern — affects baluster family recommendation)"
+        ],
+        "evidence_covered": [
+          "timber_species",
+          "refacing",
+          "balusters"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-K-03",
+      "category": "retention_respect",
+      "turns_count": 2,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Clear",
+        "reason": "Options request · readiness=6 (goal=1 · constraint=1 · evidence=2 · bias=2 · unresolved=0)",
+        "missing": [],
+        "evidence_covered": [
+          "design_style",
+          "refacing"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-K-04",
+      "category": "retention_respect",
+      "turns_count": 2,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Likely",
+        "reason": "Exploration request with ambiguous framing",
+        "missing": [
+          "style_lean (traditional / modern — affects baluster family recommendation)"
+        ],
+        "evidence_covered": [
+          "balusters",
+          "design_style",
+          "refacing"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Recommend",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-K-05",
+      "category": "retention_respect",
+      "turns_count": 2,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Clear",
+        "reason": "Exploration · readiness=5 · lean available",
+        "missing": [],
+        "evidence_covered": [
+          "refacing",
+          "balusters",
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-L-01",
+      "category": "mind_change",
+      "turns_count": 3,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Likely",
+        "reason": "Options request · readiness=5 (goal=1 · constraint=0 · evidence=2 · bias=2 · unresolved=0)",
+        "missing": [],
+        "evidence_covered": [
+          "timber_species",
+          "newel_caps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-L-02",
+      "category": "mind_change",
+      "turns_count": 3,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Clear",
+        "reason": "Recommendation request · readiness=7 (goal=2 · constraint=0 · evidence=3 · bias=2 · unresolved=0)",
+        "missing": [],
+        "evidence_covered": [
+          "balusters",
+          "design_style",
+          "handrail"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-L-03",
+      "category": "mind_change",
+      "turns_count": 3,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Likely",
+        "reason": "Recommendation request · readiness=4 (goal=1 · constraint=0 · evidence=2 · bias=2 · unresolved=1)",
+        "missing": [
+          "construction_type (wall-fixed vs two-sided — affects what starting-step projections are physically possible)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "design_style",
+          "starting_steps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-L-04",
+      "category": "mind_change",
+      "turns_count": 3,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Likely",
+        "reason": "Exploration · readiness=2 · need to narrow",
+        "missing": [
+          "construction_type (wall-fixed vs two-sided — affects what starting-step projections are physically possible)",
+          "style_lean (traditional / modern — affects starting-step recommendation)"
+        ],
+        "evidence_covered": [
+          "carpet_stepmats",
+          "starting_steps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": [
+          "lighting"
+        ]
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Recommend",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-L-05",
+      "category": "mind_change",
+      "turns_count": 3,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Likely",
+        "reason": "Recommendation request · readiness=5 (goal=1 · constraint=0 · evidence=2 · bias=2 · unresolved=0)",
+        "missing": [],
+        "evidence_covered": [
+          "design_style",
+          "balusters"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Recommend",
+      "expected_response_shape": "Recommendation",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Recommend",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-M-01",
+      "category": "which_is_best",
+      "turns_count": 1,
+      "decision": {
+        "action": "Compare",
+        "response_shape": "Options",
+        "confidence": "Clear",
+        "reason": "Utterance function = comparison_request",
+        "missing": [],
+        "evidence_covered": [
+          "balusters",
+          "timber_species",
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Compare",
+      "expected_response_shape": "Options",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Compare",
+          "got": "Compare"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-M-02",
+      "category": "which_is_best",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Likely",
+        "reason": "Exploration · readiness=2 · need to narrow",
+        "missing": [],
+        "evidence_covered": [
+          "timber_species"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Answer",
+      "expected_response_shape": "Explain",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Answer",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-M-03",
+      "category": "which_is_best",
+      "turns_count": 1,
+      "decision": {
+        "action": "Compare",
+        "response_shape": "Options",
+        "confidence": "Ambiguous",
+        "reason": "Utterance function = comparison_request",
+        "missing": [
+          "construction_type (wall-fixed vs two-sided — affects what starting-step projections are physically possible)",
+          "style_lean (traditional / modern — affects starting-step recommendation)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "starting_steps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Compare",
+      "expected_response_shape": "Options",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Compare",
+          "got": "Compare"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-M-04",
+      "category": "which_is_best",
+      "turns_count": 1,
+      "decision": {
+        "action": "Compare",
+        "response_shape": "Options",
+        "confidence": "Clear",
+        "reason": "Utterance function = comparison_request",
+        "missing": [],
+        "evidence_covered": [
+          "timber_species",
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Compare",
+      "expected_response_shape": "Options",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Compare",
+          "got": "Compare"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-M-05",
+      "category": "which_is_best",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Clear",
+        "reason": "Exploration · readiness=4 · direct answer from evidence",
+        "missing": [],
+        "evidence_covered": [
+          "balusters",
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Compare",
+      "expected_response_shape": "Options",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Compare",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-N-01",
+      "category": "why_explanation",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Likely",
+        "reason": "Utterance function = factual_query + evidence available",
+        "missing": [],
+        "evidence_covered": [
+          "landing_railings"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Answer",
+      "expected_response_shape": "Explain",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Answer",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-N-02",
+      "category": "why_explanation",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Likely",
+        "reason": "Utterance function = factual_query + evidence available",
+        "missing": [
+          "style_lean (traditional / modern — affects starting-step recommendation)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "starting_steps",
+          "stringers"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Answer",
+      "expected_response_shape": "Explain",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Answer",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-N-03",
+      "category": "why_explanation",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Likely",
+        "reason": "Utterance function = factual_query + evidence available",
+        "missing": [],
+        "evidence_covered": [
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Answer",
+      "expected_response_shape": "Explain",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Answer",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-N-04",
+      "category": "why_explanation",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Likely",
+        "reason": "Utterance function = factual_query + evidence available",
+        "missing": [
+          "construction_type (wall-fixed vs two-sided — affects what starting-step projections are physically possible)",
+          "style_lean (traditional / modern — affects starting-step recommendation)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "starting_steps",
+          "balusters"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Answer",
+      "expected_response_shape": "Explain",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Answer",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-N-05",
+      "category": "why_explanation",
+      "turns_count": 1,
+      "decision": {
+        "action": "Answer",
+        "response_shape": "Explain",
+        "confidence": "Ambiguous",
+        "reason": "Utterance function = factual_query + evidence available",
+        "missing": [],
+        "evidence_covered": [],
+        "evidence_routed": [],
+        "evidence_partial": [
+          "lighting"
+        ]
+      },
+      "expected_action": "Answer",
+      "expected_response_shape": "Explain",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Answer",
+          "got": "Answer"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-O-01",
+      "category": "i_dont_know",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Ambiguous",
+        "reason": "ambiguous_utterance_no_state",
+        "missing": [
+          "construction_type (wall-fixed vs two-sided — affects what starting-step projections are physically possible)",
+          "style_lean (traditional / modern — affects starting-step recommendation)",
+          "finish_intent (carpet / runner / exposed_timber — affects whether starting step is exposed feature)"
+        ],
+        "evidence_covered": [
+          "starting_steps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Ask",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-O-02",
+      "category": "i_dont_know",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Ambiguous",
+        "reason": "ambiguous_utterance_no_state",
+        "missing": [
+          "style_lean (traditional / modern — affects baluster family recommendation)"
+        ],
+        "evidence_covered": [
+          "balusters"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": [
+          "installation_process"
+        ]
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Ask",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-O-03",
+      "category": "i_dont_know",
+      "turns_count": 1,
+      "decision": {
+        "action": "Recommend",
+        "response_shape": "Recommendation",
+        "confidence": "Ambiguous",
+        "reason": "Recommendation request · readiness=4 (goal=0 · constraint=0 · evidence=2 · bias=2 · unresolved=0)",
+        "missing": [],
+        "evidence_covered": [
+          "newel_caps"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": false,
+          "expected": "Ask",
+          "got": "Recommend"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": false,
+      "action_pass": false,
+      "full_pass": false
+    },
+    {
+      "id": "adv-O-04",
+      "category": "i_dont_know",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Likely",
+        "reason": "Exploration request with ambiguous framing",
+        "missing": [],
+        "evidence_covered": [
+          "design_style"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Ask",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    },
+    {
+      "id": "adv-O-05",
+      "category": "i_dont_know",
+      "turns_count": 1,
+      "decision": {
+        "action": "Ask",
+        "response_shape": "Clarification",
+        "confidence": "Clear",
+        "reason": "Exploration request with ambiguous framing",
+        "missing": [],
+        "evidence_covered": [
+          "refacing"
+        ],
+        "evidence_routed": [],
+        "evidence_partial": []
+      },
+      "expected_action": "Ask",
+      "expected_response_shape": "Clarification",
+      "gates": {
+        "state_fidelity": {
+          "pass": true
+        },
+        "evidence_fidelity": {
+          "pass": true,
+          "note": "architecturally guaranteed — decisions derive evidence from coverage table"
+        },
+        "constraint_fidelity": {
+          "pass": true
+        },
+        "preference_fidelity": {
+          "pass": true
+        },
+        "uncertainty_fidelity": {
+          "pass": true,
+          "failures": []
+        },
+        "reasoning_order": {
+          "pass": true,
+          "expected": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ],
+          "got": [
+            "construction",
+            "design",
+            "material",
+            "finish",
+            "preference",
+            "manufacturer_bespoke"
+          ]
+        },
+        "action_suitability": {
+          "pass": true,
+          "expected": "Ask",
+          "got": "Ask"
+        },
+        "explanation_quality": {
+          "pass": true
+        },
+        "alternatives": {
+          "pass": true
+        },
+        "fabrication": {
+          "pass": true,
+          "note": "architecturally guaranteed 0% fabrication — decision derives from state only"
+        }
+      },
+      "shape_pass": true,
+      "action_pass": true,
+      "full_pass": true
+    }
+  ]
+}

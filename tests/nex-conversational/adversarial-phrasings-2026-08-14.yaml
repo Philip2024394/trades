@@ -1,0 +1,508 @@
+# NEX Adversarial Phrasings Test Set · v2 comprehensive (Philip 2026-08-14 Speaking Layer directive)
+#
+# Measures: does NEX correctly route many different phrasings of THE SAME
+# underlying intent to the same concept?
+#
+# Coverage: 15 concept families x multiple concepts per family x 8-12 phrasings each.
+# Each concept block tests 8-12 different ways a customer might express the same intent.
+# A concept "passes" only if all phrasings within it route to the same (family, tier) pair.
+
+meta:
+  suite: adversarial-phrasings-v2-comprehensive
+  version: 2.0
+  created: 2026-08-14
+  provenance: philip-speaking-layer-directive-2026-08-14
+  scale: 30_concepts_300_plus_phrasings
+  purpose: measure_language_coverage_across_15_families_and_21_question_types
+
+concepts:
+
+  # ============================================================
+  # FAMILY · Starting Steps (3 concepts)
+  # ============================================================
+
+  - concept: starting_step_widen_or_feature
+    expected_family: starting_steps
+    expected_tier: Ambiguous
+    phrasings:
+      - "Can I have a bigger first step?"
+      - "Make the bottom step wider."
+      - "I want a nicer first step."
+      - "Can the entry step be more substantial?"
+      - "The bottom looks a bit plain — can I add something?"
+      - "Can we make the first step more of a feature?"
+      - "I want that impressive first step you see in magazines."
+      - "Big statement step at the bottom please."
+      - "The first tread — can it be more prominent?"
+      - "Bigger bottom step."
+
+  - concept: starting_step_bullnose_curtail_terminology
+    expected_family: starting_steps
+    expected_tier: Clear
+    phrasings:
+      - "What is a bullnose starting step?"
+      - "What's a curtail step?"
+      - "Explain the difference between bullnose and curtail."
+      - "What do bullnose starting steps look like on a wall-fixed staircase?"
+      - "Curtail step with volute — what is that?"
+      - "The rounded first step is called what?"
+      - "What's the technical name for the step that curves around the newel?"
+
+  - concept: starting_step_wall_fixed_options
+    expected_family: starting_steps
+    expected_tier: Clear
+    phrasings:
+      - "I've got a staircase against a wall — what starting-step options do I have?"
+      - "What starting step can I have with a wall on one side?"
+      - "Wall-fixed staircase, options for the first step?"
+      - "Can I have a curved first step if the stairs are against a wall?"
+      - "One side is against the wall — what's possible at the bottom?"
+      - "The staircase is fixed to a wall. First step options?"
+
+  # ============================================================
+  # FAMILY · Landing Railings (2 concepts)
+  # ============================================================
+
+  - concept: landing_railing_continuity
+    expected_family: landing_railings
+    expected_tier: Clear
+    phrasings:
+      - "Can I have the same railing around the landing?"
+      - "Should the landing rail match the stairs?"
+      - "Same style upstairs as downstairs."
+      - "The landing should feel like part of the staircase."
+      - "Match the top with the bottom."
+      - "I want the whole thing to feel one system."
+      - "Landing railing consistent with the stairs?"
+      - "Should the balusters upstairs match the ones on the stairs?"
+
+  - concept: landing_railing_top_newel_transition
+    expected_family: landing_railings
+    expected_tier: Clear
+    phrasings:
+      - "How do I connect the landing rail to the top newel?"
+      - "How does the stair handrail meet the landing rail?"
+      - "Where does the rail turn at the top?"
+      - "What happens at the top of the stairs where the rail turns?"
+      - "How do the two rails join at the top?"
+      - "How does the landing railing connect to the staircase?"
+      - "Where does the handrail finish at the top?"
+
+  # ============================================================
+  # FAMILY · Handrails (2 concepts)
+  # ============================================================
+
+  - concept: handrail_material_choice
+    expected_family: handrail
+    expected_tier: Likely
+    phrasings:
+      - "What handrail should I choose?"
+      - "Which handrail material is best?"
+      - "Timber or metal handrail — which?"
+      - "What kind of handrail would work?"
+      - "Recommend me a handrail."
+      - "What's the best handrail for heavy use?"
+      - "Handrail options please."
+      - "Which handrail material lasts longest?"
+
+  - concept: handrail_wall_brackets
+    expected_family: handrail
+    expected_tier: Clear
+    phrasings:
+      - "What brackets do I need for the handrail?"
+      - "What's that metal thing that holds the handrail to the wall?"
+      - "How do you fix a handrail to the wall?"
+      - "What kind of bracket goes with a wall-mounted handrail?"
+      - "The wall handrail — what holds it up?"
+      - "Handrail wall-mounting — what do I need?"
+      - "Do I need brackets every certain distance?"
+
+  # ============================================================
+  # FAMILY · Balusters / Spindles (2 concepts)
+  # ============================================================
+
+  - concept: baluster_style_choice_modern
+    expected_family: balusters
+    expected_tier: Likely
+    phrasings:
+      - "I want modern spindles."
+      - "What modern balusters can I have?"
+      - "Modern balustrade options."
+      - "The spindles need to be more modern."
+      - "Show me modern railing options."
+      - "Modern-looking balusters please."
+      - "Contemporary spindle styles?"
+      - "Modernise the balusters — what are my options?"
+
+  - concept: baluster_metaphor_description
+    expected_family: balusters
+    expected_tier: Clear
+    phrasings:
+      - "The wooden fence things."
+      - "The vertical wooden bits."
+      - "The bars between the handrail and the steps."
+      - "The wooden sticks going up."
+      - "The pickets."
+      - "The vertical pieces on the balustrade."
+      - "Those wooden bars."
+
+  # ============================================================
+  # FAMILY · Newels (2 concepts)
+  # ============================================================
+
+  - concept: newel_cap_options
+    expected_family: newel_caps
+    expected_tier: Clear
+    phrasings:
+      - "What kinds of newel cap can I have?"
+      - "What's the thing on top of the post?"
+      - "Can I have a ball on top of the newel?"
+      - "Can the newel cap be metal?"
+      - "Can I change just the caps?"
+      - "The top piece on the post — what are my options?"
+      - "Newel cap styles please."
+
+  - concept: newel_terminology_customer
+    expected_family: newel_caps
+    expected_tier: Clear
+    phrasings:
+      - "The big post at the bottom."
+      - "The tall thing at the corner."
+      - "The chunky post at the base of the stairs."
+      - "The post the handrail ends on."
+      - "The corner pole."
+      - "That big vertical post."
+
+  # ============================================================
+  # FAMILY · Treads / Risers / Nosings (2 concepts)
+  # ============================================================
+
+  - concept: tread_finish_options
+    expected_family: treads_risers
+    expected_tier: Likely
+    phrasings:
+      - "What are the best ways to finish raw oak treads?"
+      - "How should I finish my staircase treads?"
+      - "Timber tread finish options?"
+      - "What finish for oak steps?"
+      - "How do I protect wood treads?"
+      - "What kind of coat should I put on the treads?"
+      - "Tread finish for high-traffic stairs?"
+
+  - concept: open_vs_closed_riser
+    expected_family: treads_risers
+    expected_tier: Clear
+    phrasings:
+      - "What is the difference between open and closed risers?"
+      - "Open riser vs closed riser?"
+      - "Are open risers safe for children?"
+      - "Should I have open or closed risers?"
+      - "What are the pros and cons of open riser stairs?"
+      - "Explain closed riser versus open riser."
+
+  # ============================================================
+  # FAMILY · Carpet / Runners / Step Mats (2 concepts)
+  # ============================================================
+
+  - concept: carpet_starting_step_interaction
+    expected_family: carpet_stepmats
+    expected_tier: Likely
+    phrasings:
+      - "I'm carpeting the stairs — what about the first step?"
+      - "Do I carpet the bullnose too?"
+      - "Can I keep the first step wood if the rest is carpet?"
+      - "Feature first step with a runner — is that a thing?"
+      - "How do I handle the first step with carpet on the rest?"
+      - "Carpet the flight, expose the bottom step?"
+
+  - concept: step_mats_vs_runner
+    expected_family: carpet_stepmats
+    expected_tier: Clear
+    phrasings:
+      - "Can I put mats just on the steps?"
+      - "What's the difference between a stair runner and step mats?"
+      - "Individual mats per step — is that a thing?"
+      - "Step mats — what are they?"
+      - "Runner vs mats?"
+      - "Should I get a runner or individual mats?"
+
+  # ============================================================
+  # FAMILY · Stringers / Strings (2 concepts)
+  # ============================================================
+
+  - concept: staircase_construction_type_query
+    expected_family: stringers
+    expected_tier: Clear
+    phrasings:
+      - "What is a mono-stringer staircase?"
+      - "Mono-stringer — what is it?"
+      - "What does a central spine staircase look like?"
+      - "How does a mono-stringer work?"
+      - "Explain mono-stringer."
+      - "What's a single-stringer staircase called?"
+
+  - concept: cut_string_vs_closed_string
+    expected_family: stringers
+    expected_tier: Clear
+    phrasings:
+      - "What is the difference between cut string and closed string?"
+      - "Cut string vs housed string — which is which?"
+      - "Explain open stringer versus closed stringer."
+      - "What's a cut-string staircase?"
+      - "The difference between open string and closed string?"
+      - "Cut string or box string — what's the difference?"
+
+  # ============================================================
+  # FAMILY · Refacing (2 concepts)
+  # ============================================================
+
+  - concept: refacing_scope_partial_retention
+    expected_family: refacing
+    expected_tier: Likely
+    phrasings:
+      - "I want to refurb my stairs but keep some of the timber showing."
+      - "Update the staircase but don't rip it out."
+      - "Refresh it without a full replacement."
+      - "Refacing job — keep the structure."
+      - "Can I renovate the staircase without touching the treads?"
+      - "New look but same staircase underneath."
+      - "Redo the balustrade only."
+      - "Refresh what's visible without disturbing the structure."
+      - "Keep the current staircase but change the look."
+
+  - concept: modernise_existing_staircase
+    expected_family: refacing
+    expected_tier: Ambiguous
+    phrasings:
+      - "How do I modernise my existing staircase?"
+      - "The staircase feels dated — what can I do?"
+      - "It's stuck in the 1990s — modernise moves?"
+      - "Old pine staircase — make it modern?"
+      - "How to update a Victorian staircase without ruining it?"
+      - "Refresh an old dark staircase — how?"
+
+  # ============================================================
+  # FAMILY · Under-stair Design (1 concept)
+  # ============================================================
+
+  - concept: what_to_do_under_stairs
+    expected_family: understair
+    expected_tier: Ambiguous
+    phrasings:
+      - "What can I do under my stairs?"
+      - "How can I use the space under the stairs?"
+      - "Under-stair ideas please."
+      - "The space under the staircase is wasted — what can I put there?"
+      - "Under-stair storage or something else?"
+      - "What's a good use for the space beneath the stairs?"
+      - "Any ideas for the understairs void?"
+      - "Under the stairs — I don't know what to do with it."
+
+  # ============================================================
+  # FAMILY · Staircase Styles (2 concepts)
+  # ============================================================
+
+  - concept: make_staircase_feel_more_open
+    expected_family: design_style
+    expected_tier: Ambiguous
+    phrasings:
+      - "Make the staircase feel more open."
+      - "I want the stairs to look bigger."
+      - "Can we open this up?"
+      - "The staircase feels heavy — can we lighten it?"
+      - "It feels cramped."
+      - "I don't want it boxed in."
+      - "Can the staircase feel less closed in?"
+      - "Airier staircase please."
+      - "How do we make the stairs feel more spacious?"
+      - "The staircase area feels dark and enclosed."
+
+  - concept: modernise_staircase
+    expected_family: design_style
+    expected_tier: Ambiguous
+    phrasings:
+      - "Modernise this staircase."
+      - "Make it look more modern."
+      - "Update the look."
+      - "Bring the staircase into the 21st century."
+      - "Give it a makeover."
+      - "Refresh the staircase."
+      - "Contemporary look please."
+      - "Less old-fashioned."
+      - "Can we modernise this without a full replacement?"
+      - "Make it feel current."
+
+  # ============================================================
+  # FAMILY · Materials (2 concepts)
+  # ============================================================
+
+  - concept: timber_species_choice
+    expected_family: timber_species
+    expected_tier: Likely
+    phrasings:
+      - "What woods can I have my staircase in?"
+      - "Should I go with oak or pine?"
+      - "Which wood is best for stairs?"
+      - "What's the difference between oak and walnut for stairs?"
+      - "Can I have a painted staircase?"
+      - "Which timber lasts longest?"
+      - "Best hardwood for a family staircase?"
+
+  - concept: material_choice_hardwood_vs_softwood
+    expected_family: timber_species
+    expected_tier: Clear
+    phrasings:
+      - "Hardwood versus softwood for stairs?"
+      - "Oak or pine — which lasts longer?"
+      - "What's more durable, oak or walnut?"
+      - "Which hardwood handles children and pets best?"
+      - "Softwood staircase — is it a bad idea?"
+
+  # ============================================================
+  # FAMILY · Lighting (2 concepts)
+  # ============================================================
+
+  - concept: staircase_led_options
+    expected_family: lighting
+    expected_tier: Likely
+    phrasings:
+      - "How do I add LED lights to my staircase?"
+      - "Where can I put LEDs on the stairs?"
+      - "Staircase lighting options?"
+      - "Can I have step lights on my stairs?"
+      - "Best places to put LEDs on a staircase?"
+      - "LED integration on the stairs — how?"
+      - "I want lights on the staircase — where?"
+
+  - concept: motion_activated_stair_lights
+    expected_family: lighting
+    expected_tier: Clear
+    phrasings:
+      - "How do I install motion-activated LED lights on stairs?"
+      - "Motion-sensor stair lights — how do they work?"
+      - "Automatic stair lights that come on when you walk up?"
+      - "Motion-activated LEDs on the staircase — how do I set them up?"
+      - "Do I need a sensor for automatic stair lights?"
+
+  # ============================================================
+  # FAMILY · Maintenance (2 concepts)
+  # ============================================================
+
+  - concept: creaking_stairs_maintenance
+    expected_family: maintenance_repair
+    expected_tier: Clear
+    phrasings:
+      - "How do I stop stairs from creaking?"
+      - "The stairs squeak — how do I fix it?"
+      - "My staircase creaks in winter."
+      - "Squeaky stair fix?"
+      - "Wooden stairs make noise — can I stop it?"
+      - "The staircase creaks every time I walk on it."
+
+  - concept: fix_wobbly_newel
+    expected_family: maintenance_repair
+    expected_tier: Clear
+    phrasings:
+      - "How do I fix a wobbly newel post?"
+      - "The corner post is loose — how do I secure it?"
+      - "My newel wobbles — help?"
+      - "Loose newel — how to tighten?"
+      - "The post at the bottom moves — fix it?"
+
+  # ============================================================
+  # FAMILY · Image / Design Requests (3 concepts)
+  # ============================================================
+
+  - concept: image_request_starting_step
+    expected_family: starting_steps
+    expected_tier: Clear
+    expected_query_type: image_retrieval
+    phrasings:
+      - "Show me starting step examples."
+      - "Pictures of bullnose starting steps please."
+      - "What do curtail starting steps look like?"
+      - "Show me feature first step ideas."
+      - "Examples of extended starting steps."
+      - "Show me different starting steps."
+      - "I want to see starting step options."
+      - "Give me some starting-step pictures."
+
+  - concept: image_request_modern_staircase
+    expected_family: design_style
+    expected_tier: Clear
+    expected_query_type: image_retrieval
+    phrasings:
+      - "Show me modern staircases."
+      - "Pictures of contemporary staircase designs."
+      - "Modern staircase examples please."
+      - "What do modern staircases look like?"
+      - "Show me modern floating staircases."
+      - "Contemporary staircase pictures."
+      - "Modern architectural staircase examples."
+
+  - concept: image_request_traditional_staircase
+    expected_family: design_style
+    expected_tier: Clear
+    expected_query_type: image_retrieval
+    phrasings:
+      - "Show me traditional staircases."
+      - "Pictures of Victorian staircases."
+      - "Traditional staircase examples please."
+      - "What do classical staircases look like?"
+      - "Show me period staircases."
+      - "Show me a grand curved traditional staircase."
+
+  # ============================================================
+  # FAMILY · Safety Regulations (1 concept, routes to future brain)
+  # ============================================================
+
+  - concept: safety_reg_handrail_height
+    expected_family: safety_regs
+    expected_tier: Clear
+    expected_routing: "future_brain:building_codes"
+    phrasings:
+      - "How high should the handrail be?"
+      - "What's the legal handrail height?"
+      - "Handrail height regulations?"
+      - "Is there a required handrail height?"
+      - "What height for the stair handrail?"
+      - "Handrail height — is it a rule?"
+      - "How tall must the handrail be by law?"
+
+  # ============================================================
+  # FAMILY · Ambiguity / Compound / Special (3 concepts)
+  # ============================================================
+
+  - concept: pronoun_lack_ambiguity
+    expected_family: unclassified
+    expected_tier: Ambiguous
+    phrasings:
+      - "Can I have this?"
+      - "Like this."
+      - "What about this?"
+      - "Something like this."
+      - "Can you do this?"
+      - "This one please."
+      - "I want it like that."
+
+  - concept: cost_question_route_to_business_brain
+    expected_family: business_estimation
+    expected_tier: Clear
+    expected_routing: "future_brain:business_estimation"
+    phrasings:
+      - "How much does a staircase cost?"
+      - "What will a new staircase cost me?"
+      - "Price of a new staircase?"
+      - "Quote for a modern staircase?"
+      - "How much for an oak staircase?"
+      - "Cost of refacing my staircase?"
+
+  - concept: wrong_word_ambiguous_railing
+    expected_family: balusters
+    expected_tier: Ambiguous
+    phrasings:
+      - "Update the railing."
+      - "New railing please."
+      - "The railing needs work."
+      - "Can we change the railing?"
+      - "What can I do about the railing?"

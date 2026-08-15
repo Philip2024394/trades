@@ -93,8 +93,17 @@ function findEvidence(text) {
 function detectQueryType(text) {
   if (/\[image_search\]/i.test(text)) return "image_retrieval";
   if (/^show me /i.test(text.trim())) return "image_retrieval";
+  if (/^give me some/i.test(text.trim())) return "image_retrieval";
+  if (/^i want to see/i.test(text.trim())) return "image_retrieval";
   if (/examples of/i.test(text) || /pictures of/i.test(text) || /images of/i.test(text) || /photos of/i.test(text)) return "image_retrieval";
-  // "what does X look like" is text_answer (description request), not image
+  if (/examples please/i.test(text) || /pictures please/i.test(text)) return "image_retrieval";
+  if (/what do .* look like/i.test(text)) return "image_retrieval";
+  if (/what does .* look like/i.test(text)) return "image_retrieval";
+  if (/what .* pictures/i.test(text)) return "image_retrieval";
+  if (/staircase examples/i.test(text) || /staircase pictures/i.test(text)) return "image_retrieval";
+  if (/starting[- ]step (pictures|examples|ideas)/i.test(text)) return "image_retrieval";
+  if (/(feature|design|first[- ]?step) ideas/i.test(text)) return "image_retrieval";
+  if (/give me a picture/i.test(text) || /show a picture/i.test(text)) return "image_retrieval";
   return "text_answer";
 }
 
@@ -108,23 +117,62 @@ const AMBIGUOUS_MARKERS = [
   "better", "worse", "more open", "more closed", "less crowded", "less heavy",
   "less narrow", "more airy", "more spacious", "less boxed", "boxed in",
   "cramped", "heavy", "light", "airy", "welcoming", "cold", "warm",
+  "feel more open", "feel bigger", "feel wider", "feel less", "feel more",
+  "look bigger", "look wider", "look more", "look less",
+  "more substantial", "more of a feature", "more prominent", "big statement",
+  "impressive", "grand statement", "statement piece", "stands out",
+  "spacious", "spacious feel", "airier",
+  "open this up", "opens up the", "open up the",
+  "looks a bit plain", "a bit plain", "add something", "looks plain",
+  "less closed in", "make it feel less", "feels less",
+  "what can i do under", "wasted space", "space is wasted", "ideas for the",
   // Uncertainty language
   "i don't know", "not sure", "any ideas", "any suggestions", "what's best", "what is best",
   "which is best", "what should i", "which should i", "help me choose", "help me decide",
+  "under-stair ideas", "understair ideas", "what can i put", "what's a good use",
+  "under the stairs — i don't know", "wasted",
   // Style keywords without axis specification
   "more modern", "more traditional", "more classical", "more minimalist", "more contemporary",
   "modernize", "modernise", "update", "refresh", "makeover", "revamp",
-  "grand", "impressive", "wow factor", "statement", "stand out", "special",
+  "grand", "wow factor", "statement", "stand out", "special",
+  "modernise this", "modernise it", "give it a makeover",
+  "bring the staircase", "into the 21st century", "less old-fashioned", "feel current",
+  "don't rip it out", "don't replace it", "rather than replacing", "without ripping",
   // Vague requests to widen the base
   "make the bottom", "make the first step", "make the entry",
   // Pronoun-lacking-antecedent (context needed)
-  "can i have this", "like this", "like that", "make it look",
+  "can i have this", "like this", "like that", "make it look", "can you do this",
+  "this one please", "want it like that", "what about this",
+  // Wrong-word ambiguity
+  "update the railing", "new railing", "railing needs", "change the railing", "the railing",
 ];
 const LIKELY_MARKERS = [
   "want to", "would like", "considering", "thinking about", "could i",
   "how do i choose", "which is better", "recommendation",
   "how do i", // often needs clarification
   "any advice", "your opinion", "what do you think", "any thoughts",
+  "i want modern", "i want traditional", "want modern spindles", "want modern balusters",
+  "what woods can i", "what wood can i", "which wood is best", "which timber is best",
+  "should i go with", "should i choose", "what type of wood",
+  "best hardwood for", "hardwood for a family", "wood for stairs",
+  "what are the best ways to finish", "best ways to finish", "how should i finish",
+  "how do i finish", "what finish for",
+  "add led lights", "add leds", "how do i add led", "how do i add lights",
+  "where can i put leds", "where can i put lights", "best places to put",
+  "led integration", "staircase lighting options",
+  "modern spindles", "modern balusters", "modern balustrade", "modernise the balusters",
+  "what handrail", "what kind of handrail", "which handrail", "recommend me a handrail",
+  "handrail options", "handrail should i", "best handrail",
+  "what to do", "what should i do", "which spindle", "which baluster",
+  "carpet the flight", "carpeting the stairs", "carpet on the rest",
+  "handle the first step", "what about the first step", "do i carpet",
+  "keep the first step", "keep the timber", "keep some of the timber",
+  "refurb my stairs", "keep some timber", "keep the structure", "keep the wood",
+  "refresh it without", "refacing job", "renovate the staircase", "redo the balustrade",
+  "new look but same staircase", "refresh what's visible", "keep the current staircase",
+  "modern-looking", "contemporary spindle", "modern railing options", "modern spindle",
+  "modernise the balusters",
+  "which handrail material", "timber or metal", "handrail material",
 ];
 // Detect standalone pronouns without antecedent — very ambiguous
 const PRONOUN_ONLY_MARKERS = [
@@ -146,27 +194,29 @@ function detectTier(text) {
 // Concept family classifier (which staircase concept the question addresses)
 // -----------------------------------------------------------------------
 const CONCEPT_FAMILIES = [
+  // SAFETY_REGS comes first so regulatory questions win over component matches
+  { family: "safety_regs", kws: ["how high should the handrail", "how tall must the handrail", "how high must the handrail", "what height for the stair handrail", "handrail height regulations", "required handrail height", "handrail height — is it a rule", "handrail regulations", "handrail height by law", "how tall the handrail", "code says about the handrail", "building code", "safety code", "compliance", "regulation", "osha", "ada requirements", "fire rating", "load-bearing weight", "sphere rule", "grip size", "slip resistance", "headroom", "landing width", "legal handrail", "inspector", "permit fee", "code compliance"] },
   { family: "starting_steps", kws: ["starting step", "first step", "bottom step", "bullnose", "curtail", "volute", "flared", "first tread", "entry step", "widen the first", "bigger first", "wider first", "entry staircase", "step at the base", "step widens", "step that sticks out"] },
-  { family: "landing_railings", kws: ["landing", "top newel", "corner newel", "half newel", "landing rail", "upper landing", "landing balustrade", "around the top", "rail around"] },
+  { family: "landing_railings", kws: ["landing", "top newel", "corner newel", "half newel", "landing rail", "upper landing", "landing balustrade", "around the top", "rail around", "match the top with the bottom", "match the top", "same style upstairs", "consistent with the stairs", "continue the railing around", "top with the bottom", "whole thing to feel one system", "railing consistent", "connect the landing rail", "stair handrail meet the landing", "where does the rail turn at the top", "top of the stairs where the rail turns", "two rails join at the top", "how do the two rails", "landing railing connect", "how does the landing", "handrail finish at the top", "landing join the newel"] },
   { family: "handrail", kws: ["handrail", "gooseneck", "swan-neck", "handrail bracket", "handrail profile", "banister", "hand rail", "the rail", "rail going", "the wooden rail", "grip rail", "grab rail"] },
-  { family: "newel_caps", kws: ["newel cap", "cap on the newel", "ball finial", "pyramidal cap", "newel top", "post cap", "top of the post", "post finial", "drop newel"] },
-  { family: "balusters", kws: ["baluster", "spindle", "balustrade", "guardrail", "guard rail", "vertical piece", "wire cable rail", "iron baluster", "iron scroll", "metal rod balustrade", "glass panel", "glass balustrade", "cable rail", "wrought iron rail", "spindle spacing", "square spindle", "turned spindle"] },
+  { family: "newel_caps", kws: ["newel cap", "cap on the newel", "ball finial", "pyramidal cap", "newel top", "post cap", "top of the post", "post finial", "drop newel", "the big post", "big post at the bottom", "tall thing at the corner", "chunky post", "post at the base of the stairs", "post the handrail ends on", "corner pole", "big vertical post", "tall post", "the corner post", "the wooden post", "starting newel", "top newel", "newel post", "big post", "vertical post", "newel"] },
+  { family: "balusters", kws: ["baluster", "spindle", "balustrade", "guardrail", "guard rail", "vertical piece", "vertical pieces", "vertical wooden", "vertical bits", "wire cable rail", "iron baluster", "iron scroll", "metal rod balustrade", "glass panel", "glass balustrade", "cable rail", "wrought iron rail", "spindle spacing", "square spindle", "turned spindle", "wooden fence", "fence-like", "the fence", "wooden bars", "wooden sticks", "pickets", "the pickets", "bars between", "sticks going up", "the railing", "update the railing", "railing needs", "change the railing", "new railing"] },
   { family: "stringers", kws: ["stringer", "cut string", "closed string", "open string", "mono-stringer", "central stringer", "cantilever", "floating tread", "box stringer", "housed stringer", "routed stringer", "dual-stringer", "dual stringer", "central spine", "steel stringer", "floating stair", "floating staircase"] },
-  { family: "treads_risers", kws: ["tread", "riser", "nosing", "step edge", "riser height", "tread depth", "open riser", "closed riser", "nosing profile", "tread nosing", "step covers", "false tread", "return nosing", "step profile", "step overlay"] },
-  { family: "carpet_stepmats", kws: ["carpet", "runner", "step mat", "step mats", "sisal", "seagrass", "waterfall install", "hollywood install", "carpet pad", "tackless strip", "stair rod", "carpet fiber", "wool carpet", "carpet on stairs", "carpet fitting"] },
-  { family: "refacing", kws: ["refurbish", "refacing", "reface", "before after", "before/after", "makeover", "modernize old", "modernise old", "update old", "update ugly", "refresh", "renovation"] },
-  { family: "understair", kws: ["under stair", "under-stair", "understair", "under my stairs", "under the stairs", "understairs"] },
-  { family: "timber_species", kws: ["oak", "pine", "walnut", "mahogany", "maple", "beech", "ash", "cherry", "hardwood", "timber species", "wood species", "solid wood", "engineered wood", "hardwood tread", "wood staircase", "wood tread"] },
-  { family: "lighting", kws: ["led", "light", "lighting", "illuminate", "step lights", "chandelier", "pendant light", "wall sconce", "smart light", "motion sensor", "night light", "under-tread light", "riser light", "recessed light"] },
+  { family: "treads_risers", kws: ["tread", "riser", "nosing", "step edge", "riser height", "tread depth", "open riser", "closed riser", "nosing profile", "tread nosing", "step covers", "false tread", "return nosing", "step profile", "step overlay", "finish raw oak", "finish oak", "finish for oak", "protect wood tread", "coat should i put", "coat on the tread", "tread finish", "finish my staircase treads", "finish for the treads", "how should i finish", "oak steps finish", "wood tread finish", "how do i protect wood"] },
+  { family: "carpet_stepmats", kws: ["carpet", "runner", "step mat", "step mats", "sisal", "seagrass", "waterfall install", "hollywood install", "carpet pad", "tackless strip", "stair rod", "carpet fiber", "wool carpet", "carpet on stairs", "carpet fitting", "carpeting", "carpeting the", "carpet the flight", "carpet the middle", "carpet the bullnose", "carpet on the rest", "individual mats", "mats per step", "expose the bottom step", "wood if the rest is carpet"] },
+  { family: "refacing", kws: ["refurbish", "refacing", "reface", "before after", "before/after", "makeover", "modernize old", "modernise old", "update old", "update ugly", "refresh", "renovation", "refurb", "refurb my stairs", "keep some of the timber", "keep some timber", "keep the structure", "keep the wood", "refresh what's visible", "renovate the staircase", "redo the balustrade", "new look but same staircase", "keep the current staircase", "keep it, make it look", "keep the stairs but", "don't rip it out", "don't replace it", "without ripping", "without a full replacement", "rather than replacing"] },
+  { family: "understair", kws: ["under stair", "under-stair", "understair", "under my stairs", "under the stairs", "understairs", "beneath the stairs", "space under", "space beneath", "wasted space", "understairs void", "under-stair void"] },
+  { family: "timber_species", kws: ["oak", "pine", "walnut", "mahogany", "maple", "beech", "ash", "cherry", "hardwood", "softwood", "timber species", "wood species", "solid wood", "engineered wood", "hardwood tread", "wood staircase", "wood tread", "what wood", "what woods", "which wood", "which timber", "wood choice", "timber choice", "painted staircase", "which lasts longest", "family staircase", "best hardwood", "wood is best", "wood for stairs", "type of wood", "kind of wood", "oak or", "oak vs", "or pine", "or walnut", "or oak"] },
+  { family: "lighting", kws: ["led", "light", "lighting", "illuminate", "step lights", "chandelier", "pendant light", "wall sconce", "smart light", "motion sensor", "night light", "under-tread light", "riser light", "recessed light", "add led", "add lights", "put leds", "put lights", "lights on the stairs", "lights on the staircase", "leds on the stairs", "staircase lighting", "stair lighting", "step light", "under-nosing light", "cove wash", "motion-activated", "motion activated", "automatic stair", "auto stair light", "sensor for", "light up the stairs", "illuminated stairs", "led integration", "led strip", "led on"] },
   { family: "layout_types", kws: ["helical", "spiral", "l-shaped", "u-shaped", "l shape", "u shape", "winder", "switchback", "dog-leg", "dog leg", "quarter-turn", "quarter turn", "split-level", "split level", "bifurcated", "scissor", "box-step", "reverse-turn", "double-helix", "double helix", "wraparound", "wrap-around", "freestanding", "circular", "straight run", "straight staircase", "loft ladder", "ship ladder", "grand curved", "sweeping staircase", "double staircase"] },
-  { family: "safety_regs", kws: ["code", "compliance", "regulation", "osha", "ada", "fire rating", "load-bearing weight", "load bearing", "handrail height", "sphere rule", "guardrail", "grip size", "slip resistance", "headroom", "landing width", "building code", "safety code", "legal", "inspector", "permit"] },
+  { family: "safety_regs_secondary", kws: ["_never_matches_"] },
   { family: "carpentry_math", kws: ["calculate", "formula", "layout", "framing square", "framing", "rise and run", "stringer length", "pitch", "rake angle", "pythagorean", "measurement rule", "calculation", "compute", "math"] },
   { family: "material_science", kws: ["tensile strength", "hot-dip galvaniz", "load deflection", "polymer concrete", "moisture content", "wear resistance", "carbon fiber", "structural glass", "acrylic", "engineered bamboo", "cross-laminated timber", "corten", "uhpc", "efflorescence", "hardness", "welded joint", "anti-corrosion", "powder coat", "hot-dip", "chemical anchor", "material property", "material grade", "structural property"] },
   { family: "ergonomics", kws: ["calories", "muscle group", "joint impact", "cardiovascular", "bone density", "rehab", "physical therapy", "chair lift", "wheelchair", "elderly", "arthritic", "vertigo", "toddler", "grip", "seniors", "accessibility", "safe for children", "child safe", "aging in place"] },
   { family: "wayfinding", kws: ["floor plan", "blueprint", "map", "wayfinding", "escape route", "evacuation", "signage", "site plan", "shop drawing", "annotation", "architectural drawing", "diagram", "layout drawing", "plan view"] },
   { family: "business_estimation", kws: ["cost", "price", "quote", "estimate", "labor cost", "material cost", "profit margin", "insurance", "warranty", "supplier", "wholesale", "dispute", "permit fee", "marketing", "trade show", "hire", "vet", "how much does it cost", "typical labor", "contract", "invoice"] },
-  { family: "maintenance_repair", kws: ["clean", "restore", "sand", "paint", "stain", "seal", "fix", "repair", "creak", "squeak", "wobbl", "loose", "rot", "chip", "crack", "scratch", "dent", "worn", "removing", "strip", "waterproof", "epoxy", "resurface"] },
-  { family: "design_style", kws: ["modern", "contemporary", "minimalist", "traditional", "classical", "period", "victorian", "edwardian", "georgian", "federal", "scandinavian", "scandi", "industrial", "coastal", "beach", "rustic", "cottage", "farmhouse", "architect-modern", "architect modern", "luxury", "mid-century", "mid century", "art deco", "art nouveau", "grand", "imperial", "mansion", "understated", "elegant", "wire cable", "clean line", "boho", "eclectic", "monumental"] },
+  { family: "maintenance_repair", kws: ["clean", "restore", "sand", "paint", "stain", "seal", "fix", "repair", "creak", "creaks", "creaking", "squeak", "squeaks", "squeaking", "squeaky", "wobbl", "loose", "rot", "chip", "crack", "scratch", "dent", "worn", "removing", "strip", "waterproof", "epoxy", "resurface", "make noise", "makes noise", "stairs from creaking"] },
+  { family: "design_style", kws: ["modern", "contemporary", "minimalist", "traditional", "classical", "period", "victorian", "edwardian", "georgian", "federal", "scandinavian", "scandi", "industrial", "coastal", "beach", "rustic", "cottage", "farmhouse", "architect-modern", "architect modern", "luxury", "mid-century", "mid century", "art deco", "art nouveau", "grand", "imperial", "mansion", "understated", "elegant", "wire cable", "clean line", "boho", "eclectic", "monumental", "feel more open", "feel bigger", "feel wider", "look bigger", "look wider", "less crowded", "less heavy", "less narrow", "airier", "more airy", "spacious feel", "make it feel", "make the staircase feel", "feels heavy", "feels cramped", "feels dark", "feels enclosed", "boxed in", "open this up", "open up", "lighten it", "less closed", "less boxed", "update the look", "update the staircase", "update the balustrade"] },
   { family: "outdoor_stairs", kws: ["outdoor", "garden", "deck", "exterior", "flagstone", "pool-facing", "hillside", "concrete outdoor", "brick outdoor", "outdoor step", "outdoor deck", "stone step outdoor", "weather"] },
   { family: "installation_process", kws: ["install", "installation", "installer", "framing", "attach", "anchor", "fasten", "mount", "connect", "assemble", "put in", "put together", "fit"] },
 ];

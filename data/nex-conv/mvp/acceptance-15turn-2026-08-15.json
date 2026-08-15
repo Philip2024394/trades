@@ -1,0 +1,2052 @@
+{
+  "summary": {
+    "fixture": "acceptance-15turn-oak-staircase-2026-08-15",
+    "backend": "postgres",
+    "model": "anthropic/claude-haiku-4.5",
+    "turns_run": 18,
+    "prose_calls_ok": 18,
+    "prose_calls_err": 0,
+    "total_prompt_tokens": 25093,
+    "total_completion_tokens": 925,
+    "total_cost_usd": 0,
+    "avg_prose_latency_ms": 2128.2,
+    "p50_prose_latency_ms": 2014,
+    "p95_prose_latency_ms": 3253,
+    "faithfulness_violations": [],
+    "final_state": {
+      "current_topic": "bullnose",
+      "established_facts": {
+        "style_intent": {
+          "value": "straight_flight",
+          "turn_established": 3,
+          "confidence": 0.49500000000000005
+        },
+        "material_primary": {
+          "value": "walnut",
+          "turn_established": 29,
+          "confidence": 0.95,
+          "via": "correction"
+        }
+      },
+      "entities_in_focus": [
+        "staircase",
+        "against_wall",
+        "straight_flight",
+        "traditional",
+        "contemporary",
+        "oak",
+        "baluster",
+        "base_rail",
+        "string",
+        "closed_string",
+        "cut_string",
+        "open_riser",
+        "riser",
+        "starting_step",
+        "carpet",
+        "price",
+        "installation",
+        "walnut",
+        "handrail_height",
+        "handrail",
+        "tread",
+        "bullnose",
+        "timber",
+        "metal"
+      ],
+      "constraints": [],
+      "corrections_log": [],
+      "turn_count": 36
+    }
+  },
+  "turns": [
+    {
+      "turn": 1,
+      "customer": "Hi, I'm renovating my hallway and I think I want a new staircase. Where do we start?",
+      "understood_intent": {
+        "slug": "ask_definition",
+        "class": "discover",
+        "confidence": 0.6,
+        "reason": "trailing question mark"
+      },
+      "entities": [
+        "staircase"
+      ],
+      "effective_query_entities": [
+        "staircase"
+      ],
+      "state_snapshot": {
+        "current_topic": "staircase",
+        "established_facts": {},
+        "entities_in_focus": [
+          "staircase"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "945428c2-3765-49d0-aa27-73217b6ba2d8",
+        "score": 0.473,
+        "source_batch": "conv-intel-2026-08-14",
+        "head": "\"Which wood is best for stairs?\""
+      },
+      "top_k_source_batches": [
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "staircase-multi-2026-08-15",
+        "staircase-multi-2026-08-15"
+      ],
+      "response_frame": {
+        "acknowledge": "",
+        "core_answer_from_item_id": "945428c2-3765-49d0-aa27-73217b6ba2d8",
+        "core_answer_head": "\"Which wood is best for stairs?\"",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "Is your staircase against a wall on one side, or open on both sides?",
+        "at": "2026-08-15T05:03:58.370Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 1763,
+        "packet_chars": 2145,
+        "reply_chars": 68,
+        "tokens_prompt": 1085,
+        "tokens_completion": 17,
+        "cost_usd": 0,
+        "load_ms": 471,
+        "prompt_eval_ms": 852,
+        "gen_ms": 353,
+        "tok_per_sec": 48.1,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 8,
+        "embed_ms": 3103,
+        "retrieve_ms": 3,
+        "retrieve_stages": {
+          "semantic_ms": 1,
+          "entity_ms": 1,
+          "graph_ms": 0,
+          "merge_ms": 0,
+          "rerank_ms": 0
+        },
+        "state_ms": 1,
+        "prose_ms": 1764
+      },
+      "total_ms": 4879
+    },
+    {
+      "turn": 2,
+      "customer": "The current one is against a wall on one side and open on the other. It's a straight run up to the first floor.",
+      "understood_intent": {
+        "slug": "statement",
+        "class": "discover",
+        "confidence": 0.55,
+        "reason": "fallback statement"
+      },
+      "entities": [
+        "against_wall",
+        "straight_flight"
+      ],
+      "effective_query_entities": [
+        "against_wall",
+        "straight_flight",
+        "staircase"
+      ],
+      "state_snapshot": {
+        "current_topic": "straight_flight",
+        "established_facts": {
+          "style_intent": {
+            "value": "straight_flight",
+            "turn_established": 3,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "entities_in_focus": [
+          "staircase",
+          "against_wall",
+          "straight_flight"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "46ba587a-6187-43aa-8d67-9e7e22cb171b",
+        "score": 0.495,
+        "source_batch": "conv-intel-2026-08-14",
+        "head": "\"I've got a staircase against a wall"
+      },
+      "top_k_source_batches": [
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "staircase-string-types-2026-08-15",
+        "staircase-multi-2026-08-15",
+        "conv-intel-2026-08-14",
+        "staircase-string-types-2026-08-15"
+      ],
+      "response_frame": {
+        "acknowledge": "",
+        "core_answer_from_item_id": "46ba587a-6187-43aa-8d67-9e7e22cb171b",
+        "core_answer_head": "\"I've got a staircase against a wall",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "Is your staircase against a wall on one side, or open on both sides?",
+        "at": "2026-08-15T05:03:59.659Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 1255,
+        "packet_chars": 2584,
+        "reply_chars": 68,
+        "tokens_prompt": 1177,
+        "tokens_completion": 17,
+        "cost_usd": 0,
+        "load_ms": 437,
+        "prompt_eval_ms": 352,
+        "gen_ms": 347,
+        "tok_per_sec": 49,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 2,
+        "embed_ms": 28,
+        "retrieve_ms": 2,
+        "retrieve_stages": {
+          "semantic_ms": 2,
+          "entity_ms": 0,
+          "graph_ms": 0,
+          "merge_ms": 0,
+          "rerank_ms": 0
+        },
+        "state_ms": 1,
+        "prose_ms": 1255
+      },
+      "total_ms": 1288
+    },
+    {
+      "turn": 3,
+      "customer": "I like oak. The house is Victorian so I don't want it to look too modern.",
+      "understood_intent": {
+        "slug": "statement",
+        "class": "discover",
+        "confidence": 0.55,
+        "reason": "fallback statement"
+      },
+      "entities": [
+        "traditional",
+        "contemporary",
+        "oak"
+      ],
+      "effective_query_entities": [
+        "traditional",
+        "contemporary",
+        "oak",
+        "staircase",
+        "against_wall",
+        "straight_flight"
+      ],
+      "state_snapshot": {
+        "current_topic": "traditional",
+        "established_facts": {
+          "style_intent": {
+            "value": "straight_flight",
+            "turn_established": 3,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "entities_in_focus": [
+          "staircase",
+          "against_wall",
+          "straight_flight",
+          "traditional",
+          "contemporary",
+          "oak"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "0aee8461-c8db-4949-b8a0-5e62b8cddec5",
+        "score": 0.394,
+        "source_batch": "conv-intel-2026-08-14",
+        "head": "A common transitional look would be slim brushed stainless steel vertical rods with the oak handrail and oak newels. The oak stays, the balustrade lightens up, and the whole stairc"
+      },
+      "top_k_source_batches": [
+        "conv-intel-2026-08-14",
+        "conversation-examples-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "staircase-multi-2026-08-15",
+        "staircase-multi-2026-08-15",
+        "staircase-multi-2026-08-15"
+      ],
+      "response_frame": {
+        "acknowledge": "Continuing with straight_flight.",
+        "core_answer_from_item_id": "0aee8461-c8db-4949-b8a0-5e62b8cddec5",
+        "core_answer_head": "A common transitional look would be slim brushed stainless steel vertical rods with the oak handrail and oak newels. The oak stays, the balustrade lightens up, and the whole staircase feels more open without abandoning the traditional feel. Alternative: plain slim square oak spindles at wider spacin",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "A common transitional look would be slim brushed stainless steel vertical rods with the oak handrail and oak newels. The oak stays, the balustrade lightens up, and the whole staircase feels more open without abandoning the traditional feel. An alternative could be plain slim square oak spindles at wider spacing. Is your staircase against a wall on one side, or open on both sides?",
+        "at": "2026-08-15T05:04:02.336Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 2651,
+        "packet_chars": 3340,
+        "reply_chars": 382,
+        "tokens_prompt": 1350,
+        "tokens_completion": 79,
+        "cost_usd": 0,
+        "load_ms": 473,
+        "prompt_eval_ms": 413,
+        "gen_ms": 1670,
+        "tok_per_sec": 47.3,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 3,
+        "embed_ms": 20,
+        "retrieve_ms": 2,
+        "retrieve_stages": {
+          "semantic_ms": 0,
+          "entity_ms": 1,
+          "graph_ms": 0,
+          "merge_ms": 0,
+          "rerank_ms": 0
+        },
+        "state_ms": 1,
+        "prose_ms": 2651
+      },
+      "total_ms": 2677
+    },
+    {
+      "turn": 4,
+      "customer": "What about the balusters? I hear that word a lot and I'm not sure what looks good with oak.",
+      "understood_intent": {
+        "slug": "ask_what_about",
+        "class": "revisit",
+        "confidence": 0.92,
+        "reason": "elliptical follow-up cue"
+      },
+      "entities": [
+        "baluster",
+        "oak"
+      ],
+      "effective_query_entities": [
+        "baluster",
+        "oak",
+        "staircase",
+        "against_wall",
+        "straight_flight",
+        "traditional",
+        "contemporary"
+      ],
+      "state_snapshot": {
+        "current_topic": "baluster",
+        "established_facts": {
+          "style_intent": {
+            "value": "straight_flight",
+            "turn_established": 3,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "entities_in_focus": [
+          "staircase",
+          "against_wall",
+          "straight_flight",
+          "traditional",
+          "contemporary",
+          "oak",
+          "baluster"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "0aee8461-c8db-4949-b8a0-5e62b8cddec5",
+        "score": 0.397,
+        "source_batch": "conv-intel-2026-08-14",
+        "head": "A common transitional look would be slim brushed stainless steel vertical rods with the oak handrail and oak newels. The oak stays, the balustrade lightens up, and the whole stairc"
+      },
+      "top_k_source_batches": [
+        "conv-intel-2026-08-14",
+        "conversation-examples-2026-08-14",
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "conv-intel-2026-08-14",
+        "conversation-examples-2026-08-14",
+        "conv-intel-2026-08-14",
+        "staircase-string-types-2026-08-15"
+      ],
+      "response_frame": {
+        "acknowledge": "Understood — you're asking about baluster, oak in the context of traditional.",
+        "core_answer_from_item_id": "0aee8461-c8db-4949-b8a0-5e62b8cddec5",
+        "core_answer_head": "A common transitional look would be slim brushed stainless steel vertical rods with the oak handrail and oak newels. The oak stays, the balustrade lightens up, and the whole staircase feels more open without abandoning the traditional feel. Alternative: plain slim square oak spindles at wider spacin",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "Sure, a common option would be slim brushed stainless steel vertical rods with the oak handrail and newels. The oak stays and balustrade help keep it traditional while making it feel more open. Another option could be plain slim square oak spindles with a wider spacing. Would your staircase be against a wall on one side, or open on both?",
+        "at": "2026-08-15T05:04:04.933Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 2569,
+        "packet_chars": 3756,
+        "reply_chars": 339,
+        "tokens_prompt": 1417,
+        "tokens_completion": 73,
+        "cost_usd": 0,
+        "load_ms": 446,
+        "prompt_eval_ms": 445,
+        "gen_ms": 1526,
+        "tok_per_sec": 47.8,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 1,
+        "embed_ms": 24,
+        "retrieve_ms": 2,
+        "retrieve_stages": {
+          "semantic_ms": 1,
+          "entity_ms": 0,
+          "graph_ms": 1,
+          "merge_ms": 0,
+          "rerank_ms": 0
+        },
+        "state_ms": 0,
+        "prose_ms": 2569
+      },
+      "total_ms": 2597
+    },
+    {
+      "turn": 5,
+      "customer": "Something in between traditional and modern would be nice. My partner wants it to feel light.",
+      "understood_intent": {
+        "slug": "statement",
+        "class": "discover",
+        "confidence": 0.55,
+        "reason": "fallback statement"
+      },
+      "entities": [
+        "traditional",
+        "contemporary"
+      ],
+      "effective_query_entities": [
+        "traditional",
+        "contemporary",
+        "staircase",
+        "against_wall",
+        "straight_flight",
+        "oak",
+        "baluster"
+      ],
+      "state_snapshot": {
+        "current_topic": "traditional",
+        "established_facts": {
+          "style_intent": {
+            "value": "straight_flight",
+            "turn_established": 3,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "entities_in_focus": [
+          "staircase",
+          "against_wall",
+          "straight_flight",
+          "traditional",
+          "contemporary",
+          "oak",
+          "baluster"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "6f0b9db9-1a1d-40ca-85f2-51ba3d36973a",
+        "score": 0.498,
+        "source_batch": "conv-intel-2026-08-14",
+        "head": "Example: > Customer: \"It's a staircase against a wall — I want the first step to feel special and modern balustrade.\" > NEX: \"Wall-fixed staircase — so the first step's outward pro"
+      },
+      "top_k_source_batches": [
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conversation-examples-2026-08-14",
+        "staircase-multi-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "conv-intel-2026-08-14"
+      ],
+      "response_frame": {
+        "acknowledge": "Continuing with straight_flight.",
+        "core_answer_from_item_id": "6f0b9db9-1a1d-40ca-85f2-51ba3d36973a",
+        "core_answer_head": "Example: > Customer: \"It's a staircase against a wall — I want the first step to feel special and modern balustrade.\" > NEX: \"Wall-fixed staircase — so the first step's outward projection can happen on the free side only. For 'special' on the free side: extended square tread (modern-fitting) or a su",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "This is a commonly-recommended option; other options exist depending on your specific setup. Is your staircase against a wall on one side, or open on both sides?",
+        "at": "2026-08-15T05:04:06.708Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 1757,
+        "packet_chars": 3784,
+        "reply_chars": 161,
+        "tokens_prompt": 1457,
+        "tokens_completion": 34,
+        "cost_usd": 0,
+        "load_ms": 465,
+        "prompt_eval_ms": 462,
+        "gen_ms": 716,
+        "tok_per_sec": 47.5,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 0,
+        "embed_ms": 15,
+        "retrieve_ms": 2,
+        "retrieve_stages": {
+          "semantic_ms": 0,
+          "entity_ms": 2,
+          "graph_ms": 0,
+          "merge_ms": 0,
+          "rerank_ms": 0
+        },
+        "state_ms": 0,
+        "prose_ms": 1758
+      },
+      "total_ms": 1775
+    },
+    {
+      "turn": 6,
+      "customer": "What is a base rail? I keep seeing it mentioned.",
+      "understood_intent": {
+        "slug": "ask_definition",
+        "class": "discover",
+        "confidence": 0.88,
+        "reason": "definition cue"
+      },
+      "entities": [
+        "base_rail",
+        "string"
+      ],
+      "effective_query_entities": [
+        "base_rail",
+        "string",
+        "staircase",
+        "against_wall",
+        "straight_flight",
+        "traditional",
+        "contemporary",
+        "oak",
+        "baluster"
+      ],
+      "state_snapshot": {
+        "current_topic": "base_rail",
+        "established_facts": {
+          "style_intent": {
+            "value": "straight_flight",
+            "turn_established": 3,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "entities_in_focus": [
+          "staircase",
+          "against_wall",
+          "straight_flight",
+          "traditional",
+          "contemporary",
+          "oak",
+          "baluster",
+          "base_rail",
+          "string"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "0b8be3ce-dfce-4747-a307-aa6b2a1af54c",
+        "score": 0.391,
+        "source_batch": "staircase-string-types-2026-08-15",
+        "head": "Interior residential straight-flight staircase in oak with a mixed string configuration — the OUTER (visible) string is a CLOSED string (smooth diagonal plank with a straight top e"
+      },
+      "top_k_source_batches": [
+        "staircase-string-types-2026-08-15",
+        "staircase-multi-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "staircase-multi-2026-08-15",
+        "conv-intel-2026-08-14"
+      ],
+      "response_frame": {
+        "acknowledge": "Continuing with straight_flight.",
+        "core_answer_from_item_id": "0b8be3ce-dfce-4747-a307-aa6b2a1af54c",
+        "core_answer_head": "Interior residential straight-flight staircase in oak with a mixed string configuration — the OUTER (visible) string is a CLOSED string (smooth diagonal plank with a straight top edge and a base rail carrying the balusters), while the WALL side has a CUT STRING (stepped top edge where the treads ste",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "This is a commonly-recommended option; other options exist depending on your specific setup. Is your staircase against a wall on one side, or open on both sides?",
+        "at": "2026-08-15T05:04:08.435Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 1715,
+        "packet_chars": 3633,
+        "reply_chars": 161,
+        "tokens_prompt": 1390,
+        "tokens_completion": 34,
+        "cost_usd": 0,
+        "load_ms": 425,
+        "prompt_eval_ms": 440,
+        "gen_ms": 716,
+        "tok_per_sec": 47.5,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 1,
+        "embed_ms": 9,
+        "retrieve_ms": 1,
+        "retrieve_stages": {
+          "semantic_ms": 0,
+          "entity_ms": 1,
+          "graph_ms": 0,
+          "merge_ms": 0,
+          "rerank_ms": 0
+        },
+        "state_ms": 0,
+        "prose_ms": 1717
+      },
+      "total_ms": 1728
+    },
+    {
+      "turn": 7,
+      "customer": "Ok so do I need one? Depends on the string type?",
+      "understood_intent": {
+        "slug": "confirm",
+        "class": "confirm",
+        "confidence": 0.85,
+        "reason": "confirmation cue"
+      },
+      "entities": [
+        "string"
+      ],
+      "effective_query_entities": [
+        "string",
+        "staircase",
+        "against_wall",
+        "straight_flight",
+        "traditional",
+        "contemporary",
+        "oak",
+        "baluster",
+        "base_rail"
+      ],
+      "state_snapshot": {
+        "current_topic": "string",
+        "established_facts": {
+          "style_intent": {
+            "value": "straight_flight",
+            "turn_established": 3,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "entities_in_focus": [
+          "staircase",
+          "against_wall",
+          "straight_flight",
+          "traditional",
+          "contemporary",
+          "oak",
+          "baluster",
+          "base_rail",
+          "string"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "d92165af-f51c-4167-859d-4b655da50f8f",
+        "score": 0.364,
+        "source_batch": "staircase-string-types-2026-08-15",
+        "head": "Long straight double-side cut-string interior staircase with a small square top-landing (quarter landing) that sits against a wall. Both stringers show the stepped top profile with"
+      },
+      "top_k_source_batches": [
+        "staircase-string-types-2026-08-15",
+        "conv-intel-2026-08-14",
+        "staircase-string-types-2026-08-15",
+        "conv-intel-2026-08-14",
+        "staircase-string-types-2026-08-15",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "staircase-string-types-2026-08-15"
+      ],
+      "response_frame": {
+        "acknowledge": "Continuing with straight_flight.",
+        "core_answer_from_item_id": "d92165af-f51c-4167-859d-4b655da50f8f",
+        "core_answer_head": "Long straight double-side cut-string interior staircase with a small square top-landing (quarter landing) that sits against a wall. Both stringers show the stepped top profile with visible tread ends projecting past both string faces. Closed risers. Slim black metal round balusters land directly int",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "This is a commonly-recommended option; other options exist depending on your specific setup. Is your staircase against a wall on one side, or open on both sides?",
+        "at": "2026-08-15T05:04:10.095Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 1640,
+        "packet_chars": 3592,
+        "reply_chars": 161,
+        "tokens_prompt": 1378,
+        "tokens_completion": 34,
+        "cost_usd": 0,
+        "load_ms": 397,
+        "prompt_eval_ms": 439,
+        "gen_ms": 712,
+        "tok_per_sec": 47.8,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 1,
+        "embed_ms": 16,
+        "retrieve_ms": 2,
+        "retrieve_stages": {
+          "semantic_ms": 0,
+          "entity_ms": 1,
+          "graph_ms": 1,
+          "merge_ms": 0,
+          "rerank_ms": 0
+        },
+        "state_ms": 0,
+        "prose_ms": 1640
+      },
+      "total_ms": 1659
+    },
+    {
+      "turn": 8,
+      "customer": "What's the difference between closed string and cut string?",
+      "understood_intent": {
+        "slug": "compare",
+        "class": "compare",
+        "confidence": 0.9,
+        "reason": "comparison cue"
+      },
+      "entities": [
+        "closed_string",
+        "cut_string",
+        "string"
+      ],
+      "effective_query_entities": [
+        "closed_string",
+        "cut_string",
+        "string"
+      ],
+      "state_snapshot": {
+        "current_topic": "closed_string",
+        "established_facts": {
+          "style_intent": {
+            "value": "straight_flight",
+            "turn_established": 3,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "entities_in_focus": [
+          "staircase",
+          "against_wall",
+          "straight_flight",
+          "traditional",
+          "contemporary",
+          "oak",
+          "baluster",
+          "base_rail",
+          "string",
+          "closed_string",
+          "cut_string"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "40b8e5c2-d6f9-4aee-a35c-9a83fdecf19d",
+        "score": 0.542,
+        "source_batch": "conv-intel-2026-08-14",
+        "head": "Use when: explaining the three-way base-rail rule (closed-string vs cut-string vs landing)."
+      },
+      "top_k_source_batches": [
+        "conv-intel-2026-08-14",
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "conv-intel-2026-08-14",
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15"
+      ],
+      "response_frame": {
+        "acknowledge": "Continuing with straight_flight.",
+        "core_answer_from_item_id": "40b8e5c2-d6f9-4aee-a35c-9a83fdecf19d",
+        "core_answer_head": "Use when: explaining the three-way base-rail rule (closed-string vs cut-string vs landing).",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "Closed string is like a smooth diagonal plank with treads hidden, while cut string has a stepped top edge with visible treads and balusters landing directly into them.",
+        "at": "2026-08-15T05:04:11.887Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 1773,
+        "packet_chars": 3414,
+        "reply_chars": 167,
+        "tokens_prompt": 1332,
+        "tokens_completion": 34,
+        "cost_usd": 0,
+        "load_ms": 521,
+        "prompt_eval_ms": 410,
+        "gen_ms": 720,
+        "tok_per_sec": 47.2,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 0,
+        "embed_ms": 16,
+        "retrieve_ms": 1,
+        "retrieve_stages": {
+          "semantic_ms": 1,
+          "entity_ms": 0,
+          "graph_ms": 0,
+          "merge_ms": 0,
+          "rerank_ms": 0
+        },
+        "state_ms": 0,
+        "prose_ms": 1773
+      },
+      "total_ms": 1791
+    },
+    {
+      "turn": 9,
+      "customer": "Is that the same as open riser?",
+      "understood_intent": {
+        "slug": "ask_definition",
+        "class": "discover",
+        "confidence": 0.6,
+        "reason": "trailing question mark"
+      },
+      "entities": [
+        "open_riser",
+        "riser"
+      ],
+      "effective_query_entities": [
+        "open_riser",
+        "riser",
+        "staircase",
+        "against_wall",
+        "straight_flight",
+        "traditional",
+        "contemporary",
+        "oak",
+        "baluster",
+        "base_rail",
+        "string",
+        "closed_string",
+        "cut_string"
+      ],
+      "state_snapshot": {
+        "current_topic": "open_riser",
+        "established_facts": {
+          "style_intent": {
+            "value": "straight_flight",
+            "turn_established": 3,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "entities_in_focus": [
+          "staircase",
+          "against_wall",
+          "straight_flight",
+          "traditional",
+          "contemporary",
+          "oak",
+          "baluster",
+          "base_rail",
+          "string",
+          "closed_string",
+          "cut_string",
+          "open_riser",
+          "riser"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "d92165af-f51c-4167-859d-4b655da50f8f",
+        "score": 0.595,
+        "source_batch": "staircase-string-types-2026-08-15",
+        "head": "Long straight double-side cut-string interior staircase with a small square top-landing (quarter landing) that sits against a wall. Both stringers show the stepped top profile with"
+      },
+      "top_k_source_batches": [
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "staircase-multi-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "conv-intel-2026-08-14"
+      ],
+      "response_frame": {
+        "acknowledge": "Continuing with straight_flight.",
+        "core_answer_from_item_id": "d92165af-f51c-4167-859d-4b655da50f8f",
+        "core_answer_head": "Long straight double-side cut-string interior staircase with a small square top-landing (quarter landing) that sits against a wall. Both stringers show the stepped top profile with visible tread ends projecting past both string faces. Closed risers. Slim black metal round balusters land directly int",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "This is a commonly-recommended option; other options exist depending on your specific setup. Is your staircase against a wall on one side, or open on both sides?",
+        "at": "2026-08-15T05:04:13.621Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 1709,
+        "packet_chars": 3736,
+        "reply_chars": 161,
+        "tokens_prompt": 1390,
+        "tokens_completion": 34,
+        "cost_usd": 0,
+        "load_ms": 446,
+        "prompt_eval_ms": 441,
+        "gen_ms": 711,
+        "tok_per_sec": 47.9,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 1,
+        "embed_ms": 19,
+        "retrieve_ms": 2,
+        "retrieve_stages": {
+          "semantic_ms": 1,
+          "entity_ms": 1,
+          "graph_ms": 0,
+          "merge_ms": 0,
+          "rerank_ms": 0
+        },
+        "state_ms": 0,
+        "prose_ms": 1710
+      },
+      "total_ms": 1734
+    },
+    {
+      "turn": 10,
+      "customer": "Got it. For our staircase (against a wall one side, oak, Victorian) which string type would you recommend?",
+      "understood_intent": {
+        "slug": "ask_recommendation",
+        "class": "decide",
+        "confidence": 0.85,
+        "reason": "recommendation cue"
+      },
+      "entities": [
+        "against_wall",
+        "traditional",
+        "staircase",
+        "string",
+        "oak"
+      ],
+      "effective_query_entities": [
+        "against_wall",
+        "traditional",
+        "staircase",
+        "string",
+        "oak",
+        "straight_flight",
+        "contemporary",
+        "baluster",
+        "base_rail",
+        "closed_string",
+        "cut_string",
+        "open_riser",
+        "riser"
+      ],
+      "state_snapshot": {
+        "current_topic": "traditional",
+        "established_facts": {
+          "style_intent": {
+            "value": "straight_flight",
+            "turn_established": 3,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "entities_in_focus": [
+          "staircase",
+          "against_wall",
+          "straight_flight",
+          "traditional",
+          "contemporary",
+          "oak",
+          "baluster",
+          "base_rail",
+          "string",
+          "closed_string",
+          "cut_string",
+          "open_riser",
+          "riser"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "6d8e74dc-cac0-45b9-a67a-073e4efd3e60",
+        "score": 0.485,
+        "source_batch": "staircase-string-types-2026-08-15",
+        "head": "Interior residential straight-flight staircase with OPEN RISERS — the vertical riser board between treads has been omitted, so you can see through between each tread. IMPORTANT: th"
+      },
+      "top_k_source_batches": [
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15"
+      ],
+      "response_frame": {
+        "acknowledge": "Continuing with straight_flight.",
+        "core_answer_from_item_id": "6d8e74dc-cac0-45b9-a67a-073e4efd3e60",
+        "core_answer_head": "Interior residential straight-flight staircase with OPEN RISERS — the vertical riser board between treads has been omitted, so you can see through between each tread. IMPORTANT: the strings here are CLOSED strings (smooth diagonal plank, straight top edge, tread ends hidden), which shows that `open ",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "This is a commonly-recommended option; other options exist depending on your specific setup. Is your staircase against a wall on one side, or open on both sides?",
+        "at": "2026-08-15T05:04:15.356Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 1723,
+        "packet_chars": 3859,
+        "reply_chars": 161,
+        "tokens_prompt": 1414,
+        "tokens_completion": 34,
+        "cost_usd": 0,
+        "load_ms": 451,
+        "prompt_eval_ms": 445,
+        "gen_ms": 712,
+        "tok_per_sec": 47.7,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 0,
+        "embed_ms": 10,
+        "retrieve_ms": 1,
+        "retrieve_stages": {
+          "semantic_ms": 0,
+          "entity_ms": 1,
+          "graph_ms": 0,
+          "merge_ms": 0,
+          "rerank_ms": 0
+        },
+        "state_ms": 0,
+        "prose_ms": 1723
+      },
+      "total_ms": 1734
+    },
+    {
+      "turn": 11,
+      "customer": "What about the bottom step? Can we do something a bit special there?",
+      "understood_intent": {
+        "slug": "ask_what_about",
+        "class": "revisit",
+        "confidence": 0.92,
+        "reason": "elliptical follow-up cue"
+      },
+      "entities": [
+        "starting_step"
+      ],
+      "effective_query_entities": [
+        "starting_step",
+        "staircase",
+        "against_wall",
+        "straight_flight",
+        "traditional",
+        "contemporary",
+        "oak",
+        "baluster",
+        "base_rail",
+        "string",
+        "closed_string",
+        "cut_string",
+        "open_riser",
+        "riser"
+      ],
+      "state_snapshot": {
+        "current_topic": "starting_step",
+        "established_facts": {
+          "style_intent": {
+            "value": "straight_flight",
+            "turn_established": 3,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "entities_in_focus": [
+          "staircase",
+          "against_wall",
+          "straight_flight",
+          "traditional",
+          "contemporary",
+          "oak",
+          "baluster",
+          "base_rail",
+          "string",
+          "closed_string",
+          "cut_string",
+          "open_riser",
+          "riser",
+          "starting_step"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "d66d8d8a-d3b3-4a21-80ac-f14e53577def",
+        "score": 0.326,
+        "source_batch": "conv-intel-2026-08-14",
+        "head": "NEX response: > \"So we're building a coherent modern staircase: extended feature first step in your chosen timber, frameless glass balustrade on the flight, and a matching modern l"
+      },
+      "top_k_source_batches": [
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14"
+      ],
+      "response_frame": {
+        "acknowledge": "Understood — you're asking about starting_step in the context of traditional.",
+        "core_answer_from_item_id": "d66d8d8a-d3b3-4a21-80ac-f14e53577def",
+        "core_answer_head": "NEX response: > \"So we're building a coherent modern staircase: extended feature first step in your chosen timber, frameless glass balustrade on the flight, and a matching modern landing railing. Four choices unlock the rest: (1) timber species — oak is the common modern pick, walnut deeper and more",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "Sure, we could extend the feature of the first step in oak, which is often a popular choice for modern staircases. This includes a frameless glass balustrade on the flight and a matching modern landing railing. Four choices unlock the rest: (1) timber species — oak is the common modern pick, walnut deeper and more traditional.",
+        "at": "2026-08-15T05:04:17.911Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 2532,
+        "packet_chars": 3657,
+        "reply_chars": 328,
+        "tokens_prompt": 1427,
+        "tokens_completion": 70,
+        "cost_usd": 0,
+        "load_ms": 465,
+        "prompt_eval_ms": 446,
+        "gen_ms": 1482,
+        "tok_per_sec": 47.2,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 0,
+        "embed_ms": 19,
+        "retrieve_ms": 2,
+        "retrieve_stages": {
+          "semantic_ms": 1,
+          "entity_ms": 1,
+          "graph_ms": 0,
+          "merge_ms": 0,
+          "rerank_ms": 0
+        },
+        "state_ms": 1,
+        "prose_ms": 2532
+      },
+      "total_ms": 2554
+    },
+    {
+      "turn": 12,
+      "customer": "And can I carpet the flight but keep the bottom step in exposed oak?",
+      "understood_intent": {
+        "slug": "ask_what_about",
+        "class": "revisit",
+        "confidence": 0.92,
+        "reason": "elliptical follow-up cue"
+      },
+      "entities": [
+        "starting_step",
+        "carpet",
+        "staircase",
+        "oak"
+      ],
+      "effective_query_entities": [
+        "starting_step",
+        "carpet",
+        "staircase",
+        "oak",
+        "against_wall",
+        "straight_flight",
+        "traditional",
+        "contemporary",
+        "baluster",
+        "base_rail",
+        "string",
+        "closed_string",
+        "cut_string",
+        "open_riser",
+        "riser"
+      ],
+      "state_snapshot": {
+        "current_topic": "starting_step",
+        "established_facts": {
+          "style_intent": {
+            "value": "straight_flight",
+            "turn_established": 3,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "entities_in_focus": [
+          "staircase",
+          "against_wall",
+          "straight_flight",
+          "traditional",
+          "contemporary",
+          "oak",
+          "baluster",
+          "base_rail",
+          "string",
+          "closed_string",
+          "cut_string",
+          "open_riser",
+          "riser",
+          "starting_step",
+          "carpet"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "8771d404-00b6-4db1-aa56-999a60900c1d",
+        "score": 0.567,
+        "source_batch": "conv-intel-2026-08-14",
+        "head": "NEX: \"So we're building a coherent modern staircase: extended feature first step in your chosen timber, frameless glass balustrade on the flight, and a matching modern landing rail"
+      },
+      "top_k_source_batches": [
+        "conv-intel-2026-08-14",
+        "staircase-multi-2026-08-15",
+        "staircase-multi-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "staircase-multi-2026-08-15",
+        "staircase-multi-2026-08-15",
+        "staircase-multi-2026-08-15",
+        "staircase-multi-2026-08-15"
+      ],
+      "response_frame": {
+        "acknowledge": "Understood — you're asking about starting_step, carpet, staircase, oak in the context of starting_step.",
+        "core_answer_from_item_id": "8771d404-00b6-4db1-aa56-999a60900c1d",
+        "core_answer_head": "NEX: \"So we're building a coherent modern staircase: extended feature first step in your chosen timber, frameless glass balustrade on the flight, and a matching modern landing railing. Let me walk through the four choices that unlock the rest: (1) timber species for the treads and handrail, (2) full",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "Sure, we can have the bottom step in exposed oak while carpeting the rest of the flight. Let's discuss the timber species for the treads and handrail. Would you prefer the staircase to be against a wall or open on both sides?",
+        "at": "2026-08-15T05:04:20.047Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 2115,
+        "packet_chars": 3940,
+        "reply_chars": 225,
+        "tokens_prompt": 1467,
+        "tokens_completion": 51,
+        "cost_usd": 0,
+        "load_ms": 449,
+        "prompt_eval_ms": 465,
+        "gen_ms": 1073,
+        "tok_per_sec": 47.5,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 1,
+        "embed_ms": 16,
+        "retrieve_ms": 4,
+        "retrieve_stages": {
+          "semantic_ms": 1,
+          "entity_ms": 2,
+          "graph_ms": 0,
+          "merge_ms": 0,
+          "rerank_ms": 1
+        },
+        "state_ms": 0,
+        "prose_ms": 2115
+      },
+      "total_ms": 2136
+    },
+    {
+      "turn": 13,
+      "customer": "How much roughly?",
+      "understood_intent": {
+        "slug": "ask_price",
+        "class": "price",
+        "confidence": 0.9,
+        "reason": "price cue (priority over ellipsis)"
+      },
+      "entities": [
+        "price"
+      ],
+      "effective_query_entities": [
+        "price",
+        "staircase",
+        "against_wall",
+        "straight_flight",
+        "traditional",
+        "contemporary",
+        "oak",
+        "baluster",
+        "base_rail",
+        "string",
+        "closed_string",
+        "cut_string",
+        "open_riser",
+        "riser",
+        "starting_step",
+        "carpet"
+      ],
+      "state_snapshot": {
+        "current_topic": "starting_step",
+        "established_facts": {
+          "style_intent": {
+            "value": "straight_flight",
+            "turn_established": 3,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "entities_in_focus": [
+          "staircase",
+          "against_wall",
+          "straight_flight",
+          "traditional",
+          "contemporary",
+          "oak",
+          "baluster",
+          "base_rail",
+          "string",
+          "closed_string",
+          "cut_string",
+          "open_riser",
+          "riser",
+          "starting_step",
+          "carpet",
+          "price"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "64cd659c-f4ae-459c-930d-119f4a4b8ba7",
+        "score": 0.508,
+        "source_batch": "conv-intel-2026-08-14",
+        "head": "Example: > Customer: \"I want a modern staircase with a nice big first step, glass above it and something modern around the landing.\" > NEX: \"So we're building a coherent modern sta"
+      },
+      "top_k_source_batches": [
+        "conv-intel-2026-08-14",
+        "staircase-multi-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "staircase-multi-2026-08-15",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14"
+      ],
+      "response_frame": {
+        "acknowledge": "Continuing with straight_flight.",
+        "core_answer_from_item_id": "64cd659c-f4ae-459c-930d-119f4a4b8ba7",
+        "core_answer_head": "Example: > Customer: \"I want a modern staircase with a nice big first step, glass above it and something modern around the landing.\" > NEX: \"So we're building a coherent modern staircase: extended feature first step in your chosen timber, frameless glass balustrade on the flight, and a matching mode",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "This is a commonly-recommended option; other options exist depending on your specific setup. Is your staircase against a wall on one side, or open on both sides?",
+        "at": "2026-08-15T05:04:21.815Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 1748,
+        "packet_chars": 3569,
+        "reply_chars": 161,
+        "tokens_prompt": 1407,
+        "tokens_completion": 34,
+        "cost_usd": 0,
+        "load_ms": 406,
+        "prompt_eval_ms": 447,
+        "gen_ms": 712,
+        "tok_per_sec": 47.8,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 1,
+        "embed_ms": 15,
+        "retrieve_ms": 3,
+        "retrieve_stages": {
+          "semantic_ms": 1,
+          "entity_ms": 2,
+          "graph_ms": 0,
+          "merge_ms": 0,
+          "rerank_ms": 0
+        },
+        "state_ms": 1,
+        "prose_ms": 1748
+      },
+      "total_ms": 1768
+    },
+    {
+      "turn": 14,
+      "customer": "And installation — is that separate?",
+      "understood_intent": {
+        "slug": "ask_what_about",
+        "class": "revisit",
+        "confidence": 0.92,
+        "reason": "elliptical follow-up cue"
+      },
+      "entities": [
+        "installation"
+      ],
+      "effective_query_entities": [
+        "installation",
+        "staircase",
+        "against_wall",
+        "straight_flight",
+        "traditional",
+        "contemporary",
+        "oak",
+        "baluster",
+        "base_rail",
+        "string",
+        "closed_string",
+        "cut_string",
+        "open_riser",
+        "riser",
+        "starting_step",
+        "carpet",
+        "price"
+      ],
+      "state_snapshot": {
+        "current_topic": "starting_step",
+        "established_facts": {
+          "style_intent": {
+            "value": "straight_flight",
+            "turn_established": 3,
+            "confidence": 0.49500000000000005
+          }
+        },
+        "entities_in_focus": [
+          "staircase",
+          "against_wall",
+          "straight_flight",
+          "traditional",
+          "contemporary",
+          "oak",
+          "baluster",
+          "base_rail",
+          "string",
+          "closed_string",
+          "cut_string",
+          "open_riser",
+          "riser",
+          "starting_step",
+          "carpet",
+          "price",
+          "installation"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "df715793-63e4-47e0-9d27-1f59485ee118",
+        "score": 0.34,
+        "source_batch": "staircase-multi-2026-08-15",
+        "head": "Interior straight-flight residential staircase (longer flight than _02) with oak treads, white-painted risers, oak newel post and black square vertical balusters. Curved (bullnose)"
+      },
+      "top_k_source_batches": [
+        "staircase-multi-2026-08-15",
+        "staircase-multi-2026-08-15",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "staircase-multi-2026-08-15",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14"
+      ],
+      "response_frame": {
+        "acknowledge": "Understood — you're asking about installation in the context of starting_step.",
+        "core_answer_from_item_id": "df715793-63e4-47e0-9d27-1f59485ee118",
+        "core_answer_head": "Interior straight-flight residential staircase (longer flight than _02) with oak treads, white-painted risers, oak newel post and black square vertical balusters. Curved (bullnose) starting step. Black boucle stair-tread pads on every tread. Wall art gallery of framed forest prints alongside. Hallwa",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "Understood — you're asking about installation in the context of a starting step. This is a commonly-recommended option; other options exist depending on your specific setup. Is your staircase against a wall on one side, or open on both sides?",
+        "at": "2026-08-15T05:04:23.851Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 2014,
+        "packet_chars": 3754,
+        "reply_chars": 242,
+        "tokens_prompt": 1438,
+        "tokens_completion": 50,
+        "cost_usd": 0,
+        "load_ms": 414,
+        "prompt_eval_ms": 463,
+        "gen_ms": 1056,
+        "tok_per_sec": 47.3,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 5,
+        "embed_ms": 12,
+        "retrieve_ms": 3,
+        "retrieve_stages": {
+          "semantic_ms": 1,
+          "entity_ms": 2,
+          "graph_ms": 0,
+          "merge_ms": 0,
+          "rerank_ms": 0
+        },
+        "state_ms": 0,
+        "prose_ms": 2015
+      },
+      "total_ms": 2035
+    },
+    {
+      "turn": 15,
+      "customer": "Actually wait, let's switch to walnut. Does that change anything?",
+      "understood_intent": {
+        "slug": "correct",
+        "class": "correct",
+        "confidence": 0.95,
+        "reason": "negation cue at start"
+      },
+      "entities": [
+        "walnut"
+      ],
+      "effective_query_entities": [
+        "walnut",
+        "staircase",
+        "against_wall",
+        "straight_flight",
+        "traditional",
+        "contemporary",
+        "oak",
+        "baluster",
+        "base_rail",
+        "string",
+        "closed_string",
+        "cut_string",
+        "open_riser",
+        "riser",
+        "starting_step",
+        "carpet",
+        "price",
+        "installation"
+      ],
+      "state_snapshot": {
+        "current_topic": "starting_step",
+        "established_facts": {
+          "style_intent": {
+            "value": "straight_flight",
+            "turn_established": 3,
+            "confidence": 0.49500000000000005
+          },
+          "material_primary": {
+            "value": "walnut",
+            "turn_established": 29,
+            "confidence": 0.95,
+            "via": "correction"
+          }
+        },
+        "entities_in_focus": [
+          "staircase",
+          "against_wall",
+          "straight_flight",
+          "traditional",
+          "contemporary",
+          "oak",
+          "baluster",
+          "base_rail",
+          "string",
+          "closed_string",
+          "cut_string",
+          "open_riser",
+          "riser",
+          "starting_step",
+          "carpet",
+          "price",
+          "installation",
+          "walnut"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "d66d8d8a-d3b3-4a21-80ac-f14e53577def",
+        "score": 0.367,
+        "source_batch": "conv-intel-2026-08-14",
+        "head": "NEX response: > \"So we're building a coherent modern staircase: extended feature first step in your chosen timber, frameless glass balustrade on the flight, and a matching modern l"
+      },
+      "top_k_source_batches": [
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conversation-examples-2026-08-14",
+        "staircase-multi-2026-08-15",
+        "conv-intel-2026-08-14",
+        "staircase-multi-2026-08-15",
+        "conv-intel-2026-08-14"
+      ],
+      "response_frame": {
+        "acknowledge": "Got it — updating the current assumption.",
+        "core_answer_from_item_id": "d66d8d8a-d3b3-4a21-80ac-f14e53577def",
+        "core_answer_head": "NEX response: > \"So we're building a coherent modern staircase: extended feature first step in your chosen timber, frameless glass balustrade on the flight, and a matching modern landing railing. Four choices unlock the rest: (1) timber species — oak is the common modern pick, walnut deeper and more",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "Got it — updating the current assumption. So we're building a coherent modern staircase: extended feature first step in your chosen timber, frameless glass balustrade on the flight, and a matching modern landing railing. Four choices unlock the rest: (1) timber species — oak is the common modern pick, walnut deeper and more traditional. This is a commonly-recommended option; other options exist depending on your specific setup. Is your staircase against a wall on one side, or open on both sides?",
+        "at": "2026-08-15T05:04:27.117Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 3253,
+        "packet_chars": 3730,
+        "reply_chars": 500,
+        "tokens_prompt": 1443,
+        "tokens_completion": 102,
+        "cost_usd": 0,
+        "load_ms": 497,
+        "prompt_eval_ms": 464,
+        "gen_ms": 2169,
+        "tok_per_sec": 47,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 0,
+        "embed_ms": 10,
+        "retrieve_ms": 2,
+        "retrieve_stages": {
+          "semantic_ms": 0,
+          "entity_ms": 1,
+          "graph_ms": 0,
+          "merge_ms": 0,
+          "rerank_ms": 0
+        },
+        "state_ms": 0,
+        "prose_ms": 3253
+      },
+      "total_ms": 3265
+    },
+    {
+      "turn": 16,
+      "customer": "Ok back to oak. Sorry. What about the handrail height — is there a rule?",
+      "understood_intent": {
+        "slug": "confirm",
+        "class": "confirm",
+        "confidence": 0.85,
+        "reason": "confirmation cue"
+      },
+      "entities": [
+        "handrail_height",
+        "oak",
+        "handrail"
+      ],
+      "effective_query_entities": [
+        "handrail_height",
+        "oak",
+        "handrail"
+      ],
+      "state_snapshot": {
+        "current_topic": "handrail",
+        "established_facts": {
+          "style_intent": {
+            "value": "straight_flight",
+            "turn_established": 3,
+            "confidence": 0.49500000000000005
+          },
+          "material_primary": {
+            "value": "walnut",
+            "turn_established": 29,
+            "confidence": 0.95,
+            "via": "correction"
+          }
+        },
+        "entities_in_focus": [
+          "staircase",
+          "against_wall",
+          "straight_flight",
+          "traditional",
+          "contemporary",
+          "oak",
+          "baluster",
+          "base_rail",
+          "string",
+          "closed_string",
+          "cut_string",
+          "open_riser",
+          "riser",
+          "starting_step",
+          "carpet",
+          "price",
+          "installation",
+          "walnut",
+          "handrail_height",
+          "handrail"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "0aee8461-c8db-4949-b8a0-5e62b8cddec5",
+        "score": 0.539,
+        "source_batch": "conv-intel-2026-08-14",
+        "head": "A common transitional look would be slim brushed stainless steel vertical rods with the oak handrail and oak newels. The oak stays, the balustrade lightens up, and the whole stairc"
+      },
+      "top_k_source_batches": [
+        "conv-intel-2026-08-14",
+        "conversation-examples-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14"
+      ],
+      "response_frame": {
+        "acknowledge": "Continuing with walnut · straight_flight.",
+        "core_answer_from_item_id": "0aee8461-c8db-4949-b8a0-5e62b8cddec5",
+        "core_answer_head": "A common transitional look would be slim brushed stainless steel vertical rods with the oak handrail and oak newels. The oak stays, the balustrade lightens up, and the whole staircase feels more open without abandoning the traditional feel. Alternative: plain slim square oak spindles at wider spacin",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "A common transitional look would be slim brushed stainless steel vertical rods with the oak handrail and oak newels. The oak stays, the balustrade lightens up, and the whole staircase feels more open without abandoning the traditional feel. This is a commonly-recommended option; other options exist depending on your specific setup. Is your staircase against a wall on one side, or open on both sides?",
+        "at": "2026-08-15T05:04:30.052Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 2908,
+        "packet_chars": 3945,
+        "reply_chars": 402,
+        "tokens_prompt": 1502,
+        "tokens_completion": 81,
+        "cost_usd": 0,
+        "load_ms": 500,
+        "prompt_eval_ms": 514,
+        "gen_ms": 1723,
+        "tok_per_sec": 47,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 2,
+        "embed_ms": 23,
+        "retrieve_ms": 2,
+        "retrieve_stages": {
+          "semantic_ms": 0,
+          "entity_ms": 1,
+          "graph_ms": 0,
+          "merge_ms": 0,
+          "rerank_ms": 1
+        },
+        "state_ms": 0,
+        "prose_ms": 2908
+      },
+      "total_ms": 2935
+    },
+    {
+      "turn": 17,
+      "customer": "Between two balusters per tread and one, which do you recommend for our set-up?",
+      "understood_intent": {
+        "slug": "ask_recommendation",
+        "class": "decide",
+        "confidence": 0.85,
+        "reason": "recommendation cue"
+      },
+      "entities": [
+        "baluster",
+        "tread"
+      ],
+      "effective_query_entities": [
+        "baluster",
+        "tread"
+      ],
+      "state_snapshot": {
+        "current_topic": "baluster",
+        "established_facts": {
+          "style_intent": {
+            "value": "straight_flight",
+            "turn_established": 3,
+            "confidence": 0.49500000000000005
+          },
+          "material_primary": {
+            "value": "walnut",
+            "turn_established": 29,
+            "confidence": 0.95,
+            "via": "correction"
+          }
+        },
+        "entities_in_focus": [
+          "staircase",
+          "against_wall",
+          "straight_flight",
+          "traditional",
+          "contemporary",
+          "oak",
+          "baluster",
+          "base_rail",
+          "string",
+          "closed_string",
+          "cut_string",
+          "open_riser",
+          "riser",
+          "starting_step",
+          "carpet",
+          "price",
+          "installation",
+          "walnut",
+          "handrail_height",
+          "handrail",
+          "tread"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "e513433b-20ef-4a3c-9b40-48c276f803ac",
+        "score": 0.441,
+        "source_batch": "conv-intel-2026-08-14",
+        "head": "Template: > \"Two balusters per tread is a common practical starting arrangement for many traditional staircase designs — it gives a balanced appearance and consistent spacing. Wher"
+      },
+      "top_k_source_batches": [
+        "conv-intel-2026-08-14",
+        "staircase-string-types-2026-08-15",
+        "staircase-multi-2026-08-15",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conv-intel-2026-08-14",
+        "conversation-examples-2026-08-14"
+      ],
+      "response_frame": {
+        "acknowledge": "Continuing with walnut · straight_flight.",
+        "core_answer_from_item_id": "e513433b-20ef-4a3c-9b40-48c276f803ac",
+        "core_answer_head": "Template: > \"Two balusters per tread is a common practical starting arrangement for many traditional staircase designs — it gives a balanced appearance and consistent spacing. Where the top or bottom of the flight has restricted tread width (because of the newel post, string, or other construction),",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "Two balusters per tread is a common practical starting arrangement for many traditional staircase designs — it gives a balanced appearance and consistent spacing. This is a commonly-recommended option; other options exist depending on your specific setup. Is your staircase against a wall on one side, or open on both sides?",
+        "at": "2026-08-15T05:04:32.351Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 2289,
+        "packet_chars": 3948,
+        "reply_chars": 324,
+        "tokens_prompt": 1482,
+        "tokens_completion": 60,
+        "cost_usd": 0,
+        "load_ms": 418,
+        "prompt_eval_ms": 471,
+        "gen_ms": 1283,
+        "tok_per_sec": 46.8,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 0,
+        "embed_ms": 9,
+        "retrieve_ms": 0,
+        "retrieve_stages": {
+          "semantic_ms": 0,
+          "entity_ms": 0,
+          "graph_ms": 0,
+          "merge_ms": 0,
+          "rerank_ms": 0
+        },
+        "state_ms": 0,
+        "prose_ms": 2289
+      },
+      "total_ms": 2298
+    },
+    {
+      "turn": 18,
+      "customer": "Perfect. To summarise: oak, closed string with cut wall option, bullnose starting step, exposed timber, carpeted flight above, matt-black slim metal balusters, 900mm handrail. Sound right?",
+      "understood_intent": {
+        "slug": "confirm",
+        "class": "confirm",
+        "confidence": 0.85,
+        "reason": "confirmation cue"
+      },
+      "entities": [
+        "bullnose",
+        "closed_string",
+        "baluster",
+        "carpet",
+        "handrail",
+        "timber",
+        "staircase",
+        "metal",
+        "handrail_height",
+        "oak",
+        "starting_step",
+        "string"
+      ],
+      "effective_query_entities": [
+        "bullnose",
+        "closed_string",
+        "baluster",
+        "carpet",
+        "handrail",
+        "timber",
+        "staircase",
+        "metal",
+        "handrail_height",
+        "oak",
+        "starting_step",
+        "string"
+      ],
+      "state_snapshot": {
+        "current_topic": "bullnose",
+        "established_facts": {
+          "style_intent": {
+            "value": "straight_flight",
+            "turn_established": 3,
+            "confidence": 0.49500000000000005
+          },
+          "material_primary": {
+            "value": "walnut",
+            "turn_established": 29,
+            "confidence": 0.95,
+            "via": "correction"
+          }
+        },
+        "entities_in_focus": [
+          "staircase",
+          "against_wall",
+          "straight_flight",
+          "traditional",
+          "contemporary",
+          "oak",
+          "baluster",
+          "base_rail",
+          "string",
+          "closed_string",
+          "cut_string",
+          "open_riser",
+          "riser",
+          "starting_step",
+          "carpet",
+          "price",
+          "installation",
+          "walnut",
+          "handrail_height",
+          "handrail",
+          "tread",
+          "bullnose",
+          "timber",
+          "metal"
+        ],
+        "constraints": [],
+        "corrections_log_length": 0
+      },
+      "top_k_first": {
+        "id": "0aee8461-c8db-4949-b8a0-5e62b8cddec5",
+        "score": 0.601,
+        "source_batch": "conv-intel-2026-08-14",
+        "head": "A common transitional look would be slim brushed stainless steel vertical rods with the oak handrail and oak newels. The oak stays, the balustrade lightens up, and the whole stairc"
+      },
+      "top_k_source_batches": [
+        "conv-intel-2026-08-14",
+        "conversation-examples-2026-08-14",
+        "conv-intel-2026-08-14",
+        "staircase-string-types-2026-08-15",
+        "conv-intel-2026-08-14",
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15",
+        "staircase-string-types-2026-08-15"
+      ],
+      "response_frame": {
+        "acknowledge": "Continuing with walnut · straight_flight.",
+        "core_answer_from_item_id": "0aee8461-c8db-4949-b8a0-5e62b8cddec5",
+        "core_answer_head": "A common transitional look would be slim brushed stainless steel vertical rods with the oak handrail and oak newels. The oak stays, the balustrade lightens up, and the whole staircase feels more open without abandoning the traditional feel. Alternative: plain slim square oak spindles at wider spacin",
+        "hedge": "This is a commonly-recommended option; other options exist depending on your specific setup.",
+        "next_ask": "Is your staircase against a wall on one side, or open on both sides?"
+      },
+      "prose": {
+        "text": "Continuing with walnut and a straight-flight staircase, a common transitional look would be slim brushed stainless steel vertical rods with the oak handrail and oak newels. The oak stays, the balustrade lightens up, and the whole staircase feels more open without abandoning the traditional feel. Alternative: plain slim square oak spindles at wider spacing. Is your staircase against a wall on one side, or open on both sides?",
+        "at": "2026-08-15T05:04:35.266Z",
+        "provider": "ollama-local",
+        "model": "qwen2.5:3b",
+        "url": "http://localhost:11434/api/chat",
+        "latency_ms": 2893,
+        "packet_chars": 4203,
+        "reply_chars": 427,
+        "tokens_prompt": 1537,
+        "tokens_completion": 87,
+        "cost_usd": 0,
+        "load_ms": 424,
+        "prompt_eval_ms": 513,
+        "gen_ms": 1844,
+        "tok_per_sec": 47.2,
+        "done_reason": "stop",
+        "finish_reason": "stop"
+      },
+      "timings": {
+        "extract_ms": 0,
+        "embed_ms": 19,
+        "retrieve_ms": 1,
+        "retrieve_stages": {
+          "semantic_ms": 0,
+          "entity_ms": 1,
+          "graph_ms": 0,
+          "merge_ms": 0,
+          "rerank_ms": 0
+        },
+        "state_ms": 0,
+        "prose_ms": 2894
+      },
+      "total_ms": 2914
+    }
+  ]
+}

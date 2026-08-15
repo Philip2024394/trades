@@ -1383,17 +1383,19 @@ function OpsWorkerHealth({
         </span>
       </div>
 
-      {/* Cloud workers strip (Fly) — the ones that actually own the work */}
+      {/* Cloud workers strip (Fly) — LEGACY · out of scope under LOCAL-FIRST (Philip 2026-08-14).
+          The Fly fleet is deliberately paused; absent heartbeats are EXPECTED, not an incident. */}
       <div className="mt-3">
         <div className="text-[10px] font-semibold uppercase tracking-widest mb-2" style={{ color: TOKEN.textSoft }}>
-          Cloud workers (Fly)
+          Cloud workers (Fly) · legacy · paused
         </div>
         {cloudWorkers.length === 0 ? (
           <div
             className="rounded-2xl border p-4 text-[12px]"
             style={{ background: TOKEN.card, borderColor: TOKEN.border, color: TOKEN.textSoft }}
           >
-            No cloud workers online. If this persists, run <span className="font-mono">fly status --app nex-brain-worker</span>.
+            Cloud worker fleet not in current scope. Local-first pipeline active · no cloud worker dependency detected.
+            Fly monitoring is paused under the current LOCAL-FIRST architecture; this does not affect the active NEX pipeline.
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">

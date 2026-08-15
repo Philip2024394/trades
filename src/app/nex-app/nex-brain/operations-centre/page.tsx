@@ -263,11 +263,14 @@ const NEX_DIRECTOR = {
 // count depends on the Worker Audit Log; until migration 004 is
 // applied that number stays honest (null · "awaiting audit log").
 // ─────────────────────────────────────────────────────────────────
-type CaseTone = "green" | "amber" | "red";
+// neutral · informational · not an operational incident (e.g. a legacy
+// out-of-scope subsystem whose absence is expected under the current
+// architecture · Philip 2026-08-14 · LOCAL-FIRST reclassification rule)
+type CaseTone = "green" | "amber" | "red" | "neutral";
 type OpsCase = {
   id: string;
-  tone: CaseTone;        // green resolved · amber investigating · red admin required
-  priority: "P1" | "P2" | "P3";
+  tone: CaseTone;                              // green resolved · amber investigating · red admin required · neutral informational (out-of-scope)
+  priority: "P1" | "P2" | "P3" | "INFO";       // INFO = neutral · no decision requested
   title: string;
   affected: string;      // affected worker / provider / subsystem
   reportedAt: string;    // ISO
@@ -298,17 +301,29 @@ function computeCases(input: {
     });
   }
 
-  // Red · admin required — cloud workers offline
+  // Cloud worker fleet · OUT OF SCOPE under LOCAL-FIRST (Philip 2026-08-14).
+  //
+  // The Fly.io worker fleet is a legacy subsystem the active architecture
+  // no longer depends on. Absent heartbeats is EXPECTED, not an incident.
+  //
+  // Constitutional rule (LOCKED · Philip 2026-08-14):
+  //   "An inactive external service must not be allowed to report itself
+  //    as a failure of the active system when the active system has no
+  //    dependency on it."
+  //
+  // We surface the fact rather than silencing it, but as an informational
+  // note with no priority + no action requested. Reclassify to red only
+  // when the cloud fleet is explicitly brought back into scope.
   if (input.cloud && input.cloud.any_online === false) {
     list.push({
-      id: "cloud-offline",
-      tone: "red",
-      priority: "P1",
-      title: "No cloud workers online",
-      affected: "Fly.io worker fleet",
+      id: "cloud-out-of-scope",
+      tone: "neutral",
+      priority: "INFO",
+      title: "Cloud worker fleet not in current scope",
+      affected: "Fly.io worker fleet (legacy · paused)",
       reportedAt: now,
-      status: "Building shell online but no worker heartbeats received.",
-      recommendation: "Check Fly worker app health · fly status --app nex-brain-worker",
+      status: "Local-first pipeline active · no cloud worker dependency detected. Fly monitoring is paused under the current LOCAL-FIRST architecture.",
+      recommendation: "No action needed · this does not affect the active NEX pipeline.",
     });
   }
 
@@ -4400,8 +4415,16 @@ function DirectorWorkspace({ cases }: { cases: ReturnType<typeof computeCases> }
 }
 
 function CaseRow({ c }: { c: OpsCase }) {
-  const tone = c.tone === "green" ? T.success : c.tone === "amber" ? T.warning : T.danger;
-  const badge = c.tone === "green" ? "Resolved" : c.tone === "amber" ? "Investigating" : "Needs your decision";
+  const tone =
+    c.tone === "green"   ? T.success  :
+    c.tone === "amber"   ? T.warning  :
+    c.tone === "neutral" ? T.textDim  :
+    T.danger;
+  const badge =
+    c.tone === "green"   ? "Resolved" :
+    c.tone === "amber"   ? "Investigating" :
+    c.tone === "neutral" ? "Informational · no action needed" :
+    "Needs your decision";
   return (
     <div className="rounded-xl border p-4" style={{ background: T.panel, borderColor: c.tone === "red" ? T.danger : T.border }}>
       <div className="flex items-baseline gap-2">

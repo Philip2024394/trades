@@ -51,8 +51,11 @@ export const staircaseConfig: TradeConfig = {
     // tradespeople speak).
     { label: "Stair Terminology",   target_state: "discover",
       chat_intro: "Ask me what a term means — dog-leg, monkey volute, base rail, stringer, balustrade — and I'll explain where the word comes from and what it does." },
-    { label: "3D Design",           target_state: "configure", canvas_variant: "visualiser",
-      chat_intro: "Let's shape it up in 3D — what style are you thinking of?" },
+    // Philip 2026-08-14 · Replaced "3D Design" pill with NEX Studio · direct
+    // entry to the App Builder chat surface (Phase 19C landing addition).
+    { label: "NEX Studio",          target_state: "discover",
+      href: "/nex-app/app-builder",
+      chat_intro: "Describe the website you want in plain English — I'll design and build it." },
     // Was "AI Assistant" · rebranded as the Nex Chat entry point.
     // Philip 2026-08-03 · this tile now navigates to the CLEAN GENERAL
     // Nex Chat surface (/nex-app/chat) · NOT the trade-flavoured ChatSurface

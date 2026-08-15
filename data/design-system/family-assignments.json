@@ -1,0 +1,391 @@
+{
+  "ranAt": "2026-08-14T13:04:46.797Z",
+  "families": [
+    {
+      "name": "Trust-First",
+      "description": "Minimal · fast-load · image-optional · trust-signals dominant. Best for trades where credentials + response speed sell."
+    },
+    {
+      "name": "Editorial",
+      "description": "Full-bleed photography · sophisticated typography. Best for architectural / luxury / portfolio-led businesses."
+    },
+    {
+      "name": "Trade-Native",
+      "description": "Service-area · postcode · product-grid · local utility. Best for local trades whose USP is coverage + inventory."
+    },
+    {
+      "name": "Interactive",
+      "description": "Motion-heavy · animated · video · kinetic. Best for businesses competing on modernity + energy."
+    },
+    {
+      "name": "Utility & Content",
+      "description": "Every non-hero building block. Composes into any of the 4 hero families."
+    }
+  ],
+  "byFamily": {
+    "Utility & Content": 26,
+    "Interactive": 7,
+    "Trust-First": 5,
+    "Trade-Native": 9,
+    "Editorial": 4
+  },
+  "assignments": [
+    {
+      "id": "banner.ribbon_1",
+      "library": "banner",
+      "name": "Ribbon banner",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "brands.strip_1",
+      "library": "brands",
+      "name": "Brand logo strip",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "addon.trade_connections",
+      "library": "categories",
+      "name": "Trade Connections",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "categories.grid_1",
+      "library": "categories",
+      "name": "Categories grid",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "contact.split_1",
+      "library": "contact",
+      "name": "Contact · split",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "addon.ai_visualiser",
+      "library": "cta",
+      "name": "AI Visualiser",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "checkout.stack_1",
+      "library": "cta",
+      "name": "Checkout stack",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "cta.centred_1",
+      "library": "cta",
+      "name": "Centred CTA",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "cta.compact_band_1",
+      "library": "cta",
+      "name": "Compact CTA band",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "faq.accordion_1",
+      "library": "faq",
+      "name": "FAQ Accordion",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "features.icon_grid_1",
+      "library": "features",
+      "name": "Feature icon grid",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "features.three_up_reasons_1",
+      "library": "features",
+      "name": "Three-up reasons (Why choose us)",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "footer.minimal_1",
+      "library": "footer",
+      "name": "Footer · minimal",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "gallery.grid_1",
+      "library": "gallery",
+      "name": "Gallery grid",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.animated_gradient_1",
+      "library": "hero",
+      "name": "Animated Gradient Hero",
+      "family": "Interactive",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.animation_hero_1",
+      "library": "hero",
+      "name": "Animated Tool Hero",
+      "family": "Interactive",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.badge_wall_1",
+      "library": "hero",
+      "name": "Accreditation Badge Wall Hero",
+      "family": "Trust-First",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.before_after_slider_1",
+      "library": "hero",
+      "name": "Before/After Slider Hero",
+      "family": "Trade-Native",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.chat_bubble_hero_1",
+      "library": "hero",
+      "name": "WhatsApp Chat Hero",
+      "family": "Trade-Native",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.compare_hero_1",
+      "library": "hero",
+      "name": "Independent-vs-Corporate Compare Hero",
+      "family": "Trade-Native",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.cursor_spotlight_1",
+      "library": "hero",
+      "name": "Cursor Spotlight Hero",
+      "family": "Interactive",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.emergency_247_1",
+      "library": "hero",
+      "name": "24/7 Emergency Hero",
+      "family": "Trade-Native",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.magazine_editorial_1",
+      "library": "hero",
+      "name": "Editorial Magazine Hero",
+      "family": "Editorial",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.map_hero_1",
+      "library": "hero",
+      "name": "Coverage Map Hero",
+      "family": "Trade-Native",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.marquee_scroll_1",
+      "library": "hero",
+      "name": "Marquee Scroll Hero",
+      "family": "Interactive",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.minimal_centred_1",
+      "library": "hero",
+      "name": "Minimal centred hero",
+      "family": "Trust-First",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.plant_hire_bold_1",
+      "library": "hero",
+      "name": "Bold trade hero",
+      "family": "Trade-Native",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.portfolio_mosaic_1",
+      "library": "hero",
+      "name": "Portfolio Mosaic Hero",
+      "family": "Editorial",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.postcode_local_1",
+      "library": "hero",
+      "name": "Postcode-Local Hero",
+      "family": "Trade-Native",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.product_showroom_1",
+      "library": "hero",
+      "name": "Merchant Product Showroom Hero",
+      "family": "Editorial",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.qr_poster_hero_1",
+      "library": "hero",
+      "name": "QR Poster Hero",
+      "family": "Trade-Native",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.review_wave_1",
+      "library": "hero",
+      "name": "Review-Wave Hero",
+      "family": "Trade-Native",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.split_photo_left_1",
+      "library": "hero",
+      "name": "Split photo hero",
+      "family": "Editorial",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.stat_hero_1",
+      "library": "hero",
+      "name": "Stat-anchor hero",
+      "family": "Trust-First",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.text_kinetic_1",
+      "library": "hero",
+      "name": "Kinetic Typography Hero",
+      "family": "Interactive",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.tilt_3d_1",
+      "library": "hero",
+      "name": "3D Tilt Card Hero",
+      "family": "Interactive",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.trust_anchor_1",
+      "library": "hero",
+      "name": "Trust Anchor Hero",
+      "family": "Trust-First",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.trust_minimal_1",
+      "library": "hero",
+      "name": "Trust-first minimal hero",
+      "family": "Trust-First",
+      "matchTrace": []
+    },
+    {
+      "id": "hero.video_background_1",
+      "library": "hero",
+      "name": "Video Background Hero",
+      "family": "Interactive",
+      "matchTrace": []
+    },
+    {
+      "id": "map.embed_1",
+      "library": "map",
+      "name": "Map embed",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "addon.newsletter",
+      "library": "newsletter",
+      "name": "Newsletter",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "newsletter.inline_1",
+      "library": "newsletter",
+      "name": "Newsletter signup",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "pricing.three_tier_1",
+      "library": "pricing",
+      "name": "3-tier pricing",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "product_grid.classic_3col_1",
+      "library": "product_grid",
+      "name": "3-column product grid",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "services.list_1",
+      "library": "services",
+      "name": "Services menu",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "statistics.band_1",
+      "library": "statistics",
+      "name": "Statistics band",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "addon.meet_the_team",
+      "library": "team",
+      "name": "Meet the Team",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "team.cards_1",
+      "library": "team",
+      "name": "Team cards",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "testimonials.card_grid_1",
+      "library": "testimonials",
+      "name": "Testimonials · card grid",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "trust_bar.icon_row_1",
+      "library": "trust_bar",
+      "name": "Trust bar · icon row",
+      "family": "Utility & Content",
+      "matchTrace": []
+    },
+    {
+      "id": "video.embed_1",
+      "library": "video",
+      "name": "Video embed",
+      "family": "Utility & Content",
+      "matchTrace": []
+    }
+  ]
+}

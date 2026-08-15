@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026-08-14T08:26:47.910Z",
+  "screenshots": [
+    {
+      "pageId": "home",
+      "viewport": "desktop",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots-chat-e2e\\home__desktop.png"
+    },
+    {
+      "pageId": "home",
+      "viewport": "mobile",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots-chat-e2e\\home__mobile.png"
+    },
+    {
+      "pageId": "services",
+      "viewport": "desktop",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots-chat-e2e\\services__desktop.png"
+    },
+    {
+      "pageId": "services",
+      "viewport": "mobile",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots-chat-e2e\\services__mobile.png"
+    },
+    {
+      "pageId": "coverage",
+      "viewport": "desktop",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots-chat-e2e\\coverage__desktop.png"
+    },
+    {
+      "pageId": "coverage",
+      "viewport": "mobile",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots-chat-e2e\\coverage__mobile.png"
+    },
+    {
+      "pageId": "contact",
+      "viewport": "desktop",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots-chat-e2e\\contact__desktop.png"
+    },
+    {
+      "pageId": "contact",
+      "viewport": "mobile",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots-chat-e2e\\contact__mobile.png"
+    }
+  ]
+}

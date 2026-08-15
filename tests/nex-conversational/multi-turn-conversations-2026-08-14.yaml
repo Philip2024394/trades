@@ -1,0 +1,269 @@
+# NEX Multi-Turn Coherence Test Suite (Philip 2026-08-14 Compound Conversation Engine directive)
+#
+# Measures: across multiple turns, does NEX correctly RETAIN state
+# (preferences · constraints · concepts) that were established in earlier turns?
+#
+# Format per conversation:
+#   turns: [array of customer utterances in order]
+#   expected_final_state: what NEX should be tracking after all turns
+#   critical_constraints: which specific pieces of state MUST be retained
+#     (partial state loss on any of these = conversation fails)
+
+conversations:
+
+  - id: mt-01
+    description: "Classic modern-oak-carpet-feature-step conversation (Philip's flagship example)"
+    turns:
+      - "I want oak."
+      - "Actually, keep the existing newels."
+      - "And we're carpeting it."
+      - "What would you recommend for the bottom step?"
+    expected_final_state:
+      timber_species: oak
+      finish: carpet
+      scope: refacing
+      concepts_visited_includes: [timber_species, newel_caps, carpet_stepmats, starting_steps]
+    critical_constraints:
+      - timber_species=oak (from turn 1)
+      - scope=refacing (from turn 2 "keep the existing newels")
+      - finish=carpet (from turn 3)
+      - starting_step concept invoked (turn 4)
+
+  - id: mt-02
+    description: "Traditional refacing conversation with material preference"
+    turns:
+      - "Old pine staircase, we want to refurb it."
+      - "Keep the treads, change the balustrade."
+      - "Something traditional but lighter."
+      - "Turned oak spindles with a bullnose starting step."
+    expected_final_state:
+      timber_species: oak
+      style: traditional
+      scope: refacing
+      balustrade_material: turned_timber
+      concepts_visited_includes: [refacing, treads_risers, balusters, design_style, starting_steps]
+    critical_constraints:
+      - scope=refacing (from turns 1-2)
+      - style=traditional (from turn 3)
+      - balustrade_material=turned_timber (from turn 4)
+
+  - id: mt-03
+    description: "Wall-fixed staircase with cumulative constraints"
+    turns:
+      - "Staircase against a wall on one side."
+      - "It's oak."
+      - "I want the first step to be a feature."
+      - "Fully carpeted flight."
+    expected_final_state:
+      timber_species: oak
+      finish: carpet
+      construction: wall_fixed
+      concepts_visited_includes: [stringers, timber_species, starting_steps, carpet_stepmats]
+    critical_constraints:
+      - construction=wall_fixed (from turn 1)
+      - timber_species=oak (from turn 2)
+      - finish=carpet (from turn 4)
+
+  - id: mt-04
+    description: "Design change mid-conversation (customer changes their mind)"
+    turns:
+      - "Modern staircase with glass balustrade."
+      - "Actually, on second thought, matt black metal instead of glass."
+      - "Oak treads and handrail."
+      - "Landing to match."
+    expected_final_state:
+      style: modern
+      timber_species: oak
+      balustrade_material: matt_black_metal
+      concepts_visited_includes: [design_style, balusters, treads_risers, timber_species, landing_railings]
+    critical_constraints:
+      - style=modern (from turn 1, retained)
+      - balustrade_material=matt_black_metal (from turn 2, overriding glass)
+      - timber_species=oak (from turn 3)
+
+  - id: mt-05
+    description: "Adding constraints incrementally (short turns)"
+    turns:
+      - "Modern staircase."
+      - "Oak."
+      - "Glass."
+      - "Cantilever."
+      - "LED lighting."
+      - "What would you recommend for the first step?"
+    expected_final_state:
+      style: modern
+      timber_species: oak
+      balustrade_material: glass
+      concepts_visited_includes: [design_style, timber_species, balusters, stringers, lighting, starting_steps]
+    critical_constraints:
+      - style=modern (from turn 1)
+      - timber_species=oak (from turn 2)
+      - balustrade_material=glass (from turn 3)
+      - stringers concept invoked (turn 4 cantilever)
+      - lighting concept invoked (turn 5)
+      - starting_steps concept invoked (turn 6)
+
+  - id: mt-06
+    description: "Compound utterance then follow-up refinement"
+    turns:
+      - "I want a modern staircase but still want some wood showing, maybe glass, and the first step bigger."
+      - "Oak for the wood parts."
+      - "Full carpet or runner?"
+    expected_final_state:
+      style: modern
+      timber_species: oak
+      balustrade_material: glass
+      concepts_visited_includes: [design_style, treads_risers, balusters, starting_steps, timber_species, carpet_stepmats]
+    critical_constraints:
+      - style=modern (turn 1)
+      - balustrade_material=glass (turn 1)
+      - timber_species=oak (turn 2)
+      - carpet_stepmats concept invoked (turn 3)
+
+  - id: mt-07
+    description: "Traditional with modernise-existing constraint"
+    turns:
+      - "Grand Victorian staircase — want to update it a bit."
+      - "Don't strip out the volute or the turned newels."
+      - "Repaint the spindles matt black."
+      - "How does that read overall?"
+    expected_final_state:
+      style: traditional
+      balustrade_material: matt_black_metal
+      scope: refacing
+      concepts_visited_includes: [design_style, refacing, newel_caps, balusters]
+    critical_constraints:
+      - style=traditional (turn 1 Victorian)
+      - scope=refacing (turn 1 "update it")
+      - balustrade_material=matt_black_metal (turn 3)
+
+  - id: mt-08
+    description: "Constraint added AFTER an earlier answer"
+    turns:
+      - "What starting step options do I have?"
+      - "The staircase is against a wall."
+      - "It's oak and I'm carpeting it."
+      - "Now recommend the starting step."
+    expected_final_state:
+      timber_species: oak
+      finish: carpet
+      construction: wall_fixed
+      concepts_visited_includes: [starting_steps, stringers, timber_species, carpet_stepmats]
+    critical_constraints:
+      - construction=wall_fixed (turn 2 — the constraint added AFTER the initial question)
+      - timber_species=oak (turn 3)
+      - finish=carpet (turn 3)
+      - starting_steps still in scope (turn 4)
+
+  - id: mt-09
+    description: "Customer corrects themselves"
+    turns:
+      - "I want walnut for everything."
+      - "Sorry, I mean oak — walnut is too dark for the room."
+      - "Modern balustrade."
+      - "Recommend the balustrade."
+    expected_final_state:
+      timber_species: oak
+      style: modern
+      concepts_visited_includes: [timber_species, design_style, balusters]
+    critical_constraints:
+      - timber_species=oak (turn 2 correction, NOT walnut from turn 1)
+      - style=modern (turn 3)
+
+  - id: mt-10
+    description: "Image request with cumulative constraints"
+    turns:
+      - "Modern staircase."
+      - "Oak treads, glass balustrade."
+      - "Show me examples."
+    expected_final_state:
+      style: modern
+      timber_species: oak
+      balustrade_material: glass
+      concepts_visited_includes: [design_style, treads_risers, balusters, timber_species]
+    critical_constraints:
+      - style=modern (turn 1)
+      - timber_species=oak (turn 2)
+      - balustrade_material=glass (turn 2)
+      - image_retrieval routing on turn 3
+
+  - id: mt-11
+    description: "Landing conversation with construction constraint from earlier"
+    turns:
+      - "It's a wall-fixed staircase, cut-string design."
+      - "How does the landing railing work?"
+      - "Same oak as the flight."
+      - "Any specific things I should know about the base rail?"
+    expected_final_state:
+      timber_species: oak
+      construction: wall_fixed
+      concepts_visited_includes: [stringers, landing_railings, timber_species, handrail]
+    critical_constraints:
+      - construction=wall_fixed (turn 1)
+      - timber_species=oak (turn 3)
+      - landing_railings concept invoked (turn 2)
+
+  - id: mt-12
+    description: "Multi-turn refacing scope buildup"
+    turns:
+      - "1990s pine staircase."
+      - "Keep the structure."
+      - "Modernise the balustrade only."
+      - "Slim matt-black spindles."
+      - "What newel cap works with that?"
+    expected_final_state:
+      timber_species: pine
+      scope: refacing
+      balustrade_material: matt_black_metal
+      concepts_visited_includes: [timber_species, refacing, balusters, newel_caps]
+    critical_constraints:
+      - timber_species=pine (turn 1)
+      - scope=refacing (turn 2)
+      - balustrade_material=matt_black_metal (turn 4)
+      - newel_caps concept invoked (turn 5)
+
+  - id: mt-13
+    description: "Traditional to modern shift with retention"
+    turns:
+      - "Existing Georgian staircase, mahogany."
+      - "Want to keep the classical feel but freshen it."
+      - "Repaint the spindles white, keep the mahogany handrail."
+      - "How would that read?"
+    expected_final_state:
+      timber_species: mahogany
+      style: traditional
+      scope: refacing
+      concepts_visited_includes: [design_style, timber_species, refacing, balusters, handrail]
+    critical_constraints:
+      - timber_species=mahogany (turn 1)
+      - style=traditional (turn 1-2, "classical feel")
+      - scope=refacing (turn 2 "freshen it")
+
+  - id: mt-14
+    description: "Cascade change (customer opens up more scope)"
+    turns:
+      - "Change the spindles."
+      - "Actually, the newels too."
+      - "And the handrail."
+      - "Full balustrade replacement then?"
+    expected_final_state:
+      scope: refacing
+      concepts_visited_includes: [balusters, newel_caps, handrail]
+    critical_constraints:
+      - scope=refacing (implied by "change" language)
+      - balusters + newel_caps + handrail all in scope
+
+  - id: mt-15
+    description: "Preference given late (final turn adds most information)"
+    turns:
+      - "What can I do with the space under the stairs?"
+      - "How about a home office?"
+      - "Oak desk to match the treads."
+      - "Anything else useful there?"
+    expected_final_state:
+      timber_species: oak
+      concepts_visited_includes: [understair, timber_species]
+    critical_constraints:
+      - understair concept invoked (turn 1)
+      - timber_species=oak (turn 3)
+      - understair still in scope on turn 4

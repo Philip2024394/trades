@@ -1,0 +1,74 @@
+{
+  "id": "regression-phase-b-2026-08-15",
+  "purpose": "Phase B regression · 5 real brain features · runnable as unit-level asserts against pipeline output.",
+  "brain": "staircase_brain",
+  "conversations": [
+    {
+      "id": "b1-multi-intent-two-questions",
+      "purpose": "B1 · one message with TWO intents · both must be detected and addressed",
+      "turns": [
+        { "customer": "How much roughly, and how long does installation take?", "expect_intent": "ask_price", "expect_secondary_intent_slug": "ask_installation" }
+      ]
+    },
+    {
+      "id": "b1-multi-intent-correction-plus-question",
+      "purpose": "B1 · correction PLUS new question (T16-type failure) · both handled",
+      "turns": [
+        { "customer": "I want oak" },
+        { "customer": "Actually walnut" },
+        { "customer": "back to oak, and what's the handrail height rule?", "expect_intent": "correct", "expect_secondary_intent_slug": "ask_definition" }
+      ]
+    },
+    {
+      "id": "b2-emotion-apologetic",
+      "purpose": "B2 · apologetic register detected · reply tone MUST be reassuring, NOT clinical",
+      "turns": [
+        { "customer": "sorry for the flip flopping", "expect_emotion": "apologetic", "expect_reply_no_phrase": ["updating the current assumption", "updating the assumption", "swapping"] }
+      ]
+    },
+    {
+      "id": "b2-emotion-frustrated",
+      "purpose": "B2 · frustrated register (multi-punctuation / emphatic) · reply MUST be short + apologetic + real offer",
+      "turns": [
+        { "customer": "I already told you oak!!!!", "expect_emotion": "frustrated" }
+      ]
+    },
+    {
+      "id": "b2-emotion-uncertain",
+      "purpose": "B2 · uncertain register (hedge words) · reply MUST be gentle, offer options, not push",
+      "turns": [
+        { "customer": "hmm not sure maybe I want closed string?", "expect_emotion": "uncertain" }
+      ]
+    },
+    {
+      "id": "b3-implicit-facts",
+      "purpose": "B3 · 'renovating my Victorian terrace hallway' → captures renovation + victorian + terrace + hallway as entities",
+      "turns": [
+        { "customer": "I'm renovating my Victorian terrace hallway", "expect_entities_after_contains": ["renovation", "traditional", "terrace_house", "hallway"] }
+      ]
+    },
+    {
+      "id": "b4-handoff-signal",
+      "purpose": "B4 · TWO thin-packet price turns in a row → handoff_recommended=true",
+      "turns": [
+        { "customer": "How much?", "expect_intent": "ask_price" },
+        { "customer": "Rough figure?", "expect_intent": "ask_price", "expect_handoff_recommended": true }
+      ]
+    },
+    {
+      "id": "b5-condensation",
+      "purpose": "B5 · after >8 turns, condensed_history is populated · recent_turn_summaries stays ≤6",
+      "turns": [
+        { "customer": "hi" },
+        { "customer": "oak staircase" },
+        { "customer": "against a wall" },
+        { "customer": "closed string" },
+        { "customer": "bullnose" },
+        { "customer": "carpet the flight" },
+        { "customer": "900mm handrail" },
+        { "customer": "yeah" },
+        { "customer": "ok", "expect_condensed_history_populated": true }
+      ]
+    }
+  ]
+}

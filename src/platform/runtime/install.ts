@@ -28,8 +28,42 @@ import { invokeLifecycleHook } from "./hooks";
 import type {
   InstallOptions,
   InstallResult,
-  InstalledAppRow
+  InstalledAppRow,
+  PreflightBypass
 } from "./types";
+
+/** Whitelisted preflight-bypass sources (Philip 2026-08-14 security fix).
+ *
+ *  Adding a new source is a security decision — do NOT add without an
+ *  audit review. Every bypass is logged (see logPreflightBypass) so the
+ *  security team can trace who bypassed and why.
+ *
+ *  Explicitly NOT included: any string a merchant/customer/NL prompt
+ *  could ever provide. */
+const PREFLIGHT_BYPASS_WHITELIST = new Set<PreflightBypass["source"]>([
+  "industry-pack-installer",
+  "migration-script",
+  "admin-override"
+]);
+
+function logPreflightBypass(slug: string, bypass: PreflightBypass) {
+  // Grep-able structured log — every bypass audit-traceable.
+  // TODO(app-builder-security): replace with a durable audit table
+  // (installed_apps_preflight_bypasses) once the audit surface exists.
+  const payload = {
+    event: "installApp.preflight.bypass",
+    at: new Date().toISOString(),
+    slug,
+    source: bypass.source,
+    ...(bypass.source === "industry-pack-installer" ? { packSlug: bypass.packSlug } : {}),
+    ...(bypass.source === "migration-script" ? { scriptId: bypass.scriptId } : {}),
+    ...(bypass.source === "admin-override"
+      ? { adminId: bypass.adminId, reason: bypass.reason }
+      : {})
+  };
+  // eslint-disable-next-line no-console
+  console.warn("[SECURITY]", JSON.stringify(payload));
+}
 
 export async function installApp(
   slug: string,
@@ -42,11 +76,46 @@ export async function installApp(
 
   const merchantId = opts.merchantId;
 
+  // ─── Preflight bypass validation ────────────────────────────
+  // Structured bypass grants are the ONLY way to skip preflight.
+  // Any bypass with a non-whitelisted source is rejected. This closes
+  // the pre-2026-08-14 hole where `skipPreflight: true` (a plain bool)
+  // could be flipped by any code path — including NL-routed installs.
+  let bypassPreflight = false;
+  if (opts.preflightBypass) {
+    if (!PREFLIGHT_BYPASS_WHITELIST.has(opts.preflightBypass.source)) {
+      return {
+        ok: false,
+        error: {
+          code: "preflight-bypass-rejected",
+          slug,
+          reason: `bypass source "${opts.preflightBypass.source}" is not whitelisted`
+        }
+      };
+    }
+    // admin-override MUST include a non-empty reason (audit trail requirement)
+    if (
+      opts.preflightBypass.source === "admin-override" &&
+      (!opts.preflightBypass.reason || opts.preflightBypass.reason.trim().length === 0)
+    ) {
+      return {
+        ok: false,
+        error: {
+          code: "preflight-bypass-rejected",
+          slug,
+          reason: "admin-override bypass requires a non-empty reason"
+        }
+      };
+    }
+    bypassPreflight = true;
+    logPreflightBypass(slug, opts.preflightBypass);
+  }
+
   // ─── Preflight ──────────────────────────────────────────────
   const existing = await getInstalledApp(merchantId, slug);
   const isReinstall = !!existing && !!existing.uninstalled_at;
 
-  if (!opts.skipPreflight) {
+  if (!bypassPreflight) {
     if (existing && !existing.uninstalled_at) {
       return { ok: false, error: { code: "already-installed", slug } };
     }
@@ -82,7 +151,8 @@ export async function installApp(
     // declaration but does not itself resolve the merchant's tier
     // (that lookup lives with the existing tier helpers in
     // src/lib/tradeOff). Callers that bypass the Store (Industry Pack
-    // installer, migration scripts) can pass skipPreflight to opt out.
+    // installer, migration scripts) must present a structured
+    // preflightBypass grant with a whitelisted source (see top of file).
   }
 
   // ─── Resolve brand ──────────────────────────────────────────

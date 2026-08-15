@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026-08-14T08:26:38.318Z",
+  "screenshots": [
+    {
+      "pageId": "home",
+      "viewport": "desktop",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s4\\home__desktop.png"
+    },
+    {
+      "pageId": "home",
+      "viewport": "mobile",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s4\\home__mobile.png"
+    },
+    {
+      "pageId": "products",
+      "viewport": "desktop",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s4\\products__desktop.png"
+    },
+    {
+      "pageId": "products",
+      "viewport": "mobile",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s4\\products__mobile.png"
+    },
+    {
+      "pageId": "product-detail",
+      "viewport": "desktop",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s4\\product-detail__desktop.png"
+    },
+    {
+      "pageId": "product-detail",
+      "viewport": "mobile",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s4\\product-detail__mobile.png"
+    },
+    {
+      "pageId": "contact",
+      "viewport": "desktop",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s4\\contact__desktop.png"
+    },
+    {
+      "pageId": "contact",
+      "viewport": "mobile",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s4\\contact__mobile.png"
+    }
+  ]
+}

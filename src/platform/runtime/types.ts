@@ -32,12 +32,25 @@ export type InstallOptions = {
   brandId?: string;
   /** Per-install App config. Written to installed_apps.config_json. */
   config?: Record<string, unknown>;
-  /** Skip dependency + conflict + plan preflight. The Industry Pack
-   *  installer sets this so it can resolve a bundle of Apps in a
-   *  single transaction without preflight rejecting an intermediate
-   *  state. */
-  skipPreflight?: boolean;
+  /** Structured bypass grant with a WHITELISTED caller identity.
+   *  Replaces the pre-2026-08-14 boolean `skipPreflight` field, which
+   *  could be flipped by any code path (including NL-routed installs).
+   *
+   *  Only callers whose source matches the whitelist in
+   *  `PREFLIGHT_BYPASS_WHITELIST` (install.ts) may pass this. Every
+   *  bypass is audit-logged with source + reason. */
+  preflightBypass?: PreflightBypass;
 };
+
+/** Structured bypass grant. The `source` string must match the
+ *  whitelist inside install.ts — no free-form bypass allowed. */
+export type PreflightBypass =
+  /** The Industry Pack installer resolves a bundle in one transaction. */
+  | { source: "industry-pack-installer"; packSlug: string }
+  /** One-shot migration script. Not for use from application code. */
+  | { source: "migration-script"; scriptId: string }
+  /** Admin manual override — must include reason for the audit log. */
+  | { source: "admin-override"; adminId: string; reason: string };
 
 export type InstallOk = {
   ok: true;
@@ -65,6 +78,7 @@ export type InstallError =
       reason: string;
     }
   | { code: "no-default-brand"; slug: string }
+  | { code: "preflight-bypass-rejected"; slug: string; reason: string }
   | { code: "db-error"; slug: string; reason: string };
 
 // ─── Uninstall ─────────────────────────────────────────────────────

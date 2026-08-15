@@ -1,15 +1,19 @@
 "use client";
 
-// Cookie consent banner — UK PECR / GDPR compliance surface.
-// Fixed at the bottom of every page until the visitor either accepts
-// all cookies or selects essential-only. Choice is stored in a
-// first-party cookie (`xrated_cookie_consent`) with a 90-day expiry,
-// so no third-party SDK is involved.
+// Cookie consent · UK PECR / GDPR compliance surface.
 //
-// The banner is rendered from the root layout so it appears on every
-// page (marketing, profiles, legal, dashboards). Hidden by default to
-// avoid hydration mismatch — flipped on once a client-side effect
-// confirms the cookie is missing.
+// v2 (Philip 2026-08-14): the banner now slides in from the RIGHT as a
+// compact card with a single Accept button, instead of the previous
+// full-width bottom bar with two options. Rationale: the fullbar was
+// dominating premium-template previews and creating a competing focal
+// point at the bottom of every page. The right-side slide-in respects
+// the composition and disappears the moment the visitor accepts.
+//
+// Choice is stored in a first-party cookie (`xrated_cookie_consent`)
+// with a 90-day expiry, so no third-party SDK is involved. "Manage"
+// link routes to /legal/cookies for finer-grained control (retains
+// PECR/GDPR compliance surface even though the primary CTA is single-
+// action).
 
 import { useEffect, useState } from "react";
 
@@ -34,19 +38,23 @@ function setConsentCookie(value: "all" | "essential") {
 }
 
 export function CookieConsentBanner() {
-  // Render nothing on the server; the client-side effect decides
-  // whether to surface the banner. This avoids a flash for visitors
-  // who have already chosen and keeps SSR HTML stable.
+  const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (!hasConsentCookie()) setVisible(true);
+    setMounted(true);
+    if (!hasConsentCookie()) {
+      // Delay 1 frame so the "slide-in" transition has a starting state
+      // to animate from.
+      requestAnimationFrame(() => setVisible(true));
+    }
   }, []);
 
-  if (!visible) return null;
+  if (!mounted) return null;
+  if (!visible && hasConsentCookie()) return null;
 
-  function accept(value: "all" | "essential") {
-    setConsentCookie(value);
+  function accept() {
+    setConsentCookie("all");
     setVisible(false);
   }
 
@@ -55,43 +63,98 @@ export function CookieConsentBanner() {
       role="dialog"
       aria-live="polite"
       aria-label="Cookie consent"
-      className="fixed inset-x-0 bottom-0 z-[60] border-t border-white/10 bg-black/95 backdrop-blur"
       style={{
-        // Respect iOS safe-area so the banner clears the home indicator.
+        position: "fixed",
+        right: 20,
+        bottom: 20,
+        zIndex: 60,
+        maxWidth: 380,
+        width: "calc(100vw - 40px)",
+        transform: visible ? "translateX(0)" : "translateX(calc(100% + 20px))",
+        opacity: visible ? 1 : 0,
+        transition: "transform 320ms cubic-bezier(0.16, 1, 0.3, 1), opacity 240ms ease-out",
+        pointerEvents: visible ? "auto" : "none",
         paddingBottom: "max(env(safe-area-inset-bottom), 0px)"
       }}
     >
-      <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:gap-4 sm:py-4">
-        <p className="text-[13px] leading-relaxed text-white/85 sm:flex-1">
-          We use cookies to keep you signed in, remember your preferences,
-          and understand how the site is used. Read our{" "}
-          <a
-            href="/legal/privacy"
-            className="font-semibold underline hover:text-white"
-            style={{ color: "#FFB300" }}
+      <div
+        style={{
+          background: "#FFFFFF",
+          border: "1px solid #E6DFD1",
+          borderRadius: 14,
+          padding: 18,
+          fontFamily: '"Inter", ui-sans-serif, system-ui, sans-serif',
+          color: "#3A3428",
+          boxShadow: "0 24px 60px -20px rgba(58, 52, 40, 0.25), 0 2px 6px -2px rgba(58, 52, 40, 0.08)"
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+          <div
+            aria-hidden
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: "50%",
+              background: "#F5EBDA",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+              color: "#B58F5E"
+            }}
           >
-            Privacy Policy
-          </a>
-          .
-        </p>
-        <div className="flex shrink-0 flex-col gap-2 sm:flex-row sm:items-center">
-          <button
-            type="button"
-            onClick={() => accept("essential")}
-            className="inline-flex h-11 min-h-[44px] items-center justify-center rounded-lg border border-white/25 bg-transparent px-4 text-[13px] font-bold text-white transition hover:bg-white/10 sm:h-10 sm:min-h-0"
-          >
-            Essential only
-          </button>
-          <button
-            type="button"
-            onClick={() => accept("all")}
-            className="inline-flex h-11 min-h-[44px] items-center justify-center rounded-lg px-4 text-[13px] font-extrabold text-black transition active:scale-[0.98] sm:h-10 sm:min-h-0"
-            style={{ background: "#FFB300" }}
-          >
-            Accept all
-          </button>
+            <CookieGlyph />
+          </div>
+          <div style={{ minWidth: 0, flex: 1 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, lineHeight: 1.25 }}>
+              We use cookies
+            </div>
+            <p style={{ margin: "6px 0 0", fontSize: 12.5, lineHeight: 1.5, color: "#6B5F52" }}>
+              To keep you signed in, remember your preferences, and understand how the site is used.{" "}
+              <a
+                href="/legal/cookies"
+                onClick={(e) => e.stopPropagation()}
+                style={{ color: "#B58F5E", fontWeight: 600, textDecoration: "underline" }}
+              >
+                Manage
+              </a>
+              .
+            </p>
+          </div>
         </div>
+
+        <button
+          type="button"
+          onClick={accept}
+          style={{
+            marginTop: 14,
+            width: "100%",
+            padding: "12px 16px",
+            background: "#3A3428",
+            color: "#FFFFFF",
+            border: "none",
+            borderRadius: 8,
+            fontWeight: 700,
+            fontSize: 13,
+            letterSpacing: "0.02em",
+            cursor: "pointer"
+          }}
+        >
+          Accept
+        </button>
       </div>
     </div>
+  );
+}
+
+function CookieGlyph() {
+  return (
+    <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M12 3a9 9 0 1 0 9 9 4 4 0 0 1-4-4 4 4 0 0 1-4-4 4 4 0 0 1-1-1Z" />
+      <circle cx="9" cy="12" r="0.5" />
+      <circle cx="13" cy="9" r="0.5" />
+      <circle cx="15" cy="14" r="0.5" />
+      <circle cx="10" cy="16" r="0.5" />
+    </svg>
   );
 }

@@ -1,0 +1,55 @@
+{
+  "generatedAt": "2026-08-14T08:26:33.814Z",
+  "screenshots": [
+    {
+      "pageId": "home",
+      "viewport": "desktop",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s3\\home__desktop.png"
+    },
+    {
+      "pageId": "home",
+      "viewport": "mobile",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s3\\home__mobile.png"
+    },
+    {
+      "pageId": "portraits",
+      "viewport": "desktop",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s3\\portraits__desktop.png"
+    },
+    {
+      "pageId": "portraits",
+      "viewport": "mobile",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s3\\portraits__mobile.png"
+    },
+    {
+      "pageId": "weddings",
+      "viewport": "desktop",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s3\\weddings__desktop.png"
+    },
+    {
+      "pageId": "weddings",
+      "viewport": "mobile",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s3\\weddings__mobile.png"
+    },
+    {
+      "pageId": "about",
+      "viewport": "desktop",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s3\\about__desktop.png"
+    },
+    {
+      "pageId": "about",
+      "viewport": "mobile",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s3\\about__mobile.png"
+    },
+    {
+      "pageId": "contact",
+      "viewport": "desktop",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s3\\contact__desktop.png"
+    },
+    {
+      "pageId": "contact",
+      "viewport": "mobile",
+      "path": "tmp-nex-qa-screenshots-p10-ab_p10_s3\\contact__mobile.png"
+    }
+  ]
+}

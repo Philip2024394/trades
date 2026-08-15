@@ -1,0 +1,398 @@
+# NEX Compound Utterance Test Suite (Philip 2026-08-14 Compound Conversation Engine directive)
+#
+# Measures: for each compound utterance, does NEX correctly detect ALL concepts,
+# identify the primary, and extract stated preferences?
+#
+# Format per test:
+#   text: the customer utterance
+#   expected_concepts: array of concept families that MUST be detected
+#   expected_primary: which concept is the primary (from precedence hierarchy)
+#   expected_preferences: preferences that should be extracted
+#   expected_retention: true if utterance signals refacing/retention scope
+
+tests:
+
+  # ============================================================
+  # Group 1 · Starting step + carpet (5 variants)
+  # ============================================================
+  - id: cu-01
+    text: "We're carpeting the stairs but I want the first step wider and the wood visible."
+    expected_concepts: [carpet_stepmats, starting_steps, treads_risers]
+    expected_primary: carpet_stepmats
+    expected_preferences: { finish: carpet, balustrade_material: null }
+    expected_retention: false
+
+  - id: cu-02
+    text: "I'm carpeting the flight but keep the bullnose in oak."
+    expected_concepts: [carpet_stepmats, starting_steps, timber_species]
+    expected_primary: carpet_stepmats
+    expected_preferences: { finish: carpet, timber_species: oak }
+    expected_retention: false
+
+  - id: cu-03
+    text: "Full carpet on the flight, exposed timber bullnose starting step."
+    expected_concepts: [carpet_stepmats, starting_steps]
+    expected_primary: carpet_stepmats
+    expected_preferences: { finish: carpet }
+    expected_retention: false
+
+  - id: cu-04
+    text: "Runner down the middle, keep the first step wood."
+    expected_concepts: [carpet_stepmats, starting_steps]
+    expected_primary: carpet_stepmats
+    expected_preferences: { finish: runner }
+    expected_retention: false
+
+  - id: cu-05
+    text: "Carpet the stairs, but I want the bottom step to look really nice."
+    expected_concepts: [carpet_stepmats, starting_steps]
+    expected_primary: carpet_stepmats
+    expected_preferences: { finish: carpet }
+    expected_retention: false
+
+  # ============================================================
+  # Group 2 · Starting step + construction type (5 variants)
+  # ============================================================
+  - id: cu-06
+    text: "The staircase is against a wall, but I'd like the first step to curve out."
+    expected_concepts: [starting_steps, stringers]
+    expected_primary: starting_steps
+    expected_preferences: { construction: wall_fixed }
+    expected_retention: false
+
+  - id: cu-07
+    text: "Open on both sides — can I have a curtail starting step on both sides?"
+    expected_concepts: [starting_steps]
+    expected_primary: starting_steps
+    expected_preferences: { construction: two_sided }
+    expected_retention: false
+
+  - id: cu-08
+    text: "Wall-fixed staircase, want a bullnose on the free side."
+    expected_concepts: [starting_steps]
+    expected_primary: starting_steps
+    expected_preferences: { construction: wall_fixed }
+    expected_retention: false
+
+  - id: cu-09
+    text: "Cut-string design, curtail with volute at the bottom."
+    expected_concepts: [starting_steps, stringers]
+    expected_primary: starting_steps
+    expected_preferences: {}
+    expected_retention: false
+
+  - id: cu-10
+    text: "Wall on the left, want the bottom step to project out."
+    expected_concepts: [starting_steps]
+    expected_primary: starting_steps
+    expected_preferences: { construction: wall_fixed }
+    expected_retention: false
+
+  # ============================================================
+  # Group 3 · Landing railing + top newel + handrail continuity (5 variants)
+  # ============================================================
+  - id: cu-11
+    text: "I want the landing railing to continue around the top newel but I don't want a long unsupported handrail."
+    expected_concepts: [landing_railings, handrail]
+    expected_primary: landing_railings
+    expected_preferences: {}
+    expected_retention: false
+
+  - id: cu-12
+    text: "Same handrail throughout — how does it join at the top?"
+    expected_concepts: [handrail, landing_railings]
+    expected_primary: landing_railings
+    expected_preferences: {}
+    expected_retention: false
+
+  - id: cu-13
+    text: "Continue the oak handrail from the stairs onto the landing."
+    expected_concepts: [handrail, landing_railings, timber_species]
+    expected_primary: landing_railings
+    expected_preferences: { timber_species: oak }
+    expected_retention: false
+
+  - id: cu-14
+    text: "Landing railing needs to feel like part of the staircase, oak throughout."
+    expected_concepts: [landing_railings, timber_species]
+    expected_primary: landing_railings
+    expected_preferences: { timber_species: oak }
+    expected_retention: false
+
+  - id: cu-15
+    text: "How does the handrail get from the stairs to the landing balustrade?"
+    expected_concepts: [handrail, landing_railings]
+    expected_primary: landing_railings
+    expected_preferences: {}
+    expected_retention: false
+
+  # ============================================================
+  # Group 4 · Balusters + style + spacing (5 variants)
+  # ============================================================
+  - id: cu-16
+    text: "Modern matt-black metal spindles, wider spacing for that airy look."
+    expected_concepts: [balusters, design_style]
+    expected_primary: balusters
+    expected_preferences: { style: modern, balustrade_material: matt_black_metal }
+    expected_retention: false
+
+  - id: cu-17
+    text: "Traditional turned oak spindles two per tread."
+    expected_concepts: [balusters, timber_species]
+    expected_primary: balusters
+    expected_preferences: { style: traditional, timber_species: oak, balustrade_material: turned_timber }
+    expected_retention: false
+
+  - id: cu-18
+    text: "Slim brushed stainless verticals modernise the balustrade."
+    expected_concepts: [balusters, design_style]
+    expected_primary: balusters
+    expected_preferences: { balustrade_material: brushed_stainless }
+    expected_retention: false
+
+  - id: cu-19
+    text: "Glass panels instead of spindles for a cleaner modern look."
+    expected_concepts: [balusters, design_style]
+    expected_primary: balusters
+    expected_preferences: { style: modern, balustrade_material: glass }
+    expected_retention: false
+
+  - id: cu-20
+    text: "Contemporary balustrade with square oak spindles."
+    expected_concepts: [balusters, design_style, timber_species]
+    expected_primary: balusters
+    expected_preferences: { style: modern, timber_species: oak }
+    expected_retention: false
+
+  # ============================================================
+  # Group 5 · Existing staircase + refacing + new materials (5 variants)
+  # ============================================================
+  - id: cu-21
+    text: "Can we refurbish the existing stairs, keep the newel posts, and change the spindles?"
+    expected_concepts: [refacing, newel_caps, balusters]
+    expected_primary: refacing
+    expected_preferences: {}
+    expected_retention: true
+
+  - id: cu-22
+    text: "I have an old pine staircase, want to keep it but make it modern with black spindles."
+    expected_concepts: [refacing, timber_species, balusters, design_style]
+    expected_primary: refacing
+    expected_preferences: { timber_species: pine, style: modern, balustrade_material: matt_black_metal }
+    expected_retention: true
+
+  - id: cu-23
+    text: "Existing staircase, don't rip it out, swap the balustrade for glass."
+    expected_concepts: [refacing, balusters]
+    expected_primary: refacing
+    expected_preferences: { balustrade_material: glass }
+    expected_retention: true
+
+  - id: cu-24
+    text: "Refresh the current staircase — new spindles, new caps, keep the treads."
+    expected_concepts: [refacing, balusters, newel_caps, treads_risers]
+    expected_primary: refacing
+    expected_preferences: {}
+    expected_retention: true
+
+  - id: cu-25
+    text: "Refacing scope — keep the structure, modernise the visible components."
+    expected_concepts: [refacing, design_style]
+    expected_primary: refacing
+    expected_preferences: {}
+    expected_retention: true
+
+  # ============================================================
+  # Group 6 · Handrail + material + landing transition (5 variants)
+  # ============================================================
+  - id: cu-26
+    text: "Oak handrail from the stairs continues to the landing."
+    expected_concepts: [handrail, landing_railings, timber_species]
+    expected_primary: landing_railings
+    expected_preferences: { timber_species: oak }
+    expected_retention: false
+
+  - id: cu-27
+    text: "Dark walnut handrail with brushed stainless brackets on the wall side."
+    expected_concepts: [handrail, timber_species]
+    expected_primary: handrail
+    expected_preferences: { timber_species: walnut, balustrade_material: brushed_stainless }
+    expected_retention: false
+
+  - id: cu-28
+    text: "Matt-black metal handrail throughout the flight and the landing."
+    expected_concepts: [handrail, landing_railings]
+    expected_primary: landing_railings
+    expected_preferences: { balustrade_material: matt_black_metal }
+    expected_retention: false
+
+  - id: cu-29
+    text: "Timber handrail with a volute at the bottom newel."
+    expected_concepts: [handrail, newel_caps]
+    expected_primary: handrail
+    expected_preferences: {}
+    expected_retention: false
+
+  - id: cu-30
+    text: "Handrail material — oak for the stairs, glass for the landing balustrade."
+    expected_concepts: [handrail, landing_railings, timber_species]
+    expected_primary: landing_railings
+    expected_preferences: { timber_species: oak, balustrade_material: glass }
+    expected_retention: false
+
+  # ============================================================
+  # Group 7 · Staircase style + multiple materials (5 variants)
+  # ============================================================
+  - id: cu-31
+    text: "I want a modern staircase with glass but keep the oak handrail."
+    expected_concepts: [design_style, balusters, handrail, timber_species]
+    expected_primary: balusters
+    expected_preferences: { style: modern, balustrade_material: glass, timber_species: oak }
+    expected_retention: false
+
+  - id: cu-32
+    text: "Modern staircase, oak treads, matt-black spindles, glass panels around the landing."
+    expected_concepts: [design_style, treads_risers, balusters, landing_railings, timber_species]
+    expected_primary: landing_railings
+    expected_preferences: { style: modern, timber_species: oak, balustrade_material: matt_black_metal }
+    expected_retention: false
+
+  - id: cu-33
+    text: "Traditional oak staircase but modern glass balustrade."
+    expected_concepts: [design_style, balusters, timber_species]
+    expected_primary: balusters
+    expected_preferences: { style: traditional, timber_species: oak, balustrade_material: glass }
+    expected_retention: false
+
+  - id: cu-34
+    text: "Scandinavian light oak with slim brushed stainless spindles."
+    expected_concepts: [design_style, balusters, timber_species]
+    expected_primary: balusters
+    expected_preferences: { style: scandi, timber_species: oak, balustrade_material: brushed_stainless }
+    expected_retention: false
+
+  - id: cu-35
+    text: "Industrial look — steel stringer, oak treads, black metal spindles."
+    expected_concepts: [design_style, stringers, treads_risers, balusters, timber_species]
+    expected_primary: stringers
+    expected_preferences: { style: industrial, timber_species: oak, balustrade_material: matt_black_metal }
+    expected_retention: false
+
+  # ============================================================
+  # Group 8 · Lighting + staircase design (5 variants)
+  # ============================================================
+  - id: cu-36
+    text: "Modern staircase with LED under-nosing on every tread."
+    expected_concepts: [lighting, design_style, treads_risers]
+    expected_primary: treads_risers
+    expected_preferences: { style: modern }
+    expected_retention: false
+
+  - id: cu-37
+    text: "LED cove wash under the bullnose starting step."
+    expected_concepts: [lighting, starting_steps]
+    expected_primary: starting_steps
+    expected_preferences: {}
+    expected_retention: false
+
+  - id: cu-38
+    text: "Motion-sensor step lights for the whole staircase."
+    expected_concepts: [lighting]
+    expected_primary: lighting
+    expected_preferences: {}
+    expected_retention: false
+
+  - id: cu-39
+    text: "Recessed wall lights along the flight, warm colour temperature."
+    expected_concepts: [lighting]
+    expected_primary: lighting
+    expected_preferences: {}
+    expected_retention: false
+
+  - id: cu-40
+    text: "Modern floating staircase with hidden LED strips in the treads."
+    expected_concepts: [lighting, stringers, treads_risers, design_style]
+    expected_primary: stringers
+    expected_preferences: { style: modern }
+    expected_retention: false
+
+  # ============================================================
+  # Group 9 · Maintenance + redesign (5 variants)
+  # ============================================================
+  - id: cu-41
+    text: "The staircase creaks and looks dated — repair and modernise?"
+    expected_concepts: [maintenance_repair, design_style, refacing]
+    expected_primary: refacing
+    expected_preferences: {}
+    expected_retention: true
+
+  - id: cu-42
+    text: "Fix the wobbly newel and swap the caps to matt black."
+    expected_concepts: [maintenance_repair, newel_caps]
+    expected_primary: newel_caps
+    expected_preferences: { balustrade_material: matt_black_metal }
+    expected_retention: false
+
+  - id: cu-43
+    text: "Sand the treads and refinish, then update the spindles."
+    expected_concepts: [maintenance_repair, treads_risers, balusters, refacing]
+    expected_primary: refacing
+    expected_preferences: {}
+    expected_retention: true
+
+  - id: cu-44
+    text: "Stop the creaking and change the handrail to match a modern look."
+    expected_concepts: [maintenance_repair, handrail, design_style]
+    expected_primary: handrail
+    expected_preferences: { style: modern }
+    expected_retention: false
+
+  - id: cu-45
+    text: "Old staircase — fix the loose bits and modernise the whole thing."
+    expected_concepts: [maintenance_repair, refacing, design_style]
+    expected_primary: refacing
+    expected_preferences: { style: modern }
+    expected_retention: true
+
+  # ============================================================
+  # Group 10 · Image request + design constraints (5 variants)
+  # ============================================================
+  - id: cu-46
+    text: "Show me modern staircases with glass balustrade and oak treads."
+    expected_concepts: [design_style, balusters, treads_risers, timber_species]
+    expected_primary: balusters
+    expected_preferences: { style: modern, balustrade_material: glass, timber_species: oak }
+    expected_retention: false
+    expected_query_type: image_retrieval
+
+  - id: cu-47
+    text: "Pictures of traditional staircases with curtail starting steps."
+    expected_concepts: [design_style, starting_steps]
+    expected_primary: starting_steps
+    expected_preferences: { style: traditional }
+    expected_retention: false
+    expected_query_type: image_retrieval
+
+  - id: cu-48
+    text: "What would a modern staircase look like with glass and oak?"
+    expected_concepts: [design_style, balusters, timber_species]
+    expected_primary: balusters
+    expected_preferences: { style: modern, balustrade_material: glass, timber_species: oak }
+    expected_retention: false
+    expected_query_type: hybrid
+
+  - id: cu-49
+    text: "Give me examples of modernising an old Victorian staircase."
+    expected_concepts: [design_style, refacing]
+    expected_primary: refacing
+    expected_preferences: { style: modern }
+    expected_retention: true
+    expected_query_type: image_retrieval
+
+  - id: cu-50
+    text: "Show me some starting step ideas for a wall-fixed staircase."
+    expected_concepts: [starting_steps]
+    expected_primary: starting_steps
+    expected_preferences: { construction: wall_fixed }
+    expected_retention: false
+    expected_query_type: image_retrieval

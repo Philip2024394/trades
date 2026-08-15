@@ -1,0 +1,2926 @@
+{
+  "meta": {
+    "computed_at": "2026-08-13T18:46:41.072Z",
+    "suite": "adversarial-phrasings-2026-08-14"
+  },
+  "summary": {
+    "total_concepts": 35,
+    "concepts_full_pass": 4,
+    "concept_pass_rate_pct": 11,
+    "total_phrasings": 242,
+    "phrasings_correct": 165,
+    "phrasing_correct_rate_pct": 68
+  },
+  "concepts": [
+    {
+      "concept": "starting_step_widen_or_feature",
+      "expected": {
+        "family": "starting_steps",
+        "tier": "Ambiguous",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 10,
+      "phrasings_correct": 8,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "Can I have a bigger first step?",
+          "family": "starting_steps",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Make the bottom step wider.",
+          "family": "starting_steps",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "I want a nicer first step.",
+          "family": "starting_steps",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Can the entry step be more substantial?",
+          "family": "starting_steps",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "The bottom looks a bit plain — can I add something?",
+          "family": "unclassified",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Can we make the first step more of a feature?",
+          "family": "starting_steps",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "I want that impressive first step you see in magazines.",
+          "family": "starting_steps",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Big statement step at the bottom please.",
+          "family": "unclassified",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "The first tread — can it be more prominent?",
+          "family": "starting_steps",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Bigger bottom step.",
+          "family": "starting_steps",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "starting_step_bullnose_curtail_terminology",
+      "expected": {
+        "family": "starting_steps",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 7,
+      "phrasings_correct": 6,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "What is a bullnose starting step?",
+          "family": "starting_steps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What's a curtail step?",
+          "family": "starting_steps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Explain the difference between bullnose and curtail.",
+          "family": "starting_steps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What do bullnose starting steps look like on a wall-fixed staircase?",
+          "family": "starting_steps",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Curtail step with volute — what is that?",
+          "family": "starting_steps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "The rounded first step is called what?",
+          "family": "starting_steps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What's the technical name for the step that curves around the newel?",
+          "family": "newel_caps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        }
+      ]
+    },
+    {
+      "concept": "starting_step_wall_fixed_options",
+      "expected": {
+        "family": "starting_steps",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 6,
+      "phrasings_correct": 4,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "I've got a staircase against a wall — what starting-step options do I have?",
+          "family": "unclassified",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "What starting step can I have with a wall on one side?",
+          "family": "starting_steps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Wall-fixed staircase, options for the first step?",
+          "family": "starting_steps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Can I have a curved first step if the stairs are against a wall?",
+          "family": "starting_steps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "One side is against the wall — what's possible at the bottom?",
+          "family": "unclassified",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "The staircase is fixed to a wall. First step options?",
+          "family": "starting_steps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "landing_railing_continuity",
+      "expected": {
+        "family": "landing_railings",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 8,
+      "phrasings_correct": 7,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "Can I have the same railing around the landing?",
+          "family": "landing_railings",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Should the landing rail match the stairs?",
+          "family": "landing_railings",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Same style upstairs as downstairs.",
+          "family": "landing_railings",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "The landing should feel like part of the staircase.",
+          "family": "landing_railings",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Match the top with the bottom.",
+          "family": "landing_railings",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "I want the whole thing to feel one system.",
+          "family": "landing_railings",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Landing railing consistent with the stairs?",
+          "family": "landing_railings",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Should the balusters upstairs match the ones on the stairs?",
+          "family": "balusters",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        }
+      ]
+    },
+    {
+      "concept": "landing_railing_top_newel_transition",
+      "expected": {
+        "family": "landing_railings",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 7,
+      "phrasings_correct": 6,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "How do I connect the landing rail to the top newel?",
+          "family": "landing_railings",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "How does the stair handrail meet the landing rail?",
+          "family": "landing_railings",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Where does the rail turn at the top?",
+          "family": "landing_railings",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What happens at the top of the stairs where the rail turns?",
+          "family": "landing_railings",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "How do the two rails join at the top?",
+          "family": "landing_railings",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "How does the landing railing connect to the staircase?",
+          "family": "landing_railings",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Where does the handrail finish at the top?",
+          "family": "landing_railings",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "handrail_material_choice",
+      "expected": {
+        "family": "handrail",
+        "tier": "Likely",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 8,
+      "phrasings_correct": 7,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "What handrail should I choose?",
+          "family": "handrail",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Which handrail material is best?",
+          "family": "handrail",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Timber or metal handrail — which?",
+          "family": "handrail",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What kind of handrail would work?",
+          "family": "handrail",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Recommend me a handrail.",
+          "family": "handrail",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What's the best handrail for heavy use?",
+          "family": "handrail",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Handrail options please.",
+          "family": "handrail",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Which handrail material lasts longest?",
+          "family": "handrail",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "handrail_wall_brackets",
+      "expected": {
+        "family": "handrail",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 7,
+      "phrasings_correct": 6,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "What brackets do I need for the handrail?",
+          "family": "handrail",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What's that metal thing that holds the handrail to the wall?",
+          "family": "handrail",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "How do you fix a handrail to the wall?",
+          "family": "handrail",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What kind of bracket goes with a wall-mounted handrail?",
+          "family": "handrail",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "The wall handrail — what holds it up?",
+          "family": "handrail",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Handrail wall-mounting — what do I need?",
+          "family": "handrail",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Do I need brackets every certain distance?",
+          "family": "unclassified",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        }
+      ]
+    },
+    {
+      "concept": "baluster_style_choice_modern",
+      "expected": {
+        "family": "balusters",
+        "tier": "Likely",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 8,
+      "phrasings_correct": 5,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "I want modern spindles.",
+          "family": "balusters",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What modern balusters can I have?",
+          "family": "balusters",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Modern balustrade options.",
+          "family": "balusters",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "The spindles need to be more modern.",
+          "family": "balusters",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Show me modern railing options.",
+          "family": "design_style",
+          "tier": "Likely",
+          "queryType": "image_retrieval",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Modern-looking balusters please.",
+          "family": "balusters",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Contemporary spindle styles?",
+          "family": "balusters",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Modernise the balusters — what are my options?",
+          "family": "balusters",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        }
+      ]
+    },
+    {
+      "concept": "baluster_metaphor_description",
+      "expected": {
+        "family": "balusters",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 7,
+      "phrasings_correct": 6,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "The wooden fence things.",
+          "family": "balusters",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "The vertical wooden bits.",
+          "family": "balusters",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "The bars between the handrail and the steps.",
+          "family": "handrail",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "The wooden sticks going up.",
+          "family": "balusters",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "The pickets.",
+          "family": "balusters",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "The vertical pieces on the balustrade.",
+          "family": "balusters",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Those wooden bars.",
+          "family": "balusters",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "newel_cap_options",
+      "expected": {
+        "family": "newel_caps",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 7,
+      "phrasings_correct": 5,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "What kinds of newel cap can I have?",
+          "family": "newel_caps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What's the thing on top of the post?",
+          "family": "newel_caps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Can I have a ball on top of the newel?",
+          "family": "newel_caps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Can the newel cap be metal?",
+          "family": "newel_caps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Can I change just the caps?",
+          "family": "unclassified",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "The top piece on the post — what are my options?",
+          "family": "unclassified",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Newel cap styles please.",
+          "family": "newel_caps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "newel_terminology_customer",
+      "expected": {
+        "family": "newel_caps",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 6,
+      "phrasings_correct": 5,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "The big post at the bottom.",
+          "family": "newel_caps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "The tall thing at the corner.",
+          "family": "newel_caps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "The chunky post at the base of the stairs.",
+          "family": "newel_caps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "The post the handrail ends on.",
+          "family": "handrail",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "The corner pole.",
+          "family": "newel_caps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "That big vertical post.",
+          "family": "newel_caps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "tread_finish_options",
+      "expected": {
+        "family": "treads_risers",
+        "tier": "Likely",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 7,
+      "phrasings_correct": 4,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "What are the best ways to finish raw oak treads?",
+          "family": "treads_risers",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "How should I finish my staircase treads?",
+          "family": "treads_risers",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Timber tread finish options?",
+          "family": "treads_risers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "What finish for oak steps?",
+          "family": "treads_risers",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "How do I protect wood treads?",
+          "family": "treads_risers",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What kind of coat should I put on the treads?",
+          "family": "treads_risers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Tread finish for high-traffic stairs?",
+          "family": "treads_risers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        }
+      ]
+    },
+    {
+      "concept": "open_vs_closed_riser",
+      "expected": {
+        "family": "treads_risers",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 6,
+      "phrasings_correct": 6,
+      "concept_pass": true,
+      "per_phrasing": [
+        {
+          "phrasing": "What is the difference between open and closed risers?",
+          "family": "treads_risers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Open riser vs closed riser?",
+          "family": "treads_risers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Are open risers safe for children?",
+          "family": "treads_risers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Should I have open or closed risers?",
+          "family": "treads_risers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What are the pros and cons of open riser stairs?",
+          "family": "treads_risers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Explain closed riser versus open riser.",
+          "family": "treads_risers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "carpet_starting_step_interaction",
+      "expected": {
+        "family": "carpet_stepmats",
+        "tier": "Likely",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 6,
+      "phrasings_correct": 0,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "I'm carpeting the stairs — what about the first step?",
+          "family": "starting_steps",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Do I carpet the bullnose too?",
+          "family": "starting_steps",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Can I keep the first step wood if the rest is carpet?",
+          "family": "starting_steps",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Feature first step with a runner — is that a thing?",
+          "family": "starting_steps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "How do I handle the first step with carpet on the rest?",
+          "family": "starting_steps",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Carpet the flight, expose the bottom step?",
+          "family": "starting_steps",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        }
+      ]
+    },
+    {
+      "concept": "step_mats_vs_runner",
+      "expected": {
+        "family": "carpet_stepmats",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 6,
+      "phrasings_correct": 5,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "Can I put mats just on the steps?",
+          "family": "unclassified",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "What's the difference between a stair runner and step mats?",
+          "family": "carpet_stepmats",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Individual mats per step — is that a thing?",
+          "family": "carpet_stepmats",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Step mats — what are they?",
+          "family": "carpet_stepmats",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Runner vs mats?",
+          "family": "carpet_stepmats",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Should I get a runner or individual mats?",
+          "family": "carpet_stepmats",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "staircase_construction_type_query",
+      "expected": {
+        "family": "stringers",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 6,
+      "phrasings_correct": 6,
+      "concept_pass": true,
+      "per_phrasing": [
+        {
+          "phrasing": "What is a mono-stringer staircase?",
+          "family": "stringers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Mono-stringer — what is it?",
+          "family": "stringers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What does a central spine staircase look like?",
+          "family": "stringers",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "How does a mono-stringer work?",
+          "family": "stringers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Explain mono-stringer.",
+          "family": "stringers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What's a single-stringer staircase called?",
+          "family": "stringers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "cut_string_vs_closed_string",
+      "expected": {
+        "family": "stringers",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 6,
+      "phrasings_correct": 5,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "What is the difference between cut string and closed string?",
+          "family": "stringers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Cut string vs housed string — which is which?",
+          "family": "stringers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Explain open stringer versus closed stringer.",
+          "family": "stringers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What's a cut-string staircase?",
+          "family": "unclassified",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "The difference between open string and closed string?",
+          "family": "stringers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Cut string or box string — what's the difference?",
+          "family": "stringers",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "refacing_scope_partial_retention",
+      "expected": {
+        "family": "refacing",
+        "tier": "Likely",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 9,
+      "phrasings_correct": 4,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "I want to refurb my stairs but keep some of the timber showing.",
+          "family": "refacing",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Update the staircase but don't rip it out.",
+          "family": "refacing",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Refresh it without a full replacement.",
+          "family": "refacing",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Refacing job — keep the structure.",
+          "family": "refacing",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Can I renovate the staircase without touching the treads?",
+          "family": "treads_risers",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "New look but same staircase underneath.",
+          "family": "refacing",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Redo the balustrade only.",
+          "family": "balusters",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Refresh what's visible without disturbing the structure.",
+          "family": "refacing",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Keep the current staircase but change the look.",
+          "family": "refacing",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "modernise_existing_staircase",
+      "expected": {
+        "family": "refacing",
+        "tier": "Ambiguous",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 6,
+      "phrasings_correct": 1,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "How do I modernise my existing staircase?",
+          "family": "design_style",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "The staircase feels dated — what can I do?",
+          "family": "unclassified",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "It's stuck in the 1990s — modernise moves?",
+          "family": "design_style",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Old pine staircase — make it modern?",
+          "family": "timber_species",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "How to update a Victorian staircase without ruining it?",
+          "family": "design_style",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Refresh an old dark staircase — how?",
+          "family": "refacing",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "what_to_do_under_stairs",
+      "expected": {
+        "family": "understair",
+        "tier": "Ambiguous",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 8,
+      "phrasings_correct": 6,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "What can I do under my stairs?",
+          "family": "understair",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "How can I use the space under the stairs?",
+          "family": "understair",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Under-stair ideas please.",
+          "family": "understair",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "The space under the staircase is wasted — what can I put there?",
+          "family": "understair",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Under-stair storage or something else?",
+          "family": "understair",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "What's a good use for the space beneath the stairs?",
+          "family": "understair",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Any ideas for the understairs void?",
+          "family": "understair",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Under the stairs — I don't know what to do with it.",
+          "family": "understair",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "make_staircase_feel_more_open",
+      "expected": {
+        "family": "design_style",
+        "tier": "Ambiguous",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 10,
+      "phrasings_correct": 7,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "Make the staircase feel more open.",
+          "family": "design_style",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "I want the stairs to look bigger.",
+          "family": "design_style",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Can we open this up?",
+          "family": "design_style",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "The staircase feels heavy — can we lighten it?",
+          "family": "lighting",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "It feels cramped.",
+          "family": "design_style",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "I don't want it boxed in.",
+          "family": "design_style",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Can the staircase feel less closed in?",
+          "family": "design_style",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Airier staircase please.",
+          "family": "design_style",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "How do we make the stairs feel more spacious?",
+          "family": "unclassified",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "The staircase area feels dark and enclosed.",
+          "family": "design_style",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        }
+      ]
+    },
+    {
+      "concept": "modernise_staircase",
+      "expected": {
+        "family": "design_style",
+        "tier": "Ambiguous",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 10,
+      "phrasings_correct": 4,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "Modernise this staircase.",
+          "family": "design_style",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Make it look more modern.",
+          "family": "design_style",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Update the look.",
+          "family": "design_style",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Bring the staircase into the 21st century.",
+          "family": "unclassified",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Give it a makeover.",
+          "family": "refacing",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Refresh the staircase.",
+          "family": "refacing",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Contemporary look please.",
+          "family": "design_style",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Less old-fashioned.",
+          "family": "timber_species",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Can we modernise this without a full replacement?",
+          "family": "refacing",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Make it feel current.",
+          "family": "design_style",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "timber_species_choice",
+      "expected": {
+        "family": "timber_species",
+        "tier": "Likely",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 7,
+      "phrasings_correct": 4,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "What woods can I have my staircase in?",
+          "family": "timber_species",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Should I go with oak or pine?",
+          "family": "timber_species",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Which wood is best for stairs?",
+          "family": "timber_species",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What's the difference between oak and walnut for stairs?",
+          "family": "timber_species",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Can I have a painted staircase?",
+          "family": "timber_species",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Which timber lasts longest?",
+          "family": "timber_species",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Best hardwood for a family staircase?",
+          "family": "timber_species",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "material_choice_hardwood_vs_softwood",
+      "expected": {
+        "family": "timber_species",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 5,
+      "phrasings_correct": 4,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "Hardwood versus softwood for stairs?",
+          "family": "timber_species",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Oak or pine — which lasts longer?",
+          "family": "timber_species",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What's more durable, oak or walnut?",
+          "family": "timber_species",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Which hardwood handles children and pets best?",
+          "family": "timber_species",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Softwood staircase — is it a bad idea?",
+          "family": "timber_species",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "staircase_led_options",
+      "expected": {
+        "family": "lighting",
+        "tier": "Likely",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 7,
+      "phrasings_correct": 3,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "How do I add LED lights to my staircase?",
+          "family": "lighting",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Where can I put LEDs on the stairs?",
+          "family": "lighting",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Staircase lighting options?",
+          "family": "lighting",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Can I have step lights on my stairs?",
+          "family": "lighting",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Best places to put LEDs on a staircase?",
+          "family": "lighting",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "LED integration on the stairs — how?",
+          "family": "lighting",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "I want lights on the staircase — where?",
+          "family": "lighting",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        }
+      ]
+    },
+    {
+      "concept": "motion_activated_stair_lights",
+      "expected": {
+        "family": "lighting",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 5,
+      "phrasings_correct": 0,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "How do I install motion-activated LED lights on stairs?",
+          "family": "lighting",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Motion-sensor stair lights — how do they work?",
+          "family": "lighting",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Automatic stair lights that come on when you walk up?",
+          "family": "lighting",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Motion-activated LEDs on the staircase — how do I set them up?",
+          "family": "lighting",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Do I need a sensor for automatic stair lights?",
+          "family": "lighting",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        }
+      ]
+    },
+    {
+      "concept": "creaking_stairs_maintenance",
+      "expected": {
+        "family": "maintenance_repair",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 6,
+      "phrasings_correct": 4,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "How do I stop stairs from creaking?",
+          "family": "maintenance_repair",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "The stairs squeak — how do I fix it?",
+          "family": "maintenance_repair",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "My staircase creaks in winter.",
+          "family": "maintenance_repair",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Squeaky stair fix?",
+          "family": "maintenance_repair",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Wooden stairs make noise — can I stop it?",
+          "family": "maintenance_repair",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "The staircase creaks every time I walk on it.",
+          "family": "maintenance_repair",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "fix_wobbly_newel",
+      "expected": {
+        "family": "maintenance_repair",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 5,
+      "phrasings_correct": 1,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "How do I fix a wobbly newel post?",
+          "family": "newel_caps",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "The corner post is loose — how do I secure it?",
+          "family": "newel_caps",
+          "tier": "Likely",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "My newel wobbles — help?",
+          "family": "newel_caps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Loose newel — how to tighten?",
+          "family": "newel_caps",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "The post at the bottom moves — fix it?",
+          "family": "maintenance_repair",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "image_request_starting_step",
+      "expected": {
+        "family": "starting_steps",
+        "tier": "Clear",
+        "query_type": "image_retrieval",
+        "routing": null
+      },
+      "total_phrasings": 8,
+      "phrasings_correct": 6,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "Show me starting step examples.",
+          "family": "starting_steps",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Pictures of bullnose starting steps please.",
+          "family": "starting_steps",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What do curtail starting steps look like?",
+          "family": "starting_steps",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Show me feature first step ideas.",
+          "family": "starting_steps",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Examples of extended starting steps.",
+          "family": "starting_steps",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Show me different starting steps.",
+          "family": "starting_steps",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "I want to see starting step options.",
+          "family": "starting_steps",
+          "tier": "Likely",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Give me some starting-step pictures.",
+          "family": "unclassified",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        }
+      ]
+    },
+    {
+      "concept": "image_request_modern_staircase",
+      "expected": {
+        "family": "design_style",
+        "tier": "Clear",
+        "query_type": "image_retrieval",
+        "routing": null
+      },
+      "total_phrasings": 7,
+      "phrasings_correct": 6,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "Show me modern staircases.",
+          "family": "design_style",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Pictures of contemporary staircase designs.",
+          "family": "design_style",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Modern staircase examples please.",
+          "family": "design_style",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What do modern staircases look like?",
+          "family": "design_style",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Show me modern floating staircases.",
+          "family": "stringers",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Contemporary staircase pictures.",
+          "family": "design_style",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Modern architectural staircase examples.",
+          "family": "design_style",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "image_request_traditional_staircase",
+      "expected": {
+        "family": "design_style",
+        "tier": "Clear",
+        "query_type": "image_retrieval",
+        "routing": null
+      },
+      "total_phrasings": 6,
+      "phrasings_correct": 5,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "Show me traditional staircases.",
+          "family": "design_style",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Pictures of Victorian staircases.",
+          "family": "design_style",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Traditional staircase examples please.",
+          "family": "design_style",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What do classical staircases look like?",
+          "family": "design_style",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Show me period staircases.",
+          "family": "design_style",
+          "tier": "Clear",
+          "queryType": "image_retrieval",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Show me a grand curved traditional staircase.",
+          "family": "layout_types",
+          "tier": "Ambiguous",
+          "queryType": "image_retrieval",
+          "familyOk": false,
+          "tierOk": false,
+          "queryTypeOk": true,
+          "pass": false
+        }
+      ]
+    },
+    {
+      "concept": "safety_reg_handrail_height",
+      "expected": {
+        "family": "safety_regs",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": "future_brain:building_codes"
+      },
+      "total_phrasings": 7,
+      "phrasings_correct": 7,
+      "concept_pass": true,
+      "per_phrasing": [
+        {
+          "phrasing": "How high should the handrail be?",
+          "family": "safety_regs",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What's the legal handrail height?",
+          "family": "safety_regs",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Handrail height regulations?",
+          "family": "safety_regs",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Is there a required handrail height?",
+          "family": "safety_regs",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What height for the stair handrail?",
+          "family": "safety_regs",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Handrail height — is it a rule?",
+          "family": "safety_regs",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "How tall must the handrail be by law?",
+          "family": "safety_regs",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "pronoun_lack_ambiguity",
+      "expected": {
+        "family": "unclassified",
+        "tier": "Ambiguous",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 7,
+      "phrasings_correct": 7,
+      "concept_pass": true,
+      "per_phrasing": [
+        {
+          "phrasing": "Can I have this?",
+          "family": "unclassified",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Like this.",
+          "family": "unclassified",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What about this?",
+          "family": "unclassified",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Something like this.",
+          "family": "unclassified",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Can you do this?",
+          "family": "unclassified",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "This one please.",
+          "family": "unclassified",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "I want it like that.",
+          "family": "unclassified",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "concept": "cost_question_route_to_business_brain",
+      "expected": {
+        "family": "business_estimation",
+        "tier": "Clear",
+        "query_type": null,
+        "routing": "future_brain:business_estimation"
+      },
+      "total_phrasings": 6,
+      "phrasings_correct": 4,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "How much does a staircase cost?",
+          "family": "business_estimation",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "What will a new staircase cost me?",
+          "family": "business_estimation",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Price of a new staircase?",
+          "family": "business_estimation",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "Quote for a modern staircase?",
+          "family": "business_estimation",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "How much for an oak staircase?",
+          "family": "timber_species",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Cost of refacing my staircase?",
+          "family": "refacing",
+          "tier": "Clear",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        }
+      ]
+    },
+    {
+      "concept": "wrong_word_ambiguous_railing",
+      "expected": {
+        "family": "balusters",
+        "tier": "Ambiguous",
+        "query_type": null,
+        "routing": null
+      },
+      "total_phrasings": 5,
+      "phrasings_correct": 1,
+      "concept_pass": false,
+      "per_phrasing": [
+        {
+          "phrasing": "Update the railing.",
+          "family": "handrail",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "New railing please.",
+          "family": "balusters",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": true,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": true
+        },
+        {
+          "phrasing": "The railing needs work.",
+          "family": "handrail",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "Can we change the railing?",
+          "family": "handrail",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        },
+        {
+          "phrasing": "What can I do about the railing?",
+          "family": "handrail",
+          "tier": "Ambiguous",
+          "queryType": "text_answer",
+          "familyOk": false,
+          "tierOk": true,
+          "queryTypeOk": true,
+          "pass": false
+        }
+      ]
+    }
+  ]
+}

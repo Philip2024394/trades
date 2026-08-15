@@ -1,0 +1,1158 @@
+{
+  "$schema": "internal://nex/brain/image-batch.v1",
+  "batch_id": "staircase-multi-2026-08-15",
+  "supplied_by": "philip",
+  "supplied_at": "2026-08-15",
+  "hosting": "ImageKit (5vv5pw26q) · NEX-owned storage",
+  "total_urls": 32,
+  "user_category_counts": {
+    "general": 10,
+    "garden": 5,
+    "metal-external": 10,
+    "mixed-uncertain": 7
+  },
+  "processing_rules": {
+    "no_duplicates": true,
+    "verify_category_before_trust": "mixed-uncertain set carried Philip's suspicion of miscategorisation; per-image triage complete 2026-08-15 — ALL 7 confirmed INTERIOR (not garden). Actual sub-context is stair-tread-rug product photography.",
+    "surface_gating": {
+      "STAIRCASE_GARDEN": "Only surface when the user asks about garden/deck/outdoor stairs. Do NOT show these when the user asks about interior staircases.",
+      "STAIRCASE_EXTERNAL_METAL": "Surface for fire-escape / industrial / access-stair / commercial-external queries. Do NOT show for internal residential asks.",
+      "STAIRCASE_INTERIOR": "Default staircase surface. Suppress when the user has narrowed to garden or external-metal.",
+      "STAIR_TREAD_RUG_PRODUCT": "Sub-context of STAIRCASE_INTERIOR — surface for stair-tread-pad / stair-runner / non-slip stair carpet questions. Not primary for staircase construction questions."
+    },
+    "no_fabrication": "All entries in this batch now carry `analysis_status: sample-analysed` after per-image verification 2026-08-15.",
+    "no_nex_branding_check": "None required for brain entries (unlike wallpapers) — these are reference knowledge, not decor. One entry (general_09) contains a `NEX STUDIO 2025` watermark and is flagged `not_wallpaper_eligible: true`."
+  },
+  "sample_analysed_count": 32,
+  "queued_for_full_analysis_count": 0,
+  "triage_findings_2026_08_15": {
+    "mixed_uncertain_all_reclassified": "All 7 entries in the mixed-uncertain set are interior residential staircases, not garden. Six of seven show branded stair-tread pad/rug placements — the images are dual-purpose (interior staircase reference + stair-tread-rug product reference).",
+    "metal_external_borderline": "3 of 10 entries (m2 · m3 · m4) sit on the boundary between garden/exterior and metal-industrial. Kept in metal-external with cross-tag `also_relevant_to: STAIRCASE_GARDEN` for retrieval overlap.",
+    "watermarked_images": "1 image (stair_general_2026_08_15_09) has a `NEX STUDIO 2025` corner watermark — safe for brain but NOT for wallpaper use."
+  },
+
+  "entries": [
+    {
+      "_category_header": "GENERAL STAIRCASE (10 URLs · 10 sample analysed)",
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2003_31_54%20PM.png",
+      "id": "stair_general_2026_08_15_01",
+      "user_category": "general",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Traditional two-flight interior staircase in a bright residential home. Oak treads with white-painted risers and white square spindles, oak handrail and oak square newel post. Landing balcony with matching balustrade opens onto a large multi-pane window bringing natural light down the stairwell. Adjacent living room with cream sofa suggests a family entrance-hall setting.",
+        "staircase_type": "quarter-turn-with-landing",
+        "direction": "up",
+        "flights": 2,
+        "primary_material": "oak-with-white-paint",
+        "materials": ["oak treads", "oak handrail", "oak newel", "white-painted spindles", "white-painted risers"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["traditional", "georgian-influenced", "family-home", "bright"],
+        "notable_features": [
+          "landing balcony with matching balustrade",
+          "curved bullnose bottom starting step",
+          "large multi-pane feature window over stairwell",
+          "square-section balusters (spindles)",
+          "square oak newel post with chamfered detail"
+        ]
+      },
+      "qa": [
+        { "q": "What type of staircase is this?", "a": "A quarter-turn staircase with an intermediate landing, common in traditional two-storey British homes." },
+        { "q": "What materials is it made from?", "a": "Oak treads, handrail and newel posts paired with white-painted risers and square balusters. It's a classic mixed oak-and-paint palette." },
+        { "q": "Would this suit a modern minimalist home?", "a": "It leans traditional — the square balusters and painted risers give a family-home feel. A more minimalist project would use unpainted timber or open treads." },
+        { "q": "Is that bottom step curved?", "a": "Yes — it's a bullnose starting step, one of the classic starting-step styles. It softens the entry to the staircase and gives it a decorative anchor." },
+        { "q": "How many flights are there?", "a": "Two flights joined by a landing — the first flight rises to the landing, then a shorter second flight rises to the upper floor." }
+      ],
+      "safe_for_display_when_user_asks_about": ["interior staircase design", "traditional home", "oak staircase", "quarter-turn stairs", "landing design"],
+      "not_shown_when": ["garden stairs", "external metal stairs", "fire escape", "spiral staircase"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2003_31_08%20PM.png",
+      "id": "stair_general_2026_08_15_02",
+      "user_category": "general",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Contemporary open-plan interior staircase blending oak floating treads with a black steel horizontal-bar balustrade. Warm LED strip lighting recessed under every tread. Vertical timber-slat feature wall on the right of the stairwell alongside black-framed art. Landing balcony overlooks a living room with fireplace and TV visible to the left — full open-plan living scene.",
+        "staircase_type": "quarter-turn-with-landing",
+        "direction": "up",
+        "flights": 2,
+        "primary_material": "oak-and-black-steel",
+        "materials": ["oak floating treads", "black steel horizontal balustrade bars", "black steel stringer", "vertical timber-slat feature wall (backdrop)"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["contemporary", "open-plan", "warm-modern", "loft-style", "architectural"],
+        "notable_features": [
+          "warm LED under-tread lighting on every step",
+          "horizontal-bar (rail-style) black balustrade rather than vertical spindles",
+          "vertical timber-slat feature wall as backdrop",
+          "landing balcony overlooking living room with fireplace",
+          "no risers — fully open treads for airy pass-through"
+        ]
+      },
+      "qa": [
+        { "q": "Are those steps floating?", "a": "Yes — oak treads cantilever from a black steel stringer with no risers between them. Common in contemporary open-plan homes." },
+        { "q": "What are the black bars?", "a": "Horizontal-bar balustrade — thin black steel rails run the length of the flight in place of vertical spindles. It gives a lighter, more architectural look but must still meet the sphere-passage safety rule for the design region." },
+        { "q": "What lights the steps?", "a": "Warm LED strip is recessed under each tread nosing — a build-in item rather than an after-fit accessory." },
+        { "q": "Does the timber-slat wall come with the staircase?", "a": "That's a separate joinery item (feature wall panels), often installed by the same joinery workshop but priced separately." },
+        { "q": "Would this suit a period property?", "a": "It's a contemporary language — better suited to loft conversions, extensions and new-builds than to preserved period interiors." }
+      ],
+      "safe_for_display_when_user_asks_about": ["contemporary staircase", "floating oak treads", "open-plan staircase", "black steel balustrade", "modern loft stair"],
+      "not_shown_when": ["traditional oak staircase with spindles", "garden stairs", "external stairs", "fire escape"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2003_27_56%20PM.png",
+      "id": "stair_general_2026_08_15_03",
+      "user_category": "general",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Sweeping bespoke oak staircase with carpeted treads and a fully continuous curved oak handrail flowing up and around a landing above. Glass-panel balustrade with oak top-rail and oak newel, herringbone light-oak floor, warm morning light through a full-height window on the left. High-end residential feel — bespoke joinery work.",
+        "staircase_type": "curved-quarter-turn-with-landing",
+        "direction": "up",
+        "flights": 2,
+        "primary_material": "oak-and-glass",
+        "materials": ["oak handrail (curved, continuous)", "oak newel", "oak stringer/cladding", "glass balustrade panels", "carpeted treads", "herringbone oak floor (context)"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["bespoke", "curved-handrail", "premium", "warm-contemporary", "airy"],
+        "notable_features": [
+          "continuous curved oak handrail flowing around the landing (bespoke joinery)",
+          "glass-panel balustrade for maximum transparency",
+          "carpet-covered treads (soft acoustic finish)",
+          "warm oak newel with rounded profile",
+          "premium natural light from full-height stairwell window"
+        ]
+      },
+      "qa": [
+        { "q": "Is that handrail one continuous piece?", "a": "It looks continuous — a bespoke curved oak handrail that flows from stairs into landing balustrade with no visible join. This is skilled joinery work and normally priced as a bespoke build." },
+        { "q": "What's on the treads?", "a": "Fully-fitted stair carpet on wooden treads — softens footfall and gives a premium residential feel. Underlying stringer and side-cladding are oak." },
+        { "q": "Is the balustrade glass?", "a": "Yes — full glass infill panels with an oak top rail. Common for modern homes that want maximum natural light and a see-through stairwell." },
+        { "q": "How many flights is this?", "a": "Effectively one long curved flight that turns via a small landing at the top — the curve gives it the appearance of a grand single sweep." },
+        { "q": "Would this fit a standard terraced house?", "a": "The curved handrail and glass balustrade need generous stairwell width — normally built in larger detached or renovated period homes rather than a standard terraced footprint." }
+      ],
+      "safe_for_display_when_user_asks_about": ["bespoke staircase", "curved oak handrail", "glass balustrade", "premium home stair", "landing continuity"],
+      "not_shown_when": ["garden stairs", "external metal stairs", "budget stair", "small terrace stair"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2003_25_11%20PM.png",
+      "id": "stair_general_2026_08_15_04",
+      "user_category": "general",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Contemporary open-tread oak staircase with tinted glass balustrade panels floating in a modern hallway. Oak handrail, warm LED strip under every tread, wide-plank oak floor. Open kitchen with pendant lights and marble worktop visible at the left of the stair opening. Evening lighting mood.",
+        "staircase_type": "straight-flight-with-landing-above",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "oak-with-tinted-glass",
+        "materials": ["oak treads (open, no risers)", "oak handrail", "tinted glass balustrade panels", "black steel fittings", "oak wall cladding"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["contemporary", "open-plan", "warm-evening", "architectural", "premium"],
+        "notable_features": [
+          "open (riserless) oak treads for maximum airflow and light",
+          "tinted / smoked glass balustrade panels",
+          "warm LED under-tread lighting on every step",
+          "oak side-cladding extending to landing above",
+          "adjacent open-plan kitchen visible under the flight"
+        ]
+      },
+      "qa": [
+        { "q": "Are the steps open at the back?", "a": "Yes — this is a riserless open-tread build. Air and light pass between the treads, and it makes the space feel bigger. Some regions require a max-gap rule (typically 100mm) for open treads." },
+        { "q": "What tint is the glass?", "a": "Smoked / bronze-tinted glass panels for a warmer, softer look than clear glass. Common in evening-lit or moodier interior schemes." },
+        { "q": "What's the lighting?", "a": "Warm-white LED strips are recessed under the nosing of every tread — installed during build, not a plug-in accessory." },
+        { "q": "Would this style suit a family with young children?", "a": "The open-tread + glass combination is stylish but does need consideration for young children — some families add temporary riser-fill panels for the toddler years and remove them later." },
+        { "q": "Can you do this in walnut instead of oak?", "a": "Yes — the same construction works with walnut, ash, tulipwood or a stained finish. The joinery and the balustrade fixings stay the same; only the tread species changes." }
+      ],
+      "safe_for_display_when_user_asks_about": ["open tread staircase", "tinted glass balustrade", "oak staircase", "under-tread LED lighting", "modern open-plan"],
+      "not_shown_when": ["traditional closed-riser staircase", "garden stairs", "external stairs", "spiral staircase"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2003_21_04%20PM.png",
+      "id": "stair_general_2026_08_15_05",
+      "user_category": "general",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Luxury interior staircase blending walnut treads with polished-marble base steps and backlit fretwork feature-wall panels alongside. Walnut handrail on wall side, fully-glazed balustrade on open side, warm ambient LED lighting throughout risers and behind fretwork. Marble floor. Feels South-Asian / Middle-Eastern premium residential.",
+        "staircase_type": "quarter-turn-with-marble-base",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "walnut-and-polished-marble",
+        "materials": ["walnut treads (upper)", "polished marble base steps + landing floor", "walnut handrail", "glass balustrade panels", "backlit fretwork feature panels (side wall)"],
+        "setting": "interior-residential-premium",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["luxury", "middle-eastern-influenced", "backlit-detail", "mixed-material", "high-end"],
+        "notable_features": [
+          "walnut treads sitting on marble base steps (mixed-material build)",
+          "backlit fretwork panels alongside — decorative pattern + ambient light",
+          "warm LED under-tread lighting on every step",
+          "glass balustrade on open side with walnut handrail",
+          "polished marble entrance floor blending into first landing"
+        ]
+      },
+      "qa": [
+        { "q": "Is that marble under the wood steps?", "a": "Yes — the base landing and the first few steps are polished marble, and walnut takes over from there upwards. It's a mixed-material build often seen in premium homes." },
+        { "q": "What are the backlit panels?", "a": "Laser-cut fretwork feature panels backlit with LED — a decorator/joinery item that sits alongside the staircase rather than being part of the staircase itself." },
+        { "q": "Would this suit a UK new-build?", "a": "It's a language commonly seen in Middle Eastern and South Asian luxury residential builds. It can be adapted for UK homes but the marble + fretwork combination is not typical UK residential vernacular." },
+        { "q": "Is the balustrade glass?", "a": "Yes — full glass infill on the open side with a walnut top rail. Keeps sightlines open to the feature panels." },
+        { "q": "How is the staircase lit?", "a": "Warm LED strip under every tread nosing, plus LED behind the fretwork panels giving ambient wash from the side. All installed as part of the build." }
+      ],
+      "safe_for_display_when_user_asks_about": ["luxury staircase", "mixed-material staircase", "marble base steps", "fretwork feature wall", "backlit staircase"],
+      "not_shown_when": ["budget staircase", "traditional oak staircase", "garden stairs", "external stairs"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2003_18_41%20PM.png",
+      "id": "stair_general_2026_08_15_06",
+      "user_category": "general",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Contemporary walnut staircase against a curved plaster wall with a wavy backlit light-strip accent flowing up the stairwell. Warm walnut treads and matching stringer/side-cladding, black-painted thin vertical balusters with black handrail. Built-in walnut storage cabinets underneath the stringer. Polished marble floor. Warm evening lighting mood.",
+        "staircase_type": "straight-flight",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "walnut-with-black-metal",
+        "materials": ["walnut treads", "walnut stringer + side cladding", "walnut under-stair cabinets", "black-painted thin vertical balusters", "black handrail", "backlit wavy LED wall accent (context)"],
+        "setting": "interior-residential-premium",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["contemporary", "warm-evening", "sculptural-lighting", "under-stair-storage", "architectural"],
+        "notable_features": [
+          "curved wavy backlit LED wall strip flowing alongside the flight",
+          "integrated walnut storage cabinets under stringer",
+          "thin black vertical balusters (rod-style, spaced)",
+          "warm LED under-tread lighting on every step",
+          "curved plaster wall enclosing the stairwell for a soft envelope"
+        ]
+      },
+      "qa": [
+        { "q": "What is that wavy light behind the stairs?", "a": "A backlit LED feature cut into the plaster wall — a decorator/lighting-designer detail. It doesn't come with the staircase itself but is often coordinated at the same time." },
+        { "q": "Is the space under the stairs used?", "a": "Yes — walnut cabinets are built into the stringer for enclosed storage. This is a common bespoke add-on for premium builds." },
+        { "q": "What are the balusters made of?", "a": "Thin black-painted metal rods running vertically at close spacing, meeting a black handrail. Slim profile for a light, contemporary read." },
+        { "q": "What kind of wood is this?", "a": "Walnut, or a walnut-look stain on a workable hardwood. The rich chocolate tone with darker grain marks it as walnut rather than oak." },
+        { "q": "Would this fit a smaller home?", "a": "The staircase itself is a compact straight flight — it would fit most homes. The curved feature wall + wavy LED are the space-hungry design decisions and they're optional." }
+      ],
+      "safe_for_display_when_user_asks_about": ["walnut staircase", "under-stair storage", "backlit stairwell", "contemporary luxury stair", "black baluster"],
+      "not_shown_when": ["traditional oak staircase", "garden stairs", "external stairs", "budget stair"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2003_17_01%20PM.png",
+      "id": "stair_general_2026_08_15_07",
+      "user_category": "general",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "analysis_status": "sample-analysed",
+      "sub_context": "under-stair-seating-nook",
+      "analysis": {
+        "description": "Under-stair reading nook composed of a curved built-in sofa with cushions tucked into an arched wall recess. Warm LED under-tread lighting shows the black-baluster staircase overhead. Curved wood wall panels frame the arch with a small floating shelf holding a framed leaf print. Round wooden coffee table on a jute rug, ferns and a lantern candle for warm evening atmosphere.",
+        "staircase_type": "straight-flight-with-underside-visible",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "wood-panels-and-plaster",
+        "materials": ["curved wood wall panels", "arched plaster niche", "built-in curved sofa", "black steel balusters (staircase above)", "wood treads (staircase above)"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["under-stair-nook", "reading-corner", "warm-evening", "curved-cabinetry", "cosy"],
+        "notable_features": [
+          "arched wall recess with backlit halo lighting",
+          "curved built-in sofa (bespoke cabinetry)",
+          "warm LED under-tread lighting revealing staircase overhead",
+          "framed leaf art on floating shelf above sofa",
+          "jute rug + round wood coffee table + lantern candle for cosy scene"
+        ]
+      },
+      "qa": [
+        { "q": "Is this a staircase or a seating nook?", "a": "Both — the staircase is overhead (with visible black balusters) and the seating nook is built into the space beneath it. Under-stair nooks are a popular use of otherwise dead space." },
+        { "q": "Is the sofa built-in or freestanding?", "a": "Built-in — the curved shape hugs the arched wall recess and is bespoke cabinetry, not a bought sofa." },
+        { "q": "What lights the arch?", "a": "A recessed LED halo strip behind the curved wood panels gives a soft indirect wash. Warm colour temperature for evening mood." },
+        { "q": "Would you build this?", "a": "This is joinery + carpentry work rather than a staircase manufacturer's typical scope. A joiner can adapt an existing under-stair void once the staircase is in." },
+        { "q": "How much space does an under-stair nook need?", "a": "Usable depth typically starts at ~800mm at the shallow end. This one has been widened by a curved recess into the neighbouring wall, giving it more comfort than a straight under-stair alcove." }
+      ],
+      "safe_for_display_when_user_asks_about": ["under stair seating", "reading nook", "cosy interior stair", "under-stair use ideas", "arched recess"],
+      "not_shown_when": ["garden stairs", "external stairs", "commercial stair", "spiral staircase"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2003_12_39%20PM.png",
+      "id": "stair_general_2026_08_15_08",
+      "user_category": "general",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "analysis_status": "sample-analysed",
+      "sub_context": "under-stair-seating-nook",
+      "analysis": {
+        "description": "Under-stair bench nook with dark timber slatted back panel and a raised bench with beige cushions and mixed accent cushions. Warm LED under-tread lighting reveals the staircase overhead — dark wood treads and painted vertical balusters. Left of the bench a rough natural-stone accent wall houses a small water-feature niche and floating shelf with pot plants. Marble-effect floor with a woven jute rug in the foreground.",
+        "staircase_type": "straight-flight-with-underside-visible",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "dark-timber-and-natural-stone",
+        "materials": ["dark timber slatted feature panel", "raised bench with drawers (bespoke joinery)", "natural stone accent wall (feature)", "water feature niche", "dark wood staircase treads above", "painted vertical balusters above"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["under-stair-nook", "wellness-corner", "slatted-timber", "water-feature", "warm-evening"],
+        "notable_features": [
+          "dark slatted timber feature panel as back rest",
+          "raised bench with storage drawers beneath",
+          "warm LED under-tread lighting revealing staircase overhead",
+          "natural-stone feature wall with recessed water feature",
+          "floating shelf with plant display + potted palm anchor"
+        ]
+      },
+      "qa": [
+        { "q": "What's the vertical wood behind the bench?", "a": "Slatted timber panelling — a decorative back-wall detail that provides visual texture and light softening. Common finish for feature walls and staircase side-cladding." },
+        { "q": "Does the bench have storage?", "a": "Yes — the raised bench base contains push-open drawers, useful for shoes, throws or games in an entrance-hall context." },
+        { "q": "Is that a real water feature?", "a": "It appears so — a slot-style water wall recessed into the stone accent panel. Optional bespoke feature, best specified early so plumbing can be planned." },
+        { "q": "What's above the nook?", "a": "The staircase — you can see the underside of the treads and the balusters overhead. The nook uses the space beneath the flight." },
+        { "q": "Can you build this in a smaller footprint?", "a": "A slimmer version (slatted back panel + storage bench + LED strip) works in most under-stair voids. The stone feature wall + water niche are the elements that need extra depth." }
+      ],
+      "safe_for_display_when_user_asks_about": ["under stair seating", "under stair storage", "slatted timber feature wall", "cosy interior", "hallway nook"],
+      "not_shown_when": ["garden stairs", "external stairs", "commercial stair", "spiral staircase"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2003_12_14%20PM.png",
+      "id": "stair_general_2026_08_15_09",
+      "user_category": "general",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "analysis_status": "sample-analysed",
+      "sub_context": "under-stair-hanging-bench-conceptual",
+      "watermark_present": true,
+      "not_wallpaper_eligible": true,
+      "wallpaper_disqualification_reason": "Corner watermark reads `© NEX STUDIO 2025` — NEX-branded imagery is banned as a trade wallpaper per the wallpaper rules.",
+      "analysis": {
+        "description": "Highly sculptural conceptual under-stair scene — a large oval hanging-bench nook carved into a dark wood wall with a fluted / ribbed surround. The bench itself is a plush leather-look ribbed cushion form suspended inside the oval opening, softly backlit with a warm LED halo. Concrete industrial stair to the left of frame with slim steel handrail. Antique-style geometric floor rug in the foreground, framed abstract art alongside.",
+        "staircase_type": "straight-flight-with-underside-space",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "concrete-stair-and-carved-timber-nook",
+        "materials": ["polished concrete stair treads", "slim steel handrail + balustrade", "carved dark timber ribbed wall", "ribbed leather-look hanging bench", "backlit LED halo"],
+        "setting": "interior-residential-conceptual",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["conceptual", "sculptural", "under-stair-nook", "moody-cinematic", "premium-showpiece"],
+        "notable_features": [
+          "oval carved-wood nook with fluted/ribbed timber surround",
+          "suspended ribbed leather-look bench form inside the oval",
+          "backlit warm LED halo behind the bench",
+          "polished concrete staircase alongside",
+          "moody cinematic mood — likely an editorial / conceptual render"
+        ]
+      },
+      "qa": [
+        { "q": "Is this a real staircase design or a concept render?", "a": "It reads as a conceptual / editorial render — the extreme sculptural nook and cinematic mood are showpiece rather than typical residential build. Useful as inspiration but not off-the-shelf." },
+        { "q": "Would you build the oval nook?", "a": "A skilled joinery workshop can build a ribbed timber nook of this shape, but pricing sits at bespoke showpiece level. The hanging bench form itself is bespoke upholstery." },
+        { "q": "What's the staircase made of?", "a": "Polished concrete treads with a slim steel handrail — modern industrial. It's a separate build from the sculpted nook alongside." },
+        { "q": "Where would this suit?", "a": "A large open-plan modern home with a double-height stairwell and generous under-stair void. Not a fit for compact terraced homes." },
+        { "q": "Can we use this image on our website?", "a": "The image carries a `© NEX STUDIO 2025` watermark, so it stays inside the NEX reference brain and is not offered as a trade wallpaper or public marketing asset." }
+      ],
+      "safe_for_display_when_user_asks_about": ["conceptual staircase", "sculptural nook", "premium under-stair ideas", "cinematic staircase render"],
+      "not_shown_when": ["garden stairs", "external stairs", "budget stair", "compact terraced house"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2003_11_15%20PM.png",
+      "id": "stair_general_2026_08_15_10",
+      "user_category": "general",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Straight interior oak staircase in a modern residential entrance hall. Solid oak treads with matching riser fronts, recessed warm LED lighting under every tread nosing, matching oak side-cladding on the stringer, oak wall-mounted handrail against a white wall. Slatted timber ceiling panel above the flight. Open-plan living room with cream sectional and garden view through timber-battened floor-to-ceiling windows on the left. Woven jute rug at the base of the flight.",
+        "staircase_type": "straight-flight",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "solid-oak",
+        "materials": ["solid oak treads", "solid oak riser fronts", "oak side-cladding", "oak wall-mounted handrail", "warm LED under-tread strip"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["contemporary", "warm-modern", "clean-lines", "open-plan", "airy-natural-light"],
+        "notable_features": [
+          "wall-mounted oak handrail (no balustrade on the wall side)",
+          "warm LED strip recessed under every tread nosing",
+          "slatted timber ceiling detail above the flight",
+          "matching oak riser fronts (closed risers, not open)",
+          "open-plan living room adjacent"
+        ]
+      },
+      "qa": [
+        { "q": "Are those steps solid oak all the way through?", "a": "The visible tread faces and riser fronts read as solid oak. The build underneath (stringer, carriage) is normally structural softwood clad in oak — visually identical, cost-efficient." },
+        { "q": "Where's the balustrade?", "a": "It's a wall-flanked flight — walls on both sides, so no balustrade is needed. A wall-mounted oak handrail on the right gives the required hand-hold." },
+        { "q": "What's the lighting?", "a": "Warm LED strip recessed under each tread nosing — installed during build. Doubles as a night-light for the hallway." },
+        { "q": "Is the ceiling detail part of the staircase?", "a": "No — the slatted timber ceiling panel is a joinery/decorator item, often installed at the same time as the staircase but priced separately." },
+        { "q": "Would this suit a modern extension?", "a": "Very well — the clean straight oak flight + wall-mounted handrail + closed risers is a common language for new-builds, rear extensions and loft conversions." }
+      ],
+      "safe_for_display_when_user_asks_about": ["straight staircase", "solid oak staircase", "wall-mounted handrail", "under-tread LED", "modern residential stair"],
+      "not_shown_when": ["curved staircase", "spiral staircase", "garden stairs", "external stairs"]
+    },
+
+    {
+      "_category_header": "GARDEN STAIRCASE (5 URLs · 5 sample analysed)",
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2011_48_43%20AM.png",
+      "id": "stair_garden_2026_08_15_01",
+      "user_category": "garden",
+      "verified_category": "STAIRCASE_GARDEN",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Timber deck staircase rising from a paved garden path to a raised entertaining deck with lounge seating, dining area and string lights. Warm evening light with integrated LED riser lighting on every step and lantern lighting on the newel posts. Metal balusters between timber handrail and base rail.",
+        "staircase_type": "straight-flight",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "pressure-treated-timber-deck-boards",
+        "materials": ["timber deck boards", "timber handrail", "black metal balusters", "timber newel posts"],
+        "setting": "garden-external-deck",
+        "domain": "STAIRCASE_GARDEN",
+        "style_tags": ["outdoor-living", "entertaining", "warm-evening", "modern-deck", "family-garden"],
+        "notable_features": [
+          "LED strip lighting integrated into each riser",
+          "post-cap lanterns on newel posts",
+          "planter pots + landscape lighting alongside stringers",
+          "wide steps to accommodate flowing outdoor traffic",
+          "connects paved path to raised entertaining deck"
+        ]
+      },
+      "qa": [
+        { "q": "Is this an indoor or outdoor staircase?", "a": "Outdoor — it's a garden deck staircase connecting a lower paved area to a raised entertaining deck." },
+        { "q": "What are the steps made of?", "a": "Pressure-treated timber deck boards on timber stringers, with a matching timber handrail and dark metal balusters between." },
+        { "q": "Are those lights built into the steps?", "a": "Yes — LED strips are recessed under the nosing of each tread, plus lantern-style caps on the newel posts. Common in premium garden staircase builds." },
+        { "q": "Do you install this style?", "a": "This is a decking-contractor build rather than an interior joinery staircase. If a business specialises in garden/outdoor stairs they'd typically say so." },
+        { "q": "What's the typical width?", "a": "This looks around 1200-1400mm wide, generous for two people passing — deck stairs are commonly wider than interior stairs to feel welcoming." }
+      ],
+      "safe_for_display_when_user_asks_about": ["garden stairs", "deck stairs", "outdoor staircase", "entertaining deck", "LED step lighting"],
+      "not_shown_when": ["interior residential staircase", "fire escape", "commercial external stair", "traditional oak staircase"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2011_37_33%20AM.png",
+      "id": "stair_garden_2026_08_15_02",
+      "user_category": "garden",
+      "verified_category": "STAIRCASE_GARDEN",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Dark-stained timber garden staircase set into a mature planted garden. Ornate laser-cut / fretwork balustrade panels between newel posts, hydrangea beds and pebble edging alongside, warm LED string-light glow and warm ambient recessed lighting on the newels. Cobble-mosaic path at base. Upper deck with planted pots visible top-right.",
+        "staircase_type": "straight-flight",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "dark-stained-timber-with-fretwork-panels",
+        "materials": ["dark-stained timber treads + stringer", "laser-cut fretwork balustrade panels (metal or timber)", "dark timber newel posts with lantern caps", "cobble mosaic path (context)"],
+        "setting": "garden-external-mature-planting",
+        "domain": "STAIRCASE_GARDEN",
+        "style_tags": ["ornamental", "romantic", "mature-garden", "warm-evening", "decorative"],
+        "notable_features": [
+          "decorative fretwork balustrade panels (unusual — most garden stairs use plain balusters)",
+          "warm string-light glow at upper deck level",
+          "post-cap lanterns + newel lamps for evening ambience",
+          "cobble-mosaic path base treatment",
+          "hydrangea + shrub planting alongside stringer"
+        ]
+      },
+      "qa": [
+        { "q": "What are the decorative panels between the posts?", "a": "Laser-cut fretwork balustrade panels — an ornamental alternative to plain spindles or cable rails. Adds a decorative romantic language to a garden staircase." },
+        { "q": "What material are the treads?", "a": "Dark-stained pressure-treated timber deck boards. The dark stain gives a richer, more period-garden feel than the standard warm-brown deck-board finish." },
+        { "q": "Is that string lighting part of the staircase?", "a": "The string lights above are festoon lighting on the upper deck — a garden-lighting item rather than a staircase build item. The newel-cap lanterns and post lamps are typically fitted with the staircase." },
+        { "q": "Would this fit a small back garden?", "a": "The staircase itself is a compact straight flight. The mature planting alongside is what makes the scene feel generous — you can build the same stair into a smaller garden with different planting." },
+        { "q": "Can you do this without the ornamental panels?", "a": "Yes — swap the fretwork for plain vertical square balusters or a cable-wire balustrade for a cleaner contemporary look while keeping the same timber build." }
+      ],
+      "safe_for_display_when_user_asks_about": ["garden stairs", "decorative garden staircase", "fretwork balustrade", "ornamental garden design", "evening lit garden stair"],
+      "not_shown_when": ["interior residential staircase", "fire escape", "commercial external stair", "minimalist modern stair"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2011_34_34%20AM.png",
+      "id": "stair_garden_2026_08_15_03",
+      "user_category": "garden",
+      "verified_category": "STAIRCASE_GARDEN",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Contemporary dark-timber garden deck staircase rising from a paved path with mixed-planting borders to a raised entertaining deck with lounge sofa area. Dark stringer + treads, black horizontal cable-wire balustrade between dark timber posts, warm LED step-lights recessed in each riser, hydrangea + white-flower planting either side, pebble mosaic garden inlays. Evening / dusk mood.",
+        "staircase_type": "straight-flight",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "dark-stained-timber-with-cable-balustrade",
+        "materials": ["dark-stained timber treads + stringer", "dark timber newel posts", "black stainless cable-wire balustrade infill", "recessed step lights (per riser)"],
+        "setting": "garden-external-deck",
+        "domain": "STAIRCASE_GARDEN",
+        "style_tags": ["contemporary", "outdoor-living", "cable-balustrade", "evening-lit", "entertaining"],
+        "notable_features": [
+          "black stainless cable-wire balustrade infill (contemporary alternative to spindles)",
+          "warm LED recessed step lights on each riser",
+          "post-cap lights on newel posts",
+          "generous 4-5 board wide flight for two-abreast use",
+          "mixed hydrangea + white-flower + shrub garden borders alongside"
+        ]
+      },
+      "qa": [
+        { "q": "What's the balustrade infill made of?", "a": "Horizontal stainless-steel cable wire tensioned between the timber newel posts. Popular contemporary choice for garden decks — see-through, low-maintenance, weather-resistant." },
+        { "q": "How is it lit?", "a": "Warm LED bullet-lights recessed into every riser, plus post-cap lights on the newels. Sized for path-safety and evening atmosphere, not floodlighting." },
+        { "q": "Would this suit a traditional English cottage?", "a": "The dark timber + cable balustrade language reads contemporary. A traditional cottage would suit warm-brown timber with plain square spindles instead." },
+        { "q": "What's the width?", "a": "Looks around 1300-1500mm across — wide enough for two people abreast. Garden stairs commonly go wider than interior stairs for a more welcoming feel." },
+        { "q": "Is the deck at the top part of the same build?", "a": "Typically yes — a decking contractor builds the raised deck and the staircase up to it as a single project." }
+      ],
+      "safe_for_display_when_user_asks_about": ["garden stairs", "deck stairs", "cable balustrade", "contemporary outdoor stair", "entertaining deck"],
+      "not_shown_when": ["interior staircase", "fire escape", "traditional oak staircase", "commercial external stair"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2011_27_27%20AM.png",
+      "id": "stair_garden_2026_08_15_04",
+      "user_category": "garden",
+      "verified_category": "STAIRCASE_GARDEN",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Warm-brown timber garden staircase rising from a paved patio path to a raised entertaining deck with lounge seating, planter of ornamental grasses and festoon string lights. Timber handrail with slim black vertical balusters between, chunky timber newel posts with LED-lit caps. Uplit trees + shrub borders alongside. Warm dusk lighting mood.",
+        "staircase_type": "straight-flight",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "warm-brown-timber-with-black-balusters",
+        "materials": ["warm-brown timber treads + stringer", "chunky timber newel posts with LED caps", "slim black metal vertical balusters", "timber handrail", "recessed step lights"],
+        "setting": "garden-external-deck",
+        "domain": "STAIRCASE_GARDEN",
+        "style_tags": ["outdoor-living", "entertaining", "warm-dusk", "modern-deck", "family-friendly"],
+        "notable_features": [
+          "chunky timber newel posts with LED-lit caps",
+          "slim black metal vertical balusters (contemporary alternative to timber spindles)",
+          "recessed step lights on each riser",
+          "festoon string lights on upper deck",
+          "raised entertaining deck with sofa lounge above"
+        ]
+      },
+      "qa": [
+        { "q": "What are the balusters made of?", "a": "Slim black-painted metal rods running vertically between timber handrail and base rail. Adds a contemporary contrast against the warm timber." },
+        { "q": "What's on top of the newel posts?", "a": "LED-lit post caps — a fitted lighting accessory that sits over the newel top. Adds evening safety-lighting and atmosphere." },
+        { "q": "Is this deck stair kit-built or bespoke?", "a": "This level of detail (LED caps, recessed step lights, chunky newels) is typically bespoke by a decking contractor rather than a flat-pack kit." },
+        { "q": "How steep is it?", "a": "Looks like a standard garden pitch (around 35 degrees) with 8-10 risers. Comfortable for regular use, not steep." },
+        { "q": "Can we swap the balusters for cable wire?", "a": "Yes — the same stringer + newel build accepts cable balustrade infill instead of vertical rods. Common alternative when maximum openness is wanted." }
+      ],
+      "safe_for_display_when_user_asks_about": ["garden stairs", "deck stairs", "LED newel caps", "warm timber deck stair", "entertaining deck"],
+      "not_shown_when": ["interior staircase", "fire escape", "commercial external stair", "spiral staircase"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2011_05_51%20AM.png",
+      "id": "stair_garden_2026_08_15_05",
+      "user_category": "garden",
+      "verified_category": "STAIRCASE_GARDEN",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Medium-brown timber garden deck staircase from a paved patio to a raised deck with dining table and planter of ornamental grasses. Recessed LED step lights on the stringer (side-mounted, one per tread), warm timber handrail with slim black metal vertical balusters, chunky matching timber newel posts with LED-lit caps. Mixed planting borders. Evening / dusk mood.",
+        "staircase_type": "straight-flight",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "warm-brown-timber-with-black-balusters",
+        "materials": ["warm-brown timber treads + stringer", "chunky timber newel posts with LED caps", "slim black metal vertical balusters", "warm timber handrail", "side-mounted recessed step lights"],
+        "setting": "garden-external-deck",
+        "domain": "STAIRCASE_GARDEN",
+        "style_tags": ["outdoor-living", "dining-deck", "warm-dusk", "modern-deck", "family-friendly"],
+        "notable_features": [
+          "side-mounted recessed step lights on stringer (rather than under-nosing)",
+          "chunky timber newel posts with LED-lit caps",
+          "slim black metal vertical balusters",
+          "wide, generous-tread proportions (comfortable pitch)",
+          "connects paved patio to raised dining deck with planter"
+        ]
+      },
+      "qa": [
+        { "q": "Where are the step lights fitted?", "a": "In this build they are side-mounted into the stringer facia rather than under the nosing — one light per tread. Both mounting positions are common; side-mount avoids water sitting on the fitting." },
+        { "q": "What's at the top of the newel posts?", "a": "LED-lit post caps that give a soft warm glow at handrail height. Fitted as an accessory over the newel top." },
+        { "q": "Is this a good staircase for a family?", "a": "Yes — generous width, vertical balusters at safe spacing, and evening lighting. Handrail height meets typical garden safety expectations." },
+        { "q": "Could this be built in composite decking instead of timber?", "a": "Yes — the same construction pattern works with composite deck boards (Trex, Millboard, etc). Composite lasts longer but costs more upfront." },
+        { "q": "How wide is it?", "a": "Looks around 1200-1300mm — a comfortable two-abreast garden width." }
+      ],
+      "safe_for_display_when_user_asks_about": ["garden stairs", "deck stairs", "side-mounted step lights", "warm timber deck stair", "dining deck"],
+      "not_shown_when": ["interior staircase", "fire escape", "commercial external stair", "spiral staircase"]
+    },
+
+    {
+      "_category_header": "METAL EXTERNAL + FIRE ESCAPES (10 URLs · 10 sample analysed)",
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2001_25_31%20AM.png",
+      "id": "stair_metal_external_2026_08_15_01",
+      "user_category": "metal-external",
+      "verified_category": "STAIRCASE_EXTERNAL_METAL",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Galvanised-steel external access staircase rising to a footbridge platform. Open-grid steel treads with yellow safety-marking nosing strips, tubular vertical balusters with mid-rail and hand-rail, welded I-beam stringers with cross-bracing supports. Public-infrastructure / industrial context — likely a railway or road overpass access.",
+        "staircase_type": "straight-flight",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "galvanised-steel",
+        "materials": ["galvanised steel grid treads", "yellow anti-slip nosing strips", "galvanised tubular balusters", "welded steel stringers", "concrete pad base"],
+        "setting": "external-industrial-public-infrastructure",
+        "domain": "STAIRCASE_EXTERNAL_METAL",
+        "style_tags": ["utility", "public-infrastructure", "compliance-driven", "high-durability", "weatherproof"],
+        "notable_features": [
+          "open-grid treads for drainage and anti-slip",
+          "yellow-marked nosing for visibility (colour-contrast safety compliance)",
+          "double-rail balustrade (handrail + mid-rail) for accessibility",
+          "hot-dip galvanised finish for corrosion resistance",
+          "cross-bracing under landing for structural stability"
+        ]
+      },
+      "qa": [
+        { "q": "What is this staircase for?", "a": "A public-access external stair leading up to a footbridge platform — likely crossing a road or railway. Not a residential product." },
+        { "q": "Is this a fire escape?", "a": "Not specifically — it's a permanent access stair. Fire escapes use similar galvanised construction but usually have a switchback or spiral configuration and are attached to a building facade." },
+        { "q": "Why are the treads yellow?", "a": "Yellow nosing strips provide colour-contrast visibility, a common compliance requirement for public and industrial stairs (DDA / Approved Doc M in the UK)." },
+        { "q": "Would you fabricate a stair like this?", "a": "A metal fabricator specialising in external stairs, fire escapes or public-infrastructure work would build this. A domestic staircase joinery workshop typically wouldn't." },
+        { "q": "What material is it?", "a": "Hot-dip galvanised steel throughout — treads, stringers, balusters and handrails. Galvanising gives long-term corrosion resistance in outdoor exposure." }
+      ],
+      "safe_for_display_when_user_asks_about": ["external metal stair", "fire escape", "industrial access stair", "public infrastructure stair", "compliance stair"],
+      "not_shown_when": ["interior residential staircase", "garden deck stair", "traditional oak staircase", "bespoke home stair"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2010_58_33%20AM.png",
+      "id": "stair_metal_external_2026_08_15_02",
+      "user_category": "metal-external",
+      "verified_category": "STAIRCASE_EXTERNAL_METAL",
+      "cross_tag": "also_relevant_to: STAIRCASE_INTERIOR_INDUSTRIAL (barn / warehouse mezzanine)",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Black-painted steel mezzanine access staircase inside a timber-framed barn / workshop / event-barn interior. Open-grid mesh treads and landing, thin cable-wire horizontal balustrade, welded black steel stringers and support columns. Corrugated metal cladding walls, exposed timber roof rafters, sliding barn doors and pendant industrial lighting throughout — commercial/hospitality interior.",
+        "staircase_type": "straight-flight-to-mezzanine-landing",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "black-painted-steel",
+        "materials": ["black-painted steel stringers", "open-grid mesh treads", "steel mezzanine landing", "horizontal cable-wire balustrade infill", "exposed timber-framed structure (context)"],
+        "setting": "interior-industrial-barn-mezzanine",
+        "domain": "STAIRCASE_EXTERNAL_METAL",
+        "style_tags": ["industrial", "barn-conversion", "warehouse", "mezzanine-access", "commercial-hospitality"],
+        "notable_features": [
+          "open-grid mesh treads for anti-slip",
+          "horizontal cable-wire balustrade (industrial vernacular)",
+          "welded black steel stringers with cross-brace at underside",
+          "connects ground floor to mezzanine landing",
+          "sits inside timber-framed barn / warehouse / event-barn shell"
+        ]
+      },
+      "qa": [
+        { "q": "Is this stair inside or outside?", "a": "Inside — it's a mezzanine access stair inside a barn / warehouse interior. The build style is the same as an external metal stair which is why it lives in this brain, but it's under a roof." },
+        { "q": "What's on the treads?", "a": "Open-grid welded steel mesh — anti-slip, self-draining, industrial standard. Same construction as external walkway grating." },
+        { "q": "What's the balustrade infill?", "a": "Horizontal cable-wire between welded steel posts — a common industrial / barn-conversion detail that keeps sightlines open." },
+        { "q": "Who would build this?", "a": "A structural metal fabricator specialising in mezzanine and industrial stairs. Not a domestic joinery workshop." },
+        { "q": "Is this compliant for public use?", "a": "The visible detailing looks industrial-grade. For public access (commercial, hospitality) it would need to meet local Building Regs for handrail height, tread pitch, riser height and colour-contrast nosing." }
+      ],
+      "safe_for_display_when_user_asks_about": ["mezzanine access stair", "industrial staircase", "barn conversion stair", "warehouse stair", "cable balustrade metal stair"],
+      "not_shown_when": ["traditional oak staircase", "garden deck stair", "residential curved stair", "family home stair"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2001_21_39%20AM.png",
+      "id": "stair_metal_external_2026_08_15_03",
+      "user_category": "metal-external",
+      "verified_category": "STAIRCASE_EXTERNAL_METAL",
+      "cross_tag": "also_relevant_to: STAIRCASE_GARDEN (mixed use — external residential garden access with metal frame)",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Exterior garden staircase rising through a landscaped retaining-wall garden, connecting a gravel path to an upper terrace. Warm-timber treads on a black-painted steel frame, black cable-wire balustrade infill, wall-mounted uplights on the timber cladding wall alongside, warm LED step lighting recessed in each riser. Ornamental grasses, ferns and potted planting alongside stringer. Evening / dusk mood.",
+        "staircase_type": "straight-flight",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "timber-treads-on-black-steel-frame",
+        "materials": ["warm-timber treads", "black-painted steel stringer + posts", "black stainless cable-wire balustrade", "warm LED step lighting", "wall-mounted uplights (context)"],
+        "setting": "garden-external-retained-slope",
+        "domain": "STAIRCASE_EXTERNAL_METAL",
+        "style_tags": ["contemporary-garden", "hybrid-metal-timber", "sloped-garden", "warm-evening", "landscape-integrated"],
+        "notable_features": [
+          "hybrid construction — timber treads on black steel frame",
+          "cable-wire balustrade infill between black steel posts",
+          "warm LED step lighting recessed in each riser",
+          "wall-mounted uplights on adjacent timber cladding",
+          "landscape-integrated with grasses + ferns + potted planting alongside"
+        ]
+      },
+      "qa": [
+        { "q": "Is this garden or metal-external?", "a": "Hybrid — it's a garden staircase with an all-timber tread finish but a black metal structural frame and cable balustrade. Sits between the garden-deck and pure-metal categories and appears in both retrieval sets." },
+        { "q": "Why the metal frame?", "a": "For a sloped garden with a retaining wall, a metal frame is easier to level and anchor into the slope than an all-timber stringer, and it's slimmer visually." },
+        { "q": "What lights the steps?", "a": "Warm LED step lights recessed into each riser, plus wall-mounted uplights on the timber cladding alongside for wash-light on the plantings." },
+        { "q": "Would this suit a level garden?", "a": "The build is designed for a change in level (a raised terrace above a lower garden). On a level garden a much simpler ground-level path is normally the right answer." },
+        { "q": "Who builds this?", "a": "A landscaper working with a metal fabricator — the metalwork is fabricated to survey, the timber treads and planting are landscape-side." }
+      ],
+      "safe_for_display_when_user_asks_about": ["garden stairs", "metal-frame garden stair", "sloped garden access", "cable balustrade external", "retained slope stair"],
+      "not_shown_when": ["interior staircase", "fire escape", "commercial industrial stair", "traditional oak staircase"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2001_18_13%20AM.png",
+      "id": "stair_metal_external_2026_08_15_04",
+      "user_category": "metal-external",
+      "verified_category": "STAIRCASE_EXTERNAL_METAL",
+      "cross_tag": "also_relevant_to: STAIRCASE_GARDEN (external residential premium)",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Premium external garden staircase in a residential setting — warm-timber treads on a slim black-painted steel frame with vertical cable / thin-rod balustrade infill. Warm LED step lights recessed on both sides of each tread, retaining-wall planting beds either side with ornamental grasses and shrubs, mature tree uplit in background. Evening / twilight mood.",
+        "staircase_type": "straight-flight",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "timber-treads-on-black-steel-frame",
+        "materials": ["warm-timber treads", "slim black-painted steel stringer + posts", "black steel cable / thin-rod balustrade", "warm LED step lights (both sides)", "concrete-block retaining walls (context)"],
+        "setting": "garden-external-residential-premium",
+        "domain": "STAIRCASE_EXTERNAL_METAL",
+        "style_tags": ["contemporary-garden", "hybrid-metal-timber", "warm-evening", "landscape-integrated", "premium-residential"],
+        "notable_features": [
+          "warm LED step lights on both sides of each tread",
+          "slim black steel frame minimising visual mass",
+          "cable / thin-rod balustrade infill",
+          "landscape-integrated retaining walls with mixed planting",
+          "mature uplit tree as background focal element"
+        ]
+      },
+      "qa": [
+        { "q": "How is this different from a pure timber deck stair?", "a": "The structure is a black steel frame with timber treads laid on top, rather than timber stringers. Slimmer visually and easier to level on a sloped site with retaining walls." },
+        { "q": "What are the small lights on each step?", "a": "Warm LED recessed step lights, positioned on the stringer edges — this build has one on each side of every tread for even wash-light." },
+        { "q": "Would this suit a UK garden?", "a": "Yes — the hybrid metal + timber build is common in UK premium garden renovation, particularly on sites with a change in level and retaining walls." },
+        { "q": "How much maintenance?", "a": "Timber treads may need re-oiling annually depending on exposure; the powder-coated steel frame is low-maintenance; LEDs are typically 10-year life." },
+        { "q": "What's the balustrade for safety?", "a": "The visible thin rods / cable meet close-spacing rules for the sphere-passage safety test typical of external stairs. Handrail height is set to the local Building Regs for the drop." }
+      ],
+      "safe_for_display_when_user_asks_about": ["garden stairs", "hybrid metal timber stair", "premium residential garden", "step lighting", "sloped garden access"],
+      "not_shown_when": ["interior staircase", "fire escape", "commercial industrial stair", "traditional oak staircase"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2012_38_21%20AM.png",
+      "id": "stair_metal_external_2026_08_15_05",
+      "user_category": "metal-external",
+      "verified_category": "STAIRCASE_EXTERNAL_METAL",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Commercial external metal staircase connecting the first-floor entrance of a modern black-clad commercial / office building to an upper walkway. Powder-coated dark grey steel throughout — open-grid mesh treads, tubular vertical balusters between two-rail balustrade, welded angled stringers, matching upper walkway platform with balustrade continuing along. Blue sky, paved commercial forecourt, planted young trees along path.",
+        "staircase_type": "straight-flight-with-connecting-walkway",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "powder-coated-dark-grey-steel",
+        "materials": ["powder-coated dark grey steel stringers + posts", "open-grid mesh treads", "tubular vertical balusters", "top and mid rails", "matching walkway platform above"],
+        "setting": "external-commercial-office",
+        "domain": "STAIRCASE_EXTERNAL_METAL",
+        "style_tags": ["commercial", "office-park", "compliance-driven", "modern-industrial", "weatherproof"],
+        "notable_features": [
+          "connects commercial first-floor entrance to elevated walkway",
+          "open-grid mesh treads for drainage and anti-slip",
+          "tubular vertical balusters (safety-compliant close spacing)",
+          "matching upper walkway with continuous balustrade",
+          "powder-coated dark grey finish rather than plain galvanised"
+        ]
+      },
+      "qa": [
+        { "q": "Is this a fire escape?", "a": "No — it's a permanent external access stair between the paved forecourt and the first-floor commercial entrance. Fire escapes typically zigzag down a building facade rather than sitting alongside a walkway." },
+        { "q": "Why powder-coated instead of galvanised?", "a": "For commercial architecture, dark grey powder-coat matches building cladding and reads more finished. Galvanised is bare industrial finish; powder-coat is applied over galvanising for both corrosion protection and colour." },
+        { "q": "Who fabricates this?", "a": "Structural metal fabricators who work with commercial architects. Not a domestic staircase joinery workshop." },
+        { "q": "Is this DDA / accessible?", "a": "Only if there is a parallel level-access or lift route. A stair alone is not accessible; it must be complemented by a compliant lift or ramp on a commercial building." },
+        { "q": "What are the treads made of?", "a": "Open welded steel mesh grating — anti-slip when wet, self-draining, and the industry-standard for external commercial stairs." }
+      ],
+      "safe_for_display_when_user_asks_about": ["external metal stair", "commercial external access", "office building stair", "powder-coated steel stair", "walkway stair"],
+      "not_shown_when": ["interior residential staircase", "garden deck stair", "traditional oak staircase", "domestic bespoke stair"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2012_37_43%20AM.png",
+      "id": "stair_metal_external_2026_08_15_06",
+      "user_category": "metal-external",
+      "verified_category": "STAIRCASE_EXTERNAL_METAL",
+      "cross_tag": "also_relevant_to: STAIRCASE_INTERIOR_INDUSTRIAL (mezzanine access inside warehouse)",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Interior warehouse / industrial mezzanine access staircase — dark powder-coated steel throughout with diamond-plate (chequer-plate) treads, welded steel stringers, tubular vertical balusters with two-rail balustrade continuing along the mezzanine landing above. Warehouse floor with polished concrete, overhead crane rail and industrial pendant lighting visible in background.",
+        "staircase_type": "straight-flight-to-mezzanine-landing",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "powder-coated-dark-grey-steel",
+        "materials": ["powder-coated dark grey steel stringers + posts", "diamond-plate (chequer-plate) steel treads", "tubular vertical balusters", "top and mid rails", "mezzanine landing platform"],
+        "setting": "interior-industrial-warehouse-mezzanine",
+        "domain": "STAIRCASE_EXTERNAL_METAL",
+        "style_tags": ["industrial", "warehouse-mezzanine", "compliance-driven", "heavy-duty", "commercial-workshop"],
+        "notable_features": [
+          "diamond-plate (chequer-plate) treads rather than open grid",
+          "connects warehouse floor to mezzanine office / storage above",
+          "tubular vertical balusters (safety-compliant close spacing)",
+          "matching mezzanine landing with continuous balustrade",
+          "heavy-duty build for regular commercial use"
+        ]
+      },
+      "qa": [
+        { "q": "Why chequer-plate not mesh?", "a": "Chequer-plate treads are more common for interior industrial where drainage isn't needed. Mesh is used outdoors so rain drains through; indoors the raised diamond pattern is enough for anti-slip." },
+        { "q": "What's this staircase for?", "a": "Access to a mezzanine level inside a warehouse — typically an office, storage or overseer space above the main floor." },
+        { "q": "Would you find this in a home?", "a": "No — this is a commercial / industrial build. Some barn-conversion homes use similar language but the finish and detail here are commercial-grade." },
+        { "q": "Who supplies this?", "a": "A mezzanine specialist or structural metal fabricator, often as part of a full mezzanine floor package rather than a standalone stair." },
+        { "q": "How heavy a load can it take?", "a": "Industrial mezzanine stairs are typically designed for 5 kN/m² live load. Different from a domestic stair which is designed for 1.5 kN/m². Actual load rating always confirmed by the structural engineer." }
+      ],
+      "safe_for_display_when_user_asks_about": ["mezzanine access stair", "industrial staircase", "warehouse mezzanine", "chequer plate steel stair", "commercial stair"],
+      "not_shown_when": ["traditional oak staircase", "garden deck stair", "residential curved stair", "family home stair"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2012_32_01%20AM.png",
+      "id": "stair_metal_external_2026_08_15_07",
+      "user_category": "metal-external",
+      "verified_category": "STAIRCASE_EXTERNAL_METAL",
+      "sub_context": "fire-escape",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Multi-storey exterior fire escape / access staircase attached to a cream / buff brick building. Three switchback flights of black-painted steel connected by intermediate landings that access each floor's door. Vertical tubular balusters with top rail, painted black steel stringers, cast steel base plates bolted to concrete pad. Blue sky, clean daytime light.",
+        "staircase_type": "multi-flight-switchback-facade",
+        "direction": "up",
+        "flights": 3,
+        "primary_material": "black-painted-steel",
+        "materials": ["black-painted steel stringers + posts", "black-painted steel treads (perforated or plain)", "vertical tubular balusters", "steel landings at each floor", "cast steel base plates + bolts (context)"],
+        "setting": "external-commercial-multi-storey-facade",
+        "domain": "STAIRCASE_EXTERNAL_METAL",
+        "style_tags": ["fire-escape", "multi-storey", "commercial-facade", "compliance-driven", "urban"],
+        "notable_features": [
+          "three switchback flights connecting three floor-level landings",
+          "landings sized to allow a door to swing outward",
+          "tubular vertical balusters at code-compliant spacing",
+          "attached to brick facade with steel wall brackets + landing supports",
+          "black paint finish over galvanised base for aesthetic + protection"
+        ]
+      },
+      "qa": [
+        { "q": "Is this a fire escape?", "a": "Yes — the switchback configuration alongside a multi-storey facade with a landing at each floor level is characteristic of an external fire-escape stair." },
+        { "q": "Why switchback rather than straight?", "a": "Switchback flights save footprint — they zigzag up and down within a narrow strip against the building rather than running straight out from it. Standard fire-escape geometry." },
+        { "q": "How is it fixed to the building?", "a": "The landings are bolted through wall brackets embedded in the brickwork, and the base of the stair sits on a concrete pad with cast-steel base plates. A structural engineer sizes the connections." },
+        { "q": "Who builds this?", "a": "A structural metal fabricator specialising in fire escapes and external access stairs — this is not a domestic joinery product." },
+        { "q": "Is it compliant?", "a": "Compliance depends on jurisdiction. UK Building Regs Approved Doc B covers escape stair widths, headroom, landing sizes, guarding and non-combustible construction. A local building control officer signs off." }
+      ],
+      "safe_for_display_when_user_asks_about": ["fire escape", "external access stair", "multi storey stair", "switchback stair", "commercial escape"],
+      "not_shown_when": ["interior residential staircase", "garden deck stair", "traditional oak staircase", "bespoke home stair"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2012_32_14%20AM.png",
+      "id": "stair_metal_external_2026_08_15_08",
+      "user_category": "metal-external",
+      "verified_category": "STAIRCASE_EXTERNAL_METAL",
+      "sub_context": "fire-escape",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Multi-storey exterior fire escape / access staircase attached to a red-brick apartment or loft building. Three switchback flights of black-painted steel with open-grid mesh treads, landings at each floor accessing exterior doors, tubular vertical balusters with top rail, welded steel stringers and support columns. Exterior wall-lights above each door. Evening / blue-hour mood with warm building lights spilling from windows.",
+        "staircase_type": "multi-flight-switchback-facade",
+        "direction": "up",
+        "flights": 3,
+        "primary_material": "black-painted-steel",
+        "materials": ["black-painted steel stringers + posts", "open-grid mesh treads", "vertical tubular balusters", "steel landings at each floor", "wall-mounted exterior door lights (context)"],
+        "setting": "external-residential-multi-storey-facade",
+        "domain": "STAIRCASE_EXTERNAL_METAL",
+        "style_tags": ["fire-escape", "multi-storey", "residential-facade", "evening-lit", "urban-loft"],
+        "notable_features": [
+          "three switchback flights connecting three floor-level landings",
+          "open-grid mesh treads for drainage and anti-slip",
+          "tubular vertical balusters at code-compliant spacing",
+          "landings sized to allow doors to swing outward",
+          "wall-mounted lights above each door — safety egress lighting"
+        ]
+      },
+      "qa": [
+        { "q": "Is this a fire escape?", "a": "Yes — same switchback multi-storey configuration as the classic urban fire escape / secondary access stair. This one serves what looks like a residential loft or apartment conversion." },
+        { "q": "Why mesh treads instead of solid?", "a": "Mesh drains rain rather than pooling water — critical for outdoor use where slip risk is higher when wet. Solid treads are used indoors where drainage isn't needed." },
+        { "q": "How much does one cost?", "a": "Fire escapes are heavily specification-dependent — number of storeys, load rating, finish, fixing method. A three-storey escape typically ranges from mid-five to low-six figures fitted, subject to survey and structural sign-off." },
+        { "q": "Is it safe in a fire?", "a": "Non-combustible construction (steel) with wall lights and code-compliant landings, tread pitch, balustrade heights. A fire safety consultant reviews for the building's occupancy and escape plan." },
+        { "q": "Who paints and maintains it?", "a": "Powder-coating gives 10-15 years' finish life. After that, periodic touch-up and eventual re-paint by a specialist coatings contractor keeps the steel protected." }
+      ],
+      "safe_for_display_when_user_asks_about": ["fire escape", "external residential escape", "loft apartment fire escape", "switchback stair", "mesh tread stair"],
+      "not_shown_when": ["interior residential staircase", "garden deck stair", "traditional oak staircase", "bespoke home stair"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2012_29_33%20AM.png",
+      "id": "stair_metal_external_2026_08_15_09",
+      "user_category": "metal-external",
+      "verified_category": "STAIRCASE_EXTERNAL_METAL",
+      "sub_context": "product-marketing-collage",
+      "asset_type": "marketing-composite-spec-sheet",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Five-panel marketing composite for an external residential access staircase — main photo shows a black powder-coated steel stair rising to a first-floor apartment / annexe balcony walkway with open-grid mesh treads, tubular vertical balusters, and matching balcony guarding. Four detail-panel insets on the right cover perspective view, handrail close-up, tread grip pattern and base-plate fixing. Bottom-left overlay lists four spec bullets: DURABLE & WEATHER RESISTANT · ANTI-SLIP OPEN TREADS · STRONG & SECURE · LOW MAINTENANCE.",
+        "staircase_type": "straight-flight-to-first-floor-walkway",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "powder-coated-black-steel",
+        "materials": ["powder-coated black steel stringers + posts", "open-grid mesh treads", "tubular vertical balusters", "cast steel base plates + bolts", "matching balcony walkway guarding"],
+        "setting": "external-residential-first-floor-access",
+        "domain": "STAIRCASE_EXTERNAL_METAL",
+        "style_tags": ["product-marketing", "spec-sheet", "residential-access", "powder-coated", "compliance-driven"],
+        "notable_features": [
+          "5-panel composite (main view + 4 detail insets)",
+          "spec-bullet overlay: durable / anti-slip / strong / low-maintenance",
+          "matching upper balcony walkway (part of the same fabrication)",
+          "base-plate detail visible (welded plate + through-bolts to concrete pad)",
+          "asset type is marketing composite — NOT a scenic reference image"
+        ]
+      },
+      "qa": [
+        { "q": "Is this a real staircase or a marketing image?", "a": "Both — it's a real design of an external residential access stair, but the image is a composite marketing / spec sheet with detail insets and text overlays, not a scenic reference photo." },
+        { "q": "Who is this staircase for?", "a": "External first-floor access — for example an annexe entrance, granny-flat, home office, or a rear-of-property upstairs door. Also common on holiday-let coach houses." },
+        { "q": "What does 'anti-slip open treads' mean?", "a": "The treads are an open steel mesh pattern with raised nodules — grip in dry and wet, plus water drains through rather than pooling. Standard external-metal-stair spec." },
+        { "q": "Would you build this style?", "a": "External access-stair fabricators build exactly this style. It's a common residential / semi-commercial product with straight-flight, first-floor-height, code-compliant balustrade." },
+        { "q": "Can we use this exact image on our site?", "a": "It's a marketing composite from a supplier. It goes into the NEX brain as a reference of what a supplier's spec-sheet looks like, but the trade would use their own photography on their own site." }
+      ],
+      "safe_for_display_when_user_asks_about": ["external residential access stair", "first floor access", "annexe stair", "powder coated steel stair", "spec sheet reference"],
+      "not_shown_when": ["interior residential staircase", "garden deck stair", "traditional oak staircase", "public infrastructure stair"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2012_28_56%20AM.png",
+      "id": "stair_metal_external_2026_08_15_10",
+      "user_category": "metal-external",
+      "verified_category": "STAIRCASE_EXTERNAL_METAL",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "External residential access staircase rising from a paved courtyard to a first-floor balcony walkway. Powder-coated black steel throughout — stringers, posts and balustrade. Open-grid mesh treads, tubular vertical balusters between two-rail balustrade. Modern dark-grey clapboard-clad two-storey house / annexe, wall-mounted spot-lights above each door on the walkway. Small landscape planting alongside the base. Evening / dusk mood with wet-looking concrete underfoot.",
+        "staircase_type": "straight-flight-to-first-floor-walkway",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "powder-coated-black-steel",
+        "materials": ["powder-coated black steel stringers + posts", "open-grid mesh treads", "tubular vertical balusters", "cast steel base plates", "matching first-floor walkway balustrade"],
+        "setting": "external-residential-first-floor-access",
+        "domain": "STAIRCASE_EXTERNAL_METAL",
+        "style_tags": ["residential-access", "modern-cladding", "evening-lit", "annexe-access", "powder-coated"],
+        "notable_features": [
+          "connects paved courtyard to first-floor entrance / walkway",
+          "open-grid mesh treads for drainage and anti-slip",
+          "matching first-floor walkway balustrade (same fabrication)",
+          "wall-mounted spot lights above each door",
+          "small landscape planting integrated at base"
+        ]
+      },
+      "qa": [
+        { "q": "What is this staircase for?", "a": "External access to a first-floor entrance — typically an annexe, granny flat, coach-house apartment or upstairs office. Common in coach-house-style properties." },
+        { "q": "How is the walkway supported?", "a": "The walkway platform sits on steel outriggers bolted through the building wall and supported by vertical columns from the paved courtyard below. Structural engineer sizes the loading." },
+        { "q": "Is this the same as a fire escape?", "a": "Same construction language but a different purpose — this is a permanent main access, not a secondary escape route. Fire escapes typically switchback across a facade rather than sitting alongside a single walkway." },
+        { "q": "How wide is it?", "a": "External residential access stairs are typically 900-1000mm clear width — narrower than a garden entertaining stair. The mesh tread width in this image looks around 900mm." },
+        { "q": "Can it be a different colour?", "a": "Yes — powder-coating comes in almost any RAL colour. Anthracite and RAL 9005 (jet black) are the popular residential choices; other colours are on request." }
+      ],
+      "safe_for_display_when_user_asks_about": ["external residential access stair", "first floor access", "annexe stair", "powder coated steel stair", "modern coach house"],
+      "not_shown_when": ["interior residential staircase", "garden deck stair", "traditional oak staircase", "public infrastructure stair"]
+    },
+
+    {
+      "_category_header": "MIXED-UNCERTAIN (7 URLs · Philip flagged as possibly garden · TRIAGE 2026-08-15: ALL 7 confirmed INTERIOR staircases; 6 are dual-purpose stair-tread-rug product photography · 1 is a plain interior staircase)",
+      "url": "https://ik.imagekit.io/5vv5pw26q/Untitledfsdfsdfdsfsdfdfrer.png",
+      "id": "stair_mixed_2026_08_15_01",
+      "user_category": "mixed-uncertain",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "analysis_status": "sample-analysed",
+      "verification_note": "Philip flagged this set as possibly garden — triage 2026-08-15 confirmed ALL 7 entries are interior staircases, not garden. This one is a plain interior residential staircase.",
+      "analysis": {
+        "description": "Interior straight-flight residential staircase with oak treads, curved (bullnose) starting step and black-painted square balusters. Grey/charcoal carpet-covered stair pads on each tread. Oak newel post at bottom, wall-mounted framed forest artwork alongside. Hallway with mirror and console table visible behind, oak floor throughout.",
+        "staircase_type": "straight-flight",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "oak-with-black-balusters",
+        "materials": ["oak treads", "white-painted risers", "black-painted square balusters", "oak handrail", "oak newel post", "charcoal carpet stair pads"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["contemporary-craftsman", "hallway", "family-home", "warm-modern"],
+        "notable_features": [
+          "curved bullnose starting step with sweeping profile",
+          "black balusters against oak handrail — high-contrast contemporary detail",
+          "charcoal carpet stair pads on oak treads (protection + acoustic softening)",
+          "recessed under-tread LED lighting visible on each riser",
+          "framed art gallery alongside the flight"
+        ]
+      },
+      "qa": [
+        { "q": "Is this a garden staircase?", "a": "No — this is an interior residential staircase in a home hallway, despite being flagged 'uncertain'. The oak floor, console table, framed wall art and hallway mirror confirm interior use." },
+        { "q": "What's on the steps?", "a": "Charcoal carpet stair pads placed on each oak tread — used both for grip and to soften footfall noise. They can be lifted off the underlying tread." },
+        { "q": "Why are the balusters black?", "a": "It's a contemporary contrast choice — black balusters against oak handrail and newel is a popular current craftsman look. Structurally identical to natural-finish balusters." },
+        { "q": "Is that bottom step curved?", "a": "Yes — a bullnose starting step with a sweeping profile. It welcomes visitors and gives a decorative anchor to the base of the flight." },
+        { "q": "Does the wall lighting come with the staircase?", "a": "The under-tread LED strips are a stair-build item. The wall-mounted framed art is a decorator choice, not part of the staircase package." }
+      ],
+      "safe_for_display_when_user_asks_about": ["interior staircase", "oak staircase", "contemporary craftsman", "black baluster", "bullnose starting step", "carpet stair pads"],
+      "not_shown_when": ["garden stairs", "external stairs", "fire escape", "spiral staircase"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2013,%202026,%2011_13_21%20PM.png",
+      "id": "stair_mixed_2026_08_15_02",
+      "user_category": "mixed-uncertain",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "sub_context": "stair-tread-rug-product-photography",
+      "analysis_status": "sample-analysed",
+      "verification_note": "Interior straight-flight staircase used as backdrop for stair-tread-pad product photography. Dual-purpose asset: interior staircase reference + stair-tread-rug product reference.",
+      "analysis": {
+        "description": "Interior straight-flight residential staircase with oak treads, white-painted risers, oak square newel post and black square vertical balusters against a white wall. Curved (bullnose) starting step at bottom. Dark-charcoal boucle stair-tread pads placed on every tread and a matching mat on the bottom bullnose step. Wall art gallery of three framed forest prints alongside. Hallway with mirror and console table behind, warm oak floor.",
+        "staircase_type": "straight-flight",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "oak-with-black-balusters",
+        "materials": ["oak treads", "white-painted risers", "black-painted square balusters", "oak handrail", "oak square newel post", "charcoal boucle stair-tread pads (product)"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["contemporary-craftsman", "hallway", "product-photography", "family-home", "warm-modern"],
+        "notable_features": [
+          "curved bullnose starting step with matching bullnose stair pad",
+          "black balusters against oak handrail (high-contrast contemporary detail)",
+          "charcoal boucle stair-tread pads on every tread — the featured product",
+          "recessed step lights visible under the nosings",
+          "framed forest-print gallery alongside the flight"
+        ]
+      },
+      "qa": [
+        { "q": "Is this a garden staircase?", "a": "No — this is an interior residential straight staircase. The bookshelves, console table, framed art and hallway mirror confirm interior use." },
+        { "q": "What are the dark shapes on the steps?", "a": "Stair-tread rug pads — a product placed on each tread for grip, comfort and noise softening. They're removable and not part of the staircase build." },
+        { "q": "Do you sell these stair pads?", "a": "The staircase itself is built by the joiner. The stair pads are a separate product available from soft-furnishings retailers; some staircase companies do also offer them as an add-on." },
+        { "q": "Are the balusters black metal or painted timber?", "a": "This looks like painted square timber balusters — a common way to get a black-metal look at lower cost. Metal versions are also available." },
+        { "q": "Is that bottom step curved?", "a": "Yes — a bullnose starting step with a shaped tread pad on top. The bullnose softens the entry to the flight." }
+      ],
+      "safe_for_display_when_user_asks_about": ["interior staircase", "stair tread pads", "stair rug pads", "contemporary craftsman", "black baluster", "bullnose starting step"],
+      "not_shown_when": ["garden stairs", "external stairs", "fire escape", "spiral staircase"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2013,%202026,%2011_07_45%20PM.png",
+      "id": "stair_mixed_2026_08_15_03",
+      "user_category": "mixed-uncertain",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "sub_context": "stair-tread-rug-product-photography",
+      "analysis_status": "sample-analysed",
+      "verification_note": "Same interior staircase / same product line as _02 — long-flight variant. Interior straight staircase, not garden.",
+      "analysis": {
+        "description": "Interior straight-flight residential staircase (longer flight than _02) with oak treads, white-painted risers, oak newel post and black square vertical balusters. Curved (bullnose) starting step. Black boucle stair-tread pads on every tread. Wall art gallery of framed forest prints alongside. Hallway with mirror and console table visible behind.",
+        "staircase_type": "straight-flight-long",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "oak-with-black-balusters",
+        "materials": ["oak treads", "white-painted risers", "black-painted square balusters", "oak handrail", "oak square newel post", "black boucle stair-tread pads (product)"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["contemporary-craftsman", "hallway", "product-photography", "family-home", "warm-modern"],
+        "notable_features": [
+          "long straight flight — around 14 risers visible",
+          "curved bullnose starting step with matching bullnose pad",
+          "black balusters against oak handrail",
+          "black boucle stair-tread pads on every tread — the featured product",
+          "framed forest-print gallery alongside the flight"
+        ]
+      },
+      "qa": [
+        { "q": "How is this different from the previous one?", "a": "Same house and same product line — this is the longer full-flight variant of the shorter view. Useful for reference of how the stair-pad product looks on a long flight." },
+        { "q": "How many treads is this?", "a": "Around 14 visible from bottom to top — typical for a domestic ground-to-first-floor flight." },
+        { "q": "Are the pads a fixed carpet or removable?", "a": "Removable — they sit on top of the tread rather than being glued or stapled. Easy to lift, replace or take with you when moving." },
+        { "q": "Would you install a stair like this?", "a": "The staircase is a straightforward domestic straight flight — oak treads, white risers, black square balusters, bullnose starting step. Most joinery workshops build variants of this every week." },
+        { "q": "What's the height of the flight?", "a": "Around 2.6-2.9m rise for a standard modern domestic floor-to-floor height. The pitch reads standard (35-38 degrees)." }
+      ],
+      "safe_for_display_when_user_asks_about": ["interior staircase", "long straight staircase", "stair tread pads", "contemporary craftsman", "black baluster"],
+      "not_shown_when": ["garden stairs", "external stairs", "fire escape", "spiral staircase"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2013,%202026,%2010_18_30%20PM.png",
+      "id": "stair_mixed_2026_08_15_04",
+      "user_category": "mixed-uncertain",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "sub_context": "stair-tread-rug-product-photography",
+      "analysis_status": "sample-analysed",
+      "verification_note": "Interior straight-flight staircase used as backdrop for brown-leaf-motif stair-tread pad product photography. Interior residential, not garden.",
+      "analysis": {
+        "description": "Interior straight-flight residential staircase with oak treads, white-painted risers, oak newel post and black square vertical balusters against a white wall. Brown boucle stair-tread pads with a printed leaf motif and small brand-name text on each pad, matching leaf-motif door mat at the base. Wall art of framed forest prints alongside. Warm oak floor, hallway visible behind with mirror and console table.",
+        "staircase_type": "straight-flight",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "oak-with-black-balusters",
+        "materials": ["oak treads", "white-painted risers", "black-painted square balusters", "oak handrail", "oak newel post", "brown boucle leaf-motif stair-tread pads (product)"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["contemporary-craftsman", "hallway", "product-photography", "botanical", "family-home"],
+        "notable_features": [
+          "brown boucle stair-tread pads with printed leaf motif and small brand text",
+          "matching leaf-motif door mat at base of flight",
+          "recessed step lights on each riser",
+          "same underlying oak + black-baluster staircase as _02 and _03",
+          "botanical / natural product styling"
+        ]
+      },
+      "qa": [
+        { "q": "Is this a garden staircase?", "a": "No — same interior home as the other stair-tread-pad product shots, just with a different colour and pattern of stair pad." },
+        { "q": "What's the leaf pattern?", "a": "A printed botanical motif on the brown boucle pad — a design variant of the stair-tread pad product. There's also small brand-name text on each pad." },
+        { "q": "Does the doormat come with the stair pads?", "a": "It's a matching-print product from the same range — sold as an option to coordinate the entry and the flight. Not a required buy." },
+        { "q": "Can we use images with brand text on them?", "a": "They're fine as interior-staircase reference but if the brand text is visible they should be treated as third-party product photography and NOT used as a trade wallpaper or marketing hero." },
+        { "q": "Is the staircase itself branded or generic?", "a": "The staircase is a generic contemporary-craftsman oak + black-baluster build. Any joinery workshop can build it. The stair pads are the branded product on top." }
+      ],
+      "safe_for_display_when_user_asks_about": ["interior staircase", "stair tread pads", "botanical stair pads", "contemporary craftsman", "black baluster"],
+      "not_shown_when": ["garden stairs", "external stairs", "fire escape", "spiral staircase"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2013,%202026,%2009_56_36%20PM.png",
+      "id": "stair_mixed_2026_08_15_05",
+      "user_category": "mixed-uncertain",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "sub_context": "stair-tread-rug-product-photography",
+      "analysis_status": "sample-analysed",
+      "verification_note": "Interior contemporary staircase with glass balustrade used as backdrop for jute-look stair-tread pad product photography. Interior, not garden.",
+      "analysis": {
+        "description": "Contemporary interior straight-flight residential staircase with oak treads, white-painted risers, oak square newel post and full glass balustrade panels. Woven jute / sisal-look stair-tread pads on every tread, matching jute runner at the base of the flight. Wall gallery of framed abstract prints alongside. Warm oak floor, hallway with black console table and pendant lighting.",
+        "staircase_type": "straight-flight",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "oak-with-glass-balustrade",
+        "materials": ["oak treads", "white-painted risers", "oak square newel post", "clear glass balustrade panels", "oak handrail", "woven jute / sisal-look stair-tread pads (product)"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["contemporary", "glass-balustrade", "product-photography", "warm-modern", "natural-fibre"],
+        "notable_features": [
+          "full clear-glass balustrade panels with oak top-rail",
+          "woven jute / sisal-look stair-tread pads (natural-fibre finish)",
+          "matching jute runner at base of flight",
+          "recessed step lights on each riser",
+          "abstract framed art gallery alongside"
+        ]
+      },
+      "qa": [
+        { "q": "Is this the same house as the other pads?", "a": "No — this one has a glass balustrade rather than black balusters, so a different property or a different room in the same product-shoot set. Both are interior residential." },
+        { "q": "What are the pads made of?", "a": "Woven jute or sisal (natural fibre) — a warm, textural stair-pad option. Softer underfoot than boucle, and coordinates with jute rugs." },
+        { "q": "Does the balustrade need cleaning?", "a": "Yes — clear glass shows fingerprints and dust readily. Most owners wipe it every couple of weeks; the alternative is smoked / bronze-tinted glass which hides marks better." },
+        { "q": "Can the stair pads be fixed down?", "a": "Some products come with grip backing that stays in place without adhesive; some can be double-sided taped for busier households. Fully-fitted stair carpet is a different product (professionally installed)." },
+        { "q": "Does the runner match the pads?", "a": "Yes — the woven jute base runner is a coordinating piece from the same product range, sold as a matching set." }
+      ],
+      "safe_for_display_when_user_asks_about": ["interior staircase", "glass balustrade", "stair tread pads", "jute stair pads", "contemporary residential"],
+      "not_shown_when": ["garden stairs", "external stairs", "fire escape", "spiral staircase"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2013,%202026,%2009_36_31%20PM.png",
+      "id": "stair_mixed_2026_08_15_06",
+      "user_category": "mixed-uncertain",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "sub_context": "stair-tread-rug-product-photography",
+      "analysis_status": "sample-analysed",
+      "verification_note": "Traditional interior staircase with turned oak newel used as backdrop for dark carpet-pad product photography. Interior, not garden.",
+      "analysis": {
+        "description": "Traditional interior straight-flight residential staircase with oak treads, white-painted risers, a large turned oak newel post at the base and slim turned wood spindles between white handrail and base rail. Curved bullnose starting step. Dark charcoal woven stair-tread pads on every tread. Recessed step lights on each riser. Framed art alongside, oak floor with dark rug at base, hallway with console table and mirror visible behind.",
+        "staircase_type": "straight-flight",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "oak-with-turned-spindles",
+        "materials": ["oak treads", "white-painted risers", "slim turned wood spindles", "oak handrail", "large turned oak newel post", "curved bullnose starting step", "charcoal woven stair-tread pads (product)"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["traditional", "period-home", "product-photography", "warm-modern", "family-home"],
+        "notable_features": [
+          "large turned oak newel post at base (traditional joinery detail)",
+          "slim turned wood spindles rather than square or black balusters",
+          "curved bullnose starting step",
+          "charcoal woven stair-tread pads on every tread (product)",
+          "recessed step lights on each riser"
+        ]
+      },
+      "qa": [
+        { "q": "How is this different from the other stair-pad photos?", "a": "Same product concept but on a traditional staircase — turned oak newel and turned spindles rather than black square balusters. The stair pads are the constant; the staircase behind them changes." },
+        { "q": "What kind of staircase is this?", "a": "A traditional straight-flight residential staircase with turned spindles, a large turned newel and a bullnose starting step. Common in Victorian and Edwardian home renovations." },
+        { "q": "Is that a rug at the bottom?", "a": "Yes — a dark rug at the base of the flight, matching the tone of the stair pads. The floor itself is oak." },
+        { "q": "Would this staircase work with modern black balusters?", "a": "Yes — the same construction accepts a variety of balustrade styles. Swapping turned wood spindles for black square metal balusters gives a contemporary-craftsman look on the same underlying build." },
+        { "q": "Are the treads solid oak?", "a": "The visible face reads solid oak. The build underneath (stringer + carriage) is typically structural softwood clad in oak — visually indistinguishable, cost-efficient." }
+      ],
+      "safe_for_display_when_user_asks_about": ["traditional staircase", "turned newel", "turned spindles", "stair tread pads", "period home stair"],
+      "not_shown_when": ["garden stairs", "external stairs", "fire escape", "contemporary black-baluster stair"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2013,%202026,%2009_34_24%20PM.png",
+      "id": "stair_mixed_2026_08_15_07",
+      "user_category": "mixed-uncertain",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "sub_context": "stair-tread-rug-product-photography",
+      "analysis_status": "sample-analysed",
+      "verification_note": "Traditional interior staircase (same product shoot as _06) with sisal-look pad product placement. Interior, not garden.",
+      "analysis": {
+        "description": "Traditional interior straight-flight residential staircase with oak treads, white-painted risers, a large turned oak newel post and slim turned wood spindles. Curved (bullnose) starting step at bottom. Woven jute / sisal-look stair-tread pads on every tread and a matching jute runner rug at the base. Framed botanical art alongside, warm oak floor, hallway with a light oak console table and vase of foliage visible behind.",
+        "staircase_type": "straight-flight",
+        "direction": "up",
+        "flights": 1,
+        "primary_material": "oak-with-turned-spindles",
+        "materials": ["oak treads", "white-painted risers", "slim turned wood spindles", "oak handrail", "large turned oak newel post", "curved bullnose starting step", "woven jute / sisal-look stair-tread pads (product)"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["traditional", "period-home", "product-photography", "warm-modern", "natural-fibre", "family-home"],
+        "notable_features": [
+          "large turned oak newel post at base",
+          "slim turned wood spindles",
+          "curved bullnose starting step",
+          "woven jute / sisal-look stair-tread pads on every tread",
+          "matching jute runner at base of flight"
+        ]
+      },
+      "qa": [
+        { "q": "Is this the same staircase as the previous one?", "a": "Yes — same traditional staircase with turned oak newel and spindles. The difference is the stair-pad product on top: this one uses woven jute / sisal, the previous used a charcoal boucle." },
+        { "q": "Which colour would you recommend?", "a": "Neither is 'right' — it's an aesthetic choice. Jute reads natural and warm; dark boucle reads modern and hides marks. Household with pets often prefers the darker option." },
+        { "q": "Is the newel post carved by hand?", "a": "Most turned newel posts today are machine-turned on a lathe to a stock or bespoke profile. Genuine hand-carved detailing is rare and priced accordingly." },
+        { "q": "Do the pads slip?", "a": "Well-made stair-tread pads have a grip backing so they stay in place. Poor-quality ones can shift. For heavy-use households, double-sided stair tape or a fully-fitted runner is safer." },
+        { "q": "Would this suit a Victorian house?", "a": "Yes — turned newel + turned spindles + white risers + oak treads is the Victorian-through-Edwardian domestic language. Very at home in a period property." }
+      ],
+      "safe_for_display_when_user_asks_about": ["traditional staircase", "turned newel", "turned spindles", "stair tread pads", "jute stair pads", "period home stair"],
+      "not_shown_when": ["garden stairs", "external stairs", "fire escape", "contemporary black-baluster stair"]
+    }
+  ]
+}

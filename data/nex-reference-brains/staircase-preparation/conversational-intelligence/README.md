@@ -136,3 +136,27 @@ The first sentence: acknowledges → gives direction → notes the dependency �
 The second: recites a definition.
 
 The first is an advisor. The second is a knowledge base. Only the first is NEX.
+
+---
+
+## Scaling this intelligence across large datasets — see ADR-0044
+
+This manifesto and its 21 supporting docs define **what NEX believes a good conversation IS**.
+
+The companion architecture — how NEX scales that intelligence across large amounts of Q&A + conversation data — is **ADR-0044 · Conversational Learning Pipeline** at `docs/DECISIONS/0044-conversational-learning-pipeline.md`.
+
+Concrete implementation detail (DDL, formulas, pipeline stages, live inference loop) lives at `nex-conversation-learning-pipeline-architecture-2026-08-15.md` in this same folder. The storage substrate lands as migration `deploy/postgres/init/050_nex_conv_learning_pipeline_schema.sql`.
+
+Locked distinction:
+
+- **This layer (conversational-intelligence docs)** defines the conversational contract.
+- **ADR-0044** defines the scaling engine underneath.
+- **Conversation Graph + Brain Knowledge Graph** are the runtime infrastructure.
+
+Locked rule (Philip · 2026-08-15):
+
+> **NEX does not learn by blindly generating new knowledge from conversations. It learns by measuring which existing knowledge relationships, conversational transitions, retrieval paths and responses produce successful outcomes.**
+
+> **The graphs store relationships. The conversation state determines which relationships matter right now.**
+
+Ingestion implementation is queued behind the MT-1 landing-page lock. Architecture is frozen now so the design does not drift.

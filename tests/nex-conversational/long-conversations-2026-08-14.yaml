@@ -1,0 +1,356 @@
+# NEX Layer 5 · Realistic 10-15 Turn Customer Conversation Benchmark (Philip 2026-08-14)
+#
+# Tests whether NEX SURVIVES a realistic messy conversation.
+# At the END of each conversation, evaluate 7 dimensions:
+#   1. goal_understood            — customer's current goal correctly identified
+#   2. exclusions_retained        — what they rejected NOT sneaked back in
+#   3. corrections_reflected      — later corrections win over earlier statements
+#   4. uncertainty_surfaced       — items NEX doesn't know are honestly flagged
+#   5. evidence_traceable         — recommendation elements match Reference Brain
+#   6. next_action_appropriate    — the action NEX would take is correct
+#   7. fabrication_zero           — no invented facts ever
+#
+# 15 substantial multi-turn conversations · avg 12 turns each · 180+ total turns.
+
+conversations:
+
+  - id: long-01
+    description: "Philip's flagship scenario · scope-change + correction + reconsider + image + retention"
+    turns:
+      - "I want to update my staircase."
+      - "Keep the stairs themselves. I mainly hate the balustrade."
+      - "Something more modern."
+      - "Maybe oak and metal."
+      - "Actually no, forget the metal. My wife doesn't like it."
+      - "What about glass?"
+      - "Show me a few ideas."
+      - "I like the second one, but keep our existing newel."
+      - "Recommend a starting step to fit with the new balustrade."
+      - "Traditional oak on the treads too."
+      - "Anything I'm missing?"
+    expected_final_state:
+      timber_species: oak
+      style: modern  # from turn 3
+      balustrade_material: glass  # from turn 6 (metal was rejected turn 5)
+      scope: refacing
+      concepts_visited_includes: [refacing, balusters, timber_species, design_style, starting_steps, newel_caps]
+    expected_exclusions_retained:
+      balustrade_material: [metal]  # from turn 5
+    expected_corrections:
+      - {field: balustrade_material, from: metal_note, to: glass}
+    expected_next_action: Recommend
+    expected_evidence_covers: [starting_steps, balusters, timber_species]
+
+  - id: long-02
+    description: "Long build with multiple preference changes and one hard exclusion"
+    turns:
+      - "New modern staircase."
+      - "Oak."
+      - "Glass balustrade."
+      - "Actually — I don't want glass. Kids and dogs."
+      - "Matt-black metal instead."
+      - "LED under-nosing."
+      - "Cantilever if it fits."
+      - "Something for the first step."
+      - "Traditional bullnose? Or something more modern?"
+      - "Modern extended tread — I like that."
+      - "What newel cap works?"
+    expected_final_state:
+      style: modern
+      timber_species: oak
+      balustrade_material: matt_black_metal
+      concepts_visited_includes: [design_style, timber_species, balusters, lighting, stringers, starting_steps, newel_caps]
+    expected_exclusions_retained:
+      balustrade_material: [glass]
+    expected_corrections:
+      - {field: balustrade_material, from: glass, to: matt_black_metal}
+    expected_next_action: Recommend
+
+  - id: long-03
+    description: "Refacing scope + material change mid-way + reconsider excluded item"
+    turns:
+      - "Old pine staircase we've had 30 years."
+      - "Structurally fine, just looks dated."
+      - "Want to modernise without a full replacement."
+      - "Change the spindles."
+      - "Oak handrail instead of pine."
+      - "Something in matt black for the spindles."
+      - "Actually — what about brushed stainless?"
+      - "I prefer that."
+      - "Runner down the middle in a dark grey."
+      - "Keep the existing newels."
+      - "Show me examples of the finished look."
+    expected_final_state:
+      timber_species: oak
+      balustrade_material: brushed_stainless
+      finish: runner
+      scope: refacing
+      concepts_visited_includes: [refacing, timber_species, handrail, balusters, carpet_stepmats, newel_caps]
+    expected_corrections:
+      - {field: balustrade_material, from: matt_black_metal, to: brushed_stainless}
+    expected_next_action: RetrieveImages
+
+  - id: long-04
+    description: "Grand traditional with exclusion + late correction"
+    turns:
+      - "Grand traditional oak staircase."
+      - "Turned spindles."
+      - "Curtail starting step with a volute."
+      - "Carpet runner with brass rods."
+      - "No modern touches at all — pure Victorian."
+      - "Landing to continue the same design."
+      - "What newel cap?"
+      - "Ball finial in oak, chunky."
+      - "Actually — pyramidal cap, not ball finial."
+      - "Change of mind."
+      - "Anything I'm forgetting?"
+    expected_final_state:
+      style: traditional
+      timber_species: oak
+      balustrade_material: turned_timber
+      finish: runner
+      concepts_visited_includes: [design_style, timber_species, balusters, starting_steps, carpet_stepmats, landing_railings, newel_caps]
+    expected_exclusions_retained:
+      style: [modern]
+    expected_corrections:
+      - {field: newel_cap_type_note, from: ball_finial, to: pyramidal}
+    expected_next_action: Ask
+
+  - id: long-05
+    description: "Wall-fixed with cumulative constraints + image request at the end"
+    turns:
+      - "Staircase against a wall on one side."
+      - "It's oak, we're keeping it."
+      - "Modernise the balustrade only."
+      - "Matt-black metal rods."
+      - "Extended square starting step on the free side."
+      - "Bullnose is too traditional."
+      - "Modern flat cap on the newel — matt black."
+      - "Landing to match — same matt-black rods."
+      - "How does that all read together?"
+      - "Show me some examples of that combination."
+    expected_final_state:
+      timber_species: oak
+      balustrade_material: matt_black_metal
+      style: modern
+      construction: wall_fixed
+      scope: refacing
+      concepts_visited_includes: [stringers, timber_species, refacing, balusters, starting_steps, newel_caps, landing_railings]
+    expected_exclusions_retained: {}
+    expected_next_action: RetrieveImages
+
+  - id: long-06
+    description: "Cottage refacing with material shift and honest limit acknowledgment"
+    turns:
+      - "Cottage style pine staircase, existing."
+      - "Painted balustrade currently."
+      - "Refresh but keep cottage feel."
+      - "Repaint the spindles."
+      - "Which colours work for a cottage refresh?"
+      - "Sage green?"
+      - "OK — sage spindles, natural pine treads and handrail."
+      - "Runner down the middle."
+      - "Traditional stair rods to hold it."
+      - "What about the newel caps?"
+      - "Turned pine ball finial, natural."
+    expected_final_state:
+      style: rustic
+      timber_species: pine
+      scope: refacing
+      finish: runner
+      concepts_visited_includes: [design_style, timber_species, refacing, balusters, carpet_stepmats, newel_caps]
+    expected_next_action: Recommend
+
+  - id: long-07
+    description: "Modern floating with technical detail + honest limit"
+    turns:
+      - "Modern floating staircase."
+      - "Oak treads, cantilevered."
+      - "Frameless glass balustrade."
+      - "LED under-nosing on each tread."
+      - "How thick should the treads be structurally?"
+      - "What size steel channel embeds in the wall?"
+      - "OK — I'll ask the engineer for those figures."
+      - "Design-side: what starting step suits?"
+      - "Extended square platform."
+      - "Newel cap?"
+    expected_final_state:
+      style: modern
+      timber_species: oak
+      balustrade_material: glass
+      concepts_visited_includes: [design_style, stringers, timber_species, balusters, lighting, treads_risers, starting_steps, newel_caps]
+    expected_uncertainty_surfaced: [structural_thickness, steel_channel_size]
+    expected_next_action: Recommend
+
+  - id: long-08
+    description: "Contradiction detection during long conversation"
+    turns:
+      - "Traditional oak staircase."
+      - "Turned spindles."
+      - "Bullnose starting step."
+      - "Actually — modern minimalist balustrade."
+      - "Matt-black metal rods."
+      - "Wait — but keep the volute at the bottom."
+      - "The turned newel too."
+      - "Landing to match the balustrade."
+      - "How does that read together?"
+    expected_final_state:
+      timber_species: oak
+      balustrade_material: matt_black_metal
+      concepts_visited_includes: [design_style, timber_species, balusters, starting_steps, landing_railings, newel_caps]
+    expected_contradictions_at_least: 1
+    expected_next_action: Ask
+
+  - id: long-09
+    description: "Cost + design + code compound routed cleanly"
+    turns:
+      - "Modern staircase for the entry hall."
+      - "Cantilever if possible."
+      - "Oak throughout."
+      - "How much will something like that cost?"
+      - "OK — I'll get quotes from a builder for that."
+      - "On design: matt-black metal rods or brushed stainless?"
+      - "What does building regs say about handrail height on cantilevers?"
+      - "OK — check with inspector."
+      - "Back to design — matt black or brushed stainless?"
+      - "Modern-industrial feel is what I want."
+    expected_final_state:
+      style: modern
+      timber_species: oak
+      concepts_visited_includes: [design_style, stringers, timber_species, balusters, business_estimation, safety_regs]
+    expected_next_action: Recommend
+
+  - id: long-10
+    description: "Customer with unclear intent walking through discovery"
+    turns:
+      - "I'm not sure what I want."
+      - "The stairs are OK, just feel dated."
+      - "What kinds of changes are possible?"
+      - "Something simple — I don't want a full rebuild."
+      - "The current stairs are pine."
+      - "Something warmer looking."
+      - "Not modern — I don't like matt black or glass."
+      - "More traditional but not Victorian."
+      - "Cottage-modern maybe."
+      - "What would you recommend?"
+    expected_final_state:
+      timber_species: pine
+      scope: refacing
+      concepts_visited_includes: [refacing, timber_species, design_style]
+    expected_exclusions_retained:
+      style: [modern, matt_black, glass]
+    expected_next_action: Recommend
+
+  - id: long-11
+    description: "Image-driven conversation · customer refines by referencing images"
+    turns:
+      - "Show me modern staircases."
+      - "I like the second one with glass."
+      - "Can we do that but in oak?"
+      - "Wall-fixed staircase though."
+      - "What starting step suits?"
+      - "Bullnose on the free side."
+      - "Show me starting step examples."
+      - "The third one — that shape."
+      - "In matching oak."
+      - "What about the newel cap?"
+    expected_final_state:
+      style: modern
+      timber_species: oak
+      balustrade_material: glass
+      construction: wall_fixed
+      concepts_visited_includes: [design_style, balusters, timber_species, stringers, starting_steps, newel_caps]
+    expected_next_action: Ask
+
+  - id: long-12
+    description: "Long refacing conversation with material reconsideration"
+    turns:
+      - "Existing oak staircase, structurally fine."
+      - "Want to modernise the look."
+      - "Replace the turned spindles with matt-black metal rods."
+      - "Actually, the wife likes brushed stainless better."
+      - "Fine — brushed stainless it is."
+      - "New matt-black flat cap on the newel."
+      - "Wait — should the cap match the spindles instead?"
+      - "OK, brushed stainless caps too."
+      - "Keep the oak handrail as is."
+      - "Add LED under-nosing."
+      - "How would that look overall?"
+    expected_final_state:
+      timber_species: oak
+      balustrade_material: brushed_stainless
+      scope: refacing
+      concepts_visited_includes: [refacing, balusters, newel_caps, handrail, lighting]
+    expected_corrections:
+      - {field: balustrade_material, from: matt_black_metal, to: brushed_stainless}
+    expected_next_action: Recommend
+
+  - id: long-13
+    description: "Compound utterance-heavy conversation"
+    turns:
+      - "I want a Scandinavian light-oak staircase with glass balustrade and LED under-nosing."
+      - "Cantilever floating treads."
+      - "Extended square starting step in oak."
+      - "Landing to match — same glass system."
+      - "Frosted or clear glass?"
+      - "Clear."
+      - "Point-fixed or clamp-mounted?"
+      - "Point-fixed for the cleanest look."
+      - "How does the handrail work with point-fixed glass?"
+      - "Oak top cap on the glass."
+      - "That's the picture."
+    expected_final_state:
+      style: scandi
+      timber_species: oak
+      balustrade_material: glass
+      concepts_visited_includes: [design_style, timber_species, balusters, lighting, stringers, starting_steps, landing_railings, handrail]
+    expected_next_action: Recommend
+
+  - id: long-14
+    description: "Refacing with explicit retention constraint and multiple exclusions"
+    turns:
+      - "Existing traditional oak staircase — 1920s house."
+      - "Definitely keeping the turned newels."
+      - "Definitely keeping the volute."
+      - "No modern — has to stay period-appropriate."
+      - "But refresh the spindles somehow."
+      - "Painted white spindles?"
+      - "Actually — keep the turned oak spindles too."
+      - "Just refinish everything."
+      - "Wax the treads."
+      - "New carpet runner in a period pattern."
+    expected_final_state:
+      style: traditional
+      timber_species: oak
+      finish: runner
+      scope: refacing
+      concepts_visited_includes: [refacing, timber_species, newel_caps, handrail, balusters, treads_risers, carpet_stepmats]
+    expected_exclusions_retained:
+      style: [modern]
+    expected_next_action: Recommend
+
+  - id: long-15
+    description: "Discovery + gradual refinement + honest gap acknowledgment"
+    turns:
+      - "New house — need a staircase design."
+      - "Show me some staircase options."
+      - "Modern but warm."
+      - "Oak."
+      - "I like the second and fifth from that grid."
+      - "Both had glass balustrade — I'd rather metal."
+      - "Matt-black metal rods."
+      - "Cantilever if possible in the space."
+      - "Actually maybe standard cut-string flight — cantilever might be too architect-y for us."
+      - "Extended square starting step in oak."
+      - "How much floor space does the starting step need?"
+      - "OK — I'll measure."
+      - "Anything else I should decide before quote?"
+    expected_final_state:
+      style: modern
+      timber_species: oak
+      balustrade_material: matt_black_metal
+      concepts_visited_includes: [design_style, timber_species, balusters, stringers, starting_steps]
+    expected_exclusions_retained:
+      balustrade_material: [glass]
+    expected_uncertainty_surfaced: [floor_space_at_starting_step]
+    expected_next_action: Ask

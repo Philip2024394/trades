@@ -87,9 +87,10 @@ export async function installPack(
   }
 
   // ─── App installs ──────────────────────────────────
-  // skipPreflight = true so dependency+conflict resolution across the
-  // pack's apps doesn't reject an intermediate state. The pack itself
-  // is the authoritative install unit.
+  // Preflight bypass grant issued below so dependency+conflict resolution
+  // across the pack's apps doesn't reject an intermediate state. The pack
+  // itself is the authoritative install unit. Only this well-known caller
+  // ("industry-pack-installer" source) is on the whitelist in install.ts.
   const installedApps: string[] = [];
   for (const entry of pack.apps) {
     // If the App isn't in the registry we skip it silently — a Pack
@@ -102,7 +103,12 @@ export async function installPack(
       merchantId: opts.merchantId,
       brandId,
       config: entry.config,
-      skipPreflight: true
+      // Structured bypass grant (Philip 2026-08-14). Replaces the pre-fix
+      // `skipPreflight: true` boolean, which any code path could flip.
+      preflightBypass: {
+        source: "industry-pack-installer",
+        packSlug
+      }
     });
     if (!res.ok) {
       // Rollback: uninstall everything we installed so far.

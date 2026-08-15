@@ -46,10 +46,7 @@
     { "path": "/api/cron/nex-proactive",            "schedule": "0 5 * * *" },
     { "path": "/api/cron/business-brains-sync",     "schedule": "0 * * * *" },
 
-    { "//": "NEX Brain 24/7 processing loop — every minute (Vercel Hobby minimum). Uses GET wrapper because Vercel cron issues GET." },
     { "path": "/api/nex/brain/cron-tick",            "schedule": "* * * * *" },
-
-    { "//": "NEX Comms Centre · Social · worker tick. Drains up to 10 queued posts per fire. Runs every minute so scheduled + immediate publishes go live within ~60 s." },
     { "path": "/api/cron/comms-social-worker",       "schedule": "* * * * *" }
   ]
 }

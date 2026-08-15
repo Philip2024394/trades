@@ -1,0 +1,538 @@
+{
+  "$schema": "internal://nex/brain/image-batch.v1",
+  "batch_id": "staircase-string-types-2026-08-15",
+  "topic": "staircase_string_types_and_construction",
+  "supplied_by": "philip",
+  "supplied_at": "2026-08-15",
+  "hosting": "ImageKit (5vv5pw26q) · NEX-owned storage",
+  "brain": "staircase_brain",
+  "domain": "STAIRCASE",
+  "total_urls": 15,
+  "philip_framing_reference": {
+    "framing_rule": "construction_design_relationship_not_compliance_rule",
+    "language_rule": "use `commonly / often / one option` — never `always / must / requires`",
+    "hierarchy": [
+      "Construction (physical structure — timber-frame joinery · concrete substructure · steel spine · hybrid)",
+      "Physical possibilities (what the structure permits — where treads land · whether returns are needed · where balusters can attach)",
+      "Design options (visual language — closed vs cut string appearance · open vs closed riser · symmetric vs asymmetric)",
+      "Material (species · finish · timber vs concrete vs steel)",
+      "Finish (paint · stain · natural · varnish)",
+      "Customer preference",
+      "Manufacturer / bespoke detail"
+    ]
+  },
+  "why_this_batch_matters": [
+    "Most customers do not know the difference between closed string / cut string / open string / open riser and use the terms interchangeably.",
+    "The string type materially affects construction cost, joinery detail, baluster attachment, base-rail requirement, visual character, and whether the flight can be placed against a wall on one side.",
+    "The concrete-substructure case is often mistaken for a timber cut-string build because the visual language is similar.",
+    "Cut string and Open string are the SAME thing — one construction detail, two regional names.",
+    "Open riser is a SEPARATE concept from string type — you can have a closed-string open-riser staircase or a cut-string closed-riser staircase."
+  ],
+  "surface_gating": {
+    "STAIRCASE_STRING_TYPE": "Surface these reference images and knowledge when the user asks about string types, closed vs cut string, open string, open riser, exposed tread ends, tread returns, mitered corners, base rail, or when advising on a build against a wall.",
+    "STAIRCASE_CONCRETE_CLAD": "Surface image 08 specifically when a customer describes a concrete substructure clad with timber — the visual language mimics cut string but has no timber string.",
+    "STAIRCASE_REFACING": "Surface image 13 when explaining tread/riser/return anatomy in a refacing context (over-cladding an existing staircase)."
+  },
+  "sample_analysed_count": 15,
+  "queued_for_full_analysis_count": 0,
+
+  "entries": [
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2001_30_18%20PM.png",
+      "id": "stair_string_type_2026_08_15_01",
+      "philip_annotation": "This image shows the difference between closed and cut/open string — labelled illustration displaying string types on the floor plus two staircases showing the sides.",
+      "role": "comparison-teaching-image",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "sub_context": "string-type-comparison-diagram",
+      "analysis_status": "sample-analysed",
+      "verification_note": "Labels in the image identify the LEFT staircase as CUT STRING and the RIGHT staircase as CLOSED STRING. The floor samples below each staircase are intended to show the respective string profiles isolated. Reviewer note: the floor-sample profiles do not read as unambiguously as the ideal reference; use images 02, 03 and 04 for the clearest isolated evidence of each type. Trust Philip's per-image annotations across the batch as the authoritative source.",
+      "analysis": {
+        "description": "Comparison teaching illustration. Two interior residential staircases stand side by side in a shared hallway. The left staircase is labelled `CUT STRING · Classic Elegance`; it has a turned oak newel post, turned wood spindles and a curved (bullnose/curtail) starting step. The right staircase is labelled `CLOSED STRING · Contemporary Detail`; it has a taller oak newel post with a chamfered cap and slim dark metal balusters. Two isolated string-board samples lie on the wood floor between the flights, each positioned beneath its labelled staircase to illustrate the string profile in isolation.",
+        "purpose": "Side-by-side visual teaching aid — meant to help a customer understand that string type is what changes when we describe a staircase as cut vs closed.",
+        "materials_visible": ["oak treads", "oak handrail", "oak newel posts", "turned wood spindles (left)", "dark metal balusters (right)", "isolated oak string samples on floor"],
+        "setting": "interior-residential-hallway",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["teaching-diagram", "comparison", "closed-string-vs-cut-string", "reference", "traditional-and-contemporary"],
+        "notable_features": [
+          "two full-height staircases labelled with string type",
+          "isolated string-profile samples on the floor for each type",
+          "left staircase = traditional turned-spindle character",
+          "right staircase = contemporary metal-baluster character",
+          "same hallway backdrop for fair comparison"
+        ]
+      },
+      "qa": [
+        { "q": "What's the difference between cut string and closed string?", "a": "Closed string is a straight-topped plank running alongside the flight; the treads and risers slot into routed grooves inside it and their ends are hidden. Cut string has a stepped top edge that follows each tread and riser; the treads sit on top and their ends are exposed. Both are perfectly valid — the choice is aesthetic and cost, not one being better than the other." },
+        { "q": "Is `open string` a different thing to cut string?", "a": "No — `open string` and `cut string` are two names for the same construction. UK joinery workshops use both terms interchangeably. Different from `open riser`, which is a separate concept referring to the vertical board between treads being omitted." },
+        { "q": "Which style is more traditional?", "a": "Both are traditional — Victorian houses used both, often on the same staircase (closed on the wall side, cut on the exposed outer side). What reads `traditional` to most people is the newel and baluster style rather than the string type. Turned spindles read traditional; slim metal balusters read contemporary — either can sit on either string type." },
+        { "q": "Which is more expensive?", "a": "Cut string is usually a bit more expensive to make and install because the joinery is more exposed — treads need finished returns on the visible side, and balusters typically dovetail into the treads rather than land into a base rail. Closed string hides more of the joinery inside the string and is quicker to produce." },
+        { "q": "Can I have one side of each?", "a": "Yes — a common configuration is a closed string on the wall side and a cut string on the exposed side. It's neither a compromise nor unusual — it's a real choice that can look correct in the right home." }
+      ],
+      "safe_for_display_when_user_asks_about": ["string type comparison", "closed vs cut string", "open string meaning", "traditional vs contemporary staircase style"],
+      "not_shown_when": ["garden stairs", "external metal stairs", "fire escape"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/Untitledasdds-removebg-preview.png",
+      "id": "stair_string_type_2026_08_15_02",
+      "philip_annotation": "Closed string on its own — no steps or risers, just the string showing the routed housings.",
+      "role": "isolated-component-teaching-image",
+      "verified_category": "STAIRCASE_COMPONENT",
+      "sub_context": "closed-string-routed-housings-isolated",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "A single isolated oak closed-string board photographed against a transparent / removed background. The plank has a straight top edge and a straight bottom edge (parallel), and four routed housings are visible on the inner face — each housing is a diagonal groove for the underside of a tread, a shallow rising groove for the back of the riser, and small wedge pockets at the tread-riser junction. This is the definitive visual identifier of a closed string: routed grooves on the inside face, straight top edge.",
+        "purpose": "Component-in-isolation reference so a customer can see what a closed string looks like before the treads and risers are fitted.",
+        "materials_visible": ["solid oak plank", "routed housings on inner face"],
+        "setting": "isolated-component-studio",
+        "domain": "STAIRCASE_COMPONENT",
+        "style_tags": ["isolated-reference", "closed-string", "housed-string", "joinery-detail", "component-view"],
+        "notable_features": [
+          "straight top edge (identifier of closed string)",
+          "routed diagonal grooves for tread undersides",
+          "shallow angled grooves for riser backs",
+          "small wedge pockets at tread-riser junctions",
+          "grooves are on the INSIDE face — the outside face is smooth"
+        ]
+      },
+      "qa": [
+        { "q": "What are those grooves for?", "a": "They're routed housings that receive the treads and risers. Each tread slides into a diagonal groove, each riser slides into a shallower angled groove, and a wooden wedge is driven from underneath into a small pocket to lock everything tight. It's how a closed string holds a staircase together without any visible fixings." },
+        { "q": "Do both strings have these grooves?", "a": "Yes — if both strings on a staircase are closed strings, both carry the same housing pattern on their inner face. If one string is cut string, that one has treads sitting on top instead of housings inside." },
+        { "q": "How thick is a typical closed string?", "a": "38-45mm (1½–1¾ inch) for a domestic staircase in a hardwood species. Softwood strings for paint-grade builds can be slightly thicker to keep stiffness. Actual thickness is set by the joinery workshop for the span and load." },
+        { "q": "Why can't I see the treads and risers?", "a": "This is the string on its own — before the staircase is assembled. Once fitted, the treads and risers slot into these grooves and the string is what you see running diagonally alongside the flight. From the outside, the string face stays smooth — the treads are hidden inside it." },
+        { "q": "How does the balustrade attach on a closed string?", "a": "A base rail sits on top of the closed string and the balusters land into the base rail. On a cut string, balusters land directly into the treads instead — that's one of the practical differences between the two string types." }
+      ],
+      "safe_for_display_when_user_asks_about": ["what a closed string looks like", "how a staircase is put together", "housed string", "wedges and grooves", "closed string joinery detail"],
+      "not_shown_when": ["garden stairs", "external metal stairs", "fire escape"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2011_38_09%20AM.png",
+      "id": "stair_string_type_2026_08_15_03",
+      "philip_annotation": "Closed string staircase.",
+      "role": "canonical-example",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "sub_context": "closed-string-full-staircase",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Interior residential straight-flight staircase (with a small square landing / quarter turn at the base) built as a closed-string configuration. The outer visible string is a smooth diagonal oak plank with a straight top edge — the treads and risers are hidden inside it, and a base rail sits on top of the string with the balusters landing into it. Slim black metal balusters (round profile) at 2-per-tread spacing rise to a matching oak handrail. Large chamfered square oak newel post at the bottom. Bottom step is a boxed / closed-string configuration (no bullnose). White plastered walls, light oak floor, white baseboards.",
+        "identifier": "Look for the smooth diagonal outer-string plank with a base rail on top. Tread ends are hidden — you see the string face, not the tread ends.",
+        "materials_visible": ["oak treads", "oak risers", "oak closed string (outer)", "oak base rail on top of string", "slim black metal round balusters", "oak handrail", "large chamfered square oak newel"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["closed-string", "contemporary-craftsman", "black-baluster", "oak-and-black", "canonical-reference"],
+        "notable_features": [
+          "smooth diagonal outer string with straight top edge",
+          "base rail on top of string carrying the balusters",
+          "tread ends hidden inside the string (not visible on the outside)",
+          "boxed / closed-string bottom step (no bullnose)",
+          "large chamfered square oak newel"
+        ]
+      },
+      "qa": [
+        { "q": "How can I tell this is a closed string?", "a": "The outer string is a smooth diagonal plank with a straight top edge — you can see the string face but you cannot see the tread ends coming through it. The balusters land into a base rail on top of the string rather than into the treads themselves. Those two features together are the tell." },
+        { "q": "Why is there a base rail here?", "a": "Because the string is closed. Balusters can't dovetail into the tread ends (the tread ends are hidden inside the string) so they land into a base rail that sits on top of the string. On a cut string the balusters land directly into the treads instead and no base rail is needed on the flight." },
+        { "q": "Is the bottom step curved?", "a": "No — the bottom step here is a boxed / closed-string configuration where the string wraps around the bottom step. Bullnose starting steps are one option; boxed bottom steps are another and are common on closed-string builds against a wall." },
+        { "q": "Can I have this look in walnut or painted?", "a": "Yes — closed string is a construction detail, not a finish. The same build works in oak, walnut, ash, painted softwood, or a stained finish. Balusters can be metal or turned wood in whatever style suits." },
+        { "q": "Would this fit against a wall?", "a": "Yes — the wall side would be another closed string, closed against the plaster. This is the most common domestic configuration in the UK: closed string on both sides, one side against a wall." }
+      ],
+      "safe_for_display_when_user_asks_about": ["closed string staircase", "traditional straight staircase", "base rail on string", "oak and black staircase", "how to identify a closed string"],
+      "not_shown_when": ["garden stairs", "external metal stairs", "fire escape"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2011_28_41%20AM.png",
+      "id": "stair_string_type_2026_08_15_04",
+      "philip_annotation": "Double side cut string / open string staircase.",
+      "role": "canonical-example",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "sub_context": "double-side-cut-string-freestanding",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Freestanding double-side cut-string interior staircase — a quarter-turn / short mid-landing configuration in oak with closed risers and slim black metal round balusters. BOTH stringers show the stepped / sawtooth top profile characteristic of cut string, and the treads sit ON TOP of the stringers with their ends visibly projecting past both string faces. Balusters land directly into the tread tops. Four square oak newel posts (one at each corner). Bottom step is a boxed configuration — no bullnose.",
+        "identifier": "Look for the stepped top profile on the outer face of the stringer AND visible tread ends projecting past the string on both sides. Balusters land into the treads (not into a base rail).",
+        "materials_visible": ["oak treads", "oak risers", "oak cut stringers (both sides)", "slim black metal round balusters", "oak handrails", "four square oak newel posts"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["double-side-cut-string", "double-open-string", "freestanding", "contemporary-craftsman", "canonical-reference"],
+        "notable_features": [
+          "stepped top profile on both stringers (identifier of cut string)",
+          "tread ends visible projecting past both string faces",
+          "balusters land directly into the treads (no base rail)",
+          "four newel posts (one at each corner)",
+          "bottom step is a boxed configuration"
+        ]
+      },
+      "qa": [
+        { "q": "Why are both sides cut string?", "a": "Because this staircase is freestanding and both sides are visible. When both sides show, both string tops are cut to match the tread profile — it looks intentional and symmetric. If one side were against a wall you could go with any of several configurations; when both are open, double-side cut is a common choice." },
+        { "q": "How can I tell this is cut string?", "a": "The top edge of each stringer is stepped, following each tread and riser. The tread ends visibly project past the stringer face on both sides. And the balusters land into the treads (with a dovetail or dropped pin) rather than into a base rail on top of the string." },
+        { "q": "Where do the balusters go on a cut string?", "a": "Straight into the top of each tread — traditionally with a dovetail joint that gets covered by the tread return moulding on the outside, or with a dropped-in pin on more contemporary builds. Two balusters per tread is the common spacing." },
+        { "q": "Do I need to see all the tread ends? They look busy.", "a": "It's aesthetic. Cut-string tread ends give a decorative rhythm that some homes love and some find busy. If you prefer a quieter look, closed string with the tread ends hidden inside a smooth diagonal plank is the alternative." },
+        { "q": "Can this go against a wall?", "a": "Yes — the far string can simply meet the wall. There's a real example in image 05 of this same batch where a double-side cut-string flight sits against a wall on one side. No newel is needed at the wall-adjacent top corner because the string terminates against the wall." }
+      ],
+      "safe_for_display_when_user_asks_about": ["double side cut string", "double open string", "freestanding staircase", "cut string identification", "balusters into treads"],
+      "not_shown_when": ["garden stairs", "external metal stairs", "fire escape"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2010_59_24%20AM.png",
+      "id": "stair_string_type_2026_08_15_05",
+      "philip_annotation": "Double side cut string with square top quarter landing — this type of staircase goes against a wall as an option, since there's no newel on the far string.",
+      "role": "canonical-example",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "sub_context": "double-side-cut-string-against-wall-with-square-top-landing",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Long straight double-side cut-string interior staircase with a small square top-landing (quarter landing) that sits against a wall. Both stringers show the stepped top profile with visible tread ends projecting past both string faces. Closed risers. Slim black metal round balusters land directly into the treads. Oak handrail. The bottom has a large chamfered square oak newel; the top landing has a smaller newel on the near string but on the far string (wall-adjacent), the string terminates against the wall — no newel post. This is the configuration Philip highlights: a double-side cut-string flight can sit against a wall because the wall-adjacent side needs no newel.",
+        "identifier": "Same cut-string identifiers as image 04 (stepped top profile, exposed tread ends, balusters into treads) BUT one side of the top landing terminates against a wall with no newel — the string simply meets the wall.",
+        "materials_visible": ["oak treads", "oak risers", "oak cut stringers (both sides)", "slim black metal round balusters", "oak handrail", "large chamfered square oak newel at bottom", "small oak newel at top near corner"],
+        "setting": "interior-residential-against-wall",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["double-side-cut-string", "square-quarter-landing", "wall-adjacent", "wall-terminated-string", "canonical-reference"],
+        "notable_features": [
+          "long straight flight (approximately 12-14 treads)",
+          "square quarter landing at the top",
+          "far top string terminates against the wall (no newel needed)",
+          "double-side cut string throughout",
+          "large chamfered oak newel at bottom, smaller oak newel at top near corner"
+        ]
+      },
+      "qa": [
+        { "q": "Can a double-side cut-string staircase go against a wall?", "a": "Yes — this is a real example. The wall-adjacent string simply meets the wall and terminates there. You don't need a newel post at the wall-side top corner because the string is captured by the wall. Both stringers stay cut string throughout their length." },
+        { "q": "Why isn't there a newel post at the top-far corner?", "a": "Because the string terminates against the wall. A newel is needed where a string ends in free air (bottom of the flight, or top-of-flight corner in the open) but not where the string is captured against a wall. It's a real, correct configuration." },
+        { "q": "What's a `square quarter landing`?", "a": "A small square-shaped landing at the top of the flight where the staircase turns 90° onto the upper floor. It's the smallest form of landing — big enough to stand on and turn, no more. Common when floor-plan geometry is tight." },
+        { "q": "Isn't a cut string usually only on the open side?", "a": "That's the older configuration and the one many joiners default to (closed on wall side, cut on open side). But double-side cut is a perfectly valid choice — either because both sides are visible or, as here, because the aesthetic wants both sides to read as cut even where one side happens to sit against a wall." },
+        { "q": "Would balusters ever land into the wall side here?", "a": "No — the wall itself takes the role of the balustrade on that side. Balusters only rise on the open (non-wall) side of the flight and on the open faces of the landing." }
+      ],
+      "safe_for_display_when_user_asks_about": ["double side cut string against wall", "square quarter landing", "no newel at wall side", "cut string terminating at wall", "long straight double cut string flight"],
+      "not_shown_when": ["garden stairs", "external metal stairs", "fire escape"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2010_37_54%20AM.png",
+      "id": "stair_string_type_2026_08_15_06",
+      "philip_annotation": "Open riser staircase.",
+      "role": "canonical-example",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "sub_context": "open-riser-closed-string",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Interior residential straight-flight staircase with OPEN RISERS — the vertical riser board between treads has been omitted, so you can see through between each tread. IMPORTANT: the strings here are CLOSED strings (smooth diagonal plank, straight top edge, tread ends hidden), which shows that `open riser` is a different concept from `open string`. Slim black metal round balusters land into the base rail on top of the closed string. Oak handrail. Large chamfered square oak newel at the bottom. Wall-mounted on the right, open on the left.",
+        "identifier": "Look for the horizontal gap between each tread (no riser board). The strings themselves are still closed — smooth diagonal plank with tread ends hidden. Baluster base sits on a base rail on top of the string, so this is closed-string open-riser.",
+        "materials_visible": ["oak treads (open, no risers)", "oak closed string (outer)", "oak base rail on top of string", "slim black metal round balusters", "oak handrail", "large chamfered square oak newel"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["open-riser", "closed-string", "airy", "contemporary", "canonical-reference"],
+        "notable_features": [
+          "no riser board between treads (identifier of open riser)",
+          "closed string still — smooth diagonal outer face",
+          "base rail on top of string carrying the balusters",
+          "wall-side flight (no far-side balustrade needed)",
+          "same closed-string body as image 03 but with the risers left out"
+        ]
+      },
+      "qa": [
+        { "q": "Is this the same as an open string staircase?", "a": "No — this is an OPEN RISER staircase, which is a different thing. Open riser means the vertical board between treads has been omitted so you can see through. The strings here are still closed strings (smooth diagonal plank). The two words are often confused but they refer to different parts of the staircase." },
+        { "q": "Is there a safety issue with open risers?", "a": "There's a rule about gap size — a specified sphere shouldn't be able to pass through the gap between treads (typically 100mm in UK Approved Doc K). Modern open-riser builds meet this by keeping tread spacing close enough. Some families with very young children also fit temporary riser-fill panels and remove them later." },
+        { "q": "Why go open riser?", "a": "It makes the staircase feel lighter and lets more light through — useful in an open-plan setting or a narrow hallway that needs to feel airy. It also lets people see the space beyond the staircase, so smaller floor plans feel bigger." },
+        { "q": "Can I have open riser + cut string together?", "a": "Yes — the two are independent. You can have any combination: closed string + closed riser (most traditional), closed string + open riser (like this image), cut string + closed riser, or cut string + open riser (most contemporary and most open-feeling)." },
+        { "q": "Is open riser more expensive?", "a": "Usually a bit less — there's no riser board to make and fit. The trade-off is that the tread underside is visible so it may need to be finished on both faces rather than one." }
+      ],
+      "safe_for_display_when_user_asks_about": ["open riser staircase", "no riser between treads", "difference between open riser and open string", "closed string open riser", "airy interior stair"],
+      "not_shown_when": ["garden stairs", "external metal stairs", "fire escape"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2010_35_29%20AM.png",
+      "id": "stair_string_type_2026_08_15_07",
+      "philip_annotation": "Double side cut string.",
+      "role": "canonical-example",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "sub_context": "double-side-cut-string-alternate-render",
+      "analysis_status": "sample-analysed",
+      "verification_note": "Philip identifies this as double-side cut string. The outer render angle here shows the stepped tread-end profile less starkly than image 04, but the tell-tale tread-end projections past the outer stringer face are visible on close inspection — particularly the second tread up from the base.",
+      "analysis": {
+        "description": "Interior residential straight-flight double-side cut-string staircase in oak, viewed from the open side. Slim black metal round balusters land directly into the treads. Oak handrail. Large chamfered square oak newel at the bottom. Wall-adjacent on the right; the far top string terminates near a wall. Closed risers. The stepped profile of the outer stringer is subtle in this render angle — the identifier is the visible tread-end projection past the outer face rather than a strongly sawtoothed top edge.",
+        "identifier": "Tread ends project past the outer string face (visible as small square projections on each step), balusters land directly into the treads — no base rail on the flight.",
+        "materials_visible": ["oak treads", "oak risers", "oak cut stringers (both sides)", "slim black metal round balusters", "oak handrail", "large chamfered square oak newel"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["double-side-cut-string", "wall-adjacent", "contemporary-craftsman", "canonical-reference"],
+        "notable_features": [
+          "double-side cut string throughout",
+          "tread ends visibly project past outer string face",
+          "balusters land directly into the treads",
+          "wall-adjacent on the right, terminating near the wall at the top",
+          "no base rail on the flight (base rail may appear on landing above)"
+        ]
+      },
+      "qa": [
+        { "q": "How is this different from image 04?", "a": "Same construction — double-side cut string with balusters into treads. The render angle here is slightly more head-on so the stepped stringer top edge reads less strongly, but the tread-end projections past the outer face confirm the cut-string identification." },
+        { "q": "Could I mistake this for a closed string?", "a": "It's a subtle example. The tell is the tread-end projection past the outer face — on a closed string the tread ends would be hidden inside a smooth diagonal plank. If you can see small square tread projections stepping down the outer face, it's cut string; if the outer face is uninterrupted, it's closed." },
+        { "q": "What does the wall-adjacent side look like?", "a": "On the near-wall side the string still has the cut top edge, but the tread projections meet the wall rather than being seen in the open. This is Philip's configuration from image 05 — a cut-string flight against a wall." },
+        { "q": "How many treads is this?", "a": "Roughly 9-10 visible from bottom to landing above, plus the boxed bottom step — typical for a domestic ground-to-first-floor flight." },
+        { "q": "Can the balusters be swapped later?", "a": "Yes — pulling the existing balusters and dropping new ones into the same tread sockets is one of the more common staircase upgrades. Metal, timber turned, square section — as long as the base fits the socket." }
+      ],
+      "safe_for_display_when_user_asks_about": ["double side cut string", "cut string identification", "wall-adjacent cut string flight", "balusters into treads", "how to tell cut string"],
+      "not_shown_when": ["garden stairs", "external metal stairs", "fire escape"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2010_35_02%20AM.png",
+      "id": "stair_string_type_2026_08_15_08",
+      "philip_annotation": "This is cut string BUT for concrete stairs — there is no support string, the concrete holds the steps and risers, and the other side is a plastered wall.",
+      "role": "important-distinction-example",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "sub_context": "concrete-substructure-visually-cut-string",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Interior residential staircase presented with the visual language of a cut string — stepped outer edge, exposed tread ends and slim black metal balusters landing into the treads — BUT structurally there is no timber string. The staircase is built on a concrete substructure (or a concealed steel spine) and clad in oak. The outer stepped edge is the CLADDING profile, not a load-bearing string. The right side is a plastered wall with no wooden wall string; the treads and risers meet the plaster directly. Oak handrail, slim black metal balusters, large chamfered square oak newel at the bottom. Skirting board along the wall side.",
+        "identifier": "Visually reads like a cut string, but there is no timber string board — the treads and risers themselves form the visible stepped edge. Wall side has NO wooden string at all; treads/risers meet plaster directly.",
+        "materials_visible": ["concrete substructure (concealed)", "oak tread cladding", "oak riser cladding", "slim black metal balusters", "oak handrail", "large chamfered square oak newel", "plastered wall (no wall string)"],
+        "setting": "interior-residential-concrete-clad",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["concrete-substructure", "visually-cut-string", "no-timber-string", "modern-architectural", "important-distinction"],
+        "notable_features": [
+          "no timber string — concrete substructure clad in oak",
+          "outer stepped edge is CLADDING profile, not a load-bearing string",
+          "wall side has no wall string — plaster meets treads directly",
+          "visually mimics a timber cut string but is a different construction",
+          "very common in high-end contemporary and modern architectural builds"
+        ]
+      },
+      "qa": [
+        { "q": "Is this a cut string staircase?", "a": "Visually yes — it reads as cut string with a stepped outer edge and exposed tread ends. Structurally no — there is no timber string board. The staircase is built on a concrete substructure (or a concealed steel spine) and clad in oak. The stepped edge you see is CLADDING, not a load-bearing string." },
+        { "q": "Why does it matter what's underneath?", "a": "It matters for anyone specifying, quoting or repairing the staircase. A timber cut-string staircase and a concrete-clad staircase with the same visual look are entirely different builds — different trades, different costs, different repair approaches. Two staircases can look identical from three metres away and be built completely differently." },
+        { "q": "How can I tell?", "a": "Usually by context. Concrete substructure is common in modern architect-designed extensions, new-builds and commercial spaces. If the staircase is inside a Victorian terraced house, it's likely timber. If it's in a modern minimalist build with polished-concrete floors, it's likely concrete. Sometimes the only way to know is by asking the original builder or opening up the underside." },
+        { "q": "Is this cheaper than a timber cut string?", "a": "Rarely — concrete substructure work is a separate specialist trade (steel-fixer + concrete pour + curing time + oak cladding after). Total cost is usually higher than an equivalent timber-string joinery build. But the aesthetic can justify it in the right architectural setting." },
+        { "q": "What about the wall side — no wooden string at all?", "a": "That's right. The treads and risers meet the plastered wall directly. The wall itself does the closing function that a wall string would provide on a timber build. It's uncommon in domestic timber joinery but normal on concrete builds." }
+      ],
+      "safe_for_display_when_user_asks_about": ["concrete staircase clad in wood", "no timber string", "concrete substructure staircase", "why does this look like cut string but isn't", "wall side no string"],
+      "not_shown_when": ["garden stairs", "external metal stairs", "fire escape"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2010_34_31%20AM.png",
+      "id": "stair_string_type_2026_08_15_09",
+      "philip_annotation": "Closed string with wall cut string — mixed configuration.",
+      "role": "important-mixed-configuration-example",
+      "verified_category": "STAIRCASE_INTERIOR",
+      "sub_context": "closed-outer-string-with-cut-wall-string",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Interior residential straight-flight staircase in oak with a mixed string configuration — the OUTER (visible) string is a CLOSED string (smooth diagonal plank with a straight top edge and a base rail carrying the balusters), while the WALL side has a CUT STRING (stepped top edge where the treads step against the wall). Slim black metal round balusters land into the base rail on top of the closed outer string. Oak handrail. Large chamfered square oak newel at the bottom. This is the mixed configuration Philip highlights — one string is closed, the other is cut.",
+        "identifier": "Outer face: smooth diagonal closed string with base rail (like image 03). Wall face: stepped tread profile against the wall (subtle in this render — visible as small stepped projections where each tread meets the plaster).",
+        "materials_visible": ["oak treads", "oak risers", "oak closed string (outer)", "oak cut string (wall side)", "oak base rail on top of outer string", "slim black metal round balusters", "oak handrail", "large chamfered square oak newel"],
+        "setting": "interior-residential",
+        "domain": "STAIRCASE_INTERIOR",
+        "style_tags": ["mixed-string-configuration", "closed-outer-cut-wall", "canonical-reference"],
+        "notable_features": [
+          "outer string is closed — smooth diagonal plank with base rail",
+          "wall side has a cut string profile against the wall",
+          "balusters land into base rail on top of outer string",
+          "large chamfered oak newel at bottom",
+          "one of several valid mixed string configurations"
+        ]
+      },
+      "qa": [
+        { "q": "Why mix closed and cut on the same staircase?", "a": "Aesthetics and practicality. The formal outer face reads well as a smooth closed string; on the wall side the stepped cut treatment gives a cleaner meeting between tread ends and plaster wall than trying to bury the treads inside a full wall string. It's a real design choice, not a compromise." },
+        { "q": "Is this common?", "a": "Less common than closed-both-sides or cut-both-sides, but a recognised configuration. Some joinery workshops offer it as a specific option, particularly on straight flights against a wall where the outer face wants to read formal but the wall side is easier to detail cut." },
+        { "q": "Where do the balusters go here?", "a": "Into the base rail on top of the closed outer string — same as any closed-string flight. The wall side doesn't need balusters because the wall itself does the job of the balustrade there." },
+        { "q": "How can I check on my own staircase?", "a": "Stand at the bottom of the flight and look up the outer face. If the string is smooth, it's closed on that side. Then look along the wall side of the flight — if the treads step up against the wall in visible steps, the wall string is cut. If the wall side is a smooth diagonal plank against the wall, the wall string is also closed." },
+        { "q": "Does the price differ?", "a": "Slightly — a cut wall string can be quicker to fit against an existing plaster wall than a full closed wall string that has to be housed against irregular plaster. Details vary by joinery workshop, but the difference is normally small compared to the overall build cost." }
+      ],
+      "safe_for_display_when_user_asks_about": ["mixed string configuration", "closed outer cut wall", "cut string on wall side only", "different string types either side"],
+      "not_shown_when": ["garden stairs", "external metal stairs", "fire escape"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ttyityutyu.jpg",
+      "id": "stair_string_type_2026_08_15_10",
+      "philip_annotation": "Different shapes of top steps for staircases.",
+      "role": "component-profile-comparison",
+      "verified_category": "STAIRCASE_COMPONENT",
+      "sub_context": "tread-nosing-profile-comparison",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Three isolated stair-tread samples stacked one above the other on a white background, each showing a different NOSING profile — the shape of the front edge of the tread. Top sample: `Standard Bullnose Profile` — a fully rounded (half-round) front edge that projects past the riser and returns underneath. Middle sample: `1/4\" Round Over Square Nose Profile` — a slight round-over on the top corner with an otherwise square face. Bottom sample: `1/4\" Round Over Modern Nose Profile` — a subtle round-over on both top and bottom of the front face for a modern, blockier read.",
+        "purpose": "Component reference showing the three most common nosing profiles a customer can specify. Nosing profile is a separate decision from string type — any of these nosings can appear on a closed-string or cut-string build.",
+        "materials_visible": ["maple / light-hardwood tread samples"],
+        "setting": "isolated-component-studio",
+        "domain": "STAIRCASE_COMPONENT",
+        "style_tags": ["nosing-profile", "tread-comparison", "component-reference", "specification-sheet"],
+        "notable_features": [
+          "three distinct nosing profiles isolated for comparison",
+          "top: standard bullnose (fully rounded, returns under)",
+          "middle: 1/4\" round-over square nose (slight top round, square face)",
+          "bottom: 1/4\" round-over modern nose (subtle round on both edges of face)",
+          "identical timber, identical body — only the front edge differs"
+        ]
+      },
+      "qa": [
+        { "q": "What's a `nosing`?", "a": "The projecting front edge of a stair tread — the bit that overhangs the riser. Nosing profile is the shape of that edge (rounded, square, bevelled, chamfered) and it's a separate design decision from string type or riser type." },
+        { "q": "Which nosing is most traditional?", "a": "Standard bullnose — a fully rounded front edge that projects past the riser. It's the classic Victorian and Edwardian domestic profile and reads warm and welcoming. Modern nosings tend to be squarer or slightly softened." },
+        { "q": "Which is safest?", "a": "All three meet UK building standards for a compliant nosing projection. Bullnose tends to be perceived as safer underfoot because the rounded edge is softer. Square-nose profiles need a good visual contrast against the riser to read well on a dim stair." },
+        { "q": "Can I change the nosing profile on my existing staircase?", "a": "Only by replacing the treads (or the tread caps in a refacing build). The nosing is machined into the front edge of the tread itself; you can't retro-fit a different profile onto an existing tread without machining it away." },
+        { "q": "Does the nosing depend on the string type?", "a": "No — the nosing is a tread detail. Any of these three profiles can appear on a closed-string, cut-string or concrete-substructure staircase. What changes with string type is how the tread END is finished (return moulding on a cut string vs hidden inside the string on a closed string)." }
+      ],
+      "safe_for_display_when_user_asks_about": ["nosing profile", "bullnose nosing", "modern square nosing", "top step shape", "different tread edge shapes"],
+      "not_shown_when": ["garden stairs", "external metal stairs", "fire escape"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/dfsgsdfg.jpg",
+      "id": "stair_string_type_2026_08_15_11",
+      "philip_annotation": "Cut string tread side return — how it's finished.",
+      "role": "joinery-detail-close-up",
+      "verified_category": "STAIRCASE_COMPONENT",
+      "sub_context": "cut-string-tread-return-joinery",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Extreme close-up of the front-right corner of an oak stair tread showing the RETURN piece that finishes the exposed tread end on a cut-string build. The main tread top surface runs across the top-right of the frame. A separate return piece runs along the exposed side edge of the tread, glued and pinned in place with a mitered 45° corner at the front where it meets the tread nosing. The wood grain flows continuously through the mitered corner, giving the appearance of a solid wrapped-around block rather than a raw end-grain edge.",
+        "purpose": "Shows the joinery detail that finishes the visible tread end on a cut string — a small return moulding wraps the tread end so no end-grain is exposed.",
+        "materials_visible": ["oak tread", "oak return moulding", "mitered corner joint"],
+        "setting": "isolated-component-studio",
+        "domain": "STAIRCASE_COMPONENT",
+        "style_tags": ["joinery-detail", "tread-return", "cut-string-finishing", "close-up", "mitered-corner"],
+        "notable_features": [
+          "separate return moulding piece running along tread end",
+          "mitered 45° corner where return meets front nosing",
+          "grain flows continuously across the mitre",
+          "hides end-grain that would otherwise show on cut-string exposed side",
+          "hallmark of quality cut-string joinery"
+        ]
+      },
+      "qa": [
+        { "q": "What is this piece for?", "a": "It's a tread return — a small piece of matching timber glued and pinned to the exposed side of a cut-string tread. It hides the end-grain that would otherwise show, and it wraps the front nosing round the corner so the tread looks like a solid block from the outside. Only used on cut-string staircases (closed-string tread ends are already hidden inside the string)." },
+        { "q": "Is the mitered corner difficult to make?", "a": "It's careful joinery work — the mitre has to be tight enough that the grain reads as continuous. A good joinery workshop does this every day; a rushed build might show a gap or misalignment at the corner. This is one of the details a customer can check when quality-inspecting a finished cut-string staircase." },
+        { "q": "Can I have a tread return in a different timber?", "a": "Some designs deliberately contrast — walnut tread with an oak return, for example — but the norm is matching timber and matching grain direction for a seamless appearance." },
+        { "q": "What happens if there's no return?", "a": "You'd see raw end-grain on the exposed side of every tread. It looks unfinished and it's how you can tell a cut-string staircase was value-engineered or built to a budget. On a quality cut-string build, every exposed tread end has a return." },
+        { "q": "Is a return the same as a mitered floating tread?", "a": "No — a return is a separate small piece added to the tread. A mitered floating tread (see image 12 of this batch) is a solid slab where the front and side are one continuous piece with a mitered corner — no separate return needed. Different construction, different look." }
+      ],
+      "safe_for_display_when_user_asks_about": ["cut string tread return", "how cut string tread ends are finished", "mitered tread corner", "return moulding", "cut string joinery detail"],
+      "not_shown_when": ["garden stairs", "external metal stairs", "fire escape"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/vbcxvb.jpg",
+      "id": "stair_string_type_2026_08_15_12",
+      "philip_annotation": "Front-edge view showing the mitered corner for the edge of a cut-string heavy-thickness step, no bullnose.",
+      "role": "joinery-detail-close-up",
+      "verified_category": "STAIRCASE_COMPONENT",
+      "sub_context": "heavy-floating-tread-mitered-front-corner",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Extreme close-up of a heavy-thickness oak floating tread cantilevered from a plastered wall. The tread reads as a single solid oak block — roughly 55-65mm thick — with a MITERED 45° corner at the front-outer edge (where the exposed side face meets the front face). No bullnose profile — the arrises are square with a slight eased softening. The grain wraps around the mitre continuously, giving the appearance of one solid block of wood rather than a return-piece assembly. Left side of frame is a plastered wall.",
+        "purpose": "Shows the alternative to a tread-return finish — a heavy-thickness solid-block tread where the front-outer corner is mitered so no end-grain shows and no separate return piece is needed. Common on contemporary architectural floating staircases.",
+        "materials_visible": ["heavy-thickness solid oak tread", "mitered front-outer corner", "plastered wall (context)"],
+        "setting": "isolated-component-on-wall",
+        "domain": "STAIRCASE_COMPONENT",
+        "style_tags": ["heavy-floating-tread", "mitered-front-corner", "no-bullnose", "modern-architectural", "cantilevered-cladding"],
+        "notable_features": [
+          "heavy-thickness solid oak block (approximately 55-65mm)",
+          "mitered 45° corner at front-outer edge",
+          "no separate return piece — one solid block wrapped by mitre",
+          "no bullnose — square arrises with slight eased softening",
+          "cantilevered from wall (typical mounting for this style)"
+        ]
+      },
+      "qa": [
+        { "q": "How is this different from a tread with a return?", "a": "This is a solid heavy-thickness block — the front face and the exposed side face are one continuous piece wrapped by a mitred corner. On a return build (image 11) the tread is a standard thickness and a small return moulding is glued onto the side. Different construction, different look, different price. This is the architectural / floating-stair language." },
+        { "q": "Why so thick?", "a": "Thick treads are structural on floating staircases where the tread cantilevers from a wall or spine — the thickness gives the tread the stiffness to carry loads without needing an underlying string. Also visually: a chunky solid slab reads as premium and architectural. Common thicknesses are 55-80mm on floating builds vs 25-40mm on a conventional string-built tread." },
+        { "q": "Why no bullnose?", "a": "Bullnose is a traditional / Victorian language. Contemporary floating stairs typically use square-edged treads with only a very slight softening at the arris — the visual language is `chunky slab`, not `warm rounded step`. Both are valid; the choice signals which era of design you're aiming for." },
+        { "q": "Does this need special installation?", "a": "Yes — floating cantilevered treads need a robust fixing hidden inside the wall (a steel spine, an embedded plate, or wall-fixed brackets). It's a structural build, sized by an engineer rather than a joiner. Not a retrofit unless the wall behind is opened up." },
+        { "q": "Can I have this look with a closed string?", "a": "No — the heavy floating tread is inherently a stringless / concealed-support construction. If you want a closed-string staircase, the treads sit in string housings and won't be a heavy solid block. If you want the chunky-slab look, you'll need a floating build or a concrete substructure clad in solid timber." }
+      ],
+      "safe_for_display_when_user_asks_about": ["heavy floating tread", "mitered corner solid tread", "no bullnose modern tread", "chunky slab step", "contemporary architectural stair"],
+      "not_shown_when": ["garden stairs", "external metal stairs", "fire escape"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2003_54_46%20PM.png",
+      "id": "stair_string_type_2026_08_15_13",
+      "philip_annotation": null,
+      "role": "component-anatomy-teaching-diagram",
+      "verified_category": "STAIRCASE_COMPONENT",
+      "sub_context": "tread-riser-return-anatomy-with-refacing-context",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Labelled illustration showing three white-riser walnut-tread steps in perspective, with call-outs identifying three components: TREAD (the horizontal walking surface, walnut here — labelled as adding warmth, durability, and premium finish), RISER (the vertical panel between treads, white here — labelled as creating clean bright contrast), and RETURN (the finished edge on the side of the tread, walnut here — labelled as providing a seamless high-end look and protecting the stair edge). Bottom of the illustration shows a `HOW IT WORKS` sequence positioning this as a REFACING system: treads installed on top of existing stairs, risers fitted on the vertical face, returns finish the sides.",
+        "purpose": "Anatomy-plus-marketing diagram naming the three visible stair-face components (tread · riser · return) in a refacing / over-cladding context. Useful for teaching a customer the names of the three parts they can see.",
+        "materials_visible": ["walnut tread cladding", "white-painted riser cladding", "walnut return cladding"],
+        "setting": "labelled-illustration-teaching-diagram",
+        "domain": "STAIRCASE_COMPONENT",
+        "style_tags": ["anatomy-diagram", "labelled-teaching", "refacing-context", "tread-riser-return", "specification-illustration"],
+        "notable_features": [
+          "three components labelled: tread · riser · return",
+          "walnut-and-white two-tone treatment shown",
+          "positioned as a refacing / over-cladding system",
+          "four-icon `HOW IT WORKS` explaining install sequence",
+          "bottom marketing panel: `WHY CHOOSE THIS SYSTEM?` list"
+        ]
+      },
+      "qa": [
+        { "q": "What are the three parts of a stair face called?", "a": "Tread (the horizontal you walk on) · riser (the vertical between treads) · return (the finished edge on the exposed side of the tread). Return only exists on a cut-string or exposed-side build — if the tread is fully closed inside a string, you don't see the tread end so no return is needed." },
+        { "q": "Is this a full new staircase or a refacing?", "a": "This diagram is showing a refacing system — treads and risers installed over an existing staircase. The three components (tread, riser, return) exist on any staircase, but the diagram is marketing a specific over-cladding approach where you cover the old surface without replacing the structure." },
+        { "q": "Can I have walnut treads with white risers on a new build?", "a": "Yes — the two-tone (dark wood tread + white/painted riser) is a valid new-build choice as well as a refacing choice. It's a common contemporary palette for both approaches." },
+        { "q": "Do all staircases have returns?", "a": "No — only staircases with exposed tread ends need returns. A closed-string staircase where both sides are closed against walls has no exposed tread ends and no returns. Cut-string staircases with an open side always have returns on that side." },
+        { "q": "What's the point of a return?", "a": "Two jobs — hiding the end-grain of the tread so the exposed side looks like a solid finished piece rather than a cut edge, and protecting the tread corner from bumps and wear. Without a return the tread end would look unfinished and would chip more easily." }
+      ],
+      "safe_for_display_when_user_asks_about": ["what a tread is", "what a riser is", "what a return is", "stair face anatomy", "refacing components"],
+      "not_shown_when": ["garden stairs", "external metal stairs", "fire escape"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2004_09_16%20PM.png",
+      "id": "stair_string_type_2026_08_15_14",
+      "philip_annotation": null,
+      "role": "dimensioning-teaching-diagram",
+      "verified_category": "STAIRCASE_COMPONENT",
+      "sub_context": "tread-and-riser-dimensioning-imperial",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Labelled dimensioning illustration showing three white-riser walnut-tread steps in perspective, with call-outs identifying: TREAD (the horizontal walking surface) with a depth dimension `TREAD 8¼-14 inches`, TREAD HEIGHT (labelled but showing riser rise) `7-7½ inches`, RISER HEIGHT `5-7⅞ inches`, and NOSING (with a separate detail zoom showing the rounded front edge profile). Dimensions are given in imperial (US units).",
+        "purpose": "Component-dimensioning reference — teaches customers the standard tread-depth and riser-height ranges. IMPORTANT: dimensions are in imperial (US); the UK equivalents differ and are governed by Approved Document K (see doc reference).",
+        "materials_visible": ["walnut tread cladding", "white-painted riser cladding"],
+        "setting": "labelled-illustration-teaching-diagram",
+        "domain": "STAIRCASE_COMPONENT",
+        "style_tags": ["dimensioning-diagram", "imperial-units", "tread-depth", "riser-height", "nosing-profile", "specification-reference"],
+        "notable_features": [
+          "tread depth range 8¼-14 inches (approx 210-355mm)",
+          "riser height range 5-7⅞ inches (approx 127-200mm)",
+          "nosing detail zoom showing rounded projection",
+          "US-imperial units — UK equivalents differ under Approved Doc K",
+          "same walnut-and-white treatment as image 13"
+        ]
+      },
+      "qa": [
+        { "q": "What's a `tread depth`?", "a": "How far your foot can rest on the walking surface, measured from the front of one step to the front of the next. In UK terms this is called the `going`. Typical domestic going in the UK is 220-260mm; the imperial range shown here (8¼-14 inches / 210-355mm) is US IRC guidance, so the UK domestic range is at the lower end of that." },
+        { "q": "What's the UK equivalent?", "a": "UK Approved Document K (domestic): max riser 220mm, min going 220mm, with 2R + G between 550 and 700mm, and max pitch 42°. Common domestic actuals are riser ~180-190mm, going ~230-250mm, which fall comfortably inside those limits." },
+        { "q": "Does the tread depth affect comfort?", "a": "Yes — a shallow going forces the foot to overhang the nosing and feels less secure going down. A generous going feels safer and more like walking on a level floor. The trade-off is total horizontal run — a deeper going needs a longer floor area." },
+        { "q": "Why does the diagram say `tread height`?", "a": "That label is a bit confusing — the dimension it points to is the vertical rise between treads (which is more usually called `riser height` or just `rise`). The UK term is `rise`; the US term is either `rise` or `riser height`; `tread height` is not a standard UK term." },
+        { "q": "How is nosing projection measured?", "a": "It's the horizontal distance the front of the tread projects past the face of the riser below. UK Approved Doc K typically requires 15-25mm of projection for domestic stairs, but you'll see anywhere from a flush 0mm (modern flush-riser look) up to about 35mm (traditional deep bullnose)." }
+      ],
+      "safe_for_display_when_user_asks_about": ["tread depth", "riser height", "stair dimensioning", "nosing projection", "US vs UK stair dimensions"],
+      "not_shown_when": ["garden stairs", "external metal stairs", "fire escape"]
+    },
+    {
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2004_14_27%20PM.png",
+      "id": "stair_string_type_2026_08_15_15",
+      "philip_annotation": null,
+      "role": "dimensioning-teaching-diagram",
+      "verified_category": "STAIRCASE_COMPONENT",
+      "sub_context": "tread-and-riser-dimensioning-imperial-and-metric",
+      "analysis_status": "sample-analysed",
+      "analysis": {
+        "description": "Labelled dimensioning illustration showing four white-riser walnut-tread steps in perspective, with more comprehensive dimensioning call-outs than image 14: TREAD (walking surface), RISER HEIGHT `7-3/4\" MAX (196mm)`, TREAD DEPTH `10\" (254mm) MIN`, NOSING (projecting front edge), STAIRWAY WIDTH (overall width of the flight), RUN (total horizontal length of the flight). Dimensions given in both imperial and metric.",
+        "purpose": "More thorough dimensioning-teaching diagram than image 14 — adds STAIRWAY WIDTH and RUN and includes metric equivalents for the primary dimensions.",
+        "materials_visible": ["walnut tread cladding", "white-painted riser cladding"],
+        "setting": "labelled-illustration-teaching-diagram",
+        "domain": "STAIRCASE_COMPONENT",
+        "style_tags": ["dimensioning-diagram", "imperial-and-metric", "code-max-min-values", "stairway-width", "run", "specification-reference"],
+        "notable_features": [
+          "riser height 7-3/4 inches max (196mm) — US IRC max value",
+          "tread depth 10 inches min (254mm) — US IRC min value",
+          "stairway width dimensioned",
+          "total run dimensioned",
+          "both imperial and metric values shown"
+        ]
+      },
+      "qa": [
+        { "q": "What's a `stairway width`?", "a": "The clear width of the flight — measured between the inside faces of the two strings (or between wall and outer string on a wall-flanked flight). UK Approved Doc K minimum for domestic is 800mm clear; comfortable modern builds are usually 900-1000mm." },
+        { "q": "What's the `run`?", "a": "The total horizontal length the staircase covers on the floor — from the front of the bottom step to the front of the top step. For a domestic 13-tread flight at 240mm going, the run is around 3 metres." },
+        { "q": "Are these US values applicable in the UK?", "a": "These values (7-3/4 max riser, 10 min tread) are US IRC (International Residential Code). UK Approved Doc K sets a different envelope — max riser 220mm, min going 220mm, and a joint rule that 2R+G is between 550 and 700mm. The US and UK envelopes overlap on `comfortable stair` proportions but the extreme edges differ." },
+        { "q": "Can a stair be too wide?", "a": "Structurally rare, but there's a psychological width above which stairs start to feel `grand` rather than domestic — around 1200mm and up. Most domestic staircases sit between 800 and 1000mm clear. Wider stairs cost more (longer treads, more baluster spacing, potentially two handrails)." },
+        { "q": "How do I calculate how much floor space a new staircase needs?", "a": "Total run = number of treads × going. For a typical 13-tread domestic flight at 240mm going = 3.12m of horizontal floor space. Plus space at the top (landing) and at the bottom (approach). Getting this right early is critical — retrofitting a staircase into a smaller footprint often forces a compromise on pitch or tread depth." }
+      ],
+      "safe_for_display_when_user_asks_about": ["stairway width", "total run of a staircase", "code minimum tread", "code maximum riser", "how much space does a staircase need"],
+      "not_shown_when": ["garden stairs", "external metal stairs", "fire escape"]
+    }
+  ]
+}

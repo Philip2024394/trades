@@ -1,0 +1,70 @@
+{
+  "id": "regression-4-fixes-2026-08-15",
+  "purpose": "Regression tests for the 4 conversation failures Philip flagged after V1 Step 2 routing was fixed.",
+  "brain": "staircase_brain",
+  "conversations": [
+    {
+      "id": "reg-fix-4-hello-meta",
+      "purpose": "Fix 4 — meta greetings must NOT force staircase advice",
+      "turns": [
+        { "customer": "hello", "expect_intent": "meta_greeting", "expect_reply_no_phrase": ["against a wall", "closed string", "cut string", "balustrade", "tread"] },
+        { "customer": "hi there", "expect_intent": "meta_greeting", "expect_reply_no_phrase": ["against a wall", "closed string"] }
+      ]
+    },
+    {
+      "id": "reg-fix-4-presence-check",
+      "purpose": "Fix 4 — presence checks must confirm you're there, not talk staircases",
+      "turns": [
+        { "customer": "Is anyone online?", "expect_intent": "meta_presence", "expect_reply_no_phrase": ["against a wall", "closed string", "cut string", "starting step"] },
+        { "customer": "are you there?", "expect_intent": "meta_presence", "expect_reply_no_phrase": ["against a wall", "closed string", "cut string"] }
+      ]
+    },
+    {
+      "id": "reg-fix-4-identity",
+      "purpose": "Fix 4 — 'who are you' should identify as Summit assistant, not reveal AI model",
+      "turns": [
+        { "customer": "who are you?", "expect_intent": "meta_identity", "expect_reply_no_phrase": ["Qwen", "Ollama", "LLM", "language model", "GPT", "Claude"] }
+      ]
+    },
+    {
+      "id": "reg-fix-1-price-no-fabrication",
+      "purpose": "Fix 1 — asking for a price when NO price is in the packet must NOT invent a £ figure",
+      "turns": [
+        { "customer": "I'm looking for an oak staircase" },
+        { "customer": "How much would that cost?", "expect_intent": "ask_price", "expect_reply_no_regex": ["£\\s*[0-9]{1,3}[,.]?[0-9]{0,3}", "\\$\\s*[0-9]{1,3}[,.]?[0-9]{0,3}"] }
+      ]
+    },
+    {
+      "id": "reg-fix-1-price-range-no-fabrication",
+      "purpose": "Fix 1 — invented price RANGES also count as fabrication",
+      "turns": [
+        { "customer": "I want a walnut staircase" },
+        { "customer": "roughly what's the price?", "expect_intent": "ask_price", "expect_reply_no_regex": ["\\d{1,3}[,.]?\\d{3}\\s*(to|-|–)\\s*\\d", "around\\s+£"] }
+      ]
+    },
+    {
+      "id": "reg-fix-3-no-op-correction",
+      "purpose": "Fix 3 — correcting to the CURRENT value should not narrate a state change",
+      "turns": [
+        { "customer": "I'd like an oak staircase" },
+        { "customer": "No, I meant oak", "expect_intent": "correct", "expect_reply_no_phrase": ["updating the current assumption", "switching from oak to oak", "swapping oak for oak", "changed to oak"] }
+      ]
+    },
+    {
+      "id": "reg-fix-2-pronoun-that",
+      "purpose": "Fix 2 — 'is that expensive?' must resolve 'that' from state, not ask what",
+      "turns": [
+        { "customer": "Can I have a bullnose starting step in oak?" },
+        { "customer": "Is that expensive?", "expect_intent": "ask_price", "expect_reply_no_phrase": ["what do you mean", "what are you referring to", "which one do you mean"] }
+      ]
+    },
+    {
+      "id": "reg-fix-2-pronoun-the-other-one",
+      "purpose": "Fix 2 — 'the other one' must resolve to prior alternative from state",
+      "turns": [
+        { "customer": "Closed string or cut string for a Victorian oak staircase?" },
+        { "customer": "Tell me more about the other one", "expect_reply_no_phrase": ["what do you mean", "which one do you mean", "the other one? which"] }
+      ]
+    }
+  ]
+}

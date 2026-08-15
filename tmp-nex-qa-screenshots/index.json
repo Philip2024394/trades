@@ -1,0 +1,75 @@
+{
+  "generatedAt": "2026-08-14T08:26:06.833Z",
+  "screenshots": [
+    {
+      "pageId": "home",
+      "viewport": "desktop",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots\\home__desktop.png"
+    },
+    {
+      "pageId": "home",
+      "viewport": "mobile",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots\\home__mobile.png"
+    },
+    {
+      "pageId": "about",
+      "viewport": "desktop",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots\\about__desktop.png"
+    },
+    {
+      "pageId": "about",
+      "viewport": "mobile",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots\\about__mobile.png"
+    },
+    {
+      "pageId": "products",
+      "viewport": "desktop",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots\\products__desktop.png"
+    },
+    {
+      "pageId": "products",
+      "viewport": "mobile",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots\\products__mobile.png"
+    },
+    {
+      "pageId": "product-detail",
+      "viewport": "desktop",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots\\product-detail__desktop.png"
+    },
+    {
+      "pageId": "product-detail",
+      "viewport": "mobile",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots\\product-detail__mobile.png"
+    },
+    {
+      "pageId": "services",
+      "viewport": "desktop",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots\\services__desktop.png"
+    },
+    {
+      "pageId": "services",
+      "viewport": "mobile",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots\\services__mobile.png"
+    },
+    {
+      "pageId": "gallery",
+      "viewport": "desktop",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots\\gallery__desktop.png"
+    },
+    {
+      "pageId": "gallery",
+      "viewport": "mobile",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots\\gallery__mobile.png"
+    },
+    {
+      "pageId": "contact",
+      "viewport": "desktop",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots\\contact__desktop.png"
+    },
+    {
+      "pageId": "contact",
+      "viewport": "mobile",
+      "path": "C:\\Users\\Victus\\trades\\tmp-nex-qa-screenshots\\contact__mobile.png"
+    }
+  ]
+}
