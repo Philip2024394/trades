@@ -1,0 +1,338 @@
+[
+  {
+    "name": "OC Stair Guy",
+    "from_agent": "agent-us-exp-1-california.json",
+    "into_v1": "OC Stair Guy",
+    "signal": "domain"
+  },
+  {
+    "name": "Marquez Iron Works",
+    "from_agent": "agent-us-exp-1-california.json",
+    "into_v1": "Marquez Iron Works",
+    "signal": "name"
+  },
+  {
+    "name": "Beach City Stairs & Trim",
+    "from_agent": "agent-us-exp-1-california.json",
+    "into_v1": "Beach City Stairs",
+    "signal": "domain"
+  },
+  {
+    "name": "Wonders Ornamental Iron",
+    "from_agent": "agent-us-exp-1-california.json",
+    "into_v1": "Wonders Ornamental Iron, Inc.",
+    "signal": "domain"
+  },
+  {
+    "name": "3D Stairs & Wood Works",
+    "from_agent": "agent-us-exp-1-california.json",
+    "into_v1": "3D Stairs & Wood Works",
+    "signal": "domain"
+  },
+  {
+    "name": "Precision Stair Co.",
+    "from_agent": "agent-us-exp-2-texas.json",
+    "into_v1": "Precision Stair Co.",
+    "signal": "domain"
+  },
+  {
+    "name": "Higher Level Stairs",
+    "from_agent": "agent-us-exp-2-texas.json",
+    "into_v1": "Higher Level Stairs",
+    "signal": "domain"
+  },
+  {
+    "name": "Stair Heros",
+    "from_agent": "agent-us-exp-2-texas.json",
+    "into_v1": "Stair Heros",
+    "signal": "domain"
+  },
+  {
+    "name": "Innovations Carpentry",
+    "from_agent": "agent-us-exp-2-texas.json",
+    "into_v1": "Innovations Carpentry",
+    "signal": "domain"
+  },
+  {
+    "name": "Texas Woodwrx, LLC",
+    "from_agent": "agent-us-exp-2-texas.json",
+    "into_v1": "Texas Woodwrx, LLC",
+    "signal": "domain"
+  },
+  {
+    "name": "Atomic Steelworks",
+    "from_agent": "agent-us-exp-2-texas.json",
+    "into_v1": "Atomic Steelworks",
+    "signal": "domain"
+  },
+  {
+    "name": "Precision Metal Services (PMS Welding)",
+    "from_agent": "agent-us-exp-2-texas.json",
+    "into_v1": "Precision Metal Services",
+    "signal": "domain"
+  },
+  {
+    "name": "Ornamental Iron of Houston",
+    "from_agent": "agent-us-exp-2-texas.json",
+    "into_v1": "Ornamental Iron of Houston",
+    "signal": "domain"
+  },
+  {
+    "name": "Star Iron Houston",
+    "from_agent": "agent-us-exp-2-texas.json",
+    "into_v1": "Star Iron Houston",
+    "signal": "domain"
+  },
+  {
+    "name": "Houston Stair Company, Inc.",
+    "from_agent": "agent-us-exp-2-texas.json",
+    "into_v1": "Houston Stair Company, Inc.",
+    "signal": "domain"
+  },
+  {
+    "name": "Custom iRon works",
+    "from_agent": "agent-us-exp-6-wa-az-co.json",
+    "into_v1": "Custom Iron Works",
+    "signal": "name"
+  },
+  {
+    "name": "Custom Stairs Aspen",
+    "from_agent": "agent-us-exp-6-wa-az-co.json",
+    "into_v1": "Custom Stairs Aspen",
+    "signal": "domain"
+  },
+  {
+    "name": "ARAD LLC (Arizona Remodeling and Design)",
+    "from_agent": "agent-us-exp-6-wa-az-co.json",
+    "into_v1": "ARAD LLC (Arizona Woodwork)",
+    "signal": "domain"
+  },
+  {
+    "name": "Artistic Stairs Inc (Tucson)",
+    "from_agent": "agent-us-exp-6-wa-az-co.json",
+    "into_v1": "Artistic Stairs US",
+    "signal": "domain"
+  },
+  {
+    "name": "Artistic Alloys & Design, LLC",
+    "from_agent": "agent-us-exp-6-wa-az-co.json",
+    "into_v1": "Artistic Alloys & Design, LLC",
+    "signal": "domain"
+  },
+  {
+    "name": "Sonoran Stairs LLC",
+    "from_agent": "agent-us-exp-6-wa-az-co.json",
+    "into_v1": "Sonoran Stairs LLC",
+    "signal": "domain"
+  },
+  {
+    "name": "B&A Stair Design (BNA Stairs)",
+    "from_agent": "agent-us-exp-6-wa-az-co.json",
+    "into_v1": "B&A Stairs",
+    "signal": "domain"
+  },
+  {
+    "name": "Precision Stair Co.",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "Precision Stair Co.",
+    "signal": "domain"
+  },
+  {
+    "name": "Trinity Stairs",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "Trinity Stairs, Inc.",
+    "signal": "domain"
+  },
+  {
+    "name": "SRG Stairs",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "SRG Stairs (Houston)",
+    "signal": "domain"
+  },
+  {
+    "name": "Elite Staircases",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "Elite Staircases LLC",
+    "signal": "domain"
+  },
+  {
+    "name": "Mac Stairs",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "Mac Stairs",
+    "signal": "domain"
+  },
+  {
+    "name": "Custom Stairs Orlando",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "Custom Stairs Orlando",
+    "signal": "domain"
+  },
+  {
+    "name": "Designed Stairs",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "Designed Stairs Inc.",
+    "signal": "domain"
+  },
+  {
+    "name": "New York Wood Stairs",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "New York Wood Stairs",
+    "signal": "domain"
+  },
+  {
+    "name": "DKP Stairs",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "DKP Wood Railings & Stairs",
+    "signal": "domain"
+  },
+  {
+    "name": "San Diego Stair Builders",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "San Diego Stair Builders",
+    "signal": "domain"
+  },
+  {
+    "name": "SoCal Stairs",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "SoCal Stairs",
+    "signal": "domain"
+  },
+  {
+    "name": "Buckeye Stairs",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "Buckeye Stairs",
+    "signal": "domain"
+  },
+  {
+    "name": "The Great Lakes Stair & Millwork Co.",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "Great Lakes Stair & Millwork Co.",
+    "signal": "domain"
+  },
+  {
+    "name": "StairWorx (Cumming GA)",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "StairWorx",
+    "signal": "domain"
+  },
+  {
+    "name": "Superior Stairs and Rails LLC",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "Superior Stairs and Rails LLC",
+    "signal": "domain"
+  },
+  {
+    "name": "Arizona Stairs, Inc.",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "Arizona Stairs, Inc.",
+    "signal": "domain"
+  },
+  {
+    "name": "Artistic Stairs US",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "Artistic Stairs US",
+    "signal": "domain"
+  },
+  {
+    "name": "B&A Stairs",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "B&A Stairs",
+    "signal": "domain"
+  },
+  {
+    "name": "Dr. Stairs",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "Dr. Stairs",
+    "signal": "domain"
+  },
+  {
+    "name": "Patrick Millwork",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "Patrick Millwork, Inc.",
+    "signal": "domain"
+  },
+  {
+    "name": "Stair Depot of Mississippi",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "Stair Depot of Mississippi",
+    "signal": "domain"
+  },
+  {
+    "name": "MyStairways Custom Stairbuilder",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "MyStairways, Inc.",
+    "signal": "domain"
+  },
+  {
+    "name": "Peerless Stairs & Rails",
+    "from_agent": "agent-us-exp-7-refacing-expanded.json",
+    "into_v1": "Peerless Stairs & Rails",
+    "signal": "domain"
+  },
+  {
+    "name": "Atlantic Hardwoods",
+    "from_agent": "agent-us-exp-8-small-states.json",
+    "into_v1": "Atlantic Hardwoods",
+    "signal": "domain"
+  },
+  {
+    "name": "Vermont Custom Handrails and Metalwork LLC",
+    "from_agent": "agent-us-exp-8-small-states.json",
+    "into_v1": "Vermont Custom Handrails & Metalwork",
+    "signal": "domain"
+  },
+  {
+    "name": "Mississippi Stair & Millwork",
+    "from_agent": "agent-us-exp-8-small-states.json",
+    "into_v1": "Mississippi Stair & Millwork",
+    "signal": "domain"
+  },
+  {
+    "name": "Stair Depot of Mississippi Inc",
+    "from_agent": "agent-us-exp-8-small-states.json",
+    "into_v1": "Stair Depot of Mississippi",
+    "signal": "domain"
+  },
+  {
+    "name": "Ensley Iron LLC",
+    "from_agent": "agent-us-exp-8-small-states.json",
+    "into_v1": "Ensley Iron",
+    "signal": "domain"
+  },
+  {
+    "name": "AMP Welding & Fabrication",
+    "from_agent": "agent-us-exp-8-small-states.json",
+    "into_v1": "AMP Welding & Fabrication",
+    "signal": "domain"
+  },
+  {
+    "name": "HI End Construction Inc",
+    "from_agent": "agent-us-exp-8-small-states.json",
+    "into_v1": "HI End Construction",
+    "signal": "domain"
+  },
+  {
+    "name": "Excalibur Metal Design Inc",
+    "from_agent": "agent-us-exp-8-small-states.json",
+    "into_v1": "Excalibur Metal Design",
+    "signal": "domain"
+  },
+  {
+    "name": "Patrick Millwork Inc",
+    "from_agent": "agent-us-exp-8-small-states.json",
+    "into_v1": "Patrick Millwork, Inc.",
+    "signal": "domain"
+  },
+  {
+    "name": "Stronghold Fabrication",
+    "from_agent": "agent-us-exp-8-small-states.json",
+    "into_v1": "Stronghold Fabrication",
+    "signal": "domain"
+  },
+  {
+    "name": "OMARAIL",
+    "from_agent": "agent-us-exp-8-small-states.json",
+    "into_v1": "Omarail",
+    "signal": "domain"
+  }
+]

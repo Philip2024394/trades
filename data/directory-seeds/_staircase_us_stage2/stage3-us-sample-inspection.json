@@ -1,0 +1,1675 @@
+[
+  {
+    "business_name": "NYC Stair",
+    "website": "https://nycstairs.com/",
+    "town": "New York",
+    "state": "NY",
+    "region": "NY",
+    "country": "USA",
+    "postcode": null,
+    "telephone": null,
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": true,
+      "glass": false,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Own site markets 'Custom Staircase Solutions by NYC STAIR' — fabricates custom staircase designs and installs industrial metal stairs for NYC residents, building managers and property owners.",
+    "source_query": "custom staircase manufacturer New York",
+    "source_url": "https://nycstairs.com/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-1-northeast.json",
+    "_sample_bucket": "Northeast",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://nycstairs.com/",
+        "content_type": "text/html;charset=utf-8",
+        "size_bytes": 106274
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Manufacturer"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installing"
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "railings"
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "metal stair"
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Custom Stair"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "designs"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "steel"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "STAIRCASE_MANUFACTURER"
+    }
+  },
+  {
+    "business_name": "Steel Masters NYC",
+    "website": "https://steelmastersnyc.com/",
+    "town": "Brooklyn",
+    "state": "NY",
+    "region": "NY",
+    "country": "USA",
+    "postcode": "11212",
+    "telephone": "(888) 577-8335",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": true,
+      "glass": false,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Own site: 'custom fabricates, builds and installs structural steel and metal staircases for commercial, industrial, and residential buildings throughout New York City' — over 50 years experience since 1972. 135 Liberty Ave, Brooklyn NY 11212.",
+    "source_query": "custom staircase manufacturer New York",
+    "source_url": "https://steelmastersnyc.com/steel-iron-staircases/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-1-northeast.json",
+    "_sample_bucket": "Northeast",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://steelmastersnyc.com/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 166505
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "staircase built"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installation"
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "Repairs"
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "Railings"
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "Metal Stair"
+          },
+          "bespoke": {
+            "present": false
+          },
+          "design": {
+            "present": false
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "steel"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  },
+  {
+    "business_name": "Southern Staircase",
+    "website": "https://southernstaircase.com/",
+    "town": "Alpharetta",
+    "state": "GA",
+    "region": "GA",
+    "country": "USA",
+    "postcode": "30005",
+    "telephone": "+1-770-888-7333",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": null,
+      "refacing": null,
+      "balustrade": true,
+      "handrail": true,
+      "glass": null,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Industry-leading designer and manufacturer of custom stairs, handrail solutions and stair parts serving residential and commercial buildings across the Southeast for 30+ years.",
+    "source_query": "custom staircase manufacturer Florida",
+    "source_url": "https://southernstaircase.com/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-2-southeast.json",
+    "_sample_bucket": "Southeast",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 403,
+        "final_url": "https://southernstaircase.com/",
+        "content_type": "text/html",
+        "size_bytes": 1084
+      },
+      "identity_confirmed": false,
+      "evidence": null,
+      "verification": "SEARCH_DISCOVERED",
+      "quality_band": "D",
+      "business_group": "STAIRCASE_MANUFACTURER"
+    }
+  },
+  {
+    "business_name": "Vision Stairways & Millwork",
+    "website": "https://visionstairwaysandmillwork.com/",
+    "town": "Woodstock",
+    "state": "GA",
+    "region": "GA",
+    "country": "USA",
+    "postcode": "30188",
+    "telephone": "+1-678-701-5520",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": null,
+      "balustrade": true,
+      "handrail": true,
+      "glass": null,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Award-winning stair and door company serving the entire Southeast; builds custom spiral, straight, curved and suspended stairs and fabricates custom and stock stair parts.",
+    "source_query": "stair contractor Atlanta Georgia custom staircase",
+    "source_url": "https://visionstairwaysandmillwork.com/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-2-southeast.json",
+    "_sample_bucket": "Southeast",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 202,
+        "final_url": "https://visionstairwaysandmillwork.com/",
+        "content_type": "text/html",
+        "size_bytes": 168
+      },
+      "identity_confirmed": false,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": false
+          },
+          "installation": {
+            "present": false
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": false
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": false
+          },
+          "design": {
+            "present": false
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": []
+      },
+      "verification": "SEARCH_DISCOVERED",
+      "quality_band": "D",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  },
+  {
+    "business_name": "Designed Stairs Inc.",
+    "website": "https://designedstairs.com/",
+    "town": "Sandwich",
+    "state": "IL",
+    "region": "IL",
+    "country": "USA",
+    "postcode": "60548",
+    "telephone": "+1-815-786-7600",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": null,
+      "balustrade": true,
+      "handrail": true,
+      "glass": null,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "50,000 sqft manufacturing facility. Curved stairs, open riser, reproduction and luxury custom stairs. Serves Chicagoland, southern Wisconsin, northwestern Indiana. Est. 1969, largest stair company in Chicagoland per own site.",
+    "source_query": "staircase manufacturer Chicago Illinois custom stairs",
+    "source_url": "https://designedstairs.com/about-dsi.php",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-3-midwest.json",
+    "_sample_bucket": "Midwest",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.designedstairs.com/",
+        "content_type": "text/html; charset=utf-8",
+        "size_bytes": 170537
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Custom Stair"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "Installation"
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "Remodeling"
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "Balustrade"
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "Glass Balustrad"
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "Metal Stair"
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Custom Stair"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Designed"
+          },
+          "kit_or_product_supplier": {
+            "present": true,
+            "matched_phrase": "Kit"
+          }
+        },
+        "materials_mentioned": [
+          "glass"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER"
+    }
+  },
+  {
+    "business_name": "HL Stairs",
+    "website": "https://hlstairs.com/",
+    "town": "Chicago",
+    "state": "IL",
+    "region": "IL",
+    "country": "USA",
+    "postcode": null,
+    "telephone": null,
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": null,
+      "refacing": null,
+      "balustrade": true,
+      "handrail": true,
+      "glass": true,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Designs and builds custom luxury staircases for homeowners, architects, and builders throughout Chicago's North Shore (Winnetka, Lake Forest, Glencoe, Highland Park, Kenilworth, Wilmette, Northfield, Lake Bluff).",
+    "source_query": "staircase manufacturer Chicago Illinois custom stairs",
+    "source_url": "https://hlstairs.com/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-3-midwest.json",
+    "_sample_bucket": "Midwest",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://hlstairs.com/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 151990
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Custom Stair"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installation"
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "renovation"
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "railings"
+          },
+          "handrail": {
+            "present": true,
+            "matched_phrase": "Handrails"
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "glass rail"
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "Stainless Steel"
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Bespoke"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Designed"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "oak",
+          "walnut",
+          "ash",
+          "maple",
+          "hickory",
+          "glass",
+          "stainless steel",
+          "steel"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  },
+  {
+    "business_name": "Arizona Stairs, Inc.",
+    "website": "https://www.arizonastairs.com/",
+    "town": "Phoenix",
+    "state": "AZ",
+    "region": "AZ",
+    "country": "USA",
+    "postcode": "85040",
+    "telephone": "+1-480-507-5433",
+    "email": null,
+    "capabilities_claimed": {
+      "custom_staircase": true,
+      "stair_remodel": true,
+      "railings": true,
+      "wood_stairs": true,
+      "metal_stairs": null,
+      "glass_stairs": null,
+      "spiral_stairs": null,
+      "curved_stairs": null,
+      "floating_stairs": null,
+      "commercial": true
+    },
+    "evidence_notes": "Custom stair design, stair building, stair remodeling, half-wall removal and custom rail systems across Phoenix Metro and Gilbert. Located 2120 E Raymond #21, Phoenix.",
+    "source_query": "staircase manufacturer Phoenix Arizona custom stairs",
+    "source_url": "https://www.arizonastairs.com/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-4-southwest.json",
+    "_sample_bucket": "Southwest",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.arizonastairs.com/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 15984
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Custom Stair"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installation"
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "Remodeling"
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "Railing"
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "Stainless Steel"
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Custom Stair"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "glass",
+          "stainless steel",
+          "steel"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  },
+  {
+    "business_name": "Artistic Stairs US",
+    "website": "https://artisticstairs-us.com/",
+    "town": "Phoenix",
+    "state": "AZ",
+    "region": "AZ",
+    "country": "USA",
+    "postcode": "85040",
+    "telephone": null,
+    "email": null,
+    "capabilities_claimed": {
+      "custom_staircase": true,
+      "stair_remodel": true,
+      "railings": true,
+      "wood_stairs": true,
+      "metal_stairs": true,
+      "glass_stairs": true,
+      "spiral_stairs": true,
+      "curved_stairs": true,
+      "floating_stairs": null,
+      "commercial": true
+    },
+    "evidence_notes": "35+ year manufacturer of aluminum spiral, straight, curved, custom staircases, spindles, railings, posts; interior railings in wood/metal/stainless/glass. HQ 4116 E. Superior Ste 7 Phoenix AZ 85040; second location 2555 N Coyote Dr Ste 103 Tucson AZ 85745.",
+    "source_query": "staircase manufacturer Phoenix Arizona custom stairs",
+    "source_url": "https://artisticstairs-us.com/staircase-design-phoenix-az/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-4-southwest.json",
+    "_sample_bucket": "Southwest",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://artisticstairs-us.com/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 157902
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Manufacturing"
+          },
+          "installation": {
+            "present": false
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "Remodels"
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "Railings"
+          },
+          "handrail": {
+            "present": true,
+            "matched_phrase": "handrails"
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "glass panel"
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "Iron Stair"
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Custom Stair"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "glass",
+          "stainless steel",
+          "steel"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  },
+  {
+    "business_name": "West Coast Stair Co.",
+    "website": "https://www.westcoaststairco.com/",
+    "town": "Bellevue",
+    "state": "WA",
+    "region": "WA",
+    "country": "USA",
+    "postcode": null,
+    "telephone": null,
+    "email": null,
+    "capabilities_claimed": {
+      "custom_stairs": true,
+      "wood_stairs": true,
+      "metal_stairs": null,
+      "glass_stairs": null,
+      "spiral_stairs": null,
+      "curved_stairs": true,
+      "floating_stairs": null,
+      "railings": true,
+      "renovation": true,
+      "commercial": null
+    },
+    "evidence_notes": "Serving Seattle and Bellevue since 1980; oldest operating stair company in the Pacific Northwest per search; every component designed and constructed by hand in local shop.",
+    "source_query": "staircase manufacturer Seattle Washington custom stairs",
+    "source_url": "https://www.westcoaststairco.com/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-5-west.json",
+    "_sample_bucket": "West",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.westcoaststairco.com/",
+        "content_type": "text/html;charset=utf-8",
+        "size_bytes": 261384
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "custom stair"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "Installation"
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "Railings"
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "metal stair"
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "custom stair"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": []
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "STAIRCASE_MANUFACTURER"
+    }
+  },
+  {
+    "business_name": "Brookfield Stairs",
+    "website": "https://www.brookfieldstairs.com/",
+    "town": "Bellevue",
+    "state": "WA",
+    "region": "WA",
+    "country": "USA",
+    "postcode": "98006",
+    "telephone": "+1-206-972-7888",
+    "email": "info@brookfieldstairs.com",
+    "capabilities_claimed": {
+      "custom_stairs": true,
+      "wood_stairs": true,
+      "metal_stairs": true,
+      "glass_stairs": null,
+      "spiral_stairs": null,
+      "curved_stairs": null,
+      "floating_stairs": true,
+      "railings": true,
+      "renovation": null,
+      "commercial": null
+    },
+    "evidence_notes": "Address 12404 SE 38th St, Ste H, Bellevue, WA (Yelp). Custom stair and rail construction: manufacture parts, sales, design, installation, custom fabrication; 25+ years in the greater Seattle area.",
+    "source_query": "staircase manufacturer Seattle Washington custom stairs",
+    "source_url": "https://www.brookfieldstairs.com/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-5-west.json",
+    "_sample_bucket": "West",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.brookfieldstairs.com/",
+        "content_type": "text/html;charset=utf-8",
+        "size_bytes": 144848
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "manufactures"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installation"
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "remodel"
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": false
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Custom Design"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Designs"
+          },
+          "kit_or_product_supplier": {
+            "present": true,
+            "matched_phrase": "KITS"
+          }
+        },
+        "materials_mentioned": [
+          "glass",
+          "steel"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER"
+    }
+  },
+  {
+    "business_name": "Bay Area Stairs, Inc.",
+    "website": "https://bayareastairs.com",
+    "town": "Benicia",
+    "state": "CA",
+    "region": "CA",
+    "country": "USA",
+    "postcode": "94510",
+    "telephone": "800-310-7824",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": null,
+      "refacing": null,
+      "balustrade": true,
+      "handrail": true,
+      "glass": true,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Design, fabrication and installation of custom interior stair systems for residential and commercial projects. Classic wood staircases through modern steel, stainless steel, glass and cable railing systems. Serves Pleasanton, San Ramon, Walnut Creek, Piedmont, San Francisco, Marin, Napa, Sonoma, Truckee, Tahoe. CA CSLB Lic #687658.",
+    "source_query": "\"Bay Area Stairs\" Benicia California address phone services",
+    "source_url": "https://www.yelp.com/biz/bay-area-stairs-benicia",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-6-california.json",
+    "_sample_bucket": "California",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://bayareastairs.com/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 84828
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "bespoke stair"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installation"
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "renovating"
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "railing"
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "stainless steel"
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "bespoke"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "designs"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "walnut",
+          "glass",
+          "stainless steel",
+          "steel"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  },
+  {
+    "business_name": "Classical Stairways, Inc.",
+    "website": "https://www.classicalstairwaysinc.org",
+    "town": "San Jose",
+    "state": "CA",
+    "region": "CA",
+    "country": "USA",
+    "postcode": "95133",
+    "telephone": "408-292-4534",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": null,
+      "refacing": null,
+      "balustrade": true,
+      "handrail": true,
+      "glass": null,
+      "metal": null,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Design, manufacturing and installation of custom stairs and rails, Bay Area. Over 40 years of experience in high-quality craftsmanship. Address 1240 Yard Ct Unit G, San Jose CA 95133.",
+    "source_query": "\"Classical Stairways\" San Jose California address phone",
+    "source_url": "https://www.yelp.com/biz/classical-stairways-san-jose-4",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-6-california.json",
+    "_sample_bucket": "California",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.classicalstairwaysinc.org/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 780644
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Manufacturing"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "Installation"
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": false
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Custom Stair"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": []
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "STAIRCASE_MANUFACTURER"
+    }
+  },
+  {
+    "business_name": "Naddour's Custom Metalworks",
+    "website": "https://www.naddourscustommetalworks.com",
+    "town": "Santa Ana",
+    "state": "CA",
+    "region": "CA",
+    "country": "USA",
+    "postcode": "92705",
+    "telephone": "714-546-3003",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": null,
+      "refacing": null,
+      "balustrade": true,
+      "handrail": true,
+      "glass": null,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Family-owned Orange County custom metalworks specialising in steel and iron stair railings, spiral staircases, custom balconies, metal gates and decorative pieces. Over 40 years in operation. 1525 E Edinger Ave, Santa Ana CA 92705.",
+    "source_query": "\"Naddour's Custom Metalworks\" Orange County address phone",
+    "source_url": "https://www.naddourscustommetalworks.com/contact-us",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-6-california.json",
+    "_sample_bucket": "California",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.naddourscustommetalworks.com/",
+        "content_type": "text/html;charset=utf-8",
+        "size_bytes": 271822
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Manufacturer"
+          },
+          "installation": {
+            "present": false
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "RAILINGS"
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "iron stair"
+          },
+          "bespoke": {
+            "present": false
+          },
+          "design": {
+            "present": false
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "wrought iron",
+          "steel"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "STAIRCASE_MANUFACTURER"
+    }
+  },
+  {
+    "business_name": "Houston Stair Company, Inc.",
+    "website": "https://www.houstonstair.com/",
+    "town": "Houston",
+    "state": "TX",
+    "region": "TX",
+    "country": "USA",
+    "postcode": "77022",
+    "telephone": "(713) 694-4700",
+    "email": null,
+    "capabilities_claimed": {
+      "wood": true,
+      "iron": true,
+      "glass": true,
+      "cable": true,
+      "floating": null,
+      "spiral": null,
+      "curved": null,
+      "custom": true,
+      "remodel": true,
+      "railings": true
+    },
+    "evidence_notes": "Houston-based stair builder; Yelp/BBB list address 55 Lyerly St Ste 208, Houston TX 77022. Site describes custom builds in glass, cable, iron and wood.",
+    "source_query": "custom staircase manufacturer Houston Texas",
+    "source_url": "https://www.yelp.com/biz/houston-stair-company-houston",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-7-texas.json",
+    "_sample_bucket": "Texas",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.houstonstair.com/",
+        "content_type": "text/html;charset=utf-8",
+        "size_bytes": 607636
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": false
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installation"
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "Makeover"
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "RAILING"
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "GLASS STAIR"
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "IRON RAIL"
+          },
+          "bespoke": {
+            "present": false
+          },
+          "design": {
+            "present": false
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "glass",
+          "stainless steel",
+          "steel"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "REFURBISHMENT_SERVICE_SPECIALIST"
+    }
+  },
+  {
+    "business_name": "Precision Stair Co.",
+    "website": "https://precisionstairco.com/",
+    "town": "Houston",
+    "state": "TX",
+    "region": "TX",
+    "country": "USA",
+    "postcode": "77014",
+    "telephone": "(832) 288-4023",
+    "email": null,
+    "capabilities_claimed": {
+      "wood": true,
+      "iron": true,
+      "glass": null,
+      "cable": null,
+      "floating": null,
+      "spiral": null,
+      "curved": null,
+      "custom": true,
+      "remodel": true,
+      "railings": true
+    },
+    "evidence_notes": "20+ years serving Houston, Katy, Humble, Kingwood; Yelp lists 14100 Bammel North Houston Rd, Houston TX 77014. New installs, complete remodels and renovations; all custom (no pre-fabbed parts).",
+    "source_query": "custom staircase manufacturer Houston Texas",
+    "source_url": "https://www.yelp.com/biz/precision-stair-houston-2",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-7-texas.json",
+    "_sample_bucket": "Texas",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.precisionstairco.com/",
+        "content_type": "text/html;charset=utf-8",
+        "size_bytes": 170272
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Staircase Make"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "Installation"
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "Remodeling"
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "Railings"
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "iron stair"
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Custom Stair"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "tile"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  },
+  {
+    "business_name": "Ironwood Connection (Houston)",
+    "website": "https://ironwoodusa.com/",
+    "town": "Houston",
+    "state": "TX",
+    "region": "TX",
+    "country": "USA",
+    "postcode": "77038",
+    "telephone": "(281) 209-0000",
+    "email": null,
+    "capabilities_claimed": {
+      "wood": true,
+      "iron": true,
+      "glass": true,
+      "cable": true,
+      "floating": true,
+      "spiral": null,
+      "curved": null,
+      "custom": true,
+      "remodel": true,
+      "railings": true
+    },
+    "evidence_notes": "Houston showroom at 353 Greens Landing Drive, Houston TX 77038. Full-service stair/railing company covering Houston, DFW, Austin. Modern designs, floating staircases, cable railing, stair parts.",
+    "source_query": "\"Ironwood Connection\" Houston Austin Dallas showroom address phone",
+    "source_url": "https://ironwoodusa.com/houston/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-7-texas.json",
+    "_sample_bucket": "Texas",
+    "_stage3us": {
+      "fetch": {
+        "ok": false,
+        "error": "This operation was aborted"
+      },
+      "identity_confirmed": false,
+      "evidence": null,
+      "verification": "SEARCH_DISCOVERED",
+      "quality_band": "D",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  },
+  {
+    "business_name": "New York Wood Stairs",
+    "website": "https://nywoodstairs.com/",
+    "town": "Brooklyn",
+    "state": "NY",
+    "region": "NY",
+    "country": "USA",
+    "postcode": null,
+    "telephone": "(718) 456-2227",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": true,
+      "glass": true,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Own site: 37+ years experience in wood, steel and glass stairs and railings, established 1973. Brooklyn-based. Works on new commercial properties and residential townhouses; also wood turning, mouldings and custom millwork.",
+    "source_query": "custom staircase manufacturer New York",
+    "source_url": "https://nywoodstairs.com/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-1-northeast.json",
+    "_sample_bucket": "Refacing",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://nywoodstairs.com/",
+        "content_type": "text/html;charset=utf-8",
+        "size_bytes": 246085
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "manufacturing"
+          },
+          "installation": {
+            "present": false
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "existing stair"
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": false
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": false
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "oak",
+          "steel"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  },
+  {
+    "business_name": "Stairway to Heaven of NY",
+    "website": "https://www.stairsny.com/",
+    "town": "Brooklyn",
+    "state": "NY",
+    "region": "NY",
+    "country": "USA",
+    "postcode": null,
+    "telephone": "(917) 517-0392",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": true,
+      "glass": false,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Own site: for 20+ years designs, builds and installs custom wood staircases, floating stairs and precise stair restorations across NYC. Collaborates with homeowners, architects and interior designers.",
+    "source_query": "stairbuilder Brooklyn NYC bespoke",
+    "source_url": "https://www.stairsny.com/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-1-northeast.json",
+    "_sample_bucket": "Refacing",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.stairsny.com/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 1175090
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Manufacturing"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "Installation"
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "Restoration"
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "railings"
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "custom stair"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": []
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  },
+  {
+    "business_name": "Hardwood Design Inc.",
+    "website": "https://www.hdistair.com/",
+    "town": "Exeter",
+    "state": "RI",
+    "region": "RI",
+    "country": "USA",
+    "postcode": "02822",
+    "telephone": "(401) 294-2235",
+    "email": "info@hdistair.com",
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": true,
+      "glass": false,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Own site: 30+ years supplying architects, builders and homeowners with beautiful stairs and stair parts — CNC precision, custom fabrication, design & engineering, fully assembled in-shop staircases, and precise installation.",
+    "source_query": "stair renovation Rhode Island contractor",
+    "source_url": "https://www.hdistair.com/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-1-northeast.json",
+    "_sample_bucket": "Small state",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.hdistair.com/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 72017
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "stair building"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installation"
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": false
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": false
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "oak",
+          "walnut"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "STAIRCASE_MANUFACTURER"
+    }
+  },
+  {
+    "business_name": "Vermont Custom Handrails & Metalwork",
+    "website": "https://www.vthandrailsandmetal.com/",
+    "town": "Hyde Park",
+    "state": "VT",
+    "region": "VT",
+    "country": "USA",
+    "postcode": null,
+    "telephone": null,
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": true,
+      "glass": false,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Own site: Vermont-based metal stairs and stair railing contractor — custom-built commercial and residential interior/exterior stairs, monorail stairs, staircase renovations, stainless steel handrail systems and stoop railings.",
+    "source_query": "curved stairs manufacturer Vermont",
+    "source_url": "https://www.vthandrailsandmetal.com/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-us-1-northeast.json",
+    "_sample_bucket": "Small state",
+    "_stage3us": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.vthandrailsandmetal.com/",
+        "content_type": "text/html;charset=utf-8",
+        "size_bytes": 233619
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Custom Stair"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installation"
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "Railing"
+          },
+          "handrail": {
+            "present": true,
+            "matched_phrase": "Handrails"
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "metal stair"
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Custom Stair"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "stainless steel",
+          "steel"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  }
+]

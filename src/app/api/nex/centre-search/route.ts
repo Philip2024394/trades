@@ -28,11 +28,34 @@ import { NextResponse } from "next/server";
 import { complete } from "@/lib/llm/anthropic";
 import { retrieveBrainMatches, type BrainEntry } from "@/lib/nex/knowledge/retrieve";
 import { listCentreFeedItems, type CentreFeedItem } from "@/lib/nex/centre-publishing";
+import { toDbCountryValue, findCountryByDbValue } from "@/lib/nex/geography/countries";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const SYSTEM = `You are NEX, the search assistant for NEX Trade Centre — a UK marketplace where homeowners and trades find suppliers, products, services, projects and deals.
+type PromptCountry = "GB" | "US" | "IE" | "all";
+
+// Country-aware AskNex prompt (Philip 2026-08-16 · P1-4). Never claims
+// "UK marketplace" for a non-UK customer. Never introduces a country the
+// customer did not select — for "all", stays country-neutral.
+function buildSystemPrompt(country: PromptCountry): string {
+  const marketplacePhrase =
+    country === "GB"
+      ? "a UK marketplace where homeowners and trades find suppliers, products, services, projects and deals"
+      : country === "US"
+        ? "a marketplace where homeowners and trades in the United States find suppliers, products, services, projects and deals"
+        : country === "IE"
+          ? "a marketplace where homeowners and trades in Ireland find suppliers, products, services, projects and deals"
+          : "a marketplace where homeowners and trades find suppliers, products, services, projects and deals across the countries NEX serves";
+  const spellingRule =
+    country === "US"
+      ? "US English throughout (color, favor, tire, $, in, lb) · no metric assumptions"
+      : country === "IE"
+        ? "UK-English spelling · currency € · metric units (mm, kg)"
+        : country === "GB"
+          ? "UK English throughout (colour, favour, tyre, £, mm, kg)"
+          : "Country-neutral wording · introduce £ / $ / € only if the user mentions a country first";
+  return `You are NEX, the search assistant for NEX Trade Centre — ${marketplacePhrase}.
 
 When a user asks a question, respond with a short helpful message (2-3 sentences maximum) that:
 - Restates the intent in plain English so the user knows you understood
@@ -41,10 +64,22 @@ When a user asks a question, respond with a short helpful message (2-3 sentences
 - If the query is vague, ask ONE clarifying question
 
 Rules:
-- UK English throughout (colour, favour, tyre, £, mm, kg)
+- ${spellingRule}
 - Never invent specific supplier names, prices, addresses or listings
 - Never mention that you are an AI, LLM, model or system
+- Never claim NEX is "a UK-only marketplace" or "a US-only marketplace" — the country picker exists
 - Warm workshop tone: direct, useful, no fluff`;
+}
+
+function resolvePromptCountry(input: string | null | undefined): PromptCountry {
+  if (!input || input === "all") return "all";
+  const dbValue = toDbCountryValue(input);
+  const c = findCountryByDbValue(dbValue ?? input);
+  if (c?.code === "GB") return "GB";
+  if (c?.code === "US") return "US";
+  if (c?.code === "IE") return "IE";
+  return "all";
+}
 
 export async function POST(req: Request) {
   try {
@@ -54,6 +89,12 @@ export async function POST(req: Request) {
       typeof body?.postcode === "string" && body.postcode.trim().length > 0
         ? body.postcode.trim().slice(0, 12)
         : undefined;
+    const countryInput: string | null =
+      typeof body?.country === "string" && body.country.trim().length > 0
+        ? body.country.trim()
+        : null;
+    const promptCountry = resolvePromptCountry(countryInput);
+    const dbCountry = toDbCountryValue(countryInput) ?? undefined;
 
     if (!query) {
       return NextResponse.json(
@@ -73,6 +114,7 @@ export async function POST(req: Request) {
       listCentreFeedItems({
         query,
         postcode,
+        country: dbCountry,
         limit: 8,
       }) as Promise<CentreFeedItem[]>,
     ]);
@@ -100,7 +142,7 @@ export async function POST(req: Request) {
       : "";
 
     const reply = await complete({
-      system: SYSTEM,
+      system: buildSystemPrompt(promptCountry),
       messages: [
         { role: "user", content: query + brainContext + productContext },
       ],

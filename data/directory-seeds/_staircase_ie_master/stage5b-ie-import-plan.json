@@ -1,0 +1,1095 @@
+{
+  "generated_at": "2026-08-16T00:00:00.000Z",
+  "dry_run": true,
+  "schema_prerequisite": "deploy/postgres/init/053_drop_region_check.sql must be applied first",
+  "inserts": [
+    {
+      "slug": "evolution-stairs-dublin",
+      "business_name": "Evolution Stairs",
+      "country": "Ireland",
+      "region": "Dublin",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4,
+      "claims_pending_verification": [
+        "installation",
+        "metal"
+      ]
+    },
+    {
+      "slug": "57-stairs-carlow",
+      "business_name": "57 Stairs",
+      "country": "Ireland",
+      "region": "Carlow",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6,
+      "claims_pending_verification": []
+    },
+    {
+      "slug": "collins-stairs-dublin",
+      "business_name": "Collins Stairs",
+      "country": "Ireland",
+      "region": "Dublin",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4,
+      "claims_pending_verification": [
+        "bespoke"
+      ]
+    },
+    {
+      "slug": "ajd-stairs-kilkenny",
+      "business_name": "AJD Stairs",
+      "country": "Ireland",
+      "region": "Kilkenny",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4,
+      "claims_pending_verification": [
+        "balustrade",
+        "glass",
+        "metal"
+      ]
+    },
+    {
+      "slug": "myles-staircases-meath",
+      "business_name": "Myles Staircases",
+      "country": "Ireland",
+      "region": "Meath",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5,
+      "claims_pending_verification": []
+    },
+    {
+      "slug": "os-holding-dublin",
+      "business_name": "OS Holding",
+      "country": "Ireland",
+      "region": "Dublin",
+      "business_type": "REFACING_SERVICE_SPECIALIST",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3,
+      "claims_pending_verification": [
+        "refacing",
+        "balustrade",
+        "handrail"
+      ]
+    },
+    {
+      "slug": "clonmines-joinery-wexford",
+      "business_name": "Clonmines Joinery",
+      "country": "Ireland",
+      "region": "Wexford",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5,
+      "claims_pending_verification": [
+        "balustrade",
+        "handrail",
+        "glass"
+      ]
+    },
+    {
+      "slug": "mcnally-joinery-dublin",
+      "business_name": "McNally Joinery",
+      "country": "Ireland",
+      "region": "Dublin",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4,
+      "claims_pending_verification": [
+        "installation",
+        "metal"
+      ]
+    },
+    {
+      "slug": "louth-timber-products-louth",
+      "business_name": "Louth Timber Products",
+      "country": "Ireland",
+      "region": "Louth",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5,
+      "claims_pending_verification": []
+    },
+    {
+      "slug": "spireco-stairs-balustrades-dublin",
+      "business_name": "Spireco Stairs & Balustrades",
+      "country": "Ireland",
+      "region": "Dublin",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4,
+      "claims_pending_verification": [
+        "manufacture",
+        "installation",
+        "bespoke",
+        "design"
+      ]
+    },
+    {
+      "slug": "myra-glass-dublin",
+      "business_name": "Myra Glass",
+      "country": "Ireland",
+      "region": "Dublin",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6,
+      "claims_pending_verification": [
+        "manufacture"
+      ]
+    },
+    {
+      "slug": "the-handrail-man-dublin",
+      "business_name": "The Handrail Man",
+      "country": "Ireland",
+      "region": "Dublin",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7,
+      "claims_pending_verification": []
+    },
+    {
+      "slug": "g-j-ard-joinery-meath",
+      "business_name": "G & J Ard Joinery",
+      "country": "Ireland",
+      "region": "Meath",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4,
+      "claims_pending_verification": [
+        "installation"
+      ]
+    },
+    {
+      "slug": "stairs-ireland-by-jea-wicklow",
+      "business_name": "Stairs Ireland by JEA",
+      "country": "Ireland",
+      "region": "Wicklow",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7,
+      "claims_pending_verification": [
+        "glass"
+      ]
+    },
+    {
+      "slug": "colin-healy-stairs-dublin",
+      "business_name": "Colin Healy Stairs",
+      "country": "Ireland",
+      "region": "Dublin",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4,
+      "claims_pending_verification": [
+        "manufacture",
+        "installation",
+        "refurbishment",
+        "bespoke"
+      ]
+    },
+    {
+      "slug": "renovation-dublin-dublin",
+      "business_name": "Renovation Dublin",
+      "country": "Ireland",
+      "region": "Dublin",
+      "business_type": "REFACING_SERVICE_SPECIALIST",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3,
+      "claims_pending_verification": [
+        "refacing",
+        "balustrade",
+        "handrail"
+      ]
+    },
+    {
+      "slug": "custom-stairs-joinery-kildare",
+      "business_name": "Custom Stairs Joinery",
+      "country": "Ireland",
+      "region": "Kildare",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 7,
+      "claims_pending_verification": []
+    },
+    {
+      "slug": "oakman-joinery-wexford",
+      "business_name": "Oakman Joinery",
+      "country": "Ireland",
+      "region": "Wexford",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3,
+      "claims_pending_verification": [
+        "installation"
+      ]
+    },
+    {
+      "slug": "trim-joinery-meath",
+      "business_name": "Trim Joinery",
+      "country": "Ireland",
+      "region": "Meath",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4,
+      "claims_pending_verification": []
+    },
+    {
+      "slug": "embankment-joinery-dublin",
+      "business_name": "Embankment Joinery",
+      "country": "Ireland",
+      "region": "Dublin",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3,
+      "claims_pending_verification": []
+    },
+    {
+      "slug": "carrigaline-joinery-ltd-cork",
+      "business_name": "Carrigaline Joinery Ltd",
+      "country": "Ireland",
+      "region": "Cork",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6,
+      "claims_pending_verification": [
+        "refacing",
+        "balustrade",
+        "handrail"
+      ]
+    },
+    {
+      "slug": "ballingeary-joinery-ltd-cork",
+      "business_name": "Ballingeary Joinery Ltd",
+      "country": "Ireland",
+      "region": "Cork",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4,
+      "claims_pending_verification": [
+        "glass",
+        "metal",
+        "bespoke",
+        "design"
+      ]
+    },
+    {
+      "slug": "brennans-carpentry-joinery-cork",
+      "business_name": "Brennans Carpentry & Joinery",
+      "country": "Ireland",
+      "region": "Cork",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4,
+      "claims_pending_verification": [
+        "balustrade",
+        "handrail",
+        "glass"
+      ]
+    },
+    {
+      "slug": "alan-twomey-welding-services-cork",
+      "business_name": "Alan Twomey Welding Services",
+      "country": "Ireland",
+      "region": "Cork",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4,
+      "claims_pending_verification": [
+        "installation",
+        "bespoke"
+      ]
+    },
+    {
+      "slug": "northside-glass-nsg-cork",
+      "business_name": "Northside Glass (NSG)",
+      "country": "Ireland",
+      "region": "Cork",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6,
+      "claims_pending_verification": [
+        "bespoke"
+      ]
+    },
+    {
+      "slug": "ardagh-joinery-works-limerick",
+      "business_name": "Ardagh Joinery Works",
+      "country": "Ireland",
+      "region": "Limerick",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3,
+      "claims_pending_verification": [
+        "installation"
+      ]
+    },
+    {
+      "slug": "suedestone-ltd-limerick",
+      "business_name": "SuedeStone Ltd",
+      "country": "Ireland",
+      "region": "Limerick",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6,
+      "claims_pending_verification": [
+        "installation"
+      ]
+    },
+    {
+      "slug": "holbein-carpentry-joinery-ltd-kerry",
+      "business_name": "Holbein Carpentry & Joinery Ltd",
+      "country": "Ireland",
+      "region": "Kerry",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5,
+      "claims_pending_verification": [
+        "installation"
+      ]
+    },
+    {
+      "slug": "euro-attic-stairs-kerry",
+      "business_name": "Euro Attic Stairs",
+      "country": "Ireland",
+      "region": "Kerry",
+      "business_type": "STAIRCASE_INSTALLER",
+      "category": "Staircase Installer",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 2,
+      "claims_pending_verification": [
+        "metal",
+        "bespoke"
+      ]
+    },
+    {
+      "slug": "western-joinery-co-ltd-clare",
+      "business_name": "Western Joinery Co Ltd",
+      "country": "Ireland",
+      "region": "Clare",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4,
+      "claims_pending_verification": [
+        "installation"
+      ]
+    },
+    {
+      "slug": "kilgallon-stairs-ltd-sligo",
+      "business_name": "Kilgallon Stairs Ltd",
+      "country": "Ireland",
+      "region": "Sligo",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3,
+      "claims_pending_verification": [
+        "manufacture",
+        "installation",
+        "refacing",
+        "handrail",
+        "metal",
+        "bespoke"
+      ]
+    },
+    {
+      "slug": "eamonn-burke-stairs-ltd-sligo",
+      "business_name": "Eamonn Burke Stairs Ltd",
+      "country": "Ireland",
+      "region": "Sligo",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 2,
+      "claims_pending_verification": [
+        "balustrade",
+        "handrail",
+        "bespoke"
+      ]
+    },
+    {
+      "slug": "sligo-glass-company-ltd-sligo",
+      "business_name": "Sligo Glass Company Ltd",
+      "country": "Ireland",
+      "region": "Sligo",
+      "business_type": "STAIRCASE_INSTALLER",
+      "category": "Staircase Installer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5,
+      "claims_pending_verification": [
+        "bespoke"
+      ]
+    },
+    {
+      "slug": "geraghty-joinery-galway",
+      "business_name": "Geraghty Joinery",
+      "country": "Ireland",
+      "region": "Galway",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 4,
+      "claims_pending_verification": [
+        "glass",
+        "metal"
+      ]
+    },
+    {
+      "slug": "lohan-joinery-galway",
+      "business_name": "Lohan Joinery",
+      "country": "Ireland",
+      "region": "Galway",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 2,
+      "claims_pending_verification": [
+        "manufacture",
+        "installation"
+      ]
+    },
+    {
+      "slug": "casey-s-joinery-gort-galway",
+      "business_name": "Casey's Joinery Gort",
+      "country": "Ireland",
+      "region": "Galway",
+      "business_type": "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3,
+      "claims_pending_verification": []
+    },
+    {
+      "slug": "dylell-carpentry-galway",
+      "business_name": "Dylell Carpentry",
+      "country": "Ireland",
+      "region": "Galway",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5,
+      "claims_pending_verification": []
+    },
+    {
+      "slug": "mulrooney-joinery-ltd-galway",
+      "business_name": "Mulrooney Joinery Ltd",
+      "country": "Ireland",
+      "region": "Galway",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 1,
+      "claims_pending_verification": [
+        "manufacture",
+        "bespoke"
+      ]
+    },
+    {
+      "slug": "quay-carpentry-mayo",
+      "business_name": "Quay Carpentry",
+      "country": "Ireland",
+      "region": "Mayo",
+      "business_type": "STAIRCASE_INSTALLER",
+      "category": "Staircase Installer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3,
+      "claims_pending_verification": []
+    },
+    {
+      "slug": "stairsworld-leitrim",
+      "business_name": "StairsWorld",
+      "country": "Ireland",
+      "region": "Leitrim",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6,
+      "claims_pending_verification": []
+    },
+    {
+      "slug": "mcquillan-staircases-ltd-monaghan",
+      "business_name": "McQuillan Staircases Ltd",
+      "country": "Ireland",
+      "region": "Monaghan",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6,
+      "claims_pending_verification": []
+    },
+    {
+      "slug": "lynch-joinery-cavan",
+      "business_name": "Lynch Joinery",
+      "country": "Ireland",
+      "region": "Cavan",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 2,
+      "claims_pending_verification": [
+        "manufacture",
+        "bespoke"
+      ]
+    },
+    {
+      "slug": "tiernan-stairs-cavan",
+      "business_name": "Tiernan Stairs",
+      "country": "Ireland",
+      "region": "Cavan",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 2,
+      "claims_pending_verification": [
+        "refurbishment",
+        "balustrade",
+        "bespoke"
+      ]
+    },
+    {
+      "slug": "macbride-bros-joinery-ltd-donegal",
+      "business_name": "MacBride Bros Joinery Ltd",
+      "country": "Ireland",
+      "region": "Donegal",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 3,
+      "claims_pending_verification": [
+        "manufacture",
+        "refurbishment"
+      ]
+    },
+    {
+      "slug": "donegal-glass-donegal",
+      "business_name": "Donegal Glass",
+      "country": "Ireland",
+      "region": "Donegal",
+      "business_type": "STAIRCASE_MANUFACTURER",
+      "category": "Staircase Manufacturer",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 6,
+      "claims_pending_verification": []
+    },
+    {
+      "slug": "msq-carpentry-dublin",
+      "business_name": "MSQ Carpentry",
+      "country": "Ireland",
+      "region": "Dublin",
+      "business_type": "REFACING_SERVICE_SPECIALIST",
+      "category": "Staircase Refacing",
+      "internal_verification_state": "FULLY_VERIFIED",
+      "customer_facing_label": "Business information checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 5,
+      "claims_pending_verification": [
+        "refacing",
+        "balustrade"
+      ]
+    },
+    {
+      "slug": "clarke-s-carpentry-services-louth",
+      "business_name": "Clarke's Carpentry Services",
+      "country": "Ireland",
+      "region": "Louth",
+      "business_type": "REFURBISHMENT_SERVICE_SPECIALIST",
+      "category": "Staircase Refurbishment",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 2,
+      "claims_pending_verification": [
+        "installation",
+        "balustrade",
+        "handrail",
+        "bespoke"
+      ]
+    },
+    {
+      "slug": "expert-spray-painting-ltd-dublin",
+      "business_name": "Expert Spray Painting Ltd",
+      "country": "Ireland",
+      "region": "Dublin",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 2,
+      "claims_pending_verification": [
+        "balustrade",
+        "handrail",
+        "metal"
+      ]
+    },
+    {
+      "slug": "rl-painting-decorating-wexford",
+      "business_name": "RL Painting & Decorating",
+      "country": "Ireland",
+      "region": "Wexford",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 2,
+      "claims_pending_verification": [
+        "balustrade",
+        "handrail",
+        "metal"
+      ]
+    },
+    {
+      "slug": "just-respray-dublin",
+      "business_name": "Just Respray",
+      "country": "Ireland",
+      "region": "Dublin",
+      "business_type": "MULTI_SERVICE_COMPANY",
+      "category": "Multi-Service Staircase Company",
+      "internal_verification_state": "SERVICE_EVIDENCED",
+      "customer_facing_label": "Business information partially checked",
+      "claimed": false,
+      "verified": false,
+      "capabilities_count_yes": 1,
+      "claims_pending_verification": [
+        "balustrade",
+        "handrail"
+      ]
+    }
+  ],
+  "deferred_review": [
+    {
+      "slug": "ardara-woodwork-stairs-dublin-dublin",
+      "business_name": "Ardara Woodwork (Stairs Dublin)",
+      "county": "Dublin",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "connolly-stairs-doors-dublin",
+      "business_name": "Connolly Stairs & Doors",
+      "county": "Dublin",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "horizon-bespoke-joinery-dublin",
+      "business_name": "Horizon Bespoke Joinery",
+      "county": "Dublin",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "kinsella-joinery-wexford",
+      "business_name": "Kinsella Joinery",
+      "county": "Wexford",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "michael-black-joinery-limited-louth",
+      "business_name": "Michael Black (Joinery) Limited",
+      "county": "Louth",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "cosyroom-ie-attics-dublin-dublin",
+      "business_name": "cosyroom.ie (Attics Dublin)",
+      "county": "Dublin",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "propel-manufacturing-dublin",
+      "business_name": "Propel Manufacturing",
+      "county": "Dublin",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "bavari-bespoke-staircases-meath",
+      "business_name": "Bavari Bespoke Staircases",
+      "county": "Meath",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "maclyn-conservation-joinery-dublin",
+      "business_name": "MacLyn Conservation Joinery",
+      "county": "Dublin",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "dunnes-joinery-westmeath",
+      "business_name": "Dunnes Joinery",
+      "county": "Westmeath",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "woodstyle-dublin",
+      "business_name": "Woodstyle",
+      "county": "Dublin",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "jonathan-evans-carpentry-joinery-cork",
+      "business_name": "Jonathan Evans Carpentry Joinery",
+      "county": "Cork",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "the-stairs-store-rpb-products-ltd-cork",
+      "business_name": "The Stairs Store (RPB Products Ltd)",
+      "county": "Cork",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "mallow-joinery-cork",
+      "business_name": "Mallow Joinery",
+      "county": "Cork",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "bantry-bespoke-joinery-cork",
+      "business_name": "Bantry Bespoke Joinery",
+      "county": "Cork",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "cloghroe-joinery-ltd-cork",
+      "business_name": "Cloghroe Joinery Ltd",
+      "county": "Cork",
+      "internal_verification_state": "DIRECTLY_REACHABLE",
+      "reason": "no_capability_evidence"
+    },
+    {
+      "slug": "all-about-stairs-limerick",
+      "business_name": "All About Stairs",
+      "county": "Limerick",
+      "internal_verification_state": "DIRECTLY_REACHABLE",
+      "reason": "no_capability_evidence"
+    },
+    {
+      "slug": "crann-ard-joinery-limerick",
+      "business_name": "Crann Ard Joinery",
+      "county": "Limerick",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "brett-joinery-tipperary",
+      "business_name": "Brett Joinery",
+      "county": "Tipperary",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "jm-joinery-john-molloy-joinery-works-tipperary",
+      "business_name": "JM Joinery (John Molloy Joinery Works)",
+      "county": "Tipperary",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "waterford-wood-waterford",
+      "business_name": "Waterford Wood",
+      "county": "Waterford",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "loughnanes-joinery-galway",
+      "business_name": "Loughnanes Joinery",
+      "county": "Galway",
+      "internal_verification_state": "DIRECTLY_REACHABLE",
+      "reason": "no_capability_evidence"
+    },
+    {
+      "slug": "carrabine-joinery-ltd-mayo",
+      "business_name": "Carrabine Joinery Ltd",
+      "county": "Mayo",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "castlebar-woodwork-mayo",
+      "business_name": "Castlebar Woodwork",
+      "county": "Mayo",
+      "internal_verification_state": "DIRECTLY_REACHABLE",
+      "reason": "no_capability_evidence"
+    },
+    {
+      "slug": "kieran-mc-kenna-staircases-monaghan",
+      "business_name": "Kieran Mc Kenna Staircases",
+      "county": "Monaghan",
+      "internal_verification_state": "DIRECTLY_REACHABLE",
+      "reason": "no_capability_evidence"
+    },
+    {
+      "slug": "peadar-greenan-staircases-ltd-monaghan",
+      "business_name": "Peadar Greenan Staircases Ltd",
+      "county": "Monaghan",
+      "internal_verification_state": "DIRECTLY_REACHABLE",
+      "reason": "no_capability_evidence"
+    },
+    {
+      "slug": "brianformwork-cavan",
+      "business_name": "Brianformwork",
+      "county": "Cavan",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "rock-forging-ironcrafts-cavan",
+      "business_name": "Rock Forging Ironcrafts",
+      "county": "Cavan",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "haughey-joinery-ltd-donegal",
+      "business_name": "Haughey Joinery Ltd",
+      "county": "Donegal",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "pj-designs-donegal",
+      "business_name": "PJ Designs",
+      "county": "Donegal",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "letterkenny-glass-donegal",
+      "business_name": "Letterkenny Glass",
+      "county": "Donegal",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "john-o-leary-home-improvement-services-ltd-portas-partner-cork",
+      "business_name": "John O'Leary Home Improvement Services Ltd (PORTAS Partner)",
+      "county": "Cork",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "cork-glass-centre-cork",
+      "business_name": "Cork Glass Centre",
+      "county": "Cork",
+      "internal_verification_state": "DIRECTLY_REACHABLE",
+      "reason": "no_capability_evidence"
+    },
+    {
+      "slug": "vj-painting-vj-services-dublin",
+      "business_name": "VJ Painting (VJ Services)",
+      "county": "Dublin",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "jk-spraying-galway",
+      "business_name": "JK Spraying",
+      "county": "Galway",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "floor-design-ltd-dublin",
+      "business_name": "Floor Design Ltd",
+      "county": "Dublin",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    },
+    {
+      "slug": "forte-flooring-dublin",
+      "business_name": "Forte Flooring",
+      "county": "Dublin",
+      "internal_verification_state": "SEARCH_DISCOVERED",
+      "reason": "identity_not_confirmed"
+    }
+  ],
+  "totals": {
+    "insert_count": 50,
+    "deferred_review_count": 37,
+    "total_covered": 87
+  }
+}

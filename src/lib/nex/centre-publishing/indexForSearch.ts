@@ -11,7 +11,10 @@
 
 import "server-only";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import { centroidOf, haversineKm } from "@/lib/ukPostcodeCentroids";
+// Country-aware centroid resolver · Philip 2026-08-16 · returns null for
+// non-UK so distance ranking degrades honestly rather than fabricating
+// distances against UK centroids.
+import { centroidOf, haversineKm } from "@/lib/nex/geography/postcodeCentroid";
 import type { CentreFeedFilters, CentreFeedItem } from "./types";
 
 const DEFAULT_LIMIT = 40;
@@ -26,6 +29,16 @@ export async function listCentreFeedItems(
 ): Promise<CentreFeedItem[]> {
   const limit = Math.min(filters.limit ?? DEFAULT_LIMIT, MAX_LIMIT);
   const offset = Math.max(filters.offset ?? 0, 0);
+
+  // Country-aware guard (Philip 2026-08-16). Real merchant listings currently
+  // live only in the UK — `hammerex_trade_off_listings` has no country column
+  // yet. When the customer has filtered to a non-UK country ("Ireland",
+  // "USA", …), returning UK merchants here would leak them into the wrong
+  // market. Return empty until the merchant table carries country, at which
+  // point this guard becomes a `.eq("country", filters.country)` on the query.
+  if (filters.country && filters.country !== "United Kingdom") {
+    return [];
+  }
 
   // Step 1: pull active offers with their canonical + merchant joined
   // and the nex_centre_visible flag honoured.
@@ -102,9 +115,11 @@ export async function listCentreFeedItems(
     (bannersRes.data ?? []).map((b) => [b.offer_id as string, b])
   );
 
-  // Resolve the user's postcode centroid once for proximity ranking
+  // Resolve the user's postcode centroid once for proximity ranking.
+  // Country-aware: non-UK returns null so we don't fake distances against
+  // UK centroids for a US ZIP or IE Eircode.
   const userCentroid = filters.postcode
-    ? centroidOf(filters.postcode)
+    ? centroidOf(filters.postcode, filters.country)
     : null;
 
   let items: CentreFeedItem[] = offers
@@ -153,6 +168,10 @@ export async function listCentreFeedItems(
         merchant_city: (merchant.city as string) ?? null,
         merchant_postcode_prefix:
           (merchant.postcode_prefix as string) ?? null,
+        // Real merchants are UK-only today (guard at top of fn).
+        // Future: derive from merchant.country column when that lands.
+        merchant_country: "United Kingdom",
+        merchant_region: null,
         merchant_lat: merchantLat,
         merchant_lng: merchantLng,
         merchant_avatar_url: (merchant.avatar_url as string) ?? null,

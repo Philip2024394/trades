@@ -9,6 +9,7 @@
 // server has already null'd any channel the merchant hid.
 
 import { useEffect, useState } from "react";
+import { formatCardLocation } from "@/lib/nex/geography/formatAddress";
 import {
   ExternalLink,
   Flag,
@@ -52,7 +53,14 @@ export function ProductDetailsSheet({
 
   const price = formatPrice(item.price_pence);
   const location =
-    item.merchant_city ?? item.merchant_postcode_prefix ?? "UK";
+    formatCardLocation({
+      country: item.merchant_country,
+      city: item.merchant_city,
+      county: item.merchant_region,
+      region: item.merchant_region,
+      postcode: item.merchant_postcode_prefix,
+      postcode_prefix: item.merchant_postcode_prefix,
+    }) || (item.merchant_city ?? item.merchant_postcode_prefix ?? "");
 
   const whatsappUrl = item.merchant_whatsapp
     ? `https://wa.me/${item.merchant_whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(

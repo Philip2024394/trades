@@ -1,0 +1,3207 @@
+{
+  "generated_at": "2026-08-16T16:16:45.721Z",
+  "distribution": {
+    "INSERTED": 375,
+    "DEFERRED": 158
+  },
+  "records": [
+    {
+      "business_name": "NYC Stair",
+      "slug": "nyc-stair-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Steel Masters NYC",
+      "slug": "steel-masters-nyc-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Deer Park Stairbuilding & Millwork Co.",
+      "slug": "deer-park-stairbuilding-millwork-co-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Acadia Stairs",
+      "slug": "acadia-stairs-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Atlantic Stairs Construction Company",
+      "slug": "atlantic-stairs-construction-company-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "New York Wood Stairs",
+      "slug": "new-york-wood-stairs-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "RC Henderson Stair Builder",
+      "slug": "rc-henderson-stair-builder-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Grand Stairs",
+      "slug": "grand-stairs-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Duke of Iron",
+      "slug": "duke-of-iron-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Rail King Iron Works",
+      "slug": "rail-king-iron-works-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "HMH Architectural Metal and Glass",
+      "slug": "hmh-architectural-metal-and-glass-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stairway to Heaven of NY",
+      "slug": "stairway-to-heaven-of-ny-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Unique Stairways",
+      "slug": "unique-stairways-ma",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Miller's Custom Rails",
+      "slug": "miller-s-custom-rails-ma",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Gath Woodworking",
+      "slug": "gath-woodworking-ma",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Hardwood Design Inc.",
+      "slug": "hardwood-design-inc-ri",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Quality Stairs Inc.",
+      "slug": "quality-stairs-inc-ct",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "New England Stair Company",
+      "slug": "new-england-stair-company-ct",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stately Stair Co.",
+      "slug": "stately-stair-co-ct",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Mitchell Welding & Iron Works",
+      "slug": "mitchell-welding-iron-works-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Paterson Iron Works",
+      "slug": "paterson-iron-works-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Alberona Iron Works",
+      "slug": "alberona-iron-works-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Decorative Iron Works",
+      "slug": "decorative-iron-works-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Anvil Iron Works",
+      "slug": "anvil-iron-works-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Macaro Iron Works",
+      "slug": "macaro-iron-works-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Snyder Stairs",
+      "slug": "snyder-stairs-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "John's Custom Stairs",
+      "slug": "john-s-custom-stairs-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Capozzoli Stairworks",
+      "slug": "capozzoli-stairworks-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bilger Railing & Stairs",
+      "slug": "bilger-railing-stairs-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Delta Iron Works",
+      "slug": "delta-iron-works-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Salem Millwork",
+      "slug": "salem-millwork-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Custom Stair Builders, Inc.",
+      "slug": "custom-stair-builders-inc-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "King & Company",
+      "slug": "king-company-nh",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "New England StairWorks",
+      "slug": "new-england-stairworks-nh",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Treehouse Woodworking",
+      "slug": "treehouse-woodworking-nh",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Vermont Custom Handrails & Metalwork",
+      "slug": "vermont-custom-handrails-metalwork-vt",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Atlantic Hardwoods",
+      "slug": "atlantic-hardwoods-me",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "StairWorx",
+      "slug": "stairworx-ga",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Superior Stairs and Rails LLC",
+      "slug": "superior-stairs-and-rails-llc-ga",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Florida Stairs & Millwork",
+      "slug": "florida-stairs-millwork-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Custom Stairs Orlando",
+      "slug": "custom-stairs-orlando-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Creative Custom Stairs",
+      "slug": "creative-custom-stairs-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Trimcraft of Fort Myers, Inc.",
+      "slug": "trimcraft-of-fort-myers-inc-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Peerless Stairs & Rails",
+      "slug": "peerless-stairs-rails-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Naples Railing",
+      "slug": "naples-railing-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Modern Concepts of South Florida",
+      "slug": "modern-concepts-of-south-florida-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Piedmont StairWorks LLC",
+      "slug": "piedmont-stairworks-llc-nc",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "AndronX",
+      "slug": "andronx-nc",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stairways by Rogers",
+      "slug": "stairways-by-rogers-va",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Loudoun Stairs, Inc.",
+      "slug": "loudoun-stairs-inc-va",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "American Staircrafters of Maryland",
+      "slug": "american-staircrafters-of-maryland-md",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Back Alley Ornamental Iron",
+      "slug": "back-alley-ornamental-iron-ky",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Elemental Arthouse",
+      "slug": "elemental-arthouse-tn",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Nashville Custom Railing",
+      "slug": "nashville-custom-railing-tn",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Garrett Stair Company",
+      "slug": "garrett-stair-company-tn",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ensley Iron",
+      "slug": "ensley-iron-al",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "AMP Welding & Fabrication",
+      "slug": "amp-welding-fabrication-al",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stair Depot of Mississippi",
+      "slug": "stair-depot-of-mississippi-ms",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Mississippi Stair & Millwork",
+      "slug": "mississippi-stair-millwork-ms",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Quality Stair Company",
+      "slug": "quality-stair-company-ar",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Big Easy Iron Works",
+      "slug": "big-easy-iron-works-la",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "TurnKey Ironworks",
+      "slug": "turnkey-ironworks-la",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Designed Stairs Inc.",
+      "slug": "designed-stairs-inc-il",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "HL Stairs",
+      "slug": "hl-stairs-il",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Signature Metal Works, Inc.",
+      "slug": "signature-metal-works-inc-il",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Signature Stairs Inc.",
+      "slug": "signature-stairs-inc-il",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Great Lakes Stair & Millwork Co.",
+      "slug": "great-lakes-stair-millwork-co-oh",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ramsey Stairs & Woodworking LLC",
+      "slug": "ramsey-stairs-woodworking-llc-oh",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Buckeye Stairs",
+      "slug": "buckeye-stairs-oh",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Beaver Stair Company",
+      "slug": "beaver-stair-company-mi",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Highland Wood Products",
+      "slug": "highland-wood-products-mi",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Badger Railing",
+      "slug": "badger-railing-wi",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Arcways, Inc.",
+      "slug": "arcways-inc-wi",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bauer Metal",
+      "slug": "bauer-metal-mn",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Anchor Iron Company",
+      "slug": "anchor-iron-company-mn",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Capitol City Iron Works",
+      "slug": "capitol-city-iron-works-in",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Kirkwood Stair & Millwork",
+      "slug": "kirkwood-stair-millwork-mo",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "St. Louis Stair & Wood Works",
+      "slug": "st-louis-stair-wood-works-mo",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Builders Stair Supply",
+      "slug": "builders-stair-supply-mo",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Wichita Metal Stair & Fabrication",
+      "slug": "wichita-metal-stair-fabrication-ks",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Records Custom Cabinets and Trim",
+      "slug": "records-custom-cabinets-and-trim-ks",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Omarail",
+      "slug": "omarail-ne",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Alliance Deck Builders of Nebraska",
+      "slug": "alliance-deck-builders-of-nebraska-ne",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Lister Concrete Products and Railing Fabrication LLC",
+      "slug": "lister-concrete-products-and-railing-fabrication-llc-ia",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Roughrider Hardwoods",
+      "slug": "roughrider-hardwoods-nd",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Arizona Stairs, Inc.",
+      "slug": "arizona-stairs-inc-az",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Artistic Stairs US",
+      "slug": "artistic-stairs-us-az",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Artistic Alloys & Design, LLC",
+      "slug": "artistic-alloys-design-llc-az",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Sonoran Stairs LLC",
+      "slug": "sonoran-stairs-llc-az",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Victory Metal Works",
+      "slug": "victory-metal-works-az",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Eaglewings Iron Craft, LLC",
+      "slug": "eaglewings-iron-craft-llc-az",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "First Impression Ironworks",
+      "slug": "first-impression-ironworks-az",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Classic Stairs and Remodeling LLC",
+      "slug": "classic-stairs-and-remodeling-llc-az",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "JM Custom Iron Work",
+      "slug": "jm-custom-iron-work-az",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stairs 4 Less",
+      "slug": "stairs-4-less-az",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Amazing Stairways LLC",
+      "slug": "amazing-stairways-llc-az",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Accent Stair and Specialty",
+      "slug": "accent-stair-and-specialty-nm",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Twin Pro Service",
+      "slug": "twin-pro-service-ok",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "LKP Woodworks",
+      "slug": "lkp-woodworks-ok",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Roper Hardwood Floors",
+      "slug": "roper-hardwood-floors-ok",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Marquez Iron Works",
+      "slug": "marquez-iron-works-nm",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "West Coast Stair Co.",
+      "slug": "west-coast-stair-co-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Brookfield Stairs",
+      "slug": "brookfield-stairs-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Eastside Stairs",
+      "slug": "eastside-stairs-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "NK Woodworking & Design",
+      "slug": "nk-woodworking-design-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Cascade Stair Company",
+      "slug": "cascade-stair-company-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Custom Railings WA",
+      "slug": "custom-railings-wa-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stumptown Stairs",
+      "slug": "stumptown-stairs-or",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Tree of Life Stairs",
+      "slug": "tree-of-life-stairs-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Exquisite Stair",
+      "slug": "exquisite-stair-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Denver Stair",
+      "slug": "denver-stair-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stairs Unlimited",
+      "slug": "stairs-unlimited-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Rocky Mountain Stair Works",
+      "slug": "rocky-mountain-stair-works-ut",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Utah Stair Company",
+      "slug": "utah-stair-company-ut",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ornamental Elegance",
+      "slug": "ornamental-elegance-ut",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Titan Stairs Inc.",
+      "slug": "titan-stairs-inc-nv",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ascent Stair & Mill",
+      "slug": "ascent-stair-mill-nv",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Patrick Millwork, Inc.",
+      "slug": "patrick-millwork-inc-id",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Excalibur Metal Design",
+      "slug": "excalibur-metal-design-id",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Boise Metal Works",
+      "slug": "boise-metal-works-id",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stronghold Fabrication",
+      "slug": "stronghold-fabrication-mt",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "City Craftsmen",
+      "slug": "city-craftsmen-mt",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bay Area Stairs, Inc.",
+      "slug": "bay-area-stairs-inc-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Classical Stairways, Inc.",
+      "slug": "classical-stairways-inc-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Naddour's Custom Metalworks",
+      "slug": "naddour-s-custom-metalworks-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Sacramento Stair Company, Inc.",
+      "slug": "sacramento-stair-company-inc-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bertram Blondina Handrail & Stair, Inc.",
+      "slug": "bertram-blondina-handrail-stair-inc-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Angels Ornamental Iron, Inc.",
+      "slug": "angels-ornamental-iron-inc-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stocklin Iron Works",
+      "slug": "stocklin-iron-works-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Hana Hardwood Flooring & Stairs",
+      "slug": "hana-hardwood-flooring-stairs-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "iStairs, Inc.",
+      "slug": "istairs-inc-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "D.R.S. Stairs, Inc.",
+      "slug": "d-r-s-stairs-inc-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "San Diego Stair Builders",
+      "slug": "san-diego-stair-builders-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "San Francisco Stair Company",
+      "slug": "san-francisco-stair-company-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Olson & Co. Steel",
+      "slug": "olson-co-steel-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "California Stairs and Millworks",
+      "slug": "california-stairs-and-millworks-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Creekside Metal Handrails",
+      "slug": "creekside-metal-handrails-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "FabWorx, Inc.",
+      "slug": "fabworx-inc-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "3D Stairs & Wood Works",
+      "slug": "3d-stairs-wood-works-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "American Steel & Stairways, Inc.",
+      "slug": "american-steel-stairways-inc-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Beach City Stairs",
+      "slug": "beach-city-stairs-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Houston Stair Company, Inc.",
+      "slug": "houston-stair-company-inc-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Precision Stair Co.",
+      "slug": "precision-stair-co-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ironwood Connection (Houston)",
+      "slug": "ironwood-connection-houston-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ornamental Iron of Houston",
+      "slug": "ornamental-iron-of-houston-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Star Iron Houston",
+      "slug": "star-iron-houston-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Trinity Stairs, Inc.",
+      "slug": "trinity-stairs-inc-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Higher Level Stairs",
+      "slug": "higher-level-stairs-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "FJR Stair & Door",
+      "slug": "fjr-stair-door-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Mac Stairs",
+      "slug": "mac-stairs-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Rising Stairways LLC",
+      "slug": "rising-stairways-llc-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Innovations Carpentry",
+      "slug": "innovations-carpentry-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stair Heros",
+      "slug": "stair-heros-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Premium Stair Parts",
+      "slug": "premium-stair-parts-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Metropolitan Gate Inc.",
+      "slug": "metropolitan-gate-inc-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Elite Staircases LLC",
+      "slug": "elite-staircases-llc-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Precision Fabshop & Steel Solutions LLC",
+      "slug": "precision-fabshop-steel-solutions-llc-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Elevate Fabricators",
+      "slug": "elevate-fabricators-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Texas Woodwrx, LLC",
+      "slug": "texas-woodwrx-llc-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Best Iron Works & Fences",
+      "slug": "best-iron-works-fences-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Epic Ironworks",
+      "slug": "epic-ironworks-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Southwestern Home Products",
+      "slug": "southwestern-home-products-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "NuStair",
+      "slug": "nustair-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "StairSupplies",
+      "slug": "stairsupplies-in",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "EZTREAD",
+      "slug": "eztread-de",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Cheap Stair Parts",
+      "slug": "cheap-stair-parts-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "StepUP Stair Parts",
+      "slug": "stepup-stair-parts-il",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stair Parts USA",
+      "slug": "stair-parts-usa-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "N-Hance Wood Refinishing of Columbus",
+      "slug": "n-hance-wood-refinishing-of-columbus-oh",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Re-Stair",
+      "slug": "re-stair-tn",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "OC Stair Guy",
+      "slug": "oc-stair-guy-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "All Things Interior",
+      "slug": "all-things-interior-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Dr. Stairs",
+      "slug": "dr-stairs-nc",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Fabricio Hardwood Floors Inc.",
+      "slug": "fabricio-hardwood-floors-inc-nc",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Tadas Wood Flooring Inc",
+      "slug": "tadas-wood-flooring-inc-il",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Big Bro Hardwood",
+      "slug": "big-bro-hardwood-il",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Top Shelf Painting & Improvement Specialists",
+      "slug": "top-shelf-painting-improvement-specialists-mi",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Al Havner & Sons Hardwood Floors",
+      "slug": "al-havner-sons-hardwood-floors-mi",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Elevated Stair and Rail",
+      "slug": "elevated-stair-and-rail-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Sequoia Wood Flooring Company",
+      "slug": "sequoia-wood-flooring-company-ma",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "CELN",
+      "slug": "celn-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "323 Metal Works",
+      "slug": "323-metal-works-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "King Iron Works",
+      "slug": "king-iron-works-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "ForgeWays",
+      "slug": "forgeways-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Signature Iron Works",
+      "slug": "signature-iron-works-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bay Area Spiral Stair",
+      "slug": "bay-area-spiral-stair-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Heath Stairworks",
+      "slug": "heath-stairworks-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "South Bay Stairs",
+      "slug": "south-bay-stairs-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Pacific Stairs",
+      "slug": "pacific-stairs-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Orange County Custom Railing & Stairs",
+      "slug": "orange-county-custom-railing-stairs-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "C&L Stairs and Millwork",
+      "slug": "c-l-stairs-and-millwork-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Metal Innovations",
+      "slug": "metal-innovations-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Alcantara Steel",
+      "slug": "alcantara-steel-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Summit Steel Works",
+      "slug": "summit-steel-works-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Meti Iron Works",
+      "slug": "meti-iron-works-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Morena Welding",
+      "slug": "morena-welding-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Isaac's Ironworks",
+      "slug": "isaac-s-ironworks-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "NoHo Stairs",
+      "slug": "noho-stairs-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Almaden Stair & Rail",
+      "slug": "almaden-stair-rail-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "USTAIRS",
+      "slug": "ustairs-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Sam's Welding, Inc.",
+      "slug": "sam-s-welding-inc-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "LA Railings",
+      "slug": "la-railings-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "The Iron Shop",
+      "slug": "the-iron-shop-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Pacific Coast Stairs",
+      "slug": "pacific-coast-stairs-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Carter Wood Floors",
+      "slug": "carter-wood-floors-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Strycula Stairs",
+      "slug": "strycula-stairs-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Benitez Wrought Iron",
+      "slug": "benitez-wrought-iron-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "HandyMaestro",
+      "slug": "handymaestro-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "NYLO Stairs",
+      "slug": "nylo-stairs-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Kastle Stair & Finish",
+      "slug": "kastle-stair-finish-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Lone Star Custom Woodworks",
+      "slug": "lone-star-custom-woodworks-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Quality Fence & Welding",
+      "slug": "quality-fence-welding-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Aztec Fence & Ornamental Iron",
+      "slug": "aztec-fence-ornamental-iron-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Modern Steel & Fence LLC",
+      "slug": "modern-steel-fence-llc-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Patina Metals",
+      "slug": "patina-metals-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "El Paso Custom Iron Works",
+      "slug": "el-paso-custom-iron-works-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "StairFlair",
+      "slug": "stairflair-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Roberts Hardwood Flooring Services LLC",
+      "slug": "roberts-hardwood-flooring-services-llc-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "BHS Welding LLC",
+      "slug": "bhs-welding-llc-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Whitney's Custom Iron",
+      "slug": "whitney-s-custom-iron-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "3rd Coast Developers",
+      "slug": "3rd-coast-developers-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Heavy Metal Welding",
+      "slug": "heavy-metal-welding-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Premier Stair and Door",
+      "slug": "premier-stair-and-door-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stair Solutions",
+      "slug": "stair-solutions-tx",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stair Builders of South Florida",
+      "slug": "stair-builders-of-south-florida-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Richwood Turning & Stairworks",
+      "slug": "richwood-turning-stairworks-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Miami Floating Stairs Specialists",
+      "slug": "miami-floating-stairs-specialists-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Miami Fabricators, Inc.",
+      "slug": "miami-fabricators-inc-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Yosvany Stairs LLC",
+      "slug": "yosvany-stairs-llc-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Griffiths Metal Products Inc.",
+      "slug": "griffiths-metal-products-inc-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Luxury Staircase Railings LLC",
+      "slug": "luxury-staircase-railings-llc-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Modern Railing Co",
+      "slug": "modern-railing-co-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "J Fig Carpentry LLC",
+      "slug": "j-fig-carpentry-llc-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "The Stair Guyz Incorporated",
+      "slug": "the-stair-guyz-incorporated-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Orlando Custom Railings",
+      "slug": "orlando-custom-railings-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Sarasota Stair, Inc.",
+      "slug": "sarasota-stair-inc-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "DB Welding & Fabrication",
+      "slug": "db-welding-fabrication-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bella Stairs LLC",
+      "slug": "bella-stairs-llc-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ambiance Interiors Manufacturing Corp.",
+      "slug": "ambiance-interiors-manufacturing-corp-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "AMD Ornamental LLC",
+      "slug": "amd-ornamental-llc-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ace Screen Repair & More",
+      "slug": "ace-screen-repair-more-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Remodeling Pro of N FL LLC",
+      "slug": "remodeling-pro-of-n-fl-llc-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Peachstate Rails & Stairs",
+      "slug": "peachstate-rails-stairs-ga",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Atlanta Railing Pros",
+      "slug": "atlanta-railing-pros-ga",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "TriArt Hardwoods",
+      "slug": "triart-hardwoods-ga",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "North Atlanta Steel Supply, LLC",
+      "slug": "north-atlanta-steel-supply-llc-ga",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Capital Stair Makeover",
+      "slug": "capital-stair-makeover-nc",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "JF Stair Contractors",
+      "slug": "jf-stair-contractors-nc",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "HighRise Stairs",
+      "slug": "highrise-stairs-nc",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "The Stair Guys LLC",
+      "slug": "the-stair-guys-llc-nc",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Art Walker Stair Design",
+      "slug": "art-walker-stair-design-nc",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Architectural Staircase and Millwork",
+      "slug": "architectural-staircase-and-millwork-nc",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Master Fabrication (CLT)",
+      "slug": "master-fabrication-clt-nc",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "BlueStar StairWorks LLC",
+      "slug": "bluestar-stairworks-llc-nc",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Island Custom Stairs & Rails, LLC",
+      "slug": "island-custom-stairs-rails-llc-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bell West Services",
+      "slug": "bell-west-services-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "H.B. Millwork, Inc.",
+      "slug": "h-b-millwork-inc-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "E.S. Ironworks",
+      "slug": "e-s-ironworks-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "SRI Stair Builders",
+      "slug": "sri-stair-builders-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Chiusano Design Build LLC",
+      "slug": "chiusano-design-build-llc-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ivy Lea Construction",
+      "slug": "ivy-lea-construction-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bison Iron & Step Inc.",
+      "slug": "bison-iron-step-inc-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Keuka Studios",
+      "slug": "keuka-studios-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Wm. B. Morse Lumber Co.",
+      "slug": "wm-b-morse-lumber-co-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "A.W. Hamel Stair Mfg., Inc.",
+      "slug": "a-w-hamel-stair-mfg-inc-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Capital District Stairs, Inc.",
+      "slug": "capital-district-stairs-inc-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bennett Stair Company, Inc.",
+      "slug": "bennett-stair-company-inc-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Steps Plus, Inc.",
+      "slug": "steps-plus-inc-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Kingsmen Stairs & Woodwork",
+      "slug": "kingsmen-stairs-woodwork-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Legacy Stairs and Millwork, Inc.",
+      "slug": "legacy-stairs-and-millwork-inc-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Glen Rock Stair Corporation",
+      "slug": "glen-rock-stair-corporation-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Gorsegner Brothers",
+      "slug": "gorsegner-brothers-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Carlo Carpentry",
+      "slug": "carlo-carpentry-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Pinto Carpentry",
+      "slug": "pinto-carpentry-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Marty Anderson & Associates, Inc.",
+      "slug": "marty-anderson-associates-inc-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ron Hartman Woodwork",
+      "slug": "ron-hartman-woodwork-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Town Gate Co, Inc.",
+      "slug": "town-gate-co-inc-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Master Pro Railing & Welding",
+      "slug": "master-pro-railing-welding-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Integrity Ironworks, Inc.",
+      "slug": "integrity-ironworks-inc-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Valley Stair and Rail LLC",
+      "slug": "valley-stair-and-rail-llc-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Scheidler Fabrication LLC",
+      "slug": "scheidler-fabrication-llc-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bryan Ahner Welding",
+      "slug": "bryan-ahner-welding-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Pinnacle Stair Railings",
+      "slug": "pinnacle-stair-railings-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Vintage Millwork & Restoration",
+      "slug": "vintage-millwork-restoration-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "McClellands Contracting and Roofing, LLC",
+      "slug": "mcclellands-contracting-and-roofing-llc-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Steel Valley Fabricators",
+      "slug": "steel-valley-fabricators-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stairworks, Inc.",
+      "slug": "stairworks-inc-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bucks County Stairs & Millwork",
+      "slug": "bucks-county-stairs-millwork-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Nu-View Construction",
+      "slug": "nu-view-construction-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Structural Beam",
+      "slug": "structural-beam-il",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Lake Shore Stair Company",
+      "slug": "lake-shore-stair-company-il",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Custom Stair Craft",
+      "slug": "custom-stair-craft-il",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Custom Stairs and Finishes Inc",
+      "slug": "custom-stairs-and-finishes-inc-oh",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stull Woodworks Inc",
+      "slug": "stull-woodworks-inc-oh",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Hazelwood Floors",
+      "slug": "hazelwood-floors-oh",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Mr Felix Floor Inc",
+      "slug": "mr-felix-floor-inc-oh",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Summit Millwork",
+      "slug": "summit-millwork-oh",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "San Marino Iron Inc",
+      "slug": "san-marino-iron-inc-mi",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Keystone Contracting LLC",
+      "slug": "keystone-contracting-llc-mi",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "OIK Industries",
+      "slug": "oik-industries-mi",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ann Arbor Hardwoods",
+      "slug": "ann-arbor-hardwoods-mi",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Pennings & Sons",
+      "slug": "pennings-sons-mi",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Lakeshore Customs",
+      "slug": "lakeshore-customs-mi",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Waterfront Solutions LLC",
+      "slug": "waterfront-solutions-llc-mi",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Voda Stairs & Floors",
+      "slug": "voda-stairs-floors-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Beautiful Custom Stairs Inc",
+      "slug": "beautiful-custom-stairs-inc-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Adventures in Wood, Ltd.",
+      "slug": "adventures-in-wood-ltd-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Staircrafters, Inc.",
+      "slug": "staircrafters-inc-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "The Masters Touch Custom Woodworking",
+      "slug": "the-masters-touch-custom-woodworking-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Kaizen Custom Railing",
+      "slug": "kaizen-custom-railing-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ramey Construction Company, Inc.",
+      "slug": "ramey-construction-company-inc-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "KB Custom Railings",
+      "slug": "kb-custom-railings-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stairs NW LLC",
+      "slug": "stairs-nw-llc-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "AAA Metal Railings",
+      "slug": "aaa-metal-railings-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Colorado Custom Stairs",
+      "slug": "colorado-custom-stairs-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "5280 Custom Woodworks LLC",
+      "slug": "5280-custom-woodworks-llc-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Walnut Hardwood LLC",
+      "slug": "walnut-hardwood-llc-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Old Market Forge",
+      "slug": "old-market-forge-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Empirical Construction",
+      "slug": "empirical-construction-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Commercial Welding LLC",
+      "slug": "commercial-welding-llc-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Top Peak Welding",
+      "slug": "top-peak-welding-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Breck Ironworks",
+      "slug": "breck-ironworks-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Alpine Railing",
+      "slug": "alpine-railing-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Mile High Railings LLC",
+      "slug": "mile-high-railings-llc-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Denver Railings & Metal Art",
+      "slug": "denver-railings-metal-art-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Creative Metal Works, Inc.",
+      "slug": "creative-metal-works-inc-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "CK Metalworks, LLC",
+      "slug": "ck-metalworks-llc-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "StairMeister Log Works LLC",
+      "slug": "stairmeister-log-works-llc-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Scottsdale Railing & Gate LLC",
+      "slug": "scottsdale-railing-gate-llc-az",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Verde Valley Remodeling",
+      "slug": "verde-valley-remodeling-az",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ability Wood Flooring",
+      "slug": "ability-wood-flooring-fl",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "FLOORecki Floors & Stairs",
+      "slug": "floorecki-floors-stairs-il",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Art Stairs Corporation",
+      "slug": "art-stairs-corporation-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Galaxy Hardwood",
+      "slug": "galaxy-hardwood-ny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Alamo Stairs",
+      "slug": "alamo-stairs-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "OC Renovation Group",
+      "slug": "oc-renovation-group-ca",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "JLC Finish Carpentry",
+      "slug": "jlc-finish-carpentry-mi",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Modern Renovation",
+      "slug": "modern-renovation-mi",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Colorado Carpet & Flooring",
+      "slug": "colorado-carpet-flooring-co",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Nova Stair Remodeling",
+      "slug": "nova-stair-remodeling-va",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stair Creations",
+      "slug": "stair-creations-va",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Vivanco's Trim",
+      "slug": "vivanco-s-trim-va",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Mr. Contractor",
+      "slug": "mr-contractor-pa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Hardwood Operator",
+      "slug": "hardwood-operator-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "LeviArs Floors & Interiors",
+      "slug": "leviars-floors-interiors-wa",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "VGJ Floors Covering",
+      "slug": "vgj-floors-covering-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Kirksey Stairs",
+      "slug": "kirksey-stairs-nj",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "DE ARMAS WOOD FLOORS",
+      "slug": "de-armas-wood-floors-nc",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Reno Quality Stairs",
+      "slug": "reno-quality-stairs-nv",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Dream Construction",
+      "slug": "dream-construction-nv",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Anchor Wood Floors",
+      "slug": "anchor-wood-floors-ri",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "The Stair Repair LLC",
+      "slug": "the-stair-repair-llc-ct",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Guy Daigle Hardwood Flooring LLC",
+      "slug": "guy-daigle-hardwood-flooring-llc-ct",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Kimminau Floors",
+      "slug": "kimminau-floors-mo",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Shumba Floors",
+      "slug": "shumba-floors-md",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Darby Stair Renovations",
+      "slug": "darby-stair-renovations-md",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Atlantic Millwork & Cabinetry",
+      "slug": "atlantic-millwork-cabinetry-de",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "GC Handrail LLC",
+      "slug": "gc-handrail-llc-ak",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Chugach Contracting LLC",
+      "slug": "chugach-contracting-llc-ak",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Old World Stairs",
+      "slug": "old-world-stairs-wy",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ross Construction LLC",
+      "slug": "ross-construction-llc-wy",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Cumbow Custom Carpentry",
+      "slug": "cumbow-custom-carpentry-wy",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Sioux Falls Concrete Contractor",
+      "slug": "sioux-falls-concrete-contractor-sd",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Quality Woods Inc",
+      "slug": "quality-woods-inc-wv",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Maine Spiral Staircase Corp",
+      "slug": "maine-spiral-staircase-corp-me",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "NRK Welding",
+      "slug": "nrk-welding-me",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Blair Custom Builders LLC",
+      "slug": "blair-custom-builders-llc-vt",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bauer Fabrication & Art Metal",
+      "slug": "bauer-fabrication-art-metal-vt",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Newport Stair & Millwork Corp",
+      "slug": "newport-stair-millwork-corp-ri",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Advanced Millworks Inc",
+      "slug": "advanced-millworks-inc-la",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Deep South Iron LLC",
+      "slug": "deep-south-iron-llc-la",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Bello's Millwork Inc",
+      "slug": "bello-s-millwork-inc-hi",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Hilweh Builders LLC",
+      "slug": "hilweh-builders-llc-hi",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "83 MetalCraft LLC",
+      "slug": "83-metalcraft-llc-id",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Richard Herrmann Stair Builder Inc",
+      "slug": "richard-herrmann-stair-builder-inc-de",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "DKP Wood Railings & Stairs",
+      "slug": "dkp-wood-railings-stairs-ny",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Islip Stair Building and Millwork Company",
+      "slug": "islip-stair-building-and-millwork-company-ny",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Ponders Hollow Custom Wood Flooring & Millwork",
+      "slug": "ponders-hollow-custom-wood-flooring-millwork-ma",
+      "state": "DEFERRED",
+      "reason": "DIRECTLY_REACHABLE · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Anderson Stair and Railing",
+      "slug": "anderson-stair-and-railing-ct",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "NH Custom Carpentry",
+      "slug": "nh-custom-carpentry-nh",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "New England Treads",
+      "slug": "new-england-treads-me",
+      "state": "DEFERRED",
+      "reason": "DIRECTLY_REACHABLE · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Southern Staircase",
+      "slug": "southern-staircase-ga",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Vision Stairways & Millwork",
+      "slug": "vision-stairways-millwork-ga",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Image Design Stairs",
+      "slug": "image-design-stairs-ga",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Advanced Staircase & Iron Works, Inc.",
+      "slug": "advanced-staircase-iron-works-inc-ga",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Royal Oak Stairs",
+      "slug": "royal-oak-stairs-nc",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Cast Iron Elegance",
+      "slug": "cast-iron-elegance-nc",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Cooper Iron Works LLC",
+      "slug": "cooper-iron-works-llc-sc",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "H R Stairs & Rails",
+      "slug": "h-r-stairs-rails-md",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Crown Stair",
+      "slug": "crown-stair-ky",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Savannah Millwork",
+      "slug": "savannah-millwork-ga",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Cincinnati Stair & Handrail",
+      "slug": "cincinnati-stair-handrail-oh",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Schutte Stair Co., Inc.",
+      "slug": "schutte-stair-co-inc-oh",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Northern Staircase Company, Inc.",
+      "slug": "northern-staircase-company-inc-mi",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Jerry Ray Stairbuilders",
+      "slug": "jerry-ray-stairbuilders-wi",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "MyStairways, Inc.",
+      "slug": "mystairways-inc-mn",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Ortmann Stair Company",
+      "slug": "ortmann-stair-company-mo",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Eclipse Carpentry LLC",
+      "slug": "eclipse-carpentry-llc-nd",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Phoenix Stair, Inc.",
+      "slug": "phoenix-stair-inc-az",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "ARAD LLC (Arizona Woodwork)",
+      "slug": "arad-llc-arizona-woodwork-az",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "B&A Stairs",
+      "slug": "b-a-stairs-az",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Albuquerque Stair LLC (ABQ Stair)",
+      "slug": "albuquerque-stair-llc-abq-stair-nm",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Powerhouse Contracting",
+      "slug": "powerhouse-contracting-nm",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "OKC Cabinets",
+      "slug": "okc-cabinets-ok",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Oklahoma Stair Parts LLC",
+      "slug": "oklahoma-stair-parts-llc-ok",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "A.R.T.T. Wood Manufacturing (ARTT Stairs)",
+      "slug": "a-r-t-t-wood-manufacturing-artt-stairs-ok",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Forest Custom Millwork",
+      "slug": "forest-custom-millwork-ok",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Kervin Brothers Ornamental Iron",
+      "slug": "kervin-brothers-ornamental-iron-or",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Custom Stairs Aspen",
+      "slug": "custom-stairs-aspen-co",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Titan Architectural Products (Titan Stairs Utah)",
+      "slug": "titan-architectural-products-titan-stairs-utah-ut",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Olson Iron / Olson Stair Railing",
+      "slug": "olson-iron-olson-stair-railing-nv",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "HI End Construction",
+      "slug": "hi-end-construction-hi",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Folsom Stair & Woodworks, Inc.",
+      "slug": "folsom-stair-woodworks-inc-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Norman Hasenfang Railings & Stairs",
+      "slug": "norman-hasenfang-railings-stairs-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "California Fine Stairbuilding LLC",
+      "slug": "california-fine-stairbuilding-llc-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Wonders Ornamental Iron, Inc.",
+      "slug": "wonders-ornamental-iron-inc-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "San Joaquin Stairs Inc.",
+      "slug": "san-joaquin-stairs-inc-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Regal Deck & Stair",
+      "slug": "regal-deck-stair-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "SoCal Stairs",
+      "slug": "socal-stairs-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Bay Area Cable Railing",
+      "slug": "bay-area-cable-railing-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Fair Oaks Iron",
+      "slug": "fair-oaks-iron-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Sacramento Stairs Inc. (Jerry Lee Stairs)",
+      "slug": "sacramento-stairs-inc-jerry-lee-stairs-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Martinez Stair Company, Inc.",
+      "slug": "martinez-stair-company-inc-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Hearst Hardwood Floors, Inc.",
+      "slug": "hearst-hardwood-floors-inc-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Coast Building Specialties (SDstair)",
+      "slug": "coast-building-specialties-sdstair-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Texas Stairs and Rails (TSAR)",
+      "slug": "texas-stairs-and-rails-tsar-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Stairways Inc.",
+      "slug": "stairways-inc-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "SRG Stairs (Houston)",
+      "slug": "srg-stairs-houston-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Houston Stair Parts (HSP)",
+      "slug": "houston-stair-parts-hsp-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Skyrel Stairs",
+      "slug": "skyrel-stairs-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Atomic Steelworks",
+      "slug": "atomic-steelworks-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Innovative Stairs",
+      "slug": "innovative-stairs-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Precision Metal Services",
+      "slug": "precision-metal-services-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "SMAK Stairs & Railing",
+      "slug": "smak-stairs-railing-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Custom Iron Works",
+      "slug": "custom-iron-works-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "StareCasing Systems",
+      "slug": "starecasing-systems-oh",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "N-Hance Wood Refinishing (Franchise HQ)",
+      "slug": "n-hance-wood-refinishing-franchise-hq-ut",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Footprints Floors (Franchise HQ)",
+      "slug": "footprints-floors-franchise-hq-co",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Stain Door Company",
+      "slug": "stain-door-company-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "CMC Hardwood Floors",
+      "slug": "cmc-hardwood-floors-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Stair Solution LLC",
+      "slug": "stair-solution-llc-ga",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Design Hardwoods / OC Stairs",
+      "slug": "design-hardwoods-oc-stairs-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "MJ Modern Stairways",
+      "slug": "mj-modern-stairways-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Carroll Metal Works",
+      "slug": "carroll-metal-works-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Architectural Metal Works",
+      "slug": "architectural-metal-works-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "UA Steel Fabrication (Umili America)",
+      "slug": "ua-steel-fabrication-umili-america-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Contour Stairs",
+      "slug": "contour-stairs-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Majestic Wood Works",
+      "slug": "majestic-wood-works-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Costa Millworks Construction",
+      "slug": "costa-millworks-construction-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Michael Bondi Metal Design",
+      "slug": "michael-bondi-metal-design-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "LA Custom Railing & Stairs",
+      "slug": "la-custom-railing-stairs-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Gibin Custom Stairs & Millwork",
+      "slug": "gibin-custom-stairs-millwork-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Royal Oak Stair Designs",
+      "slug": "royal-oak-stair-designs-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Roberto's Wrought Iron",
+      "slug": "roberto-s-wrought-iron-ca",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "3 Cords Stairs & Railings",
+      "slug": "3-cords-stairs-railings-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Alma's Wrought Iron",
+      "slug": "alma-s-wrought-iron-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "MS Custom Welding LLC",
+      "slug": "ms-custom-welding-llc-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "D&C Fence Company",
+      "slug": "d-c-fence-company-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Make Ready Flooring",
+      "slug": "make-ready-flooring-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Weld Worx LLC",
+      "slug": "weld-worx-llc-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Santos Creativity Staircase",
+      "slug": "santos-creativity-staircase-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Supreme Hardwood Floors",
+      "slug": "supreme-hardwood-floors-tx",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Superior Spiral Stairs",
+      "slug": "superior-spiral-stairs-fl",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Precision Stairs, Inc.",
+      "slug": "precision-stairs-inc-fl",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Argentum Welding LLC (Sarasota Spiral Stairs)",
+      "slug": "argentum-welding-llc-sarasota-spiral-stairs-fl",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Florida Stair Masters (Stairmaster LLC)",
+      "slug": "florida-stair-masters-stairmaster-llc-fl",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Fabri-Tech Screen Enclosures",
+      "slug": "fabri-tech-screen-enclosures-fl",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Florida Stairworks & Carpentry LLC",
+      "slug": "florida-stairworks-carpentry-llc-fl",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Atlanta Iron Works",
+      "slug": "atlanta-iron-works-ga",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Harris Iron",
+      "slug": "harris-iron-ga",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Peachy Flooring Solutions",
+      "slug": "peachy-flooring-solutions-ga",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Iron-Works International",
+      "slug": "iron-works-international-ga",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Stair Pros of the Triangle",
+      "slug": "stair-pros-of-the-triangle-nc",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Right Step Flooring",
+      "slug": "right-step-flooring-nc",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Cardinal Millwork & Supply, Inc.",
+      "slug": "cardinal-millwork-supply-inc-nc",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Alamance Iron Works, Inc.",
+      "slug": "alamance-iron-works-inc-nc",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Zack Hardwood Flooring",
+      "slug": "zack-hardwood-flooring-nc",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Joyce's Hardwood Floors",
+      "slug": "joyce-s-hardwood-floors-nc",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Allwood Stillwell Stairs & Railings",
+      "slug": "allwood-stillwell-stairs-railings-ny",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Dutchess Millwork & Machine Shop",
+      "slug": "dutchess-millwork-machine-shop-ny",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Matthews & Fields Lumber Company",
+      "slug": "matthews-fields-lumber-company-ny",
+      "state": "DEFERRED",
+      "reason": "DIRECTLY_REACHABLE · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Old Fox LLC",
+      "slug": "old-fox-llc-pa",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Acero Iron",
+      "slug": "acero-iron-nj",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Hess Ornamental Iron",
+      "slug": "hess-ornamental-iron-pa",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Compass Ironworks",
+      "slug": "compass-ironworks-pa",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Americana Iron Works & Fence",
+      "slug": "americana-iron-works-fence-il",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Lamonaca Iron Works",
+      "slug": "lamonaca-iron-works-il",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Chicago Iron Works Inc",
+      "slug": "chicago-iron-works-inc-il",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Best Chicago Railings",
+      "slug": "best-chicago-railings-il",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Stairguy Inc",
+      "slug": "stairguy-inc-il",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Jusalda Custom Stairs and Woodwork",
+      "slug": "jusalda-custom-stairs-and-woodwork-il",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Oak Brothers Historic Restoration",
+      "slug": "oak-brothers-historic-restoration-il",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Lotz Home & Office LLC (Lotz Remodeling)",
+      "slug": "lotz-home-office-llc-lotz-remodeling-il",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "K & D Custom Carpentry",
+      "slug": "k-d-custom-carpentry-il",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "The Wm. Lang & Sons Iron Works Company",
+      "slug": "the-wm-lang-sons-iron-works-company-oh",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Elegant Iron Studios",
+      "slug": "elegant-iron-studios-oh",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Royal Stairs Construction LLC",
+      "slug": "royal-stairs-construction-llc-oh",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Architectural Woodworking",
+      "slug": "architectural-woodworking-oh",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Great Lakes Metal Fabrication",
+      "slug": "great-lakes-metal-fabrication-mi",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Commercial Stairworks",
+      "slug": "commercial-stairworks-mi",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Carter Quality Hardwood Flooring Inc",
+      "slug": "carter-quality-hardwood-flooring-inc-mi",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Northwest Stair & Rail, Inc.",
+      "slug": "northwest-stair-rail-inc-wa",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Custom Stairs Denver",
+      "slug": "custom-stairs-denver-co",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Steelhead LLC",
+      "slug": "steelhead-llc-co",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Law Fence Company",
+      "slug": "law-fence-company-co",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Affordable Ornamental Iron",
+      "slug": "affordable-ornamental-iron-co",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Kokopelli Custom Woodworks",
+      "slug": "kokopelli-custom-woodworks-az",
+      "state": "DEFERRED",
+      "reason": "DIRECTLY_REACHABLE · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "The Stair Company (South Florida)",
+      "slug": "the-stair-company-south-florida-fl",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Mike's Custom Stairs, Railings and Trim",
+      "slug": "mike-s-custom-stairs-railings-and-trim-il",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "MacFarland Painting",
+      "slug": "macfarland-painting-mi",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Jenson Stair Refinishing",
+      "slug": "jenson-stair-refinishing-mi",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Alvarado Custom Carpentry",
+      "slug": "alvarado-custom-carpentry-va",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "The Stair Doctor",
+      "slug": "the-stair-doctor-nj",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Nevada Stairs",
+      "slug": "nevada-stairs-nv",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Stair Care LV",
+      "slug": "stair-care-lv-nv",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "GoMango Enterprises",
+      "slug": "gomango-enterprises-wa",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "CFW Stair (Correia Fine Woodworking)",
+      "slug": "cfw-stair-correia-fine-woodworking-id",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Wood Floors by Ace",
+      "slug": "wood-floors-by-ace-ri",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "A and M Hardwood Floors",
+      "slug": "a-and-m-hardwood-floors-ct",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "KC Wood",
+      "slug": "kc-wood-ks",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Stair Masterz",
+      "slug": "stair-masterz-fl",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Pacific Staircase Stair Builder",
+      "slug": "pacific-staircase-stair-builder-ak",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "HTS Construction LLC",
+      "slug": "hts-construction-llc-ak",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Builders Millwork Supply (SBS Millwork & Design)",
+      "slug": "builders-millwork-supply-sbs-millwork-design-ak",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Denali Custom Construction LLC",
+      "slug": "denali-custom-construction-llc-ak",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Creative Ironworks",
+      "slug": "creative-ironworks-sd",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Elite Decks LLC",
+      "slug": "elite-decks-llc-al",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "TADS Metalworks LLC",
+      "slug": "tads-metalworks-llc-al",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "The Stairway Shop",
+      "slug": "the-stairway-shop-la",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Zuccarello Custom Woodworks LLC",
+      "slug": "zuccarello-custom-woodworks-llc-la",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Skyline Stair Company Inc",
+      "slug": "skyline-stair-company-inc-mt",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Creations By Day Inc",
+      "slug": "creations-by-day-inc-ne",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "King's Corner Wood Turning & Woodworking",
+      "slug": "king-s-corner-wood-turning-woodworking-nh",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    }
+  ]
+}

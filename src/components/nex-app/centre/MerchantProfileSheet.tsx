@@ -55,6 +55,7 @@ function Instagram({ className }: { className?: string; strokeWidth?: number }) 
   );
 }
 import type { CentreFeedItem } from "@/lib/nex/centre-publishing/types";
+import { formatCardLocation } from "@/lib/nex/geography/formatAddress";
 import { WhatsAppProtectionModal } from "./WhatsAppProtectionModal";
 import {
   appendMessage,
@@ -131,7 +132,15 @@ export function MerchantProfileSheet({ seed, onSelectProduct }: Props) {
   }, [seed.merchant_id]);
 
   const merchantName = seed.merchant_display_name ?? seed.brand_name;
-  const location = seed.merchant_city ?? seed.merchant_postcode_prefix ?? "UK";
+  const location =
+    formatCardLocation({
+      country: seed.merchant_country,
+      city: seed.merchant_city,
+      county: seed.merchant_region,
+      region: seed.merchant_region,
+      postcode: seed.merchant_postcode_prefix,
+      postcode_prefix: seed.merchant_postcode_prefix,
+    }) || (seed.merchant_city ?? seed.merchant_postcode_prefix ?? "");
   const trade =
     seed.category_path[0] ??
     (seed.merchant_services.length > 0 ? seed.merchant_services[0] : null);

@@ -84,6 +84,54 @@ export async function listDirectorySeedsByCategory(category: string): Promise<Di
 }
 
 /**
+ * Country-aware filter (Philip 2026-08-16). Supports the ONE-Trade-Centre /
+ * multi-country architecture: filter by country (canonical DB value like
+ * "USA"), plus optional region/category/capability. `country` should be the
+ * canonical directory_seeds.country string; callers with codes ("GB"/"US")
+ * must translate via `toDbCountryValue` first.
+ *
+ * capability filter matches `capabilities->>{capability} = 'yes'` — the
+ * two-dimension schema means Stage-2 claims stored under different keys
+ * (e.g. `refacing_qualification.hint`) are NOT surfaced by this filter.
+ */
+export async function listDirectorySeedsByCountry(opts: {
+  country?: string;
+  region?: string;
+  category?: string;
+  capability?: string;
+}): Promise<DirectorySeed[]> {
+  let q = supabaseAdmin.from("directory_seeds").select("*");
+  if (opts.country) q = q.eq("country", opts.country);
+  if (opts.region) q = q.eq("region", opts.region);
+  if (opts.category) q = q.eq("category", opts.category);
+  if (opts.capability) {
+    // Capability filter with transitional safety net (Philip 2026-08-17).
+    // For "refacing": also match refacing-typed business_type + legacy
+    // `category='Staircase Refacing'` rows so the UK surface doesn't
+    // regress from 101 → 34 (81 UK rows were imported pre-capability-
+    // tagging and only carry the category label). Non-refacing capabilities
+    // fall through to the plain capability-only match.
+    if (opts.capability === "refacing") {
+      q = q.or(
+        [
+          "capabilities->>refacing.eq.yes",
+          "business_type.in.(REFACING_SERVICE_SPECIALIST,REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER)",
+          "category.eq.Staircase Refacing",
+        ].join(",")
+      );
+    } else {
+      q = q.eq(`capabilities->>${opts.capability}`, "yes");
+    }
+  }
+  const res = await q.order("imported_at", { ascending: true });
+  if (res.error) {
+    console.error("[directorySeedsDb.listDirectorySeedsByCountry]", res.error);
+    return [];
+  }
+  return (res.data ?? []).map(rowToSeed);
+}
+
+/**
  * Insert a new seed. Returns the persisted id + slug on success, or a typed
  * error. Unique violations (23505 · duplicate slug or duplicate email) are
  * translated to human-readable errors so the caller can surface them.
@@ -296,6 +344,7 @@ function rowToSeed(row: Row): DirectorySeed {
     county:                  (row.county ?? null) as string | null,
     postcode:                (row.postcode ?? null) as string | null,
     country:                 (row.country ?? "United Kingdom") as string,
+    region:                  (row.region ?? null) as string | null,
     telephone:               (row.telephone ?? null) as string | null,
     website:                 (row.website ?? null) as string | null,
     email:                   (row.email ?? null) as string | null,

@@ -181,6 +181,9 @@ export type DirectorySeed = {
   county: string | null;
   postcode: string | null;
   country: string;
+  /** Country-scoped region · UK county, Irish county, or US state code.
+   *  Free-text (migration 053 dropped the CHECK constraint). */
+  region: string | null;
   telephone: string | null;
   website: string | null;
   email: string | null;
@@ -388,6 +391,28 @@ const CURATED_HERO_OVERRIDES: Record<string, string> = {
   // "NEX-D-001": "https://ik.imagekit.io/5vv5pw26q/...",
 };
 
+// Hero-image cache (Philip 2026-08-17). Resolving a seed's hero image
+// scans the whole nex-image-manifest via matchImage() — for 375 US
+// seeds × ~500 manifest rows that was 187k scoring calls per feed
+// request and dominated the API wall time. The output is a pure
+// function of a few immutable seed fields plus the manifest itself,
+// so we memoise per seed keyed on a content signature that changes
+// whenever any field feeding the matcher changes.
+type HeroCacheEntry = { sig: string; url: string };
+const heroCache: Map<string, HeroCacheEntry> = new Map();
+
+function seedHeroSig(seed: DirectorySeed): string {
+  return [
+    seed.business_name,
+    seed.description ?? "",
+    (seed.services ?? []).join(","),
+    (seed.tags ?? []).join(","),
+    seed.category ?? "",
+    seed.town ?? "",
+    seed.cover_image ?? "",
+  ].join("|");
+}
+
 /** Recursively collect all .json seed files under SEEDS_ROOT.
  *  Excludes any file whose name starts with underscore (index / schema). */
 async function collectSeedFiles(dir: string): Promise<string[]> {
@@ -417,10 +442,12 @@ async function collectSeedFiles(dir: string): Promise<string[]> {
  *  Directory listings have no price (price_pence stays 0 — the card
  *  hides the price row when it's 0). */
 function seedToFeedItem(seed: DirectorySeed): CentreFeedItem {
+  // Kept for legacy · call sites now use `formatCardLocation` on the item
+  // fields directly so nothing ships the literal "UK" fallback.
   const location =
     seed.town ??
     (seed.postcode ? seed.postcode.split(" ")[0] : null) ??
-    "UK";
+    "";
 
   // Verification level for the public card (Philip 2026-08-13):
   //   paid_member → "partner"   (unlocks NEX Chat enquiry CTA, phone shown)
@@ -458,6 +485,8 @@ function seedToFeedItem(seed: DirectorySeed): CentreFeedItem {
     merchant_postcode_prefix: seed.postcode
       ? seed.postcode.split(" ")[0]
       : null,
+    merchant_country: seed.country,
+    merchant_region: seed.region ?? seed.county,
     merchant_lat: seed.latitude,
     merchant_lng: seed.longitude,
     merchant_avatar_url: null,
@@ -509,34 +538,45 @@ function seedToFeedItem(seed: DirectorySeed): CentreFeedItem {
  *  public directory. Emits a console warning so the operator notices.
  */
 export async function loadDirectorySeedsAsFeedItems(
-  opts?: { category?: string },
+  opts?: { category?: string; country?: string; region?: string; capability?: string },
 ): Promise<CentreFeedItem[]> {
   // Dynamic import to keep this module safe to load in edge / non-server
   // contexts (the DB module has `import "server-only"`).
   const {
     listDirectorySeeds,
     listDirectorySeedsByCategory,
+    listDirectorySeedsByCountry,
     listSeedRefMap,
   } = await import("./directorySeedsDb");
 
   // Perf fix (Philip 2026-08-13): when the caller supplies a category, pull
   // ONLY that category from the DB instead of every seed across every trade.
-  // The previous "pull all + filter later" pattern was loading kitchens seeds
-  // just to render the Refacing page.
+  //
+  // Country-aware fix (Philip 2026-08-16): a country/region/capability filter
+  // takes precedence — it selects a compound WHERE clause at the DB layer.
+  // No filter at all = whole table.
   //
   // Identity-preservation fix (Philip 2026-08-13): admin_ref (NEX-D-XXX) is
   // a GLOBAL identifier — the same seed always gets the same NEX-D-XXX
   // regardless of filter. We fetch a cheap `id + imported_at` map across
   // ALL seeds in parallel with the filtered feed query · then assign each
-  // filtered seed its stable global admin_ref from that map. Wall time is
-  // max(refmap, filtered-feed) not sum.
+  // filtered seed its stable global admin_ref from that map.
+  const hasCountryScopedFilter = !!(opts?.country || opts?.region || opts?.capability);
+  const hasAnyFilter = hasCountryScopedFilter || !!opts?.category;
   const [dbSeeds, globalRefMap] = await Promise.all([
-    opts?.category
-      ? listDirectorySeedsByCategory(opts.category)
-      : listDirectorySeeds(),
+    hasCountryScopedFilter
+      ? listDirectorySeedsByCountry({
+          country: opts?.country,
+          region: opts?.region,
+          category: opts?.category,
+          capability: opts?.capability,
+        })
+      : opts?.category
+        ? listDirectorySeedsByCategory(opts.category)
+        : listDirectorySeeds(),
     // Only fetch the global ref-map when filtering · unfiltered path can
     // number in-place from its own ordering.
-    opts?.category ? listSeedRefMap() : Promise.resolve(new Map<string, string>()),
+    hasAnyFilter ? listSeedRefMap() : Promise.resolve(new Map<string, string>()),
   ]);
 
   const seedItems: Array<{ seed: DirectorySeed; item: CentreFeedItem }> = [];
@@ -554,6 +594,9 @@ export async function loadDirectorySeedsAsFeedItems(
         // Honour the category filter for the JSON fallback path too, so a
         // Refacing request doesn't accidentally render Kitchen archive seeds.
         if (opts?.category && seed.category !== opts.category) continue;
+        if (opts?.country && seed.country !== opts.country) continue;
+        if (opts?.region && seed.region !== opts.region) continue;
+        if (opts?.capability && seed.capabilities?.[opts.capability as keyof NonNullable<DirectorySeed["capabilities"]>] !== "yes") continue;
         seedItems.push({ seed, item: seedToFeedItem(seed) });
       } catch { continue; }
     }
@@ -590,7 +633,7 @@ export async function loadDirectorySeedsAsFeedItems(
       // archive read + DB never seen it), assign the local ordinal so the
       // card still renders — it just won't collide with a curated override
       // aimed at a different seed.
-      const ref = opts?.category
+      const ref = hasAnyFilter
         ? (globalRefMap.get(seed.id) ?? `NEX-D-${String(i + 1).padStart(3, "0")}`)
         : `NEX-D-${String(i + 1).padStart(3, "0")}`;
       item.admin_ref = ref;
@@ -602,6 +645,15 @@ export async function loadDirectorySeedsAsFeedItems(
         item.hero_image_url = applyCardCrop(CURATED_HERO_OVERRIDES[ref]);
         return;
       }
+
+      const sig = seedHeroSig(seed);
+      const cached = heroCache.get(seed.id);
+      if (cached && cached.sig === sig) {
+        item.hero_image_url = cached.url;
+        return;
+      }
+
+      let resolved: string | null = null;
 
       // 2. Matcher against the manifest (ADR-0025 · directory-card floor 0.65)
       const targetText = [
@@ -624,8 +676,7 @@ export async function loadDirectorySeedsAsFeedItems(
           { surface: "directory-card", requireAPlus: true }
         );
         if (result.url) {
-          item.hero_image_url = applyCardCrop(result.url);
-          return;
+          resolved = applyCardCrop(result.url);
         }
       } catch {
         // matcher failure never crashes the feed — fall through to placeholder
@@ -636,7 +687,12 @@ export async function loadDirectorySeedsAsFeedItems(
       // merchant's business text against per-image trade tags (glass · oak ·
       // steel · traditional · commercial · etc.). Falls back to a
       // deterministic hash pick when nothing scores.
-      item.hero_image_url = applyCardCrop(pickInterimStaircase(seed.id, seed));
+      if (!resolved) {
+        resolved = applyCardCrop(pickInterimStaircase(seed.id, seed));
+      }
+
+      item.hero_image_url = resolved;
+      heroCache.set(seed.id, { sig, url: resolved });
     }),
   );
 

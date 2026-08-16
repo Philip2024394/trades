@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-08-16T17:10:55.994Z",
+  "raw_total": 369,
+  "within_au_duplicates_removed": 37,
+  "unique_count": 332,
+  "cross_country_hits": [],
+  "per_agent": [
+    {
+      "file": "agent-au-1-nsw-deep.json",
+      "count": 71
+    },
+    {
+      "file": "agent-au-2-vic-deep.json",
+      "count": 63
+    },
+    {
+      "file": "agent-au-3-qld-deep.json",
+      "count": 44
+    },
+    {
+      "file": "agent-au-4-wa-deep.json",
+      "count": 51
+    },
+    {
+      "file": "agent-au-5-sa-tas.json",
+      "count": 50
+    },
+    {
+      "file": "agent-au-6-act-nt-small.json",
+      "count": 30
+    },
+    {
+      "file": "agent-au-7-national-manufacturers.json",
+      "count": 32
+    },
+    {
+      "file": "agent-au-8-national-refacing-refurb.json",
+      "count": 28
+    }
+  ]
+}

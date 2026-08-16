@@ -62,6 +62,14 @@ import {
   type Interstitial,
   type TipTile,
 } from "./interstitials";
+import { CountryPicker } from "./CountryPicker";
+import {
+  getSelectedCountry,
+  setSelectedCountry,
+  type SelectedCountry,
+} from "@/lib/nex/geography/countryStore";
+import { findCountryByCode, flagForDbValue } from "@/lib/nex/geography/countries";
+import { formatCardLocation } from "@/lib/nex/geography/formatAddress";
 
 type ApiResponse = {
   ok: boolean;
@@ -77,6 +85,8 @@ type Filters = {
   max_price: string;
   verified_only: boolean;
   sort: "relevance" | "newest";
+  /** ONE Trade Centre · ONE URL · country is a first-class filter. */
+  country: SelectedCountry;
 };
 
 const PAGE_SIZE = 24;
@@ -88,6 +98,7 @@ const EMPTY_FILTERS: Filters = {
   max_price: "",
   verified_only: false,
   sort: "relevance",
+  country: "all",
 };
 
 function formatPrice(pence: number): string {
@@ -108,6 +119,8 @@ function buildQuery(
   if (query.trim()) params.set("q", query.trim());
   if (filters.postcode.trim()) params.set("postcode", filters.postcode.trim());
   if (filters.category.trim()) params.set("category", filters.category.trim());
+  if (filters.country && filters.country !== "all")
+    params.set("country", filters.country);
   const minP = Number(filters.min_price);
   if (Number.isFinite(minP) && minP > 0)
     params.set("min_price", String(Math.round(minP * 100)));
@@ -137,7 +150,24 @@ export function NexCentreLiveFeed() {
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState<Set<string>>(new Set());
   const [emptyFallback, setEmptyFallback] = useState<CentreFeedItem[]>([]);
+  const [verifiedFilterDegraded, setVerifiedFilterDegraded] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
+
+  // Country selection · rehydrate from URL first, then localStorage/cookie.
+  // Country picker's `onChange` writes back through countryStore, so this
+  // effect only ever runs on cold mount.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    let initial: SelectedCountry | null = null;
+    const fromUrl = new URLSearchParams(window.location.search).get("country");
+    if (fromUrl === "all") initial = "all";
+    else if (fromUrl) initial = findCountryByCode(fromUrl)?.code ?? null;
+    if (!initial) initial = getSelectedCountry();
+    if (initial && initial !== filters.country) {
+      setFilters((f) => ({ ...f, country: initial! }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // AskNex chat panel state
   const [askQuery, setAskQuery] = useState("");
@@ -221,13 +251,24 @@ export function NexCentreLiveFeed() {
         }
         let fresh = data.items ?? [];
 
-        // Client-side filters that the API doesn't handle server-side yet
+        // Client-side filters that the API doesn't handle server-side yet.
+        // "Verified only" was silently deleting every non-UK row (imported
+        // verified=false per the language-caution rule). Now: if the filter
+        // would empty the page, degrade to unfiltered + surface a hint.
         if (filters.verified_only) {
-          fresh = fresh.filter(
+          const verified = fresh.filter(
             (i) =>
               i.merchant_verification_level === "verified" ||
               i.merchant_verification_level === "partner"
           );
+          if (verified.length === 0 && fresh.length > 0) {
+            setVerifiedFilterDegraded(true);
+          } else {
+            setVerifiedFilterDegraded(false);
+            fresh = verified;
+          }
+        } else {
+          setVerifiedFilterDegraded(false);
         }
         if (filters.sort === "newest") {
           fresh = [...fresh].sort((a, b) =>
@@ -376,6 +417,13 @@ export function NexCentreLiveFeed() {
               Live
             </div>
             <div className="flex-1" />
+            <CountryPicker
+              value={filters.country}
+              onChange={(next) => {
+                setFilters((f) => ({ ...f, country: next }));
+                setSelectedCountry(next);
+              }}
+            />
             {openProjectCount > 0 && (
               // Philip 2026-08-02 · Continue chip (was "My Projects").
               // "People rarely want to start something new — they usually want
@@ -417,6 +465,7 @@ export function NexCentreLiveFeed() {
                 setFilters={setFilters}
                 activeFilterCount={activeFilterCount}
                 onClear={clearFilters}
+                verifiedFilterDegraded={verifiedFilterDegraded}
               />
             </div>
           )}
@@ -618,6 +667,7 @@ export function NexCentreLiveFeed() {
                     key={`p-${tile.offer_id}`}
                     item={tile}
                     onViewDetails={() => openMerchant(tile)}
+                    showFlag={filters.country === "all"}
                   />
                 );
               }
@@ -766,11 +816,13 @@ function FilterPanel({
   setFilters,
   activeFilterCount,
   onClear,
+  verifiedFilterDegraded,
 }: {
   filters: Filters;
   setFilters: React.Dispatch<React.SetStateAction<Filters>>;
   activeFilterCount: number;
   onClear: () => void;
+  verifiedFilterDegraded: boolean;
 }) {
   return (
     <>
@@ -788,14 +840,26 @@ function FilterPanel({
           />
         </label>
         <label className="flex flex-col gap-1">
-          <span className="text-black/60">Your postcode</span>
+          <span className="text-black/60">
+            {filters.country === "US"
+              ? "Your ZIP"
+              : filters.country === "IE"
+              ? "Your Eircode"
+              : "Your postcode"}
+          </span>
           <input
             type="text"
             value={filters.postcode}
             onChange={(e) =>
               setFilters((f) => ({ ...f, postcode: e.target.value }))
             }
-            placeholder="e.g. M20"
+            placeholder={
+              filters.country === "US"
+                ? "e.g. 78701"
+                : filters.country === "IE"
+                ? "e.g. D02"
+                : "e.g. M20"
+            }
             className="rounded-lg border border-black/10 px-2 py-1.5 uppercase"
             maxLength={12}
           />
@@ -835,6 +899,11 @@ function FilterPanel({
             className="h-4 w-4"
           />
         </label>
+        {verifiedFilterDegraded && (
+          <p className="col-span-2 -mt-1 text-[11px] leading-snug text-black/50">
+            No verified merchants for the current filters yet — showing all listings.
+          </p>
+        )}
         <label className="col-span-2 flex items-center justify-between gap-2">
           <span className="text-black/70">Sort</span>
           <select
@@ -996,13 +1065,25 @@ function VerifiedPip({
 function ProductCard({
   item,
   onViewDetails,
+  showFlag = false,
 }: {
   item: CentreFeedItem;
   onViewDetails: () => void;
+  /** When true, prepend the merchant's country flag to the location pill.
+   *  Only meaningful on multi-country views (country filter === "all"). */
+  showFlag?: boolean;
 }) {
   const price = formatPrice(item.price_pence);
   const location =
-    item.merchant_city ?? item.merchant_postcode_prefix ?? "UK";
+    formatCardLocation({
+      country: item.merchant_country,
+      city: item.merchant_city,
+      county: item.merchant_region,
+      region: item.merchant_region,
+      postcode: item.merchant_postcode_prefix,
+      postcode_prefix: item.merchant_postcode_prefix,
+    }) || (item.merchant_city ?? item.merchant_postcode_prefix ?? "");
+  const flag = showFlag ? flagForDbValue(item.merchant_country) : "";
   const aspect = cardAspect(item);
   const topCategory = item.category_path[0];
   // Philip 2026-08-02 · Trade Centre v3 · users tapping an image ask
@@ -1099,8 +1180,15 @@ function ProductCard({
               {topCategory}
             </span>
           )}
-          <span className="inline-flex items-center gap-0.5 rounded-full bg-black/[0.04] px-1.5 py-0.5 text-[9px] font-medium text-black/60">
-            <MapPin className="h-2 w-2" />
+          <span
+            className="inline-flex items-center gap-0.5 rounded-full bg-black/[0.04] px-1.5 py-0.5 text-[9px] font-medium text-black/60"
+            title={flag ? `${item.merchant_country ?? ""} · ${location}` : location}
+          >
+            {flag ? (
+              <span aria-hidden className="text-[10px] leading-none">{flag}</span>
+            ) : (
+              <MapPin className="h-2 w-2" />
+            )}
             {location}
           </span>
         </div>

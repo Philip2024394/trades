@@ -14,10 +14,17 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Bell, Menu, Hammer, MapPin, Star, ShieldCheck, Sparkles, Megaphone, ChevronRight } from "lucide-react";
 import type { CentreFeedItem } from "@/lib/nex/centre-publishing/types";
-import { CATEGORY_STAIRCASE_REFACING } from "@/lib/nex/centre-publishing/categories";
 import { assignRefacingHeroPool } from "@/lib/refacing/refacingHeroPool";
 import { NexBottomSheet } from "@/components/nex-app/centre/NexBottomSheet";
 import { TradeProfileSheet } from "@/components/nex-app/refacing/TradeProfileSheet";
+import { CountryPicker } from "@/components/nex-app/centre/CountryPicker";
+import {
+  getSelectedCountry,
+  setSelectedCountry,
+  type SelectedCountry,
+} from "@/lib/nex/geography/countryStore";
+import { findCountryByCode } from "@/lib/nex/geography/countries";
+import { formatCardLocation } from "@/lib/nex/geography/formatAddress";
 
 const LOGO_SRC = "/brand/nex-logo.png";
 const ORANGE   = "#F97316";
@@ -140,17 +147,38 @@ export default function CompaniesClient() {
   const [items, setItems] = useState<CentreFeedItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError]   = useState<string | null>(null);
+  const [country, setCountry] = useState<SelectedCountry>("all");
   // Slider state (Rule 1: one orange "More Details" opens a slider · state lives here,
   // not per-card, so exactly one sheet is mounted at a time).
   const [openItem, setOpenItem] = useState<CentreFeedItem | null>(null);
   const openSheet  = useCallback((item: CentreFeedItem) => setOpenItem(item), []);
   const closeSheet = useCallback(() => setOpenItem(null), []);
 
+  // Country rehydrate · URL > localStorage > "all". Cold-mount only.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const fromUrl = new URLSearchParams(window.location.search).get("country");
+    let initial: SelectedCountry | null = null;
+    if (fromUrl === "all") initial = "all";
+    else if (fromUrl) initial = findCountryByCode(fromUrl)?.code ?? null;
+    if (!initial) initial = getSelectedCountry();
+    if (initial) setCountry(initial);
+  }, []);
+
   useEffect(() => {
     let cancelled = false;
     (async () => {
+      setLoading(true);
       try {
-        const qs = new URLSearchParams({ category: CATEGORY_STAIRCASE_REFACING, limit: "100" });
+        // Capability-based query (Philip 2026-08-16 · P0-5). The prior
+        // `category="Staircase Refacing"` filter missed every non-UK
+        // refacing record because the US/IE imports used plain "Staircase"
+        // + `capabilities.refacing='yes'`. Capability is first-class per the
+        // two-dimension schema — surface the 14 US directly-evidenced
+        // refacing rows without falsely promoting the 58 unverified claims.
+        const params: Record<string, string> = { capability: "refacing", limit: "100" };
+        if (country && country !== "all") params.country = country;
+        const qs = new URLSearchParams(params);
         const res = await fetch(`/api/nex/centre/feed?${qs}`, { cache: "no-store" });
         const data = (await res.json()) as Feed;
         if (cancelled) return;
@@ -158,6 +186,7 @@ export default function CompaniesClient() {
           setError(data.error ?? "feed_failed");
         } else {
           setItems(data.items ?? []);
+          setError(null);
         }
       } catch {
         if (!cancelled) setError("network");
@@ -166,7 +195,7 @@ export default function CompaniesClient() {
       }
     })();
     return () => { cancelled = true; };
-  }, []);
+  }, [country]);
 
   return (
     <div className="relative min-h-screen bg-[#faf7f2] pb-24 text-black">
@@ -187,6 +216,13 @@ export default function CompaniesClient() {
               <ArrowLeft size={16} strokeWidth={2.2} />
             </Link>
             <div className="flex items-center gap-2">
+              <CountryPicker
+                value={country}
+                onChange={(next) => {
+                  setCountry(next);
+                  setSelectedCountry(next);
+                }}
+              />
               <button type="button" aria-label="Notifications" className="grid h-9 w-9 place-items-center rounded-full border border-black/10 bg-white/90 text-black/80 shadow-sm backdrop-blur-sm">
                 <Bell size={15} strokeWidth={2} />
               </button>
@@ -386,9 +422,14 @@ function CornerBackground({ src, corner, alt }: { src: string; corner: CornerPos
 //   NEX owns the enquiry journey. Homeowner → NEX Chat → routing engine → trade.
 function RefacingListingCard({ item, onOpen }: { item: CentreFeedItem; onOpen: (item: CentreFeedItem) => void }) {
   const location =
-    item.merchant_city ??
-    item.merchant_postcode_prefix ??
-    "UK";
+    formatCardLocation({
+      country: item.merchant_country,
+      city: item.merchant_city,
+      county: item.merchant_region,
+      region: item.merchant_region,
+      postcode: item.merchant_postcode_prefix,
+      postcode_prefix: item.merchant_postcode_prefix,
+    }) || (item.merchant_city ?? item.merchant_postcode_prefix ?? "");
   const isUnclaimed = item.merchant_verification_level === "listed";
   const isPartner = item.merchant_verification_level === "partner";
 

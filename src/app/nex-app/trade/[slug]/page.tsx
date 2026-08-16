@@ -16,6 +16,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, MapPin, Phone, Globe, Mail, ShieldCheck, CheckCircle2, Hammer, Building2, Wrench, Paintbrush, Layers, Fence, RectangleHorizontal, Sparkles, PenTool, Package } from "lucide-react";
 import { supabaseNexAdmin } from "@/lib/supabaseNexAdmin";
+import { formatProfileLocation } from "@/lib/nex/geography/formatAddress";
+import { findCountryByDbValue } from "@/lib/nex/geography/countries";
 
 const ORANGE = "#F97316";
 
@@ -44,6 +46,7 @@ type Listing = {
   county: string | null;
   postcode: string | null;
   region: string | null;
+  country: string | null;
   telephone: string | null;
   website: string | null;
   email: string | null;
@@ -61,7 +64,7 @@ type Listing = {
 async function loadListing(slug: string): Promise<Listing | null> {
   const bySlug = await supabaseNexAdmin
     .from("directory_seeds")
-    .select("id, slug, business_name, category, primary_trade, business_type, capabilities, tags, town, county, postcode, region, telephone, website, email, description, refacing_qualification, directory_state, lifecycle_status, verified, claimed, internal_verification_state, customer_facing_label, provenance")
+    .select("id, slug, business_name, category, primary_trade, business_type, capabilities, tags, town, county, postcode, region, country, telephone, website, email, description, refacing_qualification, directory_state, lifecycle_status, verified, claimed, internal_verification_state, customer_facing_label, provenance")
     .eq("slug", slug)
     .maybeSingle();
   if (bySlug.data) return bySlug.data as unknown as Listing;
@@ -69,7 +72,7 @@ async function loadListing(slug: string): Promise<Listing | null> {
   if (/^[0-9a-f-]{36}$/i.test(slug)) {
     const byId = await supabaseNexAdmin
       .from("directory_seeds")
-      .select("id, slug, business_name, category, primary_trade, business_type, capabilities, tags, town, county, postcode, region, telephone, website, email, description, refacing_qualification, directory_state, lifecycle_status, verified, claimed, internal_verification_state, customer_facing_label, provenance")
+      .select("id, slug, business_name, category, primary_trade, business_type, capabilities, tags, town, county, postcode, region, country, telephone, website, email, description, refacing_qualification, directory_state, lifecycle_status, verified, claimed, internal_verification_state, customer_facing_label, provenance")
       .eq("id", slug)
       .maybeSingle();
     return byId.data as unknown as Listing | null;
@@ -81,7 +84,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const listing = await loadListing(slug);
   if (!listing) return { title: "Business not found · NEX" };
-  const parts = [listing.business_name, listing.town, "UK staircase trade"].filter(Boolean);
+  // Country-aware trade label (Philip 2026-08-16 · P1-3). Derived from
+  // listing.country so a US or IE listing never carries "UK staircase trade".
+  const c = findCountryByDbValue(listing.country);
+  const tradeLabel = c ? `${c.short_name ?? c.name} staircase trade` : "Staircase trade";
+  const parts = [listing.business_name, listing.town, tradeLabel].filter(Boolean);
   return {
     title: `${listing.business_name} · NEX Trade Centre`,
     description: `${parts.join(" · ")}. Directory profile on NEX. Claim this business to take control of its NEX presence.`,
@@ -100,8 +107,16 @@ export default async function TradeProfilePage({ params }: { params: Promise<{ s
   const caps = (listing.capabilities ?? {}) as Record<string, "yes" | "no" | "unknown">;
   const capsYes = Object.entries(caps).filter(([, v]) => v === "yes").map(([k]) => k);
 
-  const locationParts = [listing.town, listing.county, listing.postcode].filter(Boolean);
-  const locationLine = locationParts.join(" · ");
+  // Country-aware address renderer (Philip 2026-08-16 · P1-2). Formatter
+  // handles US "City, ST ZIP" · IE "City, Co. County, Eircode" · UK
+  // "City, County, Postcode" · fallback drops literal "UK".
+  const locationLine = formatProfileLocation({
+    country: listing.country,
+    city: listing.town,
+    county: listing.county,
+    region: listing.region,
+    postcode: listing.postcode,
+  });
 
   const canonicalUrl = listing.website?.trim();
 

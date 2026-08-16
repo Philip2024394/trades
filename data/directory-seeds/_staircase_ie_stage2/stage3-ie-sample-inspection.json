@@ -1,0 +1,1557 @@
+[
+  {
+    "business_name": "Evolution Stairs",
+    "website": "https://www.evolutionstairs.ie/",
+    "town": "Rathcoole",
+    "county": "Dublin",
+    "region": "Dublin",
+    "country": "Ireland",
+    "postcode": null,
+    "telephone": null,
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": false,
+      "handrail": false,
+      "glass": false,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Bespoke staircase manufacturer based in Rathcoole/Newcastle, County Dublin. Site states they supply straight staircases or staircases with turns, in timber or steel.",
+    "source_query": "staircase manufacturer Dublin Ireland",
+    "source_url": "https://www.evolutionstairs.ie/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-1-dublin-leinster.json",
+    "_sample_bucket": "Dublin/Leinster",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.evolutionstairs.ie/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 367236
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "manufacturer"
+          },
+          "installation": {
+            "present": false
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": false
+          },
+          "handrail": {
+            "present": true,
+            "matched_phrase": "Handrail"
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "BESPOKE"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "DESIGNER"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "oak",
+          "iroko",
+          "glass"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "STAIRCASE_MANUFACTURER"
+    }
+  },
+  {
+    "business_name": "Ardara Woodwork (Stairs Dublin)",
+    "website": "https://www.stairsdublin.ie/",
+    "town": "Dublin 3",
+    "county": "Dublin",
+    "region": "Dublin",
+    "country": "Ireland",
+    "postcode": "D03 YC52",
+    "telephone": "01 888 1685",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": true,
+      "glass": true,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Handmade staircase maker in North Strand, Dublin 3, established 1984. Site lists oak cut string, oak open-rise, glass panel, double winder and attic stairs; supplies handrails, base rails, spindles and posts, and can remove old staircases and fit new ones.",
+    "source_query": "bespoke staircases Ireland joinery",
+    "source_url": "https://www.stairsdublin.ie/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-1-dublin-leinster.json",
+    "_sample_bucket": "Dublin/Leinster",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 403,
+        "final_url": "https://www.stairsdublin.ie/",
+        "content_type": "text/html; charset=utf-8",
+        "size_bytes": 71
+      },
+      "identity_confirmed": false,
+      "evidence": null,
+      "verification": "SEARCH_DISCOVERED",
+      "quality_band": "D",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  },
+  {
+    "business_name": "Connolly Stairs & Doors",
+    "website": "https://www.connollystairs.ie/",
+    "town": "Dublin 12",
+    "county": "Dublin",
+    "region": "Dublin",
+    "country": "Ireland",
+    "postcode": null,
+    "telephone": "01 450 7826",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": false,
+      "handrail": false,
+      "glass": false,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Family-run Dublin 12 business established 2002, one of Ireland's leading suppliers of handcrafted staircases and interior doors, combining traditional artisan skills with contemporary design.",
+    "source_query": "staircase manufacturer Dublin Ireland",
+    "source_url": "https://www.connollystairs.ie/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-1-dublin-leinster.json",
+    "_sample_bucket": "Dublin/Leinster",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.connollystairs.ie/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 221279
+      },
+      "identity_confirmed": false,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "handmade stair"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installation"
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "Refurbish"
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": false
+          },
+          "handrail": {
+            "present": true,
+            "matched_phrase": "handrails"
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "glass Handrail"
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "stainless steel"
+          },
+          "bespoke": {
+            "present": false
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Designs"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "oak",
+          "walnut",
+          "glass",
+          "stainless steel",
+          "carpet"
+        ]
+      },
+      "verification": "SEARCH_DISCOVERED",
+      "quality_band": "D",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  },
+  {
+    "business_name": "57 Stairs",
+    "website": "https://57stairs.ie/",
+    "town": "Clonmore",
+    "county": "Carlow",
+    "region": "Carlow",
+    "country": "Ireland",
+    "postcode": null,
+    "telephone": null,
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": false,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": false,
+      "handrail": false,
+      "glass": false,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Fourth-generation joinery business trading as 57 Group, based in Clonmore, Co. Carlow; makes bespoke timber staircases for delivery nationwide. Craft tradition traces to 1907.",
+    "source_query": "staircase manufacturer Dublin Ireland",
+    "source_url": "https://57stairs.ie/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-1-dublin-leinster.json",
+    "_sample_bucket": "Dublin/Leinster",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://57stairs.ie/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 65712
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Manufacturer"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installed"
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "balustrade"
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "glass balustrad"
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Custom Stair"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "oak",
+          "glass"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "STAIRCASE_MANUFACTURER"
+    }
+  },
+  {
+    "business_name": "Collins Stairs",
+    "website": "https://www.collinsstairs.com/",
+    "town": "Tallaght, Dublin 24",
+    "county": "Dublin",
+    "region": "Dublin",
+    "country": "Ireland",
+    "postcode": null,
+    "telephone": "01 452 8888",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": false,
+      "handrail": false,
+      "glass": false,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Established Dublin supplier at Unit A11, South City Business Centre, Whitestown Way, Tallaght, Dublin 24; provides end-to-end service across design, manufacture, supply and fitting of quality stairs.",
+    "source_query": "staircase manufacturer Dublin Ireland",
+    "source_url": "https://www.collinsstairs.com/contact-details",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-1-dublin-leinster.json",
+    "_sample_bucket": "Dublin/Leinster",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.collinsstairs.com/",
+        "content_type": "text/html; charset=utf-8",
+        "size_bytes": 24103
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "manufacturing"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "fitting"
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": false
+          },
+          "handrail": {
+            "present": true,
+            "matched_phrase": "Handrails"
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": false
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": []
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "STAIRCASE_MANUFACTURER"
+    }
+  },
+  {
+    "business_name": "Carrigaline Joinery Ltd",
+    "website": "https://carrigalinejoinery.com/",
+    "town": "Carrigaline",
+    "county": "Cork",
+    "region": "Cork",
+    "country": "Ireland",
+    "postcode": "P43 CD89",
+    "telephone": "021 437 3322",
+    "email": "carrigalinejoinery@gmail.com",
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": true,
+      "balustrade": true,
+      "handrail": true,
+      "glass": true,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Cork supplier of timber windows, doors and stairs. Own site lists bespoke timber stairs, glass stairs, and 'stairs parts & renovation' pages, including a stair cladding/refurbishment product.",
+    "source_query": "staircase manufacturer Cork Ireland bespoke",
+    "source_url": "https://carrigalinejoinery.com/timber-stairs-cork/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-2-munster.json",
+    "_sample_bucket": "Munster",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://carrigalinejoinery.com/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 84421
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "manufacture"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installation"
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "Renovation"
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": false
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "Glass Stair"
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Bespoke"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "designs"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "glass"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  },
+  {
+    "business_name": "Jonathan Evans Carpentry Joinery",
+    "website": "https://carpentryjoineryballincolligcork.com/",
+    "town": "Ballincollig",
+    "county": "Cork",
+    "region": "Cork",
+    "country": "Ireland",
+    "postcode": null,
+    "telephone": "086 260 4787",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": true,
+      "glass": false,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Ballincollig Commercial Park, Co. Cork. Site states they replace or repair existing staircases, stair parts and balustrade systems, and manufacture bespoke curved, spiral, straight, quarter-turn, dog-leg, space saver and attic stairs.",
+    "source_query": "staircase refurbishment Cork Ireland refacing",
+    "source_url": "https://carpentryjoineryballincolligcork.com/joinery-cork/stairs-and-staircases-cork/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-2-munster.json",
+    "_sample_bucket": "Munster",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 403,
+        "final_url": "https://carpentryjoinerycork.ie/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 5592
+      },
+      "identity_confirmed": false,
+      "evidence": null,
+      "verification": "SEARCH_DISCOVERED",
+      "quality_band": "D",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  },
+  {
+    "business_name": "The Stairs Store (RPB Products Ltd)",
+    "website": "https://www.thestairsstore.ie/",
+    "town": "Midleton",
+    "county": "Cork",
+    "region": "Cork",
+    "country": "Ireland",
+    "postcode": null,
+    "telephone": "086 387 4415",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": false,
+      "installation": true,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": false,
+      "handrail": true,
+      "glass": false,
+      "metal": true,
+      "bespoke": false,
+      "design": false
+    },
+    "evidence_notes": "Farren House, Cork Road, Midleton, Co. Cork. Ireland's sole supplier of Mobirolo spiral and open (modular) staircases and landing rail; supplied nationwide.",
+    "source_query": "spiral staircase Limerick Cork Ireland",
+    "source_url": "https://www.thestairsstore.ie/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-2-munster.json",
+    "_sample_bucket": "Munster",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.thestairsstore.ie/",
+        "content_type": "text/html",
+        "size_bytes": 74257
+      },
+      "identity_confirmed": false,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "MADE TO MEASURE STAIR"
+          },
+          "installation": {
+            "present": false
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": false
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "MADE TO MEASURE"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Designing"
+          },
+          "kit_or_product_supplier": {
+            "present": true,
+            "matched_phrase": "Kit"
+          }
+        },
+        "materials_mentioned": []
+      },
+      "verification": "SEARCH_DISCOVERED",
+      "quality_band": "D",
+      "business_group": "STAIRCASE_MANUFACTURER"
+    }
+  },
+  {
+    "business_name": "Mallow Joinery",
+    "website": "https://www.mallowjoinery.com/stairs-cork.php",
+    "town": "Mallow",
+    "county": "Cork",
+    "region": "Cork",
+    "country": "Ireland",
+    "postcode": null,
+    "telephone": "086 198 3056",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": false,
+      "handrail": false,
+      "glass": false,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Mallow, Co. Cork joinery designing and installing custom staircases including closed-string, open-string and spiral stairs for homes and businesses across Ireland.",
+    "source_query": "staircase manufacturer Cork Ireland bespoke",
+    "source_url": "https://www.mallowjoinery.com/stairs-cork.php",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-2-munster.json",
+    "_sample_bucket": "Munster",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 521,
+        "final_url": "https://www.mallowjoinery.com/stairs-cork.php",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 7050
+      },
+      "identity_confirmed": false,
+      "evidence": null,
+      "verification": "SEARCH_DISCOVERED",
+      "quality_band": "D",
+      "business_group": "STAIRCASE_MANUFACTURER"
+    }
+  },
+  {
+    "business_name": "Kilgallon Stairs Ltd",
+    "website": "https://kilgallonstairs.com/",
+    "town": "Dromard",
+    "county": "Sligo",
+    "region": "Sligo",
+    "country": "Ireland",
+    "postcode": "F91 TD66",
+    "telephone": "+353 71 916 6710",
+    "email": "info@kilgallonstairs.com",
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": null,
+      "refacing": true,
+      "balustrade": true,
+      "handrail": true,
+      "glass": true,
+      "metal": true,
+      "bespoke": true,
+      "design": null
+    },
+    "evidence_notes": "Established 1993 in Dromard, Co. Sligo. Manufactures Closed, Cut-string, Open rise, Flared & Cut String Open Rise staircases in hardwood and softwood. Also produces attic-conversion stairs and material to cover concrete stairs; supplies handrails, balusters, scrolls and glass panel balustrade. Serves Sligo, Mayo, Roscommon, Galway, Donegal, Leitrim and nationwide.",
+    "source_query": "staircase installer Sligo Ireland",
+    "source_url": "https://kilgallonstairs.com/about-us",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-3-connacht-roi-ulster.json",
+    "_sample_bucket": "Connacht+RoI Ulster",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://kilgallonstairs.com/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 48640
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": false
+          },
+          "installation": {
+            "present": false
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "Balustrade"
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "Glass Panel"
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": false
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "oak",
+          "walnut",
+          "glass",
+          "concrete"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  },
+  {
+    "business_name": "Eamonn Burke Stairs Ltd",
+    "website": "https://burkestairs.com/",
+    "town": "Skreen",
+    "county": "Sligo",
+    "region": "Sligo",
+    "country": "Ireland",
+    "postcode": null,
+    "telephone": "+353 71 916 6650",
+    "email": "info@burkestairs.com",
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": null,
+      "refurbishment": null,
+      "refacing": null,
+      "balustrade": true,
+      "handrail": true,
+      "glass": null,
+      "metal": null,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Family-run business established 1978 in Skreen, Co. Sligo. Manufactures wooden stairs for the construction industry and private clients, with a large selection of newels and balustrades. Offers design and budget guidance to customers.",
+    "source_query": "staircase manufacturer Mayo Ireland",
+    "source_url": "https://burkestairs.com/about-us/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-3-connacht-roi-ulster.json",
+    "_sample_bucket": "Connacht+RoI Ulster",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://burkestairs.com/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 57138
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "manufacture"
+          },
+          "installation": {
+            "present": false
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": false
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": false
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": []
+      },
+      "verification": "SERVICE_EVIDENCED",
+      "quality_band": "B",
+      "business_group": "STAIRCASE_MANUFACTURER"
+    }
+  },
+  {
+    "business_name": "Sligo Glass Company Ltd",
+    "website": "https://sligoglass.com/",
+    "town": "Sligo",
+    "county": "Sligo",
+    "region": "Sligo",
+    "country": "Ireland",
+    "postcode": "F91 YYK6",
+    "telephone": null,
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": null,
+      "installation": true,
+      "refurbishment": null,
+      "refacing": null,
+      "balustrade": true,
+      "handrail": null,
+      "glass": true,
+      "metal": null,
+      "bespoke": true,
+      "design": null
+    },
+    "evidence_notes": "Based on Far Finisklin Road, Sligo. Supplies and installs glass balustrades, glass stairs and walk-on glass; also kitchen splashbacks, shower screens and glazing across Sligo and the North-West. Works with carpenters, joiners and stainless steel fabricators for stair installation.",
+    "source_query": "staircase installer Sligo Ireland",
+    "source_url": "https://sligoglass.com/glass-stairs/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-3-connacht-roi-ulster.json",
+    "_sample_bucket": "Connacht+RoI Ulster",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://sligoglass.com/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 700728
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": false
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "Installing"
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "Balustrades"
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "Glass Balustrad"
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": false
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Design"
+          },
+          "kit_or_product_supplier": {
+            "present": true,
+            "matched_phrase": "Add to cart"
+          }
+        },
+        "materials_mentioned": [
+          "glass"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "STAIRCASE_INSTALLER"
+    }
+  },
+  {
+    "business_name": "Geraghty Joinery",
+    "website": "https://geraghtyjoinery.com/",
+    "town": "Claregalway",
+    "county": "Galway",
+    "region": "Galway",
+    "country": "Ireland",
+    "postcode": "H91 RX80",
+    "telephone": "+353 91 797193",
+    "email": "info@geraghtyjoinery.com",
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": null,
+      "refacing": null,
+      "balustrade": null,
+      "handrail": null,
+      "glass": true,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Family-run joinery in Carraghy, Claregalway, Co. Galway. Manufactures and installs bespoke timber stairs in White Oak, Ash, Walnut, Teak and Mahogany in traditional and contemporary styles, including curved and cantilevered stairs combining timber with glass, stainless steel or wrought iron. Also manufactures doors, windows, fire doors and commercial fit-outs.",
+    "source_query": "staircase manufacturer Galway Ireland",
+    "source_url": "https://geraghtyjoinery.com/stairs/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-3-connacht-roi-ulster.json",
+    "_sample_bucket": "Connacht+RoI Ulster",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://geraghtyjoinery.com/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 99384
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Manufacture"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "Installation"
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": false
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Bespoke"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "oak"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "STAIRCASE_MANUFACTURER"
+    }
+  },
+  {
+    "business_name": "OS Holding",
+    "website": "https://osholding.ie/",
+    "town": "Lucan",
+    "county": "Dublin",
+    "region": "Dublin",
+    "country": "Ireland",
+    "postcode": "K78 CA25",
+    "telephone": "01 524 1644",
+    "email": "info@osholding.ie",
+    "capabilities_claimed": {
+      "manufacture": false,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": true,
+      "balustrade": true,
+      "handrail": true,
+      "glass": false,
+      "metal": false,
+      "bespoke": false,
+      "design": true
+    },
+    "evidence_notes": "Renovation contractor at Ashley Hall 106, Lucan, Co. Dublin (K78 CA25); dedicated staircase renovation/refurbishment service including cladding, repainting, and replacing handrails, spindles or treads.",
+    "source_query": "staircase refurbishment Dublin Ireland",
+    "source_url": "https://osholding.ie/staircase-renovation-services/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-1-dublin-leinster.json",
+    "_sample_bucket": "Refurb/Refacing",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://osholding.ie/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 201061
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": false
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installation"
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "refurbishment"
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": false
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": false
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": []
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "REFACING_SERVICE_SPECIALIST"
+    }
+  },
+  {
+    "business_name": "cosyroom.ie (Attics Dublin)",
+    "website": "https://cosyroom.ie/",
+    "town": "Islandbridge, Dublin",
+    "county": "Dublin",
+    "region": "Dublin",
+    "country": "Ireland",
+    "postcode": null,
+    "telephone": "01 872 9850",
+    "email": "info@atticsdublin.ie",
+    "capabilities_claimed": {
+      "manufacture": false,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": false,
+      "balustrade": false,
+      "handrail": false,
+      "glass": false,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Dublin contractor at 5 Kingsbridge House, Islandbridge; runs a dedicated 'home stairs' service specialising in new-build staircases and renovation of existing staircases in a range of styles and finishes.",
+    "source_query": "staircase refurbishment Dublin Ireland",
+    "source_url": "https://cosyroom.ie/home-stairs/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-1-dublin-leinster.json",
+    "_sample_bucket": "Refurb/Refacing",
+    "_stage3ie": {
+      "fetch": {
+        "ok": false,
+        "error": "fetch failed"
+      },
+      "identity_confirmed": false,
+      "evidence": null,
+      "verification": "SEARCH_DISCOVERED",
+      "quality_band": "D",
+      "business_group": "REFURBISHMENT_SERVICE_SPECIALIST"
+    }
+  },
+  {
+    "business_name": "MacLyn Conservation Joinery",
+    "website": "https://conservationjoinery.com/",
+    "town": "Walkinstown, Dublin 12",
+    "county": "Dublin",
+    "region": "Dublin",
+    "country": "Ireland",
+    "postcode": "D12 N231",
+    "telephone": "01 460 5945",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": false,
+      "balustrade": false,
+      "handrail": false,
+      "glass": false,
+      "metal": false,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Conservation joinery at Unit 4 Block W, Ballymount Drive, Walkinstown, Dublin 12; specialises in period staircases (modern and traditional) alongside sash windows and glasshouse structures.",
+    "source_query": "staircase refurbishment Dublin Ireland",
+    "source_url": "https://www.conservationjoinery.com/stairs.html",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-1-dublin-leinster.json",
+    "_sample_bucket": "Refurb/Refacing",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://conservationjoinery.com/",
+        "content_type": "text/html",
+        "size_bytes": 29552
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": false
+          },
+          "installation": {
+            "present": false
+          },
+          "refurbishment": {
+            "present": true,
+            "matched_phrase": "refurbishing"
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": false
+          },
+          "handrail": {
+            "present": true,
+            "matched_phrase": "Handrails"
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Bespoke"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Designed"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": []
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  },
+  {
+    "business_name": "Colin Healy Stairs",
+    "website": "http://colinhealystairs.com/",
+    "town": "Fairview, Dublin 3",
+    "county": "Dublin",
+    "region": "Dublin",
+    "country": "Ireland",
+    "postcode": null,
+    "telephone": "086 602 5130",
+    "email": "info@colinhealystairs.com",
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": true,
+      "refacing": false,
+      "balustrade": false,
+      "handrail": true,
+      "glass": false,
+      "metal": false,
+      "bespoke": true,
+      "design": false
+    },
+    "evidence_notes": "Stairs specialist at Unit 1, 148 Richmond Road, Fairview, Dublin 3; offers custom-made staircases, replacement stairs, attic-conversion stairs, cut-string stairs, handrails and spindles.",
+    "source_query": "\"Colin Healy Stairs\" Dublin address phone contact",
+    "source_url": "http://colinhealystairs.com/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-1-dublin-leinster.json",
+    "_sample_bucket": "Refurb/Refacing",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "http://colinhealystairs.com/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 29112
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": false
+          },
+          "installation": {
+            "present": false
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "Balustrade"
+          },
+          "handrail": {
+            "present": true,
+            "matched_phrase": "Handrail"
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "Glass Balustrad"
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": false
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "glass"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "MULTI_SERVICE_COMPANY"
+    }
+  },
+  {
+    "business_name": "AJD Stairs",
+    "website": "https://ajdstairs.com/",
+    "town": "Slieverue",
+    "county": "Kilkenny",
+    "region": "Kilkenny",
+    "country": "Ireland",
+    "postcode": null,
+    "telephone": null,
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": false,
+      "glass": true,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Bespoke staircase specialist founded 2002 in Slieverue, Co. Kilkenny; a team of master joiners, metal fabricators and designers making floating, curved, timber and steel-spine stairs with glass balustrades; serves Dublin, Wexford, Carlow, Kildare and beyond.",
+    "source_query": "\"staircase\" company Kilkenny OR Carlow Ireland",
+    "source_url": "https://ajdstairs.com/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-1-dublin-leinster.json",
+    "_sample_bucket": "Small county",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://ajdstairs.com/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 35285
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Bespoke Stair"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installation"
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": false
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": false
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Bespoke"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "designs"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": []
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "STAIRCASE_MANUFACTURER"
+    }
+  },
+  {
+    "business_name": "Stairs Ireland by JEA",
+    "website": "https://stairsireland.ie/",
+    "town": "Blessington",
+    "county": "Wicklow",
+    "region": "Wicklow",
+    "country": "Ireland",
+    "postcode": "W91 DX49",
+    "telephone": "01 257 3986",
+    "email": null,
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": false,
+      "glass": true,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Custom design, manufacture and installation from Ballyknockan, Blessington, Co. Wicklow (W91 DX49); projects include folded steel staircases, modern oak stairs and glass balustrades.",
+    "source_query": "glass staircase floating steel spine Ireland",
+    "source_url": "https://stairsireland.ie/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-1-dublin-leinster.json",
+    "_sample_bucket": "Small county",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://stairsireland.ie/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 556325
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "Manufacture"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "Installation"
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "balustrade"
+          },
+          "handrail": {
+            "present": true,
+            "matched_phrase": "Handrails"
+          },
+          "glass": {
+            "present": false
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "Steel Stair"
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "Bespoke"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "Design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "oak",
+          "glass"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "STAIRCASE_MANUFACTURER"
+    }
+  },
+  {
+    "business_name": "Custom Stairs Joinery",
+    "website": "https://www.customstairs.ie/",
+    "town": "Kill",
+    "county": "Kildare",
+    "region": "Kildare",
+    "country": "Ireland",
+    "postcode": null,
+    "telephone": "045 842501",
+    "email": "customstairsjoinery@gmail.com",
+    "capabilities_claimed": {
+      "manufacture": true,
+      "installation": true,
+      "refurbishment": false,
+      "refacing": false,
+      "balustrade": true,
+      "handrail": false,
+      "glass": true,
+      "metal": true,
+      "bespoke": true,
+      "design": true
+    },
+    "evidence_notes": "Design, manufacture and supply of high-quality staircases at Unit 1, Oldmill Industrial Estate, Kill, Co. Kildare; range includes glass stairs, cut-string, open-riser, balustrade, spindle and metal stairs, attic stairs and red-deal timber stairs; serves Dublin, Wicklow and Kildare.",
+    "source_query": "staircase installer Kildare Ireland",
+    "source_url": "https://www.customstairs.ie/",
+    "discovered_at": "2026-08-16",
+    "_agent": "agent-ie-1-dublin-leinster.json",
+    "_sample_bucket": "Small county",
+    "_stage3ie": {
+      "fetch": {
+        "ok": true,
+        "status": 200,
+        "final_url": "https://www.customstairs.ie/",
+        "content_type": "text/html; charset=UTF-8",
+        "size_bytes": 1938658
+      },
+      "identity_confirmed": true,
+      "evidence": {
+        "capabilities": {
+          "manufacture": {
+            "present": true,
+            "matched_phrase": "manufacture"
+          },
+          "installation": {
+            "present": true,
+            "matched_phrase": "installation"
+          },
+          "refurbishment": {
+            "present": false
+          },
+          "refacing": {
+            "present": false
+          },
+          "balustrade": {
+            "present": true,
+            "matched_phrase": "Balustrade"
+          },
+          "handrail": {
+            "present": false
+          },
+          "glass": {
+            "present": true,
+            "matched_phrase": "Glass Stair"
+          },
+          "metal": {
+            "present": true,
+            "matched_phrase": "Metal Stair"
+          },
+          "bespoke": {
+            "present": true,
+            "matched_phrase": "bespoke"
+          },
+          "design": {
+            "present": true,
+            "matched_phrase": "design"
+          },
+          "kit_or_product_supplier": {
+            "present": false
+          }
+        },
+        "materials_mentioned": [
+          "oak",
+          "glass"
+        ]
+      },
+      "verification": "FULLY_VERIFIED",
+      "quality_band": "A",
+      "business_group": "STAIRCASE_MANUFACTURER"
+    }
+  }
+]

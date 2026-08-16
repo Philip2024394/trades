@@ -22,6 +22,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Circle, Clock, Hammer, MapPin, Mai
 import { supabaseNexAdmin } from "@/lib/supabaseNexAdmin";
 import { REFACING_TRADE_MEMBER } from "@/lib/nex/centre-publishing/refacingMembership";
 import { ClaimForm } from "./ClaimForm";
+import { formatProfileLocation } from "@/lib/nex/geography/formatAddress";
 
 export const dynamic = "force-dynamic";
 export const metadata = {
@@ -35,13 +36,13 @@ type SearchParams = Promise<{ listing_id?: string }>;
 async function loadListing(listing_id: string) {
   const bySlug = await supabaseNexAdmin
     .from("directory_seeds")
-    .select("id, slug, business_name, town, county, postcode, telephone, website, email, category, refacing_qualification, directory_state, lifecycle_status, verified, description, services")
+    .select("id, slug, business_name, town, county, postcode, region, country, telephone, website, email, category, refacing_qualification, directory_state, lifecycle_status, verified, description, services")
     .eq("slug", listing_id)
     .maybeSingle();
   if (bySlug.data) return bySlug.data;
   const byId = await supabaseNexAdmin
     .from("directory_seeds")
-    .select("id, slug, business_name, town, county, postcode, telephone, website, email, category, refacing_qualification, directory_state, lifecycle_status, verified, description, services")
+    .select("id, slug, business_name, town, county, postcode, region, country, telephone, website, email, category, refacing_qualification, directory_state, lifecycle_status, verified, description, services")
     .eq("id", listing_id)
     .maybeSingle();
   return byId.data;
@@ -65,7 +66,13 @@ export default async function ClaimPage({ searchParams }: { searchParams: Search
   // Qualification (A+/A/B/C) preserved for ranking/quality display only, not as a gate.
   const isExchangeEligible = isMember;
 
-  const locationLine = [listing.town, listing.postcode].filter(Boolean).join(", ");
+  const locationLine = formatProfileLocation({
+    country: (listing.country as string | null) ?? null,
+    city: (listing.town as string | null) ?? null,
+    county: (listing.county as string | null) ?? null,
+    region: (listing.region as string | null) ?? null,
+    postcode: (listing.postcode as string | null) ?? null,
+  });
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">

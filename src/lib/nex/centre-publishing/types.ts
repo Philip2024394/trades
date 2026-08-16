@@ -32,6 +32,15 @@ export type CentreFeedItem = {
   merchant_display_name: string | null;
   merchant_city: string | null;
   merchant_postcode_prefix: string | null;
+  // Philip 2026-08-16 · country-aware Trade Centre. `merchant_country` is
+  // the canonical directory_seeds.country string ("United Kingdom",
+  // "Ireland", "USA", …). `merchant_region` is a free-text region field —
+  // a UK county, an Irish county, or a US state code — country-scoped, so
+  // callers must combine with `merchant_country` to interpret it. Optional
+  // for backward compatibility with mock items and legacy merchant rows
+  // that pre-date the country column.
+  merchant_country?: string | null;
+  merchant_region?: string | null;
   merchant_lat: number | null;
   merchant_lng: number | null;
   merchant_avatar_url: string | null;
@@ -90,6 +99,17 @@ export type CentreFeedFilters = {
   postcode?: string;
   min_price_pence?: number;
   max_price_pence?: number;
+  /**
+   * Canonical directory_seeds.country value ("United Kingdom", "Ireland",
+   * "USA"). Callers passing a code like "GB"/"US"/"IE" should first
+   * normalise via `toDbCountryValue` in `@/lib/nex/geography/countries`.
+   * Absent or "all" = no country filter.
+   */
+  country?: string;
+  /** Country-scoped region — UK county, Irish county, or US state code. */
+  region?: string;
+  /** Capability flag key (e.g. "refacing") — filters on `capabilities`. */
+  capability?: string;
   limit?: number;
   offset?: number;
 };

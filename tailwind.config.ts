@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 // Xrated Trades — Tailwind theme.
 //
@@ -153,7 +154,7 @@ const config: Config = {
       }
     }
   },
-  plugins: [require("tailwindcss-animate")]
+  plugins: [tailwindcssAnimate]
 };
 
 export default config;

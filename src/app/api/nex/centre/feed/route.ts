@@ -31,6 +31,7 @@ import { listCentreFeedItems } from "@/lib/nex/centre-publishing";
 import { MOCK_CENTRE_FEED } from "@/lib/nex/centre-publishing/mockFeed";
 import { loadDirectorySeedsAsFeedItems } from "@/lib/nex/centre-publishing/directorySeedLoader";
 import type { CentreFeedItem } from "@/lib/nex/centre-publishing/types";
+import { toDbCountryValue } from "@/lib/nex/geography/countries";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -86,6 +87,14 @@ export async function GET(req: NextRequest) {
   const postcode = url.searchParams.get("postcode") ?? undefined;
   const query = url.searchParams.get("q") ?? undefined;
   const category = url.searchParams.get("category") ?? undefined;
+  // Country-aware filters (Philip 2026-08-16). `country` accepts either a
+  // code ("GB", "US", "IE") or the canonical DB value. `region` is scoped
+  // to whichever country is selected. `capability` filters on the
+  // capabilities JSONB column (e.g. capability=refacing).
+  const countryParam = url.searchParams.get("country") ?? undefined;
+  const country = toDbCountryValue(countryParam) ?? undefined;
+  const region = url.searchParams.get("region") ?? undefined;
+  const capability = url.searchParams.get("capability") ?? undefined;
   const minPriceRaw = url.searchParams.get("min_price");
   const maxPriceRaw = url.searchParams.get("max_price");
   const limitRaw = url.searchParams.get("limit");
@@ -116,6 +125,9 @@ export async function GET(req: NextRequest) {
         postcode,
         query,
         category,
+        country,
+        region,
+        capability,
         min_price_pence,
         max_price_pence,
         limit,
@@ -123,8 +135,10 @@ export async function GET(req: NextRequest) {
       }),
       // Perf fix (Philip 2026-08-13): pass the category filter down so the
       // directory loader pulls ONLY the requested trade from Supabase.
-      // Previously loaded every seed across every category on every request.
-      loadDirectorySeedsAsFeedItems({ category }),
+      // Country/region/capability (Philip 2026-08-16) route through the
+      // country-aware helper so the DB query is a single compound WHERE
+      // rather than fetch-all-then-filter.
+      loadDirectorySeedsAsFeedItems({ category, country, region, capability }),
     ]);
 
     // Merge: directory seeds first (they're the seeded UK trade
@@ -149,7 +163,7 @@ export async function GET(req: NextRequest) {
     // Philip 2026-08-05 · trade-domain badges surface Doors/Flooring
     // before those seeds exist · truthful empty > misleading match.
     const hasActiveFilter =
-      !!query || !!category ||
+      !!query || !!category || !!country || !!region || !!capability ||
       typeof min_price_pence === "number" ||
       typeof max_price_pence === "number";
     if (merged.length === 0 && !hasActiveFilter) {

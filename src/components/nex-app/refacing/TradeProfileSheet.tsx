@@ -20,6 +20,7 @@ import Link from "next/link";
 import { MapPin, ShieldCheck, MessageSquare, Hammer, Building2, Wrench, Clock, ArrowRightLeft } from "lucide-react";
 import type { CentreFeedItem } from "@/lib/nex/centre-publishing/types";
 import { REFACING_CAPABILITY_LABELS } from "@/lib/nex/centre-publishing/categories";
+import { formatCardLocation } from "@/lib/nex/geography/formatAddress";
 
 const ORANGE = "#F97316";
 
@@ -41,9 +42,14 @@ type Props = {
 
 export function TradeProfileSheet({ item, isPartner, isUnclaimed }: Props) {
   const location =
-    item.merchant_city ??
-    item.merchant_postcode_prefix ??
-    "UK";
+    formatCardLocation({
+      country: item.merchant_country,
+      city: item.merchant_city,
+      county: item.merchant_region,
+      region: item.merchant_region,
+      postcode: item.merchant_postcode_prefix,
+      postcode_prefix: item.merchant_postcode_prefix,
+    }) || (item.merchant_city ?? item.merchant_postcode_prefix ?? "");
   const slug = item.merchant_slug ?? item.merchant_id;
   const contactHref = `/nex-app/refacing/companies/${encodeURIComponent(slug)}/ask`;
   const claimHref = `/nex-app/claim?listing_id=${encodeURIComponent(slug)}`;

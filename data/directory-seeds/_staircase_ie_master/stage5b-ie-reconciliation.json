@@ -1,0 +1,531 @@
+{
+  "generated_at": "2026-08-16T11:12:08.797Z",
+  "distribution": {
+    "INSERTED": 50,
+    "DEFERRED": 37
+  },
+  "records": [
+    {
+      "business_name": "Evolution Stairs",
+      "slug": "evolution-stairs-dublin",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "57 Stairs",
+      "slug": "57-stairs-carlow",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Collins Stairs",
+      "slug": "collins-stairs-dublin",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "AJD Stairs",
+      "slug": "ajd-stairs-kilkenny",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Myles Staircases",
+      "slug": "myles-staircases-meath",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "OS Holding",
+      "slug": "os-holding-dublin",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Clonmines Joinery",
+      "slug": "clonmines-joinery-wexford",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "McNally Joinery",
+      "slug": "mcnally-joinery-dublin",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Louth Timber Products",
+      "slug": "louth-timber-products-louth",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Spireco Stairs & Balustrades",
+      "slug": "spireco-stairs-balustrades-dublin",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Myra Glass",
+      "slug": "myra-glass-dublin",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "The Handrail Man",
+      "slug": "the-handrail-man-dublin",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "G & J Ard Joinery",
+      "slug": "g-j-ard-joinery-meath",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Stairs Ireland by JEA",
+      "slug": "stairs-ireland-by-jea-wicklow",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Colin Healy Stairs",
+      "slug": "colin-healy-stairs-dublin",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Renovation Dublin",
+      "slug": "renovation-dublin-dublin",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Custom Stairs Joinery",
+      "slug": "custom-stairs-joinery-kildare",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Oakman Joinery",
+      "slug": "oakman-joinery-wexford",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Trim Joinery",
+      "slug": "trim-joinery-meath",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Embankment Joinery",
+      "slug": "embankment-joinery-dublin",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Carrigaline Joinery Ltd",
+      "slug": "carrigaline-joinery-ltd-cork",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ballingeary Joinery Ltd",
+      "slug": "ballingeary-joinery-ltd-cork",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Brennans Carpentry & Joinery",
+      "slug": "brennans-carpentry-joinery-cork",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Alan Twomey Welding Services",
+      "slug": "alan-twomey-welding-services-cork",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Northside Glass (NSG)",
+      "slug": "northside-glass-nsg-cork",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ardagh Joinery Works",
+      "slug": "ardagh-joinery-works-limerick",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "SuedeStone Ltd",
+      "slug": "suedestone-ltd-limerick",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Holbein Carpentry & Joinery Ltd",
+      "slug": "holbein-carpentry-joinery-ltd-kerry",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Euro Attic Stairs",
+      "slug": "euro-attic-stairs-kerry",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Western Joinery Co Ltd",
+      "slug": "western-joinery-co-ltd-clare",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Kilgallon Stairs Ltd",
+      "slug": "kilgallon-stairs-ltd-sligo",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Eamonn Burke Stairs Ltd",
+      "slug": "eamonn-burke-stairs-ltd-sligo",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Sligo Glass Company Ltd",
+      "slug": "sligo-glass-company-ltd-sligo",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Geraghty Joinery",
+      "slug": "geraghty-joinery-galway",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Lohan Joinery",
+      "slug": "lohan-joinery-galway",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Casey's Joinery Gort",
+      "slug": "casey-s-joinery-gort-galway",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Dylell Carpentry",
+      "slug": "dylell-carpentry-galway",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Mulrooney Joinery Ltd",
+      "slug": "mulrooney-joinery-ltd-galway",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Quay Carpentry",
+      "slug": "quay-carpentry-mayo",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "StairsWorld",
+      "slug": "stairsworld-leitrim",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "McQuillan Staircases Ltd",
+      "slug": "mcquillan-staircases-ltd-monaghan",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Lynch Joinery",
+      "slug": "lynch-joinery-cavan",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Tiernan Stairs",
+      "slug": "tiernan-stairs-cavan",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "MacBride Bros Joinery Ltd",
+      "slug": "macbride-bros-joinery-ltd-donegal",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Donegal Glass",
+      "slug": "donegal-glass-donegal",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "MSQ Carpentry",
+      "slug": "msq-carpentry-dublin",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Clarke's Carpentry Services",
+      "slug": "clarke-s-carpentry-services-louth",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Expert Spray Painting Ltd",
+      "slug": "expert-spray-painting-ltd-dublin",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "RL Painting & Decorating",
+      "slug": "rl-painting-decorating-wexford",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Just Respray",
+      "slug": "just-respray-dublin",
+      "state": "INSERTED",
+      "reason": null
+    },
+    {
+      "business_name": "Ardara Woodwork (Stairs Dublin)",
+      "slug": "ardara-woodwork-stairs-dublin-dublin",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Connolly Stairs & Doors",
+      "slug": "connolly-stairs-doors-dublin",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Horizon Bespoke Joinery",
+      "slug": "horizon-bespoke-joinery-dublin",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Kinsella Joinery",
+      "slug": "kinsella-joinery-wexford",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Michael Black (Joinery) Limited",
+      "slug": "michael-black-joinery-limited-louth",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "cosyroom.ie (Attics Dublin)",
+      "slug": "cosyroom-ie-attics-dublin-dublin",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Propel Manufacturing",
+      "slug": "propel-manufacturing-dublin",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Bavari Bespoke Staircases",
+      "slug": "bavari-bespoke-staircases-meath",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "MacLyn Conservation Joinery",
+      "slug": "maclyn-conservation-joinery-dublin",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Dunnes Joinery",
+      "slug": "dunnes-joinery-westmeath",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Woodstyle",
+      "slug": "woodstyle-dublin",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Jonathan Evans Carpentry Joinery",
+      "slug": "jonathan-evans-carpentry-joinery-cork",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "The Stairs Store (RPB Products Ltd)",
+      "slug": "the-stairs-store-rpb-products-ltd-cork",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Mallow Joinery",
+      "slug": "mallow-joinery-cork",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Bantry Bespoke Joinery",
+      "slug": "bantry-bespoke-joinery-cork",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Cloghroe Joinery Ltd",
+      "slug": "cloghroe-joinery-ltd-cork",
+      "state": "DEFERRED",
+      "reason": "DIRECTLY_REACHABLE · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "All About Stairs",
+      "slug": "all-about-stairs-limerick",
+      "state": "DEFERRED",
+      "reason": "DIRECTLY_REACHABLE · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Crann Ard Joinery",
+      "slug": "crann-ard-joinery-limerick",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Brett Joinery",
+      "slug": "brett-joinery-tipperary",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "JM Joinery (John Molloy Joinery Works)",
+      "slug": "jm-joinery-john-molloy-joinery-works-tipperary",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Waterford Wood",
+      "slug": "waterford-wood-waterford",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Loughnanes Joinery",
+      "slug": "loughnanes-joinery-galway",
+      "state": "DEFERRED",
+      "reason": "DIRECTLY_REACHABLE · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Carrabine Joinery Ltd",
+      "slug": "carrabine-joinery-ltd-mayo",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Castlebar Woodwork",
+      "slug": "castlebar-woodwork-mayo",
+      "state": "DEFERRED",
+      "reason": "DIRECTLY_REACHABLE · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Kieran Mc Kenna Staircases",
+      "slug": "kieran-mc-kenna-staircases-monaghan",
+      "state": "DEFERRED",
+      "reason": "DIRECTLY_REACHABLE · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Peadar Greenan Staircases Ltd",
+      "slug": "peadar-greenan-staircases-ltd-monaghan",
+      "state": "DEFERRED",
+      "reason": "DIRECTLY_REACHABLE · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Brianformwork",
+      "slug": "brianformwork-cavan",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Rock Forging Ironcrafts",
+      "slug": "rock-forging-ironcrafts-cavan",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Haughey Joinery Ltd",
+      "slug": "haughey-joinery-ltd-donegal",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "PJ Designs",
+      "slug": "pj-designs-donegal",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Letterkenny Glass",
+      "slug": "letterkenny-glass-donegal",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "John O'Leary Home Improvement Services Ltd (PORTAS Partner)",
+      "slug": "john-o-leary-home-improvement-services-ltd-portas-partner-cork",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Cork Glass Centre",
+      "slug": "cork-glass-centre-cork",
+      "state": "DEFERRED",
+      "reason": "DIRECTLY_REACHABLE · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "VJ Painting (VJ Services)",
+      "slug": "vj-painting-vj-services-dublin",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "JK Spraying",
+      "slug": "jk-spraying-galway",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Floor Design Ltd",
+      "slug": "floor-design-ltd-dublin",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    },
+    {
+      "business_name": "Forte Flooring",
+      "slug": "forte-flooring-dublin",
+      "state": "DEFERRED",
+      "reason": "SEARCH_DISCOVERED · preserved in manual_review_queue.json"
+    }
+  ]
+}
