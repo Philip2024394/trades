@@ -24,9 +24,51 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { MT1_TOKENS as T } from "../tokens";
+import { useStaircaseDesign } from "../StaircaseDesign";
 
 type Agent = "summit" | "nex" | "customer";
-type Msg = { agent: Agent; text: string };
+type Msg = {
+  agent: Agent;
+  text: string;
+  /** Session 4 Commit 1 (Philip 2026-08-20). Client-generated per customer
+   *  message. Sent to /api/nex-conv/chat as `source_message_id` and held
+   *  on the Msg for future audit correlation with any StaircaseDesign
+   *  write attributed to this instruction. Server currently ignores it;
+   *  round-trip is additive. Non-customer messages leave this undefined. */
+  sourceMessageId?: string;
+};
+
+// Session 4 Commit 1 · response shape from /api/nex-conv/chat.
+// Loose typing — Commit 1 only reads for console diagnostics; Commit 2
+// will introduce a strict adapter type once the sync mapping table lands.
+type NexConvResponse = {
+  reply?: string;
+  conversation_id?: string;
+  error?: string;
+  understood_intent?: { slug?: string; [k: string]: unknown };
+  understood_entities?: unknown[];
+  state_summary?: {
+    turn_count?: number;
+    current_topic?: string;
+    established_facts?: Record<string, {
+      value?: unknown;
+      turn_established?: number;
+      confidence?: number;
+      via?: string;
+      provenance?: string;
+    }>;
+    entities_in_focus?: unknown;
+    constraints?: unknown;
+    stage?: string;
+    corrections_logged?: number;
+    current_emotion?: string;
+    handoff_recommended?: boolean;
+    thin_packet_strikes?: number;
+    condensed_history_present?: boolean;
+    [k: string]: unknown;
+  };
+  metrics?: Record<string, unknown>;
+};
 
 type Config = {
   brandName?: string;
@@ -109,6 +151,13 @@ export function STCH01(props: Config = {}) {
   const [placeholderIdx, setPlaceholderIdx] = useState(0);
   const streamRef = useRef<HTMLDivElement | null>(null);
 
+  // Session 4 Commit 1 (Philip 2026-08-20) · design-state reference held
+  // but NOT mutated. Commit 1 proves the wire-up: chat has the design
+  // context available and can inspect current design alongside NEX-Conv
+  // state. The adapter that writes into `design` lands in Commit 2 behind
+  // NEX_CHAT_WRITES_ENABLED. Reading `design.wood` etc for debug is fine.
+  const designApi = useStaircaseDesign();
+
   const isEmpty = messages.length === 0 && thinking === null;
 
   /* ── Auto-greeting on mount ─────────────────────────────────────
@@ -156,7 +205,16 @@ export function STCH01(props: Config = {}) {
     const text = raw.trim();
     if (!text) return;
     setInput("");
-    setMessages((m) => [...m, { agent: "customer", text }]);
+
+    // Session 4 Commit 1 · client-generated per-message id. Carried on the
+    // customer Msg (for future correlation) AND sent to the API so any
+    // design write attributed to this instruction can trace back to the
+    // exact message the customer sent. Server ignores it in Commit 1.
+    const sourceMessageId = (
+      typeof window !== "undefined" && window.crypto?.randomUUID?.()
+    ) || `msg-${Math.random().toString(36).slice(2)}-${Date.now().toString(36)}`;
+
+    setMessages((m) => [...m, { agent: "customer", text, sourceMessageId }]);
     if (!customerHasSpoken) setCustomerHasSpoken(true);
 
     // NEX is the one actually responding · routed via the local NEX
@@ -171,9 +229,10 @@ export function STCH01(props: Config = {}) {
         body: JSON.stringify({
           conversation_id: conversationIdRef.current,
           message: text,
+          source_message_id: sourceMessageId,
         }),
       });
-      const j = (await resp.json().catch(() => null)) as { reply?: string; conversation_id?: string; error?: string } | null;
+      const j = (await resp.json().catch(() => null)) as NexConvResponse | null;
       if (!resp.ok) {
         const errMsg = j?.error ? `Hmm — ${j.error}` : NEX_ERROR_FALLBACK;
         setMessages((m) => [...m, { agent: "nex", text: errMsg }]);
@@ -185,13 +244,45 @@ export function STCH01(props: Config = {}) {
           conversationIdRef.current = j.conversation_id;
         }
       }
+
+      // Session 4 Commit 1 · diagnostic log · groups the round-trip so
+      // the developer can eyeball intent classification + established
+      // facts + design snapshot at each turn without stepping through
+      // the network tab. Zero mutations. The adapter that consumes this
+      // exact `state_summary.established_facts` map lands in Commit 2.
+      if (typeof window !== "undefined" && j) {
+        const turn = j.state_summary?.turn_count ?? "?";
+        const intent = j.understood_intent?.slug ?? "unknown";
+        // eslint-disable-next-line no-console
+        console.groupCollapsed(
+          `[nex-conv] turn ${turn} · intent=${intent} · msg=${sourceMessageId.slice(0, 8)}`,
+        );
+        // eslint-disable-next-line no-console
+        console.log("customer:", text);
+        // eslint-disable-next-line no-console
+        console.log("understood_intent:", j.understood_intent);
+        // eslint-disable-next-line no-console
+        console.log("understood_entities:", j.understood_entities);
+        // eslint-disable-next-line no-console
+        console.log("established_facts:", j.state_summary?.established_facts);
+        // eslint-disable-next-line no-console
+        console.log("state_summary:", j.state_summary);
+        // eslint-disable-next-line no-console
+        console.log("metrics:", j.metrics);
+        // Design snapshot at THIS moment (pre-any-Commit-2 write).
+        // In Commit 1 this should never change turn-to-turn from chat.
+        // eslint-disable-next-line no-console
+        console.log("design (unchanged in Commit 1):", designApi.design);
+        // eslint-disable-next-line no-console
+        console.groupEnd();
+      }
     } catch (e) {
       const message = e instanceof Error ? e.message : String(e);
       setMessages((m) => [...m, { agent: "nex", text: `${NEX_ERROR_FALLBACK} (${message.slice(0, 80)})` }]);
     } finally {
       setThinking(null);
     }
-  }, [customerHasSpoken]);
+  }, [customerHasSpoken, designApi]);
 
   useEffect(() => {
     const el = streamRef.current;
@@ -682,7 +773,13 @@ function Composer({
             value={value}
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder}
-            key={placeholder /* trigger the fade animation on morph */}
+            // NB · we intentionally do NOT set `key={placeholder}` here.
+            // Doing so causes React to unmount + remount the input every
+            // time the placeholder rotates (every 4s), which drops any
+            // in-flight keystroke and destroys focus. Philip 2026-08-17:
+            // customer reported "won't allow me type in the chat text
+            // field" — root cause was the remount race. The placeholder
+            // fade animation is a nice-to-have; typing is not.
             style={{
               flex: 1,
               border: "none",
@@ -692,7 +789,6 @@ function Composer({
               fontFamily: T.font.sans,
               color: T.color.ink,
               padding: "10px 4px",
-              animation: value.length === 0 ? "mt1-placeholder-fade 420ms ease-out" : "none",
               minWidth: 0
             }}
             className="mt1-chat-input"

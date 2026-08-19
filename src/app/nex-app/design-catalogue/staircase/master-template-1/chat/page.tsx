@@ -12,11 +12,20 @@
 
 import { notFound } from "next/navigation";
 import { STCH01 } from "@/lib/design-catalogue/premium-architectural/staircase/master-template-1/sections/ST-CH01";
+import { StaircaseDesignProvider } from "@/lib/design-catalogue/premium-architectural/staircase/master-template-1/StaircaseDesign";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Chat with Summit", robots: { index: false } };
 
+// Session 4 · Commit 1 (Philip 2026-08-20 · wiring-only, no design writes).
+// Wraps STCH01 in a design-state provider so the chat surface has a
+// StaircaseDesign context to read (and, from Commit 2 onwards behind
+// NEX_CHAT_WRITES_ENABLED, to write into). Commit 1 only reads.
 export default function MasterTemplate1ChatPage() {
   if (process.env.NODE_ENV !== "development") notFound();
-  return <STCH01 />;
+  return (
+    <StaircaseDesignProvider>
+      <STCH01 />
+    </StaircaseDesignProvider>
+  );
 }
