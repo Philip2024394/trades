@@ -12,6 +12,12 @@ const nextConfig = {
   // hiding real bugs. Ok for preview URL generation only.
   typescript: { ignoreBuildErrors: true },
   eslint: { ignoreDuringBuilds: true },
+  // Prevent Next/Turbopack from bundling `unzipper` (used by nex/backup
+  // routes) — its S3 branch dynamically requires `@aws-sdk/client-s3`
+  // which is an OPTIONAL peer dep we don't install. Keeping it external
+  // means the server-side require only fails IF the S3 branch is ever
+  // invoked (which it isn't in local dev / typical deploys).
+  serverExternalPackages: ["unzipper"],
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "msdonkkechxzgagyguoe.supabase.co" },

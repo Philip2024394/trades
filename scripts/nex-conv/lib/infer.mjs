@@ -26,11 +26,20 @@ import { embed, stats as embedStats } from './embed.mjs';
 import { extractEntities, extractIntent, extractEmotion, extractMultiIntent } from './extract.mjs';
 import { retrieve } from './retrieve.mjs';
 import { newState, updateStateFromCustomer, updateStateFromNex } from './state.mjs';
+import { detectLanguage } from './language.mjs';
 // respond.mjs is imported lazily below · only when `withProse: true`
 
 export async function processTurn({ store, state, brain, text, speaker = 'customer', withProse = false, proseOptions = {} }) {
   const t0 = Date.now();
   const timings = {};
+
+  // P3 (2026-08-20 · Indonesian language-neutral layer). Re-detect per
+  // turn — customer can switch English ↔ Indonesian mid-conversation
+  // and NEX follows. Detected BEFORE extract so downstream can (in
+  // Phase 2) route to the right intent-cue table. State stays
+  // language-neutral (canonical slugs); only response language changes.
+  const detectedLang = detectLanguage(text);
+  if (state) state.conversation_language = detectedLang;
 
   // (a) extract · intent · multi-intent · entities · emotion · topics
   const t_ex = Date.now();

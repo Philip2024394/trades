@@ -39,7 +39,11 @@ const CHAT_PATH = '/api/chat';
 // Qwen 3B was reproducing skeleton strings verbatim (2026-08-15 acceptance run).
 const SYSTEM_PROMPT = `You are NEX, an advisor for a UK staircase business. The customer does not know trade terminology.
 
-LANGUAGE: Reply in British English only. Never any other language.
+LANGUAGE: Reply in the customer's language.
+  - Default: British English.
+  - If the packet says CUSTOMER_LANGUAGE=id (Bahasa Indonesia), reply in Indonesian.
+  - Do NOT switch language mid-conversation unless the customer's own message switched first.
+  - Slugs and technical terms (oak / walnut / closed string / balustrade / newel etc.) may stay in English inside your reply if that reads more naturally — many Indonesian construction customers use these English loanwords directly.
 
 ═══════════════════════════════════════════════════════════════════
 RULE 0 · CONSTITUTIONAL (Philip 2026-08-15) — top priority · overrides all others
@@ -227,6 +231,48 @@ const _callLog = [];
 export function getCallLog() { return _callLog.slice(); }
 export function clearCallLog() { _callLog.length = 0; }
 
+// P0-#4 (2026-08-20 speaking-quality audit): shared detection for the
+// NEX_DOESNT_KNOW mode. Used by buildPacket (to emit the ABSOLUTE RULE
+// in the prompt) AND by renderReply's post-processing (to force-replace
+// Qwen's reply with a canned deflection when the flag fired but the
+// reply lacks a deflection phrase). Must produce identical results in
+// both call sites, so factored out here.
+const _ASK_INTENTS_FOR_UNKNOWN = new Set(['ask_definition', 'ask_options', 'ask_recommendation', 'ask_installation']);
+// The trailing `\b` on the alternation would fail on multi-digit codes
+// (e.g. "DIN 18065" — after the first digit "1" the next char "8" is
+// also a word char, so \b never matches). Split codes into their own
+// pattern with greedy digit/dot/hyphen matching so "BS 5395-1", "DIN
+// 18065", "IBC 1011.14", "EN 1991-1-1" all match reliably.
+const _EXTERNAL_KNOWLEDGE_RX = /\b(?:(?:BS|EN|ISO|DIN|IBC)\s*\d[\d.\-]*|Approved\s+Document|20\d{2}\s+(?:revision|edition|amendment)|Scandinavian|German|French|Italian|Spanish)\b/i;
+function computeNexDoesntKnow(intent, topK, customerMessage) {
+  if (!_ASK_INTENTS_FOR_UNKNOWN.has(intent?.slug ?? '')) return false;
+  const retrievalIsEmpty = (topK?.length ?? 0) === 0;
+  const externalMarkers = _EXTERNAL_KNOWLEDGE_RX.test(customerMessage ?? '');
+  return retrievalIsEmpty || externalMarkers;
+}
+
+// P2-T1 (2026-08-20 natural-conversation audit): detect which SPECIFIC
+// category the customer asked options about. Prior implementation always
+// gave a wood example, so "options for the balustrade?" got wood options
+// in reply. Now the buildPacket ask_options block passes the detected
+// category + a category-specific example so Qwen stays on-topic.
+function detectAskOptionsCategory(message) {
+  const m = (message ?? '').toLowerCase();
+  if (/\bbalustrade/.test(m))                  return { category: 'balustrade', example: `"For balustrade options, common choices are glass panels, timber spindles, metal balusters, or steel cable — depends on the look and how child-safe you need it. Any of those catch your eye?"` };
+  if (/\bhandrail/.test(m))                    return { category: 'handrail',   example: `"For handrail options, common choices are matching timber, stainless steel, painted metal, or glass — often driven by the balustrade material. Which appeals?"` };
+  if (/\bnewel/.test(m))                       return { category: 'newel',      example: `"For newel options, common styles are turned (traditional), square (contemporary), or hidden/wall-mounted (floating). What look are you going for?"` };
+  if (/\b(finish|colour|color|stain)/.test(m)) return { category: 'finish',     example: `"For finish options, common choices are natural (clear seal), stained (lets you shift the tone), or painted (usually a colour of your choice). Do you know which direction you'd like?"` };
+  if (/\b(shape|geometry|layout|configuration)/.test(m))
+                                              return { category: 'shape',      example: `"For shape options, common choices are straight, quarter-turn (one landing), half-turn (two landings or U-shape), winder (turns without a landing), or spiral. What's the space like?"` };
+  if (/\btread/.test(m))                       return { category: 'tread',      example: `"For tread options, common choices are solid timber, glass, stone, or a timber core with a stone/glass overlay. Any preference for the look under your feet?"` };
+  if (/\briser/.test(m))                       return { category: 'riser',      example: `"For riser options, common choices are closed (solid face), open (no riser — you can see through), or partial (glass or bar infill). The open look is more contemporary."` };
+  if (/\b(stringer|string)/.test(m) && !/(closed|cut)\s+string/.test(m))
+                                              return { category: 'stringer',   example: `"For stringer options, common choices are closed string (smooth diagonal plank), cut string (stepped top edge, tread ends visible), mono stringer (single central beam), or cantilever (treads mounted directly into the wall)."` };
+  if (/\b(wood|timber|material)/.test(m))     return { category: 'wood',       example: `"For wood specifically, common choices are oak, walnut, ash, and pine — the look and budget usually drive the pick. Any of those catch your eye?"` };
+  if (/\b(style|era)/.test(m))                return { category: 'style',      example: `"For style options, common directions are traditional (classic mouldings + turned newels), transitional (mix of clean lines and warm timber), or contemporary (minimal, often glass + metal). Which appeals?"` };
+  return { category: null, example: '' };
+}
+
 /**
  * Render one NEX reply via local Ollama.
  * Same signature as the quarantined OpenRouter renderReply.
@@ -278,12 +324,89 @@ export async function renderReply({ state, customerMessage, topK, responseFrame,
 
   let text = j.message?.content?.trim() ?? '(empty reply)';
 
-  // M1-6: post-generation length trim if Qwen overshoots the mode's shape.
-  // Backchannel <=120c · meta <=200c · close <=100c · normal <=400c.
-  const modeCap = intent?.slug === 'backchannel' ? 120
-                : intent?.slug === 'close' ? 100
-                : intent?.slug?.startsWith('meta_') ? 200
-                : 400;
+  // P0-#4 post-processing (2026-08-20): FORCE-REPLACE with canned deflection
+  // if NEX_DOESNT_KNOW fires but Qwen didn't include a deflection phrase.
+  // P3 (2026-08-20): language-aware — pick English or Indonesian canned
+  // text based on state.conversation_language so the fallback doesn't
+  // language-mismatch the customer.
+  if (computeNexDoesntKnow(intent, topK, customerMessage)) {
+    const hasDeflectionEn = /\b(check\s+(?:with|it\s+with)\s+(?:the\s+)?(?:team|specialist|colleague)|pass\s+(?:this|it)\s+(?:on|to)|flag\s+(?:this|it)|don'?t\s+have\s+(?:that|this|a\s+firm\s+answer|it)|outside\s+what|not\s+something\s+I\s+have|rather\s+check\s+than\s+guess|get\s+you\s+the\s+right\s+answer)\b/i.test(text);
+    const hasDeflectionId = /\b(cek|periksa|serahkan|tanyakan|hubungi)\b.*(tim|spesialis)/i.test(text)
+                         || /\btidak\s+(punya|memiliki|ada)\b.*(info|jawaban|data|informasi)/i.test(text)
+                         || /\bperlu\s+(cek|periksa|konfirmasi)\b/i.test(text)
+                         || /\bharus\s+(cek|dikonfirmasi)/i.test(text);
+    if (!hasDeflectionEn && !hasDeflectionId) {
+      text = state?.conversation_language === 'id'
+        ? `Untuk pertanyaan itu, saya perlu cek dengan tim kami dan akan kembali kepada Anda. Sementara ini, ada hal lain yang bisa saya bantu?`
+        : `That's not something I have to hand — let me check with the team and come back to you. In the meantime, is there anything else I can help with?`;
+    }
+  }
+
+  // P0-#1 post-processing (2026-08-20): price-fabrication defence in depth.
+  // P3: language-aware canned deflection.
+  if (intent?.slug === 'ask_price' && /£\s*\d|\$\s*\d|\bRp\s*[\d.]|\d[\d,]*\s*(?:pounds|gbp|dollars|usd|eur|euros|rupiah|idr)/i.test(text)) {
+    text = state?.conversation_language === 'id'
+      ? `Saya tidak ingin menebak angka — biar saya teruskan ke tim penawaran kami dan mereka akan kembali dengan harga yang tepat. Sementara itu, apakah Anda sudah memutuskan finishing-nya?`
+      : `I don't want to guess figures — let me pass this to our quotation team and they'll come back to you with a proper number. In the meantime, have you decided on the finish yet?`;
+  }
+
+  // P1-#8 post-processing (2026-08-20 speaking-quality audit): strip Qwen
+  // scaffold leakage. S2 of the audit had NEX reply beginning "Sure, here's
+  // a reply that fits the context and the rules: 'Between a closed string
+  // and a cut string...'" — the model leaked its thinking scaffold before
+  // the actual reply. S4 T1 had a nested wrapper 'Sure, how about "Sure.
+  // For wood specifically..."'. These sound terrible in voice and
+  // untrustworthy in text. Deterministic strip.
+  text = text.replace(/^\s*(?:sure,?\s+)?here'?s (?:a|the|my)?\s*reply[^:]*:\s*/i, '');
+  text = text.replace(/^\s*sure,?\s+how about\s+["'“]\s*/i, '');
+  // If the whole reply is wrapped in one pair of quotes, unwrap it.
+  const wrapMatch = text.match(/^\s*["'“](.+)["'”]\s*$/s);
+  if (wrapMatch) text = wrapMatch[1].trim();
+  // Strip leading orphan quote if the closing wasn't paired.
+  text = text.replace(/^["'“]+\s*/, '');
+
+  // P1-#6 post-processing: kill "Given your X..." opener (60% frequency in
+  // the audit). Rewrites the opener to a cleaner alternative.
+  //
+  // Updated 2026-08-20 (P2-R1): capture the FULL phrase up to the next
+  // clause boundary (comma / period / em-dash) rather than a single word.
+  // Prior regex captured "small" from "Given your small Victorian hallway,
+  // ..." and produced "For that small — Victorian hallway, ..." (dash
+  // between adjective and noun). Now captures "small Victorian hallway"
+  // as one phrase → "For that small Victorian hallway, ...".
+  text = text.replace(
+    /^\s*given\s+(?:the|your|that)\s+([^,.—]+?)(?:\s+you\s+mentioned)?(,\s|\.\s|\s+—\s)/i,
+    'For that $1$2',
+  );
+
+  // P1-#10 post-processing: fabricated-context strip. If the customer has
+  // NOT stated a wall constraint but the reply attributes one, strip the
+  // phrase. Same for "for a traditional/victorian look" when style isn't
+  // customer_stated. Deterministic defence — sentence may end slightly
+  // less fluent but ATTRIBUTION > fluency (doctrine rule 14).
+  const facts = state?.established_facts ?? {};
+  const constraintStated = facts.construction_context?.provenance === 'customer_stated';
+  const styleStated      = facts.style_intent?.provenance === 'customer_stated';
+  if (!constraintStated) {
+    text = text.replace(/\s+(?:with\s+the\s+wall\s+on\s+one\s+side|against\s+(?:the|a)\s+wall)/gi, '');
+  }
+  if (!styleStated) {
+    text = text.replace(/\s+for\s+(?:the|a)\s+(?:traditional|victorian|edwardian|contemporary)\s+(?:look|style)/gi, '');
+  }
+  // Tidy any double-spaces / trailing spaces / stray commas the strips leave.
+  text = text.replace(/\s{2,}/g, ' ').replace(/\s+([,.])/g, '$1').replace(/,\s*\./g, '.').trim();
+
+  // M1-6 + P1-#9 + P2-R1: post-generation length trim if Qwen overshoots.
+  // Tightened caps 2026-08-20 (P1-#9 · make replies snappier):
+  //   backchannel 120 → 80  · close 100 → 80  · meta 200 → 150
+  //   normal      400 → 280 (roughly 3 sentences instead of 4-5).
+  // Recommendations (P2-R1 2026-08-20) get 380 chars because the 3-part
+  // shape (primary + alternative + narrowing question) needs the room.
+  const modeCap = intent?.slug === 'backchannel' ? 80
+                : intent?.slug === 'close' ? 80
+                : intent?.slug?.startsWith('meta_') ? 150
+                : intent?.slug === 'ask_recommendation' ? 380
+                : 280;
   if (text.length > modeCap) {
     // Trim at last sentence-ending punctuation before the cap
     const window = text.slice(0, modeCap);
@@ -404,6 +527,7 @@ function buildPacket({ state, customerMessage, topK, responseFrame, nextLikelyIn
     return `CUSTOMER MESSAGE (respond to THIS):
 "${customerMessage}"
 
+CUSTOMER_LANGUAGE=${state?.conversation_language ?? 'en'}  ← reply in THIS language (P3)
 CONVERSATION_MODE=${mode}
 EMOTION=${emotion?.register ?? 'neutral'}
 
@@ -413,23 +537,32 @@ CONVERSATION SO FAR:
 Rules for this reply:
 ${guidance}
 - Adjust tone to EMOTION (apologetic → reassuring · frustrated → short + offer real help · excited → match briefly · uncertain → gentle · neutral → measured).
-- 1 short British-English sentence, maybe 2 max.
+- 1 short sentence in ${state?.conversation_language === 'id' ? 'INDONESIAN (Bahasa Indonesia)' : 'BRITISH ENGLISH'}, maybe 2 max.
 
-Write the reply now.`;
+Write the reply now in ${state?.conversation_language === 'id' ? 'INDONESIAN' : 'BRITISH ENGLISH'}.`;
   }
 
   // Assemble PACKET FLAGS the LLM should read before writing.
-  const priceQueried = /price|cost|how\s+much|expensive|cheap|cheaper|budget|figure|ballpark|estimate|quote/i.test(customerMessage);
-  // Only count as "having price data" if a SPECIFIC £ or $ NUMBER appears in
-  // one of the TOP-3 retrieved items (peripheral £ mentions in a training
-  // example like "Never quote a specific cost ('£2,500')" would otherwise
-  // falsely disable the anti-fabrication flag · same class of bug we fixed
-  // for the handoff strike counter).
-  const packetHasSpecificPrice = /£\s*\d|\$\s*\d|\d+\s*(pounds|gbp)/i.test(
-    (topK || []).slice(0, 3).map(k => k.answer_head || '').join(' ')
-  );
+  //
+  // P0-#1 · ZERO PRICE FABRICATION (2026-08-20 speaking-quality audit +
+  // Owner-Provenanced Pricing doctrine 2026-08-20):
+  //
+  // Prior implementation gated the flag on packet content (only fired if
+  // no £ number appeared in top-3 retrieved items). S10 of the audit
+  // proved this was insufficient — Qwen invented £1,500-£2,500 anyway.
+  // Under the pricing doctrine, NEX may quote ONLY from owner-authorised
+  // Product records. Until the catalogue exists, packet items are NEVER
+  // owner-authorised — they are general knowledge. Therefore: if the
+  // intent is ask_price, ALWAYS suppress prices, regardless of packet
+  // content or message phrasing. No exceptions until the Product
+  // catalogue lookup layer is wired.
+  //
+  // Also widened from the previous text-regex `priceQueried` heuristic
+  // to trust the intent classifier (which already handles all common
+  // price-ask phrasings including "standard range", "ballpark",
+  // "roughly", "typical").
   const flags = {
-    PACKET_HAS_NO_PRICE_DATA: priceQueried && !packetHasSpecificPrice,
+    PACKET_HAS_NO_PRICE_DATA: intent?.slug === 'ask_price',
     ...(packetFlags || {}),
   };
   const stateDelta = state?.last_turn_state_delta ?? { changes: [], noops: [] };
@@ -459,19 +592,60 @@ Write the reply now.`;
   // KNOWLEDGE_PACKET_EMPTY flag helps the LLM pick the thin-packet playbook.
   const packetIsThin = topK.length === 0 || (topK.length <= 2 && topK.every(k => (k.answer_head || '').length < 40));
 
-  // M4-BUG-01 · TURN-1 EMPTY STATE mode.
-  // If we're on turn 1 (or 0) with no established facts and the customer's
-  // intent is a bare statement/discover ("i need staircase"), the LLM has
-  // been observed to paraphrase KNOWLEDGE_PACKET items verbatim ("Given
-  // your staircase against a wall..."), falsely attributing them.
-  // Solution: SUPPRESS the knowledge packet on turn-1-empty-state and add
-  // an ABSOLUTE RULE tail forbidding any specific claim. Force an open
-  // discovery question instead — identical treatment to the price flag.
-  const turnCountEff = state?.turn_count ?? 0;
+  // M4-BUG-01 · EMPTY-STATE DISCOVERY mode.
+  // Fires on ANY substantive discover/statement turn while established_facts
+  // is still empty — not just literal turn 1. Prior "turnCountEff <= 1" check
+  // silently disengaged after preceding meta/backchannel turns (hi + presence
+  // burned two turns without adding facts, so on the first real message
+  // turn_count was already 3+ and the guard didn't fire), reproducing the
+  // "Given your staircase against a wall..." fabrication the guard exists
+  // to prevent. Empty-state is the real signal · turn number was a proxy.
   const factCountEff = Object.keys(state?.established_facts ?? {}).length;
-  const isTurn1EmptyState = turnCountEff <= 1
+
+  // P0-#4 (2026-08-20 speaking-quality audit): NEX DOESN'T KNOW mode.
+  //
+  // Central principle (Philip 2026-08-20 · Commercial Model §E-CENTRAL-PRINCIPLE):
+  //   "Know it → answer it.
+  //    Know from customer's saved info → use it.
+  //    Know from owner's authorised product → use it.
+  //    Don't know → say so / check / hand off.
+  //    Never fill the gap with a guess."
+  //
+  // Fires when the customer asks a domain question (definition / options /
+  // recommendation / installation) AND either:
+  //   (a) retrieval returned zero items (nothing in the corpus matches), OR
+  //   (b) the message contains distinctly external-knowledge markers that
+  //       the corpus doesn't cover — BS/EN/ISO regulatory codes, specific
+  //       year references ("2019 revision"), country-specific terminology
+  //       we haven't ingested (Scandinavian, DIN 18065, etc.).
+  //
+  // When true, the response layer must produce the honest deflection shape
+  // ("I don't have that to hand — let me check with the team") plus one
+  // graceful continuation question. NEVER invent a name/code/price/fact.
+  //
+  // Defined BEFORE isEmptyStateDiscover so the empty-state guard can yield
+  // to it — a regulatory question in empty state (S6 in the audit) belongs
+  // in the "I don't know" pathway, not the "reset to discovery" pathway.
+  // Uses shared computeNexDoesntKnow so renderReply's post-processing sees
+  // the same signal — deflection is enforced in both prompt AND fallback.
+  const nexDoesntKnow = computeNexDoesntKnow(intent, topK, customerMessage);
+
+  // M4-BUG-01 · EMPTY-STATE DISCOVERY mode.
+  // Yields to nexDoesntKnow — a regulatory question in empty state must get
+  // the honest-deflection path, not the discovery-reset path.
+  //
+  // P1-#7 (2026-08-20 speaking-quality audit): tightened to `intent.slug ===
+  // 'statement'` only (was `intent.class === 'discover' || intent.slug ===
+  // 'statement'`). S1 in the audit — "What is a newel?" — is intent
+  // ask_definition class discover, and was being hit by the empty-state
+  // guard even though the knowledge packet DID have relevant items to
+  // answer with. Definition questions must get definitions, not "roughly
+  // where in the house is the staircase going." Ask intents on an empty
+  // state now go through the normal packet path (or nexDoesntKnow if
+  // retrieval is thin / external markers present).
+  const isEmptyStateDiscover = !nexDoesntKnow
     && factCountEff === 0
-    && (intent?.class === 'discover' || intent?.slug === 'statement')
+    && intent?.slug === 'statement'
     && !isMeta && !isBackchannel && !isClose;
 
   // Order matters: CUSTOMER MESSAGE first · PACKET FLAGS · ESTABLISHED FACTS
@@ -536,14 +710,18 @@ Write the reply now.`;
 "${customerMessage}"
 
 PACKET FLAGS (read before writing):
+- CUSTOMER_LANGUAGE: ${state?.conversation_language ?? 'en'}  ← reply in THIS language (P3 · 2026-08-20)
 - INTENT_MODE: ${intentMode}  ← Rule 0 · serve THIS shape
 - PACKET_HAS_NO_PRICE_DATA: ${flags.PACKET_HAS_NO_PRICE_DATA}
 - KNOWLEDGE_PACKET_EMPTY: ${packetIsThin}
+- NEX_DOESNT_KNOW: ${nexDoesntKnow}  ← honest deflection required when true (P0-#4)
 - STATE_DELTA.changes: ${JSON.stringify(stateDelta.changes)}
 - STATE_DELTA.noops: ${JSON.stringify(stateDelta.noops)}
 - EMOTION: ${emotion?.register ?? 'neutral'}${emotion?.cues?.length ? ` (cues: ${emotion.cues.join(', ')})` : ''}
 - SECONDARY_INTENTS: ${secondaryList}
 - HANDOFF_RECOMMENDED: ${state?.handoff_recommended === true}
+- LAST_NEX_QUESTION: ${state?.last_nex_question ? `"${state.last_nex_question.text}" (shape=${state.last_nex_question.shape})` : '(none)'}
+- EMPTY_STATE_DISCOVERY_STREAK: ${state?.empty_state_discovery_streak ?? 0}  ← if ≥ 2 · switch to differently-help mode
 ${referenceHint ? `- REFERENCE_HINT: ${referenceHint}` : '- REFERENCE_HINT: (none)'}
 ${state?.condensed_history ? `\nEARLIER IN THIS CONVERSATION (condensed): ${state.condensed_history.summary}` : ''}
 ${lockedTermBlock}${summaryComparisonBlock}
@@ -600,14 +778,42 @@ ${state?.handoff_recommended ? `KNOWLEDGE PACKET (SUPPRESSED · HANDOFF MODE):
     - Ask for the ONE piece of info needed to make the handoff (name + phone, or best time to call)
   Do NOT ask for wall/material/string type details — that's more hedging.
   Do NOT invent a price to fill the gap.
-` : isTurn1EmptyState ? `KNOWLEDGE PACKET (SUPPRESSED · TURN-1 EMPTY STATE):
-  The customer has JUST arrived and said something vague like "i need staircase". You know NOTHING about their project. Do NOT paraphrase any retrieved content. Do NOT name a material, string type, wall orientation, style era, or price. Ask ONE open discovery question and stop.
+` : nexDoesntKnow ? `KNOWLEDGE PACKET (SUPPRESSED · NEX DOESN'T KNOW):
+  The customer asked something outside what NEX has reliably in its own knowledge.
+  Either the corpus returned nothing, or the question mentions specific external-
+  knowledge markers (regulatory codes like BS/EN/ISO/DIN, dated revisions,
+  country-specific terminology). Central-principle rule (Philip 2026-08-20):
+  "Don't know → say so / check / hand off. NEVER fill the gap with a guess."
+
+  Required reply shape:
+    - Brief HONEST acknowledgement that this isn't something you have to hand
+    - Concrete "let me check with the team" offer OR "want me to flag this to
+      a specialist?" · pick natural phrasing
+    - ONE graceful continuation question so the conversation keeps moving
+      (e.g. "In the meantime, have you decided on X yet?")
+
+  Correct examples:
+    - "That's not something I have to hand — let me check with the team and come back to you. In the meantime, have you settled on a shape yet?"
+    - "I don't have a firm answer on that specific spec — I can pass it to a specialist who'll come back within a day. Want me to do that?"
+    - "That's outside what I've got on record — I'd rather check than guess. Do you want me to flag it, or shall we carry on with the parts I can help with?"
+
+  FORBIDDEN:
+    - Inventing a name, code, price, dimension, regulation, or product spec.
+    - Paraphrasing an unrelated packet item to sound like an answer.
+    - Restart-discovery ("Is this a new staircase, or replacing one?") when the
+      customer actually asked a specific technical question. That's dodging.
+    - Beginning "Given your..." — this is a moment for honesty, not attribution.
+` : isEmptyStateDiscover ? `KNOWLEDGE PACKET (SUPPRESSED · EMPTY-STATE DISCOVERY):
+  The customer has said something without establishing any specific fact yet (materials, style, constraint — all unknown). You know NOTHING about their project. Do NOT paraphrase any retrieved content. Do NOT name a material, string type, wall orientation, style era, or price. Ask ONE open discovery question and stop.
 ` : `KNOWLEDGE PACKET (top ${topK.length} retrieved · use ONLY these):
 ${knowledge || '  (empty · trigger THIN PACKET PLAYBOOK — honest "I don\'t have that yet" + a real next-action)'}`}
 
 ${anchors.length ? `RECENT_ANCHORS · earlier facts you can naturally reference back to:
 - ${anchors.join('\n- ')}
-Callback style · use ONE phrase like "given ${anchors[0]}" or "for ${anchors[0]}" or "back to ${anchors[0]}" somewhere in the reply so the conversation feels remembered. Only if it fits naturally.
+Callback style (P1-#6 · 2026-08-20 · "Given your..." was 60% of replies in the audit — vary hard):
+Prefer "For ${anchors[0]}, ..." OR "Back to ${anchors[0]}, ..." OR "With ${anchors[0]} in mind, ..." OR "Sticking with ${anchors[0]}, ...".
+NEVER begin with "Given your..." or "Given the...". That specific opener is banned this turn.
+Use ONE callback per reply if it fits naturally. Otherwise skip entirely.
 
 ` : ''}
 RECENT_NEX_CLOSERS (patterns you already used · MUST vary this turn):
@@ -623,36 +829,80 @@ ${(() => {
   return bans.map(p => `- ${p}`).join('\n') + '\nAvoid re-using these exact opening phrases:\n' + openerExamples;
 })()}
 
-Write ONE short British-English NEX reply now.
+Write ONE short NEX reply now in ${state?.conversation_language === 'id' ? 'INDONESIAN (Bahasa Indonesia) — the customer wrote in Indonesian so you MUST reply in Indonesian' : 'BRITISH ENGLISH'}.
 Do NOT reproduce any recent closer pattern above.
 Do NOT ask about any ESTABLISHED FACT already listed.
-${flags.PACKET_HAS_NO_PRICE_DATA ? `!!! ABSOLUTE RULE FOR THIS TURN !!!  PACKET_HAS_NO_PRICE_DATA=true. Your reply MUST NOT contain any £ figure, any $ figure, any "around £", any "starts from", any "£X to £Y" range, or any number-plus-currency. If you feel yourself about to write a price · STOP · replace it with: "I don't want to guess figures — I can get you an accurate quote once we've talked through the specifics. What sort of size is your staircase, roughly?" This is non-negotiable.
+${flags.PACKET_HAS_NO_PRICE_DATA ? `!!! ABSOLUTE RULE FOR THIS TURN — ZERO PRICE FABRICATION !!!  intent=ask_price. Owner-Provenanced Pricing doctrine (2026-08-20): NEX may quote ONLY from owner-authorised Product records. That catalogue does not exist yet. Therefore your reply MUST NOT contain any £ figure, any $ figure, any "£X to £Y" range, any "around £", any "starts from", any "typically £", any "commonly costs", any number-plus-currency, any per-item price ("£/m²", "per tread"), and any "budget for". If you feel yourself about to write a price · STOP · say instead: "I don't want to guess figures — let me pass this to our quotation team and they'll come back to you with a proper number. In the meantime, [ONE continuation question about spec]." This is non-negotiable — inventing a price is a doctrine violation.
+` : ''}${nexDoesntKnow ? `!!! ABSOLUTE RULE FOR THIS TURN — NEX DOESN'T KNOW !!!  You do not have reliable knowledge for this question (empty retrieval OR external-knowledge markers detected). Central principle: "Don't know → say so / check / hand off. NEVER fill the gap with a guess." Your reply MUST:
+  · Honestly acknowledge you don't have this to hand
+  · Offer to check with the team OR flag to a specialist
+  · End with ONE graceful continuation question so the conversation keeps flowing
+Your reply MUST NOT:
+  · Invent a name, code, price, dimension, regulation, or product spec
+  · Restart discovery ("Is this a new staircase or a replacement?") when the customer asked something specific — that reads as dodging
+  · Begin with "Given your..." — this is a moment for honesty
+  · Paraphrase an unrelated packet item as if it were the answer
 ` : ''}${state?.handoff_recommended ? `!!! HANDOFF MODE THIS TURN !!!  Use the HANDOFF-shape reply exactly as specified in the packet above · brief acknowledge + honest "let me get you the right answer" + concrete handoff offer + ask for name/phone. Do NOT dip back into staircase advice.
-` : ''}${isTurn1EmptyState ? `!!! ABSOLUTE RULE FOR THIS TURN — TURN 1 EMPTY STATE !!!  You know NOTHING about this customer's staircase. Your reply MUST NOT contain any of: "wall", "against", "one side", "opens onto", "closed string", "cut string", "open riser", "oak", "walnut", "ash", "pine", "victorian", "edwardian", "traditional look", "contemporary look", "given your", "for your", "since you", "your oak", "your victorian". Your reply MUST BE one of these shapes (pick any variant, one short sentence + one open question):
-  - "Absolutely — happy to help. Is this a new staircase, or replacing one that's already there?"
-  - "Of course. Roughly where in the house is the staircase going — hallway, extension, loft?"
-  - "Sure. What sort of look are you going for — traditional, contemporary, or something in between?"
-This is non-negotiable. If you feel yourself about to name a material or a wall · STOP · use one of the shapes above instead.
+` : ''}${isEmptyStateDiscover ? `!!! ABSOLUTE RULE FOR THIS TURN — EMPTY-STATE DISCOVERY !!!  You know NOTHING about this customer's staircase. Your reply MUST NOT contain any of: "wall", "against", "one side", "opens onto", "closed string", "cut string", "open riser", "oak", "walnut", "ash", "pine", "victorian", "edwardian", "traditional look", "contemporary look", "given your", "for your", "since you", "your oak", "your victorian" (and the equivalent claims in Indonesian).
+Your reply MUST be short (1 sentence + 1 open question) and pick ONE discovery axis:
+  · new vs replacement (English exemplar: "Absolutely — happy to help. Is this a new staircase, or replacing one that's already there?"  · Indonesian exemplar: "Tentu, dengan senang hati. Apakah ini tangga baru, atau mengganti tangga yang sudah ada?")
+  · location (English: "Of course. Roughly where in the house is the staircase going — hallway, extension, loft?"  · Indonesian: "Tentu. Kira-kira di bagian rumah mana tangganya — koridor, ekstensi, atau loteng?")
+  · style direction (English: "Sure. What sort of look are you going for — traditional, contemporary, or something in between?"  · Indonesian: "Baik. Gaya seperti apa yang Anda inginkan — tradisional, kontemporer, atau di antara keduanya?")
+Reply in the CUSTOMER_LANGUAGE shown in PACKET FLAGS. Do NOT name a material, wall orientation, string type, or price.
 ` : ''}${intent?.slug === 'ask_options' ? (() => {
   const nCustomerFacts = Object.values(state?.established_facts ?? {}).filter(v => v?.provenance === 'customer_stated' || v?.provenance === 'confirmed').length;
-  const askedAboutSpecificCategory = /\b(wood|timber|material|handrail|balustrade|finish|colour|style|shape|layout|price|cost)/i.test(customerMessage);
-  // Early state · vague ask ("what options have i") → CATEGORY-LEVEL enumeration
-  // (shape, wood, handrail, balustrade, finish) · give customer agency to pick axis
-  const useCategoryLevel = nCustomerFacts <= 2 && !askedAboutSpecificCategory;
+  // P2-T1 (2026-08-20 natural-conversation audit): detect the SPECIFIC
+  // category the customer named. Prior version gave a wood-only example
+  // regardless, so "options for the balustrade?" → NEX listed woods (S1
+  // T5 of the audit). Now we pass the exact category into the prompt +
+  // give a tailored example FOR that category so Qwen stays on-topic.
+  const categoryDetection = detectAskOptionsCategory(customerMessage);
+  const specificCategory = categoryDetection.category;   // 'balustrade' | 'handrail' | 'wood' | ...
+  const categoryExample  = categoryDetection.example;    // string reply exemplar
+  const useCategoryLevel = nCustomerFacts <= 2 && !specificCategory;
   return `!!! ABSOLUTE RULE — INTENT_MODE=enumerate_options !!!
 The customer is asking WHAT ARE MY OPTIONS. Your reply MUST NOT recommend a specific configuration, MUST NOT phrase any option as "your X", MUST NOT explain construction, and MUST end with ONE narrowing question.
 ${useCategoryLevel ? `SHAPE = CATEGORY-LEVEL (state is thin · customer hasn't picked axes yet):
   List the CATEGORIES that can be configured (shape, wood, handrail, balustrade, finish) NOT specific combinations. Give the customer agency to pick which axis to explore.
   Correct: "You've got a few directions — the staircase shape, the wood, handrail, balustrade, and finish. Where would you like to start?"
   Wrong:   "Options are: a closed string with oak treads, an open string with glass panels, or a floating staircase." (These are configurations, not category-level options. Bounces the customer into picking a full spec before they've had a chance to explore.)`
-: `SHAPE = SPECIFIC-CATEGORY ENUMERATION (customer named a category like wood/handrail):
-  List 3+ specific options WITHIN that category · do NOT pair them with other categories.
-  Correct: "For wood specifically, common choices are oak, walnut, mahogany and pine — the look and budget usually drive the pick. Any of those catch your eye?"
-  Wrong:   "A closed string with oak treads would be a good fit." (Recommends a configuration · attributes to customer.)`}
+: `SHAPE = SPECIFIC-CATEGORY ENUMERATION · CATEGORY = "${specificCategory ?? 'general'}"
+  The customer named ONE specific category. Your reply MUST list options WITHIN THAT CATEGORY ONLY. Do NOT switch to a different category (e.g. do NOT reply about wood when they asked about balustrade).
+  CATEGORY-SPECIFIC EXAMPLE (adapt tone · use these options):
+    ${categoryExample}
+  Wrong shape: "A closed string with oak treads would be a good fit." (Recommends a configuration.)
+  Wrong shape: listing wood options when the customer asked about balustrade (WRONG CATEGORY).`}
 ` })() : ''}${intent?.slug === 'ask_definition' ? `!!! INTENT_MODE=define !!!
 The customer wants a TERM EXPLAINED. Define the specific term concisely (use LOCKED_TERMINOLOGY if provided). Do NOT introduce material/style specifics as if they were this customer's. End with ONE small clarification or next-step question.
 ` : ''}${(intent?.slug === 'specify_material' || intent?.slug === 'specify_style' || intent?.slug === 'specify_constraint') ? `!!! INTENT_MODE=ack_and_narrow !!!
 The customer just added a piece of their spec. Acknowledge briefly (one short clause), then narrow to the NEXT missing piece of state (not something already CUSTOMER_STATED). Do NOT restart discovery. Do NOT dump domain knowledge about the choice they just made.
+` : ''}${(intent?.slug === 'confirm' || intent?.slug === 'backchannel') && state?.last_nex_question ? `!!! ABSOLUTE RULE — RESOLVE AGAINST NEX'S LAST QUESTION (P2-Y1 · 2026-08-20) !!!
+The customer just replied "${customerMessage}" — this is a confirmation / backchannel that must be resolved against YOUR previous question:
+  "${state.last_nex_question.text}"  (shape: ${state.last_nex_question.shape})
+${state.last_nex_question.shape === 'ab' ? `Your previous question was A-OR-B. The customer's "yes" does NOT pick one — it means "keep going, help me choose". Your reply MUST acknowledge the ambiguity and either offer a lean OR ask a specific narrowing question. Example: "Both are good options — for a small hallway I'd lean towards X because Y. Does that suit, or would you rather Z?"` :
+  state.last_nex_question.shape === 'binary' ? `Your previous question was YES/NO. The customer's "yes" is a clear AGREEMENT with your proposal. Acknowledge briefly, then move to the NEXT natural step (next spec dimension). Do NOT re-ask the same question. Do NOT restart discovery.` :
+  `Your previous question was OPEN-ENDED. The customer's "yes" is essentially "please continue" or "makes sense" — treat it as a soft nudge to move forward. Suggest the next natural direction OR give a small piece of relevant knowledge and end with a specific narrowing question. Do NOT re-ask the same question.`}
+` : ''}${(state?.empty_state_discovery_streak ?? 0) >= 2 ? `!!! ABSOLUTE RULE — DIFFERENTLY-HELP MODE (P2-D1 · 2026-08-20) !!!
+NEX has now asked ${state.empty_state_discovery_streak} consecutive generic discovery questions without capturing a single fact. The customer is either giving very short replies OR the discovery questions aren't landing. Do NOT ask another generic "is it new / where in the house / what look" question — that reads as a form.
+
+Your reply MUST switch approach. Pick ONE:
+  (a) "Tell me in a sentence or two what you're thinking — I can go from there."
+  (b) "I want to make sure I understand you properly. Could you describe the staircase project in your own words?"
+  (c) "Let me try a different angle — is there a photo or example you like, or a specific concern (space, budget, style)?"
+
+Do NOT re-ask "is this a new staircase, or replacing one?" · "roughly where in the house..." · "what sort of look..." — those are the questions that just failed.
+` : ''}${intent?.slug === 'ask_recommendation' ? `!!! INTENT_MODE=recommend (P2-R1 · 2026-08-20) !!!
+The customer asked for a RECOMMENDATION. Your reply MUST have this three-part shape:
+  1. A specific PRIMARY recommendation using the customer's known state facts (from CUSTOMER_STATED_FACTS). Include a ONE-sentence reason.
+  2. ONE ALTERNATIVE recommendation (usually simpler or contrasting) with a ONE-sentence reason.
+  3. A specific narrowing question that helps the customer choose between the two.
+
+Correct example (small Victorian hallway):
+  "For a small Victorian hallway, I'd lean towards a quarter-turn with a traditional balustrade — it uses the corner and keeps the run compact. A straight flight would be simpler if you've got the length. Do you know roughly how much floor space you have?"
+
+Wrong: single recommendation with no alternative + generic "what do you think?" close (that's a validation-seeking dead-end, not a narrowing question).
+Wrong: two recommendations with no reasons attached (feels arbitrary).
+Wrong: three or more options in a bulleted list (that's ENUMERATE_OPTIONS mode, not RECOMMEND mode).
 ` : ''}If KNOWLEDGE_PACKET_EMPTY is true, use the thin-packet playbook (honest "don't have that yet" + real next-action, not "would you like to explore ...").`;
 }
 

@@ -16,8 +16,8 @@ export const STAIRCASE_ENTITIES = [
   { slug: 'maple', display_name: 'Maple', entity_class: 'material', aliases: ['maple'] },
   { slug: 'sapele', display_name: 'Sapele', entity_class: 'material', aliases: ['sapele', 'sapelli'] },
   { slug: 'iroko', display_name: 'Iroko', entity_class: 'material', aliases: ['iroko'] },
-  { slug: 'glass', display_name: 'Glass', entity_class: 'material', aliases: ['glass', 'glazed', 'glass panel', 'glass balustrade', 'glass panels'] },
-  { slug: 'metal', display_name: 'Metal', entity_class: 'material', aliases: ['metal', 'steel', 'brushed stainless', 'stainless steel', 'matt black metal', 'black metal', 'iron', 'wrought iron', 'powder-coated'] },
+  { slug: 'glass', display_name: 'Glass', entity_class: 'material', aliases: ['glass', 'glazed', 'glass panel', 'glass balustrade', 'glass panels', 'kaca'] },
+  { slug: 'metal', display_name: 'Metal', entity_class: 'material', aliases: ['metal', 'steel', 'brushed stainless', 'stainless steel', 'matt black metal', 'black metal', 'iron', 'wrought iron', 'powder-coated', 'logam', 'besi'] },
   { slug: 'concrete', display_name: 'Concrete', entity_class: 'material', aliases: ['concrete', 'reinforced concrete', 'concrete substructure'] },
   { slug: 'carpet', display_name: 'Carpet', entity_class: 'material', aliases: ['carpet', 'stair carpet', 'carpeted', 'runner', 'stair runner'] },
   { slug: 'timber', display_name: 'Timber', entity_class: 'material', aliases: ['timber', 'wood', 'wooden', 'hardwood'] },
@@ -31,10 +31,10 @@ export const STAIRCASE_ENTITIES = [
   { slug: 'cut_string', display_name: 'Cut String', entity_class: 'component', aliases: ['cut string', 'open string', 'open stringer', 'cut stringer', 'cutstring', 'openstring'] },
   { slug: 'open_riser', display_name: 'Open Riser', entity_class: 'component', aliases: ['open riser', 'open risers', 'riserless', 'no risers'] },
   { slug: 'baluster', display_name: 'Baluster', entity_class: 'component', aliases: ['baluster', 'balusters', 'spindle', 'spindles'] },
-  { slug: 'balustrade', display_name: 'Balustrade', entity_class: 'component', aliases: ['balustrade', 'railing', 'rail', 'guarding'] },
-  { slug: 'handrail', display_name: 'Handrail', entity_class: 'component', aliases: ['handrail', 'hand rail', 'handrails'] },
+  { slug: 'balustrade', display_name: 'Balustrade', entity_class: 'component', aliases: ['balustrade', 'balustrades', 'railing', 'railings', 'rail', 'rails', 'guarding', 'guardings'] },
+  { slug: 'handrail', display_name: 'Handrail', entity_class: 'component', aliases: ['handrail', 'hand rail', 'handrails', 'pegangan tangan', 'pegangan atas'] },
   { slug: 'base_rail', display_name: 'Base Rail', entity_class: 'component', aliases: ['base rail', 'shoe rail', 'sub rail', 'sub-rail'] },
-  { slug: 'newel', display_name: 'Newel', entity_class: 'component', aliases: ['newel', 'newel post', 'newels', 'newel posts'] },
+  { slug: 'newel', display_name: 'Newel', entity_class: 'component', aliases: ['newel', 'newel post', 'newels', 'newel posts', 'tiang tangga'] },
   { slug: 'newel_cap', display_name: 'Newel Cap', entity_class: 'component', aliases: ['newel cap', 'post cap', 'newel top', 'cap'] },
   { slug: 'landing', display_name: 'Landing', entity_class: 'component', aliases: ['landing', 'landings', 'half landing', 'quarter landing'] },
   { slug: 'winder', display_name: 'Winder', entity_class: 'component', aliases: ['winder', 'winders', 'winding step'] },
@@ -46,8 +46,8 @@ export const STAIRCASE_ENTITIES = [
   { slug: 'wedges', display_name: 'Wedges', entity_class: 'component', aliases: ['wedges', 'stair wedges'] },
 
   // ---- Styles -----------------------------------------------------------
-  { slug: 'traditional', display_name: 'Traditional', entity_class: 'style', aliases: ['traditional', 'classic', 'victorian', 'edwardian', 'georgian', 'period'] },
-  { slug: 'contemporary', display_name: 'Contemporary', entity_class: 'style', aliases: ['contemporary', 'modern', 'minimalist', 'architectural', 'sleek'] },
+  { slug: 'traditional', display_name: 'Traditional', entity_class: 'style', aliases: ['traditional', 'classic', 'victorian', 'edwardian', 'georgian', 'period', 'tradisional', 'klasik'] },
+  { slug: 'contemporary', display_name: 'Contemporary', entity_class: 'style', aliases: ['contemporary', 'modern', 'minimalist', 'architectural', 'sleek', 'kontemporer'] },
   { slug: 'transitional', display_name: 'Transitional', entity_class: 'style', aliases: ['transitional', 'hybrid', 'in-between', 'somewhere in between'] },
   { slug: 'floating_stair', display_name: 'Floating Stair', entity_class: 'style', aliases: ['floating', 'floating stair', 'cantilever', 'cantilevered'] },
   { slug: 'spiral', display_name: 'Spiral', entity_class: 'style', aliases: ['spiral', 'helical', 'spiral staircase'] },
@@ -75,9 +75,9 @@ export const STAIRCASE_ENTITIES = [
   { slug: 'both_sides_open', display_name: 'Both Sides Open', entity_class: 'location', aliases: ['both sides open', 'freestanding', 'two-sided', 'open both sides'] },
   { slug: 'interior', display_name: 'Interior', entity_class: 'location', aliases: ['interior', 'indoor', 'inside'] },
   { slug: 'garden', display_name: 'Garden', entity_class: 'location', aliases: ['garden', 'outdoor', 'deck', 'external'] },
-  { slug: 'hallway', display_name: 'Hallway', entity_class: 'location', aliases: ['hallway', 'hall', 'entrance hall', 'entry hall', 'foyer'] },
-  { slug: 'loft', display_name: 'Loft Conversion', entity_class: 'location', aliases: ['loft', 'loft conversion', 'attic', 'attic conversion'] },
-  { slug: 'extension', display_name: 'Extension', entity_class: 'location', aliases: ['extension', 'rear extension', 'side extension', 'new extension'] },
+  { slug: 'hallway', display_name: 'Hallway', entity_class: 'location', aliases: ['hallway', 'hall', 'entrance hall', 'entry hall', 'foyer', 'koridor', 'lorong'] },
+  { slug: 'loft', display_name: 'Loft Conversion', entity_class: 'location', aliases: ['loft', 'loft conversion', 'attic', 'attic conversion', 'loteng'] },
+  { slug: 'extension', display_name: 'Extension', entity_class: 'location', aliases: ['extension', 'rear extension', 'side extension', 'new extension', 'ekstensi'] },
 
   // ---- Property type ----------------------------------------------------
   { slug: 'terrace_house', display_name: 'Terraced House', entity_class: 'other', aliases: ['terrace', 'terraced', 'terraced house', 'end-of-terrace', 'end of terrace'] },
@@ -95,7 +95,7 @@ export const STAIRCASE_ENTITIES = [
   { slug: 'renovating_hallway', display_name: 'Renovating Hallway', entity_class: 'process', aliases: ['redo my hallway', 'renovating my hallway', 'doing up the hallway'] },
 
   // ---- Composite topics ------------------------------------------------
-  { slug: 'staircase', display_name: 'Staircase', entity_class: 'component', aliases: ['staircase', 'stair', 'stairs', 'stairway', 'flight'] },
+  { slug: 'staircase', display_name: 'Staircase', entity_class: 'component', aliases: ['staircase', 'stair', 'stairs', 'stairway', 'flight', 'tangga'] },
 ];
 
 // Canonical intent taxonomy (subset — expanded from intent-patterns.md)

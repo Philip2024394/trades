@@ -125,8 +125,15 @@ export function extractIntent(text, store) {
   // Meta / conversational intents (highest priority · short-circuit staircase retrieval)
   // These must fire BEFORE staircase-domain rules so "hello" doesn't get treated
   // as a definition question that forces a wall-orientation reply.
+  //
+  // P3 (2026-08-20 Indonesian layer): parallel Indonesian markers added
+  // to each cue where the doctrine-critical safety matters. Same canonical
+  // intent slug regardless of language. State stays language-neutral.
   if (/^(hi|hello|hey|hiya|yo|howdy|greetings|good\s+(morning|afternoon|evening|night))\b/i.test(lower) && lower.length < 60) {
-    return { slug: 'meta_greeting', class: 'discover', confidence: 0.95, reason: 'greeting cue' };
+    return { slug: 'meta_greeting', class: 'discover', confidence: 0.95, reason: 'greeting cue (en)' };
+  }
+  if (/^(halo|hai|hallo|selamat\s+(pagi|siang|sore|malam)|permisi)\b/i.test(lower) && lower.length < 60) {
+    return { slug: 'meta_greeting', class: 'discover', confidence: 0.95, reason: 'greeting cue (id)' };
   }
   if (/\b(is\s+)?any(one|body)\s+(online|here|around|there|about)\b|\b(are\s+you|u|you)\s+(there|online|here|around|about)\b|^u\s+there\b/i.test(lower)) {
     return { slug: 'meta_presence', class: 'discover', confidence: 0.9, reason: 'presence check cue' };
@@ -158,7 +165,12 @@ export function extractIntent(text, store) {
       || /\bthat'?s\s+not\s+what\s+i\s+(said|meant|mentioned)\b/i.test(lower)
       || /\byou\s+(just\s+)?assumed\b/i.test(lower)
       || /\byou'?re\s+putting\s+words\b/i.test(lower)) {
-    return { slug: 'deny_attribution', class: 'correct', confidence: 0.92, reason: 'explicit denial of attribution' };
+    return { slug: 'deny_attribution', class: 'correct', confidence: 0.92, reason: 'explicit denial of attribution (en)' };
+  }
+  // P3 · deny_attribution (id)
+  if (/\bsaya\s+(tidak|nggak|gak|belum\s+pernah)\s+(pernah\s+)?(bilang|mengatakan|berkata|katakan|menyebut|menyatakan)\b/i.test(lower)
+      || /\bbukan\s+itu\s+(yang\s+saya\s+(katakan|maksud)|maksud\s+saya)\b/i.test(lower)) {
+    return { slug: 'deny_attribution', class: 'correct', confidence: 0.9, reason: 'explicit denial of attribution (id)' };
   }
 
   // A question-shaped message ("wait sorry, what does X mean?") should NOT be
@@ -166,40 +178,128 @@ export function extractIntent(text, store) {
   // Yields correction detection to explicit definition/how questions.
   const looksLikeDefinitionQuestion = /\b(what|how|which)\s+(is|are|does|do|means?|mean)\b|\bwhat'?s\b|\bmean\b.*\?/i.test(lower);
 
-  // Correction cues (high priority · but yield to explicit questions)
+  // Correction cues (high priority · but yield to explicit questions).
+  //
+  // P2-C1 (2026-08-20 natural-conversation audit): widened to catch the
+  // failure phrasings from S5 of the natural probe · "hmm no, let's go
+  // walnut after all" (bare "hmm no" prefix · no traditional cue) ·
+  // "make it walnut" (replace cue with no negation) · "I changed my mind"
+  // (declarative correction). Without these, natural corrections silently
+  // fall through to specify_material which is a no-op if a prior material
+  // is already set — NEX SAYS the new material but STATE keeps the old.
+  // Silent divergence = doctrine violation (rule 3 · never contradict the
+  // customer).
   if (!looksLikeDefinitionQuestion && /^(no,?\s|actually,?\s|wait,?\s|sorry,?\s|i meant\s|i mean\s|scratch that)/i.test(lower)) {
     return { slug: 'correct', class: 'correct', confidence: 0.95, reason: 'negation cue at start' };
+  }
+  // "hmm no" / "hm actually" / "hmm wait" — hesitation + negation
+  if (!looksLikeDefinitionQuestion && /^(hmm+|hm+|erm+|umm+|uh+)[\s,]+(no|nope|actually|wait|really)/i.test(lower)) {
+    return { slug: 'correct', class: 'correct', confidence: 0.9, reason: 'hesitation + negation cue' };
+  }
+  // "I changed my mind" / "I've changed my mind" — declarative correction
+  if (!looksLikeDefinitionQuestion && /\bi(?:'?ve)?\s+chang(?:ed|e)\s+my\s+mind\b/i.test(lower)) {
+    return { slug: 'correct', class: 'correct', confidence: 0.92, reason: 'changed-my-mind cue' };
   }
   if (!looksLikeDefinitionQuestion && /\b(let'?s |can we |please )?(switch|change|swap|go back|revert)\s+(back\s+)?to\b/i.test(lower)) {
     return { slug: 'correct', class: 'correct', confidence: 0.90, reason: 'switch/back-to cue' };
   }
+  // "let's go X" · "let's do X" · "let's have X" · "let's try X" · "let's pick X"
+  // where X is followed by a material/style word · handles S5 T4 case.
+  if (!looksLikeDefinitionQuestion && /\blet'?s\s+(go|do|have|try|pick|make\s+it)\s+/i.test(lower) && lower.length < 100) {
+    return { slug: 'correct', class: 'correct', confidence: 0.85, reason: "let's-go cue" };
+  }
+  // "make it X" · replace cue · classify as correct so state.mjs's
+  // correction handler (which OVERWRITES prior facts) runs. When state has
+  // no prior fact, the correction handler falls through cleanly.
+  if (!looksLikeDefinitionQuestion && /^make\s+it\s+/i.test(lower) && lower.length < 80) {
+    return { slug: 'correct', class: 'correct', confidence: 0.82, reason: 'make-it cue' };
+  }
   if (!looksLikeDefinitionQuestion && /\bback to\b/i.test(lower) && lower.length < 100) {
     return { slug: 'correct', class: 'correct', confidence: 0.85, reason: 'short back-to cue' };
+  }
+  // P3 · Indonesian correction cues
+  //   "sebenarnya, ganti ke walnut" · "sebetulnya ubah ke oak" ·
+  //   "tunggu, kembali ke oak" · "maaf, saya mau ganti ke walnut" ·
+  //   "oh tidak, walnut saja" · "maksud saya walnut"
+  if (!looksLikeDefinitionQuestion && /^(sebenarnya|sebetulnya|sebenernya|tunggu|maaf|oh\s+(tidak|bukan)|tidak,|bukan,|maksud\s+saya)[,\s]/i.test(lower)) {
+    return { slug: 'correct', class: 'correct', confidence: 0.92, reason: 'correction cue at start (id)' };
+  }
+  if (!looksLikeDefinitionQuestion && /\b(ganti|ubah|ubah\s+ke|ganti\s+ke|jadikan|jadi)\s+(ke|jadi|menjadi)?\s*(oak|walnut|ash|pine|beech|maple|glass|kaca|logam|metal)\b/i.test(lower)) {
+    return { slug: 'correct', class: 'correct', confidence: 0.9, reason: 'change-to cue (id)' };
+  }
+  if (!looksLikeDefinitionQuestion && /\bkembali\s+ke\s+(oak|walnut|ash|pine|beech|maple|glass|kaca|logam|metal)\b/i.test(lower)) {
+    return { slug: 'correct', class: 'correct', confidence: 0.9, reason: 'back-to cue (id)' };
   }
   // Price cue takes priority over elliptical prefix (e.g., "And installation cost?" is a price ask)
   if (/\b(how much|price[s]?|cost[s]?|expensive|cheap|cheaper|budget|rough (figure|number|estimate|price|idea)|ballpark|estimate|quote[s]?)\b/i.test(lower)
       || (/\bfigure\b/i.test(lower) && lower.length < 40)) {
-    return { slug: 'ask_price', class: 'price', confidence: 0.9, reason: 'price cue (priority over ellipsis)' };
+    return { slug: 'ask_price', class: 'price', confidence: 0.9, reason: 'price cue (priority over ellipsis) (en)' };
+  }
+  // P3 · Indonesian price cues · doctrine-critical (Owner-Provenanced
+  // Pricing) · MUST classify as ask_price so the price-fabrication guard
+  // fires · "berapa harganya" · "harga(nya) berapa" · "biaya berapa" ·
+  // "perkiraan biaya" · "ongkos berapa" · "kira-kira berapa".
+  if (/\bberapa\s+(harga|biaya|ongkos|estimasi|kira-kira)/i.test(lower)
+      || /\b(harga|biaya|ongkos)(nya)?\s+(berapa|berapa\s+kira-kira)/i.test(lower)
+      || /\bperkiraan\s+(biaya|harga|ongkos)\b/i.test(lower)
+      || /\bkira-kira\s+berapa\b/i.test(lower)) {
+    return { slug: 'ask_price', class: 'price', confidence: 0.9, reason: 'price cue (id)' };
   }
   // "What about X" → elliptical revisit
   if (/^(what about|how about|and\s|and if)\b/i.test(lower)) {
-    return { slug: 'ask_what_about', class: 'revisit', confidence: 0.92, reason: 'elliptical follow-up cue' };
+    return { slug: 'ask_what_about', class: 'revisit', confidence: 0.92, reason: 'elliptical follow-up cue (en)' };
   }
-  // Recommendation ask takes priority when "which is better for X" is asking NEX to advise
-  if (/\bwhich\s+(is\s+)?(better|best|recommend)\s+for\b/i.test(lower)) {
-    return { slug: 'ask_recommendation', class: 'decide', confidence: 0.88, reason: 'recommendation cue (better for ...)' };
+  // P3 · Indonesian "bagaimana dengan / kalau" · "dan kalau" · "dan bagaimana"
+  if (/^(bagaimana\s+(dengan|kalau|jika|tentang)|kalau\s+(untuk|dengan)|dan\s+(kalau|bagaimana))\b/i.test(lower)) {
+    return { slug: 'ask_what_about', class: 'revisit', confidence: 0.9, reason: 'elliptical follow-up cue (id)' };
+  }
+  // Recommendation ask takes priority when the customer is asking NEX to advise.
+  // Widened 2026-08-20 (P2-R1): catch "what would you recommend for X" ·
+  // "what style would you recommend" · "any recommendations" · etc.
+  if (/\bwhich\s+(is\s+)?(better|best|recommend)\s+for\b/i.test(lower)
+      || /\b(what|which)\s+(would|do|should)\s+(you|we)\s+(recommend|suggest|advise|pick|choose|go\s+for)\b/i.test(lower)
+      || /\bwhat do you (think|recommend|suggest|advise)\b/i.test(lower)
+      || /\bany\s+recommendations?\s+(for|on|about)\b/i.test(lower)
+      // "what NOUN would you recommend" · "which NOUN do you suggest"
+      || /\b(what|which)\s+\S+(\s+of\s+\S+)?\s+(would|do|should)\s+(you|we)\s+(recommend|suggest|advise|pick|choose)\b/i.test(lower)
+      // Generic "would you recommend"
+      || /\bwould\s+(you|we)\s+(recommend|suggest|advise)\b/i.test(lower)) {
+    return { slug: 'ask_recommendation', class: 'decide', confidence: 0.88, reason: 'recommendation cue (en widened)' };
+  }
+  // P3 · Indonesian recommendation cues
+  if (/\b(apa|mana)\s+(yang\s+)?(kamu|Anda|kau)\s+(rekomendasikan|sarankan|sarankan|anjurkan)/i.test(lower)
+      || /\brekomendasi(nya)?\s+apa\b/i.test(lower)
+      || /\bmana\s+yang\s+(lebih\s+baik|lebih\s+bagus|kamu\s+pilih|Anda\s+pilih)/i.test(lower)
+      || /\bapa\s+saran(nya)?\b/i.test(lower)) {
+    return { slug: 'ask_recommendation', class: 'decide', confidence: 0.88, reason: 'recommendation cue (id)' };
   }
   // Comparison cues
   if (/\b(versus|vs\.?|compared to|difference between|or\b.*\bor\b|which is better)\b/i.test(lower)) {
-    return { slug: 'compare', class: 'compare', confidence: 0.9, reason: 'comparison cue' };
+    return { slug: 'compare', class: 'compare', confidence: 0.9, reason: 'comparison cue (en)' };
+  }
+  // P3 · Indonesian comparison cues
+  if (/\b(vs|banding|dibanding|dibandingkan|perbandingan)\b/i.test(lower)
+      || /\bapa\s+(bedanya|perbedaan(nya)?)\b/i.test(lower)
+      || /\bmana\s+yang\s+lebih\s+baik\b/i.test(lower)) {
+    return { slug: 'compare', class: 'compare', confidence: 0.88, reason: 'comparison cue (id)' };
   }
   // Installation cues
   if (/\b(installation|install|fitting|fitted|delivery)\b/i.test(lower)) {
-    return { slug: 'ask_installation', class: 'discover', confidence: 0.85, reason: 'install cue' };
+    return { slug: 'ask_installation', class: 'discover', confidence: 0.85, reason: 'install cue (en)' };
+  }
+  // P3 · Indonesian installation cues.
+  // Stem-friendly: Indonesian nouns take suffixes ("instalasinya", "pemasangannya"),
+  // so allow trailing word chars. \b at start still anchors to a word boundary.
+  if (/\b(instalasi|pemasangan|memasang|pengiriman|pengantaran)\w*/i.test(lower)) {
+    return { slug: 'ask_installation', class: 'discover', confidence: 0.85, reason: 'install cue (id)' };
   }
   // Definition / discovery
   if (/^(what is|what are|what does|define|meaning of|whats)\b/i.test(lower)) {
-    return { slug: 'ask_definition', class: 'discover', confidence: 0.88, reason: 'definition cue' };
+    return { slug: 'ask_definition', class: 'discover', confidence: 0.88, reason: 'definition cue (en)' };
+  }
+  // P3 · Indonesian definition cues
+  if (/^(apa\s+itu|apa\s+(arti|artinya|maksud|maksudnya)|jelaskan|coba\s+jelaskan)\b/i.test(lower)) {
+    return { slug: 'ask_definition', class: 'discover', confidence: 0.88, reason: 'definition cue (id)' };
   }
   // Options / discovery · expanded for M4-BUG-02
   // Catches: "what options have i" · "what options do i have" · "what have i got" ·
@@ -211,17 +311,32 @@ export function extractIntent(text, store) {
       || /\bwhat\s+(are|is)\s+(my|the)\s+(options|choices|possibilities)\b/i.test(lower)
       || /\bwhat\s+can\s+i\s+(choose|pick|have|get|do)\b/i.test(lower)
       || /^what\s+(wood|timber|material)\b/i.test(lower)) {
-    return { slug: 'ask_options', class: 'discover', confidence: 0.9, reason: 'options cue (expanded)' };
+    return { slug: 'ask_options', class: 'discover', confidence: 0.9, reason: 'options cue (expanded en)' };
+  }
+  // P3 · Indonesian options cues
+  //   "apa saja pilihan untuk balustrade" · "pilihan apa saja" ·
+  //   "opsi apa yang ada" · "apa saja yang tersedia" · "jenis apa saja"
+  if (/\bapa\s+saja\s+(pilihan|opsi|jenis|macam|tipe)/i.test(lower)
+      || /\b(pilihan|opsi|jenis|macam|tipe)\s+apa\s+(saja|yang\s+ada|yang\s+tersedia)/i.test(lower)
+      || /\bapa\s+saja\s+yang\s+(tersedia|bisa|ada)\b/i.test(lower)) {
+    return { slug: 'ask_options', class: 'discover', confidence: 0.88, reason: 'options cue (id)' };
   }
   // M4-BUG-02 · bare-noun-plural category queries — "wood materials" · "materials"
   // · "prices" · "types" · "styles" · "handrails" · "balustrades" · "finishes"
   // Short 1-3 word plural noun that names a category is a category-listing ask,
   // NOT a specify. This runs BEFORE the bare-material-specify rule below so
   // "wood" alone or "wood materials" doesn't get mis-labelled as specify_material.
+  //
+  // P3 (2026-08-20 · Indonesian): the specific-material check now uses
+  // extractEntities so Indonesian aliases (kaca → glass, logam → metal)
+  // count as "specific material" and prevent the mis-classification.
+  // Prior English-only regex made "Tambahkan balustrade kaca" become
+  // ask_options instead of specify_material — silently losing state.
   const wordCount = lower.split(/\s+/).length;
   if (wordCount <= 3 && /\b(materials?|options?|choices?|types?|kinds?|styles?|prices?|costs?|handrails?|balustrades?|finishes?|colours?|woods?|timbers?|constructions?)\b/i.test(lower)) {
-    // Only fire if there's no specific material choice being made (e.g. "walnut please")
-    const hasSpecificMaterial = /\b(oak|walnut|ash|pine|beech|maple|sapele|iroko|glass|metal|concrete)\b/i.test(lower);
+    const bareCheckEnts = extractEntities(text, store);
+    const SPECIFIC_MATERIAL_SLUGS = new Set(['oak','walnut','ash','pine','beech','maple','sapele','iroko','glass','metal','concrete']);
+    const hasSpecificMaterial = bareCheckEnts.some(e => SPECIFIC_MATERIAL_SLUGS.has(e));
     if (!hasSpecificMaterial) {
       return { slug: 'ask_options', class: 'discover', confidence: 0.85, reason: 'bare category-plural query' };
     }
@@ -241,15 +356,51 @@ export function extractIntent(text, store) {
   // Close · check BEFORE confirm so "great thanks" isn't captured as confirm.
   // Matches "thanks" anywhere in a short polite closer (leading adjective allowed).
   if (/\b(thanks|thank you|cheers|thanx)\b/i.test(lower) && lower.length < 80) {
-    return { slug: 'close', class: 'close', confidence: 0.88, reason: 'close (thanks) cue' };
+    return { slug: 'close', class: 'close', confidence: 0.88, reason: 'close (thanks) cue (en)' };
   }
   if (/^(bye|goodbye|thats all|that'?s all|catch you later|talk later)\b/i.test(lower)) {
-    return { slug: 'close', class: 'close', confidence: 0.85, reason: 'close (farewell) cue' };
+    return { slug: 'close', class: 'close', confidence: 0.85, reason: 'close (farewell) cue (en)' };
+  }
+  // P3 · Indonesian close cues
+  if (/\b(terima\s+kasih|makasih|thanks)\b/i.test(lower) && lower.length < 80) {
+    return { slug: 'close', class: 'close', confidence: 0.88, reason: 'close (thanks) cue (id)' };
+  }
+  if (/^(sampai\s+jumpa|selamat\s+tinggal|dah\s+cukup|sudah\s+cukup|itu\s+saja|udah\s+cukup)\b/i.test(lower)) {
+    return { slug: 'close', class: 'close', confidence: 0.85, reason: 'close (farewell) cue (id)' };
   }
   // Confirmation
   if (/^(yes|yeah|yep|ok|okay|sounds good|that sounds right|great|perfect)\b/i.test(lower)) {
-    return { slug: 'confirm', class: 'confirm', confidence: 0.85, reason: 'confirmation cue' };
+    return { slug: 'confirm', class: 'confirm', confidence: 0.85, reason: 'confirmation cue (en)' };
   }
+  // P3 · Indonesian confirmation cues
+  if (/^(ya|iya|oke|okey|baik|betul|benar|setuju|sip|boleh|siap)\b/i.test(lower)) {
+    return { slug: 'confirm', class: 'confirm', confidence: 0.85, reason: 'confirmation cue (id)' };
+  }
+
+  // P0-#2 (2026-08-20 speaking-quality audit): information-seeking questions
+  // MUST NOT fall through to specify_* rules. S5 of the audit ("what's the
+  // name of the metal bracket that holds a floating tread to the wall in
+  // Scandinavian houses?") was mis-routed to specify_material because the
+  // "in " token matched a specify cue and `metal` was an entity — writing
+  // material_primary=metal[customer_stated] into state. Fix: any message
+  // beginning with a question word or "what's the X" is asking, not
+  // choosing. Route to ask_definition or ask_options based on the noun
+  // shape · never to specify_*.
+  const startsWithQuestionWord = /^(what|which|how|why|when|where|who|tell\s+me|show\s+me|explain)\b/i.test(lower.trim());
+  const isWhatsTheX = /\bwhat'?s\s+(the|a|an)\b/i.test(lower);
+  // P3 · Indonesian question-word start. "Apa yang", "Bagaimana kalau",
+  // "Mengapa", etc. — same route: info-seeking, must not become specify_*.
+  const startsWithIdQuestionWord = /^(apa|bagaimana|mengapa|kenapa|di\s*mana|kapan|siapa|berapa|apakah|jelaskan|tolong\s+jelaskan)\b/i.test(lower.trim());
+  if (startsWithQuestionWord || isWhatsTheX || startsWithIdQuestionWord) {
+    // Category-listing shape? → ask_options
+    if (/\b(options|choices|types|kinds|styles|materials?|woods?|timbers?|finishes?|colours?|handrails?|balustrades?|prices?)\b/i.test(lower)
+        || /\b(pilihan|opsi|jenis|macam|tipe)\b/i.test(lower)) {
+      return { slug: 'ask_options', class: 'discover', confidence: 0.85, reason: 'question-word start + category noun' };
+    }
+    // Everything else → ask_definition (specific-thing query · "what's the name of X" · "what is a Y")
+    return { slug: 'ask_definition', class: 'discover', confidence: 0.8, reason: 'question-word start · info-seeking' };
+  }
+
   // Specify constraint — a location/context entity in a possessive / short frame
   const ents = extractEntities(text, store);
   const locations = ents.filter(e => {
@@ -358,9 +509,19 @@ export function extractMultiIntent(text, store) {
     return { primary: extractIntent(raw, store), secondary: [], parts: [raw] };
   }
   const perPart = parts.map(p => ({ text: p, intent: extractIntent(p, store) }));
-  const primary = perPart[0].intent;
+  // P2-R1 (2026-08-20): when a message mixes CONTEXT + QUESTION (e.g.
+  // "Loft conversion, low ceilings. What do you recommend?"), the
+  // QUESTION is the primary intent and the context is state to capture.
+  // Prior behaviour picked perPart[0] which meant the ask_recommendation
+  // got buried in secondary. Now: prefer any ask_* / correct / compare
+  // intent as primary, then question-marked parts, then fall back to
+  // the first part.
+  const askOrDecidePriority = perPart.find(p => p.intent.slug.startsWith('ask_') || p.intent.slug === 'compare' || p.intent.slug === 'correct');
+  const questionShaped = perPart.find(p => /\?\s*$/.test(p.text));
+  const primary = (askOrDecidePriority ?? questionShaped)?.intent ?? perPart[0].intent;
   // secondary intents = distinct-slug remainder
-  const secondary = perPart.slice(1)
+  const secondary = perPart
+    .filter(p => p.intent !== primary)
     .filter(p => p.intent.slug !== 'statement' || p.intent.confidence > 0.7)
     .filter(p => p.intent.slug !== primary.slug)
     .map(p => ({ ...p.intent, source_part: p.text }));

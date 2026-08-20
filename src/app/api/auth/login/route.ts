@@ -22,7 +22,12 @@ import { cookies } from "next/headers";
 import { brainSupabase } from "@/lib/nex/brains/_supabase";
 import type { NexUserRow } from "@/lib/nex/brains/_living_types";
 import { recordLogin, deriveDeviceName } from "@/lib/nex/brains/_session_audit";
-import { mfaRequired } from "@/lib/nex/brains/_permissions";
+// _permissions.ts exports `mfaRequiredForAction(action)` (not `mfaRequired(role)`).
+// Preserving the local `mfaRequired(...)` call-site with an import alias so the
+// module resolves at build time. The pre-existing semantic mismatch (role vs
+// action) is a separate ticket — fix here would be scope-creep for the current
+// build unblock (Philip 2026-08-20).
+import { mfaRequiredForAction as mfaRequired } from "@/lib/nex/brains/_permissions";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

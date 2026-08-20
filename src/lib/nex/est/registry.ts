@@ -10,12 +10,14 @@ import { plasteringAdapter } from "./trades/plastering";
 import { concretingAdapter } from "./trades/concreting";
 import { pavingAdapter } from "./trades/paving";
 import { paintingAdapter } from "./trades/painting";
+import { staircaseAdapter } from "./trades/staircase";
 
 export const ADAPTERS: TradeAdapter[] = [
   plasteringAdapter,
   concretingAdapter,
   pavingAdapter,
-  paintingAdapter
+  paintingAdapter,
+  staircaseAdapter
 ];
 
 export function findAdapter(brief: string, tradeHint?: string): TradeAdapter | null {
