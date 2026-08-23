@@ -29,18 +29,17 @@ import {
 } from "react";
 import {
   ChevronRight,
-  DoorOpen,
   Grid3x3,
   Hammer,
   LayoutGrid,
   Layers,
+  Lightbulb,
   MapPin,
   Megaphone,
   MessageSquare,
   SlidersHorizontal,
   Sparkles,
   Star,
-  UtensilsCrossed,
   X,
 } from "lucide-react";
 import Link from "next/link";
@@ -64,11 +63,10 @@ import {
 } from "./interstitials";
 import { CountryPicker } from "./CountryPicker";
 import {
-  getSelectedCountry,
   setSelectedCountry,
   type SelectedCountry,
 } from "@/lib/nex/geography/countryStore";
-import { findCountryByCode, flagForDbValue } from "@/lib/nex/geography/countries";
+import { flagForDbValue } from "@/lib/nex/geography/countries";
 import { formatCardLocation } from "@/lib/nex/geography/formatAddress";
 
 type ApiResponse = {
@@ -87,6 +85,12 @@ type Filters = {
   sort: "relevance" | "newest";
   /** ONE Trade Centre · ONE URL · country is a first-class filter. */
   country: SelectedCountry;
+  /** Capability filter (e.g. "refacing"). Sent as ?capability=... to the feed
+   *  API, which resolves it via the OR-chain on capabilities JSONB +
+   *  business_type + legacy category label. Chosen over category="Staircase
+   *  Refacing" because refacing spans multiple business types (a manufacturer
+   *  can also do refacing) — capability matches the taxonomy memory. */
+  capability: string;
 };
 
 const PAGE_SIZE = 24;
@@ -99,6 +103,7 @@ const EMPTY_FILTERS: Filters = {
   verified_only: false,
   sort: "relevance",
   country: "all",
+  capability: "",
 };
 
 function formatPrice(pence: number): string {
@@ -118,7 +123,10 @@ function buildQuery(
   const params = new URLSearchParams();
   if (query.trim()) params.set("q", query.trim());
   if (filters.postcode.trim()) params.set("postcode", filters.postcode.trim());
-  if (filters.category.trim()) params.set("category", filters.category.trim());
+  const category = (filters.category ?? "").trim();
+  if (category) params.set("category", category);
+  const capability = (filters.capability ?? "").trim();
+  if (capability) params.set("capability", capability);
   if (filters.country && filters.country !== "all")
     params.set("country", filters.country);
   const minP = Number(filters.min_price);
@@ -138,11 +146,24 @@ type AskNexReply = {
   brain_matches: BrainEntry[];
 };
 
-export function NexCentreLiveFeed() {
+export function NexCentreLiveFeed({
+  initialCountry = "GB",
+}: {
+  /** Country resolved server-side from the `nex_selected_country` cookie
+   *  or `?country=` URL param. Injected by /nex-app/centre/page.tsx so SSR
+   *  HTML and first client render agree on the CountryPicker label — no
+   *  hydration mismatch, no post-mount reshuffle, no wasted country="all"
+   *  fetch that used to time out the browser. Defaults to "GB" so the
+   *  component still works if a different route renders it without a prop. */
+  initialCountry?: SelectedCountry;
+} = {}) {
   const [items, setItems] = useState<CentreFeedItem[]>([]);
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
-  const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
+  const [filters, setFilters] = useState<Filters>(() => ({
+    ...EMPTY_FILTERS,
+    country: initialCountry,
+  }));
   const [showFilters, setShowFilters] = useState(false);
   const [loading, setLoading] = useState(true); // first-load skeleton
   const [loadingMore, setLoadingMore] = useState(false);
@@ -152,22 +173,6 @@ export function NexCentreLiveFeed() {
   const [emptyFallback, setEmptyFallback] = useState<CentreFeedItem[]>([]);
   const [verifiedFilterDegraded, setVerifiedFilterDegraded] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
-
-  // Country selection · rehydrate from URL first, then localStorage/cookie.
-  // Country picker's `onChange` writes back through countryStore, so this
-  // effect only ever runs on cold mount.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    let initial: SelectedCountry | null = null;
-    const fromUrl = new URLSearchParams(window.location.search).get("country");
-    if (fromUrl === "all") initial = "all";
-    else if (fromUrl) initial = findCountryByCode(fromUrl)?.code ?? null;
-    if (!initial) initial = getSelectedCountry();
-    if (initial && initial !== filters.country) {
-      setFilters((f) => ({ ...f, country: initial! }));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // AskNex chat panel state
   const [askQuery, setAskQuery] = useState("");
@@ -221,13 +226,6 @@ export function NexCentreLiveFeed() {
       setAskLoading(false);
     }
   }, [askQuery, askLoading, filters.postcode]);
-
-  const toggleHeroChip = useCallback((label: string) => {
-    setFilters((f) => ({
-      ...f,
-      category: f.category === label ? "" : label,
-    }));
-  }, []);
 
   // Debounce the search query (300ms) so keystrokes don't hammer the API.
   useEffect(() => {
@@ -593,9 +591,13 @@ export function NexCentreLiveFeed() {
           )}
 
           {/* Trade-domain chips — Philip 2026-08-05. Reframed from entity types
-              (Products/Suppliers/Services/Projects/Deals) to trade domains
-              (Staircase/Kitchen/Doors/Flooring) so the filter composes with
-              the Brain architecture: each chip corresponds to a NEX Brain.
+              (Products/Suppliers/Services/Projects/Deals) to trade
+              specialisations WITHIN the staircase vertical:
+                All        · no filter · mixed
+                Staircase  · capability=manufacture (companies that make stairs)
+                Stairparts · capability=kit_or_product_supplier
+                StairRefacing · capability=refacing (spans multiple business types)
+                Stairs Lighting · search q=lighting (no capability tagged yet)
               "All" leads the row so first-time visitors immediately see it
               as the default (mixed trades) and can explicitly return to it
               from any active filter. */}
@@ -603,40 +605,68 @@ export function NexCentreLiveFeed() {
             <HeroChip
               icon={LayoutGrid}
               label="All"
-              active={filters.category === ""}
-              onClick={() =>
-                setFilters((f) => ({ ...f, category: "" }))
+              active={
+                filters.category === "" &&
+                filters.capability === "" &&
+                query.toLowerCase() !== "lighting"
               }
+              onClick={() => {
+                setFilters((f) => ({ ...f, category: "", capability: "" }));
+                if (query.toLowerCase() === "lighting") setQuery("");
+              }}
             />
             <HeroChip
               icon={Layers}
               label="Staircase"
-              active={filters.category === "Staircase"}
-              onClick={() => toggleHeroChip("Staircase")}
-            />
-            <HeroChip
-              icon={Hammer}
-              label="Refacing"
-              active={filters.category === "Staircase Refacing"}
-              onClick={() => toggleHeroChip("Staircase Refacing")}
-            />
-            <HeroChip
-              icon={UtensilsCrossed}
-              label="Kitchen"
-              active={filters.category === "Kitchen"}
-              onClick={() => toggleHeroChip("Kitchen")}
-            />
-            <HeroChip
-              icon={DoorOpen}
-              label="Doors"
-              active={filters.category === "Doors"}
-              onClick={() => toggleHeroChip("Doors")}
+              active={filters.capability === "manufacture"}
+              onClick={() => {
+                setFilters((f) => ({
+                  ...f,
+                  category: "",
+                  capability: f.capability === "manufacture" ? "" : "manufacture",
+                }));
+                if (query.toLowerCase() === "lighting") setQuery("");
+              }}
             />
             <HeroChip
               icon={Grid3x3}
-              label="Flooring"
-              active={filters.category === "Flooring"}
-              onClick={() => toggleHeroChip("Flooring")}
+              label="Stairparts"
+              active={filters.capability === "kit_or_product_supplier"}
+              onClick={() => {
+                setFilters((f) => ({
+                  ...f,
+                  category: "",
+                  capability:
+                    f.capability === "kit_or_product_supplier"
+                      ? ""
+                      : "kit_or_product_supplier",
+                }));
+                if (query.toLowerCase() === "lighting") setQuery("");
+              }}
+            />
+            <HeroChip
+              icon={Hammer}
+              label="StairRefacing"
+              active={filters.capability === "refacing"}
+              onClick={() => {
+                setFilters((f) => ({
+                  ...f,
+                  category: "",
+                  capability: f.capability === "refacing" ? "" : "refacing",
+                }));
+                if (query.toLowerCase() === "lighting") setQuery("");
+              }}
+            />
+            <HeroChip
+              icon={Lightbulb}
+              label="Stairs Lighting"
+              active={query.toLowerCase() === "lighting"}
+              onClick={() => {
+                setFilters((f) => ({ ...f, category: "", capability: "" }));
+                setQuery(
+                  query.toLowerCase() === "lighting" ? "" : "lighting"
+                );
+              }}
             />
           </div>
         </div>

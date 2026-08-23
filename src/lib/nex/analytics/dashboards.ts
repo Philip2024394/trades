@@ -52,10 +52,13 @@ export async function executiveDashboard(): Promise<ExecutiveDashboard> {
     );
     const campaigns_today = Number((campaignsTodayRes.rows[0] as { n: number })?.n ?? 0);
 
-    // LIVE (from delivery engine)
+    // LIVE (from delivery engine) · Task #75 Bundle A (2026-08-22):
+    // delivery workers redirected from dropped nex.delivery_workers to
+    // canonical nex.worker_heartbeat WHERE worker_type='delivery'.
     const liveRes = await c.query(
       `SELECT
-         (SELECT COUNT(*)::int FROM nex.delivery_workers WHERE last_seen_at > NOW() - INTERVAL '2 minutes') AS live_workers,
+         (SELECT COUNT(*)::int FROM nex.worker_heartbeat
+             WHERE worker_type = 'delivery' AND last_heartbeat_at > NOW() - INTERVAL '2 minutes') AS live_workers,
          (SELECT COUNT(*)::int FROM nex.delivery_jobs WHERE status IN ('pending','running')) AS queue_depth,
          (SELECT COUNT(*)::int FROM nex.delivery_jobs WHERE status = 'dead_letter') AS dead_letter,
          (SELECT MIN(scheduled_for) FROM nex.delivery_jobs WHERE status = 'pending') AS next_scheduled_at`,

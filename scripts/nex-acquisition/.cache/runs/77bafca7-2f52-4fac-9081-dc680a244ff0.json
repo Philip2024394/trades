@@ -1,0 +1,187 @@
+{
+  "jobId": "77bafca7-2f52-4fac-9081-dc680a244ff0",
+  "vertical": "food",
+  "city": "Yogyakarta",
+  "bbox": {
+    "sw": [
+      -7.78,
+      110.45
+    ],
+    "ne": [
+      -7.74,
+      110.5
+    ]
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-22T11:46:22.254Z",
+  "finishedAt": "2026-08-22T11:46:35.102Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 135,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 135,
+    "matched_exact": 110,
+    "matched_high": 6,
+    "ambiguous": 3,
+    "unnamed": 0,
+    "new_candidates": 16,
+    "enriched": 3,
+    "gate3_contactable": 4,
+    "gate4_eligible": 4,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 4,
+    "rejected_by_gate": 12,
+    "errors": 0
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#FL-2026-0013X",
+        "name": "Pasar Digital Banyunibo",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-0013Y",
+        "name": "Lituhayu Shadow \"Puppet\" Coffee",
+        "category": "coffee-cafe",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-0013Z",
+        "name": "Loewak Coffee Kalasan",
+        "category": "coffee-cafe",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-00140",
+        "name": "Smart Bakery",
+        "category": "ice-cream-dessert",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-00141",
+        "name": "Kopi Latar",
+        "category": "coffee-cafe",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-00142",
+        "name": "Esthy Cake & Bakery",
+        "category": "ice-cream-dessert",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-00143",
+        "name": "Aneka Frozen Food",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-00144",
+        "name": "Aneka Snack & Jajan Pasar Kurnia",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [
+      {
+        "candidateName": "Warung Makan Keluarga",
+        "existingName": "warung makan",
+        "existingRef": "#FL-2026-0006H",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Sate Kambing Ngebruk",
+        "existingName": "Kambing Sate",
+        "existingRef": "#FL-2026-0009M",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Sop Ayam Pak Mim Klaten",
+        "existingName": "Sop Ayam Pak Min Klaten",
+        "existingRef": "#FL-2026-000EQ",
+        "score": "0.600"
+      }
+    ],
+    "contactable": [
+      {
+        "publicRef": "#FL-2026-0013Y",
+        "name": "Lituhayu Shadow \"Puppet\" Coffee",
+        "whatsapp": null,
+        "phone": "+62 274 2850353",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-00142",
+        "name": "Esthy Cake & Bakery",
+        "whatsapp": "+62 815 9424 712",
+        "phone": "+62 896 2270 0700",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-00145",
+        "name": "Indi Cake & Bakery",
+        "whatsapp": "+62 815 7898 6506",
+        "phone": "+62 274 4960 55",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-00147",
+        "name": "Esthy Cake & Bakery",
+        "whatsapp": "+62 896-7270-0700",
+        "phone": null,
+        "website": null
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#FL-2026-0013X",
+        "name": "Pasar Digital Banyunibo",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-0013Z",
+        "name": "Loewak Coffee Kalasan",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-00140",
+        "name": "Smart Bakery",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-00141",
+        "name": "Kopi Latar",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-00143",
+        "name": "Aneka Frozen Food",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": []
+}

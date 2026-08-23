@@ -22,6 +22,7 @@
     "nex:eval": "node scripts/eval-nex-chat.mjs",
     "nex:eval:dry": "node scripts/eval-nex-chat.mjs --dry-run",
     "nex:worker:cloud": "tsx --env-file=.env.local scripts/nex-brain-cloud-worker.ts",
+    "dev:workers": "node --env-file=.env.local scripts/nex-dev-scheduler.mjs",
     "nex:verify-storage": "tsx scripts/verify-storage-pilot.ts",
     "nex:bootstrap-postgres": "node scripts/bootstrap-nex-postgres.mjs",
     "nex:apply-storage-schema": "node scripts/apply-nex-storage-schema.mjs",
@@ -100,6 +101,7 @@
     "stripe": "^17.7.0",
     "tailwind-merge": "^3.6.0",
     "tailwindcss-animate": "^1.0.7",
+    "tesseract.js": "^7.0.0",
     "unzipper": "^0.12.5",
     "web-push": "^3.6.7",
     "zod": "^4.4.3"

@@ -39,12 +39,12 @@ const SECTIONS: Section[] = [
   { href: "/nex-app/messages",               label: "Messages",             description: "Direct chats with your contacts",    icon: MessageSquare },
   { href: "/nex-app/contacts",               label: "Contacts",             description: "Your saved connections + groups",    icon: Users },
   { href: "/nex-app/centre",                 label: "Trade Centre",         description: "Marketplace: products · services",   icon: Store },
-  { href: "/nex-app/nex-brain/comms-social", label: "Nex Marketing",        description: "Get your business seen",             icon: Share2 },
+  { href: "/nex-head-quarters/comms-social", label: "Nex Marketing",        description: "Get your business seen",             icon: Share2 },
   // Phase 12.4 · Dedicated Knowledge Factory page. Physical hierarchy
   // (Inbox → Workers → Warehouse → Vault) driven by real state
   // transitions from workers-live / warehouse / timeline. Operations
   // Centre remains reachable directly for the older admin surfaces.
-  { href: "/nex-app/nex-brain/factory",           label: "Knowledge Factory", description: "Inbox · Workers · Warehouse · Vault", icon: Factory },
+  { href: "/nex-head-quarters/factory",           label: "Knowledge Factory", description: "Inbox · Workers · Warehouse · Vault", icon: Factory },
   { href: "/nex-app/staircase-configurator", label: "Staircase Configurator", description: "3D configurator + Nex Designs",    icon: Ruler },
   { href: "/nex-app/design-system",          label: "Design System",        description: "Design tokens · components",         icon: Palette },
 ];

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Bifurcated (imperial) walk line">
+  <defs>
+    <marker id="a" viewBox="0 0 12 12" refX="6" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M1 1 L11 6 L1 11 Z" fill="#F26C1F"/>
+    </marker>
+  </defs>
+  <!-- Up centre to the mid-landing, then splits into two arms -->
+  <line x1="120" y1="215" x2="120" y2="140" stroke="#F26C1F" stroke-width="3" stroke-linecap="round"/>
+  <!-- Left arm -->
+  <path d="M120,140 Q120,115 95,115 L45,115 L45,25"
+        fill="none" stroke="#F26C1F" stroke-width="3" stroke-linecap="round"
+        marker-end="url(#a)"/>
+  <!-- Right arm -->
+  <path d="M120,140 Q120,115 145,115 L195,115 L195,25"
+        fill="none" stroke="#F26C1F" stroke-width="3" stroke-linecap="round"
+        marker-end="url(#a)"/>
+  <circle cx="120" cy="222" r="6" fill="#FFFFFF" stroke="#F26C1F" stroke-width="2.5"/>
+</svg>

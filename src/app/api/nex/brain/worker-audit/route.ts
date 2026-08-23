@@ -17,6 +17,10 @@ import { z } from "zod";
 import { createClient } from "@supabase/supabase-js";
 // V-1b · D9 route-boundary validation adopted 2026-08-10.
 import { validateSearchParams } from "@/lib/nex/brain/http/validate-input";
+// Task #72 Step 1c (2026-08-22) · heartbeats now sourced from canonical
+// nex.worker_heartbeat via brainStore · kills the direct sb.from bypass
+// that used to read the dropped plural table.
+import { brainStore } from "@/lib/nex/brain/storage";
 
 const QuerySchema = z.object({
   hours: z.coerce.number().int().min(1).max(720).default(24),
@@ -89,7 +93,14 @@ export async function GET(req: NextRequest) {
     // NOTE: for very high-volume windows this pulls a lot of rows; we cap
     // reasonably. Server-side aggregation via SQL RPC would be more
     // efficient; deferred until row counts justify.
-    const [jobsRes, resultsRes, heartbeatsRes, contradictionsRes, recordsRes] = await Promise.all([
+    //
+    // Task #72 Step 1c: heartbeats now come from the canonical Postgres
+    // singular table via brainStore (was: direct sb.from("worker_heartbeats")
+    // against the now-dropped plural table). Other Supabase telemetry
+    // (jobs · results · contradictions · records) still comes from Supabase
+    // because those tables live there · migrating them is out of scope.
+    const heartbeatsSince = new Date(now - HEARTBEAT_ONLINE_MS).toISOString();
+    const [jobsRes, resultsRes, canonicalHeartbeats, contradictionsRes, recordsRes] = await Promise.all([
       sb.from("worker_jobs")
         .select("id,worker_type,status,created_at,assigned_at,completed_at,attempts,last_error")
         .or(`completed_at.gte.${from},created_at.gte.${from}`)
@@ -98,9 +109,7 @@ export async function GET(req: NextRequest) {
         .select("id,job_id,worker_type,llm_provider,llm_ms,llm_tokens_in,llm_tokens_out,created_at")
         .gte("created_at", from)
         .limit(50000),
-      sb.from("worker_heartbeats")
-        .select("host_id,last_seen_at,uptime_ms,cycles_total,cycles_failed,metadata")
-        .gte("last_seen_at", new Date(now - HEARTBEAT_ONLINE_MS).toISOString()),
+      brainStore().listHeartbeats({ since: heartbeatsSince, limit: 100 }),
       sb.from("contradictions")
         .select("id,detected_at,resolved_at")
         .or(`detected_at.gte.${from},resolved_at.gte.${from}`),
@@ -116,16 +125,30 @@ export async function GET(req: NextRequest) {
 
     if (jobsRes.error)          return err("jobs", jobsRes.error.message);
     if (resultsRes.error)       return err("results", resultsRes.error.message);
-    if (heartbeatsRes.error)    return err("heartbeats", heartbeatsRes.error.message);
     if (contradictionsRes.error)return err("contradictions", contradictionsRes.error.message);
     if (recordsRes.error)       return err("records", recordsRes.error.message);
+
+    // Map canonical singular-table shape → RawCloudWorker shape expected by
+    // the aggregator. Post-Fly, uptime_ms/cycles_total/cycles_failed live in
+    // metadata jsonb (not primary columns) · we surface them from there.
+    const heartbeatsMapped: RawCloudWorker[] = canonicalHeartbeats.map((h) => {
+      const m = (h.metadata ?? {}) as Record<string, unknown>;
+      return {
+        host_id: h.worker_id,
+        last_seen_at: h.last_heartbeat_at,
+        uptime_ms: typeof m.uptime_ms === "number" ? m.uptime_ms : 0,
+        cycles_total: typeof m.cycles_total === "number" ? m.cycles_total : 0,
+        cycles_failed: typeof m.cycles_failed === "number" ? m.cycles_failed : 0,
+        metadata: h.metadata as unknown as Record<string, unknown> | null,
+      } as RawCloudWorker;
+    });
 
     const inputs: AuditInputs = {
       window_from: from,
       window_to: to,
       jobs: (jobsRes.data ?? []) as RawWorkerJob[],
       results: (resultsRes.data ?? []) as RawWorkerResult[],
-      cloud_workers: (heartbeatsRes.data ?? []) as RawCloudWorker[],
+      cloud_workers: heartbeatsMapped,
       // Normalise contradictions column: schema uses `detected_at`,
       // aggregator expects `created_at`.
       contradictions: ((contradictionsRes.data ?? []) as Array<{ id: string; detected_at: string; resolved_at: string | null }>)

@@ -1,0 +1,781 @@
+{
+  "$schema": "internal://nex/staircase-terminology-v1",
+  "version": "1.0.0",
+  "generated": "2026-08-17",
+  "scope": {
+    "countries": ["UK", "IE", "US", "CA", "DE", "AT", "CH", "IT", "FR", "ES", "NL", "BE", "SE", "NO", "DK", "FI", "AU", "NZ"],
+    "principle": "Every concept is a first-class term. Regional variants are attached as translations. Confidence per entry.",
+    "confidence_scale": ["high", "medium", "low", "unknown", "needs_review"]
+  },
+  "layers": {
+    "A_material_family": {
+      "concepts": [
+        {
+          "id": "material.timber",
+          "canonical_en": "Timber staircase",
+          "customer_language": "Made from wood — the most common material in most countries.",
+          "regional": {
+            "UK": "timber staircase / wooden staircase",
+            "IE": "timber staircase",
+            "US": "wood staircase / wood stair",
+            "CA": "wood staircase",
+            "DE": "Holztreppe",
+            "AT": "Holztreppe",
+            "CH-DE": "Holztreppe",
+            "IT": "scala in legno",
+            "FR": "escalier en bois",
+            "ES": "escalera de madera",
+            "NL": "houten trap",
+            "BE-NL": "houten trap",
+            "SE": "trätrappa",
+            "NO": "tretrapp",
+            "DK": "trætrappe",
+            "FI": "puuporras / puuportaikko",
+            "AU": "timber staircase",
+            "NZ": "timber staircase"
+          },
+          "confidence": "high",
+          "sources": ["DIN 18065", "BS 5395", "UNI 10804", "NF DTU 36.3", "CTE DB-SUA"]
+        },
+        {
+          "id": "material.metal",
+          "canonical_en": "Metal staircase",
+          "customer_language": "Steel, aluminium, stainless or brass frame — industrial or contemporary look.",
+          "regional": {
+            "UK": "metal staircase / steel staircase",
+            "US": "steel staircase / metal stair",
+            "DE": "Metalltreppe / Stahltreppe",
+            "IT": "scala in metallo / scala in acciaio",
+            "FR": "escalier métallique / escalier en acier",
+            "ES": "escalera metálica / escalera de acero",
+            "NL": "metalen trap / stalen trap",
+            "SE": "metalltrappa / ståltrappa",
+            "AU": "steel staircase"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "material.glass",
+          "canonical_en": "Glass staircase",
+          "customer_language": "Toughened / laminated glass treads or panels — usually combined with metal or timber structure.",
+          "regional": {
+            "UK": "glass staircase",
+            "DE": "Glastreppe",
+            "IT": "scala in vetro",
+            "FR": "escalier en verre",
+            "ES": "escalera de vidrio / escalera de cristal",
+            "NL": "glazen trap",
+            "SE": "glastrappa",
+            "AU": "glass staircase"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "material.concrete",
+          "canonical_en": "Concrete staircase",
+          "customer_language": "In-situ or precast concrete — often clad in timber or stone.",
+          "regional": {
+            "UK": "concrete staircase",
+            "DE": "Betontreppe",
+            "IT": "scala in cemento / scala in calcestruzzo",
+            "FR": "escalier en béton",
+            "ES": "escalera de hormigón",
+            "NL": "betontrap",
+            "AU": "concrete staircase"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "material.stone",
+          "canonical_en": "Stone staircase",
+          "customer_language": "Natural stone treads — marble, granite, limestone, sandstone.",
+          "regional": {
+            "UK": "stone staircase",
+            "DE": "Steintreppe / Natursteintreppe",
+            "IT": "scala in pietra",
+            "FR": "escalier en pierre",
+            "ES": "escalera de piedra",
+            "NL": "stenen trap",
+            "AU": "stone staircase"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "material.mixed.timber_metal",
+          "canonical_en": "Timber + metal staircase",
+          "customer_language": "Combines wood treads with a metal frame or metal balustrade.",
+          "confidence": "high"
+        },
+        {
+          "id": "material.mixed.timber_glass",
+          "canonical_en": "Timber + glass staircase",
+          "customer_language": "Wood structure with glass balustrade panels.",
+          "confidence": "high"
+        },
+        {
+          "id": "material.mixed.metal_glass",
+          "canonical_en": "Metal + glass staircase",
+          "customer_language": "Metal frame with glass balustrade — contemporary look.",
+          "confidence": "high"
+        },
+        {
+          "id": "material.mixed.timber_metal_glass",
+          "canonical_en": "Timber + metal + glass staircase",
+          "customer_language": "Three-material combination — often mono-stringer with wood treads and glass balustrade.",
+          "confidence": "high"
+        }
+      ]
+    },
+    "B_geometry": {
+      "concepts": [
+        {
+          "id": "geometry.straight",
+          "canonical_en": "Straight flight",
+          "customer_language": "A single flight from bottom to top with no turns.",
+          "regional": {
+            "UK": "straight flight staircase",
+            "US": "straight run staircase",
+            "DE": "gerade Treppe / geradläufige Treppe",
+            "IT": "scala rettilinea",
+            "FR": "escalier droit",
+            "ES": "escalera recta",
+            "NL": "rechte trap",
+            "SE": "rak trappa",
+            "NO": "rett trapp",
+            "DK": "lige trappe",
+            "FI": "suora porras",
+            "AU": "straight staircase",
+            "NZ": "straight staircase"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "geometry.quarter_turn",
+          "canonical_en": "Quarter turn (L-shape)",
+          "customer_language": "One 90° turn — usually with a small landing or a set of winder treads.",
+          "regional": {
+            "UK": "L-shape staircase / quarter turn",
+            "US": "L-shaped staircase",
+            "DE": "viertelgewendelte Treppe / L-Treppe",
+            "IT": "scala a L / scala a un quarto di giro",
+            "FR": "escalier quart tournant",
+            "ES": "escalera en L",
+            "NL": "kwartslag trap / L-trap",
+            "SE": "L-trappa",
+            "AU": "quarter-turn / L-shape staircase"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "geometry.half_turn",
+          "canonical_en": "Half turn (U-shape / dog-leg)",
+          "customer_language": "Two flights turning 180° — sometimes with a half-landing between them.",
+          "regional": {
+            "UK": "U-shape / half turn / dog-leg staircase",
+            "US": "U-shaped staircase / switchback",
+            "DE": "halbgewendelte Treppe / U-Treppe / Podesttreppe",
+            "IT": "scala a U / scala a due quarti di giro",
+            "FR": "escalier demi-tournant / double quart tournant",
+            "ES": "escalera en U",
+            "NL": "halfslag trap / U-trap",
+            "SE": "U-trappa",
+            "AU": "half-turn / U-shape staircase"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "geometry.winder",
+          "canonical_en": "Winder",
+          "customer_language": "Wedge-shaped treads used to turn a corner instead of a landing — saves floor space.",
+          "regional": {
+            "UK": "winder staircase / kite winder",
+            "US": "winder staircase / pie-shaped tread",
+            "DE": "gewendelte Treppe / Wendelstufen",
+            "IT": "scala a piè d'oca / gradini compensati",
+            "FR": "escalier balancé / marches balancées",
+            "ES": "escalera compensada",
+            "NL": "trap met samenkomende treden / wenteltrap-elementen",
+            "SE": "trappa med svängda plansteg",
+            "AU": "winder staircase",
+            "NZ": "winder staircase"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "geometry.spiral",
+          "canonical_en": "Spiral staircase (central column)",
+          "customer_language": "Winds around a load-bearing central column — the tightest space-saving turn.",
+          "regional": {
+            "UK": "spiral staircase",
+            "US": "spiral staircase",
+            "DE": "Spindeltreppe",
+            "IT": "scala a chiocciola",
+            "FR": "escalier en colimaçon / escalier à vis",
+            "ES": "escalera de caracol",
+            "NL": "spiltrap",
+            "BE-NL": "spiltrap",
+            "SE": "spiraltrappa / spindeltrappa (see note)",
+            "NO": "spindeltrapp",
+            "DK": "spindeltrappe",
+            "FI": "kierreporras (keskipilarilla)",
+            "AU": "spiral staircase",
+            "NZ": "spiral staircase"
+          },
+          "notes": "SE uniquely treats spiraltrappa/vindeltrappa/spindeltrappa as synonyms (per Swedish Academy). Elsewhere the central-column vs open-well distinction is rigid. FR often merges colimaçon/hélicoïdal — verify with a photo.",
+          "confidence": "high"
+        },
+        {
+          "id": "geometry.helical",
+          "canonical_en": "Helical staircase (open well, no column)",
+          "customer_language": "Winds around an open central well — no central column — a curved sculptural staircase.",
+          "regional": {
+            "UK": "helical staircase",
+            "US": "helical staircase",
+            "DE": "Wendeltreppe (ohne Spindel) / freitragende Wendeltreppe",
+            "IT": "scala elicoidale",
+            "FR": "escalier hélicoïdal (often used for both — verify)",
+            "ES": "escalera helicoidal (Spain-usage; LatAm ambiguous)",
+            "NL": "wenteltrap",
+            "BE-NL": "wenteltrap",
+            "SE": "vindeltrappa (see spiral note)",
+            "NO": "vindeltrapp",
+            "DK": "vindeltrappe",
+            "FI": "kierreporras (avoin keskiö)",
+            "AU": "helical staircase",
+            "NZ": "helical staircase"
+          },
+          "notes": "Central-column vs open-well is the definitive spiral/helical distinction. FR routinely merges the two.",
+          "confidence": "high"
+        },
+        {
+          "id": "geometry.curved",
+          "canonical_en": "Curved staircase",
+          "customer_language": "Smooth continuous radius — not a full helix — often used as a grand feature.",
+          "regional": {
+            "UK": "curved staircase",
+            "DE": "gebogene Treppe / gewölbte Treppe",
+            "IT": "scala curva / scala circolare",
+            "FR": "escalier courbe",
+            "ES": "escalera curva",
+            "NL": "gebogen trap",
+            "AU": "curved staircase"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "geometry.t_shape",
+          "canonical_en": "T-shape staircase",
+          "customer_language": "A straight flight up that ends in a turn at the top — usually leading into a hallway or landing. Turn direction (left or right) is captured separately.",
+          "regional": {
+            "UK": "T-shape staircase / T-junction staircase",
+            "US": "T-shape staircase",
+            "DE": "T-Treppe",
+            "IT": "scala a T",
+            "FR": "escalier en T",
+            "ES": "escalera en T",
+            "NL": "T-trap",
+            "AU": "T-shape staircase"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "geometry.bifurcated",
+          "canonical_en": "Bifurcated / imperial staircase",
+          "customer_language": "One wide flight that splits into two flights at a mid-landing — grand entrance style.",
+          "regional": {
+            "UK": "bifurcated / imperial staircase",
+            "US": "bifurcated / imperial staircase",
+            "DE": "Podesttreppe mit Teilung / Prunktreppe",
+            "IT": "scala imperiale",
+            "FR": "escalier à l'impériale",
+            "ES": "escalera imperial",
+            "AU": "bifurcated staircase"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "geometry.paddle",
+          "canonical_en": "Alternating tread / paddle / space-saver",
+          "customer_language": "Half-treads that alternate left/right — legal only for loft access or secondary rooms (rules vary by country).",
+          "regional": {
+            "UK": "paddle stair / space-saver stair",
+            "US": "alternating tread device (IBC 1011.14)",
+            "DE": "Sambatreppe / Raumspartreppe",
+            "IT": "scala salvaspazio",
+            "FR": "escalier gain de place / escalier à pas japonais",
+            "ES": "escalera compacta / escalera japonesa",
+            "NL": "vlizotrap / molenaarstrap",
+            "SE": "utrymmesbesparande trappa",
+            "AU": "space-saver staircase"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "geometry.floating",
+          "canonical_en": "Floating staircase",
+          "customer_language": "Any staircase where the support is hidden — visually appears to float.",
+          "notes": "This is a VISUAL/marketing tag. Structurally it may be cantilever, mono-stringer, or bolt-fixed (Bolzentreppe). Record both a visual and structural tag.",
+          "regional": {
+            "UK": "floating staircase",
+            "DE": "freischwebende Treppe / Kragarmtreppe (structural: cantilever)",
+            "IT": "scala sospesa / scala a sbalzo (structural: cantilever)",
+            "FR": "escalier suspendu / flottant",
+            "ES": "escalera flotante / suspendida",
+            "NL": "zwevende trap",
+            "AU": "floating staircase"
+          },
+          "confidence": "high"
+        }
+      ]
+    },
+    "C_structural": {
+      "concepts": [
+        {
+          "id": "structural.closed_string",
+          "canonical_en": "Closed string",
+          "customer_language": "Solid side beam — top edge is straight, tread ends are hidden inside the stringer.",
+          "regional": {
+            "UK": "closed string",
+            "US": "closed stringer / housed stringer",
+            "DE": "Wangentreppe (geschlossen)",
+            "IT": "cosciale chiuso",
+            "FR": "limon",
+            "ES": "zanca cerrada",
+            "NL": "gesloten boom",
+            "AU": "closed stringer",
+            "NZ": "closed stringer"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "structural.cut_string",
+          "canonical_en": "Cut string / Open string",
+          "customer_language": "Side beam with a stepped top edge — the tread ends are visible.",
+          "notes": "UK trade: cut string = open string. US: open stringer / cut stringer / sawtooth stringer.",
+          "regional": {
+            "UK": "cut string / open string",
+            "US": "open stringer / cut stringer / sawtooth stringer",
+            "DE": "Wangentreppe (offen) / Sattelholztreppe",
+            "IT": "cosciale a giorno / cosciale intagliato",
+            "FR": "crémaillère / escalier à l'anglaise",
+            "ES": "zanca a la inglesa",
+            "NL": "open boom / gezaagde boom",
+            "AU": "open stringer / cut stringer",
+            "NZ": "open stringer"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "structural.wall_string",
+          "canonical_en": "Wall string",
+          "customer_language": "The stringer that sits against a wall — structural in UK/EU practice.",
+          "notes": "US 'skirt board' is NOT the same — US skirt board is decorative trim, non-structural. This is a common transatlantic false friend.",
+          "regional": {
+            "UK": "wall string",
+            "US": "skirt board (decorative only, NOT structural equivalent)",
+            "DE": "Wandwange",
+            "IT": "cosciale a muro",
+            "FR": "limon mural",
+            "ES": "zanca de pared",
+            "NL": "muurboom"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "structural.mono_stringer",
+          "canonical_en": "Mono stringer / Central spine",
+          "customer_language": "A single beam running down the middle of the stair — treads cantilever off it.",
+          "regional": {
+            "UK": "mono stringer / central spine staircase",
+            "US": "mono stringer / center stringer",
+            "DE": "Mittelholmtreppe / Wangenlose Treppe",
+            "IT": "scala a trave centrale",
+            "FR": "escalier à limon central",
+            "ES": "escalera con zanca central",
+            "NL": "middenboomtrap / spiraaltrap met kern",
+            "AU": "centre stringer / mono stringer"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "structural.cantilever",
+          "canonical_en": "Cantilever staircase",
+          "customer_language": "Treads project out from the wall with no visible support at the free end.",
+          "regional": {
+            "UK": "cantilever staircase",
+            "US": "cantilever staircase",
+            "DE": "Kragarmtreppe / Kragstufentreppe",
+            "IT": "scala a sbalzo",
+            "FR": "escalier en encorbellement / escalier à marches en console",
+            "ES": "escalera voladiza / en voladizo / volada",
+            "NL": "vrijdragende trap",
+            "AU": "cantilevered staircase"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "structural.bolt_fixed",
+          "canonical_en": "Bolt-fixed (Bolzentreppe)",
+          "customer_language": "Treads connected by bolts to a wall and to each other — visually minimal, no stringer.",
+          "regional": {
+            "UK": "bolt-fixed staircase (rare term)",
+            "DE": "Bolzentreppe",
+            "IT": "scala a bulloni",
+            "FR": "escalier à limon caché / escalier à crémaillère cachée",
+            "AT": "Bolzentreppe"
+          },
+          "notes": "Very common in DACH residential, rare label in UK/US where it's often marketed just as 'floating'.",
+          "confidence": "medium"
+        },
+        {
+          "id": "structural.folded_plate",
+          "canonical_en": "Folded plate (Faltwerktreppe)",
+          "customer_language": "Steel or timber plate folded in a zig-zag to form treads and risers as one continuous surface.",
+          "regional": {
+            "DE": "Faltwerktreppe",
+            "UK": "folded plate stair (specialist term)",
+            "IT": "scala a origami / scala a lastra piegata"
+          },
+          "confidence": "medium"
+        }
+      ]
+    },
+    "D_riser": {
+      "concepts": [
+        {
+          "id": "riser.closed",
+          "canonical_en": "Closed riser",
+          "customer_language": "The vertical face between treads is a solid board — most common in traditional homes.",
+          "regional": {
+            "UK": "closed riser",
+            "US": "closed riser",
+            "DE": "geschlossene Setzstufe",
+            "IT": "alzata chiusa",
+            "FR": "contremarche pleine",
+            "ES": "contrahuella cerrada",
+            "NL": "gesloten stootbord",
+            "AU": "closed riser"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "riser.open",
+          "canonical_en": "Open riser",
+          "customer_language": "No board between treads — you can see through — more contemporary look.",
+          "notes": "Regulated in most countries: opening size must not allow a sphere of a specified diameter to pass (varies).",
+          "regional": {
+            "UK": "open riser",
+            "US": "open riser (IRC R311.7.5.1)",
+            "DE": "offene Setzstufe / offene Stufe",
+            "IT": "alzata a giorno / scala a giorno",
+            "FR": "escalier à jour / escalier à claire-voie",
+            "ES": "escalera sin contrahuella / peldañeado a la francesa",
+            "NL": "open trap / open stootborden",
+            "SE": "öppen trappa (utan sättsteg)",
+            "AU": "open riser",
+            "NZ": "open riser"
+          },
+          "confidence": "high"
+        }
+      ]
+    },
+    "E_treads": {
+      "concepts": [
+        {
+          "id": "tread.solid.oak",
+          "canonical_en": "Solid oak tread",
+          "regional_species": {
+            "UK": "European oak",
+            "US": "White oak / Red oak",
+            "AU": "European oak (imported common)",
+            "DE": "Eiche",
+            "IT": "rovere",
+            "FR": "chêne",
+            "ES": "roble",
+            "NL": "eiken",
+            "SE": "ek"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "tread.solid.walnut",
+          "canonical_en": "Solid walnut tread",
+          "regional_species": {
+            "UK": "European walnut",
+            "US": "Black walnut",
+            "DE": "Nussbaum",
+            "IT": "noce",
+            "FR": "noyer",
+            "ES": "nogal"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "tread.solid.au_natives",
+          "canonical_en": "Australian native hardwood treads",
+          "species": ["Jarrah", "Blackbutt", "Spotted Gum", "Tasmanian Oak", "Ironbark", "Merbau", "Blue Gum"],
+          "customer_language": "Native Australian hardwoods — very dense, distinctive grain, popular for staircases.",
+          "confidence": "high"
+        },
+        {
+          "id": "tread.solid.nz_natives",
+          "canonical_en": "New Zealand native timber treads",
+          "species": ["Rimu", "Matai", "Kauri (heritage only, protected)", "Tawa", "Beech NZ"],
+          "notes": "Kauri is protected — heritage/recycled only. Rimu is the most common native tread species.",
+          "confidence": "high"
+        },
+        {
+          "id": "tread.solid.us_natives",
+          "canonical_en": "US native hardwood treads",
+          "species": ["Red Oak", "White Oak", "Hard Maple", "Hickory", "Cherry", "Black Walnut"],
+          "confidence": "high"
+        },
+        {
+          "id": "tread.stone",
+          "canonical_en": "Stone tread",
+          "sub_types": ["Marble", "Granite", "Limestone", "Sandstone", "Quartz", "Slate"],
+          "regional": {
+            "UK": "stone tread",
+            "IT": "gradino in pietra / marmo",
+            "FR": "marche en pierre",
+            "ES": "peldaño de piedra"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "tread.glass",
+          "canonical_en": "Glass tread",
+          "customer_language": "Laminated toughened glass tread — requires structural verification per country's glass code.",
+          "confidence": "high"
+        },
+        {
+          "id": "tread.metal",
+          "canonical_en": "Metal tread",
+          "sub_types": ["Steel plate", "Stainless steel", "Aluminium", "Perforated / mesh"],
+          "confidence": "high"
+        },
+        {
+          "id": "tread.carpet_runner",
+          "canonical_en": "Carpet runner (over timber tread)",
+          "customer_language": "Timber tread with a carpet strip down the middle — the wood on each side remains visible.",
+          "regional": {
+            "AU": "carpet runner over timber (a huge conversion market — 'carpet-to-timber conversion' is the Australian commercial anchor)"
+          },
+          "confidence": "high"
+        }
+      ]
+    },
+    "G_balustrade": {
+      "concepts": [
+        {
+          "id": "balustrade.assembly",
+          "canonical_en": "Balustrade (whole assembly)",
+          "customer_language": "The barrier system on the open side — verticals + top rail + posts.",
+          "regional": {
+            "UK": "balustrade",
+            "IE": "balustrade",
+            "US": "guard / guardrail / railing (code); balustrade (high-end residential)",
+            "CA": "guardrail (code); balustrade (residential)",
+            "DE": "Geländer / Brüstung (solid)",
+            "AT": "Geländer",
+            "CH-DE": "Geländer",
+            "CH-IT": "parapetto",
+            "IT": "ringhiera (flight) / balaustra (landing) / parapetto (code)",
+            "FR": "garde-corps (code, NF P01-012) / rampe (commercial) / balustrade (ornamental)",
+            "ES": "barandilla / balaustrada (architectural)",
+            "NL": "balustrade / leuning / hekwerk (industrial)",
+            "BE-NL": "balustrade",
+            "SE": "räcke / glasräcke / smidesräcke",
+            "NO": "rekkverk",
+            "DK": "gelænder",
+            "FI": "kaide / suojakaide",
+            "AU": "balustrade",
+            "NZ": "balustrade"
+          },
+          "notes": "US code distinguishes 'guardrail' (fall-prevention) from 'handrail' (graspable). UK/EU fuses them under 'balustrade' + 'handrail'. FR 2026 NF P01-012 rev replaces 'garde-corps' with 'EDP — Élément de Protection'.",
+          "confidence": "high"
+        },
+        {
+          "id": "balustrade.vertical",
+          "canonical_en": "Baluster / Spindle (vertical infill)",
+          "customer_language": "The vertical posts between the top rail and the tread or floor.",
+          "regional": {
+            "UK": "baluster / spindle",
+            "US": "baluster / spindle / picket (Southern US)",
+            "DE": "Stab / Füllstäbe / Geländerstab",
+            "IT": "balaustro / pilastrino / asta",
+            "FR": "balustre / barreau",
+            "ES": "balaustre / barrote",
+            "NL": "spijl / baluster",
+            "SE": "ballister",
+            "NO": "spile",
+            "DK": "balustre",
+            "FI": "pinna",
+            "AU": "baluster",
+            "NZ": "baluster"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "balustrade.glass",
+          "canonical_en": "Glass balustrade",
+          "sub_types": ["Framed", "Semi-frameless (with posts / clamps)", "Frameless (structural glass in channel)"],
+          "customer_language": "Toughened / laminated glass panels — framed, semi-frameless or frameless.",
+          "confidence": "high"
+        },
+        {
+          "id": "balustrade.cable",
+          "canonical_en": "Cable / wire balustrade",
+          "sub_types": ["Horizontal cable", "Vertical cable"],
+          "notes": "Horizontal cable is popular in US residential; UK Approved Doc K applies 100 mm sphere rule that many horizontal cable systems fail without careful spacing.",
+          "confidence": "high"
+        },
+        {
+          "id": "balustrade.timber_traditional",
+          "canonical_en": "Timber traditional (turned or square spindles)",
+          "confidence": "high"
+        },
+        {
+          "id": "balustrade.metal",
+          "canonical_en": "Metal balustrade",
+          "sub_types": ["Mild steel painted", "Stainless steel brushed", "Stainless polished", "Powder-coated", "Brass / bronze"],
+          "confidence": "high"
+        }
+      ]
+    },
+    "H_handrail": {
+      "concepts": [
+        {
+          "id": "handrail.canonical",
+          "canonical_en": "Handrail (graspable top rail)",
+          "regional": {
+            "UK": "handrail",
+            "US": "handrail (code distinguishes from guardrail)",
+            "DE": "Handlauf",
+            "IT": "corrimano / mancorrente (Central-South IT)",
+            "FR": "main courante",
+            "ES": "pasamanos",
+            "NL": "trapleuning / leuning",
+            "SE": "handledare",
+            "NO": "håndlist",
+            "DK": "håndliste",
+            "FI": "käsijohde",
+            "AU": "handrail",
+            "NZ": "handrail"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "handrail.fittings",
+          "canonical_en": "Handrail fittings",
+          "sub_types": ["Volute (scroll start)", "Monkey's tail", "Turnout", "Easing up / over", "Gooseneck (at landing)", "Rosette", "Return", "Easer", "Stop end", "90° bend"],
+          "confidence": "high"
+        }
+      ]
+    },
+    "I_newel": {
+      "concepts": [
+        {
+          "id": "newel.starting",
+          "canonical_en": "Starting newel (post at the bottom of the flight)",
+          "regional": {
+            "UK": "starting newel / bottom newel",
+            "US": "starting newel / newel post",
+            "DE": "Anfangspfosten",
+            "IT": "piantone di partenza / capiscala",
+            "FR": "poteau de départ",
+            "ES": "pilarote de arranque",
+            "NL": "trappaal (begin)",
+            "AU": "starting newel",
+            "NZ": "starting newel"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "newel.system",
+          "canonical_en": "Newel system",
+          "sub_types": ["Post-to-post", "Over-the-post (continuous handrail)"],
+          "notes": "US trade term. Post-to-post = handrail terminates into each newel. Over-the-post = handrail passes over newels via a cap or continuous fitting.",
+          "confidence": "high"
+        }
+      ]
+    },
+    "J_landing": {
+      "concepts": [
+        {
+          "id": "landing.half",
+          "canonical_en": "Half landing (180° platform)",
+          "regional": {
+            "UK": "half landing",
+            "DE": "Zwischenpodest / Halbpodest",
+            "IT": "pianerottolo intermedio",
+            "FR": "palier de repos",
+            "ES": "meseta intermedia",
+            "NL": "half bordes",
+            "AU": "half landing"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "landing.quarter",
+          "canonical_en": "Quarter landing (90° platform)",
+          "regional": {
+            "UK": "quarter landing",
+            "DE": "Viertelpodest",
+            "IT": "pianerottolo a quarto",
+            "FR": "palier quart-tournant",
+            "AU": "quarter landing"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "landing.top",
+          "canonical_en": "Top landing (arrival at upper floor)",
+          "regional": {
+            "UK": "top landing / arrival landing",
+            "IT": "pianerottolo di arrivo / sbarco",
+            "FR": "palier d'arrivée / palier d'étage",
+            "ES": "meseta de desembarco",
+            "DE": "Antrittspodest (bottom) / Austrittspodest (top)",
+            "AU": "top landing"
+          },
+          "confidence": "high"
+        }
+      ]
+    },
+    "K_specialist": {
+      "concepts": [
+        {
+          "id": "specialist.loft_ladder",
+          "canonical_en": "Loft / attic ladder",
+          "customer_language": "Retractable or folding stair for accessing an attic or loft.",
+          "regional": {
+            "UK": "loft ladder",
+            "US": "attic ladder / attic stair",
+            "DE": "Bodentreppe / Dachbodentreppe",
+            "IT": "scala retrattile / botola",
+            "FR": "escalier escamotable",
+            "ES": "escalera escamoteable / escalera plegable",
+            "NL": "vliezotrap / vlizotrap",
+            "AU": "attic ladder",
+            "NZ": "attic ladder"
+          },
+          "confidence": "high"
+        },
+        {
+          "id": "specialist.ships_ladder",
+          "canonical_en": "Ships ladder",
+          "customer_language": "Very steep stair (>60°) — usually for access to mezzanines, roof plants, service areas.",
+          "notes": "Not a code-compliant primary staircase in most countries — must be secondary/service access.",
+          "confidence": "high"
+        },
+        {
+          "id": "specialist.ext_garden",
+          "canonical_en": "External / garden staircase",
+          "customer_language": "Outdoor stair — must resist weather, use rot-resistant / marine-grade timber, hot-dipped galvanised or stainless fixings.",
+          "confidence": "high"
+        }
+      ]
+    }
+  }
+}

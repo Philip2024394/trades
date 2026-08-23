@@ -242,6 +242,32 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     if (pathname.startsWith(prefix)) return attachCid(NextResponse.next(), cid);
   }
 
+  // ── DEV-ONLY compile-bomb guard (Philip 2026-08-21) ──────────────
+  // The /nex-app design-catalogue route family reliably OOMs Next dev
+  // on the 8 GB Victus even with `--max-old-space-size=6144`
+  // (verified 2026-08-21 · pinned `feedback_nex_ram_aware_development`).
+  // Any browser tab / service-worker cache that reconnects to a live
+  // dev server pointing at /nex-app crashes the whole Node process.
+  //
+  // In DEV: return an immediate 404 so Next never gets to compile it.
+  // In PROD: this guard is a no-op — /nex-app serves normally on Vercel
+  //          where memory is not constrained.
+  //
+  // Remove this block after: (a) 16 GB RAM upgrade AND
+  // (b) verified /nex-app compiles reliably at 6 GB heap. Meanwhile
+  // it keeps the NEX Priority 2-4 build unblocked on this machine.
+  // Narrowed 2026-08-21 · only the design-catalogue master-template family
+  // was OOMing · other /nex-app/* routes (refacing/companies etc.) compile
+  // fine and we need them accessible as visual references for food-directory
+  // acceptance work. Widen the guard again if we hit new compile bombs.
+  if (
+    process.env.NODE_ENV === "development" &&
+    (pathname.startsWith("/nex-app/design-catalogue") ||
+     pathname === "/nex-app/staircase-library")
+  ) {
+    return attachCid(new NextResponse(null, { status: 404 }), cid);
+  }
+
   // Legacy marketplace redirect — Philip 2026-07-27. /nex-app/centre
   // is the single marketplace surface; every prior route bounces to it.
   for (const legacy of LEGACY_MARKETPLACE_PREFIXES) {

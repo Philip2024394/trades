@@ -47,7 +47,7 @@ const DEFAULT_CARDS: CardConfig[] = [
   {
     slug: "modern",
     name: "Modern",
-    caption: "Sleek designs for contemporary homes",
+    caption: "Clean lines, floating treads, restrained detail.",
     badgeColour: "#A5BFA1",
     icon: "layout-grid",
     badgeImage: "https://ik.imagekit.io/5vv5pw26q/sadsdsdssdd-removebg-preview.png",
@@ -57,7 +57,7 @@ const DEFAULT_CARDS: CardConfig[] = [
   {
     slug: "traditional",
     name: "Traditional",
-    caption: "Timeless elegance for classic spaces",
+    caption: "Turned newels, timber balustrade, quiet elegance.",
     badgeColour: "#8EA3B8",
     icon: "column",
     badgeImage: "https://ik.imagekit.io/5vv5pw26q/sadsdsds-removebg-preview.png",
@@ -67,7 +67,7 @@ const DEFAULT_CARDS: CardConfig[] = [
   {
     slug: "industrial",
     name: "Industrial",
-    caption: "Bold & strong for urban living",
+    caption: "Steel stringers, timber treads, structural honesty.",
     badgeColour: "#C6906F",
     icon: "brick",
     badgeImage: "https://ik.imagekit.io/5vv5pw26q/sadsd-removebg-preview.png",
@@ -77,7 +77,7 @@ const DEFAULT_CARDS: CardConfig[] = [
   {
     slug: "bespoke",
     name: "Bespoke",
-    caption: "Custom made to match your vision",
+    caption: "One-of-a-kind. Designed around your space.",
     badgeColour: "#A5BFA1",
     icon: "compass-circle",
     badgeImage: "https://ik.imagekit.io/5vv5pw26q/sad-removebg-preview.png",

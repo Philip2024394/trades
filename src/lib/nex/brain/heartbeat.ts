@@ -1,4 +1,4 @@
-// NEX Brain · Worker Heartbeat Layer · Phase 12.3
+// NEX Brain · Worker Heartbeat Layer · Phase 12.3 · unified 2026-08-22
 //
 // Real worker liveness. Every worker call in manager.ts::withAuditEvents
 // writes a heartbeat before + after the runner executes. runOneCycle
@@ -15,16 +15,20 @@
 // Heartbeat writes are best-effort. A failed upsert MUST NOT break
 // the worker cycle — observability layers never propagate errors.
 //
-// Compatibility: uses existing BrainStore.upsertHeartbeat method that
-// FilesystemStore + SupabaseStore already implement, and that migrations
-// 041+042 have prepared for PostgresBrainStore. No schema change.
+// Task #72 Step 1c (2026-08-22 · Philip constitutional rule "one heartbeat"):
+// unified against nex.worker_heartbeat (singular · migration 063 + 070).
+// Prior plural table nex.worker_heartbeats (migration 042 · db/migrations/003
+// on Supabase) dropped. Brain workers write with worker_id="brain:<type>",
+// worker_type="brain", worker_config="<type>". Reliability layer already
+// uses this same table with worker_type="acquisition"/"cle"/etc — no
+// competition, no duplicate row shape, no two-writer split brain.
 
 import { brainStore } from "./storage";
 import type { WorkerHeartbeat, WorkerType } from "./types";
 
 // Row older than this = worker considered offline / crashed / lost
-// connectivity. Matches the docstring on the worker_heartbeats table
-// (created in db/migrations/003 · duplicated in deploy/postgres/init/042).
+// connectivity. Matches the docstring on the worker_heartbeat table
+// (unified 2026-08-22 · migrations 063 + 070).
 export const LIVENESS_THRESHOLD_MS = 60_000;
 
 // Six worker types the manager may exercise in runOneCycle. Order
@@ -50,8 +54,20 @@ export type WorkerLiveness =
   | "failed"       // 🔴 last runner threw
   | "offline";     // ⚪ no heartbeat within LIVENESS_THRESHOLD_MS
 
+// Canonical worker_id encoding for Brain workers (Task #72 Step 1c 2026-08-22).
+// One stable row per logical Brain worker in nex.worker_heartbeat regardless
+// of how many processes run. Multi-instance separation (which was designed
+// for Fly horizontal scaling · Fly destroyed 2026-08-09) moved to
+// worker_cycle_run per cycle, not per heartbeat.
+export function brainWorkerId(worker_type: WorkerType): string {
+  return `brain:${worker_type}`;
+}
+
+// Legacy alias · kept so downstream imports don't break in the same commit.
+// Returns the canonical brainWorkerId · the "@pid" suffix from the plural-era
+// is gone. Prefer brainWorkerId in new code.
 export function workerHostId(worker_type: WorkerType): string {
-  return `${worker_type}@${process.pid}`;
+  return brainWorkerId(worker_type);
 }
 
 // G2 · Truth Contract · runtime identity for every heartbeat.
@@ -106,10 +122,25 @@ export interface HeartbeatUpdate {
   error?: string | null;
 }
 
-// Upsert one worker's heartbeat row. Always includes last_seen_at =
-// now so freshness ticks forward on every call. Fields last_error and
-// last_cycle_summary carry the state Philip requested (current job,
-// stage, started/completed timestamps encoded implicitly by last_seen).
+// Map Brain vocabulary → canonical 7-value vocabulary (Task #72 Step 1c 2026-08-22).
+// 'offline' is derived from freshness at read time · never stored.
+function canonicalStatus(s: WorkerLiveness): WorkerHeartbeat["last_status"] {
+  switch (s) {
+    case "working":     return "running";
+    case "waiting_llm": return "waiting";
+    case "standby":     return "standby";
+    case "failed":      return "failed";
+    case "offline":     return "standby"; // caller must never pass this · defensive
+    default:            return "standby";
+  }
+}
+
+// Upsert one worker's heartbeat row into nex.worker_heartbeat (canonical
+// singular table). Always sets last_heartbeat_at = now so freshness ticks
+// forward on every call. Brain-specific per-heartbeat detail (current job,
+// stage, input_ref, error, uptime_ms, runtime_kind) is carried in metadata
+// jsonb · reliability doctrine says primary cycle detail lives in
+// worker_cycle_run, not on the heartbeat row.
 //
 // Best-effort: any write failure is logged (behind a debug env flag)
 // and swallowed. The worker cycle continues regardless. Heartbeats
@@ -119,27 +150,25 @@ export async function writeHeartbeat(update: HeartbeatUpdate): Promise<void> {
   try {
     const store = brainStore();
     const row: WorkerHeartbeat = {
-      host_id: workerHostId(update.worker_type),
-      last_seen_at: nowIso,
-      uptime_ms: Math.round(process.uptime() * 1000),
-      cycles_total: 0,
-      cycles_failed: 0,
-      last_error: update.error ?? null,
-      last_cycle_summary: {
-        worker_type: update.worker_type,
-        status: update.status,
-        current_job_id: update.current_job_id ?? null,
-        current_stage: update.current_stage ?? null,
-        input_ref: update.input_ref ?? null,
-        at: nowIso,
-      },
+      worker_id:         brainWorkerId(update.worker_type),
+      worker_type:       "brain",
+      worker_config:     update.worker_type,
+      last_heartbeat_at: nowIso,
+      last_status:       canonicalStatus(update.status),
+      last_cycle_run_id: null, // Brain does not yet write cycle_run · Task #57/#59 territory
       metadata: {
-        pid: process.pid,
-        node_env: process.env.NODE_ENV ?? "unknown",
-        // G2 · positive-evidence runtime identity · required so
-        // /cloud-status can distinguish real Fly workers from local
-        // dev heartbeats. See detectRuntimeKind() above.
-        runtime_kind: detectRuntimeKind(),
+        pid:            process.pid,
+        node_env:       process.env.NODE_ENV ?? "unknown",
+        // G2 · positive-evidence runtime identity · post-Fly all writes are "local"
+        // but the field is preserved so /cloud-status stays honest if Fly ever
+        // returns · see detectRuntimeKind() above.
+        runtime_kind:   detectRuntimeKind(),
+        uptime_ms:      Math.round(process.uptime() * 1000),
+        // Brain-specific per-heartbeat detail (was primary columns pre-unification)
+        current_job_id: update.current_job_id ?? null,
+        current_stage:  update.current_stage ?? null,
+        input_ref:      update.input_ref ?? null,
+        error:          update.error ?? null,
       },
     };
     await store.upsertHeartbeat(row);
@@ -179,22 +208,29 @@ export async function primeStandbyHeartbeats(): Promise<void> {
 // fresh heartbeat is Standby; a worker with an empty queue and a stale
 // heartbeat is Offline. Same queue depth, opposite states.
 //
+// Task #72 Step 1c (2026-08-22): maps canonical status vocabulary
+// (idle/running/waiting/standby/completed/failed/stopped) back to the
+// UI's WorkerLiveness enum (working/waiting_llm/standby/failed/offline)
+// so factory + workers-live UI don't need to change their state map.
+//
 // `now` is injectable so tests can pin time deterministically.
 export function deriveLiveness(
   hb: WorkerHeartbeat | null | undefined,
   now: number = Date.now()
 ): WorkerLiveness {
-  if (!hb || !hb.last_seen_at) return "offline";
-  const seenMs = new Date(hb.last_seen_at).getTime();
+  if (!hb || !hb.last_heartbeat_at) return "offline";
+  const seenMs = new Date(hb.last_heartbeat_at).getTime();
   if (!Number.isFinite(seenMs)) return "offline";
   const age = now - seenMs;
   if (age > LIVENESS_THRESHOLD_MS) return "offline";
-  const summary = (hb.last_cycle_summary ?? {}) as { status?: string };
-  switch (summary.status) {
-    case "failed":      return "failed";
-    case "waiting_llm": return "waiting_llm";
-    case "working":     return "working";
-    case "standby":     return "standby";
-    default:            return "standby";
+  switch (hb.last_status) {
+    case "failed":    return "failed";
+    case "waiting":   return "waiting_llm"; // UI vocabulary preserved
+    case "running":   return "working";      // UI vocabulary preserved
+    case "standby":
+    case "idle":
+    case "completed":
+    case "stopped":
+    default:          return "standby";
   }
 }

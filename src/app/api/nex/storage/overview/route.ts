@@ -1,6 +1,6 @@
 // GET /api/nex/storage/overview — NEX Storage headquarters aggregator
 //
-// One endpoint feeds the /nex-app/nex-brain/nex-storage dashboard. Composes:
+// One endpoint feeds the /nex-head-quarters/nex-storage dashboard. Composes:
 //   · adapter registry state (current backend · known providers · mode)
 //   · Postgres server info (version · host · port · uptime · extensions)
 //     — only when the postgres adapter is active

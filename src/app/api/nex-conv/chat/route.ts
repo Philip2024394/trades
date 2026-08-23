@@ -216,5 +216,11 @@ function shapeStateSummary(state: any) {
     handoff_recommended: state?.handoff_recommended === true,
     thin_packet_strikes: state?.thin_packet_strikes ?? 0,
     condensed_history_present: !!state?.condensed_history,
+    // Priority 2 Indonesian V2: brain auto-detects language per turn
+    // (infer.mjs → state.conversation_language). Exposed here so the
+    // client can auto-follow the brain's detected language for STT + TTS
+    // on the NEXT turn, matching the pinned Language-Neutral Brain rule:
+    // same brain state, response language shifts.
+    conversation_language: state?.conversation_language ?? "en",
   };
 }

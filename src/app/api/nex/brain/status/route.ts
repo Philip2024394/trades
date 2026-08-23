@@ -2,7 +2,7 @@
 //
 // Returns the full BrainStatus (worker pool health, corpus counts,
 // LLM budget consumed, feedback totals, contradictions open). Used by
-// the /nex-app/nex-brain monitor page and by anything else that wants
+// the /nex-head-quarters monitor page and by anything else that wants
 // to display the brain's live state.
 
 import type { NextRequest } from "next/server";

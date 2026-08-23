@@ -1,0 +1,152 @@
+{
+  "jobId": "465d9468-7411-46c5-bd83-14eeaacb75ec",
+  "vertical": "food",
+  "city": "Yogyakarta",
+  "bbox": {
+    "sw": [
+      -7.95,
+      110.3
+    ],
+    "ne": [
+      -7.86,
+      110.4
+    ]
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-22T13:35:39.410Z",
+  "finishedAt": "2026-08-22T13:35:52.223Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 71,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 71,
+    "matched_exact": 39,
+    "matched_high": 1,
+    "ambiguous": 2,
+    "unnamed": 0,
+    "new_candidates": 29,
+    "enriched": 0,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 29,
+    "errors": 0
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#FL-2026-00162",
+        "name": "Pasar Onderdil Motor Jejeran",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-00163",
+        "name": "Pasar Hewan Imogiri",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-00164",
+        "name": "Alif's Bakery & Cookies",
+        "category": "ice-cream-dessert",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-00165",
+        "name": "Anugrah Buah",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-00166",
+        "name": "Larizo Cake & Bakery",
+        "category": "ice-cream-dessert",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-00167",
+        "name": "Leksa Ganesha Batik Coffee",
+        "category": "coffee-cafe",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-00168",
+        "name": "Jamu Bu Kardi",
+        "category": "coffee-cafe",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-00169",
+        "name": "Emilia Bakery and Cake",
+        "category": "ice-cream-dessert",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [
+      {
+        "candidateName": "Waroeng Omah Sawah",
+        "existingName": "Waroeng Sawah",
+        "existingRef": "#FL-2026-000VV",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Warung Soto Gumyak",
+        "existingName": "warung soto",
+        "existingRef": "#FL-2026-00011",
+        "score": "0.600"
+      }
+    ],
+    "contactable": [],
+    "rejected": [
+      {
+        "publicRef": "#FL-2026-00162",
+        "name": "Pasar Onderdil Motor Jejeran",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-00163",
+        "name": "Pasar Hewan Imogiri",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-00164",
+        "name": "Alif's Bakery & Cookies",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-00165",
+        "name": "Anugrah Buah",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-00166",
+        "name": "Larizo Cake & Bakery",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": []
+}

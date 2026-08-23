@@ -17,7 +17,7 @@
 // fails-closed in production.
 //
 // Typical callers:
-//   · "Run one cycle" button on /nex-app/nex-brain
+//   · "Run one cycle" button on /nex-head-quarters
 //   · scripts/nex-brain-worker.mjs (local always-on worker)
 //   · Vercel cron (see vercel.json — activates on deploy)
 //   · External cron (cron-job.org, GitHub Actions, Supabase pg_cron)

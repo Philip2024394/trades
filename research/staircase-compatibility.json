@@ -1,0 +1,217 @@
+{
+  "$schema": "internal://nex/staircase-compatibility-v1",
+  "version": "1.0.0",
+  "generated": "2026-08-17",
+  "purpose": "Compatibility and dependency rules between taxonomy layers. Never says 'impossible' — where a combination is unusual or specialist, flags 'specialist_review_required'. NEX never blocks a customer's design choice on its own authority.",
+  "principles": [
+    "A combination is either COMMON, UNCOMMON (specialist_review_required) or REGIONAL (only common in some markets).",
+    "NEX never declares a combination structurally impossible — that judgement belongs to the professional.",
+    "Every specialist_review_required combination still submits — it just routes with a flag."
+  ],
+  "rules": [
+    {
+      "id": "compat.geometry_material.spiral_glass_only",
+      "description": "A pure glass spiral (all glass, no central column) is not standard.",
+      "if": {"geometry": "spiral", "material_family": "glass"},
+      "then": "specialist_review_required",
+      "note": "Spirals require a load-bearing central column. All-glass is not a standard construction — treat as a bespoke commission."
+    },
+    {
+      "id": "compat.geometry_riser.paddle_must_be_secondary",
+      "description": "Paddle / space-saver stairs are legal only as secondary access in most countries.",
+      "if": {"geometry": "paddle"},
+      "then": "restrict_use_to",
+      "restrictions": ["secondary_home", "loft_access", "industrial"],
+      "regional_notes": {
+        "UK": "Approved Doc K limits alternating tread to loft conversion only, single room served",
+        "US": "IBC 1011.14 restricts alternating tread device to specific uses",
+        "DE": "DIN 18065 restricts Sambatreppe use similarly"
+      }
+    },
+    {
+      "id": "compat.tread_environment.internal_species_outdoor",
+      "description": "Standard internal timber species used outdoors will fail quickly.",
+      "if": {"tread_material": "solid_timber", "tread_species_class": "internal_only", "use": "outdoor"},
+      "then": "warn_and_specialist_review",
+      "note": "For outdoor stairs use rot-resistant species (Iroko, Teak, Ipê, Accoya) or engineered exterior systems. NEX warns and refers to specialist for species selection."
+    },
+    {
+      "id": "compat.tread_carpet_runner_open_riser",
+      "description": "Carpet runner over open-riser stair is unusual but not impossible.",
+      "if": {"tread": "carpet_runner", "riser": "open"},
+      "then": "specialist_review_required",
+      "note": "Physically possible but visually unusual — runner may look disconnected between treads. Specialist confirms with photos of comparable installs."
+    },
+    {
+      "id": "compat.balustrade_cable_horizontal_child_safety",
+      "description": "Horizontal cable balustrades may fail the local 'sphere rule' in residential settings.",
+      "if": {"balustrade": "cable_horizontal", "use": ["primary_home", "secondary_home"]},
+      "then": "flag_check_local_sphere_rule",
+      "regional_thresholds": {
+        "UK": "100 mm sphere must not pass — horizontal cable typically fails without very tight spacing",
+        "US": "IBC 1015.4 4-inch (~102 mm) sphere rule — horizontal cable often allowed with post spacing engineered",
+        "AU": "NCC — 125 mm sphere rule, cable systems available",
+        "DE": "DIN 18065 — 120 mm opening rule",
+        "IT": "Italian building code — 100 mm opening rule",
+        "FR": "NF P01-012 — 110 mm opening rule",
+        "ES": "CTE DB-SUA-1 — 100 mm opening rule",
+        "NL": "Bouwbesluit — 100 mm opening rule for residential"
+      }
+    },
+    {
+      "id": "compat.balustrade_glass_frameless_top_rail",
+      "description": "Frameless structural glass balustrade must be engineered with an appropriate cap and channel.",
+      "if": {"balustrade": "glass_frameless"},
+      "then": "specialist_review_required",
+      "note": "Structural glass balustrade requires engineering calculation — glass thickness, laminate build-up, channel fixing all specialist choices per local glass code (BS 6180, AS 1288, DIN 18008, etc.)."
+    },
+    {
+      "id": "compat.structural_cantilever_material_timber",
+      "description": "Cantilever staircases in pure timber are uncommon — usually stone or steel.",
+      "if": {"structural": "cantilever", "material_family": "timber"},
+      "then": "specialist_review_required",
+      "note": "Cantilever construction usually uses stone (traditional), reinforced concrete or steel treads with hidden armature. Pure timber cantilever is specialist bespoke."
+    },
+    {
+      "id": "compat.structural_boltfixed_regional",
+      "description": "Bolzentreppe (bolt-fixed) is a common form in DACH — rare label elsewhere.",
+      "if": {"structural": "bolt_fixed"},
+      "then": "flag_regional",
+      "regions_common": ["DE", "AT", "CH"],
+      "note": "In UK/US the same construction is usually marketed as 'floating' or 'wall-mounted' — the customer's region determines which vocabulary the specialist will use."
+    },
+    {
+      "id": "compat.geometry_helical_all_glass",
+      "description": "All-glass helical (no visible structure) is a very high-end bespoke commission.",
+      "if": {"geometry": "helical", "material_family": "glass"},
+      "then": "specialist_review_required",
+      "note": "All-glass helical requires engineered structural glass system — specialist review always required."
+    },
+    {
+      "id": "compat.stringer_material_glass",
+      "description": "Glass stringer (side beam) is uncommon outside curved / helical high-end.",
+      "if": {"structural": ["closed_string", "cut_string", "wall_string"], "structural_material": "glass"},
+      "then": "specialist_review_required"
+    },
+    {
+      "id": "compat.mono_stringer_geometry_straight_preferred",
+      "description": "Mono-stringer is most commonly used for straight / quarter turn / half turn geometries.",
+      "if": {"structural": "mono_stringer", "geometry": ["spiral", "paddle"]},
+      "then": "specialist_review_required"
+    },
+    {
+      "id": "compat.material_stone_geometry_helical",
+      "description": "Stone helical is possible but a very rare high-end commission.",
+      "if": {"material_family": "stone", "geometry": "helical"},
+      "then": "specialist_review_required"
+    },
+    {
+      "id": "compat.newel_hidden_balustrade_solid",
+      "description": "Requesting hidden newels with a solid balustrade needs a top-rail return detail.",
+      "if": {"newel": "hidden", "balustrade": ["timber_traditional", "timber_square", "metal_traditional"]},
+      "then": "specialist_review_required",
+      "note": "Solid balustrades usually terminate into newels. Hidden-newel + solid balustrade requires an alternative termination (wall fixing, corner detail) — specialist confirms."
+    },
+    {
+      "id": "compat.combination.riser_open_traditional_look",
+      "description": "Open riser is contemporary in most markets — pairing with traditional turned spindles/newels is unusual visually.",
+      "if": {"riser": "open", "balustrade": "timber_traditional"},
+      "then": "warn_visual_unusual",
+      "note": "Not blocked — but pairing open risers with turned traditional spindles is visually inconsistent. NEX suggests viewing example images before submitting."
+    },
+    {
+      "id": "compat.finish.stain_species",
+      "description": "Some timber species do not take stain evenly.",
+      "if": {"finish": "stain", "tread_species_group": "closed_grain_pine_beech"},
+      "then": "warn_specialist_advice",
+      "note": "Species like beech and closed-grain pines often blotch when stained. Specialist advises alternative colour approach (dye, tint lacquer)."
+    },
+    {
+      "id": "compat.use_commercial_geometry_paddle",
+      "description": "Alternating-tread stairs are almost never accepted for commercial primary access.",
+      "if": {"use": "commercial", "geometry": "paddle"},
+      "then": "specialist_review_required_strong",
+      "note": "In every researched country, commercial primary staircases have stricter geometry requirements than residential — paddle/alternating-tread will almost certainly not be code-compliant."
+    },
+    {
+      "id": "compat.geometry_bifurcated_use",
+      "description": "Bifurcated / imperial staircases are grand-space features.",
+      "if": {"geometry": "bifurcated", "use": "primary_home", "estimated_floor_area": "small"},
+      "then": "warn_scale_check",
+      "note": "Bifurcated staircases require substantial floor area. NEX cannot check floor area — specialist confirms with site measurement."
+    },
+    {
+      "id": "compat.combination.spec_review_default",
+      "description": "Any combination the customer flags as 'special' or 'unusual' routes to specialist without NEX judgement.",
+      "if": {"customer_flag": "special_or_unusual"},
+      "then": "specialist_review_required",
+      "note": "NEX's default posture: when the customer signals unusualness, trust them and route to specialist."
+    }
+  ],
+  "regional_common_defaults": {
+    "UK": {
+      "most_common_geometry": ["quarter_turn", "half_turn", "straight"],
+      "most_common_material": "timber",
+      "most_common_structural": "closed_string",
+      "note": "UK residential dominated by timber closed-string L or U-shape."
+    },
+    "IE": {
+      "most_common_geometry": ["quarter_turn", "half_turn", "straight"],
+      "most_common_material": "timber",
+      "most_common_structural": "closed_string"
+    },
+    "US": {
+      "most_common_geometry": ["straight", "L-shape", "U-shape"],
+      "most_common_material": "timber",
+      "most_common_balustrade": ["timber_traditional", "cable_horizontal", "wrought_iron"],
+      "note": "Cable balustrade is a distinctly popular US market — much more common than UK."
+    },
+    "DE": {
+      "most_common_geometry": ["straight", "quarter_turn"],
+      "most_common_structural": ["Wangentreppe", "Bolzentreppe", "Faltwerktreppe"],
+      "note": "DACH residential includes Bolzentreppe and Faltwerktreppe as mainstream, not niche."
+    },
+    "IT": {
+      "most_common_geometry": ["straight", "quarter_turn", "chiocciola"],
+      "most_common_material": ["timber", "concrete", "metal"],
+      "note": "Italian residential often has concrete substructure with timber cladding."
+    },
+    "FR": {
+      "most_common_geometry": ["quart_tournant", "balancé", "colimaçon"],
+      "most_common_material": "timber",
+      "most_common_structural": ["limon", "crémaillère"]
+    },
+    "ES": {
+      "most_common_geometry": ["straight", "L-shape", "caracol"],
+      "most_common_material": ["timber", "concrete_with_tread_cladding"],
+      "note": "Spanish residential often concrete substructure with stone/wood tread cladding — very different pricing from all-timber."
+    },
+    "NL": {
+      "most_common_geometry": ["straight_steep", "L-shape"],
+      "note": "Dutch homes traditionally use very steep straight stairs — steeper than most other EU countries. Specialist confirms."
+    },
+    "BE": {
+      "most_common_geometry": ["straight", "L-shape", "U-shape"],
+      "note": "Belgian market splits Dutch (Flanders) and French (Wallonia) vocabulary — CountryPicker + language toggle both matter."
+    },
+    "SE": {
+      "most_common_geometry": ["straight", "L-shape"],
+      "most_common_material": "timber",
+      "note": "Scandinavian timber-forward market."
+    },
+    "NO": {"most_common_material": "timber"},
+    "DK": {"most_common_material": "timber"},
+    "FI": {"most_common_material": "timber"},
+    "AU": {
+      "most_common_geometry": ["straight", "L-shape", "U-shape"],
+      "most_common_material": "timber",
+      "notable_market": "carpet_to_timber_conversion is a huge AU commercial anchor — many existing homes have carpeted timber substructure to be converted to exposed timber."
+    },
+    "NZ": {
+      "most_common_geometry": ["straight", "L-shape"],
+      "most_common_material": "timber",
+      "notable_species": ["Rimu", "Matai", "Beech NZ"],
+      "protected_species": ["Kauri (heritage/recycled only)"]
+    }
+  }
+}

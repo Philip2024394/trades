@@ -25,7 +25,7 @@
 //   · Full audit trail: reviewed_at + reviewed_by + admin_note captured
 //
 // This endpoint is admin-only. In dev/local it currently accepts any request
-// (the /nex-app/nex-brain surface is already admin-gated elsewhere). Wire up
+// (the /nex-head-quarters surface is already admin-gated elsewhere). Wire up
 // real isAdminAuthed() as part of M6.5.
 
 import { NextResponse } from "next/server";

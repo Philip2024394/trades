@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Paddle / space-saver walk line">
+  <defs>
+    <marker id="a" viewBox="0 0 12 12" refX="6" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M1 1 L11 6 L1 11 Z" fill="#F26C1F"/>
+    </marker>
+  </defs>
+  <!-- Zigzag walk line · alternating left/right to signal paddle half-treads -->
+  <polyline points="120,215 138,197 102,179 138,161 102,143 138,125 102,107 138,89 102,71 138,53 120,35"
+            fill="none" stroke="#F26C1F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+            marker-end="url(#a)"/>
+  <circle cx="120" cy="222" r="6" fill="#FFFFFF" stroke="#F26C1F" stroke-width="2.5"/>
+</svg>

@@ -17,46 +17,24 @@
 
 import { MT1_TOKENS as T } from "../tokens";
 
-type NavLink = { label: string; href: string };
 type Credential = { label: string; short?: string };
 type SocialLink = { label: string; href: string; icon: "facebook" | "instagram" | "tiktok" };
 
 type Config = {
   brandName?: string;
   brandStrapline?: string;
-  exploreNav?: NavLink[];
-  companyNav?: NavLink[];
-  contactAddress?: string;
-  contactPhone?: string;
-  contactEmail?: string;
   heritageLead?: string;
   credentials?: Credential[];
   socials?: SocialLink[];
   poweredBy?: string;
   poweredByHref?: string;
   rightsLine?: string;
-  legalLinks?: NavLink[];
 };
 
 const DEFAULTS: Required<Config> = {
   brandName:       "Summit",
   brandStrapline:  "Staircase Solutions",
-  exploreNav: [
-    { label: "Styles",     href: "#styles"    },
-    { label: "Materials",  href: "#materials" },
-    { label: "Gallery",    href: "#gallery"   },
-    { label: "Process",    href: "#process"   }
-  ],
-  companyNav: [
-    { label: "About Us",   href: "#about"     },
-    { label: "Craftsmen",  href: "#team"      },
-    { label: "Testimonials", href: "#reviews" },
-    { label: "Careers",    href: "#careers"   }
-  ],
-  contactAddress: "The Workshop · Old Mill Lane · Manchester M1 4AZ",
-  contactPhone:   "+44 161 000 0000",
-  contactEmail:   "hello@summit-staircases.example",
-  heritageLead:   "Handmade in Manchester · Est. 1998",
+  heritageLead:    "Handmade in the UK · Est. 1998",
   credentials: [
     { label: "BWF Stair Scheme" },
     { label: "FMB Member" },
@@ -69,8 +47,7 @@ const DEFAULTS: Required<Config> = {
   ],
   poweredBy:     "asknexapp.com",
   poweredByHref: "https://asknexapp.com",
-  rightsLine:    "All Rights Reserved",
-  legalLinks: []
+  rightsLine:    "All Rights Reserved"
 };
 
 export function STF01(props: Config = {}) {
@@ -113,8 +90,8 @@ export function STF01(props: Config = {}) {
           className="mt1-footer-top"
         >
           <a
-            href="#home"
-            aria-label={`${c.brandName} — home`}
+            href="#top"
+            aria-label={`${c.brandName} — back to top`}
             className="mt1-footer-brand"
             style={{
               display: "inline-flex",
@@ -237,7 +214,7 @@ export function STF01(props: Config = {}) {
           <Flourish tone={T.color.accent} side="right" />
         </div>
 
-        {/* ── ROW 3 · slim bottom bar · Powered By + All Rights ────── */}
+        {/* ── ROW 3 · slim bottom bar · Powered By + Back-to-top + Rights ── */}
         <div
           style={{
             display: "flex",
@@ -262,6 +239,51 @@ export function STF01(props: Config = {}) {
               {c.poweredBy}
             </a>
           </div>
+
+          <a
+            href="#top"
+            aria-label="Back to top"
+            className="mt1-footer-top-btn"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "8px 14px",
+              borderRadius: 999,
+              border: `1px solid ${hairlineOnDark}`,
+              color: inkMutedOnDark,
+              textDecoration: "none",
+              fontSize: 11.5,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              fontWeight: 600,
+              transition: "border-color 140ms, color 140ms"
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = T.color.accent;
+              e.currentTarget.style.color = inkOnDark;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = hairlineOnDark;
+              e.currentTarget.style.color = inkMutedOnDark;
+            }}
+          >
+            <svg
+              width={12}
+              height={12}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <path d="m6 15 6-6 6 6" />
+            </svg>
+            Back to top
+          </a>
+
           <div>{c.rightsLine}</div>
         </div>
       </div>
@@ -290,42 +312,6 @@ export function STF01(props: Config = {}) {
 }
 
 /* ── Sub-components ─────────────────────────────────────────────── */
-
-function FooterNavColumn({
-  title,
-  links,
-  accent,
-  inkMuted,
-  inkFaint
-}: {
-  title: string;
-  links: NavLink[];
-  accent: string;
-  inkMuted: string;
-  inkFaint: string;
-}) {
-  return (
-    <div style={{ minWidth: 0 }}>
-      <div style={{ fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: inkFaint, fontWeight: 700, marginBottom: 18 }}>
-        {title}
-      </div>
-      <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 12 }}>
-        {links.map((l) => (
-          <li key={l.href}>
-            <a
-              href={l.href}
-              style={{ color: inkMuted, textDecoration: "none", fontSize: 13.5, transition: "color 120ms" }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = accent; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = inkMuted; }}
-            >
-              {l.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
 
 /**
  * Signature flourish · a subtle hand-drawn curl in tan. Mirrored on
@@ -389,28 +375,3 @@ function SocialIcon({ slug }: { slug: SocialLink["icon"] }) {
   }
 }
 
-function FooterIcon({ slug, tone }: { slug: "map-pin" | "phone" | "mail"; tone: string }) {
-  const props = { width: 16, height: 16, viewBox: "0 0 24 24", fill: "none", stroke: tone, strokeWidth: 1.5, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, "aria-hidden": true, style: { flexShrink: 0, marginTop: 2 } };
-  switch (slug) {
-    case "map-pin":
-      return (
-        <svg {...props}>
-          <path d="M12 21c-4-4-7-7-7-11a7 7 0 0 1 14 0c0 4-3 7-7 11Z" />
-          <circle cx="12" cy="10" r="2.5" />
-        </svg>
-      );
-    case "phone":
-      return (
-        <svg {...props}>
-          <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8 9.6a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z" />
-        </svg>
-      );
-    case "mail":
-      return (
-        <svg {...props}>
-          <rect x="3" y="5" width="18" height="14" rx="2" />
-          <path d="m3 7 9 7 9-7" />
-        </svg>
-      );
-  }
-}

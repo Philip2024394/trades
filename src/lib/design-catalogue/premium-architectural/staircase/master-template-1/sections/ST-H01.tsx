@@ -27,11 +27,15 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { MT1_TOKENS as T } from "../tokens";
+import { StaircaseDesignProvider } from "../StaircaseDesign";
+import { STW01 } from "./ST-W01";
 
 // Served directly from ImageKit (approved NEX-owned storage per the
 // NEX Storage Boundary Rule 2026-08-14). Local /public copy is a
 // build-time fallback that Next.js has been serving as 0-byte in dev.
 const HERO_IMG = "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2008_16_57%20PM.png";
+
+type TrustSignal = { label: string };
 
 type Config = {
   eyebrow?: string;
@@ -40,6 +44,13 @@ type Config = {
   supportingCopy?: string;
   primaryCtaLabel?: string;
   primaryCtaHref?: string;
+  /** Small trust chips under the CTA · qualitative signals only, no
+   *  fabricated numbers unless the owner supplies verified data. */
+  trustSignals?: TrustSignal[];
+  /** Whether to render the subtle "scroll to explore" hint at the
+   *  bottom of the hero. Defaults to true so the customer knows there
+   *  is a full experience below the fold. */
+  showScrollHint?: boolean;
 };
 
 const DEFAULTS: Required<Config> = {
@@ -48,12 +59,19 @@ const DEFAULTS: Required<Config> = {
   headlineBottom:     "The Best",
   supportingCopy:     "Browse our design portfolio for inspiration, then get in touch for a staircase crafted around your home.",
   primaryCtaLabel:    "Get A Quote",
-  primaryCtaHref:     "#chat"
+  primaryCtaHref:     "#chat",
+  trustSignals: [
+    { label: "Bespoke design" },
+    { label: "UK-wide installation" },
+    { label: "Free consultation" }
+  ],
+  showScrollHint: true
 };
 
 export function STH01(props: Config = {}) {
   const c = { ...DEFAULTS, ...props };
-  const [chatOpen, setChatOpen] = useState(false);
+  const [chatOpen, setChatOpen]     = useState(false);
+  const [wizardOpen, setWizardOpen] = useState(false);
 
   const openChat = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -61,9 +79,24 @@ export function STH01(props: Config = {}) {
   }, []);
   const closeChat = useCallback(() => setChatOpen(false), []);
 
+  // Guided design overlay · Philip 2026-08-18. The "Get Your Staircase
+  // Quote" text button opens the 14-node wizard directly (ST-W01),
+  // NOT the chat. The chat is a separate entry surfaced by the image
+  // CTA below · the wizard is the structured quote-brief entry point.
+  const openWizard = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setWizardOpen(true);
+  }, []);
+  const closeWizard = useCallback(() => setWizardOpen(false), []);
+
   useEffect(() => {
-    if (!chatOpen) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closeChat(); };
+    if (!chatOpen && !wizardOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (wizardOpen) closeWizard();
+        else if (chatOpen) closeChat();
+      }
+    };
     document.addEventListener("keydown", onKey);
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -71,7 +104,7 @@ export function STH01(props: Config = {}) {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
     };
-  }, [chatOpen, closeChat]);
+  }, [chatOpen, wizardOpen, closeChat, closeWizard]);
 
   return (
     <section
@@ -117,26 +150,162 @@ export function STH01(props: Config = {}) {
             <p className="mt1-hero-copy-body">{c.supportingCopy}</p>
 
             <div className="mt1-hero-cta-row">
+              {/* Get Your Staircase Quote · Philip 2026-08-18 · this is
+                  the STAIRCASE QUOTE BUTTON. It opens the 14-node
+                  Guided Design wizard (ST-W01) directly — NOT the chat.
+                  The wizard is the structured route the customer takes
+                  when they're ready to commit to a quote brief; the
+                  chat entry (image CTA below) is the softer route for
+                  general questions. */}
+              <a
+                href="#guided-design"
+                onClick={openWizard}
+                className="mt1-hero-cta"
+                aria-haspopup="dialog"
+                aria-expanded={wizardOpen}
+                data-testid="mt1-hero-quote-cta"
+              >
+                <span>Get Your Staircase Quote</span>
+                <span aria-hidden style={{ display: "inline-flex" }}>
+                  <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12h14" /><path d="m13 5 7 7-7 7" />
+                  </svg>
+                </span>
+              </a>
+
               <a
                 href={c.primaryCtaHref}
                 onClick={openChat}
-                className="mt1-hero-cta"
+                className="mt1-hero-cta-image"
+                aria-label={c.primaryCtaLabel}
                 aria-haspopup="dialog"
                 aria-expanded={chatOpen}
               >
-                {c.primaryCtaLabel}
-                <ChevronRight />
+                <img
+                  src="https://ik.imagekit.io/5vv5pw26q/Untitledsdasddsdssdsdssadasdsdfasdasdasdsdsdsdfsdfdfsdfsdfsdfsdfdf-removebg-preview.png"
+                  alt=""
+                  aria-hidden
+                />
               </a>
             </div>
+
+            {c.trustSignals.length > 0 && (
+              <ul className="mt1-hero-trust">
+                {c.trustSignals.map((t, i) => (
+                  <li key={t.label} className="mt1-hero-trust-item">
+                    {i > 0 && (
+                      <span aria-hidden className="mt1-hero-trust-sep">·</span>
+                    )}
+                    <span>{t.label}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
+
+        {c.showScrollHint && (
+          <a
+            href="#materials"
+            className="mt1-hero-scroll-hint"
+            aria-label="Scroll to explore staircase materials and designs"
+          >
+            <span className="mt1-hero-scroll-label">Explore</span>
+            <span aria-hidden className="mt1-hero-scroll-chev">
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </span>
+          </a>
+        )}
       </div>
 
+      {/* ─── Guided Design wizard · full-screen overlay ─────────
+          Philip 2026-08-18 · triggered by the "Get Your Staircase
+          Quote" text button above. ST-W01 is mounted directly (not
+          the chat) with its own StaircaseDesignProvider because the
+          hero doesn't share the scroll's provider tree. autoStart
+          skips the wizard's IdleCard — clicking the quote button IS
+          the opt-in. Escape closes. */}
+      {wizardOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Guided staircase design"
+          data-testid="mt1-hero-wizard-overlay"
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: T.color.surface,
+            zIndex: 100,
+            display: "flex",
+            flexDirection: "column",
+            overflow: "auto"
+          }}
+        >
+          <button
+            type="button"
+            onClick={closeWizard}
+            aria-label="Close guided design"
+            title="Close"
+            style={{
+              position: "fixed",
+              top: "clamp(12px, 2vw, 20px)",
+              right: "clamp(12px, 2vw, 20px)",
+              zIndex: 110,
+              width: 40,
+              height: 40,
+              borderRadius: "50%",
+              background: "rgba(253, 249, 240, 0.85)",
+              backdropFilter: "blur(28px) saturate(200%)",
+              WebkitBackdropFilter: "blur(28px) saturate(200%)",
+              border: "1px solid rgba(58, 52, 40, 0.08)",
+              color: T.color.ink,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "0 8px 22px -10px rgba(58, 52, 40, 0.22)"
+            }}
+          >
+            <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+            </svg>
+          </button>
+
+          <StaircaseDesignProvider>
+            {/* Two-tile IdleCard renders first (autoStart dropped
+                2026-08-20 · Philip). Customer sees the choice between
+                "I already know what I want" (fast path → close wizard +
+                open Summit chat) and "Help me design my staircase"
+                (starts the guided wizard). */}
+            <STW01
+              onExit={closeWizard}
+              onSkipToChat={() => {
+                closeWizard();
+                setChatOpen(true);
+              }}
+            />
+          </StaircaseDesignProvider>
+        </div>
+      )}
+
       {/* ─── Chat with Summit · full-screen overlay ─────────────
-          Chat Now / Get A Quote opens the BRANDED chat page (ST-CH01)
-          in an iframe at full viewport. The chat page carries its OWN
-          floating brown-glass header so the overlay wrapper has no
-          header of its own · Philip 2026-08-15. Escape dismisses. */}
+          Chat Now (decorative image CTA) opens the BRANDED chat page
+          (ST-CH01) in an iframe at full viewport. Kept as the softer
+          general-questions route · the Guided Design wizard above is
+          the structured quote-brief route · Philip 2026-08-18. The
+          chat page carries its OWN floating brown-glass header so the
+          overlay wrapper has no header of its own. Escape dismisses. */}
       {chatOpen && (
         <div
           role="dialog"
@@ -263,6 +432,119 @@ export function STH01(props: Config = {}) {
           margin-top: 20px;
           flex-wrap: wrap;
         }
+        /* Trust chips · sit under the CTA · qualitative signals that
+           reassure without fabricated numbers. Owner overrides the
+           labels via the trustSignals prop. */
+        .mt1-hero-trust {
+          list-style: none;
+          margin: 18px 0 0;
+          padding: 0;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px 10px;
+          font-size: 11.5px;
+          letter-spacing: 0.02em;
+          color: ${T.color.inkMuted};
+        }
+        .mt1-hero-trust-item {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .mt1-hero-trust-sep {
+          color: ${T.color.accent};
+          opacity: 0.6;
+        }
+        /* Subtle scroll indicator · bottom-centre of the hero canvas ·
+           gentle down-bounce · reduced-motion safe · degrades to a
+           static chevron. */
+        .mt1-hero-scroll-hint {
+          position: absolute;
+          left: 50%;
+          bottom: clamp(18px, 3vw, 32px);
+          transform: translateX(-50%);
+          display: inline-flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 4px;
+          color: ${T.color.inkMuted};
+          text-decoration: none;
+          font-size: 10.5px;
+          letter-spacing: 0.24em;
+          text-transform: uppercase;
+          font-weight: 600;
+          padding: 8px 12px;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.55);
+          backdrop-filter: blur(4px);
+          transition: color 160ms, background 160ms, transform 160ms;
+          z-index: 3;
+        }
+        .mt1-hero-scroll-hint:hover,
+        .mt1-hero-scroll-hint:focus-visible {
+          color: ${T.color.accent};
+          background: rgba(255, 255, 255, 0.85);
+          outline: none;
+        }
+        .mt1-hero-scroll-chev {
+          display: inline-flex;
+          animation: mt1-hero-scroll-bounce 2.4s ease-in-out infinite;
+        }
+        @keyframes mt1-hero-scroll-bounce {
+          0%, 100% { transform: translateY(0); opacity: 0.7; }
+          50%      { transform: translateY(3px); opacity: 1; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .mt1-hero-scroll-chev { animation: none !important; }
+        }
+        @media (max-width: 720px) {
+          .mt1-hero-scroll-hint {
+            font-size: 10px;
+            padding: 6px 10px;
+          }
+          .mt1-hero-scroll-label {
+            display: none;
+          }
+        }
+        /* Philip 2026-08-17 · hero CTA rendered as an image button.
+           The image itself IS the visual — no accent background, no
+           padding, no shadow · just a subtle scale + drop-shadow on
+           hover so it feels tactile. Fixed max width keeps it inside
+           the hero copy column on every breakpoint. */
+        .mt1-hero-cta-image {
+          display: inline-block;
+          padding: 0;
+          background: transparent;
+          border: 0;
+          text-decoration: none;
+          transition: transform 180ms ease, filter 180ms ease;
+          filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.18));
+        }
+        .mt1-hero-cta-image:hover,
+        .mt1-hero-cta-image:focus-visible {
+          transform: translateY(-1px) scale(1.02);
+          filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.22));
+        }
+        /* Height-first sizing (Philip 2026-08-17 · bigger + longer).
+           The button image is naturally wide; capping height lets width
+           follow the intrinsic aspect ratio. max-width still caps the
+           image on wide screens where the height cap would otherwise
+           over-expand it. */
+        .mt1-hero-cta-image img {
+          display: block;
+          width: auto;
+          max-width: 300px;
+          height: auto;
+          max-height: 60px;
+          user-select: none;
+          -webkit-user-drag: none;
+        }
+        @media (max-width: 640px) {
+          .mt1-hero-cta-image img {
+            max-width: 240px;
+            max-height: 52px;
+          }
+        }
         .mt1-hero-cta {
           display: inline-flex;
           align-items: center;
@@ -351,13 +633,5 @@ export function STH01(props: Config = {}) {
         }
       `}</style>
     </section>
-  );
-}
-
-function ChevronRight() {
-  return (
-    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.25} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="m9 18 6-6-6-6" />
-    </svg>
   );
 }

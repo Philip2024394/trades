@@ -40,7 +40,7 @@ export async function GET() {
 
     const now = Date.now();
     const enriched = cloudHeartbeats.map((h) => {
-      const age = now - new Date(h.last_seen_at).getTime();
+      const age = now - new Date(h.last_heartbeat_at).getTime();
       return {
         ...h,
         age_ms: age,
@@ -55,7 +55,8 @@ export async function GET() {
       workers: enriched,
       // G2 · disclose what was filtered so operators can see the
       // reason a zero response is honest (local heartbeats exist,
-      // they just are not cloud).
+      // they just are not cloud). Task #72 Step 1c: unified row shape
+      // uses worker_id + last_heartbeat_at (was host_id + last_seen_at).
       diagnostics: {
         total_heartbeats_in_window: allHeartbeats.length,
         cloud_heartbeats: cloudHeartbeats.length,
@@ -63,14 +64,14 @@ export async function GET() {
         window_start: fiveMinAgo,
         // G2 verification · sample the runtime_kind on each heartbeat
         // so operators can see the filter is honest. Never dumps
-        // secrets · only host_id + runtime_kind + last_seen_at age.
+        // secrets · only worker_id + runtime_kind + last_heartbeat_at age.
         heartbeat_sample: allHeartbeats.slice(0, 12).map((h) => ({
-          host_id: h.host_id,
-          last_seen_at: h.last_seen_at,
+          worker_id: h.worker_id,
+          last_heartbeat_at: h.last_heartbeat_at,
           runtime_kind: (h.metadata && typeof h.metadata === "object")
             ? (h.metadata as Record<string, unknown>).runtime_kind ?? "(missing)"
             : "(no-metadata)",
-          age_ms: now - new Date(h.last_seen_at).getTime(),
+          age_ms: now - new Date(h.last_heartbeat_at).getTime(),
         })),
       },
     });

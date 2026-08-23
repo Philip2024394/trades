@@ -840,34 +840,40 @@ export class SupabaseStore implements BrainStore {
 
   // ── Heartbeats ─────────────────────────────────────────────────────
   //
-  // upsert by host_id — each running process (Fly machine, local dev,
-  // local worker script) owns its own row. Read-side of this feeds the
-  // "Cloud worker: online" tile via /api/nex/brain/cloud-status.
+  // Task #72 Step 1c (2026-08-22): unified against worker_heartbeat
+  // (singular). The Supabase side does NOT currently have this table
+  // (migration 063 was Postgres-only). This adapter is inactive in
+  // nex_dev. If the Supabase backend is reactivated, migrations 063 + 070
+  // must be applied to Supabase first · calling this code against the
+  // current Supabase will error with "table not found" · that is the
+  // intended loud signal, not a silent divergence.
+  //
+  // Historical process-scoped rows (host_id-keyed · Fly cluster destroyed
+  // 2026-08-09) are frozen in Postgres nex.worker_heartbeats_archive_2026_08_22.
   async upsertHeartbeat(row: WorkerHeartbeat): Promise<void> {
     const { error } = await this.client
-      .from("worker_heartbeats")
+      .from("worker_heartbeat")
       .upsert(
         {
-          host_id: row.host_id,
-          last_seen_at: row.last_seen_at,
-          uptime_ms: row.uptime_ms,
-          cycles_total: row.cycles_total,
-          cycles_failed: row.cycles_failed,
-          last_error: row.last_error,
-          last_cycle_summary: row.last_cycle_summary,
+          worker_id: row.worker_id,
+          worker_type: row.worker_type,
+          worker_config: row.worker_config,
+          last_heartbeat_at: row.last_heartbeat_at,
+          last_status: row.last_status,
+          last_cycle_run_id: row.last_cycle_run_id,
           metadata: row.metadata,
         },
-        { onConflict: "host_id" }
+        { onConflict: "worker_id" }
       );
     if (error) throw new Error(`upsertHeartbeat failed: ${error.message}`);
   }
 
   async listHeartbeats(filter: { since?: string; limit?: number } = {}): Promise<WorkerHeartbeat[]> {
     let query = this.client
-      .from("worker_heartbeats")
+      .from("worker_heartbeat")
       .select("*")
-      .order("last_seen_at", { ascending: false });
-    if (filter.since) query = query.gt("last_seen_at", filter.since);
+      .order("last_heartbeat_at", { ascending: false });
+    if (filter.since) query = query.gt("last_heartbeat_at", filter.since);
     if (filter.limit) query = query.limit(filter.limit);
     const { data, error } = await query;
     if (error) throw new Error(`listHeartbeats failed: ${error.message}`);

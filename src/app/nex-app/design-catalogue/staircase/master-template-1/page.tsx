@@ -2,21 +2,33 @@
 //
 // Route: /nex-app/design-catalogue/staircase/master-template-1
 //
-// Assembles the Master Template as sections get approved. Currently
-// contains ONLY the hero (ST-H01) — no trust bar, no collections, no
-// other sections until Philip approves the hero composition.
+// Thin Server Component wrapper. All section composition + activation
+// lives in the client-side <Mt1ExperienceStream />. This file only
+// renders the dev-only approval bar and mounts the stream.
+//
+// Section catalogue (as of 2026-08-17 · two-journey doctrine order):
+//   Core scroll (always mounted):
+//     ST-N01 (nav)
+//     ST-H01 (hero)
+//     ST-T01 (trust bar)
+//     ST-C01 (Staircase Types · 4 curated cards → future style writer)
+//     ST-M01 (Choose Your Wood · reads/writes design.wood)
+//     [ST-D01 · Design Your Staircase · future component selectors]
+//     ST-AB01 (How It's Made · process / team / stats / CTA)
+//     ST-B01  (Installation across the UK)
+//     ST-P01  (Staircase Parts & Accessories · Customer B gateway)
+//     ST-F01  (footer)
+//   Append-on-demand (URL-hash deep-link auto-activation):
+//     #materials-all-woods → full wood catalogue inside ST-M01
+//     #parts-all           → full parts catalogue inside ST-P01
+//
+// See docstring on Mt1ExperienceStream for how to wire another
+// append-on-demand chapter.
 //
 // Dev-only. Returns 404 outside development.
 
 import { notFound } from "next/navigation";
-import { STN01 } from "@/lib/design-catalogue/premium-architectural/staircase/master-template-1/sections/ST-N01";
-import { STH01 } from "@/lib/design-catalogue/premium-architectural/staircase/master-template-1/sections/ST-H01";
-import { STT01 } from "@/lib/design-catalogue/premium-architectural/staircase/master-template-1/sections/ST-T01";
-import { STC01 } from "@/lib/design-catalogue/premium-architectural/staircase/master-template-1/sections/ST-C01";
-import { STB01 } from "@/lib/design-catalogue/premium-architectural/staircase/master-template-1/sections/ST-B01";
-import { STA01 } from "@/lib/design-catalogue/premium-architectural/staircase/master-template-1/sections/ST-A01";
-import { STF01 } from "@/lib/design-catalogue/premium-architectural/staircase/master-template-1/sections/ST-F01";
-import { Reveal } from "@/lib/design-catalogue/premium-architectural/staircase/master-template-1/Reveal";
+import { Mt1ExperienceStream } from "@/lib/design-catalogue/premium-architectural/staircase/master-template-1/Mt1ExperienceStream";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Master Template 1 · dev preview", robots: { index: false } };
@@ -26,9 +38,7 @@ export default function MasterTemplate1PreviewPage() {
 
   return (
     <main data-testid="mt1-preview">
-      {/* Owner-approval bar · replaces itself with the real header once
-          ST-N01 is built and approved. Kept minimal so the eye stays on
-          the section under review. */}
+      {/* Owner-approval bar · dev-only. */}
       <div
         style={{
           background: "#0a0a0a",
@@ -45,18 +55,11 @@ export default function MasterTemplate1PreviewPage() {
           <strong>NEX Design Catalogue</strong> · Master Template 1 · Premium Architectural · Staircase
         </span>
         <span style={{ opacity: 0.65 }}>
-          Awaiting owner approval · sections built so far: <code>ST-N01</code>, <code>ST-H01</code>, <code>ST-T01</code>, <code>ST-C01</code>, <code>ST-A01</code> (with <code>ST-Q01</code> embedded)
+          Order: <code>N01</code> · <code>H01</code> · <code>T01</code> · <code>C01</code> (Types) · <code>M01</code> (Wood) · <em>[D01 · Design · pending]</em> · <code>AB01</code> (Process) · <code>B01</code> (UK cover) · <code>P01</code> (Parts) · <code>F01</code> · append-on-demand: <code>#materials-all-woods</code>, <code>#parts-all</code>
         </span>
       </div>
 
-      <STN01 />
-      <STH01 />
-      <Reveal><STT01 /></Reveal>
-      <Reveal><STC01 /></Reveal>
-      <Reveal><STB01 /></Reveal>
-      {/* ST-A01 removed from the page per Philip 2026-08-14 (still
-          exists as a section file for future use). */}
-      <Reveal><STF01 /></Reveal>
+      <Mt1ExperienceStream />
     </main>
   );
 }

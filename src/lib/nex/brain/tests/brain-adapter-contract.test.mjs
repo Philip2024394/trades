@@ -41,7 +41,7 @@
 //     C7  · PostgresBrainStore.insertRecordIdempotent uses ON CONFLICT DO NOTHING
 //     C8  · PostgresBrainStore.claimNextJob delegates to nex.claim_next_job
 //     C9  · PostgresBrainStore.claimNextLlmRetry delegates to nex.claim_next_llm_retry
-//     C10 · PostgresBrainStore.upsertHeartbeat uses ON CONFLICT (host_id) DO UPDATE
+//     C10 · PostgresBrainStore.upsertHeartbeat uses ON CONFLICT (worker_id) DO UPDATE (Task #72 2026-08-22)
 //     C11 · brainStore() singleton picks PostgresBrainStore when NEX_BRAIN_BACKEND=postgres
 //
 //   B · Live SQL semantics (Postgres nex.* schema, application role)
@@ -58,7 +58,7 @@
 //           survives insert + select
 //     L11 · Feedback lifecycle · insert → list unapplied → mark applied → list zero
 //     L12 · LLM retry lifecycle · enqueue → claim → mark succeeded
-//     L13 · Heartbeat upsert · same host_id upsert overwrites without duplicate
+//     L13 · Heartbeat upsert · same worker_id upsert overwrites without duplicate (Task #72 2026-08-22)
 //     L14 · RLS · nex_brain_app CAN read/write brain tables
 //     L15 · RLS · a foreign no-privilege role CANNOT read brain tables
 //     L16 · nex.nex_brain_status view returns finite integers for the 3 count fields
@@ -196,9 +196,9 @@ async function main() {
   record("C9", /claimNextLlmRetry[\s\S]*?FROM nex\.claim_next_llm_retry\(/.test(pgClassBlock),
     "claimNextLlmRetry delegates to nex.claim_next_llm_retry()");
 
-  // C10 · upsertHeartbeat uses ON CONFLICT (host_id) DO UPDATE
-  record("C10", /upsertHeartbeat[\s\S]*?ON CONFLICT \(host_id\) DO UPDATE/.test(pgClassBlock),
-    "upsertHeartbeat uses ON CONFLICT (host_id) DO UPDATE");
+  // C10 · upsertHeartbeat uses ON CONFLICT (worker_id) DO UPDATE (Task #72 Step 1c 2026-08-22)
+  record("C10", /upsertHeartbeat[\s\S]*?ON CONFLICT \(worker_id\) DO UPDATE/.test(pgClassBlock),
+    "upsertHeartbeat uses ON CONFLICT (worker_id) DO UPDATE");
 
   // C11 · brainStore() selects PostgresBrainStore branch
   // Regex tolerates the Wave 7 rewrite where the postgres branch
@@ -390,35 +390,38 @@ async function main() {
       `enq=${!!enq.rows[0]?.id} claim=${!!claimedId} match=${claimedId === enq.rows[0]?.id} final_status=${status.rows[0]?.status}`);
   } catch (e) { record("L12", false, `threw: ${e.message}`); }
 
-  // L13 · Heartbeat upsert idempotent per host_id
+  // L13 · Heartbeat upsert idempotent per worker_id (Task #72 Step 1c 2026-08-22).
+  // Uptime/cycles moved from primary columns to metadata jsonb · verify via metadata.
   try {
-    const hid = `${TEST_TAG}_worker@0`;
+    const wid = `${TEST_TAG}_worker`;
     await insideNexRole((c) => c.query(
-      `INSERT INTO nex.worker_heartbeats (host_id, last_seen_at, uptime_ms, cycles_total, cycles_failed)
-       VALUES ($1, NOW() - INTERVAL '3 seconds', 100, 1, 0)
-       ON CONFLICT (host_id) DO UPDATE SET last_seen_at = EXCLUDED.last_seen_at`,
-      [hid]
+      `INSERT INTO nex.worker_heartbeat (worker_id, worker_type, worker_config, last_heartbeat_at, last_status, metadata)
+       VALUES ($1, 'brain', 'test', NOW() - INTERVAL '3 seconds', 'standby', '{"uptime_ms":100,"cycles_total":1}'::jsonb)
+       ON CONFLICT (worker_id) DO UPDATE SET last_heartbeat_at = EXCLUDED.last_heartbeat_at`,
+      [wid]
     ));
     await insideNexRole((c) => c.query(
-      `INSERT INTO nex.worker_heartbeats (host_id, last_seen_at, uptime_ms, cycles_total, cycles_failed)
-       VALUES ($1, NOW(), 200, 2, 0)
-       ON CONFLICT (host_id) DO UPDATE SET
-         last_seen_at = EXCLUDED.last_seen_at, uptime_ms = EXCLUDED.uptime_ms, cycles_total = EXCLUDED.cycles_total`,
-      [hid]
+      `INSERT INTO nex.worker_heartbeat (worker_id, worker_type, worker_config, last_heartbeat_at, last_status, metadata)
+       VALUES ($1, 'brain', 'test', NOW(), 'running', '{"uptime_ms":200,"cycles_total":2}'::jsonb)
+       ON CONFLICT (worker_id) DO UPDATE SET
+         last_heartbeat_at = EXCLUDED.last_heartbeat_at,
+         last_status       = EXCLUDED.last_status,
+         metadata          = EXCLUDED.metadata`,
+      [wid]
     ));
-    const r = await pool.query(`SELECT uptime_ms, cycles_total FROM nex.worker_heartbeats WHERE host_id = $1`, [hid]);
-    const dupCount = await pool.query(`SELECT COUNT(*)::int AS n FROM nex.worker_heartbeats WHERE host_id = $1`, [hid]);
-    // BIGINT columns come back as strings from pg → coerce with Number() before compare.
-    const uptime = Number(r.rows[0].uptime_ms);
-    const cycles = Number(r.rows[0].cycles_total);
+    const r = await pool.query(`SELECT last_status, metadata FROM nex.worker_heartbeat WHERE worker_id = $1`, [wid]);
+    const dupCount = await pool.query(`SELECT COUNT(*)::int AS n FROM nex.worker_heartbeat WHERE worker_id = $1`, [wid]);
+    const uptime = Number(r.rows[0]?.metadata?.uptime_ms ?? 0);
+    const cycles = Number(r.rows[0]?.metadata?.cycles_total ?? 0);
+    const status = r.rows[0]?.last_status;
     record("L13",
-      dupCount.rows[0].n === 1 && uptime === 200 && cycles === 2,
-      `rows=${dupCount.rows[0].n} uptime=${uptime} cycles=${cycles}`);
+      dupCount.rows[0].n === 1 && uptime === 200 && cycles === 2 && status === "running",
+      `rows=${dupCount.rows[0].n} last_status=${status} uptime=${uptime} cycles=${cycles}`);
   } catch (e) { record("L13", false, `threw: ${e.message}`); }
 
   // L14 · RLS · nex_brain_app can read every brain table (positive control)
   try {
-    const tables = ["knowledge_records","confidence_scores","worker_jobs","worker_heartbeats","llm_retry_queue"];
+    const tables = ["knowledge_records","confidence_scores","worker_jobs","worker_heartbeat","llm_retry_queue"];
     const results14 = [];
     for (const t of tables) {
       const r = await insideNexRole((c) => c.query(`SELECT COUNT(*)::int AS n FROM nex.${t}`));
@@ -499,13 +502,14 @@ async function main() {
     deleted += jr.rowCount ?? 0;
     const rr = await pool.query(`DELETE FROM nex.knowledge_records WHERE record_id LIKE $1`, [`${TEST_TAG}%`]);
     deleted += rr.rowCount ?? 0;
-    const hr = await pool.query(`DELETE FROM nex.worker_heartbeats WHERE host_id LIKE $1`, [`${TEST_TAG}%`]);
+    // Task #72 Step 1c: heartbeat cleanup targets singular table + worker_id column.
+    const hr = await pool.query(`DELETE FROM nex.worker_heartbeat WHERE worker_id LIKE $1`, [`${TEST_TAG}%`]);
     deleted += hr.rowCount ?? 0;
     // Verify nothing left behind
     const remains = await pool.query(
       `SELECT (SELECT COUNT(*) FROM nex.knowledge_records WHERE record_id LIKE $1) AS records,
               (SELECT COUNT(*) FROM nex.worker_jobs WHERE input_ref LIKE $1) AS jobs,
-              (SELECT COUNT(*) FROM nex.worker_heartbeats WHERE host_id LIKE $1) AS heartbeats`,
+              (SELECT COUNT(*) FROM nex.worker_heartbeat WHERE worker_id LIKE $1) AS heartbeats`,
       [`${TEST_TAG}%`]
     );
     const clean = Number(remains.rows[0].records) === 0

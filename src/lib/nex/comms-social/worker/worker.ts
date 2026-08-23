@@ -20,6 +20,7 @@
 // providers; Phase 4 exercises the flow via the simulator adapter.
 
 import { randomUUID } from "node:crypto";
+import os from "node:os";
 import { withTenantClient } from "../db";
 import { withClient, type PgClientLike } from "@/lib/nex/db";
 import { getAdapter } from "../adapters/registry";
@@ -29,9 +30,17 @@ import { reCheckAtAdapterCall } from "../validators/pipeline";
 import type { ValidatorSubject } from "../validators/interface";
 import { emitSocialAudit } from "../audit";
 import { revealTokenForAdapter } from "../oauth/accounts";
+// Task #75 Bundle A (2026-08-22): canonical heartbeat + cycle_run · this
+// worker previously ran heartbeat-blind (Vercel cron every 60s but zero
+// canonical registry writes). HQ six-criteria can now see it.
+import { emitHeartbeat, startCycleRun, finishCycleRun } from "@/lib/nex/reliability";
 
 const LEASE_TTL_SECONDS = 60;
 const IDEMPOTENCY_MARKER_PREFIX = "nex-social";
+
+// Canonical worker_id · one stable id per process (host-pid) so multiple
+// hosts don't collide. worker_type='social', worker_config='comms'.
+const CANONICAL_SOCIAL_WORKER_ID = `social:comms:${os.hostname().slice(0, 20)}-${process.pid}`;
 
 export interface WorkerTickOptions {
   worker_id?:     string;
@@ -50,11 +59,83 @@ export interface WorkerTickResult {
 
 // Single worker tick · runs at most ONE job. Cron/loop callers invoke
 // repeatedly. Idempotent per lease.
+//
+// Task #75 Bundle A (2026-08-22): every tick opens a canonical worker_cycle_run
+// and emits heartbeat before + after · HQ six-criteria evaluator can prove
+// consumption from records_processed and status transitions.
 export async function runWorkerTickOnce(opts: WorkerTickOptions = {}): Promise<WorkerTickResult> {
   const worker_id  = opts.worker_id ?? `worker-${randomUUID()}`;
   const lease_ttl  = opts.lease_ttl_s ?? LEASE_TTL_SECONDS;
   const now        = opts.now ?? new Date();
   const outcomes: WorkerTickResult["outcomes"] = [];
+
+  // Open canonical cycle_run + emit running heartbeat.
+  const cycleRunId = await withClient(async (c) => startCycleRun(c, {
+    workerId:      CANONICAL_SOCIAL_WORKER_ID,
+    workerType:    "social",
+    workerConfig:  "comms",
+    jobIdExternal: worker_id,
+  }));
+  await withClient(async (c) => emitHeartbeat(c, {
+    workerId:     CANONICAL_SOCIAL_WORKER_ID,
+    workerType:   "social",
+    workerConfig: "comms",
+    status:       "running",
+    cycleRunId,
+    metadata:     { hostname: os.hostname(), pid: process.pid, worker_id },
+  }));
+
+  // Wrap the tick body so heartbeat + cycle_run always finalise even on throw.
+  try {
+    const result = await runWorkerTickBody({ worker_id, lease_ttl, now, outcomes });
+    // Compute honest counts from outcomes.
+    const noWork = result.outcomes.length === 1 && result.outcomes[0]!.outcome === "no_work";
+    const recordsProcessed = noWork ? 0 : result.outcomes.length;
+    const errorsCount = result.outcomes.filter((o) => o.outcome === "failed").length;
+    const finalStatus = errorsCount > 0 ? "failed" : "completed";
+    await withClient(async (c) => finishCycleRun(c, cycleRunId, {
+      status: finalStatus,
+      recordsProcessed,
+      errorsCount,
+      summary: { outcomes: result.outcomes },
+    }));
+    await withClient(async (c) => emitHeartbeat(c, {
+      workerId:     CANONICAL_SOCIAL_WORKER_ID,
+      workerType:   "social",
+      workerConfig: "comms",
+      status:       errorsCount > 0 ? "failed" : "standby",
+      cycleRunId,
+      metadata:     { hostname: os.hostname(), pid: process.pid, worker_id },
+    }));
+    return result;
+  } catch (e) {
+    await withClient(async (c) => finishCycleRun(c, cycleRunId, {
+      status: "failed",
+      errorsCount: 1,
+      summary: { error: e instanceof Error ? e.message : String(e) },
+    }));
+    await withClient(async (c) => emitHeartbeat(c, {
+      workerId:     CANONICAL_SOCIAL_WORKER_ID,
+      workerType:   "social",
+      workerConfig: "comms",
+      status:       "failed",
+      cycleRunId,
+      metadata:     { hostname: os.hostname(), pid: process.pid, worker_id, error: e instanceof Error ? e.message : String(e) },
+    }));
+    throw e;
+  }
+}
+
+// Extracted worker tick body (unchanged behaviour · pre-Task-#75 code
+// path preserved verbatim). Wrapping in runWorkerTickOnce lets Task #75
+// add heartbeat + cycle_run without touching the working publish logic.
+async function runWorkerTickBody(ctx: {
+  worker_id: string;
+  lease_ttl: number;
+  now: Date;
+  outcomes: WorkerTickResult["outcomes"];
+}): Promise<WorkerTickResult> {
+  const { worker_id, lease_ttl, now, outcomes } = ctx;
 
   // Cross-tenant acquire path — RLS is disabled for this SELECT because
   // the worker daemon is a cross-tenant process. Uses admin bypass GUC

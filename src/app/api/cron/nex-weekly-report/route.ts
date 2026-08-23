@@ -3,7 +3,7 @@
 //
 // Writes one row per week to hammerex_nex_weekly_reports summarising:
 // pending reviews, approvals + rejections this week, new entries per
-// trade, weakest trade. Admins read at /admin/nex/weekly.
+// trade, weakest trade. Admins read at /nex-head-quarters/weekly (removed 2026-08-22 · report kept for cron consumers only).
 //
 // Email delivery is deferred to pass 2 (needs an email transport
 // decision). The row lands in the DB — that's the source of truth.

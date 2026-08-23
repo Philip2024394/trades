@@ -1,30 +1,32 @@
-// NEX Voice · dispatcher (mirrors scripts/nex-conv/lib/respond.mjs pattern).
+// NEX Voice · public barrel.
 //
-// Adapter selection · env NEX_VOICE_PROVIDER (default 'browser').
-// Registered LOCAL / PROTOTYPE providers only. Cloud voice providers
-// (Groq Whisper, ElevenLabs, etc.) each land as a new adapter file and
-// register here — never wire a customer-facing surface directly to a
-// provider SDK. Router doctrine: interface permanent, provider temporary.
+// This file re-exports the provider factory, types, and orchestration hook.
+// Callers should import everything from '@/lib/nex-voice' — never reach
+// into providers/ or useNexVoice directly.
+//
+// Architecture:
+//   · types.ts             — permanent NexVoiceProvider interface
+//   · providers/*.ts       — swappable adapters (browser, groq, elevenlabs…)
+//   · factory.ts           — provider dispatch (env / config)
+//   · useNexVoice.ts       — SINGLE orchestration hook consumed by every
+//                            NEX voice surface (see Voice Pipeline doctrine
+//                            2026-08-21: one pipeline, brain-vs-voice split).
 
-import { browserVoiceProvider } from "./providers/browser";
-import type { NexVoiceProvider } from "./types";
+export type {
+  NexVoiceProvider,
+  VoiceTranscript,
+  VoiceListenHandle,
+  VoiceListenOptions,
+  VoiceSpeakOptions,
+} from "./types";
 
-export type { NexVoiceProvider, VoiceTranscript, VoiceListenHandle, VoiceListenOptions, VoiceSpeakOptions } from "./types";
+export { getVoiceProvider } from "./factory";
 
-const REGISTERED: Record<string, NexVoiceProvider> = {
-  browser: browserVoiceProvider,
-};
-
-export function getVoiceProvider(id?: string): NexVoiceProvider {
-  const wanted = id
-    ?? (typeof process !== "undefined" ? process.env?.NEX_VOICE_PROVIDER : undefined)
-    ?? "browser";
-  const p = REGISTERED[wanted];
-  if (!p) {
-    throw new Error(
-      `nex-voice: NEX_VOICE_PROVIDER='${wanted}' not registered. ` +
-      `Registered: ${Object.keys(REGISTERED).join(", ")}.`
-    );
-  }
-  return p;
-}
+export { useNexVoice } from "./useNexVoice";
+export type {
+  NexVoiceState,
+  NexVoiceLanguage,
+  NexReplyMeta,
+  UseNexVoiceOptions,
+  UseNexVoiceApi,
+} from "./useNexVoice";

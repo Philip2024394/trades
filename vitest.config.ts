@@ -18,7 +18,11 @@ export default defineConfig({
   },
   test: {
     environment: "node",
-    include: ["src/**/*.test.ts", "src/**/*.test.tsx"],
+    // Country Foundation Step 4 (2026-08-22) · scripts/**/*.test.mjs added so Walker
+    // config country-awareness tests (which live next to the acquisition code they test)
+    // are discovered by the default `vitest run`. Only .test.mjs files match — pre-existing
+    // `_test-*.mjs` standalone scripts are NOT swept up (different naming convention).
+    include: ["src/**/*.test.ts", "src/**/*.test.tsx", "scripts/**/*.test.mjs"],
     globals:  true,
     setupFiles: ["src/test/setup.ts"]
   }

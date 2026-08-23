@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Winder walk line">
+  <defs>
+    <marker id="a" viewBox="0 0 12 12" refX="6" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M1 1 L11 6 L1 11 Z" fill="#F26C1F"/>
+    </marker>
+  </defs>
+  <!-- Wider, smoother curve through the winder corner (vs the sharper L quarter-turn) -->
+  <path d="M60,215 L60,150 Q60,60 150,60 L215,60"
+        fill="none" stroke="#F26C1F" stroke-width="3" stroke-linecap="round"
+        marker-end="url(#a)"/>
+  <circle cx="60" cy="222" r="6" fill="#FFFFFF" stroke="#F26C1F" stroke-width="2.5"/>
+</svg>

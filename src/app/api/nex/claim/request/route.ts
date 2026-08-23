@@ -4,7 +4,7 @@
 //
 // Owner submits form → row inserted into `claim_requests` audit table +
 // listing lifecycle_status flipped to "claim_requested". Admin reviews the
-// request in /nex-app/nex-brain/claim-review and clicks Approve / Reject,
+// request in /nex-head-quarters/claim-review and clicks Approve / Reject,
 // which invokes /api/nex/claim/admin-action.
 //
 // Rules preserved:

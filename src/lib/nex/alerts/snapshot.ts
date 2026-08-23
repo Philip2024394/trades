@@ -38,13 +38,16 @@ export async function buildPlatformSnapshot(): Promise<PlatformSnapshot> {
     );
     const q = queueRes.rows[0] as { pending: number; running: number; dead_letter: number; oldest_pending_age_seconds: number };
 
+    // Task #75 Bundle A (2026-08-22): redirected from dropped
+    // nex.delivery_workers to canonical nex.worker_heartbeat.
     const workerRes = await c.query(
       `SELECT
-         COUNT(*)::int                                                       AS registered,
-         COUNT(*) FILTER (WHERE last_seen_at > NOW() - INTERVAL '2 minutes')::int AS alive,
-         MAX(last_seen_at)                                                    AS last_heartbeat,
-         EXTRACT(EPOCH FROM (NOW() - MAX(last_seen_at)))::int                 AS seconds_since_last_heartbeat
-       FROM nex.delivery_workers`,
+         COUNT(*)::int                                                             AS registered,
+         COUNT(*) FILTER (WHERE last_heartbeat_at > NOW() - INTERVAL '2 minutes')::int AS alive,
+         MAX(last_heartbeat_at)                                                     AS last_heartbeat,
+         EXTRACT(EPOCH FROM (NOW() - MAX(last_heartbeat_at)))::int                  AS seconds_since_last_heartbeat
+       FROM nex.worker_heartbeat
+      WHERE worker_type = 'delivery'`,
     );
     const w = workerRes.rows[0] as { registered: number; alive: number; last_heartbeat: string | null; seconds_since_last_heartbeat: number | null };
 

@@ -105,7 +105,7 @@ export default function NexBookerPage() {
         {/* Back nav */}
         <div className="mt-8">
           <Link
-            href="/nex-app/nex-brain"
+            href="/nex-head-quarters"
             className="inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-[12px] font-semibold"
             style={{ background: TOKEN.card, borderColor: TOKEN.border, color: TOKEN.textMid }}
           >

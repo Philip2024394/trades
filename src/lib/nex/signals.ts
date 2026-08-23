@@ -53,7 +53,7 @@ async function reviewPending(_ctx: SignalContext): Promise<Signal[]> {
     kind:     "review_pending",
     priority: (count ?? 0) > 5 ? "high" : "medium",
     headline: `${count} knowledge ${count === 1 ? "item" : "items"} waiting for approval.`,
-    action:   { label: "Open Review", href: "/admin/nex/review" }
+    action:   { label: "Open Review", href: "/nex-head-quarters/review" }
   }];
 }
 

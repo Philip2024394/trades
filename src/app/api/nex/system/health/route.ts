@@ -37,13 +37,15 @@ export async function GET() {
     );
     const oldest_pending_age_seconds = Number((oldestRes.rows[0] as { age_seconds: number | null })?.age_seconds ?? 0) || 0;
 
-    // Worker signals
+    // Worker signals · Task #75 Bundle A (2026-08-22) · redirected from
+    // dropped nex.delivery_workers to canonical nex.worker_heartbeat.
     const workersRes = await c.query(
       `SELECT
          COUNT(*)::int AS registered,
-         COUNT(*) FILTER (WHERE last_seen_at > NOW() - INTERVAL '2 minutes')::int AS alive,
-         MAX(last_seen_at) AS last_heartbeat
-       FROM nex.delivery_workers`,
+         COUNT(*) FILTER (WHERE last_heartbeat_at > NOW() - INTERVAL '2 minutes')::int AS alive,
+         MAX(last_heartbeat_at) AS last_heartbeat
+       FROM nex.worker_heartbeat
+      WHERE worker_type = 'delivery'`,
     );
     const workers = {
       registered:  Number((workersRes.rows[0] as { registered: number })?.registered ?? 0),

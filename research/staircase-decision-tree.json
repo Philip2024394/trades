@@ -1,0 +1,579 @@
+{
+  "$schema": "internal://nex/staircase-decision-tree-v1",
+  "version": "1.1.0",
+  "generated": "2026-08-17",
+  "purpose": "Conditional decision path for a customer specifying a staircase. Never asks the customer to hold professional vocabulary. Every question offers plain English + 'I'm not sure'. Never calculates measurements, never quotes final price, never claims compliance.",
+  "handoff_rule": "At any point the customer selects 'I'm not sure' + does not respond to visual comparison, or picks a value flagged 'specialist_review_required', the wizard exits to a professional review request.",
+  "root": "Q1_country",
+  "nodes": {
+    "Q1_country": {
+      "question_en": "Which country will your staircase be installed in?",
+      "type": "single_select",
+      "options": [
+        {"value": "UK", "label": "United Kingdom", "loads_regional_pack": "UK"},
+        {"value": "IE", "label": "Ireland", "loads_regional_pack": "IE"},
+        {"value": "US", "label": "United States", "loads_regional_pack": "US"},
+        {"value": "CA", "label": "Canada", "loads_regional_pack": "CA"},
+        {"value": "DE", "label": "Germany", "loads_regional_pack": "DE"},
+        {"value": "AT", "label": "Austria", "loads_regional_pack": "AT"},
+        {"value": "CH", "label": "Switzerland", "loads_regional_pack": "CH"},
+        {"value": "IT", "label": "Italy", "loads_regional_pack": "IT"},
+        {"value": "FR", "label": "France", "loads_regional_pack": "FR"},
+        {"value": "ES", "label": "Spain", "loads_regional_pack": "ES"},
+        {"value": "NL", "label": "Netherlands", "loads_regional_pack": "NL"},
+        {"value": "BE", "label": "Belgium", "loads_regional_pack": "BE"},
+        {"value": "SE", "label": "Sweden", "loads_regional_pack": "SE"},
+        {"value": "NO", "label": "Norway", "loads_regional_pack": "NO"},
+        {"value": "DK", "label": "Denmark", "loads_regional_pack": "DK"},
+        {"value": "FI", "label": "Finland", "loads_regional_pack": "FI"},
+        {"value": "AU", "label": "Australia", "loads_regional_pack": "AU"},
+        {"value": "NZ", "label": "New Zealand", "loads_regional_pack": "NZ"},
+        {"value": "OTHER", "label": "Somewhere else", "route": "handoff_professional"}
+      ],
+      "next": "Q2_use"
+    },
+    "Q2_use": {
+      "question_en": "Where in the building will the staircase go?",
+      "explanation_en": "Different areas have different rules and different typical layouts.",
+      "type": "single_select",
+      "options": [
+        {"value": "primary_home", "label": "Hallway - Ground Floor to First Floor", "help_en": "The main staircase connecting your entrance level to the first upper floor. It's the everyday, most-used staircase in the home, so it drives the strongest requirements around headroom, tread depth, handrail height and pitch. The design also sets the visual tone for the whole hallway."},
+        {"value": "secondary_home", "label": "Second Staircase - First Floor to Second Floor", "help_en": "A staircase between two upper floors — usually the first to a second floor or loft-conversion level. Similar regulations to the main staircase, but layouts are often more constrained by existing walls, ceilings and roof lines, which can influence the shape (winder, quarter-turn, space-saver, etc)."},
+        {"value": "loft_access", "label": "Loft or attic access only", "help_en": "A dedicated staircase serving a single loft or attic room. Often steeper and narrower than a main staircase — space-saver, paddle-tread and alternating-tread designs are common. Different regulations can apply because it serves one habitable room rather than a whole floor."},
+        {"value": "commercial", "label": "Commercial or public building", "flag": "specialist_review_required", "help_en": "A staircase inside a shop, office, hotel, restaurant, school or any other non-domestic building open to the public or staff. Stricter regulations apply around fire escape, width, handrails on both sides, disability access, non-slip surfaces and material fire-ratings. A specialist will review your project before quoting."},
+        {"value": "outdoor", "label": "Outdoor / garden", "help_en": "A staircase exposed to the weather — garden steps, deck stairs, balcony or terrace access. Materials, fixings and finishes have to cope with rain, frost, UV and thermal movement. Slip resistance and drainage become primary design drivers, and separate rules can apply depending on where the stair sits."},
+        {"value": "industrial", "label": "Industrial or service access", "flag": "specialist_review_required", "help_en": "A staircase in a factory, warehouse, plant room, mezzanine or service access route. Load ratings, non-slip metal treads, kickplates and specific industrial safety codes apply, and pitch allowances differ from domestic stairs. A specialist will review your project before quoting."},
+        {"value": "not_sure", "label": "I'm not sure", "compare": ["primary_home", "loft_access", "secondary_home"]}
+      ],
+      "next": "Q3_geometry"
+    },
+    "Q3_geometry": {
+      "question_en": "What shape of staircase are you thinking of?",
+      "explanation_en": "The shape describes how the staircase turns through your space. If you're not sure, we'll show you the differences visually.",
+      "type": "single_select",
+      "options": [
+        {"value": "straight", "label": "Straight — one flight, no turn", "concept_id": "geometry.straight", "image_aspect": "2/3", "installed_examples": ["https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2013,%202026,%2009_56_36%20PM.png?updatedAt=1786633014522", "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2012,%202026,%2009_53_29%20AM.png?updatedAt=1786503235418", "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%208,%202026,%2012_19_54%20AM.png?updatedAt=1786123209483"]},
+        {"value": "quarter_turn", "label": "L-shape — one 90° turn", "concept_id": "geometry.quarter_turn", "image_aspect": "2/3", "installed_examples": ["https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2005_11_27%20AM.png?updatedAt=1785535908073", "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2004_36_25%20AM.png?updatedAt=1785533811254", "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2003_21_15%20AM.png?updatedAt=1785529301388"]},
+        {"value": "half_turn", "label": "U-shape — two flights meeting a landing", "concept_id": "geometry.half_turn", "image_aspect": "2/3", "installed_examples": ["https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2003_27_56%20PM.png?updatedAt=1786696106987", "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2012,%202026,%2006_56_54%20PM.png?updatedAt=1786535843210", "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2012,%202026,%2010_09_38%20AM.png?updatedAt=1786504198163", "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%208,%202026,%2002_22_15%20AM.png?updatedAt=1786130555682", "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%207,%202026,%2010_48_58%20AM.png?updatedAt=1786074556737"]},
+        {"value": "winder", "label": "Winder — wedge-shaped treads at a corner instead of a landing", "concept_id": "geometry.winder", "image_aspect": "2/3", "installed_examples": ["https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2002_13_19%20AM.png?updatedAt=1785525221667", "https://ik.imagekit.io/5vv5pw26q/Untitledsadasd.png", "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2018,%202026,%2012_03_56%20PM.png", "https://ik.imagekit.io/5vv5pw26q/Untitledsadasdwer.png", "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2018,%202026,%2012_16_38%20PM.png", "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2018,%202026,%2012_23_07%20PM.png", "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2018,%202026,%2012_26_33%20PM.png", "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%207,%202026,%2006_53_23%20AM.png?updatedAt=1786060422381"]},
+        {"value": "spiral", "label": "Spiral — winding around a central column", "concept_id": "geometry.spiral"},
+        {"value": "helical", "label": "Helical — smooth spiral around an open central well, no column", "concept_id": "geometry.helical"},
+        {"value": "curved", "label": "Curved — a smooth radius, not a full spiral", "concept_id": "geometry.curved"},
+        {"value": "bifurcated", "label": "Split / imperial — grand staircase that splits at a mid-landing", "concept_id": "geometry.bifurcated", "flag": "specialist_review_required"},
+        {"value": "space_saver", "label": "Paddle / space-saver — alternating half-treads (loft use only in most countries)", "concept_id": "geometry.paddle", "restriction": "loft_access_only_in_many_countries"},
+        {"value": "not_sure", "label": "I'm not sure — show me the differences", "compare": ["straight", "quarter_turn", "half_turn", "winder", "spiral", "helical", "curved"]}
+      ],
+      "next": "Q4_material_family"
+    },
+    "Q4_material_family": {
+      "question_en": "What material family are you thinking about?",
+      "explanation_en": "This is the overall material — you can combine materials later (for example wooden treads with a glass balustrade).",
+      "type": "single_select",
+      "options": [
+        {"value": "timber", "label": "Timber (wood)", "concept_id": "material.timber"},
+        {"value": "metal", "label": "Metal (steel, stainless, aluminium, brass)", "concept_id": "material.metal"},
+        {"value": "glass", "label": "Glass (usually combined with metal or timber)", "concept_id": "material.glass"},
+        {"value": "concrete", "label": "Concrete", "concept_id": "material.concrete"},
+        {"value": "stone", "label": "Stone", "concept_id": "material.stone"},
+        {"value": "mixed_timber_metal", "label": "Timber + metal", "concept_id": "material.mixed.timber_metal"},
+        {"value": "mixed_timber_glass", "label": "Timber + glass", "concept_id": "material.mixed.timber_glass"},
+        {"value": "mixed_metal_glass", "label": "Metal + glass", "concept_id": "material.mixed.metal_glass"},
+        {"value": "mixed_all", "label": "Timber + metal + glass", "concept_id": "material.mixed.timber_metal_glass"},
+        {"value": "not_sure", "label": "I'm not sure — show me options", "compare": ["timber", "mixed_timber_metal", "mixed_timber_glass", "mixed_metal_glass"]}
+      ],
+      "next": "Q5_structural"
+    },
+    "Q5_structural": {
+      "question_en": "What's the main design of your staircase?",
+      "explanation_en": "The main design defines how the staircase looks from the side and underneath. If you're not sure, we can show you the differences side-by-side.",
+      "type": "single_select",
+      "options": [
+        {"value": "closed_string", "label": "Closed string staircase", "concept_id": "structural.closed_string", "image_url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2023,%202026,%2010_05_20%20AM.png?updatedAt=1784775938722", "help_en": "Staircase can sit against a wall on the left or on the right side, in between walls, or free-standing in the centre of a room.", "installed_examples": [{"url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2013,%202026,%2009_56_36%20PM.png?updatedAt=1786633014522", "caption": "Left Side Handrail"}, {"url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%207,%202026,%2011_44_46%20PM.png?updatedAt=1786121106168", "caption": "Handrail Both Sides"}, {"url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2012,%202026,%2010_06_38%20AM.png?updatedAt=1786504064064", "caption": "Right Side Handrail"}, {"url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%207,%202026,%2004_26_28%20AM.png?updatedAt=1786051610961", "caption": "Handrail Both Sides"}, {"url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%206,%202026,%2010_12_43%20AM.png?updatedAt=1785985988086", "caption": "Handrail Both Sides"}, {"url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%206,%202026,%2008_25_41%20AM.png?updatedAt=1785979564468", "caption": "Handrail Both Sides"}, {"url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%206,%202026,%2007_28_43%20AM.png?updatedAt=1785976145158", "caption": "Handrail Both Sides"}]},
+        {"value": "cut_string", "label": "Cut String staircase One Side", "concept_id": "structural.cut_string", "image_url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2023,%202026,%2010_09_14%20AM.png?updatedAt=1784776171862", "help_en": "One side sits against a wall (closed wall string); the other, open side has a stepped stringer with the tread ends visible. A traditional decorative style — very common in Victorian and Georgian UK homes."},
+        {"value": "cut_string_double", "label": "Double side Cut String staircase", "concept_id": "structural.cut_string", "image_url": "https://ik.imagekit.io/5vv5pw26q/Untitledasdasdvccv-removebg-preview.png", "help_en": "Both sides have stepped cut stringers with the tread ends visible from either side. Usually installed as a freestanding feature staircase in the middle of a room, not against a wall.", "installed_examples": ["https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2014,%202026,%2003_31_54%20PM.png?updatedAt=1786696332275", "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2002_41_25%20AM.png?updatedAt=1785613303883", "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2002_29_26%20PM.png?updatedAt=1785050984174"]},
+        {"value": "mono_stringer", "label": "Mono staircase", "concept_id": "structural.mono_stringer", "image_url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2023,%202026,%2010_34_04%20AM.png?updatedAt=1784777661212", "help_en": "A single central steel or timber beam runs underneath the treads, so the staircase appears to sit on a spine with the tread ends floating on either side. A contemporary look — structural engineering is required and the specialist will confirm the beam size for your span."},
+        {"value": "cantilever", "label": "Cantilever staircase", "concept_id": "structural.cantilever", "flag": "specialist_review_required", "image_url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2018,%202026,%2002_26_54%20AM.png", "help_en": "Each tread projects out of a load-bearing wall with no visible support underneath — a true floating look. Needs a strong structural wall to carry the loads; the specialist confirms suitability at site visit and specifies the fixings. The most contemporary of the design options."},
+        {"value": "bolt_fixed", "label": "Bolt wall staircase", "concept_id": "structural.bolt_fixed", "flag": "regional_common_dach", "image_url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2018,%202026,%2002_36_36%20AM.png", "help_en": "The treads connect to each other and to a wall using bolts — no side stringers. Known as a Bolzentreppe in German-speaking markets where it's very common; less traditional in the UK but growing. Very lightweight visual, mid-way between mono-stringer and cantilever in style."},
+        {"value": "not_sure", "label": "I'm not sure — show me the differences", "compare": ["closed_string", "cut_string", "mono_stringer", "cantilever"]}
+      ],
+      "conditional_next": {
+        "if_geometry_spiral": "Q5b_central_column",
+        "if_geometry_helical": "Q5c_helical_structure",
+        "else": "Q6_riser"
+      }
+    },
+    "Q5b_central_column": {
+      "question_en": "For your spiral, what is the central column made from?",
+      "explanation_en": "Spirals are supported by a central column. Steel is most common, but timber and stainless are both available.",
+      "type": "single_select",
+      "options": [
+        {"value": "steel_column", "label": "Steel column"},
+        {"value": "stainless_column", "label": "Stainless steel column"},
+        {"value": "timber_column", "label": "Timber column"},
+        {"value": "not_sure", "label": "I'm not sure"}
+      ],
+      "next": "Q6_riser"
+    },
+    "Q5c_helical_structure": {
+      "question_en": "For your helical, is there a preference for how the underside looks?",
+      "explanation_en": "Helical staircases hide their structure inside curved stringers. Some are mono-stringer, some are twin-stringer.",
+      "type": "single_select",
+      "options": [
+        {"value": "single_curved_stringer", "label": "Single curved central beam"},
+        {"value": "twin_curved_stringers", "label": "Twin curved side beams"},
+        {"value": "concealed_structure", "label": "Concealed structure — treads appear to float"},
+        {"value": "not_sure", "label": "I'm not sure — specialist will advise", "flag": "specialist_review_required"}
+      ],
+      "next": "Q6_riser"
+    },
+    "Q6_riser": {
+      "question_en": "Between the treads — do you want a solid board or an open gap?",
+      "explanation_en": "Closed risers give a traditional look and more sound insulation. Open risers give a more contemporary look and let more light through. In some countries the size of the opening is regulated.",
+      "type": "single_select",
+      "options": [
+        {"value": "closed", "label": "Closed riser — solid board between treads", "concept_id": "riser.closed"},
+        {"value": "open", "label": "Open riser — no board between treads", "concept_id": "riser.open"},
+        {"value": "partial", "label": "Partial or feature riser — a bar or slats", "concept_id": "riser.partial"},
+        {"value": "not_sure", "label": "I'm not sure — show me both", "compare": ["closed", "open"]}
+      ],
+      "next": "Q7_tread_material"
+    },
+    "Q7_tread_material": {
+      "question_en": "What material would you like the treads to be?",
+      "explanation_en": "The treads are what you step on. We ask this separately from the overall material because you can have (for example) timber treads on a metal frame.",
+      "type": "single_select",
+      "options": [
+        {"value": "solid_timber", "label": "Solid timber", "concept_id": "tread.solid.oak", "next": "Q7a_timber_species"},
+        {"value": "engineered_timber", "label": "Engineered timber (real wood surface on a stable core)"},
+        {"value": "stone", "label": "Stone (marble, granite, limestone, etc.)", "concept_id": "tread.stone"},
+        {"value": "concrete", "label": "Concrete"},
+        {"value": "glass", "label": "Glass — laminated toughened", "concept_id": "tread.glass"},
+        {"value": "metal", "label": "Metal (steel, stainless, aluminium)", "concept_id": "tread.metal"},
+        {"value": "carpeted", "label": "Carpeted (fully carpeted tread)"},
+        {"value": "carpet_runner", "label": "Timber tread with a carpet runner down the middle", "concept_id": "tread.carpet_runner"},
+        {"value": "not_sure", "label": "I'm not sure — show me options", "compare": ["solid_timber", "stone", "glass", "carpet_runner"]}
+      ]
+    },
+    "Q7a_timber_species": {
+      "question_en": "Which timber?",
+      "explanation_en": "The most popular species vary by country. We show you what's common where you are, plus the international favourites.",
+      "type": "single_select",
+      "region_aware": true,
+      "options_by_country": {
+        "UK": [
+          {"value": "oak", "label": "European Oak"},
+          {"value": "walnut", "label": "Walnut"},
+          {"value": "ash", "label": "Ash"},
+          {"value": "beech", "label": "Beech"},
+          {"value": "pine", "label": "Pine"},
+          {"value": "sapele", "label": "Sapele"},
+          {"value": "iroko", "label": "Iroko"},
+          {"value": "maple", "label": "Maple"}
+        ],
+        "IE": [
+          {"value": "oak", "label": "European Oak"},
+          {"value": "walnut", "label": "Walnut"},
+          {"value": "ash", "label": "Ash"},
+          {"value": "beech", "label": "Beech"},
+          {"value": "pine", "label": "Pine"}
+        ],
+        "US": [
+          {"value": "red_oak", "label": "Red Oak"},
+          {"value": "white_oak", "label": "White Oak"},
+          {"value": "hard_maple", "label": "Hard Maple"},
+          {"value": "hickory", "label": "Hickory"},
+          {"value": "cherry", "label": "Cherry"},
+          {"value": "black_walnut", "label": "Black Walnut"},
+          {"value": "pine", "label": "Pine"}
+        ],
+        "CA": [
+          {"value": "red_oak", "label": "Red Oak"},
+          {"value": "white_oak", "label": "White Oak"},
+          {"value": "hard_maple", "label": "Hard Maple"},
+          {"value": "birch", "label": "Birch"},
+          {"value": "cherry", "label": "Cherry"},
+          {"value": "black_walnut", "label": "Black Walnut"}
+        ],
+        "DE": [
+          {"value": "oak", "label": "Eiche (Oak)"},
+          {"value": "beech", "label": "Buche (Beech)"},
+          {"value": "maple", "label": "Ahorn (Maple)"},
+          {"value": "ash", "label": "Esche (Ash)"},
+          {"value": "walnut", "label": "Nussbaum (Walnut)"},
+          {"value": "cherry", "label": "Kirsche (Cherry)"},
+          {"value": "pine", "label": "Kiefer (Pine)"}
+        ],
+        "AT": [
+          {"value": "oak", "label": "Eiche"},
+          {"value": "beech", "label": "Buche"},
+          {"value": "maple", "label": "Ahorn"},
+          {"value": "ash", "label": "Esche"},
+          {"value": "walnut", "label": "Nussbaum"}
+        ],
+        "CH": [
+          {"value": "oak", "label": "Eiche"},
+          {"value": "beech", "label": "Buche"},
+          {"value": "maple", "label": "Ahorn"},
+          {"value": "ash", "label": "Esche"},
+          {"value": "walnut", "label": "Nussbaum"}
+        ],
+        "IT": [
+          {"value": "oak", "label": "Rovere (Oak)"},
+          {"value": "walnut", "label": "Noce (Walnut)"},
+          {"value": "beech", "label": "Faggio (Beech)"},
+          {"value": "maple", "label": "Acero (Maple)"},
+          {"value": "ash", "label": "Frassino (Ash)"},
+          {"value": "cherry", "label": "Ciliegio (Cherry)"}
+        ],
+        "FR": [
+          {"value": "oak", "label": "Chêne (Oak)"},
+          {"value": "walnut", "label": "Noyer (Walnut)"},
+          {"value": "beech", "label": "Hêtre (Beech)"},
+          {"value": "ash", "label": "Frêne (Ash)"},
+          {"value": "cherry", "label": "Merisier (Cherry)"}
+        ],
+        "ES": [
+          {"value": "oak", "label": "Roble (Oak)"},
+          {"value": "walnut", "label": "Nogal (Walnut)"},
+          {"value": "beech", "label": "Haya (Beech)"},
+          {"value": "ash", "label": "Fresno (Ash)"},
+          {"value": "cherry", "label": "Cerezo (Cherry)"},
+          {"value": "pine", "label": "Pino (Pine)"}
+        ],
+        "NL": [
+          {"value": "oak", "label": "Eiken (Oak)"},
+          {"value": "beech", "label": "Beuken (Beech)"},
+          {"value": "ash", "label": "Essen (Ash)"},
+          {"value": "walnut", "label": "Notenhout (Walnut)"}
+        ],
+        "BE": [
+          {"value": "oak", "label": "Eiken / Chêne (Oak)"},
+          {"value": "beech", "label": "Hêtre / Beuken (Beech)"}
+        ],
+        "SE": [
+          {"value": "oak", "label": "Ek (Oak)"},
+          {"value": "beech", "label": "Bok (Beech)"},
+          {"value": "birch", "label": "Björk (Birch)"},
+          {"value": "ash", "label": "Ask (Ash)"},
+          {"value": "pine", "label": "Furu (Pine)"}
+        ],
+        "NO": [
+          {"value": "oak", "label": "Eik (Oak)"},
+          {"value": "beech", "label": "Bøk (Beech)"},
+          {"value": "birch", "label": "Bjørk (Birch)"},
+          {"value": "pine", "label": "Furu (Pine)"}
+        ],
+        "DK": [
+          {"value": "oak", "label": "Eg (Oak)"},
+          {"value": "beech", "label": "Bøg (Beech)"},
+          {"value": "birch", "label": "Birk (Birch)"},
+          {"value": "ash", "label": "Ask (Ash)"},
+          {"value": "pine", "label": "Fyr (Pine)"}
+        ],
+        "FI": [
+          {"value": "oak", "label": "Tammi (Oak)"},
+          {"value": "birch", "label": "Koivu (Birch)"},
+          {"value": "pine", "label": "Mänty (Pine)"},
+          {"value": "spruce", "label": "Kuusi (Spruce)"}
+        ],
+        "AU": [
+          {"value": "oak", "label": "European Oak"},
+          {"value": "jarrah", "label": "Jarrah"},
+          {"value": "blackbutt", "label": "Blackbutt"},
+          {"value": "spotted_gum", "label": "Spotted Gum"},
+          {"value": "tasmanian_oak", "label": "Tasmanian Oak"},
+          {"value": "ironbark", "label": "Ironbark"},
+          {"value": "merbau", "label": "Merbau"},
+          {"value": "blue_gum", "label": "Blue Gum"}
+        ],
+        "NZ": [
+          {"value": "rimu", "label": "Rimu"},
+          {"value": "matai", "label": "Matai"},
+          {"value": "beech_nz", "label": "Beech NZ"},
+          {"value": "tawa", "label": "Tawa"},
+          {"value": "oak", "label": "European Oak"},
+          {"value": "american_oak", "label": "American Oak"}
+        ]
+      },
+      "next": "Q8_balustrade_material"
+    },
+    "Q8_balustrade_material": {
+      "question_en": "What kind of balustrade would you like?",
+      "explanation_en": "The balustrade is the safety barrier on the open side of the staircase. It can be traditional timber, contemporary metal, glass, cable — or a combination.",
+      "type": "single_select",
+      "options": [
+        {"value": "timber_traditional", "label": "Traditional timber spindles (turned)"},
+        {"value": "timber_square", "label": "Contemporary square timber spindles"},
+        {"value": "metal_traditional", "label": "Traditional metal (painted mild steel, wrought iron style)"},
+        {"value": "metal_stainless", "label": "Stainless steel (brushed or polished)"},
+        {"value": "metal_powder", "label": "Powder-coated metal (matt black, colour)"},
+        {"value": "glass_framed", "label": "Glass with frame or posts"},
+        {"value": "glass_frameless", "label": "Frameless glass (structural glass in a channel)"},
+        {"value": "cable_horizontal", "label": "Horizontal cable / wire", "flag": "check_local_sphere_rule"},
+        {"value": "cable_vertical", "label": "Vertical cable / wire"},
+        {"value": "combination", "label": "Combination — I'll describe with the specialist"},
+        {"value": "not_sure", "label": "I'm not sure — show me the options", "compare": ["timber_traditional", "metal_stainless", "glass_frameless", "cable_horizontal"]}
+      ],
+      "next": "Q_handrail_position"
+    },
+    "Q_handrail_position": {
+      "question_en": "Which side will the handrail be on?",
+      "explanation_en": "This depends on where the staircase sits in your home. Against a wall on one side means the handrail goes on the other side. A staircase in the middle of a room usually needs handrails on both sides.",
+      "type": "single_select",
+      "options": [
+        {"value": "right", "label": "Right side only", "help_en": "The staircase sits against a wall on the left, so the handrail runs down the right (open) side. This is the most common configuration in UK homes."},
+        {"value": "left", "label": "Left side only", "help_en": "The staircase sits against a wall on the right, so the handrail runs down the left (open) side."},
+        {"value": "both", "label": "Both sides (freestanding staircase)", "help_en": "The staircase stands freely in the middle of a room, away from walls on either side. Both open sides need a handrail. Common in loft conversions, open-plan spaces and architectural feature staircases."},
+        {"value": "not_sure", "label": "I'm not sure — a specialist will confirm at site visit"}
+      ],
+      "next": "Q9_handrail_material"
+    },
+    "Q9_handrail_material": {
+      "question_en": "What material would you like the handrail to be?",
+      "explanation_en": "The handrail is the graspable top rail. It can match the balustrade or be a different material (a common choice is oak handrail on a stainless balustrade).",
+      "type": "single_select",
+      "options": [
+        {"value": "timber_oak", "label": "Oak"},
+        {"value": "timber_walnut", "label": "Walnut"},
+        {"value": "timber_painted", "label": "Painted timber"},
+        {"value": "timber_other", "label": "Other timber — match my tread"},
+        {"value": "stainless", "label": "Stainless steel"},
+        {"value": "metal_black", "label": "Black metal / powder coat"},
+        {"value": "brass_bronze", "label": "Brass or bronze"},
+        {"value": "glass_cap", "label": "Glass cap (on top of glass balustrade — regional)"},
+        {"value": "wall_mounted", "label": "Wall-mounted only"},
+        {"value": "not_sure", "label": "I'm not sure — match to balustrade"}
+      ],
+      "next": "Q10_newel"
+    },
+    "Q10_newel": {
+      "question_en": "What style of newel posts?",
+      "explanation_en": "Newels are the vertical posts at the start, corners and top of the staircase. Style is mostly a look choice (turned, square, box, contemporary).",
+      "type": "single_select",
+      "options": [
+        {"value": "turned", "label": "Turned (traditional, lathe-shaped)"},
+        {"value": "square", "label": "Square (contemporary)"},
+        {"value": "box", "label": "Box newel (large square, often for grand stairs)"},
+        {"value": "feature", "label": "Feature newel (statement design)"},
+        {"value": "hidden", "label": "Hidden — I don't want visible newels (glass or cantilever)"},
+        {"value": "not_sure", "label": "Let the specialist advise"}
+      ],
+      "next": "Q11_landing"
+    },
+    "Q11_landing": {
+      "question_en": "Are there landings in the staircase?",
+      "explanation_en": "Landings are the level platforms between flights. Your geometry choice already tells us where landings usually go — this is a chance to confirm or adjust.",
+      "type": "single_select",
+      "options": [
+        {"value": "yes_matches_geometry", "label": "Yes — matches the shape I picked"},
+        {"value": "yes_extra_at_top", "label": "Yes — plus an open landing / balcony at the top"},
+        {"value": "no_winders_instead", "label": "No landings — use winders instead where the stair turns"},
+        {"value": "not_sure", "label": "I'm not sure — let the specialist decide based on site measurement"}
+      ],
+      "next": "Q12_finish"
+    },
+    "Q12_finish": {
+      "question_en": "How would you like the timber to be finished?",
+      "explanation_en": "The finish is what the wood looks and feels like on the surface. Oil is natural feel, lacquer is harder-wearing, stain changes the colour.",
+      "type": "single_select",
+      "if_material_not_timber": "skip",
+      "options": [
+        {"value": "natural_oil", "label": "Natural oil (matt, natural feel)"},
+        {"value": "hard_wax_oil", "label": "Hard wax oil (blend of oil + wax)"},
+        {"value": "lacquer_matt", "label": "Matt lacquer (hard-wearing, low sheen)"},
+        {"value": "lacquer_satin", "label": "Satin lacquer (hard-wearing, some sheen)"},
+        {"value": "lacquer_gloss", "label": "Gloss lacquer (very shiny)"},
+        {"value": "stain", "label": "Stain to a specific colour"},
+        {"value": "painted", "label": "Painted (colour on riser or tread edge)"},
+        {"value": "unfinished", "label": "Unfinished — I'll finish on site"},
+        {"value": "not_sure", "label": "Recommend a finish for this look"}
+      ],
+      "next": "Q13_extras"
+    },
+    "Q13_extras": {
+      "question_en": "Any extras or preferences?",
+      "explanation_en": "Optional features — pick any that apply.",
+      "type": "multi_select",
+      "options": [
+        {"value": "under_stair_storage", "label": "Under-stair storage or cupboard"},
+        {"value": "lighting", "label": "Integrated lighting (LED strip under tread / step-lights)"},
+        {"value": "runner", "label": "Carpet runner"},
+        {"value": "sound_insulation", "label": "Sound insulation between treads / underneath"},
+        {"value": "child_gate_ready", "label": "Ready for a child safety gate"},
+        {"value": "pet_friendly", "label": "Pet-friendly (non-slip nosing)"},
+        {"value": "removal_of_existing", "label": "Removal of existing staircase"},
+        {"value": "matching_upstairs_floor", "label": "Match to existing upstairs floor"},
+        {"value": "none", "label": "None — just the staircase"}
+      ],
+      "next": "Q_property_type"
+    },
+    "Q_property_type": {
+      "question_en": "What type of property is this?",
+      "explanation_en": "This tells the specialist how the project fits into the wider build — a new build, an existing property, an extension or a conversion have different practical requirements.",
+      "type": "single_select",
+      "options": [
+        {"value": "new_build", "label": "New build", "next": "Q_build_stage", "help_en": "A brand-new house or building currently being constructed from the ground up. The staircase specification usually needs to line up with the build programme (structural, plastering, second fix)."},
+        {"value": "existing", "label": "Existing property / renovation", "next": "Q_replace_existing", "help_en": "An existing house or building where the staircase is being replaced, upgraded, or refitted as part of a renovation."},
+        {"value": "extension", "label": "Extension", "next": "Q_replace_existing", "help_en": "An extension being added to an existing property. There may or may not be a new staircase involved — the specialist will confirm."},
+        {"value": "conversion", "label": "Conversion", "next": "Q_replace_existing", "help_en": "A loft, garage, basement, barn or other space being converted into habitable rooms. Conversions often need a new staircase to serve the new floor level."},
+        {"value": "commercial", "label": "Commercial / other", "next": "Q_opening_ready", "flag": "specialist_review_required", "help_en": "A shop, office, hotel, restaurant, school, public building or other non-domestic project. A specialist will review the project scope and applicable regulations before quoting."},
+        {"value": "not_sure", "label": "I'm not sure", "next": "Q_opening_ready"}
+      ]
+    },
+    "Q_build_stage": {
+      "question_en": "Where are you in the build?",
+      "explanation_en": "This helps the specialist understand the timing — a project at planning stage is very different from one where plastering is already complete.",
+      "type": "single_select",
+      "options": [
+        {"value": "planning", "label": "Still at planning stage"},
+        {"value": "just_quotation", "label": "Just looking for a quotation at this stage"},
+        {"value": "structural_underway", "label": "First fix / structural work underway"},
+        {"value": "under_construction", "label": "Under construction"},
+        {"value": "plastering_underway", "label": "Plastering / drylining underway"},
+        {"value": "plastering_complete", "label": "Plastering / drylining completed"},
+        {"value": "ready_for_staircase", "label": "Ready for the staircase"},
+        {"value": "finished_occupied", "label": "Finished / occupied"},
+        {"value": "not_sure", "label": "I'm not sure"}
+      ],
+      "next": "Q_opening_ready"
+    },
+    "Q_replace_existing": {
+      "question_en": "Is the existing staircase being replaced?",
+      "explanation_en": "Whether you're swapping out an existing staircase or adding one where none exists changes what the specialist needs to plan for.",
+      "type": "single_select",
+      "options": [
+        {"value": "yes_replace", "label": "Yes — replacing the existing staircase"},
+        {"value": "no_keep", "label": "No — keeping the existing staircase"},
+        {"value": "new_where_none", "label": "New staircase where there isn't currently one"},
+        {"value": "not_sure", "label": "I'm not sure"}
+      ],
+      "next": "Q_opening_ready"
+    },
+    "Q_opening_ready": {
+      "question_en": "Is the staircase opening already prepared?",
+      "explanation_en": "The 'opening' is the hole in the upper floor that the staircase rises into. Whether it's already framed and ready — or still to be built — affects lead time.",
+      "type": "single_select",
+      "options": [
+        {"value": "yes_ready", "label": "Yes — ready for the staircase", "help_en": "The opening is fully framed and dimensioned, and the staircase can be installed as soon as it's manufactured."},
+        {"value": "still_being_constructed", "label": "No — still being constructed", "help_en": "The opening is being built or altered. The specialist will co-ordinate final dimensions with the site."},
+        {"value": "not_yet", "label": "Not yet — no opening yet", "help_en": "There's no opening yet. The specialist will help agree the position and dimensions before manufacture."},
+        {"value": "not_sure", "label": "I'm not sure"}
+      ],
+      "next": "Q_customer_type"
+    },
+    "Q_customer_type": {
+      "question_en": "Who is the staircase for?",
+      "explanation_en": "This helps the specialist route your enquiry appropriately — private homeowners and trade customers are handled slightly differently.",
+      "type": "single_select",
+      "options": [
+        {"value": "private", "label": "Private homeowner", "next": "Q_install_required"},
+        {"value": "developer", "label": "Developer", "next": "Q_vat_status"},
+        {"value": "contractor", "label": "Contractor", "next": "Q_vat_status"},
+        {"value": "architect", "label": "Architect / designer", "next": "Q_vat_status"},
+        {"value": "other", "label": "Other", "next": "Q_vat_status"}
+      ]
+    },
+    "Q_vat_status": {
+      "question_en": "Are you VAT registered?",
+      "explanation_en": "Useful for the specialist to know for commercial enquiries. NEX doesn't calculate VAT treatment — the specialist confirms this in the quotation.",
+      "type": "single_select",
+      "options": [
+        {"value": "yes", "label": "Yes — VAT registered"},
+        {"value": "no", "label": "No — not VAT registered"},
+        {"value": "not_applicable", "label": "Not applicable"}
+      ],
+      "next": "Q_install_required"
+    },
+    "Q_install_required": {
+      "question_en": "Do you need supply only, or supply and installation?",
+      "explanation_en": "Some customers want the staircase manufactured and delivered only. Others want the specialist to install it on site.",
+      "type": "single_select",
+      "options": [
+        {"value": "supply_and_install", "label": "Supply and installation", "help_en": "The specialist manufactures, delivers and installs the staircase."},
+        {"value": "supply_only", "label": "Supply only", "help_en": "The specialist manufactures and delivers the staircase. You (or your own contractor) install it on site."},
+        {"value": "not_sure", "label": "I'm not sure"}
+      ],
+      "next": "Q_supply_market"
+    },
+    "Q_supply_market": {
+      "question_en": "Where is the staircase being supplied?",
+      "explanation_en": "Local projects and export projects are handled differently — export doesn't necessarily mean the specialist installs on site.",
+      "type": "single_select",
+      "options": [
+        {"value": "local", "label": "For a project in my country", "next": "Q_project_stage"},
+        {"value": "export", "label": "For export to another country", "next": "Q_export_country"},
+        {"value": "not_sure", "label": "I'm not sure", "next": "Q_project_stage"}
+      ]
+    },
+    "Q_export_country": {
+      "question_en": "Which country will the staircase be supplied to?",
+      "explanation_en": "This helps the specialist plan shipping, packaging and any country-specific compliance needs.",
+      "type": "single_select",
+      "options": [
+        {"value": "UK", "label": "United Kingdom"},
+        {"value": "IE", "label": "Ireland"},
+        {"value": "US", "label": "United States"},
+        {"value": "CA", "label": "Canada"},
+        {"value": "DE", "label": "Germany"},
+        {"value": "AT", "label": "Austria"},
+        {"value": "CH", "label": "Switzerland"},
+        {"value": "IT", "label": "Italy"},
+        {"value": "FR", "label": "France"},
+        {"value": "ES", "label": "Spain"},
+        {"value": "NL", "label": "Netherlands"},
+        {"value": "BE", "label": "Belgium"},
+        {"value": "SE", "label": "Sweden"},
+        {"value": "NO", "label": "Norway"},
+        {"value": "DK", "label": "Denmark"},
+        {"value": "FI", "label": "Finland"},
+        {"value": "AU", "label": "Australia"},
+        {"value": "NZ", "label": "New Zealand"},
+        {"value": "OTHER", "label": "Somewhere else"}
+      ],
+      "next": "Q_project_stage"
+    },
+    "Q_project_stage": {
+      "question_en": "Where are you in the buying journey?",
+      "explanation_en": "This tells the specialist how to prioritise your enquiry — an early-quote request is very different from a ready-to-proceed order.",
+      "type": "single_select",
+      "options": [
+        {"value": "exploring", "label": "Just exploring / obtaining an early quotation"},
+        {"value": "planning", "label": "Planning stage"},
+        {"value": "ready_to_order", "label": "Ready to order"},
+        {"value": "construction_underway", "label": "Construction underway"},
+        {"value": "required_soon", "label": "Staircase required soon"},
+        {"value": "not_sure", "label": "I'm not sure"}
+      ],
+      "next": "Q_attachments_info"
+    },
+    "Q_attachments_info": {
+      "question_en": "Photos, drawings & inspiration",
+      "type": "info_card",
+      "body_en": "You'll be able to attach photos, sketches, dimension drawings and inspiration images in the follow-up chat with your specialist. Nothing to attach here — it happens naturally once you send this specification through.",
+      "cta_label_en": "Continue",
+      "next": "Q_notes"
+    },
+    "Q_notes": {
+      "question_en": "Anything else the specialist should know?",
+      "explanation_en": "Optional — write anything that would help the specialist quote your project accurately. Site access, deadlines, budget range, existing staircase issues, style references, or anything else.",
+      "type": "textarea",
+      "placeholder_en": "e.g. we're aiming for a contemporary look but with warm oak tones, and we need the staircase installed before Christmas…",
+      "max_length": 1200,
+      "next": "Q14_summary"
+    },
+    "Q14_summary": {
+      "question_en": "Here's your specification — anything to adjust before we pass it to a specialist for a professional review?",
+      "type": "review_screen",
+      "actions": [
+        {"action": "edit", "label": "Change something"},
+        {"action": "submit", "label": "Send to specialist for a quote", "route": "handoff_professional"},
+        {"action": "save_draft", "label": "Save my choices — I'm not ready yet"}
+      ]
+    },
+    "handoff_professional": {
+      "type": "handoff",
+      "message_en": "Thanks — a specialist will review your choices, take site measurements, confirm regulations for your region and give you a full quote. Nothing about your specification is calculated by NEX — every measurement, structural detail and price comes from the professional.",
+      "attaches": ["full_specification_json", "customer_contact", "region_selected"]
+    }
+  }
+}

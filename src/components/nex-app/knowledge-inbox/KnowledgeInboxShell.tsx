@@ -135,7 +135,7 @@ type InboxItem = {
 // forward on every processing run.
 //
 // Downstream counts (records / FAQs / edges / duplicates) are nullable
-// because the Worker Manager (/nex-app/nex-brain) is authoritative.
+// because the Worker Manager (/nex-head-quarters) is authoritative.
 // See feedback_nex_never_pretends_work_done_2026_08_07.md.
 type ServerStats = {
   completedToday: number;
@@ -1052,7 +1052,7 @@ function StatStrip({
         <span className="sr-only">Total items in inbox: {total}</span>
       </section>
       <a
-        href="/nex-app/nex-brain"
+        href="/nex-head-quarters"
         className="mt-3 inline-flex items-center gap-1.5 text-[12px] font-semibold hover:underline"
         style={{ color: TOKEN.textMid }}
         title="Records created, FAQs generated, and graph relationships are authoritative on the Worker Manager"
@@ -2027,7 +2027,7 @@ function ReportOverlay({
             ))}
           </ul>
           <a
-            href="/nex-app/nex-brain"
+            href="/nex-head-quarters"
             className="mt-3 inline-flex items-center gap-1.5 text-[12px] font-semibold"
             style={{ color: TOKEN.accentDark }}
           >

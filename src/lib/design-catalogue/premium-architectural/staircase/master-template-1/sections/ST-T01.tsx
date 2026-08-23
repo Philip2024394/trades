@@ -21,6 +21,7 @@ import { MT1_TOKENS as T } from "../tokens";
 
 type PillarConfig = {
   title: string;
+  caption?: string;
   /** One of the built-in icon slugs below. */
   icon: "shield-check" | "diamond" | "compass" | "layout-grid" | "headset" | "wood-plank";
 };
@@ -29,12 +30,26 @@ type Config = {
   pillars?: PillarConfig[];
 };
 
-// Philip 2026-08-14 · single-word titles · icon on top, text under
-// (2 rows per pillar: icon row + text row).
+// Philip 2026-08-17 · trust signals not jump-nav. Qualitative claims
+// true of most premium staircase makers; owner overrides via prop.
+// Each pillar carries an icon + short title + one-line caption that
+// grounds the promise. No fabricated numbers.
 const DEFAULT_PILLARS: PillarConfig[] = [
-  { icon: "wood-plank",  title: "Materials" },
-  { icon: "layout-grid", title: "Gallery" },
-  { icon: "compass",     title: "Designs" }
+  {
+    icon: "wood-plank",
+    title: "Bespoke design",
+    caption: "Made to measure for your home",
+  },
+  {
+    icon: "diamond",
+    title: "Workshop craftsmanship",
+    caption: "Every joint made to tolerance",
+  },
+  {
+    icon: "compass",
+    title: "On-site installation",
+    caption: "Careful fit + full handover",
+  },
 ];
 
 export function STT01({ pillars = DEFAULT_PILLARS }: Config = {}) {
@@ -63,7 +78,7 @@ export function STT01({ pillars = DEFAULT_PILLARS }: Config = {}) {
       >
         <div
           role="list"
-          aria-label="Materials, gallery, designs"
+          aria-label="What we do: bespoke design, workshop craftsmanship, on-site installation"
           style={{
             background: T.color.surfaceCard,
             // Philip 2026-08-14 · landscape container, square corners.
@@ -114,12 +129,26 @@ export function STT01({ pillars = DEFAULT_PILLARS }: Config = {}) {
                   fontWeight: 700,
                   color: T.color.ink,
                   lineHeight: 1.2,
-                  letterSpacing: "-0.005em",
-                  whiteSpace: "nowrap"
+                  letterSpacing: "-0.005em"
                 }}
               >
                 {p.title}
               </div>
+              {p.caption && (
+                <div
+                  style={{
+                    marginTop: 4,
+                    fontSize: 11.5,
+                    color: T.color.inkMuted,
+                    lineHeight: 1.4,
+                    fontWeight: 400,
+                    letterSpacing: "0.01em"
+                  }}
+                  className="mt1-trust-caption"
+                >
+                  {p.caption}
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -144,6 +173,10 @@ export function STT01({ pillars = DEFAULT_PILLARS }: Config = {}) {
             padding-block: 16px !important;
             padding-inline: 8px !important;
           }
+          .mt1-trust-caption { font-size: 10.5px !important; }
+        }
+        @media (max-width: 480px) {
+          .mt1-trust-caption { display: none !important; }
         }
         @media (max-width: 380px) {
           .mt1-trust-pillar { padding-inline: 4px !important; }
@@ -152,10 +185,6 @@ export function STT01({ pillars = DEFAULT_PILLARS }: Config = {}) {
     </section>
   );
 }
-
-// Inlined so the <style> tag's template literal above can interpolate
-// without React re-parsing token access on every render.
-const MT1_HAIRLINE = T.color.hairline;
 
 // ── Icon glyphs · 1px outlined · tan tint via currentColor ──────────
 

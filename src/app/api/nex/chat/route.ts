@@ -222,7 +222,7 @@ async function execute(
       if (clarify) return { intent: intent.kind, ...clarify };
 
       // Kicks off a research pass. Returns the report id so the UI can
-      // deep-link to /admin/nex/research/<id>. Merchants also see their
+      // deep-link to /nex-head-quarters/research/<id>. Merchants also see their
       // own reports via RLS.
       const requesterKind = merchantSlug === "admin" ? "staff" : "merchant";
       try {
@@ -249,7 +249,7 @@ async function execute(
           intent: intent.kind,
           speak:  lines.join("\n"),
           result: {
-            path:                     `/admin/nex/research/${report.id}`,
+            path:                     `/nex-head-quarters/research/${report.id}`,
             report_id:                report.id,
             proposed_count:           report.proposed_count,
             changed_count:            report.changed_count,
@@ -294,7 +294,7 @@ async function execute(
         return {
           intent: intent.kind,
           speak:  "Got it. Sent to Review. Nothing's live until a human confirms it.",
-          result: { review_id: r.id, path: "/admin/nex/review" }
+          result: { review_id: r.id, path: "/nex-head-quarters/review" }
         };
       } catch (e) {
         return {
@@ -316,7 +316,7 @@ async function execute(
         return {
           intent: intent.kind,
           speak:  `${pending.length} item${pending.length === 1 ? "" : "s"} pending. Say "approve everything, confirm" to publish them all, or open the Review page to check one by one.`,
-          result: { path: "/admin/nex/review", pending_count: pending.length },
+          result: { path: "/nex-head-quarters/review", pending_count: pending.length },
           suggestions: ["Approve everything, confirm", "Open Review", "What changed?"]
         };
       }
@@ -334,7 +334,7 @@ async function execute(
       return {
         intent: intent.kind,
         speak:  `Approved ${approved} of ${pending.length}. Version history recorded.`,
-        result: { path: "/admin/nex/review?status=approved", approved_count: approved }
+        result: { path: "/nex-head-quarters/review?status=approved", approved_count: approved }
       };
     }
 
@@ -359,7 +359,7 @@ async function execute(
       return {
         intent: intent.kind,
         speak,
-        result: { count: rows.length, path: "/admin/nex/review?status=approved" }
+        result: { count: rows.length, path: "/nex-head-quarters/review?status=approved" }
       };
     }
 

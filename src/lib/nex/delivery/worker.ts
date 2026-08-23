@@ -28,32 +28,31 @@ import { ingestEvent } from "@/lib/nex/analytics/ingest";
 import { simulateEngagementFor } from "@/lib/nex/analytics/simulator";
 import { getContactCompliance } from "@/lib/nex/compliance/engine";
 import { NON_SENDABLE_STATES } from "@/lib/nex/compliance/policy";
+// Task #75 Bundle A (2026-08-22): canonical heartbeat + cycle_run · replaces
+// nex.delivery_workers parallel registry (dropped by migration 072).
+import { emitHeartbeat, startCycleRun, finishCycleRun } from "@/lib/nex/reliability";
 
-const WORKER_ID = `${os.hostname().slice(0, 30)}-${process.pid}`;
+const RAW_WORKER_ID = `${os.hostname().slice(0, 30)}-${process.pid}`;
+// Canonical worker_id · namespaced with worker_type per doctrine
+// (Walker uses "acquisition:food:Yogyakarta" · CLE uses "cle:staircase" ·
+// delivery uses "delivery:<host>-<pid>").
+const CANONICAL_WORKER_ID = `delivery:${RAW_WORKER_ID}`;
 const BATCH_SIZE = 25;
 const SEND_BATCH_ATTEMPTS = 3;
 
-// ── worker heartbeat ──────────────────────────────────────────────
-async function heartbeat(): Promise<void> {
+// ── worker heartbeat · canonical nex.worker_heartbeat ─────────────
+// Task #75 Bundle A: writes to the ONE canonical heartbeat table via
+// reliability helper. Preserves hostname/pid/mode in metadata.
+async function heartbeat(status: "running" | "standby" | "failed", cycleRunId: string | null = null): Promise<void> {
   await withClient(async (c) => {
-    await c.query(
-      `INSERT INTO nex.delivery_workers (worker_id, hostname, mode, last_seen_at)
-       VALUES ($1, $2, $3, NOW())
-       ON CONFLICT (worker_id) DO UPDATE SET last_seen_at = NOW(), mode = EXCLUDED.mode`,
-      [WORKER_ID, os.hostname(), currentMode()],
-    );
-    return null;
-  });
-}
-
-async function bumpProcessed(failed: boolean): Promise<void> {
-  await withClient(async (c) => {
-    await c.query(
-      failed
-        ? `UPDATE nex.delivery_workers SET jobs_failed = jobs_failed + 1, last_seen_at = NOW() WHERE worker_id = $1`
-        : `UPDATE nex.delivery_workers SET jobs_processed = jobs_processed + 1, last_seen_at = NOW() WHERE worker_id = $1`,
-      [WORKER_ID],
-    );
+    await emitHeartbeat(c, {
+      workerId: CANONICAL_WORKER_ID,
+      workerType: "delivery",
+      workerConfig: currentMode(),
+      status,
+      cycleRunId,
+      metadata: { hostname: os.hostname(), pid: process.pid, mode: currentMode() },
+    });
     return null;
   });
 }
@@ -64,9 +63,26 @@ export type TickResult =
   | { picked: true; job_id: string; job_type: string; outcome: "success" | "transient_failure" | "permanent_failure"; detail?: Record<string, unknown> };
 
 export async function tick(): Promise<TickResult> {
-  await heartbeat();
-  const job = await leaseNextJob(WORKER_ID);
-  if (!job) return { picked: false, reason: "no runnable job" };
+  // Task #75 Bundle A: every tick is a real worker_cycle_run · records_processed
+  // reflects actual work · heartbeat carries the current cycle_run_id · HQ
+  // six-criteria evaluator can prove consumption/output/state directly.
+  const cycleRunId = await withClient(async (c) => startCycleRun(c, {
+    workerId: CANONICAL_WORKER_ID,
+    workerType: "delivery",
+    workerConfig: currentMode(),
+    jobIdExternal: RAW_WORKER_ID,
+  }));
+  await heartbeat("running", cycleRunId);
+
+  const job = await leaseNextJob(RAW_WORKER_ID);
+  if (!job) {
+    await withClient(async (c) => finishCycleRun(c, cycleRunId, {
+      status: "completed", recordsProcessed: 0,
+      summary: { outcome: "no_runnable_job" },
+    }));
+    await heartbeat("standby", cycleRunId);
+    return { picked: false, reason: "no runnable job" };
+  }
 
   const t0 = Date.now();
   try {
@@ -81,16 +97,24 @@ export async function tick(): Promise<TickResult> {
 
     const latency = Date.now() - t0;
     await completeJob(job.job_id, detail);
-    await recordAttempt({ job_id: job.job_id, attempt_no: job.attempts, worker_id: WORKER_ID, outcome: "success", latency_ms: latency, detail });
-    await bumpProcessed(false);
+    await recordAttempt({ job_id: job.job_id, attempt_no: job.attempts, worker_id: RAW_WORKER_ID, outcome: "success", latency_ms: latency, detail });
+    await withClient(async (c) => finishCycleRun(c, cycleRunId, {
+      status: "completed", recordsProcessed: 1,
+      summary: { job_id: job.job_id, job_type: job.job_type, latency_ms: latency, ...detail },
+    }));
+    await heartbeat("completed", cycleRunId);
     return { picked: true, job_id: job.job_id, job_type: job.job_type, outcome: "success", detail };
   } catch (err) {
     const latency = Date.now() - t0;
     const msg = err instanceof Error ? err.message : String(err);
     const permanent = /permanent/i.test(msg);
     await failJob(job.job_id, msg, { permanent, backoffMs: backoffFor(job.attempts) });
-    await recordAttempt({ job_id: job.job_id, attempt_no: job.attempts, worker_id: WORKER_ID, outcome: permanent ? "permanent_failure" : "transient_failure", latency_ms: latency, error: msg });
-    await bumpProcessed(true);
+    await recordAttempt({ job_id: job.job_id, attempt_no: job.attempts, worker_id: RAW_WORKER_ID, outcome: permanent ? "permanent_failure" : "transient_failure", latency_ms: latency, error: msg });
+    await withClient(async (c) => finishCycleRun(c, cycleRunId, {
+      status: "failed", recordsProcessed: 1, errorsCount: 1,
+      summary: { job_id: job.job_id, job_type: job.job_type, error: msg, permanent, latency_ms: latency },
+    }));
+    await heartbeat("failed", cycleRunId);
     if (job.attempts >= job.max_attempts) await emitDeliveryEvent("delivery.job_dead_letter", { job_id: job.job_id, job_type: job.job_type, error: msg }, job.campaign_id ?? undefined);
     return { picked: true, job_id: job.job_id, job_type: job.job_type, outcome: permanent ? "permanent_failure" : "transient_failure", detail: { error: msg } };
   }

@@ -49,7 +49,7 @@ function record(id, pass, note = "") {
 
 const WH  = readFileSync(join(REPO, "src/lib/nex/brain/warehouse.ts"), "utf8");
 const RT  = readFileSync(join(REPO, "src/app/api/nex/brain/warehouse/route.ts"), "utf8");
-const OPS = readFileSync(join(REPO, "src/app/nex-app/nex-brain/operations-centre/page.tsx"), "utf8");
+const OPS = readFileSync(join(REPO, "src/app/nex-head-quarters/operations-centre/page.tsx"), "utf8");
 
 const DETERMINISTIC = ["knowledge-context", "voice-context", "learning-context"];
 const LLM           = ["knowledge-extractor", "image-analyst", "quality-checker"];

@@ -66,3 +66,12 @@ backups/
 # UK Staircase Trade Market · temp HTML dumps from Agent 1 curl fallback
 # (Agent 1 lacked permission to delete them from its sandbox; JSON deliverables live alongside)
 data/directory-seeds/_staircase_uk_stage2/*.html
+
+# 2026-08-23 · Added when pushing catch-up commit.
+# Dev server logs (regenerated on every start)
+.next-dev.err
+.next-dev.log
+# Tesseract OCR training data — 5-7 MB binaries · load at runtime, not source
+*.traineddata
+# Ad-hoc QA screenshots · not source of truth
+tmp-nex-qa-screenshots-chat/

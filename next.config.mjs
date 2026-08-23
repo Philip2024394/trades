@@ -12,12 +12,18 @@ const nextConfig = {
   // hiding real bugs. Ok for preview URL generation only.
   typescript: { ignoreBuildErrors: true },
   eslint: { ignoreDuringBuilds: true },
-  // Prevent Next/Turbopack from bundling `unzipper` (used by nex/backup
-  // routes) — its S3 branch dynamically requires `@aws-sdk/client-s3`
-  // which is an OPTIONAL peer dep we don't install. Keeping it external
-  // means the server-side require only fails IF the S3 branch is ever
-  // invoked (which it isn't in local dev / typical deploys).
-  serverExternalPackages: ["unzipper"],
+  // Prevent Next/Turbopack from bundling packages whose runtime path
+  // resolution breaks under bundling:
+  //   · unzipper — its S3 branch dynamically requires `@aws-sdk/client-s3`
+  //     (optional peer we don't install). Keeping it external means the
+  //     server-side require only fails IF the S3 branch is ever invoked.
+  //   · tesseract.js — Task #69 (2026-08-22) · uses __dirname / require.resolve
+  //     to locate its Node worker script. Turbopack rewrites paths to a
+  //     virtual `C:\ROOT\node_modules\...` prefix that doesn't exist on disk,
+  //     causing "Cannot find module 'tesseract.js/src/worker-script/node/index.js'"
+  //     and an unrecoverable uncaughtException in a spawned worker. Keeping
+  //     tesseract.js external lets it resolve its own worker at the real path.
+  serverExternalPackages: ["unzipper", "tesseract.js"],
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "msdonkkechxzgagyguoe.supabase.co" },
@@ -169,8 +175,8 @@ const nextConfig = {
   // these on first fetch. HSTS locks the site to HTTPS for 2 years
   // (preload-eligible); nosniff blocks MIME sniffing attacks;
   // Referrer-Policy leaks less to third parties; Permissions-Policy
-  // hard-denies APIs we never use (camera/microphone) and scopes
-  // geolocation to same-origin only.
+  // hard-denies camera, scopes microphone + geolocation to same-origin
+  // only (microphone needed for NEX voice on /nex-voice-demo etc.).
   //
   // CSP is deliberately NOT set here — the site uses inline
   // dangerouslySetInnerHTML for JSON-LD in ~10 places, which needs
@@ -180,7 +186,7 @@ const nextConfig = {
       { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
       { key: "X-Content-Type-Options",    value: "nosniff" },
       { key: "Referrer-Policy",           value: "strict-origin-when-cross-origin" },
-      { key: "Permissions-Policy",        value: "camera=(), microphone=(), geolocation=(self), interest-cohort=()" },
+      { key: "Permissions-Policy",        value: "camera=(), microphone=(self), geolocation=(self), interest-cohort=()" },
       { key: "X-Frame-Options",           value: "SAMEORIGIN" }
     ];
     return [{ source: "/(.*)", headers: common }];

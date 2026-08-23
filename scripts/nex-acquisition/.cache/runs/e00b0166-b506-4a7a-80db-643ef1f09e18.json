@@ -1,0 +1,197 @@
+{
+  "jobId": "e00b0166-b506-4a7a-80db-643ef1f09e18",
+  "vertical": "accommodation",
+  "city": "Yogyakarta",
+  "bbox": {
+    "sw": [
+      -7.818,
+      110.36
+    ],
+    "ne": [
+      -7.806,
+      110.378
+    ],
+    "scope": "Prawirotaman · south Yogyakarta · Kota Yogyakarta (DIY)"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-22T14:22:59.711Z",
+  "finishedAt": "2026-08-22T14:23:06.981Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 61,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 61,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 61,
+    "enriched": 0,
+    "gate3_contactable": 10,
+    "gate4_eligible": 10,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 10,
+    "rejected_by_gate": 51,
+    "errors": 0
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#AC-2026-0003C",
+        "name": "Pondok terra",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0003D",
+        "name": "Puspita",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0003E",
+        "name": "Posein",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0003F",
+        "name": "Hotel Prime Syailendra",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0003G",
+        "name": "Puri Ageng",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0003H",
+        "name": "OstiC hostel",
+        "category": "hostel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0003J",
+        "name": "ichan house",
+        "category": "guesthouse",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0003K",
+        "name": "Wood Stone Hostel",
+        "category": "hostel",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [
+      {
+        "publicRef": "#AC-2026-0003K",
+        "name": "Wood Stone Hostel",
+        "whatsapp": null,
+        "phone": "+62 274 4221 215",
+        "website": "http://www.woodstonehostel.com"
+      },
+      {
+        "publicRef": "#AC-2026-0003Q",
+        "name": "cozy nest hostel",
+        "whatsapp": null,
+        "phone": "+6281333572892",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-0003S",
+        "name": "Cozy Nest Hostel Yogyakarta",
+        "whatsapp": null,
+        "phone": "+6281333572892",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-0003T",
+        "name": "Cozy Nest Hostel Yogyakarta",
+        "whatsapp": null,
+        "phone": "+6281333572892",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-0003W",
+        "name": "Trava House",
+        "whatsapp": null,
+        "phone": "+62 819 9847 1233",
+        "website": "https://instagram.com/travahouse"
+      },
+      {
+        "publicRef": "#AC-2026-00044",
+        "name": "The Kresna Hotel",
+        "whatsapp": null,
+        "phone": "+62 27 4373 303",
+        "website": "https://www.yogyes.com/"
+      },
+      {
+        "publicRef": "#AC-2026-0004B",
+        "name": "Abrakadabra",
+        "whatsapp": null,
+        "phone": "+6281916308777",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-0004S",
+        "name": "Ndalem Mantrigawen",
+        "whatsapp": null,
+        "phone": "+62 274 4154 09",
+        "website": null
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#AC-2026-0003C",
+        "name": "Pondok terra",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-0003D",
+        "name": "Puspita",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-0003E",
+        "name": "Posein",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-0003F",
+        "name": "Hotel Prime Syailendra",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-0003G",
+        "name": "Puri Ageng",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": []
+}

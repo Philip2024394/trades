@@ -363,18 +363,35 @@ export type WorkerPoolHealth = {
 // Written by every running worker process (local script OR Fly.io
 // deployment) on a fixed interval. Powers the dashboard's "Cloud
 // worker: online" tile — a heartbeat older than 60s means the runtime
-// has stopped, crashed, or lost its connection to Supabase.
+// has stopped, crashed, or lost its connection.
 //
-// The primary key is host_id so each running process upserts its own
-// row. FLY_MACHINE_ID for Fly deployments; HOSTNAME otherwise.
+// Task #72 Step 1c (2026-08-22): unified shape. Every worker across NEX
+// (Brain · Acquisition · CLE · future) writes to nex.worker_heartbeat
+// (singular) via BrainStore.upsertHeartbeat. The prior plural table
+// nex.worker_heartbeats (host_id-scoped, one row per process) was dropped
+// by migration 070. Identity is now stable per logical worker, not per
+// process instance. Historical Fly process-scoped rows are frozen in
+// nex.worker_heartbeats_archive_2026_08_22.
+//
+// worker_id encoding (locked 2026-08-22):
+//   Brain workers        · "brain:<worker_type>"       · worker_type='brain'  · worker_config='<name>'
+//   Acquisition workers  · "acquisition:<vertical>:<region>" · worker_type='acquisition' · worker_config='<vertical>:<region>'
+//   CLE workers          · "cle:<domain>"              · worker_type='cle'    · worker_config='<domain>'
+//
+// last_status vocabulary (7 unified values · CHECK constraint on singular table):
+//   idle | running | waiting | standby | completed | failed | stopped
+// 'offline' is DERIVED from last_heartbeat_at freshness · never stored.
 
 export type WorkerHeartbeat = {
-  host_id: string;
-  last_seen_at: string;
-  uptime_ms: number;
-  cycles_total: number;
-  cycles_failed: number;
-  last_error: string | null;
-  last_cycle_summary: Record<string, unknown> | null;
-  metadata: Record<string, unknown> | null;
+  worker_id:          string;
+  worker_type:        string;
+  worker_config:      string | null;
+  last_heartbeat_at:  string;
+  last_status:
+    | "idle" | "running" | "waiting"
+    | "standby" | "completed" | "failed" | "stopped";
+  last_cycle_run_id:  string | null;
+  metadata:           Record<string, unknown>;
+  created_at?:        string;
+  updated_at?:        string;
 };

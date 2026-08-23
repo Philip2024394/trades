@@ -1,0 +1,48 @@
+{
+  "jobId": "e70694b4-554e-4017-84fe-31a3b5651d5f",
+  "vertical": "food",
+  "city": "Yogyakarta",
+  "bbox": {
+    "sw": [
+      -7.605,
+      110.415
+    ],
+    "ne": [
+      -7.585,
+      110.435
+    ]
+  },
+  "smokeMode": true,
+  "dryRun": true,
+  "startedAt": "2026-08-21T16:49:23.356Z",
+  "finishedAt": "2026-08-21T16:49:35.980Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 5,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 5,
+    "matched_exact": 5,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "enriched": 0,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 0
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": []
+}

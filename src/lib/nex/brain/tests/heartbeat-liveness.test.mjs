@@ -1,13 +1,19 @@
 #!/usr/bin/env node
-// heartbeat-liveness.test.mjs · Phase 12.3
+// heartbeat-liveness.test.mjs · Phase 12.3 · unified 2026-08-22 (Task #72 Step 1c)
 //
 // Proves the worker heartbeat layer:
 //   - writes real heartbeats before + after every worker call
 //   - primes standby heartbeats at cycle start so idle workers don't
 //     look identical to offline workers
 //   - derives Working / Waiting_AI / Standby / Failed / Offline from
-//     heartbeat freshness + last-cycle status, NEVER from queue depth
+//     heartbeat freshness + last_status, NEVER from queue depth
 //   - swallows write failures so observability can't break the runtime
+//
+// Task #72 Step 1c: canonical row shape is now
+// { worker_id, worker_type, worker_config, last_heartbeat_at, last_status,
+//   last_cycle_run_id, metadata } targeting nex.worker_heartbeat (singular).
+// Prior { host_id, last_seen_at, last_cycle_summary.status } shape is
+// gone. Brain workers use worker_id = "brain:<worker_type>".
 //
 // Two sections:
 //   A · Static · greps the source for required contracts (import
@@ -18,15 +24,15 @@
 // Assertions:
 //   HB1   · heartbeat.ts exports LIVENESS_THRESHOLD_MS = 60_000
 //   HB2   · heartbeat.ts exports BRAIN_WORKER_TYPES with 6 entries
-//   HB3   · workerHostId returns "<worker_type>@<pid>"
+//   HB3   · brainWorkerId returns "brain:<worker_type>" (Task #72 rename)
 //   HB4   · writeHeartbeat is async + wrapped in try/catch (never throws)
 //   HB5   · primeStandbyHeartbeats writes for every BRAIN_WORKER_TYPES entry
 //   HB6   · deriveLiveness returns "offline" for null heartbeat
 //   HB7   · deriveLiveness returns "offline" for heartbeat older than threshold
 //   HB8   · deriveLiveness returns "standby" for fresh heartbeat with status=standby
-//   HB9   · deriveLiveness returns "working" for fresh heartbeat with status=working
+//   HB9   · deriveLiveness returns "working" for fresh heartbeat with status=running (canonical→UI mapping)
 //   HB10  · deriveLiveness returns "failed" for fresh heartbeat with status=failed
-//   HB11  · deriveLiveness returns "waiting_llm" for fresh heartbeat with status=waiting_llm
+//   HB11  · deriveLiveness returns "waiting_llm" for fresh heartbeat with status=waiting (canonical→UI mapping)
 //   HB12  · deriveLiveness NEVER accepts queue-depth arguments (function signature check)
 //   HB13  · Standby vs Offline distinction · same heartbeat · only time changes
 //   HB14  · manager.ts imports writeHeartbeat + primeStandbyHeartbeats
@@ -37,6 +43,8 @@
 //   HB19  · heartbeat.ts contains no Math.random / setInterval / fake progress
 //   HB20  · /api/nex/brain/workers-live endpoint exists + reads listHeartbeats
 //   HB21  · workers-live endpoint reports all 5 states in totals
+//   HB22  · Task #72 · writeHeartbeat targets canonical worker_id + worker_type='brain'
+//   HB23  · Task #72 · writeHeartbeat maps UI vocabulary → canonical vocabulary
 
 import { readFileSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -72,10 +80,10 @@ const workerTypesCount = workerTypesMatch
 record("HB2", workerTypesCount === 6,
   `BRAIN_WORKER_TYPES has ${workerTypesCount} entries (expected 6)`);
 
-// HB3 · workerHostId formula
+// HB3 · brainWorkerId returns "brain:<worker_type>" (Task #72 Step 1c)
 record("HB3",
-  /export function workerHostId\(worker_type: WorkerType\): string\s*\{\s*return\s*`\$\{worker_type\}@\$\{process\.pid\}`;?\s*\}/.test(HEARTBEAT),
-  "workerHostId returns worker_type@pid");
+  /export function brainWorkerId\(worker_type: WorkerType\): string\s*\{\s*return\s*`brain:\$\{worker_type\}`;?\s*\}/.test(HEARTBEAT),
+  "brainWorkerId returns brain:<worker_type>");
 
 // HB4 · writeHeartbeat is async + inner try/catch (never throws)
 const writeMatch = HEARTBEAT.match(/export async function writeHeartbeat[\s\S]*?^\}/m);
@@ -148,14 +156,23 @@ const allFiveStatesInTotals =
 record("HB21", allFiveStatesInTotals,
   "workers-live totals include working/waiting_llm/standby/failed/offline");
 
+// HB22 · Task #72 · writeHeartbeat composes canonical row shape (worker_id + worker_type='brain')
+record("HB22",
+  /worker_id:\s*brainWorkerId\(update\.worker_type\)/.test(writeBlock)
+    && /worker_type:\s*"brain"/.test(writeBlock)
+    && /worker_config:\s*update\.worker_type/.test(writeBlock),
+  "writeHeartbeat sets worker_id=brainWorkerId · worker_type='brain' · worker_config=update.worker_type");
+
+// HB23 · Task #72 · canonicalStatus mapping present (UI vocab → 7-value)
+record("HB23",
+  /function canonicalStatus\(s: WorkerLiveness\)/.test(HEARTBEAT)
+    && /case "working":[\s\S]{0,60}?return "running"/.test(HEARTBEAT)
+    && /case "waiting_llm":[\s\S]{0,60}?return "waiting"/.test(HEARTBEAT),
+  "canonicalStatus maps working→running · waiting_llm→waiting");
+
 // ═════════════════════════════════════════════════════════════════════
 // SECTION B · LOGIC · import heartbeat.ts + exercise deriveLiveness
 // ═════════════════════════════════════════════════════════════════════
-
-// Dynamic import via ts-node-esque loader isn't available here — use
-// esbuild-registered runtime if present, otherwise transpile inline
-// with a minimal type-strip. For test purposes we just re-implement
-// the derive logic in JS from the exported spec and assert against it.
 
 // Transpile heartbeat.ts on the fly using esbuild (already a project
 // dep). This avoids a brittle regex type-strip while keeping the test
@@ -189,57 +206,52 @@ const now = 1_000_000_000_000; // pinned "now" in ms
 const freshIso = new Date(now - 5_000).toISOString();
 const staleIso = new Date(now - 90_000).toISOString();
 
+// Helper: build a canonical WorkerHeartbeat row (post-Task-#72 shape)
+function hb(last_status, last_heartbeat_at = freshIso) {
+  return {
+    worker_id: "brain:test",
+    worker_type: "brain",
+    worker_config: "test",
+    last_heartbeat_at,
+    last_status,
+    last_cycle_run_id: null,
+    metadata: {},
+  };
+}
+
 // HB6 · null heartbeat = offline
 record("HB6", deriveLiveness(null, now) === "offline",
   "null heartbeat → offline");
 
-// HB7 · stale heartbeat = offline
+// HB7 · stale heartbeat = offline (any canonical status)
 record("HB7",
-  deriveLiveness({
-    host_id: "test", last_seen_at: staleIso, uptime_ms: 0, cycles_total: 0,
-    cycles_failed: 0, last_error: null, last_cycle_summary: { status: "standby" }, metadata: null,
-  }, now) === "offline",
+  deriveLiveness(hb("standby", staleIso), now) === "offline",
   "heartbeat older than 60s → offline");
 
 // HB8 · fresh + standby
 record("HB8",
-  deriveLiveness({
-    host_id: "test", last_seen_at: freshIso, uptime_ms: 0, cycles_total: 0,
-    cycles_failed: 0, last_error: null, last_cycle_summary: { status: "standby" }, metadata: null,
-  }, now) === "standby",
-  "fresh heartbeat + status=standby → standby");
+  deriveLiveness(hb("standby"), now) === "standby",
+  "fresh heartbeat + last_status=standby → standby");
 
-// HB9 · fresh + working
+// HB9 · fresh + running → working (canonical→UI mapping)
 record("HB9",
-  deriveLiveness({
-    host_id: "test", last_seen_at: freshIso, uptime_ms: 0, cycles_total: 0,
-    cycles_failed: 0, last_error: null, last_cycle_summary: { status: "working" }, metadata: null,
-  }, now) === "working",
-  "fresh heartbeat + status=working → working");
+  deriveLiveness(hb("running"), now) === "working",
+  "fresh heartbeat + last_status=running → working (canonical→UI)");
 
 // HB10 · fresh + failed
 record("HB10",
-  deriveLiveness({
-    host_id: "test", last_seen_at: freshIso, uptime_ms: 0, cycles_total: 0,
-    cycles_failed: 1, last_error: "boom", last_cycle_summary: { status: "failed" }, metadata: null,
-  }, now) === "failed",
-  "fresh heartbeat + status=failed → failed");
+  deriveLiveness(hb("failed"), now) === "failed",
+  "fresh heartbeat + last_status=failed → failed");
 
-// HB11 · fresh + waiting_llm
+// HB11 · fresh + waiting → waiting_llm (canonical→UI mapping)
 record("HB11",
-  deriveLiveness({
-    host_id: "test", last_seen_at: freshIso, uptime_ms: 0, cycles_total: 0,
-    cycles_failed: 0, last_error: null, last_cycle_summary: { status: "waiting_llm" }, metadata: null,
-  }, now) === "waiting_llm",
-  "fresh heartbeat + status=waiting_llm → waiting_llm");
+  deriveLiveness(hb("waiting"), now) === "waiting_llm",
+  "fresh heartbeat + last_status=waiting → waiting_llm (canonical→UI)");
 
 // HB13 · Standby vs Offline · same heartbeat body · only time differs
-const hb = {
-  host_id: "test", last_seen_at: freshIso, uptime_ms: 0, cycles_total: 0,
-  cycles_failed: 0, last_error: null, last_cycle_summary: { status: "standby" }, metadata: null,
-};
-const asStandby = deriveLiveness(hb, now);
-const asOffline = deriveLiveness(hb, now + 120_000); // 2 min later
+const sameHb = hb("standby");
+const asStandby = deriveLiveness(sameHb, now);
+const asOffline = deriveLiveness(sameHb, now + 120_000); // 2 min later
 record("HB13", asStandby === "standby" && asOffline === "offline",
   `same hb: standby-at-now=${asStandby} · offline-at-now+120s=${asOffline}`);
 

@@ -617,18 +617,22 @@ export class FilesystemStore implements BrainStore {
   }
 
   // ── Heartbeats ─────────────────────────────────────────────────────
+  //
+  // Task #72 Step 1c (2026-08-22): unified against worker_heartbeat
+  // (singular). Filesystem backend is dev-only; the JSON file name changed
+  // from worker_heartbeats.json to worker_heartbeat.json.
   async upsertHeartbeat(row: WorkerHeartbeat): Promise<void> {
-    const rows = await readTable<WorkerHeartbeat>("worker_heartbeats");
-    const others = rows.filter((r) => r.host_id !== row.host_id);
+    const rows = await readTable<WorkerHeartbeat>("worker_heartbeat");
+    const others = rows.filter((r) => r.worker_id !== row.worker_id);
     others.push(row);
-    await writeTable("worker_heartbeats", others);
+    await writeTable("worker_heartbeat", others);
   }
 
   async listHeartbeats(filter: { since?: string; limit?: number } = {}): Promise<WorkerHeartbeat[]> {
-    const rows = await readTable<WorkerHeartbeat>("worker_heartbeats");
+    const rows = await readTable<WorkerHeartbeat>("worker_heartbeat");
     let out = rows;
-    if (filter.since) out = out.filter((r) => r.last_seen_at > filter.since!);
-    out = out.sort((a, b) => (a.last_seen_at < b.last_seen_at ? 1 : -1));
+    if (filter.since) out = out.filter((r) => r.last_heartbeat_at > filter.since!);
+    out = out.sort((a, b) => (a.last_heartbeat_at < b.last_heartbeat_at ? 1 : -1));
     if (filter.limit) out = out.slice(0, filter.limit);
     return out;
   }

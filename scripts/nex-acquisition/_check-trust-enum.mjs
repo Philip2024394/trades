@@ -1,0 +1,10 @@
+import pg from "pg";
+const pool = new pg.Pool({ connectionString: process.env.NEX_POSTGRES_URL });
+const r = await pool.query(`SELECT unnest(enum_range(NULL::nex_food_field_trust))::text AS value ORDER BY value`);
+console.log("valid trust_layer values for nex_food_field_trust:");
+for (const row of r.rows) console.log("  " + row.value);
+console.log("");
+const existing = await pool.query(`SELECT trust_layer::text, count(*)::int AS n FROM nex.food_business_field_provenance GROUP BY trust_layer ORDER BY n DESC`);
+console.log("existing values in use:");
+for (const row of existing.rows) console.log("  " + row.trust_layer + "  " + row.n);
+await pool.end();

@@ -12,7 +12,25 @@ export async function GET() {
 
   const r = await withClient(async (c) => {
     const byStatus = await c.query(`SELECT status, COUNT(*)::int AS n FROM nex.delivery_jobs GROUP BY status`);
-    const workers = await c.query(`SELECT worker_id, hostname, started_at, last_seen_at, jobs_processed, jobs_failed, mode, EXTRACT(EPOCH FROM (NOW() - last_seen_at))::int AS seconds_since_seen FROM nex.delivery_workers ORDER BY last_seen_at DESC LIMIT 25`);
+    // Task #75 Bundle A (2026-08-22): redirected from dropped nex.delivery_workers
+    // to canonical nex.worker_heartbeat. Column mapping: worker_id → same,
+    // hostname/mode → metadata jsonb, started_at → created_at, last_seen_at → last_heartbeat_at.
+    // jobs_processed/jobs_failed migrated to derived counts from nex.worker_cycle_run.
+    const workers = await c.query(
+      `SELECT
+         h.worker_id,
+         (h.metadata->>'hostname')::text                            AS hostname,
+         h.created_at                                                AS started_at,
+         h.last_heartbeat_at                                         AS last_seen_at,
+         COALESCE((SELECT SUM(records_processed)::int FROM nex.worker_cycle_run
+                   WHERE worker_id = h.worker_id AND status = 'completed'), 0) AS jobs_processed,
+         COALESCE((SELECT COUNT(*)::int FROM nex.worker_cycle_run
+                   WHERE worker_id = h.worker_id AND status = 'failed'), 0)    AS jobs_failed,
+         COALESCE(h.worker_config, 'unknown')                        AS mode,
+         EXTRACT(EPOCH FROM (NOW() - h.last_heartbeat_at))::int      AS seconds_since_seen
+       FROM nex.worker_heartbeat h
+      WHERE h.worker_type = 'delivery'
+      ORDER BY h.last_heartbeat_at DESC LIMIT 25`);
     const deadLetter = await c.query(`SELECT job_id, job_type, campaign_id, last_error, updated_at FROM nex.delivery_jobs WHERE status = 'dead_letter' ORDER BY updated_at DESC LIMIT 20`);
     const throughput = await c.query(`SELECT COUNT(*)::int AS n FROM nex.delivery_job_attempts WHERE completed_at > NOW() - INTERVAL '1 hour' AND outcome = 'success'`);
     const errorsHour = await c.query(`SELECT COUNT(*)::int AS n FROM nex.delivery_job_attempts WHERE completed_at > NOW() - INTERVAL '1 hour' AND outcome IN ('transient_failure','permanent_failure')`);

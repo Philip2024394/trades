@@ -14,7 +14,7 @@
         {
           "customer": "hi there",
           "intent": "meta_greeting",
-          "reply": "Hi there — how can I help?",
+          "reply": "Hi, how can I help you today?",
           "facts": {},
           "failures": []
         }
@@ -29,14 +29,14 @@
         {
           "customer": "Is anyone online?",
           "intent": "meta_presence",
-          "reply": "No problem, I'm here and ready to help. How can I assist you today?",
+          "reply": "No problem — I'm here and ready to help. How can I assist you today?",
           "facts": {},
           "failures": []
         },
         {
           "customer": "are you there?",
           "intent": "meta_presence",
-          "reply": "Hi — I'm here, no problem. How can I help?",
+          "reply": "Apologies, I'm ready. How can I help you today?",
           "facts": {},
           "failures": []
         }
@@ -51,7 +51,7 @@
         {
           "customer": "who are you?",
           "intent": "meta_identity",
-          "reply": "Apologies, I was quiet there. I'm NEX, your advisor for staircase solutions. How can I help today?",
+          "reply": "No problem — I'm here to help with any staircase questions you have. How can I assist you today?",
           "facts": {},
           "failures": []
         }
@@ -66,7 +66,7 @@
         {
           "customer": "I'm looking for an oak staircase",
           "intent": "specify_material",
-          "reply": "Given your preference for oak, would you consider a closed string staircase for the wall?",
+          "reply": "Given your preference for oak, a closed string staircase would often be a good fit for a traditional look. Would you consider this option, or are you leaning towards something else?",
           "facts": {
             "material_primary": {
               "value": "oak",
@@ -80,7 +80,7 @@
         {
           "customer": "How much would that cost?",
           "intent": "ask_price",
-          "reply": "Would you like to explore any other aspects of the staircase design before we discuss the cost?",
+          "reply": "Would you prefer to know more about the design options before we discuss the cost?",
           "facts": {
             "material_primary": {
               "value": "oak",
@@ -102,7 +102,7 @@
         {
           "customer": "I want a walnut staircase",
           "intent": "specify_material",
-          "reply": "Given your preference for walnut, would you consider a closed string look for the staircase?",
+          "reply": "Given your preference for walnut, a closed string would be a good choice for a traditional look. Would you consider this option or are you leaning towards an open string instead?",
           "facts": {
             "material_primary": {
               "value": "walnut",
@@ -116,7 +116,7 @@
         {
           "customer": "roughly what's the price?",
           "intent": "ask_price",
-          "reply": "Given your preference for walnut, how about we discuss the overall size and layout of the staircase first? What's the approximate height and width you need?",
+          "reply": "Given your preference for walnut, a closed string would be a good choice for a traditional look. Would you consider this option or are you leaning towards an open string instead?",
           "facts": {
             "material_primary": {
               "value": "walnut",
@@ -138,7 +138,7 @@
         {
           "customer": "I'd like an oak staircase",
           "intent": "specify_material",
-          "reply": "Given your preference for oak, a closed string would often be a good fit for a traditional look. What about the style—traditional or something more contemporary in mind?",
+          "reply": "Given your preference for oak, a closed string would often be a good fit for this look. Would you prefer the tread ends hidden or visible?",
           "facts": {
             "material_primary": {
               "value": "oak",
@@ -152,7 +152,7 @@
         {
           "customer": "No, I meant oak",
           "intent": "correct",
-          "reply": "Given your preference for oak, a closed string would often be a good fit for a traditional look. Would you prefer the closed string look with oak or consider an open string with another wood for contrast?",
+          "reply": "Given your preference for oak, a closed string would often be a good fit for this look. Would you prefer the tread ends hidden or visible?",
           "facts": {
             "material_primary": {
               "value": "oak",
@@ -175,7 +175,7 @@
         {
           "customer": "Can I have a bullnose starting step in oak?",
           "intent": "specify_material",
-          "reply": "Given your preference for a bullnose starting step in oak, how about considering a cut string for the open side?",
+          "reply": "Given your preference for a bullnose starting step in oak, what tread profile would you prefer for this staircase?",
           "facts": {
             "material_primary": {
               "value": "oak",
@@ -189,7 +189,7 @@
         {
           "customer": "Is that expensive?",
           "intent": "ask_price",
-          "reply": "Given your preference for a bullnose starting step in oak, a cut string for the open side is often a bit more expensive to make and install. Would you like to explore this further?",
+          "reply": "Given your preference for a bullnose starting step in oak, the cost can vary depending on the complexity of the design and the materials used. Typically, a bullnose starting step can be a bit more expensive due to the detailing required. Would you like to explore some other options to potentially keep costs down?",
           "facts": {
             "material_primary": {
               "value": "oak",
@@ -211,7 +211,7 @@
         {
           "customer": "Closed string or cut string for a Victorian oak staircase?",
           "intent": "specify_style",
-          "reply": "Given your preference for a Victorian look, would you lean towards the closed string for its traditional elegance or consider a cut string for a more contemporary feel?",
+          "reply": "Given your preference for a Victorian look, a closed string would naturally fit well with the traditional style you're aiming for. Which do you lean towards, the closed string or the cut string?",
           "facts": {
             "material_primary": {
               "value": "oak",
@@ -231,7 +231,7 @@
         {
           "customer": "Tell me more about the other one",
           "intent": "statement",
-          "reply": "Given your preference for a Victorian look, would you prefer the closed string for its traditional elegance or consider a cut string for its contrasting profile?",
+          "reply": "Given your preference for a Victorian look, the cut string would showcase the tread ends step down as a feature, which might complement the traditional style you're aiming for. Which do you lean towards, the closed string or the cut string?",
           "facts": {
             "material_primary": {
               "value": "oak",
@@ -256,7 +256,7 @@
   "natural": {
     "fixture": "natural-25turn-2026-08-15",
     "total_turns": 25,
-    "avg_latency_ms": 2196.6,
+    "avg_latency_ms": 1997.2,
     "final_state": {
       "turn_count": 50,
       "material": "oak",
@@ -280,8 +280,8 @@
           "noops": []
         },
         "corrections_log_len": 0,
-        "reply": "Hi there — how can I help?",
-        "latency_ms": 1385
+        "reply": "Hi there — how can I help with your staircase needs?",
+        "latency_ms": 771
       },
       {
         "n": 2,
@@ -296,8 +296,8 @@
           "noops": []
         },
         "corrections_log_len": 0,
-        "reply": "Apologies, I'm ready and here. How can I help?",
-        "latency_ms": 1005
+        "reply": "No problem — happy to help. How can I assist you today?",
+        "latency_ms": 701
       },
       {
         "n": 3,
@@ -316,8 +316,8 @@
           "noops": []
         },
         "corrections_log_len": 0,
-        "reply": "Given your staircase against the wall, a closed string is often the natural fit — smooth diagonal, tread ends hidden. If you'd rather see the tread ends step down as a feature, a cut string on the open side is the alternative. Which appeals more?",
-        "latency_ms": 2877
+        "reply": "Given your staircase against a wall, a closed string with oak would be a common choice. How does that sound?",
+        "latency_ms": 1809
       },
       {
         "n": 4,
@@ -346,8 +346,8 @@
           "noops": []
         },
         "corrections_log_len": 0,
-        "reply": "Given your staircase against the wall, do you prefer a cut string for the open side?",
-        "latency_ms": 2499
+        "reply": "Given your staircase against a wall on one side, would you prefer a closed string or a cut string for the open side?",
+        "latency_ms": 1774
       },
       {
         "n": 5,
@@ -383,8 +383,8 @@
           "noops": []
         },
         "corrections_log_len": 0,
-        "reply": "Given the oak you mentioned, would you consider a cut string for the open side?",
-        "latency_ms": 1929
+        "reply": "Given the oak you mentioned, a closed string with a traditional look would suit your staircase well against the wall. What about a cut string for the open side?",
+        "latency_ms": 1942
       },
       {
         "n": 6,
@@ -418,8 +418,8 @@
           "noops": []
         },
         "corrections_log_len": 0,
-        "reply": "Would you lean towards the closed string for its traditional look, or consider the cut string for a more contemporary feel?",
-        "latency_ms": 2094
+        "reply": "Would you like to explore which staircase style appeals more to you, the closed string or the cut string?",
+        "latency_ms": 1729
       },
       {
         "n": 7,
@@ -458,8 +458,8 @@
           "noops": []
         },
         "corrections_log_len": 0,
-        "reply": "Would you prefer the closed string for its traditional look, or the cut string for a more contemporary feel?",
-        "latency_ms": 2089
+        "reply": "Would you like to explore which staircase style appeals more to you, the open riser or the open string?",
+        "latency_ms": 1758
       },
       {
         "n": 8,
@@ -496,7 +496,7 @@
         },
         "corrections_log_len": 0,
         "reply": "Take your time. I'm here when you're ready.",
-        "latency_ms": 1293
+        "latency_ms": 827
       },
       {
         "n": 9,
@@ -541,8 +541,8 @@
           "noops": []
         },
         "corrections_log_len": 0,
-        "reply": "Would you prefer the closed string for its traditional look, or the cut string for a more contemporary feel?",
-        "latency_ms": 2095
+        "reply": "Given your preference for a traditional look, a closed string staircase would be a fitting choice for a Victorian house. What about the material—would you consider walnut as an option?",
+        "latency_ms": 2088
       },
       {
         "n": 10,
@@ -589,7 +589,7 @@
         },
         "corrections_log_len": 0,
         "reply": "I don't want to guess figures — I can get you an accurate quote once we've talked through the specifics. What sort of size is your staircase, roughly?",
-        "latency_ms": 2443
+        "latency_ms": 2251
       },
       {
         "n": 11,
@@ -636,8 +636,8 @@
           "noops": []
         },
         "corrections_log_len": 0,
-        "reply": "Given the oak you mentioned and the traditional direction, a closed string with a smooth diagonal look would often be a good fit for your staircase. What size are you thinking of?",
-        "latency_ms": 2429
+        "reply": "Given the oak you mentioned and the traditional direction, a closed string staircase would be a fitting choice for your Victorian house. Would you prefer the installation to be separate from the design?",
+        "latency_ms": 2438
       },
       {
         "n": 12,
@@ -687,8 +687,8 @@
           "noops": []
         },
         "corrections_log_len": 0,
-        "reply": "Sure, how about explaining what a base rail is? It's like a vertical board that supports the handrail at the base of the staircase. Does that help clarify?",
-        "latency_ms": 2554
+        "reply": "Sure, how does \"base rail\" work in a staircase? Would you like to know more about its function or how it fits into the design?",
+        "latency_ms": 2411
       },
       {
         "n": 13,
@@ -739,8 +739,8 @@
           "noops": []
         },
         "corrections_log_len": 0,
-        "reply": "Sure, does the base rail apply to both closed string and cut string?",
-        "latency_ms": 1972
+        "reply": "Sure, how does \"base rail\" work in a staircase? Would you like to know more about its function or how it fits into the design?",
+        "latency_ms": 2365
       },
       {
         "n": 14,
@@ -798,8 +798,8 @@
           "noops": []
         },
         "corrections_log_len": 1,
-        "reply": "Given the walnut you mentioned, a closed string with walnut would provide a traditional look that suits your preference. Would you prefer that or consider an open string with oak for contrast?",
-        "latency_ms": 2459
+        "reply": "Given the walnut you mentioned and your traditional style intent, a walnut string would complement the look well. Would you like to explore further?",
+        "latency_ms": 2194
       },
       {
         "n": 15,
@@ -849,8 +849,8 @@
           "noops": []
         },
         "corrections_log_len": 1,
-        "reply": "Given the walnut you mentioned, a closed string with walnut would provide a traditional look that suits your preference. Would you prefer that or consider an open string with oak for contrast?",
-        "latency_ms": 2297
+        "reply": "Given the walnut you mentioned and your traditional style intent, a walnut string would complement the look well. Would you like to explore other materials or styles for your staircase?",
+        "latency_ms": 2333
       },
       {
         "n": 16,
@@ -908,8 +908,8 @@
           "noops": []
         },
         "corrections_log_len": 2,
-        "reply": "Given your preference for oak, an interior residential staircase with a closed string in oak would offer a traditional look that aligns well with your style. Would you like to explore this option further?",
-        "latency_ms": 2386
+        "reply": "Given your preference to return to oak and your traditional style intent, a closed string staircase in oak would be a classic choice. Would you like to explore this further?",
+        "latency_ms": 2096
       },
       {
         "n": 17,
@@ -959,8 +959,8 @@
           "noops": []
         },
         "corrections_log_len": 2,
-        "reply": "Given your preference for oak, a closed string staircase would indeed offer a traditional look that aligns well with your style. Would you like to explore this option further?",
-        "latency_ms": 2297
+        "reply": "Given your flip-flopping, how about we revisit the idea of a closed string staircase in oak? Would that appeal to you?",
+        "latency_ms": 2214
       },
       {
         "n": 18,
@@ -1013,8 +1013,8 @@
           "noops": []
         },
         "corrections_log_len": 2,
-        "reply": "Given your preference for a traditional look with oak, would you consider a starting step with a bullnose detail to make the bottom step something special?",
-        "latency_ms": 2296
+        "reply": "Given your interest in a special feature for the bottom step, a rounded bullnose is a classic and common choice for traditional oak staircases. Would you like to explore this further?",
+        "latency_ms": 2494
       },
       {
         "n": 19,
@@ -1069,8 +1069,8 @@
           "noops": []
         },
         "corrections_log_len": 2,
-        "reply": "Given your preference for a traditional look with oak and the bullnose detail, would you consider a starting step in exposed timber, with a step mat shaped for the curve to complement it?",
-        "latency_ms": 2386
+        "reply": "Given your preference for a bullnose, would you consider a full carpet on the flight with the bullnose starting step left in exposed timber as the feature?",
+        "latency_ms": 2484
       },
       {
         "n": 20,
@@ -1128,8 +1128,8 @@
           "noops": []
         },
         "corrections_log_len": 2,
-        "reply": "Given the oak you mentioned and the traditional direction, would you consider a starting step in exposed timber, with a bullnose detail?",
-        "latency_ms": 2175
+        "reply": "Given the oak you mentioned and the traditional direction, a full carpet on the flight with the bullnose starting step left in exposed timber sounds like a great idea. What do you think?",
+        "latency_ms": 2493
       },
       {
         "n": 21,
@@ -1183,8 +1183,8 @@
           "noops": []
         },
         "corrections_log_len": 2,
-        "reply": "No problem — I'm here and ready to help with your staircase needs. How can I assist you today?",
-        "latency_ms": 3064
+        "reply": "No problem — I'm here and ready to help with your staircase. How can I assist you today?",
+        "latency_ms": 1766
       },
       {
         "n": 22,
@@ -1239,7 +1239,7 @@
         },
         "corrections_log_len": 2,
         "reply": "You're welcome — anything else I can help with?",
-        "latency_ms": 1025
+        "latency_ms": 1048
       },
       {
         "n": 23,
@@ -1298,8 +1298,8 @@
           "noops": []
         },
         "corrections_log_len": 2,
-        "reply": "Given the oak you mentioned and the traditional direction, the handrail height typically falls within the UK Approved Document K range of 900mm to 1000mm measured vertically above the pitch line of the flight. Is there anything else I can help with?",
-        "latency_ms": 2906
+        "reply": "Given the oak you mentioned and your traditional direction, the handrail height should be around 900mm to 1000mm measured vertically above the pitch line of the flight. Is that helpful?",
+        "latency_ms": 2615
       },
       {
         "n": 24,
@@ -1309,9 +1309,9 @@
           "closed_string",
           "against_wall",
           "starting_step",
-          "bullnose",
           "carpet",
           "handrail",
+          "bullnose",
           "staircase",
           "handrail_height",
           "oak",
@@ -1367,8 +1367,8 @@
           "noops": []
         },
         "corrections_log_len": 2,
-        "reply": "Given your summary, it sounds like a closed string with a cut wall option would be a good fit. Would you like to proceed with that, or do you have any other preferences?",
-        "latency_ms": 2357
+        "reply": "Given your summary, it sounds like a closed string with a cut-walk option would be a good fit. The bullnose bottom step, carpeted flight, and 900mm handrail all align well with this configuration. Is there anything else you need help with?",
+        "latency_ms": 3009
       },
       {
         "n": 25,
@@ -1425,8 +1425,8 @@
           "noops": []
         },
         "corrections_log_len": 2,
-        "reply": "Perfect, the staircase you're thinking of with an oak finish against the wall would suit a closed string, which has a smooth diagonal look with treads hidden. Would you like to proceed with that, or do you have any other preferences?",
-        "latency_ms": 2602
+        "reply": "Sound right? Would you like to explore a closed string staircase with a cut-walk option for your staircase?",
+        "latency_ms": 2320
       }
     ]
   }

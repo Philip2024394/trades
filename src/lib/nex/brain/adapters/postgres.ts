@@ -611,34 +611,38 @@ export class PostgresBrainStore implements BrainStore {
   }
 
   // ── Heartbeats ─────────────────────────────────────────────────────
+  //
+  // Task #72 Step 1c (2026-08-22): unified against nex.worker_heartbeat
+  // (singular). Prior plural table dropped by migration 070. Row shape
+  // per src/lib/nex/brain/types.ts:WorkerHeartbeat.
   async upsertHeartbeat(row: WorkerHeartbeat): Promise<void> {
     await this.withTx(async (c) => {
       await c.query(
-        `INSERT INTO nex.worker_heartbeats
-           (host_id, last_seen_at, uptime_ms, cycles_total, cycles_failed,
-            last_error, last_cycle_summary, metadata)
-         VALUES ($1, COALESCE($2::timestamptz, NOW()), $3, $4, $5, $6, $7::jsonb, $8::jsonb)
-         ON CONFLICT (host_id) DO UPDATE SET
-           last_seen_at       = EXCLUDED.last_seen_at,
-           uptime_ms          = EXCLUDED.uptime_ms,
-           cycles_total       = EXCLUDED.cycles_total,
-           cycles_failed      = EXCLUDED.cycles_failed,
-           last_error         = EXCLUDED.last_error,
-           last_cycle_summary = EXCLUDED.last_cycle_summary,
-           metadata           = EXCLUDED.metadata`,
-        [row.host_id, row.last_seen_at ?? null, row.uptime_ms ?? 0,
-         row.cycles_total ?? 0, row.cycles_failed ?? 0, row.last_error ?? null,
-         row.last_cycle_summary ? JSON.stringify(row.last_cycle_summary) : null,
-         row.metadata ? JSON.stringify(row.metadata) : null],
+        `INSERT INTO nex.worker_heartbeat
+           (worker_id, worker_type, worker_config, last_heartbeat_at,
+            last_status, last_cycle_run_id, metadata, updated_at)
+         VALUES ($1, $2, $3, COALESCE($4::timestamptz, NOW()), $5, $6, $7::jsonb, NOW())
+         ON CONFLICT (worker_id) DO UPDATE SET
+           worker_type       = EXCLUDED.worker_type,
+           worker_config     = EXCLUDED.worker_config,
+           last_heartbeat_at = EXCLUDED.last_heartbeat_at,
+           last_status       = EXCLUDED.last_status,
+           last_cycle_run_id = EXCLUDED.last_cycle_run_id,
+           metadata          = EXCLUDED.metadata,
+           updated_at        = NOW()`,
+        [row.worker_id, row.worker_type, row.worker_config ?? null,
+         row.last_heartbeat_at ?? null, row.last_status,
+         row.last_cycle_run_id ?? null,
+         JSON.stringify(row.metadata ?? {})],
       );
     });
   }
   async listHeartbeats(filter?: { since?: string; limit?: number }): Promise<WorkerHeartbeat[]> {
     return this.withTx(async (c) => {
       const params: unknown[] = [];
-      let sql = `SELECT * FROM nex.worker_heartbeats WHERE 1=1`;
-      if (filter?.since) { params.push(filter.since); sql += ` AND last_seen_at > $${params.length}::timestamptz`; }
-      sql += ` ORDER BY last_seen_at DESC`;
+      let sql = `SELECT * FROM nex.worker_heartbeat WHERE 1=1`;
+      if (filter?.since) { params.push(filter.since); sql += ` AND last_heartbeat_at > $${params.length}::timestamptz`; }
+      sql += ` ORDER BY last_heartbeat_at DESC`;
       if (filter?.limit) { params.push(filter.limit); sql += ` LIMIT $${params.length}`; }
       const r = await c.query(sql, params);
       return r.rows as unknown as WorkerHeartbeat[];

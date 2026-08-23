@@ -1,0 +1,118 @@
+{
+  "jobId": "food-yogyakarta-smoke-kaliurang-2026-08-21t14-43-15-461z",
+  "vertical": "food",
+  "city": "Yogyakarta",
+  "bbox": {
+    "sw": [
+      -7.605,
+      110.415
+    ],
+    "ne": [
+      -7.585,
+      110.435
+    ]
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-21T14:43:15.462Z",
+  "finishedAt": "2026-08-21T14:43:15.583Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 5,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 5,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 5,
+    "enriched": 0,
+    "gate3_contactable": 1,
+    "gate4_eligible": 1,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 1,
+    "rejected_by_gate": 4,
+    "errors": 0
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#FL-2026-000S7",
+        "name": "Joyo",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-000S8",
+        "name": "Kedai Jons",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-000S9",
+        "name": "Warung Sate Pak Min",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-000SA",
+        "name": "Jada Tempeh",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-000SB",
+        "name": "Lavana",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [
+      {
+        "publicRef": "#FL-2026-000SB",
+        "name": "Lavana",
+        "whatsapp": null,
+        "phone": "+62 877-2444-28492",
+        "website": null
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#FL-2026-000S7",
+        "name": "Joyo",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-000S8",
+        "name": "Kedai Jons",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-000S9",
+        "name": "Warung Sate Pak Min",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-000SA",
+        "name": "Jada Tempeh",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": []
+}

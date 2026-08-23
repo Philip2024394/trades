@@ -1,161 +1,81 @@
-// NEX Voice · Push-to-talk microphone component (prototype).
+// NEX Voice · Push-to-talk microphone component (prototype UI).
 //
-// Contract:
-//   · Uses the browser voice provider (via getVoiceProvider()).
-//   · Sends every final transcript to the SAME /api/nex-conv/chat endpoint
-//     the text UI uses. No parallel pipeline. No parallel state.
-//   · Persists NOTHING client-side · audio never touches disk.
-//   · Fails gracefully: no-speech → "didn't catch that" spoken back.
+// This is the developer prototype at /nex-voice-demo. It renders the
+// classic hold-to-speak button + transcript pane. All orchestration
+// (provider, state machine, STT, POST → /api/nex-conv/chat, TTS,
+// conversation continuity) lives in the SHARED useNexVoice hook —
+// same pipeline consumed by /nexapp. See feedback_nex_voice_pipeline_
+// architecture 2026-08-21: one voice pipeline, brain-vs-voice split.
 //
-// Prototype only. Not for customer-facing surfaces until a privacy-
-// controlled STT provider (Groq Whisper Turbo / local whisper.cpp) is
-// wired behind the same NexVoiceProvider interface.
+// This component is intentionally UI-only. If you find yourself adding
+// listen/POST/TTS logic here, add it to useNexVoice instead.
 
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { getVoiceProvider, type NexVoiceProvider, type VoiceListenHandle } from "@/lib/nex-voice";
-
-type VoiceState = "idle" | "listening" | "thinking" | "speaking" | "error";
+import { useCallback, useState } from "react";
+import { useNexVoice, type NexReplyMeta } from "@/lib/nex-voice";
 
 type Turn = {
   speaker: "customer" | "nex";
   text: string;
   intent?: string | null;
   entities?: string[];
-  factsSnapshot?: Record<string, { value: string; provenance?: string }>;
+  factsSnapshot?: Record<string, { value: string; provenance?: string }> | null;
 };
-
-type ChatResponse = {
-  conversation_id: string;
-  reply: string | null;
-  understood_intent?: string | null;
-  understood_entities?: string[];
-  state_summary?: {
-    established_facts?: Record<string, { value: string; provenance?: string }>;
-    turn_count?: number;
-  };
-  error?: string;
-};
-
-const FALLBACK_MISHEARD = "I didn't quite catch that. Could you say it again?";
-const FALLBACK_API_DOWN = "I'm having trouble hearing you right now. Give me a moment.";
 
 export function VoiceMic() {
-  const [state, setState] = useState<VoiceState>("idle");
   const [transcript, setTranscript] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [turns, setTurns] = useState<Turn[]>([]);
-  const [conversationId, setConversationId] = useState<string | null>(null);
-  const [supported, setSupported] = useState<boolean>(true);
 
-  const providerRef = useRef<NexVoiceProvider | null>(null);
-  const handleRef = useRef<VoiceListenHandle | null>(null);
+  const voice = useNexVoice({
+    // Priority 2 V2: prototype defaults to English but auto-adopts the
+    // brain-detected language after the first turn (see useNexVoice
+    // onLanguageChange). Explicit user toggle lives in NexAppHome, not
+    // in this dev prototype.
+    language: "en",
+    onPartial: (t) => setTranscript(t),
+    onUserFinal: (text) => {
+      setTranscript(text);
+      setTurns((prev) => [...prev, { speaker: "customer", text }]);
+    },
+    onNexReply: (reply, meta: NexReplyMeta) => {
+      setTurns((prev) => [
+        ...prev,
+        {
+          speaker: "nex",
+          text: reply,
+          intent: meta.intent,
+          entities: meta.entities,
+          factsSnapshot: meta.establishedFacts,
+        },
+      ]);
+    },
+    onError: (m) => setErrorMsg(m),
+  });
 
-  useEffect(() => {
-    try {
-      const p = getVoiceProvider("browser");
-      providerRef.current = p;
-      setSupported(p.isSupported());
-    } catch (e) {
-      setSupported(false);
-      setErrorMsg(String((e as Error)?.message ?? e));
-    }
-    return () => {
-      handleRef.current?.stop();
-      providerRef.current?.cancelSpeech();
-    };
-  }, []);
-
-  const sendToNex = useCallback(async (text: string) => {
-    setState("thinking");
-    let res: ChatResponse | null = null;
-    try {
-      const r = await fetch("/api/nex-conv/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          conversation_id: conversationId ?? undefined,
-          message: text,
-        }),
-      });
-      res = (await r.json()) as ChatResponse;
-    } catch (e) {
-      setErrorMsg(String((e as Error)?.message ?? e));
-    }
-
-    if (!res || !res.reply) {
-      setState("speaking");
-      await providerRef.current?.speak(FALLBACK_API_DOWN);
-      setState("idle");
-      return;
-    }
-
-    if (res.conversation_id && !conversationId) setConversationId(res.conversation_id);
-
-    setTurns(prev => [
-      ...prev,
-      { speaker: "customer", text },
-      {
-        speaker: "nex",
-        text: res!.reply ?? "",
-        intent: res!.understood_intent ?? null,
-        entities: res!.understood_entities ?? [],
-        factsSnapshot: res!.state_summary?.established_facts,
-      },
-    ]);
-
-    setState("speaking");
-    await providerRef.current?.speak(res.reply);
-    setState("idle");
-  }, [conversationId]);
-
-  const handleFinal = useCallback(async (t: { text: string; confidence: number }) => {
-    handleRef.current = null;
-    const cleaned = (t.text ?? "").trim();
-    if (!cleaned || t.confidence < 0.4) {
-      setTranscript(cleaned);
-      setState("speaking");
-      await providerRef.current?.speak(FALLBACK_MISHEARD);
-      setState("idle");
-      return;
-    }
-    setTranscript(cleaned);
-    await sendToNex(cleaned);
-  }, [sendToNex]);
-
-  const startListening = useCallback(() => {
-    const p = providerRef.current;
-    if (!p || !p.isSupported()) return;
-    p.cancelSpeech();
-    setTranscript("");
-    setErrorMsg("");
-    setState("listening");
-    handleRef.current = p.listen({
-      lang: "en-GB",
-      onPartial: (t) => setTranscript(t.text),
-      onFinal: (t) => void handleFinal(t),
-      onError: (m) => {
-        setErrorMsg(m);
-        setState("error");
-      },
-    });
-  }, [handleFinal]);
-
-  const stopListening = useCallback(() => {
-    handleRef.current?.stop();
-    handleRef.current = null;
-  }, []);
+  const { state, isSupported, conversationId, beginListen, endListen, reset } = voice;
 
   const resetConversation = useCallback(() => {
-    handleRef.current?.stop();
-    providerRef.current?.cancelSpeech();
+    reset();
     setTurns([]);
     setTranscript("");
     setErrorMsg("");
-    setConversationId(null);
-    setState("idle");
-  }, []);
+  }, [reset]);
+
+  // Push-to-talk semantics (walkie-talkie style): mousedown/touchstart
+  // begins capture, mouseup/touchend/mouseleave ends it. Keyboard
+  // activation (Space / Enter, detail===0) toggles instead.
+  const beginCapture = useCallback((e: React.SyntheticEvent) => {
+    e.preventDefault();
+    if (state === "thinking" || state === "speaking") return;
+    if (state !== "listening") beginListen();
+  }, [state, beginListen]);
+
+  const endCapture = useCallback((e: React.SyntheticEvent) => {
+    e.preventDefault();
+    if (state === "listening") endListen();
+  }, [state, endListen]);
 
   const buttonLabel = {
     idle:      "🎙  Hold to speak",
@@ -165,27 +85,11 @@ export function VoiceMic() {
     error:     "⚠ Retry",
   }[state];
 
-  const isDisabled = !supported || state === "thinking" || state === "speaking";
-
-  // Push-to-talk (2026-08-20 fix): the button was previously click-to-toggle
-  // but its label promises "Hold to speak". Now mousedown/touchstart begins
-  // capture and mouseup/touchend/mouseleave ends it — matches label + more
-  // natural voice UX (Discord / walkie-talkie style). onClick fallback kept
-  // for keyboard / accessibility (Space or Enter triggers a short single
-  // capture window).
-  const beginCapture = useCallback((e: React.SyntheticEvent) => {
-    e.preventDefault();
-    if (isDisabled) return;
-    if (state !== "listening") startListening();
-  }, [isDisabled, state, startListening]);
-  const endCapture = useCallback((e: React.SyntheticEvent) => {
-    e.preventDefault();
-    if (state === "listening") stopListening();
-  }, [state, stopListening]);
+  const isDisabled = !isSupported || state === "thinking" || state === "speaking";
 
   return (
     <div style={containerStyle}>
-      {!supported && (
+      {!isSupported && (
         <div style={warnStyle}>
           Your browser doesn't support the Web Speech API. Try Chrome or Edge.
           {errorMsg && <div style={{ marginTop: 4, opacity: 0.8 }}>{errorMsg}</div>}
@@ -200,11 +104,8 @@ export function VoiceMic() {
           onTouchStart={beginCapture}
           onTouchEnd={endCapture}
           onClick={(e) => {
-            // Keyboard / accessibility fallback: if the button was activated
-            // by keyboard (Space/Enter), the mouseDown/mouseUp handlers won't
-            // have fired. Toggle in that case.
             if ((e as any).detail === 0) {
-              if (state === "listening") stopListening(); else startListening();
+              if (state === "listening") endListen(); else beginListen();
             }
           }}
           disabled={isDisabled}

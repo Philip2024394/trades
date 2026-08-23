@@ -15,7 +15,13 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import type { CentreFeedItem, MerchantVerificationLevel } from "./types";
-import { matchImage, applyCardCrop } from "./imageMatcher";
+import {
+  matchImage,
+  pickDiverseAPlusImage,
+  applyCardCrop,
+  deriveCompanyMaterialsFromText,
+  type StaircaseMaterialFamily,
+} from "./imageMatcher";
 
 // ─────────────────────────────────────────────────────────────────────
 // Refacing-specific optional extensions (2026-08-13 · per Philip spec).
@@ -391,6 +397,56 @@ const CURATED_HERO_OVERRIDES: Record<string, string> = {
   // "NEX-D-001": "https://ik.imagekit.io/5vv5pw26q/...",
 };
 
+// Dedicated pool for STAIRPARTS SUPPLIER cards (Philip 2026-08-17).
+//
+// STRICT ISOLATION: these images render ONLY on cards whose seed identifies
+// as a staircase-parts / kit / product supplier. They are NOT in the A+
+// staircase manifest, so the general diverse picker cannot surface them on
+// any other surface (Trade Centre cards for manufacturers / refurbishers /
+// installers / refacers, brain-chat, marketing hero, etc.). Adding a new
+// stairparts image = append the URL to this array. Removing = remove.
+export const STAIRPARTS_SUPPLIER_POOL: readonly string[] = [
+  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2017,%202026,%2012_30_26%20PM.png?updatedAt=1786944642443",
+  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2017,%202026,%2012_30_56%20PM.png?updatedAt=1786944688501",
+  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2017,%202026,%2012_31_41%20PM.png?updatedAt=1786944720100",
+  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2017,%202026,%2012_32_09%20PM.png?updatedAt=1786944746584",
+  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2017,%202026,%2012_34_16%20PM.png?updatedAt=1786944873247",
+  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2017,%202026,%2001_07_46%20PM.png?updatedAt=1786946883518",
+  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%2017,%202026,%2001_11_56%20PM.png",
+];
+
+/** A seed is a stairparts supplier when its capability flag OR
+ *  business_type marks it as a kit/product supplier. Same criteria the
+ *  Trade Centre "Stairparts" chip uses (`?capability=kit_or_product_supplier`)
+ *  so the two stay in lockstep. */
+export function isStairpartsSupplier(seed: DirectorySeed): boolean {
+  if (seed.capabilities?.kit_or_product_supplier === "yes") return true;
+  const bt = (seed as unknown as { business_type?: string }).business_type;
+  if (bt === "REFACING_OR_REFURB_KIT_OR_PRODUCT_SUPPLIER") return true;
+  return false;
+}
+
+/** Pick from the dedicated stairparts pool. Same rules as the general
+ *  picker: least-used-first, ties broken by hash(seedId + rotationSalt).
+ *  Returns null iff the pool is empty. */
+export function pickStairpartsSupplierImage(
+  seedIdForDistribution: string,
+  usedCounts: ReadonlyMap<string, number>,
+  rotationSalt: string,
+): string | null {
+  if (STAIRPARTS_SUPPLIER_POOL.length === 0) return null;
+  const countOf = (u: string) => usedCounts.get(u) ?? 0;
+  const min = Math.min(...STAIRPARTS_SUPPLIER_POOL.map(countOf));
+  const candidates = STAIRPARTS_SUPPLIER_POOL.filter((u) => countOf(u) === min);
+  const hashKey = `${seedIdForDistribution}|${rotationSalt}`;
+  let h = 0;
+  for (let i = 0; i < hashKey.length; i++) {
+    h = ((h << 5) - h) + hashKey.charCodeAt(i);
+    h |= 0;
+  }
+  return candidates[Math.abs(h) % candidates.length];
+}
+
 // Hero-image cache (Philip 2026-08-17). Resolving a seed's hero image
 // scans the whole nex-image-manifest via matchImage() — for 375 US
 // seeds × ~500 manifest rows that was 187k scoring calls per feed
@@ -401,8 +457,13 @@ const CURATED_HERO_OVERRIDES: Record<string, string> = {
 type HeroCacheEntry = { sig: string; url: string };
 const heroCache: Map<string, HeroCacheEntry> = new Map();
 
+// Bump when the picker algorithm changes so old cached URLs are invalidated
+// without needing a manual purge or process restart.
+const HERO_PICKER_VERSION = "v13-stairparts-supplier-isolated-pool-2026-08-17";
+
 function seedHeroSig(seed: DirectorySeed): string {
   return [
+    HERO_PICKER_VERSION,
     seed.business_name,
     seed.description ?? "",
     (seed.services ?? []).join(","),
@@ -620,19 +681,49 @@ export async function loadDirectorySeedsAsFeedItems(
     (a.seed.imported_at ?? "").localeCompare(b.seed.imported_at ?? "")
   );
 
-  // Perf fix (Philip 2026-08-13): resolve hero images in PARALLEL. Previously
-  // this was a for/await loop that awaited matchImage() per seed serially —
-  // at ~20-100ms per seed with a large directory that dominated the whole
-  // request. Promise.all runs them concurrently and cuts wall time to
-  // roughly the slowest single lookup instead of the sum.
+  // Two-phase resolve so we get parallelism AND within-batch de-duplication:
+  //
+  // Phase 1 (parallel · fast steps): admin_ref · seed.cover_image · curated
+  //   override · cache hit · matchImage top-score. These are independent
+  //   per-seed so Promise.all is safe.
+  //
+  // Phase 2 (sequential · dedup pass): walks items in display order,
+  //   tracking every URL already assigned. If a Phase-1 pick collides with
+  //   one already in use, we re-pick from the diverse pool passing
+  //   `usedUrls` so the picker skips the collided URL. Also runs the pool
+  //   pick for any seed Phase 1 couldn't resolve. Sequential is OK here
+  //   because the pool step is a cheap in-memory scan after Phase 1 has
+  //   already warmed the manifest.
+
+  const targetTextFor = (seed: DirectorySeed) =>
+    [
+      seed.business_name,
+      seed.description ?? "",
+      (seed.services ?? []).join(" · "),
+      (seed.tags ?? []).join(" · "),
+      seed.category ?? "",
+      seed.town ?? "",
+    ]
+      .filter(Boolean)
+      .join(" · ");
+
+  // Company material profile drives the hard eligibility gate on the diverse
+  // A+ picker. Uses the trade-realistic broadening derivation: metal / glass
+  // companies auto-include timber (they almost always work with timber
+  // substrates), timber companies do NOT auto-broaden. See docstring on
+  // deriveCompanyMaterialsFromText for the asymmetry rationale.
+  const companyMaterialsFor = (seed: DirectorySeed): Set<StaircaseMaterialFamily> =>
+    deriveCompanyMaterialsFromText(targetTextFor(seed));
+
+  // Rotation salt · once per calendar day (UTC). Same salt across a day
+  // means the heroCache serves fast; different salt tomorrow means each
+  // merchant may see a different equally-least-used image. Rotates
+  // assignments over time without breaking within-day stability.
+  const rotationSalt = new Date().toISOString().slice(0, 10);
+
+  // Phase 1 — parallel · fast per-seed resolution (no dedup yet).
   await Promise.all(
     byImportAsc.map(async ({ seed, item }, i) => {
-      // Filtered path: seed's stable global NEX-D-XXX from the ref map.
-      // Unfiltered path: derive in-place from local ordering (== global).
-      // Fallback: if the ref map missed this seed (edge case · e.g. JSON
-      // archive read + DB never seen it), assign the local ordinal so the
-      // card still renders — it just won't collide with a curated override
-      // aimed at a different seed.
       const ref = hasAnyFilter
         ? (globalRefMap.get(seed.id) ?? `NEX-D-${String(i + 1).padStart(3, "0")}`)
         : `NEX-D-${String(i + 1).padStart(3, "0")}`;
@@ -640,7 +731,6 @@ export async function loadDirectorySeedsAsFeedItems(
 
       if (item.hero_image_url) return; // seed had a real cover
 
-      // 1. Curated Philip override
       if (CURATED_HERO_OVERRIDES[ref]) {
         item.hero_image_url = applyCardCrop(CURATED_HERO_OVERRIDES[ref]);
         return;
@@ -653,48 +743,134 @@ export async function loadDirectorySeedsAsFeedItems(
         return;
       }
 
-      let resolved: string | null = null;
+      // Stairparts suppliers use a strictly isolated pool (defined at the
+      // top of this file). Skip matchImage entirely so the general A+
+      // library never leaks onto their cards · Phase 2 will assign from
+      // STAIRPARTS_SUPPLIER_POOL.
+      if (isStairpartsSupplier(seed)) return;
 
-      // 2. Matcher against the manifest (ADR-0025 · directory-card floor 0.65)
-      const targetText = [
-        seed.business_name,
-        seed.description ?? "",
-        (seed.services ?? []).join(" · "),
-        (seed.tags ?? []).join(" · "),
-        seed.category ?? "",
-        seed.town ?? "",
-      ]
-        .filter(Boolean)
-        .join(" · ");
       try {
         const result = await matchImage(
           {
-            text: targetText,
+            text: targetTextFor(seed),
             tags: seed.tags ?? [],
             subject_domain: "staircase",
           },
-          { surface: "directory-card", requireAPlus: true }
+          {
+            surface: "directory-card",
+            requireAPlus: true,
+            excludeStaircaseParts: true,
+          }
         );
-        if (result.url) {
-          resolved = applyCardCrop(result.url);
-        }
+        if (result.url) item.hero_image_url = applyCardCrop(result.url);
       } catch {
-        // matcher failure never crashes the feed — fall through to placeholder
+        // matcher failure is silent · Phase 2 will handle it
       }
-
-      // 3. Trade-aware pool pick · Philip 2026-08-02 · AI Image Intelligence v1.
-      // Passes the seed context so the pool image is chosen by matching the
-      // merchant's business text against per-image trade tags (glass · oak ·
-      // steel · traditional · commercial · etc.). Falls back to a
-      // deterministic hash pick when nothing scores.
-      if (!resolved) {
-        resolved = applyCardCrop(pickInterimStaircase(seed.id, seed));
-      }
-
-      item.hero_image_url = resolved;
-      heroCache.set(seed.id, { sig, url: resolved });
     }),
   );
+
+  // Phase 2 — sequential · uniqueness + even-distribution + fill remaining.
+  //
+  // `usedCounts` maps RAW manifest URL (no `tr=` transform param) → number
+  // of times assigned so far in this batch. Prior version used a Set which
+  // could only say "used / not used" — when the pool exhausts the picker
+  // had no way to prefer the LEAST-used image, so one URL could hit 3×
+  // while another sat at 0. Now the picker breaks ties on lowest count.
+  //
+  // URL stripping uses the URL API (not string slice) so it works whether
+  // `tr=` is appended after `?` or `&` — earlier bug on URLs with an
+  // existing `?updatedAt=` param.
+  const rawUrl = (u: string | null | undefined): string => {
+    if (!u) return "";
+    try {
+      const parsed = new URL(u);
+      parsed.searchParams.delete("tr");
+      return parsed.toString();
+    } catch {
+      return u;
+    }
+  };
+
+  const usedCounts = new Map<string, number>();
+  const bumpUsed = (raw: string) => {
+    if (!raw) return;
+    usedCounts.set(raw, (usedCounts.get(raw) ?? 0) + 1);
+  };
+
+  for (const { seed, item } of byImportAsc) {
+    const sig = seedHeroSig(seed);
+    const current = item.hero_image_url;
+    const currentRaw = rawUrl(current);
+
+    // Owner-uploaded cover images and Philip-curated overrides ALWAYS win
+    // over algorithmic assignment. They're still counted (so the picker
+    // won't pick the same URL for another merchant) but are never replaced.
+    const isProtected =
+      !!seed.cover_image ||
+      (item.admin_ref ? !!CURATED_HERO_OVERRIDES[item.admin_ref] : false);
+
+    if (current && isProtected) {
+      bumpUsed(currentRaw);
+      continue;
+    }
+
+    // Keep Phase-1 matchImage pick when its URL is still at count 0 in this
+    // batch. If another seed already claimed it, fall through to a fresh
+    // typed pick.
+    if (current && (usedCounts.get(currentRaw) ?? 0) === 0) {
+      bumpUsed(currentRaw);
+      heroCache.set(seed.id, { sig, url: current });
+      continue;
+    }
+
+    // Stairparts supplier branch — strictly isolated pool, never touches
+    // the general staircase manifest or the interim pool. If the dedicated
+    // pool is empty (no images configured) the card stays blank rather
+    // than leaking a general staircase image onto a parts-supplier card.
+    if (isStairpartsSupplier(seed)) {
+      const url = pickStairpartsSupplierImage(seed.id, usedCounts, rotationSalt);
+      const resolved = url ? applyCardCrop(url) : null;
+      item.hero_image_url = resolved;
+      if (resolved) bumpUsed(rawUrl(resolved));
+      heroCache.set(seed.id, { sig, url: resolved });
+      continue;
+    }
+
+    // Fresh pick from the diverse pool · material-gated · least-used-first.
+    let resolved: string | null = null;
+    try {
+      const url = await pickDiverseAPlusImage(
+        {
+          text: targetTextFor(seed),
+          tags: seed.tags ?? [],
+          subject_domain: "staircase",
+        },
+        seed.id,
+        {
+          poolSize: 12,
+          requireAPlus: true,
+          excludeStaircaseParts: true,
+          companyMaterials: companyMaterialsFor(seed),
+          usedCounts,
+          rotationSalt,
+        },
+      );
+      if (url) resolved = applyCardCrop(url);
+    } catch {
+      // fall through to hardcoded interim pool if the manifest read fails
+    }
+
+    // Last-resort hardcoded 10-image pool. Only reached if the A+ manifest
+    // is empty. 10 images can never cover a real feed so we skip uniqueness
+    // here — a card with a repeated pool image beats a blank card.
+    if (!resolved) {
+      resolved = applyCardCrop(pickInterimStaircase(seed.id, seed));
+    }
+
+    item.hero_image_url = resolved;
+    if (resolved) bumpUsed(rawUrl(resolved));
+    heroCache.set(seed.id, { sig, url: resolved });
+  }
 
   // Return in display order — newest first.
   const items = seedItems.map((si) => si.item);

@@ -1,0 +1,197 @@
+{
+  "jobId": "65b739a4-5893-436c-bd08-ef82853a1390",
+  "vertical": "accommodation",
+  "city": "Yogyakarta",
+  "bbox": {
+    "sw": [
+      -7.797,
+      110.36
+    ],
+    "ne": [
+      -7.787,
+      110.372
+    ],
+    "scope": "Malioboro · Yogyakarta city centre · Kota Yogyakarta (DIY)"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-22T14:12:16.522Z",
+  "finishedAt": "2026-08-22T14:12:30.649Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 107,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 107,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 107,
+    "enriched": 0,
+    "gate3_contactable": 16,
+    "gate4_eligible": 16,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 16,
+    "rejected_by_gate": 91,
+    "errors": 0
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#AC-2026-00001",
+        "name": "Asia Afrika",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-00002",
+        "name": "Betty losmen",
+        "category": "guesthouse",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-00003",
+        "name": "Yogyakarta BnB",
+        "category": "guesthouse",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-00004",
+        "name": "Andrea Hotel",
+        "category": "hostel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-00005",
+        "name": "Laura's backpacker 523, nr 2",
+        "category": "hostel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-00006",
+        "name": "Hotel 1001 Malam",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-00007",
+        "name": "Wakeup Homestay",
+        "category": "hostel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-00008",
+        "name": "Hotel Sekar Ayu",
+        "category": "guesthouse",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [
+      {
+        "publicRef": "#AC-2026-00002",
+        "name": "Betty losmen",
+        "whatsapp": null,
+        "phone": "+62 818 0278 1500",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-00003",
+        "name": "Yogyakarta BnB",
+        "whatsapp": null,
+        "phone": "+6281998471232",
+        "website": "https://www.instagram.com/yogyakartabnb"
+      },
+      {
+        "publicRef": "#AC-2026-00006",
+        "name": "Hotel 1001 Malam",
+        "whatsapp": null,
+        "phone": "+62274515087",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-00008",
+        "name": "Hotel Sekar Ayu",
+        "whatsapp": null,
+        "phone": "+62 274 566688",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-00009",
+        "name": "Lotus Losmen",
+        "whatsapp": null,
+        "phone": "+62 274 515090",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-0000H",
+        "name": "Homey Home",
+        "whatsapp": null,
+        "phone": "+6281212192111",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-0000J",
+        "name": "The Packer Lodge",
+        "whatsapp": null,
+        "phone": "+62-274-513872",
+        "website": "http://yogya.thepackerlodge.com"
+      },
+      {
+        "publicRef": "#AC-2026-0000V",
+        "name": "Kristina",
+        "whatsapp": null,
+        "phone": "+62-274-512076",
+        "website": null
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#AC-2026-00001",
+        "name": "Asia Afrika",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-00004",
+        "name": "Andrea Hotel",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-00005",
+        "name": "Laura's backpacker 523, nr 2",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-00007",
+        "name": "Wakeup Homestay",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-0000A",
+        "name": "Andrea hotel",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": []
+}

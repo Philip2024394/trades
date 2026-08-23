@@ -1,0 +1,18 @@
+import pg from "pg";
+const pool = new pg.Pool({ connectionString: process.env.NEX_POSTGRES_URL });
+const ki = await pool.query(`SELECT brain, count(*)::int AS n FROM nex.conv_knowledge_items GROUP BY brain`);
+const turns = await pool.query(`SELECT count(*)::int AS n FROM nex.conv_turns`);
+const outcomes = await pool.query(`SELECT count(*)::int AS n FROM nex.conv_outcomes`);
+const feedback = await pool.query(`SELECT count(*)::int AS n FROM nex.conv_feedback`);
+const edges = await pool.query(`SELECT count(*)::int AS n FROM nex.conv_edges`);
+const intents = await pool.query(`SELECT count(*)::int AS n FROM nex.conv_intents`);
+const entities = await pool.query(`SELECT count(*)::int AS n FROM nex.conv_entities`);
+console.log("── nex.conv_* data volumes ──");
+console.log("  knowledge_items by brain:", ki.rows);
+console.log("  turns:", turns.rows[0].n);
+console.log("  outcomes:", outcomes.rows[0].n);
+console.log("  feedback:", feedback.rows[0].n);
+console.log("  edges:", edges.rows[0].n);
+console.log("  intents:", intents.rows[0].n);
+console.log("  entities:", entities.rows[0].n);
+await pool.end();

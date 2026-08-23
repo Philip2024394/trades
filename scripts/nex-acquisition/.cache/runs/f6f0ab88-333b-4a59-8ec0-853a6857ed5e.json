@@ -1,0 +1,168 @@
+{
+  "jobId": "f6f0ab88-333b-4a59-8ec0-853a6857ed5e",
+  "vertical": "food",
+  "city": "Yogyakarta",
+  "bbox": {
+    "sw": [
+      -7.78,
+      110.55
+    ],
+    "ne": [
+      -7.7,
+      110.65
+    ]
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-22T12:28:30.784Z",
+  "finishedAt": "2026-08-22T12:28:35.517Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 27,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 27,
+    "matched_exact": 0,
+    "matched_high": 1,
+    "ambiguous": 1,
+    "unnamed": 0,
+    "new_candidates": 25,
+    "enriched": 0,
+    "gate3_contactable": 3,
+    "gate4_eligible": 3,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 3,
+    "rejected_by_gate": 22,
+    "errors": 0
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#FL-2026-0014D",
+        "name": "Ronde Mak Pari",
+        "category": "coffee-cafe",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-0014E",
+        "name": "lumbung resto",
+        "category": "fast-food",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-0014F",
+        "name": "warko coffe",
+        "category": "coffee-cafe",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-0014G",
+        "name": "Soto Ayam Kampung Pak Haji",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-0014H",
+        "name": "Hara Chicken",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-0014J",
+        "name": "Steak House",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-0014K",
+        "name": "Bakso Urat Gajah",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-0014M",
+        "name": "Warung Makan Pak Haji Muh",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [
+      {
+        "candidateName": "Pizza Hut Klaten",
+        "existingName": "Pizza Hut",
+        "existingRef": "#FL-2026-000JE",
+        "score": "0.600"
+      }
+    ],
+    "contactable": [
+      {
+        "publicRef": "#FL-2026-0014S",
+        "name": "Toko Roti Muntjul",
+        "whatsapp": null,
+        "phone": "+62 272-322360",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-0014T",
+        "name": "Ayam Bakar Artomoro",
+        "whatsapp": "+62 819-9701-0722",
+        "phone": "+62 819-9701-0722",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-0014W",
+        "name": "Family Sayur 3",
+        "whatsapp": "+62 822-2095-3448",
+        "phone": "+62 822-2095-3448",
+        "website": null
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#FL-2026-0014D",
+        "name": "Ronde Mak Pari",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-0014E",
+        "name": "lumbung resto",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-0014F",
+        "name": "warko coffe",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-0014G",
+        "name": "Soto Ayam Kampung Pak Haji",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-0014H",
+        "name": "Hara Chicken",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": []
+}

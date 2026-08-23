@@ -112,7 +112,7 @@ export default async function TradeOSKeysPage() {
 
       <div className="mt-4 flex gap-3">
         <Link href="/admin" className="text-[12px] font-black text-neutral-600 hover:text-neutral-900">← Back to admin</Link>
-        <Link href="/admin/nex" className="text-[12px] font-black text-neutral-600 hover:text-neutral-900">Nex observatory →</Link>
+        <Link href="/nex-head-quarters" className="text-[12px] font-black text-neutral-600 hover:text-neutral-900">NEX Headquarters →</Link>
       </div>
     </div>
   );

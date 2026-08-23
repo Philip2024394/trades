@@ -20,12 +20,17 @@ import {
   BRAIN_WORKER_TYPES,
   LIVENESS_THRESHOLD_MS,
   deriveLiveness,
-  workerHostId,
+  brainWorkerId,
 } from "@/lib/nex/brain/heartbeat";
 import type { WorkerHeartbeat, WorkerType } from "@/lib/nex/brain/types";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+// Task #72 Step 1c (2026-08-22): unified against nex.worker_heartbeat singular.
+// Every Brain worker has one canonical row keyed by worker_id="brain:<type>".
+// Prior multi-process fallback (searching for host_id.startsWith("<type>@"))
+// is gone · one stable identity per logical worker.
 
 export async function GET() {
   try {
@@ -34,44 +39,34 @@ export async function GET() {
     const since = new Date(Date.now() - LIVENESS_THRESHOLD_MS * 5).toISOString();
     const heartbeats = await brainStore().listHeartbeats({ since, limit: 100 });
 
-    // Index heartbeats by host_id for O(1) lookup per worker slot.
-    const byHost = new Map<string, WorkerHeartbeat>();
-    for (const hb of heartbeats) byHost.set(hb.host_id, hb);
+    // Index heartbeats by worker_id for O(1) lookup per worker slot.
+    const byWorkerId = new Map<string, WorkerHeartbeat>();
+    for (const hb of heartbeats) byWorkerId.set(hb.worker_id, hb);
 
     const now = Date.now();
     const workers = BRAIN_WORKER_TYPES.map((worker_type: WorkerType) => {
-      const expected_host_id = workerHostId(worker_type);
-      // Prefer this-process heartbeat; fall back to any heartbeat for
-      // this worker type (multi-process deployments write different
-      // host_ids). We report the freshest one.
-      let hb = byHost.get(expected_host_id) ?? null;
-      if (!hb) {
-        const candidates = heartbeats.filter((h) =>
-          h.host_id.startsWith(`${worker_type}@`)
-        );
-        candidates.sort((a, b) =>
-          new Date(b.last_seen_at).getTime() - new Date(a.last_seen_at).getTime()
-        );
-        hb = candidates[0] ?? null;
-      }
+      const expected_worker_id = brainWorkerId(worker_type);
+      const hb = byWorkerId.get(expected_worker_id) ?? null;
       const status = deriveLiveness(hb, now);
-      const summary = (hb?.last_cycle_summary ?? {}) as {
+      const meta = (hb?.metadata ?? {}) as {
         current_job_id?: string | null;
         current_stage?: string | null;
         input_ref?: string | null;
+        error?: string | null;
+        uptime_ms?: number | null;
       };
-      const age_ms = hb ? now - new Date(hb.last_seen_at).getTime() : null;
+      const age_ms = hb ? now - new Date(hb.last_heartbeat_at).getTime() : null;
       return {
         worker_type,
-        host_id: hb?.host_id ?? expected_host_id,
+        host_id: hb?.worker_id ?? expected_worker_id, // shape-compat with existing consumers
         status,
-        last_seen_at: hb?.last_seen_at ?? null,
+        last_seen_at: hb?.last_heartbeat_at ?? null,   // shape-compat: UI still reads last_seen_at
         age_ms,
-        current_job_id: summary.current_job_id ?? null,
-        current_stage: summary.current_stage ?? null,
-        input_ref: summary.input_ref ?? null,
-        last_error: hb?.last_error ?? null,
-        uptime_ms: hb?.uptime_ms ?? null,
+        current_job_id: meta.current_job_id ?? null,
+        current_stage: meta.current_stage ?? null,
+        input_ref: meta.input_ref ?? null,
+        last_error: meta.error ?? null,
+        uptime_ms: meta.uptime_ms ?? null,
       };
     });
 

@@ -270,8 +270,8 @@ async function main() {
     "src/app/api/nex/comms-social/oauth-for-me/[platform]/start/route.ts",
     "src/app/api/nex/comms-social/oauth-for-me/[platform]/callback/route.ts",
     "src/app/api/cron/comms-social-worker/route.ts",
-    "src/components/nex-app/nex-brain/SocialFirstPostWizard.tsx",
-    "src/app/nex-app/nex-brain/comms-social/page.tsx",
+    "src/components/nex-head-quarters/SocialFirstPostWizard.tsx",
+    "src/app/nex-head-quarters/comms-social/page.tsx",
   ];
   let predictiveHits = 0;
   let hammerexHits   = 0;

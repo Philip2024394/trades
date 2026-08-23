@@ -101,7 +101,7 @@ record("IB9", factoryEntry, "Knowledge Factory drawer entry present");
 
 // IB10 · entry links to a nex-brain path (operations-centre until 12.4 flips)
 const factoryHref = /href:\s*"\/nex-app\/nex-brain\/[a-z0-9-]+"[\s\S]{0,120}?label:\s*"Knowledge Factory"/.test(NAV);
-record("IB10", factoryHref, "Knowledge Factory href points into /nex-app/nex-brain/");
+record("IB10", factoryHref, "Knowledge Factory href points into /nex-head-quarters/");
 
 // IB11 · existing Nex Marketing entry untouched
 record("IB11", /label:\s*"Nex Marketing"/.test(NAV),

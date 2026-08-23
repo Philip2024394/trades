@@ -13,11 +13,11 @@
 //   RV4  · GET uses count=exact head=true for the total (accurate past 1000)
 //   RV5  · GET composes latest_check per record (confidence + flags + decision)
 //   RV6  · POST semantics unchanged (approve → AUTHORITATIVE · reject → DEPRECATED · edit → UNDER_REVIEW)
-//   RV7  · UI page exists at src/app/nex-app/nex-brain/review/page.tsx
+//   RV7  · UI page exists at src/app/nex-head-quarters/review/page.tsx
 //   RV8  · UI consumes GET /api/nex/brain/review (no local composition)
 //   RV9  · UI action buttons POST to /api/nex/brain/review with action ∈ {approve,reject}
 //   RV10 · UI does NOT display or edit records outside UNDER_REVIEW
-//   RV11 · Warehouse "Awaiting your review" barrel links to /nex-app/nex-brain/review
+//   RV11 · Warehouse "Awaiting your review" barrel links to /nex-head-quarters/review
 //   RV12 · Live · GET returns non-empty records array with the expected shape
 //          (skipped cleanly when server offline or creds absent)
 
@@ -36,8 +36,8 @@ function record(id, pass, note = "") {
 }
 
 const REVIEW_ROUTE = readFileSync(join(REPO, "src/app/api/nex/brain/review/route.ts"), "utf8");
-const REVIEW_UI    = readFileSync(join(REPO, "src/app/nex-app/nex-brain/review/page.tsx"), "utf8");
-const OPS_UI       = readFileSync(join(REPO, "src/app/nex-app/nex-brain/operations-centre/page.tsx"), "utf8");
+const REVIEW_UI    = readFileSync(join(REPO, "src/app/nex-head-quarters/review/page.tsx"), "utf8");
+const OPS_UI       = readFileSync(join(REPO, "src/app/nex-head-quarters/operations-centre/page.tsx"), "utf8");
 
 // RV1 · GET handler is in the same route file as POST
 record("RV1",
@@ -93,7 +93,7 @@ record("RV9", postsToReview && buttonApprove && buttonReject && bodyCarriesActio
 const noOtherStatusFetch = !/status=(AUTHORITATIVE|DRAFT|DEPRECATED|SUPERSEDED)/.test(REVIEW_UI);
 record("RV10", noOtherStatusFetch, "UI never fetches other statuses");
 
-// RV11 · Warehouse barrel links to /nex-app/nex-brain/review
+// RV11 · Warehouse barrel links to /nex-head-quarters/review
 const warehouseLinks = /\/nex-app\/nex-brain\/review/.test(OPS_UI);
 const linkOnReviewKey = /b\.key\s*===\s*["']review["'][\s\S]{0,200}?\/nex-app\/nex-brain\/review/.test(OPS_UI);
 record("RV11", warehouseLinks && linkOnReviewKey,

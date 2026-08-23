@@ -121,7 +121,7 @@ export type ProcessingReport = {
   needsReview: number;                 // Real count of items flagged review
 
   // Downstream results — NULL because we don't produce them here.
-  // The Worker Manager (/nex-app/nex-brain) is authoritative.
+  // The Worker Manager (/nex-head-quarters) is authoritative.
   recordsCreated: number | null;
   recordsUpdated: number | null;
   faqsGenerated: number | null;
