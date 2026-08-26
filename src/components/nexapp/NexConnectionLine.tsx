@@ -214,12 +214,15 @@ export const NexConnectionLine = memo(function NexConnectionLine({
           top: 50%;
           height: 1px;
           transform: translateY(-0.5px);
+          /* 2026-08-24 · Cyber Aurora · line + sweep flipped from orange to
+             cyan (#22D3EE) so the connection line reads as a LIVE/ACTIVE
+             signal · orange stays reserved for brand identity elsewhere. */
           background:
             linear-gradient(90deg,
               transparent 0%,
-              rgba(249, 115, 22, ${lineIntense ? 0.30 : 0.08}) 15%,
-              rgba(249, 115, 22, ${lineIntense ? 0.42 : 0.14}) 50%,
-              rgba(249, 115, 22, ${lineIntense ? 0.30 : 0.08}) 85%,
+              rgba(34, 211, 238, ${lineIntense ? 0.30 : 0.08}) 15%,
+              rgba(34, 211, 238, ${lineIntense ? 0.42 : 0.14}) 50%,
+              rgba(34, 211, 238, ${lineIntense ? 0.30 : 0.08}) 85%,
               transparent 100%);
           transition: background 400ms ease;
         }
@@ -236,7 +239,7 @@ export const NexConnectionLine = memo(function NexConnectionLine({
           background: linear-gradient(90deg,
             transparent 0%,
             transparent 35%,
-            rgba(255, 200, 120, 0.55) 50%,
+            rgba(103, 232, 249, 0.55) 50%,
             transparent 65%,
             transparent 100%);
           background-size: 200% 100%;
@@ -269,22 +272,26 @@ export const NexConnectionLine = memo(function NexConnectionLine({
         /* Direction-aware soft gradient · brighter at the LEADING edge
            of the direction of travel, fading toward the trail. Very
            smooth falloff so there are no hard edges anywhere. */
+        /* 2026-08-24 · Cyber Aurora · ember glow flipped to cyan family.
+           Bright leading edge = ice-white cyan (207,250,254) · warm mid =
+           cyan-soft (103,232,249) · body = NEX.cyan (34,211,238) · trail =
+           faded cyan. Same falloff geometry — only the hue palette changes. */
         .nex-cl-glow.ltr {
           background: radial-gradient(ellipse 90px 12px at 68% 50%,
-            rgba(255, 235, 195, 0.85) 0%,
-            rgba(255, 175, 75,  0.70) 22%,
-            rgba(249, 115, 22, 0.45) 48%,
-            rgba(249, 115, 22, 0.15) 72%,
-            rgba(249, 115, 22, 0)    100%);
+            rgba(207, 250, 254, 0.85) 0%,
+            rgba(103, 232, 249, 0.70) 22%,
+            rgba(34,  211, 238, 0.45) 48%,
+            rgba(34,  211, 238, 0.15) 72%,
+            rgba(34,  211, 238, 0)    100%);
           animation: nex-cl-ember-ltr var(--nex-cl-cycle, ${BASE_CYCLE_S}s) ${EMBER_EASING} infinite;
         }
         .nex-cl-glow.rtl {
           background: radial-gradient(ellipse 90px 12px at 32% 50%,
-            rgba(255, 235, 195, 0.85) 0%,
-            rgba(255, 175, 75,  0.70) 22%,
-            rgba(249, 115, 22, 0.45) 48%,
-            rgba(249, 115, 22, 0.15) 72%,
-            rgba(249, 115, 22, 0)    100%);
+            rgba(207, 250, 254, 0.85) 0%,
+            rgba(103, 232, 249, 0.70) 22%,
+            rgba(34,  211, 238, 0.45) 48%,
+            rgba(34,  211, 238, 0.15) 72%,
+            rgba(34,  211, 238, 0)    100%);
           animation: nex-cl-ember-rtl var(--nex-cl-cycle, ${BASE_CYCLE_S}s) ${EMBER_EASING} infinite;
         }
 
@@ -304,19 +311,20 @@ export const NexConnectionLine = memo(function NexConnectionLine({
           opacity: 0.55;
           will-change: left, opacity;
         }
+        /* 2026-08-24 · Cyber Aurora · halo layer follows the same cyan hue. */
         .nex-cl-glow-halo.ltr {
           background: radial-gradient(ellipse 140px 20px at 55% 50%,
-            rgba(255, 165, 60, 0.55) 0%,
-            rgba(249, 115, 22, 0.30) 40%,
-            rgba(249, 115, 22, 0)    100%);
+            rgba(103, 232, 249, 0.55) 0%,
+            rgba(34,  211, 238, 0.30) 40%,
+            rgba(34,  211, 238, 0)    100%);
           animation: nex-cl-ember-ltr var(--nex-cl-cycle, ${BASE_CYCLE_S}s) ${EMBER_EASING} infinite;
           animation-delay: var(--nex-cl-halo-delay, -${(BASE_TRAIL_OFFSET_S * 0.4).toFixed(2)}s);
         }
         .nex-cl-glow-halo.rtl {
           background: radial-gradient(ellipse 140px 20px at 45% 50%,
-            rgba(255, 165, 60, 0.55) 0%,
-            rgba(249, 115, 22, 0.30) 40%,
-            rgba(249, 115, 22, 0)    100%);
+            rgba(103, 232, 249, 0.55) 0%,
+            rgba(34,  211, 238, 0.30) 40%,
+            rgba(34,  211, 238, 0)    100%);
           animation: nex-cl-ember-rtl var(--nex-cl-cycle, ${BASE_CYCLE_S}s) ${EMBER_EASING} infinite;
           animation-delay: var(--nex-cl-halo-delay, -${(BASE_TRAIL_OFFSET_S * 0.4).toFixed(2)}s);
         }
@@ -384,7 +392,7 @@ function DecayFadeStarter({ fadeDelayMs }: { fadeDelayMs: number }) {
       .nex-cl-wrap .nex-cl-line {
         background: linear-gradient(90deg,
           transparent 0%,
-          rgba(249, 115, 22, 0.08) 50%,
+          rgba(34, 211, 238, 0.08) 50%,
           transparent 100%) !important;
         transition: background ${DECAY_FADE_MS}ms ease-out !important;
       }

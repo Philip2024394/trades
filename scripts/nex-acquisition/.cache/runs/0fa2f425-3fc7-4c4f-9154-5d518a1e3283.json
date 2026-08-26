@@ -1,0 +1,50 @@
+{
+  "jobId": "0fa2f425-3fc7-4c4f-9154-5d518a1e3283",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Solo",
+  "bbox": {
+    "sw": [
+      -7.6,
+      110.75
+    ],
+    "ne": [
+      -7.5,
+      110.9
+    ],
+    "scope": "Solo (Surakarta) city · Central Java · cultural centre"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-24T00:02:27.388Z",
+  "finishedAt": "2026-08-24T00:02:27.409Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 165,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 165,
+    "matched_exact": 165,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "enriched": 0,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 0
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": []
+}

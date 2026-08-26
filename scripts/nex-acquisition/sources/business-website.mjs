@@ -21,6 +21,103 @@ const TEL_PATTERNS = [
 const IG_PATTERN = /https?:\/\/(?:www\.)?instagram\.com\/([A-Za-z0-9_.]+)/gi;
 const FB_PATTERN = /https?:\/\/(?:www\.)?facebook\.com\/([A-Za-z0-9_.]+)/gi;
 
+// Image extraction · Chief Architect 2026-08-27 · narrowly scoped pivot.
+// Priority: og:image:secure_url > og:image > schema.org JSON-LD image >
+// apple-touch-icon fallback. Own-site public info only · ADR-0022 compliant ·
+// never GBP/Facebook/Instagram/Google-Image-Search.
+const OG_IMAGE_SECURE_PATTERN = /<meta[^>]+property=["']og:image:secure_url["'][^>]+content=["']([^"']+)["'][^>]*>/gi;
+const OG_IMAGE_PATTERN        = /<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["'][^>]*>/gi;
+// Also handle content-first, property-second attribute order (both are legal HTML)
+const OG_IMAGE_SECURE_ALT     = /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image:secure_url["'][^>]*>/gi;
+const OG_IMAGE_ALT            = /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["'][^>]*>/gi;
+const APPLE_TOUCH_ICON        = /<link[^>]+rel=["']apple-touch-icon(?:-precomposed)?["'][^>]+href=["']([^"']+)["'][^>]*>/gi;
+const APPLE_TOUCH_ICON_ALT    = /<link[^>]+href=["']([^"']+)["'][^>]+rel=["']apple-touch-icon(?:-precomposed)?["'][^>]*>/gi;
+const JSON_LD_BLOCK           = /<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+
+// Resolve a possibly-relative image URL against a base page URL.
+// Returns null if unresolvable or clearly invalid.
+function resolveImageUrl(raw, baseUrl) {
+  if (typeof raw !== "string") return null;
+  const trimmed = raw.trim();
+  if (trimmed.length < 4 || trimmed.length > 2048) return null;
+  try {
+    const resolved = new URL(trimmed, baseUrl).toString();
+    // Only accept http/https (rejects data:, javascript:, etc.)
+    if (!/^https?:\/\//i.test(resolved)) return null;
+    return resolved;
+  } catch { return null; }
+}
+
+// Extract image URL(s) from a schema.org JSON-LD script block · safely.
+// LocalBusiness / Restaurant / Hotel / etc. all use the same `image` field.
+// Handles: string · {url:string} · array of either.
+function extractFromJsonLd(jsonText, baseUrl) {
+  let parsed;
+  try { parsed = JSON.parse(jsonText); } catch { return null; }
+  const blocks = Array.isArray(parsed) ? parsed : [parsed];
+  for (const block of blocks) {
+    if (!block || typeof block !== "object") continue;
+    // Only trust @type that's a business/place · not Person/Article/Product-in-list
+    const t = block["@type"];
+    const types = Array.isArray(t) ? t : t ? [t] : [];
+    const isBusiness = types.some((x) =>
+      typeof x === "string" &&
+      /^(LocalBusiness|Restaurant|CafeOrCoffeeShop|Hotel|LodgingBusiness|Bakery|BarOrPub|FastFoodRestaurant|Store|Organization|Place|TouristAttraction)$/i.test(x)
+    );
+    if (!isBusiness) continue;
+    const img = block.image;
+    if (typeof img === "string") {
+      const r = resolveImageUrl(img, baseUrl);
+      if (r) return r;
+    } else if (img && typeof img === "object" && !Array.isArray(img) && typeof img.url === "string") {
+      const r = resolveImageUrl(img.url, baseUrl);
+      if (r) return r;
+    } else if (Array.isArray(img)) {
+      for (const item of img) {
+        if (typeof item === "string") {
+          const r = resolveImageUrl(item, baseUrl);
+          if (r) return r;
+        } else if (item && typeof item === "object" && typeof item.url === "string") {
+          const r = resolveImageUrl(item.url, baseUrl);
+          if (r) return r;
+        }
+      }
+    }
+  }
+  return null;
+}
+
+// Pick best image from HTML · priority order captured in `image_source_method`.
+function extractImageFromHtml(html, baseUrl) {
+  // 1. og:image:secure_url (HTTPS preferred)
+  for (const p of [OG_IMAGE_SECURE_PATTERN, OG_IMAGE_SECURE_ALT]) {
+    for (const m of html.matchAll(p)) {
+      const r = resolveImageUrl(m[1], baseUrl);
+      if (r) return { url: r, method: "og:image:secure_url" };
+    }
+  }
+  // 2. og:image
+  for (const p of [OG_IMAGE_PATTERN, OG_IMAGE_ALT]) {
+    for (const m of html.matchAll(p)) {
+      const r = resolveImageUrl(m[1], baseUrl);
+      if (r) return { url: r, method: "og:image" };
+    }
+  }
+  // 3. schema.org JSON-LD image (only from a business/place @type block)
+  for (const m of html.matchAll(JSON_LD_BLOCK)) {
+    const found = extractFromJsonLd(m[1], baseUrl);
+    if (found) return { url: found, method: "schema.org/JSON-LD" };
+  }
+  // 4. apple-touch-icon (fallback · smaller · sometimes only option)
+  for (const p of [APPLE_TOUCH_ICON, APPLE_TOUCH_ICON_ALT]) {
+    for (const m of html.matchAll(p)) {
+      const r = resolveImageUrl(m[1], baseUrl);
+      if (r) return { url: r, method: "apple-touch-icon" };
+    }
+  }
+  return null;
+}
+
 async function safeFetch(url) {
   const ac = new AbortController();
   const t = setTimeout(() => ac.abort(), FETCH_TIMEOUT_MS);
@@ -49,7 +146,7 @@ function normalisePhone(raw) {
   return cleaned;
 }
 
-function extractFromHtml(html) {
+function extractFromHtml(html, baseUrl) {
   const gain = {};
   const whatsappMatches = new Set();
   for (const p of WHATSAPP_PATTERNS) {
@@ -83,6 +180,17 @@ function extractFromHtml(html) {
   }
   if (fbMatches.size > 0) gain.facebook = Array.from(fbMatches)[0];
 
+  // Image extraction · Chief Architect 2026-08-27 · own-site only.
+  // baseUrl is required for resolving relative image paths (og:image often
+  // gives "/img/hero.jpg" instead of a full URL).
+  if (baseUrl) {
+    const img = extractImageFromHtml(html, baseUrl);
+    if (img) {
+      gain.image_url            = img.url;
+      gain.image_source_method  = img.method;   // 'og:image:secure_url' | 'og:image' | 'schema.org/JSON-LD' | 'apple-touch-icon'
+    }
+  }
+
   return gain;
 }
 
@@ -97,19 +205,26 @@ export function businessWebsiteSource() {
       const gain = {};
 
       const homepage = await safeFetch(url);
-      if (homepage) Object.assign(gain, extractFromHtml(homepage));
+      if (homepage) Object.assign(gain, extractFromHtml(homepage, url));
 
       if (!gain.whatsapp || !gain.phone) {
         const base = url.replace(/\/$/, "");
         for (const path of ["/contact", "/kontak", "/hubungi"]) {
           if (gain.whatsapp && gain.phone) break;
-          const sub = await safeFetch(base + path);
+          const subUrl = base + path;
+          const sub = await safeFetch(subUrl);
           if (sub) {
-            const extra = extractFromHtml(sub);
+            const extra = extractFromHtml(sub, subUrl);
             if (!gain.whatsapp && extra.whatsapp) gain.whatsapp = extra.whatsapp;
             if (!gain.phone && extra.phone) gain.phone = extra.phone;
             if (!gain.instagram && extra.instagram) gain.instagram = extra.instagram;
             if (!gain.facebook && extra.facebook) gain.facebook = extra.facebook;
+            // Image · only take from contact/kontak page if homepage didn't
+            // yield one (homepage's og:image usually wins on quality).
+            if (!gain.image_url && extra.image_url) {
+              gain.image_url = extra.image_url;
+              gain.image_source_method = extra.image_source_method;
+            }
           }
         }
       }

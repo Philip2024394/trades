@@ -86,23 +86,34 @@ out center tags meta;
 `.trim();
 }
 
-async function fetchOverpass(query) {
-  let lastErr = null;
-  for (const endpoint of OVERPASS_ENDPOINTS) {
-    try {
-      const resp = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "User-Agent": USER_AGENT,
-        },
-        body: "data=" + encodeURIComponent(query),
-      });
-      if (!resp.ok) { lastErr = new Error(`${endpoint}: ${resp.status}`); continue; }
-      return await resp.json();
-    } catch (err) { lastErr = err; }
+// Phase B (2026-08-24) · Provider Rate Governor gate around Overpass fetches.
+// Every Overpass request acquires a lease from nex.provider_rate_lease · waits
+// behind other walkers if the 2000ms min interval hasn't elapsed globally.
+// Never bypass · governor is authoritative.
+import { acquireProviderLease, releaseProviderLease } from "./_provider-lease-helper.mjs";
+
+async function fetchOverpass(query, walkerId = "acquisition:overpass") {
+  const leaseId = await acquireProviderLease("overpass", walkerId);
+  try {
+    let lastErr = null;
+    for (const endpoint of OVERPASS_ENDPOINTS) {
+      try {
+        const resp = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "User-Agent": USER_AGENT,
+          },
+          body: "data=" + encodeURIComponent(query),
+        });
+        if (!resp.ok) { lastErr = new Error(`${endpoint}: ${resp.status}`); continue; }
+        return await resp.json();
+      } catch (err) { lastErr = err; }
+    }
+    throw lastErr ?? new Error("all Overpass endpoints failed");
+  } finally {
+    await releaseProviderLease(leaseId);
   }
-  throw lastErr ?? new Error("all Overpass endpoints failed");
 }
 
 function extractCandidate(el, categoryMapping, classifier) {

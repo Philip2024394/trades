@@ -87,37 +87,87 @@ if (process.env.NEX_DEV_WORKERS !== "1") {
 // operators running Next on a non-default port. Default matches package.json.
 const DEV_BASE_URL = process.env.NEX_DEV_BASE_URL ?? "http://localhost:3008";
 
+// P0 · 2026-08-24 · Rotation Controller doctrine · fixed-cron acquisition
+// entries DELETED. Philip's directive after the 7-hour rotation forensic
+// showed 2,206 of 3,296 acquisition cycles (67%) landed on Yogyakarta while
+// the orchestrator only PICKED Yogyakarta 32 times · the remaining 2,174
+// came from four Yogyakarta-only fixed-cron entries (food/accommodation/
+// transport/market) that fired every 15 min regardless of rotation state.
+// These same entries produced the 10 post-saturation cycles seen on
+// Yogyakarta:food + Yogyakarta:accommodation after they were marked SATURATED.
+//
+// The orchestrator (`discovery:orchestrator:tick`, 60s cadence, MAX_SLOTS=10)
+// respects rotation state, city diversity, saturation exclusion, and the
+// Provider Rate Governor · it is now the SOLE spawn authority for acquisition
+// work. Removing the fixed-cron entries fixes both concentration and
+// saturation-violation in one change.
+//
+// The deleted entries were:
+//   acquisition:food:Yogyakarta          (5-zone rotation, 15-min cadence)
+//   acquisition:accommodation:Yogyakarta (5-zone rotation, 15-min cadence)
+//   acquisition:transport:Yogyakarta     (6h cadence)
+//   acquisition:market:Yogyakarta        (15-min cadence, non-stop chained)
+//
+// If the orchestrator itself fails, restore these entries from git history
+// (this file at commit prior to 2026-08-24) rather than reintroducing
+// hardcoded Yogyakarta bypass.
+
 const DEV_SCHEDULE = [
   {
-    // Task #84 · 2026-08-22 · Philip approved LOCAL NOW · CLOUD LATER.
-    // Walker rotates through 5 geographic zones on a 15-min cadence.
-    // Persistent cursor (`data/nex-scheduler/walker-geo-cursor.json`) survives
-    // scheduler restarts — next launch resumes where prior one left off, so
-    // rotation is deterministic across Victus power-off cycles.
-    // Every zone preserves the full doctrine chain:
-    //   OSM Overpass discover → ON CONFLICT DO NOTHING dedup → per-field
-    //   source_import provenance stamped with cycle_run_id (Direct-Provenance A)
-    //   → last_verified_at from OSM meta (Freshness Doctrine) → Gate 5 hard-noop
-    //   → status='discovered' (never auto-teach).
-    // DEV ONLY · production Walker migration is a separate future task.
+    // Discovery Rotation Controller tick · 2026-08-24 · Philip greenlit central
+    // rotation state model. Reads worker_cycle_run history per (city, category)
+    // combo · recomputes BUILD/SATURATED/MAINTENANCE/REACTIVATE state · upserts
+    // nex.discovery_rotation_state. MVP INFORMATIONAL only · does NOT spawn
+    // walker children · existing individual walker cron entries continue firing
+    // on their fixed schedules. Auto-spawn overlay is a next-session unit.
+    // Doctrine: project_nex_discovery_rotation_controller_2026_08_24.
     kind: "spawn",
-    key: "acquisition:food:Yogyakarta",
-    intervalSec: 900, // 15 min · Task #84
+    key: "discovery:rotation:tick",
+    intervalSec: 600, // 10 min
+    // P0 · 2026-08-24 · scheduler offset (Philip greenlit). Rotation ticks
+    // sit +30s away from the 60s orchestrator cadence · the two authorities
+    // never fire on the same wall-clock second · eliminates the previously-
+    // observed 327-370ms race where a saturated state transition landed just
+    // before an orchestrator pick could re-read state. Keeps One Geographic
+    // Authority intact · no picker/evaluator/saturation/cooldown change.
+    startDelaySec: 30,
     command: "node",
     args: [
-      "scripts/nex-acquisition/run-live-cycle.mjs",
-      "--vertical=food",
-      "--city=Yogyakarta",
-      "--apply",
+      "scripts/nex-discovery-rotation/_rotation-tick.mjs",
     ],
-    bboxRotation: {
-      // Order matters · cursor advances by index modulo length.
-      // Prambanan retained (Direct-Provenance A test target + continuity).
-      // Four new zones added Task #84 · uncovered in existing DB coverage.
-      zones: ["prambanan", "sleman-north", "bantul-south", "klaten-east", "gamping-west"],
-      cursorFile: "data/nex-scheduler/walker-geo-cursor.json",
-    },
-    description: "Universal Walker · Yogyakarta food · 5-zone geographic rotation · 15-min cadence · smoke mode (Gate 5 hard-noop · outreach never)",
+    description: "Discovery Rotation Controller · refreshes rotation state per (city, category) from cycle_run history · 10-min cadence · +30s offset from orchestrator cadence",
+  },
+  {
+    // NEX Auto Walker Orchestrator · 2026-08-24 · Philip greenlit central
+    // authority for discovery work. Env-gated for safety · default OFF.
+    // When NEX_ORCHESTRATOR_ENABLED=true · every 5min this worker reads
+    // rotation state · builds a queue · picks the next eligible combo · and
+    // spawns the appropriate walker if a slot is free (MAX_SLOTS=1).
+    // Doctrine: project_nex_auto_walker_orchestrator_2026_08_24.
+    kind: "spawn",
+    key: "discovery:orchestrator:tick",
+    intervalSec: 60, // 1 min · Stage 10 (2026-08-24) · continuously fills the 10-slot queue
+    command: "node",
+    args: [
+      "scripts/nex-discovery-orchestrator/_orchestrator-tick.mjs",
+    ],
+    description: "Auto Walker Orchestrator · env-gated (NEX_ORCHESTRATOR_ENABLED=true) · central pick/spawn · 1-min cadence · MAX_SLOTS=10 · fairness cap 2 · governor authoritative on provider rate",
+  },
+  {
+    // P0 · 2026-08-24 · Autonomous zombie cycle reconciler. Marks cycles
+    // that have been in status='running' beyond a per-worker-type timeout
+    // (acquisition/social:15min · intake/manual/cle:60min · promotion:30min
+    // · unknown:30min) as status='failed_zombie', sets finished_at=now(),
+    // preserves reason in summary.reconciler_reason. Idempotent. No manual
+    // SQL ever · autonomous 24/7 operation requirement.
+    kind: "spawn",
+    key: "orchestration:zombie-reconciler",
+    intervalSec: 180, // 3 min
+    command: "node",
+    args: [
+      "scripts/nex-orchestration/_zombie-reconciler.mjs",
+    ],
+    description: "Autonomous zombie cycle reconciler · reclaims slots from dead workers · idempotent · runs every 3 minutes",
   },
   {
     // Task #76 Bundle B (2026-08-22) · Conversation Teacher · consumes
@@ -267,32 +317,66 @@ function selectRotationArgs(worker) {
 }
 
 // ── Runner · spawn (child process) ─────────────────────────────────────
+// Returns a Promise that resolves when the child exits (success OR error).
+// Never rejects · scheduler stays alive on child failure. Callers may await
+// (chained-mode acquisition loop) or ignore (setInterval one-shot spawns).
 function runSpawn(worker) {
-  const tickIso = new Date().toISOString();
-  const resolvedArgs = selectRotationArgs(worker);
-  const rotationTag = worker.bboxRotation ? ` · zone=${resolvedArgs[resolvedArgs.length - 1].replace("--bbox=", "")}` : "";
-  console.log(`[${tickIso}] tick · ${worker.key}${rotationTag} · spawning`);
-  const child = spawn(worker.command, resolvedArgs, {
-    stdio: ["ignore", "pipe", "pipe"],
-    env: process.env,
+  return new Promise((resolve) => {
+    const tickIso = new Date().toISOString();
+    const resolvedArgs = selectRotationArgs(worker);
+    const rotationTag = worker.bboxRotation ? ` · zone=${resolvedArgs[resolvedArgs.length - 1].replace("--bbox=", "")}` : "";
+    console.log(`[${tickIso}] tick · ${worker.key}${rotationTag} · spawning`);
+    const child = spawn(worker.command, resolvedArgs, {
+      stdio: ["ignore", "pipe", "pipe"],
+      env: process.env,
+    });
+    const chunks = [];
+    child.stdout.on("data", (c) => chunks.push(c));
+    child.stderr.on("data", (c) => chunks.push(c));
+    child.on("close", (code, signal) => {
+      const endIso = new Date().toISOString();
+      const outcome = code === 0 ? "OK" : "FAIL";
+      console.log(`[${endIso}] tick · ${worker.key} · exit=${code ?? "?"} signal=${signal ?? "-"} · ${outcome}`);
+      if (code !== 0) {
+        const tail = Buffer.concat(chunks).toString("utf8").split(/\r?\n/).filter(Boolean).slice(-20).join("\n");
+        console.log(`  --- last 20 lines of output ---`);
+        console.log(tail.split("\n").map((l) => `  ${l}`).join("\n"));
+        console.log(`  --------------------------------`);
+      }
+      resolve();
+    });
+    child.on("error", (err) => {
+      console.log(`[${new Date().toISOString()}] tick · ${worker.key} · spawn error: ${err.message}`);
+      resolve();
+    });
   });
-  const chunks = [];
-  child.stdout.on("data", (c) => chunks.push(c));
-  child.stderr.on("data", (c) => chunks.push(c));
-  child.on("close", (code, signal) => {
-    const endIso = new Date().toISOString();
-    const outcome = code === 0 ? "OK" : "FAIL";
-    console.log(`[${endIso}] tick · ${worker.key} · exit=${code ?? "?"} signal=${signal ?? "-"} · ${outcome}`);
-    if (code !== 0) {
-      const tail = Buffer.concat(chunks).toString("utf8").split(/\r?\n/).filter(Boolean).slice(-20).join("\n");
-      console.log(`  --- last 20 lines of output ---`);
-      console.log(tail.split("\n").map((l) => `  ${l}`).join("\n"));
-      console.log(`  --------------------------------`);
+}
+
+// ── Non-stop chained loop for acquisition walkers ─────────────────────
+//
+// Doctrine anchor: project_nex_walkers_nonstop_while_laptop_and_internet_active_2026_08_23
+//   Philip 2026-08-23: "when laptop and internet active walkers must be
+//   processing none stop." Cycle N+1 starts when cycle N finishes · no
+//   fixed 15-min gap. Only acquisition:* workers use this loop · CLE,
+//   Brain, Social, Promotion retain their own cadences per doctrine.
+//
+// Polite floor: NEX_WALKER_CHAIN_DELAY_MS (default 3000 ms · 3 s) between
+// consecutive cycles. Prevents hammering OSM/Overpass with zero gap ·
+// tunable via env if the acquisition source changes. Applies to the
+// between-cycle wait · never the internal within-cycle OSM pacing.
+const CHAIN_DELAY_MS = Number(process.env.NEX_WALKER_CHAIN_DELAY_MS ?? 3000);
+
+async function runSpawnChainedForever(worker) {
+  console.log(`[${new Date().toISOString()}] chained · ${worker.key} · non-stop mode enabled · polite floor ${CHAIN_DELAY_MS}ms`);
+  // Loop lives for the lifetime of the scheduler process · exit is via
+  // SIGINT/SIGTERM which propagates to the current child.
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    await runSpawn(worker);
+    if (CHAIN_DELAY_MS > 0) {
+      await new Promise((r) => setTimeout(r, CHAIN_DELAY_MS));
     }
-  });
-  child.on("error", (err) => {
-    console.log(`[${new Date().toISOString()}] tick · ${worker.key} · spawn error: ${err.message}`);
-  });
+  }
 }
 
 // ── Runner · http (fetch endpoint on running Next dev server) ──────────
@@ -331,13 +415,41 @@ async function runHttp(worker) {
   }
 }
 
-// ── Loop · one interval timer per worker ───────────────────────────────
+// ── Loop · acquisition = chained non-stop · everything else = interval ─
+//
+// Acquisition walkers (food · accommodation · any future acquisition:*) run
+// in a chained non-stop loop per the 2026-08-23 doctrine
+// (project_nex_walkers_nonstop_while_laptop_and_internet_active).
+//
+// Everything else (CLE, Brain cron-tick, Social cron-tick, Promotion
+// quality-check) retains its interval cadence — those cadences exist for
+// separate reasons (Vercel Cron parity · admin adjudication rhythm · CLE
+// batching) and are explicitly out of scope for the non-stop rule.
 const timers = [];
 for (const w of DEV_SCHEDULE) {
-  // First tick immediately (so operators see something in the log)
-  runOne(w);
-  const t = setInterval(() => runOne(w), w.intervalSec * 1000);
-  timers.push(t);
+  if (w.kind === "spawn" && w.key.startsWith("acquisition:")) {
+    runSpawnChainedForever(w).catch((err) => {
+      console.error(`[${new Date().toISOString()}] chained loop crashed for ${w.key}: ${err?.stack ?? err}`);
+    });
+  } else if (w.startDelaySec && w.startDelaySec > 0) {
+    // P0 · 2026-08-24 · offset support · Philip's scheduler-offset directive.
+    // startDelaySec pushes the FIRST tick out by N seconds so tick cadences
+    // don't align on the same boundary. The rotation controller uses this
+    // to sit +30s away from the 60s orchestrator ticks, eliminating the
+    // sub-second race where a rotation state change and an orchestrator
+    // pick could commit within the same wall-clock second.
+    console.log(`[${new Date().toISOString()}] ${w.key} · deferred first tick by ${w.startDelaySec}s (offset from orchestrator cadence)`);
+    setTimeout(() => {
+      runOne(w);
+      const t = setInterval(() => runOne(w), w.intervalSec * 1000);
+      timers.push(t);
+    }, w.startDelaySec * 1000);
+  } else {
+    // First tick immediately (so operators see something in the log)
+    runOne(w);
+    const t = setInterval(() => runOne(w), w.intervalSec * 1000);
+    timers.push(t);
+  }
 }
 
 // ── Graceful shutdown ──────────────────────────────────────────────────

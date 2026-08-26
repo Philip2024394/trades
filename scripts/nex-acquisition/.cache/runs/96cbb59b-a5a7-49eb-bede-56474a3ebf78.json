@@ -1,0 +1,730 @@
+{
+  "jobId": "96cbb59b-a5a7-49eb-bede-56474a3ebf78",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Bandung",
+  "bbox": {
+    "sw": [
+      -7,
+      107.53
+    ],
+    "ne": [
+      -6.85,
+      107.75
+    ],
+    "scope": "Bandung · West Java"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-24T11:48:06.774Z",
+  "finishedAt": "2026-08-24T11:52:44.349Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 2118,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 2118,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 2118,
+    "records_persisted": 2012,
+    "enriched": 17,
+    "gate3_contactable": 84,
+    "gate4_eligible": 84,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 84,
+    "rejected_by_gate": 2034,
+    "errors": 106
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#FL-2026-004TY",
+        "name": "Terazza",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-004TZ",
+        "name": "Inti Laut",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-004V0",
+        "name": "Grace",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-004V1",
+        "name": "Tomodachi",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-004V2",
+        "name": "Suis Butcher Steak House",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-004V3",
+        "name": "Ikan Bakar Pak Chi Met",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-004V4",
+        "name": "Ikan Bakar Cianjur",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-004V5",
+        "name": "Ny. Suharti",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [
+      {
+        "publicRef": "#FL-2026-004VH",
+        "name": "Bumi Sangkuriang",
+        "whatsapp": null,
+        "phone": "+62 22 2032661",
+        "website": "https://bumi-sangkuriang.business.site/"
+      },
+      {
+        "publicRef": "#FL-2026-004VR",
+        "name": "Barbar Wing's",
+        "whatsapp": "+6285624478749",
+        "phone": "+6285624478749",
+        "website": "https://barbarwings.wordpress.com/"
+      },
+      {
+        "publicRef": "#FL-2026-004W1",
+        "name": "Itenas Bandung",
+        "whatsapp": "+6282216127225",
+        "phone": "+62227272215",
+        "website": "https://www.itenas.ac.id/"
+      },
+      {
+        "publicRef": "#FL-2026-004WP",
+        "name": "Starbucks",
+        "whatsapp": null,
+        "phone": "+62 22 2061102",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-004WR",
+        "name": "Mako",
+        "whatsapp": null,
+        "phone": "+62 22 2061097",
+        "website": "https://www.breadtalk.com/en/"
+      },
+      {
+        "publicRef": "#FL-2026-004WS",
+        "name": "J.Co.",
+        "whatsapp": null,
+        "phone": "+62 22 2060991",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-004WX",
+        "name": "KFC",
+        "whatsapp": null,
+        "phone": "+62 22 2061060",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-004XS",
+        "name": "Warung Nasi Kang EWOK",
+        "whatsapp": null,
+        "phone": "+62 22 6038783; +62 22 92035359",
+        "website": null
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#FL-2026-004TY",
+        "name": "Terazza",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-004TZ",
+        "name": "Inti Laut",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-004V0",
+        "name": "Grace",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-004V1",
+        "name": "Tomodachi",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-004V2",
+        "name": "Suis Butcher Steak House",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": [
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004TY",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004TZ",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004V0",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004V1",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004V2",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004V3",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004V4",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004V5",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004V6",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004V7",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004V8",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004V9",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VA",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VB",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VC",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VD",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VE",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VF",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VG",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VH",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VJ",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VK",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VM",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VN",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VP",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VQ",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VR",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VS",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VT",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VV",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VW",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VX",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VY",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004VZ",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004W0",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004W1",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004W2",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004W3",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004W4",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004W5",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004W6",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004W7",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004W8",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004W9",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WA",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WB",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WC",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WD",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WE",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WF",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WG",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WH",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WJ",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WK",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WM",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WN",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WP",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WQ",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WR",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WS",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WT",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WV",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WW",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WX",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WY",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004WZ",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004X0",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004X1",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004X2",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004X3",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004X4",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004X5",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004X6",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004X7",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004X8",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004X9",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XA",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XB",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XC",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XD",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XE",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XF",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XG",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XH",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XJ",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XK",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XM",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XN",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XP",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XQ",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XR",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XS",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XT",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XV",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XW",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XX",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XY",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004XZ",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004Y0",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004Y1",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004Y2",
+      "message": "the database system is in recovery mode"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004Y3",
+      "message": "the database system is not yet accepting connections"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004Y4",
+      "message": "the database system is not yet accepting connections"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004Y5",
+      "message": "the database system is not yet accepting connections"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004Y6",
+      "message": "the database system is not yet accepting connections"
+    },
+    {
+      "phase": "persist",
+      "ref": "#FL-2026-004Y7",
+      "message": "the database system is not yet accepting connections"
+    }
+  ]
+}

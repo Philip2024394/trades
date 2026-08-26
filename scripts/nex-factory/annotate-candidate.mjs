@@ -67,14 +67,45 @@ async function main() {
 
   let inserted = 0;
   for (const r of rows) {
+    // Fetch the candidate row so we can snapshot its identifying fields.
+    // The snapshot makes the annotation self-contained history · it
+    // survives candidate deletion (migration 086 · ON DELETE SET NULL).
+    // Refuses to annotate a non-existent candidate.
+    const candRes = await pool.query(
+      `SELECT proposed_category_id, proposed_name, display_name_en,
+              suggested_parent_vertical, suggested_countries, brain_keywords,
+              business_count, cycle_count, proposed_by, created_at
+         FROM nex.category_candidate
+        WHERE id = $1`,
+      [r.candidateId],
+    );
+    if (candRes.rows.length === 0) {
+      console.error(`  ERROR: candidate ${r.candidateId} not found · refusing to annotate a non-existent candidate`);
+      process.exit(1);
+    }
+    const c = candRes.rows[0];
+    const snapshot = {
+      proposed_category_id:      c.proposed_category_id,
+      proposed_name:             c.proposed_name,
+      display_name_en:           c.display_name_en,
+      suggested_parent_vertical: c.suggested_parent_vertical,
+      suggested_countries:       c.suggested_countries,
+      brain_keywords:            c.brain_keywords,
+      business_count:            c.business_count,
+      cycle_count:               c.cycle_count,
+      proposed_by:               c.proposed_by,
+      candidate_created_at:      c.created_at,
+      snapshot_taken_at:         new Date().toISOString(),
+    };
+
     const res = await pool.query(
       `INSERT INTO nex.category_candidate_calibration_annotation
-         (candidate_id, annotator, verdict, reason)
-       VALUES ($1, $2, $3, $4)
+         (candidate_id, annotator, verdict, reason, candidate_snapshot)
+       VALUES ($1, $2, $3, $4, $5)
        RETURNING id, candidate_id`,
-      [r.candidateId, opts.annotator, r.verdict, r.reason ?? null],
+      [r.candidateId, opts.annotator, r.verdict, r.reason ?? null, JSON.stringify(snapshot)],
     );
-    console.log(`  annotated ${res.rows[0].candidate_id} · verdict=${r.verdict} · annotator=${opts.annotator}`);
+    console.log(`  annotated ${res.rows[0].candidate_id} · verdict=${r.verdict} · annotator=${opts.annotator} · snapshot=${c.proposed_category_id}`);
     inserted += 1;
   }
 

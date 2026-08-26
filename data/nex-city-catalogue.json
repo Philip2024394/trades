@@ -1,0 +1,150 @@
+{
+  "_doc": "SINGLE SOURCE OF TRUTH for NEX geographic universe. Loaded by src/lib/nex/city-registry.ts (TypeScript consumers) AND by scripts/nex-* .mjs consumers (rotation tick, orchestrator tick, market/transport walkers, city-bbox-catalogue). Adding a city = one entry here. Drift is caught by src/lib/nex/city-registry.test.ts.",
+  "_schema": {
+    "canonical": "display name · MUST exactly match nex.*.city column values",
+    "slug": "URL segment · lowercase-hyphenated",
+    "province": "display province · e.g. DIY · Central Java · DKI Jakarta · Bali · East Java",
+    "region": "grouping label · initially matches province · future regions may collapse multiple provinces",
+    "centroid": "map centre {lat, lng} for landing hero + map",
+    "bboxSw": "[lat, lng] south-west corner · used by walkers",
+    "bboxNe": "[lat, lng] north-east corner",
+    "aliases": "additional accepted spellings for slug/canonical matching (never fabricated)"
+  },
+  "cities": [
+    {
+      "canonical": "Yogyakarta",
+      "slug": "yogyakarta",
+      "province": "DIY",
+      "region": "DIY",
+      "centroid": { "lat": -7.79, "lng": 110.38 },
+      "bboxSw": [-7.83, 110.34],
+      "bboxNe": [-7.75, 110.42],
+      "aliases": ["Jogja", "Jogjakarta", "Kota Yogyakarta"]
+    },
+    {
+      "canonical": "Sleman",
+      "slug": "sleman",
+      "province": "DIY",
+      "region": "DIY",
+      "centroid": { "lat": -7.685, "lng": 110.385 },
+      "bboxSw": [-7.75, 110.29],
+      "bboxNe": [-7.62, 110.48],
+      "aliases": []
+    },
+    {
+      "canonical": "Bantul",
+      "slug": "bantul",
+      "province": "DIY",
+      "region": "DIY",
+      "centroid": { "lat": -7.925, "lng": 110.38 },
+      "bboxSw": [-8.02, 110.28],
+      "bboxNe": [-7.83, 110.48],
+      "aliases": []
+    },
+    {
+      "canonical": "Kulon Progo",
+      "slug": "kulon-progo",
+      "province": "DIY",
+      "region": "DIY",
+      "centroid": { "lat": -7.81, "lng": 110.185 },
+      "bboxSw": [-8.00, 110.09],
+      "bboxNe": [-7.62, 110.28],
+      "aliases": ["Kulonprogo"]
+    },
+    {
+      "canonical": "Gunungkidul",
+      "slug": "gunungkidul",
+      "province": "DIY",
+      "region": "DIY",
+      "centroid": { "lat": -7.975, "lng": 110.635 },
+      "bboxSw": [-8.20, 110.42],
+      "bboxNe": [-7.75, 110.85],
+      "aliases": ["Gunung Kidul"]
+    },
+    {
+      "canonical": "Magelang",
+      "slug": "magelang",
+      "province": "Central Java",
+      "region": "Central Java",
+      "centroid": { "lat": -7.535, "lng": 110.25 },
+      "bboxSw": [-7.65, 110.15],
+      "bboxNe": [-7.42, 110.35],
+      "aliases": []
+    },
+    {
+      "canonical": "Klaten",
+      "slug": "klaten",
+      "province": "Central Java",
+      "region": "Central Java",
+      "centroid": { "lat": -7.70, "lng": 110.65 },
+      "bboxSw": [-7.80, 110.55],
+      "bboxNe": [-7.60, 110.75],
+      "aliases": []
+    },
+    {
+      "canonical": "Solo",
+      "slug": "solo",
+      "province": "Central Java",
+      "region": "Central Java",
+      "centroid": { "lat": -7.55, "lng": 110.825 },
+      "bboxSw": [-7.60, 110.75],
+      "bboxNe": [-7.50, 110.90],
+      "aliases": ["Surakarta"]
+    },
+    {
+      "_added": "2026-08-24 · Phase 2 · Philip greenlight · Indonesia expansion beyond DIY + Central Java. Bbox covers the Semarang metropolitan area on the Central Java north coast.",
+      "canonical": "Semarang",
+      "slug": "semarang",
+      "province": "Central Java",
+      "region": "Central Java",
+      "centroid": { "lat": -6.99, "lng": 110.42 },
+      "bboxSw": [-7.06, 110.35],
+      "bboxNe": [-6.90, 110.51],
+      "aliases": ["Kota Semarang"]
+    },
+    {
+      "_added": "2026-08-24 · Phase 2 · DKI Jakarta metropolitan capital. Bbox intentionally covers central Jakarta + surrounding wards; sub-region refinement is a Phase 4 concern once discovery numbers indicate it.",
+      "canonical": "Jakarta",
+      "slug": "jakarta",
+      "province": "DKI Jakarta",
+      "region": "DKI Jakarta",
+      "centroid": { "lat": -6.20, "lng": 106.85 },
+      "bboxSw": [-6.37, 106.68],
+      "bboxNe": [-6.09, 106.98],
+      "aliases": ["DKI Jakarta", "Jakarta Raya"]
+    },
+    {
+      "_added": "2026-08-24 · Phase 2 · Bali capital city. Bali is a separate province from Java · new region introduced.",
+      "canonical": "Denpasar",
+      "slug": "denpasar",
+      "province": "Bali",
+      "region": "Bali",
+      "centroid": { "lat": -8.67, "lng": 115.22 },
+      "bboxSw": [-8.75, 115.14],
+      "bboxNe": [-8.60, 115.28],
+      "aliases": ["Bali", "Kota Denpasar"]
+    },
+    {
+      "_added": "2026-08-24 · Phase 2 · East Java capital / Indonesia's 2nd-largest city.",
+      "canonical": "Surabaya",
+      "slug": "surabaya",
+      "province": "East Java",
+      "region": "East Java",
+      "centroid": { "lat": -7.25, "lng": 112.75 },
+      "bboxSw": [-7.36, 112.60],
+      "bboxNe": [-7.16, 112.86],
+      "aliases": ["Kota Surabaya"]
+    },
+    {
+      "_added": "2026-08-24 · Phase 2 · West Java capital · high-density metropolitan area.",
+      "canonical": "Bandung",
+      "slug": "bandung",
+      "province": "West Java",
+      "region": "West Java",
+      "centroid": { "lat": -6.92, "lng": 107.61 },
+      "bboxSw": [-7.00, 107.53],
+      "bboxNe": [-6.85, 107.75],
+      "aliases": ["Kota Bandung", "Paris van Java"]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "geo-landmark-registry-v0.2",
+  "description": "NEX Location Intelligence · Yogyakarta landmark seed set · v0.2 · added 5 key missing landmarks per validation 2026-08-23 (Vredeburg Fort · Sonobudoyo Museum · Ullen Sentalu · Parangtritis Beach · Affandi Museum) · did NOT inflate list to boost proximity matches",
+  "doctrine": "project_nex_location_intelligence_2026_08_23",
+  "country": "ID",
+  "city": "Yogyakarta",
+  "validation_note_2026_08_23": "Verified against public knowledge of Yogyakarta geography. Coordinates checked for known named locations. Added obvious missing destination anchors: Vredeburg Fort (major historical + fits Malioboro area) · Sonobudoyo Museum (near Alun-Alun Utara + Kraton) · Ullen Sentalu Museum (Kaliurang area · well-known cultural destination · improves Kaliurang landmark density truthfully) · Parangtritis Beach (major south-coast sunset destination · outside bbox but tourists reason about it) · Affandi Museum (well-known art destination).",
+  "landmarks": [
+    { "landmark_id": "malioboro-street",       "name": "Malioboro Street",           "category": "attraction", "centroid_lat": -7.7925, "centroid_lng": 110.3660, "meaningful_area_ids": ["malioboro"] },
+    { "landmark_id": "malioboro-mall",         "name": "Malioboro Mall",             "category": "shopping",   "centroid_lat": -7.7898, "centroid_lng": 110.3673, "meaningful_area_ids": ["malioboro"] },
+    { "landmark_id": "beringharjo-market",     "name": "Beringharjo Market",         "category": "shopping",   "centroid_lat": -7.7973, "centroid_lng": 110.3673, "meaningful_area_ids": ["malioboro"] },
+    { "landmark_id": "tugu-yogyakarta",        "name": "Tugu Yogyakarta",            "category": "attraction", "centroid_lat": -7.7830, "centroid_lng": 110.3670, "meaningful_area_ids": ["malioboro"] },
+    { "landmark_id": "vredeburg-fort",         "name": "Vredeburg Fort Museum",      "category": "attraction", "centroid_lat": -7.8000, "centroid_lng": 110.3672, "meaningful_area_ids": ["malioboro", "yogya-city-core"] },
+    { "landmark_id": "kraton-yogyakarta",      "name": "Kraton Yogyakarta",          "category": "attraction", "centroid_lat": -7.8054, "centroid_lng": 110.3641, "meaningful_area_ids": ["yogya-city-core"] },
+    { "landmark_id": "sonobudoyo-museum",      "name": "Sonobudoyo Museum",          "category": "attraction", "centroid_lat": -7.8025, "centroid_lng": 110.3638, "meaningful_area_ids": ["yogya-city-core"] },
+    { "landmark_id": "taman-sari",             "name": "Taman Sari (Water Castle)",  "category": "attraction", "centroid_lat": -7.8100, "centroid_lng": 110.3593, "meaningful_area_ids": ["yogya-city-core"] },
+    { "landmark_id": "alun-alun-kidul",        "name": "Alun-Alun Kidul",            "category": "attraction", "centroid_lat": -7.8121, "centroid_lng": 110.3644, "meaningful_area_ids": ["yogya-city-core"] },
+    { "landmark_id": "alun-alun-utara",        "name": "Alun-Alun Utara",            "category": "attraction", "centroid_lat": -7.8020, "centroid_lng": 110.3639, "meaningful_area_ids": ["yogya-city-core"] },
+    { "landmark_id": "kotagede",               "name": "Kotagede historical district", "category": "attraction", "centroid_lat": -7.8280, "centroid_lng": 110.3985, "meaningful_area_ids": [] },
+    { "landmark_id": "affandi-museum",         "name": "Affandi Museum",             "category": "attraction", "centroid_lat": -7.7822, "centroid_lng": 110.3960, "meaningful_area_ids": [] },
+    { "landmark_id": "prambanan-temple",       "name": "Prambanan Temple",           "category": "attraction", "centroid_lat": -7.7521, "centroid_lng": 110.4914, "meaningful_area_ids": ["prambanan"] },
+    { "landmark_id": "borobudur-temple",       "name": "Borobudur Temple",           "category": "attraction", "centroid_lat": -7.6079, "centroid_lng": 110.2038, "meaningful_area_ids": ["borobudur"] },
+    { "landmark_id": "ratu-boko",              "name": "Ratu Boko",                  "category": "attraction", "centroid_lat": -7.7708, "centroid_lng": 110.4894, "meaningful_area_ids": ["prambanan"] },
+    { "landmark_id": "merapi-viewpoint",       "name": "Merapi viewpoint (Kaliurang)","category":"attraction", "centroid_lat": -7.5960, "centroid_lng": 110.4250, "meaningful_area_ids": ["kaliurang"] },
+    { "landmark_id": "ullen-sentalu-museum",   "name": "Ullen Sentalu Museum",       "category": "attraction", "centroid_lat": -7.5950, "centroid_lng": 110.4218, "meaningful_area_ids": ["kaliurang"] },
+    { "landmark_id": "parangtritis-beach",     "name": "Parangtritis Beach",         "category": "attraction", "centroid_lat": -8.0247, "centroid_lng": 110.3305, "meaningful_area_ids": [] },
+
+    { "landmark_id": "yia-airport",            "name": "Yogyakarta International Airport (YIA)", "category": "transport", "centroid_lat": -7.9058, "centroid_lng": 110.0574, "meaningful_area_ids": [] },
+    { "landmark_id": "adisutjipto-airport",    "name": "Adisutjipto Airport (JOG)",   "category": "transport", "centroid_lat": -7.7883, "centroid_lng": 110.4319, "meaningful_area_ids": [] },
+    { "landmark_id": "tugu-station",           "name": "Tugu Railway Station",        "category": "transport", "centroid_lat": -7.7893, "centroid_lng": 110.3634, "meaningful_area_ids": ["malioboro"] },
+    { "landmark_id": "lempuyangan-station",    "name": "Lempuyangan Railway Station", "category": "transport", "centroid_lat": -7.7900, "centroid_lng": 110.3766, "meaningful_area_ids": [] },
+    { "landmark_id": "giwangan-terminal",      "name": "Giwangan Bus Terminal",       "category": "transport", "centroid_lat": -7.8280, "centroid_lng": 110.3833, "meaningful_area_ids": [] },
+    { "landmark_id": "jombor-terminal",        "name": "Jombor Bus Terminal",         "category": "transport", "centroid_lat": -7.7532, "centroid_lng": 110.3672, "meaningful_area_ids": [] },
+
+    { "landmark_id": "ambarrukmo-plaza",       "name": "Ambarrukmo Plaza",            "category": "shopping",   "centroid_lat": -7.7830, "centroid_lng": 110.4014, "meaningful_area_ids": [] },
+    { "landmark_id": "jogja-city-mall",        "name": "Jogja City Mall",             "category": "shopping",   "centroid_lat": -7.7515, "centroid_lng": 110.3600, "meaningful_area_ids": [] },
+    { "landmark_id": "hartono-mall",           "name": "Hartono Mall",                "category": "shopping",   "centroid_lat": -7.7551, "centroid_lng": 110.4133, "meaningful_area_ids": [] },
+    { "landmark_id": "pasar-sore-kotagede",    "name": "Pasar Sore Kotagede",         "category": "shopping",   "centroid_lat": -7.8280, "centroid_lng": 110.3985, "meaningful_area_ids": [] },
+
+    { "landmark_id": "ugm-university",         "name": "Universitas Gadjah Mada (UGM)","category":"education", "centroid_lat": -7.7712, "centroid_lng": 110.3785, "meaningful_area_ids": [] },
+    { "landmark_id": "uny-university",         "name": "Universitas Negeri Yogyakarta (UNY)","category":"education","centroid_lat": -7.7758, "centroid_lng": 110.3891, "meaningful_area_ids": [] },
+    { "landmark_id": "uii-university",         "name": "Universitas Islam Indonesia (UII)", "category":"education","centroid_lat": -7.6867, "centroid_lng": 110.4133, "meaningful_area_ids": [] },
+
+    { "landmark_id": "rsup-sardjito",          "name": "RSUP Dr. Sardjito Hospital",  "category": "medical",    "centroid_lat": -7.7702, "centroid_lng": 110.3719, "meaningful_area_ids": [] },
+    { "landmark_id": "rs-panti-rapih",         "name": "RS Panti Rapih",              "category": "medical",    "centroid_lat": -7.7817, "centroid_lng": 110.3778, "meaningful_area_ids": [] },
+    { "landmark_id": "rs-bethesda",            "name": "RS Bethesda",                 "category": "medical",    "centroid_lat": -7.7823, "centroid_lng": 110.3819, "meaningful_area_ids": [] }
+  ]
+}

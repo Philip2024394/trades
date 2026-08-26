@@ -1,0 +1,51 @@
+{
+  "jobId": "020d1930-a743-4063-b01b-131499f39cf5",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Klaten",
+  "bbox": {
+    "sw": [
+      -7.8,
+      110.55
+    ],
+    "ne": [
+      -7.6,
+      110.75
+    ],
+    "scope": "Klaten · Central Java"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-24T11:18:06.021Z",
+  "finishedAt": "2026-08-24T11:18:18.146Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 107,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 107,
+    "matched_exact": 107,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "records_persisted": 0,
+    "enriched": 1,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 0
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": []
+}

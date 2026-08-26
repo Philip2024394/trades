@@ -28,6 +28,8 @@ import pg from "pg";
 import { runAgent } from "./engine.mjs";
 import { foodYogyakartaConfig } from "./configs/food-yogyakarta.mjs";
 import { accommodationYogyakartaConfig } from "./configs/accommodation-yogyakarta.mjs";
+import { makeFoodConfig } from "./configs/food-city-factory.mjs";
+import { makeAccommodationConfig } from "./configs/accommodation-city-factory.mjs";
 import { emitHeartbeat, startCycleRun, finishCycleRun } from "../nex-worker/reliability.mjs";
 // Directory Factory · Phase 1 · 2026-08-23 · Walker candidate writer.
 // STATIC IMPORT DELIBERATELY NOT USED — see the dynamic import inside
@@ -39,21 +41,55 @@ import { emitHeartbeat, startCycleRun, finishCycleRun } from "../nex-worker/reli
 const args = process.argv.slice(2);
 const vertical = args.find((a) => a.startsWith("--vertical="))?.split("=")[1] ?? "food";
 const city = args.find((a) => a.startsWith("--city="))?.split("=")[1] ?? "Yogyakarta";
-const bboxName = args.find((a) => a.startsWith("--bbox="))?.split("=")[1] ?? "prambanan";
+const bboxArg = args.find((a) => a.startsWith("--bbox="))?.split("=")[1];
 const apply = args.includes("--apply");
 const dryRun = !apply;
 
+// Phase B (2026-08-24) · Yogyakarta configs retained hand-tuned · other cities
+// served by factories reading city-bbox-catalogue. Yogyakarta path unchanged.
 const CONFIG_REGISTRY = {
   "food:Yogyakarta":          foodYogyakartaConfig,
   "accommodation:Yogyakarta": accommodationYogyakartaConfig,   // Task #89 Phase A · 2026-08-22
 };
-const config = CONFIG_REGISTRY[`${vertical}:${city}`];
+function resolveConfig(vertical, city) {
+  const key = `${vertical}:${city}`;
+  if (CONFIG_REGISTRY[key]) return CONFIG_REGISTRY[key];
+  if (vertical === "food")          return makeFoodConfig(city);
+  if (vertical === "accommodation") return makeAccommodationConfig(city);
+  return null;
+}
+const config = resolveConfig(vertical, city);
 if (!config) { console.error(`No config for ${vertical}:${city}`); process.exit(1); }
+// 2026-08-24 · P0 atomic · surface-aware naming. Default falls back to the
+// config's honest defaultSurfaceName (city slug for factory configs · legacy
+// 'prambanan' only if a hand-tuned config still lists it in smokeBboxes).
+// Removes the previous hardcoded 'prambanan' fallback that was causing every
+// non-Yogyakarta city to record a lying surface name in worker_config.
+const bboxName = bboxArg
+  ?? config.defaultSurfaceName
+  ?? Object.keys(config.smokeBboxes ?? {})[0]
+  ?? "default";
 const bbox = config.smokeBboxes?.[bboxName] ?? config.defaultBbox;
 
 const pgUrl = process.env.NEX_POSTGRES_URL;
 if (!pgUrl) { console.error("NEX_POSTGRES_URL not set"); process.exit(1); }
 const pool = new pg.Pool({ connectionString: pgUrl });
+
+// Phase B (2026-08-24) · duplicate-guard mirrors market walker · orchestrator
+// + fixed cron cannot double-fire same (vertical, city, bbox) combo. Skips
+// gracefully if a running cycle already exists within the last 2h.
+async function isAlreadyRunning(workerId, workerConfig) {
+  try {
+    const q = await pool.query(
+      `SELECT id, started_at FROM nex.worker_cycle_run
+        WHERE worker_id = $1 AND worker_config = $2
+          AND status = 'running' AND started_at > now() - interval '2 hours'
+        LIMIT 1`,
+      [workerId, workerConfig],
+    );
+    return q.rows[0] ?? null;
+  } catch { return null; }
+}
 
 // ── BEFORE snapshot ─────────────────────────────────────────────────────────
 
@@ -96,6 +132,15 @@ const before = await snapshot("BEFORE");
 // ── Reliability instrumentation · start ────────────────────────────────────
 const workerId = `acquisition:${vertical}:${city}`;
 const workerConfig = `${vertical}:${city}:${bboxName}`;
+
+// Phase B (2026-08-24) · check duplicate BEFORE opening a new cycle_run row.
+const existingRun = await isAlreadyRunning(workerId, workerConfig);
+if (existingRun) {
+  console.log(`⏸  SKIP_DUPLICATE · ${workerId} / ${workerConfig} already running (started ${new Date(existingRun.started_at).toISOString()})`);
+  await pool.end();
+  process.exit(0);
+}
+
 const cycleRunId = await startCycleRun(pool, {
   workerId, workerType: "acquisition", workerConfig,
   jobIdExternal: `${vertical}-${city}-live-${bboxName}-${new Date().toISOString().replace(/[:.]/g,"-")}`.toLowerCase(),
@@ -109,13 +154,21 @@ try {
     smokeMode: true,          // Gate 5 hard-noop · Discovery ≠ Outreach
     dryRun,
     bbox,
-    jobId: cycleRunId,
+    jobId: cycleRunId,        // legacy · consumed by legacy insertNewRecord path
+    cycleRunId,               // persistence contract 2026-08-26
+    workerId,                 // persistence contract 2026-08-26
   });
 } catch (err) { cycleErr = err; throw err; }
 
 const after = await snapshot("AFTER");
 const t1 = Date.now();
 const runtimeSec = ((t1 - t0) / 1000).toFixed(2);
+
+// Hoisted here (2026-08-23 fix · was originally declared after the
+// per-field enrichment diff block below) so the Directory Factory
+// Phase 1 candidate-writer + Calibration score-recorder blocks that
+// follow can use `line(...)` without hitting the temporal dead zone.
+const line = (s = "") => console.log(s);
 
 // ── Directory Factory · Phase 1 · CATEGORY_CANDIDATE proposal ─────────
 // Walker discovered → THIS writes proposals → human approves via HQ →
@@ -217,8 +270,9 @@ for (const f of allFields) {
 }
 
 // ── Report · Philip's 5-section format ────────────────────────────────────
-
-const line = (s = "") => console.log(s);
+// Note: `const line` is hoisted higher up (near cycle end) so the
+// candidate-writer + scorer blocks can use it without hitting the
+// temporal dead zone.
 line("");
 line("═".repeat(72));
 line(`NEX ACQUISITION · LIVE CYCLE REPORT · ${audit.jobId}`);
@@ -345,14 +399,40 @@ line(`  next step:  STOP · report to Philip · await go/no-go for scheduling`);
 line("═".repeat(72));
 
 // ── Reliability instrumentation · finish ──────────────────────────────────
-const finalStatus = cycleErr ? "failed" : "completed";
+// Persistence contract 2026-08-26 · a cycle that violates the invariant is
+// FAILED, not completed-with-warnings. Prevents phantom counts from ever
+// being reported as success.
+const finalStatus = cycleErr
+  ? "failed"
+  : (audit?.persistenceInvariantFailed ? "failed" : "completed");
 await finishCycleRun(pool, cycleRunId, {
   status: finalStatus,
   recordsProcessed: audit.counts.discovered,
-  recordsNew: audit.counts.new_candidates,
+  // Persistence contract 2026-08-26 · records_new = DB truth (SELECT COUNT(*)
+  // WHERE cycle_run_id=$1) when contract active; falls back to records_persisted
+  // counter for legacy-path verticals until P5 rollout completes.
+  recordsNew: audit.counts.records_new_from_db ?? audit.counts.records_persisted,
   recordsRejected: audit.counts.rejected_by_gate,
   errorsCount: audit.counts.errors,
   summary: {
+    // Scoring / matching stats · non-persistence signal · kept honest so a
+    // reviewer can see how many candidates were classified without inflating
+    // the discovery metric. Discovery inserts live in records_persisted above.
+    scoring_stats: {
+      matched_exact: audit.counts.matched_exact,
+      matched_high: audit.counts.matched_high,
+      ambiguous: audit.counts.ambiguous,
+      unnamed: audit.counts.unnamed,
+      new_candidates: audit.counts.new_candidates,   // Phase B classification count · pre-persist
+    },
+    // Discovery stats · records_persisted matches recordsNew above.
+    discovery_stats: {
+      candidates_examined: audit.counts.discovered,
+      candidates_classified_new: audit.counts.new_candidates,
+      records_persisted: audit.counts.records_persisted,
+    },
+    // Preserve legacy fields at summary root for dashboards that still read them.
+    // Dashboards should migrate to summary.scoring_stats.* + summary.discovery_stats.*.
     matched_exact: audit.counts.matched_exact,
     matched_high: audit.counts.matched_high,
     ambiguous: audit.counts.ambiguous,
@@ -374,6 +454,20 @@ await finishCycleRun(pool, cycleRunId, {
     category_candidates_scored: scorerResult
       ? { scored: scorerResult.scored, skipped: scorerResult.skipped }
       : (scorerError ? { error: scorerError.message } : null),
+    // Phase 1 rejection telemetry (2026-08-25). Per-reason histogram +
+    // cycle-outcome bucket surfaced on HQ workers/discovery. Policy unchanged.
+    rejected_by_reason: audit.counts.rejected_by_reason ?? {},
+    cycle_outcome:      audit.cycle_outcome ?? null,
+    // Persistence contract evidence (2026-08-26).
+    persistence_invariant: audit.persistenceInvariant ?? null,
+    persistence_counts: {
+      insert_attempted:    audit.counts.insert_attempted ?? null,
+      insert_returned:     audit.counts.insert_returned ?? null,
+      insert_verified:     audit.counts.insert_verified ?? null,
+      insert_conflicts:    audit.counts.insert_conflicts ?? null,
+      verification_failed: audit.counts.verification_failed ?? null,
+      records_new_from_db: audit.counts.records_new_from_db ?? null,
+    },
   },
   auditReportPath: `scripts/nex-acquisition/.cache/runs/${audit.jobId}.json`,
   doctrineChecks: {

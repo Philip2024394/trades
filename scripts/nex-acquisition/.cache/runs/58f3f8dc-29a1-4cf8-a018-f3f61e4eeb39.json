@@ -1,0 +1,65 @@
+{
+  "jobId": "58f3f8dc-29a1-4cf8-a018-f3f61e4eeb39",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Sleman",
+  "bbox": {
+    "sw": [
+      -7.75,
+      110.29
+    ],
+    "ne": [
+      -7.62,
+      110.48
+    ],
+    "scope": "Sleman regency · DIY · north of Kota Yogyakarta"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-24T01:35:28.067Z",
+  "finishedAt": "2026-08-24T01:35:28.080Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 57,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 57,
+    "matched_exact": 56,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 1,
+    "enriched": 0,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 1,
+    "errors": 0
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#AC-2026-0013S",
+        "name": "Spot Residence Exclusive Boarding House",
+        "category": "hostel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [],
+    "rejected": [
+      {
+        "publicRef": "#AC-2026-0013S",
+        "name": "Spot Residence Exclusive Boarding House",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": []
+}

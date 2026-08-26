@@ -23,11 +23,29 @@ export const NEX = {
   orangeGlow:    "rgba(249, 115, 22, 0.55)",
   orangeGlowLo:  "rgba(249, 115, 22, 0.14)",
 
+  // ── Cyber Aurora accents (2026-08-24 · Philip greenlit) ─────────────
+  // Palette rules · enforced across every NEX surface:
+  //   · Orange       = brand identity · voice orb · primary CTAs · logo halo
+  //   · Electric cyan = LIVE/ACTIVE state · connection ember, typing dots,
+  //                     in-flight chips, verified badges, real-time signals
+  //   · Violet       = AI / PERSONAL-BRAIN surfaces · NEX suggestions,
+  //                     personal memory, premium/brain features
+  // Discipline: any single component picks AT MOST one accent (cyan OR
+  // violet), never both. Orange is the constant.
+  cyan:          "#22D3EE",
+  cyanSoft:      "#67E8F9",
+  cyanGlow:      "rgba(34, 211, 238, 0.55)",
+  cyanGlowLo:    "rgba(34, 211, 238, 0.14)",
+  violet:        "#A855F7",
+  violetSoft:    "#C084FC",
+  violetGlow:    "rgba(168, 85, 247, 0.55)",
+  violetGlowLo:  "rgba(168, 85, 247, 0.14)",
+
   text:          "#F5F5F5",
   textMuted:     "#9CA3AF",
   textFaint:     "#6B7280",
 
-  green:         "#10B981",   // Open indicator only
+  green:         "#10B981",   // legacy Open indicator · superseded by NEX.cyan for the Open state
 
   // Layout constants
   navHeight:     92,           // Bottom nav (excl. safe area)

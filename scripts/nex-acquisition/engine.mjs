@@ -23,6 +23,11 @@
 
 import { runGates } from "./gates.mjs";
 import { writeReport } from "./report.mjs";
+import {
+  REJECTION_REASONS,
+  createRejectionCounter,
+  computeCycleOutcome,
+} from "../nex-worker/rejection-reasons.mjs";
 
 const CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
 
@@ -136,6 +141,77 @@ function matchAgainstExisting(candidate, existing) {
   return { kind: "new" };
 }
 
+/**
+ * Persistence contract enforcement · Philip 2026-08-26.
+ *
+ * For each candidate:
+ *   1. INSERT via config.persistence.buildInsert (must include worker_id +
+ *      cycle_run_id, ON CONFLICT DO NOTHING RETURNING <primary_key>).
+ *   2. rowCount === 0 → conflict · counted as conflictSkipped, continue.
+ *   3. rowCount === 1 → read returned PK from insertResult.rows[0].
+ *   4. SELECT pk FROM destination WHERE pk=$1 AND cycle_run_id=$2 AND worker_id=$3.
+ *      Three-way match rules out any race where two cycles collide on the same PK.
+ *      If verify returns exactly one row → insertVerified++.
+ *      Otherwise → verificationFailed++.
+ *   5. If verified AND config.persistence.writeSideEffects present → call it for
+ *      snapshot + provenance rows. Side-write errors surface as `errors` but do
+ *      NOT unverify the row (row is already persisted correctly).
+ */
+export async function persistCandidates(pool, candidates, config, { workerId, cycleRunId }) {
+  const results = {
+    insertAttempted: 0, insertReturned: 0, insertVerified: 0,
+    conflictSkipped: 0, verificationFailed: 0, errors: 0,
+  };
+  const { destinationTable, primaryKeyColumn, buildInsert, writeSideEffects } = config.persistence;
+
+  for (const c of candidates) {
+    results.insertAttempted++;
+    // buildInsert is invoked with `this` bound to config so it can read
+    // this.city / this.country / this.tables / etc. exactly like the
+    // legacy insertNewRecord method did.
+    const { sql, values } = buildInsert.call(config, c, {
+      workerId, cycleRunId, sourceName: c.sourceName,
+    });
+    let insertRes;
+    try {
+      insertRes = await pool.query(sql, values);
+    } catch (err) {
+      results.errors++;
+      continue;
+    }
+    if (insertRes.rowCount === 0) { results.conflictSkipped++; continue; }
+    results.insertReturned++;
+
+    const returnedPk = insertRes.rows[0]?.[primaryKeyColumn];
+    if (returnedPk == null) {
+      results.verificationFailed++;
+      continue;
+    }
+    // Three-way strict verify per Philip 2026-08-26.
+    const ver = await pool.query(
+      `SELECT ${primaryKeyColumn} FROM ${destinationTable}
+       WHERE ${primaryKeyColumn} = $1 AND cycle_run_id = $2 AND worker_id = $3`,
+      [returnedPk, cycleRunId, workerId]
+    );
+    if (ver.rowCount !== 1) {
+      results.verificationFailed++;
+      continue;
+    }
+    results.insertVerified++;
+
+    if (writeSideEffects) {
+      try {
+        await writeSideEffects.call(config, pool, c, {
+          workerId, cycleRunId, sourceName: c.sourceName, primaryKeyValue: returnedPk,
+        });
+      } catch (err) {
+        results.errors++;
+      }
+    }
+  }
+  return results;
+}
+
 export async function runAgent(pool, config, options = {}) {
   // Country Foundation Step 4 (2026-08-22) · validate config.country explicitly BEFORE any DB access.
   // Country MUST be a valid ISO 3166-1 alpha-2 code. NEVER inferred from city.
@@ -150,6 +226,23 @@ export async function runAgent(pool, config, options = {}) {
       `Got: ${JSON.stringify(config.country)}. ` +
       `Country must be declared explicitly per Country Foundation Step 4 doctrine · never inferred from city.`
     );
+  }
+
+  // Persistence contract 2026-08-26 · workerId + cycleRunId flow through so
+  // every INSERT + verify SELECT can attribute rows to the walker cycle.
+  // Contract mode requires both; legacy insertNewRecord path still works
+  // with only jobId (accommodation/market/transport until P5).
+  const workerId   = options.workerId   ?? null;
+  const cycleRunId = options.cycleRunId ?? options.jobId ?? null;
+
+  if (config.persistence && !options.dryRun) {
+    if (!workerId || !cycleRunId) {
+      throw new Error(
+        `Persistence contract requires workerId + cycleRunId when config.persistence is present. ` +
+        `Got workerId=${workerId} cycleRunId=${cycleRunId}. ` +
+        `run-live-cycle.mjs must pass both in runAgent options.`
+      );
+    }
   }
 
   const smokeMode = options.smokeMode ?? true;
@@ -175,7 +268,17 @@ export async function runAgent(pool, config, options = {}) {
       matched_high: 0,
       ambiguous: 0,
       unnamed: 0,
+      // new_candidates counts items that CLASSIFIED as "new" in Phase B (dedupe
+      // step) · this is a SCORING count · NOT the number of rows actually
+      // persisted. Keep it here for backwards-compat + operator visibility, but
+      // NEVER let a dashboard-facing "records_new" metric read from it. The
+      // authoritative persistence count lives in `records_persisted` below.
       new_candidates: 0,
+      // records_persisted counts rows that the DB actually accepted (ON CONFLICT
+      // DO NOTHING → rowCount>0). This is the truth · use this when reporting
+      // records_new to worker_cycle_run. Introduced 2026-08-24 · P1 records_new
+      // pollution fix (Philip greenlight after cutover-3 acceptance).
+      records_persisted: 0,
       enriched: 0,
       gate3_contactable: 0,
       gate4_eligible: 0,
@@ -192,6 +295,11 @@ export async function runAgent(pool, config, options = {}) {
     },
     errors: [],
   };
+
+  // Phase 1 rejection telemetry (2026-08-25) · per-reason histogram written
+  // into worker_cycle_run.summary.rejected_by_reason. Policy unchanged.
+  const rejectionCounter = createRejectionCounter();
+  let providerErroredCount = 0;
 
   const log = (msg) => { console.log(`  [${config.vertical}] ${msg}`); };
 
@@ -226,6 +334,7 @@ export async function runAgent(pool, config, options = {}) {
       sourceReport.errors.push(err.message);
       audit.errors.push({ source: source.name, phase: "discover", message: err.message });
       audit.counts.errors++;
+      providerErroredCount++;
       log(`  ✗ discover failed: ${err.message}`);
     }
     audit.sources.push(sourceReport);
@@ -239,17 +348,23 @@ export async function runAgent(pool, config, options = {}) {
   for (const c of allCandidates) {
     const match = matchAgainstExisting(c, existing);
     switch (match.kind) {
-      case "unnamed": audit.counts.unnamed++; break;
+      case "unnamed":
+        audit.counts.unnamed++;
+        rejectionCounter.increment(REJECTION_REASONS.MALFORMED);
+        break;
       case "exact":
         audit.counts.matched_exact++;
+        rejectionCounter.increment(REJECTION_REASONS.MATCHED_EXISTING);
         enrichableMatches.push({ candidate: c, existing: match.existing });
         break;
       case "high":
         audit.counts.matched_high++;
+        rejectionCounter.increment(REJECTION_REASONS.MATCHED_EXISTING);
         enrichableMatches.push({ candidate: c, existing: match.existing });
         break;
       case "ambiguous":
         audit.counts.ambiguous++;
+        rejectionCounter.increment(REJECTION_REASONS.MATCHED_EXISTING);
         if (audit.samples.ambiguous.length < 8) {
           audit.samples.ambiguous.push({
             candidateName: c.name,
@@ -289,7 +404,25 @@ export async function runAgent(pool, config, options = {}) {
         }
         for (const m of enrichableMatches) {
           const gain = await source.enrich({ record: { ...m.candidate, existing: m.existing }, config, log });
-          if (gain && Object.keys(gain).length > 0) enrichedCount++;
+          if (gain && Object.keys(gain).length > 0) {
+            enrichedCount++;
+            // Enrichment pivot 2026-08-27 · Chief Architect. Write gain BACK to
+            // the existing row when config supports it. COALESCE semantics ·
+            // NEVER overwrites non-null values · NEVER touches owner_verified
+            // rows (enforced in the SQL). Errors captured in audit.errors ·
+            // never crash the cycle.
+            if (config.persistence?.applyEnrichmentToExisting) {
+              try {
+                const written = await config.persistence.applyEnrichmentToExisting.call(
+                  config, pool, m.existing, gain, { workerId, cycleRunId, sourceName: source.name }
+                );
+                if (written > 0) audit.counts.enrichment_writes_applied = (audit.counts.enrichment_writes_applied ?? 0) + 1;
+              } catch (err) {
+                audit.errors.push({ source: source.name, phase: "enrichment-write", ref: m.existing.public_listing_ref, message: err.message });
+                audit.counts.errors++;
+              }
+            }
+          }
         }
       } catch (err) {
         audit.errors.push({ source: source.name, phase: "enrich", message: err.message });
@@ -309,6 +442,7 @@ export async function runAgent(pool, config, options = {}) {
     c.gateResult = result;
     if (!result.passedContactable) {
       audit.counts.rejected_by_gate++;
+      rejectionCounter.increment(REJECTION_REASONS.CONTACT_MISSING);
       if (audit.samples.rejected.length < 5) {
         audit.samples.rejected.push({ publicRef: c.publicRef, name: c.name, reason: result.reason });
       }
@@ -323,6 +457,10 @@ export async function runAgent(pool, config, options = {}) {
     }
     if (!result.passedEligible) {
       audit.counts.rejected_by_gate++;
+      rejectionCounter.increment(REJECTION_REASONS.INELIGIBLE);
+      if (audit.samples.rejected.length < 5) {
+        audit.samples.rejected.push({ publicRef: c.publicRef, name: c.name, reason: result.reason ?? "ineligible" });
+      }
       continue;
     }
     audit.counts.gate4_eligible++;
@@ -336,24 +474,80 @@ export async function runAgent(pool, config, options = {}) {
   log(`  rejected by any gate: ${audit.counts.rejected_by_gate}`);
   log("");
 
-  // ── Phase E · persist new records to DB (unless dry-run) ──────────────────
-  if (!dryRun) {
-    log(`── PERSIST · inserting ${newRecords.length} new records ──`);
-    let inserted = 0;
+  // ── Phase E · persist new records with STRICT contract ────────────────────
+  // Philip 2026-08-26 persistence contract:
+  //   INSERT with worker_id + cycle_run_id → RETURNING pk → SELECT-verify by pk
+  //   → records_new derived from SELECT COUNT(*) WHERE cycle_run_id=$1
+  //   → invariant: db_count === insert_verified · mismatch = FAILED cycle
+  //   → NO errors_count escape hatch
+  //
+  // Legacy path preserved for verticals not yet on the contract (P5 rollout).
+  if (!dryRun && config.persistence) {
+    log(`── PERSIST · contract mode · ${newRecords.length} candidates ──`);
+    const results = await persistCandidates(pool, newRecords, config, {
+      workerId, cycleRunId,
+    });
+    audit.counts.insert_attempted    = results.insertAttempted;
+    audit.counts.insert_conflicts    = results.conflictSkipped;
+    audit.counts.insert_returned     = results.insertReturned;
+    audit.counts.insert_verified     = results.insertVerified;
+    audit.counts.verification_failed = results.verificationFailed;
+    audit.counts.persist_errors      = results.errors;
+    audit.counts.errors             += results.errors;
+    log(`  attempted=${results.insertAttempted}  returned=${results.insertReturned}  ` +
+        `verified=${results.insertVerified}  conflicts=${results.conflictSkipped}  ` +
+        `verify_failed=${results.verificationFailed}  errors=${results.errors}`);
+    log("");
+  } else if (!dryRun && config.insertNewRecord) {
+    // Legacy path (accommodation/market/transport until P5).
+    // Preserved 2026-08-24 concurrent-safety property: ON CONFLICT DO NOTHING
+    // → only the walker that genuinely created the row gets credit.
+    log(`── PERSIST · legacy mode · ${newRecords.length} candidates ──`);
     for (const c of newRecords) {
       try {
-        const ok = await config.insertNewRecord(pool, c, { jobId, sourceName: c.sourceName });
-        if (ok) inserted++;
+        const ok = await config.insertNewRecord(pool, c, { jobId: cycleRunId, sourceName: c.sourceName });
+        if (ok) audit.counts.records_persisted++;
       } catch (err) {
         audit.errors.push({ phase: "persist", ref: c.publicRef, message: err.message });
         audit.counts.errors++;
       }
     }
-    log(`  inserted: ${inserted} / ${newRecords.length}`);
+    log(`  inserted: ${audit.counts.records_persisted} / ${newRecords.length}`);
     log("");
-  } else {
+  } else if (dryRun) {
     log(`── PERSIST · SKIPPED (dry-run) ──`);
     log(`  would insert ${newRecords.length} new records`);
+    log("");
+  }
+
+  // ── Strict invariant · DB is source of truth ──────────────────────────────
+  // Philip 2026-08-26: records_new = COUNT(destination WHERE cycle_run_id=$1)
+  // ALWAYS. Any mismatch = FAILED cycle. NO errors_count escape hatch.
+  if (!dryRun && config.persistence && cycleRunId) {
+    const q = await pool.query(
+      `SELECT COUNT(*)::int AS n FROM ${config.persistence.destinationTable}
+       WHERE cycle_run_id = $1`,
+      [cycleRunId]
+    );
+    const recordsNewFromDb = q.rows[0].n;
+    audit.counts.records_new_from_db = recordsNewFromDb;
+    audit.counts.records_persisted    = recordsNewFromDb;   // DB truth wins
+
+    const verified = audit.counts.insert_verified ?? 0;
+    const invariantHeld = recordsNewFromDb === verified;
+
+    audit.persistenceInvariant = {
+      held: invariantHeld,
+      db_count: recordsNewFromDb,
+      insert_verified: verified,
+      delta: verified - recordsNewFromDb,
+    };
+    if (!invariantHeld) {
+      audit.persistenceInvariantFailed = true;
+      log(`  ✗ INVARIANT FAILED · db_count=${recordsNewFromDb} · insert_verified=${verified}`);
+    } else {
+      log(`  ✓ INVARIANT HELD · db_count=${recordsNewFromDb} · insert_verified=${verified}`);
+    }
     log("");
   }
 
@@ -366,6 +560,20 @@ export async function runAgent(pool, config, options = {}) {
   }
 
   audit.finishedAt = new Date().toISOString();
+
+  // Phase 1 rejection telemetry · fold histogram + cycle-outcome bucket into audit
+  // so run-live-cycle.mjs can lift both into worker_cycle_run.summary.
+  audit.counts.rejected_by_reason = rejectionCounter.toObject();
+  // Prefer DB-truth (records_new_from_db) when persistence contract is active;
+  // fall back to records_persisted (legacy counter) for legacy-path verticals.
+  audit.cycle_outcome = computeCycleOutcome({
+    recordsProcessed: allCandidates.length,
+    recordsNew:       audit.counts.records_new_from_db ?? audit.counts.records_persisted,
+    recordsRejected:  audit.counts.rejected_by_gate,
+    matchedExisting:  audit.counts.matched_exact + audit.counts.matched_high + audit.counts.ambiguous,
+    providerReturned: audit.counts.discovered,
+    providerErrored:  providerErroredCount,
+  });
 
   const reportPath = await writeReport(audit);
   log(`── AUDIT REPORT WRITTEN ──`);

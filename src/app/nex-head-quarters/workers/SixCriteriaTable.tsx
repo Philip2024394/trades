@@ -9,7 +9,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import type { CriteriaKey, CriterionResult, SixCriteriaVerdict, WorkerEvaluation } from "@/lib/nex/hq/worker-criteria";
 
 const VERDICT_STYLE: Record<SixCriteriaVerdict, { glyph: string; bg: string; text: string; border: string; label: string }> = {
@@ -71,9 +71,8 @@ export default function SixCriteriaTable({ workers }: SixCriteriaTableProps) {
             const style = VERDICT_STYLE[w.verdict];
             const expanded = expandedId === w.worker_id;
             return (
-              <>
+              <Fragment key={w.worker_id}>
                 <tr
-                  key={w.worker_id}
                   onClick={() => setExpandedId(expanded ? null : w.worker_id)}
                   style={{ cursor: "pointer", background: expanded ? "var(--nex-neutral-50, var(--nex-neutral-100))" : "transparent" }}
                 >
@@ -106,13 +105,13 @@ export default function SixCriteriaTable({ workers }: SixCriteriaTableProps) {
                   <td style={{ ...tdStyle, fontSize: 12, color: "var(--nex-neutral-700)", maxWidth: 320 }}>{w.verdict_reason}</td>
                 </tr>
                 {expanded && (
-                  <tr key={w.worker_id + "-detail"}>
+                  <tr>
                     <td colSpan={CRITERIA_ORDER.length + 3} style={detailCellStyle}>
                       <EvidenceDetail evaluation={w} />
                     </td>
                   </tr>
                 )}
-              </>
+              </Fragment>
             );
           })}
         </tbody>

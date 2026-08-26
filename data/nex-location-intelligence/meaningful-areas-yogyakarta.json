@@ -1,0 +1,97 @@
+{
+  "$schema": "meaningful-area-registry-v0.2",
+  "description": "NEX Location Intelligence · meaningful areas for Yogyakarta laboratory · v0.2 · adds area_kind semantic distinction (neighbourhood / corridor / belt / fallback) per project_nex_location_area_kind_semantic_doctrine_2026_08_23 · centroids and radii validated 2026-08-23.",
+  "doctrine": [
+    "project_nex_location_intelligence_2026_08_23",
+    "project_nex_location_area_kind_semantic_doctrine_2026_08_23"
+  ],
+  "country": "ID",
+  "city": "Yogyakarta",
+  "validation_note_2026_08_23": "Kaliurang low food-match count (5) confirmed as truthful — resort belt has in-house dining · not a data/geography issue. Malioboro and Prawirotaman circles do not overlap (centroids 2.3 km apart at 0.8 km radius each). Yogya-city-core radius 3km overlaps with both but is fallback-only precedence so does not steal assignments. Centroids adjusted to public-known midpoints where minor discrepancies existed.",
+  "areas": [
+    {
+      "area_id": "malioboro",
+      "name": "Malioboro",
+      "area_kind": "neighbourhood",
+      "precedence": 1,
+      "centroid_lat": -7.7925,
+      "centroid_lng": 110.3660,
+      "radius_km": 0.8,
+      "character_tags": ["busy", "shopping", "cultural", "evening-energy", "tourist-oriented", "walkable", "pedestrian-friendly"],
+      "description": "Yogyakarta city-centre shopping/tourism strip · pedestrian-heavy · high evening activity · tourist-central. Circle covers Malioboro Street from Tugu Station south to Vredeburg Fort + Beringharjo Market area.",
+      "brain_phrasing_hint": "in the Malioboro neighbourhood (or 'Malioboro area')",
+      "source": "philip_2026_08_23_seed",
+      "provenance": { "seed_version": "v0.2", "confidence": "philip-approved" }
+    },
+    {
+      "area_id": "prawirotaman",
+      "name": "Prawirotaman",
+      "area_kind": "neighbourhood",
+      "precedence": 1,
+      "centroid_lat": -7.8135,
+      "centroid_lng": 110.3670,
+      "radius_km": 0.8,
+      "character_tags": ["relaxed", "social", "restaurants", "nightlife", "backpacker-friendly", "cafes", "walkable", "expat-friendly"],
+      "description": "South Yogyakarta backpacker + expat district · dense café + restaurant + nightlife cluster · walkable evening area.",
+      "brain_phrasing_hint": "in the Prawirotaman neighbourhood",
+      "source": "philip_2026_08_23_seed",
+      "provenance": { "seed_version": "v0.2", "confidence": "philip-approved" }
+    },
+    {
+      "area_id": "kaliurang",
+      "name": "Kaliurang",
+      "area_kind": "belt",
+      "precedence": 2,
+      "centroid_lat": -7.5960,
+      "centroid_lng": 110.4250,
+      "radius_km": 3.0,
+      "character_tags": ["cooler", "nature", "quieter", "mountain-atmosphere", "resort-belt", "villa-suitable"],
+      "description": "Merapi slopes north of Yogyakarta · villa + resort belt · nature-adjacent · cooler climate. Radius kept at 3 km after validation — low food density confirmed as truthful (resorts have in-house dining) not a geographic error.",
+      "brain_phrasing_hint": "in the Kaliurang belt (or 'Kaliurang mountain area')",
+      "source": "philip_2026_08_23_seed",
+      "provenance": { "seed_version": "v0.2", "confidence": "philip-approved · low food density is truthful" }
+    },
+    {
+      "area_id": "borobudur",
+      "name": "Borobudur approach",
+      "area_kind": "corridor",
+      "precedence": 2,
+      "centroid_lat": -7.6079,
+      "centroid_lng": 110.2038,
+      "radius_km": 3.0,
+      "character_tags": ["temple", "tourism", "quiet-outside-peak", "nature-adjacent", "outside-DIY"],
+      "description": "Borobudur temple approach corridor · Magelang regency (Central Java · outside DIY) · tourism-adjacent hospitality cluster around the temple.",
+      "brain_phrasing_hint": "in the Borobudur corridor / a convenient base for visiting Borobudur Temple",
+      "source": "philip_2026_08_23_seed",
+      "provenance": { "seed_version": "v0.2", "confidence": "philip-approved" }
+    },
+    {
+      "area_id": "prambanan",
+      "name": "Prambanan approach",
+      "area_kind": "corridor",
+      "precedence": 2,
+      "centroid_lat": -7.7521,
+      "centroid_lng": 110.4914,
+      "radius_km": 3.0,
+      "character_tags": ["temple", "tourism", "east-sleman", "rural", "cultural"],
+      "description": "Prambanan temple approach corridor · east Sleman regency · rural + tourism · convenient base for temple visits.",
+      "brain_phrasing_hint": "in the Prambanan corridor / a convenient base for visiting Prambanan Temple",
+      "source": "philip_2026_08_23_seed",
+      "provenance": { "seed_version": "v0.2", "confidence": "philip-approved" }
+    },
+    {
+      "area_id": "yogya-city-core",
+      "name": "Yogyakarta city",
+      "area_kind": "fallback",
+      "precedence": 99,
+      "centroid_lat": -7.8014,
+      "centroid_lng": 110.3644,
+      "radius_km": 3.0,
+      "character_tags": ["urban", "varied", "central", "fallback"],
+      "description": "Wider Yogyakarta urban catch-all · fallback for coords inside the city that don't match a more specific meaningful area. Precedence 99 means this is only assigned when no neighbourhood/corridor/belt matches.",
+      "brain_phrasing_hint": "in the wider Yogyakarta area / in the Yogyakarta city core",
+      "source": "philip_2026_08_23_seed",
+      "provenance": { "seed_version": "v0.2", "confidence": "fallback-role-locked" }
+    }
+  ]
+}

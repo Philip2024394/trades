@@ -1,0 +1,51 @@
+{
+  "jobId": "ebcbc389-d7b7-4ace-8e8b-92369a7b3708",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Denpasar",
+  "bbox": {
+    "sw": [
+      -8.75,
+      115.14
+    ],
+    "ne": [
+      -8.6,
+      115.28
+    ],
+    "scope": "Denpasar · Bali"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-24T12:57:11.594Z",
+  "finishedAt": "2026-08-24T13:10:43.060Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 2521,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 2521,
+    "matched_exact": 2521,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "records_persisted": 0,
+    "enriched": 76,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 0
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": []
+}

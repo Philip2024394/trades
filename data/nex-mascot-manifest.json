@@ -1,0 +1,16 @@
+{
+  "$schema": "./nex-mascot-manifest.schema.md",
+  "version": 1,
+  "generated": "2026-08-27",
+  "_note": "AUGMENTATION ONLY. Mascot identity lives in src/lib/nex-actions/registry.ts (NEX_ACTIONS). Rows here layer optional theme-recommendation tags / featured pins / extra tags for search. See public/nex/mascots/README.md.",
+  "mascots": [
+    { "id": "nex-love",     "recommendedThemes": ["pink-metal"], "extraTags": ["pink", "cute", "girl-theme", "soft"], "recommendedTagsMatch": ["pink", "cute"], "featured": true },
+    { "id": "nex-laugh",    "recommendedThemes": ["titanium"],   "extraTags": ["playful", "happy"] },
+    { "id": "nex-approve",  "recommendedThemes": ["titanium"],   "extraTags": ["confident", "clean"] },
+    { "id": "nex-boss",     "recommendedThemes": ["gold"],       "extraTags": ["luxury", "regal", "warm"], "recommendedTagsMatch": ["luxury"], "featured": true },
+    { "id": "nex-cool",     "recommendedThemes": ["titanium"],   "extraTags": ["cool", "chill", "tech"] },
+    { "id": "date",         "recommendedThemes": ["pink-metal"], "extraTags": ["romance", "candlelit", "pink"] },
+    { "id": "weather",      "recommendedThemes": ["titanium"],   "extraTags": ["utility"] },
+    { "id": "currency",     "recommendedThemes": ["gold"],       "extraTags": ["luxury", "premium"] }
+  ]
+}

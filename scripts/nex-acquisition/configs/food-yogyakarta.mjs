@@ -239,6 +239,196 @@ export const foodYogyakartaConfig = {
   ],
   killSwitchEngaged: false,
 
+  // ── Persistence contract 2026-08-26 · Philip's production launch directive ──
+  // Engine owns the CONTRACT (verify, invariant). Config owns the STRUCTURE
+  // (table shape, INSERT column list, per-vertical side-writes).
+  // Doctrine anchor: project_nex_walker_production_launch_directive_2026_08_26.
+  persistence: {
+    destinationTable: "nex.food_business",
+    primaryKeyColumn: "internal_id",
+
+    // Returns { sql, values } for a single INSERT with worker_id + cycle_run_id
+    // stamped. Engine calls with `this` bound to the outer config so
+    // this.city / this.country resolve normally.
+    buildInsert(candidate, { workerId, cycleRunId, sourceName }) {
+      const secondaryCategories = Array.isArray(candidate.categories) ? candidate.categories : [];
+      return {
+        sql: `INSERT INTO nex.food_business (
+                public_listing_ref, business_name, category, categories, address, city,
+                coordinates_lng, coordinates_lat,
+                whatsapp_number, phone, website,
+                source, source_reference, source_ingested_at, source_licence_terms,
+                source_updated_at, last_verified_at, verification_source,
+                dedupe_hash, claim_status, owner_status, created_by, country,
+                worker_id, cycle_run_id
+              ) VALUES (
+                $1, $2, $3, $4::text[], $5, $6, $7, $8, $9, $10, $11,
+                $12, $13, now(), $14,
+                $15, $16, $17,
+                $18, 'discovered', 'unknown', $19, $20,
+                $21, $22
+              )
+              ON CONFLICT DO NOTHING
+              RETURNING internal_id`,
+        values: [
+          candidate.publicRef, candidate.name, candidate.category, secondaryCategories,
+          candidate.address, this.city,
+          candidate.lng, candidate.lat,
+          candidate.whatsapp, candidate.phone, candidate.website,
+          candidate.sourceType, candidate.sourceReference, candidate.sourceLicenceTerms,
+          candidate.sourceUpdatedAt ?? null,
+          candidate.lastVerifiedAt ?? null,
+          candidate.verificationSource ?? null,
+          candidate.dedupeHash,
+          `agent:universal-acquisition:${sourceName}:${cycleRunId}`,
+          this.country,
+          workerId,           // $21 · persistence contract
+          cycleRunId,         // $22 · persistence contract
+        ],
+      };
+    },
+
+    // Snapshot + provenance side-writes · fired only after INSERT+verify succeed.
+    // Preserves the Task #85 (raw OSM payload), Task #53 (per-field OSM provenance),
+    // Task #74 (cycle_run_id on provenance rows) semantics from the legacy path.
+    // Enrichment pivot 2026-08-27 · Chief Architect · fills NULL fields on
+    // EXISTING rows using data extracted from business_website source.
+    // COALESCE semantics · never overwrites non-null · owner_status='verified'
+    // rows protected in the WHERE clause (Discovery ≠ Outreach doctrine ·
+    // owner_verified fields must NEVER be modified by walkers).
+    //
+    // Image extraction pivot 2026-08-27 (added same day · narrowly scoped):
+    // If gain.image_url present, write to universal nex.business_image
+    // (VERIFIED_REAL · approved=false · owner-review gate) AND COALESCE the
+    // denormalised hero_image_url on food_business (fast lookup for HQ).
+    // Never overwrites existing image · ON CONFLICT DO NOTHING on business_image.
+    //
+    // Returns total rowCount across all writes (engine.mjs counts >0 as one applied write).
+    async applyEnrichmentToExisting(pool, existing, gain, { workerId, cycleRunId, sourceName }) {
+      const socials = (gain.instagram || gain.facebook)
+        ? { instagram: gain.instagram ?? null, facebook: gain.facebook ?? null }
+        : null;
+      let totalWrites = 0;
+
+      const textUpdate = await pool.query(
+        `UPDATE nex.food_business SET
+           phone               = COALESCE(phone, $1),
+           whatsapp_number     = COALESCE(whatsapp_number, $2),
+           public_social_links = COALESCE(public_social_links, $3::jsonb),
+           last_verified_at    = now(),
+           verification_source = COALESCE(verification_source, 'official_website'),
+           updated_at          = now()
+         WHERE public_listing_ref = $4
+           AND owner_status != 'verified'
+         RETURNING internal_id`,
+        [
+          gain.phone ?? null,
+          gain.whatsapp ?? null,
+          socials ? JSON.stringify(socials) : null,
+          existing.public_listing_ref,
+        ]
+      );
+      totalWrites += textUpdate.rowCount;
+
+      // Image write-back · only if we found a legitimate image on the own site.
+      if (gain.image_url) {
+        const provenance = {
+          source_url:    gain._sourceReference ?? null,
+          method:        gain.image_source_method ?? "unknown",
+          extracted_at:  new Date().toISOString(),
+          worker_id:     workerId,
+          cycle_run_id:  cycleRunId,
+        };
+        // Universal image system · state=VERIFIED_REAL · approved=false so an
+        // admin/owner review must gate publication (Universal Image Doctrine).
+        const imgInsert = await pool.query(
+          `INSERT INTO nex.business_image (
+             business_type, business_country, business_ref, image_type,
+             url, source, provenance, confidence, cycle_run_id, approved, owner_approved
+           ) VALUES (
+             'food', 'ID', $1, 'VERIFIED_REAL',
+             $2, 'official_website', $3::jsonb, 0.8, $4, false, false
+           )
+           ON CONFLICT (business_type, business_country, business_ref, image_type) DO NOTHING
+           RETURNING id`,
+          [existing.public_listing_ref, gain.image_url, JSON.stringify(provenance), cycleRunId]
+        );
+        totalWrites += imgInsert.rowCount;
+
+        // COALESCE-UPDATE denormalised hero_image_url on food_business row.
+        // Fast-lookup for directory rendering. NEVER overwrites existing image.
+        // hero_image_approved stays false · UI treats as advisory until admin gate.
+        const heroUpdate = await pool.query(
+          `UPDATE nex.food_business SET
+             hero_image_url        = COALESCE(hero_image_url, $1),
+             hero_image_source     = COALESCE(hero_image_source, 'official_website'),
+             hero_image_provenance = COALESCE(hero_image_provenance, $2::jsonb),
+             updated_at            = now()
+           WHERE public_listing_ref = $3
+             AND owner_status != 'verified'
+             AND hero_image_url IS NULL
+           RETURNING internal_id`,
+          [gain.image_url, JSON.stringify(provenance), existing.public_listing_ref]
+        );
+        totalWrites += heroUpdate.rowCount;
+      }
+
+      return totalWrites;
+    },
+
+    async writeSideEffects(pool, candidate, { workerId, cycleRunId, sourceName, primaryKeyValue }) {
+      // Raw OSM snapshot (Priority 2 · 2026-08-23) · food-parity with accommodation Task #89.
+      const rawTags = candidate.rawTags ?? {};
+      await pool.query(
+        `INSERT INTO ${this.tables.snapshot}
+           (business_ref, source, source_reference, source_ingested_at,
+            source_licence_terms, raw_payload, ingested_by)
+         VALUES ($1, $2, $3, now(), $4, $5::jsonb, $6)`,
+        [
+          candidate.publicRef,
+          candidate.sourceType,
+          candidate.sourceReference,
+          candidate.sourceLicenceTerms ?? "ODbL-1.0",
+          JSON.stringify({
+            tags: rawTags,
+            osmId: candidate.osmId ?? null,
+            lat: candidate.lat,
+            lng: candidate.lng,
+            cycle_run_id: cycleRunId,
+          }),
+          `agent:universal-acquisition:${sourceName}`,
+        ],
+      );
+
+      // Per-field provenance (Task #53 · Task #74 · cycle_run_id stamped).
+      const provenanceFields = [];
+      provenanceFields.push(["business_name"]);
+      provenanceFields.push(["category"]);
+      if (candidate.address)         provenanceFields.push(["address"]);
+      if (candidate.lat != null)     provenanceFields.push(["coordinates_lat"]);
+      if (candidate.lng != null)     provenanceFields.push(["coordinates_lng"]);
+      if (candidate.phone)           provenanceFields.push(["phone"]);
+      if (candidate.whatsapp)        provenanceFields.push(["whatsapp_number"]);
+      if (candidate.website)         provenanceFields.push(["website"]);
+
+      const writtenBy = `agent:universal-acquisition:${sourceName}`;
+      const sourceRef = candidate.sourceReference ?? null;
+      for (const [fieldName] of provenanceFields) {
+        await pool.query(
+          `INSERT INTO ${this.tables.provenance}
+             (business_ref, field_name, trust_layer, written_at, written_by, source_reference, cycle_run_id)
+           VALUES ($1, $2, 'source_import', now(), $3, $4, $5)
+           ON CONFLICT (business_ref, field_name) DO NOTHING`,
+          [candidate.publicRef, fieldName, writtenBy, sourceRef, cycleRunId]
+        );
+      }
+    },
+  },
+
+  // ── LEGACY insertNewRecord · superseded by persistence block above ──────
+  // Retained temporarily for any caller still using the old signature.
+  // Engine branches on config.persistence FIRST, so this is dead code on the
+  // food path. Will be removed after P5 rolls the contract to all verticals.
   async insertNewRecord(pool, candidate, { jobId, sourceName }) {
     // Freshness doctrine (Philip 2026-08-21): capture source_updated_at +
     // last_verified_at at insert time. Freshness is derived from evidence,
@@ -280,6 +470,52 @@ export const foodYogyakartaConfig = {
       ]
     );
     if (ins.rowCount === 0) return false;
+
+    // 2026-08-23 · Priority 2 (Philip greenlight · food Walker raw-tag preservation).
+    // Preserve raw OSM payload in snapshot table, matching the accommodation Walker's
+    // Task #89 pattern. This closes the food-snapshot architecture gap discovered in
+    // the 2026-08-23 Walker Intelligence Audit — historically food snapshots existed
+    // in flat/typed form (never containing raw OSM tags), so Path A re-parse could
+    // not recover the OSM richness (description · brand · operator · wikidata etc.)
+    // for food rows. From this cycle forward, every new food discovery preserves the
+    // raw OSM tags in the same {lat, lng, tags, osmId} shape accommodation uses.
+    //
+    // Existing 806 flat-format food snapshots are UNCHANGED (backfill is Priority 3).
+    // Dedupe (ON CONFLICT DO NOTHING above) means this only fires for genuinely new
+    // discoveries · not repeat OSM tags for businesses already in the database.
+    //
+    // Doctrine:
+    //   · Walker remains pure acquisition (no scoring · no decision · no ranking)
+    //   · Snapshot IS the raw evidence · never modified after write
+    //   · Provenance chain preserved via source_reference + cycle_run_id
+    //
+    // Schema note (verified 2026-08-23 during Priority 3 smoke test):
+    // nex.food_business_source_snapshot uses source_ingested_at +
+    // source_licence_terms + ingested_by (NOT captured_at + cycle_run_id like
+    // accommodation). Same intent · different columns. cycle_run_id from jobId
+    // is retained in the raw_payload jsonb for provenance rather than a typed
+    // column since food's snapshot schema pre-dates cycle_run_id preservation.
+    const rawTags = candidate.rawTags ?? {};
+    await pool.query(
+      `INSERT INTO ${this.tables.snapshot}
+         (business_ref, source, source_reference, source_ingested_at,
+          source_licence_terms, raw_payload, ingested_by)
+       VALUES ($1, $2, $3, now(), $4, $5::jsonb, $6)`,
+      [
+        candidate.publicRef,
+        candidate.sourceType,
+        candidate.sourceReference,
+        candidate.sourceLicenceTerms ?? "ODbL-1.0",
+        JSON.stringify({
+          tags: rawTags,
+          osmId: candidate.osmId ?? null,
+          lat: candidate.lat,
+          lng: candidate.lng,
+          cycle_run_id: jobId ?? null,   // preserved in payload since schema lacks column
+        }),
+        `agent:universal-acquisition:${sourceName}`,
+      ],
+    );
 
     // Task #53 · Per-field OSM provenance on initial insert.
     // Trust hierarchy (nex_food_field_trust enum · verified 2026-08-22):

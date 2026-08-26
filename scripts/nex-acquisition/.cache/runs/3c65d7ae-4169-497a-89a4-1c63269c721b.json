@@ -1,0 +1,57 @@
+{
+  "jobId": "3c65d7ae-4169-497a-89a4-1c63269c721b",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Yogyakarta",
+  "bbox": {
+    "sw": [
+      -7.95,
+      110.3
+    ],
+    "ne": [
+      -7.86,
+      110.4
+    ]
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-23T16:11:02.912Z",
+  "finishedAt": "2026-08-23T16:12:49.738Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 0,
+      "errors": [
+        "https://overpass.private.coffee/api/interpreter: 500"
+      ]
+    }
+  ],
+  "counts": {
+    "discovered": 0,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "enriched": 0,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 1
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": [
+    {
+      "source": "osm_overpass",
+      "phase": "discover",
+      "message": "https://overpass.private.coffee/api/interpreter: 500"
+    }
+  ]
+}

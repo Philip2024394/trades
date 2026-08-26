@@ -74,10 +74,11 @@ async function main() {
         l.computed_at                 AS score_computed_at,
         l.computed_by                 AS score_computed_by,
         (SELECT jsonb_agg(jsonb_build_object(
-                  'annotator',    a.annotator,
-                  'verdict',      a.verdict,
-                  'reason',       a.reason,
-                  'annotated_at', a.annotated_at))
+                  'annotator',         a.annotator,
+                  'verdict',           a.verdict,
+                  'reason',            a.reason,
+                  'annotated_at',      a.annotated_at,
+                  'candidate_snapshot', a.candidate_snapshot))
            FROM nex.category_candidate_calibration_annotation a
           WHERE a.candidate_id = c.id
           ORDER BY 1)                 AS annotations
@@ -88,13 +89,25 @@ async function main() {
 
   const rows = rowsRes.rows;
 
+  // Orphaned annotations · candidate_id IS NULL because the candidate
+  // was deleted but annotations survived (migration 086 · SET NULL +
+  // candidate_snapshot). These preserve NEX's learning history forever.
+  const orphanRes = await pool.query(
+    `SELECT id, annotator, verdict, reason, annotated_at, candidate_snapshot
+       FROM nex.category_candidate_calibration_annotation
+      WHERE candidate_id IS NULL
+      ORDER BY annotated_at DESC
+      LIMIT 200`,
+  );
+  const orphans = orphanRes.rows;
+
   if (minCandidatesArg > 0 && rows.length < minCandidatesArg) {
     console.error(`Only ${rows.length} candidates in DB · need ≥ ${minCandidatesArg}. Bailing.`);
     await pool.end();
     process.exit(2);
   }
 
-  const md = buildMarkdown(rows);
+  const md = buildMarkdown(rows, orphans);
 
   if (outArg) {
     writeFileSync(outArg, md, "utf8");
@@ -106,7 +119,7 @@ async function main() {
   await pool.end();
 }
 
-function buildMarkdown(rows) {
+function buildMarkdown(rows, orphans = []) {
   const now = new Date().toISOString();
   const tiers = { HIGH: 0, MEDIUM: 0, LOW: 0, UNSCORED: 0 };
   for (const r of rows) {
@@ -277,6 +290,23 @@ function buildMarkdown(rows) {
     if (disagreeCount > 0) {
       lines.push(``);
       lines.push(`**Disagreements deserve inspection — those are the calibration signal.**`);
+    }
+    lines.push(``);
+  }
+
+  // Orphaned annotations · candidate row was deleted but the annotation
+  // survived (migration 086 SET NULL + snapshot). This is NEX's learning
+  // history · it must remain visible even after candidate cleanup.
+  if (orphans.length > 0) {
+    lines.push(`## Orphaned annotations · history preserved`);
+    lines.push(``);
+    lines.push(`These candidates were deleted from \`nex.category_candidate\` but the annotator's verdict was preserved via the snapshot column (migration 086).`);
+    lines.push(``);
+    lines.push(`| Annotator | Verdict | Snapshot id | Vertical | Business × Cycles | Reason | When |`);
+    lines.push(`|---|---|---|---|---|---|---|`);
+    for (const o of orphans) {
+      const s = o.candidate_snapshot ?? {};
+      lines.push(`| \`${o.annotator}\` | ${tierEmoji(o.verdict)} **${o.verdict}** | \`${s.proposed_category_id ?? "(unknown)"}\` | ${s.suggested_parent_vertical ?? "?"} | ${s.business_count ?? "?"} × ${s.cycle_count ?? "?"} | ${o.reason ?? "_(none)_"} | ${o.annotated_at ? new Date(o.annotated_at).toISOString() : "—"} |`);
     }
     lines.push(``);
   }

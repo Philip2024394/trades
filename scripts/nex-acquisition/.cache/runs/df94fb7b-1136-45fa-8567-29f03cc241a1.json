@@ -1,0 +1,50 @@
+{
+  "jobId": "df94fb7b-1136-45fa-8567-29f03cc241a1",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Yogyakarta",
+  "bbox": {
+    "sw": [
+      -7.625,
+      110.19
+    ],
+    "ne": [
+      -7.59,
+      110.225
+    ],
+    "scope": "Borobudur temple approach · Magelang regency (Central Java · OUTSIDE DIY) · tourism-adjacent"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-23T19:41:32.921Z",
+  "finishedAt": "2026-08-23T19:41:32.954Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 34,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 34,
+    "matched_exact": 34,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "enriched": 0,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 0
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": []
+}

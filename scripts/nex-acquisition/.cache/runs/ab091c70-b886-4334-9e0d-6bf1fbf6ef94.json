@@ -1,0 +1,177 @@
+{
+  "jobId": "ab091c70-b886-4334-9e0d-6bf1fbf6ef94",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Bantul",
+  "bbox": {
+    "sw": [
+      -8.02,
+      110.28
+    ],
+    "ne": [
+      -7.83,
+      110.48
+    ],
+    "scope": "Bantul regency · DIY · south of Kota Yogyakarta"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-23T19:50:47.829Z",
+  "finishedAt": "2026-08-23T19:50:58.760Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 26,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 26,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 26,
+    "enriched": 0,
+    "gate3_contactable": 5,
+    "gate4_eligible": 5,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 5,
+    "rejected_by_gate": 21,
+    "errors": 0
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#AC-2026-000XN",
+        "name": "Ros In Hotel",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000XP",
+        "name": "Yabbiekayu",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000XQ",
+        "name": "Rumah Antonius Wijaya",
+        "category": "guesthouse",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000XR",
+        "name": "Giyatna",
+        "category": "guesthouse",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000XS",
+        "name": "Rumah Senjakala",
+        "category": "guesthouse",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000XT",
+        "name": "The Sawah",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000XV",
+        "name": "Blue Steps",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000XW",
+        "name": "Blue Garden",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [
+      {
+        "publicRef": "#AC-2026-000XP",
+        "name": "Yabbiekayu",
+        "whatsapp": null,
+        "phone": "+62 274 6463434",
+        "website": "https://www.yabbiekayu.com/"
+      },
+      {
+        "publicRef": "#AC-2026-000XS",
+        "name": "Rumah Senjakala",
+        "whatsapp": null,
+        "phone": "+6281225696099",
+        "website": "https://facebook.com/rumahsenjakala"
+      },
+      {
+        "publicRef": "#AC-2026-000Y0",
+        "name": "Filistay Homestay",
+        "whatsapp": null,
+        "phone": "+62 851-0181-9925",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-000Y4",
+        "name": "Puri Ganjuran",
+        "whatsapp": "+62 897-7348-666",
+        "phone": "+62 897-7348-666",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-000Y9",
+        "name": "Tembi Rumah Budaya",
+        "whatsapp": null,
+        "phone": "+62 274 368000",
+        "website": "https://tembi.net/"
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#AC-2026-000XN",
+        "name": "Ros In Hotel",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-000XQ",
+        "name": "Rumah Antonius Wijaya",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-000XR",
+        "name": "Giyatna",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-000XT",
+        "name": "The Sawah",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-000XV",
+        "name": "Blue Steps",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": []
+}

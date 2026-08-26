@@ -1,0 +1,68 @@
+{
+  "jobId": "537da9e3-67d5-4601-a1a9-a4e22ee78914",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Yogyakarta",
+  "bbox": {
+    "sw": [
+      -7.78,
+      110.45
+    ],
+    "ne": [
+      -7.74,
+      110.5
+    ]
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-23T17:13:16.699Z",
+  "finishedAt": "2026-08-23T17:13:27.093Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 135,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 135,
+    "matched_exact": 126,
+    "matched_high": 6,
+    "ambiguous": 3,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "enriched": 3,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 0
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [
+      {
+        "candidateName": "Warung Makan Keluarga",
+        "existingName": "warung makan",
+        "existingRef": "#FL-2026-0006H",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Sate Kambing Ngebruk",
+        "existingName": "Kambing Sate",
+        "existingRef": "#FL-2026-0009M",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Sop Ayam Pak Mim Klaten",
+        "existingName": "Sop Ayam Pak Min Klaten",
+        "existingRef": "#FL-2026-000EQ",
+        "score": "0.600"
+      }
+    ],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": []
+}

@@ -1,0 +1,199 @@
+{
+  "jobId": "20ea1c3a-4a8e-4d6c-bc20-1250e5256ffb",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Bandung",
+  "bbox": {
+    "sw": [
+      -7,
+      107.53
+    ],
+    "ne": [
+      -6.85,
+      107.75
+    ],
+    "scope": "Bandung · West Java"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-24T11:03:05.863Z",
+  "finishedAt": "2026-08-24T11:12:28.296Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 2118,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 2118,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 2118,
+    "records_persisted": 0,
+    "enriched": 17,
+    "gate3_contactable": 84,
+    "gate4_eligible": 84,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 84,
+    "rejected_by_gate": 2034,
+    "errors": 0
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#FL-2026-0026R",
+        "name": "Terazza",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-0026S",
+        "name": "Inti Laut",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-0026T",
+        "name": "Grace",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-0026V",
+        "name": "Tomodachi",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-0026W",
+        "name": "Suis Butcher Steak House",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-0026X",
+        "name": "Ikan Bakar Pak Chi Met",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-0026Y",
+        "name": "Ikan Bakar Cianjur",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-0026Z",
+        "name": "Ny. Suharti",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [
+      {
+        "publicRef": "#FL-2026-0027B",
+        "name": "Bumi Sangkuriang",
+        "whatsapp": null,
+        "phone": "+62 22 2032661",
+        "website": "https://bumi-sangkuriang.business.site/"
+      },
+      {
+        "publicRef": "#FL-2026-0027J",
+        "name": "Barbar Wing's",
+        "whatsapp": "+6285624478749",
+        "phone": "+6285624478749",
+        "website": "https://barbarwings.wordpress.com/"
+      },
+      {
+        "publicRef": "#FL-2026-0027V",
+        "name": "Itenas Bandung",
+        "whatsapp": "+6282216127225",
+        "phone": "+62227272215",
+        "website": "https://www.itenas.ac.id/"
+      },
+      {
+        "publicRef": "#FL-2026-0028G",
+        "name": "Starbucks",
+        "whatsapp": null,
+        "phone": "+62 22 2061102",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-0028J",
+        "name": "Mako",
+        "whatsapp": null,
+        "phone": "+62 22 2061097",
+        "website": "https://www.breadtalk.com/en/"
+      },
+      {
+        "publicRef": "#FL-2026-0028K",
+        "name": "J.Co.",
+        "whatsapp": null,
+        "phone": "+62 22 2060991",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-0028Q",
+        "name": "KFC",
+        "whatsapp": null,
+        "phone": "+62 22 2061060",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-0029K",
+        "name": "Warung Nasi Kang EWOK",
+        "whatsapp": null,
+        "phone": "+62 22 6038783; +62 22 92035359",
+        "website": null
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#FL-2026-0026R",
+        "name": "Terazza",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-0026S",
+        "name": "Inti Laut",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-0026T",
+        "name": "Grace",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-0026V",
+        "name": "Tomodachi",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-0026W",
+        "name": "Suis Butcher Steak House",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": []
+}

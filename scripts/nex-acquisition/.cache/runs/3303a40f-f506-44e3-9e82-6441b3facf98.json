@@ -1,0 +1,59 @@
+{
+  "jobId": "3303a40f-f506-44e3-9e82-6441b3facf98",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Denpasar",
+  "bbox": {
+    "sw": [
+      -8.75,
+      115.14
+    ],
+    "ne": [
+      -8.6,
+      115.28
+    ],
+    "scope": "Denpasar · Bali"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-24T10:49:05.844Z",
+  "finishedAt": "2026-08-24T10:49:06.127Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 0,
+      "errors": [
+        "Release called on client which has already been released to the pool."
+      ]
+    }
+  ],
+  "counts": {
+    "discovered": 0,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "records_persisted": 0,
+    "enriched": 0,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 1
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": [
+    {
+      "source": "osm_overpass",
+      "phase": "discover",
+      "message": "Release called on client which has already been released to the pool."
+    }
+  ]
+}

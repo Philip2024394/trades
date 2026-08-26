@@ -76,8 +76,15 @@ function BusinessCardTile({ card }: { card: BusinessCard }) {
       style={{
         flex: "0 0 156px",
         scrollSnapAlign: "start",
-        background: NEX.bgSurface,
-        border: `1px solid ${NEX.borderMuted}`,
+        // 2026-08-24 · Philip · frosted BLACK glass to match chat bubbles.
+        // Same material system (dark translucent + backdrop blur + subtle
+        // white edge + inset highlight + outer shadow) so cards + bubbles
+        // read as one design language on the artwork background.
+        background: "rgba(0, 0, 0, 0.38)",
+        backdropFilter: "blur(18px) saturate(1.2)",
+        WebkitBackdropFilter: "blur(18px) saturate(1.2)",
+        border: `1px solid rgba(255, 255, 255, 0.10)`,
+        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06)",
         borderRadius: 12,
         overflow: "hidden",
         display: "flex",
@@ -107,7 +114,9 @@ function BusinessCardTile({ card }: { card: BusinessCard }) {
           {card.distanceKm.toFixed(1)} km away
         </div>
         <div style={{ fontSize: 11, color: NEX.textMuted }}>
-          <span style={{ color: card.open ? NEX.green : "#EF4444", fontWeight: 600 }}>
+          {/* 2026-08-24 · Cyber Aurora · "Open now" is a LIVE/ACTIVE state so
+              it gets electric-cyan · "Closed" stays red for stop-state clarity. */}
+          <span style={{ color: card.open ? NEX.cyan : "#EF4444", fontWeight: 600 }}>
             {card.open ? "Open" : "Closed"}
           </span>
           <span style={{ margin: "0 4px" }}>·</span>

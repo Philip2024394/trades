@@ -1,0 +1,184 @@
+{
+  "jobId": "458f0848-aa18-494c-b52b-0ef7897dff10",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Sleman",
+  "bbox": {
+    "sw": [
+      -7.75,
+      110.29
+    ],
+    "ne": [
+      -7.62,
+      110.48
+    ],
+    "scope": "Sleman regency · DIY · north of Kota Yogyakarta"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-23T19:11:18.450Z",
+  "finishedAt": "2026-08-23T19:11:23.539Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 57,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 57,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 57,
+    "enriched": 0,
+    "gate3_contactable": 6,
+    "gate4_eligible": 6,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 6,
+    "rejected_by_gate": 51,
+    "errors": 0
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#AC-2026-000VW",
+        "name": "Villa Hanis",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000VX",
+        "name": "Rumah Mertua",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000VY",
+        "name": "Rumah Palagan",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000VZ",
+        "name": "Hotel Graha Buana",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000W0",
+        "name": "Hyatt Regency",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000W1",
+        "name": "Borneo Homestay",
+        "category": "guesthouse",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000W2",
+        "name": "Hotel Taman Eden 2",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000W3",
+        "name": "Disaster Oasis",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [
+      {
+        "publicRef": "#AC-2026-000VX",
+        "name": "Rumah Mertua",
+        "whatsapp": null,
+        "phone": "+62 274 866680",
+        "website": "www.rumahmertua.com"
+      },
+      {
+        "publicRef": "#AC-2026-000W0",
+        "name": "Hyatt Regency",
+        "whatsapp": null,
+        "phone": "+62274869123",
+        "website": "https://m.hyatt.com/mt/yogyakarta.regency.hyatt.com"
+      },
+      {
+        "publicRef": "#AC-2026-000WF",
+        "name": "Popi Hotel & Homestay",
+        "whatsapp": "+62 812-2721-3475",
+        "phone": "+62 274-895-484",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-000WN",
+        "name": "Garrya Bianti Yogyakarta",
+        "whatsapp": null,
+        "phone": "+62 2742888888",
+        "website": "https://www.garrya.com/en/destinations/yogyakarta"
+      },
+      {
+        "publicRef": "#AC-2026-000WV",
+        "name": "Kos Putri 74",
+        "whatsapp": null,
+        "phone": "+6282300010916",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-000XK",
+        "name": "balebale Resort",
+        "whatsapp": null,
+        "phone": "+62274897878",
+        "website": null
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#AC-2026-000VW",
+        "name": "Villa Hanis",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-000VY",
+        "name": "Rumah Palagan",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-000VZ",
+        "name": "Hotel Graha Buana",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-000W1",
+        "name": "Borneo Homestay",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-000W2",
+        "name": "Hotel Taman Eden 2",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": []
+}

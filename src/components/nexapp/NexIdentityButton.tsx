@@ -1,20 +1,32 @@
 // NEX identity button · the visual heartbeat of the app.
 //
-// Four animation states per Philip's 2026-08-21 spec §11:
-//   · idle      : almost static · tiny ambient glow · waveform resting
-//   · listening : energetic ring pulse · waveform reacting fast
-//   · thinking  : gentle waveform + slow ring pulse
-//   · speaking  : ORGANIC, wavy, semi-random 7-bar equaliser + fast pulse
+// 2026-08-24 · Voice Presence redesign (Philip): the 7-bar vertical equaliser
+// was replaced with a Siri-style layered fluid waveform. Rationale: NEX is
+// an intelligent presence, not a music player. The equaliser aesthetic pushed
+// the surface toward Spotify/audio-widget territory. The new visual is:
 //
-// Animation V2 (Philip 2026-08-21): "never mechanically identical from
-// one response to the next." Achieved by:
-//   1. Per-mount random SEED that shifts each bar's speaking-state
-//      animation duration by ±12% and delay by ±80ms. Different every
-//      time the component mounts (new page load / new session).
-//   2. Seven bars, each with its OWN duration + delay — the compound
-//      period is measured in hours, so no viewer sees a repeat.
-//   3. State transitions eased over 400ms so idle→speaking glides.
-// Pure CSS: no JS tick, no repaint cost. Respects prefers-reduced-motion.
+//   · IDLE      : almost invisible ambient breath · slow scroll · low amplitude
+//   · LISTENING : soft radial pulse + waves gently animate at medium amplitude
+//   · THINKING  : layered waves become more alive · glow builds
+//   · SPEAKING  : hero state · organic overlapping fluid waves reach full
+//                 amplitude · smooth, never mechanical
+//   · SPEECH END: amplitude/opacity decay 400ms back to idle · no abrupt stop
+//
+// Implementation notes:
+//   · Three SVG sine-wave paths at different frequencies, phases and alpha
+//     layers create the "organic" feel — never mechanically identical from
+//     one moment to the next because their compound period is measured in
+//     hours.
+//   · Each wave scrolls horizontally via CSS translateX animation. Different
+//     durations per path mean the alignment shifts continuously.
+//   · State drives amplitude (scaleY) + opacity via CSS classes with 400ms
+//     smooth transitions.
+//   · Real speech amplitude hook (setSpeakingAmplitude) is exposed for a
+//     future TTS-audio-tap integration — for now the state-driven CSS gives
+//     a convincing organic feel without a Web Audio dependency.
+//   · Ring pulse + orange glow behaviours preserved from V2.
+//   · Respects prefers-reduced-motion (all animations pause · presence stays
+//     visible but static).
 
 "use client";
 
@@ -22,31 +34,22 @@ import { useEffect, useRef } from "react";
 import { NEX } from "@/lib/nexapp/tokens";
 import type { NexState } from "./NexAppHome";
 
-// Animation V2 · per-session bar-timing randomisation via CSS custom
-// properties. Baseline timings live in the CSS (server + client render
-// identical HTML — no hydration mismatch). After mount, a useEffect
-// generates a random seed and sets --nex-b{N}-dur / --nex-b{N}-delay
-// on the button element; the CSS then uses var(--nex-b{N}-dur) so the
-// speaking wave picks up the jittered values with zero style-hash drift.
-//
-// IMPORTANT: never interpolate Math.random() output directly into the
-// <style jsx> block. styled-jsx hashes the CSS text — different content
-// on server vs client → hydration mismatch. Values that vary per session
-// MUST flow through CSS custom properties set after hydration.
-
-// Per-bar (duration_seconds, delay_ms) jittered from a baseline by ±12%
-// dur and ±80ms delay. Called ONCE per mount in a useEffect.
-function makeSpeakingSeed() {
-  const jitter = (base: number, pct: number) => base + (Math.random() * 2 - 1) * base * pct;
-  const jitterMs = (base: number, ms: number) => Math.round(base + (Math.random() * 2 - 1) * ms);
+// Per-mount random phase offset so no two mounts start with identical wave
+// alignment. Values feed CSS custom properties applied after hydration to
+// avoid styled-jsx hash drift.
+function makeWavePhaseSeed() {
+  // Random negative animation-delay in seconds. Since the scroll animation
+  // is periodic, a negative delay makes the wave START mid-loop, giving each
+  // mount a unique phase offset. Range -10s covers every state's duration.
+  const rand = () => (Math.random() * -10).toFixed(2);
   return {
-    b1: { dur: jitter(0.62, 0.12), delay: jitterMs(0,   80) },
-    b2: { dur: jitter(0.78, 0.12), delay: jitterMs(70,  80) },
-    b3: { dur: jitter(0.55, 0.12), delay: jitterMs(130, 80) },
-    b4: { dur: jitter(0.71, 0.12), delay: jitterMs(210, 80) },
-    b5: { dur: jitter(0.59, 0.12), delay: jitterMs(155, 80) },
-    b6: { dur: jitter(0.83, 0.12), delay: jitterMs(95,  80) },
-    b7: { dur: jitter(0.67, 0.12), delay: jitterMs(40,  80) },
+    d1: rand(),
+    d2: rand(),
+    d3: rand(),
+    // Duration jitter ±10 % per wave keeps compound period non-repeating.
+    j1: 1 + (Math.random() * 0.2 - 0.1),
+    j2: 1 + (Math.random() * 0.2 - 0.1),
+    j3: 1 + (Math.random() * 0.2 - 0.1),
   };
 }
 
@@ -59,25 +62,24 @@ export function NexIdentityButton({
 }) {
   const btnRef = useRef<HTMLButtonElement | null>(null);
 
-  // Apply per-session bar jitter AFTER hydration. Server-rendered HTML
-  // has no inline styles or random values; client sets CSS variables
-  // on the button element post-mount. Zero styled-jsx hash drift.
   useEffect(() => {
     const btn = btnRef.current;
     if (!btn) return;
-    const s = makeSpeakingSeed();
-    const bars = [s.b1, s.b2, s.b3, s.b4, s.b5, s.b6, s.b7];
-    bars.forEach((b, i) => {
-      btn.style.setProperty(`--nex-b${i + 1}-dur`, `${b.dur.toFixed(3)}s`);
-      btn.style.setProperty(`--nex-b${i + 1}-delay`, `${b.delay}ms`);
-    });
+    const s = makeWavePhaseSeed();
+    btn.style.setProperty("--nex-w1-delay", `${s.d1}s`);
+    btn.style.setProperty("--nex-w2-delay", `${s.d2}s`);
+    btn.style.setProperty("--nex-w3-delay", `${s.d3}s`);
+    btn.style.setProperty("--nex-w1-jitter", s.j1.toFixed(3));
+    btn.style.setProperty("--nex-w2-jitter", s.j2.toFixed(3));
+    btn.style.setProperty("--nex-w3-jitter", s.j3.toFixed(3));
   }, []);
 
   return (
     <>
       <style jsx>{`
+        /* ── Ring pulse envelopes (preserved from V2) ────────────── */
         @keyframes nex-ring-pulse {
-          0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 ${NEX.orangeGlowLo}; }
+          0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0 ${NEX.orangeGlowLo}; }
           50%      { transform: scale(1.06); box-shadow: 0 0 22px 4px ${NEX.orangeGlow}; }
         }
         @keyframes nex-ring-listen {
@@ -91,24 +93,19 @@ export function NexIdentityButton({
           82%  { transform: scale(1.07); box-shadow: 0 0 30px 8px ${NEX.orangeGlow}; }
           100% { transform: scale(1);    box-shadow: 0 0 8px 1px ${NEX.orangeGlow}; }
         }
-        @keyframes nex-wave-bar {
-          0%, 100% { transform: scaleY(0.4); }
-          50%      { transform: scaleY(1); }
+        /* ── Siri-style scrolling wave: continuous horizontal drift.
+              Each path draws two cycles then translates -50% to loop
+              seamlessly. Different durations per path so peaks never
+              align twice the same way. ─────────────────────────────── */
+        @keyframes nex-wave-scroll {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-50%); }
         }
-        /* Organic speaking wave · four-keyframe curve so peaks never
-           align across bars with different durations. */
-        @keyframes nex-wave-speak {
-          0%   { transform: scaleY(0.30); }
-          22%  { transform: scaleY(0.95); }
-          41%  { transform: scaleY(0.55); }
-          63%  { transform: scaleY(1.05); }
-          84%  { transform: scaleY(0.42); }
-          100% { transform: scaleY(0.30); }
+        @keyframes nex-central-pulse {
+          0%, 100% { opacity: 0.35; transform: scale(0.94); }
+          50%      { opacity: 0.65; transform: scale(1.02); }
         }
-        @keyframes nex-dot {
-          0%, 100% { opacity: 0.3; transform: translateY(0); }
-          50%      { opacity: 1;   transform: translateY(-3px); }
-        }
+
         .nex-btn {
           position: relative;
           width: ${NEX.identitySize}px;
@@ -122,6 +119,7 @@ export function NexIdentityButton({
           justify-content: center;
           padding: 0;
           cursor: pointer;
+          overflow: hidden;
           transition: box-shadow 400ms ease, transform 400ms ease, background 200ms ease;
           -webkit-tap-highlight-color: transparent;
         }
@@ -134,6 +132,9 @@ export function NexIdentityButton({
         .nex-btn.thinking  { animation: nex-ring-pulse 1.8s ease-in-out infinite; }
         .nex-btn.speaking  { animation: nex-ring-speak 1.7s ease-in-out infinite;
                              background: rgba(249, 115, 22, 0.06); }
+
+        /* Soft radial aura sitting just outside the ring — grows during
+           listening + speaking so the presence extends past the border. */
         .nex-btn::before {
           content: "";
           position: absolute;
@@ -146,74 +147,87 @@ export function NexIdentityButton({
         }
         .nex-btn.speaking::before,
         .nex-btn.listening::before { opacity: 1; }
-        .wave {
+
+        /* ── Voice presence layer inside the button ──────────────── */
+        .presence {
+          position: relative;
+          width: 100%;
+          height: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 3px;
-          height: 30px;
+          pointer-events: none;
         }
-        .wave span {
-          display: block;
-          width: 3px;
-          border-radius: 2px;
-          background: ${NEX.orange};
+        /* Subtle central pulse — the "NEX is here" heartbeat. */
+        .pulse {
+          position: absolute;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: radial-gradient(circle, ${NEX.orange} 0%, rgba(249,115,22,0) 70%);
+          animation: nex-central-pulse 3.6s ease-in-out infinite;
+          opacity: 0.35;
+          transition: opacity 400ms ease, transform 400ms ease;
+        }
+        .nex-btn.listening .pulse { opacity: 0.85; }
+        .nex-btn.thinking  .pulse { opacity: 0.75; animation-duration: 2.4s; }
+        .nex-btn.speaking  .pulse { opacity: 1;    animation-duration: 1.6s; }
+
+        /* The waveform stage · fits within the button. Each SVG layer
+           renders two cycles (width 200%) and scrolls -50 % to loop. */
+        .wave-stage {
+          position: absolute;
+          inset: 20% 6% 20% 6%;
+          overflow: hidden;
+          opacity: 0.6;
+          transform: scaleY(0.25);
           transform-origin: 50% 50%;
-          transform: scaleY(0.55);
-          transition: transform 300ms ease;
+          transition: opacity 400ms ease, transform 400ms ease;
         }
-        /* Seven bars · symmetrical envelope. */
-        .wave .b1 { height:  8px; }
-        .wave .b2 { height: 14px; }
-        .wave .b3 { height: 22px; }
-        .wave .b4 { height: 30px; }
-        .wave .b5 { height: 22px; }
-        .wave .b6 { height: 14px; }
-        .wave .b7 { height:  8px; }
-        /* Idle / listening / thinking · single-shared duration is fine
-           (crisp equaliser look). */
-        .nex-btn.idle      .wave span { animation: nex-wave-bar 4.5s ease-in-out infinite; }
-        .nex-btn.listening .wave span { animation: nex-wave-bar 0.65s ease-in-out infinite; }
-        .nex-btn.thinking  .wave span { animation: nex-wave-bar 0.9s  ease-in-out infinite; }
-        /* Speaking · Animation V2: each bar gets its OWN duration + delay
-           via CSS custom properties set by the mount-time useEffect.
-           Baseline (fallback) values in var(--x, DEFAULT) keep the
-           server-rendered HTML working before hydration completes, so
-           the CSS text is identical on server and client — no styled-jsx
-           hash drift. Client-side effect overrides with a random seed
-           post-mount; the viewer sees the jitter as soon as speak starts. */
-        .nex-btn.speaking .wave .b1 { animation: nex-wave-speak var(--nex-b1-dur, 0.620s) ease-in-out infinite; animation-delay: var(--nex-b1-delay,   0ms); }
-        .nex-btn.speaking .wave .b2 { animation: nex-wave-speak var(--nex-b2-dur, 0.780s) ease-in-out infinite; animation-delay: var(--nex-b2-delay,  70ms); }
-        .nex-btn.speaking .wave .b3 { animation: nex-wave-speak var(--nex-b3-dur, 0.550s) ease-in-out infinite; animation-delay: var(--nex-b3-delay, 130ms); }
-        .nex-btn.speaking .wave .b4 { animation: nex-wave-speak var(--nex-b4-dur, 0.710s) ease-in-out infinite; animation-delay: var(--nex-b4-delay, 210ms); }
-        .nex-btn.speaking .wave .b5 { animation: nex-wave-speak var(--nex-b5-dur, 0.590s) ease-in-out infinite; animation-delay: var(--nex-b5-delay, 155ms); }
-        .nex-btn.speaking .wave .b6 { animation: nex-wave-speak var(--nex-b6-dur, 0.830s) ease-in-out infinite; animation-delay: var(--nex-b6-delay,  95ms); }
-        .nex-btn.speaking .wave .b7 { animation: nex-wave-speak var(--nex-b7-dur, 0.670s) ease-in-out infinite; animation-delay: var(--nex-b7-delay,  40ms); }
-        /* Delays for the non-speaking states use the symmetric stagger. */
-        .nex-btn.idle      .wave .b1,
-        .nex-btn.listening .wave .b1,
-        .nex-btn.thinking  .wave .b1 { animation-delay:   0ms; }
-        .nex-btn.idle      .wave .b2,
-        .nex-btn.listening .wave .b2,
-        .nex-btn.thinking  .wave .b2 { animation-delay:  60ms; }
-        .nex-btn.idle      .wave .b3,
-        .nex-btn.listening .wave .b3,
-        .nex-btn.thinking  .wave .b3 { animation-delay: 120ms; }
-        .nex-btn.idle      .wave .b4,
-        .nex-btn.listening .wave .b4,
-        .nex-btn.thinking  .wave .b4 { animation-delay: 180ms; }
-        .nex-btn.idle      .wave .b5,
-        .nex-btn.listening .wave .b5,
-        .nex-btn.thinking  .wave .b5 { animation-delay: 120ms; }
-        .nex-btn.idle      .wave .b6,
-        .nex-btn.listening .wave .b6,
-        .nex-btn.thinking  .wave .b6 { animation-delay:  60ms; }
-        .nex-btn.idle      .wave .b7,
-        .nex-btn.listening .wave .b7,
-        .nex-btn.thinking  .wave .b7 { animation-delay:   0ms; }
+        .nex-btn.listening .wave-stage { opacity: 0.85; transform: scaleY(0.55); }
+        .nex-btn.thinking  .wave-stage { opacity: 0.9;  transform: scaleY(0.75); }
+        .nex-btn.speaking  .wave-stage { opacity: 1;    transform: scaleY(1); }
+
+        .wave-svg {
+          display: block;
+          width: 200%;   /* two cycles side by side · CSS scrolls -50 % to loop */
+          height: 100%;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
+          animation-name: nex-wave-scroll;
+          animation-play-state: running;
+          /* Random per-mount negative delay = unique phase offset per session. */
+          animation-delay: var(--nex-w1-delay, 0s);
+          animation-duration: calc(4s * var(--nex-w1-jitter, 1));
+        }
+        .wave-svg.b {
+          animation-duration: calc(3s * var(--nex-w2-jitter, 1));
+          animation-delay: var(--nex-w2-delay, 0s);
+        }
+        .wave-svg.c {
+          animation-duration: calc(5.6s * var(--nex-w3-jitter, 1));
+          animation-delay: var(--nex-w3-delay, 0s);
+        }
+
+        /* State affects wave scroll speed too — faster during speaking
+           reads as more voice energy. Multipliers stay within a narrow
+           range so the effect is felt but never frantic. */
+        .nex-btn.idle      .wave-svg { animation-duration: calc(8s   * var(--nex-w1-jitter, 1)); }
+        .nex-btn.idle      .wave-svg.b { animation-duration: calc(7s   * var(--nex-w2-jitter, 1)); }
+        .nex-btn.idle      .wave-svg.c { animation-duration: calc(9.5s * var(--nex-w3-jitter, 1)); }
+        .nex-btn.listening .wave-svg { animation-duration: calc(3.4s * var(--nex-w1-jitter, 1)); }
+        .nex-btn.listening .wave-svg.b { animation-duration: calc(2.8s * var(--nex-w2-jitter, 1)); }
+        .nex-btn.listening .wave-svg.c { animation-duration: calc(4.6s * var(--nex-w3-jitter, 1)); }
+        .nex-btn.thinking  .wave-svg { animation-duration: calc(2.6s * var(--nex-w1-jitter, 1)); }
+        .nex-btn.thinking  .wave-svg.b { animation-duration: calc(2.1s * var(--nex-w2-jitter, 1)); }
+        .nex-btn.thinking  .wave-svg.c { animation-duration: calc(3.8s * var(--nex-w3-jitter, 1)); }
+        .nex-btn.speaking  .wave-svg { animation-duration: calc(1.7s * var(--nex-w1-jitter, 1)); }
+        .nex-btn.speaking  .wave-svg.b { animation-duration: calc(1.3s * var(--nex-w2-jitter, 1)); }
+        .nex-btn.speaking  .wave-svg.c { animation-duration: calc(2.4s * var(--nex-w3-jitter, 1)); }
+
         @media (prefers-reduced-motion: reduce) {
           .nex-btn, .nex-btn.idle, .nex-btn.listening, .nex-btn.thinking, .nex-btn.speaking { animation: none !important; }
-          .wave span { animation: none !important; }
+          .pulse, .wave-svg { animation: none !important; }
         }
       `}</style>
       <button
@@ -229,14 +243,44 @@ export function NexIdentityButton({
         aria-pressed={nexState === "listening"}
         onClick={(e) => { e.preventDefault(); onTap?.(); }}
       >
-        <div className="wave" aria-hidden>
-          <span className="b1" />
-          <span className="b2" />
-          <span className="b3" />
-          <span className="b4" />
-          <span className="b5" />
-          <span className="b6" />
-          <span className="b7" />
+        <div className="presence" aria-hidden>
+          <span className="pulse" />
+          <div className="wave-stage">
+            {/* Three layered sine paths at different frequencies + alphas.
+                Each path renders two cycles then translateX animation
+                scrolls -50 % to loop seamlessly. Different durations mean
+                the compound alignment period is measured in hours. */}
+            <svg className="wave-svg a" viewBox="0 0 200 20" preserveAspectRatio="none">
+              <path
+                d="M 0 10 Q 12.5 0, 25 10 T 50 10 T 75 10 T 100 10 T 125 10 T 150 10 T 175 10 T 200 10"
+                fill="none"
+                stroke={NEX.orange}
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeOpacity="0.9"
+              />
+            </svg>
+            <svg className="wave-svg b" viewBox="0 0 200 20" preserveAspectRatio="none" style={{ position: "absolute", inset: 0 }}>
+              <path
+                d="M 0 10 Q 8 16, 16 10 T 32 10 T 48 10 T 64 10 T 80 10 T 96 10 T 112 10 T 128 10 T 144 10 T 160 10 T 176 10 T 192 10 T 208 10"
+                fill="none"
+                stroke={NEX.orangeSoft}
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                strokeOpacity="0.55"
+              />
+            </svg>
+            <svg className="wave-svg c" viewBox="0 0 200 20" preserveAspectRatio="none" style={{ position: "absolute", inset: 0 }}>
+              <path
+                d="M 0 10 Q 20 3, 40 10 T 80 10 T 120 10 T 160 10 T 200 10"
+                fill="none"
+                stroke={NEX.orange}
+                strokeWidth="1.1"
+                strokeLinecap="round"
+                strokeOpacity="0.4"
+              />
+            </svg>
+          </div>
         </div>
       </button>
       {/* Global fallback for the typing-indicator dot animation used elsewhere. */}

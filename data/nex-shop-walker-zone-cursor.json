@@ -1,0 +1,1015 @@
+{
+  "processedZones": [
+    {
+      "zone": "central-java-solo",
+      "date": "2026-08-24",
+      "at": "2026-08-24T12:23:05.092Z",
+      "totalReturned": 48,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "denpasar",
+      "date": "2026-08-24",
+      "at": "2026-08-24T12:31:53.120Z",
+      "totalReturned": 49,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-klaten",
+      "date": "2026-08-24",
+      "at": "2026-08-24T12:34:12.581Z",
+      "totalReturned": 38,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "kulon-progo",
+      "date": "2026-08-24",
+      "at": "2026-08-24T12:38:32.624Z",
+      "totalReturned": 28,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-magelang",
+      "date": "2026-08-24",
+      "at": "2026-08-24T12:40:10.719Z",
+      "totalReturned": 10,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-semarang",
+      "date": "2026-08-24",
+      "at": "2026-08-24T12:47:12.019Z",
+      "totalReturned": 54,
+      "totalPersisted": 6,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "surabaya",
+      "date": "2026-08-24",
+      "at": "2026-08-24T12:49:40.060Z",
+      "totalReturned": 56,
+      "totalPersisted": 4,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-24",
+      "at": "2026-08-24T13:03:45.932Z",
+      "totalReturned": 61,
+      "totalPersisted": 16,
+      "totalErrors": 2,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "bandung",
+      "date": "2026-08-24",
+      "at": "2026-08-24T13:06:43.382Z",
+      "totalReturned": 38,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "denpasar",
+      "date": "2026-08-24",
+      "at": "2026-08-24T18:15:53.876Z",
+      "totalReturned": 50,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "surabaya",
+      "date": "2026-08-24",
+      "at": "2026-08-24T18:21:53.173Z",
+      "totalReturned": 56,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-magelang",
+      "date": "2026-08-24",
+      "at": "2026-08-24T18:23:37.322Z",
+      "totalReturned": 10,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-24",
+      "at": "2026-08-24T18:28:29.171Z",
+      "totalReturned": 61,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "bandung",
+      "date": "2026-08-24",
+      "at": "2026-08-24T18:28:59.641Z",
+      "totalReturned": 37,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-24",
+      "at": "2026-08-24T18:33:51.122Z",
+      "totalReturned": 42,
+      "totalPersisted": 0,
+      "totalErrors": 3,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-solo",
+      "date": "2026-08-24",
+      "at": "2026-08-24T18:37:43.687Z",
+      "totalReturned": 47,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "kulon-progo",
+      "date": "2026-08-24",
+      "at": "2026-08-24T18:38:46.468Z",
+      "totalReturned": 28,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-semarang",
+      "date": "2026-08-24",
+      "at": "2026-08-24T18:38:57.870Z",
+      "totalReturned": 54,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-klaten",
+      "date": "2026-08-24",
+      "at": "2026-08-24T18:39:28.287Z",
+      "totalReturned": 38,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "surabaya",
+      "date": "2026-08-24",
+      "at": "2026-08-24T18:56:20.762Z",
+      "totalReturned": 56,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-magelang",
+      "date": "2026-08-24",
+      "at": "2026-08-24T18:57:45.458Z",
+      "totalReturned": 8,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-24",
+      "at": "2026-08-24T19:09:49.865Z",
+      "totalReturned": 41,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "denpasar",
+      "date": "2026-08-24",
+      "at": "2026-08-24T19:25:49.657Z",
+      "totalReturned": 50,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "kulon-progo",
+      "date": "2026-08-24",
+      "at": "2026-08-24T19:30:58.200Z",
+      "totalReturned": 28,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-klaten",
+      "date": "2026-08-24",
+      "at": "2026-08-24T19:33:21.496Z",
+      "totalReturned": 38,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-solo",
+      "date": "2026-08-24",
+      "at": "2026-08-24T19:33:37.164Z",
+      "totalReturned": 48,
+      "totalPersisted": 0,
+      "totalErrors": 2,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "bandung",
+      "date": "2026-08-24",
+      "at": "2026-08-24T19:34:36.608Z",
+      "totalReturned": 38,
+      "totalPersisted": 0,
+      "totalErrors": 3,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-24",
+      "at": "2026-08-24T19:36:06.213Z",
+      "totalReturned": 62,
+      "totalPersisted": 11,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-24",
+      "at": "2026-08-24T19:43:40.486Z",
+      "totalReturned": 42,
+      "totalPersisted": 0,
+      "totalErrors": 2,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "denpasar",
+      "date": "2026-08-24",
+      "at": "2026-08-24T19:45:14.794Z",
+      "totalReturned": 47,
+      "totalPersisted": 0,
+      "totalErrors": 2,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-magelang",
+      "date": "2026-08-24",
+      "at": "2026-08-24T19:46:16.230Z",
+      "totalReturned": 10,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "surabaya",
+      "date": "2026-08-24",
+      "at": "2026-08-24T19:48:55.164Z",
+      "totalReturned": 56,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-semarang",
+      "date": "2026-08-24",
+      "at": "2026-08-24T19:49:49.756Z",
+      "totalReturned": 50,
+      "totalPersisted": 0,
+      "totalErrors": 2,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "bandung",
+      "date": "2026-08-24",
+      "at": "2026-08-24T19:53:01.953Z",
+      "totalReturned": 38,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-semarang",
+      "date": "2026-08-24",
+      "at": "2026-08-24T19:54:03.109Z",
+      "totalReturned": 54,
+      "totalPersisted": 2,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-solo",
+      "date": "2026-08-24",
+      "at": "2026-08-24T20:02:26.702Z",
+      "totalReturned": 48,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-24",
+      "at": "2026-08-24T20:03:45.839Z",
+      "totalReturned": 40,
+      "totalPersisted": 0,
+      "totalErrors": 4,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-24",
+      "at": "2026-08-24T20:04:13.470Z",
+      "totalReturned": 61,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-klaten",
+      "date": "2026-08-24",
+      "at": "2026-08-24T20:06:14.453Z",
+      "totalReturned": 38,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "kulon-progo",
+      "date": "2026-08-24",
+      "at": "2026-08-24T20:09:24.401Z",
+      "totalReturned": 28,
+      "totalPersisted": 0,
+      "totalErrors": 3,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "denpasar",
+      "date": "2026-08-24",
+      "at": "2026-08-24T20:16:39.810Z",
+      "totalReturned": 50,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-24",
+      "at": "2026-08-24T20:18:13.643Z",
+      "totalReturned": 23,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-magelang",
+      "date": "2026-08-24",
+      "at": "2026-08-24T20:23:28.434Z",
+      "totalReturned": 10,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "surabaya",
+      "date": "2026-08-24",
+      "at": "2026-08-24T20:33:28.482Z",
+      "totalReturned": 54,
+      "totalPersisted": 0,
+      "totalErrors": 3,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "bandung",
+      "date": "2026-08-24",
+      "at": "2026-08-24T20:40:26.380Z",
+      "totalReturned": 38,
+      "totalPersisted": 0,
+      "totalErrors": 3,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-klaten",
+      "date": "2026-08-24",
+      "at": "2026-08-24T20:42:35.219Z",
+      "totalReturned": 38,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-semarang",
+      "date": "2026-08-24",
+      "at": "2026-08-24T20:45:49.256Z",
+      "totalReturned": 54,
+      "totalPersisted": 5,
+      "totalErrors": 2,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-24",
+      "at": "2026-08-24T20:48:06.556Z",
+      "totalReturned": 59,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "bandung",
+      "date": "2026-08-24",
+      "at": "2026-08-24T20:55:22.405Z",
+      "totalReturned": 38,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-24",
+      "at": "2026-08-24T20:55:58.117Z",
+      "totalReturned": 43,
+      "totalPersisted": 4,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-semarang",
+      "date": "2026-08-24",
+      "at": "2026-08-24T20:58:49.794Z",
+      "totalReturned": 51,
+      "totalPersisted": 0,
+      "totalErrors": 2,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-solo",
+      "date": "2026-08-24",
+      "at": "2026-08-24T21:07:01.524Z",
+      "totalReturned": 48,
+      "totalPersisted": 0,
+      "totalErrors": 3,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-solo",
+      "date": "2026-08-24",
+      "at": "2026-08-24T21:16:33.580Z",
+      "totalReturned": 48,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-24",
+      "at": "2026-08-24T21:21:23.191Z",
+      "totalReturned": 59,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-solo",
+      "date": "2026-08-24",
+      "at": "2026-08-24T21:24:40.393Z",
+      "totalReturned": 48,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-24",
+      "at": "2026-08-24T21:51:03.243Z",
+      "totalReturned": 61,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "bandung",
+      "date": "2026-08-24",
+      "at": "2026-08-24T22:01:32.672Z",
+      "totalReturned": 38,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-semarang",
+      "date": "2026-08-24",
+      "at": "2026-08-24T22:03:12.492Z",
+      "totalReturned": 54,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-24",
+      "at": "2026-08-24T22:03:19.097Z",
+      "totalReturned": 38,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-solo",
+      "date": "2026-08-24",
+      "at": "2026-08-24T22:13:37.842Z",
+      "totalReturned": 48,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-24",
+      "at": "2026-08-24T22:23:23.841Z",
+      "totalReturned": 61,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-24",
+      "at": "2026-08-24T22:33:27.014Z",
+      "totalReturned": 43,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-solo",
+      "date": "2026-08-24",
+      "at": "2026-08-24T22:37:36.042Z",
+      "totalReturned": 48,
+      "totalPersisted": 0,
+      "totalErrors": 2,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-24",
+      "at": "2026-08-24T22:45:02.367Z",
+      "totalReturned": 61,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-semarang",
+      "date": "2026-08-24",
+      "at": "2026-08-24T22:45:39.158Z",
+      "totalReturned": 50,
+      "totalPersisted": 0,
+      "totalErrors": 2,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-24",
+      "at": "2026-08-24T22:56:29.585Z",
+      "totalReturned": 43,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-semarang",
+      "date": "2026-08-24",
+      "at": "2026-08-24T23:07:49.631Z",
+      "totalReturned": 54,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-24",
+      "at": "2026-08-24T23:14:42.852Z",
+      "totalReturned": 60,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-semarang",
+      "date": "2026-08-24",
+      "at": "2026-08-24T23:25:49.977Z",
+      "totalReturned": 34,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-24",
+      "at": "2026-08-24T23:32:04.482Z",
+      "totalReturned": 43,
+      "totalPersisted": 0,
+      "totalErrors": 2,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-24",
+      "at": "2026-08-24T23:32:40.543Z",
+      "totalReturned": 59,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-24",
+      "at": "2026-08-24T23:46:34.549Z",
+      "totalReturned": 42,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-25",
+      "at": "2026-08-25T00:11:02.307Z",
+      "totalReturned": 61,
+      "totalPersisted": 7,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-semarang",
+      "date": "2026-08-25",
+      "at": "2026-08-25T00:11:19.733Z",
+      "totalReturned": 54,
+      "totalPersisted": 3,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-25",
+      "at": "2026-08-25T09:18:06.542Z",
+      "totalReturned": 61,
+      "totalPersisted": 2,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-semarang",
+      "date": "2026-08-25",
+      "at": "2026-08-25T09:22:31.934Z",
+      "totalReturned": 54,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-25",
+      "at": "2026-08-25T09:23:40.079Z",
+      "totalReturned": 23,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-25",
+      "at": "2026-08-25T09:51:51.634Z",
+      "totalReturned": 43,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-25",
+      "at": "2026-08-25T09:54:37.803Z",
+      "totalReturned": 61,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-semarang",
+      "date": "2026-08-25",
+      "at": "2026-08-25T09:56:21.391Z",
+      "totalReturned": 54,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-25",
+      "at": "2026-08-25T10:01:15.317Z",
+      "totalReturned": 43,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-semarang",
+      "date": "2026-08-25",
+      "at": "2026-08-25T10:10:50.895Z",
+      "totalReturned": 54,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-25",
+      "at": "2026-08-25T10:17:18.346Z",
+      "totalReturned": 61,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-25",
+      "at": "2026-08-25T10:23:30.268Z",
+      "totalReturned": 43,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-semarang",
+      "date": "2026-08-25",
+      "at": "2026-08-25T10:36:42.083Z",
+      "totalReturned": 34,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-25",
+      "at": "2026-08-25T10:37:33.719Z",
+      "totalReturned": 61,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "sleman",
+      "date": "2026-08-25",
+      "at": "2026-08-25T10:45:28.842Z",
+      "totalReturned": 14,
+      "totalPersisted": 0,
+      "totalErrors": 2,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "central-java-semarang",
+      "date": "2026-08-25",
+      "at": "2026-08-25T10:49:26.491Z",
+      "totalReturned": 51,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-25",
+      "at": "2026-08-25T10:54:24.549Z",
+      "totalReturned": 61,
+      "totalPersisted": 4,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-25",
+      "at": "2026-08-25T11:13:46.563Z",
+      "totalReturned": 61,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-25",
+      "at": "2026-08-25T11:47:42.086Z",
+      "totalReturned": 61,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-25",
+      "at": "2026-08-25T11:55:06.886Z",
+      "totalReturned": 62,
+      "totalPersisted": 0,
+      "totalErrors": 1,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-25",
+      "at": "2026-08-25T12:05:49.080Z",
+      "totalReturned": 61,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "jakarta",
+      "date": "2026-08-25",
+      "at": "2026-08-25T12:26:11.518Z",
+      "totalReturned": 61,
+      "totalPersisted": 0,
+      "totalErrors": 2,
+      "status": "failed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-26",
+      "at": "2026-08-26T14:27:59.534Z",
+      "totalReturned": 43,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-26",
+      "at": "2026-08-26T14:49:18.941Z",
+      "totalReturned": 43,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-26",
+      "at": "2026-08-26T16:00:06.267Z",
+      "totalReturned": 43,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-26",
+      "at": "2026-08-26T16:03:09.689Z",
+      "totalReturned": 43,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-26",
+      "at": "2026-08-26T16:05:31.747Z",
+      "totalReturned": 43,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-26",
+      "at": "2026-08-26T16:08:32.641Z",
+      "totalReturned": 43,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    },
+    {
+      "zone": "yogyakarta-city",
+      "date": "2026-08-26",
+      "at": "2026-08-26T16:11:55.595Z",
+      "totalReturned": 43,
+      "totalPersisted": 0,
+      "totalErrors": 0,
+      "status": "completed",
+      "source": "orchestrator"
+    }
+  ],
+  "lastRunAt": "2026-08-26T16:11:55.595Z"
+}

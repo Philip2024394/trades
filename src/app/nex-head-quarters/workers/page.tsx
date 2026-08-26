@@ -67,15 +67,42 @@ interface ScheduleRow {
   enabled: boolean;
   schedule_started_at: Date;
 }
+// Phase 1 rejection telemetry (2026-08-25) · latest completed cycle per worker.
+interface LatestCycleRow {
+  worker_id: string;
+  worker_config: string | null;
+  records_processed: number | null;
+  records_new: number | null;
+  records_rejected: number | null;
+  rejected_by_reason: Record<string, number> | null;
+  cycle_outcome: string | null;
+  finished_at: Date;
+}
 
 async function loadData() {
   const pool = getFoodDbPool();
-  const [health, activity, missed, schedules, workerRefs] = await Promise.all([
+  const [health, activity, missed, schedules, workerRefs, latest] = await Promise.all([
     pool.query<HealthRow>(`SELECT * FROM nex.worker_health_status ORDER BY worker_type, worker_id`),
     pool.query<ActivityRow>(`SELECT * FROM nex.worker_24h_activity`),
     pool.query<MissedRow>(`SELECT * FROM nex.worker_missed_runs_24h LIMIT 100`),
     pool.query<ScheduleRow>(`SELECT * FROM nex.worker_schedule ORDER BY worker_id`),
     listAllWorkers(pool),
+    // Phase 1 rejection telemetry (2026-08-25) · latest completed cycle per worker.
+    // Reads summary.rejected_by_reason + summary.cycle_outcome written by each walker.
+    pool.query<LatestCycleRow>(`
+      SELECT DISTINCT ON (worker_id)
+        worker_id,
+        worker_config,
+        records_processed,
+        records_new,
+        records_rejected,
+        summary->'rejected_by_reason'         AS rejected_by_reason,
+        summary->>'cycle_outcome'             AS cycle_outcome,
+        finished_at
+      FROM nex.worker_cycle_run
+      WHERE finished_at IS NOT NULL
+      ORDER BY worker_id, finished_at DESC
+    `),
   ]);
   // Six-criteria evaluations (Task #72 Step 3) · run in parallel.
   const evaluations: WorkerEvaluation[] = await Promise.all(
@@ -95,8 +122,29 @@ async function loadData() {
     counts,
     evaluations,
     verdictCounts,
+    latest: latest.rows,
   };
 }
+
+// Phase 1 rejection telemetry (2026-08-25) · style tokens for the histogram row.
+const rejectionReasonPalette: Record<string, string> = {
+  CONTACT_MISSING:  "#b45309", // amber-700
+  INELIGIBLE:       "#7c2d12", // orange-900
+  MALFORMED:        "#991b1b", // red-800
+  GEO_MISS:         "#3730a3", // indigo-800
+  CATEGORY_MISS:    "#6d28d9", // violet-700
+  MATCHED_EXISTING: "#374151", // gray-700 (informational, not a rejection)
+  OTHER:            "#0f766e", // teal-700
+};
+const cycleOutcomePalette: Record<string, string> = {
+  PROVIDER_EMPTY:    "#4b5563",
+  PROVIDER_ERROR:    "#b91c1c",
+  ALL_DEDUPED:       "#6b7280",
+  ALL_REJECTED:      "#b45309",
+  PARTIAL:           "#0369a1",
+  PRODUCTIVE:        "#15803d",
+  NO_NEW_CANDIDATES: "#78716c",
+};
 
 export default async function WorkersPage() {
   const d = await loadData();
@@ -140,6 +188,80 @@ export default async function WorkersPage() {
       {/* Six-criteria per-worker evidence table · Task #72 Step 3 */}
       <div style={sectionLabelStyle}>Workers · six-criteria evidence · click a row to expand</div>
       <SixCriteriaTable workers={d.evaluations} />
+
+      {/* Phase 1 · Rejection Telemetry · per-reason histogram from the latest
+          completed cycle. Reads summary.rejected_by_reason + summary.cycle_outcome
+          written by every walker (food · accommodation · market · transport).
+          Policy unchanged — this is instrumentation only, evidence before loosening. */}
+      <div style={sectionLabelStyle}>Rejection reasons · latest cycle per worker · Phase 1 telemetry (2026-08-25)</div>
+      {d.latest.length === 0 ? (
+        <div style={mutedCardStyle}>
+          No completed cycles with rejection telemetry yet. Trigger a walker cycle to populate.
+        </div>
+      ) : (
+        <div style={panelStyle}>
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Worker · Config</th>
+                <th style={thStyle}>Cycle Outcome</th>
+                <th style={tdNumStyle}>Processed</th>
+                <th style={tdNumStyle}>New</th>
+                <th style={tdNumStyle}>Rejected</th>
+                <th style={thStyle}>Reason breakdown (latest cycle)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {d.latest.map((row) => {
+                const reasons = row.rejected_by_reason ?? {};
+                const reasonKeys = Object.keys(reasons).sort();
+                return (
+                  <tr key={row.worker_id + (row.worker_config ?? "")}>
+                    <td style={{ ...tdStyle, fontFamily: "monospace", fontSize: 11 }}>
+                      {row.worker_id}{row.worker_config ? ` · ${row.worker_config}` : ""}
+                    </td>
+                    <td style={tdStyle}>
+                      {row.cycle_outcome ? (
+                        <span style={{
+                          display: "inline-block",
+                          padding: "2px 8px",
+                          borderRadius: 999,
+                          fontSize: 11,
+                          fontWeight: 600,
+                          color: "#fff",
+                          background: cycleOutcomePalette[row.cycle_outcome] ?? "#4b5563",
+                        }}>{row.cycle_outcome.replace(/_/g, " ").toLowerCase()}</span>
+                      ) : <span style={{ opacity: 0.5 }}>—</span>}
+                    </td>
+                    <td style={tdNumStyle}>{row.records_processed ?? 0}</td>
+                    <td style={tdNumStyle}>{row.records_new ?? 0}</td>
+                    <td style={tdNumStyle}>{row.records_rejected ?? 0}</td>
+                    <td style={tdStyle}>
+                      {reasonKeys.length === 0 ? (
+                        <span style={{ opacity: 0.5 }}>none</span>
+                      ) : (
+                        <span style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                          {reasonKeys.map((k) => (
+                            <span key={k} style={{
+                              display: "inline-block",
+                              padding: "1px 6px",
+                              borderRadius: 4,
+                              fontSize: 10,
+                              fontWeight: 600,
+                              color: "#fff",
+                              background: rejectionReasonPalette[k] ?? "#6b7280",
+                            }}>{k.toLowerCase()} {reasons[k]}</span>
+                          ))}
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {/* Legacy health tiles · DEPRECATED as source of truth · retained
           only as reliability-layer self-report per Step 3 doctrine. */}

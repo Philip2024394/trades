@@ -1,0 +1,82 @@
+{
+  "jobId": "af35442a-9dd2-4614-acb2-91b4f7c97b74",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Bandung",
+  "bbox": {
+    "sw": [
+      -7,
+      107.53
+    ],
+    "ne": [
+      -6.85,
+      107.75
+    ],
+    "scope": "Bandung · West Java"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-24T18:43:17.944Z",
+  "finishedAt": "2026-08-24T18:47:24.032Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 2118,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 2118,
+    "matched_exact": 2089,
+    "matched_high": 24,
+    "ambiguous": 5,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "records_persisted": 0,
+    "enriched": 17,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 0
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [
+      {
+        "candidateName": "Yoghurt Cisangkuy",
+        "existingName": "Pasar Cisangkuy",
+        "existingRef": "#FL-2026-005PZ",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Pizza Place",
+        "existingName": "Richeese Pizza",
+        "existingRef": "#FL-2026-0067T",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Rumah Makan Padang",
+        "existingName": "Rumah Makan Padang Shanum",
+        "existingRef": "#FL-2026-0065A",
+        "score": "0.675"
+      },
+      {
+        "candidateName": "Warung Surabi Setiabudhi",
+        "existingName": "Waroeng Setiabudhi Surabi & Baso Kampung",
+        "existingRef": "#FL-2026-00584",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "RM Padang Sederhana",
+        "existingName": "Rumah Makan Padang Sederhana",
+        "existingRef": "#FL-2026-006FP",
+        "score": "0.640"
+      }
+    ],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": []
+}

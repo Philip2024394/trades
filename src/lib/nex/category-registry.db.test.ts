@@ -376,6 +376,131 @@ describe("decideCategoryCandidate · DB integration · Phase 2 invariants", () =
   });
 });
 
+// ═══════════════════════════════════════════════════════════════════════
+// MIGRATION 086 · calibration annotation survives candidate deletion
+// ═══════════════════════════════════════════════════════════════════════
+// Regression proving NEX's learning history is NOT destroyed by
+// candidate cleanup. FK is ON DELETE SET NULL + snapshot column
+// preserves candidate identity forever. Philip 2026-08-23:
+//   "NEX's learning history must survive cleanup of the thing it
+//    learned from."
+
+describe("Migration 086 · annotation survives candidate deletion", () => {
+  const runIfDbLocal = HAS_DB ? it : it.skip;
+
+  runIfDbLocal("annotation persists after candidate deletion · candidate_id becomes NULL · snapshot retained", async () => {
+    const pool = getRegistryDbPool()!;
+
+    // 1. Create a candidate + one annotation with a full snapshot.
+    const cand = await pool.query<{ id: string }>(
+      `INSERT INTO nex.category_candidate
+         (proposed_category_id, proposed_name, display_name_en, suggested_parent_vertical,
+          brain_keywords, suggested_countries, business_count, cycle_count, confidence,
+          evidence, discovered_businesses, proposed_by)
+       VALUES ($1,'RegTest','RegTest','services','["reg-test-kw"]'::jsonb,ARRAY['GB'],
+               75, 3, 0.9, '{}'::jsonb, '[]'::jsonb, 'test-p1-mig086')
+       RETURNING id`,
+      [`test-mig086-${Date.now()}`],
+    );
+    const candidateId = cand.rows[0].id;
+
+    const snapshotBefore = {
+      proposed_category_id: "reg-test-mig086",
+      proposed_name: "RegTest",
+      display_name_en: "RegTest",
+      suggested_parent_vertical: "services",
+      suggested_countries: ["GB"],
+      brain_keywords: ["reg-test-kw"],
+      business_count: 75,
+      cycle_count: 3,
+      proposed_by: "test-p1-mig086",
+      candidate_created_at: new Date().toISOString(),
+      snapshot_taken_at: new Date().toISOString(),
+    };
+
+    const annoRes = await pool.query<{ id: string }>(
+      `INSERT INTO nex.category_candidate_calibration_annotation
+         (candidate_id, annotator, verdict, reason, candidate_snapshot)
+       VALUES ($1, 'test-mig086@nex', 'LOW', 'regression test · snapshot must survive delete', $2)
+       RETURNING id`,
+      [candidateId, JSON.stringify(snapshotBefore)],
+    );
+    const annotationId = annoRes.rows[0].id;
+
+    // 2. Confirm annotation exists AND links to the candidate.
+    const preDelete = await pool.query(
+      `SELECT id, candidate_id, verdict, candidate_snapshot
+         FROM nex.category_candidate_calibration_annotation
+        WHERE id = $1`,
+      [annotationId],
+    );
+    expect(preDelete.rows[0].candidate_id).toBe(candidateId);
+    expect(preDelete.rows[0].verdict).toBe("LOW");
+    expect(preDelete.rows[0].candidate_snapshot.proposed_category_id).toBe("reg-test-mig086");
+
+    // 3. Delete the candidate · this used to CASCADE the annotation
+    //    (migration 085 · destroyed learning history) · migration 086
+    //    changed to SET NULL so the annotation survives.
+    await pool.query(`DELETE FROM nex.category_candidate WHERE id = $1`, [candidateId]);
+
+    // 4. Assert · annotation still exists · candidate_id is NULL ·
+    //    snapshot preserved with full context.
+    const postDelete = await pool.query(
+      `SELECT id, candidate_id, annotator, verdict, reason, candidate_snapshot
+         FROM nex.category_candidate_calibration_annotation
+        WHERE id = $1`,
+      [annotationId],
+    );
+    expect(postDelete.rows.length, "annotation should survive candidate deletion").toBe(1);
+    expect(postDelete.rows[0].candidate_id, "candidate_id must be NULL after cascade replacement").toBeNull();
+    expect(postDelete.rows[0].annotator).toBe("test-mig086@nex");
+    expect(postDelete.rows[0].verdict).toBe("LOW");
+
+    const snap = postDelete.rows[0].candidate_snapshot;
+    expect(snap.proposed_category_id, "snapshot preserves the proposed id").toBe("reg-test-mig086");
+    expect(snap.proposed_name).toBe("RegTest");
+    expect(snap.suggested_parent_vertical).toBe("services");
+    expect(snap.business_count).toBe(75);
+    expect(snap.cycle_count).toBe(3);
+    expect(snap.proposed_by).toBe("test-p1-mig086");
+
+    // 5. Cleanup · remove the surviving annotation now that the
+    //    regression is proven.
+    await pool.query(
+      `DELETE FROM nex.category_candidate_calibration_annotation WHERE id = $1`,
+      [annotationId],
+    );
+  });
+
+  runIfDbLocal("FK definition is ON DELETE SET NULL (not CASCADE)", async () => {
+    const pool = getRegistryDbPool()!;
+    const res = await pool.query<{ delete_rule: string }>(
+      `SELECT rc.delete_rule
+         FROM information_schema.referential_constraints rc
+         JOIN information_schema.table_constraints tc
+           ON tc.constraint_name = rc.constraint_name
+        WHERE tc.table_schema = 'nex'
+          AND tc.table_name   = 'category_candidate_calibration_annotation'
+          AND tc.constraint_name = 'category_candidate_calibration_annotation_candidate_id_fkey'`,
+    );
+    expect(res.rows[0].delete_rule, "annotation FK must be SET NULL to preserve learning history").toBe("SET NULL");
+  });
+
+  runIfDbLocal("candidate_snapshot column exists with jsonb type + NOT NULL", async () => {
+    const pool = getRegistryDbPool()!;
+    const res = await pool.query(
+      `SELECT column_name, data_type, is_nullable
+         FROM information_schema.columns
+        WHERE table_schema = 'nex'
+          AND table_name = 'category_candidate_calibration_annotation'
+          AND column_name = 'candidate_snapshot'`,
+    );
+    expect(res.rows.length).toBe(1);
+    expect(res.rows[0].data_type).toBe("jsonb");
+    expect(res.rows[0].is_nullable).toBe("NO");
+  });
+});
+
 describe("Phase 2 · source audit · decide route + mutator never touch Registry", () => {
   it("category-registry.db.ts decideCategoryCandidate never emits category_registry SQL", async () => {
     const fs = await import("node:fs/promises");

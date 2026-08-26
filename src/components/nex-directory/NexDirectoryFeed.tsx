@@ -25,8 +25,13 @@
 //   project_nex_local_directory_engine_architecture_2026_08_22
 //   project_nex_task89_accommodation_spec_2026_08_22
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
+import { AccommodationDetailSlider, type AccommodationDetailData } from "./AccommodationDetailSlider";
+import { NexDiscoveryCard, type DiscoveryCardData } from "./NexDiscoveryCard";
+import { SmartDiscoveryCard } from "./SmartDiscoveryCard";
+import { SmartDiscoveryController } from "./SmartDiscoveryController";
+import type { SmartDiscoverySignal } from "@/lib/nex-accommodation/smart-discovery-signals";
 
 export interface NexDirectoryListing {
   publicListingRef: string;
@@ -42,6 +47,9 @@ export interface NexDirectoryListing {
   heroImageUrl?:    string | null;
   rating?:          number | null;
   reviewCount?:     number | null;
+  // PART B 2026-08-24 · optional detail-slider payload · when present the
+  // card renders a "Details" button and the slider opens with rich content.
+  detail?:          AccommodationDetailData;
   // Category-specific badges shown in the card header row (star rating for
   // accommodation · cuisine for food · vehicle-class for rentals · future).
   categoryBadges?:  Array<{ label: string; tone?: "neutral" | "orange" | "green" }>;
@@ -60,13 +68,32 @@ export interface NexDirectoryFeedProps {
     ctaLabel?:       string;
   };
   attribution?:      string;                    // OSM ODbL etc.
+  // PART C 2026-08-24 · optional contextual discovery cards interspersed in
+  // the grid. If omitted no cards appear · directory renders as before.
+  discoveryCards?:   DiscoveryCardData[];
+  // Smart Discovery prototype (2026-08-24) · optional map of publicListingRef → signal.
+  // Present on only the 3-5 demonstration accommodations · rest of the grid
+  // renders exactly as before · flip is orchestrated by SmartDiscoveryController.
+  smartDiscovery?:   Record<string, SmartDiscoverySignal>;
 }
 
 // ── Main feed component ─────────────────────────────────────────────
 
 export function NexDirectoryFeed(props: NexDirectoryFeedProps) {
-  const { categoryId, categoryLabel, categoryIcon, city, listings, emptyState, attribution } = props;
+  // categoryId retained as prop for future filter · not yet consumed here.
+  const { categoryLabel, categoryIcon, city, listings, emptyState, attribution, discoveryCards, smartDiscovery } = props;
   const [query, setQuery] = useState("");
+  const [activeDetail, setActiveDetail] = useState<AccommodationDetailData | null>(null);
+  const [flippedRefs, setFlippedRefs] = useState<Set<string>>(() => new Set());
+
+  const eligibleRefs = useMemo(() => Object.keys(smartDiscovery ?? {}), [smartDiscovery]);
+
+  const handleFlip = useCallback((ref: string) => {
+    setFlippedRefs((prev) => { const next = new Set(prev); next.add(ref); return next; });
+  }, []);
+  const handleUnflip = useCallback((ref: string) => {
+    setFlippedRefs((prev) => { const next = new Set(prev); next.delete(ref); return next; });
+  }, []);
 
   const filtered = useMemo(() => {
     if (!query.trim()) return listings;
@@ -130,15 +157,38 @@ export function NexDirectoryFeed(props: NexDirectoryFeedProps) {
             emptyState={emptyState}
           />
         ) : (
-          <DirectoryMasonry listings={filtered} />
+          <DirectoryMasonry
+            listings={filtered}
+            discoveryCards={discoveryCards ?? []}
+            smartDiscovery={smartDiscovery ?? {}}
+            flippedRefs={flippedRefs}
+            onFlipComplete={handleUnflip}
+            onUserCancel={handleUnflip}
+            onOpenDetails={(l) => setActiveDetail(l.detail ?? null)}
+          />
         )}
       </main>
+
+      {/* Smart Discovery controller · orchestrates 1-2 flips per session ·
+          respects prefers-reduced-motion · never re-flips same card. */}
+      {eligibleRefs.length > 0 && (
+        <SmartDiscoveryController
+          eligibleRefs={eligibleRefs}
+          flippedRefs={flippedRefs}
+          onFlip={handleFlip}
+          onUnflip={handleUnflip}
+        />
+      )}
 
       {attribution && (
         <footer className="mx-auto max-w-4xl px-4 pb-6 text-[10px] leading-relaxed text-black/40">
           {attribution}
         </footer>
       )}
+
+      {/* PART B (2026-08-24) · Details slider · rendered at feed level so it
+          overlays the whole directory · closes cleanly · never causes grid jump. */}
+      <AccommodationDetailSlider listing={activeDetail} onClose={() => setActiveDetail(null)} />
     </div>
   );
 }
@@ -184,14 +234,70 @@ function EmptyState(props: {
 
 // ── CSS-columns masonry · matches /food's visual pattern ────────────
 
-function DirectoryMasonry({ listings }: { listings: NexDirectoryListing[] }) {
+function DirectoryMasonry({
+  listings, discoveryCards, smartDiscovery, flippedRefs, onFlipComplete, onUserCancel, onOpenDetails,
+}: {
+  listings: NexDirectoryListing[];
+  discoveryCards: DiscoveryCardData[];
+  smartDiscovery: Record<string, SmartDiscoverySignal>;
+  flippedRefs: Set<string>;
+  onFlipComplete: (ref: string) => void;
+  onUserCancel: (ref: string) => void;
+  onOpenDetails: (l: NexDirectoryListing) => void;
+}) {
+  // PART C · sparse insertion pattern · one discovery card every ~7 business
+  // cards so the grid never feels ad-heavy. Cards are cycled through the
+  // provided list · never fabricated.
+  const CARD_EVERY = 7;
+  const items: Array<{ kind: "business"; l: NexDirectoryListing } | { kind: "discovery"; c: DiscoveryCardData }> = [];
+  let discoveryIdx = 0;
+  listings.forEach((l, i) => {
+    items.push({ kind: "business", l });
+    if (discoveryCards.length > 0 && i > 0 && (i + 1) % CARD_EVERY === 0) {
+      const c = discoveryCards[discoveryIdx % discoveryCards.length];
+      items.push({ kind: "discovery", c });
+      discoveryIdx++;
+    }
+  });
+
   return (
     <div className="[column-count:2] md:[column-count:3] lg:[column-count:4] [column-gap:12px]">
-      {listings.map((l) => (
-        <div key={l.publicListingRef} className="mb-3 break-inside-avoid">
-          <NexBusinessCard listing={l} />
-        </div>
-      ))}
+      {items.map((it, idx) => {
+        if (it.kind === "discovery") {
+          return (
+            <div key={`discover-${idx}`} className="mb-3 break-inside-avoid">
+              <NexDiscoveryCard card={it.c} />
+            </div>
+          );
+        }
+        const listing = it.l;
+        const signal = smartDiscovery[listing.publicListingRef];
+        const card = <NexBusinessCard listing={listing} onOpenDetails={onOpenDetails} />;
+        if (!signal) {
+          return (
+            <div key={listing.publicListingRef} className="mb-3 break-inside-avoid">
+              {card}
+            </div>
+          );
+        }
+        // Wrap Smart-Discovery-eligible cards with the flip surface. The
+        // controller decides when isFlipped=true · the wrap does not change
+        // layout when isFlipped=false so the grid never jumps.
+        return (
+          <div key={listing.publicListingRef} className="mb-3 break-inside-avoid">
+            <SmartDiscoveryCard
+              publicListingRef={listing.publicListingRef}
+              signal={signal}
+              isFlipped={flippedRefs.has(listing.publicListingRef)}
+              onFlipComplete={() => onFlipComplete(listing.publicListingRef)}
+              onUserCancel={() => onUserCancel(listing.publicListingRef)}
+              onDetailsClick={() => onOpenDetails(listing)}
+            >
+              {card}
+            </SmartDiscoveryCard>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -201,8 +307,9 @@ function DirectoryMasonry({ listings }: { listings: NexDirectoryListing[] }) {
 // single card. Fields absent for a vertical (e.g. cuisine for accommodation)
 // simply don't appear.
 
-function NexBusinessCard({ listing }: { listing: NexDirectoryListing }) {
+function NexBusinessCard({ listing, onOpenDetails }: { listing: NexDirectoryListing; onOpenDetails?: (l: NexDirectoryListing) => void }) {
   const initial = listing.businessName.charAt(0).toUpperCase();
+  const canOpenDetail = Boolean(listing.detail && onOpenDetails);
   return (
     <article className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm transition hover:shadow-md">
       {/* Hero image OR letter-tile fallback */}
@@ -254,7 +361,16 @@ function NexBusinessCard({ listing }: { listing: NexDirectoryListing }) {
           <div className="mb-2 line-clamp-2 text-[11.5px] text-black/60">{listing.address}</div>
         )}
 
-        <div className="flex flex-wrap gap-2 text-[11px]">
+        <div className="flex flex-wrap items-center gap-2 text-[11px]">
+          {canOpenDetail && (
+            <button
+              type="button"
+              onClick={() => onOpenDetails?.(listing)}
+              className="rounded-full bg-orange-600 px-2.5 py-1 font-semibold text-white hover:bg-orange-700"
+            >
+              Details
+            </button>
+          )}
           {listing.whatsappNumber && (
             <a
               href={`https://wa.me/${listing.whatsappNumber.replace(/\D+/g, "")}`}

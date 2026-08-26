@@ -1,0 +1,199 @@
+{
+  "jobId": "433134f5-fa80-4c4b-a141-0533eded733f",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Gunungkidul",
+  "bbox": {
+    "sw": [
+      -8.2,
+      110.42
+    ],
+    "ne": [
+      -7.75,
+      110.85
+    ],
+    "scope": "Gunungkidul regency · DIY · south-east karst region · beaches + caves"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-24T10:04:03.045Z",
+  "finishedAt": "2026-08-24T10:05:04.961Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 405,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 405,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 405,
+    "records_persisted": 405,
+    "enriched": 4,
+    "gate3_contactable": 43,
+    "gate4_eligible": 43,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 43,
+    "rejected_by_gate": 362,
+    "errors": 0
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#FL-2026-001T3",
+        "name": "Prambanan Garden Resto",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-001T4",
+        "name": "Pasar Cawas Klaten",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-001T5",
+        "name": "Bakso Baskom",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-001T6",
+        "name": "Soto Bathok \"Mbah Joyo\"",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-001T7",
+        "name": "Sendang Ayu",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-001T8",
+        "name": "Rumah Kawan",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-001T9",
+        "name": "Dunkin'",
+        "category": "fast-food",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-001TA",
+        "name": "Warung Sri Agung",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [
+      {
+        "publicRef": "#FL-2026-001T7",
+        "name": "Sendang Ayu",
+        "whatsapp": null,
+        "phone": "+62 274-497234",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-001VM",
+        "name": "Lituhayu Shadow \"Puppet\" Coffee",
+        "whatsapp": null,
+        "phone": "+62 274 2850353",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-001VN",
+        "name": "Roti Bakar Si Kiting",
+        "whatsapp": null,
+        "phone": "+62 821 8850 0483",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-001VX",
+        "name": "Jogja Airport Resto",
+        "whatsapp": "+6282137197178",
+        "phone": null,
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-001VZ",
+        "name": "Cafe Lintas Senja",
+        "whatsapp": "+62 882-2761-2524",
+        "phone": "+62 882-2761-2524",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-001W8",
+        "name": "Waroeng Damandiri",
+        "whatsapp": null,
+        "phone": "+628121579658",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-001WQ",
+        "name": "Bakso & Mie Ayam Nio",
+        "whatsapp": null,
+        "phone": "+628816404812",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-001X0",
+        "name": "Esthy Cake & Bakery",
+        "whatsapp": "+62 815 9424 712",
+        "phone": "+62 896 2270 0700",
+        "website": null
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#FL-2026-001T3",
+        "name": "Prambanan Garden Resto",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-001T4",
+        "name": "Pasar Cawas Klaten",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-001T5",
+        "name": "Bakso Baskom",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-001T6",
+        "name": "Soto Bathok \"Mbah Joyo\"",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-001T8",
+        "name": "Rumah Kawan",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": []
+}

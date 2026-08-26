@@ -27,6 +27,7 @@
 //   Phase B directory filter decides whether to show by admin city or by tourism_region.
 
 import { osmOverpassSource } from "../sources/osm-overpass.mjs";
+import { businessWebsiteSource } from "../sources/business-website.mjs";
 import { createHash } from "node:crypto";
 
 // ── 1. Conservative Accommodation classifier (Q3) ───────────────────
@@ -198,14 +199,183 @@ export const accommodationYogyakartaConfig = {
 
   sources: [
     osmOverpassSource(),
-    // NOTE · businessWebsiteSource() NOT included in Phase A.
-    // Food's website-enrichment is called separately in Phase 2 orchestrator.
-    // Accommodation enrichment agents are Phase C decision.
+    // 2026-08-27 · Chief Architect enrichment pivot · Phase C now writes gains
+    // BACK to existing accommodation_business rows via applyEnrichmentToExisting.
+    // Same source as food · own-domain public info · no ToS/rate concerns.
+    businessWebsiteSource(),
   ],
 
   killSwitchEngaged: false,
 
-  // ── insertNewRecord · adapts Food's pattern to Accommodation columns ──
+  // ── Persistence contract 2026-08-26 · P5 rollout (mirrors food config) ──
+  // Engine owns the CONTRACT (verify + invariant). Config owns the STRUCTURE
+  // (table shape, INSERT column list, per-vertical side-writes).
+  persistence: {
+    destinationTable: "nex.accommodation_business",
+    primaryKeyColumn: "internal_id",
+
+    buildInsert(candidate, { workerId, cycleRunId, sourceName }) {
+      // Assemble deterministic public_listing_ref if caller hasn't set one.
+      if (!candidate.publicRef) {
+        candidate.publicRef = generatePublicRef(candidate.dedupeHash);
+      }
+      const secondaryCategories = Array.isArray(candidate.categories) ? candidate.categories : [];
+      const rawTags = candidate.rawTags ?? {};
+      const starRating = parseStarRating(rawTags);
+      const roomCount  = parseRoomCount(rawTags);
+      const amenities  = parseAmenities(rawTags);
+      return {
+        sql: `INSERT INTO nex.accommodation_business (
+                public_listing_ref, business_name, category, categories, address, city,
+                coordinates_lng, coordinates_lat,
+                whatsapp_number, phone, website,
+                star_rating, star_rating_source, room_count, amenities,
+                source, source_reference, source_ingested_at, source_licence_terms,
+                source_updated_at, last_verified_at, verification_source,
+                dedupe_hash, claim_status, owner_status, created_by, country,
+                worker_id, cycle_run_id
+              ) VALUES (
+                $1, $2, $3, $4::text[], $5, $6, $7, $8, $9, $10, $11,
+                $12, $13, $14, $15::text[],
+                $16, $17, now(), $18,
+                $19, $20, $21,
+                $22, 'discovered', 'unknown', $23, $24,
+                $25, $26
+              )
+              ON CONFLICT DO NOTHING
+              RETURNING internal_id`,
+        values: [
+          candidate.publicRef, candidate.name, candidate.category, secondaryCategories,
+          candidate.address, this.city,
+          candidate.lng, candidate.lat,
+          candidate.whatsapp, candidate.phone, candidate.website,
+          starRating, starRating != null ? "osm_stars_tag" : null, roomCount, amenities,
+          candidate.sourceType, candidate.sourceReference, candidate.sourceLicenceTerms,
+          candidate.sourceUpdatedAt ?? null,
+          candidate.lastVerifiedAt ?? null,
+          candidate.verificationSource ?? null,
+          candidate.dedupeHash,
+          `agent:universal-acquisition:${sourceName}:${cycleRunId}`,
+          this.country,
+          workerId,           // $25 · persistence contract
+          cycleRunId,         // $26 · persistence contract
+        ],
+      };
+    },
+
+    // Enrichment pivot 2026-08-27 · Chief Architect · same shape as food.
+    // COALESCE · never overwrites non-null · owner_status='verified' guarded.
+    // Image extraction pivot 2026-08-27 · writes to universal nex.business_image
+    // (business_type='accommodation') + COALESCE hero_image_url on this table.
+    async applyEnrichmentToExisting(pool, existing, gain, { workerId, cycleRunId, sourceName }) {
+      const socials = (gain.instagram || gain.facebook)
+        ? { instagram: gain.instagram ?? null, facebook: gain.facebook ?? null }
+        : null;
+      let totalWrites = 0;
+
+      const textUpdate = await pool.query(
+        `UPDATE nex.accommodation_business SET
+           phone               = COALESCE(phone, $1),
+           whatsapp_number     = COALESCE(whatsapp_number, $2),
+           public_social_links = COALESCE(public_social_links, $3::jsonb),
+           last_verified_at    = now(),
+           verification_source = COALESCE(verification_source, 'official_website'),
+           updated_at          = now()
+         WHERE public_listing_ref = $4
+           AND owner_status != 'verified'
+         RETURNING internal_id`,
+        [
+          gain.phone ?? null,
+          gain.whatsapp ?? null,
+          socials ? JSON.stringify(socials) : null,
+          existing.public_listing_ref,
+        ]
+      );
+      totalWrites += textUpdate.rowCount;
+
+      if (gain.image_url) {
+        const provenance = {
+          source_url:    gain._sourceReference ?? null,
+          method:        gain.image_source_method ?? "unknown",
+          extracted_at:  new Date().toISOString(),
+          worker_id:     workerId,
+          cycle_run_id:  cycleRunId,
+        };
+        const imgInsert = await pool.query(
+          `INSERT INTO nex.business_image (
+             business_type, business_country, business_ref, image_type,
+             url, source, provenance, confidence, cycle_run_id, approved, owner_approved
+           ) VALUES (
+             'accommodation', 'ID', $1, 'VERIFIED_REAL',
+             $2, 'official_website', $3::jsonb, 0.8, $4, false, false
+           )
+           ON CONFLICT (business_type, business_country, business_ref, image_type) DO NOTHING
+           RETURNING id`,
+          [existing.public_listing_ref, gain.image_url, JSON.stringify(provenance), cycleRunId]
+        );
+        totalWrites += imgInsert.rowCount;
+
+        const heroUpdate = await pool.query(
+          `UPDATE nex.accommodation_business SET
+             hero_image_url        = COALESCE(hero_image_url, $1),
+             hero_image_source     = COALESCE(hero_image_source, 'official_website'),
+             hero_image_provenance = COALESCE(hero_image_provenance, $2::jsonb),
+             updated_at            = now()
+           WHERE public_listing_ref = $3
+             AND owner_status != 'verified'
+             AND hero_image_url IS NULL
+           RETURNING internal_id`,
+          [gain.image_url, JSON.stringify(provenance), existing.public_listing_ref]
+        );
+        totalWrites += heroUpdate.rowCount;
+      }
+
+      return totalWrites;
+    },
+
+    async writeSideEffects(pool, candidate, { workerId, cycleRunId, sourceName, primaryKeyValue }) {
+      const rawTags = candidate.rawTags ?? {};
+      const starRating = parseStarRating(rawTags);
+      const roomCount  = parseRoomCount(rawTags);
+      const amenities  = parseAmenities(rawTags);
+
+      await pool.query(
+        `INSERT INTO ${this.tables.snapshot} (business_ref, source, source_reference, raw_payload, cycle_run_id)
+         VALUES ($1, $2, $3, $4::jsonb, $5)`,
+        [candidate.publicRef, candidate.sourceType, candidate.sourceReference,
+         JSON.stringify({ tags: rawTags, osmId: candidate.osmId, lat: candidate.lat, lng: candidate.lng }),
+         cycleRunId]
+      );
+
+      const provenanceFields = [];
+      provenanceFields.push(["business_name"]);
+      provenanceFields.push(["category"]);
+      if (candidate.address)         provenanceFields.push(["address"]);
+      if (candidate.lat != null)     provenanceFields.push(["coordinates_lat"]);
+      if (candidate.lng != null)     provenanceFields.push(["coordinates_lng"]);
+      if (candidate.phone)           provenanceFields.push(["phone"]);
+      if (candidate.whatsapp)        provenanceFields.push(["whatsapp_number"]);
+      if (candidate.website)         provenanceFields.push(["website"]);
+      if (starRating != null)        provenanceFields.push(["star_rating"]);
+      if (roomCount != null)         provenanceFields.push(["room_count"]);
+      if (amenities.length > 0)      provenanceFields.push(["amenities"]);
+
+      const writtenBy = `agent:universal-acquisition:${sourceName}`;
+      const sourceRef = candidate.sourceReference ?? null;
+      for (const [fieldName] of provenanceFields) {
+        await pool.query(
+          `INSERT INTO ${this.tables.provenance}
+             (business_ref, field_name, trust_layer, written_at, written_by, source_reference, cycle_run_id)
+           VALUES ($1, $2, 'source_import', now(), $3, $4, $5)
+           ON CONFLICT (business_ref, field_name) DO NOTHING`,
+          [candidate.publicRef, fieldName, writtenBy, sourceRef, cycleRunId]
+        );
+      }
+    },
+  },
+
+  // ── LEGACY insertNewRecord · superseded by persistence block above ──
+  // Retained temporarily · engine branches on config.persistence FIRST.
   async insertNewRecord(pool, candidate, { jobId, sourceName }) {
     // Assemble the deterministic public_listing_ref (#AC-YYYY-XXXXX).
     // Uses SHA-256 hash of dedupe_hash truncated to 5 Crockford base-32 chars.

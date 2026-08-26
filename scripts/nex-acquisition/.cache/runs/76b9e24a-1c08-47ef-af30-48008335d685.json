@@ -1,0 +1,141 @@
+{
+  "jobId": "76b9e24a-1c08-47ef-af30-48008335d685",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Kulon Progo",
+  "bbox": {
+    "sw": [
+      -8,
+      110.09
+    ],
+    "ne": [
+      -7.62,
+      110.28
+    ],
+    "scope": "Kulon Progo regency · DIY · western DIY · YIA airport corridor"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-23T21:41:26.502Z",
+  "finishedAt": "2026-08-23T21:41:31.018Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 7,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 7,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 7,
+    "enriched": 0,
+    "gate3_contactable": 1,
+    "gate4_eligible": 1,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 1,
+    "rejected_by_gate": 6,
+    "errors": 0
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#AC-2026-0013K",
+        "name": "Joglo Abiproyo",
+        "category": "hostel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0013M",
+        "name": "Home Stay Casa Java Borobudur",
+        "category": "guesthouse",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0013N",
+        "name": "Gado gado BNB",
+        "category": "hostel",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0013P",
+        "name": "Griya Harja Homestay",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0013Q",
+        "name": "Amanjiwo",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0013R",
+        "name": "Villa Borobudur Resort",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0013S",
+        "name": "Borobudur Hill",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [
+      {
+        "publicRef": "#AC-2026-0013N",
+        "name": "Gado gado BNB",
+        "whatsapp": null,
+        "phone": "+6282133931578",
+        "website": null
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#AC-2026-0013K",
+        "name": "Joglo Abiproyo",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-0013M",
+        "name": "Home Stay Casa Java Borobudur",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-0013P",
+        "name": "Griya Harja Homestay",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-0013Q",
+        "name": "Amanjiwo",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-0013R",
+        "name": "Villa Borobudur Resort",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": []
+}

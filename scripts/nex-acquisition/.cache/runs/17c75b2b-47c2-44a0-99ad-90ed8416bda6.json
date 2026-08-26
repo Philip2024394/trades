@@ -1,0 +1,184 @@
+{
+  "jobId": "17c75b2b-47c2-44a0-99ad-90ed8416bda6",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Solo",
+  "bbox": {
+    "sw": [
+      -7.6,
+      110.75
+    ],
+    "ne": [
+      -7.5,
+      110.9
+    ],
+    "scope": "Solo (Surakarta) city · Central Java · cultural centre"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-23T20:59:11.884Z",
+  "finishedAt": "2026-08-23T20:59:17.217Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 165,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 165,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 165,
+    "enriched": 0,
+    "gate3_contactable": 6,
+    "gate4_eligible": 6,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 6,
+    "rejected_by_gate": 159,
+    "errors": 0
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#AC-2026-000YE",
+        "name": "Novotel",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000YF",
+        "name": "Ibis Hotel",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000YG",
+        "name": "Hotel Dana Solo",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000YH",
+        "name": "Diamond Hotel",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000YJ",
+        "name": "Riyadi Palace Hotel",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000YK",
+        "name": "Hotel Baron Indah",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000YM",
+        "name": "Hotel Mandala Wisata",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-000YN",
+        "name": "Grand Orchid",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [
+      {
+        "publicRef": "#AC-2026-000Z0",
+        "name": "Sala View Hotel",
+        "whatsapp": null,
+        "phone": "+62 271-718388",
+        "website": "https://www.salaviewhotel.com"
+      },
+      {
+        "publicRef": "#AC-2026-0010C",
+        "name": "Solia Zigna",
+        "whatsapp": "+6285231525525",
+        "phone": "+62 271 7470000",
+        "website": "https://soliahotels.com/solia-zigna/"
+      },
+      {
+        "publicRef": "#AC-2026-0010Q",
+        "name": "A1Salam Syariah Guest House",
+        "whatsapp": null,
+        "phone": "+622712931281",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-0010W",
+        "name": "Front One Boutique Brani Solo",
+        "whatsapp": null,
+        "phone": "+62 271-714177",
+        "website": "https://www.frontoneboutiquehotel.com"
+      },
+      {
+        "publicRef": "#AC-2026-0010Y",
+        "name": "Vifa Guest House",
+        "whatsapp": null,
+        "phone": "+6282257730206",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-00110",
+        "name": "Asrama Haji Donohudan",
+        "whatsapp": null,
+        "phone": "+62 271 782244",
+        "website": "https://asramahajidonohudan.id/"
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#AC-2026-000YE",
+        "name": "Novotel",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-000YF",
+        "name": "Ibis Hotel",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-000YG",
+        "name": "Hotel Dana Solo",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-000YH",
+        "name": "Diamond Hotel",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-000YJ",
+        "name": "Riyadi Palace Hotel",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": []
+}

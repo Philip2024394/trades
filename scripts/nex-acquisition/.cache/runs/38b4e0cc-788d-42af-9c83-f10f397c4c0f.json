@@ -1,0 +1,51 @@
+{
+  "jobId": "38b4e0cc-788d-42af-9c83-f10f397c4c0f",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Gunungkidul",
+  "bbox": {
+    "sw": [
+      -8.2,
+      110.42
+    ],
+    "ne": [
+      -7.75,
+      110.85
+    ],
+    "scope": "Gunungkidul regency · DIY · south-east karst region · beaches + caves"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-24T10:10:03.081Z",
+  "finishedAt": "2026-08-24T10:10:21.111Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 405,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 405,
+    "matched_exact": 405,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "records_persisted": 0,
+    "enriched": 4,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 0
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": []
+}

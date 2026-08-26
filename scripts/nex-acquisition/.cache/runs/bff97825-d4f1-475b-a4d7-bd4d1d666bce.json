@@ -1,0 +1,59 @@
+{
+  "jobId": "bff97825-d4f1-475b-a4d7-bd4d1d666bce",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Surabaya",
+  "bbox": {
+    "sw": [
+      -7.36,
+      112.6
+    ],
+    "ne": [
+      -7.16,
+      112.86
+    ],
+    "scope": "Surabaya · East Java"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-24T10:48:06.297Z",
+  "finishedAt": "2026-08-24T10:48:06.734Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 0,
+      "errors": [
+        "Release called on client which has already been released to the pool."
+      ]
+    }
+  ],
+  "counts": {
+    "discovered": 0,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "records_persisted": 0,
+    "enriched": 0,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 1
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": [
+    {
+      "source": "osm_overpass",
+      "phase": "discover",
+      "message": "Release called on client which has already been released to the pool."
+    }
+  ]
+}

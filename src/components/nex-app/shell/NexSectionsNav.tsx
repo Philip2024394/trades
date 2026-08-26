@@ -39,6 +39,7 @@ const SECTIONS: Section[] = [
   { href: "/nex-app/messages",               label: "Messages",             description: "Direct chats with your contacts",    icon: MessageSquare },
   { href: "/nex-app/contacts",               label: "Contacts",             description: "Your saved connections + groups",    icon: Users },
   { href: "/nex-app/centre",                 label: "Trade Centre",         description: "Marketplace: products · services",   icon: Store },
+  { href: "/nex-market",                     label: "NEX Market · Yogyakarta", description: "Marketplace · buy from local sellers", icon: Store },
   { href: "/nex-head-quarters/comms-social", label: "Nex Marketing",        description: "Get your business seen",             icon: Share2 },
   // Phase 12.4 · Dedicated Knowledge Factory page. Physical hierarchy
   // (Inbox → Workers → Warehouse → Vault) driven by real state

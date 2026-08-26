@@ -1,0 +1,65 @@
+{
+  "jobId": "37cf86e5-16b3-4330-ab4c-290e42cd3d83",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Kulon Progo",
+  "bbox": {
+    "sw": [
+      -8,
+      110.09
+    ],
+    "ne": [
+      -7.62,
+      110.28
+    ],
+    "scope": "Kulon Progo regency · DIY · western DIY · YIA airport corridor"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-24T07:13:30.642Z",
+  "finishedAt": "2026-08-24T07:13:30.658Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 7,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 7,
+    "matched_exact": 6,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 1,
+    "enriched": 0,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 1,
+    "errors": 0
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#AC-2026-0013S",
+        "name": "Borobudur Hill",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [],
+    "rejected": [
+      {
+        "publicRef": "#AC-2026-0013S",
+        "name": "Borobudur Hill",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": []
+}

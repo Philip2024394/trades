@@ -20,9 +20,9 @@ export const XRATED_BRAND = {
   // Cream page background (the Yard/Warehouse standard).
   surface: "#FBF6EC",
   logoUrl:
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/branding/xrated_logo_v3.png",
+    "https://ik.imagekit.io/7grri5v7d/ChatGPT%20Image%20Aug%2024,%202026,%2011_20_05%20PM.png?updatedAt=1787588455939",
   heroImageUrl:
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/branding/xrated-landing-hero-v4.png"
+    "https://ik.imagekit.io/7grri5v7d/ChatGPT%20Image%20Aug%2024,%202026,%2011_20_05%20PM.png?updatedAt=1787588455939"
 } as const;
 
 // Tier system — Standard is free for life, App is a 14-day trial then £14.99/mo.

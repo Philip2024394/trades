@@ -1,19 +1,13 @@
-// NEX home experience · route entry.
+// NEX home experience · route entry (server component · metadata carrier).
 //
-// The one canonical NEX home surface per Philip's 2026-08-21 build spec.
-// Reference image: mobile portrait mockup · four corner shortcuts +
-// central conversation area + reactive orange particle field + living
-// NEX identity button in the bottom nav.
+// UI + interactivity lives in ./NexAppShell (client). This file only exports
+// route-level metadata + viewport per Next 13 rules (metadata cannot be
+// exported from a client component).
 //
-// Doctrine-compliant:
-//   · Reuses existing /api/nex-conv/chat endpoint (single conversation
-//     brain, per Router doctrine).
-//   · Reuses existing NexVoiceProvider (voice adapter is frozen).
-//   · No fabricated prices in business cards (Owner-Provenanced Pricing).
-//   · State is language-neutral (Indonesian works via existing layer).
-//   · No new backend, no architecture changes, no touching frozen files.
+// 2026-08-25 · Phase 1 install of the console HUD frame per Philip. See
+// project_nex_workspace_identity_doctrine_2026_08_25 for the shell doctrine.
 
-import { NexAppHome } from "@/components/nexapp/NexAppHome";
+import { NexAppShell } from "./NexAppShell";
 
 export const dynamic = "force-dynamic";
 export const metadata = {
@@ -21,15 +15,18 @@ export const metadata = {
   description: "NEX · Ask. Discover. Connect.",
 };
 
+// 2026-08-25 · Philip · frame must be the device boundary · viewportFit
+// changed from "cover" (which painted the bezel behind notches) to
+// "auto" so the browser gives us a viewport that already excludes the
+// notch area. Prevents top clipping on notched phones.
 export const viewport = {
   themeColor: "#050505",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  viewportFit: "cover" as const,
 };
 
 export default function NexAppRoute() {
-  return <NexAppHome />;
+  return <NexAppShell />;
 }

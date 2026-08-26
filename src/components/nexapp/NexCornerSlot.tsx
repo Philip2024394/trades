@@ -23,11 +23,15 @@ export type CornerPosition = "top-left" | "top-right" | "bottom-left" | "bottom-
  *  button can sit as a flex child in the new composer row (Directory + Contacts). */
 export type CornerLayout = "corner" | "inline";
 
+// 2026-08-24 PM · corner buttons SIT ON the frame corner points. Chat window
+// chrome is now CSS-native (charcoal fill + orange border · see
+// conversationFrameStyle in NexAppHome), so buttons anchor to the true div
+// corners with no PNG-margin compensation.
 const POSITION_OFFSET: Record<CornerPosition, CSSProperties> = {
-  "top-left":     { top: -14, left: -12 },
-  "top-right":    { top: -14, right: -12 },
-  "bottom-left":  { bottom: -14, left: -12 },
-  "bottom-right": { bottom: -14, right: -12 },
+  "top-left":     { top: -23, left: -23 },
+  "top-right":    { top: -23, right: -23 },
+  "bottom-left":  { bottom: -23, left: -23 },
+  "bottom-right": { bottom: -23, right: -23 },
 };
 
 export function NexCornerSlot({
@@ -75,29 +79,23 @@ export function NexCornerSlot({
         width: 46,
         height: 46,
         borderRadius: "50%",
-        // All 4 corner rims are gray (Philip 2026-08-21: "the 4 round
-        // buttons on the corners change the button rim to gray color").
-        // Rims quiet the corners into subtle access points — the
-        // pinned Four Corners doctrine calls for quiet corners around
-        // a dominant central conversation. Active state keeps a soft
-        // orange glow as the "on" signal for open panels; rim colour
-        // stays gray in all states.
-        background: isNex
-          ? NEX.bgSurface
-          : (active ? "rgba(249, 115, 22, 0.10)" : "rgba(13, 13, 13, 0.9)"),
-        border: `1.5px solid ${NEX.borderMuted}`,
+        // 2026-08-24 PM · all 4 corner buttons unified to solid black with
+        // orange rim + NEX wordmark inside (Philip explicit). Icons and
+        // labels removed · every corner reads as "an instance of the NEX
+        // identity mark". Active state deepens the orange rim + adds a
+        // soft outer glow so an open panel is still visible.
+        background: "#000000",
+        border: `1.5px solid ${active ? NEX.orange : "rgba(249, 115, 22, 0.55)"}`,
         boxShadow: active
-          ? `0 0 14px ${NEX.orangeGlowLo}`
-          : "none",
-        color: NEX.orange,
+          ? `0 0 14px ${NEX.orangeGlow}, inset 0 0 10px rgba(249, 115, 22, 0.28)`
+          : "0 2px 8px rgba(0, 0, 0, 0.45)",
+        color: NEX.text,
         display: "flex",
-        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: 1,
         cursor: onTap ? "pointer" : "default",
         padding: 0,
-        transition: "background 180ms ease, box-shadow 180ms ease",
+        transition: "border-color 180ms ease, box-shadow 180ms ease",
         zIndex: 3,
       }}
       aria-label={kind === "nex" ? "NEX identity"
@@ -105,87 +103,56 @@ export function NexCornerSlot({
                  : kind === "directory" ? "Explore categories"
                  : "Your NEX contacts"}
     >
-      <CornerIcon kind={kind} entityLabel={entityLabel} />
-      {label && (
-        <span style={{ fontSize: 7.5, fontWeight: 500, letterSpacing: 0.2 }}>{label}</span>
+      {kind === "directory" ? (
+        <ExploreIcon />
+      ) : kind === "people" ? (
+        <ContactsIcon />
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: 13,
+            fontWeight: 700,
+            letterSpacing: 0.4,
+            color: NEX.text,
+            lineHeight: 1,
+          }}
+          aria-hidden
+        >
+          <span>NE</span>
+          <span style={{ color: NEX.orange, marginLeft: 1 }}>X</span>
+        </div>
       )}
     </button>
   );
 }
 
-function CornerIcon({ kind, entityLabel }: { kind: CornerKind; entityLabel?: string }) {
-  if (kind === "nex") {
-    // NEX wordmark — "NE" white + "X" orange · exact same treatment as
-    // the chat message-list NEX profile round (see NexAppHome
-    // MessageBubble). Consistency across surfaces per Philip 2026-08-21.
-    return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: 11,
-          fontWeight: 700,
-          letterSpacing: 0.4,
-          color: NEX.text,
-          lineHeight: 1,
-        }}
-        aria-hidden
-      >
-        <span>NE</span>
-        <span style={{ color: NEX.orange, marginLeft: 1 }}>X</span>
-      </div>
-    );
-  }
-  if (kind === "person") {
-    // If we know the user's name initial, render it inside a soft circle.
-    // Fallback: a subtle person glyph. NEX-to-NEX chat (Priority 4+) will
-    // eventually swap this for a real profile photo.
-    if (entityLabel) {
-      return (
-        <div
-          style={{
-            width: 22,
-            height: 22,
-            borderRadius: "50%",
-            background: `linear-gradient(180deg, ${NEX.orange} 0%, rgba(249,115,22,0.7) 100%)`,
-            color: "#0a0a0a",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: 0,
-          }}
-          aria-hidden
-        >
-          {entityLabel}
-        </div>
-      );
-    }
-    return (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={NEX.orange} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <circle cx="12" cy="8" r="3.5" />
-        <path d="M4.5 20a7.5 7.5 0 0 1 15 0" />
-      </svg>
-    );
-  }
-  if (kind === "directory") {
-    // Compass / world discovery icon.
-    return (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={NEX.orange} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <circle cx="12" cy="12" r="9" />
-        <path d="M16 8l-2.5 5.5L8 16l2.5-5.5L16 8z" fill={NEX.orange} stroke="none" />
-      </svg>
-    );
-  }
-  // people
+// Explore (bottom-left · directory) · compass with orange needle inside
+// a white ring. Two-tone matches the NEX identity palette on the corner
+// black+orange rim.
+function ExploreIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={NEX.orange} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <circle cx="9" cy="8" r="3" />
-      <path d="M2 20a7 7 0 0 1 14 0" />
-      <circle cx="17" cy="9" r="2.5" />
-      <path d="M15 20a5 5 0 0 1 7 0" />
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <circle cx="12" cy="12" r="9" stroke="#FFFFFF" strokeWidth="1.8" />
+      <path d="M16 8l-2.5 5.5L8 16l2.5-5.5L16 8z" fill={NEX.orange} />
     </svg>
   );
 }
+
+// Contacts (bottom-right · people) · two overlapping silhouettes. Front
+// figure white (primary contact), back figure orange (network).
+function ContactsIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+      {/* back figure · orange */}
+      <circle cx="17" cy="9" r="2.5" stroke={NEX.orange} strokeWidth="1.8" />
+      <path d="M15 20a5 5 0 0 1 7 0" stroke={NEX.orange} strokeWidth="1.8" strokeLinecap="round" />
+      {/* front figure · white */}
+      <circle cx="9" cy="8" r="3" stroke="#FFFFFF" strokeWidth="1.8" />
+      <path d="M2 20a7 7 0 0 1 14 0" stroke="#FFFFFF" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
+
