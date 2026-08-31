@@ -1,0 +1,69 @@
+{
+  "jobId": "6d6aedce-8b0d-48de-a50d-df817fa80411",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Sleman",
+  "bbox": {
+    "sw": [
+      -7.75,
+      110.29
+    ],
+    "ne": [
+      -7.62,
+      110.48
+    ],
+    "scope": "Sleman · DIY"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T14:03:03.766Z",
+  "finishedAt": "2026-08-27T14:04:28.807Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 460,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 460,
+    "matched_exact": 460,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "records_persisted": 0,
+    "enriched": 8,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 0,
+    "enrichment_writes_applied": 8,
+    "insert_attempted": 0,
+    "insert_conflicts": 0,
+    "insert_returned": 0,
+    "insert_verified": 0,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 0,
+    "rejected_by_reason": {
+      "MATCHED_EXISTING": 460
+    }
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 0,
+    "insert_verified": 0,
+    "delta": 0
+  },
+  "cycle_outcome": "ALL_DEDUPED"
+}

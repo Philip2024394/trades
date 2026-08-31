@@ -71,15 +71,20 @@ export async function finishCycleRun(pool, cycleRunId, {
 
 // ── Deterministic health evaluator (pure function · testable) ─────────────
 //
-// Rules match nex.worker_health_status view. Duplicated here so callers
-// don't need DB round-trip for a single-worker health check. View is
-// authoritative for aggregate reads.
+// Rules match nex.worker_health_status view (see migration 142). Duplicated
+// here so callers don't need DB round-trip for a single-worker health check.
+// View is authoritative for aggregate reads.
+//
+// States (worst first · alert): MISSED_RUN · CRITICAL · WARNING · HEALTHY.
+// Informational: DEACTIVATED (no cycle in 7d) · UNKNOWN (never heartbeated).
 
 export function evaluateHealth({
   lastHeartbeatAt,        // Date or ISO string · nullable
+  lastCycleStartedAt,     // Date or ISO string · nullable (added 2026-08-29 for DEACTIVATED)
   lastCycleStatus,        // 'completed' | 'failed' | 'running' | 'aborted' | null
   lastCycleErrorsCount,   // int · nullable
   recentFailures24h,      // int
+  recentMissedRuns24h,    // int · nullable (added 2026-08-29 to mirror view)
   now = new Date(),
 }) {
   if (!lastHeartbeatAt) return { health: "UNKNOWN", reason: "no heartbeat ever recorded" };
@@ -87,7 +92,30 @@ export function evaluateHealth({
   const ageMs = now.getTime() - hb.getTime();
   const ageMin = ageMs / 60_000;
 
+  // ALERT states first · schedule miss > repeated failures > staleness.
+  if ((recentMissedRuns24h ?? 0) > 0) return { health: "MISSED_RUN", reason: `${recentMissedRuns24h} scheduled run(s) missed in last 24h` };
   if ((recentFailures24h ?? 0) >= 3) return { health: "CRITICAL", reason: `${recentFailures24h} failures in last 24h` };
+
+  // DEACTIVATED · historical / ephemeral / idle worker. Two triggers:
+  //   (a) NO cycle_run ever recorded (fires regardless of heartbeat)
+  //   (b) heartbeat stale (> 60 min) AND (last cycle finished > 60 min ago
+  //       OR last cycle started > 7 days ago)
+  // Matches migration 142 view · not CRITICAL because these workers aren't
+  // in an actively-expected state.
+  const lastCycleAt = lastCycleStartedAt
+    ? (lastCycleStartedAt instanceof Date ? lastCycleStartedAt : new Date(lastCycleStartedAt))
+    : null;
+  if (!lastCycleAt) {
+    return { health: "DEACTIVATED", reason: "no cycle_run ever recorded · never activated" };
+  }
+  const daysSinceLastCycle = (now.getTime() - lastCycleAt.getTime()) / (24 * 60 * 60 * 1000);
+  const minutesSinceLastCycle = (now.getTime() - lastCycleAt.getTime()) / 60_000;
+  if (ageMin > 60 && (minutesSinceLastCycle > 60 || daysSinceLastCycle > 7)) {
+    return { health: "DEACTIVATED", reason: daysSinceLastCycle > 7
+      ? `no cycle_run in ${daysSinceLastCycle.toFixed(1)} days (> 7d)`
+      : `stale heartbeat + last cycle ${minutesSinceLastCycle.toFixed(0)}min ago (> 60min) · ephemeral one-shot` };
+  }
+
   if (ageMin > 60) return { health: "CRITICAL", reason: `no heartbeat for ${ageMin.toFixed(1)}min (> 60min threshold)` };
   if (ageMin > 15 && ((lastCycleErrorsCount ?? 0) > 0 || lastCycleStatus === "failed")) {
     return { health: "WARNING", reason: `heartbeat ${ageMin.toFixed(1)}min old + last cycle had issues` };

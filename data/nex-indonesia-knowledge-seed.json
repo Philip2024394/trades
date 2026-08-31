@@ -1,0 +1,1164 @@
+{
+  "_doc": "NEX Brain · Indonesia Knowledge Seed Catalogue · Philip 2026-08-27. Curated list of Indonesian topics for the knowledge walkers to fetch from Wikipedia / Wikidata / Wikivoyage. Adding a topic = one entry here; the shared walker script picks it up automatically. Truth class per section reflects the knowledge type: confirmed_fact for provinces/cities/geographic entities; traditional_folk for oral traditions and legends; spiritual_belief for religious/spiritual practices.",
+  "_schema": {
+    "topic_key": "stable slug used as dedup key across walker cycles",
+    "topic_key_en": "English Wikipedia article title (URL-encoded)",
+    "topic_key_id": "Indonesian Wikipedia article title (URL-encoded)",
+    "truth_class": "confirmed_fact | traditional_folk | spiritual_belief | academic_reference",
+    "categories": "tags for retrieval + display",
+    "region": "province or archipelago region"
+  },
+  "provinces": [
+    {
+      "topic_key": "prov-aceh",
+      "topic_key_en": "Aceh",
+      "topic_key_id": "Aceh",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "sumatra"
+      ],
+      "region": "Aceh"
+    },
+    {
+      "topic_key": "prov-sumut",
+      "topic_key_en": "North_Sumatra",
+      "topic_key_id": "Sumatera_Utara",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "sumatra"
+      ],
+      "region": "Sumatera Utara"
+    },
+    {
+      "topic_key": "prov-sumbar",
+      "topic_key_en": "West_Sumatra",
+      "topic_key_id": "Sumatera_Barat",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "sumatra"
+      ],
+      "region": "Sumatera Barat"
+    },
+    {
+      "topic_key": "prov-riau",
+      "topic_key_en": "Riau",
+      "topic_key_id": "Riau",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "sumatra"
+      ],
+      "region": "Riau"
+    },
+    {
+      "topic_key": "prov-kepri",
+      "topic_key_en": "Riau_Islands",
+      "topic_key_id": "Kepulauan_Riau",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "sumatra"
+      ],
+      "region": "Kepulauan Riau"
+    },
+    {
+      "topic_key": "prov-jambi",
+      "topic_key_en": "Jambi",
+      "topic_key_id": "Jambi",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "sumatra"
+      ],
+      "region": "Jambi"
+    },
+    {
+      "topic_key": "prov-sumsel",
+      "topic_key_en": "South_Sumatra",
+      "topic_key_id": "Sumatera_Selatan",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "sumatra"
+      ],
+      "region": "Sumatera Selatan"
+    },
+    {
+      "topic_key": "prov-babel",
+      "topic_key_en": "Bangka_Belitung_Islands",
+      "topic_key_id": "Kepulauan_Bangka_Belitung",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "sumatra"
+      ],
+      "region": "Kepulauan Bangka Belitung"
+    },
+    {
+      "topic_key": "prov-bengkulu",
+      "topic_key_en": "Bengkulu",
+      "topic_key_id": "Bengkulu",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "sumatra"
+      ],
+      "region": "Bengkulu"
+    },
+    {
+      "topic_key": "prov-lampung",
+      "topic_key_en": "Lampung",
+      "topic_key_id": "Lampung",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "sumatra"
+      ],
+      "region": "Lampung"
+    },
+    {
+      "topic_key": "prov-banten",
+      "topic_key_en": "Banten",
+      "topic_key_id": "Banten",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "java"
+      ],
+      "region": "Banten"
+    },
+    {
+      "topic_key": "prov-jakarta",
+      "topic_key_en": "Jakarta",
+      "topic_key_id": "Daerah_Khusus_Ibukota_Jakarta",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "java"
+      ],
+      "region": "DKI Jakarta"
+    },
+    {
+      "topic_key": "prov-jabar",
+      "topic_key_en": "West_Java",
+      "topic_key_id": "Jawa_Barat",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "java"
+      ],
+      "region": "Jawa Barat"
+    },
+    {
+      "topic_key": "prov-jateng",
+      "topic_key_en": "Central_Java",
+      "topic_key_id": "Jawa_Tengah",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "java"
+      ],
+      "region": "Jawa Tengah"
+    },
+    {
+      "topic_key": "prov-diy",
+      "topic_key_en": "Special_Region_of_Yogyakarta",
+      "topic_key_id": "Daerah_Istimewa_Yogyakarta",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "java"
+      ],
+      "region": "DIY"
+    },
+    {
+      "topic_key": "prov-jatim",
+      "topic_key_en": "East_Java",
+      "topic_key_id": "Jawa_Timur",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "java"
+      ],
+      "region": "Jawa Timur"
+    },
+    {
+      "topic_key": "prov-bali",
+      "topic_key_en": "Bali",
+      "topic_key_id": "Bali",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "nusa-tenggara"
+      ],
+      "region": "Bali"
+    },
+    {
+      "topic_key": "prov-ntb",
+      "topic_key_en": "West_Nusa_Tenggara",
+      "topic_key_id": "Nusa_Tenggara_Barat",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "nusa-tenggara"
+      ],
+      "region": "Nusa Tenggara Barat"
+    },
+    {
+      "topic_key": "prov-ntt",
+      "topic_key_en": "East_Nusa_Tenggara",
+      "topic_key_id": "Nusa_Tenggara_Timur",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "nusa-tenggara"
+      ],
+      "region": "Nusa Tenggara Timur"
+    },
+    {
+      "topic_key": "prov-kalbar",
+      "topic_key_en": "West_Kalimantan",
+      "topic_key_id": "Kalimantan_Barat",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "kalimantan"
+      ],
+      "region": "Kalimantan Barat"
+    },
+    {
+      "topic_key": "prov-kalteng",
+      "topic_key_en": "Central_Kalimantan",
+      "topic_key_id": "Kalimantan_Tengah",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "kalimantan"
+      ],
+      "region": "Kalimantan Tengah"
+    },
+    {
+      "topic_key": "prov-kalsel",
+      "topic_key_en": "South_Kalimantan",
+      "topic_key_id": "Kalimantan_Selatan",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "kalimantan"
+      ],
+      "region": "Kalimantan Selatan"
+    },
+    {
+      "topic_key": "prov-kaltim",
+      "topic_key_en": "East_Kalimantan",
+      "topic_key_id": "Kalimantan_Timur",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "kalimantan"
+      ],
+      "region": "Kalimantan Timur"
+    },
+    {
+      "topic_key": "prov-kaltara",
+      "topic_key_en": "North_Kalimantan",
+      "topic_key_id": "Kalimantan_Utara",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "kalimantan"
+      ],
+      "region": "Kalimantan Utara"
+    },
+    {
+      "topic_key": "prov-sulut",
+      "topic_key_en": "North_Sulawesi",
+      "topic_key_id": "Sulawesi_Utara",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "sulawesi"
+      ],
+      "region": "Sulawesi Utara"
+    },
+    {
+      "topic_key": "prov-gorontalo",
+      "topic_key_en": "Gorontalo",
+      "topic_key_id": "Gorontalo_(provinsi)",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "sulawesi"
+      ],
+      "region": "Gorontalo"
+    },
+    {
+      "topic_key": "prov-sulteng",
+      "topic_key_en": "Central_Sulawesi",
+      "topic_key_id": "Sulawesi_Tengah",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "sulawesi"
+      ],
+      "region": "Sulawesi Tengah"
+    },
+    {
+      "topic_key": "prov-sulbar",
+      "topic_key_en": "West_Sulawesi",
+      "topic_key_id": "Sulawesi_Barat",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "sulawesi"
+      ],
+      "region": "Sulawesi Barat"
+    },
+    {
+      "topic_key": "prov-sulsel",
+      "topic_key_en": "South_Sulawesi",
+      "topic_key_id": "Sulawesi_Selatan",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "sulawesi"
+      ],
+      "region": "Sulawesi Selatan"
+    },
+    {
+      "topic_key": "prov-sultra",
+      "topic_key_en": "Southeast_Sulawesi",
+      "topic_key_id": "Sulawesi_Tenggara",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "sulawesi"
+      ],
+      "region": "Sulawesi Tenggara"
+    },
+    {
+      "topic_key": "prov-maluku",
+      "topic_key_en": "Maluku_(province)",
+      "topic_key_id": "Maluku",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "maluku"
+      ],
+      "region": "Maluku"
+    },
+    {
+      "topic_key": "prov-malut",
+      "topic_key_en": "North_Maluku",
+      "topic_key_id": "Maluku_Utara",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "maluku"
+      ],
+      "region": "Maluku Utara"
+    },
+    {
+      "topic_key": "prov-papua",
+      "topic_key_en": "Papua_(province)",
+      "topic_key_id": "Papua",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "papua"
+      ],
+      "region": "Papua"
+    },
+    {
+      "topic_key": "prov-papuabarat",
+      "topic_key_en": "West_Papua_(province)",
+      "topic_key_id": "Papua_Barat",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "papua"
+      ],
+      "region": "Papua Barat"
+    },
+    {
+      "topic_key": "prov-papuabaratdaya",
+      "topic_key_en": "Southwest_Papua",
+      "topic_key_id": "Papua_Barat_Daya",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "papua"
+      ],
+      "region": "Papua Barat Daya"
+    },
+    {
+      "topic_key": "prov-papuatengah",
+      "topic_key_en": "Central_Papua",
+      "topic_key_id": "Papua_Tengah",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "papua"
+      ],
+      "region": "Papua Tengah"
+    },
+    {
+      "topic_key": "prov-papuapegunungan",
+      "topic_key_en": "Highland_Papua",
+      "topic_key_id": "Papua_Pegunungan",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "papua"
+      ],
+      "region": "Papua Pegunungan"
+    },
+    {
+      "topic_key": "prov-papuaselatan",
+      "topic_key_en": "South_Papua",
+      "topic_key_id": "Papua_Selatan",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "province",
+        "papua"
+      ],
+      "region": "Papua Selatan"
+    }
+  ],
+  "destinations": [
+    {
+      "topic_key": "dest-borobudur",
+      "topic_key_en": "Borobudur",
+      "topic_key_id": "Borobudur",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "temple",
+        "unesco",
+        "buddhist"
+      ],
+      "region": "Jawa Tengah"
+    },
+    {
+      "topic_key": "dest-prambanan",
+      "topic_key_en": "Prambanan",
+      "topic_key_id": "Prambanan",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "temple",
+        "unesco",
+        "hindu"
+      ],
+      "region": "DIY"
+    },
+    {
+      "topic_key": "dest-komodo-np",
+      "topic_key_en": "Komodo_National_Park",
+      "topic_key_id": "Taman_Nasional_Komodo",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "national-park",
+        "unesco",
+        "wildlife"
+      ],
+      "region": "Nusa Tenggara Timur"
+    },
+    {
+      "topic_key": "dest-raja-ampat",
+      "topic_key_en": "Raja_Ampat_Islands",
+      "topic_key_id": "Kepulauan_Raja_Ampat",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "islands",
+        "diving"
+      ],
+      "region": "Papua Barat Daya"
+    },
+    {
+      "topic_key": "dest-ubud",
+      "topic_key_en": "Ubud",
+      "topic_key_id": "Ubud",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "town",
+        "cultural"
+      ],
+      "region": "Bali"
+    },
+    {
+      "topic_key": "dest-bromo",
+      "topic_key_en": "Mount_Bromo",
+      "topic_key_id": "Gunung_Bromo",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "volcano"
+      ],
+      "region": "Jawa Timur"
+    },
+    {
+      "topic_key": "dest-toba",
+      "topic_key_en": "Lake_Toba",
+      "topic_key_id": "Danau_Toba",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "lake",
+        "volcanic"
+      ],
+      "region": "Sumatera Utara"
+    },
+    {
+      "topic_key": "dest-toraja",
+      "topic_key_en": "Toraja_people",
+      "topic_key_id": "Suku_Toraja",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "culture",
+        "ethnic-group"
+      ],
+      "region": "Sulawesi Selatan"
+    },
+    {
+      "topic_key": "dest-bunaken",
+      "topic_key_en": "Bunaken",
+      "topic_key_id": "Bunaken",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "marine-park",
+        "diving"
+      ],
+      "region": "Sulawesi Utara"
+    },
+    {
+      "topic_key": "dest-rinjani",
+      "topic_key_en": "Mount_Rinjani",
+      "topic_key_id": "Gunung_Rinjani",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "volcano"
+      ],
+      "region": "Nusa Tenggara Barat"
+    },
+    {
+      "topic_key": "dest-kelimutu",
+      "topic_key_en": "Kelimutu",
+      "topic_key_id": "Danau_Kelimutu",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "volcano",
+        "lake"
+      ],
+      "region": "Nusa Tenggara Timur"
+    },
+    {
+      "topic_key": "dest-tanah-lot",
+      "topic_key_en": "Tanah_Lot",
+      "topic_key_id": "Tanah_Lot",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "temple",
+        "coastal"
+      ],
+      "region": "Bali"
+    },
+    {
+      "topic_key": "dest-krakatau",
+      "topic_key_en": "Krakatoa",
+      "topic_key_id": "Krakatau",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "volcano"
+      ],
+      "region": "Lampung"
+    },
+    {
+      "topic_key": "dest-tanjung-puting",
+      "topic_key_en": "Tanjung_Puting",
+      "topic_key_id": "Taman_Nasional_Tanjung_Puting",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "national-park",
+        "orangutan"
+      ],
+      "region": "Kalimantan Tengah"
+    },
+    {
+      "topic_key": "dest-derawan",
+      "topic_key_en": "Derawan_Islands",
+      "topic_key_id": "Kepulauan_Derawan",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "islands",
+        "diving"
+      ],
+      "region": "Kalimantan Timur"
+    },
+    {
+      "topic_key": "dest-merapi",
+      "topic_key_en": "Mount_Merapi",
+      "topic_key_id": "Gunung_Merapi",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "volcano"
+      ],
+      "region": "DIY"
+    },
+    {
+      "topic_key": "dest-gili",
+      "topic_key_en": "Gili_Islands",
+      "topic_key_id": "Kepulauan_Gili",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "islands"
+      ],
+      "region": "Nusa Tenggara Barat"
+    },
+    {
+      "topic_key": "dest-wakatobi",
+      "topic_key_en": "Wakatobi_National_Park",
+      "topic_key_id": "Taman_Nasional_Wakatobi",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "marine-park",
+        "diving"
+      ],
+      "region": "Sulawesi Tenggara"
+    },
+    {
+      "topic_key": "dest-belitung",
+      "topic_key_en": "Belitung",
+      "topic_key_id": "Belitung",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "island"
+      ],
+      "region": "Kepulauan Bangka Belitung"
+    },
+    {
+      "topic_key": "dest-baluran",
+      "topic_key_en": "Baluran_National_Park",
+      "topic_key_id": "Taman_Nasional_Baluran",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "national-park"
+      ],
+      "region": "Jawa Timur"
+    },
+    {
+      "topic_key": "dest-nusa-penida",
+      "topic_key_en": "Nusa_Penida",
+      "topic_key_id": "Nusa_Penida",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "island"
+      ],
+      "region": "Bali"
+    },
+    {
+      "topic_key": "dest-kraton-yogya",
+      "topic_key_en": "Kraton_Ngayogyakarta_Hadiningrat",
+      "topic_key_id": "Keraton_Ngayogyakarta_Hadiningrat",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "palace",
+        "cultural"
+      ],
+      "region": "DIY"
+    }
+  ],
+  "folklore": [
+    {
+      "topic_key": "folk-ratu-kidul",
+      "topic_key_en": "Nyai_Roro_Kidul",
+      "topic_key_id": "Nyi_Roro_Kidul",
+      "truth_class": "traditional_folk",
+      "categories": [
+        "legend",
+        "queen-of-southern-sea"
+      ],
+      "region": "Java"
+    },
+    {
+      "topic_key": "folk-legenda-danau-toba",
+      "topic_key_en": null,
+      "topic_key_id": "Legenda_Danau_Toba",
+      "truth_class": "traditional_folk",
+      "categories": [
+        "legend",
+        "origin-story"
+      ],
+      "region": "Sumatera Utara"
+    },
+    {
+      "topic_key": "folk-sangkuriang",
+      "topic_key_en": "Sangkuriang",
+      "topic_key_id": "Sangkuriang",
+      "truth_class": "traditional_folk",
+      "categories": [
+        "legend",
+        "sundanese"
+      ],
+      "region": "Jawa Barat"
+    },
+    {
+      "topic_key": "folk-malin-kundang",
+      "topic_key_en": "Malin_Kundang",
+      "topic_key_id": "Malin_Kundang",
+      "truth_class": "traditional_folk",
+      "categories": [
+        "legend",
+        "minangkabau"
+      ],
+      "region": "Sumatera Barat"
+    },
+    {
+      "topic_key": "folk-timun-mas",
+      "topic_key_en": "Timun_Mas",
+      "topic_key_id": "Timun_Mas",
+      "truth_class": "traditional_folk",
+      "categories": [
+        "folktale",
+        "javanese"
+      ],
+      "region": "Java"
+    },
+    {
+      "topic_key": "folk-jaka-tarub",
+      "topic_key_en": null,
+      "topic_key_id": "Jaka_Tarub",
+      "truth_class": "traditional_folk",
+      "categories": [
+        "legend",
+        "javanese"
+      ],
+      "region": "Java"
+    }
+  ],
+  "spiritual": [
+    {
+      "topic_key": "spirit-balinese-hinduism",
+      "topic_key_en": "Balinese_Hinduism",
+      "topic_key_id": "Agama_Hindu_Dharma_Bali",
+      "truth_class": "spiritual_belief",
+      "categories": [
+        "religion",
+        "hinduism",
+        "balinese"
+      ],
+      "region": "Bali"
+    },
+    {
+      "topic_key": "spirit-kejawen",
+      "topic_key_en": "Kejawèn",
+      "topic_key_id": "Kejawen",
+      "truth_class": "spiritual_belief",
+      "categories": [
+        "mysticism",
+        "javanese"
+      ],
+      "region": "Java"
+    },
+    {
+      "topic_key": "spirit-sunda-wiwitan",
+      "topic_key_en": "Sunda_Wiwitan",
+      "topic_key_id": "Sunda_Wiwitan",
+      "truth_class": "spiritual_belief",
+      "categories": [
+        "ancestral",
+        "sundanese"
+      ],
+      "region": "Jawa Barat"
+    },
+    {
+      "topic_key": "spirit-parmalim",
+      "topic_key_en": "Parmalim",
+      "topic_key_id": "Parmalim",
+      "truth_class": "spiritual_belief",
+      "categories": [
+        "religion",
+        "batak"
+      ],
+      "region": "Sumatera Utara"
+    },
+    {
+      "topic_key": "spirit-kaharingan",
+      "topic_key_en": "Kaharingan",
+      "topic_key_id": "Kaharingan",
+      "truth_class": "spiritual_belief",
+      "categories": [
+        "religion",
+        "dayak"
+      ],
+      "region": "Kalimantan"
+    },
+    {
+      "topic_key": "spirit-ngaben",
+      "topic_key_en": "Ngaben",
+      "topic_key_id": "Ngaben",
+      "truth_class": "spiritual_belief",
+      "categories": [
+        "ritual",
+        "balinese",
+        "cremation"
+      ],
+      "region": "Bali"
+    },
+    {
+      "topic_key": "spirit-canang-sari",
+      "topic_key_en": "Canang_sari",
+      "topic_key_id": "Canang_sari",
+      "truth_class": "spiritual_belief",
+      "categories": [
+        "offering",
+        "balinese"
+      ],
+      "region": "Bali"
+    },
+    {
+      "topic_key": "spirit-nyepi",
+      "topic_key_en": "Nyepi",
+      "topic_key_id": "Nyepi",
+      "truth_class": "spiritual_belief",
+      "categories": [
+        "festival",
+        "balinese",
+        "silence-day"
+      ],
+      "region": "Bali"
+    },
+    {
+      "topic_key": "spirit-wayang-kulit",
+      "topic_key_en": "Wayang_kulit",
+      "topic_key_id": "Wayang_kulit",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "performance",
+        "shadow-puppet",
+        "unesco"
+      ],
+      "region": "Java"
+    },
+    {
+      "topic_key": "spirit-gamelan",
+      "topic_key_en": "Gamelan",
+      "topic_key_id": "Gamelan",
+      "truth_class": "confirmed_fact",
+      "categories": [
+        "music",
+        "javanese",
+        "unesco"
+      ],
+      "region": "Java"
+    }
+  ],
+  "cuisine": [
+    {
+      "slug": "nasi-padang",
+      "name_en": "Nasi Padang",
+      "name_id": "Nasi Padang",
+      "region": "West Sumatra",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "rendang",
+      "name_en": "Rendang",
+      "name_id": "Rendang",
+      "region": "West Sumatra",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "nasi-goreng",
+      "name_en": "Nasi Goreng",
+      "name_id": "Nasi Goreng",
+      "region": "National",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "sate",
+      "name_en": "Satay",
+      "name_id": "Sate",
+      "region": "National",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "soto",
+      "name_en": "Soto",
+      "name_id": "Soto",
+      "region": "National",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "bakso",
+      "name_en": "Bakso",
+      "name_id": "Bakso",
+      "region": "National",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "gado-gado",
+      "name_en": "Gado-gado",
+      "name_id": "Gado-gado",
+      "region": "National",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "pempek",
+      "name_en": "Pempek",
+      "name_id": "Pempek",
+      "region": "South Sumatra",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "ayam-betutu",
+      "name_en": "Ayam Betutu",
+      "name_id": "Ayam Betutu",
+      "region": "Bali",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "papeda",
+      "name_en": "Papeda",
+      "name_id": "Papeda",
+      "region": "Papua/Maluku",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "coto-makassar",
+      "name_en": "Coto Makassar",
+      "name_id": "Coto Makassar",
+      "region": "South Sulawesi",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "nasi-kuning",
+      "name_en": "Nasi Kuning",
+      "name_id": "Nasi Kuning",
+      "region": "National",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "rawon",
+      "name_en": "Rawon",
+      "name_id": "Rawon",
+      "region": "East Java",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "rujak",
+      "name_en": "Rujak",
+      "name_id": "Rujak",
+      "region": "National",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "mie-ayam",
+      "name_en": "Mie Ayam",
+      "name_id": "Mie Ayam",
+      "region": "National",
+      "truth_class": "confirmed_fact"
+    }
+  ],
+  "history": [
+    {
+      "slug": "srivijaya-empire",
+      "name_en": "Srivijaya Empire",
+      "name_id": "Kerajaan Sriwijaya",
+      "period": "7th-13th century",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "majapahit-empire",
+      "name_en": "Majapahit Empire",
+      "name_id": "Kerajaan Majapahit",
+      "period": "13th-16th century",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "mataram-sultanate",
+      "name_en": "Mataram Sultanate",
+      "name_id": "Kesultanan Mataram",
+      "period": "16th-18th century",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "dutch-east-india-company",
+      "name_en": "Dutch East India Company (VOC)",
+      "name_id": "VOC",
+      "period": "1602-1799",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "sukarno",
+      "name_en": "Sukarno",
+      "name_id": "Sukarno",
+      "period": "1901-1970",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "proclamation-1945",
+      "name_en": "Proclamation of Indonesian Independence",
+      "name_id": "Proklamasi Kemerdekaan Indonesia 1945",
+      "period": "17 August 1945",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "indonesian-national-revolution",
+      "name_en": "Indonesian National Revolution",
+      "name_id": "Revolusi Nasional Indonesia",
+      "period": "1945-1949",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "new-order-suharto",
+      "name_en": "New Order (Suharto)",
+      "name_id": "Orde Baru (Soeharto)",
+      "period": "1966-1998",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "reformasi-1998",
+      "name_en": "Reformasi 1998",
+      "name_id": "Reformasi 1998",
+      "period": "1998",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "east-timor-independence",
+      "name_en": "East Timor Independence",
+      "name_id": "Kemerdekaan Timor Leste",
+      "period": "1999-2002",
+      "truth_class": "confirmed_fact"
+    }
+  ],
+  "culture": [
+    {
+      "slug": "batik",
+      "name_en": "Batik",
+      "name_id": "Batik",
+      "origin": "Java",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "wayang-kulit",
+      "name_en": "Wayang Kulit (shadow puppet theatre)",
+      "name_id": "Wayang Kulit",
+      "origin": "Java · Bali",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "gamelan",
+      "name_en": "Gamelan",
+      "name_id": "Gamelan",
+      "origin": "Java · Bali · Sunda",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "kecak",
+      "name_en": "Kecak (Balinese fire dance)",
+      "name_id": "Kecak",
+      "origin": "Bali",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "angklung",
+      "name_en": "Angklung",
+      "name_id": "Angklung",
+      "origin": "Sundanese · West Java",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "keris",
+      "name_en": "Keris (traditional dagger)",
+      "name_id": "Keris",
+      "origin": "Java · archipelago-wide",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "tari-saman",
+      "name_en": "Saman Dance",
+      "name_id": "Tari Saman",
+      "origin": "Aceh",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "tari-pendet",
+      "name_en": "Pendet Dance",
+      "name_id": "Tari Pendet",
+      "origin": "Bali",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "ikat-tenun",
+      "name_en": "Ikat & Tenun (traditional weaving)",
+      "name_id": "Ikat dan Tenun",
+      "origin": "NTT · Bali · Sumatra",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "songket",
+      "name_en": "Songket",
+      "name_id": "Songket",
+      "origin": "Sumatra · Bali",
+      "truth_class": "confirmed_fact"
+    }
+  ],
+  "language": [
+    {
+      "slug": "bahasa-indonesia",
+      "name_en": "Bahasa Indonesia (national language)",
+      "name_id": "Bahasa Indonesia",
+      "family": "Austronesian · Malayic",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "bahasa-jawa",
+      "name_en": "Javanese",
+      "name_id": "Bahasa Jawa",
+      "family": "Austronesian · Javanese",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "bahasa-sunda",
+      "name_en": "Sundanese",
+      "name_id": "Bahasa Sunda",
+      "family": "Austronesian · Sundanese",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "bahasa-bali",
+      "name_en": "Balinese",
+      "name_id": "Bahasa Bali",
+      "family": "Austronesian · Bali-Sasak",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "bahasa-batak",
+      "name_en": "Batak languages",
+      "name_id": "Bahasa Batak",
+      "family": "Austronesian · Batak",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "bahasa-minangkabau",
+      "name_en": "Minangkabau",
+      "name_id": "Bahasa Minangkabau",
+      "family": "Austronesian · Malayic",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "bahasa-bugis",
+      "name_en": "Buginese",
+      "name_id": "Bahasa Bugis",
+      "family": "Austronesian · South Sulawesi",
+      "truth_class": "confirmed_fact"
+    },
+    {
+      "slug": "bahasa-sasak",
+      "name_en": "Sasak (Lombok)",
+      "name_id": "Bahasa Sasak",
+      "family": "Austronesian · Bali-Sasak",
+      "truth_class": "confirmed_fact"
+    }
+  ]
+}

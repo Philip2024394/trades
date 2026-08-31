@@ -183,27 +183,72 @@ async function categoryIdByKey(key) {
   return q.rows[0]?.category_id ?? null;
 }
 
-// ── Seller insert (idempotent · slug from name + jurisdiction) ────────
-function slugify(s) {
-  return s.toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")
-    .slice(0, 60);
-}
+// ── Seller insert · Phase 1a unified through resolver (Philip 2026-08-27) ─
+// Root cause of 2,324 mp_seller dupes: this walker used slug = slugify(name)
+// + jurisdiction-tail, while _marketplace-persister used slug = name +
+// crockford5(hash(source_reference)). Same real-world shop discovered via
+// both walkers → two different slugs → two rows.
+//
+// Fix: BOTH writers now call buildMpSellerSlug({name, city, source, sourceRef})
+// via the shared identity-resolver module. When Nominatim gives us an
+// osm_type/osm_id pair we pass it as source_reference so future Overpass
+// discovery of the same OSM element resolves to the same row.
 
-async function upsertDiscoveredSeller(businessName, city, jurisdiction, bio, discoveredFrom, { workerId, cycleRunId }) {
-  const slug = slugify(businessName) + "-" + (jurisdiction.split("/").pop() || "").toLowerCase();
+import {
+  resolveIdentity, mergeEnrichment, buildMpSellerSlug,
+} from "../nex-worker/identity-resolver.mjs";
+
+async function upsertDiscoveredSeller(businessName, city, jurisdiction, bio, discoveredFrom, sourceMeta, { workerId, cycleRunId }) {
+  const source = sourceMeta?.source ?? "nominatim";
+  const sourceReference = sourceMeta?.sourceReference ?? null;
+  const slug = buildMpSellerSlug({ displayName: businessName, city, source, sourceReference });
+  const incomingForLog = {
+    source, sourceReference,
+    name: businessName, city,
+    website: null, phone: null, whatsapp: null,
+    lat: sourceMeta?.lat ?? null, lng: sourceMeta?.lng ?? null,
+    extras: { bio, jurisdiction, discoveredFrom },
+  };
+
+  // Resolver first: strong match → merge (never create second row).
+  const resolved = await resolveIdentity(pool, {
+    table: "nex.mp_seller", candidate: incomingForLog,
+  });
+  if (resolved.match === "strong") {
+    await mergeEnrichment(pool, {
+      table: "nex.mp_seller", existing: resolved.existing,
+      incoming: incomingForLog, layer: resolved.layer,
+      enrichableFields: ["city", "jurisdiction", "bio"],
+      incomingValues: { city, jurisdiction, bio },
+      workerId, cycleRunId,
+    });
+    return { seller_id: resolved.existing.seller_id, is_new: false };
+  }
+  if (resolved.match === "candidate") {
+    await mergeEnrichment(pool, {
+      table: "nex.mp_seller", existing: resolved.existing,
+      incoming: incomingForLog, layer: "name_city",
+      enrichableFields: [], incomingValues: {},
+      workerId, cycleRunId,
+    }).catch(() => {});
+    // Fall through to INSERT.
+  }
+
   // Persistence contract 2026-08-26 P5 · every INSERT stamps worker_id + cycle_run_id.
   // ON CONFLICT UPDATE deliberately does NOT overwrite them · original attribution preserved.
   const q = await pool.query(
-    `INSERT INTO nex.mp_seller (slug, display_name, city, jurisdiction, status, bio, discovered_from, worker_id, cycle_run_id)
-     VALUES ($1, $2, $3, $4, 'discovered', $5, $6, $7, $8)
+    `INSERT INTO nex.mp_seller
+       (slug, display_name, city, jurisdiction, status, bio, discovered_from,
+        source, source_reference, worker_id, cycle_run_id)
+     VALUES ($1, $2, $3, $4, 'discovered', $5, $6, $7, $8, $9, $10)
      ON CONFLICT (slug) DO UPDATE SET
        updated_at = now(),
        city = COALESCE(nex.mp_seller.city, EXCLUDED.city),
-       bio = COALESCE(nex.mp_seller.bio, EXCLUDED.bio)
+       bio = COALESCE(nex.mp_seller.bio, EXCLUDED.bio),
+       source = COALESCE(nex.mp_seller.source, EXCLUDED.source),
+       source_reference = COALESCE(nex.mp_seller.source_reference, EXCLUDED.source_reference)
      RETURNING seller_id, (xmax = 0) AS is_new`,
-    [slug, businessName, city, jurisdiction, bio, discoveredFrom, workerId, cycleRunId],
+    [slug, businessName, city, jurisdiction, bio, discoveredFrom, source, sourceReference, workerId, cycleRunId],
   );
   return q.rows[0];
 }
@@ -382,8 +427,17 @@ async function runZoneCycle(zone) {
           const addr = el.address || {};
           const city = addr.city || addr.town || addr.county || zone.label;
           const bio = `Discovered via Nominatim search for "${kw}" in ${zone.label} on ${new Date().toISOString().slice(0, 10)}. Public source only · not yet contacted.`;
+          // Phase 1a · pass OSM identity + coords so resolver's Layer 1
+          // (source, source_reference) match closes the two-writer duplicate
+          // hole that produced 2,324 mp_seller dupes.
+          const sourceMeta = {
+            source: "nominatim",
+            sourceReference: (el.osm_type && el.osm_id) ? `${el.osm_type}/${el.osm_id}` : (el.place_id ? `place/${el.place_id}` : null),
+            lat: el.lat != null ? Number(el.lat) : null,
+            lng: el.lon != null ? Number(el.lon) : null,
+          };
           try {
-            const r = await upsertDiscoveredSeller(name, city, zone.jurisdiction, bio, `walker:market:${zone.id}`, {
+            const r = await upsertDiscoveredSeller(name, city, zone.jurisdiction, bio, `walker:market:${zone.id}`, sourceMeta, {
               workerId: WORKER_ID, cycleRunId: cycleId,
             });
             if (r.is_new) {

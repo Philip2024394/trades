@@ -48,12 +48,24 @@ console.log("\n── TEST 1 · evaluateHealth pure function ──");
   const freshHb = new Date("2026-08-21T11:55:00Z");   // 5min ago
   const staleHb = new Date("2026-08-21T10:00:00Z");   // 120min ago
   const oldHb = new Date("2026-08-21T11:30:00Z");     // 30min ago
+  // Active tests give a cycle within the last 60 minutes so DEACTIVATED
+  // (which fires on stale heartbeat + old cycle) doesn't take over.
+  const activeCycle = new Date("2026-08-21T11:15:00Z");    // 45min ago (< 60min)
+  const recentCycle = new Date("2026-08-21T09:00:00Z");    // 3h ago (< 7d, > 60min)
+  const oldCycle = new Date("2026-08-13T12:00:00Z");       // 8d ago (> 7d)
   check("unknown when no heartbeat", evaluateHealth({ lastHeartbeatAt: null, now }).health === "UNKNOWN");
-  check("healthy with fresh HB + clean cycle", evaluateHealth({ lastHeartbeatAt: freshHb, lastCycleStatus: "completed", lastCycleErrorsCount: 0, recentFailures24h: 0, now }).health === "HEALTHY");
-  check("critical when 3+ failures", evaluateHealth({ lastHeartbeatAt: freshHb, lastCycleStatus: "failed", lastCycleErrorsCount: 5, recentFailures24h: 3, now }).health === "CRITICAL");
-  check("critical when heartbeat > 60min", evaluateHealth({ lastHeartbeatAt: staleHb, lastCycleStatus: "completed", lastCycleErrorsCount: 0, recentFailures24h: 0, now }).health === "CRITICAL");
-  check("warning when HB stale + errors", evaluateHealth({ lastHeartbeatAt: oldHb, lastCycleStatus: "failed", lastCycleErrorsCount: 2, recentFailures24h: 1, now }).health === "WARNING");
-  check("warning when errors but HB fresh", evaluateHealth({ lastHeartbeatAt: freshHb, lastCycleStatus: "failed", lastCycleErrorsCount: 1, recentFailures24h: 1, now }).health === "WARNING");
+  check("healthy with fresh HB + clean active cycle", evaluateHealth({ lastHeartbeatAt: freshHb, lastCycleStartedAt: activeCycle, lastCycleStatus: "completed", lastCycleErrorsCount: 0, recentFailures24h: 0, now }).health === "HEALTHY");
+  check("critical when 3+ failures (active cycles)", evaluateHealth({ lastHeartbeatAt: freshHb, lastCycleStartedAt: activeCycle, lastCycleStatus: "failed", lastCycleErrorsCount: 5, recentFailures24h: 3, now }).health === "CRITICAL");
+  check("critical when heartbeat > 60min AND active cycle (worker went silent mid-flight)", evaluateHealth({ lastHeartbeatAt: staleHb, lastCycleStartedAt: activeCycle, lastCycleStatus: "completed", lastCycleErrorsCount: 0, recentFailures24h: 0, now }).health === "CRITICAL");
+  check("warning when HB stale + errors (active cycle)", evaluateHealth({ lastHeartbeatAt: oldHb, lastCycleStartedAt: activeCycle, lastCycleStatus: "failed", lastCycleErrorsCount: 2, recentFailures24h: 1, now }).health === "WARNING");
+  check("warning when errors but HB fresh", evaluateHealth({ lastHeartbeatAt: freshHb, lastCycleStartedAt: activeCycle, lastCycleStatus: "failed", lastCycleErrorsCount: 1, recentFailures24h: 1, now }).health === "WARNING");
+  check("missed_run when scheduled run missed in last 24h", evaluateHealth({ lastHeartbeatAt: freshHb, lastCycleStartedAt: activeCycle, lastCycleStatus: "completed", lastCycleErrorsCount: 0, recentFailures24h: 0, recentMissedRuns24h: 1, now }).health === "MISSED_RUN");
+  // DEACTIVATED tests · Philip 2026-08-29
+  check("deactivated when no cycle ever recorded (regardless of heartbeat freshness)", evaluateHealth({ lastHeartbeatAt: staleHb, lastCycleStartedAt: null, lastCycleStatus: null, lastCycleErrorsCount: 0, recentFailures24h: 0, now }).health === "DEACTIVATED");
+  check("deactivated when no cycle ever recorded (fresh heartbeat)", evaluateHealth({ lastHeartbeatAt: freshHb, lastCycleStartedAt: null, lastCycleStatus: null, lastCycleErrorsCount: 0, recentFailures24h: 0, now }).health === "DEACTIVATED");
+  check("deactivated when last cycle > 7 days ago (stale HB)", evaluateHealth({ lastHeartbeatAt: staleHb, lastCycleStartedAt: oldCycle, lastCycleStatus: "completed", lastCycleErrorsCount: 0, recentFailures24h: 0, now }).health === "DEACTIVATED");
+  check("deactivated when stale HB + cycle finished > 60min ago (ephemeral one-shot)", evaluateHealth({ lastHeartbeatAt: staleHb, lastCycleStartedAt: recentCycle, lastCycleStatus: "completed", lastCycleErrorsCount: 0, recentFailures24h: 0, now }).health === "DEACTIVATED");
+  check("healthy when fresh HB + active cycle within 60min", evaluateHealth({ lastHeartbeatAt: freshHb, lastCycleStartedAt: activeCycle, lastCycleStatus: "completed", lastCycleErrorsCount: 0, recentFailures24h: 0, now }).health === "HEALTHY");
 }
 
 // ── TEST 2 · Heartbeat write + upsert ────────────────────────────────────
@@ -90,17 +102,28 @@ console.log("\n── TEST 4 · simulate WARNING state ──");
 }
 
 // ── TEST 5 · Simulate CRITICAL via stale heartbeat ──────────────────────
-console.log("\n── TEST 5 · simulate CRITICAL (stale heartbeat) ──");
+console.log("\n── TEST 5 · simulate CRITICAL (stale heartbeat, ACTIVE cycle) ──");
 {
   const wid = "test:reliability:critical_stale";
   await pool.query(
     `INSERT INTO nex.worker_heartbeat (worker_id, worker_type, last_heartbeat_at, last_status)
-     VALUES ($1, 'test', now() - interval '90 minutes', 'idle')
-     ON CONFLICT (worker_id) DO UPDATE SET last_heartbeat_at = EXCLUDED.last_heartbeat_at`,
+     VALUES ($1, 'test', now() - interval '90 minutes', 'running')
+     ON CONFLICT (worker_id) DO UPDATE SET last_heartbeat_at = EXCLUDED.last_heartbeat_at, last_status = EXCLUDED.last_status`,
     [wid]
   );
+  // CRITICAL requires: stale heartbeat AND worker is CURRENTLY active
+  // (cycle started < 60min ago and either still running or just finished).
+  // Post-migration-142 · a stale heartbeat with only an OLD cycle is
+  // DEACTIVATED, not CRITICAL. This test asserts the true alert case:
+  // worker was actively cycling but heartbeat has gone silent.
+  const cid = await startCycleRun(pool, { workerId: wid, workerType: "test" });
+  await finishCycleRun(pool, cid, { status: "completed", recordsProcessed: 1, recordsNew: 0, errorsCount: 0, summary: {}, doctrineChecks: {} });
+  await pool.query(
+    `UPDATE nex.worker_cycle_run SET started_at = now() - interval '30 minutes', finished_at = now() - interval '10 minutes' WHERE id = $1`,
+    [cid],
+  );
   const r = await pool.query(`SELECT health, seconds_since_heartbeat FROM nex.worker_health_status WHERE worker_id=$1`, [wid]);
-  check("view reports CRITICAL for stale heartbeat", r.rows[0].health === "CRITICAL", `hb ${r.rows[0].seconds_since_heartbeat}s ago`);
+  check("view reports CRITICAL for stale heartbeat + active cycle", r.rows[0].health === "CRITICAL", `hb ${r.rows[0].seconds_since_heartbeat}s ago · got ${r.rows[0].health}`);
 }
 
 // ── TEST 6 · Simulate CRITICAL via 3 failures ───────────────────────────
@@ -116,15 +139,17 @@ console.log("\n── TEST 6 · simulate CRITICAL (3 failures in 24h) ──");
   check("view reports CRITICAL for 3 failures", r.rows[0].health === "CRITICAL", `${r.rows[0].recent_failures_24h} failures`);
 }
 
-// ── TEST 7 · Simulate UNKNOWN (heartbeat row but no cycles) ────────────
-console.log("\n── TEST 7 · UNKNOWN state (has HB but implicit no cycles counts) ──");
+// ── TEST 7 · Simulate DEACTIVATED (heartbeat row but no cycles) ─────────
+console.log("\n── TEST 7 · DEACTIVATED state (has HB but no cycle_run · post-migration-142) ──");
 {
   const wid = "test:reliability:unknown";
   await emitHeartbeat(pool, { workerId: wid, workerType: "test", status: "idle" });
   const r = await pool.query(`SELECT health FROM nex.worker_health_status WHERE worker_id=$1`, [wid]);
-  // No cycles + fresh heartbeat → HEALTHY (view treats absence of cycle as neutral)
-  // UNKNOWN is only when NO heartbeat exists · verified in TEST 1 evaluateHealth
-  check("worker with heartbeat but no cycles = HEALTHY (view semantics)", r.rows[0].health === "HEALTHY", `got ${r.rows[0].health}`);
+  // Post-migration 142 (Philip 2026-08-29): a worker with a heartbeat but
+  // NO cycle_run in 7 days is DEACTIVATED · informational, not CRITICAL.
+  // Pre-142 this returned HEALTHY (view treated absence of cycle as neutral)
+  // which was misleading for the 14,179 historical worker_ids in production.
+  check("worker with heartbeat but no cycles = DEACTIVATED (view semantics · post-142)", r.rows[0].health === "DEACTIVATED", `got ${r.rows[0].health}`);
 }
 
 // ── TEST 8 · Failure-recovery: worker fails then next cycle succeeds ────

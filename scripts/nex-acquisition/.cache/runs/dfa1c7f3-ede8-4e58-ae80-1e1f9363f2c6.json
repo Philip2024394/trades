@@ -1,0 +1,225 @@
+{
+  "jobId": "dfa1c7f3-ede8-4e58-ae80-1e1f9363f2c6",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Semarang",
+  "bbox": {
+    "sw": [
+      -7.06,
+      110.35
+    ],
+    "ne": [
+      -6.9,
+      110.51
+    ],
+    "scope": "Semarang · Central Java"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T11:58:55.860Z",
+  "finishedAt": "2026-08-27T12:01:50.187Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 432,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 432,
+    "matched_exact": 58,
+    "matched_high": 3,
+    "ambiguous": 1,
+    "unnamed": 0,
+    "new_candidates": 370,
+    "records_persisted": 96,
+    "enriched": 8,
+    "gate3_contactable": 22,
+    "gate4_eligible": 22,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 22,
+    "rejected_by_gate": 348,
+    "errors": 0,
+    "enrichment_writes_applied": 3,
+    "insert_attempted": 370,
+    "insert_conflicts": 274,
+    "insert_returned": 96,
+    "insert_verified": 96,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 96,
+    "rejected_by_reason": {
+      "CONTACT_MISSING": 348,
+      "MATCHED_EXISTING": 62
+    }
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#FL-2026-ZTCAQ",
+        "name": "KFC",
+        "category": "fast-food",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAR",
+        "name": "Cafe Pelangi",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAS",
+        "name": "Gudeg Abimanyu",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAT",
+        "name": "Kedai Gula Jawa",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAV",
+        "name": "Lombok Idjo",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAW",
+        "name": "Super Penyet",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAX",
+        "name": "Food Court STIKES Widya Husada",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAY",
+        "name": "Nasi Kucing Pak Gik",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [
+      {
+        "candidateName": "Martabak Sumo Sumurboto Banyumanik",
+        "existingName": "I-Cos Sumurboto Banyumanik",
+        "existingRef": "#FL-2026-2M37T",
+        "score": "0.600"
+      }
+    ],
+    "contactable": [
+      {
+        "publicRef": "#FL-2026-ZTCBX",
+        "name": "Sakapatat beer garden & resto",
+        "whatsapp": null,
+        "phone": "+62 24-8312646",
+        "website": "https://www.sakapatat.com/"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCCW",
+        "name": "Richese Factory",
+        "whatsapp": null,
+        "phone": "+62 1 500 220",
+        "website": "https://richeesefactory.com"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCDD",
+        "name": "Chicken Geprek",
+        "whatsapp": null,
+        "phone": "+62 895601894787",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTCDW",
+        "name": "Ellena's Kitchen",
+        "whatsapp": null,
+        "phone": "+6283838202414",
+        "website": "https://ellenaskitchen.com"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCDZ",
+        "name": "Asem-Asem Koh Liem",
+        "whatsapp": null,
+        "phone": "+62 24 3565628",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTCE3",
+        "name": "Nasi Goreng Babat \"Pak Karmin\" Mberok",
+        "whatsapp": "+62 858-7688-6100",
+        "phone": "+62 24-356-3334",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTCE6",
+        "name": "Toko ANEKA DEJAPAS Semarang - Roti, Kue, Snack, dan Jajanan Pasar",
+        "whatsapp": "+6282124575858",
+        "phone": "082124575858",
+        "website": "www.dejapas.com"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCEP",
+        "name": "Herbaloof",
+        "whatsapp": null,
+        "phone": "+62 851-6268-4046",
+        "website": "https://www.tokopedia.com/herbaloof"
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#FL-2026-ZTCAQ",
+        "name": "KFC",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAR",
+        "name": "Cafe Pelangi",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAS",
+        "name": "Gudeg Abimanyu",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAT",
+        "name": "Kedai Gula Jawa",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAV",
+        "name": "Lombok Idjo",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 96,
+    "insert_verified": 96,
+    "delta": 0
+  },
+  "cycle_outcome": "PARTIAL"
+}

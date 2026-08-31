@@ -1,0 +1,98 @@
+{
+  "jobId": "cef31de5-14fa-4b90-b918-5abdf59141fb",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Jakarta",
+  "bbox": {
+    "sw": [
+      -6.37,
+      106.68
+    ],
+    "ne": [
+      -6.09,
+      106.98
+    ],
+    "scope": "Jakarta · DKI Jakarta"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T14:25:03.677Z",
+  "finishedAt": "2026-08-27T14:34:18.805Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 989,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 989,
+    "matched_exact": 986,
+    "matched_high": 0,
+    "ambiguous": 2,
+    "unnamed": 0,
+    "new_candidates": 1,
+    "records_persisted": 1,
+    "enriched": 45,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 1,
+    "errors": 0,
+    "enrichment_writes_applied": 45,
+    "insert_attempted": 1,
+    "insert_conflicts": 0,
+    "insert_returned": 1,
+    "insert_verified": 1,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 1,
+    "rejected_by_reason": {
+      "CONTACT_MISSING": 1,
+      "MATCHED_EXISTING": 988
+    }
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#AC-2026-ZYZKZ",
+        "name": "Pondok Nirwana",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [
+      {
+        "candidateName": "Guest House",
+        "existingName": "58 Guest House",
+        "existingRef": "#AC-2026-003KH",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Wisma 1 UT",
+        "existingName": "wisma 2 UT",
+        "existingRef": "#AC-2026-003HC",
+        "score": "0.700"
+      }
+    ],
+    "contactable": [],
+    "rejected": [
+      {
+        "publicRef": "#AC-2026-ZYZKZ",
+        "name": "Pondok Nirwana",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 1,
+    "insert_verified": 1,
+    "delta": 0
+  },
+  "cycle_outcome": "PARTIAL"
+}

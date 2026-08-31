@@ -1,0 +1,7 @@
+{
+  "taxonomyId": "walker.adat.communities",
+  "sourceDir": "adat_communities",
+  "defaultStability": "stable",
+  "refreshCadenceDays": 180,
+  "description": "Adat community registry (Baduy, Toraja, Dayak subgroups, Sasak Sade, Mentawai). AMAN + academic sources."
+}

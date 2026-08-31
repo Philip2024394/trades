@@ -1,0 +1,1165 @@
+{
+  "_doc": "NEX WORKFORCE JOB REGISTRY · Philip 2026-08-27. Each entry = one permanent category specialist. Adding a job = one entry here · scheduler + rotation + HQ pick it up automatically. Cardinality goal: 10 (Phase 1) → 30 (Phase 2) → 100 (Phase 3).",
+  "_doctrine": "Worker identity = category · not city. Geography = Indonesia-wide. Each job continuously sweeps eligible cities via existing Rotation Controller. Surface-level cooldown moves the worker to the next eligible city, NOT globally idle.",
+  "_schema": {
+    "id": "two-digit string · stable · never renumber",
+    "name": "display name shown in HQ",
+    "emoji": "1 emoji shown in HQ",
+    "category_slug": "canonical lowercase-hyphenated · becomes the `category` column value in nex.discovery_rotation_state AND worker_config token · MUST be unique",
+    "target_table": "fully-qualified table where persisted rows land · Phase 1 = existing food/accommodation OR new nex.service_business",
+    "strategies": "ordered list · each strategy = one discovery pass · walker cycles through them",
+    "geographic_scope": "indonesia-all (Phase 1 default · rotation picks from data/nex-city-catalogue.json) or a named subset (future)"
+  },
+  "_strategy_schema": {
+    "provider": "overpass | nominatim | own-website | wikipedia (Phase 1 uses overpass only · others reserved)",
+    "query_kind": "tag (OSM tag pattern) | keyword (Nominatim free-text) | domain (per-website)",
+    "params": "provider-specific · Overpass example: { amenity: 'restaurant' } or { shop: 'hairdresser' } or { tag_pairs: [['tourism','hotel']] }"
+  },
+  "jobs": [
+    {
+      "id": "01",
+      "name": "Restaurants",
+      "emoji": "🍜",
+      "category_slug": "restaurants",
+      "target_table": "nex.food_business",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "amenity": "restaurant"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "amenity": "food_court"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "id": "02",
+      "name": "Cafés",
+      "emoji": "☕",
+      "category_slug": "cafes",
+      "target_table": "nex.food_business",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "amenity": "cafe"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "coffee"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "id": "05",
+      "name": "Hotels",
+      "emoji": "🏨",
+      "category_slug": "hotels",
+      "target_table": "nex.accommodation_business",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "tourism": "hotel"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "tourism": "motel"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "tourism": "resort"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "id": "06",
+      "name": "Guesthouses",
+      "emoji": "🏡",
+      "category_slug": "guesthouses",
+      "target_table": "nex.accommodation_business",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "tourism": "guest_house"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "tourism": "hostel"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "id": "09",
+      "name": "Gyms",
+      "emoji": "🏋️",
+      "category_slug": "gyms",
+      "target_table": "nex.service_business",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "leisure": "fitness_centre"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "sport": "fitness"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "id": "17",
+      "name": "Hair Salons",
+      "emoji": "💇",
+      "category_slug": "salons",
+      "target_table": "nex.service_business",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "hairdresser"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "beauty"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "id": "21",
+      "name": "Dentists",
+      "emoji": "🦷",
+      "category_slug": "dentists",
+      "target_table": "nex.service_business",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "amenity": "dentist"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "healthcare": "dentist"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "id": "22",
+      "name": "Opticians",
+      "emoji": "👓",
+      "category_slug": "opticians",
+      "target_table": "nex.service_business",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "optician"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "healthcare": "optometrist"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "id": "23",
+      "name": "Pharmacies",
+      "emoji": "💊",
+      "category_slug": "pharmacies",
+      "target_table": "nex.service_business",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "amenity": "pharmacy"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "healthcare": "pharmacy"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "id": "28",
+      "name": "Car Repair",
+      "emoji": "🔧",
+      "category_slug": "car-repair",
+      "target_table": "nex.service_business",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "car_repair"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "craft": "car_body_shop"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "motorcycle_repair"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "_added": "Phase 2 marketplace · 2026-08-27 · retail sellers populate nex.mp_seller",
+      "id": "30",
+      "name": "Electronics Shops",
+      "emoji": "📱",
+      "category_slug": "retail-electronics",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "electronics"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "_amended": "Philip 2026-08-30 · added mobile_phone_accessory strategy per 'mobile phones AND accessories' request.",
+      "id": "31",
+      "name": "Phone Shops",
+      "emoji": "📞",
+      "category_slug": "retail-phones",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "mobile_phone"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "mobile_phone_accessory"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "id": "32",
+      "name": "Fashion Shops",
+      "emoji": "👗",
+      "category_slug": "retail-fashion",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "clothes"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "id": "33",
+      "name": "Furniture Shops",
+      "emoji": "🛋️",
+      "category_slug": "retail-furniture",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "furniture"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "id": "34",
+      "name": "Hardware Shops",
+      "emoji": "🔩",
+      "category_slug": "retail-hardware",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "hardware"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "doityourself"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "id": "35",
+      "name": "Bakeries",
+      "emoji": "🥐",
+      "category_slug": "retail-bakery",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "bakery"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "id": "36",
+      "name": "Supermarkets",
+      "emoji": "🛒",
+      "category_slug": "retail-supermarket",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "supermarket"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "id": "37",
+      "name": "Convenience Stores",
+      "emoji": "🏪",
+      "category_slug": "retail-convenience",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "convenience"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "id": "38",
+      "name": "Bookshops",
+      "emoji": "📚",
+      "category_slug": "retail-books",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "books"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "id": "39",
+      "name": "Motorcycle Dealers",
+      "emoji": "🏍️",
+      "category_slug": "retail-motorcycle",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "motorcycle"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all"
+    },
+    {
+      "_added": "Phase 2B · 2026-08-27 · gated behind Phase 2A saturation · escalation runner flips active=true when Phase 2A retail categories reach ≥90% saturation across Indonesian cities",
+      "id": "40",
+      "name": "Car Dealers",
+      "emoji": "🚗",
+      "category_slug": "retail-car-dealer",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "car"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "id": "41",
+      "name": "Car Parts",
+      "emoji": "⚙️",
+      "category_slug": "retail-car-parts",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "car_parts"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "id": "42",
+      "name": "Tyre Shops",
+      "emoji": "🛞",
+      "category_slug": "retail-tyres",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "tyres"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "id": "43",
+      "name": "Bicycle Shops",
+      "emoji": "🚲",
+      "category_slug": "retail-bicycle",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "bicycle"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "id": "44",
+      "name": "Jewelry",
+      "emoji": "💍",
+      "category_slug": "retail-jewelry",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "jewelry"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "id": "45",
+      "name": "Watches",
+      "emoji": "⌚",
+      "category_slug": "retail-watches",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "watches"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "id": "46",
+      "name": "Shoe Shops",
+      "emoji": "👟",
+      "category_slug": "retail-shoes",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "shoes"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "id": "47",
+      "name": "Bag & Luggage",
+      "emoji": "👜",
+      "category_slug": "retail-bag",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "bag"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "id": "48",
+      "name": "Gift Shops",
+      "emoji": "🎁",
+      "category_slug": "retail-gift",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "gift"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "id": "49",
+      "name": "Florists",
+      "emoji": "🌸",
+      "category_slug": "retail-florist",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "florist"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "id": "50",
+      "name": "Stationery",
+      "emoji": "✏️",
+      "category_slug": "retail-stationery",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "stationery"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "id": "51",
+      "name": "Toy Shops",
+      "emoji": "🧸",
+      "category_slug": "retail-toys",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "toys"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "id": "52",
+      "name": "Greengrocers",
+      "emoji": "🥬",
+      "category_slug": "retail-greengrocer",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "greengrocer"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "id": "53",
+      "name": "Butchers",
+      "emoji": "🥩",
+      "category_slug": "retail-butcher",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "butcher"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "id": "54",
+      "name": "Cosmetics",
+      "emoji": "💄",
+      "category_slug": "retail-cosmetics",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "cosmetics"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "id": "55",
+      "name": "Second-hand Shops",
+      "emoji": "♻️",
+      "category_slug": "retail-second-hand",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "second_hand"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "_added": "Philip 2026-08-30 · handcrafts sweep · shop=craft + shop=art discover artisan sellers Indonesia-wide.",
+      "id": "56",
+      "name": "Handcrafts",
+      "emoji": "🎨",
+      "category_slug": "retail-handcrafts",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "craft"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "art"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "_added": "Philip 2026-08-30 · leather goods · shop=leather.",
+      "id": "57",
+      "name": "Leather Goods",
+      "emoji": "👜",
+      "category_slug": "retail-leather",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "leather"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "_added": "Philip 2026-08-30 · herbs · shop=herbalist + shop=health_food.",
+      "id": "58",
+      "name": "Herbs",
+      "emoji": "🌿",
+      "category_slug": "retail-herbs",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "herbalist"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "health_food"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "_added": "Philip 2026-08-30 · spices · shop=spices.",
+      "id": "59",
+      "name": "Spices",
+      "emoji": "🌶️",
+      "category_slug": "retail-spices",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "shop": "spices"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "_added": "Philip 2026-08-30 · karaoke venues · amenity+leisure fan-out to catch OSM tagging variants.",
+      "id": "60",
+      "name": "Karaoke",
+      "emoji": "🎤",
+      "category_slug": "leisure-karaoke",
+      "target_table": "nex.service_business",
+      "strategies": [
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "amenity": "karaoke_box"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "leisure": "karaoke_box"
+          }
+        },
+        {
+          "provider": "overpass",
+          "query_kind": "tag",
+          "params": {
+            "amenity": "karaoke"
+          }
+        }
+      ],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    {
+      "_added": "Philip 2026-08-30 · tattoo studios · shop=tattoo.",
+      "id": "61",
+      "name": "Tattoo Studios",
+      "emoji": "🎨",
+      "category_slug": "service-tattoo",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "shop": "tattoo" } }],
+      "geographic_scope": "indonesia-all",
+      "active": true
+    },
+    { "_added": "Phase 3 batch · Philip 2026-08-30 · 59 categories added to reach 100+ · all active.",
+      "id": "62", "name": "Fast Food", "emoji": "🍔", "category_slug": "food-fast",
+      "target_table": "nex.food_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "fast_food" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "63", "name": "Bars & Pubs", "emoji": "🍺", "category_slug": "food-bars",
+      "target_table": "nex.food_business",
+      "strategies": [
+        { "provider": "overpass", "query_kind": "tag", "params": { "amenity": "bar" } },
+        { "provider": "overpass", "query_kind": "tag", "params": { "amenity": "pub" } }
+      ],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "64", "name": "Ice Cream", "emoji": "🍦", "category_slug": "food-ice-cream",
+      "target_table": "nex.food_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "ice_cream" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "65", "name": "Fuel Stations", "emoji": "⛽", "category_slug": "auto-fuel",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "fuel" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "66", "name": "Car Wash", "emoji": "🚿", "category_slug": "auto-car-wash",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "car_wash" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "67", "name": "Doctors", "emoji": "🩺", "category_slug": "health-doctors",
+      "target_table": "nex.service_business",
+      "strategies": [
+        { "provider": "overpass", "query_kind": "tag", "params": { "amenity": "doctors" } },
+        { "provider": "overpass", "query_kind": "tag", "params": { "healthcare": "doctor" } }
+      ],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "68", "name": "Clinics", "emoji": "🏥", "category_slug": "health-clinics",
+      "target_table": "nex.service_business",
+      "strategies": [
+        { "provider": "overpass", "query_kind": "tag", "params": { "amenity": "clinic" } },
+        { "provider": "overpass", "query_kind": "tag", "params": { "healthcare": "clinic" } }
+      ],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "69", "name": "Hospitals", "emoji": "🏨", "category_slug": "health-hospitals",
+      "target_table": "nex.service_business",
+      "strategies": [
+        { "provider": "overpass", "query_kind": "tag", "params": { "amenity": "hospital" } },
+        { "provider": "overpass", "query_kind": "tag", "params": { "healthcare": "hospital" } }
+      ],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "70", "name": "Veterinary", "emoji": "🐾", "category_slug": "health-veterinary",
+      "target_table": "nex.service_business",
+      "strategies": [
+        { "provider": "overpass", "query_kind": "tag", "params": { "amenity": "veterinary" } },
+        { "provider": "overpass", "query_kind": "tag", "params": { "healthcare": "veterinary" } }
+      ],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "71", "name": "Laundry", "emoji": "🧺", "category_slug": "service-laundry",
+      "target_table": "nex.service_business",
+      "strategies": [
+        { "provider": "overpass", "query_kind": "tag", "params": { "shop": "laundry" } },
+        { "provider": "overpass", "query_kind": "tag", "params": { "shop": "dry_cleaning" } }
+      ],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "72", "name": "Spa & Massage", "emoji": "💆", "category_slug": "service-spa",
+      "target_table": "nex.service_business",
+      "strategies": [
+        { "provider": "overpass", "query_kind": "tag", "params": { "shop": "massage" } },
+        { "provider": "overpass", "query_kind": "tag", "params": { "leisure": "spa" } }
+      ],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "73", "name": "Post Offices", "emoji": "📮", "category_slug": "service-post",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "post_office" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "74", "name": "Banks", "emoji": "🏦", "category_slug": "finance-banks",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "bank" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "75", "name": "ATMs", "emoji": "🏧", "category_slug": "finance-atms",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "atm" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "76", "name": "Money Transfer", "emoji": "💱", "category_slug": "finance-money-transfer",
+      "target_table": "nex.service_business",
+      "strategies": [
+        { "provider": "overpass", "query_kind": "tag", "params": { "amenity": "money_transfer" } },
+        { "provider": "overpass", "query_kind": "tag", "params": { "amenity": "bureau_de_change" } }
+      ],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "77", "name": "Cinemas", "emoji": "🎬", "category_slug": "leisure-cinemas",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "cinema" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "78", "name": "Nightclubs", "emoji": "🕺", "category_slug": "leisure-nightclubs",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "nightclub" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "79", "name": "Bowling", "emoji": "🎳", "category_slug": "leisure-bowling",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "leisure": "bowling_alley" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "80", "name": "Amusement Arcades", "emoji": "🕹️", "category_slug": "leisure-arcades",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "leisure": "amusement_arcade" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "81", "name": "Sports Centres", "emoji": "🏟️", "category_slug": "leisure-sports-centres",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "leisure": "sports_centre" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "82", "name": "Swimming Pools", "emoji": "🏊", "category_slug": "leisure-swimming",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "leisure": "swimming_pool" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "83", "name": "Golf Courses", "emoji": "⛳", "category_slug": "leisure-golf",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "leisure": "golf_course" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "84", "name": "Museums", "emoji": "🏛️", "category_slug": "culture-museums",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "tourism": "museum" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "85", "name": "Art Galleries", "emoji": "🖼️", "category_slug": "culture-galleries",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "tourism": "gallery" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "86", "name": "Tourist Attractions", "emoji": "📸", "category_slug": "tourism-attractions",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "tourism": "attraction" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "87", "name": "Viewpoints", "emoji": "🌄", "category_slug": "tourism-viewpoints",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "tourism": "viewpoint" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "88", "name": "Camp Sites", "emoji": "🏕️", "category_slug": "tourism-camping",
+      "target_table": "nex.accommodation_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "tourism": "camp_site" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "89", "name": "Places of Worship", "emoji": "🕌", "category_slug": "community-worship",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "place_of_worship" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "90", "name": "Schools", "emoji": "🏫", "category_slug": "education-schools",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "school" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "91", "name": "Universities", "emoji": "🎓", "category_slug": "education-universities",
+      "target_table": "nex.service_business",
+      "strategies": [
+        { "provider": "overpass", "query_kind": "tag", "params": { "amenity": "university" } },
+        { "provider": "overpass", "query_kind": "tag", "params": { "amenity": "college" } }
+      ],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "92", "name": "Kindergartens", "emoji": "🧒", "category_slug": "education-kindergartens",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "kindergarten" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "93", "name": "Language Schools", "emoji": "🗣️", "category_slug": "education-language",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "language_school" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "94", "name": "Driving Schools", "emoji": "🚘", "category_slug": "education-driving",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "driving_school" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "95", "name": "Bus Stations", "emoji": "🚌", "category_slug": "transport-bus",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "bus_station" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "96", "name": "Taxi Stands", "emoji": "🚕", "category_slug": "transport-taxi",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "taxi" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "97", "name": "Ferry Terminals", "emoji": "⛴️", "category_slug": "transport-ferry",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "ferry_terminal" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "98", "name": "EV Charging", "emoji": "🔌", "category_slug": "transport-ev-charging",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "charging_station" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "99", "name": "Boat Rentals", "emoji": "🛥️", "category_slug": "transport-boat-rental",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "boat_rental" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "100", "name": "Bicycle Rentals", "emoji": "🚴", "category_slug": "transport-bicycle-rental",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "amenity": "bicycle_rental" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "101", "name": "Beverages", "emoji": "🥤", "category_slug": "retail-beverages",
+      "target_table": "nex.mp_seller",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "shop": "beverages" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "102", "name": "Alcohol Shops", "emoji": "🍾", "category_slug": "retail-alcohol",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        { "provider": "overpass", "query_kind": "tag", "params": { "shop": "alcohol" } },
+        { "provider": "overpass", "query_kind": "tag", "params": { "shop": "wine" } }
+      ],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "103", "name": "Confectionery", "emoji": "🍬", "category_slug": "retail-confectionery",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        { "provider": "overpass", "query_kind": "tag", "params": { "shop": "confectionery" } },
+        { "provider": "overpass", "query_kind": "tag", "params": { "shop": "chocolate" } }
+      ],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "104", "name": "Deli", "emoji": "🧀", "category_slug": "retail-deli",
+      "target_table": "nex.mp_seller",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "shop": "deli" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "105", "name": "Fabric", "emoji": "🧵", "category_slug": "retail-fabric",
+      "target_table": "nex.mp_seller",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "shop": "fabric" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "106", "name": "Tailors", "emoji": "🪡", "category_slug": "service-tailor",
+      "target_table": "nex.service_business",
+      "strategies": [
+        { "provider": "overpass", "query_kind": "tag", "params": { "shop": "tailor" } },
+        { "provider": "overpass", "query_kind": "tag", "params": { "craft": "tailor" } }
+      ],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "107", "name": "Pet Shops", "emoji": "🐶", "category_slug": "retail-pet",
+      "target_table": "nex.mp_seller",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "shop": "pet" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "108", "name": "Musical Instruments", "emoji": "🎸", "category_slug": "retail-music-instruments",
+      "target_table": "nex.mp_seller",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "shop": "musical_instrument" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "109", "name": "Sports Goods", "emoji": "⚽", "category_slug": "retail-sports",
+      "target_table": "nex.mp_seller",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "shop": "sports" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "110", "name": "Photo Shops", "emoji": "📷", "category_slug": "retail-photo",
+      "target_table": "nex.mp_seller",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "shop": "photo" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "111", "name": "Locksmiths", "emoji": "🔐", "category_slug": "service-locksmith",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "shop": "locksmith" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "112", "name": "Copy Shops", "emoji": "🖨️", "category_slug": "service-copyshop",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "shop": "copyshop" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "113", "name": "Shoe Repair", "emoji": "👞", "category_slug": "service-shoe-repair",
+      "target_table": "nex.service_business",
+      "strategies": [
+        { "provider": "overpass", "query_kind": "tag", "params": { "shop": "shoe_repair" } },
+        { "provider": "overpass", "query_kind": "tag", "params": { "craft": "shoemaker" } }
+      ],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "114", "name": "Tea Shops", "emoji": "🍵", "category_slug": "retail-tea",
+      "target_table": "nex.mp_seller",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "shop": "tea" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "115", "name": "Wedding Services", "emoji": "💒", "category_slug": "service-wedding",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "shop": "wedding" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "116", "name": "Funeral Services", "emoji": "🕯️", "category_slug": "service-funeral",
+      "target_table": "nex.service_business",
+      "strategies": [
+        { "provider": "overpass", "query_kind": "tag", "params": { "amenity": "funeral_hall" } },
+        { "provider": "overpass", "query_kind": "tag", "params": { "shop": "funeral_directors" } }
+      ],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "117", "name": "Physiotherapy", "emoji": "🧑‍⚕️", "category_slug": "health-physio",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "healthcare": "physiotherapist" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "118", "name": "Chiropractors", "emoji": "🦴", "category_slug": "health-chiropractic",
+      "target_table": "nex.service_business",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "healthcare": "chiropractor" } }],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "119", "name": "Tobacco & Vape", "emoji": "🚬", "category_slug": "retail-tobacco",
+      "target_table": "nex.mp_seller",
+      "strategies": [
+        { "provider": "overpass", "query_kind": "tag", "params": { "shop": "tobacco" } },
+        { "provider": "overpass", "query_kind": "tag", "params": { "shop": "e-cigarette" } }
+      ],
+      "geographic_scope": "indonesia-all", "active": true },
+    { "id": "120", "name": "Hobby Shops", "emoji": "🧩", "category_slug": "retail-hobby",
+      "target_table": "nex.mp_seller",
+      "strategies": [{ "provider": "overpass", "query_kind": "tag", "params": { "shop": "hobby" } }],
+      "geographic_scope": "indonesia-all", "active": true }
+  ]
+}

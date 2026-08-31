@@ -1,0 +1,118 @@
+{
+  "jobId": "1e4392a1-87d6-4a0f-a634-ebbb42f4ec2e",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Semarang",
+  "bbox": {
+    "sw": [
+      -7.06,
+      110.35
+    ],
+    "ne": [
+      -6.9,
+      110.51
+    ],
+    "scope": "Semarang · Central Java"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T12:04:55.770Z",
+  "finishedAt": "2026-08-27T12:07:34.595Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 432,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 432,
+    "matched_exact": 409,
+    "matched_high": 8,
+    "ambiguous": 15,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "records_persisted": 0,
+    "enriched": 8,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 0,
+    "enrichment_writes_applied": 8,
+    "insert_attempted": 0,
+    "insert_conflicts": 0,
+    "insert_returned": 0,
+    "insert_verified": 0,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 0,
+    "rejected_by_reason": {
+      "MATCHED_EXISTING": 432
+    }
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [
+      {
+        "candidateName": "Pringsewu Kota Lama Semarang",
+        "existingName": "Pringsewu Semarang",
+        "existingRef": "#FL-2026-ZTCNP",
+        "score": "0.700"
+      },
+      {
+        "candidateName": "Martabak Sumo Sumurboto Banyumanik",
+        "existingName": "I-Cos Sumurboto Banyumanik",
+        "existingRef": "#FL-2026-2M37T",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Warung Makan Berkah",
+        "existingName": "warung makan",
+        "existingRef": "#FL-2026-ZTCN4",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Warung Makan Rizky",
+        "existingName": "warung makan",
+        "existingRef": "#FL-2026-ZTCN4",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Warung Makan Tegal",
+        "existingName": "warung makan",
+        "existingRef": "#FL-2026-ZTCN4",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Taman Ventura",
+        "existingName": "Ventura Taman Kuliner",
+        "existingRef": "#FL-2026-ZTCNE",
+        "score": "0.800"
+      },
+      {
+        "candidateName": "Wingko Babad",
+        "existingName": "Wingko Babad Cap Kereta Api",
+        "existingRef": "#FL-2026-ZTCNH",
+        "score": "0.640"
+      },
+      {
+        "candidateName": "Openaire Resto Bar and Market",
+        "existingName": "Openaire Resto",
+        "existingRef": "#FL-2026-ZTCK9",
+        "score": "0.640"
+      }
+    ],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 0,
+    "insert_verified": 0,
+    "delta": 0
+  },
+  "cycle_outcome": "ALL_DEDUPED"
+}

@@ -12,8 +12,12 @@ import pg from "pg";
 let _pool = null;
 function getPool() {
   if (_pool) return _pool;
-  const url = process.env.NEX_POSTGRES_URL;
-  if (!url) throw new Error("NEX_POSTGRES_URL not set · governor lease unavailable");
+  // Philip 2026-08-30 · dev fallback aligned with _category-walker.mjs:68 so
+  // scripts spawned without --env-file=.env.local still reach the local dev
+  // DB. Production must set NEX_POSTGRES_URL explicitly; localhost:5433 dev
+  // credential is not accepted anywhere outside developer workstations.
+  const url = process.env.NEX_POSTGRES_URL
+    ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
   _pool = new pg.Pool({ connectionString: url, max: 1 });
   return _pool;
 }

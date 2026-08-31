@@ -1,0 +1,1340 @@
+
+════════════════════════════════════════════════════════════════════════
+  NEX geographic-progression forensic · window: last 1 hours
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "generated_at": "2026-08-24T10:16:53.214Z",
+    "window": "1 hours"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §G1 · Coverage summary
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "distinct_cities": "8",
+    "distinct_categories": "4",
+    "distinct_city_cat_surface": "41",
+    "total_picks": "241"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §G2 · Selections per city (concentration check)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Magelang",
+    "picks": "55",
+    "pct": "22.8"
+  },
+  {
+    "city": "Klaten",
+    "picks": "50",
+    "pct": "20.7"
+  },
+  {
+    "city": "Solo",
+    "picks": "49",
+    "pct": "20.3"
+  },
+  {
+    "city": "Yogyakarta",
+    "picks": "23",
+    "pct": "9.5"
+  },
+  {
+    "city": "Kulon Progo",
+    "picks": "19",
+    "pct": "7.9"
+  },
+  {
+    "city": "Sleman",
+    "picks": "15",
+    "pct": "6.2"
+  },
+  {
+    "city": "Gunungkidul",
+    "picks": "15",
+    "pct": "6.2"
+  },
+  {
+    "city": "Bantul",
+    "picks": "15",
+    "pct": "6.2"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §G3 · Selections per (city, category)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Klaten",
+    "category": "market",
+    "picks": "46"
+  },
+  {
+    "city": "Magelang",
+    "category": "market",
+    "picks": "46"
+  },
+  {
+    "city": "Solo",
+    "category": "market",
+    "picks": "42"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "market",
+    "picks": "16"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "food",
+    "picks": "9"
+  },
+  {
+    "city": "Magelang",
+    "category": "accommodation",
+    "picks": "8"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "food",
+    "picks": "7"
+  },
+  {
+    "city": "Sleman",
+    "category": "food",
+    "picks": "6"
+  },
+  {
+    "city": "Sleman",
+    "category": "accommodation",
+    "picks": "5"
+  },
+  {
+    "city": "Bantul",
+    "category": "accommodation",
+    "picks": "5"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "accommodation",
+    "picks": "5"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "accommodation",
+    "picks": "5"
+  },
+  {
+    "city": "Bantul",
+    "category": "food",
+    "picks": "5"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "transport",
+    "picks": "4"
+  },
+  {
+    "city": "Solo",
+    "category": "food",
+    "picks": "4"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "transport",
+    "picks": "3"
+  },
+  {
+    "city": "Solo",
+    "category": "accommodation",
+    "picks": "3"
+  },
+  {
+    "city": "Bantul",
+    "category": "transport",
+    "picks": "3"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "market",
+    "picks": "3"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "transport",
+    "picks": "2"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "accommodation",
+    "picks": "2"
+  },
+  {
+    "city": "Sleman",
+    "category": "transport",
+    "picks": "2"
+  },
+  {
+    "city": "Klaten",
+    "category": "accommodation",
+    "picks": "2"
+  },
+  {
+    "city": "Sleman",
+    "category": "market",
+    "picks": "2"
+  },
+  {
+    "city": "Klaten",
+    "category": "food",
+    "picks": "2"
+  },
+  {
+    "city": "Bantul",
+    "category": "market",
+    "picks": "2"
+  },
+  {
+    "city": "Magelang",
+    "category": "food",
+    "picks": "1"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "market",
+    "picks": "1"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §G4 · Selections per (city, category, surface)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Magelang",
+    "category": "market",
+    "surface": "(null)",
+    "picks": "42"
+  },
+  {
+    "city": "Klaten",
+    "category": "market",
+    "surface": "(null)",
+    "picks": "42"
+  },
+  {
+    "city": "Solo",
+    "category": "market",
+    "surface": "(null)",
+    "picks": "42"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "market",
+    "surface": "nominatim",
+    "picks": "14"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "food",
+    "surface": "gunungkidul",
+    "picks": "9"
+  },
+  {
+    "city": "Magelang",
+    "category": "accommodation",
+    "surface": "magelang",
+    "picks": "8"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "food",
+    "surface": "kulon-progo",
+    "picks": "7"
+  },
+  {
+    "city": "Sleman",
+    "category": "food",
+    "surface": "sleman",
+    "picks": "6"
+  },
+  {
+    "city": "Bantul",
+    "category": "food",
+    "surface": "bantul",
+    "picks": "5"
+  },
+  {
+    "city": "Solo",
+    "category": "food",
+    "surface": "solo",
+    "picks": "4"
+  },
+  {
+    "city": "Magelang",
+    "category": "market",
+    "surface": "nominatim",
+    "picks": "4"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "accommodation",
+    "surface": "malioboro",
+    "picks": "4"
+  },
+  {
+    "city": "Sleman",
+    "category": "accommodation",
+    "surface": "sleman",
+    "picks": "4"
+  },
+  {
+    "city": "Bantul",
+    "category": "accommodation",
+    "surface": "bantul",
+    "picks": "4"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "accommodation",
+    "surface": "kulon-progo",
+    "picks": "4"
+  },
+  {
+    "city": "Klaten",
+    "category": "market",
+    "surface": "nominatim",
+    "picks": "4"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "transport",
+    "surface": "(null)",
+    "picks": "3"
+  },
+  {
+    "city": "Solo",
+    "category": "accommodation",
+    "surface": "solo",
+    "picks": "3"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "transport",
+    "surface": "(null)",
+    "picks": "2"
+  },
+  {
+    "city": "Bantul",
+    "category": "transport",
+    "surface": "(null)",
+    "picks": "2"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "accommodation",
+    "surface": "gunungkidul",
+    "picks": "2"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "transport",
+    "surface": "(null)",
+    "picks": "2"
+  },
+  {
+    "city": "Klaten",
+    "category": "accommodation",
+    "surface": "klaten",
+    "picks": "2"
+  },
+  {
+    "city": "Klaten",
+    "category": "food",
+    "surface": "klaten",
+    "picks": "2"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "market",
+    "surface": "(null)",
+    "picks": "2"
+  },
+  {
+    "city": "Sleman",
+    "category": "market",
+    "surface": "(null)",
+    "picks": "2"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "market",
+    "surface": "(null)",
+    "picks": "2"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "market",
+    "surface": "nominatim",
+    "picks": "1"
+  },
+  {
+    "city": "Sleman",
+    "category": "accommodation",
+    "surface": "(null)",
+    "picks": "1"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "accommodation",
+    "surface": "(null)",
+    "picks": "1"
+  },
+  {
+    "city": "Bantul",
+    "category": "accommodation",
+    "surface": "(null)",
+    "picks": "1"
+  },
+  {
+    "city": "Sleman",
+    "category": "transport",
+    "surface": "query-universe-v1",
+    "picks": "1"
+  },
+  {
+    "city": "Sleman",
+    "category": "transport",
+    "surface": "(null)",
+    "picks": "1"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "transport",
+    "surface": "query-universe-v1",
+    "picks": "1"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "market",
+    "surface": "(null)",
+    "picks": "1"
+  },
+  {
+    "city": "Bantul",
+    "category": "transport",
+    "surface": "query-universe-v1",
+    "picks": "1"
+  },
+  {
+    "city": "Bantul",
+    "category": "market",
+    "surface": "(null)",
+    "picks": "1"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "accommodation",
+    "surface": "(null)",
+    "picks": "1"
+  },
+  {
+    "city": "Bantul",
+    "category": "market",
+    "surface": "nominatim",
+    "picks": "1"
+  },
+  {
+    "city": "Magelang",
+    "category": "food",
+    "surface": "magelang",
+    "picks": "1"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "transport",
+    "surface": "query-universe-v1",
+    "picks": "1"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §G5 · Repeat interval · seconds between same (city, category, surface) picks
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Solo",
+    "category": "market",
+    "surface": "(null)",
+    "picks": "42",
+    "avg_interval_s": "59.7",
+    "min_interval_s": "46.2",
+    "max_interval_s": "60.2"
+  },
+  {
+    "city": "Klaten",
+    "category": "market",
+    "surface": "(null)",
+    "picks": "42",
+    "avg_interval_s": "59.7",
+    "min_interval_s": "46.2",
+    "max_interval_s": "60.2"
+  },
+  {
+    "city": "Magelang",
+    "category": "market",
+    "surface": "(null)",
+    "picks": "42",
+    "avg_interval_s": "59.7",
+    "min_interval_s": "46.2",
+    "max_interval_s": "60.2"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "market",
+    "surface": "nominatim",
+    "picks": "14",
+    "avg_interval_s": "60.0",
+    "min_interval_s": "59.9",
+    "max_interval_s": "60.2"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "food",
+    "surface": "gunungkidul",
+    "picks": "9",
+    "avg_interval_s": "67.5",
+    "min_interval_s": "59.9",
+    "max_interval_s": "120.2"
+  },
+  {
+    "city": "Magelang",
+    "category": "accommodation",
+    "surface": "magelang",
+    "picks": "8",
+    "avg_interval_s": "68.6",
+    "min_interval_s": "59.9",
+    "max_interval_s": "119.9"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "food",
+    "surface": "kulon-progo",
+    "picks": "7",
+    "avg_interval_s": "90.0",
+    "min_interval_s": "59.9",
+    "max_interval_s": "179.9"
+  },
+  {
+    "city": "Sleman",
+    "category": "food",
+    "surface": "sleman",
+    "picks": "6",
+    "avg_interval_s": "96.0",
+    "min_interval_s": "59.9",
+    "max_interval_s": "179.9"
+  },
+  {
+    "city": "Bantul",
+    "category": "food",
+    "surface": "bantul",
+    "picks": "5",
+    "avg_interval_s": "135.0",
+    "min_interval_s": "60.0",
+    "max_interval_s": "179.9"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "accommodation",
+    "surface": "kulon-progo",
+    "picks": "4",
+    "avg_interval_s": "47.0",
+    "min_interval_s": "21.0",
+    "max_interval_s": "60.1"
+  },
+  {
+    "city": "Bantul",
+    "category": "accommodation",
+    "surface": "bantul",
+    "picks": "4",
+    "avg_interval_s": "47.0",
+    "min_interval_s": "21.0",
+    "max_interval_s": "60.1"
+  },
+  {
+    "city": "Sleman",
+    "category": "accommodation",
+    "surface": "sleman",
+    "picks": "4",
+    "avg_interval_s": "47.0",
+    "min_interval_s": "21.0",
+    "max_interval_s": "60.1"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "accommodation",
+    "surface": "malioboro",
+    "picks": "4",
+    "avg_interval_s": "47.0",
+    "min_interval_s": "21.0",
+    "max_interval_s": "60.1"
+  },
+  {
+    "city": "Solo",
+    "category": "food",
+    "surface": "solo",
+    "picks": "4",
+    "avg_interval_s": "60.0",
+    "min_interval_s": "59.9",
+    "max_interval_s": "60.1"
+  },
+  {
+    "city": "Klaten",
+    "category": "market",
+    "surface": "nominatim",
+    "picks": "4",
+    "avg_interval_s": "60.0",
+    "min_interval_s": "59.9",
+    "max_interval_s": "60.1"
+  },
+  {
+    "city": "Magelang",
+    "category": "market",
+    "surface": "nominatim",
+    "picks": "4",
+    "avg_interval_s": "60.0",
+    "min_interval_s": "59.9",
+    "max_interval_s": "60.1"
+  },
+  {
+    "city": "Solo",
+    "category": "accommodation",
+    "surface": "solo",
+    "picks": "3",
+    "avg_interval_s": "90.0",
+    "min_interval_s": "59.9",
+    "max_interval_s": "120.0"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "transport",
+    "surface": "(null)",
+    "picks": "3",
+    "avg_interval_s": "983.1",
+    "min_interval_s": "479.8",
+    "max_interval_s": "1486.4"
+  },
+  {
+    "city": "Klaten",
+    "category": "food",
+    "surface": "klaten",
+    "picks": "2",
+    "avg_interval_s": "59.9",
+    "min_interval_s": "59.9",
+    "max_interval_s": "59.9"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "accommodation",
+    "surface": "gunungkidul",
+    "picks": "2",
+    "avg_interval_s": "120.1",
+    "min_interval_s": "120.1",
+    "max_interval_s": "120.1"
+  },
+  {
+    "city": "Klaten",
+    "category": "accommodation",
+    "surface": "klaten",
+    "picks": "2",
+    "avg_interval_s": "179.9",
+    "min_interval_s": "179.9",
+    "max_interval_s": "179.9"
+  },
+  {
+    "city": "Sleman",
+    "category": "market",
+    "surface": "(null)",
+    "picks": "2",
+    "avg_interval_s": "1246.3",
+    "min_interval_s": "1246.3",
+    "max_interval_s": "1246.3"
+  },
+  {
+    "city": "Bantul",
+    "category": "transport",
+    "surface": "(null)",
+    "picks": "2",
+    "avg_interval_s": "1246.5",
+    "min_interval_s": "1246.5",
+    "max_interval_s": "1246.5"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "transport",
+    "surface": "(null)",
+    "picks": "2",
+    "avg_interval_s": "1426.4",
+    "min_interval_s": "1426.4",
+    "max_interval_s": "1426.4"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "transport",
+    "surface": "(null)",
+    "picks": "2",
+    "avg_interval_s": "1426.5",
+    "min_interval_s": "1426.5",
+    "max_interval_s": "1426.5"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "market",
+    "surface": "(null)",
+    "picks": "2",
+    "avg_interval_s": "1486.2",
+    "min_interval_s": "1486.2",
+    "max_interval_s": "1486.2"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "market",
+    "surface": "(null)",
+    "picks": "2",
+    "avg_interval_s": "1486.5",
+    "min_interval_s": "1486.5",
+    "max_interval_s": "1486.5"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "transport",
+    "surface": "query-universe-v1",
+    "picks": "1",
+    "avg_interval_s": null,
+    "min_interval_s": null,
+    "max_interval_s": null
+  },
+  {
+    "city": "Bantul",
+    "category": "accommodation",
+    "surface": "(null)",
+    "picks": "1",
+    "avg_interval_s": null,
+    "min_interval_s": null,
+    "max_interval_s": null
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "transport",
+    "surface": "query-universe-v1",
+    "picks": "1",
+    "avg_interval_s": null,
+    "min_interval_s": null,
+    "max_interval_s": null
+  },
+  {
+    "city": "Sleman",
+    "category": "transport",
+    "surface": "query-universe-v1",
+    "picks": "1",
+    "avg_interval_s": null,
+    "min_interval_s": null,
+    "max_interval_s": null
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "market",
+    "surface": "(null)",
+    "picks": "1",
+    "avg_interval_s": null,
+    "min_interval_s": null,
+    "max_interval_s": null
+  },
+  {
+    "city": "Bantul",
+    "category": "transport",
+    "surface": "query-universe-v1",
+    "picks": "1",
+    "avg_interval_s": null,
+    "min_interval_s": null,
+    "max_interval_s": null
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "accommodation",
+    "surface": "(null)",
+    "picks": "1",
+    "avg_interval_s": null,
+    "min_interval_s": null,
+    "max_interval_s": null
+  },
+  {
+    "city": "Bantul",
+    "category": "market",
+    "surface": "nominatim",
+    "picks": "1",
+    "avg_interval_s": null,
+    "min_interval_s": null,
+    "max_interval_s": null
+  },
+  {
+    "city": "Bantul",
+    "category": "market",
+    "surface": "(null)",
+    "picks": "1",
+    "avg_interval_s": null,
+    "min_interval_s": null,
+    "max_interval_s": null
+  },
+  {
+    "city": "Sleman",
+    "category": "transport",
+    "surface": "(null)",
+    "picks": "1",
+    "avg_interval_s": null,
+    "min_interval_s": null,
+    "max_interval_s": null
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "market",
+    "surface": "nominatim",
+    "picks": "1",
+    "avg_interval_s": null,
+    "min_interval_s": null,
+    "max_interval_s": null
+  },
+  {
+    "city": "Magelang",
+    "category": "food",
+    "surface": "magelang",
+    "picks": "1",
+    "avg_interval_s": null,
+    "min_interval_s": null,
+    "max_interval_s": null
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "accommodation",
+    "surface": "(null)",
+    "picks": "1",
+    "avg_interval_s": null,
+    "min_interval_s": null,
+    "max_interval_s": null
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §G6 · Saturated (surface-level) combinations right now · verify skip
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Bantul",
+    "category": "accommodation",
+    "surface": "bantul",
+    "state_entered_at": "2026-08-24T10:02:32.991Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Bantul",
+    "category": "food",
+    "surface": "bantul",
+    "state_entered_at": "2026-08-24T10:12:32.740Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "food",
+    "surface": "gunungkidul",
+    "state_entered_at": "2026-08-24T10:12:32.767Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "market",
+    "surface": "nominatim",
+    "state_entered_at": "2026-08-24T10:02:33.070Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "accommodation",
+    "surface": "kulon-progo",
+    "state_entered_at": "2026-08-24T10:02:33.016Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "food",
+    "surface": "kulon-progo",
+    "state_entered_at": "2026-08-24T10:12:32.753Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Magelang",
+    "category": "accommodation",
+    "surface": "magelang",
+    "state_entered_at": "2026-08-24T10:12:32.778Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Sleman",
+    "category": "accommodation",
+    "surface": "sleman",
+    "state_entered_at": "2026-08-24T10:02:32.967Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Sleman",
+    "category": "food",
+    "surface": "sleman",
+    "state_entered_at": "2026-08-24T10:12:32.725Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Sleman",
+    "category": "market",
+    "surface": "nominatim",
+    "state_entered_at": "2026-08-24T10:02:32.985Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Solo",
+    "category": "accommodation",
+    "surface": "solo",
+    "state_entered_at": "2026-08-24T10:12:32.805Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "accommodation",
+    "surface": "borobudur",
+    "state_entered_at": "2026-08-24T10:02:32.893Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "accommodation",
+    "surface": "kaliurang",
+    "state_entered_at": "2026-08-24T10:02:32.883Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "accommodation",
+    "surface": "malioboro",
+    "state_entered_at": "2026-08-24T10:02:32.833Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "accommodation",
+    "surface": "prawirotaman",
+    "state_entered_at": "2026-08-24T10:02:32.869Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "accommodation",
+    "surface": "yogya-wider",
+    "state_entered_at": "2026-08-24T10:02:32.901Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "food",
+    "surface": "bantul-south",
+    "state_entered_at": "2026-08-24T10:02:32.928Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "food",
+    "surface": "gamping-west",
+    "state_entered_at": "2026-08-24T10:02:32.945Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "food",
+    "surface": "klaten-east",
+    "state_entered_at": "2026-08-24T10:02:32.936Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "food",
+    "surface": "prambanan",
+    "state_entered_at": "2026-08-24T10:02:32.909Z",
+    "picks_after_saturation": "0"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "food",
+    "surface": "sleman-north",
+    "state_entered_at": "2026-08-24T10:02:32.917Z",
+    "picks_after_saturation": "0"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §G7 · MAINTENANCE combinations · re-entered after cooldown?
+════════════════════════════════════════════════════════════════════════
+[]
+
+════════════════════════════════════════════════════════════════════════
+  §G8 · Cities with eligible (non-saturated) surfaces but ZERO picks in window
+════════════════════════════════════════════════════════════════════════
+[]
+
+════════════════════════════════════════════════════════════════════════
+  §G9 · Category starvation · categories with 0 picks in window
+════════════════════════════════════════════════════════════════════════
+[]
+
+════════════════════════════════════════════════════════════════════════
+  §G10 · Geographic concentration · top-1 and top-3 city percentages
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "top_city": "Magelang",
+    "top_city_picks": "55",
+    "top_city_pct": "22.8",
+    "top_3_pct": "63.9",
+    "distinct_cities": "8"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §G11 · Advance progression · picks per hour bucket (last 24h) per city
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "hour_bucket": "2026-08-24T10:00:00.000Z",
+    "city": "Yogyakarta",
+    "picks": "17"
+  },
+  {
+    "hour_bucket": "2026-08-24T10:00:00.000Z",
+    "city": "Magelang",
+    "picks": "13"
+  },
+  {
+    "hour_bucket": "2026-08-24T10:00:00.000Z",
+    "city": "Kulon Progo",
+    "picks": "12"
+  },
+  {
+    "hour_bucket": "2026-08-24T10:00:00.000Z",
+    "city": "Gunungkidul",
+    "picks": "11"
+  },
+  {
+    "hour_bucket": "2026-08-24T10:00:00.000Z",
+    "city": "Bantul",
+    "picks": "10"
+  },
+  {
+    "hour_bucket": "2026-08-24T10:00:00.000Z",
+    "city": "Sleman",
+    "picks": "10"
+  },
+  {
+    "hour_bucket": "2026-08-24T10:00:00.000Z",
+    "city": "Klaten",
+    "picks": "8"
+  },
+  {
+    "hour_bucket": "2026-08-24T10:00:00.000Z",
+    "city": "Solo",
+    "picks": "7"
+  },
+  {
+    "hour_bucket": "2026-08-24T09:00:00.000Z",
+    "city": "Solo",
+    "picks": "58"
+  },
+  {
+    "hour_bucket": "2026-08-24T09:00:00.000Z",
+    "city": "Magelang",
+    "picks": "58"
+  },
+  {
+    "hour_bucket": "2026-08-24T09:00:00.000Z",
+    "city": "Klaten",
+    "picks": "58"
+  },
+  {
+    "hour_bucket": "2026-08-24T09:00:00.000Z",
+    "city": "Sleman",
+    "picks": "13"
+  },
+  {
+    "hour_bucket": "2026-08-24T09:00:00.000Z",
+    "city": "Bantul",
+    "picks": "12"
+  },
+  {
+    "hour_bucket": "2026-08-24T09:00:00.000Z",
+    "city": "Kulon Progo",
+    "picks": "10"
+  },
+  {
+    "hour_bucket": "2026-08-24T09:00:00.000Z",
+    "city": "Yogyakarta",
+    "picks": "6"
+  },
+  {
+    "hour_bucket": "2026-08-24T09:00:00.000Z",
+    "city": "Gunungkidul",
+    "picks": "6"
+  },
+  {
+    "hour_bucket": "2026-08-24T08:00:00.000Z",
+    "city": "Magelang",
+    "picks": "59"
+  },
+  {
+    "hour_bucket": "2026-08-24T08:00:00.000Z",
+    "city": "Klaten",
+    "picks": "59"
+  },
+  {
+    "hour_bucket": "2026-08-24T08:00:00.000Z",
+    "city": "Solo",
+    "picks": "56"
+  },
+  {
+    "hour_bucket": "2026-08-24T08:00:00.000Z",
+    "city": "Bantul",
+    "picks": "18"
+  },
+  {
+    "hour_bucket": "2026-08-24T08:00:00.000Z",
+    "city": "Sleman",
+    "picks": "16"
+  },
+  {
+    "hour_bucket": "2026-08-24T08:00:00.000Z",
+    "city": "Kulon Progo",
+    "picks": "11"
+  },
+  {
+    "hour_bucket": "2026-08-24T08:00:00.000Z",
+    "city": "Gunungkidul",
+    "picks": "5"
+  },
+  {
+    "hour_bucket": "2026-08-24T08:00:00.000Z",
+    "city": "Yogyakarta",
+    "picks": "4"
+  },
+  {
+    "hour_bucket": "2026-08-24T07:00:00.000Z",
+    "city": "Solo",
+    "picks": "61"
+  },
+  {
+    "hour_bucket": "2026-08-24T07:00:00.000Z",
+    "city": "Magelang",
+    "picks": "61"
+  },
+  {
+    "hour_bucket": "2026-08-24T07:00:00.000Z",
+    "city": "Klaten",
+    "picks": "60"
+  },
+  {
+    "hour_bucket": "2026-08-24T07:00:00.000Z",
+    "city": "Sleman",
+    "picks": "46"
+  },
+  {
+    "hour_bucket": "2026-08-24T07:00:00.000Z",
+    "city": "Bantul",
+    "picks": "43"
+  },
+  {
+    "hour_bucket": "2026-08-24T07:00:00.000Z",
+    "city": "Kulon Progo",
+    "picks": "38"
+  },
+  {
+    "hour_bucket": "2026-08-24T07:00:00.000Z",
+    "city": "Gunungkidul",
+    "picks": "26"
+  },
+  {
+    "hour_bucket": "2026-08-24T07:00:00.000Z",
+    "city": "Yogyakarta",
+    "picks": "4"
+  },
+  {
+    "hour_bucket": "2026-08-24T06:00:00.000Z",
+    "city": "Solo",
+    "picks": "61"
+  },
+  {
+    "hour_bucket": "2026-08-24T06:00:00.000Z",
+    "city": "Magelang",
+    "picks": "60"
+  },
+  {
+    "hour_bucket": "2026-08-24T06:00:00.000Z",
+    "city": "Klaten",
+    "picks": "60"
+  },
+  {
+    "hour_bucket": "2026-08-24T06:00:00.000Z",
+    "city": "Sleman",
+    "picks": "46"
+  },
+  {
+    "hour_bucket": "2026-08-24T06:00:00.000Z",
+    "city": "Kulon Progo",
+    "picks": "43"
+  },
+  {
+    "hour_bucket": "2026-08-24T06:00:00.000Z",
+    "city": "Bantul",
+    "picks": "37"
+  },
+  {
+    "hour_bucket": "2026-08-24T06:00:00.000Z",
+    "city": "Gunungkidul",
+    "picks": "26"
+  },
+  {
+    "hour_bucket": "2026-08-24T06:00:00.000Z",
+    "city": "Yogyakarta",
+    "picks": "4"
+  },
+  {
+    "hour_bucket": "2026-08-24T05:00:00.000Z",
+    "city": "Magelang",
+    "picks": "60"
+  },
+  {
+    "hour_bucket": "2026-08-24T05:00:00.000Z",
+    "city": "Solo",
+    "picks": "60"
+  },
+  {
+    "hour_bucket": "2026-08-24T05:00:00.000Z",
+    "city": "Klaten",
+    "picks": "60"
+  },
+  {
+    "hour_bucket": "2026-08-24T05:00:00.000Z",
+    "city": "Sleman",
+    "picks": "52"
+  },
+  {
+    "hour_bucket": "2026-08-24T05:00:00.000Z",
+    "city": "Bantul",
+    "picks": "42"
+  },
+  {
+    "hour_bucket": "2026-08-24T05:00:00.000Z",
+    "city": "Kulon Progo",
+    "picks": "34"
+  },
+  {
+    "hour_bucket": "2026-08-24T05:00:00.000Z",
+    "city": "Gunungkidul",
+    "picks": "27"
+  },
+  {
+    "hour_bucket": "2026-08-24T05:00:00.000Z",
+    "city": "Yogyakarta",
+    "picks": "5"
+  },
+  {
+    "hour_bucket": "2026-08-24T04:00:00.000Z",
+    "city": "Magelang",
+    "picks": "60"
+  },
+  {
+    "hour_bucket": "2026-08-24T04:00:00.000Z",
+    "city": "Klaten",
+    "picks": "60"
+  },
+  {
+    "hour_bucket": "2026-08-24T04:00:00.000Z",
+    "city": "Solo",
+    "picks": "60"
+  },
+  {
+    "hour_bucket": "2026-08-24T04:00:00.000Z",
+    "city": "Sleman",
+    "picks": "53"
+  },
+  {
+    "hour_bucket": "2026-08-24T04:00:00.000Z",
+    "city": "Kulon Progo",
+    "picks": "44"
+  },
+  {
+    "hour_bucket": "2026-08-24T04:00:00.000Z",
+    "city": "Bantul",
+    "picks": "43"
+  },
+  {
+    "hour_bucket": "2026-08-24T04:00:00.000Z",
+    "city": "Gunungkidul",
+    "picks": "23"
+  },
+  {
+    "hour_bucket": "2026-08-24T04:00:00.000Z",
+    "city": "Yogyakarta",
+    "picks": "4"
+  },
+  {
+    "hour_bucket": "2026-08-24T03:00:00.000Z",
+    "city": "Klaten",
+    "picks": "62"
+  },
+  {
+    "hour_bucket": "2026-08-24T03:00:00.000Z",
+    "city": "Magelang",
+    "picks": "61"
+  },
+  {
+    "hour_bucket": "2026-08-24T03:00:00.000Z",
+    "city": "Solo",
+    "picks": "60"
+  },
+  {
+    "hour_bucket": "2026-08-24T03:00:00.000Z",
+    "city": "Bantul",
+    "picks": "45"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §G12 · Dominance check · any city > 60% of picks?
+════════════════════════════════════════════════════════════════════════
+[]
+
+════════════════════════════════════════════════════════════════════════
+  §G13 · Regression sentinels · protections still in force
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "serialization_errors": "0",
+    "zombies_reconciled": "7",
+    "non_yogya_prambanan_leaks": "0",
+    "orphan_bypass": "-138"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  END · geographic-progression forensic complete · window 1 hours
+════════════════════════════════════════════════════════════════════════

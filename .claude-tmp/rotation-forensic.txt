@@ -1,0 +1,601 @@
+
+════════════════════════════════════════════════════════════════════════
+  §R1 · Saturated combos observed in last 7 hours (rotation state history)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Solo",
+    "category": "accommodation",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:48:23.873Z",
+    "updated_age_s": 181
+  },
+  {
+    "city": "Klaten",
+    "category": "food",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:48:23.852Z",
+    "updated_age_s": 181
+  },
+  {
+    "city": "Klaten",
+    "category": "accommodation",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:48:23.845Z",
+    "updated_age_s": 181
+  },
+  {
+    "city": "Magelang",
+    "category": "food",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:48:23.822Z",
+    "updated_age_s": 181
+  },
+  {
+    "city": "Magelang",
+    "category": "accommodation",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:48:23.814Z",
+    "updated_age_s": 181
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "food",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:48:23.793Z",
+    "updated_age_s": 181
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "accommodation",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:48:23.786Z",
+    "updated_age_s": 181
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "food",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:48:23.772Z",
+    "updated_age_s": 181
+  },
+  {
+    "city": "Bantul",
+    "category": "food",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:48:23.755Z",
+    "updated_age_s": 181
+  },
+  {
+    "city": "Sleman",
+    "category": "food",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:48:23.737Z",
+    "updated_age_s": 181
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "food",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:48:23.718Z",
+    "updated_age_s": 181
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "accommodation",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:48:23.694Z",
+    "updated_age_s": 181
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §R2 · Orchestrator picks in last 7 hours by city (concentration)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Magelang",
+    "picks": "423"
+  },
+  {
+    "city": "Klaten",
+    "picks": "423"
+  },
+  {
+    "city": "Solo",
+    "picks": "421"
+  },
+  {
+    "city": "Sleman",
+    "picks": "297"
+  },
+  {
+    "city": "Bantul",
+    "picks": "265"
+  },
+  {
+    "city": "Kulon Progo",
+    "picks": "249"
+  },
+  {
+    "city": "Gunungkidul",
+    "picks": "156"
+  },
+  {
+    "city": "Yogyakarta",
+    "picks": "32"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §R3 · All acquisition cycles in last 7 hours · by parsed city
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city_raw": "Yogyakarta",
+    "cycles": "2206",
+    "categories": "4"
+  },
+  {
+    "city_raw": "Sleman",
+    "cycles": "297",
+    "categories": "3"
+  },
+  {
+    "city_raw": "Bantul",
+    "cycles": "265",
+    "categories": "3"
+  },
+  {
+    "city_raw": "Kulon Progo",
+    "cycles": "225",
+    "categories": "2"
+  },
+  {
+    "city_raw": "Gunungkidul",
+    "cycles": "156",
+    "categories": "2"
+  },
+  {
+    "city_raw": "Central",
+    "cycles": "116",
+    "categories": "1"
+  },
+  {
+    "city_raw": "Kulon",
+    "cycles": "24",
+    "categories": "1"
+  },
+  {
+    "city_raw": "Solo",
+    "cycles": "3",
+    "categories": "2"
+  },
+  {
+    "city_raw": "Magelang",
+    "cycles": "2",
+    "categories": "1"
+  },
+  {
+    "city_raw": "Klaten",
+    "cycles": "2",
+    "categories": "1"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §R4 · Cycles per category (last 7 hours)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "category": "transport",
+    "cycles": "1227"
+  },
+  {
+    "category": "accommodation",
+    "cycles": "1117"
+  },
+  {
+    "category": "food",
+    "cycles": "705"
+  },
+  {
+    "category": "market",
+    "cycles": "247"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §R5 · Concentration · % of cycles going to top city and top-3 cities
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "__query_error": "function round(double precision, integer) does not exist"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §R6 · CRITICAL · did any saturated combo get a cycle in last 7 hours?
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Yogyakarta",
+    "category": "accommodation",
+    "saturated_since": "2026-08-24T08:48:23.694Z",
+    "cycles_after_saturation": "5"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "food",
+    "saturated_since": "2026-08-24T08:48:23.718Z",
+    "cycles_after_saturation": "5"
+  },
+  {
+    "city": "Sleman",
+    "category": "food",
+    "saturated_since": "2026-08-24T08:48:23.737Z",
+    "cycles_after_saturation": "0"
+  },
+  {
+    "city": "Bantul",
+    "category": "food",
+    "saturated_since": "2026-08-24T08:48:23.755Z",
+    "cycles_after_saturation": "0"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "food",
+    "saturated_since": "2026-08-24T08:48:23.772Z",
+    "cycles_after_saturation": "0"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "accommodation",
+    "saturated_since": "2026-08-24T08:48:23.786Z",
+    "cycles_after_saturation": "0"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "food",
+    "saturated_since": "2026-08-24T08:48:23.793Z",
+    "cycles_after_saturation": "0"
+  },
+  {
+    "city": "Magelang",
+    "category": "accommodation",
+    "saturated_since": "2026-08-24T08:48:23.814Z",
+    "cycles_after_saturation": "0"
+  },
+  {
+    "city": "Magelang",
+    "category": "food",
+    "saturated_since": "2026-08-24T08:48:23.822Z",
+    "cycles_after_saturation": "0"
+  },
+  {
+    "city": "Klaten",
+    "category": "accommodation",
+    "saturated_since": "2026-08-24T08:48:23.845Z",
+    "cycles_after_saturation": "0"
+  },
+  {
+    "city": "Klaten",
+    "category": "food",
+    "saturated_since": "2026-08-24T08:48:23.852Z",
+    "cycles_after_saturation": "0"
+  },
+  {
+    "city": "Solo",
+    "category": "accommodation",
+    "saturated_since": "2026-08-24T08:48:23.873Z",
+    "cycles_after_saturation": "0"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §R7 · Fixed-cron vs orchestrator picks · which spawner drives which cycles
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "total_cycles_7h": "3296",
+    "orchestrator_picks_7h": "2266"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §R8 · Discovery rotation state · full snapshot of every tracked combo
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Bantul",
+    "category": "accommodation",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T08:38:24.529Z",
+    "last_productive_at": "2026-08-24T08:38:24.529Z",
+    "updated_at": "2026-08-24T08:48:23.750Z"
+  },
+  {
+    "city": "Bantul",
+    "category": "food",
+    "state": "saturated",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-23T21:24:27.420Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.755Z"
+  },
+  {
+    "city": "Bantul",
+    "category": "market",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T08:46:24.053Z",
+    "last_productive_at": "2026-08-23T18:35:50.423Z",
+    "updated_at": "2026-08-24T08:48:23.764Z"
+  },
+  {
+    "city": "Bantul",
+    "category": "transport",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T08:39:24.385Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.759Z"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "accommodation",
+    "state": "saturated",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-23T21:38:26.666Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.786Z"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "food",
+    "state": "saturated",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-23T21:24:27.805Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.793Z"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "market",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T08:46:24.066Z",
+    "last_productive_at": "2026-08-24T08:01:31.450Z",
+    "updated_at": "2026-08-24T08:48:23.807Z"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "transport",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T08:41:24.536Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.800Z"
+  },
+  {
+    "city": "Klaten",
+    "category": "accommodation",
+    "state": "saturated",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-23T21:24:28.095Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.845Z"
+  },
+  {
+    "city": "Klaten",
+    "category": "food",
+    "state": "saturated",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-23T21:34:26.406Z",
+    "last_productive_at": "2026-08-23T21:29:26.466Z",
+    "updated_at": "2026-08-24T08:48:23.852Z"
+  },
+  {
+    "city": "Klaten",
+    "category": "market",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": null,
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.865Z"
+  },
+  {
+    "city": "Klaten",
+    "category": "transport",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T03:20:28.830Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.859Z"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "accommodation",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T08:47:24.176Z",
+    "last_productive_at": "2026-08-24T08:47:24.176Z",
+    "updated_at": "2026-08-24T08:48:23.768Z"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "food",
+    "state": "saturated",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-23T21:24:27.690Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.772Z"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "market",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T08:24:31.400Z",
+    "last_productive_at": "2026-08-23T18:45:56.197Z",
+    "updated_at": "2026-08-24T08:48:23.781Z"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "transport",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T08:29:24.125Z",
+    "last_productive_at": "2026-08-24T07:55:30.910Z",
+    "updated_at": "2026-08-24T08:48:23.776Z"
+  },
+  {
+    "city": "Magelang",
+    "category": "accommodation",
+    "state": "saturated",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-23T22:02:26.624Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.814Z"
+  },
+  {
+    "city": "Magelang",
+    "category": "food",
+    "state": "saturated",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-23T21:24:27.883Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.822Z"
+  },
+  {
+    "city": "Magelang",
+    "category": "market",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": null,
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.837Z"
+  },
+  {
+    "city": "Magelang",
+    "category": "transport",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T07:24:30.809Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.830Z"
+  },
+  {
+    "city": "Sleman",
+    "category": "accommodation",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T08:36:24.219Z",
+    "last_productive_at": "2026-08-24T08:36:24.219Z",
+    "updated_at": "2026-08-24T08:48:23.733Z"
+  },
+  {
+    "city": "Sleman",
+    "category": "food",
+    "state": "saturated",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-23T21:24:27.958Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.737Z"
+  },
+  {
+    "city": "Sleman",
+    "category": "market",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T08:38:24.432Z",
+    "last_productive_at": "2026-08-23T17:26:53.011Z",
+    "updated_at": "2026-08-24T08:48:23.746Z"
+  },
+  {
+    "city": "Sleman",
+    "category": "transport",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T08:40:24.354Z",
+    "last_productive_at": "2026-08-23T20:09:03.882Z",
+    "updated_at": "2026-08-24T08:48:23.742Z"
+  },
+  {
+    "city": "Solo",
+    "category": "accommodation",
+    "state": "saturated",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T00:03:27.325Z",
+    "last_productive_at": "2026-08-23T20:59:11.878Z",
+    "updated_at": "2026-08-24T08:48:23.873Z"
+  },
+  {
+    "city": "Solo",
+    "category": "food",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T06:44:30.648Z",
+    "last_productive_at": "2026-08-23T22:04:26.589Z",
+    "updated_at": "2026-08-24T08:48:23.881Z"
+  },
+  {
+    "city": "Solo",
+    "category": "market",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": null,
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.895Z"
+  },
+  {
+    "city": "Solo",
+    "category": "transport",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T07:04:30.769Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.888Z"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "accommodation",
+    "state": "saturated",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T08:48:04.714Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.694Z"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "food",
+    "state": "saturated",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T08:48:02.369Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T08:48:23.718Z"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "market",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T08:30:24.134Z",
+    "last_productive_at": "2026-08-23T21:46:26.571Z",
+    "updated_at": "2026-08-24T08:48:23.729Z"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "transport",
+    "state": "build",
+    "round": 1,
+    "last_cycle_started_at": "2026-08-24T08:28:27.180Z",
+    "last_productive_at": "2026-08-23T16:08:10.636Z",
+    "updated_at": "2026-08-24T08:48:23.724Z"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  END
+════════════════════════════════════════════════════════════════════════

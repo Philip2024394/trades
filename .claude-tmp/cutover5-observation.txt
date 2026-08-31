@@ -1,0 +1,596 @@
+
+════════════════════════════════════════════════════════════════════════
+  §C1 · SURFACE SEPARATION · same combo · SAT + BUILD surfaces coexist
+════════════════════════════════════════════════════════════════════════
+Every (city, category) with both a SATURATED and non-SAT surface currently:
+[]
+
+════════════════════════════════════════════════════════════════════════
+  §C1b · Where BOTH a SAT and non-SAT surface exist · which surfaces have been PICKED?
+════════════════════════════════════════════════════════════════════════
+[]
+
+════════════════════════════════════════════════════════════════════════
+  §C2 · No false city exhaustion · saturated surfaces do not block combo picks
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Bantul",
+    "category": "accommodation",
+    "sat_surfaces": "1",
+    "total_surfaces": "1",
+    "combo_status": "fully-exhausted",
+    "picks_since_cutover": "1"
+  },
+  {
+    "city": "Bantul",
+    "category": "food",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "2"
+  },
+  {
+    "city": "Bantul",
+    "category": "market",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Bantul",
+    "category": "transport",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "accommodation",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "food",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "3"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "market",
+    "sat_surfaces": "1",
+    "total_surfaces": "1",
+    "combo_status": "fully-exhausted",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "transport",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Klaten",
+    "category": "accommodation",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Klaten",
+    "category": "food",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Klaten",
+    "category": "market",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Klaten",
+    "category": "transport",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "accommodation",
+    "sat_surfaces": "1",
+    "total_surfaces": "1",
+    "combo_status": "fully-exhausted",
+    "picks_since_cutover": "1"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "food",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "4"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "market",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "transport",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Magelang",
+    "category": "accommodation",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "3"
+  },
+  {
+    "city": "Magelang",
+    "category": "food",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Magelang",
+    "category": "market",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Magelang",
+    "category": "transport",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Sleman",
+    "category": "accommodation",
+    "sat_surfaces": "1",
+    "total_surfaces": "1",
+    "combo_status": "fully-exhausted",
+    "picks_since_cutover": "1"
+  },
+  {
+    "city": "Sleman",
+    "category": "food",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "3"
+  },
+  {
+    "city": "Sleman",
+    "category": "market",
+    "sat_surfaces": "1",
+    "total_surfaces": "1",
+    "combo_status": "fully-exhausted",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Sleman",
+    "category": "transport",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Solo",
+    "category": "accommodation",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Solo",
+    "category": "food",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Solo",
+    "category": "market",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Solo",
+    "category": "transport",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "accommodation",
+    "sat_surfaces": "5",
+    "total_surfaces": "5",
+    "combo_status": "fully-exhausted",
+    "picks_since_cutover": "1"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "food",
+    "sat_surfaces": "5",
+    "total_surfaces": "5",
+    "combo_status": "fully-exhausted",
+    "picks_since_cutover": "0"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "market",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "4"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "transport",
+    "sat_surfaces": "0",
+    "total_surfaces": "1",
+    "combo_status": "combo-remains-eligible",
+    "picks_since_cutover": "0"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §C3 · Real surfaces · every distinct worker_config surface since cutover 5
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "category": "accommodation",
+    "city": "Bantul",
+    "surface": "bantul",
+    "cycles": "1"
+  },
+  {
+    "category": "accommodation",
+    "city": "Kulon Progo",
+    "surface": "kulon-progo",
+    "cycles": "1"
+  },
+  {
+    "category": "accommodation",
+    "city": "Magelang",
+    "surface": "magelang",
+    "cycles": "3"
+  },
+  {
+    "category": "accommodation",
+    "city": "Sleman",
+    "surface": "sleman",
+    "cycles": "1"
+  },
+  {
+    "category": "accommodation",
+    "city": "Yogyakarta",
+    "surface": "malioboro",
+    "cycles": "1"
+  },
+  {
+    "category": "food",
+    "city": "Bantul",
+    "surface": "bantul",
+    "cycles": "2"
+  },
+  {
+    "category": "food",
+    "city": "Gunungkidul",
+    "surface": "gunungkidul",
+    "cycles": "3"
+  },
+  {
+    "category": "food",
+    "city": "Kulon Progo",
+    "surface": "kulon-progo",
+    "cycles": "4"
+  },
+  {
+    "category": "food",
+    "city": "Sleman",
+    "surface": "sleman",
+    "cycles": "3"
+  },
+  {
+    "category": "market",
+    "city": "yogyakarta-city",
+    "surface": "nominatim",
+    "cycles": "1"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §C3b · Any post-cutover cycle still using 'prambanan' for non-Yogyakarta cities?
+════════════════════════════════════════════════════════════════════════
+[]
+
+════════════════════════════════════════════════════════════════════════
+  §C4 · Per-surface state_entered_at · lifecycle timing preserved
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Solo",
+    "category": "market",
+    "surface": "nominatim",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:02:33.149Z",
+    "age_s": 230,
+    "last_cycle_started_at": null
+  },
+  {
+    "city": "Solo",
+    "category": "transport",
+    "surface": "query-universe-v1",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:02:33.142Z",
+    "age_s": 230,
+    "last_cycle_started_at": "2026-08-24T07:04:30.769Z"
+  },
+  {
+    "city": "Solo",
+    "category": "food",
+    "surface": "solo",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:02:33.136Z",
+    "age_s": 230,
+    "last_cycle_started_at": null
+  },
+  {
+    "city": "Solo",
+    "category": "accommodation",
+    "surface": "solo",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:02:33.128Z",
+    "age_s": 230,
+    "last_cycle_started_at": null
+  },
+  {
+    "city": "Klaten",
+    "category": "market",
+    "surface": "nominatim",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:02:33.122Z",
+    "age_s": 230,
+    "last_cycle_started_at": null
+  },
+  {
+    "city": "Klaten",
+    "category": "transport",
+    "surface": "query-universe-v1",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:02:33.117Z",
+    "age_s": 230,
+    "last_cycle_started_at": "2026-08-24T03:20:28.830Z"
+  },
+  {
+    "city": "Klaten",
+    "category": "food",
+    "surface": "klaten",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:02:33.108Z",
+    "age_s": 230,
+    "last_cycle_started_at": null
+  },
+  {
+    "city": "Klaten",
+    "category": "accommodation",
+    "surface": "klaten",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:02:33.101Z",
+    "age_s": 230,
+    "last_cycle_started_at": null
+  },
+  {
+    "city": "Magelang",
+    "category": "market",
+    "surface": "nominatim",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:02:33.095Z",
+    "age_s": 230,
+    "last_cycle_started_at": null
+  },
+  {
+    "city": "Magelang",
+    "category": "transport",
+    "surface": "query-universe-v1",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:02:33.089Z",
+    "age_s": 230,
+    "last_cycle_started_at": "2026-08-24T07:24:30.809Z"
+  },
+  {
+    "city": "Magelang",
+    "category": "food",
+    "surface": "magelang",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:02:33.083Z",
+    "age_s": 230,
+    "last_cycle_started_at": null
+  },
+  {
+    "city": "Magelang",
+    "category": "accommodation",
+    "surface": "magelang",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:02:33.078Z",
+    "age_s": 231,
+    "last_cycle_started_at": null
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "market",
+    "surface": "nominatim",
+    "state": "saturated",
+    "state_entered_at": "2026-08-24T10:02:33.070Z",
+    "age_s": 231,
+    "last_cycle_started_at": "2026-08-24T09:29:55.927Z"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "transport",
+    "surface": "query-universe-v1",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:02:33.061Z",
+    "age_s": 231,
+    "last_cycle_started_at": "2026-08-24T09:50:42.144Z"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "food",
+    "surface": "gunungkidul",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:02:33.053Z",
+    "age_s": 231,
+    "last_cycle_started_at": null
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §C5 · Geographic progression · unique cities picked since cutover 5
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Kulon Progo",
+    "picks": "5",
+    "distinct_surfaces_picked": "1"
+  },
+  {
+    "city": "Yogyakarta",
+    "picks": "5",
+    "distinct_surfaces_picked": "2"
+  },
+  {
+    "city": "Sleman",
+    "picks": "4",
+    "distinct_surfaces_picked": "1"
+  },
+  {
+    "city": "Bantul",
+    "picks": "3",
+    "distinct_surfaces_picked": "1"
+  },
+  {
+    "city": "Gunungkidul",
+    "picks": "3",
+    "distinct_surfaces_picked": "1"
+  },
+  {
+    "city": "Magelang",
+    "picks": "3",
+    "distinct_surfaces_picked": "1"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §C6 · Category progression since cutover 5
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "category": "food",
+    "picks": "12"
+  },
+  {
+    "category": "accommodation",
+    "picks": "7"
+  },
+  {
+    "category": "market",
+    "picks": "4"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §C7 · One Geographic Authority · orphan bypass check
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "acquisition_cycles": "20",
+    "orchestrator_picks": "23",
+    "orphan_bypass": "-3"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §C8 · No regression · serialization / zombie / records_new truthfulness
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "serialization_errors": "0",
+    "zombies_reconciled": "3",
+    "stuck_over_15min": "2",
+    "records_new_zero_honest": "6",
+    "records_new_positive_honest": "0"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §C9 · Legacy surface='default' rows · preserved · NOT cleaned
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "legacy_default_rows": "32",
+    "legacy_saturated": "16",
+    "legacy_build": "16",
+    "legacy_saturated_combos": [
+      "Bantul:accommodation",
+      "Bantul:food",
+      "Gunungkidul:accommodation",
+      "Gunungkidul:food",
+      "Gunungkidul:market",
+      "Klaten:accommodation",
+      "Klaten:food",
+      "Kulon Progo:accommodation",
+      "Kulon Progo:food",
+      "Magelang:accommodation",
+      "Magelang:food",
+      "Sleman:accommodation",
+      "Sleman:food",
+      "Solo:accommodation",
+      "Yogyakarta:accommodation",
+      "Yogyakarta:food"
+    ]
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  END · cutover 5 live observation complete
+════════════════════════════════════════════════════════════════════════

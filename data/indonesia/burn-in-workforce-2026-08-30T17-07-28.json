@@ -1,0 +1,175 @@
+{
+  "burnIn": {
+    "startedAt": "2026-08-30T17:06:28.815Z",
+    "endedAt": "2026-08-30T17:07:28.844Z",
+    "durationMs": 60029,
+    "requestedDurationSec": 60,
+    "tickIntervalMs": 5000,
+    "liveMode": false,
+    "totalTicks": 97
+  },
+  "corpus": {
+    "sizeBefore": 714,
+    "sizeAfter": 714,
+    "newEntities": 0,
+    "distribution": {
+      "byTier": {
+        "A": 28,
+        "B": 686
+      },
+      "byFreshness": {
+        "long_lived": 692,
+        "seasonal": 20,
+        "daily": 1,
+        "live": 1
+      },
+      "byKind": {
+        "knowledge": 128,
+        "government": 15,
+        "place": 571
+      },
+      "total": 714
+    }
+  },
+  "workforce": {
+    "totalWorkers": 25,
+    "byState": {
+      "STARTING": 0,
+      "RUNNING": 0,
+      "WAITING": 24,
+      "RETRYING": 0,
+      "BACKOFF": 1,
+      "STUCK": 0,
+      "DEAD": 0,
+      "DRAINING": 0,
+      "COMPLETED": 0
+    },
+    "openBreakers": [],
+    "deadLetterCount": 0,
+    "recentIncidents": 1
+  },
+  "perWalker": [
+    {
+      "walkerId": "curated:seed",
+      "attempts": 0,
+      "successes": 0,
+      "failures": 0,
+      "successRate": null,
+      "recordsDiscovered": 0,
+      "recordsPublished": 0,
+      "recordsUpdated": 0,
+      "recordsUnchanged": 0,
+      "recordsSkipped": 0,
+      "latency": {
+        "min": 0,
+        "max": 0,
+        "avg": 0,
+        "p50": 0,
+        "p95": 0
+      },
+      "lastSuccessAt": null,
+      "lastError": null
+    },
+    {
+      "walkerId": "walker.adat.communities",
+      "attempts": 9,
+      "successes": 9,
+      "failures": 0,
+      "successRate": 1,
+      "recordsDiscovered": 45,
+      "recordsPublished": 0,
+      "recordsUpdated": 45,
+      "recordsUnchanged": 0,
+      "recordsSkipped": 0,
+      "latency": {
+        "min": 0,
+        "max": 1,
+        "avg": 0,
+        "p50": 0,
+        "p95": 1
+      },
+      "lastSuccessAt": "2026-08-30T17:06:38.845Z",
+      "lastError": null
+    },
+    {
+      "walkerId": "walker.culture.festivals_ceremonies",
+      "attempts": 8,
+      "successes": 8,
+      "failures": 0,
+      "successRate": 1,
+      "recordsDiscovered": 96,
+      "recordsPublished": 0,
+      "recordsUpdated": 96,
+      "recordsUnchanged": 0,
+      "recordsSkipped": 0,
+      "latency": {
+        "min": 0,
+        "max": 1,
+        "avg": 0,
+        "p50": 0,
+        "p95": 1
+      },
+      "lastSuccessAt": "2026-08-30T17:06:29.295Z",
+      "lastError": null
+    },
+    {
+      "walkerId": "walker.safety.earthquakes",
+      "attempts": 1,
+      "successes": 0,
+      "failures": 1,
+      "successRate": 0,
+      "recordsDiscovered": 0,
+      "recordsPublished": 0,
+      "recordsUpdated": 0,
+      "recordsUnchanged": 0,
+      "recordsSkipped": 0,
+      "latency": {
+        "min": 1,
+        "max": 1,
+        "avg": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "lastSuccessAt": null,
+      "lastError": "live_source_disabled:NEX_LIVE_SOURCES_ENABLED not set"
+    },
+    {
+      "walkerId": "walker.spiritual.sacred_sites",
+      "attempts": 8,
+      "successes": 8,
+      "failures": 0,
+      "successRate": 1,
+      "recordsDiscovered": 48,
+      "recordsPublished": 0,
+      "recordsUpdated": 48,
+      "recordsUnchanged": 0,
+      "recordsSkipped": 0,
+      "latency": {
+        "min": 0,
+        "max": 1,
+        "avg": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "lastSuccessAt": "2026-08-30T17:06:29.546Z",
+      "lastError": null
+    }
+  ],
+  "totals": {
+    "recordsDiscovered": 189,
+    "recordsPublished": 0,
+    "recordsUpdated": 189,
+    "recordsUnchanged": 0,
+    "workerAttempts": 26,
+    "workerSuccesses": 25,
+    "workerFailures": 1,
+    "overallSuccessRate": 0.962
+  },
+  "gapLoop": {
+    "gapsBefore": 0,
+    "gapsAfter": 0,
+    "gapsCreatedDuringBurnIn": 0,
+    "note": "No user queries fired during burn-in · gap counters reflect only what real chat produced before/after."
+  },
+  "verdict": "clean"
+}

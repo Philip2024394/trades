@@ -1,0 +1,88 @@
+{
+  "jobId": "c500388d-751b-485d-a68f-71f33b9d2c9f",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Surabaya",
+  "bbox": {
+    "sw": [
+      -7.36,
+      112.6
+    ],
+    "ne": [
+      -7.16,
+      112.86
+    ],
+    "scope": "Surabaya · East Java"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T14:51:04.021Z",
+  "finishedAt": "2026-08-27T14:54:51.506Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 1110,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 1110,
+    "matched_exact": 1086,
+    "matched_high": 21,
+    "ambiguous": 3,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "records_persisted": 0,
+    "enriched": 23,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 0,
+    "enrichment_writes_applied": 23,
+    "insert_attempted": 0,
+    "insert_conflicts": 0,
+    "insert_returned": 0,
+    "insert_verified": 0,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 0,
+    "rejected_by_reason": {
+      "MATCHED_EXISTING": 1110
+    }
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [
+      {
+        "candidateName": "McDonald's Mulyosari",
+        "existingName": "McDonald's",
+        "existingRef": "#FL-2026-ZTD77",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Mie Ayam Lumayan",
+        "existingName": "Mie Ayam",
+        "existingRef": "#FL-2026-ZTD7W",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Pasar Darurat (Manukan Kulon)",
+        "existingName": "Pasar Manukan Kulon",
+        "existingRef": "#FL-2026-ZTDDS",
+        "score": "0.675"
+      }
+    ],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 0,
+    "insert_verified": 0,
+    "delta": 0
+  },
+  "cycle_outcome": "ALL_DEDUPED"
+}

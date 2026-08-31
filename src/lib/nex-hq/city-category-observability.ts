@@ -15,11 +15,24 @@
 import type { Pool } from "pg";
 import { DIRECTORY_CATEGORIES, type DirectoryCategory } from "./directory-counts";
 
-const CATEGORY_TABLE: Record<DirectoryCategory, { table: string; cityColumn: string }> = {
+// Philip 2026-08-27 · A1: extended to include service categories.
+// Service categories share nex.service_business filtered by category_slug ·
+// extraWhere lets the observability count SQL filter accordingly.
+interface CategoryTableSpec { table: string; cityColumn: string; extraWhere?: string }
+function svc(slug: string): CategoryTableSpec {
+  return { table: "nex.service_business", cityColumn: "city", extraWhere: `category_slug = '${slug}'` };
+}
+const CATEGORY_TABLE: Record<DirectoryCategory, CategoryTableSpec> = {
   food:          { table: "nex.food_business",                    cityColumn: "city" },
   accommodation: { table: "nex.accommodation_business",           cityColumn: "city" },
   market:        { table: "nex.mp_seller",                        cityColumn: "city" },
   transport:     { table: "nex.transport_acquisition_record",     cityColumn: "city" },
+  "services-gyms":       svc("gyms"),
+  "services-salons":     svc("salons"),
+  "services-dentists":   svc("dentists"),
+  "services-opticians":  svc("opticians"),
+  "services-pharmacies": svc("pharmacies"),
+  "services-car-repair": svc("car-repair"),
 };
 
 export type LastRunStatus = "RUNNING" | "COMPLETED" | "FAILED" | "ABORTED" | "NEVER_RUN";
@@ -201,15 +214,19 @@ export async function loadCityCategoryObservability(
   const latestByKey = new Map(latestR.rows.map((r) => [`${r.city}:${r.category}`, r]));
 
   // 3) Persisted-row counts per (city, category) from the authoritative tables.
-  const perCityCounts: Record<DirectoryCategory, Map<string, number>> = {
-    food: new Map(), accommodation: new Map(), market: new Map(), transport: new Map(),
-  };
+  // Philip 2026-08-27 · A1: init all DIRECTORY_CATEGORIES (including 6 service
+  // slugs) so TypeScript is exhaustive and runtime writes don't hit undefined.
+  const perCityCounts: Record<DirectoryCategory, Map<string, number>> = Object.fromEntries(
+    DIRECTORY_CATEGORIES.map((c) => [c, new Map<string, number>()]),
+  ) as Record<DirectoryCategory, Map<string, number>>;
   await Promise.all(DIRECTORY_CATEGORIES.map(async (cat) => {
     const spec = CATEGORY_TABLE[cat];
+    const extraWhereClause = spec.extraWhere ? `WHERE ${spec.extraWhere}` : "";
     try {
       const r = await pool.query<{ city: string | null; n: string }>(
         `SELECT ${spec.cityColumn} AS city, count(*)::text AS n
            FROM ${spec.table}
+           ${extraWhereClause}
           GROUP BY ${spec.cityColumn}`,
       );
       for (const row of r.rows) {

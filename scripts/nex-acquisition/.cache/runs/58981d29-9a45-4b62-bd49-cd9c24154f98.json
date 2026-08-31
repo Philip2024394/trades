@@ -1,0 +1,69 @@
+{
+  "jobId": "58981d29-9a45-4b62-bd49-cd9c24154f98",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Yogyakarta",
+  "bbox": {
+    "sw": [
+      -7.818,
+      110.36
+    ],
+    "ne": [
+      -7.806,
+      110.378
+    ],
+    "scope": "Prawirotaman · south Yogyakarta · Kota Yogyakarta (DIY)"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T18:16:05.484Z",
+  "finishedAt": "2026-08-27T18:16:30.843Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 61,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 61,
+    "matched_exact": 61,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "records_persisted": 0,
+    "enriched": 3,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 0,
+    "enrichment_writes_applied": 3,
+    "insert_attempted": 0,
+    "insert_conflicts": 0,
+    "insert_returned": 0,
+    "insert_verified": 0,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 0,
+    "rejected_by_reason": {
+      "MATCHED_EXISTING": 61
+    }
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 0,
+    "insert_verified": 0,
+    "delta": 0
+  },
+  "cycle_outcome": "ALL_DEDUPED"
+}

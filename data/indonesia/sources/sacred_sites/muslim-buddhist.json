@@ -1,0 +1,41 @@
+[
+  {
+    "externalId": "sacred-istiqlal",
+    "domain": "culture",
+    "topic": "sacred.istiqlal",
+    "region": "Jakarta",
+    "content": "Masjid Istiqlal is South-East Asia's largest mosque — Jakarta's national mosque, capacity 200,000+. Belief tradition: Sunni Islam. Observance type: doctrinal. Notably located directly across from the Catholic Jakarta Cathedral — a symbol of Indonesian religious pluralism. Non-Muslim visitors are welcome outside of prayer times; dress modestly (shoulders + knees covered, headscarf provided for women at the entrance). Free entry; a guide-tip is customary. Do not photograph worshippers mid-prayer.",
+    "keywords": ["istiqlal", "masjid istiqlal", "jakarta cathedral", "sunni islam", "national mosque", "mosque etiquette"],
+    "audience": ["tourist", "family"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:sacred_sites · MUI",
+    "confidence": 0.9
+  },
+  {
+    "externalId": "sacred-borobudur-buddhist",
+    "domain": "culture",
+    "topic": "sacred.borobudur",
+    "region": "Yogyakarta",
+    "content": "Borobudur is the world's largest Buddhist temple (9th-century Sailendra dynasty) — a functioning Buddhist site as well as a UNESCO monument. Belief tradition: Theravada + Mahayana Buddhist. Observance type: doctrinal + tourist-facing. Timed entry to upper terraces (foreigner ~US$25–35) since 2022; sunrise access ticketed separately. Local Buddhist community observes Waisak here in May — access restricted that day. Visitors dress modestly, walk clockwise around the stupas, do not touch reliefs.",
+    "keywords": ["borobudur", "buddhist temple", "sailendra", "unesco", "waisak", "stupa", "central java"],
+    "audience": ["tourist", "family", "couple"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:sacred_sites · UNESCO + Kemenag",
+    "confidence": 0.9
+  },
+  {
+    "externalId": "sacred-prambanan",
+    "domain": "culture",
+    "topic": "sacred.prambanan",
+    "region": "Yogyakarta",
+    "content": "Prambanan is a 9th-century Hindu temple complex — the largest in Indonesia — dedicated to the Trimurti (Brahma, Vishnu, Shiva). Belief tradition: Historical + revived Hindu practice (mostly Balinese Hindus visit for observances). Observance type: doctrinal (revived) + tourist-facing. UNESCO listed. Sarong + sash required for the main temples (rental included with ticket). Combine-ticket with Borobudur available. Dry-season Ramayana ballet in the outdoor amphitheatre most weekends — book ahead.",
+    "keywords": ["prambanan", "trimurti", "hindu temple", "unesco", "ramayana ballet", "central java", "yogyakarta"],
+    "audience": ["tourist", "family", "couple"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:sacred_sites · UNESCO + PHDI",
+    "confidence": 0.9
+  }
+]

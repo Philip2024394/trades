@@ -1,0 +1,46 @@
+[
+  { "code": "ID-AC", "slug": "aceh",                          "name": "Aceh",                                   "island": "Sumatra",       "region": "Northern Sumatra", "capital": "Banda Aceh" },
+  { "code": "ID-SU", "slug": "sumatera-utara",                "name": "North Sumatra",                          "island": "Sumatra",       "region": "Northern Sumatra", "capital": "Medan" },
+  { "code": "ID-SB", "slug": "sumatera-barat",                "name": "West Sumatra",                           "island": "Sumatra",       "region": "Western Sumatra",  "capital": "Padang" },
+  { "code": "ID-RI", "slug": "riau",                          "name": "Riau",                                   "island": "Sumatra",       "region": "Eastern Sumatra",  "capital": "Pekanbaru" },
+  { "code": "ID-KR", "slug": "kepulauan-riau",                "name": "Riau Islands",                           "island": "Sumatra",       "region": "Eastern Sumatra",  "capital": "Tanjung Pinang" },
+  { "code": "ID-JA", "slug": "jambi",                         "name": "Jambi",                                  "island": "Sumatra",       "region": "Eastern Sumatra",  "capital": "Jambi" },
+  { "code": "ID-BE", "slug": "bengkulu",                      "name": "Bengkulu",                               "island": "Sumatra",       "region": "Western Sumatra",  "capital": "Bengkulu" },
+  { "code": "ID-SS", "slug": "sumatera-selatan",              "name": "South Sumatra",                          "island": "Sumatra",       "region": "Southern Sumatra", "capital": "Palembang" },
+  { "code": "ID-BB", "slug": "kepulauan-bangka-belitung",     "name": "Bangka Belitung Islands",                "island": "Sumatra",       "region": "Southern Sumatra", "capital": "Pangkal Pinang" },
+  { "code": "ID-LA", "slug": "lampung",                       "name": "Lampung",                                "island": "Sumatra",       "region": "Southern Sumatra", "capital": "Bandar Lampung" },
+
+  { "code": "ID-BT", "slug": "banten",                        "name": "Banten",                                 "island": "Java",          "region": "Western Java",     "capital": "Serang" },
+  { "code": "ID-JK", "slug": "dki-jakarta",                   "name": "DKI Jakarta",                            "island": "Java",          "region": "Central Java",     "capital": "Jakarta" },
+  { "code": "ID-JB", "slug": "jawa-barat",                    "name": "West Java",                              "island": "Java",          "region": "Western Java",     "capital": "Bandung" },
+  { "code": "ID-JT", "slug": "jawa-tengah",                   "name": "Central Java",                           "island": "Java",          "region": "Central Java",     "capital": "Semarang" },
+  { "code": "ID-YO", "slug": "di-yogyakarta",                 "name": "Special Region of Yogyakarta",           "island": "Java",          "region": "Central Java",     "capital": "Yogyakarta" },
+  { "code": "ID-JI", "slug": "jawa-timur",                    "name": "East Java",                              "island": "Java",          "region": "Eastern Java",     "capital": "Surabaya" },
+
+  { "code": "ID-BA", "slug": "bali",                          "name": "Bali",                                   "island": "Bali",          "region": "Bali",             "capital": "Denpasar" },
+  { "code": "ID-NB", "slug": "nusa-tenggara-barat",           "name": "West Nusa Tenggara",                     "island": "Nusa Tenggara", "region": "Western Nusa Tenggara", "capital": "Mataram" },
+  { "code": "ID-NT", "slug": "nusa-tenggara-timur",           "name": "East Nusa Tenggara",                     "island": "Nusa Tenggara", "region": "Eastern Nusa Tenggara", "capital": "Kupang" },
+
+  { "code": "ID-KB", "slug": "kalimantan-barat",              "name": "West Kalimantan",                        "island": "Kalimantan",    "region": "Western Kalimantan", "capital": "Pontianak" },
+  { "code": "ID-KT", "slug": "kalimantan-tengah",             "name": "Central Kalimantan",                     "island": "Kalimantan",    "region": "Central Kalimantan", "capital": "Palangka Raya" },
+  { "code": "ID-KS", "slug": "kalimantan-selatan",            "name": "South Kalimantan",                       "island": "Kalimantan",    "region": "Southern Kalimantan", "capital": "Banjarmasin" },
+  { "code": "ID-KI", "slug": "kalimantan-timur",              "name": "East Kalimantan",                        "island": "Kalimantan",    "region": "Eastern Kalimantan", "capital": "Samarinda" },
+  { "code": "ID-KU", "slug": "kalimantan-utara",              "name": "North Kalimantan",                       "island": "Kalimantan",    "region": "Northern Kalimantan", "capital": "Tanjung Selor" },
+
+  { "code": "ID-SA", "slug": "sulawesi-utara",                "name": "North Sulawesi",                         "island": "Sulawesi",      "region": "Northern Sulawesi", "capital": "Manado" },
+  { "code": "ID-GO", "slug": "gorontalo",                     "name": "Gorontalo",                              "island": "Sulawesi",      "region": "Northern Sulawesi", "capital": "Gorontalo" },
+  { "code": "ID-ST", "slug": "sulawesi-tengah",               "name": "Central Sulawesi",                       "island": "Sulawesi",      "region": "Central Sulawesi", "capital": "Palu" },
+  { "code": "ID-SR", "slug": "sulawesi-barat",                "name": "West Sulawesi",                          "island": "Sulawesi",      "region": "Western Sulawesi", "capital": "Mamuju" },
+  { "code": "ID-SN", "slug": "sulawesi-selatan",              "name": "South Sulawesi",                         "island": "Sulawesi",      "region": "Southern Sulawesi", "capital": "Makassar" },
+  { "code": "ID-SG", "slug": "sulawesi-tenggara",             "name": "Southeast Sulawesi",                     "island": "Sulawesi",      "region": "Southeastern Sulawesi", "capital": "Kendari" },
+
+  { "code": "ID-MA", "slug": "maluku",                        "name": "Maluku",                                 "island": "Maluku",        "region": "Southern Maluku",  "capital": "Ambon" },
+  { "code": "ID-MU", "slug": "maluku-utara",                  "name": "North Maluku",                           "island": "Maluku",        "region": "Northern Maluku",  "capital": "Sofifi" },
+
+  { "code": "ID-PB", "slug": "papua-barat",                   "name": "West Papua",                             "island": "Papua",         "region": "Western Papua",    "capital": "Manokwari" },
+  { "code": "ID-PD", "slug": "papua-barat-daya",              "name": "Southwest Papua",                        "island": "Papua",         "region": "Western Papua",    "capital": "Sorong" },
+  { "code": "ID-PP", "slug": "papua",                         "name": "Papua",                                  "island": "Papua",         "region": "Central Papua",    "capital": "Jayapura" },
+  { "code": "ID-PS", "slug": "papua-selatan",                 "name": "South Papua",                            "island": "Papua",         "region": "Southern Papua",   "capital": "Merauke" },
+  { "code": "ID-PT", "slug": "papua-tengah",                  "name": "Central Papua",                          "island": "Papua",         "region": "Central Papua",    "capital": "Nabire" },
+  { "code": "ID-PE", "slug": "papua-pegunungan",              "name": "Highland Papua",                         "island": "Papua",         "region": "Central Papua",    "capital": "Jayawijaya" }
+]

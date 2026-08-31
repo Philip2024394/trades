@@ -1,0 +1,890 @@
+
+nex-dev-scheduler · started 2026-08-24T10:42:05.122Z
+opt-in gate: NEX_DEV_WORKERS=1 (verified)
+scheduled workers:
+  · discovery:rotation:tick  every 600s  →  spawn node scripts/nex-discovery-rotation/_rotation-tick.mjs
+  · discovery:orchestrator:tick  every 60s  →  spawn node scripts/nex-discovery-orchestrator/_orchestrator-tick.mjs
+  · orchestration:zombie-reconciler  every 180s  →  spawn node scripts/nex-orchestration/_zombie-reconciler.mjs
+  · cle:conversation  every 600s  →  spawn node scripts/nex-conv/cle/run-cle-cycle.mjs --config=staircase --apply
+  · brain:cron-tick  every 180s  →  HTTP GET http://localhost:3008/api/nex/brain/cron-tick
+  · social:cron-tick  every 60s  →  HTTP GET http://localhost:3008/api/cron/comms-social-worker
+  · promotion:food:Yogyakarta:quality-check  every 1800s  →  spawn node scripts/nex-promotion/run-quality-check.mjs --vertical=food --city=Yogyakarta --apply
+ctrl+c to stop · runs foreground · logs every tick + outcome
+
+[2026-08-24T10:42:05.128Z] discovery:rotation:tick · deferred first tick by 30s (offset from orchestrator cadence)
+[2026-08-24T10:42:05.129Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:42:05.143Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T10:42:05.155Z] tick · cle:conversation · spawning
+[2026-08-24T10:42:05.174Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T10:42:05.284Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:42:05.286Z] tick · promotion:food:Yogyakarta:quality-check · spawning
+[2026-08-24T10:42:05.574Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T10:42:05.620Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:42:05.729Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T10:42:05.770Z] tick · cle:conversation · exit=0 signal=- · OK
+[2026-08-24T10:42:05.911Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T10:42:06.079Z] tick · promotion:food:Yogyakarta:quality-check · exit=0 signal=- · OK
+[2026-08-24T10:42:35.139Z] tick · discovery:rotation:tick · spawning
+[2026-08-24T10:42:35.822Z] tick · discovery:rotation:tick · exit=0 signal=- · OK
+[2026-08-24T10:43:05.149Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:43:05.294Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:43:05.474Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:43:05.605Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T10:44:05.153Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:44:05.299Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:44:05.536Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:44:05.563Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T10:45:05.158Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:45:05.176Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T10:45:05.290Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T10:45:05.298Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:45:05.516Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T10:45:05.517Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:45:05.627Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T10:45:05.883Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T10:46:05.164Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:46:05.307Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:46:05.455Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T10:46:05.552Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:47:05.166Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:47:05.310Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:47:05.581Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T10:47:05.584Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:48:05.183Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:48:05.203Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T10:48:05.294Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T10:48:05.315Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:48:05.584Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T10:48:05.600Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T10:48:05.708Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:48:06.049Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T10:49:05.204Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:49:05.315Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:49:05.533Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T10:49:05.607Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:50:05.218Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:50:05.317Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:50:05.454Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T10:50:05.523Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:51:05.207Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T10:51:05.219Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:51:05.298Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T10:51:05.329Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:51:05.570Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:51:05.610Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T10:51:05.732Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T10:51:06.149Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T10:52:05.182Z] tick · cle:conversation · spawning
+[2026-08-24T10:52:05.226Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:52:05.333Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:52:05.521Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T10:52:05.526Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:52:05.743Z] tick · cle:conversation · exit=0 signal=- · OK
+[2026-08-24T10:52:35.176Z] tick · discovery:rotation:tick · spawning
+[2026-08-24T10:52:35.827Z] tick · discovery:rotation:tick · exit=0 signal=- · OK
+[2026-08-24T10:53:05.226Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:53:05.336Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:53:05.526Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T10:53:05.535Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:54:05.213Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T10:54:05.229Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:54:05.302Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T10:54:05.344Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:54:05.466Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T10:54:05.595Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:54:05.596Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T10:54:05.842Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T10:55:05.238Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:55:05.348Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:55:05.580Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T10:55:05.633Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:56:05.246Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:56:05.360Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:56:05.506Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T10:56:05.533Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:57:05.221Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T10:57:05.247Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:57:05.303Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T10:57:05.366Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:57:05.484Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T10:57:05.700Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:57:05.919Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T10:57:06.106Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T10:58:05.257Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:58:05.371Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:58:05.640Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:58:19.592Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T10:59:05.263Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T10:59:05.371Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T10:59:05.793Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T10:59:07.475Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:00:05.223Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:00:05.264Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:00:05.308Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:00:05.373Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:00:05.734Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:00:05.772Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:00:07.140Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:00:07.296Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:01:05.274Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:01:05.384Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:01:05.582Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:01:05.593Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:02:05.189Z] tick · cle:conversation · spawning
+[2026-08-24T11:02:05.278Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:02:05.387Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:02:05.576Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:02:05.634Z] tick · cle:conversation · exit=0 signal=- · OK
+[2026-08-24T11:02:05.701Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:02:35.184Z] tick · discovery:rotation:tick · spawning
+[2026-08-24T11:02:35.800Z] tick · discovery:rotation:tick · exit=0 signal=- · OK
+[2026-08-24T11:03:05.232Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:03:05.293Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:03:05.310Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:03:05.389Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:03:05.535Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:03:05.565Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:03:05.620Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:03:05.711Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:04:05.310Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:04:05.402Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:04:05.646Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:04:05.682Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:05:05.328Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:05:05.434Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:05:05.882Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:05:08.354Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:06:05.277Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:06:05.380Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:06:05.428Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:06:05.445Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:06:05.925Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:06:06.038Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:06:14.996Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:06:15.208Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:07:05.436Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:07:05.474Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:07:05.890Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:07:06.175Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:08:05.442Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:08:05.478Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:08:05.751Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:08:05.805Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:09:05.274Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:09:05.380Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:09:05.449Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:09:05.483Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:09:05.700Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:09:05.736Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:09:06.018Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:09:06.153Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:10:05.452Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:10:05.499Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:10:05.780Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:10:05.855Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:11:05.452Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:11:05.503Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:11:05.727Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:11:05.833Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:12:05.196Z] tick · cle:conversation · spawning
+[2026-08-24T11:12:05.280Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:12:05.307Z] tick · promotion:food:Yogyakarta:quality-check · spawning
+[2026-08-24T11:12:05.384Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:12:05.454Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:12:05.504Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:12:05.848Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:12:06.010Z] tick · cle:conversation · exit=0 signal=- · OK
+[2026-08-24T11:12:06.059Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:12:06.361Z] tick · promotion:food:Yogyakarta:quality-check · exit=0 signal=- · OK
+[2026-08-24T11:12:06.746Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:12:07.002Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:12:35.188Z] tick · discovery:rotation:tick · spawning
+[2026-08-24T11:12:35.908Z] tick · discovery:rotation:tick · exit=0 signal=- · OK
+[2026-08-24T11:13:05.456Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:13:05.506Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:13:05.763Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:13:05.875Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:14:05.465Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:14:05.507Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:14:05.702Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:14:05.789Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:15:05.289Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:15:05.384Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:15:05.465Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:15:05.511Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:15:05.585Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:15:05.680Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:15:05.756Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:15:05.994Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:16:05.470Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:16:05.516Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:16:05.695Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:16:05.777Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:17:05.487Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:17:05.531Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:17:05.721Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:17:05.808Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:18:05.299Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:18:05.385Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:18:05.488Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:18:05.515Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:18:05.536Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:18:05.678Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:18:05.805Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:18:05.827Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:19:05.490Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:19:05.537Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:19:05.725Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:19:05.788Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:20:05.491Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:20:05.539Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:20:05.844Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:20:05.849Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:21:05.302Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:21:05.386Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:21:05.496Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:21:05.545Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:21:05.593Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:21:05.730Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:21:05.778Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:21:05.902Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:22:05.200Z] tick · cle:conversation · spawning
+[2026-08-24T11:22:05.504Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:22:05.509Z] tick · cle:conversation · exit=0 signal=- · OK
+[2026-08-24T11:22:05.560Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:22:05.693Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:22:05.767Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:22:35.200Z] tick · discovery:rotation:tick · spawning
+[2026-08-24T11:22:36.578Z] tick · discovery:rotation:tick · exit=0 signal=- · OK
+[2026-08-24T11:23:05.506Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:23:05.565Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:23:06.065Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:23:06.299Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:24:05.309Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:24:05.389Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:24:05.511Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:24:05.580Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:24:06.357Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:24:06.358Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:24:10.349Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:24:11.347Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:25:05.514Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:25:05.588Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:25:05.780Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:25:05.903Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:26:05.518Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:26:05.593Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:26:05.768Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:26:05.825Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:27:05.315Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:27:05.392Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:27:05.519Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:27:05.596Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:27:05.818Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:27:06.077Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:27:06.206Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:27:06.393Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:28:05.536Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:28:05.599Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:28:05.901Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:28:05.935Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:29:05.535Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:29:05.606Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:29:05.832Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:29:05.906Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:30:05.320Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:30:05.400Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:30:05.545Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:30:05.607Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:30:05.768Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:30:05.903Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:30:06.800Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:30:06.954Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:31:05.568Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:31:05.616Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:31:05.935Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:31:05.957Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:32:05.205Z] tick · cle:conversation · spawning
+[2026-08-24T11:32:05.573Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:32:05.615Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:32:05.830Z] tick · cle:conversation · exit=0 signal=- · OK
+[2026-08-24T11:32:06.007Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:32:06.054Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:32:35.211Z] tick · discovery:rotation:tick · spawning
+[2026-08-24T11:32:35.954Z] tick · discovery:rotation:tick · exit=0 signal=- · OK
+[2026-08-24T11:33:05.327Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:33:05.405Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:33:05.573Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:33:05.623Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:33:05.780Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:33:05.956Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:33:07.229Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:33:10.613Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:34:05.582Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:34:05.625Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:34:07.153Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:34:07.281Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:35:05.596Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:35:05.626Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:35:05.831Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:35:05.893Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:36:05.338Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:36:05.416Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:36:05.602Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:36:05.630Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:36:05.876Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:36:06.021Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:36:06.049Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:36:06.265Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:37:05.608Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:37:05.635Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:37:05.828Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:37:05.902Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:38:05.616Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:38:05.644Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:38:05.980Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:38:06.117Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:39:05.342Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:39:05.412Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:39:05.620Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:39:05.636Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:39:05.647Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:39:05.887Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:39:05.918Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:39:06.114Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:40:05.653Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:40:05.767Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:40:06.405Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:40:07.390Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:41:05.653Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:41:05.758Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:41:06.128Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:41:06.538Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:42:05.239Z] tick · cle:conversation · spawning
+[2026-08-24T11:42:05.474Z] tick · promotion:food:Yogyakarta:quality-check · spawning
+[2026-08-24T11:42:05.509Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:42:05.561Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:42:05.729Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:42:05.775Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:42:06.571Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:42:06.663Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:42:06.701Z] tick · cle:conversation · exit=0 signal=- · OK
+[2026-08-24T11:42:07.220Z] tick · promotion:food:Yogyakarta:quality-check · exit=0 signal=- · OK
+[2026-08-24T11:42:09.439Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:42:09.894Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:42:35.240Z] tick · discovery:rotation:tick · spawning
+[2026-08-24T11:42:38.028Z] tick · discovery:rotation:tick · exit=0 signal=- · OK
+[2026-08-24T11:43:05.784Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:43:06.448Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:43:08.994Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:43:10.797Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:44:05.775Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:44:06.447Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:44:06.576Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:44:08.552Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:45:05.543Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:45:05.634Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:45:05.778Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:45:06.167Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:45:06.178Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:45:06.452Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:45:07.013Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:45:07.221Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:46:05.803Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:46:06.459Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:46:06.996Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:46:09.262Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:47:05.837Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:47:06.466Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:47:06.651Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:47:08.647Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:48:05.541Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:48:05.643Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:48:05.832Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:48:05.991Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:48:06.280Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:48:06.470Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:48:11.036Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:48:11.805Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:49:05.849Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:49:06.475Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:49:06.802Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:49:08.604Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:50:05.883Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:50:06.482Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:50:07.149Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:50:10.051Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:51:05.587Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:51:05.782Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:51:05.882Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:51:06.488Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:51:06.574Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:51:06.582Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:51:08.646Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:51:09.390Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T11:52:05.570Z] tick · cle:conversation · spawning
+[2026-08-24T11:52:05.897Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:52:06.492Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:52:11.558Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:52:15.886Z] tick · discovery:orchestrator:tick · exit=3221226505 signal=- · FAIL
+  --- last 20 lines of output ---
+  [low_level_alloc.cc : 554] RAW: Check new_pages != nullptr failed: VirtualAlloc failed
+  --------------------------------
+[2026-08-24T11:52:15.938Z] tick · cle:conversation · exit=3221226505 signal=- · FAIL
+  --- last 20 lines of output ---
+  [low_level_alloc.cc : 554] RAW: Check new_pages != nullptr failed: VirtualAlloc failed
+  --------------------------------
+[2026-08-24T11:52:35.246Z] tick · discovery:rotation:tick · spawning
+[2026-08-24T11:52:36.034Z] tick · discovery:rotation:tick · exit=0 signal=- · OK
+[2026-08-24T11:53:05.904Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:53:06.463Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:53:06.497Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:53:15.454Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T11:54:05.584Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:54:05.784Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:54:05.877Z] tick · brain:cron-tick · fetch error · fetch failed
+[2026-08-24T11:54:05.909Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:54:06.193Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:54:06.203Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:54:06.502Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:54:06.509Z] tick · social:cron-tick · fetch error · fetch failed
+[2026-08-24T11:55:06.110Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:55:06.506Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:55:06.679Z] tick · social:cron-tick · fetch error · fetch failed
+[2026-08-24T11:55:08.167Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:56:06.070Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:56:06.529Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:56:06.821Z] tick · social:cron-tick · fetch error · fetch failed
+[2026-08-24T11:56:07.106Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:57:05.586Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T11:57:05.790Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T11:57:05.816Z] tick · brain:cron-tick · fetch error · fetch failed
+[2026-08-24T11:57:06.067Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:57:06.526Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:57:06.544Z] tick · social:cron-tick · fetch error · fetch failed
+[2026-08-24T11:57:06.558Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T11:57:06.708Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:58:06.090Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:58:06.534Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:58:06.604Z] tick · social:cron-tick · fetch error · fetch failed
+[2026-08-24T11:58:06.653Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T11:59:06.117Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T11:59:06.536Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T11:59:06.633Z] tick · social:cron-tick · fetch error · fetch failed
+[2026-08-24T11:59:06.932Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:00:05.594Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:00:05.792Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:00:05.803Z] tick · brain:cron-tick · fetch error · fetch failed
+[2026-08-24T12:00:06.062Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:00:06.123Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:00:06.542Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:00:06.553Z] tick · social:cron-tick · fetch error · fetch failed
+[2026-08-24T12:00:06.571Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:01:06.167Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:01:06.553Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:01:06.769Z] tick · social:cron-tick · fetch error · fetch failed
+[2026-08-24T12:01:08.052Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:02:06.869Z] tick · cle:conversation · spawning
+[2026-08-24T12:02:10.416Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:02:10.489Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:02:10.931Z] tick · social:cron-tick · fetch error · fetch failed
+[2026-08-24T12:02:11.481Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:02:11.581Z] tick · cle:conversation · exit=0 signal=- · OK
+[2026-08-24T12:02:35.249Z] tick · discovery:rotation:tick · spawning
+[2026-08-24T12:02:35.823Z] tick · discovery:rotation:tick · exit=0 signal=- · OK
+[2026-08-24T12:03:05.605Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:03:05.800Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:03:05.811Z] tick · brain:cron-tick · fetch error · fetch failed
+[2026-08-24T12:03:06.072Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:03:10.416Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:03:10.498Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:03:10.508Z] tick · social:cron-tick · fetch error · fetch failed
+[2026-08-24T12:03:10.732Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:04:10.536Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:04:10.753Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:04:10.814Z] tick · social:cron-tick · fetch error · fetch failed
+[2026-08-24T12:04:11.343Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:05:10.577Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:05:10.753Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:05:10.798Z] tick · social:cron-tick · fetch error · fetch failed
+[2026-08-24T12:05:11.120Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:06:05.604Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:06:05.804Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:06:05.812Z] tick · brain:cron-tick · fetch error · fetch failed
+[2026-08-24T12:06:05.832Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:06:10.576Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:06:10.756Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:06:10.772Z] tick · social:cron-tick · fetch error · fetch failed
+[2026-08-24T12:06:10.934Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:07:10.584Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:07:10.759Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:07:10.764Z] tick · social:cron-tick · fetch error · fetch failed
+[2026-08-24T12:07:10.857Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:08:10.585Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:08:10.768Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:08:10.774Z] tick · social:cron-tick · fetch error · fetch failed
+[2026-08-24T12:08:10.918Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:09:05.629Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:09:05.818Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:09:06.227Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:09:08.083Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T12:09:10.593Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:09:10.775Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:09:11.116Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:09:11.277Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:10:10.596Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:10:10.783Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:10:10.900Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:10:10.943Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:11:10.601Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:11:10.788Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:11:10.868Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:11:10.965Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:12:05.489Z] tick · promotion:food:Yogyakarta:quality-check · spawning
+[2026-08-24T12:12:05.628Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:12:05.822Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:12:05.881Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:12:06.104Z] tick · promotion:food:Yogyakarta:quality-check · exit=0 signal=- · OK
+[2026-08-24T12:12:06.273Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T12:12:06.565Z] tick · cle:conversation · spawning
+[2026-08-24T12:12:06.979Z] tick · cle:conversation · exit=0 signal=- · OK
+[2026-08-24T12:12:10.608Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:12:10.790Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:12:10.874Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:12:10.879Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:12:35.257Z] tick · discovery:rotation:tick · spawning
+[2026-08-24T12:12:35.965Z] tick · discovery:rotation:tick · exit=0 signal=- · OK
+[2026-08-24T12:13:10.609Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:13:10.795Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:13:11.295Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:13:11.352Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:14:10.615Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:14:10.799Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:14:10.908Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:14:10.916Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:15:05.638Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:15:05.826Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:15:05.947Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:15:06.273Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T12:15:10.617Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:15:10.801Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:15:10.872Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:15:10.935Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:16:10.626Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:16:10.803Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:16:10.968Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:16:10.984Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:17:10.629Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:17:10.809Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:17:10.904Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:17:10.961Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:18:05.642Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:18:05.835Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:18:05.940Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:18:06.269Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T12:18:10.634Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:18:10.813Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:18:10.965Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:18:11.083Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:19:10.640Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:19:10.813Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:19:10.975Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:19:11.106Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:20:10.655Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:20:10.818Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:20:11.026Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:20:11.053Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:21:05.646Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:21:05.846Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:21:05.918Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:21:06.584Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T12:21:10.658Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:21:10.819Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:21:10.892Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:21:10.937Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:22:06.569Z] tick · cle:conversation · spawning
+[2026-08-24T12:22:06.943Z] tick · cle:conversation · exit=0 signal=- · OK
+[2026-08-24T12:22:10.663Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:22:10.823Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:22:10.958Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:22:11.037Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:22:35.261Z] tick · discovery:rotation:tick · spawning
+[2026-08-24T12:22:36.082Z] tick · discovery:rotation:tick · exit=0 signal=- · OK
+[2026-08-24T12:23:10.678Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:23:10.827Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:23:11.024Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:23:11.047Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:24:05.652Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:24:05.862Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:24:05.967Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:24:06.316Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T12:24:10.684Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:24:10.833Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:24:10.969Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:24:10.995Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:25:10.688Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:25:10.845Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:25:11.026Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:25:11.078Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:26:10.690Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:26:10.850Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:26:11.013Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:26:11.055Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:27:05.658Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:27:05.866Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:27:06.090Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:27:06.390Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T12:27:10.692Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:27:10.860Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:27:10.966Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:27:11.004Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:28:10.692Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:28:10.863Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:28:11.016Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:28:11.034Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:29:10.696Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:29:10.870Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:29:10.975Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:29:11.032Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:30:05.662Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:30:05.869Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:30:05.970Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:30:06.368Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T12:30:10.704Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:30:10.880Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:30:10.949Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:30:11.035Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:31:10.707Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:31:10.892Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:31:11.021Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:31:11.141Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:32:06.575Z] tick · cle:conversation · spawning
+[2026-08-24T12:32:06.891Z] tick · cle:conversation · exit=0 signal=- · OK
+[2026-08-24T12:32:10.711Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:32:10.893Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:32:11.038Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:32:11.185Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:32:35.265Z] tick · discovery:rotation:tick · spawning
+[2026-08-24T12:32:35.817Z] tick · discovery:rotation:tick · exit=0 signal=- · OK
+[2026-08-24T12:33:05.662Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:33:05.879Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:33:06.033Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:33:06.325Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T12:33:10.721Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:33:10.904Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:33:10.946Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:33:10.986Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:34:10.730Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:34:10.906Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:34:10.996Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:34:11.245Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:35:10.730Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:35:10.911Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:35:10.977Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:35:11.109Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:36:05.680Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:36:05.895Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:36:06.011Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:36:06.507Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T12:36:10.731Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:36:10.920Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:36:11.113Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:36:11.909Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:37:10.736Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:37:10.923Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:37:11.128Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:37:11.234Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:38:10.763Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:38:10.922Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:38:11.410Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:38:11.610Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:39:05.687Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:39:06.080Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:39:09.461Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:39:10.764Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:39:10.927Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:39:11.064Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:39:11.135Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:39:11.156Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T12:40:10.780Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:40:10.940Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:40:11.012Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:40:11.177Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:41:10.789Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:41:10.946Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:41:11.231Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:41:11.443Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:42:05.488Z] tick · promotion:food:Yogyakarta:quality-check · spawning
+[2026-08-24T12:42:05.692Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:42:05.974Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:42:06.082Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:42:06.110Z] tick · promotion:food:Yogyakarta:quality-check · exit=0 signal=- · OK
+[2026-08-24T12:42:06.573Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T12:42:06.577Z] tick · cle:conversation · spawning
+[2026-08-24T12:42:06.916Z] tick · cle:conversation · exit=0 signal=- · OK
+[2026-08-24T12:42:10.792Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:42:10.953Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:42:11.012Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:42:11.035Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:42:35.265Z] tick · discovery:rotation:tick · spawning
+[2026-08-24T12:42:35.873Z] tick · discovery:rotation:tick · exit=0 signal=- · OK
+[2026-08-24T12:43:10.798Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:43:10.957Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:43:11.107Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:43:11.183Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:44:10.805Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:44:10.971Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:44:11.125Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:44:11.166Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:45:05.693Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:45:05.921Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:45:06.085Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:45:06.551Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T12:45:10.810Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:45:10.974Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:45:11.059Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:45:11.120Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:46:10.816Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:46:10.986Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:46:11.050Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:46:11.084Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:47:10.822Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:47:10.993Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:47:11.090Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:47:11.150Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:48:05.699Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:48:05.950Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:48:06.090Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:48:06.379Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T12:48:10.827Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:48:10.999Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:48:11.133Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:48:11.147Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:49:10.832Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:49:11.005Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:49:11.138Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:49:11.297Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:50:10.841Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:50:11.011Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:50:11.126Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:50:11.140Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:51:05.705Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:51:06.024Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:51:06.100Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:51:06.119Z] tick · brain:cron-tick · fetch error · fetch failed
+[2026-08-24T12:51:10.844Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:51:11.012Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:51:11.015Z] tick · social:cron-tick · fetch error · fetch failed
+[2026-08-24T12:51:11.131Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:52:06.619Z] tick · cle:conversation · spawning
+[2026-08-24T12:52:08.037Z] tick · cle:conversation · exit=0 signal=- · OK
+[2026-08-24T12:52:10.851Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:52:11.026Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:52:11.346Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:52:13.458Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:52:35.268Z] tick · discovery:rotation:tick · spawning
+[2026-08-24T12:52:36.148Z] tick · discovery:rotation:tick · exit=0 signal=- · OK
+[2026-08-24T12:53:10.866Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:53:11.026Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:53:11.194Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:53:11.258Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:54:05.706Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:54:06.038Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:54:06.108Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:54:07.352Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T12:54:10.861Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:54:11.042Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:54:11.122Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:54:11.269Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:55:10.877Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:55:11.048Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:55:11.167Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:55:11.270Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:56:10.885Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:56:11.054Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:56:11.214Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:56:11.244Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:57:05.722Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T12:57:05.998Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T12:57:06.119Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T12:57:06.739Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T12:57:10.893Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:57:11.064Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:57:11.182Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:57:11.228Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:58:10.898Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:58:11.079Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:58:11.241Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:58:11.289Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T12:59:10.904Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T12:59:11.092Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T12:59:11.227Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T12:59:11.235Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T13:00:05.729Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T13:00:06.045Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T13:00:06.122Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T13:00:06.614Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T13:00:10.919Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T13:00:11.093Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T13:00:11.175Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T13:00:11.216Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T13:01:10.926Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T13:01:11.097Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T13:01:11.264Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T13:01:11.327Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T13:02:06.620Z] tick · cle:conversation · spawning
+[2026-08-24T13:02:08.190Z] tick · cle:conversation · exit=3221225773 signal=- · FAIL
+  --- last 20 lines of output ---
+  
+  --------------------------------
+[2026-08-24T13:02:10.926Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T13:02:11.095Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T13:02:11.399Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T13:02:11.564Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T13:02:35.284Z] tick · discovery:rotation:tick · spawning
+[2026-08-24T13:02:35.866Z] tick · discovery:rotation:tick · exit=0 signal=- · OK
+[2026-08-24T13:03:05.730Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T13:03:06.068Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T13:03:06.123Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T13:03:06.913Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T13:03:10.926Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T13:03:11.109Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T13:03:11.243Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T13:03:11.296Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T13:04:10.941Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T13:04:11.113Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T13:04:11.371Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T13:04:11.510Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T13:05:10.947Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T13:05:11.129Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T13:05:11.280Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T13:05:11.378Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T13:06:05.742Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T13:06:06.087Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T13:06:06.131Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T13:06:06.548Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T13:06:10.952Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T13:06:11.135Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T13:06:11.347Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T13:06:11.406Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T13:07:10.971Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T13:07:11.136Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T13:07:11.619Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T13:07:11.689Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T13:08:10.981Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T13:08:11.137Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T13:08:11.462Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T13:08:11.463Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T13:09:05.751Z] tick · orchestration:zombie-reconciler · spawning
+[2026-08-24T13:09:06.111Z] tick · orchestration:zombie-reconciler · exit=0 signal=- · OK
+[2026-08-24T13:09:06.133Z] tick · brain:cron-tick · fetching GET http://localhost:3008/api/nex/brain/cron-tick
+[2026-08-24T13:09:06.632Z] tick · brain:cron-tick · status=200 · OK
+[2026-08-24T13:09:10.984Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T13:09:11.139Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T13:09:11.183Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T13:09:11.258Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T13:10:10.986Z] tick · discovery:orchestrator:tick · spawning
+[2026-08-24T13:10:11.147Z] tick · social:cron-tick · fetching GET http://localhost:3008/api/cron/comms-social-worker
+[2026-08-24T13:10:11.274Z] tick · discovery:orchestrator:tick · exit=0 signal=- · OK
+[2026-08-24T13:10:11.456Z] tick · social:cron-tick · status=200 · OK
+[2026-08-24T13:11:10.994Z] tick · discovery:orchestrator:tick · spawning

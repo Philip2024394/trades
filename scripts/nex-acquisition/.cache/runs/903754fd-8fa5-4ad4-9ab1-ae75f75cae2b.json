@@ -1,0 +1,216 @@
+{
+  "jobId": "903754fd-8fa5-4ad4-9ab1-ae75f75cae2b",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Magelang",
+  "bbox": {
+    "sw": [
+      -7.65,
+      110.15
+    ],
+    "ne": [
+      -7.42,
+      110.35
+    ],
+    "scope": "Magelang · Central Java"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T11:57:56.163Z",
+  "finishedAt": "2026-08-27T11:58:03.534Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 51,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 51,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 51,
+    "records_persisted": 12,
+    "enriched": 1,
+    "gate3_contactable": 9,
+    "gate4_eligible": 9,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 9,
+    "rejected_by_gate": 42,
+    "errors": 0,
+    "insert_attempted": 51,
+    "insert_conflicts": 39,
+    "insert_returned": 12,
+    "insert_verified": 12,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 12,
+    "rejected_by_reason": {
+      "CONTACT_MISSING": 42
+    }
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#AC-2026-003AE",
+        "name": "Lotus 2 GH",
+        "category": "guesthouse",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003AF",
+        "name": "Lotus GH",
+        "category": "guesthouse",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003AG",
+        "name": "Hotel Trio",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003AH",
+        "name": "Ardian Guesthouse",
+        "category": "guesthouse",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003AJ",
+        "name": "Joglo Guesthouse",
+        "category": "guesthouse",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003AK",
+        "name": "Lotus 1 Guesthouse",
+        "category": "guesthouse",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003AM",
+        "name": "Lotus 2 Guesthouse",
+        "category": "guesthouse",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003AN",
+        "name": "Rumah Boedi Private Residence Villa",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [
+      {
+        "publicRef": "#AC-2026-003AN",
+        "name": "Rumah Boedi Private Residence Villa",
+        "whatsapp": null,
+        "phone": "+62-293-5516000",
+        "website": "http://www.rumahboediborobudur.com"
+      },
+      {
+        "publicRef": "#AC-2026-003B5",
+        "name": "OYO 860 Rajasa Hotel",
+        "whatsapp": null,
+        "phone": "+62 293 788276",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-003B6",
+        "name": "Amanjiwo",
+        "whatsapp": "+94777743500",
+        "phone": null,
+        "website": "https://www.aman.com/resorts/amanjiwo"
+      },
+      {
+        "publicRef": "#AC-2026-003BB",
+        "name": "Lingkar Homestay",
+        "whatsapp": null,
+        "phone": "+62 857 43921247",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-003BP",
+        "name": "Shankara Borobudur",
+        "whatsapp": null,
+        "phone": "+62 293-3301-818",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-003BQ",
+        "name": "Gopalan Borobudur",
+        "whatsapp": null,
+        "phone": "+62 293-7182-782",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-003BS",
+        "name": "Bhumi Kasuryan",
+        "whatsapp": null,
+        "phone": "+62 821-3859-4259",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-003BY",
+        "name": "the Nalaya Hotel & Resto",
+        "whatsapp": null,
+        "phone": "+62 293-788-779",
+        "website": null
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#AC-2026-003AE",
+        "name": "Lotus 2 GH",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-003AF",
+        "name": "Lotus GH",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-003AG",
+        "name": "Hotel Trio",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-003AH",
+        "name": "Ardian Guesthouse",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-003AJ",
+        "name": "Joglo Guesthouse",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 12,
+    "insert_verified": 12,
+    "delta": 0
+  },
+  "cycle_outcome": "PARTIAL"
+}

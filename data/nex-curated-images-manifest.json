@@ -1,0 +1,420 @@
+{
+  "_doc": "NEX curated Indonesia-focused imagery · Philip 2026-08-28 · owner-supplied premium images with visual classification. Read by enrich-directory-images.mjs BEFORE Commons pool. Every entry: local_file + source_url + hero_image_url + category slots + region + description + confidence. Walker prefers these; when depleted per (category, city), falls back to Commons.",
+  "_licence": "Owner-uploaded to Philip's ImageKit CDN · treat as first-party NEX asset · no external attribution required · but source_url preserved for audit.",
+  "_owner": "Philip",
+  "_uploaded_from": "https://ik.imagekit.io/nepgaxllc/",
+  "_scan_date": "2026-08-28",
+  "images": [
+    {
+      "id": "img-01",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/Untitledxczzzzdfdfdfgdfgdgdddsdddd.png?updatedAt=1775593324657",
+      "local_file": "data/nex-curated-images/img-01.png",
+      "scene": "Romantic beachfront gazebo dinner at dusk with candles, heart-shaped lanterns lining path, temple silhouette in background, boat on water",
+      "categories_suitable_for": ["restaurant", "romantic-dining", "private-dining", "beach-club"],
+      "region_slug": "central-java",
+      "region_confidence": 0.6,
+      "generation_style": "AI-composite",
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-02",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/Golden%20Borobudur%20under%20starlit%20skies.png?updatedAt=1775591346155",
+      "local_file": "data/nex-curated-images/img-02.png",
+      "scene": "Borobudur temple at night with starlit sky, viewed through Balinese candi bentar (split gate), asphalt road leading to it",
+      "categories_suitable_for": ["heritage-site", "tour-operator", "cultural-tour", "guided-tour"],
+      "region_slug": "central-java",
+      "region_confidence": 0.98,
+      "specific_landmark": "Borobudur",
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-03",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/Untitledxczzzzdfdfdf.png?updatedAt=1775590759364",
+      "local_file": "data/nex-curated-images/img-03.png",
+      "scene": "Borobudur temple in daytime, viewed through candi bentar gates, road leading to it, blue sky",
+      "categories_suitable_for": ["heritage-site", "tour-operator", "cultural-tour"],
+      "region_slug": "central-java",
+      "region_confidence": 0.98,
+      "specific_landmark": "Borobudur",
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-04",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/vfddsfddfgsdfgasdasdasdasdasdasdasdasddsfasdasdasdasdasdsadasadfasd.png?updatedAt=1775543616817",
+      "local_file": "data/nex-curated-images/img-04.png",
+      "scene": "Interior of a bar/restaurant with live band (drummer, guitarist), young Indonesian people around table with drinks, TV screen playing, atmospheric orange lighting",
+      "categories_suitable_for": ["live-music-bar", "restaurant", "sports-bar", "entertainment-venue"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-05",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/vfddsfddfgsdfgasdasdasdasdasdasdasdasddsfasdasdasdasdasdsada.png?updatedAt=1775543521658",
+      "local_file": "data/nex-curated-images/img-05.png",
+      "scene": "Woman in traditional batik/songket clothing drawing motif on a traditional textile with pencil, dark studio backdrop",
+      "categories_suitable_for": ["batik-workshop", "craft-workshop", "artisan-studio", "cultural-experience"],
+      "region_slug": "central-java",
+      "region_confidence": 0.7,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-06",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/vfddsfddfgsdfgasdasdasdasdasdasdasdasddsfasdasdasdasdasd.png?updatedAt=1775543407394",
+      "local_file": "data/nex-curated-images/img-06.png",
+      "scene": "Indonesian woman in conical straw hat at traditional market stall selling vegetables, nuts, produce, hanging baskets",
+      "categories_suitable_for": ["market", "traditional-market", "warung", "market-vendor"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-07",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/vfddsfddfgsdfgasdasdasdasdasdasdasdasddsfasdasdasd.png?updatedAt=1775543315475",
+      "local_file": "data/nex-curated-images/img-07.png",
+      "scene": "POV from horseback through rice paddy fields with volcano in background, palm trees, second rider ahead",
+      "categories_suitable_for": ["horseback-riding-tour", "adventure-tour", "rice-paddy-experience"],
+      "region_slug": "bali",
+      "region_confidence": 0.75,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-08",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/vfddsfddfgsdfgasdasdasdasdasdasdasdasddsfasd.png?updatedAt=1775543117942",
+      "local_file": "data/nex-curated-images/img-08.png",
+      "scene": "Tandem skydiving selfie over open landscape, tandem master + student, blue sky, curved earth horizon",
+      "categories_suitable_for": ["skydiving", "extreme-sports", "adventure-tour"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-09",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/vfddsfddfgsdfgasdasdasdasdasdasd.png?updatedAt=1775542630294",
+      "local_file": "data/nex-curated-images/img-09.png",
+      "scene": "Indoor bar/lounge with live band playing on small stage, seated Indonesian audience, neon signs, atmospheric teal/orange lighting",
+      "categories_suitable_for": ["live-music-bar", "cocktail-bar", "entertainment-venue", "restaurant"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-10",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/vfddsfddfgsdfgasdasdasdasd.png?updatedAt=1775542514855",
+      "local_file": "data/nex-curated-images/img-10.png",
+      "scene": "Traditional gamelan ensemble performance, five musicians in traditional dress with brass gongs and xylophones, audience visible in foreground",
+      "categories_suitable_for": ["gamelan-performance", "cultural-performance", "traditional-music", "cultural-experience"],
+      "region_slug": "central-java",
+      "region_confidence": 0.7,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-11",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/vfddsfddfgsdfgasdasd.png?updatedAt=1775542411237",
+      "local_file": "data/nex-curated-images/img-11.png",
+      "scene": "Multiple pool tables in wood-paneled billiards hall with hanging green lamps, cue sticks, framed artwork on walls",
+      "categories_suitable_for": ["billiards-hall", "pool-hall", "entertainment-venue", "sports-bar"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-12",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/vfddsfddfgsdfg.png?updatedAt=1775542252839",
+      "local_file": "data/nex-curated-images/img-12.png",
+      "scene": "Chef cooking Indonesian dish (nasi goreng or mie goreng with shrimp) in large wok over open flame, ingredients on banana leaves, lemongrass, chili",
+      "categories_suitable_for": ["cooking-class", "restaurant", "warung", "culinary-experience"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-13",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/vfddsfd.png?updatedAt=1775542185955",
+      "local_file": "data/nex-curated-images/img-13.png",
+      "scene": "Manicured golf course fairway with Balinese pagoda architecture club house, palm trees, volcano in background, tropical flowers",
+      "categories_suitable_for": ["golf-course", "recreation", "sports-venue"],
+      "region_slug": "bali",
+      "region_confidence": 0.85,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-14",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/vfd.png?updatedAt=1775541862770",
+      "local_file": "data/nex-curated-images/img-14.png",
+      "scene": "Mountain biker jumping on jungle trail with volcano background, orange kit, dust trail",
+      "categories_suitable_for": ["mountain-biking-tour", "adventure-tour", "bike-rental"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-15",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/qwqwdsddsASDASDASDASDsdaSDASDasdasdassdasdasdasdasdasdsaasasdasdasdasdasdasdasdasdasdasd.png?updatedAt=1775541811710",
+      "local_file": "data/nex-curated-images/img-15.png",
+      "scene": "Traditional Balinese pavilion library with tall wooden bookshelves, rattan chairs, carved wood panels, tropical plants",
+      "categories_suitable_for": ["library", "co-working-space", "study-space", "cafe"],
+      "region_slug": "bali",
+      "region_confidence": 0.9,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-16",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/qwqwdsddsASDASDASDASDsdaSDASDasdasdassdasdasdasdasdasdsaasasdasdasdasdasdasdasdasd.png?updatedAt=1775541702874",
+      "local_file": "data/nex-curated-images/img-16.png",
+      "scene": "Rooftop bar/lounge at sunset with rattan furniture, city skyline view, bougainvillea, palm trees, cushions",
+      "categories_suitable_for": ["rooftop-bar", "sky-bar", "lounge", "restaurant"],
+      "region_slug": "jakarta",
+      "region_confidence": 0.6,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-17",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/qwqwdsddsASDASDASDASDsdaSDASDasdasdassdasdasdasdasdasdsaasasdasdasdasdasdasd.png?updatedAt=1775541662083",
+      "local_file": "data/nex-curated-images/img-17.png",
+      "scene": "Multi-stream jungle waterfall with turquoise pool, mossy rocks, ferns and tropical foliage",
+      "categories_suitable_for": ["waterfall", "natural-attraction", "eco-tour", "nature-park"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-18",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/qwqwdsddsASDASDASDASDsdaSDASDasdasdassdasdasdasdasdasdsaasasdasdasdasd.png?updatedAt=1775541596162",
+      "local_file": "data/nex-curated-images/img-18.png",
+      "scene": "Balinese spa treatment room with white-covered massage bed, carved wood doors, candles, frangipani flowers in brass bowl, incense",
+      "categories_suitable_for": ["spa", "massage", "wellness-center", "balinese-spa"],
+      "region_slug": "bali",
+      "region_confidence": 0.9,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-19",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/qwqwdsddsASDASDASDASDsdaSDASDasdasdassdasdasdasdasdasdsaasasdasd.png?updatedAt=1775541494551",
+      "local_file": "data/nex-curated-images/img-19.png",
+      "scene": "Traditional Balinese villa exterior at sunset, terracotta tile roofs, carved wooden panels, private pool, banana trees, mountain background",
+      "categories_suitable_for": ["villa", "homestay", "boutique-hotel", "guesthouse"],
+      "region_slug": "bali",
+      "region_confidence": 0.9,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-20",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/qwqwdsddsASDASDASDASDsdaSDASDasdasdassdasdasdasdasdasdsaas.png?updatedAt=1775541351292",
+      "local_file": "data/nex-curated-images/img-20.png",
+      "scene": "Moonlit pebble beach at night with palm silhouettes on headland, calm surf, starry sky, moon reflection on water",
+      "categories_suitable_for": ["beach", "natural-attraction", "night-scenery"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-21",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/qwqwdsddsASDASDASDASDsdaSDASDasdasdassdasdasdasdasdasd.png?updatedAt=1775541174025",
+      "local_file": "data/nex-curated-images/img-21.png",
+      "scene": "Traditional dancers in colorful headdresses and batik costumes performing outdoors, colorful lanterns, crowd watching",
+      "categories_suitable_for": ["traditional-dance", "cultural-performance", "cultural-experience", "festival"],
+      "region_slug": "bali",
+      "region_confidence": 0.75,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-22",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/qwqwdsddsASDASDASDASDsdaSDASDasdasdassdasdasdasdasd.png?updatedAt=1775541081246",
+      "local_file": "data/nex-curated-images/img-22.png",
+      "scene": "Traditional Indonesian fishermen on outrigger canoes casting nets at sunrise, misty mountains, seagulls",
+      "categories_suitable_for": ["fishing-tour", "traditional-boat-tour", "boat-charter", "seafood-restaurant"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-23",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/qwqwdsddsASDASDASDASDsdaSDASDasdasdassdasdasdasd.png?updatedAt=1775541025566",
+      "local_file": "data/nex-curated-images/img-23.png",
+      "scene": "Rainforest path winding through dense foliage, tropical plants, dappled sunlight",
+      "categories_suitable_for": ["jungle-trekking", "eco-tour", "nature-park", "adventure-tour"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-24",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/qwqwdsddsASDASDASDASDsdaSDASDasdasdassdasd.png?updatedAt=1775540950615",
+      "local_file": "data/nex-curated-images/img-24.png",
+      "scene": "Beach BBQ at sunset with families grilling fish and corn on skewers over open flame, banana leaf plates, palm trees",
+      "categories_suitable_for": ["beach-bbq", "seafood-restaurant", "beach-restaurant", "beach-club"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-25",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/qwqwdsddsASDASDASDASDsdaSDASDasdasdas.png?updatedAt=1775540868108",
+      "local_file": "data/nex-curated-images/img-25.png",
+      "scene": "Indonesian family flying colorful traditional kites (layang-layang) in field, father in batik shirt, children watching",
+      "categories_suitable_for": ["family-activity", "cultural-experience", "kite-flying", "park"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-26",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/qwqwdsddsASDASDASDASDsdaSDASDas.png?updatedAt=1775540755541",
+      "local_file": "data/nex-curated-images/img-26.png",
+      "scene": "Surfer riding wave with volcano and palm-tree beach background, traditional wooden boats on sand",
+      "categories_suitable_for": ["surfing", "surf-school", "surf-lesson", "beach-club"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-27",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/qwqwdsddsASDASDASDASD.png?updatedAt=1775540564729",
+      "local_file": "data/nex-curated-images/img-27.png",
+      "scene": "Jungle canopy with orangutans swinging, colorful parrots (macaws), bamboo thatched-roof huts, mountain background",
+      "categories_suitable_for": ["wildlife-sanctuary", "eco-lodge", "jungle-lodge", "nature-park"],
+      "region_slug": null,
+      "region_confidence": 0.5,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-28",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/qwqwdsddsASDASD.png?updatedAt=1775540527081",
+      "local_file": "data/nex-curated-images/img-28.png",
+      "scene": "Zoo enclosure with orangutans on branches, rhinos in grass field, Komodo dragon on rocks, colorful parrots, Balinese pagoda architecture",
+      "categories_suitable_for": ["zoo", "wildlife-park", "safari-park", "animal-sanctuary"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-29",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/qwqwdsd.png?updatedAt=1775540420687",
+      "local_file": "data/nex-curated-images/img-29.png",
+      "scene": "Museum gallery interior with wooden Barong-style carvings on pedestals, framed traditional paintings, batik tapestry, polished marble floor",
+      "categories_suitable_for": ["museum", "gallery", "cultural-institution", "art-museum"],
+      "region_slug": "bali",
+      "region_confidence": 0.6,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-30",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/qwqw.png?updatedAt=1775540349462",
+      "local_file": "data/nex-curated-images/img-30.png",
+      "scene": "Nightclub with young Indonesian dancers under circular neon lights (pink and green), some in traditional batik sarongs, DJ setup",
+      "categories_suitable_for": ["nightclub", "dance-club", "entertainment-venue"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-31",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/Untitledsssdddsdsdsdsdasdsadasadasdasdasadasdsdsdadsasdasddssadasdasdsdasdasdad.png?updatedAt=1775540256643",
+      "local_file": "data/nex-curated-images/img-31.png",
+      "scene": "Tropical outdoor bar with bamboo counter, wooden stools, colorful batik curtains, lanterns, bottles behind bar, tropical plants",
+      "categories_suitable_for": ["tropical-bar", "cocktail-bar", "beach-bar", "tiki-bar"],
+      "region_slug": "bali",
+      "region_confidence": 0.7,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-32",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/Untitledsssdddsdsdsdsdasdsadasadasdasdasadasdsdsdadsasdasddssadasdasdsd.png?updatedAt=1775540175514",
+      "local_file": "data/nex-curated-images/img-32.png",
+      "scene": "Cultural park with visitors walking along stone path through banyan trees, small pavilions and statues, tropical flowers",
+      "categories_suitable_for": ["cultural-park", "heritage-park", "park", "cultural-tour"],
+      "region_slug": "bali",
+      "region_confidence": 0.8,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-33",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/Untitledsssdddsdsdsdsdasdsadasadasdasdasadasdsdsdadsasdasddssadasdasd.png?updatedAt=1775540132004",
+      "local_file": "data/nex-curated-images/img-33.png",
+      "scene": "Deep pink roses covered in dew at sunset, dramatic sky with orange sun on horizon",
+      "categories_suitable_for": ["flower-garden", "botanical-garden", "florist", "wedding-venue"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-34",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/Untitledsssdddsdsdsdsdasdsadasadasdasdasadasdsdsdadsasdasddssad.png?updatedAt=1775539883340",
+      "local_file": "data/nex-curated-images/img-34.png",
+      "scene": "Bright multi-floor shopping mall interior with escalators, shoppers with bags, storefronts, plants",
+      "categories_suitable_for": ["shopping-mall", "retail-plaza", "shopping-center"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-35",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/Untitledsssdddsdsdsdsdasdsadasadasdasdasadasdsdsdadsasdasd.png?updatedAt=1775539752851",
+      "local_file": "data/nex-curated-images/img-35.png",
+      "scene": "Street food cart (kaki-lima) with satay skewers on banana leaves, fried snacks, kerupuk, hot pot, hanging lightbulbs, chef in background",
+      "categories_suitable_for": ["street-food-cart", "kaki-lima", "warung", "food-stall"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-36",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/Untitledsssdddsdsdsdsdasdsadasadasdasdasadas.png?updatedAt=1775539464356",
+      "local_file": "data/nex-curated-images/img-36.png",
+      "scene": "Modern gym interior with row of treadmills, weight-machine area, Balinese wooden carved panels on walls, plants",
+      "categories_suitable_for": ["gym", "fitness-center", "health-club"],
+      "region_slug": "bali",
+      "region_confidence": 0.6,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-37",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/Untitledsssdddsdsdsdsdasdsadasadasdasda.png?updatedAt=1775539385967",
+      "local_file": "data/nex-curated-images/img-37.png",
+      "scene": "Woman receiving spa oil massage in open-air gazebo overlooking rice paddies, frangipani flowers, incense, wooden statues, therapist hands visible",
+      "categories_suitable_for": ["spa", "massage", "wellness-center", "outdoor-spa", "balinese-spa"],
+      "region_slug": "bali",
+      "region_confidence": 0.95,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-38",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/Untitledsssdddsdsdsdsdasdsadasadasd.png?updatedAt=1775539254513",
+      "local_file": "data/nex-curated-images/img-38.png",
+      "scene": "Off-road Jeep driving down dusty jungle road with volcano and forested hills in background, dust cloud, bird flying",
+      "categories_suitable_for": ["4wd-tour", "jeep-tour", "adventure-tour", "safari-tour"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-39",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/Untitledsssdddsdsdsdsdasdsada.png?updatedAt=1775539188056",
+      "local_file": "data/nex-curated-images/img-39.png",
+      "scene": "Balinese Hindu temple (pura) with tiered meru towers, ornate stone carvings, split gate (candi bentar), sunset sky",
+      "categories_suitable_for": ["temple", "pura", "heritage-site", "cultural-tour", "religious-site"],
+      "region_slug": "bali",
+      "region_confidence": 0.98,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-40",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/Untitledsssdddsdsdsdsdasd.png?updatedAt=1775539117814",
+      "local_file": "data/nex-curated-images/img-40.png",
+      "scene": "Two hikers with backpacks descending trail toward Mount Bromo caldera at sunrise, steam rising from crater, Semeru volcano in distance",
+      "categories_suitable_for": ["volcano-trekking", "mount-bromo-tour", "hiking-tour", "adventure-tour"],
+      "region_slug": "east-java",
+      "region_confidence": 0.98,
+      "specific_landmark": "Mount Bromo",
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-41",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/Untitledsssdddsdsdsd.png?updatedAt=1775538946625",
+      "local_file": "data/nex-curated-images/img-41.png",
+      "scene": "Tropical beach at sunset with palm-tree silhouette, calm turquoise surf, colorful clouds",
+      "categories_suitable_for": ["beach", "beach-resort", "beach-club", "natural-attraction"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-42",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/bbbffd.png?updatedAt=1775472886288",
+      "local_file": "data/nex-curated-images/img-42.png",
+      "scene": "Handshake over open Government Tax ledger between two business people in suits, calculator, magnifying glass, hourglass, coffee",
+      "categories_suitable_for": ["tax-consultant", "accountant", "business-services", "legal-services"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    },
+    {
+      "id": "img-43",
+      "source_url": "https://ik.imagekit.io/nepgaxllc/bbbff.png?updatedAt=1775472666292",
+      "local_file": "data/nex-curated-images/img-43.png",
+      "scene": "Hand writing entries in open Government Tax ledger with calculator and coffee, other hand with pen, financial documents around",
+      "categories_suitable_for": ["tax-services", "accountant", "bookkeeping-service", "business-services"],
+      "region_slug": null,
+      "quality_tier": "premium"
+    }
+  ]
+}

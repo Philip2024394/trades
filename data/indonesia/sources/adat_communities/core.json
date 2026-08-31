@@ -1,0 +1,67 @@
+[
+  {
+    "externalId": "adat-baduy",
+    "domain": "culture",
+    "topic": "adat.baduy",
+    "region": "Banten",
+    "content": "The Baduy (Kanekes) are a Sundanese adat community in western Java, ~11,000 people. Divided into Baduy Dalam (Inner Baduy, ~1,200, strict adherence — no electricity, motorised transport, cameras, soap, or synthetic cloth) and Baduy Luar (Outer Baduy, more flexible). Visitors may enter Baduy Luar with a local guide; Baduy Dalam entry requires the guide's introduction and strict rule observance (no photos of people, no ATM/mobile use during the visit, respect for pikukuh customary law). Access: Ciboleger village, ~4 hours from Jakarta.",
+    "keywords": ["baduy", "kanekes", "banten", "sundanese", "adat dalam", "adat luar", "pikukuh", "ciboleger"],
+    "audience": ["tourist", "backpacker"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:adat_communities · AMAN + academic",
+    "confidence": 0.9
+  },
+  {
+    "externalId": "adat-toraja",
+    "domain": "culture",
+    "topic": "adat.toraja",
+    "region": "South Sulawesi",
+    "content": "The Toraja are a highland South Sulawesi adat community (~1M people) organised around Aluk Todolo (their pre-Christian religion — now a recognised penghayat kepercayaan) alongside Protestant Christianity. Most famous for rambu solo' (elaborate multi-day funeral rites) and tongkonan (boat-shaped ancestral houses). Visitors are welcome at funerals as respectful guests; customary gifts (cigarettes, sugar, palm wine) are appropriate. Do not photograph without asking; wear dark colours; expect emotional intensity.",
+    "keywords": ["toraja", "tana toraja", "rambu solo", "tongkonan", "aluk todolo", "sulawesi", "adat", "funeral"],
+    "audience": ["tourist"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:adat_communities · AMAN + academic",
+    "confidence": 0.9
+  },
+  {
+    "externalId": "adat-dayak-iban",
+    "domain": "culture",
+    "topic": "adat.dayak_iban",
+    "region": "West Kalimantan",
+    "content": "The Dayak Iban are one of many Dayak subgroups spread across Kalimantan (Borneo). Traditional longhouse (rumah betang / rumah panjai) communities on major rivers. Aluk Todolo-like animist beliefs coexist with Christianity, with adat law regulating land, marriage, and dispute. Visiting a longhouse: approach through the tuai rumah (headman), remove shoes, accept offered tuak (rice wine) with the right hand (a small sip is respectful — full refusal can be rude).",
+    "keywords": ["dayak", "iban", "kalimantan", "borneo", "longhouse", "rumah betang", "tuai rumah", "adat"],
+    "audience": ["tourist", "backpacker"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:adat_communities · AMAN + academic",
+    "confidence": 0.85
+  },
+  {
+    "externalId": "adat-sasak-sade",
+    "domain": "culture",
+    "topic": "adat.sasak_sade",
+    "region": "Lombok",
+    "content": "Sade village (Rembitan, central Lombok) is a Sasak adat village widely opened to respectful tourism — thatched-roof lumbung (rice barn) houses, weaving demonstrations, and preserved marriage-by-elopement (kawin lari) tradition. Entry: donation to the community box (~30k IDR fair). Local guides offered — negotiate before starting. Do not enter houses uninvited. The nearby Ende village is a quieter alternative less on the tour circuit.",
+    "keywords": ["sasak", "sade", "rembitan", "lombok", "lumbung", "kawin lari", "adat", "ende village"],
+    "audience": ["tourist", "backpacker"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:adat_communities · AMAN + academic",
+    "confidence": 0.85
+  },
+  {
+    "externalId": "adat-mentawai",
+    "domain": "culture",
+    "topic": "adat.mentawai",
+    "region": "West Sumatra",
+    "content": "The Mentawai people live on the Mentawai Islands off West Sumatra's coast — culturally + linguistically distinct from mainland Minangkabau. Known for sikerei (shamans), extensive body tattooing (titi), sharpened teeth traditions (increasingly rare), and Arat Sabulungan animist religion (now a recognised penghayat kepercayaan). Deep-interior visits (Siberut) require multi-day trekking + local guide; respectful visits arranged through community-based tourism operators.",
+    "keywords": ["mentawai", "siberut", "sikerei", "titi", "arat sabulungan", "west sumatra", "adat"],
+    "audience": ["backpacker"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:adat_communities · AMAN + academic",
+    "confidence": 0.85
+  }
+]

@@ -8,13 +8,33 @@
 //
 // Free-tier promise made visible in copy: no AI credits required to
 // use this surface at all.
+//
+// Stage 3.33 · Phase 26 (Philip 2026-08-31):
+//   · Wrapped in <I18nProvider> so every label pulls from the string
+//     packs (EN + ID). User's lang comes from localStorage.nex_user_lang
+//     set by the sign-on prefix picker (Stage 3.31.a).
+//   · Cross-language preview section renders 3 sample ChatBubbleTranslated
+//     bubbles under the "coming soon" hero so users see how the
+//     translation + toggle icon works before the realtime backend lands.
 
 import Link from "next/link";
 import { ArrowLeft, Search, Plus, MoreVertical, MessageCircle } from "lucide-react";
 import { StatusBar } from "../shell/StatusBar";
 import { PlatformBottomNav } from "./PlatformBottomNav";
+import { I18nProvider, useT, useLang } from "@/lib/nex/i18n/I18nProvider";
+import { ChatBubbleTranslated } from "@/components/nexapp/ChatBubbleTranslated";
 
 export function MessengerShell() {
+  return (
+    <I18nProvider>
+      <MessengerShellInner />
+    </I18nProvider>
+  );
+}
+
+function MessengerShellInner() {
+  const t = useT();
+  const { lang: viewerLang } = useLang();
   return (
     <div
       className="relative mx-auto flex min-h-screen max-w-md flex-col"
@@ -43,10 +63,10 @@ export function MessengerShell() {
           </Link>
           <div className="flex flex-col">
             <span className="text-[16px] font-bold" style={{ color: "var(--nex-neutral-900)" }}>
-              Messages
+              {t("messenger.title")}
             </span>
             <span className="text-[10.5px]" style={{ color: "var(--nex-neutral-500)" }}>
-              Free forever · no AI needed
+              {t("messenger.subtitle")}
             </span>
           </div>
         </div>
@@ -72,15 +92,15 @@ export function MessengerShell() {
           <Search size={16} strokeWidth={1.75} style={{ color: "var(--nex-neutral-400)" }} />
           <input
             type="text"
-            placeholder="Search chats"
+            placeholder={t("messenger.searchPlaceholder")}
             className="flex-1 bg-transparent py-1 text-[13px] outline-none placeholder:text-[color:var(--nex-neutral-400)]"
             style={{ color: "var(--nex-neutral-900)" }}
           />
         </div>
       </div>
 
-      {/* Empty state */}
-      <main className="flex-1 px-6 pt-14">
+      {/* Empty state + cross-language preview */}
+      <main className="flex-1 px-6 pt-14 pb-28">
         <div className="mx-auto flex max-w-xs flex-col items-center text-center">
           <span
             className="mb-5 grid h-16 w-16 place-items-center rounded-full"
@@ -90,12 +110,10 @@ export function MessengerShell() {
             <MessageCircle size={30} strokeWidth={1.75} />
           </span>
           <h2 className="text-[18px] font-bold" style={{ color: "var(--nex-neutral-900)" }}>
-            Messenger is coming soon.
+            {t("messenger.emptyStateTitle")}
           </h2>
           <p className="mt-2 text-[13px] leading-[1.5]" style={{ color: "var(--nex-neutral-500)" }}>
-            The free chat layer is the next major piece we&apos;re building. Person-to-person,
-            group chats, images, files — no AI needed to use any of it. This surface will
-            light up when the messaging backend lands.
+            {t("messenger.emptyStateBody")}
           </p>
           <Link
             href="/nex-app"
@@ -106,9 +124,64 @@ export function MessengerShell() {
               border: "1px solid var(--nex-neutral-300)"
             }}
           >
-            Back to home
+            {t("common.back")}
           </Link>
         </div>
+
+        {/* Cross-language preview · Stage 3.33. Sample bubbles that
+            demonstrate the auto-translation + top-right toggle icon.
+            When the realtime backend lands, real messages replace these
+            using the same <ChatBubbleTranslated> component. */}
+        <section
+          className="mx-auto mt-10 max-w-[420px]"
+          aria-labelledby="messenger-preview-title"
+        >
+          <div className="mb-4 text-center">
+            <h3
+              id="messenger-preview-title"
+              className="text-[13px] font-bold uppercase tracking-[0.14em]"
+              style={{ color: "var(--nex-neutral-700)" }}
+            >
+              {t("messenger.previewTitle")}
+            </h3>
+            <p className="mt-1.5 text-[12px] leading-[1.55]" style={{ color: "var(--nex-neutral-500)" }}>
+              {t("messenger.previewSubtitle")}
+            </p>
+          </div>
+
+          {/*
+            3 sample bubbles. In the "other" role we simulate a friend who
+            sent the message in the language OPPOSITE to the viewer, so the
+            translation + toggle icon are always visible for demo purposes.
+            The "self" bubble is always in the viewer's own language so no
+            translation happens (matches real UX).
+          */}
+          <div className="flex flex-col gap-3">
+            <ChatBubbleTranslated
+              role="other"
+              text={viewerLang === "id" ? "Good morning" : "Selamat pagi"}
+              sentLang={viewerLang === "id" ? "en" : "id"}
+              viewerLang={viewerLang}
+              authorName="Andi"
+              timestamp="09:14"
+            />
+            <ChatBubbleTranslated
+              role="self"
+              text={viewerLang === "id" ? "Selamat pagi, apa kabar?" : "Good morning, how are you?"}
+              sentLang={viewerLang}
+              viewerLang={viewerLang}
+              timestamp="09:15"
+            />
+            <ChatBubbleTranslated
+              role="other"
+              text={viewerLang === "id" ? "Thank you very much" : "Terima kasih banyak"}
+              sentLang={viewerLang === "id" ? "en" : "id"}
+              viewerLang={viewerLang}
+              authorName="Andi"
+              timestamp="09:16"
+            />
+          </div>
+        </section>
       </main>
 
       {/* Floating new-chat FAB reserved for when the surface is live */}

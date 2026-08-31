@@ -1,0 +1,80 @@
+[
+  {
+    "id": "SM-cant-breathe",
+    "note": "'I can't breathe' → medical_emergency (highest priority)",
+    "input": { "message": "I can't breathe" },
+    "expect": { "signal": "medical_emergency", "requiresSafetyResponse": true }
+  },
+  {
+    "id": "SM-chest-pain",
+    "note": "'chest pain' → medical_emergency",
+    "input": { "message": "I have chest pain" },
+    "expect": { "signal": "medical_emergency", "requiresSafetyResponse": true }
+  },
+  {
+    "id": "SM-ambulans-id",
+    "note": "Indonesian ambulance call → medical_emergency",
+    "input": { "message": "tolong panggil ambulans sekarang" },
+    "expect": { "signal": "medical_emergency", "requiresSafetyResponse": true }
+  },
+  {
+    "id": "SM-sick",
+    "note": "'I'm sick' → medical_illness",
+    "input": { "message": "I'm sick" },
+    "expect": { "signal": "medical_illness", "requiresSafetyResponse": true }
+  },
+  {
+    "id": "SM-bali-belly",
+    "note": "'Bali belly' → medical_illness",
+    "input": { "message": "I think I've got Bali belly" },
+    "expect": { "signal": "medical_illness", "requiresSafetyResponse": true }
+  },
+  {
+    "id": "SM-cut-myself",
+    "note": "'I cut myself' → medical_injury",
+    "input": { "message": "I cut myself" },
+    "expect": { "signal": "medical_injury", "requiresSafetyResponse": true }
+  },
+  {
+    "id": "SM-snake-bite",
+    "note": "snake bite → medical_injury",
+    "input": { "message": "I've been bitten by a snake" },
+    "expect": { "signal": "medical_injury", "requiresSafetyResponse": true }
+  },
+  {
+    "id": "SM-lost",
+    "note": "'I'm lost' → lost",
+    "input": { "message": "I'm lost" },
+    "expect": { "signal": "lost", "requiresSafetyResponse": true }
+  },
+  {
+    "id": "SM-wallet-stolen",
+    "note": "wallet stolen → theft_or_assault",
+    "input": { "message": "my wallet was stolen at the airport" },
+    "expect": { "signal": "theft_or_assault", "requiresSafetyResponse": true }
+  },
+  {
+    "id": "SM-earthquake",
+    "note": "'earthquake' → natural_disaster",
+    "input": { "message": "there was an earthquake, what should we do?" },
+    "expect": { "signal": "natural_disaster", "requiresSafetyResponse": true }
+  },
+  {
+    "id": "SM-safe-question",
+    "note": "'is it safe' → safe_but_worried (informational, NOT a safety response)",
+    "input": { "message": "is it safe to walk in Kuta at night?" },
+    "expect": { "signal": "safe_but_worried", "requiresSafetyResponse": false }
+  },
+  {
+    "id": "SM-noise-hi",
+    "note": "'Hi NEX' does NOT fire safety mode",
+    "input": { "message": "Hi NEX" },
+    "expect": { "signal": "none", "requiresSafetyResponse": false }
+  },
+  {
+    "id": "SM-noise-bali",
+    "note": "'Tell me about Bali' does NOT fire safety mode",
+    "input": { "message": "Tell me about Bali" },
+    "expect": { "signal": "none", "requiresSafetyResponse": false }
+  }
+]

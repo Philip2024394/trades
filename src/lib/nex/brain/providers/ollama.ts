@@ -4,24 +4,20 @@
 // http://localhost:11434). Speaks Ollama's native /api/chat wire
 // format, which supports tool-use (function calling) on Qwen 2.5+.
 //
-// Rationale (2026-08-20 · Session 4a):
-//   Philip approved a diagnostic test to see whether Qwen 2.5 3B is
-//   strong enough to drive the staircase design conversation via
-//   structured tool calls. This adapter lets our staircase agent
-//   run against the existing local Qwen setup that already backs
-//   /api/nex-conv/chat (per ADR-0044). The doctrine end-state
-//   (Router · CONSTITUTIONAL 2026-08-20) targets local providers as
-//   the independence path — this adapter is the concrete implementation.
-//
 // Rules baked in (matching respond-local.mjs):
 //   - Endpoint MUST be local (localhost / 127.0.0.1 / *.local /
 //     ::1). Non-local URLs throw at construction time. Zero
 //     third-party AI in any Ollama code path — hard rule per
 //     ADR-0044.
-//   - Default model qwen2.5:3b · overridable via NEX_RESPONSE_MODEL
-//     env var (matches respond-local.mjs's convention).
-//   - Blocking mode for Session 4a diagnostic clarity. Streaming
-//     upgrade lives in a follow-up if the model proves reliable.
+//   - Default model qwen2.5:7b-instruct-q3_K_M · fits the 32 GB RAM
+//     / RTX 2050 4 GB VRAM dev laptop and beats 3B on Indonesian
+//     phrasing + reasoning quality (bench 2026-08-30). Overridable
+//     via NEX_RESPONSE_MODEL for smaller models on constrained hosts.
+//   - Streaming ON: /api/chat with stream=true, parsed as NDJSON.
+//     Emits text_delta events as tokens arrive so the widget types
+//     in real time (matches the existing runtimeStream event shape).
+//     Blocking mode still available for callers that need full-response
+//     semantics (see createOllamaBrainProvider({ stream: false })).
 
 import type {
   NexBrainProvider,
@@ -37,9 +33,15 @@ import type {
 
 // ─── Config ────────────────────────────────────────────────────────
 
+import { getModelForRole, capabilitiesForTag } from "../model-registry";
+import { normalizeImageBase64ForVision } from "./image-normalize";
+
 const DEFAULT_URL = process.env.NEX_LOCAL_LLM_URL ?? "http://localhost:11434";
-const DEFAULT_MODEL = process.env.NEX_RESPONSE_MODEL ?? "qwen2.5:3b";
+const DEFAULT_MODEL = process.env.NEX_RESPONSE_MODEL ?? getModelForRole("brain.primary_local").ollamaTag;
+const DEFAULT_STREAM = process.env.NEX_OLLAMA_STREAM !== "false";
 const CHAT_PATH = "/api/chat";
+const TAGS_PATH = "/api/tags";
+const DEFAULT_TIMEOUT_MS = Number(process.env.NEX_OLLAMA_TIMEOUT_MS ?? "60000");
 
 function assertLocalEndpoint(url: string): void {
   const u = new URL(url);
@@ -62,6 +64,10 @@ function assertLocalEndpoint(url: string): void {
 type OllamaMessage = {
   role: "system" | "user" | "assistant" | "tool";
   content: string;
+  /** Vision-model input. Each string is a raw base64-encoded image
+   *  (no data-URL prefix). Only qwen2.5vl:* / moondream:* / other
+   *  vision-capable tags will consume these; text models ignore. */
+  images?: string[];
   tool_calls?: Array<{
     function: { name: string; arguments: Record<string, unknown> };
   }>;
@@ -85,7 +91,7 @@ type OllamaChatRequest = {
   model: string;
   messages: OllamaMessage[];
   tools?: OllamaToolDef[];
-  stream: false;
+  stream: boolean;
   options?: {
     temperature?: number;
     num_predict?: number;
@@ -104,15 +110,37 @@ type OllamaChatResponse = {
   eval_count?: number;
 };
 
+/** Partial chunk shape emitted by /api/chat when stream=true. Each
+ *  line is one JSON object. `message.content` holds the token delta
+ *  for THIS chunk (not cumulative). When `done: true`, `eval_count`
+ *  + `done_reason` are populated and `message.tool_calls` (if any)
+ *  is present on the final chunk. */
+type OllamaChatChunk = {
+  model: string;
+  created_at: string;
+  message: { role: "assistant"; content: string; tool_calls?: OllamaMessage["tool_calls"] };
+  done: boolean;
+  done_reason?: string;
+  prompt_eval_count?: number;
+  eval_count?: number;
+};
+
 // ─── Adapter factory ───────────────────────────────────────────────
 
 export type OllamaBrainOptions = {
   /** Override the Ollama server URL. Must be local (validated). */
   url?: string;
   /** Override the model tag. Default from NEX_RESPONSE_MODEL env or
-   *  qwen2.5:3b. Common alternatives: qwen2.5:7b, llama3.1:8b,
-   *  qwen2.5-coder:7b (though the last is code-oriented). */
+   *  qwen2.5:7b-instruct-q3_K_M. Any Ollama tool-capable tag works
+   *  (Qwen 2.5 family, Llama 3.1 8B+). */
   model?: string;
+  /** Stream tokens as they arrive. Default: env NEX_OLLAMA_STREAM
+   *  (true unless "false"). Set false for callers that need one
+   *  atomic response (background composers). */
+  stream?: boolean;
+  /** Network timeout in ms. Applies to the full request lifetime,
+   *  not idle-between-chunks. Default 60_000. */
+  timeoutMs?: number;
 };
 
 export function createOllamaBrainProvider(
@@ -121,15 +149,18 @@ export function createOllamaBrainProvider(
   const url = opts.url ?? DEFAULT_URL;
   assertLocalEndpoint(url);
   const model = opts.model ?? DEFAULT_MODEL;
+  const stream = opts.stream ?? DEFAULT_STREAM;
+  const timeoutMs = opts.timeoutMs ?? DEFAULT_TIMEOUT_MS;
   const chatUrl = url.replace(/\/$/, "") + CHAT_PATH;
 
+  const caps = capabilitiesForTag(model);
   const capabilities: NexBrainCapabilities = {
-    supportsTools: true,
-    supportsVision: false,
+    supportsTools: caps.supportsTools,
+    supportsVision: caps.supportsVision,
     supportsThinking: false,
     supportsPromptCaching: false,
-    supportsStreaming: false,
-    maxContextTokens: 32_768,
+    supportsStreaming: stream,
+    maxContextTokens: caps.contextTokens,
   };
 
   return {
@@ -143,12 +174,25 @@ export function createOllamaBrainProvider(
         ...input.messages.flatMap(nexMessageToOllama),
       ];
 
+      // Vision normalisation · re-encode any images through sharp
+      // (max 1024px · JPEG q85). Silent failure mode fix for
+      // qwen2.5vl:3b on RTX 2050 4 GB (large PNGs → @@@@ gibberish).
+      // Only touches messages that actually carry images; text
+      // requests are pass-through.
+      if (capabilities.supportsVision) {
+        for (const m of messages) {
+          if (m.images && m.images.length > 0) {
+            m.images = await Promise.all(m.images.map(normalizeImageBase64ForVision));
+          }
+        }
+      }
+
       const tools = input.tools?.map(nexToolToOllama);
 
       const body: OllamaChatRequest = {
         model,
         messages,
-        stream: false,
+        stream,
         options: {
           temperature: input.temperature ?? 0.3,
           num_predict: input.maxTokens ?? 1024,
@@ -156,29 +200,50 @@ export function createOllamaBrainProvider(
       };
       if (tools && tools.length > 0) body.tools = tools;
 
+      const controller = new AbortController();
+      const timeoutHandle = setTimeout(() => controller.abort(), timeoutMs);
+
       let res: Response;
       try {
         res = await fetch(chatUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
+          signal: controller.signal,
         });
       } catch (e) {
+        clearTimeout(timeoutHandle);
+        const isAbort = e instanceof Error && e.name === "AbortError";
+        const isConnRefused = e instanceof Error && /ECONNREFUSED|fetch failed/i.test(e.message);
         yield {
           type: "error",
-          error: e instanceof Error ? e.message : "network_error",
+          error: isAbort
+            ? `ollama_timeout after ${timeoutMs}ms`
+            : isConnRefused
+              ? `ollama_unreachable at ${url} · is the Ollama server running?`
+              : e instanceof Error ? e.message : "network_error",
           retriable: true,
         };
         return;
       }
 
       if (!res.ok) {
+        clearTimeout(timeoutHandle);
         const text = await res.text().catch(() => "");
+        // Model-missing surfaces as 404 with `"model \"…\" not found"` in body.
+        const isModelMissing = res.status === 404 && /not found/i.test(text);
         yield {
           type: "error",
-          error: `ollama_${res.status}: ${text.slice(0, 200)}`,
+          error: isModelMissing
+            ? `ollama_model_missing: '${model}' not installed · run 'ollama pull ${model}'`
+            : `ollama_${res.status}: ${text.slice(0, 200)}`,
           retriable: res.status >= 500,
         };
+        return;
+      }
+
+      if (stream) {
+        yield* streamChat(res, model, timeoutHandle);
         return;
       }
 
@@ -192,70 +257,195 @@ export function createOllamaBrainProvider(
           retriable: false,
         };
         return;
+      } finally {
+        clearTimeout(timeoutHandle);
       }
 
-      // Emit the assistant message content as a single text_delta
-      // (blocking mode · no chunk-level streaming for Session 4a).
       const content = data.message.content ?? "";
       if (content.length > 0) {
         yield { type: "text_delta", text: content };
       }
 
-      // Assemble NEX-canonical content blocks + emit tool_call events
-      // in the same shape the Anthropic adapter emits, so the agent
-      // runner's loop works identically.
-      const contentBlocks: NexContentBlock[] = [];
-      if (content.length > 0) {
-        contentBlocks.push({ type: "text", text: content });
-      }
-
-      const toolCalls = data.message.tool_calls ?? [];
-      for (let i = 0; i < toolCalls.length; i++) {
-        const call = toolCalls[i]!;
-        // Ollama doesn't assign tool_call ids · synthesise one for
-        // NEX-canonical shape so tool_result blocks can reference back.
-        const toolId = `ollama-${Date.now()}-${i}`;
-        const toolName = call.function.name;
-        const toolInput = coerceToolArguments(call.function.arguments);
-
-        yield { type: "tool_call_start", toolId, toolName };
-        yield { type: "tool_call_ready", toolId, toolName, input: toolInput };
-
-        contentBlocks.push({
-          type: "tool_call",
-          toolId,
-          toolName,
-          input: toolInput,
-        });
-      }
-
-      // Ollama's done_reason maps loosely to NEX stop reasons.
-      const stopReason: NexStopReason =
-        toolCalls.length > 0 ? "tool_use" :
-        data.done_reason === "length" ? "max_tokens" :
-        data.done_reason === "stop" ? "end_turn" :
-        "end_turn";
-
-      const usage: NexUsage = {
-        inputTokens: data.prompt_eval_count ?? 0,
-        outputTokens: data.eval_count ?? 0,
-        cachedInputTokens: 0,
-        cacheWriteTokens: 0,
-      };
-
-      const finalMessage: NexMessage = {
-        role: "assistant",
-        content: contentBlocks,
-      };
-
-      yield {
-        type: "done",
-        stopReason,
-        usage,
-        finalMessage,
-      };
+      yield* finaliseTurn(content, data.message.tool_calls ?? [], data.done_reason, data.prompt_eval_count ?? 0, data.eval_count ?? 0);
     },
   };
+}
+
+/** Read Ollama's NDJSON stream and emit NEX-canonical events as each
+ *  chunk arrives. One JSON object per newline · `message.content`
+ *  holds this chunk's token delta · final chunk carries `done: true`
+ *  plus `tool_calls` (if any) + usage counters. */
+async function* streamChat(
+  res: Response,
+  _model: string,
+  timeoutHandle: ReturnType<typeof setTimeout>,
+): AsyncGenerator<NexChatEvent> {
+  if (!res.body) {
+    clearTimeout(timeoutHandle);
+    yield { type: "error", error: "ollama_no_response_body", retriable: false };
+    return;
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  let accumulated = "";
+  let toolCalls: NonNullable<OllamaMessage["tool_calls"]> = [];
+  let doneReason: string | undefined;
+  let promptEvalCount = 0;
+  let evalCount = 0;
+
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+
+      let newlineIdx: number;
+      while ((newlineIdx = buffer.indexOf("\n")) >= 0) {
+        const line = buffer.slice(0, newlineIdx).trim();
+        buffer = buffer.slice(newlineIdx + 1);
+        if (!line) continue;
+
+        let chunk: OllamaChatChunk;
+        try {
+          chunk = JSON.parse(line) as OllamaChatChunk;
+        } catch {
+          continue;
+        }
+
+        const delta = chunk.message?.content ?? "";
+        if (delta.length > 0) {
+          accumulated += delta;
+          yield { type: "text_delta", text: delta };
+        }
+
+        if (chunk.message?.tool_calls && chunk.message.tool_calls.length > 0) {
+          toolCalls = chunk.message.tool_calls;
+        }
+
+        if (chunk.done) {
+          doneReason = chunk.done_reason;
+          promptEvalCount = chunk.prompt_eval_count ?? promptEvalCount;
+          evalCount = chunk.eval_count ?? evalCount;
+        }
+      }
+    }
+  } catch (e) {
+    clearTimeout(timeoutHandle);
+    yield {
+      type: "error",
+      error: e instanceof Error ? `ollama_stream_error: ${e.message}` : "ollama_stream_error",
+      retriable: true,
+    };
+    return;
+  } finally {
+    clearTimeout(timeoutHandle);
+  }
+
+  yield* finaliseTurn(accumulated, toolCalls, doneReason, promptEvalCount, evalCount);
+}
+
+/** Emit tool_call events + a single `done` event with usage. Shared
+ *  between blocking and streaming paths so the tail is identical. */
+function* finaliseTurn(
+  content: string,
+  toolCalls: NonNullable<OllamaMessage["tool_calls"]>,
+  doneReason: string | undefined,
+  promptEvalCount: number,
+  evalCount: number,
+): Generator<NexChatEvent> {
+  const contentBlocks: NexContentBlock[] = [];
+  if (content.length > 0) {
+    contentBlocks.push({ type: "text", text: content });
+  }
+
+  for (let i = 0; i < toolCalls.length; i++) {
+    const call = toolCalls[i]!;
+    // Ollama doesn't assign tool_call ids · synthesise one for
+    // NEX-canonical shape so tool_result blocks can reference back.
+    const toolId = `ollama-${Date.now()}-${i}`;
+    const toolName = call.function.name;
+    const toolInput = coerceToolArguments(call.function.arguments);
+
+    yield { type: "tool_call_start", toolId, toolName };
+    yield { type: "tool_call_ready", toolId, toolName, input: toolInput };
+
+    contentBlocks.push({
+      type: "tool_call",
+      toolId,
+      toolName,
+      input: toolInput,
+    });
+  }
+
+  const stopReason: NexStopReason =
+    toolCalls.length > 0 ? "tool_use" :
+    doneReason === "length" ? "max_tokens" :
+    doneReason === "stop" ? "end_turn" :
+    "end_turn";
+
+  const usage: NexUsage = {
+    inputTokens: promptEvalCount,
+    outputTokens: evalCount,
+    cachedInputTokens: 0,
+    cacheWriteTokens: 0,
+  };
+
+  const finalMessage: NexMessage = {
+    role: "assistant",
+    content: contentBlocks,
+  };
+
+  yield {
+    type: "done",
+    stopReason,
+    usage,
+    finalMessage,
+  };
+}
+
+// ─── Availability probe ────────────────────────────────────────────
+// Consumers that want provider fallback (e.g. resolveNexBrainWithFallback)
+// call this at request time. Cheap · calls /api/tags which lists installed
+// models without loading any weights.
+
+export type OllamaProbeResult =
+  | { ok: true; url: string; models: string[]; modelInstalled: boolean; selectedModel: string }
+  | { ok: false; url: string; error: string };
+
+/** Probe an Ollama server for reachability + model presence. Never
+ *  throws · always returns a discriminated result. Callers use `ok`
+ *  to decide whether to route to Ollama or fall back. */
+export async function probeOllama(opts: { url?: string; model?: string; timeoutMs?: number } = {}): Promise<OllamaProbeResult> {
+  const url = opts.url ?? DEFAULT_URL;
+  const selectedModel = opts.model ?? DEFAULT_MODEL;
+  const timeoutMs = opts.timeoutMs ?? 3000;
+  try { assertLocalEndpoint(url); }
+  catch (e) {
+    return { ok: false, url, error: e instanceof Error ? e.message : "non_local_endpoint" };
+  }
+
+  const controller = new AbortController();
+  const t = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url.replace(/\/$/, "") + TAGS_PATH, { signal: controller.signal });
+    if (!res.ok) return { ok: false, url, error: `ollama_${res.status}` };
+    const data = (await res.json()) as { models?: Array<{ name?: string; model?: string }> };
+    const models = (data.models ?? []).map((m) => m.model ?? m.name ?? "").filter(Boolean);
+    return {
+      ok: true,
+      url,
+      models,
+      modelInstalled: models.includes(selectedModel),
+      selectedModel,
+    };
+  } catch (e) {
+    const isAbort = e instanceof Error && e.name === "AbortError";
+    return { ok: false, url, error: isAbort ? "probe_timeout" : e instanceof Error ? e.message : "probe_failed" };
+  } finally {
+    clearTimeout(t);
+  }
 }
 
 // ─── Type translation · NEX-canonical ↔ Ollama ────────────────────
@@ -291,6 +481,7 @@ function nexMessageToOllama(msg: NexMessage): OllamaMessage[] {
 
   const textParts: string[] = [];
   const toolCalls: OllamaMessage["tool_calls"] = [];
+  const images: string[] = [];
   for (const block of msg.content) {
     if (block.type === "text") textParts.push(block.text);
     else if (block.type === "thinking") { /* not sent · Ollama doesn't consume thinking blocks */ }
@@ -301,12 +492,17 @@ function nexMessageToOllama(msg: NexMessage): OllamaMessage[] {
     } else if (block.type === "tool_result") {
       // Should not appear on a user/assistant NEX message · guard.
     } else if (block.type === "image_url") {
-      // Vision unsupported in this adapter · omit.
+      // Vision path · Ollama expects raw base64 (no data-URL prefix).
+      // Strip `data:<mime>;base64,` if present. Vision-capable models
+      // (qwen2.5vl, moondream, etc.) consume these; text models ignore.
+      const raw = block.url.startsWith("data:") ? block.url.split(",", 2)[1] ?? "" : block.url;
+      if (raw) images.push(raw);
     }
   }
 
   const out: OllamaMessage = { role: msg.role, content: textParts.join("\n\n") };
   if (toolCalls.length > 0) out.tool_calls = toolCalls;
+  if (images.length > 0) out.images = images;
   return [out];
 }
 

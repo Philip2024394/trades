@@ -1,0 +1,87 @@
+[
+  {
+    "id": "OP-live-eligibility-first-poll",
+    "note": "Never-polled live connectors are eligible immediately",
+    "expect": { "liveEligibleFirstPoll": true }
+  },
+  {
+    "id": "OP-live-eligibility-respects-interval",
+    "note": "Recently-polled connector is NOT eligible until pollIntervalMs elapses",
+    "expect": { "liveEligibilityWaits": true }
+  },
+  {
+    "id": "OP-live-dedupe-repeated-obs",
+    "note": "Same observation across two ticks is deduped (not published twice)",
+    "expect": { "liveDedupesRepeated": true }
+  },
+  {
+    "id": "OP-live-mixed-success-failure",
+    "note": "One failed connector does not stop others in the same tick",
+    "expect": { "liveMixedContinues": true }
+  },
+  {
+    "id": "OP-blocking-scales-10k",
+    "note": "Blocking dedupe on 10k entities completes in < 3s",
+    "expect": { "blocking10kUnder": 3000 }
+  },
+  {
+    "id": "OP-blocking-recall-planted-dupes",
+    "note": "All planted duplicates (linked by phone) are found by blocking",
+    "expect": { "blockingRecallPhone": true }
+  },
+  {
+    "id": "OP-halal-never-claim-when-unknown",
+    "note": "Halal query never returns unknown-status entities when requireCertified filter is on",
+    "expect": { "halalNeverUnknownCertified": true }
+  },
+  {
+    "id": "OP-halal-status-counts-tracked",
+    "note": "halalStatusCounts distinguishes not_scored from unknown",
+    "expect": { "halalStatusCountsDistinct": true }
+  },
+  {
+    "id": "OP-halal-cert-phrase-includes-provenance",
+    "note": "Certified phrase includes 'BPJPH' authority",
+    "expect": { "halalCertPhraseBPJPH": true }
+  },
+  {
+    "id": "OP-bpjph-gated-off-by-default",
+    "note": "BPJPH lookup returns unknown/confidence=0 when NEX_BPJPH_ENABLED is not set",
+    "expect": { "bpjphGatedOff": true }
+  },
+  {
+    "id": "OP-budget-allows-until-limit",
+    "note": "Budget policy allows polls up to maxPerMinute · then blocks with per_minute_exhausted",
+    "expect": { "budgetAllowsUntilLimit": true }
+  },
+  {
+    "id": "OP-budget-recovers-after-window",
+    "note": "Budget check passes again once the sliding minute window rolls forward",
+    "expect": { "budgetRecoversAfterWindow": true }
+  },
+  {
+    "id": "OP-runtime-skips-when-budget-exhausted",
+    "note": "liveTick skips the connector without calling fetch when budget check fails",
+    "expect": { "runtimeSkipsWhenBudgetExhausted": true }
+  },
+  {
+    "id": "OP-burn-in-clean-under-simulator",
+    "note": "runBurnIn against a clean simulator (all successes) returns verdict=clean",
+    "expect": { "burnInCleanUnderSimulator": true }
+  },
+  {
+    "id": "OP-burn-in-unhealthy-under-persistent-failure",
+    "note": "runBurnIn against a always-failing simulator returns verdict=unhealthy + tracks consecutive failures",
+    "expect": { "burnInUnhealthyPersistentFailure": true }
+  },
+  {
+    "id": "OP-cross-blocker-website-recall",
+    "note": "Website blocker proposes same-domain pair even when scoreMerge decides not to merge",
+    "expect": { "crossBlockerWebsiteRecall": true }
+  },
+  {
+    "id": "OP-dedupe-real-corpus-low-duplication",
+    "note": "Real corpus has low duplication rate under DEFAULT_BLOCKERS · <2% strong-merges expected once real OSM data (Stage 3) starts flowing · dedupe engine finding duplicates in real-world data is CORRECT behaviour, not a failure",
+    "expect": { "dedupeLowDuplicationRealCorpus": 0.02 }
+  }
+]

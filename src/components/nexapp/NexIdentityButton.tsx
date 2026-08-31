@@ -32,7 +32,7 @@
 
 import { useEffect, useRef } from "react";
 import { NEX } from "@/lib/nexapp/tokens";
-import type { NexState } from "./NexAppHome";
+import type { NexState } from "@/lib/nexapp/nex-state";
 
 // Per-mount random phase offset so no two mounts start with identical wave
 // alignment. Values feed CSS custom properties applied after hydration to

@@ -1,0 +1,210 @@
+{
+  "jobId": "569912b6-0b8c-49ef-88f6-75aaf2143c47",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Jakarta",
+  "bbox": {
+    "sw": [
+      -6.37,
+      106.68
+    ],
+    "ne": [
+      -6.09,
+      106.98
+    ],
+    "scope": "Jakarta · DKI Jakarta"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T18:28:05.522Z",
+  "finishedAt": "2026-08-27T18:41:17.524Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 4379,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 4379,
+    "matched_exact": 4219,
+    "matched_high": 88,
+    "ambiguous": 10,
+    "unnamed": 0,
+    "new_candidates": 62,
+    "records_persisted": 62,
+    "enriched": 88,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 62,
+    "errors": 0,
+    "enrichment_writes_applied": 88,
+    "insert_attempted": 62,
+    "insert_conflicts": 0,
+    "insert_returned": 62,
+    "insert_verified": 62,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 62,
+    "rejected_by_reason": {
+      "CONTACT_MISSING": 62,
+      "MATCHED_EXISTING": 4317
+    }
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#FL-2026-ZX6JK",
+        "name": "KFC Gelael",
+        "category": "fast-food",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZX6JM",
+        "name": "Food Colony",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZX6JN",
+        "name": "Kuliner Sore Gang Pinang",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZX6JP",
+        "name": "Roti Paris",
+        "category": "ice-cream-dessert",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZX6JQ",
+        "name": "Jessy Bread",
+        "category": "ice-cream-dessert",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZX6JR",
+        "name": "Pasar Palsigunung",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZX6JS",
+        "name": "Alex Pizza e Pasta",
+        "category": "fast-food",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZX6JT",
+        "name": "Sinar Garut Bogasari 3",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [
+      {
+        "candidateName": "sushimise Kemang",
+        "existingName": "Holywings Kemang",
+        "existingRef": "#FL-2026-ZTH0Z",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Pasar Tradisional Arinda",
+        "existingName": "Pasar Arinda",
+        "existingRef": "#FL-2026-ZTGT1",
+        "score": "0.800"
+      },
+      {
+        "candidateName": "PHD - Pizza Hut",
+        "existingName": "PHD (Pizza Hut Delivery)",
+        "existingRef": "#FL-2026-ZTE8A",
+        "score": "0.675"
+      },
+      {
+        "candidateName": "Pasar Mobil Kemayoran",
+        "existingName": "Pasar Kemayoran",
+        "existingRef": "#FL-2026-ZTH5X",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Total Buah Segar Waru",
+        "existingName": "Total Buah Segar",
+        "existingRef": "#FL-2026-ZTHBC",
+        "score": "0.675"
+      },
+      {
+        "candidateName": "Total Buah Segar Sunda",
+        "existingName": "Total Buah Segar",
+        "existingRef": "#FL-2026-ZTHBC",
+        "score": "0.675"
+      },
+      {
+        "candidateName": "Holland Bakery Bintaro",
+        "existingName": "Holland Bakery",
+        "existingRef": "#FL-2026-ZTHTV",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Harvest Mangga Besar",
+        "existingName": "Sogogi Shabu & Grill Mangga Besar",
+        "existingRef": "#FL-2026-ZTH9Y",
+        "score": "0.600"
+      }
+    ],
+    "contactable": [],
+    "rejected": [
+      {
+        "publicRef": "#FL-2026-ZX6JK",
+        "name": "KFC Gelael",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZX6JM",
+        "name": "Food Colony",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZX6JN",
+        "name": "Kuliner Sore Gang Pinang",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZX6JP",
+        "name": "Roti Paris",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZX6JQ",
+        "name": "Jessy Bread",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 62,
+    "insert_verified": 62,
+    "delta": 0
+  },
+  "cycle_outcome": "PARTIAL"
+}

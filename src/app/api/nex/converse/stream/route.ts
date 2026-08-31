@@ -31,6 +31,11 @@ import { tryReflex } from "@/lib/nex/reflex/reflex-brain";
 import { routeToBrain, brainHintForPrompt } from "@/lib/nex/router/brain-router";
 import { toolsForSurface } from "@/lib/nex/tools/registry";
 import { runAgenticStream } from "@/lib/nex/runtimeStream";
+import { runProviderStream } from "@/lib/nex/runtimeProviderStream";
+import { runLocalFirstStream } from "@/lib/nex/runtimeLocalFirst";
+import { resolveNexBrainWithFallback } from "@/lib/nex/brain/resolve";
+import { pickRole } from "@/lib/nex/routing";
+import { decideRag, ragTopics } from "@/lib/nex/indonesia/rag";
 import type { AnthropicMessage, AnthropicContentBlock } from "@/lib/llm/anthropic";
 import {
   resolveUserKey, checkDailyCap, isMerchantUncapped, bumpUsage, loadHistory,
@@ -176,6 +181,23 @@ export async function POST(req: NextRequest): Promise<Response> {
     });
   }
 
+  // ────────────────────────────────────────────────────────────────
+  // Provider selection (2026-08-30 · local-first architecture)
+  // ────────────────────────────────────────────────────────────────
+  // Text chat routes through the fast (3B) or primary (7B) local
+  // brain based on message complexity; vision requests route through
+  // the local Qwen2.5-VL 3B. If any of those local paths errors before
+  // emitting a text delta, runLocalFirstStream silently swaps to the
+  // existing Anthropic runtime — so the user never sees a raw
+  // provider failure. Set NEX_BRAIN_PROVIDER=ollama to enable the
+  // local dispatch; without it (or when Ollama is unreachable at
+  // request time), the resolver returns Anthropic directly.
+  const requiresVision = Boolean(validatedImage);
+  const routing = pickRole({ message, hasImage: requiresVision });
+  const localRole = routing.role;
+  const brainResolution = await resolveNexBrainWithFallback({ role: localRole });
+  const useLocalProvider = brainResolution.provider.id.startsWith("ollama:");
+
   const model = validatedImage ? MODEL_OPUS : pickModel(message);
   const thinkingBudget = pickThinkingBudget(model, message);
   const maxTokens = thinkingBudget > 0 ? thinkingBudget + 700 : 700;
@@ -226,6 +248,16 @@ export async function POST(req: NextRequest): Promise<Response> {
     brainHintForPrompt(brainRoute)
   ].filter((s) => s !== null).join("\n");
 
+  // ─── Indonesia RAG (Philip 2026-08-30) ─────────────────────────
+  // Consult the curated Indonesia knowledge corpus. When intent is
+  // indonesia/tourism/food/places (or booking/weather/business with
+  // secondary=indonesia), the retrieved facts are appended to the
+  // system prompt with a "don't invent" guardrail. Chit-chat and
+  // specialist intents pass through with no attachment — feeding
+  // Bali facts to "Hi NEX" would confuse the model.
+  const ragDecision = decideRag(message);
+  const freshSystemWithRag = freshSystem + ragDecision.systemPromptSuffix;
+
   const currentTurn: AnthropicMessage = validatedImage
     ? {
         role: "user",
@@ -262,18 +294,46 @@ export async function POST(req: NextRequest): Promise<Response> {
 
       let fullText  = "";
       let costPence = 0;
+      let servedByFallback = false;
+      let modelForRecord = useLocalProvider ? brainResolution.provider.id : model;
+      const toolCtx = {
+        surface:     surface as "merchant" | "homeowner" | "visitor",
+        userKey:     user.key,
+        slug:        surface === "merchant" ? user.key : undefined,
+        homeownerId: surface === "homeowner" ? user.key : undefined
+      };
+
+      const anthropicRuntime = () => runAgenticStream({
+        cachedSystem, system: freshSystemWithRag, messages, tools, model,
+        ctx: toolCtx,
+        maxTokens, temperature: 0.35, thinkingBudgetTokens: thinkingBudget
+      });
 
       try {
-        for await (const evt of runAgenticStream({
-          cachedSystem, system: freshSystem, messages, tools, model,
-          ctx: {
-            surface:     surface as "merchant" | "homeowner" | "visitor",
-            userKey:     user.key,
-            slug:        surface === "merchant" ? user.key : undefined,
-            homeownerId: surface === "homeowner" ? user.key : undefined
-          },
-          maxTokens, temperature: 0.35, thinkingBudgetTokens: thinkingBudget
-        })) {
+        // Local Ollama path with silent Anthropic fallback if the
+        // local stream errors before emitting any user-visible text
+        // (runLocalFirstStream contract). Text and vision requests
+        // both flow through this pattern; only the resolved provider's
+        // model differs (7B/3B for text, Qwen-VL 3B for vision).
+        const eventStream = useLocalProvider
+          ? runLocalFirstStream({
+              local: () => runProviderStream({
+                provider: brainResolution.provider,
+                systemPrompt: `${cachedSystem}\n\n${freshSystemWithRag}`,
+                messages, tools,
+                ctx: toolCtx,
+                maxTokens, temperature: 0.35, thinkingBudgetTokens: thinkingBudget,
+              }),
+              fallback: process.env.ANTHROPIC_API_KEY ? anthropicRuntime : undefined,
+              onSwap: (reason) => {
+                servedByFallback = true;
+                modelForRecord = model; // Anthropic is now serving
+                console.warn(`[nex/stream] local→cloud swap · ${brainResolution.provider.id} → ${model} · reason: ${reason}`);
+              },
+            })
+          : anthropicRuntime();
+
+        for await (const evt of eventStream) {
           if (evt.type === "text") {
             fullText += evt.delta;
             send(evt);
@@ -284,18 +344,25 @@ export async function POST(req: NextRequest): Promise<Response> {
           } else if (evt.type === "tool_start" || evt.type === "tool_end") {
             send(evt);
           } else if (evt.type === "done") {
-            const p = PRICING[model];
-            const usd = (evt.usage.inputTokens / 1_000_000) * p.input
-                      + (evt.usage.outputTokens / 1_000_000) * p.output
-                      + (evt.usage.cacheReadTokens / 1_000_000) * p.cache_read;
-            costPence = Math.ceil(usd * GBP_PER_USD * 100);
+            // Cost applies whenever Anthropic actually served the
+            // response — either the primary path or a fallback swap.
+            const anthropicServed = !useLocalProvider || servedByFallback;
+            if (!anthropicServed) {
+              costPence = 0;
+            } else {
+              const p = PRICING[model];
+              const usd = (evt.usage.inputTokens / 1_000_000) * p.input
+                        + (evt.usage.outputTokens / 1_000_000) * p.output
+                        + (evt.usage.cacheReadTokens / 1_000_000) * p.cache_read;
+              costPence = Math.ceil(usd * GBP_PER_USD * 100);
+            }
 
             // Persist assistant message
             const { data: replyRow } = await supabaseAdmin.from("hammerex_mate_messages").insert({
               conversation_id:      convId,
               role:                 "assistant",
               content:              fullText || "Not sure how to answer that, mate — try rephrasing?",
-              model,
+              model:                modelForRecord,
               input_tokens:         evt.usage.inputTokens,
               output_tokens:        evt.usage.outputTokens,
               cache_read_tokens:    evt.usage.cacheReadTokens,
@@ -308,7 +375,17 @@ export async function POST(req: NextRequest): Promise<Response> {
                 fact_keys:            Object.keys(ctx.systemFacts),
                 tools_available:      tools.map((t) => t.name),
                 stopped_by:           evt.stoppedBy,
-                streamed:             true
+                streamed:             true,
+                provider:             servedByFallback ? "anthropic" : useLocalProvider ? "ollama" : "anthropic",
+                provider_reason:      brainResolution.reason,
+                served_by_fallback:   servedByFallback,
+                requested_role:       localRole,
+                routing_reason:       routing.reason,
+                intent:               ragDecision.intent.intent,
+                intent_reason:        ragDecision.intent.reason,
+                rag_attached:         ragDecision.attached,
+                rag_reason:           ragDecision.reason,
+                knowledge_topics:     ragTopics(ragDecision)
               },
               tool_calls:           evt.toolCalls
             }).select("id").single();
@@ -317,7 +394,7 @@ export async function POST(req: NextRequest): Promise<Response> {
               type: "done",
               message_id: replyRow?.id ?? null,
               cost_pence: costPence,
-              model_used: model
+              model_used: modelForRecord
             });
 
             // Fire-and-forget bookkeeping

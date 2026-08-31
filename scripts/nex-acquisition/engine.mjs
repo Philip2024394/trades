@@ -28,6 +28,7 @@ import {
   createRejectionCounter,
   computeCycleOutcome,
 } from "../nex-worker/rejection-reasons.mjs";
+import { resolveIdentity, mergeEnrichment } from "../nex-worker/identity-resolver.mjs";
 
 const CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
 
@@ -161,11 +162,75 @@ export async function persistCandidates(pool, candidates, config, { workerId, cy
   const results = {
     insertAttempted: 0, insertReturned: 0, insertVerified: 0,
     conflictSkipped: 0, verificationFailed: 0, errors: 0,
+    resolverMerged: 0, resolverCandidateLogged: 0,
   };
   const { destinationTable, primaryKeyColumn, buildInsert, writeSideEffects } = config.persistence;
 
   for (const c of candidates) {
     results.insertAttempted++;
+
+    // ── Phase 1a · resolver pre-check (Philip 2026-08-27) ────────────────
+    // Every INSERT must first pass through the shared identity resolver.
+    // STRONG match → merge into existing row via mergeEnrichment · skip INSERT.
+    // CANDIDATE match → log observation to identity_merge_log · proceed to INSERT.
+    // NONE → proceed to INSERT.
+    // Doctrine: project_nex_dedup_and_identity_resolution_doctrine_2026_08_27.md
+    try {
+      const incomingForLog = {
+        source: c.sourceType ?? c.sourceName ?? "engine",
+        sourceReference: c.sourceReference ?? null,
+        name: c.name,
+        city: c.city ?? config.city ?? null,
+        website: c.website ?? null,
+        phone: c.phone ?? null,
+        whatsapp: c.whatsapp ?? null,
+        lat: c.lat, lng: c.lng,
+        extras: { address: c.address ?? null },
+      };
+      const resolved = await resolveIdentity(pool, {
+        table: destinationTable,
+        candidate: incomingForLog,
+      });
+      if (resolved.match === "strong") {
+        const enrichableFields = [];
+        const incomingValues = {};
+        if (c.address)      { enrichableFields.push("address");           incomingValues.address = c.address; }
+        if (c.phone)        { enrichableFields.push("phone");             incomingValues.phone = c.phone; }
+        if (c.whatsapp)     { enrichableFields.push("whatsapp_number");   incomingValues.whatsapp_number = c.whatsapp; }
+        if (c.website)      { enrichableFields.push("website");           incomingValues.website = c.website; }
+        if (c.lat != null)  { enrichableFields.push("coordinates_lat");   incomingValues.coordinates_lat = c.lat; }
+        if (c.lng != null)  { enrichableFields.push("coordinates_lng");   incomingValues.coordinates_lng = c.lng; }
+        await mergeEnrichment(pool, {
+          table: destinationTable,
+          existing: resolved.existing,
+          incoming: incomingForLog,
+          layer: resolved.layer,
+          enrichableFields,
+          incomingValues,
+          workerId, cycleRunId,
+        });
+        results.resolverMerged++;
+        results.conflictSkipped++;   // treated as "skipped INSERT" for legacy metrics parity
+        continue;
+      }
+      if (resolved.match === "candidate") {
+        await mergeEnrichment(pool, {
+          table: destinationTable,
+          existing: resolved.existing,
+          incoming: incomingForLog,
+          layer: "name_city",
+          enrichableFields: [], incomingValues: {},
+          workerId, cycleRunId,
+        }).catch(() => {});
+        results.resolverCandidateLogged++;
+        // Fall through to INSERT — evidence insufficient for merge.
+      }
+    } catch (err) {
+      // Resolver failure must NOT block persistence · log and proceed
+      // to INSERT (ON CONFLICT is still last-line defense).
+      results.errors++;
+    }
+
     // buildInsert is invoked with `this` bound to config so it can read
     // this.city / this.country / this.tables / etc. exactly like the
     // legacy insertNewRecord method did.

@@ -36,6 +36,30 @@ function isCategory(x: string | undefined): x is DirectoryCategory {
   return !!x && (DIRECTORY_CATEGORIES as readonly string[]).includes(x);
 }
 
+// Display label for the category chip. Legacy categories capitalise their
+// single word · service categories translate `services-X` → `Services · X`.
+// Philip 2026-08-27 (A1): HQ admin only · public /services routes come later.
+function categoryLabel(cat: DirectoryCategory): string {
+  if (cat.startsWith("services-")) {
+    const rest = cat.slice("services-".length);
+    // "car-repair" → "Car Repair"
+    const pretty = rest.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+    return `Services · ${pretty}`;
+  }
+  return cat.charAt(0).toUpperCase() + cat.slice(1);
+}
+
+function sourceTableLabel(cat: DirectoryCategory): string {
+  if (cat === "food") return "nex.food_business";
+  if (cat === "accommodation") return "nex.accommodation_business";
+  if (cat === "market") return "nex.mp_seller";
+  if (cat === "transport") return "nex.transport_acquisition_record";
+  if (cat.startsWith("services-")) {
+    return `nex.service_business · category_slug='${cat.slice("services-".length)}'`;
+  }
+  return "unknown";
+}
+
 export default async function DirectoryAdminPage({
   searchParams,
 }: {
@@ -97,7 +121,7 @@ export default async function DirectoryAdminPage({
                 fontWeight: 600,
               }}
             >
-              {t.category.charAt(0).toUpperCase() + t.category.slice(1)}
+              {categoryLabel(t.category)}
               <span style={{
                 marginLeft: 8,
                 fontSize: 11,
@@ -114,10 +138,7 @@ export default async function DirectoryAdminPage({
       {/* City selector · dynamic list drawn from the current category's real rows. */}
       <section style={{ marginBottom: 20 }}>
         <div style={{ fontSize: 12, color: "#a3a3a3", marginBottom: 6 }}>
-          City / area · counts from <code>nex.{category === "food" ? "food_business" :
-                                                category === "accommodation" ? "accommodation_business" :
-                                                category === "market" ? "mp_seller" :
-                                                "transport_acquisition_record"}</code>
+          City / area · counts from <code>{sourceTableLabel(category)}</code>
         </div>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
           <Link

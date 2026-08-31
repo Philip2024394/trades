@@ -1,0 +1,1186 @@
+
+════════════════════════════════════════════════════════════════════════
+  Phase 2 live chain observation · AFTER_T+25min @ 2026-08-24T12:02:35.286Z
+════════════════════════════════════════════════════════════════════════
+Cutover 8 boundary: 2026-08-24 10:41:47+00 · new cities: Jakarta, Denpasar, Surabaya, Bandung, Semarang
+
+════════════════════════════════════════════════════════════════════════
+  §1 · Per-new-city chain · pick → cycle → persist → directory count
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Jakarta",
+    "picked_since_cutover8": 13,
+    "cycles_since_cutover8": 13,
+    "cycles_detail": [
+      {
+        "worker_config": "transport:Jakarta:query-universe-v1",
+        "status": "aborted",
+        "records_processed": null,
+        "records_new": null,
+        "age_or_dur": 959
+      },
+      {
+        "worker_config": "market:jakarta:nominatim",
+        "status": "aborted",
+        "records_processed": null,
+        "records_new": null,
+        "age_or_dur": 1017
+      },
+      {
+        "worker_config": "food:Jakarta:jakarta",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 114
+      },
+      {
+        "worker_config": "food:Jakarta:jakarta",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 132
+      },
+      {
+        "worker_config": "food:Jakarta:jakarta",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 52
+      },
+      {
+        "worker_config": "transport:Jakarta:query-universe-v1",
+        "status": "failed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 1843
+      },
+      {
+        "worker_config": "market:jakarta:nominatim",
+        "status": "completed",
+        "records_processed": 61,
+        "records_new": 42,
+        "age_or_dur": 1580
+      },
+      {
+        "worker_config": "transport:Jakarta:query-universe-v1",
+        "status": "failed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 301
+      },
+      {
+        "worker_config": "accommodation:Jakarta:jakarta",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 62
+      },
+      {
+        "worker_config": "accommodation:Jakarta:jakarta",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 0
+      },
+      {
+        "worker_config": "food:Jakarta:jakarta",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 0
+      },
+      {
+        "worker_config": "food:Jakarta:jakarta",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 23
+      },
+      {
+        "worker_config": "accommodation:Jakarta:jakarta",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 174
+      }
+    ],
+    "directory_row_counts": {
+      "food": 0,
+      "accommodation": 0,
+      "market": 0,
+      "transport": 0
+    }
+  }
+]
+[
+  {
+    "city": "Denpasar",
+    "picked_since_cutover8": 9,
+    "cycles_since_cutover8": 9,
+    "cycles_detail": [
+      {
+        "worker_config": "market:denpasar:nominatim",
+        "status": "aborted",
+        "records_processed": null,
+        "records_new": null,
+        "age_or_dur": 959
+      },
+      {
+        "worker_config": "transport:Denpasar:query-universe-v1",
+        "status": "failed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 300
+      },
+      {
+        "worker_config": "food:Denpasar:denpasar",
+        "status": "aborted",
+        "records_processed": null,
+        "records_new": null,
+        "age_or_dur": 1080
+      },
+      {
+        "worker_config": "market:denpasar:nominatim",
+        "status": "completed",
+        "records_processed": 49,
+        "records_new": 38,
+        "age_or_dur": 1134
+      },
+      {
+        "worker_config": "transport:Denpasar:query-universe-v1",
+        "status": "failed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 1326
+      },
+      {
+        "worker_config": "food:Denpasar:denpasar",
+        "status": "completed",
+        "records_processed": 2521,
+        "records_new": 2521,
+        "age_or_dur": 932
+      },
+      {
+        "worker_config": "accommodation:Denpasar:denpasar",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 124
+      },
+      {
+        "worker_config": "accommodation:Denpasar:denpasar",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 0
+      },
+      {
+        "worker_config": "accommodation:Denpasar:denpasar",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 1
+      }
+    ],
+    "directory_row_counts": {
+      "food": 2521,
+      "accommodation": 0,
+      "market": 25,
+      "transport": 0
+    }
+  }
+]
+[
+  {
+    "city": "Surabaya",
+    "picked_since_cutover8": 10,
+    "cycles_since_cutover8": 10,
+    "cycles_detail": [
+      {
+        "worker_config": "market:surabaya:nominatim",
+        "status": "running",
+        "records_processed": null,
+        "records_new": null,
+        "age_or_dur": 569
+      },
+      {
+        "worker_config": "transport:Surabaya:query-universe-v1",
+        "status": "aborted",
+        "records_processed": null,
+        "records_new": null,
+        "age_or_dur": 1079
+      },
+      {
+        "worker_config": "market:surabaya:nominatim",
+        "status": "completed",
+        "records_processed": 56,
+        "records_new": 53,
+        "age_or_dur": 1498
+      },
+      {
+        "worker_config": "transport:Surabaya:query-universe-v1",
+        "status": "aborted",
+        "records_processed": null,
+        "records_new": null,
+        "age_or_dur": 1080
+      },
+      {
+        "worker_config": "food:Surabaya:surabaya",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 57
+      },
+      {
+        "worker_config": "food:Surabaya:surabaya",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 76
+      },
+      {
+        "worker_config": "food:Surabaya:surabaya",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 159
+      },
+      {
+        "worker_config": "accommodation:Surabaya:surabaya",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 30
+      },
+      {
+        "worker_config": "accommodation:Surabaya:surabaya",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 83
+      },
+      {
+        "worker_config": "accommodation:Surabaya:surabaya",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 1
+      }
+    ],
+    "directory_row_counts": {
+      "food": 0,
+      "accommodation": 0,
+      "market": 52,
+      "transport": 0
+    }
+  }
+]
+[
+  {
+    "city": "Bandung",
+    "picked_since_cutover8": 10,
+    "cycles_since_cutover8": 10,
+    "cycles_detail": [
+      {
+        "worker_config": "market:bandung:nominatim",
+        "status": "running",
+        "records_processed": null,
+        "records_new": null,
+        "age_or_dur": 509
+      },
+      {
+        "worker_config": "transport:Bandung:query-universe-v1",
+        "status": "running",
+        "records_processed": null,
+        "records_new": null,
+        "age_or_dur": 569
+      },
+      {
+        "worker_config": "food:Bandung:bandung",
+        "status": "completed",
+        "records_processed": 2118,
+        "records_new": 2012,
+        "age_or_dur": 278
+      },
+      {
+        "worker_config": "accommodation:Bandung:bandung",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 92
+      },
+      {
+        "worker_config": "accommodation:Bandung:bandung",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 216
+      },
+      {
+        "worker_config": "accommodation:Bandung:bandung",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 92
+      },
+      {
+        "worker_config": "market:bandung:nominatim",
+        "status": "aborted",
+        "records_processed": null,
+        "records_new": null,
+        "age_or_dur": 900
+      },
+      {
+        "worker_config": "transport:Bandung:query-universe-v1",
+        "status": "failed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 919
+      },
+      {
+        "worker_config": "food:Bandung:bandung",
+        "status": "completed",
+        "records_processed": 2118,
+        "records_new": 0,
+        "age_or_dur": 563
+      },
+      {
+        "worker_config": "accommodation:Bandung:bandung",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 1
+      }
+    ],
+    "directory_row_counts": {
+      "food": 2012,
+      "accommodation": 0,
+      "market": 0,
+      "transport": 0
+    }
+  }
+]
+[
+  {
+    "city": "Semarang",
+    "picked_since_cutover8": 15,
+    "cycles_since_cutover8": 15,
+    "cycles_detail": [
+      {
+        "worker_config": "transport:Semarang:query-universe-v1",
+        "status": "aborted",
+        "records_processed": null,
+        "records_new": null,
+        "age_or_dur": 1079
+      },
+      {
+        "worker_config": "market:semarang:nominatim",
+        "status": "aborted",
+        "records_processed": null,
+        "records_new": null,
+        "age_or_dur": 900
+      },
+      {
+        "worker_config": "transport:Semarang:query-universe-v1",
+        "status": "failed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 450
+      },
+      {
+        "worker_config": "food:Semarang:semarang",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 121
+      },
+      {
+        "worker_config": "food:Semarang:semarang",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 62
+      },
+      {
+        "worker_config": "market:semarang:nominatim",
+        "status": "completed",
+        "records_processed": 54,
+        "records_new": 34,
+        "age_or_dur": 1199
+      },
+      {
+        "worker_config": "food:Semarang:semarang",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 62
+      },
+      {
+        "worker_config": "food:Semarang:semarang",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 54
+      },
+      {
+        "worker_config": "transport:Semarang:query-universe-v1",
+        "status": "failed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 445
+      },
+      {
+        "worker_config": "food:Semarang:semarang",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 60
+      },
+      {
+        "worker_config": "accommodation:Semarang:semarang",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 210
+      },
+      {
+        "worker_config": "accommodation:Semarang:semarang",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 14
+      },
+      {
+        "worker_config": "accommodation:Semarang:semarang",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 56
+      },
+      {
+        "worker_config": "accommodation:Semarang:semarang",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 0
+      },
+      {
+        "worker_config": "accommodation:Semarang:semarang",
+        "status": "completed",
+        "records_processed": 0,
+        "records_new": 0,
+        "age_or_dur": 1
+      }
+    ],
+    "directory_row_counts": {
+      "food": 0,
+      "accommodation": 0,
+      "market": 0,
+      "transport": 0
+    }
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §2 · Old-city loop invariants
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "post_saturation_cycles": "15",
+    "orphan_bypass": "0",
+    "serialization_errors": "0",
+    "zombies_reconciled": "17",
+    "legacy_market_worker_configs": "0"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §3 · Non-Yogyakarta prambanan leak sentinel
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "non_yogya_prambanan_leaks_since_cutover8": "0"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §4 · SKIP_DUPLICATE storm sentinel · picks vs cycle creations by combo
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Klaten",
+    "category": "food",
+    "picks": "10",
+    "actual_cycles": "1",
+    "skip_duplicates_estimate": "9"
+  },
+  {
+    "city": "Klaten",
+    "category": "food",
+    "picks": "10",
+    "actual_cycles": "1",
+    "skip_duplicates_estimate": "9"
+  },
+  {
+    "city": "Klaten",
+    "category": "accommodation",
+    "picks": "6",
+    "actual_cycles": "1",
+    "skip_duplicates_estimate": "5"
+  },
+  {
+    "city": "Magelang",
+    "category": "food",
+    "picks": "6",
+    "actual_cycles": "1",
+    "skip_duplicates_estimate": "5"
+  },
+  {
+    "city": "Klaten",
+    "category": "accommodation",
+    "picks": "6",
+    "actual_cycles": "1",
+    "skip_duplicates_estimate": "5"
+  },
+  {
+    "city": "Magelang",
+    "category": "food",
+    "picks": "6",
+    "actual_cycles": "2",
+    "skip_duplicates_estimate": "4"
+  },
+  {
+    "city": "Klaten",
+    "category": "food",
+    "picks": "10",
+    "actual_cycles": "6",
+    "skip_duplicates_estimate": "4"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "accommodation",
+    "picks": "5",
+    "actual_cycles": "1",
+    "skip_duplicates_estimate": "4"
+  },
+  {
+    "city": "Jakarta",
+    "category": "food",
+    "picks": "5",
+    "actual_cycles": "2",
+    "skip_duplicates_estimate": "3"
+  },
+  {
+    "city": "Semarang",
+    "category": "food",
+    "picks": "5",
+    "actual_cycles": "2",
+    "skip_duplicates_estimate": "3"
+  },
+  {
+    "city": "Semarang",
+    "category": "accommodation",
+    "picks": "5",
+    "actual_cycles": "2",
+    "skip_duplicates_estimate": "3"
+  },
+  {
+    "city": "Bandung",
+    "category": "accommodation",
+    "picks": "4",
+    "actual_cycles": "2",
+    "skip_duplicates_estimate": "2"
+  },
+  {
+    "city": "Bandung",
+    "category": "accommodation",
+    "picks": "4",
+    "actual_cycles": "2",
+    "skip_duplicates_estimate": "2"
+  },
+  {
+    "city": "Bandung",
+    "category": "accommodation",
+    "picks": "4",
+    "actual_cycles": "2",
+    "skip_duplicates_estimate": "2"
+  },
+  {
+    "city": "Jakarta",
+    "category": "food",
+    "picks": "5",
+    "actual_cycles": "3",
+    "skip_duplicates_estimate": "2"
+  },
+  {
+    "city": "Jakarta",
+    "category": "food",
+    "picks": "5",
+    "actual_cycles": "3",
+    "skip_duplicates_estimate": "2"
+  },
+  {
+    "city": "Semarang",
+    "category": "accommodation",
+    "picks": "5",
+    "actual_cycles": "3",
+    "skip_duplicates_estimate": "2"
+  },
+  {
+    "city": "Semarang",
+    "category": "food",
+    "picks": "5",
+    "actual_cycles": "3",
+    "skip_duplicates_estimate": "2"
+  },
+  {
+    "city": "Jakarta",
+    "category": "accommodation",
+    "picks": "3",
+    "actual_cycles": "2",
+    "skip_duplicates_estimate": "1"
+  },
+  {
+    "city": "Denpasar",
+    "category": "accommodation",
+    "picks": "3",
+    "actual_cycles": "2",
+    "skip_duplicates_estimate": "1"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §5 · Current in-flight cycles + new-city rotation state
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "worker_config": "market:surabaya:nominatim",
+    "age_s": 569
+  },
+  {
+    "worker_config": "transport:Bandung:query-universe-v1",
+    "age_s": 569
+  },
+  {
+    "worker_config": "transport:Yogyakarta:query-universe-v1",
+    "age_s": 569
+  },
+  {
+    "worker_config": "market:bandung:nominatim",
+    "age_s": 509
+  },
+  {
+    "worker_config": "transport:Bantul:query-universe-v1",
+    "age_s": 329
+  },
+  {
+    "worker_config": "transport:Kulon Progo:query-universe-v1",
+    "age_s": 149
+  },
+  {
+    "worker_config": "transport:Sleman:query-universe-v1",
+    "age_s": 149
+  },
+  {
+    "worker_config": "market:yogyakarta:nominatim",
+    "age_s": 149
+  }
+]
+[
+  {
+    "city": "Bandung",
+    "category": "accommodation",
+    "surface": "bandung",
+    "state": "saturated",
+    "state_entered_at": "2026-08-24T11:42:37.917Z"
+  },
+  {
+    "city": "Bandung",
+    "category": "food",
+    "surface": "bandung",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:35:18.107Z"
+  },
+  {
+    "city": "Bandung",
+    "category": "market",
+    "surface": "nominatim",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:35:18.118Z"
+  },
+  {
+    "city": "Bandung",
+    "category": "transport",
+    "surface": "query-universe-v1",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:35:18.113Z"
+  },
+  {
+    "city": "Denpasar",
+    "category": "accommodation",
+    "surface": "denpasar",
+    "state": "saturated",
+    "state_entered_at": "2026-08-24T10:52:35.763Z"
+  },
+  {
+    "city": "Denpasar",
+    "category": "food",
+    "surface": "denpasar",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:35:18.076Z"
+  },
+  {
+    "city": "Denpasar",
+    "category": "market",
+    "surface": "nominatim",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:35:18.083Z"
+  },
+  {
+    "city": "Denpasar",
+    "category": "transport",
+    "surface": "query-universe-v1",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:35:18.079Z"
+  },
+  {
+    "city": "Jakarta",
+    "category": "accommodation",
+    "surface": "jakarta",
+    "state": "saturated",
+    "state_entered_at": "2026-08-24T11:02:35.697Z"
+  },
+  {
+    "city": "Jakarta",
+    "category": "food",
+    "surface": "jakarta",
+    "state": "saturated",
+    "state_entered_at": "2026-08-24T11:42:37.834Z"
+  },
+  {
+    "city": "Jakarta",
+    "category": "market",
+    "surface": "nominatim",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:35:18.070Z"
+  },
+  {
+    "city": "Jakarta",
+    "category": "transport",
+    "surface": "query-universe-v1",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:35:18.067Z"
+  },
+  {
+    "city": "Semarang",
+    "category": "accommodation",
+    "surface": "semarang",
+    "state": "saturated",
+    "state_entered_at": "2026-08-24T10:52:35.727Z"
+  },
+  {
+    "city": "Semarang",
+    "category": "food",
+    "surface": "semarang",
+    "state": "saturated",
+    "state_entered_at": "2026-08-24T11:02:35.687Z"
+  },
+  {
+    "city": "Semarang",
+    "category": "market",
+    "surface": "nominatim",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:35:18.055Z"
+  },
+  {
+    "city": "Semarang",
+    "category": "transport",
+    "surface": "query-universe-v1",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:35:18.050Z"
+  },
+  {
+    "city": "Surabaya",
+    "category": "accommodation",
+    "surface": "surabaya",
+    "state": "saturated",
+    "state_entered_at": "2026-08-24T10:52:35.779Z"
+  },
+  {
+    "city": "Surabaya",
+    "category": "food",
+    "surface": "surabaya",
+    "state": "saturated",
+    "state_entered_at": "2026-08-24T11:12:35.820Z"
+  },
+  {
+    "city": "Surabaya",
+    "category": "market",
+    "surface": "nominatim",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:35:18.100Z"
+  },
+  {
+    "city": "Surabaya",
+    "category": "transport",
+    "surface": "query-universe-v1",
+    "state": "build",
+    "state_entered_at": "2026-08-24T10:35:18.096Z"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §6 · Full directory count snapshot (all 13 cities × 4 categories)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "category": "accommodation",
+    "city": "Yogyakarta",
+    "rows": "881"
+  },
+  {
+    "category": "accommodation",
+    "city": "Solo",
+    "rows": "163"
+  },
+  {
+    "category": "accommodation",
+    "city": "Sleman",
+    "rows": "56"
+  },
+  {
+    "category": "accommodation",
+    "city": "Gunungkidul",
+    "rows": "47"
+  },
+  {
+    "category": "accommodation",
+    "city": "Bantul",
+    "rows": "16"
+  },
+  {
+    "category": "accommodation",
+    "city": "Kulon Progo",
+    "rows": "6"
+  },
+  {
+    "category": "food",
+    "city": "Denpasar",
+    "rows": "2521"
+  },
+  {
+    "category": "food",
+    "city": "Bandung",
+    "rows": "2012"
+  },
+  {
+    "category": "food",
+    "city": "Yogyakarta",
+    "rows": "1246"
+  },
+  {
+    "category": "food",
+    "city": "Solo",
+    "rows": "505"
+  },
+  {
+    "category": "food",
+    "city": "Gunungkidul",
+    "rows": "405"
+  },
+  {
+    "category": "food",
+    "city": "Magelang",
+    "rows": "173"
+  },
+  {
+    "category": "food",
+    "city": "Klaten",
+    "rows": "107"
+  },
+  {
+    "category": "market",
+    "city": "Sleman",
+    "rows": "55"
+  },
+  {
+    "category": "market",
+    "city": "Surabaya",
+    "rows": "52"
+  },
+  {
+    "category": "market",
+    "city": "Kota Yogyakarta",
+    "rows": "44"
+  },
+  {
+    "category": "market",
+    "city": "Kota Semarang",
+    "rows": "34"
+  },
+  {
+    "category": "market",
+    "city": "Denpasar",
+    "rows": "25"
+  },
+  {
+    "category": "market",
+    "city": "Klaten",
+    "rows": "20"
+  },
+  {
+    "category": "market",
+    "city": "Bantul",
+    "rows": "18"
+  },
+  {
+    "category": "market",
+    "city": "Surakarta",
+    "rows": "17"
+  },
+  {
+    "category": "market",
+    "city": "Daerah Khusus Ibukota Jakarta",
+    "rows": "17"
+  },
+  {
+    "category": "market",
+    "city": "Kota Bandung",
+    "rows": "14"
+  },
+  {
+    "category": "market",
+    "city": "Banguntapan",
+    "rows": "12"
+  },
+  {
+    "category": "market",
+    "city": "Minggir",
+    "rows": "10"
+  },
+  {
+    "category": "market",
+    "city": "Kulonprogo",
+    "rows": "10"
+  },
+  {
+    "category": "market",
+    "city": "Jakarta Timur",
+    "rows": "10"
+  },
+  {
+    "category": "market",
+    "city": "Kuta Utara",
+    "rows": "9"
+  },
+  {
+    "category": "market",
+    "city": "Jakarta Pusat",
+    "rows": "7"
+  },
+  {
+    "category": "market",
+    "city": "Juwiring",
+    "rows": "7"
+  },
+  {
+    "category": "market",
+    "city": "Ngaglik",
+    "rows": "6"
+  },
+  {
+    "category": "market",
+    "city": "Jakarta Selatan",
+    "rows": "5"
+  },
+  {
+    "category": "market",
+    "city": "Delanggu",
+    "rows": "4"
+  },
+  {
+    "category": "market",
+    "city": "Patuk",
+    "rows": "4"
+  },
+  {
+    "category": "market",
+    "city": "Magelang",
+    "rows": "4"
+  },
+  {
+    "category": "market",
+    "city": "Kuta",
+    "rows": "4"
+  },
+  {
+    "category": "market",
+    "city": "Sedayu",
+    "rows": "4"
+  },
+  {
+    "category": "market",
+    "city": "Pedan",
+    "rows": "3"
+  },
+  {
+    "category": "market",
+    "city": "Berbah",
+    "rows": "3"
+  },
+  {
+    "category": "market",
+    "city": "Wonosari",
+    "rows": "3"
+  },
+  {
+    "category": "market",
+    "city": "Playen",
+    "rows": "3"
+  },
+  {
+    "category": "market",
+    "city": "Ngemplak",
+    "rows": "2"
+  },
+  {
+    "category": "market",
+    "city": "Kedungsari",
+    "rows": "2"
+  },
+  {
+    "category": "market",
+    "city": "Tangerang Selatan",
+    "rows": "2"
+  },
+  {
+    "category": "market",
+    "city": "Eromoko",
+    "rows": "2"
+  },
+  {
+    "category": "market",
+    "city": "Nanggulan",
+    "rows": "2"
+  },
+  {
+    "category": "market",
+    "city": "Kota Magelang",
+    "rows": "1"
+  },
+  {
+    "category": "market",
+    "city": "Srandakan",
+    "rows": "1"
+  },
+  {
+    "category": "market",
+    "city": "Depok",
+    "rows": "1"
+  },
+  {
+    "category": "market",
+    "city": "Tanjung",
+    "rows": "1"
+  },
+  {
+    "category": "market",
+    "city": "Semanu",
+    "rows": "1"
+  },
+  {
+    "category": "market",
+    "city": "Yogyakarta",
+    "rows": "1"
+  },
+  {
+    "category": "market",
+    "city": "Pedan City",
+    "rows": "1"
+  },
+  {
+    "category": "market",
+    "city": "Jemawan",
+    "rows": "1"
+  },
+  {
+    "category": "market",
+    "city": "Sidoarjo",
+    "rows": "1"
+  },
+  {
+    "category": "market",
+    "city": "Muntilan",
+    "rows": "1"
+  },
+  {
+    "category": "market",
+    "city": "Bambang lipuro",
+    "rows": "1"
+  },
+  {
+    "category": "market",
+    "city": "Jaten",
+    "rows": "1"
+  },
+  {
+    "category": "market",
+    "city": "Gedangsari",
+    "rows": "1"
+  },
+  {
+    "category": "market",
+    "city": "Kebonarum",
+    "rows": "1"
+  },
+  {
+    "category": "transport",
+    "city": null,
+    "rows": "66"
+  },
+  {
+    "category": "transport",
+    "city": "Kota Yogyakarta",
+    "rows": "16"
+  },
+  {
+    "category": "transport",
+    "city": "Sleman",
+    "rows": "15"
+  },
+  {
+    "category": "transport",
+    "city": "Bantul",
+    "rows": "4"
+  },
+  {
+    "category": "transport",
+    "city": "Banguntapan",
+    "rows": "2"
+  },
+  {
+    "category": "transport",
+    "city": "Klaten",
+    "rows": "1"
+  },
+  {
+    "category": "transport",
+    "city": "Pengasih",
+    "rows": "1"
+  },
+  {
+    "category": "transport",
+    "city": "Kasihan",
+    "rows": "1"
+  },
+  {
+    "category": "transport",
+    "city": "Berbah",
+    "rows": "1"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  END · AFTER_T+25min
+════════════════════════════════════════════════════════════════════════

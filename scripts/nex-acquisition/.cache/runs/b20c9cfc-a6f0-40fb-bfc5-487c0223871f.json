@@ -1,0 +1,210 @@
+{
+  "jobId": "b20c9cfc-a6f0-40fb-bfc5-487c0223871f",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Bandung",
+  "bbox": {
+    "sw": [
+      -7,
+      107.53
+    ],
+    "ne": [
+      -6.85,
+      107.75
+    ],
+    "scope": "Bandung · West Java"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T12:08:55.670Z",
+  "finishedAt": "2026-08-27T12:13:59.803Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 2139,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 2139,
+    "matched_exact": 2075,
+    "matched_high": 35,
+    "ambiguous": 9,
+    "unnamed": 0,
+    "new_candidates": 20,
+    "records_persisted": 20,
+    "enriched": 20,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 20,
+    "errors": 0,
+    "enrichment_writes_applied": 20,
+    "insert_attempted": 20,
+    "insert_conflicts": 0,
+    "insert_returned": 20,
+    "insert_verified": 20,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 20,
+    "rejected_by_reason": {
+      "CONTACT_MISSING": 20,
+      "MATCHED_EXISTING": 2119
+    }
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#FL-2026-ZTDYX",
+        "name": "Calf Coffee Industry",
+        "category": "coffee-cafe",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDYY",
+        "name": "Warung Tilu Nini",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDYZ",
+        "name": "Queen Legend",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDZ0",
+        "name": "Ketoprak",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDZ1",
+        "name": "Delapan Padi",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDZ2",
+        "name": "Nomora",
+        "category": "coffee-cafe",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDZ3",
+        "name": "Pang Waffle",
+        "category": "fast-food",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDZ4",
+        "name": "Bakso Malang Kiara",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [
+      {
+        "candidateName": "Yoghurt Cisangkuy",
+        "existingName": "Pasar Cisangkuy",
+        "existingRef": "#FL-2026-005PZ",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Pizza Place",
+        "existingName": "Richeese Pizza",
+        "existingRef": "#FL-2026-0067T",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Rumah Makan Padang",
+        "existingName": "Rumah Makan Padang Shanum",
+        "existingRef": "#FL-2026-0065A",
+        "score": "0.675"
+      },
+      {
+        "candidateName": "Warung Surabi Setiabudhi",
+        "existingName": "Waroeng Setiabudhi Surabi & Baso Kampung",
+        "existingRef": "#FL-2026-00584",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "RM Padang Sederhana",
+        "existingName": "Rumah Makan Padang Sederhana",
+        "existingRef": "#FL-2026-006FP",
+        "score": "0.640"
+      },
+      {
+        "candidateName": "Fullmoon Coffee",
+        "existingName": "Fullmoom Coffee",
+        "existingRef": "#FL-2026-006AX",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Wingz O'Wingz Antapani",
+        "existingName": "Wingz o Wingz",
+        "existingRef": "#FL-2026-005HH",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Bakso Semar Asli",
+        "existingName": "Bakso Semar",
+        "existingRef": "#FL-2026-006KC",
+        "score": "0.800"
+      }
+    ],
+    "contactable": [],
+    "rejected": [
+      {
+        "publicRef": "#FL-2026-ZTDYX",
+        "name": "Calf Coffee Industry",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDYY",
+        "name": "Warung Tilu Nini",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDYZ",
+        "name": "Queen Legend",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDZ0",
+        "name": "Ketoprak",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDZ1",
+        "name": "Delapan Padi",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 20,
+    "insert_verified": 20,
+    "delta": 0
+  },
+  "cycle_outcome": "PARTIAL"
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "C-greeting-en",
+    "note": "Plain English greeting → conversation intent",
+    "input": { "message": "Hi NEX", "hasImage": false },
+    "expect": { "intent": "conversation", "reasonPattern": "^greeting$" }
+  },
+  {
+    "id": "C-greeting-en-question",
+    "note": "'How are you?' → conversation",
+    "input": { "message": "How are you?", "hasImage": false },
+    "expect": { "intent": "conversation", "reasonPattern": "^greeting$" }
+  },
+  {
+    "id": "C-greeting-id",
+    "note": "Indonesian greeting → conversation",
+    "input": { "message": "Halo NEX, apa kabar?", "hasImage": false },
+    "expect": { "intent": "conversation", "reasonPattern": "^greeting$" }
+  },
+  {
+    "id": "C-meta",
+    "note": "meta-about-NEX → conversation",
+    "input": { "message": "What can you do?", "hasImage": false },
+    "expect": { "intent": "conversation", "reasonPattern": "^meta_about_nex$" }
+  },
+  {
+    "id": "C-small-talk",
+    "note": "'Tell me something interesting' → conversation",
+    "input": { "message": "Tell me something interesting", "hasImage": false },
+    "expect": { "intent": "conversation", "reasonPattern": "^small_talk$" }
+  },
+  {
+    "id": "C-thanks",
+    "note": "'Thanks' → conversation",
+    "input": { "message": "Thanks", "hasImage": false },
+    "expect": { "intent": "conversation", "reasonPattern": "^small_talk$" }
+  }
+]

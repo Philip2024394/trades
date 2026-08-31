@@ -1,0 +1,663 @@
+{
+  "schemaVersion": 1,
+  "takenAt": "2026-08-30T16:44:28.265Z",
+  "workers": [
+    {
+      "id": "worker:walker.adat.communities:bali",
+      "walkerId": "walker.adat.communities",
+      "region": "Bali",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.206Z",
+      "stateChangedAt": "2026-08-30T16:44:28.157Z",
+      "recordsPublished": 5,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.280Z"
+    },
+    {
+      "id": "worker:walker.adat.communities:java",
+      "walkerId": "walker.adat.communities",
+      "region": "Java",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.208Z",
+      "stateChangedAt": "2026-08-30T16:44:28.160Z",
+      "recordsPublished": 5,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.292Z"
+    },
+    {
+      "id": "worker:walker.adat.communities:sumatra",
+      "walkerId": "walker.adat.communities",
+      "region": "Sumatra",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.209Z",
+      "stateChangedAt": "2026-08-30T16:44:28.165Z",
+      "recordsPublished": 5,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.311Z"
+    },
+    {
+      "id": "worker:walker.adat.communities:sulawesi",
+      "walkerId": "walker.adat.communities",
+      "region": "Sulawesi",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.211Z",
+      "stateChangedAt": "2026-08-30T16:44:28.168Z",
+      "recordsPublished": 5,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.325Z"
+    },
+    {
+      "id": "worker:walker.adat.communities:kalimantan",
+      "walkerId": "walker.adat.communities",
+      "region": "Kalimantan",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.213Z",
+      "stateChangedAt": "2026-08-30T16:44:28.171Z",
+      "recordsPublished": 5,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.338Z"
+    },
+    {
+      "id": "worker:walker.adat.communities:papua",
+      "walkerId": "walker.adat.communities",
+      "region": "Papua",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.215Z",
+      "stateChangedAt": "2026-08-30T16:44:28.174Z",
+      "recordsPublished": 5,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.351Z"
+    },
+    {
+      "id": "worker:walker.adat.communities:nusa_tenggara",
+      "walkerId": "walker.adat.communities",
+      "region": "Nusa Tenggara",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.217Z",
+      "stateChangedAt": "2026-08-30T16:44:28.177Z",
+      "recordsPublished": 5,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.359Z"
+    },
+    {
+      "id": "worker:walker.adat.communities:maluku",
+      "walkerId": "walker.adat.communities",
+      "region": "Maluku",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.218Z",
+      "stateChangedAt": "2026-08-30T16:44:28.179Z",
+      "recordsPublished": 5,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.375Z"
+    },
+    {
+      "id": "worker:walker.culture.festivals_ceremonies:bali",
+      "walkerId": "walker.culture.festivals_ceremonies",
+      "region": "Bali",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.220Z",
+      "stateChangedAt": "2026-08-30T16:44:28.185Z",
+      "recordsPublished": 12,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.386Z"
+    },
+    {
+      "id": "worker:walker.culture.festivals_ceremonies:java",
+      "walkerId": "walker.culture.festivals_ceremonies",
+      "region": "Java",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.222Z",
+      "stateChangedAt": "2026-08-30T16:44:28.190Z",
+      "recordsPublished": 12,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.397Z"
+    },
+    {
+      "id": "worker:walker.culture.festivals_ceremonies:sumatra",
+      "walkerId": "walker.culture.festivals_ceremonies",
+      "region": "Sumatra",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.224Z",
+      "stateChangedAt": "2026-08-30T16:44:28.196Z",
+      "recordsPublished": 12,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.410Z"
+    },
+    {
+      "id": "worker:walker.culture.festivals_ceremonies:sulawesi",
+      "walkerId": "walker.culture.festivals_ceremonies",
+      "region": "Sulawesi",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.225Z",
+      "stateChangedAt": "2026-08-30T16:44:28.201Z",
+      "recordsPublished": 12,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.420Z"
+    },
+    {
+      "id": "worker:walker.culture.festivals_ceremonies:kalimantan",
+      "walkerId": "walker.culture.festivals_ceremonies",
+      "region": "Kalimantan",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.228Z",
+      "stateChangedAt": "2026-08-30T16:44:28.204Z",
+      "recordsPublished": 12,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.439Z"
+    },
+    {
+      "id": "worker:walker.culture.festivals_ceremonies:papua",
+      "walkerId": "walker.culture.festivals_ceremonies",
+      "region": "Papua",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.230Z",
+      "stateChangedAt": "2026-08-30T16:44:28.206Z",
+      "recordsPublished": 12,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.450Z"
+    },
+    {
+      "id": "worker:walker.culture.festivals_ceremonies:nusa_tenggara",
+      "walkerId": "walker.culture.festivals_ceremonies",
+      "region": "Nusa Tenggara",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.232Z",
+      "stateChangedAt": "2026-08-30T16:44:28.219Z",
+      "recordsPublished": 12,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.460Z"
+    },
+    {
+      "id": "worker:walker.culture.festivals_ceremonies:maluku",
+      "walkerId": "walker.culture.festivals_ceremonies",
+      "region": "Maluku",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.234Z",
+      "stateChangedAt": "2026-08-30T16:44:28.227Z",
+      "recordsPublished": 12,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.468Z"
+    },
+    {
+      "id": "worker:walker.spiritual.sacred_sites:bali",
+      "walkerId": "walker.spiritual.sacred_sites",
+      "region": "Bali",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.236Z",
+      "stateChangedAt": "2026-08-30T16:44:28.232Z",
+      "recordsPublished": 6,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.486Z"
+    },
+    {
+      "id": "worker:walker.spiritual.sacred_sites:java",
+      "walkerId": "walker.spiritual.sacred_sites",
+      "region": "Java",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.238Z",
+      "stateChangedAt": "2026-08-30T16:44:28.238Z",
+      "recordsPublished": 6,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.496Z"
+    },
+    {
+      "id": "worker:walker.spiritual.sacred_sites:sumatra",
+      "walkerId": "walker.spiritual.sacred_sites",
+      "region": "Sumatra",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.239Z",
+      "stateChangedAt": "2026-08-30T16:44:28.244Z",
+      "recordsPublished": 6,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.514Z"
+    },
+    {
+      "id": "worker:walker.spiritual.sacred_sites:sulawesi",
+      "walkerId": "walker.spiritual.sacred_sites",
+      "region": "Sulawesi",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.242Z",
+      "stateChangedAt": "2026-08-30T16:44:28.248Z",
+      "recordsPublished": 6,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.526Z"
+    },
+    {
+      "id": "worker:walker.spiritual.sacred_sites:kalimantan",
+      "walkerId": "walker.spiritual.sacred_sites",
+      "region": "Kalimantan",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.244Z",
+      "stateChangedAt": "2026-08-30T16:44:28.252Z",
+      "recordsPublished": 6,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.536Z"
+    },
+    {
+      "id": "worker:walker.spiritual.sacred_sites:papua",
+      "walkerId": "walker.spiritual.sacred_sites",
+      "region": "Papua",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.245Z",
+      "stateChangedAt": "2026-08-30T16:44:28.254Z",
+      "recordsPublished": 6,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.556Z"
+    },
+    {
+      "id": "worker:walker.spiritual.sacred_sites:nusa_tenggara",
+      "walkerId": "walker.spiritual.sacred_sites",
+      "region": "Nusa Tenggara",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.248Z",
+      "stateChangedAt": "2026-08-30T16:44:28.258Z",
+      "recordsPublished": 6,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.575Z"
+    },
+    {
+      "id": "worker:walker.spiritual.sacred_sites:maluku",
+      "walkerId": "walker.spiritual.sacred_sites",
+      "region": "Maluku",
+      "state": "WAITING",
+      "spawnedAt": "2026-08-30T10:47:17.251Z",
+      "stateChangedAt": "2026-08-30T16:44:28.262Z",
+      "recordsPublished": 6,
+      "consecutiveFailures": 0,
+      "currentJobId": null,
+      "lastPublishAt": "2026-08-30T10:47:17.594Z"
+    }
+  ],
+  "jobs": [
+    {
+      "id": "job:walker.adat.communities:bali",
+      "walkerId": "walker.adat.communities",
+      "region": "Bali",
+      "priority": 1,
+      "scheduledFor": "2027-02-26T10:47:17.283Z",
+      "sourceKey": "walker.adat.communities",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.283Z",
+        "lastRecordCount": 5
+      }
+    },
+    {
+      "id": "job:walker.adat.communities:java",
+      "walkerId": "walker.adat.communities",
+      "region": "Java",
+      "priority": 1,
+      "scheduledFor": "2027-02-26T10:47:17.297Z",
+      "sourceKey": "walker.adat.communities",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.297Z",
+        "lastRecordCount": 5
+      }
+    },
+    {
+      "id": "job:walker.adat.communities:sumatra",
+      "walkerId": "walker.adat.communities",
+      "region": "Sumatra",
+      "priority": 1,
+      "scheduledFor": "2027-02-26T10:47:17.313Z",
+      "sourceKey": "walker.adat.communities",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.313Z",
+        "lastRecordCount": 5
+      }
+    },
+    {
+      "id": "job:walker.adat.communities:sulawesi",
+      "walkerId": "walker.adat.communities",
+      "region": "Sulawesi",
+      "priority": 1,
+      "scheduledFor": "2027-02-26T10:47:17.327Z",
+      "sourceKey": "walker.adat.communities",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.327Z",
+        "lastRecordCount": 5
+      }
+    },
+    {
+      "id": "job:walker.adat.communities:kalimantan",
+      "walkerId": "walker.adat.communities",
+      "region": "Kalimantan",
+      "priority": 1,
+      "scheduledFor": "2027-02-26T10:47:17.340Z",
+      "sourceKey": "walker.adat.communities",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.340Z",
+        "lastRecordCount": 5
+      }
+    },
+    {
+      "id": "job:walker.adat.communities:papua",
+      "walkerId": "walker.adat.communities",
+      "region": "Papua",
+      "priority": 1,
+      "scheduledFor": "2027-02-26T10:47:17.353Z",
+      "sourceKey": "walker.adat.communities",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.353Z",
+        "lastRecordCount": 5
+      }
+    },
+    {
+      "id": "job:walker.adat.communities:nusa_tenggara",
+      "walkerId": "walker.adat.communities",
+      "region": "Nusa Tenggara",
+      "priority": 1,
+      "scheduledFor": "2027-02-26T10:47:17.362Z",
+      "sourceKey": "walker.adat.communities",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.362Z",
+        "lastRecordCount": 5
+      }
+    },
+    {
+      "id": "job:walker.adat.communities:maluku",
+      "walkerId": "walker.adat.communities",
+      "region": "Maluku",
+      "priority": 1,
+      "scheduledFor": "2027-02-26T10:47:17.377Z",
+      "sourceKey": "walker.adat.communities",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.377Z",
+        "lastRecordCount": 5
+      }
+    },
+    {
+      "id": "job:walker.culture.festivals_ceremonies:bali",
+      "walkerId": "walker.culture.festivals_ceremonies",
+      "region": "Bali",
+      "priority": 1,
+      "scheduledFor": "2026-09-29T10:47:17.388Z",
+      "sourceKey": "walker.culture.festivals_ceremonies",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.388Z",
+        "lastRecordCount": 12
+      }
+    },
+    {
+      "id": "job:walker.culture.festivals_ceremonies:java",
+      "walkerId": "walker.culture.festivals_ceremonies",
+      "region": "Java",
+      "priority": 1,
+      "scheduledFor": "2026-09-29T10:47:17.399Z",
+      "sourceKey": "walker.culture.festivals_ceremonies",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.399Z",
+        "lastRecordCount": 12
+      }
+    },
+    {
+      "id": "job:walker.culture.festivals_ceremonies:sumatra",
+      "walkerId": "walker.culture.festivals_ceremonies",
+      "region": "Sumatra",
+      "priority": 1,
+      "scheduledFor": "2026-09-29T10:47:17.413Z",
+      "sourceKey": "walker.culture.festivals_ceremonies",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.413Z",
+        "lastRecordCount": 12
+      }
+    },
+    {
+      "id": "job:walker.culture.festivals_ceremonies:sulawesi",
+      "walkerId": "walker.culture.festivals_ceremonies",
+      "region": "Sulawesi",
+      "priority": 1,
+      "scheduledFor": "2026-09-29T10:47:17.422Z",
+      "sourceKey": "walker.culture.festivals_ceremonies",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.422Z",
+        "lastRecordCount": 12
+      }
+    },
+    {
+      "id": "job:walker.culture.festivals_ceremonies:kalimantan",
+      "walkerId": "walker.culture.festivals_ceremonies",
+      "region": "Kalimantan",
+      "priority": 1,
+      "scheduledFor": "2026-09-29T10:47:17.443Z",
+      "sourceKey": "walker.culture.festivals_ceremonies",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.443Z",
+        "lastRecordCount": 12
+      }
+    },
+    {
+      "id": "job:walker.culture.festivals_ceremonies:papua",
+      "walkerId": "walker.culture.festivals_ceremonies",
+      "region": "Papua",
+      "priority": 1,
+      "scheduledFor": "2026-09-29T10:47:17.452Z",
+      "sourceKey": "walker.culture.festivals_ceremonies",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.452Z",
+        "lastRecordCount": 12
+      }
+    },
+    {
+      "id": "job:walker.culture.festivals_ceremonies:nusa_tenggara",
+      "walkerId": "walker.culture.festivals_ceremonies",
+      "region": "Nusa Tenggara",
+      "priority": 1,
+      "scheduledFor": "2026-09-29T10:47:17.462Z",
+      "sourceKey": "walker.culture.festivals_ceremonies",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.462Z",
+        "lastRecordCount": 12
+      }
+    },
+    {
+      "id": "job:walker.culture.festivals_ceremonies:maluku",
+      "walkerId": "walker.culture.festivals_ceremonies",
+      "region": "Maluku",
+      "priority": 1,
+      "scheduledFor": "2026-09-29T10:47:17.472Z",
+      "sourceKey": "walker.culture.festivals_ceremonies",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.472Z",
+        "lastRecordCount": 12
+      }
+    },
+    {
+      "id": "job:walker.spiritual.sacred_sites:bali",
+      "walkerId": "walker.spiritual.sacred_sites",
+      "region": "Bali",
+      "priority": 1,
+      "scheduledFor": "2027-02-26T10:47:17.490Z",
+      "sourceKey": "walker.spiritual.sacred_sites",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.490Z",
+        "lastRecordCount": 6
+      }
+    },
+    {
+      "id": "job:walker.spiritual.sacred_sites:java",
+      "walkerId": "walker.spiritual.sacred_sites",
+      "region": "Java",
+      "priority": 1,
+      "scheduledFor": "2027-02-26T10:47:17.499Z",
+      "sourceKey": "walker.spiritual.sacred_sites",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.499Z",
+        "lastRecordCount": 6
+      }
+    },
+    {
+      "id": "job:walker.spiritual.sacred_sites:sumatra",
+      "walkerId": "walker.spiritual.sacred_sites",
+      "region": "Sumatra",
+      "priority": 1,
+      "scheduledFor": "2027-02-26T10:47:17.516Z",
+      "sourceKey": "walker.spiritual.sacred_sites",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.516Z",
+        "lastRecordCount": 6
+      }
+    },
+    {
+      "id": "job:walker.spiritual.sacred_sites:sulawesi",
+      "walkerId": "walker.spiritual.sacred_sites",
+      "region": "Sulawesi",
+      "priority": 1,
+      "scheduledFor": "2027-02-26T10:47:17.529Z",
+      "sourceKey": "walker.spiritual.sacred_sites",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.529Z",
+        "lastRecordCount": 6
+      }
+    },
+    {
+      "id": "job:walker.spiritual.sacred_sites:kalimantan",
+      "walkerId": "walker.spiritual.sacred_sites",
+      "region": "Kalimantan",
+      "priority": 1,
+      "scheduledFor": "2027-02-26T10:47:17.540Z",
+      "sourceKey": "walker.spiritual.sacred_sites",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.540Z",
+        "lastRecordCount": 6
+      }
+    },
+    {
+      "id": "job:walker.spiritual.sacred_sites:papua",
+      "walkerId": "walker.spiritual.sacred_sites",
+      "region": "Papua",
+      "priority": 1,
+      "scheduledFor": "2027-02-26T10:47:17.562Z",
+      "sourceKey": "walker.spiritual.sacred_sites",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.562Z",
+        "lastRecordCount": 6
+      }
+    },
+    {
+      "id": "job:walker.spiritual.sacred_sites:nusa_tenggara",
+      "walkerId": "walker.spiritual.sacred_sites",
+      "region": "Nusa Tenggara",
+      "priority": 1,
+      "scheduledFor": "2027-02-26T10:47:17.580Z",
+      "sourceKey": "walker.spiritual.sacred_sites",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.580Z",
+        "lastRecordCount": 6
+      }
+    },
+    {
+      "id": "job:walker.spiritual.sacred_sites:maluku",
+      "walkerId": "walker.spiritual.sacred_sites",
+      "region": "Maluku",
+      "priority": 1,
+      "scheduledFor": "2027-02-26T10:47:17.596Z",
+      "sourceKey": "walker.spiritual.sacred_sites",
+      "attempts": 0,
+      "totalAttempts": 0,
+      "checkpoint": {
+        "lastPublishAt": "2026-08-30T10:47:17.596Z",
+        "lastRecordCount": 6
+      }
+    }
+  ],
+  "leases": [],
+  "breakers": [
+    {
+      "sourceKey": "walker.adat.communities",
+      "state": "closed",
+      "failures": 0
+    },
+    {
+      "sourceKey": "walker.culture.festivals_ceremonies",
+      "state": "closed",
+      "failures": 0
+    },
+    {
+      "sourceKey": "walker.spiritual.sacred_sites",
+      "state": "closed",
+      "failures": 0
+    }
+  ],
+  "deadLetter": [],
+  "metrics": {
+    "recordsToday": 184,
+    "acquisitionsToday": 24,
+    "failuresToday": 0,
+    "lastPublishAt": "2026-08-30T10:47:17.594Z"
+  },
+  "supervisorHeartbeat": {
+    "lastTickAt": "2026-08-30T16:44:28.264Z",
+    "lastSuccessfulTickAt": "2026-08-30T16:44:28.264Z",
+    "processStartedAt": "2026-08-30T10:47:17.599Z",
+    "ticksTotal": 2
+  }
+}

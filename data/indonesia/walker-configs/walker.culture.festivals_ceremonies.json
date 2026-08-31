@@ -1,0 +1,7 @@
+{
+  "taxonomyId": "walker.culture.festivals_ceremonies",
+  "sourceDir": "festivals_ceremonies",
+  "defaultStability": "seasonal",
+  "refreshCadenceDays": 30,
+  "description": "Indonesian festival + ceremony calendar (Nyepi, Galungan, Kuningan, Waisak, Ramadan hours, Idul Fitri, Cap Go Meh, Erau, Bau Nyale)."
+}

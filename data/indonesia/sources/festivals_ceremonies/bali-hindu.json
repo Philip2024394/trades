@@ -1,0 +1,67 @@
+[
+  {
+    "externalId": "fest-nyepi",
+    "domain": "culture",
+    "topic": "festival.nyepi",
+    "region": "Bali",
+    "content": "Nyepi is Bali's Day of Silence — the Balinese Hindu new year according to the Saka calendar. For 24 hours (roughly 06:00 to 06:00 next day) the entire island observes silence: no travel, no lights, no fires, no work, no entertainment. The airport (DPS) closes to arrivals + departures. Tourists must stay inside their hotel compound; only emergency vehicles operate. The night before is Pengrupukan, when huge papier-mâché ogoh-ogoh monsters are paraded and burned. Falls in March (varies annually · Saka calendar).",
+    "keywords": ["nyepi", "day of silence", "saka", "balinese new year", "ogoh-ogoh", "pengrupukan", "airport closure", "bali silence"],
+    "audience": ["tourist", "family"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:festivals · PHDI",
+    "confidence": 0.95
+  },
+  {
+    "externalId": "fest-galungan",
+    "domain": "culture",
+    "topic": "festival.galungan",
+    "region": "Bali",
+    "content": "Galungan celebrates the victory of dharma (good) over adharma (evil) — the Balinese Hindu equivalent of a major religious holiday, observed every 210 days on the Pawukon calendar. Homes and shops erect penjor (tall curved bamboo poles decorated with palm-leaf ornaments) along the streets. Many Balinese travel to their family home; expect quieter tourist zones but busier villages. Ends 10 days later with Kuningan. Most businesses stay open in tourist areas, but staff numbers thin — book restaurants ahead.",
+    "keywords": ["galungan", "kuningan", "pawukon", "penjor", "dharma", "balinese hindu", "210-day cycle"],
+    "audience": ["tourist"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:festivals · PHDI",
+    "confidence": 0.95
+  },
+  {
+    "externalId": "fest-kuningan",
+    "domain": "culture",
+    "topic": "festival.kuningan",
+    "region": "Bali",
+    "content": "Kuningan marks the end of the 10-day Galungan period on the Balinese Pawukon calendar. Ancestral spirits, believed to have visited the earthly realm during Galungan, return to the heavens at noon on Kuningan — so ceremonies traditionally end by midday. Yellow rice (nasi kuning) is the ceremonial food. Best time for visitors to observe: a village temple ceremony in the morning; ask permission before entering.",
+    "keywords": ["kuningan", "galungan", "pawukon", "nasi kuning", "yellow rice", "ancestral spirits"],
+    "audience": ["tourist"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:festivals · PHDI",
+    "confidence": 0.95
+  },
+  {
+    "externalId": "fest-odalan",
+    "domain": "culture",
+    "topic": "festival.odalan",
+    "region": "Bali",
+    "content": "Odalan is a Balinese temple anniversary — every temple celebrates one every 210 days (Pawukon) or 355 days (lunar), meaning multiple happen every day across Bali. The temple is filled with offerings, gamelan music, and dance performances. Visitors are welcome if respectful: sarong + sash required, do not walk in front of praying worshippers, do not sit higher than the priests, no menstruating women per Balinese Hindu convention. Ask a local or your accommodation whether a nearby odalan is happening.",
+    "keywords": ["odalan", "temple anniversary", "pawukon", "sarong", "offerings", "gamelan", "balinese hindu"],
+    "audience": ["tourist"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:festivals · PHDI",
+    "confidence": 0.9
+  },
+  {
+    "externalId": "fest-melasti",
+    "domain": "culture",
+    "topic": "festival.melasti",
+    "region": "Bali",
+    "content": "Melasti is a Balinese purification ceremony held 3–4 days before Nyepi. Villages carry sacred temple objects (pratima) in procession to the sea or a holy spring for symbolic cleansing. Coastal beaches (Sanur, Kuta, Padang Padang) fill with white-clad worshippers. Non-Hindu visitors may respectfully observe from a distance; do not photograph individual worshippers without permission and do not walk between the procession and the sea.",
+    "keywords": ["melasti", "nyepi", "purification", "pratima", "sanur beach", "kuta beach", "coastal procession"],
+    "audience": ["tourist"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:festivals · PHDI",
+    "confidence": 0.9
+  }
+]

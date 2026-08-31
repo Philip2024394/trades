@@ -1,0 +1,76 @@
+{
+  "jobId": "4f9b9229-cd10-48b7-8e3c-6151bae5b309",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Yogyakarta",
+  "bbox": {
+    "sw": [
+      -7.85,
+      110.33
+    ],
+    "ne": [
+      -7.75,
+      110.42
+    ],
+    "scope": "Yogyakarta wider urban · DIY city + inner Sleman/Bantul spill (fallback coverage)"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T18:42:05.539Z",
+  "finishedAt": "2026-08-27T18:45:39.781Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 791,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 791,
+    "matched_exact": 788,
+    "matched_high": 2,
+    "ambiguous": 1,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "records_persisted": 0,
+    "enriched": 27,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 0,
+    "enrichment_writes_applied": 27,
+    "insert_attempted": 0,
+    "insert_conflicts": 0,
+    "insert_returned": 0,
+    "insert_verified": 0,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 0,
+    "rejected_by_reason": {
+      "MATCHED_EXISTING": 791
+    }
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [
+      {
+        "candidateName": "Syariah Family Hotel",
+        "existingName": "Hotel Family",
+        "existingRef": "#AC-2026-00039",
+        "score": "0.600"
+      }
+    ],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 0,
+    "insert_verified": 0,
+    "delta": 0
+  },
+  "cycle_outcome": "ALL_DEDUPED"
+}

@@ -1,0 +1,216 @@
+{
+  "jobId": "12c0bc0d-4489-4e7b-95a5-6ecc363d207f",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Surabaya",
+  "bbox": {
+    "sw": [
+      -7.36,
+      112.6
+    ],
+    "ne": [
+      -7.16,
+      112.86
+    ],
+    "scope": "Surabaya · East Java"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T11:59:55.815Z",
+  "finishedAt": "2026-08-27T12:04:46.736Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 1110,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 1110,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 1110,
+    "records_persisted": 647,
+    "enriched": 23,
+    "gate3_contactable": 104,
+    "gate4_eligible": 104,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 104,
+    "rejected_by_gate": 1006,
+    "errors": 0,
+    "insert_attempted": 1110,
+    "insert_conflicts": 463,
+    "insert_returned": 647,
+    "insert_verified": 647,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 647,
+    "rejected_by_reason": {
+      "CONTACT_MISSING": 1006
+    }
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#FL-2026-ZTCFP",
+        "name": "Mie Hokkien Rajake",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCFQ",
+        "name": "Cafe Glass",
+        "category": "coffee-cafe",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCFR",
+        "name": "Ah Yat Abalone Forum",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCFS",
+        "name": "Daun Lada",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCFT",
+        "name": "Kuningan Restaurant",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCFV",
+        "name": "D' Cost",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCFW",
+        "name": "Bon Cafe",
+        "category": "coffee-cafe",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCFX",
+        "name": "Loop Food Court",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [
+      {
+        "publicRef": "#FL-2026-ZTCFV",
+        "name": "D' Cost",
+        "whatsapp": null,
+        "phone": "+62317342002",
+        "website": "https://dcostseafood.com/"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCFW",
+        "name": "Bon Cafe",
+        "whatsapp": null,
+        "phone": "0315941611",
+        "website": "https://www.boncafellas.com/"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCFZ",
+        "name": "Mr. Jack",
+        "whatsapp": null,
+        "phone": "+62 31 5937465",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTCHW",
+        "name": "Bandar Djakarta",
+        "whatsapp": "+6281510136009",
+        "phone": null,
+        "website": "https://bandar-djakarta.com/"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCJ1",
+        "name": "Kudos Cafe",
+        "whatsapp": null,
+        "phone": "+623199016791",
+        "website": "https://www.instagram.com/kudos_cafe/"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCK2",
+        "name": "Calibre",
+        "whatsapp": null,
+        "phone": "+62 31 5454801",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTCKE",
+        "name": "McDonald's Mayjen Sungkono",
+        "whatsapp": "+6281110514045",
+        "phone": null,
+        "website": "https://mcdonalds.co.id/"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCNC",
+        "name": "Lentora",
+        "whatsapp": null,
+        "phone": "+62 31 99015342",
+        "website": null
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#FL-2026-ZTCFP",
+        "name": "Mie Hokkien Rajake",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCFQ",
+        "name": "Cafe Glass",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCFR",
+        "name": "Ah Yat Abalone Forum",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCFS",
+        "name": "Daun Lada",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCFT",
+        "name": "Kuningan Restaurant",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 647,
+    "insert_verified": 647,
+    "delta": 0
+  },
+  "cycle_outcome": "PARTIAL"
+}

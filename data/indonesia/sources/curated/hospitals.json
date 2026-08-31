@@ -1,0 +1,189 @@
+[
+  {
+    "externalId": "hospital-bimc-kuta",
+    "domain": "safety",
+    "topic": "hospital.bali_bimc_kuta",
+    "region": "Bali",
+    "content": "BIMC Hospital Kuta is a private international-standard hospital on Jalan Bypass Ngurah Rai in Kuta, Bali. 24/7 emergency, English-speaking staff, travel-insurance-friendly billing. One of two BIMC branches on the island (the other is at Nusa Dua). Common first stop for tourists needing serious care.",
+    "keywords": [
+      "bimc",
+      "hospital kuta",
+      "bali hospital",
+      "emergency room",
+      "international hospital",
+      "hospital",
+      "hospitals",
+      "medical",
+      "clinic"
+    ],
+    "audience": [
+      "tourist",
+      "family",
+      "senior"
+    ],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:hospitals",
+    "confidence": 0.9
+  },
+  {
+    "externalId": "hospital-bimc-nusa-dua",
+    "domain": "safety",
+    "topic": "hospital.bali_bimc_nusa_dua",
+    "region": "Bali",
+    "content": "BIMC Hospital Nusa Dua is a private international hospital in Kawasan Wisata Nusa Dua Bali. 24/7 emergency, hyperbaric chamber (useful for dive accidents), international-standard billing. Serves the Nusa Dua / Jimbaran / Uluwatu resort strip.",
+    "keywords": [
+      "bimc",
+      "hospital nusa dua",
+      "bali hospital",
+      "hyperbaric",
+      "diving accident",
+      "hospital",
+      "hospitals",
+      "medical",
+      "clinic"
+    ],
+    "audience": [
+      "tourist",
+      "family"
+    ],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:hospitals",
+    "confidence": 0.9
+  },
+  {
+    "externalId": "hospital-siloam-ubud",
+    "domain": "safety",
+    "topic": "hospital.bali_siloam_ubud",
+    "region": "Bali",
+    "content": "Siloam Hospitals Bali (Denpasar branch) and BaliMed are the closest large private hospitals for the Ubud area. Ubud itself has smaller Ubud Care Clinic and Toya Medika Clinic for minor care. For any serious condition — accidents, chest pain, high fever — head straight to Denpasar rather than a village clinic.",
+    "keywords": [
+      "siloam",
+      "balimed",
+      "ubud clinic",
+      "toya medika",
+      "bali hospital",
+      "hospital",
+      "hospitals",
+      "medical",
+      "clinic"
+    ],
+    "audience": [
+      "tourist",
+      "family"
+    ],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:hospitals",
+    "confidence": 0.85
+  },
+  {
+    "externalId": "hospital-sos-jakarta",
+    "domain": "safety",
+    "topic": "hospital.jakarta_international_sos",
+    "region": "Jakarta",
+    "content": "International SOS Clinic Jakarta (Menara Prima, Mega Kuningan) offers 24/7 medical assistance for expatriates and travellers, in-house pharmacy, and medical evacuation coordination. Preferred by many international insurers. RS Pondok Indah and RS Siloam TB Simatupang are the larger nearby hospitals for complex admissions.",
+    "keywords": [
+      "international sos",
+      "sos clinic jakarta",
+      "pondok indah",
+      "siloam tb simatupang",
+      "expat clinic",
+      "hospital",
+      "hospitals",
+      "medical",
+      "clinic"
+    ],
+    "audience": [
+      "tourist",
+      "family"
+    ],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:hospitals",
+    "confidence": 0.85
+  },
+  {
+    "externalId": "hospital-panti-rapih-yogya",
+    "domain": "safety",
+    "topic": "hospital.yogyakarta_panti_rapih",
+    "region": "Yogyakarta",
+    "content": "RS Panti Rapih and Siloam Hospitals Yogyakarta are the largest private hospitals in central Jogja with 24-hour emergency and English-speaking staff (limited). Sardjito Hospital is the largest public teaching hospital. For minor traveller ailments, private clinics on Jalan Malioboro or in Prawirotaman are cheaper.",
+    "keywords": [
+      "panti rapih",
+      "siloam yogyakarta",
+      "sardjito",
+      "jogja hospital",
+      "malioboro clinic",
+      "hospital",
+      "hospitals",
+      "medical",
+      "clinic"
+    ],
+    "audience": [
+      "tourist",
+      "family"
+    ],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:hospitals",
+    "confidence": 0.85
+  },
+  {
+    "externalId": "emergency-embassy-note",
+    "domain": "safety",
+    "topic": "emergency.embassy",
+    "region": "Indonesia",
+    "content": "For lost passport, serious legal trouble, or a fatality abroad, contact your country's embassy or consulate in Jakarta (most main embassies) or the consular office in Denpasar (Bali) — Australia, UK, and USA all maintain consular presence in Bali. Save the 24-hour emergency line before travel. Embassies do NOT pay medical bills or repatriate — that's your travel insurance's job.",
+    "keywords": [
+      "embassy",
+      "consulate",
+      "lost passport",
+      "consular",
+      "australia bali",
+      "uk bali",
+      "usa bali",
+      "emergency",
+      "help",
+      "urgent",
+      "passport",
+      "passports",
+      "documents",
+      "lost"
+    ],
+    "audience": [
+      "tourist",
+      "family",
+      "solo"
+    ],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:hospitals",
+    "confidence": 0.9
+  },
+  {
+    "externalId": "emergency-tourist-hotline-bali",
+    "domain": "safety",
+    "topic": "emergency.bali_tourist_hotline",
+    "region": "Bali",
+    "content": "Bali's Tourist Police Assistance line is +62 361 224111. English-speaking officers, help with scams, lost-property reports, and small-claims disputes. For genuine emergencies use 112 (unified) or 110 (police direct) first.",
+    "keywords": [
+      "tourist police",
+      "bali police",
+      "tourist hotline",
+      "224111",
+      "emergency",
+      "help",
+      "urgent"
+    ],
+    "audience": [
+      "tourist",
+      "solo"
+    ],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:hospitals",
+    "confidence": 0.9
+  }
+]

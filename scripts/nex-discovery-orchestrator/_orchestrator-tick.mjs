@@ -23,6 +23,23 @@ const NEX_POSTGRES_URL = process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:
 const ORCH_ENABLED = process.env.NEX_ORCHESTRATOR_ENABLED === "true";
 const MAX_SLOTS = 10;                       // Stage 10 (2026-08-24) · MUST match src/lib/nex-hq/auto-orchestrator.ts
 const FAIRNESS_CONSECUTIVE_CAP = 2;         // MUST match same file
+// Phase 1a dedup freeze · Philip 2026-08-27. Comma-separated category slugs.
+// When set, orchestrator skips these categories entirely (no work items generated,
+// no picks, no spawns). Reversible: clear the env var. Doctrine anchor:
+// project_nex_dedup_and_identity_resolution_doctrine_2026_08_27.md.
+//
+// 2026-08-28 · Philip approved (Fix A · Walker Yield Diagnosis) · food +
+// accommodation legacy categories are now DEFAULT-paused because they walk
+// Yogyakarta bboxes only, produce 100% ALL_DEDUPED, and waste Overpass budget.
+// New job-registry categories restaurants/cafes/hotels/guesthouses walk all
+// 13 Indonesian cities and do the same job cleanly. Env override still wins
+// (set NEX_ORCHESTRATOR_PAUSED_CATEGORIES to any value — even empty — to
+// take control back).
+const DEFAULT_PAUSED_CATEGORIES = "food,accommodation";
+const PAUSED_CATEGORIES = new Set(
+  (process.env.NEX_ORCHESTRATOR_PAUSED_CATEGORIES ?? DEFAULT_PAUSED_CATEGORIES)
+    .split(",").map((s) => s.trim()).filter(Boolean),
+);
 // Per-vertical concurrency cap · Chief Architect 2026-08-26. MUST match
 // src/lib/nex-hq/auto-orchestrator.ts::PER_VERTICAL_CONCURRENCY. Evidence:
 // 78% of failed cycles come from transport walkers competing for
@@ -37,7 +54,12 @@ const pool = new pg.Pool({ connectionString: NEX_POSTGRES_URL, max: 3 });
 // 2026-08-24 · Phase 1 refactor · TRACKED_CITIES derived from the shared
 // data/nex-city-catalogue.json. One JSON entry = one new city in rotation.
 import { trackedCityNames } from "../nex-city-catalogue/loader.mjs";
-const WALKED_CATEGORIES = ["accommodation", "food", "transport", "market"];
+// Workforce Phase 1 (Philip 2026-08-27) · new category-jobs from the shared
+// Job Registry (data/nex-job-registry.json). Legacy categories preserved.
+import { jobCategorySlugs, allJobs } from "../nex-workforce/_job-registry.mjs";
+const LEGACY_CATEGORIES = ["accommodation", "food", "transport", "market"];
+const JOB_CATEGORIES = jobCategorySlugs();
+const WALKED_CATEGORIES = [...LEGACY_CATEGORIES, ...JOB_CATEGORIES];
 const TRACKED_CITIES = trackedCityNames();
 
 function workItems() {
@@ -47,6 +69,7 @@ function workItems() {
   const YOGYAKARTA_FOOD_SURFACES = ["prambanan", "sleman-north", "bantul-south", "klaten-east", "gamping-west"];
   const YOGYAKARTA_ACCOMMODATION_SURFACES = ["malioboro", "prawirotaman", "kaliurang", "borobudur", "yogya-wider"];
   const citySlug = (c) => c.toLowerCase().replace(/\s+/g, "-");
+  const jobList = allJobs();
   const surfacesFor = (city, category) => {
     if (category === "market")    return ["nominatim"];
     if (category === "transport") return ["query-universe-v1"];
@@ -54,11 +77,22 @@ function workItems() {
       if (category === "food")          return YOGYAKARTA_FOOD_SURFACES;
       if (category === "accommodation") return YOGYAKARTA_ACCOMMODATION_SURFACES;
     }
+    // Phase 1 workforce · one surface per unique provider in the job's strategies.
+    if (JOB_CATEGORIES.includes(category)) {
+      const job = jobList.find((j) => j.category_slug === category);
+      return [...new Set(job.strategies.map((s) => s.provider))];
+    }
     return [citySlug(city)];
   };
 
   for (const city of TRACKED_CITIES) {
     for (const category of WALKED_CATEGORIES) {
+      // Phase 1a dedup freeze · Philip 2026-08-27. Categories in the paused
+      // set are excluded from the work-item registry entirely so the picker
+      // cannot select them and no walker spawns. Zero row is generated in
+      // discovery_orchestrator_pick for paused categories, keeping the audit
+      // trail clean. Reversible: unset NEX_ORCHESTRATOR_PAUSED_CATEGORIES.
+      if (PAUSED_CATEGORIES.has(category)) continue;
       let script = null;
       let workerAvailable = false;
       if (category === "market") {
@@ -70,6 +104,10 @@ function workItems() {
       } else if (category === "food" || category === "accommodation") {
         workerAvailable = true;
         script = "scripts/nex-acquisition/run-live-cycle.mjs";
+      } else if (JOB_CATEGORIES.includes(category)) {
+        // Phase 1 workforce · one generic walker serves all category jobs.
+        workerAvailable = true;
+        script = "scripts/nex-workforce/_category-walker.mjs";
       }
       // 2026-08-24 · P0 atomic · one work item PER SURFACE. Rotation state now
       // tracks saturation per surface · a saturated surface for a (city,
@@ -89,6 +127,10 @@ function workItems() {
         } else if (category === "accommodation") {
           workerConfigExpected = `accommodation:${city}:${surface}`;
           spawnArgs = [`--vertical=accommodation`, `--city=${city}`, `--bbox=${surface}`, `--apply`];
+        } else if (JOB_CATEGORIES.includes(category)) {
+          // Phase 1 workforce · walker infers strategy from job registry by category slug.
+          workerConfigExpected = `${category}:${city}:${surface}`;
+          spawnArgs = [`--category=${category}`, `--city=${city}`];
         }
         items.push({ city, category, surface, workerAvailable, script, workerConfigExpected, spawnArgs });
       }
@@ -156,12 +198,40 @@ async function loadRecentPicks() {
   return r.rows.map((r) => ({ city: r.city, category: r.category, pickedAt: r.picked_at }));
 }
 
-// Priority scoring · MUST match src/lib/nex-hq/auto-orchestrator.ts
-function priority(state) {
-  return { reactivate: 40, build: 30, maintenance: 20, saturated: 0 }[state] ?? 0;
+// Phase Ca (Philip 2026-08-27 · walkers-never-stuck doctrine). Category-level
+// fairness: return the most-recent pick timestamp PER CATEGORY over the last
+// FAIRNESS_LOOKBACK_MINUTES. Categories NOT in the map have not been picked
+// recently and get priority in the sort tiebreak. This unsticks starved
+// categories (retail-*, guesthouses, hotels, etc.) whose (city, category)
+// surfaces get monopolised by the (state × timestamp) sort.
+async function loadCategoryFreshness() {
+  const r = await pool.query(`
+    SELECT category, MAX(picked_at) AS latest
+      FROM nex.discovery_orchestrator_pick
+     WHERE picked_at > now() - interval '${FAIRNESS_LOOKBACK_MINUTES} minutes'
+     GROUP BY category
+  `);
+  const m = new Map();
+  for (const row of r.rows) m.set(row.category, new Date(row.latest).getTime());
+  return m;
 }
 
-function buildQueue(snapshot, workItemsList, inFlight, recentPicks) {
+// Priority scoring · MUST match src/lib/nex-hq/auto-orchestrator.ts
+// Philip 2026-08-30 · saturated raised from 0 → 5 so saturated combos are
+// still WORK-eligible (never permanently locked out). Build/reactivate/
+// maintenance still win the queue; saturated cities get walked once
+// higher-priority work is exhausted, honoring the "all locations always
+// active · free to walk any area" doctrine.
+function priority(state) {
+  return { reactivate: 40, build: 30, maintenance: 20, saturated: 5 }[state] ?? 0;
+}
+
+// Philip 2026-08-30 · "all locations must be active when walkers start walking".
+// Defaults to true. Set NEX_WALKER_SKIP_SATURATED=1 to restore the old
+// behavior (permanently skip saturated combos · pre-2026-08-30 default).
+const ALL_LOCATIONS_ALWAYS_ACTIVE = process.env.NEX_WALKER_SKIP_SATURATED !== "1";
+
+function buildQueue(snapshot, workItemsList, inFlight, recentPicks, categoryFreshness) {
   // 2026-08-24 · P0 atomic · state keyed at surface grain now.
   const stateByKey = new Map(snapshot.map((s) => [`${s.city}:${s.category}:${s.surface}`, s]));
   // In-flight remains at (city, category) grain · one walker per combo.
@@ -198,8 +268,8 @@ function buildQueue(snapshot, workItemsList, inFlight, recentPicks) {
       status = "skipped-not-city-configurable"; reason = "walker not city-configurable";
     } else if (inFlightKeys.has(comboKey)) {
       status = "in-flight"; reason = "currently running";
-    } else if (state === "saturated") {
-      status = "skipped-saturated"; reason = `surface ${wi.surface} saturated (${st?.consecutive_zero_new_cycles ?? 0} zero-new streak)`;
+    } else if (state === "saturated" && !ALL_LOCATIONS_ALWAYS_ACTIVE) {
+      status = "skipped-saturated"; reason = `surface ${wi.surface} saturated (${st?.consecutive_zero_new_cycles ?? 0} zero-new streak) · restore by unsetting NEX_WALKER_SKIP_SATURATED`;
     } else if (PER_VERTICAL_CONCURRENCY[wi.category] !== undefined
             && (inFlightByVertical.get(wi.category) ?? 0) >= PER_VERTICAL_CONCURRENCY[wi.category]) {
       status = "waiting-vertical-cap";
@@ -213,6 +283,10 @@ function buildQueue(snapshot, workItemsList, inFlight, recentPicks) {
       wi, state, status, reason,
       priorityScore: priority(state),
       lastCycleStartedAt: st?.last_cycle_started_at ?? null,
+      // Phase Ca · category freshness (Philip 2026-08-27 walkers-never-stuck).
+      // A category never picked in FAIRNESS_LOOKBACK_MINUTES → 0 (top priority).
+      // A category picked recently → its most-recent pick ms (older = wins tiebreak).
+      categoryLastPickMs: categoryFreshness.get(wi.category) ?? 0,
     };
   });
 
@@ -222,6 +296,14 @@ function buildQueue(snapshot, workItemsList, inFlight, recentPicks) {
     if (rs !== 0) return rs;
     const p = b.priorityScore - a.priorityScore;
     if (p !== 0) return p;
+    // Phase Ca · CATEGORY-level freshness beats surface-level freshness. A
+    // category that hasn't been picked in the last FAIRNESS_LOOKBACK_MINUTES
+    // (categoryLastPickMs=0) wins over a category actively being cycled. This
+    // is the specific fix for the retail-*/hotels/guesthouses/salons/dentists
+    // starvation observed 2026-08-27T13:19Z after the full unpause.
+    if (a.categoryLastPickMs !== b.categoryLastPickMs) {
+      return a.categoryLastPickMs - b.categoryLastPickMs;
+    }
     const aMs = a.lastCycleStartedAt ? new Date(a.lastCycleStartedAt).getTime() : 0;
     const bMs = b.lastCycleStartedAt ? new Date(b.lastCycleStartedAt).getTime() : 0;
     return aMs - bMs;
@@ -268,7 +350,8 @@ async function main() {
   const snapshot = await loadRotationSnapshot();
   const inFlight = await loadInFlight(wis);
   const recentPicks = await loadRecentPicks();
-  const queue = buildQueue(snapshot, wis, inFlight, recentPicks);
+  const categoryFreshness = await loadCategoryFreshness();
+  const queue = buildQueue(snapshot, wis, inFlight, recentPicks, categoryFreshness);
 
   const counts = { "would-pick": 0, "in-flight": 0, eligible: 0, "waiting-cooldown": 0, "skipped-saturated": 0, "skipped-not-city-configurable": 0 };
   for (const q of queue) counts[q.status] = (counts[q.status] ?? 0) + 1;

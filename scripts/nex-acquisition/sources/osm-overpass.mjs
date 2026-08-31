@@ -19,10 +19,20 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const CACHE_DIR = join(__dirname, "..", ".cache", "overpass");
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 const USER_AGENT = "NEX-Acquisition/1.0 (+https://nex.example · ODbL-attribution-respected)";
+// Philip 2026-08-27 · endpoint list expanded from 3 to 4 after live probe
+// showed 3-of-3 original endpoints failing (fetch-throw · HTTP 500 · HTTP 500)
+// while `maps.mail.ru` returned 33 elements in 6.4s. More failover mirrors =
+// higher chance any single walker cycle finds a healthy endpoint. Rate governor
+// still enforces global politeness · this is about resilience, not aggression.
+// Philip 2026-08-28 · added `overpass.osm.ch` (Swiss OSM mirror) as 5th
+// failover after live probe during a broad Overpass outage showed all four
+// mirrors 502/504/timeout while osm.ch returned 200 in 5.3s.
 const OVERPASS_ENDPOINTS = [
+  "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
   "https://overpass-api.de/api/interpreter",
   "https://overpass.kumi.systems/api/interpreter",
   "https://overpass.private.coffee/api/interpreter",
+  "https://overpass.osm.ch/api/interpreter",
 ];
 
 if (!existsSync(CACHE_DIR)) mkdirSync(CACHE_DIR, { recursive: true });

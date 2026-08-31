@@ -1,0 +1,35 @@
+{
+  "connectorId": "live.bmkg.earthquake",
+  "startedAt": "2026-08-30T11:57:25.017Z",
+  "endedAt": "2026-08-30T11:57:40.152Z",
+  "durationMs": 15135,
+  "tickIntervalMs": 200,
+  "ticksTotal": 74,
+  "ticksSucceeded": 1,
+  "ticksFailed": 0,
+  "ticksSkippedByBudget": 0,
+  "entitiesPublished": 1,
+  "entitiesDeduped": 0,
+  "failureReasons": {},
+  "latency": {
+    "min": 0,
+    "max": 0,
+    "avg": 0,
+    "p50": 0,
+    "p95": 0
+  },
+  "longestConsecutiveFailures": 0,
+  "finalHealth": {
+    "sourceId": "live.bmkg.earthquake",
+    "pollsTotal": 1,
+    "successesTotal": 1,
+    "failuresTotal": 0,
+    "consecutiveFailures": 0,
+    "avgLatencyMs": 0,
+    "lastPublishedEntities": 1,
+    "cumulativeEntities": 1,
+    "lastPollAt": "2026-08-30T11:57:25.017Z",
+    "lastSuccessAt": "2026-08-30T11:57:25.017Z"
+  },
+  "verdict": "clean"
+}

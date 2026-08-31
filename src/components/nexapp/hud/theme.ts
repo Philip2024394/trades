@@ -18,6 +18,11 @@ export interface NexHudTheme {
     /** Bezel artwork · URL to a rectangular image the frame renders as
      *  background · SVG preferred · raster acceptable for early themes. */
     imageSrc: string;
+    /** Alternate frame used when the right rail is collapsed via the kebab
+     *  toggle (Philip 2026-08-28). Optional · if missing, the same imageSrc
+     *  is reused (rail buttons just hide) · when present it's the chassis
+     *  drawn without the right rail housing so bubbles + content can widen. */
+    imageSrcNoRail?: string;
     /** How the artwork fills the console viewport. `fill` accepts mild
      *  vertical stretch on tall phones · `contain` letterboxes · `cover`
      *  crops. Themes choose per their tolerance. */
@@ -97,7 +102,13 @@ export const TITANIUM_THEME: NexHudTheme = {
   name: "Titanium / Tech",
   material: "metal",
   bezel: {
-    imageSrc: "/nex/hud-frame-v8.png",
+    // Stage 3.32 · v13 artwork (Philip 2026-08-31). v13 = same silhouette
+    // as v12 with cleaner hex-rail housing + brighter orange accent glow.
+    // Kept as .png variants: v13.png (rail visible) · v13-norail.png (rail
+    // collapsed) · v13-arrival.png (muted for the pre-auth sign-on shell,
+    // used by the SIGNON_THEME below).
+    imageSrc: "/nex/hud-frame-v13.png",
+    imageSrcNoRail: "/nex/hud-frame-v13-norail.png",
     fit: "fill",
     // No tint · titanium keeps the raster's native brushed-steel finish.
   },
@@ -106,14 +117,35 @@ export const TITANIUM_THEME: NexHudTheme = {
     filter: "brightness(0.85) saturate(0.95)",
   },
   interior: {
-    backgroundSrc: "/nex/hud-interior-bg-v1.jpg",
-    backgroundFilter: "brightness(0.95)",
+    // Two-hero cycle (Philip 2026-08-28) · continuously alternates between
+    // hero-nex-black.png (base) and hero-nex-black-2.png (overlay) via the
+    // InteriorBackgroundLayer's crossfade timer. No speaking-state gating ·
+    // always cycling for ambient motion. speakingSwapMs = fade cadence.
+    backgroundSrc: "/nex-app/general/hero-nex-black.png",
+    backgroundFilter: undefined,
     speakingBackgrounds: [
-      "/nex/hud-interior-bg-v2.jpg",
-      "/nex/hud-interior-bg-v3.jpg",
-      "/nex/hud-interior-bg-v4.jpg",
+      "/nex-app/general/hero-nex-black-2.png",
+      "/nex-app/general/hero-nex-black-3.png",
+      "/nex-app/general/hero-nex-black-4.png",
     ],
-    speakingSwapMs: 900,
+    speakingSwapMs: 4000,
+    // Hero sequence · Philip 2026-08-28. Extended from "1 2 3 1 2 3 2 1 3"
+    // to include image 4 · interleaved as a 4th punctuation after each round.
+    // 12-step ordered loop played by InteriorBackgroundLayer.
+    heroSequence: [
+      "/nex-app/general/hero-nex-black.png",     // 1
+      "/nex-app/general/hero-nex-black-2.png",   // 2
+      "/nex-app/general/hero-nex-black-3.png",   // 3
+      "/nex-app/general/hero-nex-black-4.png",   // 4
+      "/nex-app/general/hero-nex-black.png",     // 1
+      "/nex-app/general/hero-nex-black-2.png",   // 2
+      "/nex-app/general/hero-nex-black-3.png",   // 3
+      "/nex-app/general/hero-nex-black-4.png",   // 4
+      "/nex-app/general/hero-nex-black-2.png",   // 2
+      "/nex-app/general/hero-nex-black.png",     // 1
+      "/nex-app/general/hero-nex-black-3.png",   // 3
+      "/nex-app/general/hero-nex-black-4.png",   // 4
+    ],
   },
   lighting: {
     ambient: "rgba(249,115,22,0.06)",
@@ -153,7 +185,8 @@ export const PINK_METAL_THEME: NexHudTheme = {
   name: "Pink Metal",
   material: "metal",
   bezel: {
-    imageSrc: "/nex/hud-frame-v8.png",
+    imageSrc: "/nex/hud-frame-v13.png",
+    imageSrcNoRail: "/nex/hud-frame-v13-norail.png",
     fit: "fill",
     tint: { color: "#ec4899", blendMode: "color", opacity: 0.9 },
   },
@@ -162,8 +195,31 @@ export const PINK_METAL_THEME: NexHudTheme = {
     filter: "brightness(0.85) saturate(1.1) hue-rotate(280deg)",
   },
   interior: {
-    backgroundSrc: "/nex/hud-interior-bg-v1.jpg",
-    backgroundFilter: "brightness(0.95) hue-rotate(280deg)",
+    backgroundSrc: "/nex-app/general/hero-nex-black.png",
+    backgroundFilter: undefined,
+    speakingBackgrounds: [
+      "/nex-app/general/hero-nex-black-2.png",
+      "/nex-app/general/hero-nex-black-3.png",
+      "/nex-app/general/hero-nex-black-4.png",
+    ],
+    speakingSwapMs: 4000,
+    // Hero sequence · Philip 2026-08-28. Extended from "1 2 3 1 2 3 2 1 3"
+    // to include image 4 · interleaved as a 4th punctuation after each round.
+    // 12-step ordered loop played by InteriorBackgroundLayer.
+    heroSequence: [
+      "/nex-app/general/hero-nex-black.png",     // 1
+      "/nex-app/general/hero-nex-black-2.png",   // 2
+      "/nex-app/general/hero-nex-black-3.png",   // 3
+      "/nex-app/general/hero-nex-black-4.png",   // 4
+      "/nex-app/general/hero-nex-black.png",     // 1
+      "/nex-app/general/hero-nex-black-2.png",   // 2
+      "/nex-app/general/hero-nex-black-3.png",   // 3
+      "/nex-app/general/hero-nex-black-4.png",   // 4
+      "/nex-app/general/hero-nex-black-2.png",   // 2
+      "/nex-app/general/hero-nex-black.png",     // 1
+      "/nex-app/general/hero-nex-black-3.png",   // 3
+      "/nex-app/general/hero-nex-black-4.png",   // 4
+    ],
   },
   lighting: {
     ambient: "rgba(236,72,153,0.08)",
@@ -201,7 +257,8 @@ export const GOLD_THEME: NexHudTheme = {
   name: "Gold / Luxury",
   material: "metal",
   bezel: {
-    imageSrc: "/nex/hud-frame-v8.png",
+    imageSrc: "/nex/hud-frame-v13.png",
+    imageSrcNoRail: "/nex/hud-frame-v13-norail.png",
     fit: "fill",
     tint: { color: "#d4a544", blendMode: "color", opacity: 0.92 },
   },
@@ -210,8 +267,31 @@ export const GOLD_THEME: NexHudTheme = {
     filter: "brightness(0.82) saturate(1.15) sepia(0.15)",
   },
   interior: {
-    backgroundSrc: "/nex/hud-interior-bg-v1.jpg",
-    backgroundFilter: "brightness(0.95) sepia(0.35)",
+    backgroundSrc: "/nex-app/general/hero-nex-black.png",
+    backgroundFilter: undefined,
+    speakingBackgrounds: [
+      "/nex-app/general/hero-nex-black-2.png",
+      "/nex-app/general/hero-nex-black-3.png",
+      "/nex-app/general/hero-nex-black-4.png",
+    ],
+    speakingSwapMs: 4000,
+    // Hero sequence · Philip 2026-08-28. Extended from "1 2 3 1 2 3 2 1 3"
+    // to include image 4 · interleaved as a 4th punctuation after each round.
+    // 12-step ordered loop played by InteriorBackgroundLayer.
+    heroSequence: [
+      "/nex-app/general/hero-nex-black.png",     // 1
+      "/nex-app/general/hero-nex-black-2.png",   // 2
+      "/nex-app/general/hero-nex-black-3.png",   // 3
+      "/nex-app/general/hero-nex-black-4.png",   // 4
+      "/nex-app/general/hero-nex-black.png",     // 1
+      "/nex-app/general/hero-nex-black-2.png",   // 2
+      "/nex-app/general/hero-nex-black-3.png",   // 3
+      "/nex-app/general/hero-nex-black-4.png",   // 4
+      "/nex-app/general/hero-nex-black-2.png",   // 2
+      "/nex-app/general/hero-nex-black.png",     // 1
+      "/nex-app/general/hero-nex-black-3.png",   // 3
+      "/nex-app/general/hero-nex-black-4.png",   // 4
+    ],
   },
   lighting: {
     ambient: "rgba(212,165,68,0.08)",
@@ -242,6 +322,65 @@ export const GOLD_THEME: NexHudTheme = {
 };
 
 /**
+ * SIGN-ON · Stage 3.32 · Philip 2026-08-31.
+ *
+ * Pre-authentication arrival variant. Same chassis geometry as Titanium
+ * but the bezel PNG (`hud-frame-v13-arrival.png`) has:
+ *   · muted top-right indicator lights (grey, not glowing orange)
+ *   · no right-rail housing (the user has no capabilities to expose yet)
+ *   · a single highlighted orange pill at the bottom (points at the CTA)
+ *
+ * Renders the sign-on flow inside the frame without the voice orb, hero
+ * cycle, or rail buttons. Interior content = the sign-on form itself.
+ * Once authentication completes, the shell swaps to TITANIUM_THEME +
+ * lights up the rail.
+ */
+export const SIGNON_THEME: NexHudTheme = {
+  id: "sign-on",
+  name: "Sign-on / Arrival",
+  material: "metal",
+  bezel: {
+    imageSrc: "/nex/hud-frame-v13-arrival.png",
+    imageSrcNoRail: "/nex/hud-frame-v13-arrival.png",
+    fit: "fill",
+    // No tint · the arrival PNG already carries its own muted palette.
+  },
+  hero: {
+    // No hero image · sign-on interior is the form itself.
+    filter: "brightness(1)",
+  },
+  // No `interior` key · sign-on doesn't cycle backgrounds (the SignOn page
+  // paints its own white interior). The other themes carry an `interior`
+  // block for the nex-app hero cycle · pre-existing pattern the interface
+  // doesn't formally declare yet.
+  lighting: {
+    ambient: "rgba(0,0,0,0)",
+    outerAtmosphere: "radial-gradient(circle at 50% 30%, #1a1a1e 0%, #0a0a0c 100%)",
+    ledByMode: {
+      idle:        "rgba(249,115,22,0.6)",
+      chatting:    "rgba(249,115,22,0.6)",
+      discovering: "rgba(249,115,22,0.6)",
+      booking:     "rgba(249,115,22,0.6)",
+      image:       "rgba(249,115,22,0.6)",
+      document:    "rgba(249,115,22,0.6)",
+    },
+  },
+  accents: {
+    primary:        "#f97316",
+    onDark:         "#0a0e18",
+    onDarkMuted:    "#4b5563",
+    slotIdleBg:     "transparent",
+    slotIdleRing:   "transparent",
+    slotActiveBg:   "transparent",
+    slotActiveRing: "transparent",
+    slotActiveGlow: "none",
+  },
+  atmosphere: { kind: "none" },
+  environment: { background: "#ffffff" },
+  mascot: { recommendedTags: [] },
+};
+
+/**
  * Registry · lookup by id · new themes register here without touching the
  * frame component. Order = default sort in a future theme picker.
  */
@@ -249,6 +388,7 @@ export const NEX_HUD_THEME_REGISTRY: Record<string, NexHudTheme> = {
   [TITANIUM_THEME.id]:   TITANIUM_THEME,
   [PINK_METAL_THEME.id]: PINK_METAL_THEME,
   [GOLD_THEME.id]:       GOLD_THEME,
+  [SIGNON_THEME.id]:     SIGNON_THEME,
   // Future themes (Carbon · Rustic · White · Heritage · Cyber) drop in as
   // pure config objects here · zero component or geometry changes.
 };

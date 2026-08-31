@@ -15,7 +15,24 @@
 
 import type { Pool } from "pg";
 
-export const DIRECTORY_CATEGORIES = ["food", "accommodation", "market", "transport"] as const;
+// Philip 2026-08-27 · A1: extend HQ directory with 6 service categories from
+// nex.service_business (the Phase 1 workforce output table). Each service
+// category becomes a first-class DIRECTORY_CATEGORIES entry sharing the same
+// underlying table but filtered by category_slug column. HQ admin only ·
+// public /services routes come later once card design is settled.
+export const LEGACY_DIRECTORY_CATEGORIES = ["food", "accommodation", "market", "transport"] as const;
+export const SERVICE_DIRECTORY_CATEGORIES = [
+  "services-gyms",
+  "services-salons",
+  "services-dentists",
+  "services-opticians",
+  "services-pharmacies",
+  "services-car-repair",
+] as const;
+export const DIRECTORY_CATEGORIES = [
+  ...LEGACY_DIRECTORY_CATEGORIES,
+  ...SERVICE_DIRECTORY_CATEGORIES,
+] as const;
 export type DirectoryCategory = typeof DIRECTORY_CATEGORIES[number];
 
 interface TableSpec {
@@ -26,6 +43,8 @@ interface TableSpec {
   createdAtColumn:  string;
   sourceColumn:     string | null;
   idColumn:         string;
+  /** Optional constant WHERE fragment (e.g. category_slug filter) · appended after user filters. */
+  extraWhere?:      string;
 }
 
 const TABLE_MAP: Record<DirectoryCategory, TableSpec> = {
@@ -65,7 +84,30 @@ const TABLE_MAP: Record<DirectoryCategory, TableSpec> = {
     sourceColumn: "provider_kind",   // best proxy for "source" · provider_kind = walker-family
     idColumn: "provider_id",
   },
+  // ── Phase 1 workforce output · nex.service_business filtered by category_slug ──
+  // All 6 service categories share the same table + column layout.
+  "services-gyms":       serviceSpec("gyms"),
+  "services-salons":     serviceSpec("salons"),
+  "services-dentists":   serviceSpec("dentists"),
+  "services-opticians":  serviceSpec("opticians"),
+  "services-pharmacies": serviceSpec("pharmacies"),
+  "services-car-repair": serviceSpec("car-repair"),
 };
+
+function serviceSpec(categorySlug: string): TableSpec {
+  return {
+    table: "nex.service_business",
+    nameColumn: "business_name",
+    cityColumn: "city",
+    districtColumn: "district",
+    createdAtColumn: "created_at",
+    sourceColumn: "source",
+    idColumn: "internal_id",
+    // Literal escaped in SQL string · category_slug values are lowercase-hyphenated
+    // (validated in scripts/nex-workforce/_job-registry.mjs) so single-quotes are safe.
+    extraWhere: `category_slug = '${categorySlug}'`,
+  };
+}
 
 function specFor(category: DirectoryCategory): TableSpec {
   return TABLE_MAP[category];
@@ -91,12 +133,14 @@ export async function loadCategoryTotals(
   category: DirectoryCategory,
 ): Promise<DirectoryTotals> {
   const spec = specFor(category);
+  const extraWhereClause = spec.extraWhere ? `WHERE ${spec.extraWhere}` : "";
   try {
     const [totalR, cityR] = await Promise.all([
-      pool.query<{ n: string }>(`SELECT count(*)::text AS n FROM ${spec.table}`),
+      pool.query<{ n: string }>(`SELECT count(*)::text AS n FROM ${spec.table} ${extraWhereClause}`),
       pool.query<{ city: string | null; n: string }>(
         `SELECT ${spec.cityColumn} AS city, count(*)::text AS n
            FROM ${spec.table}
+           ${extraWhereClause}
           GROUP BY ${spec.cityColumn}
           ORDER BY 2 DESC`,
       ),
@@ -156,11 +200,13 @@ export async function loadDirectoryRows(
   const offset = Math.max(0, Math.floor(opts.offset ?? 0));
   const limit = Math.min(200, Math.max(1, Math.floor(opts.limit ?? 50)));
   const params: (string | number)[] = [];
-  let where = "";
+  const whereParts: string[] = [];
   if (opts.city && opts.city !== "All") {
     params.push(opts.city);
-    where = `WHERE ${spec.cityColumn} = $${params.length}`;
+    whereParts.push(`${spec.cityColumn} = $${params.length}`);
   }
+  if (spec.extraWhere) whereParts.push(spec.extraWhere);
+  const where = whereParts.length > 0 ? `WHERE ${whereParts.join(" AND ")}` : "";
   try {
     const [rowsR, totalR] = await Promise.all([
       pool.query<{ id: string; name: string; city: string | null; district: string | null; created_at: string; source: string | null }>(

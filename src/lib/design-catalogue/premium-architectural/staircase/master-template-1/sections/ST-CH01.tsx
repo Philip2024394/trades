@@ -230,6 +230,11 @@ export function STCH01(props: Config = {}) {
           conversation_id: conversationIdRef.current,
           message: text,
           source_message_id: sourceMessageId,
+          // UK staircase catalogue · Philip 2026-08-31 Stage 3.6. Explicit
+          // opt-in so the Brain hands staircase intents to the Qwen
+          // specialist (otherwise ID default would gate them to Indonesian
+          // knowledge). See src/lib/nex/brain/orchestrate.ts.
+          market: "UK",
         }),
       });
       const j = (await resp.json().catch(() => null)) as NexConvResponse | null;

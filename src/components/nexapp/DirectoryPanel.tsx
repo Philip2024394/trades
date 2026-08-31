@@ -18,7 +18,7 @@
 import type { CSSProperties } from "react";
 import { NEX } from "@/lib/nexapp/tokens";
 import { CategoryConstellation } from "./CategoryConstellation";
-import type { NexState } from "./NexAppHome";
+import type { NexState } from "@/lib/nexapp/nex-state";
 
 export function DirectoryPanel({
   activeCategorySlug,

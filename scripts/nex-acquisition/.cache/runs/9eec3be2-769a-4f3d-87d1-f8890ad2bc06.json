@@ -1,0 +1,216 @@
+{
+  "jobId": "9eec3be2-769a-4f3d-87d1-f8890ad2bc06",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Bantul",
+  "bbox": {
+    "sw": [
+      -8.02,
+      110.28
+    ],
+    "ne": [
+      -7.83,
+      110.48
+    ],
+    "scope": "Bantul · DIY"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T11:58:55.818Z",
+  "finishedAt": "2026-08-27T11:59:46.398Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 159,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 159,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 159,
+    "records_persisted": 36,
+    "enriched": 2,
+    "gate3_contactable": 11,
+    "gate4_eligible": 11,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 11,
+    "rejected_by_gate": 148,
+    "errors": 0,
+    "insert_attempted": 159,
+    "insert_conflicts": 123,
+    "insert_returned": 36,
+    "insert_verified": 36,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 36,
+    "rejected_by_reason": {
+      "CONTACT_MISSING": 148
+    }
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#FL-2026-ZTCAQ",
+        "name": "mie ayam Bu Tumini",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAR",
+        "name": "Bumi Langit",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAS",
+        "name": "Angkring Padu",
+        "category": "fast-food",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAT",
+        "name": "Monggo Resto",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAV",
+        "name": "Kedai Wedangan Watu Lumbung",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAW",
+        "name": "Mie Ayam Joglo",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAX",
+        "name": "Village Inn",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAY",
+        "name": "Mie Ayam Bendungan",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [
+      {
+        "publicRef": "#FL-2026-ZTCAR",
+        "name": "Bumi Langit",
+        "whatsapp": null,
+        "phone": "+62 274 85 72 121",
+        "website": "http://www.bumilangit.org/"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCB5",
+        "name": "Menco",
+        "whatsapp": null,
+        "phone": "+628562553838",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTCBM",
+        "name": "Kawasan Wisata Watu Lumbung",
+        "whatsapp": null,
+        "phone": "+6287838527753",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTCBR",
+        "name": "Simple Plant vegetarian resto & art space",
+        "whatsapp": null,
+        "phone": "+62 813 27395594",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTCCJ",
+        "name": "Kopi Klothok Paris",
+        "whatsapp": null,
+        "phone": "+62 821-3600-0185",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTCCK",
+        "name": "Lotus Mio Bangunjiwo",
+        "whatsapp": null,
+        "phone": "+62 877-2660-4177",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTCCS",
+        "name": "Pawon Mbah Poer",
+        "whatsapp": "+62 812-2823-6788",
+        "phone": "+62 812-2823-6788",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTCCW",
+        "name": "Kampoeng Mataraman",
+        "whatsapp": "+62 813-8644-0140",
+        "phone": "+62 813-8644-0140",
+        "website": null
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#FL-2026-ZTCAQ",
+        "name": "mie ayam Bu Tumini",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAS",
+        "name": "Angkring Padu",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAT",
+        "name": "Monggo Resto",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAV",
+        "name": "Kedai Wedangan Watu Lumbung",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTCAW",
+        "name": "Mie Ayam Joglo",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 36,
+    "insert_verified": 36,
+    "delta": 0
+  },
+  "cycle_outcome": "PARTIAL"
+}

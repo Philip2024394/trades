@@ -1,0 +1,41 @@
+[
+  {
+    "externalId": "sacred-besakih",
+    "domain": "culture",
+    "topic": "sacred.besakih",
+    "region": "Bali",
+    "content": "Pura Besakih (the 'Mother Temple') is Bali's largest and holiest Hindu temple complex — 23 separate temples on the slopes of Mount Agung. Belief tradition: Balinese Hindu (Agama Hindu Dharma). Observance type: doctrinal + traditional. Access rules: sarong + sash mandatory (rental available), no entry to inner sanctuaries during ceremonies except for worshippers, no menstruating women per Balinese Hindu convention, tourist entry via a paved path with local-guide encouragement (agree fee first — 100–200k IDR is fair). Entry fee ~60k IDR foreigner.",
+    "keywords": ["besakih", "mother temple", "mount agung", "hindu bali", "pura", "sarong", "belief tradition"],
+    "audience": ["tourist", "family"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:sacred_sites · PHDI",
+    "confidence": 0.9
+  },
+  {
+    "externalId": "sacred-uluwatu-temple",
+    "domain": "culture",
+    "topic": "sacred.uluwatu_temple",
+    "region": "Bali",
+    "content": "Pura Luhur Uluwatu is one of the six sad kahyangan (major sea temples) protecting Bali. Belief tradition: Balinese Hindu. Observance type: doctrinal. Dramatic clifftop setting on Bali's south peninsula. Sarong + sash mandatory (included with entry, ~50k IDR foreigner). Macaque monkeys will snatch sunglasses, phones, hats — bag them before entering. The daily Kecak fire dance at sunset (starts ~18:00) is a cultural performance held in a nearby amphitheatre — not part of the temple ritual itself.",
+    "keywords": ["uluwatu", "pura luhur uluwatu", "sad kahyangan", "sea temple", "kecak", "sarong", "macaque", "cliff temple"],
+    "audience": ["tourist", "family", "couple"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:sacred_sites · PHDI",
+    "confidence": 0.9
+  },
+  {
+    "externalId": "sacred-tirta-empul",
+    "domain": "culture",
+    "topic": "sacred.tirta_empul",
+    "region": "Bali",
+    "content": "Pura Tirta Empul (in Tampaksiring, near Ubud) is the temple of holy spring water — a working Hindu pilgrimage site where Balinese come for melukat (purification bathing) at 30-plus spouts. Belief tradition: Balinese Hindu, active use. Observance type: doctrinal + contemporary practice. Visitors may bathe respectfully: change into a sarong + shorts in the changing area, do not use the two spouts reserved for funeral cleansing (marked; ask staff), do not photograph individuals mid-prayer, women should not enter the pools during menstruation.",
+    "keywords": ["tirta empul", "tampaksiring", "melukat", "purification", "holy spring", "hindu bali", "ubud area"],
+    "audience": ["tourist", "couple"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:sacred_sites · PHDI",
+    "confidence": 0.9
+  }
+]

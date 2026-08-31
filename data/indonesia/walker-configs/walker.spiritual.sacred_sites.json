@@ -1,0 +1,7 @@
+{
+  "taxonomyId": "walker.spiritual.sacred_sites",
+  "sourceDir": "sacred_sites",
+  "defaultStability": "stable",
+  "refreshCadenceDays": 180,
+  "description": "Sacred sites with belief-context (temples, mosques, natural sacred sites) — belief_tradition + observance_type preserved."
+}

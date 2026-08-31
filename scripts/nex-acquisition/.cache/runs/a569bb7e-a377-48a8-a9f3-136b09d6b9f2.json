@@ -1,0 +1,69 @@
+{
+  "jobId": "a569bb7e-a377-48a8-a9f3-136b09d6b9f2",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Solo",
+  "bbox": {
+    "sw": [
+      -7.6,
+      110.75
+    ],
+    "ne": [
+      -7.5,
+      110.9
+    ],
+    "scope": "Solo · Central Java"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T18:15:05.550Z",
+  "finishedAt": "2026-08-27T18:15:11.599Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 165,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 165,
+    "matched_exact": 165,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "records_persisted": 0,
+    "enriched": 1,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 0,
+    "enrichment_writes_applied": 1,
+    "insert_attempted": 0,
+    "insert_conflicts": 0,
+    "insert_returned": 0,
+    "insert_verified": 0,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 0,
+    "rejected_by_reason": {
+      "MATCHED_EXISTING": 165
+    }
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 0,
+    "insert_verified": 0,
+    "delta": 0
+  },
+  "cycle_outcome": "ALL_DEDUPED"
+}

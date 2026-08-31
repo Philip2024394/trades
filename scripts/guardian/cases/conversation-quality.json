@@ -1,0 +1,104 @@
+[
+  {
+    "id": "CQ-bali-overview",
+    "note": "'Tell me about Bali' with RAG must mention Ubud/Canggu/Seminyak (grounded facts, not hallucinated)",
+    "role": "brain.primary_local",
+    "prompt": "Tell me about Bali",
+    "expect": {
+      "matchesAny": ["(?i)ubud", "(?i)canggu|seminyak"],
+      "rejectAny": ["(?i)i can help you find trusted professionals"]
+    }
+  },
+  {
+    "id": "CQ-yogyakarta-what-do",
+    "note": "'What should I do in Yogyakarta?' cites Borobudur/Prambanan/Malioboro",
+    "role": "brain.primary_local",
+    "prompt": "What should I do in Yogyakarta?",
+    "expect": {
+      "matchesAny": ["(?i)borobudur|prambanan|malioboro|kraton"]
+    }
+  },
+  {
+    "id": "CQ-nasi-goreng",
+    "note": "'What is nasi goreng?' names it as fried rice",
+    "role": "brain.fast_local",
+    "prompt": "What is nasi goreng?",
+    "expect": {
+      "matchesAny": ["(?i)fried rice|sweet soy|kecap"]
+    }
+  },
+  {
+    "id": "CQ-rendang",
+    "note": "'What is rendang?' mentions beef and Padang/Sumatra",
+    "role": "brain.fast_local",
+    "prompt": "What is rendang?",
+    "expect": {
+      "matchesAny": ["(?i)beef", "(?i)padang|sumatra|coconut"]
+    }
+  },
+  {
+    "id": "CQ-gudeg",
+    "note": "'What is gudeg?' mentions Yogyakarta and jackfruit",
+    "role": "brain.fast_local",
+    "prompt": "What is gudeg?",
+    "expect": {
+      "matchesAny": ["(?i)yogyakarta|yogya|jogja", "(?i)jackfruit"]
+    }
+  },
+  {
+    "id": "CQ-capital-of-indonesia",
+    "note": "'What is the capital of Indonesia?' answers Jakarta directly (no UK-trade-app fallback)",
+    "role": "brain.fast_local",
+    "prompt": "What is the capital of Indonesia?",
+    "expect": {
+      "matchesAny": ["(?i)jakarta"],
+      "rejectAny": ["(?i)trade centre|trusted professionals|find a plumber|find an electrician|browse.*staircase"]
+    }
+  },
+  {
+    "id": "CQ-halal",
+    "note": "Halal question mentions Muslim / halal correctly",
+    "role": "brain.fast_local",
+    "prompt": "Is Indonesian food halal?",
+    "expect": {
+      "matchesAny": ["(?i)muslim|halal"]
+    }
+  },
+  {
+    "id": "CQ-hello-nex",
+    "note": "'Hi NEX' must NOT produce staircase or UK-trade fallback text (isolation quality)",
+    "role": "brain.fast_local",
+    "prompt": "Hi NEX",
+    "expect": {
+      "rejectAny": ["(?i)staircase library|find a plumber|find an electrician|browse.*trade centre"]
+    }
+  },
+  {
+    "id": "CQ-family-bali",
+    "note": "'family + quiet in Bali' cites a grounded area (family record: Sanur/Nusa Dua/Ubud · quiet record: Sidemen/Munduk/Amed)",
+    "role": "brain.primary_local",
+    "prompt": "I'm going to Bali with my family. Where should I stay if I want it quiet and family-friendly?",
+    "expect": {
+      "matchesAny": ["(?i)sanur|nusa dua|ubud|sidemen|munduk|amed"],
+      "rejectAny": ["(?i)i can help you find trusted professionals"]
+    }
+  },
+  {
+    "id": "CQ-emergency-number",
+    "note": "'What's the emergency number in Indonesia?' answers 112",
+    "role": "brain.fast_local",
+    "prompt": "What is the emergency number in Indonesia?",
+    "expect": {
+      "matchesAny": ["\\b112\\b"]
+    }
+  },
+  {
+    "id": "CQ-scams-warning",
+    "note": "'What scams should I watch for in Bali?' mentions a real scam (taxi, money changer, or motorbike)",
+    "role": "brain.primary_local",
+    "prompt": "What scams should I watch out for in Bali?",
+    "expect": {
+      "matchesAny": ["(?i)taxi|money changer|motorbike|police"]
+    }
+  }
+]

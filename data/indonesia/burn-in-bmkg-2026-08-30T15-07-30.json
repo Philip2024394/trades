@@ -1,0 +1,82 @@
+{
+  "connectorId": "live.bmkg.earthquake",
+  "startedAt": "2026-08-30T14:52:30.600Z",
+  "endedAt": "2026-08-30T15:07:30.726Z",
+  "durationMs": 900126,
+  "tickIntervalMs": 60000,
+  "ticksTotal": 15,
+  "ticksSucceeded": 15,
+  "ticksFailed": 0,
+  "ticksSkippedByBudget": 0,
+  "entitiesPublished": 1,
+  "entitiesDeduped": 14,
+  "failureReasons": {},
+  "latency": {
+    "min": 105,
+    "max": 2002,
+    "avg": 482,
+    "p50": 152,
+    "p95": 2002
+  },
+  "longestConsecutiveFailures": 0,
+  "finalHealth": {
+    "sourceId": "live.bmkg.earthquake",
+    "pollsTotal": 15,
+    "successesTotal": 15,
+    "failuresTotal": 0,
+    "consecutiveFailures": 0,
+    "avgLatencyMs": 442,
+    "lastPublishedEntities": 0,
+    "cumulativeEntities": 1,
+    "lastPollAt": "2026-08-30T15:06:30.721Z",
+    "lastSuccessAt": "2026-08-30T15:06:30.721Z"
+  },
+  "samplePublished": [
+    {
+      "id": "earthquake:bmkg:30_Agu_2026:18:03:03_WIB",
+      "kind": "government",
+      "category": "safety.earthquake",
+      "name": "M4.8 · Pusat gempa berada di laut 43 km utara Ruteng, Manggarai",
+      "description": "Earthquake M4.8 · depth 6 km · Pusat gempa berada di laut 43 km utara Ruteng, Manggarai. Reported by BMKG at 2026-08-30T11:03:03+00:00.",
+      "keywords": [
+        "earthquake",
+        "gempa",
+        "bmkg",
+        "pusat gempa berada di laut 43 km utara ruteng, manggarai"
+      ],
+      "lifecycle": "PUBLISHED",
+      "lifecycleChangedAt": "2026-08-30T14:52:30.600Z",
+      "provenance": [
+        {
+          "walkerId": "live.bmkg.earthquake",
+          "sourceKey": "bmkg.autogempa",
+          "sourceName": "BMKG",
+          "sourceTier": "A",
+          "firstDiscoveredAt": "2026-08-30T11:03:03+00:00",
+          "lastCheckedAt": "2026-08-30T14:52:30.600Z",
+          "lastChangedAt": "2026-08-30T11:03:03+00:00",
+          "observedAt": "2026-08-30T14:52:30.600Z"
+        }
+      ],
+      "freshness": {
+        "policy": "live",
+        "lastVerifiedAt": "2026-08-30T14:52:30.600Z",
+        "nextRefreshAt": "2026-08-30T14:53:30.600Z",
+        "staleness": 0
+      },
+      "geo": {
+        "lat": -8.23,
+        "lng": 120.51,
+        "geoConfidence": 1
+      },
+      "attributes": {
+        "magnitude": 4.8,
+        "depth": "6 km",
+        "wilayah": "Pusat gempa berada di laut 43 km utara Ruteng, Manggarai",
+        "potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
+        "dirasakan": "III Kab. Manggarai"
+      }
+    }
+  ],
+  "verdict": "clean"
+}

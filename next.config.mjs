@@ -175,8 +175,13 @@ const nextConfig = {
   // these on first fetch. HSTS locks the site to HTTPS for 2 years
   // (preload-eligible); nosniff blocks MIME sniffing attacks;
   // Referrer-Policy leaks less to third parties; Permissions-Policy
-  // hard-denies camera, scopes microphone + geolocation to same-origin
-  // only (microphone needed for NEX voice on /nex-voice-demo etc.).
+  // scopes camera + microphone + geolocation to same-origin only.
+  //
+  // Philip 2026-08-27: camera opened to (self) — was globally denied,
+  // but NEX Internal Calling (WebRTC video · /nex-calling/experiment)
+  // requires it. Same-origin only preserves the security posture ·
+  // third-party iframes cannot use the camera. NEX voice was already
+  // relying on microphone=(self) so the pattern is consistent.
   //
   // CSP is deliberately NOT set here — the site uses inline
   // dangerouslySetInnerHTML for JSON-LD in ~10 places, which needs
@@ -186,7 +191,7 @@ const nextConfig = {
       { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
       { key: "X-Content-Type-Options",    value: "nosniff" },
       { key: "Referrer-Policy",           value: "strict-origin-when-cross-origin" },
-      { key: "Permissions-Policy",        value: "camera=(), microphone=(self), geolocation=(self), interest-cohort=()" },
+      { key: "Permissions-Policy",        value: "camera=(self), microphone=(self), geolocation=(self), interest-cohort=()" },
       { key: "X-Frame-Options",           value: "SAMEORIGIN" }
     ];
     return [{ source: "/(.*)", headers: common }];

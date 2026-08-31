@@ -1,0 +1,530 @@
+[
+  {
+    "id": "SI-hello-nex",
+    "note": "Greeting must NEVER route to staircase",
+    "input": {
+      "message": "Hello NEX",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "conversation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades",
+        "quotation"
+      ]
+    }
+  },
+  {
+    "id": "SI-how-are-you",
+    "note": "'How are you?' must NEVER route to staircase",
+    "input": {
+      "message": "How are you?",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "conversation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades",
+        "quotation"
+      ]
+    }
+  },
+  {
+    "id": "SI-bali",
+    "note": "'Tell me about Bali' must NOT route to staircase (was leaking pre-fix)",
+    "input": {
+      "message": "Tell me about Bali",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "indonesia",
+      "forbiddenIntents": [
+        "staircase",
+        "trades",
+        "quotation"
+      ]
+    }
+  },
+  {
+    "id": "SI-yogyakarta-food",
+    "note": "'What food should I try in Yogyakarta?' must be food, not staircase/trades",
+    "input": {
+      "message": "What food should I try in Yogyakarta?",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "food",
+      "forbiddenIntents": [
+        "staircase",
+        "trades"
+      ]
+    }
+  },
+  {
+    "id": "SI-trip-indonesia",
+    "note": "'Plan me a 3 day trip to Indonesia' must be tourism, not staircase",
+    "input": {
+      "message": "Plan me a 3 day trip to Indonesia",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "tourism",
+      "forbiddenIntents": [
+        "staircase",
+        "trades"
+      ]
+    }
+  },
+  {
+    "id": "SI-weather-bali",
+    "note": "'What is the weather like in Bali?' must be weather, not staircase",
+    "input": {
+      "message": "What is the weather like in Bali?",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "weather",
+      "forbiddenIntents": [
+        "staircase",
+        "trades"
+      ]
+    }
+  },
+  {
+    "id": "SI-find-restaurant",
+    "note": "'Find me a restaurant' must be business/food, not staircase",
+    "input": {
+      "message": "Find me a restaurant",
+      "hasImage": false
+    },
+    "expect": {
+      "intentOneOf": [
+        "business",
+        "food"
+      ],
+      "forbiddenIntents": [
+        "staircase",
+        "trades"
+      ]
+    }
+  },
+  {
+    "id": "SI-genuine-staircase-1",
+    "note": "'I need a staircase' → genuinely staircase",
+    "input": {
+      "message": "I need a staircase",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "staircase"
+    }
+  },
+  {
+    "id": "SI-genuine-staircase-2",
+    "note": "'Calculate my staircase' → genuinely staircase",
+    "input": {
+      "message": "Calculate my staircase",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "staircase"
+    }
+  },
+  {
+    "id": "SI-genuine-staircase-3",
+    "note": "'Give me a staircase quote' → genuinely staircase (specialist beats quotation)",
+    "input": {
+      "message": "Give me a staircase quote",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "staircase"
+    }
+  },
+  {
+    "id": "SI-guard-conversation",
+    "note": "assertSpecialistIntent must throw when a specialist receives conversation",
+    "assertGuardThrows": {
+      "intent": "conversation",
+      "expected": "staircase"
+    }
+  },
+  {
+    "id": "SI-hotel-en-plain",
+    "note": "Real user query 'I need hotel Indonesia' MUST route to accommodation, never staircase (Philip 2026-08-30 regression)",
+    "input": {
+      "message": "I need hotel Indonesia",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "accommodation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades",
+        "quotation"
+      ]
+    }
+  },
+  {
+    "id": "SI-hotel-en-article",
+    "note": "'I need a hotel in Indonesia' → accommodation, never staircase",
+    "input": {
+      "message": "I need a hotel in Indonesia",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "accommodation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades",
+        "quotation"
+      ]
+    }
+  },
+  {
+    "id": "SI-hotel-en-city",
+    "note": "'hotel in Yogyakarta' → accommodation with indonesia secondary",
+    "input": {
+      "message": "hotel in Yogyakarta",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "accommodation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades"
+      ]
+    }
+  },
+  {
+    "id": "SI-hotel-en-bare",
+    "note": "Single word 'hotel' still classifies as accommodation, never staircase",
+    "input": {
+      "message": "hotel",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "accommodation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades"
+      ]
+    }
+  },
+  {
+    "id": "SI-guesthouse-en",
+    "note": "'cheap guesthouse near Malioboro' → accommodation, never staircase",
+    "input": {
+      "message": "cheap guesthouse near Malioboro",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "accommodation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades"
+      ]
+    }
+  },
+  {
+    "id": "SI-homestay-en",
+    "note": "'homestay in Yogya' → accommodation, never staircase",
+    "input": {
+      "message": "homestay in Yogya",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "accommodation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades"
+      ]
+    }
+  },
+  {
+    "id": "SI-villa-en",
+    "note": "'villa in Bali' classifies as indonesia/tourism, never staircase",
+    "input": {
+      "message": "villa in Bali",
+      "hasImage": false
+    },
+    "expect": {
+      "intentOneOf": [
+        "indonesia",
+        "tourism",
+        "accommodation"
+      ],
+      "forbiddenIntents": [
+        "staircase",
+        "trades"
+      ]
+    }
+  },
+  {
+    "id": "SI-hotel-id-bali",
+    "note": "Indonesian 'Saya perlu hotel di Bali' → accommodation, never staircase",
+    "input": {
+      "message": "Saya perlu hotel di Bali",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "accommodation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades"
+      ]
+    }
+  },
+  {
+    "id": "SI-hotel-id-cari",
+    "note": "Indonesian 'cari hotel di Jakarta' → accommodation (has cari verb), never staircase",
+    "input": {
+      "message": "cari hotel di Jakarta",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "accommodation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades"
+      ]
+    }
+  },
+  {
+    "id": "SI-book-hotel-ubud",
+    "note": "'book me a hotel in Ubud' → booking with indonesia secondary, never staircase",
+    "input": {
+      "message": "book me a hotel in Ubud",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "booking",
+      "forbiddenIntents": [
+        "staircase",
+        "trades"
+      ]
+    }
+  },
+  {
+    "id": "SI-accommodation-jarkata",
+    "note": "REAL USER BUG · 'I need accommodation jarkata' (typo) MUST classify to accommodation, never conversation/staircase (Philip 2026-08-30 vocabulary-gap fix)",
+    "input": {
+      "message": "I need accommodation jarkata",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "accommodation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades",
+        "conversation"
+      ]
+    }
+  },
+  {
+    "id": "SI-accommodation-in-jakarta",
+    "note": "'I need accommodation in Jakarta' → accommodation (accommodation word + city)",
+    "input": {
+      "message": "I need accommodation in Jakarta",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "accommodation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades",
+        "conversation"
+      ]
+    }
+  },
+  {
+    "id": "SI-accommodation-jakarta",
+    "note": "'I need accommodation Jakarta' → accommodation, never conversation",
+    "input": {
+      "message": "I need accommodation Jakarta",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "accommodation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades",
+        "conversation"
+      ]
+    }
+  },
+  {
+    "id": "SI-accommodation-bare-city",
+    "note": "'accommodation in Jakarta' → accommodation",
+    "input": {
+      "message": "accommodation in Jakarta",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "accommodation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades",
+        "conversation"
+      ]
+    }
+  },
+  {
+    "id": "SI-accommodation-bali",
+    "note": "'I need accommodation in Bali' → accommodation",
+    "input": {
+      "message": "I need accommodation in Bali",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "accommodation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades",
+        "conversation"
+      ]
+    }
+  },
+  {
+    "id": "SI-akomodasi-jakarta-id",
+    "note": "Indonesian 'Saya butuh akomodasi di Jakarta' → accommodation (akomodasi vocabulary)",
+    "input": {
+      "message": "Saya butuh akomodasi di Jakarta",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "accommodation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades",
+        "conversation"
+      ]
+    }
+  },
+  {
+    "id": "SI-cari-akomodasi-id",
+    "note": "Indonesian 'cari akomodasi di Jakarta' → accommodation (has cari verb + akomodasi)",
+    "input": {
+      "message": "cari akomodasi di Jakarta",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "accommodation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades",
+        "conversation"
+      ]
+    }
+  },
+  {
+    "id": "SI-place-to-stay",
+    "note": "'I need a place to stay in Jakarta' → accommodation (place-to-stay phrasing)",
+    "input": {
+      "message": "I need a place to stay in Jakarta",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "accommodation",
+      "forbiddenIntents": [
+        "staircase",
+        "trades",
+        "conversation"
+      ]
+    }
+  },
+  {
+    "id": "SI-market-id-staircase-blocked",
+    "note": "MARKET DOCTRINE · Indonesian user + 'help with my staircase' MUST NOT enter UK staircase cascade",
+    "input": {
+      "message": "help with my staircase at home in Jakarta",
+      "hasImage": false,
+      "userMarket": "ID"
+    },
+    "expect": {
+      "intent": "indonesia",
+      "forbiddenIntents": [
+        "staircase",
+        "trades"
+      ]
+    }
+  },
+  {
+    "id": "SI-market-id-bare-staircase-blocked",
+    "note": "MARKET DOCTRINE · Indonesian user + bare 'I need a staircase' → indonesia intent, never UK staircase",
+    "input": {
+      "message": "I need a staircase",
+      "hasImage": false,
+      "userMarket": "ID"
+    },
+    "expect": {
+      "intent": "indonesia",
+      "forbiddenIntents": [
+        "staircase",
+        "trades"
+      ]
+    }
+  },
+  {
+    "id": "SI-market-id-quotation-blocked",
+    "note": "MARKET DOCTRINE · Indonesian user + 'how much for a quote' MUST NOT enter UK quotation cascade",
+    "input": {
+      "message": "how much does a quote for this cost",
+      "hasImage": false,
+      "userMarket": "ID"
+    },
+    "expect": {
+      "intent": "indonesia",
+      "forbiddenIntents": [
+        "staircase",
+        "trades",
+        "quotation"
+      ]
+    }
+  },
+  {
+    "id": "SI-market-id-plumber-blocked",
+    "note": "MARKET DOCTRINE · Indonesian user + 'plumber' MUST NOT enter UK plumber cascade",
+    "input": {
+      "message": "I need a plumber",
+      "hasImage": false,
+      "userMarket": "ID"
+    },
+    "expect": {
+      "intent": "indonesia",
+      "forbiddenIntents": [
+        "staircase",
+        "trades"
+      ]
+    }
+  },
+  {
+    "id": "SI-market-uk-staircase-preserved",
+    "note": "MARKET DOCTRINE REVERSE · UK user (or unset market) + genuine staircase query still routes to staircase specialist",
+    "input": {
+      "message": "I need a staircase",
+      "hasImage": false,
+      "userMarket": "UK"
+    },
+    "expect": {
+      "intent": "staircase",
+      "forbiddenIntents": [
+        "indonesia",
+        "conversation"
+      ]
+    }
+  },
+  {
+    "id": "SI-market-unset-staircase-preserved",
+    "note": "MARKET DOCTRINE · when userMarket is unset (legacy call), original UK routing is preserved (backward compat)",
+    "input": {
+      "message": "calculate my staircase",
+      "hasImage": false
+    },
+    "expect": {
+      "intent": "staircase"
+    }
+  }
+]

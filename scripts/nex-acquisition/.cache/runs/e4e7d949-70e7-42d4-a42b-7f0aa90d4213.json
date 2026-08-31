@@ -1,0 +1,216 @@
+{
+  "jobId": "e4e7d949-70e7-42d4-a42b-7f0aa90d4213",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Surabaya",
+  "bbox": {
+    "sw": [
+      -7.36,
+      112.6
+    ],
+    "ne": [
+      -7.16,
+      112.86
+    ],
+    "scope": "Surabaya · East Java"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T05:12:47.569Z",
+  "finishedAt": "2026-08-27T05:16:27.880Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 333,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 333,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 333,
+    "records_persisted": 332,
+    "enriched": 8,
+    "gate3_contactable": 32,
+    "gate4_eligible": 32,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 32,
+    "rejected_by_gate": 301,
+    "errors": 0,
+    "insert_attempted": 333,
+    "insert_conflicts": 1,
+    "insert_returned": 332,
+    "insert_verified": 332,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 332,
+    "rejected_by_reason": {
+      "CONTACT_MISSING": 301
+    }
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#AC-2026-0015E",
+        "name": "Hotel Sempoerno",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0015F",
+        "name": "Weta",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0015G",
+        "name": "Hotel Paviljoen",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0015H",
+        "name": "Remaja",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0015J",
+        "name": "Ganefo",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0015K",
+        "name": "Singaraja Indah Hotel",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0015M",
+        "name": "The Capital Hotel Surabaya",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-0015N",
+        "name": "Hotel Kenongo",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [
+      {
+        "publicRef": "#AC-2026-0015M",
+        "name": "The Capital Hotel Surabaya",
+        "whatsapp": "+6281215215039",
+        "phone": "6281215215039",
+        "website": "https://stayatcapital.com/surabaya/"
+      },
+      {
+        "publicRef": "#AC-2026-0015S",
+        "name": "Kana Citra Guesthouse",
+        "whatsapp": null,
+        "phone": "+62351996062",
+        "website": "https://www.instagram.com/kana_citra/"
+      },
+      {
+        "publicRef": "#AC-2026-0016M",
+        "name": "Hotel Sulawesi Gorontalo",
+        "whatsapp": null,
+        "phone": "+62 315-358555",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-0017B",
+        "name": "Bonnet Hotel",
+        "whatsapp": "+623151513403",
+        "phone": "+62315933888",
+        "website": "https://www.bonnethotelsurabaya.com/"
+      },
+      {
+        "publicRef": "#AC-2026-0017Z",
+        "name": "favehotel Graha Agung Surabaya",
+        "whatsapp": null,
+        "phone": "+6231 9900 0090",
+        "website": "https://www.favehotels.com/hotellist/eng/57/favehotel-graha-agung"
+      },
+      {
+        "publicRef": "#AC-2026-00187",
+        "name": "wisma Shanty",
+        "whatsapp": null,
+        "phone": "+62 838-3183-0068",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-0018E",
+        "name": "Jojoran Stal",
+        "whatsapp": null,
+        "phone": "+62 81 5521 5151",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-0018S",
+        "name": "Panti Asuhan Islam Bani Yaqub",
+        "whatsapp": null,
+        "phone": "+62 31 8284276;+62 852 0363 9559",
+        "website": "https://pantiasuhanbaniyaqub.blogspot.com/"
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#AC-2026-0015E",
+        "name": "Hotel Sempoerno",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-0015F",
+        "name": "Weta",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-0015G",
+        "name": "Hotel Paviljoen",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-0015H",
+        "name": "Remaja",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-0015J",
+        "name": "Ganefo",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 332,
+    "insert_verified": 332,
+    "delta": 0
+  },
+  "cycle_outcome": "PARTIAL"
+}

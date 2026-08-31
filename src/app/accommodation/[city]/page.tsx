@@ -19,6 +19,7 @@ import type { DiscoveryCardData } from "@/components/nex-directory/NexDiscoveryC
 import { getCategory } from "@/lib/nex/category-registry";
 import { normalizeDirectoryCountry } from "@/lib/nex/directoryCountry";
 import { cityFromSlug } from "@/lib/nex/city-registry";
+import { loadLibraryForCategory, resolveFallbackUrl } from "@/lib/nex-directory/category-fallback";
 
 export const dynamic = "force-dynamic";
 
@@ -49,9 +50,10 @@ export default async function AccommodationCityPage(
   const page = Math.max(1, parseInt(sp.page ?? "1", 10) || 1);
   const offset = (page - 1) * 1500;
 
-  const [listings, counts] = await Promise.all([
+  const [listings, counts, libraryRows] = await Promise.all([
     loadAccommodationListings({ city: entry.canonical, country, offset }),
     countAccommodationDiscovered({ city: entry.canonical, country }),
+    loadLibraryForCategory("accommodation"),                              // STEP 2 · category fallback library
   ]);
   const meta = getCategory("accommodation");
 
@@ -74,7 +76,7 @@ export default async function AccommodationCityPage(
       emoji: "🏍",
       eyebrow: "Coming soon",
       title: "Local rental & transport",
-      body: "Motorbike rental, car hire, airport transfer. NEX is building its local driver network before opening this.",
+      body: "Motorbike rental, car hire, airport transfer. NEX is building its local provider network before opening this.",
       state: "future",
     },
     {
@@ -90,7 +92,7 @@ export default async function AccommodationCityPage(
       emoji: "🛵",
       eyebrow: "Coming soon",
       title: "Local delivery",
-      body: "Order from a local shop, get it on a bike. Requires the Local Delivery Contract (5 allocated drivers · NEX-set minimum tariff).",
+      body: "Order from a local shop, get it on a bike. Requires the Local Delivery Contract (5 allocated providers · each provider sets their own price).",
       state: "future",
     },
   ];
@@ -113,6 +115,14 @@ export default async function AccommodationCityPage(
         whatsappNumber:   l.whatsappNumber,
         website:          l.website,
         heroImageUrl:     l.heroImageUrl,
+        // STEP 2 · category-fallback resolver kicks in when no real hero
+        // image · preferred variant tag = the vertical category (e.g. "hotel",
+        // "guesthouse") so Philip's granular variants win when curated.
+        fallbackImageUrl: l.heroImageUrl ? null : resolveFallbackUrl({
+          categorySlug: "accommodation",
+          preferredVariants: [l.category].filter(Boolean),
+          libraryRows,
+        }),
         rating:           l.rating,
         reviewCount:      l.reviewCount,
         categoryBadges:   l.starRating ? [{ label: `${l.starRating}★`, tone: "orange" }] : undefined,

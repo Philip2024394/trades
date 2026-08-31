@@ -1,0 +1,57 @@
+[
+  {
+    "id": "L-en-01",
+    "note": "English question stays English",
+    "role": "brain.fast_local",
+    "system": "You are NEX. Reply in one short sentence in the same language as the user.",
+    "prompt": "What is the capital of Indonesia?",
+    "expect": {
+      "matchesAny": ["\\bJakarta\\b"],
+      "rejectAny": ["Ibu kota", "ibukota"]
+    }
+  },
+  {
+    "id": "L-en-02",
+    "note": "English business ask stays English",
+    "role": "brain.fast_local",
+    "system": "You are NEX. Reply in the same language as the user.",
+    "prompt": "Recommend a good coffee shop in Ubud in one sentence.",
+    "expect": {
+      "matchesAny": ["\\bUbud\\b"],
+      "rejectAny": ["Warung Kopi.*(?=Sekarang|Sangat)", "Silakan"]
+    }
+  },
+  {
+    "id": "L-id-01",
+    "note": "Indonesian short factual stays Indonesian",
+    "role": "brain.fast_local",
+    "system": "Anda adalah NEX. Balas dalam bahasa yang sama dengan pengguna.",
+    "prompt": "Apa ibu kota Bali?",
+    "expect": {
+      "matchesAny": ["\\bDenpasar\\b"],
+      "requiresLanguage": "id"
+    }
+  },
+  {
+    "id": "L-id-02",
+    "note": "Indonesian food question stays Indonesian",
+    "role": "brain.fast_local",
+    "system": "Anda adalah NEX. Balas singkat dalam Bahasa Indonesia.",
+    "prompt": "Rekomendasikan warung makan enak untuk sarapan di Canggu.",
+    "expect": {
+      "matchesAny": ["(?i)warung|cafe|café|nasi|kopi"],
+      "requiresLanguage": "id"
+    }
+  },
+  {
+    "id": "L-mix-01",
+    "note": "user opens in ID → reply in ID (mixed EN terms acceptable)",
+    "role": "brain.fast_local",
+    "system": "You are NEX. Reply in the same language as the user, even if the user mixes languages.",
+    "prompt": "Halo NEX, tolong rekomendasi tempat makan malam di Seminyak untuk keluarga.",
+    "expect": {
+      "matchesAny": ["Seminyak"],
+      "requiresLanguage": "id"
+    }
+  }
+]

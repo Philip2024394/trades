@@ -26,6 +26,9 @@ import { DualWriteObjectStorage } from "./adapters/object-dual-write";
 // Phase 3a · first production adapter · stores binaries in
 // nex.object_blobs on our NEX Postgres. Cross-machine transparent.
 import { PostgresObjectStorage } from "./adapters/object-postgres";
+// NEX Media Foundation Stage 1 · Cloudflare R2 · Philip 2026-08-27.
+// Wired but only activates when NEX_OBJECT_BACKEND=r2 AND R2 creds are set.
+import { R2ObjectStorage } from "./adapters/object-r2";
 import { getStorage } from "./registry";
 import { COLLECTIONS } from "./types";
 import type {
@@ -120,14 +123,18 @@ function buildRaw(kind: string): ObjectStorage {
     // Cross-machine transparent · stores binaries in nex.object_blobs.
     case "postgres":
       return new PostgresObjectStorage();
-    // Roadmap adapters — throw with clear guidance until implemented.
-    case "supabase":
+    // NEX Media Foundation Stage 1 · Cloudflare R2 (Bandwidth Alliance $0 egress).
+    // Requires R2_ACCOUNT_ID + R2_ACCESS_KEY_ID + R2_SECRET_ACCESS_KEY.
+    // R2ObjectStorage constructor throws with a clear message if any is missing.
     case "r2":
+      return new R2ObjectStorage();
+    // Remaining roadmap adapters — throw with clear guidance until implemented.
+    case "supabase":
     case "imagekit":
     case "s3":
     case "minio":
       throw new Error(
-        `[nex-object] backend "${kind}" is on the Contract §12.4 roadmap but not yet implemented · use "filesystem" or "postgres" until it ships`,
+        `[nex-object] backend "${kind}" is on the Contract §12.4 roadmap but not yet implemented · use "filesystem" or "postgres" or "r2" until it ships`,
       );
     default:
       throw new Error(`[nex-object] unknown backend: ${kind}`);

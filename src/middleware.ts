@@ -133,9 +133,13 @@ const MREF_COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 const MREF_SLUG_RE = /^[a-z0-9][a-z0-9-]{1,62}[a-z0-9]$/;
 
 export const config = {
-  // Skip Next.js internals, API routes, and favicons. Everything else
-  // gets the host check.
-  matcher: ["/((?!_next/|api/|favicon).*)"]
+  // Skip Next.js internals, API routes, favicons, AND static image assets.
+  // Philip 2026-08-29 · added image-extension exclusion after empty
+  // chunked responses were being returned for /nex/*.png requests
+  // (middleware was intercepting them and never passing body through).
+  matcher: [
+    "/((?!_next/|api/|favicon|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico|avif)$).*)",
+  ],
 };
 
 /**

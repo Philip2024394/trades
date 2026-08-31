@@ -26,6 +26,10 @@ import {
   RAIL_SLOT_COUNT,
   BEZEL_ASPECT_RATIO,
   BEZEL_METAL,
+  NEX_BRAND_ACCENT_REGIONS,
+  HERO_HEIGHT_PCT,
+  HERO_TOP_OFFSET_PX,
+  WORKSPACE_WIDTH_NO_RAIL,
 } from "./hud/geometry";
 import { useChromaKeyedBezel } from "./hud/useChromaKeyedBezel";
 import { NexVoiceOrb } from "./NexVoiceOrb";
@@ -49,6 +53,12 @@ export interface RailButton {
   onClick: () => void;
   /** Optional guidance target id · lets NEX point at this button. */
   guidanceTarget?: GuidanceTargetId;
+  /**
+   * Per-button colour override for icon + (aria-only) label · Philip
+   * 2026-08-29. Overrides the theme accent when set. Used to blue-tint
+   * an active room button while dimming the others.
+   */
+  accentOverride?: string;
 }
 
 export interface HeaderIconButton {
@@ -77,6 +87,15 @@ interface Props {
    *  level as the bezel/rail/orb. Used by the mascot side-drawer to sit
    *  above chat + bezel but BELOW the rail buttons. */
   overlaySlot?: React.ReactNode;
+  /** When true, hides composer + header icons + wordmark from render so a
+   *  full-canvas overlay (e.g. NexMascotStage) can black out the interior
+   *  without those chrome pieces poking through. Rail + bezel + orb all
+   *  stay put. Philip 2026-08-27. */
+  hideInteriorControls?: boolean;
+  /** Renders a small header block in the top-bezel free-space (between the
+   *  wordmark and header-icon plates). z:30 · paints above the bezel metal.
+   *  Only visible while `hideInteriorControls` is true. Philip 2026-08-27. */
+  interiorHeader?: React.ReactNode;
   onBezelButton?: (id: BezelButtonId) => void;
   /** Live workspace content · rendered inside the transparent interior. */
   children?: React.ReactNode;
@@ -86,10 +105,106 @@ interface Props {
   onVoiceOrbTap?: () => void;
   /** Eye look direction · orb pupil turns toward it, auto-returns to centre. */
   voiceOrbLookAt?: import("./NexVoiceOrb").OrbLookDirection | null;
+  /** Override pupil transition duration (ms). Default 380 · parent sets 1000
+   *  during chat launch follow so the pupil takes 1s to track the message. */
+  voiceOrbPupilTransitionMs?: number;
+  /** When false, disable the orb's internal 700ms auto-return timer so the
+   *  parent controls when the pupil returns to centre. */
+  voiceOrbAutoReturn?: boolean;
+  /** When true, override orb palette with red · used the split-second before
+   *  a guidance laser fires so the eye reads "arming." */
+  voiceOrbFlashRed?: boolean;
+  /** When true, NEX grows tiny black duck legs and hops DOWN out of her
+   *  circle housing. Toggled by double-tapping the eye. */
+  voiceOrbHopped?: boolean;
+  /** When true, NEX floats to the top-right corner of the frame · used
+   *  during full-width mode so she perches out of the way while chat expands.
+   *  Position override composes with hopped (she floats WHILE hopped). */
+  voiceOrbPerched?: boolean;
+  /** When true, NEX's personality scheduler runs faster (0.35-0.7s gaps
+   *  instead of 0.8-1.9s). Reads as "curious/nosy" · used during layout
+   *  transitions so she's actively watching everything change. */
+  voiceOrbHyperMode?: boolean;
+  /** Optional style override applied to the orb container. Composes over
+   *  the base + perched transforms. Used by the shell to fly the orb off
+   *  screen during page transitions and back in on the new page ·
+   *  Philip 2026-08-29. */
+  voiceOrbTransitStyle?: React.CSSProperties;
+  /** When false, the hero image layer fades out to reveal the black
+   *  background · used in full-width chat mode (Philip 2026-08-28). */
+  heroVisible?: boolean;
+  /** When true, workspace zone (chat container) expands wider + up so chat
+   *  reclaims the freed hero + rail space · full-width cinematic. */
+  chatFullWidth?: boolean;
+  /** Rendered INSIDE the aspect-locked phone container (not the workspace).
+   *  Use for absolute-positioned overlays that need phone-relative coords
+   *  (e.g. butterfly cinematic · Philip 2026-08-28). */
+  frameOverlaySlot?: React.ReactNode;
   /** Speech bubble beneath the eye · character response to eye taps. */
   eyeBubbleMessage?: string | null;
   eyeBubbleDwellMs?: number;
   onEyeBubbleDismiss?: () => void;
+  /**
+   * Frame material mode · Philip 2026-08-27.
+   *
+   * Controls how the frame image renders WITHOUT changing artwork.
+   * Uses CSS filters on the bezel <img> · non-destructive · reversible.
+   *
+   *   "normal"  · default · full colour · orange accents visible
+   *   "dim"     · reduced brightness · muted orange (viewer knows there's a frame · frame doesn't compete with content)
+   *   "cinema"  · fully desaturated (grayscale) · zero orange · frame becomes silvery metal · best for immersive video
+   *   "off"     · frame drops to near black · minimal chrome · maximum immersion
+   *
+   * All modes preserve the bezel silhouette · rail housing · button hit targets.
+   * The user CAN tap the rail and voice orb in any mode.
+   */
+  frameMode?: "normal" | "dim" | "cinema" | "off";
+  /**
+   * Right-side kebab (3-dot vertical) menu · Philip 2026-08-28.
+   * Sits under the last rail button (Food) in the dead space between rail
+   * and composer. Toggles rail visibility · see hideRail.
+   */
+  onRightKebabTap?: () => void;
+  /** When true, kebab renders in "active" state (dots brighten). */
+  rightKebabActive?: boolean;
+  /**
+   * Rail collapse · Philip 2026-08-28. When true:
+   *   · The 5 right-rail buttons are NOT rendered
+   *   · If the theme provides `bezel.imageSrcNoRail`, the frame image
+   *     swaps to that variant (chassis drawn without rail housing) so
+   *     content can widen into the previously-occupied space
+   *   · Kebab (onRightKebabTap) STAYS visible so the user can toggle back
+   */
+  hideRail?: boolean;
+  /**
+   * Per-region accent opacity override · Philip 2026-08-29 · BATCH 7.
+   *
+   * Map of NEX_BRAND_ACCENT_REGIONS id → opacity 0..1. When provided,
+   * each listed region renders at the given opacity; regions absent from
+   * the map fall through to per-region default rules (see below).
+   *
+   * Default rules when the prop is undefined OR a region isn't in the map:
+   *   · Regions whose id starts with "railHousing" default to 0
+   *     (rail housings are ceremony-controlled · never render unbidden ·
+   *     preserves pre-BATCH-6 LIVE mode where the rail was fully greyed)
+   *   · All other regions default to 1 (backwards-compatible with any
+   *     future accent region that doesn't need explicit gating)
+   *
+   * Only meaningful when frameMode !== "normal" (the accent overlay
+   * layer only renders in those modes · see line ~592).
+   */
+  accentRegionOpacities?: Record<string, number>;
+  /**
+   * Per-button rail visibility · Philip 2026-08-29 · BATCH 7.
+   *
+   * When set to N (0..RAIL_SLOT_COUNT), only the top N rail buttons
+   * render (opacity 1); the rest render at opacity 0. Enables sequential
+   * top-to-bottom reveal during the activation ceremony.
+   *
+   * When undefined, falls back to the existing `hideRail` boolean
+   * (all-or-nothing) so pre-BATCH-7 callers behave identically.
+   */
+  visibleRailButtonCount?: number;
 }
 
 function resolveTheme(themeId?: string): NexHudTheme {
@@ -106,84 +221,91 @@ function resolveTheme(themeId?: string): NexHudTheme {
  * gpu-accelerated crossfades, not full reloads.
  */
 function InteriorBackgroundLayer({
-  baseSrc, speakingBackgrounds, speakingSwapMs, filter, isSpeaking,
+  baseSrc, speakingBackgrounds, speakingSwapMs, filter, isSpeaking, heroSequence,
+  visible = true,
 }: {
   baseSrc?: string;
   speakingBackgrounds: string[];
   speakingSwapMs: number;
   filter?: string;
   isSpeaking: boolean;
+  heroSequence?: string[];
+  /** When false, entire hero layer fades to opacity 0 · black background
+   *  becomes the surface. Philip 2026-08-28 · full-width mode. */
+  visible?: boolean;
 }) {
-  const [overlaySrc, setOverlaySrc] = useState<string | null>(null);
-  const [overlayVisible, setOverlayVisible] = useState(false);
+  // Hero sequence player · Philip 2026-08-28.
+  // Accepts an ordered list of image URLs and cycles through them at a fixed
+  // interval. Each UNIQUE URL is rendered once as a stacked <img>; opacity
+  // switches to give a crossfade between whichever image is active at each
+  // step. Sequence can repeat images in any pattern (e.g. 1,2,3,1,2,3,2,1,3).
+  //
+  // Fallback for callers not using heroSequence: [baseSrc, ...speakingBackgrounds]
+  // becomes the sequence (backward-compat with the earlier 2-image cycle).
+  const sequence =
+    heroSequence && heroSequence.length > 0
+      ? heroSequence
+      : ([baseSrc, ...speakingBackgrounds].filter(Boolean) as string[]);
+  const uniqueSrcs = Array.from(new Set(sequence));
 
+  const [stepIdx, setStepIdx] = useState(0);
   useEffect(() => {
-    if (!isSpeaking || speakingBackgrounds.length === 0) {
-      // Fade overlay out · then clear.
-      setOverlayVisible(false);
-      const clear = setTimeout(() => setOverlaySrc(null), 500);
-      return () => clearTimeout(clear);
-    }
-    // Start swapping. Immediately pick a random overlay and fade in.
-    const pickRandom = () => {
-      const options = [baseSrc, ...speakingBackgrounds].filter(Boolean) as string[];
-      // Prefer not to reshow the currently-displayed overlay.
-      const filtered = options.filter((s) => s !== overlaySrc);
-      const pool = filtered.length > 0 ? filtered : options;
-      return pool[Math.floor(Math.random() * pool.length)];
-    };
-    setOverlaySrc(pickRandom());
-    setOverlayVisible(true);
-    const interval = setInterval(() => {
-      setOverlaySrc(pickRandom());
+    if (sequence.length <= 1) return;
+    const timer = setInterval(() => {
+      setStepIdx((i) => (i + 1) % sequence.length);
     }, speakingSwapMs);
-    return () => clearInterval(interval);
-    // baseSrc / speakingBackgrounds / swapMs are stable per theme so we
-    // deliberately exclude them from deps to avoid restarting the interval
-    // on every render.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSpeaking]);
+    return () => clearInterval(timer);
+  }, [sequence.length, speakingSwapMs]);
+  void isSpeaking; // reserved · could tune swap speed on voice state later
 
-  if (!baseSrc) return null;
+  if (uniqueSrcs.length === 0) return null;
+
+  // Hero image height driven by geometry.HERO_HEIGHT_PCT (Philip 2026-08-28)
+  // so orb + hero always stay in sync. Change HERO_HEIGHT_PCT to resize hero;
+  // the voice orb automatically re-centers on the new hero.
+  //
+  // object-fit: contain (Philip 2026-08-28 "full height image must be
+  // displaying") shows the ENTIRE image without cropping · any letterbox
+  // gutters are invisible against the black console background.
+  // Fade the bottom of the hero into the black background · Philip 2026-08-28.
+  // Linear mask: fully opaque top 55% → transparent by bottom edge. Chat
+  // area below reads as a single continuous black surface (no hard edge).
+  const HERO_FADE_MASK =
+    "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)";
 
   const style: React.CSSProperties = {
     position: "absolute",
-    top: 0,
-    left: -4,
-    width: "calc(100% + 4px)",
-    height: "100%",
-    objectFit: "cover",
+    top: HERO_TOP_OFFSET_PX,
+    left: 0,
+    width: "100%",
+    height: `${HERO_HEIGHT_PCT}%`,
+    objectFit: "contain",
     objectPosition: "center top",
     pointerEvents: "none",
     filter,
+    maskImage: HERO_FADE_MASK,
+    WebkitMaskImage: HERO_FADE_MASK,
   };
 
+  const activeSrc = sequence[stepIdx];
   return (
     <>
-      {/* Base image · always visible · z:0 */}
-      <img
-        src={baseSrc}
-        alt=""
-        aria-hidden
-        style={{ ...style, zIndex: 0 }}
-      />
-      {/* Overlay image · crossfades in during speaking · z:0.5
-          (0 doesn't quite work in React so we use inline zIndex with a
-          decimal cheat via string · the important thing is it sits above
-          base + below content zones at z:3). */}
-      {overlaySrc && (
+      {uniqueSrcs.map((src) => (
         <img
-          src={overlaySrc}
+          key={src}
+          src={src}
           alt=""
           aria-hidden
           style={{
             ...style,
             zIndex: 0,
-            opacity: overlayVisible ? 1 : 0,
+            // Multiply cross-fade opacity with visibility · when visible=false
+            // (full-width mode) the whole hero layer fades to black background.
+            opacity: (src === activeSrc && visible) ? 1 : 0,
             transition: "opacity 500ms ease-in-out",
           }}
         />
-      )}
+      ))}
     </>
   );
 }
@@ -237,6 +359,9 @@ function HeaderIconSlot({
 
 function RailButtonSlot({ btn, accent }: { btn: RailButton; accent: string }) {
   const attach = useGuidanceTarget(btn.guidanceTarget ?? btn.id);
+  // Colour resolution · per-button override wins over theme accent so an
+  // active room can be tinted while the rest of the rail dims.
+  const effectiveColor = btn.accentOverride ?? accent;
   return (
     <button
       ref={attach as (el: HTMLButtonElement | null) => void}
@@ -249,30 +374,36 @@ function RailButtonSlot({ btn, accent }: { btn: RailButton; accent: string }) {
         background: "transparent",
         cursor: "pointer",
         padding: 0,
-        color: accent,
+        color: effectiveColor,
         display: "flex",
-        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: "3%",
-        transition: "opacity 180ms ease",
+        width: "100%",
+        height: "100%",
+        transition: "color 220ms ease, opacity 220ms ease",
         opacity: btn.active ? 1 : 0.85,
       }}
     >
-      <span style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "40%", height: "40%" }}>
-        {btn.icon}
-      </span>
+      {/* Icon wrapper · Philip 2026-08-29 measured centering.
+          Rail grid produces 5 equal-height cells at 190.8px tall × 153.6px
+          wide on the nominal 850×1850 bezel (see calculation in the
+          NexAppShell rail comment). Flex centers this wrapper inside the
+          button; `aspect-ratio:1` keeps the icon square across viewports.
+          width:42% = prior 60% reduced 30% per Philip · icon stays exactly
+          centered because the wrapper shrinks symmetrically around its
+          flex-center origin (no re-position math needed). */}
       <span
         style={{
-          fontSize: "clamp(8px, 1.3vw, 11px)",
-          fontWeight: 600,
-          letterSpacing: 0.2,
-          color: accent,
-          lineHeight: 1,
-          whiteSpace: "nowrap",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "42%",
+          aspectRatio: "1",
+          // Icon SVG inside will render at 100% × 100% of this wrapper.
+          lineHeight: 0,
         }}
       >
-        {btn.label}
+        {btn.icon}
       </span>
     </button>
   );
@@ -286,19 +417,59 @@ export function NexHudFrame({
   contextSlot,
   composerSlot,
   overlaySlot,
+  hideInteriorControls = false,
+  interiorHeader,
   onBezelButton,
   children,
   voiceState = "idle",
   onVoiceOrbTap,
   voiceOrbLookAt = null,
+  voiceOrbPupilTransitionMs,
+  voiceOrbAutoReturn = true,
+  voiceOrbFlashRed = false,
+  voiceOrbHopped = false,
+  voiceOrbPerched = false,
+  voiceOrbHyperMode = false,
+  voiceOrbTransitStyle,
+  heroVisible = true,
+  chatFullWidth = false,
+  frameOverlaySlot,
   eyeBubbleMessage = null,
   eyeBubbleDwellMs,
   onEyeBubbleDismiss,
+  frameMode = "normal",
+  onRightKebabTap,
+  rightKebabActive = false,
+  hideRail = false,
+  accentRegionOpacities,
+  visibleRailButtonCount,
 }: Props) {
   const theme = resolveTheme(themeId);
   const accent = theme.accents.primary;
+  // Frame variant swap (Philip 2026-08-28): when rail is hidden AND the
+  // theme ships a no-rail alternate frame, use it. Otherwise reuse the
+  // default frame (rail housing still visible · only buttons disappear).
+  const activeBezelSrc =
+    hideRail && theme.bezel.imageSrcNoRail
+      ? theme.bezel.imageSrcNoRail
+      : theme.bezel.imageSrc;
   // Chroma-key JPEGs; PNG/SVG/WebP pass through untouched (v6 has native alpha).
-  const bezelSrc = useChromaKeyedBezel(theme.bezel.imageSrc) ?? theme.bezel.imageSrc;
+  const bezelSrc = useChromaKeyedBezel(activeBezelSrc) ?? activeBezelSrc;
+
+  // Frame mode filter · Philip 2026-08-27. Applied on top of any theme-level
+  // filter. Ordering: theme filter first · then mode filter · CSS composes.
+  const frameModeFilter = (() => {
+    switch (frameMode) {
+      case "dim":    return "brightness(0.55) saturate(0.55)";     // muted orange
+      case "cinema": return "grayscale(1) brightness(0.75)";        // no orange, silvery
+      case "off":    return "grayscale(1) brightness(0.25)";        // near black chrome
+      case "normal":
+      default:       return "none";
+    }
+  })();
+  const composedBezelFilter = [theme.bezel.filter, frameModeFilter]
+    .filter((f) => f && f !== "none")
+    .join(" ") || undefined;
 
   return (
     <div
@@ -318,12 +489,32 @@ export function NexHudFrame({
         color: theme.accents.onDark,
       }}
     >
+      {/* FULL-VIEWPORT BLACK ATMOSPHERE OVERLAY · Philip 2026-08-27 · when
+          an interior blackout overlay (mascot stage) is active, fade the
+          outer atmosphere gutter to solid black so the ENTIRE viewport is
+          dark around the phone frame. z:0 sits BELOW the console viewport
+          (z:1 below) · console viewport paints on top so bezel + rail
+          decoration stays visible against the black atmosphere. */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "#000",
+          zIndex: 0,
+          opacity: hideInteriorControls ? 1 : 0,
+          transition: "opacity 900ms cubic-bezier(0.4, 0, 0.2, 1)",
+          pointerEvents: "none",
+        }}
+      />
+
       {/* Frame container · aspect-locked to v6 · fits inside phone viewport
           preserving aspect · all zone %s below are relative to this box. */}
       <div
         className="nex-console-viewport"
         style={{
           position: "relative",
+          zIndex: 1,
           aspectRatio: BEZEL_ASPECT_RATIO,
           width: `min(100dvw, calc(100dvh * ${BEZEL_METAL.w} / ${BEZEL_METAL.h}))`,
           height: "auto",
@@ -343,6 +534,8 @@ export function NexHudFrame({
           speakingSwapMs={theme.interior?.speakingSwapMs ?? 900}
           filter={theme.interior?.backgroundFilter}
           isSpeaking={voiceState === "speaking"}
+          heroSequence={theme.interior?.heroSequence}
+          visible={heroVisible}
         />
 
         {/* LAYER 1 · Live workspace content · sits inside the interior opening
@@ -350,13 +543,31 @@ export function NexHudFrame({
         <div
           style={{
             position: "absolute",
-            top:    DEFAULT_ZONES.workspace.top,
+            // Full-width mode nudges workspace UP into freed hero area.
+            // Kept moderate (6% not 4%) so top edge stays inside the bezel
+            // top-metal opaque strip · content doesn't render behind chrome.
+            top:    chatFullWidth ? "6%" : DEFAULT_ZONES.workspace.top,
+            // LEFT stays at the MEASURED bezel edge · we do NOT shift left
+            // (Philip 2026-08-28 · identity chip + NEX text were being cut
+            // when workspace shifted past measured viewport bounds).
             left:   DEFAULT_ZONES.workspace.left,
-            width:  DEFAULT_ZONES.workspace.width,
-            height: DEFAULT_ZONES.workspace.height,
+            // Width EXPANDS RIGHT into freed rail housing space only.
+            // Normal: calc(70.13% + 4px) · Rail-hidden: WORKSPACE_WIDTH_NO_RAIL
+            // Full-width: calc(70.13% + 18.07% + 4px) = ~88.2% · reaches to
+            // the frame's rail-housing right boundary (99%) but stays inside.
+            width:  chatFullWidth
+              ? "calc(70.13% + 18.07% + 4px)"
+              : hideRail ? WORKSPACE_WIDTH_NO_RAIL : DEFAULT_ZONES.workspace.width,
+            // Full-width mode extends height into freed footer/hero space.
+            height: chatFullWidth ? "86%" : DEFAULT_ZONES.workspace.height,
             zIndex: 1,
+            // Smooth glide when full-width flips · syncs with hero fade + rail
+            // stagger · reads as one coordinated layout change.
+            transition: "top 600ms cubic-bezier(0.4, 0, 0.2, 1), left 600ms cubic-bezier(0.4, 0, 0.2, 1), width 600ms cubic-bezier(0.4, 0, 0.2, 1), height 600ms cubic-bezier(0.4, 0, 0.2, 1)",
+            // Overflow kept as hidden so scroll happens on the inner container,
+            // but borderRadius removed (Philip 2026-08-28) so there's no visible
+            // rounded-corner line where bubbles clip.
             overflow: "hidden",
-            borderRadius: 4,
           }}
         >
           <div style={{ position: "absolute", inset: 0, overflow: "auto" }} className="nex-no-scrollbar">
@@ -395,9 +606,72 @@ export function NexHudFrame({
             objectFit: "fill",
             pointerEvents: "none",
             zIndex: 20,
-            filter: theme.bezel.filter,
+            filter: composedBezelFilter,
+            transition: "filter 320ms ease",
           }}
         />
+
+        {/* Brand-orange accent regions · Philip 2026-08-28. When frameMode is
+            not "normal", the base bezel image above is greyscaled/dimmed.
+            These extra copies of the bezel image sit at z:21 with NO filter,
+            each clip-path'd to a specific accent region.
+            mix-blend-mode: color makes ONLY the chromatic (orange) pixels
+            transfer their hue onto the greyscale below · neutral / grey /
+            metal pixels within the clip rectangle are effectively invisible.
+            Result: no visible clip-boundary artifacts · the accent regions
+            blend seamlessly with the cinema-mode base. */}
+        {frameMode !== "normal" && NEX_BRAND_ACCENT_REGIONS.map((region) => {
+          // Per-region opacity resolution · Philip 2026-08-29 · BATCH 7.
+          // Rail housings (id railHousing1..5) are ceremony-controlled and
+          // default to 0 · this preserves pre-BATCH-6 LIVE mode where the
+          // rail area was fully greyed. Non-rail regions (none exist today)
+          // default to 1 so future callers get natural cinema-preserve
+          // behavior without needing to opt in. Explicit map entries
+          // always win.
+          const isCeremonyControlled = region.id.startsWith("railHousing");
+          const opacity =
+            accentRegionOpacities?.[region.id] ??
+            (isCeremonyControlled ? 0 : 1);
+          // Accent overlay source · Philip 2026-08-29. ALWAYS use the full
+          // rail variant (theme.bezel.imageSrc = v12) as the accent source,
+          // never the collapsed variant. This lets housings MATERIALIZE on
+          // top of a v12-norail base during the first-access ceremony · the
+          // clipped v12 pixels contain the housing + baked orange while the
+          // rest of the base bezel stays clean. For LIVE mode (base is v12)
+          // this is unchanged (accent src was already v12).
+          const accentSrc = theme.bezel.imageSrc;
+          // Blend mode · Philip 2026-08-29. Rail housings paint pixels
+          // directly ("normal") so they can physically appear on top of a
+          // no-rail base. Non-rail regions keep the original hue-blend
+          // behavior unless they specified their own blendMode.
+          const resolvedBlendMode: React.CSSProperties["mixBlendMode"] =
+            region.blendMode ?? (isCeremonyControlled ? "normal" : "color");
+          return (
+            <img
+              key={region.id}
+              src={accentSrc}
+              alt=""
+              aria-hidden
+              draggable={false}
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "fill",
+                pointerEvents: "none",
+                zIndex: 21,
+                // clip-path insets · top right bottom left
+                clipPath: `inset(${region.insetTop}% ${region.insetRight}% ${region.insetBottom}% ${region.insetLeft}%)`,
+                // Per-region filter boost (saturate etc.) · defaults to none
+                filter: region.filter ?? "none",
+                mixBlendMode: resolvedBlendMode,
+                opacity,
+                transition: "opacity 400ms cubic-bezier(0.4, 0, 0.2, 1)",
+              }}
+            />
+          );
+        })}
 
         {/* Optional bezel material tint (theme-driven · doesn't change v6's
             baked orange glow · only recolours the metal luminance). */}
@@ -419,6 +693,42 @@ export function NexHudFrame({
         {/* LAYER 30 · Interactive controls · rendered ON TOP of frame overlay.
             Icons + labels visible where housings appear in the artwork below. */}
 
+        {/* SPEAKING STATIC LINES · Philip 2026-08-28. When voiceState is
+            "speaking", overlay dense horizontal scan lines behind the orb
+            (z:9 · below orb's z:10, above hero at z:0). Fades in over 200ms
+            and out over 400ms so the effect ties visually to NEX voice.
+            Uses the same hero-fade mask so lines don't bleed into chat area. */}
+        {(() => {
+          const SPEAKING_LINES_MASK =
+            "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)";
+          return (
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                top: HERO_TOP_OFFSET_PX,
+                left: 0,
+                width: "100%",
+                height: `${HERO_HEIGHT_PCT}%`,
+                zIndex: 9,
+                pointerEvents: "none",
+                // Dense horizontal scan lines · thin bright / dark gap pattern.
+                backgroundImage:
+                  "repeating-linear-gradient(0deg, rgba(249,115,22,0.20) 0px, rgba(249,115,22,0.20) 1px, transparent 1px, transparent 3px)",
+                // Mask so lines vanish at the same fade boundary as the hero.
+                maskImage: SPEAKING_LINES_MASK,
+                WebkitMaskImage: SPEAKING_LINES_MASK,
+                opacity: voiceState === "speaking" ? 0.85 : 0,
+                transition:
+                  voiceState === "speaking"
+                    ? "opacity 200ms ease-in"
+                    : "opacity 400ms ease-out",
+                mixBlendMode: "screen",
+              }}
+            />
+          );
+        })()}
+
         {/* NEX VOICE ORB · centered on the portal ring · MAIN NEX feature.
             Philip 2026-08-27: z:10 · UNDER the drawer wrapper (z:15) so the
             drawer visibly covers the orb ("NEX ball behind the drawer"). Orb
@@ -434,9 +744,29 @@ export function NexHudFrame({
             width:  BEZEL_AFFORDANCES.voiceOrb.width,
             height: BEZEL_AFFORDANCES.voiceOrb.height,
             zIndex: 10,
+            // Perched · NEX floats to TOP-RIGHT CORNER during full-width mode.
+            // 1.2s slow curved trajectory · her hopped + shrink state carries
+            // over so she arrives smaller. Composes with hopped translate/scale
+            // handled inside the orb itself. (Philip 2026-08-28 · corner
+            // destination bumped from (70%,-35%) → (110%,-70%) so she perches
+            // actually AT the corner, not near it.)
+            // Perched = VISIBLE top-right park position (Philip 2026-08-29
+            // BATCH 1 · reverted from off-screen 220% back to 110%,-70%).
+            // Kebab tap parks orb here · orb stays clearly inside phone
+            // viewport. Chat auto-fly-off uses its own separate transit
+            // style that goes off-screen (does NOT set perched).
+            transform: voiceOrbPerched
+              ? "translate(110%, -70%)"
+              : "translate(0, 0)",
+            transition: "transform 1200ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+            // Shell-provided transit style · overrides base transform +
+            // adds opacity + custom transition during page-navigation
+            // sequences (Philip 2026-08-29 · orb flies off in random
+            // direction, page swaps, orb re-enters top-right corner).
+            ...voiceOrbTransitStyle,
           }}
         >
-          <NexVoiceOrb nexState={voiceState} onTap={onVoiceOrbTap} lookAt={voiceOrbLookAt} />
+          <NexVoiceOrb nexState={voiceState} onTap={onVoiceOrbTap} lookAt={voiceOrbLookAt} pupilTransitionMs={voiceOrbPupilTransitionMs} autoReturn={voiceOrbAutoReturn} flashRed={voiceOrbFlashRed} hopped={voiceOrbHopped} hyperMode={voiceOrbHyperMode} perched={voiceOrbPerched} />
           <NexEyeBubble
             message={eyeBubbleMessage}
             dwellMs={eyeBubbleDwellMs}
@@ -444,29 +774,76 @@ export function NexHudFrame({
           />
         </div>
 
-        {/* NEX wordmark hit target · top-left of top bezel */}
-        <button
-          type="button"
-          aria-label="NEX home"
-          onClick={() => onBezelButton?.("nex-wordmark")}
-          style={{
-            position: "absolute",
-            top:    BEZEL_AFFORDANCES.wordmark.top,
-            left:   BEZEL_AFFORDANCES.wordmark.left,
-            width:  BEZEL_AFFORDANCES.wordmark.width,
-            height: BEZEL_AFFORDANCES.wordmark.height,
-            zIndex: 30,
-            appearance: "none",
-            border: "none",
-            background: "transparent",
-            cursor: "pointer",
-            padding: 0,
-          }}
-        />
+        {/* NEX wordmark hit target · top-left of top bezel · hidden when
+            an interior-blackout overlay (mascot stage) is active. */}
+        {!hideInteriorControls && (
+          <button
+            type="button"
+            aria-label="NEX home"
+            onClick={() => onBezelButton?.("nex-wordmark")}
+            style={{
+              position: "absolute",
+              top:    BEZEL_AFFORDANCES.wordmark.top,
+              left:   BEZEL_AFFORDANCES.wordmark.left,
+              width:  BEZEL_AFFORDANCES.wordmark.width,
+              height: BEZEL_AFFORDANCES.wordmark.height,
+              zIndex: 30,
+              appearance: "none",
+              border: "none",
+              background: "transparent",
+              cursor: "pointer",
+              padding: 0,
+            }}
+          />
+        )}
+
+        {/* Header-top-centre deep orange bar · Philip 2026-08-29.
+            Connected single bar · width 46px (prior 38px + 8px),
+            thickness 5px. Deep orange (burnt-amber core, not neon
+            yellow) with tight saturated glow · reads richer and more
+            recessed against the metal chrome. Sits at z:22. */}
+        {!hideInteriorControls && (
+          <>
+            <div
+              aria-hidden
+              className="nex-header-lights"
+              style={{
+                position: "absolute",
+                top:    "calc(2.6% - 7px)",
+                left:   "calc(50% - 23px)",
+                width:  "46px",
+                height: "5px",
+                background:
+                  // Deep orange · burnt-amber core, no yellow tint.
+                  //   edge  = #c2410c (deep orange, 0.9)
+                  //   core  = #ea580c (rich orange, 1.0)
+                  "linear-gradient(90deg, rgba(194, 65, 12, 0.9) 0%, rgba(234, 88, 12, 1) 50%, rgba(194, 65, 12, 0.9) 100%)",
+                boxShadow:
+                  // Warmer, tighter glow matching the deeper core.
+                  "0 0 4px rgba(234, 88, 12, 0.95), 0 0 10px rgba(194, 65, 12, 0.85), 0 0 22px rgba(154, 52, 18, 0.55)",
+                borderRadius: 3,
+                zIndex: 22,
+                pointerEvents: "none",
+              }}
+            />
+            <style>{`
+              @keyframes nex-header-lights-pulse {
+                0%, 100% { opacity: 0.78; }
+                50%      { opacity: 1; }
+              }
+              .nex-header-lights {
+                animation: nex-header-lights-pulse 3.4s ease-in-out infinite;
+              }
+              @media (prefers-reduced-motion: reduce) {
+                .nex-header-lights { animation: none !important; opacity: 0.95 !important; }
+              }
+            `}</style>
+          </>
+        )}
 
         {/* 3 header icons · top-right · rendered on top of the frame's header
             icon housings. 2026-08-26 · Philip · white + 2x size. */}
-        {[BEZEL_AFFORDANCES.headerIcon1, BEZEL_AFFORDANCES.headerIcon2, BEZEL_AFFORDANCES.headerIcon3].map((slot, i) => {
+        {!hideInteriorControls && [BEZEL_AFFORDANCES.headerIcon1, BEZEL_AFFORDANCES.headerIcon2, BEZEL_AFFORDANCES.headerIcon3].map((slot, i) => {
           const btn = headerIcons[i];
           if (!btn) return null;
           return (
@@ -481,9 +858,11 @@ export function NexHudFrame({
         {/* SIDE · rail hit targets · 5 slots · overlaid on rail housing.
             Icons + labels rendered on top of the frame's visible slot
             artwork. Rail buttons render icon above label per v6 example.
-            z:100 keeps rail buttons ON TOP of the mascot drawer (z:29) so
-            the drawer visibly slides OUT from under the rail column instead
-            of covering it · Philip 2026-08-27. */}
+            z:100 keeps rail buttons ON TOP of the mascot drawer (z:29).
+            Philip 2026-08-28 · STAGGER-FADE: each button opacity animates
+            individually with 60ms per-index delay so they vanish top-to-
+            bottom instead of all-at-once. Rail div always in DOM · opacity
+            + pointerEvents gate visibility + hit-testing. */}
         <div
           style={{
             position: "absolute",
@@ -495,38 +874,178 @@ export function NexHudFrame({
             display: "grid",
             gridTemplateRows: `repeat(${RAIL_SLOT_COUNT}, 1fr)`,
             gap: 2,
+            pointerEvents: hideRail ? "none" : "auto",
           }}
         >
           {Array.from({ length: RAIL_SLOT_COUNT }).map((_, i) => {
             const btn = rightRailContent[i];
-            if (!btn) return <div key={`slot-${i}`} aria-hidden />;
-            return <RailButtonSlot key={btn.id} btn={btn} accent={accent} />;
+            // Per-button visibility resolution · Philip 2026-08-29 · BATCH 7.
+            // When visibleRailButtonCount is provided (ceremony), only the
+            // top N buttons are visible · gives the sequential top-to-bottom
+            // reveal that pairs with each rail housing lighting up.
+            // When undefined, falls back to the existing hideRail all-or-
+            // nothing behavior so pre-BATCH-7 callers behave identically.
+            const perButtonMode = typeof visibleRailButtonCount === "number";
+            const isVisible = perButtonMode
+              ? i < visibleRailButtonCount
+              : !hideRail;
+            // Ceremony cadence uses a longer per-button fade so each
+            // control reads as "just powered on"; legacy hideRail path
+            // keeps the original 240ms stagger.
+            const transitionMs = perButtonMode ? 400 : 240;
+            const delayMs      = perButtonMode ? 0   : i * 60;
+            return (
+              <div
+                key={`slot-${i}`}
+                style={{
+                  opacity: isVisible ? 1 : 0,
+                  pointerEvents: isVisible ? "auto" : "none",
+                  transition: `opacity ${transitionMs}ms cubic-bezier(0.4, 0, 0.2, 1) ${delayMs}ms`,
+                }}
+              >
+                {btn ? <RailButtonSlot btn={btn} accent={accent} /> : <div aria-hidden />}
+              </div>
+            );
           })}
         </div>
 
+        {/* KEBAB · 3-dot vertical menu under the Food rail button · Philip
+            2026-08-28. Sits in the dead space between rail (76%) and
+            composer (92%). Tap → onRightKebabTap · parent opens a slide
+            panel via overlaySlot. z:100 matches rail so both stay on top. */}
+        {!hideInteriorControls && onRightKebabTap && (
+          <>
+            <button
+              type="button"
+              aria-label="More options"
+              onClick={onRightKebabTap}
+              style={{
+                position: "absolute",
+                // Philip 2026-08-29 · nudged left 5px + down 5px from
+                // geometry.ts base position (calc keeps the existing
+                // percentage + 5px offset without touching geometry).
+                top:    `calc(${BEZEL_AFFORDANCES.rightKebab.top} + 5px)`,
+                right:  `calc(${BEZEL_AFFORDANCES.rightKebab.right} + 5px)`,
+                width:  BEZEL_AFFORDANCES.rightKebab.width,
+                height: BEZEL_AFFORDANCES.rightKebab.height,
+                zIndex: 100,
+                appearance: "none",
+                border: "none",
+                background: "transparent",
+                cursor: "pointer",
+                padding: 0,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "18%",
+              }}
+            >
+              {/* 3 flashing orange dots · heartbeat cadence · Philip 2026-08-29
+                  (was white static dots). Each dot pulses on the same
+                  lub-dub rhythm; staggered animation-delay makes it feel
+                  more organic (dots don't strobe in perfect sync). */}
+              {[0, 1, 2].map((i) => (
+                <span
+                  key={i}
+                  aria-hidden
+                  className="nex-kebab-dot"
+                  style={{
+                    width: "16%",
+                    height: "16%",
+                    minWidth: 4,
+                    minHeight: 4,
+                    borderRadius: "50%",
+                    background: rightKebabActive
+                      ? accent
+                      : "rgba(251, 146, 60, 0.95)",
+                    boxShadow: "0 0 6px rgba(249,115,22,0.85), 0 0 12px rgba(249,115,22,0.45)",
+                    animationDelay: `${i * 80}ms`,
+                  }}
+                />
+              ))}
+            </button>
+            <style>{`
+              @keyframes nex-kebab-heartbeat {
+                0%, 40%, 100% { opacity: 0.55; transform: scale(1); }
+                8%            { opacity: 1;    transform: scale(1.2); }
+                20%           { opacity: 0.7;  transform: scale(1); }
+                28%           { opacity: 1;    transform: scale(1.18); }
+              }
+              .nex-kebab-dot {
+                animation: nex-kebab-heartbeat 1.4s ease-in-out infinite;
+              }
+              @media (prefers-reduced-motion: reduce) {
+                .nex-kebab-dot { animation: none !important; opacity: 0.9 !important; }
+              }
+            `}</style>
+          </>
+        )}
+
         {/* BOTTOM · composer · sits over the bottom pill housing artwork.
-            Always visible · no separate nav dock per Philip 2026-08-26. */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: DEFAULT_ZONES.bottom.bottom,
-            left:   DEFAULT_ZONES.bottom.left,
-            width:  DEFAULT_ZONES.bottom.width,
-            height: DEFAULT_ZONES.bottom.height,
-            zIndex: 30,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {composerSlot}
-        </div>
+            Hidden when an interior-blackout overlay (mascot stage) is active. */}
+        {!hideInteriorControls && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: DEFAULT_ZONES.bottom.bottom,
+              left:   DEFAULT_ZONES.bottom.left,
+              width:  DEFAULT_ZONES.bottom.width,
+              height: DEFAULT_ZONES.bottom.height,
+              zIndex: 30,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {composerSlot}
+          </div>
+        )}
 
         {/* OVERLAY SLOT · Philip 2026-08-27 · same-stacking-context sibling
             of chat/bezel/rail so its own z-index can layer between them.
             Mascot drawer uses z:29 · paints ABOVE chat (z:1) + bezel (z:20)
             but BELOW the rail buttons (z:50). */}
         {overlaySlot}
+
+        {/* INTERIOR HEADER · Philip 2026-08-27 · text in the top-bezel free
+            space (between the wordmark plate on the left and the header-icon
+            plates on the right). Only visible while an interior blackout is
+            active (mascot stage). z:30 paints above the bezel metal. */}
+        {hideInteriorControls && interiorHeader && (
+          <div
+            style={{
+              position: "absolute",
+              // Philip 2026-08-27 · nudged down 32px total (10 + 10 + 7 + 5).
+              top: "calc(1.4% + 32px)",
+              left: "24%",
+              right: "24%",
+              zIndex: 30,
+              textAlign: "center",
+              pointerEvents: "none",
+            }}
+          >
+            {interiorHeader}
+          </div>
+        )}
+        {/* Frame overlay slot · absolute-positioned children render inside
+            the aspect-locked phone container using phone-relative % coords.
+            z:8 · ABOVE workspace content (z:1) + hero (z:0) but BELOW the
+            frame chrome (z:20+ for bezel/rail). Butterfly and similar
+            "inside phone" content clips naturally behind frame silhouette
+            (Philip 2026-08-28 · "should fly under phone frame not over"). */}
+        {frameOverlaySlot && (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 8,
+              pointerEvents: "none",
+            }}
+          >
+            {frameOverlaySlot}
+          </div>
+        )}
       </div>
     </div>
   );

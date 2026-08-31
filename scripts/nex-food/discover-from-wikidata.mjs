@@ -1,4 +1,17 @@
 #!/usr/bin/env node
+// ═══════════════════════════════════════════════════════════════════════════
+// PHASE 1a HARD ABORT · Philip 2026-08-27
+// ═══════════════════════════════════════════════════════════════════════════
+// Same as the OSM + Google-Places standalone importers · frozen until Phase 1b
+// routes it through the shared identity-resolver.
+if (process.env.NEX_ALLOW_LEGACY_STANDALONE_IMPORT !== "1") {
+  console.error("");
+  console.error("╔══════════════════════════════════════════════════════════════════════╗");
+  console.error("║  discover-from-wikidata.mjs · FROZEN (Phase 1a · 2026-08-27)         ║");
+  console.error("║  Would bypass identity-resolver. Rewire in Phase 1b to unfreeze.     ║");
+  console.error("╚══════════════════════════════════════════════════════════════════════╝");
+  process.exit(2);
+}
 // NEX Food · Wikidata SPARQL discovery agent · Phase 8.2c.
 //
 // Queries Wikidata's public SPARQL endpoint for food establishments in

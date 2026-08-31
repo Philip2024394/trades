@@ -1,0 +1,52 @@
+[
+  {
+    "id": "DM-provinces-38",
+    "note": "All 38 provinces of Indonesia (post-2022 Papua split) present in geo registry",
+    "expect": { "provincesCount": 38 }
+  },
+  {
+    "id": "DM-islands-8",
+    "note": "8 major islands represented (Sumatra/Java/Kalimantan/Sulawesi/Bali/Nusa Tenggara/Maluku/Papua)",
+    "expect": { "islandsCount": 8 }
+  },
+  {
+    "id": "DM-papua-6",
+    "note": "Papua split correctly into 6 provinces (Papua/West Papua/Southwest Papua/South Papua/Central Papua/Highland Papua)",
+    "expect": { "papuaCount": 6 }
+  },
+  {
+    "id": "DM-coverage-matrix-empty",
+    "note": "Empty observations → coverage matrix has every province × category as not_covered",
+    "expect": { "emptyMatrixNotCovered": true }
+  },
+  {
+    "id": "DM-freshness-windows-ordered",
+    "note": "Freshness policy windows increase monotonically from live → long_lived",
+    "expect": { "freshnessOrdered": true }
+  },
+  {
+    "id": "DM-quality-dimensions-8",
+    "note": "Quality score has 8 dimensions",
+    "expect": { "qualityDimensions": 8 }
+  },
+  {
+    "id": "DM-source-tiers-4",
+    "note": "SourceTier has exactly 4 tiers (A/B/C/D)",
+    "expect": { "sourceTiers": ["A", "B", "C", "D"] }
+  },
+  {
+    "id": "DM-conflict-corroboration-wins",
+    "note": "2 Tier-C sources agreeing beat 1 Tier-B source (corroboration matters)",
+    "expect": { "corroborationWins": true }
+  },
+  {
+    "id": "DM-dedupe-phone-strong-evidence",
+    "note": "Same phone → strong-evidence merge regardless of name",
+    "expect": { "phoneMergeStrong": true }
+  },
+  {
+    "id": "DM-provenance-present-on-acquired",
+    "note": "Every walker-acquired record has provenance (source field set)",
+    "expect": { "provenanceOnAcquired": true }
+  }
+]

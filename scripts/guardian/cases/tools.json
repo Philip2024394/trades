@@ -1,0 +1,67 @@
+[
+  {
+    "id": "T-biz-en",
+    "note": "Restaurant lookup in EN → correct tool call",
+    "role": "brain.primary_local",
+    "system": "You are NEX. When the user asks for a business, call find_local_business with the extracted params.",
+    "prompt": "Find me a Japanese restaurant in Seminyak, Bali.",
+    "tools": [{
+      "name": "find_local_business",
+      "description": "Search the NEX directory for a local business.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cuisine": { "type": "string", "description": "cuisine or category" },
+          "area":    { "type": "string", "description": "neighbourhood or city" }
+        },
+        "required": ["cuisine", "area"]
+      }
+    }],
+    "expect": {
+      "toolName": "find_local_business",
+      "inputMatches": {
+        "cuisine": "(?i)japanese",
+        "area":    "(?i)seminyak"
+      }
+    }
+  },
+  {
+    "id": "T-biz-id",
+    "note": "Restaurant lookup in Indonesian → still calls the right tool",
+    "role": "brain.primary_local",
+    "system": "Anda adalah NEX. Jika pengguna mencari usaha atau restoran, panggil find_local_business.",
+    "prompt": "Cari saya restoran Jepang di daerah Seminyak, Bali.",
+    "tools": [{
+      "name": "find_local_business",
+      "description": "Search the NEX directory for a local business.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cuisine": { "type": "string" },
+          "area":    { "type": "string" }
+        },
+        "required": ["cuisine", "area"]
+      }
+    }],
+    "expect": {
+      "toolName": "find_local_business",
+      "inputMatches": {
+        "cuisine": "(?i)(japanese|jepang)",
+        "area":    "(?i)seminyak"
+      }
+    }
+  },
+  {
+    "id": "T-nocall-chit",
+    "note": "Chit-chat should NOT call any tool",
+    "role": "brain.fast_local",
+    "system": "You are NEX. Reply in one sentence. Only call tools when the user asks for a business lookup.",
+    "prompt": "Halo, apa kabar hari ini?",
+    "tools": [{
+      "name": "find_local_business",
+      "description": "Only for business lookups.",
+      "parameters": { "type": "object", "properties": { "cuisine": { "type": "string" }, "area": { "type": "string" } }, "required": ["cuisine", "area"] }
+    }],
+    "expect": { "toolName": null }
+  }
+]

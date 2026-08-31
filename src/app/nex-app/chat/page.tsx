@@ -4304,6 +4304,10 @@ export default function GeneralNexChatPage() {
         body: JSON.stringify({
           message: clean,
           conversation_id: conversationId,
+          // Stage 1 market-wiring · this UI IS the Indonesian NEX shell.
+          // Explicit market context prevents UK staircase/trades keywords
+          // from ever routing an Indonesian user to the UK cascade.
+          market: "ID",
         }),
       });
       const data = await res.json();

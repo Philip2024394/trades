@@ -1,0 +1,267 @@
+{
+  "jobId": "b6c7ec38-0de6-407e-9131-fb02987c8194",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Denpasar",
+  "bbox": {
+    "sw": [
+      -8.75,
+      115.14
+    ],
+    "ne": [
+      -8.6,
+      115.28
+    ],
+    "scope": "Denpasar · Bali"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T11:57:56.067Z",
+  "finishedAt": "2026-08-27T12:28:34.798Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 2208,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 2208,
+    "matched_exact": 1876,
+    "matched_high": 36,
+    "ambiguous": 48,
+    "unnamed": 0,
+    "new_candidates": 248,
+    "records_persisted": 6,
+    "enriched": 158,
+    "gate3_contactable": 125,
+    "gate4_eligible": 125,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 125,
+    "rejected_by_gate": 123,
+    "errors": 0,
+    "enrichment_writes_applied": 132,
+    "insert_attempted": 248,
+    "insert_conflicts": 242,
+    "insert_returned": 6,
+    "insert_verified": 6,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 6,
+    "rejected_by_reason": {
+      "CONTACT_MISSING": 123,
+      "MATCHED_EXISTING": 1960
+    }
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#AC-2026-003AE",
+        "name": "Semawang Beach Hotel",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003AF",
+        "name": "Kedin Inn",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003AG",
+        "name": "Kuta Puri Bungalows",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003AH",
+        "name": "Bali Mandira Resort",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003AJ",
+        "name": "Sanur Paradise Plaza",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003AK",
+        "name": "Best Western Resort Kuta",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003AM",
+        "name": "Inna Grand Hotel",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003AN",
+        "name": "Prama Sanur Beach Bali",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": true,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [
+      {
+        "candidateName": "Adi Dharma",
+        "existingName": "Adi Dharma Hotel",
+        "existingRef": "#AC-2026-001GF",
+        "score": "0.617"
+      },
+      {
+        "candidateName": "The Niche",
+        "existingName": "The Niche Bali",
+        "existingRef": "#AC-2026-002V1",
+        "score": "0.800"
+      },
+      {
+        "candidateName": "Suka Beach Inn",
+        "existingName": "Beneyasa Beach Inn",
+        "existingRef": "#AC-2026-001FY",
+        "score": "0.700"
+      },
+      {
+        "candidateName": "Palm Garden",
+        "existingName": "Palm Garden Hotel",
+        "existingRef": "#AC-2026-001QE",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "hotel alits beach bungalow",
+        "existingName": "Hotel Alit Beach",
+        "existingRef": "#AC-2026-002M8",
+        "score": "0.640"
+      },
+      {
+        "candidateName": "Uma Sapna Villas",
+        "existingName": "Uma Sapna Villa Seminyak",
+        "existingRef": "#AC-2026-002Y8",
+        "score": "0.640"
+      },
+      {
+        "candidateName": "Ahimsa Villas",
+        "existingName": "The Ahimsa",
+        "existingRef": "#AC-2026-0022C",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "The Villas",
+        "existingName": "The Ahimsa",
+        "existingRef": "#AC-2026-0022C",
+        "score": "0.600"
+      }
+    ],
+    "contactable": [
+      {
+        "publicRef": "#AC-2026-003AE",
+        "name": "Semawang Beach Hotel",
+        "whatsapp": null,
+        "phone": "+62 361 288761",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-003AH",
+        "name": "Bali Mandira Resort",
+        "whatsapp": "+6281139910777",
+        "phone": "+62 36-1751381",
+        "website": "https://www.balimandira.com/"
+      },
+      {
+        "publicRef": "#AC-2026-003AK",
+        "name": "Best Western Resort Kuta",
+        "whatsapp": null,
+        "phone": "+62 36-1767000",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-003AN",
+        "name": "Prama Sanur Beach Bali",
+        "whatsapp": null,
+        "phone": "+62 361 288011",
+        "website": "http://pramasanurbeach.com"
+      },
+      {
+        "publicRef": "#AC-2026-003AQ",
+        "name": "Hotel Werdhapura",
+        "whatsapp": null,
+        "phone": "+62 36-1288171",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-003AW",
+        "name": "Tanaya Bed & Breakfast Bali",
+        "whatsapp": "+6285792116865",
+        "phone": "+62 361 754362",
+        "website": "tanaya.com"
+      },
+      {
+        "publicRef": "#AC-2026-003AX",
+        "name": "Fourteen Roses Hotel",
+        "whatsapp": null,
+        "phone": "+62 361 752078",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-003AY",
+        "name": "Restu Bali Hotel",
+        "whatsapp": null,
+        "phone": "+62 361 751251",
+        "website": "https://restubalihotel.com/"
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#AC-2026-003AF",
+        "name": "Kedin Inn",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-003AG",
+        "name": "Kuta Puri Bungalows",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-003AJ",
+        "name": "Sanur Paradise Plaza",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-003AM",
+        "name": "Inna Grand Hotel",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-003AP",
+        "name": "Respati Sanur Beach Hotel",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 6,
+    "insert_verified": 6,
+    "delta": 0
+  },
+  "cycle_outcome": "PARTIAL"
+}

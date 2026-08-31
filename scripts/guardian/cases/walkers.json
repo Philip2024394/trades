@@ -1,0 +1,52 @@
+[
+  {
+    "id": "W-published",
+    "note": "The Indonesia walker fleet publishes a corpus",
+    "expect": { "recordsMin": 30 }
+  },
+  {
+    "id": "W-provenance",
+    "note": "Every acquired record carries provenance (source, walker_id, acquired_at)",
+    "expect": { "everyRecordHas": ["source", "walker_id", "acquired_at"] }
+  },
+  {
+    "id": "W-questions-generated",
+    "note": "Every acquired record has at least one generated Q&A variant",
+    "expect": { "everyRecordHas": ["questions"], "questionsMin": 1 }
+  },
+  {
+    "id": "W-no-live-in-corpus",
+    "note": "3-tier enforcement: no record in the corpus has stability 'live' (live must come from tools)",
+    "expect": { "forbiddenStability": ["live"] }
+  },
+  {
+    "id": "W-airports-hit",
+    "note": "Airport question retrieves an airport record",
+    "input": { "message": "How do I get from Bali airport to Seminyak?" },
+    "expect": { "topicMatches": "^airport\\." }
+  },
+  {
+    "id": "W-hospital-hit",
+    "note": "Hospital question retrieves a hospital record",
+    "input": { "message": "Where is the best hospital in Bali?" },
+    "expect": { "topicMatches": "^hospital\\." }
+  },
+  {
+    "id": "W-emergency-hit",
+    "note": "Embassy/emergency question retrieves emergency record",
+    "input": { "message": "I lost my passport in Bali, what do I do?" },
+    "expect": { "topicMatches": "^emergency\\." }
+  },
+  {
+    "id": "W-food-babi-guling",
+    "note": "'What is babi guling?' retrieves the walker-acquired babi_guling record",
+    "input": { "message": "What is babi guling?" },
+    "expect": { "topicMatches": "^food\\.babi_guling$" }
+  },
+  {
+    "id": "W-destination-nusa-penida",
+    "note": "'Tell me about Nusa Penida' retrieves the walker-acquired record",
+    "input": { "message": "Tell me about Nusa Penida" },
+    "expect": { "topicMatches": "^landmark\\.nusa_penida$" }
+  }
+]

@@ -234,6 +234,325 @@ const DEV_SCHEDULE = [
     ],
     description: "Promotion Phase 1 quality-check · scores discovered businesses · advances food_business_promotion state · never promotes to listed · never outreaches",
   },
+  {
+    // Re-Verify Worker Tier · FOOD · Philip 2026-08-27.
+    // Runs in PARALLEL with discovery cycles · never touches rotation state ·
+    // never counts toward saturation · cap 10 candidates per cycle.
+    // Reuses foodYogyakartaConfig's applyEnrichmentToExisting for the
+    // COALESCE writeback + og:image extraction (Universal Image Doctrine).
+    // Observable separately in HQ via worker_type='re_verify_food'.
+    kind: "spawn",
+    key: "re-verify:food:tick",
+    intervalSec: 900,     // 15 min · polite for own-domain fetches
+    startDelaySec: 60,    // let the process warm before first fetch batch
+    command: "node",
+    args: ["scripts/nex-worker/re-verify-food.mjs"],
+    description: "Re-Verify FOOD · enriches KNOWN businesses (never discovers new) · runs during cooldown gaps · cap 10/cycle · own-site fetches only",
+  },
+  {
+    // Re-Verify Worker Tier · ACCOMMODATION · Philip 2026-08-27.
+    // Staggered 510s after food (offset = food.startDelay + food.interval/2)
+    // so the two re-verify workers never both fetch on the same tick.
+    kind: "spawn",
+    key: "re-verify:accom:tick",
+    intervalSec: 900,
+    startDelaySec: 510,
+    command: "node",
+    args: ["scripts/nex-worker/re-verify-accommodation.mjs"],
+    description: "Re-Verify ACCOMMODATION · enriches KNOWN businesses (never discovers new) · runs during cooldown gaps · cap 10/cycle · own-site fetches only",
+  },
+  {
+    // Philip 2026-08-27 (STEP 3) · qualification runs automatically so new
+    // service_business rows continuously flow through the commercial funnel
+    // (discovered → qualified → contactable → marketing_ready). Idempotent ·
+    // pure DB reads/writes · no outreach · marketing-owned states protected
+    // by the engine's isQualificationOwned() guard. Every cycle emits a
+    // worker_cycle_run row with worker_type='commercial:qualification'.
+    kind: "spawn",
+    key: "commercial:qualification:tick",
+    intervalSec: 300,        // 5 min · picks up new walker persistences quickly
+    startDelaySec: 120,      // let discovery + persistence settle before first pass
+    command: "node",
+    args: ["scripts/nex-commercial/run-qualification.mjs"],
+    description: "Commercial qualification engine · deterministic promotion of service_business rows through the qualification band · NO OUTREACH · marketing workforce is separate approval gate.",
+  },
+  {
+    // Philip 2026-08-27 (Phase 2B): auto-activate wider retail categories when
+    // Phase 2A has swept Indonesia. Idempotent · pure read + rare JSON patch ·
+    // no walker spawn / cooldown effects. Runs every 30 min · cheap.
+    kind: "spawn",
+    key: "workforce:escalation:tick",
+    intervalSec: 1800,
+    startDelaySec: 300,
+    command: "node",
+    args: ["scripts/nex-workforce/run-escalation.mjs"],
+    description: "Workforce category escalation · monitors Phase 2A retail sweep · auto-activates Phase 2B categories (16 more shop tags) when all Phase 2A retail categories reach ≥90% saturation across Indonesian cities. Writes to data/nex-job-registry.json (idempotent).",
+  },
+  // ── NEX Brain · Indonesia Knowledge Walkers (Phase Ka · Philip 2026-08-27) ──
+  // Four rotating knowledge walkers · staggered so Wikipedia never sees more
+  // than one NEX request per second per project. Each walker cycles through
+  // its segment of data/nex-indonesia-knowledge-seed.json. Truth classification
+  // is doctrine-enforced: confirmed_fact for geographic/factual, traditional_folk
+  // for legends, spiritual_belief for religious/mystical practices.
+  {
+    kind: "spawn",
+    key: "knowledge:provinces-id",
+    intervalSec: 7200,          // 2h · 38 provinces
+    startDelaySec: 45,
+    command: "node",
+    args: ["scripts/nex-brain-knowledge/_knowledge-walker.mjs",
+           "--job=knowledge-provinces-id", "--segment=provinces",
+           "--provider=wikipedia_id", "--max-topics=15"],
+    description: "Knowledge walker · Indonesian Wikipedia · 38 provinces · truth_class=confirmed_fact · brain_slug=indonesia · sweeps 15 per cycle.",
+  },
+  {
+    kind: "spawn",
+    key: "knowledge:provinces-en",
+    intervalSec: 7200,
+    startDelaySec: 1845,        // +30 min offset
+    command: "node",
+    args: ["scripts/nex-brain-knowledge/_knowledge-walker.mjs",
+           "--job=knowledge-provinces-en", "--segment=provinces",
+           "--provider=wikipedia_en", "--max-topics=15"],
+    description: "Knowledge walker · English Wikipedia · 38 provinces · bilingual coverage per doctrine.",
+  },
+  {
+    kind: "spawn",
+    key: "knowledge:destinations-id",
+    intervalSec: 7200,
+    startDelaySec: 3645,        // +60 min offset
+    command: "node",
+    args: ["scripts/nex-brain-knowledge/_knowledge-walker.mjs",
+           "--job=knowledge-destinations-id", "--segment=destinations",
+           "--provider=wikipedia_id", "--max-topics=15"],
+    description: "Knowledge walker · Indonesian Wikipedia · tourism destinations (Borobudur/Bali/Komodo/Toba/...) · truth_class=confirmed_fact.",
+  },
+  {
+    kind: "spawn",
+    key: "knowledge:destinations-en",
+    intervalSec: 7200,
+    startDelaySec: 5445,
+    command: "node",
+    args: ["scripts/nex-brain-knowledge/_knowledge-walker.mjs",
+           "--job=knowledge-destinations-en", "--segment=destinations",
+           "--provider=wikipedia_en", "--max-topics=15"],
+    description: "Knowledge walker · English Wikipedia · destinations · bilingual.",
+  },
+  {
+    kind: "spawn",
+    key: "knowledge:folklore-id",
+    intervalSec: 7200,
+    startDelaySec: 900,
+    command: "node",
+    args: ["scripts/nex-brain-knowledge/_knowledge-walker.mjs",
+           "--job=knowledge-folklore-id", "--segment=folklore",
+           "--provider=wikipedia_id", "--max-topics=10"],
+    description: "Knowledge walker · Indonesian folk legends (Nyi Roro Kidul/Sangkuriang/Malin Kundang/Timun Mas/...) · truth_class=traditional_folk · NEX presents as 'traditional folk information · not confirmed'.",
+  },
+  {
+    kind: "spawn",
+    key: "knowledge:folklore-en",
+    intervalSec: 7200,
+    startDelaySec: 2745,
+    command: "node",
+    args: ["scripts/nex-brain-knowledge/_knowledge-walker.mjs",
+           "--job=knowledge-folklore-en", "--segment=folklore",
+           "--provider=wikipedia_en", "--max-topics=10"],
+    description: "Knowledge walker · English folk legends · bilingual folklore coverage.",
+  },
+  {
+    kind: "spawn",
+    key: "knowledge:spiritual-id",
+    intervalSec: 7200,
+    startDelaySec: 4545,
+    command: "node",
+    args: ["scripts/nex-brain-knowledge/_knowledge-walker.mjs",
+           "--job=knowledge-spiritual-id", "--segment=spiritual",
+           "--provider=wikipedia_id", "--max-topics=10"],
+    description: "Knowledge walker · Indonesian spiritual practices (Balinese Hinduism/Kejawen/Sunda Wiwitan/Parmalim/Kaharingan/Ngaben/Nyepi/...) · truth_class=spiritual_belief · presented respectfully per tradition · never dismissed as false.",
+  },
+  {
+    kind: "spawn",
+    key: "knowledge:spiritual-en",
+    intervalSec: 7200,
+    startDelaySec: 6345,
+    command: "node",
+    args: ["scripts/nex-brain-knowledge/_knowledge-walker.mjs",
+           "--job=knowledge-spiritual-en", "--segment=spiritual",
+           "--provider=wikipedia_en", "--max-topics=10"],
+    description: "Knowledge walker · English spiritual practices · bilingual.",
+  },
+  // ─── Knowledge walker expansion · Philip 2026-08-28 · Task #45 ───────────
+  // Adds cuisine · history · culture · language segments to reach 15 total
+  // knowledge walker jobs (8 existing + 7 new). Segments seeded in
+  // data/nex-indonesia-knowledge-seed.json.
+  {
+    kind: "spawn",
+    key: "knowledge:cuisine-id",
+    intervalSec: 7200,
+    startDelaySec: 8145,
+    command: "node",
+    args: ["scripts/nex-brain-knowledge/_knowledge-walker.mjs",
+           "--job=knowledge-cuisine-id", "--segment=cuisine",
+           "--provider=wikipedia_id", "--max-topics=15"],
+    description: "Knowledge walker · Indonesian Wikipedia · Indonesian cuisine (rendang · nasi padang · sate · rawon · papeda · ...) · truth_class=confirmed_fact.",
+  },
+  {
+    kind: "spawn",
+    key: "knowledge:cuisine-en",
+    intervalSec: 7200,
+    startDelaySec: 9945,
+    command: "node",
+    args: ["scripts/nex-brain-knowledge/_knowledge-walker.mjs",
+           "--job=knowledge-cuisine-en", "--segment=cuisine",
+           "--provider=wikipedia_en", "--max-topics=15"],
+    description: "Knowledge walker · English Wikipedia · Indonesian cuisine · bilingual.",
+  },
+  {
+    kind: "spawn",
+    key: "knowledge:history-id",
+    intervalSec: 7200,
+    startDelaySec: 11745,
+    command: "node",
+    args: ["scripts/nex-brain-knowledge/_knowledge-walker.mjs",
+           "--job=knowledge-history-id", "--segment=history",
+           "--provider=wikipedia_id", "--max-topics=10"],
+    description: "Knowledge walker · Indonesian Wikipedia · history (Sriwijaya/Majapahit/Mataram/Sukarno/Reformasi/...) · truth_class=confirmed_fact.",
+  },
+  {
+    kind: "spawn",
+    key: "knowledge:history-en",
+    intervalSec: 7200,
+    startDelaySec: 13545,
+    command: "node",
+    args: ["scripts/nex-brain-knowledge/_knowledge-walker.mjs",
+           "--job=knowledge-history-en", "--segment=history",
+           "--provider=wikipedia_en", "--max-topics=10"],
+    description: "Knowledge walker · English Wikipedia · Indonesian history · bilingual.",
+  },
+  {
+    kind: "spawn",
+    key: "knowledge:culture-id",
+    intervalSec: 7200,
+    startDelaySec: 15345,
+    command: "node",
+    args: ["scripts/nex-brain-knowledge/_knowledge-walker.mjs",
+           "--job=knowledge-culture-id", "--segment=culture",
+           "--provider=wikipedia_id", "--max-topics=10"],
+    description: "Knowledge walker · Indonesian Wikipedia · culture (batik/wayang/gamelan/kecak/angklung/keris/tari/tenun/songket) · truth_class=confirmed_fact.",
+  },
+  {
+    kind: "spawn",
+    key: "knowledge:culture-en",
+    intervalSec: 7200,
+    startDelaySec: 17145,
+    command: "node",
+    args: ["scripts/nex-brain-knowledge/_knowledge-walker.mjs",
+           "--job=knowledge-culture-en", "--segment=culture",
+           "--provider=wikipedia_en", "--max-topics=10"],
+    description: "Knowledge walker · English Wikipedia · Indonesian culture · bilingual.",
+  },
+  {
+    kind: "spawn",
+    key: "knowledge:language-id",
+    intervalSec: 7200,
+    startDelaySec: 18945,
+    command: "node",
+    args: ["scripts/nex-brain-knowledge/_knowledge-walker.mjs",
+           "--job=knowledge-language-id", "--segment=language",
+           "--provider=wikipedia_id", "--max-topics=8"],
+    description: "Knowledge walker · Indonesian Wikipedia · languages (Bahasa Indonesia/Jawa/Sunda/Bali/Batak/Minangkabau/Bugis/Sasak) · truth_class=confirmed_fact · foundation for future translation work.",
+  },
+  // Reserved slots · Phase Kb + Kc (awaiting Wikidata SPARQL + Wikivoyage integration)
+  // knowledge:wikidata-facts     — Phase Kb · structured facts via SPARQL
+  // knowledge:wikivoyage-guides  — Phase Kc · travel guide format
+  {
+    // Philip 2026-08-27 · "every hour report from walker findings · set by
+    // computer clock". Wall-clock aligned · first tick delayed so subsequent
+    // fires land at top of each hour. Read-only aggregate report appended
+    // to data/nex-run-logs/hourly-walker-report.jsonl.
+    kind: "spawn",
+    key: "walker:hourly-report",
+    intervalSec: 3600,
+    startDelaySec: (() => {
+      const now = new Date();
+      const nextHour = new Date(now); nextHour.setUTCMinutes(0, 0, 0);
+      nextHour.setUTCHours(nextHour.getUTCHours() + 1);
+      return Math.max(60, Math.floor((nextHour.getTime() - now.getTime()) / 1000));
+    })(),
+    command: "node",
+    args: ["scripts/nex-worker/hourly-walker-report.mjs"],
+    description: "Hourly walker findings report · wall-clock aligned (first tick at next :00) · appends JSON line to data/nex-run-logs/hourly-walker-report.jsonl · covers row deltas, cycle outcomes, merge log, missing-image backlog, category coverage.",
+  },
+  {
+    // Philip 2026-08-30 · geographic coverage diagnostic · answers "are
+    // walkers moving across all cities in Indonesia?" definitively. Reads
+    // nex.worker_cycle_run for last 24h, diffs against 518-city catalogue,
+    // exits 0 (HEALTHY) or 1 (ANOMALY). Runs every 6h for a low-noise
+    // regression signal, staggered off the hourly-report top-of-hour so
+    // both never overlap.
+    kind: "spawn",
+    key: "walker:coverage-check",
+    intervalSec: 21600, // 6 hours
+    startDelaySec: 900, // 15 minutes after scheduler boot · then every 6h
+    command: "node",
+    args: ["scripts/nex-worker/coverage-check.mjs", "--json"],
+    description: "Geographic coverage check · reads worker_cycle_run last 24h · diffs against data/nex-city-catalogue.json (518 cities · 42 provinces) · reports active/silent cities + top-city concentration + mp_seller unknown-city rate · exit 0 healthy / 1 anomaly.",
+  },
+  // Ollama Did You Know walker · Philip 2026-08-28. Distils DYK-format facts
+  // from existing Wikipedia articles in knowledge_inbox via local Ollama.
+  // Runs every 2h · 5 articles per cycle (~40s per fact given cold-start).
+  // Every generated row cites its Wikipedia source_url + CC BY-SA licence.
+  {
+    kind: "spawn",
+    key: "ollama:discover-did-you-know",
+    intervalSec: 7200,
+    startDelaySec: 5460,
+    command: "node",
+    args: ["scripts/nex-ollama/discover-did-you-know.mjs", "--limit=5"],
+    description: "Ollama DYK walker · distils Did You Know facts from Wikipedia knowledge_inbox via local Ollama · every row cites source_url + Wikipedia CC BY-SA · zero API cost.",
+  },
+  // Wikivoyage walker · Philip 2026-08-28. Travel-oriented content
+  // (transport, best time, cultural etiquette) for tourist destinations.
+  // CC BY-SA 4.0 · Wikivoyage REST v1 summary endpoint.
+  {
+    kind: "spawn",
+    key: "knowledge:destinations-wikivoyage",
+    intervalSec: 7200,
+    startDelaySec: 5645,
+    command: "node",
+    args: ["scripts/nex-brain-knowledge/_knowledge-walker.mjs",
+           "--job=knowledge-destinations-wikivoyage", "--segment=destinations",
+           "--provider=wikivoyage", "--max-topics=8"],
+    description: "Wikivoyage walker · destinations travel guides · CC BY-SA 4.0 · tourist practicalities that Wikipedia doesn't cover.",
+  },
+  // Ollama bilingual translator · Philip 2026-08-28. Fills title_id + body_id
+  // on existing DYK rows so Indonesian users can read facts in their own
+  // language. Uses same Ollama Free Infrastructure pipeline · no API cost.
+  {
+    kind: "spawn",
+    key: "ollama:translate-did-you-know-id",
+    intervalSec: 7200,
+    startDelaySec: 5830,
+    command: "node",
+    args: ["scripts/nex-ollama/translate-did-you-know.mjs", "--limit=8"],
+    description: "Ollama bilingual · translates DYK EN → ID · adds title_id + body_id to nex.brain_did_you_know_indonesia · reuses proven Ollama translation pipeline.",
+  },
+  // Directory image walker · Philip 2026-08-28. Assigns CC-licensed
+  // Wikimedia Commons category-matched images to directory cards that have
+  // no owner-uploaded image. Tick picks the (table, category, city) tuple
+  // with the most missing images that hasn't cycled in the last 120 min.
+  // Owner uploads (hero_image_approved=true) are ALWAYS respected.
+  // Doctrine: project_nex_cc_category_placeholder_imagery_2026_08_28.md
+  {
+    kind: "spawn",
+    key: "images:directory-rotation",
+    intervalSec: 900,                // 15 min · one (cat, city) per tick
+    startDelaySec: 300,
+    command: "node",
+    args: ["scripts/nex-workforce/_image-rotation-tick.mjs"],
+    description: "Directory image rotation tick · picks least-recently-imaged (table, category, city) tuple with unimaged rows · spawns enrich-directory-images.mjs for it · Wikimedia Commons only · owner upload always overrides.",
+  },
 ];
 
 const startedAt = new Date().toISOString();

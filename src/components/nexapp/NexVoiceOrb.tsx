@@ -31,30 +31,78 @@ interface Props {
   size?: string;
   /** Direction the eye should look · auto-returns to centre after ~700ms. */
   lookAt?: OrbLookDirection | null;
+  /** Override pupil transition duration (ms) · default 380. Parent sets 1000
+   *  during chat launch follow so the pupil takes 1s to track the message. */
+  pupilTransitionMs?: number;
+  /** When false, disable internal 700ms auto-return timer · parent controls
+   *  when to set lookAt back to null. Used during chat launch follow so the
+   *  pupil holds on the departing message before returning. */
+  autoReturn?: boolean;
+  /** When true, override the orb palette with a red variant · used the
+   *  split-second before a guidance laser fires so the eye reads "arming."
+   *  Philip 2026-08-28: "eye ball should turn red · then line appears." */
+  flashRed?: boolean;
+  /** When true, NEX grows tiny black duck legs and hops DOWN out of her
+   *  circle housing (Philip 2026-08-28). Toggled by double-tap in the shell. */
+  hopped?: boolean;
+  /** When true, personality scheduler runs FAST (0.35-0.7s gaps instead of
+   *  0.8-1.9s). Reads as "curious/nosy" · used during layout transitions
+   *  (full-width mode cinematic · Philip 2026-08-28) so she actively watches
+   *  everything change. Anti-repeat still applies · just tighter cadence. */
+  hyperMode?: boolean;
+  /** When true, orb progressively shrinks MORE (PERCH_SCALE) during float
+   *  to the corner · 1200ms transition syncs with the perch translate in
+   *  NexHudFrame so scale + position animate together. Philip 2026-08-28. */
+  perched?: boolean;
 }
 
 interface Palette {
   core: string; glow: string; glowSoft: string;
   wave: string; particle: string; circuit: string; label: string;
 }
+// Palette · Philip 2026-08-29 · CYAN IDLE + ORANGE SPEAKING.
+// She watches in cool cyan, warms up to orange when she talks. Sits well
+// against the brushed-metal chat bg (dark neutral makes cyan pop) while
+// preserving NEX's brand orange for engaged/action moments.
+//   idle      · cyan   (was orange)
+//   listening · bright cyan · brighter+whiter cyan reads as "more awake"
+//   thinking  · purple (unchanged · unique state)
+//   speaking  · orange (was cyan) · brand warm on engagement
+//   error     · red    (unchanged)
 const PALETTE: Record<NexVoiceState, Palette> = {
-  idle:      { core: "#fb923c", glow: "rgba(249,115,22,0.55)", glowSoft: "rgba(249,115,22,0.18)", wave: "#f97316", particle: "#fed7aa", circuit: "rgba(249,115,22,0.45)", label: "NEX · ready" },
-  listening: { core: "#fbbf24", glow: "rgba(249,115,22,0.90)", glowSoft: "rgba(249,115,22,0.35)", wave: "#fdba74", particle: "#ffedd5", circuit: "rgba(249,115,22,0.75)", label: "NEX · listening" },
-  thinking:  { core: "#c084fc", glow: "rgba(168,85,247,0.80)", glowSoft: "rgba(168,85,247,0.28)", wave: "#a855f7", particle: "#e9d5ff", circuit: "rgba(168,85,247,0.65)", label: "NEX · thinking" },
-  speaking:  { core: "#67e8f9", glow: "rgba(34,211,238,0.85)", glowSoft: "rgba(34,211,238,0.30)", wave: "#22d3ee", particle: "#cffafe", circuit: "rgba(34,211,238,0.70)", label: "NEX · speaking" },
-  error:     { core: "#fb7185", glow: "rgba(244,63,94,0.55)",  glowSoft: "rgba(244,63,94,0.18)",  wave: "#f43f5e", particle: "#fecdd3", circuit: "rgba(244,63,94,0.35)",  label: "NEX · retry" },
+  idle:      { core: "#4ac9ff", glow: "rgba(74,201,255,0.55)",  glowSoft: "rgba(74,201,255,0.18)",  wave: "#38bdf8", particle: "#bae6fd", circuit: "rgba(74,201,255,0.45)",  label: "NEX · ready" },
+  listening: { core: "#a3e2ff", glow: "rgba(74,201,255,0.90)",  glowSoft: "rgba(74,201,255,0.35)",  wave: "#7dd3fc", particle: "#e0f2fe", circuit: "rgba(74,201,255,0.75)",  label: "NEX · listening" },
+  thinking:  { core: "#c084fc", glow: "rgba(168,85,247,0.80)",  glowSoft: "rgba(168,85,247,0.28)",  wave: "#a855f7", particle: "#e9d5ff", circuit: "rgba(168,85,247,0.65)",  label: "NEX · thinking" },
+  speaking:  { core: "#fb923c", glow: "rgba(249,115,22,0.85)",  glowSoft: "rgba(249,115,22,0.30)",  wave: "#f97316", particle: "#fed7aa", circuit: "rgba(249,115,22,0.70)",  label: "NEX · speaking" },
+  error:     { core: "#fb7185", glow: "rgba(244,63,94,0.55)",   glowSoft: "rgba(244,63,94,0.18)",   wave: "#f43f5e", particle: "#fecdd3", circuit: "rgba(244,63,94,0.35)",   label: "NEX · retry" },
+};
+// Guidance-arming DARK NEON RED palette (Philip 2026-08-28 · "beam must be
+// red color DARK NEON"). Deep saturated red · reads as menacing laser
+// charging · not the bright pink-red variant.
+const RED_PALETTE: Palette = {
+  core:     "#c40027",
+  glow:     "rgba(196,0,39,1.00)",
+  glowSoft: "rgba(196,0,39,0.55)",
+  wave:     "#e02040",
+  particle: "#ff8090",
+  circuit:  "rgba(196,0,39,0.95)",
+  label:    "NEX · guiding",
 };
 
 interface Timing {
   coreBreath: string; ringSpin: string; segmentTravel: string;
   particleOrbit: string; circuitFlash: string; waveformScale: number;
 }
+// Philip 2026-08-29 · timings boosted for mobile visibility.
+// Idle state was too subtle on small screens · sped up + amplified so
+// the orb reads clearly "alive" on a 390×844 viewport. Speaking already
+// active enough · left near-original.
 const TIMING: Record<NexVoiceState, Timing> = {
-  idle:      { coreBreath: "5.5s", ringSpin: "38s", segmentTravel: "9s",   particleOrbit: "22s", circuitFlash: "7s",   waveformScale: 0.6 },
-  listening: { coreBreath: "1.8s", ringSpin: "20s", segmentTravel: "4s",   particleOrbit: "10s", circuitFlash: "3.5s", waveformScale: 1.4 },
-  thinking:  { coreBreath: "2.4s", ringSpin: "9s",  segmentTravel: "3s",   particleOrbit: "6s",  circuitFlash: "2.5s", waveformScale: 0.9 },
-  speaking:  { coreBreath: "1.1s", ringSpin: "12s", segmentTravel: "2.6s", particleOrbit: "7s",  circuitFlash: "1.6s", waveformScale: 1.8 },
-  error:     { coreBreath: "3.5s", ringSpin: "50s", segmentTravel: "14s",  particleOrbit: "26s", circuitFlash: "10s",  waveformScale: 0.5 },
+  idle:      { coreBreath: "3.2s", ringSpin: "22s", segmentTravel: "6s",   particleOrbit: "14s", circuitFlash: "4.5s", waveformScale: 0.95 },
+  listening: { coreBreath: "1.4s", ringSpin: "14s", segmentTravel: "3s",   particleOrbit: "7s",  circuitFlash: "2.4s", waveformScale: 1.6 },
+  thinking:  { coreBreath: "2.0s", ringSpin: "8s",  segmentTravel: "2.6s", particleOrbit: "5s",  circuitFlash: "2.2s", waveformScale: 1.1 },
+  speaking:  { coreBreath: "0.95s",ringSpin: "10s", segmentTravel: "2.2s", particleOrbit: "6s",  circuitFlash: "1.4s", waveformScale: 2.0 },
+  error:     { coreBreath: "2.6s", ringSpin: "36s", segmentTravel: "10s",  particleOrbit: "18s", circuitFlash: "7s",   waveformScale: 0.7 },
 };
 
 // Pupil offset per look direction (as % of ORB WIDTH · applied via top/left
@@ -83,13 +131,16 @@ function clampRadius(x: number, y: number, max: number): { x: number; y: number 
   return { x: x * s, y: y * s };
 }
 
+// Philip 2026-08-29 · particle sizes + opacities bumped ~30% so orbiting
+// dots read clearly on mobile (390-wide) · previous values were tuned
+// for desktop preview.
 const PARTICLES = [
-  { radiusPct: 34, sizePct: 3.2, phase:   0, opacity: 0.9 },
-  { radiusPct: 40, sizePct: 2.4, phase:  70, opacity: 0.7 },
-  { radiusPct: 32, sizePct: 2.0, phase: 140, opacity: 0.8 },
-  { radiusPct: 42, sizePct: 2.6, phase: 200, opacity: 0.75 },
-  { radiusPct: 36, sizePct: 1.8, phase: 260, opacity: 0.65 },
-  { radiusPct: 44, sizePct: 2.2, phase: 320, opacity: 0.7 },
+  { radiusPct: 34, sizePct: 4.2, phase:   0, opacity: 1.0 },
+  { radiusPct: 40, sizePct: 3.2, phase:  70, opacity: 0.9 },
+  { radiusPct: 32, sizePct: 2.8, phase: 140, opacity: 0.95 },
+  { radiusPct: 42, sizePct: 3.4, phase: 200, opacity: 0.9 },
+  { radiusPct: 36, sizePct: 2.6, phase: 260, opacity: 0.85 },
+  { radiusPct: 44, sizePct: 3.0, phase: 320, opacity: 0.9 },
 ];
 const CIRCUITS = [
   { angleDeg:   0, lengthPct: 30, delay: "0s"   },
@@ -104,11 +155,13 @@ const CIRCUITS = [
 
 // Pupil element extracted so it can register itself as a guidance target.
 function PupilElement({
-  finalPos, palette, className,
+  finalPos, palette, className, transitionMs, pulseScale,
 }: {
   finalPos: { x: number; y: number };
   palette: Palette;
   className: string;
+  transitionMs: number;
+  pulseScale: number;
 }) {
   const attachPupil = useGuidanceTarget("pupil");
   return (
@@ -120,8 +173,8 @@ function PupilElement({
         position: "absolute",
         top:  `calc(50% + ${finalPos.y}%)`,
         left: `calc(50% + ${finalPos.x}%)`,
-        transform: "translate(-50%, -50%)",
-        transition: "top 380ms cubic-bezier(0.34, 1.56, 0.64, 1), left 380ms cubic-bezier(0.34, 1.56, 0.64, 1)",
+        transform: `translate(-50%, -50%) scale(${pulseScale})`,
+        transition: `top ${transitionMs}ms cubic-bezier(0.34, 1.56, 0.64, 1), left ${transitionMs}ms cubic-bezier(0.34, 1.56, 0.64, 1), transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1)`,
         width: "10%", height: "10%",
         borderRadius: "50%",
         background: `radial-gradient(circle at 40% 35%, #ffffff 0%, ${palette.particle} 30%, ${palette.core} 70%, transparent 100%)`,
@@ -132,19 +185,46 @@ function PupilElement({
   );
 }
 
-export function NexVoiceOrb({ nexState, onTap, size = "100%", lookAt = null }: Props) {
-  const p = PALETTE[nexState];
+// Short jump distance (Philip 2026-08-28 · "jump must be short"). She hops
+// down just below her circle housing then shrinks · her halo stays with her.
+const HOP_DISTANCE_PX = 55;
+// How much she shrinks when hopped down · her outer glow/ring stay
+// proportionally around her (Philip 2026-08-28 · "circle around her becomes
+// smaller in size but still floating around her"). Bumped 0.55 → 0.75 per
+// Philip: "increase her size more when she jumps down."
+const HOP_SCALE = 0.75;
+// PERCH_SCALE was 0.5 (progressive shrink · Philip felt she got too small).
+// Philip 2026-08-28 revised: "your original when jump down and she floating
+// to corner was correct size for her" · locking PERCH_SCALE = HOP_SCALE so
+// she keeps her hopped size all the way through the float + perch. The
+// halo/glow scale stays consistent from jump through arrival.
+const PERCH_SCALE = 0.75;
+
+export function NexVoiceOrb({
+  nexState, onTap, size = "100%", lookAt = null,
+  pupilTransitionMs = 380, autoReturn = true, flashRed = false,
+  hopped = false, hyperMode = false, perched = false,
+}: Props) {
+  // Final scale composed from both hopped + perched states.
+  // Progressive shrinkage: normal (1) → hopped (0.75) → perched (0.5).
+  const finalScale = perched ? PERCH_SCALE : hopped ? HOP_SCALE : 1;
+  // Transition duration matches whichever phase is longer · during perch
+  // float we want the 1200ms slow ease so scale + position glide together.
+  const wrapperTransition = perched
+    ? "transform 1200ms cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+    : "transform 550ms cubic-bezier(0.34, 1.56, 0.64, 1)";
+  const p = flashRed ? RED_PALETTE : PALETTE[nexState];
   const t = TIMING[nexState];
   const uid = React.useId().replace(/:/g, "");
 
   // ── EYE LOOK STATE ─────────────────────────────────────────────────────
-  // Combines: (a) intentional look from prop · (b) natural micro-drift ·
-  // (c) occasional idle glance. Merges into a final pupil offset (%).
   const [effectiveLook, setEffectiveLook] = useState<OrbLookDirection>("center");
-  const [drift, setDrift] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [drift, setDrift]         = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [pulseScale, setPulseScale] = useState(1);
   const returnTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Respond to explicit lookAt prop · hold for ~700ms · then return to centre.
+  // Respond to explicit lookAt prop · auto-return after 700ms UNLESS the
+  // parent has set autoReturn=false (chat launch follow · parent controls).
   useEffect(() => {
     if (!lookAt || lookAt === "center") {
       setEffectiveLook("center");
@@ -152,51 +232,86 @@ export function NexVoiceOrb({ nexState, onTap, size = "100%", lookAt = null }: P
     }
     setEffectiveLook(lookAt);
     if (returnTimer.current) clearTimeout(returnTimer.current);
-    returnTimer.current = setTimeout(() => setEffectiveLook("center"), 700);
+    if (autoReturn) {
+      returnTimer.current = setTimeout(() => setEffectiveLook("center"), 700);
+    }
     return () => {
       if (returnTimer.current) clearTimeout(returnTimer.current);
     };
-  }, [lookAt]);
+  }, [lookAt, autoReturn]);
 
-  // Natural micro-drift + occasional idle glance when effective look is centre.
+  // ── PERSONALITY SCHEDULER ──────────────────────────────────────────────
+  // Philip 2026-08-28: "ball never stops moving for more than 2 seconds ·
+  // must feel alive not programmed · no repeated motions within short window."
+  //
+  // Every 0.8-1.9s pick a random action from a weighted library. Anti-repeat
+  // memory (last 4 action ids) so the pupil doesn't do the same thing twice
+  // in a row. Runs only when the pupil is at centre AND we're not being
+  // externally controlled (launch follow etc).
   useEffect(() => {
-    if (effectiveLook !== "center") return;
-    // Micro-drift oscillation via setInterval · slow, subtle.
+    if (effectiveLook !== "center" || !autoReturn) return;
+
     let cancelled = false;
-    let idleGlanceTimer: ReturnType<typeof setTimeout> | null = null;
+    const recent: string[] = [];
 
-    const microDriftLoop = () => {
-      if (cancelled) return;
-      // Random small drift ±3px equivalent
-      setDrift({
-        x: (Math.random() - 0.5) * 6,
-        y: (Math.random() - 0.5) * 6,
-      });
-      setTimeout(microDriftLoop, 1600 + Math.random() * 1600);
-    };
-    microDriftLoop();
+    type Action = { id: string; weight: number; run: () => void };
+    const actions: Action[] = [
+      // Micro-drift · most common · subtle random offset within centre
+      { id: "drift-a", weight: 3, run: () => setDrift({ x: (Math.random() - 0.5) * 6, y: (Math.random() - 0.5) * 6 }) },
+      { id: "drift-b", weight: 3, run: () => setDrift({ x: (Math.random() - 0.5) * 8, y: (Math.random() - 0.5) * 4 }) },
+      { id: "drift-c", weight: 2, run: () => setDrift({ x: (Math.random() - 0.5) * 4, y: (Math.random() - 0.5) * 8 }) },
+      // Pupil pulse · brief scale-up · reads as "spark" or blink of attention
+      { id: "pulse-s", weight: 2, run: () => { setPulseScale(1.18); setTimeout(() => !cancelled && setPulseScale(1), 200); } },
+      { id: "pulse-m", weight: 1, run: () => { setPulseScale(1.28); setTimeout(() => !cancelled && setPulseScale(1), 240); } },
+      { id: "pulse-quick", weight: 1, run: () => { setPulseScale(1.12); setTimeout(() => !cancelled && setPulseScale(1), 140); } },
+      // Directional glances · varied · anti-repeat prevents same direction back-to-back
+      { id: "look-up-left",  weight: 1, run: () => scheduleGlance("up-left",  480 + Math.random() * 300) },
+      { id: "look-up-right", weight: 1, run: () => scheduleGlance("up-right", 480 + Math.random() * 300) },
+      { id: "look-up",       weight: 1, run: () => scheduleGlance("up",       500 + Math.random() * 400) },
+      { id: "look-left",     weight: 1, run: () => scheduleGlance("left",     380 + Math.random() * 300) },
+      { id: "look-right",    weight: 1, run: () => scheduleGlance("right",    380 + Math.random() * 300) },
+      // Quick darts · very short glances · reads as "she noticed something"
+      { id: "dart-ul", weight: 1, run: () => scheduleGlance("up-left",  180 + Math.random() * 80) },
+      { id: "dart-ur", weight: 1, run: () => scheduleGlance("up-right", 180 + Math.random() * 80) },
+    ];
 
-    // Occasional idle glance every 4-8s · looks in a random natural direction ·
-    // holds ~500ms · returns.
-    const scheduleGlance = () => {
+    function scheduleGlance(dir: OrbLookDirection, holdMs: number) {
+      setEffectiveLook(dir);
+      setTimeout(() => { if (!cancelled) setEffectiveLook("center"); }, holdMs);
+    }
+
+    function pickAction(): Action {
+      const available = actions.filter((a) => !recent.includes(a.id));
+      const pool = available.length > 0 ? available : actions;
+      const total = pool.reduce((s, a) => s + a.weight, 0);
+      let r = Math.random() * total;
+      for (const a of pool) {
+        r -= a.weight;
+        if (r <= 0) return a;
+      }
+      return pool[pool.length - 1];
+    }
+
+    function loop() {
       if (cancelled) return;
-      idleGlanceTimer = setTimeout(() => {
+      // Hyper mode: 0.35-0.7s · Normal: 0.8-1.9s (max 2s gap rule).
+      // Hyper reads as "she's actively watching everything happen."
+      const gap = hyperMode
+        ? 350 + Math.random() * 350
+        : 800 + Math.random() * 1100;
+      setTimeout(() => {
         if (cancelled) return;
-        const dir = IDLE_GLANCES[Math.floor(Math.random() * IDLE_GLANCES.length)];
-        setEffectiveLook(dir);
-        setTimeout(() => {
-          if (!cancelled) setEffectiveLook("center");
-          scheduleGlance();
-        }, 500 + Math.random() * 400);
-      }, 4000 + Math.random() * 4000);
-    };
-    scheduleGlance();
+        const action = pickAction();
+        action.run();
+        recent.unshift(action.id);
+        if (recent.length > 4) recent.pop();
+        loop();
+      }, gap);
+    }
+    loop();
 
-    return () => {
-      cancelled = true;
-      if (idleGlanceTimer) clearTimeout(idleGlanceTimer);
-    };
-  }, [effectiveLook === "center"]);
+    return () => { cancelled = true; };
+  }, [effectiveLook, autoReturn, hyperMode]);
 
   // ── CANONICAL PUPIL COORDINATE ────────────────────────────────────────
   // ONE final (x, y) in % of orb width. Applied via top/left offset so the
@@ -212,6 +327,20 @@ export function NexVoiceOrb({ nexState, onTap, size = "100%", lookAt = null }: P
   );
 
   return (
+    <div
+      style={{
+        position: "relative",
+        width: size,
+        height: size,
+        aspectRatio: "1 / 1",
+        // Outer wrapper · composes HOP (translate) + SHRINK (progressive scale)
+        // in one transform. Scale drops further when perched (float to corner)
+        // so she shrinks progressively as she approaches destination.
+        transform: `translateY(${hopped ? HOP_DISTANCE_PX : 0}px) scale(${finalScale})`,
+        transformOrigin: "center center",
+        transition: wrapperTransition,
+      }}
+    >
     <button
       type="button"
       aria-label={p.label}
@@ -222,9 +351,8 @@ export function NexVoiceOrb({ nexState, onTap, size = "100%", lookAt = null }: P
         background: "transparent",
         cursor: "pointer",
         padding: 0,
-        width: size,
-        height: size,
-        aspectRatio: "1 / 1",
+        width: "100%",
+        height: "100%",
         position: "relative",
         overflow: "visible",
       }}
@@ -435,6 +563,8 @@ export function NexVoiceOrb({ nexState, onTap, size = "100%", lookAt = null }: P
         finalPos={finalPos}
         palette={p}
         className={`nex-orb-pupil-${uid}`}
+        transitionMs={pupilTransitionMs}
+        pulseScale={pulseScale}
       />
 
       {/* Rim highlight · glass depth */}
@@ -495,5 +625,6 @@ export function NexVoiceOrb({ nexState, onTap, size = "100%", lookAt = null }: P
         }
       `}</style>
     </button>
+    </div>
   );
 }

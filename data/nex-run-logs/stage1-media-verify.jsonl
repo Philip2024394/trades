@@ -1,0 +1,16 @@
+{"step":"HQ page renders","ok":true,"detail":"HTTP 200","at":"2026-08-27T15:11:59.021Z"}
+{"step":"POST /upload-url returns media_id + upload_url","ok":true,"detail":"media_id=607adaf6-7676-4cbe-87a0-6ad77c871ed0","at":"2026-08-27T15:11:59.109Z"}
+{"step":"(ADR-0118 § 4) row created with visibility=private","ok":true,"detail":"state=uploading","at":"2026-08-27T15:11:59.159Z"}
+{"step":"(ADR-0118 § 1) owner_id stamped from body","ok":true,"detail":"owner=verify-owner-1787843519021","at":"2026-08-27T15:11:59.159Z"}
+{"step":"bytes written to storage (Postgres adapter · simulates R2 PUT)","ok":true,"detail":"size=59","at":"2026-08-27T15:11:59.170Z"}
+{"step":"POST /register moves state to 'ready'","ok":true,"detail":"state=ready · size=59","at":"2026-08-27T15:11:59.286Z"}
+{"step":"GET /[id] with owner identity returns row","ok":true,"detail":"state=ready","at":"2026-08-27T15:11:59.361Z"}
+{"step":"(ADR-0118 § 4) GET with wrong identity 404s (visibility=private)","ok":true,"detail":"status=404","at":"2026-08-27T15:11:59.422Z"}
+{"step":"admin flag reads any row","ok":true,"detail":"status=200","at":"2026-08-27T15:11:59.464Z"}
+{"step":"POST /thumbnail on non-video returns clear error","ok":true,"detail":"{\"ok\":false,\"error\":\"not a video\"}","at":"2026-08-27T15:12:03.151Z"}
+{"step":"(ADR-0118 § 3) DELETE as owner soft-deletes","ok":true,"detail":"state=deleted","at":"2026-08-27T15:12:03.217Z"}
+{"step":"(ADR-0118 § 3) hard_delete_after = deleted_at + 7 days","ok":true,"detail":"grace=7.00d","at":"2026-08-27T15:12:03.217Z"}
+{"step":"(ADR-0118 § 1) DELETE as non-owner forbidden","ok":true,"detail":"status=403","at":"2026-08-27T15:12:03.346Z"}
+{"step":"(ADR-0118 § 2) phone-delete does NOT touch NEX row · no endpoint deletes without explicit DELETE call","ok":true,"detail":"verified by design · no auto-cleanup on client detach","at":"2026-08-27T15:12:03.346Z"}
+{"step":"(ADR-0024) object_manifest row exists per put","ok":true,"detail":"count=1","at":"2026-08-27T15:12:03.350Z"}
+{"step":"HQ page still renders after activity","ok":true,"detail":"HTTP 200 · size=88618","at":"2026-08-27T15:12:05.507Z"}

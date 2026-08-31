@@ -89,7 +89,11 @@ function priorityScore(state: RotationSnapshotRow["state"]): number {
     case "reactivate":  return 40;
     case "build":       return 30;
     case "maintenance": return 20;
-    case "saturated":   return 0;  // never picked
+    // Philip 2026-08-30 · saturated raised from 0 → 5. Every location must
+    // remain walker-eligible per the "all locations always active" doctrine.
+    // Build/reactivate still win the queue; saturated combos get walked
+    // only when higher-priority work is drained.
+    case "saturated":   return 5;
   }
 }
 
@@ -147,10 +151,12 @@ export function buildDiscoveryQueue(
       status = "in-flight"; reason = "worker cycle currently running for this combo";
     } else if (providerGated.has(comboKey)) {
       status = "skipped-gated-provider"; reason = "provider unavailable for this combo";
-    } else if (s.state === "saturated") {
-      // Surface-level saturation · does NOT globally exhaust the combo · other
-      // surfaces of the same (city, category) may still be pickable.
-      status = "skipped-saturated"; reason = `surface ${s.surface} saturated (${s.consecutiveZeroNewCycles} consecutive zero-new cycles)`;
+    } else if (s.state === "saturated" && process.env.NEX_WALKER_SKIP_SATURATED === "1") {
+      // Philip 2026-08-30 · saturated-skip is now OPT-IN. Default: saturated
+      // combos remain eligible (lowest priority · 5) so every location is
+      // walker-eligible every tick per "all locations always active" doctrine.
+      // Set NEX_WALKER_SKIP_SATURATED=1 to restore the old skip behavior.
+      status = "skipped-saturated"; reason = `surface ${s.surface} saturated (${s.consecutiveZeroNewCycles} consecutive zero-new cycles) · restore by unsetting NEX_WALKER_SKIP_SATURATED`;
     } else if (PER_VERTICAL_CONCURRENCY[s.category] !== undefined
             && (inFlightByVertical.get(s.category) ?? 0) >= PER_VERTICAL_CONCURRENCY[s.category]) {
       status = "waiting-vertical-cap";

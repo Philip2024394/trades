@@ -31,6 +31,7 @@ import { AccommodationDetailSlider, type AccommodationDetailData } from "./Accom
 import { NexDiscoveryCard, type DiscoveryCardData } from "./NexDiscoveryCard";
 import { SmartDiscoveryCard } from "./SmartDiscoveryCard";
 import { SmartDiscoveryController } from "./SmartDiscoveryController";
+import { NexCallSlider, type CallSliderTarget } from "./NexCallSlider";
 import type { SmartDiscoverySignal } from "@/lib/nex-accommodation/smart-discovery-signals";
 
 export interface NexDirectoryListing {
@@ -45,6 +46,11 @@ export interface NexDirectoryListing {
   whatsappNumber?:  string | null;
   website?:         string | null;
   heroImageUrl?:    string | null;
+  // Philip 2026-08-27 (STEP 2) · resolved category-fallback URL for cards
+  // whose heroImageUrl is null. Populated at server-render time by the page
+  // using resolveFallbackUrl(). Same visual card · never marked as fallback ·
+  // Universal Image Doctrine order OWNER > VERIFIED > CATEGORY_FALLBACK.
+  fallbackImageUrl?: string | null;
   rating?:          number | null;
   reviewCount?:     number | null;
   // PART B 2026-08-24 · optional detail-slider payload · when present the
@@ -84,6 +90,7 @@ export function NexDirectoryFeed(props: NexDirectoryFeedProps) {
   const { categoryLabel, categoryIcon, city, listings, emptyState, attribution, discoveryCards, smartDiscovery } = props;
   const [query, setQuery] = useState("");
   const [activeDetail, setActiveDetail] = useState<AccommodationDetailData | null>(null);
+  const [callTarget, setCallTarget] = useState<CallSliderTarget | null>(null);
   const [flippedRefs, setFlippedRefs] = useState<Set<string>>(() => new Set());
 
   const eligibleRefs = useMemo(() => Object.keys(smartDiscovery ?? {}), [smartDiscovery]);
@@ -189,6 +196,10 @@ export function NexDirectoryFeed(props: NexDirectoryFeedProps) {
       {/* PART B (2026-08-24) · Details slider · rendered at feed level so it
           overlays the whole directory · closes cleanly · never causes grid jump. */}
       <AccommodationDetailSlider listing={activeDetail} onClose={() => setActiveDetail(null)} />
+
+      {/* Philip 2026-08-27 · placeholder call/video slider · UI only ·
+          real backend defined in ADR-0100 awaits approval. */}
+      <NexCallSlider target={callTarget} onClose={() => setCallTarget(null)} />
     </div>
   );
 }
@@ -272,7 +283,7 @@ function DirectoryMasonry({
         }
         const listing = it.l;
         const signal = smartDiscovery[listing.publicListingRef];
-        const card = <NexBusinessCard listing={listing} onOpenDetails={onOpenDetails} />;
+        const card = <NexBusinessCard listing={listing} onOpenDetails={onOpenDetails} onOpenCall={(mode) => setCallTarget({ businessName: listing.businessName, city: listing.city, category: listing.category, mode })} />;
         if (!signal) {
           return (
             <div key={listing.publicListingRef} className="mb-3 break-inside-avoid">
@@ -307,17 +318,25 @@ function DirectoryMasonry({
 // single card. Fields absent for a vertical (e.g. cuisine for accommodation)
 // simply don't appear.
 
-function NexBusinessCard({ listing, onOpenDetails }: { listing: NexDirectoryListing; onOpenDetails?: (l: NexDirectoryListing) => void }) {
+function NexBusinessCard({ listing, onOpenDetails, onOpenCall }: {
+  listing: NexDirectoryListing;
+  onOpenDetails?: (l: NexDirectoryListing) => void;
+  onOpenCall?: (mode: "voice" | "video") => void;
+}) {
   const initial = listing.businessName.charAt(0).toUpperCase();
   const canOpenDetail = Boolean(listing.detail && onOpenDetails);
+  // Universal Image Doctrine: OWNER_IMAGE > VERIFIED_REAL (heroImageUrl) >
+  // CATEGORY_FALLBACK (fallbackImageUrl). Card renders whichever is available.
+  // Only when BOTH are absent does the letter-tile show. Philip 2026-08-27 (STEP 2).
+  const displayImage = listing.heroImageUrl ?? listing.fallbackImageUrl ?? null;
   return (
     <article className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm transition hover:shadow-md">
       {/* Hero image OR letter-tile fallback */}
-      {listing.heroImageUrl ? (
+      {displayImage ? (
         <div className="aspect-[4/3] w-full overflow-hidden bg-neutral-100">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={listing.heroImageUrl}
+            src={displayImage}
             alt={listing.businessName}
             className="h-full w-full object-cover"
             loading="lazy"
@@ -362,6 +381,28 @@ function NexBusinessCard({ listing, onOpenDetails }: { listing: NexDirectoryList
         )}
 
         <div className="flex flex-wrap items-center gap-2 text-[11px]">
+          {/* Philip 2026-08-27 · Call + Video buttons · FIRST on the right ·
+              placeholder UI · backend defined in ADR-0100 · opens NexCallSlider. */}
+          {onOpenCall && (
+            <>
+              <button
+                type="button"
+                onClick={() => onOpenCall("voice")}
+                title="NEX Voice Call"
+                className="rounded-full bg-emerald-600 px-2.5 py-1 font-semibold text-white hover:bg-emerald-700"
+              >
+                📞 Call
+              </button>
+              <button
+                type="button"
+                onClick={() => onOpenCall("video")}
+                title="NEX Video Call"
+                className="rounded-full bg-sky-600 px-2.5 py-1 font-semibold text-white hover:bg-sky-700"
+              >
+                🎥 Video
+              </button>
+            </>
+          )}
           {canOpenDetail && (
             <button
               type="button"

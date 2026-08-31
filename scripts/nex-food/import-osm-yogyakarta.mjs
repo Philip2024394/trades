@@ -1,4 +1,33 @@
 #!/usr/bin/env node
+// ═══════════════════════════════════════════════════════════════════════════
+// PHASE 1a HARD ABORT · Philip 2026-08-27
+// ═══════════════════════════════════════════════════════════════════════════
+// This standalone script writes to nex.food_business but does NOT route
+// through the shared identity-resolver (scripts/nex-worker/identity-resolver.mjs)
+// installed in Phase 1a. Running it would recreate the dedup problem the
+// resolver was built to fix (currently 1,102 excess food_business dupes).
+//
+// This script is FROZEN until Phase 1b rewires it through resolveIdentity()
+// + mergeEnrichment() + logs to nex.identity_merge_log.
+//
+// Doctrine: project_nex_dedup_and_identity_resolution_doctrine_2026_08_27.md
+// To unfreeze: set NEX_ALLOW_LEGACY_STANDALONE_IMPORT=1 (do NOT do this
+// in production; only for controlled Phase 1b integration tests).
+if (process.env.NEX_ALLOW_LEGACY_STANDALONE_IMPORT !== "1") {
+  console.error("");
+  console.error("╔══════════════════════════════════════════════════════════════════════╗");
+  console.error("║  import-osm-yogyakarta.mjs · FROZEN (Phase 1a · 2026-08-27)          ║");
+  console.error("║                                                                      ║");
+  console.error("║  This script bypasses the shared identity-resolver and would         ║");
+  console.error("║  recreate duplicate food_business rows. Frozen until Phase 1b        ║");
+  console.error("║  routes it through resolveIdentity() + mergeEnrichment().            ║");
+  console.error("║                                                                      ║");
+  console.error("║  Legitimate use cases now go through:                                ║");
+  console.error("║    · scripts/nex-acquisition/run-live-cycle.mjs (walker path)        ║");
+  console.error("║    · scripts/nex-workforce/_category-walker.mjs (workforce path)     ║");
+  console.error("╚══════════════════════════════════════════════════════════════════════╝");
+  process.exit(2);
+}
 // NEX Food · Yogyakarta OSM Overpass importer · Phase 2 of the acquisition
 // pipeline (Philip 2026-08-21 greenlight · OSM primary + jogjakota validation).
 //

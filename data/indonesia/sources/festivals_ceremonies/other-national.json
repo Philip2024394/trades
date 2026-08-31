@@ -1,0 +1,54 @@
+[
+  {
+    "externalId": "fest-waisak",
+    "domain": "culture",
+    "topic": "festival.waisak",
+    "region": "Central Java",
+    "content": "Waisak (Vesak) is the Buddhist commemoration of the Buddha's birth, enlightenment, and death — celebrated on the full moon of the lunar month of Vesakha (usually May). In Indonesia the largest observance is at Borobudur: thousands of monks and pilgrims gather, meditate, and release lanterns into the night sky. The lantern release is ticketed; access to the temple upper terraces is highly restricted that day. Book lantern tickets months ahead. Public holiday nationally.",
+    "keywords": ["waisak", "vesak", "buddha", "borobudur", "lantern", "full moon", "vesakha", "public holiday"],
+    "audience": ["tourist"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:festivals · Kemenag",
+    "confidence": 0.95
+  },
+  {
+    "externalId": "fest-cap-go-meh",
+    "domain": "culture",
+    "topic": "festival.cap_go_meh",
+    "region": "Indonesia",
+    "content": "Cap Go Meh marks the 15th day (final day) of Chinese New Year celebrations, most vividly in Indonesia's Chinese-Indonesian communities — Singkawang (West Kalimantan) hosts arguably the largest, with tatung (spirit-medium) processions that draw international visitors. Also strong in Jakarta's Glodok, Semarang, Surabaya, Bogor, and Pontianak. Not a national public holiday but the underlying Imlek (Chinese New Year) is.",
+    "keywords": ["cap go meh", "imlek", "chinese new year", "singkawang", "tatung", "glodok", "chinese-indonesian"],
+    "audience": ["tourist"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:festivals · Kemenag",
+    "confidence": 0.9
+  },
+  {
+    "externalId": "fest-erau",
+    "domain": "culture",
+    "topic": "festival.erau",
+    "region": "East Kalimantan",
+    "content": "Erau is the annual cultural festival of the Kutai Kartanegara sultanate in Tenggarong, East Kalimantan — traditionally centred on the enthronement anniversary. Modern Erau (revived in the 1970s) runs about a week and includes Dayak dance, boat races on the Mahakam river, tepong tawar (blessing rituals), and the belimbur (mutual water-throwing) finale. Typically held in September or October.",
+    "keywords": ["erau", "kutai", "kartanegara", "tenggarong", "mahakam", "dayak", "belimbur", "east kalimantan"],
+    "audience": ["tourist"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:festivals · Kemendikbud",
+    "confidence": 0.85
+  },
+  {
+    "externalId": "fest-bau-nyale",
+    "domain": "culture",
+    "topic": "festival.bau_nyale",
+    "region": "Lombok",
+    "content": "Bau Nyale is an annual Sasak festival on Lombok's south coast (around Kuta Lombok) — thousands gather at night to catch nyale, a sea worm that surfaces once a year in February or March according to the traditional calendar. The worms are considered incarnations of the legendary Princess Mandalika. The event is preceded by a night of song, poetry (bepantun), and cultural performance. A significant recent-revival tradition tied to Sasak identity.",
+    "keywords": ["bau nyale", "sasak", "kuta lombok", "mandalika", "sea worm", "february", "lombok festival"],
+    "audience": ["tourist"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:festivals · Kemendikbud",
+    "confidence": 0.85
+  }
+]

@@ -21,18 +21,43 @@ const TEL_PATTERNS = [
 const IG_PATTERN = /https?:\/\/(?:www\.)?instagram\.com\/([A-Za-z0-9_.]+)/gi;
 const FB_PATTERN = /https?:\/\/(?:www\.)?facebook\.com\/([A-Za-z0-9_.]+)/gi;
 
-// Image extraction · Chief Architect 2026-08-27 · narrowly scoped pivot.
-// Priority: og:image:secure_url > og:image > schema.org JSON-LD image >
-// apple-touch-icon fallback. Own-site public info only · ADR-0022 compliant ·
-// never GBP/Facebook/Instagram/Google-Image-Search.
+// Image extraction · Chief Architect 2026-08-27 · Philip A+E ship.
+// Priority (highest first):
+//   1. og:image:secure_url          (Facebook OG · HTTPS preferred)
+//   2. og:image                     (Facebook OG · plain)
+//   3. twitter:image / twitter:image:src (Twitter cards · common on WP themes)
+//   4. schema.org JSON-LD image     (LocalBusiness/Restaurant/Hotel/etc.)
+//   5. <link rel="image_src">       (legacy Facebook pre-OG · still in the wild)
+//   6. <meta itemprop="image">      (microdata · JSON-LD's older sibling)
+//   7. hero <img> heuristic         (first plausible content image · conservative)
+//   8. apple-touch-icon             (last-resort favicon-tier · usually 180×180)
+//
+// Own-site public info only · ADR-0022 compliant · never GBP/Facebook/
+// Instagram/Google-Image-Search. Every extraction records `image_source_method`
+// so downstream can debug where each image came from.
 const OG_IMAGE_SECURE_PATTERN = /<meta[^>]+property=["']og:image:secure_url["'][^>]+content=["']([^"']+)["'][^>]*>/gi;
 const OG_IMAGE_PATTERN        = /<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["'][^>]*>/gi;
 // Also handle content-first, property-second attribute order (both are legal HTML)
 const OG_IMAGE_SECURE_ALT     = /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image:secure_url["'][^>]*>/gi;
 const OG_IMAGE_ALT            = /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["'][^>]*>/gi;
+// Twitter card image · very common on WordPress themes (Yoast SEO auto-adds).
+const TWITTER_IMAGE_PATTERN   = /<meta[^>]+name=["']twitter:image(?::src)?["'][^>]+content=["']([^"']+)["'][^>]*>/gi;
+const TWITTER_IMAGE_ALT       = /<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:image(?::src)?["'][^>]*>/gi;
+// Legacy Facebook pre-OG · still emitted by older CMS themes.
+const IMAGE_SRC_LINK          = /<link[^>]+rel=["']image_src["'][^>]+href=["']([^"']+)["'][^>]*>/gi;
+const IMAGE_SRC_LINK_ALT      = /<link[^>]+href=["']([^"']+)["'][^>]+rel=["']image_src["'][^>]*>/gi;
+// Microdata itemprop=image · widely used in ecommerce/business templates.
+const META_ITEMPROP_IMAGE     = /<meta[^>]+itemprop=["']image["'][^>]+content=["']([^"']+)["'][^>]*>/gi;
+const META_ITEMPROP_IMAGE_ALT = /<meta[^>]+content=["']([^"']+)["'][^>]+itemprop=["']image["'][^>]*>/gi;
 const APPLE_TOUCH_ICON        = /<link[^>]+rel=["']apple-touch-icon(?:-precomposed)?["'][^>]+href=["']([^"']+)["'][^>]*>/gi;
 const APPLE_TOUCH_ICON_ALT    = /<link[^>]+href=["']([^"']+)["'][^>]+rel=["']apple-touch-icon(?:-precomposed)?["'][^>]*>/gi;
 const JSON_LD_BLOCK           = /<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+
+// Hero <img> heuristic · conservative · looks only for images inside <header>,
+// <main>, or with class/id containing hero/banner/cover/masthead/jumbotron.
+// Skips known-tiny-icon patterns (favicon/logo/icon/avatar/spacer/tracker in
+// filename or class) to avoid false positives.
+const HERO_IMG_SCANNER = /<img\b[^>]+>/gi;
 
 // Resolve a possibly-relative image URL against a base page URL.
 // Returns null if unresolvable or clearly invalid.
@@ -87,6 +112,60 @@ function extractFromJsonLd(jsonText, baseUrl) {
   return null;
 }
 
+/** Attribute lookup helper for an <img> tag string.
+ *  Returns the attribute value or null · lowercase-insensitive attr matching. */
+function imgAttr(tagText, attr) {
+  const re = new RegExp(`\\b${attr}\\s*=\\s*["']([^"']*)["']`, "i");
+  const m = tagText.match(re);
+  return m ? m[1] : null;
+}
+
+/** Heuristic: does the <img> URL/class/id look like a hero (vs favicon/logo/tracker)? */
+function looksLikeHeroImg(tagText, resolvedUrl) {
+  const cls = (imgAttr(tagText, "class") ?? "").toLowerCase();
+  const id  = (imgAttr(tagText, "id") ?? "").toLowerCase();
+  const alt = (imgAttr(tagText, "alt") ?? "").toLowerCase();
+  const lowerUrl = resolvedUrl.toLowerCase();
+
+  // Deny-list: obvious junk we NEVER want as a hero image.
+  const denyPatterns = [
+    "logo", "favicon", "icon-", "-icon.", "avatar", "spacer",
+    "pixel", "tracker", "1x1", "beacon", "loading.gif", "placeholder",
+  ];
+  for (const p of denyPatterns) {
+    if (lowerUrl.includes(p) || cls.includes(p) || id.includes(p) || alt.includes(p)) return false;
+  }
+
+  // Allow-list: signals this IS a hero.
+  const allowPatterns = ["hero", "banner", "cover", "masthead", "jumbotron", "featured", "showcase", "main-image"];
+  for (const p of allowPatterns) {
+    if (cls.includes(p) || id.includes(p) || alt.includes(p)) return true;
+  }
+
+  // Otherwise: allow if width/height suggest it's a big content image (≥ 400px).
+  const w = parseInt(imgAttr(tagText, "width") ?? "0", 10);
+  const h = parseInt(imgAttr(tagText, "height") ?? "0", 10);
+  if (w >= 400 || h >= 400) return true;
+
+  return false;
+}
+
+/** Extract a plausible hero <img> from the first ~200KB of HTML. Conservative. */
+function extractHeroImg(html, baseUrl) {
+  const scan = html.length > 200_000 ? html.slice(0, 200_000) : html;
+  for (const m of scan.matchAll(HERO_IMG_SCANNER)) {
+    const tagText = m[0];
+    const src = imgAttr(tagText, "src")
+             ?? imgAttr(tagText, "data-src")
+             ?? imgAttr(tagText, "data-lazy-src");
+    if (!src) continue;
+    const resolved = resolveImageUrl(src, baseUrl);
+    if (!resolved) continue;
+    if (looksLikeHeroImg(tagText, resolved)) return resolved;
+  }
+  return null;
+}
+
 // Pick best image from HTML · priority order captured in `image_source_method`.
 function extractImageFromHtml(html, baseUrl) {
   // 1. og:image:secure_url (HTTPS preferred)
@@ -103,12 +182,36 @@ function extractImageFromHtml(html, baseUrl) {
       if (r) return { url: r, method: "og:image" };
     }
   }
-  // 3. schema.org JSON-LD image (only from a business/place @type block)
+  // 3. twitter:image / twitter:image:src (Philip A · 2026-08-27)
+  for (const p of [TWITTER_IMAGE_PATTERN, TWITTER_IMAGE_ALT]) {
+    for (const m of html.matchAll(p)) {
+      const r = resolveImageUrl(m[1], baseUrl);
+      if (r) return { url: r, method: "twitter:image" };
+    }
+  }
+  // 4. schema.org JSON-LD image (only from a business/place @type block)
   for (const m of html.matchAll(JSON_LD_BLOCK)) {
     const found = extractFromJsonLd(m[1], baseUrl);
     if (found) return { url: found, method: "schema.org/JSON-LD" };
   }
-  // 4. apple-touch-icon (fallback · smaller · sometimes only option)
+  // 5. <link rel="image_src"> (legacy Facebook · Philip A · 2026-08-27)
+  for (const p of [IMAGE_SRC_LINK, IMAGE_SRC_LINK_ALT]) {
+    for (const m of html.matchAll(p)) {
+      const r = resolveImageUrl(m[1], baseUrl);
+      if (r) return { url: r, method: "link[rel=image_src]" };
+    }
+  }
+  // 6. <meta itemprop="image"> (microdata · Philip A · 2026-08-27)
+  for (const p of [META_ITEMPROP_IMAGE, META_ITEMPROP_IMAGE_ALT]) {
+    for (const m of html.matchAll(p)) {
+      const r = resolveImageUrl(m[1], baseUrl);
+      if (r) return { url: r, method: "itemprop=image" };
+    }
+  }
+  // 7. Hero <img> heuristic · conservative (Philip A · 2026-08-27)
+  const hero = extractHeroImg(html, baseUrl);
+  if (hero) return { url: hero, method: "hero-img-heuristic" };
+  // 8. apple-touch-icon (fallback · smaller · sometimes only option)
   for (const p of [APPLE_TOUCH_ICON, APPLE_TOUCH_ICON_ALT]) {
     for (const m of html.matchAll(p)) {
       const r = resolveImageUrl(m[1], baseUrl);
@@ -117,6 +220,9 @@ function extractImageFromHtml(html, baseUrl) {
   }
   return null;
 }
+
+// Exported for testing.
+export { extractImageFromHtml, extractHeroImg, looksLikeHeroImg, resolveImageUrl };
 
 async function safeFetch(url) {
   const ac = new AbortController();

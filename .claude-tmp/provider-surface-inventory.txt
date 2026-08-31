@@ -1,0 +1,1879 @@
+
+════════════════════════════════════════════════════════════════════════
+  §S1 · Every distinct worker_config seen in the last 48 hours
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "worker_config": "accommodation:Bantul:prambanan",
+    "category": "accommodation",
+    "city_token": "Bantul",
+    "surface_token": "prambanan",
+    "cycles": "194",
+    "first_seen": "2026-08-23T19:11:18.454Z",
+    "last_seen": "2026-08-24T09:05:55.619Z"
+  },
+  {
+    "worker_config": "accommodation:Gunungkidul:prambanan",
+    "category": "accommodation",
+    "city_token": "Gunungkidul",
+    "surface_token": "prambanan",
+    "cycles": "3",
+    "first_seen": "2026-08-23T19:11:18.476Z",
+    "last_seen": "2026-08-23T21:38:26.666Z"
+  },
+  {
+    "worker_config": "accommodation:Klaten:prambanan",
+    "category": "accommodation",
+    "city_token": "Klaten",
+    "surface_token": "prambanan",
+    "cycles": "4",
+    "first_seen": "2026-08-23T20:09:03.875Z",
+    "last_seen": "2026-08-23T21:24:28.095Z"
+  },
+  {
+    "worker_config": "accommodation:Kulon Progo:prambanan",
+    "category": "accommodation",
+    "city_token": "Kulon Progo",
+    "surface_token": "prambanan",
+    "cycles": "203",
+    "first_seen": "2026-08-23T19:11:18.456Z",
+    "last_seen": "2026-08-24T09:15:55.786Z"
+  },
+  {
+    "worker_config": "accommodation:Magelang:prambanan",
+    "category": "accommodation",
+    "city_token": "Magelang",
+    "surface_token": "prambanan",
+    "cycles": "3",
+    "first_seen": "2026-08-23T19:11:18.633Z",
+    "last_seen": "2026-08-23T22:02:26.624Z"
+  },
+  {
+    "worker_config": "accommodation:Sleman:prambanan",
+    "category": "accommodation",
+    "city_token": "Sleman",
+    "surface_token": "prambanan",
+    "cycles": "245",
+    "first_seen": "2026-08-23T19:11:18.442Z",
+    "last_seen": "2026-08-24T09:05:55.619Z"
+  },
+  {
+    "worker_config": "accommodation:Solo:prambanan",
+    "category": "accommodation",
+    "city_token": "Solo",
+    "surface_token": "prambanan",
+    "cycles": "9",
+    "first_seen": "2026-08-23T20:09:04.149Z",
+    "last_seen": "2026-08-24T00:03:27.325Z"
+  },
+  {
+    "worker_config": "accommodation:Yogyakarta:borobudur",
+    "category": "accommodation",
+    "city_token": "Yogyakarta",
+    "surface_token": "borobudur",
+    "cycles": "459",
+    "first_seen": "2026-08-22T14:24:45.612Z",
+    "last_seen": "2026-08-24T08:52:31.762Z"
+  },
+  {
+    "worker_config": "accommodation:Yogyakarta:kaliurang",
+    "category": "accommodation",
+    "city_token": "Yogyakarta",
+    "surface_token": "kaliurang",
+    "cycles": "459",
+    "first_seen": "2026-08-22T14:23:46.799Z",
+    "last_seen": "2026-08-24T08:51:58.410Z"
+  },
+  {
+    "worker_config": "accommodation:Yogyakarta:malioboro",
+    "category": "accommodation",
+    "city_token": "Yogyakarta",
+    "surface_token": "malioboro",
+    "cycles": "462",
+    "first_seen": "2026-08-22T14:12:16.496Z",
+    "last_seen": "2026-08-24T08:53:38.646Z"
+  },
+  {
+    "worker_config": "accommodation:Yogyakarta:prawirotaman",
+    "category": "accommodation",
+    "city_token": "Yogyakarta",
+    "surface_token": "prawirotaman",
+    "cycles": "459",
+    "first_seen": "2026-08-22T14:22:59.693Z",
+    "last_seen": "2026-08-24T08:51:24.968Z"
+  },
+  {
+    "worker_config": "accommodation:Yogyakarta:yogya-wider",
+    "category": "accommodation",
+    "city_token": "Yogyakarta",
+    "surface_token": "yogya-wider",
+    "cycles": "459",
+    "first_seen": "2026-08-22T14:25:29.499Z",
+    "last_seen": "2026-08-24T08:53:05.158Z"
+  },
+  {
+    "worker_config": "food:Bantul:prambanan",
+    "category": "food",
+    "city_token": "Bantul",
+    "surface_token": "prambanan",
+    "cycles": "4",
+    "first_seen": "2026-08-23T20:09:03.922Z",
+    "last_seen": "2026-08-23T21:24:27.420Z"
+  },
+  {
+    "worker_config": "food:Gunungkidul:prambanan",
+    "category": "food",
+    "city_token": "Gunungkidul",
+    "surface_token": "prambanan",
+    "cycles": "4",
+    "first_seen": "2026-08-23T20:09:03.934Z",
+    "last_seen": "2026-08-23T21:24:27.805Z"
+  },
+  {
+    "worker_config": "food:Klaten:prambanan",
+    "category": "food",
+    "city_token": "Klaten",
+    "surface_token": "prambanan",
+    "cycles": "10",
+    "first_seen": "2026-08-23T21:25:26.522Z",
+    "last_seen": "2026-08-23T21:34:26.406Z"
+  },
+  {
+    "worker_config": "food:Kulon Progo:prambanan",
+    "category": "food",
+    "city_token": "Kulon Progo",
+    "surface_token": "prambanan",
+    "cycles": "4",
+    "first_seen": "2026-08-23T20:09:03.870Z",
+    "last_seen": "2026-08-23T21:24:27.690Z"
+  },
+  {
+    "worker_config": "food:Magelang:prambanan",
+    "category": "food",
+    "city_token": "Magelang",
+    "surface_token": "prambanan",
+    "cycles": "4",
+    "first_seen": "2026-08-23T20:09:03.896Z",
+    "last_seen": "2026-08-23T21:24:27.883Z"
+  },
+  {
+    "worker_config": "food:Sleman:prambanan",
+    "category": "food",
+    "city_token": "Sleman",
+    "surface_token": "prambanan",
+    "cycles": "4",
+    "first_seen": "2026-08-23T20:09:03.928Z",
+    "last_seen": "2026-08-23T21:24:27.958Z"
+  },
+  {
+    "worker_config": "food:Solo:prambanan",
+    "category": "food",
+    "city_token": "Solo",
+    "surface_token": "prambanan",
+    "cycles": "4",
+    "first_seen": "2026-08-23T20:59:11.888Z",
+    "last_seen": "2026-08-24T06:44:30.648Z"
+  },
+  {
+    "worker_config": "food:Yogyakarta:bantul-south",
+    "category": "food",
+    "city_token": "Yogyakarta",
+    "surface_token": "bantul-south",
+    "cycles": "419",
+    "first_seen": "2026-08-22T11:01:21.757Z",
+    "last_seen": "2026-08-24T08:52:48.734Z"
+  },
+  {
+    "worker_config": "food:Yogyakarta:gamping-west",
+    "category": "food",
+    "city_token": "Yogyakarta",
+    "surface_token": "gamping-west",
+    "cycles": "419",
+    "first_seen": "2026-08-22T11:31:22.053Z",
+    "last_seen": "2026-08-24T08:53:55.551Z"
+  },
+  {
+    "worker_config": "food:Yogyakarta:klaten-east",
+    "category": "food",
+    "city_token": "Yogyakarta",
+    "surface_token": "klaten-east",
+    "cycles": "420",
+    "first_seen": "2026-08-22T11:16:22.148Z",
+    "last_seen": "2026-08-24T08:53:22.100Z"
+  },
+  {
+    "worker_config": "food:Yogyakarta:prambanan",
+    "category": "food",
+    "city_token": "Yogyakarta",
+    "surface_token": "prambanan",
+    "cycles": "419",
+    "first_seen": "2026-08-22T10:52:54.628Z",
+    "last_seen": "2026-08-24T08:51:30.540Z"
+  },
+  {
+    "worker_config": "food:Yogyakarta:prawirotaman",
+    "category": "food",
+    "city_token": "Yogyakarta",
+    "surface_token": "prawirotaman",
+    "cycles": "1",
+    "first_seen": "2026-08-22T11:19:27.137Z",
+    "last_seen": "2026-08-22T11:19:27.137Z"
+  },
+  {
+    "worker_config": "food:Yogyakarta:sleman-north",
+    "category": "food",
+    "city_token": "Yogyakarta",
+    "surface_token": "sleman-north",
+    "cycles": "419",
+    "first_seen": "2026-08-22T10:56:25.818Z",
+    "last_seen": "2026-08-24T08:52:11.307Z"
+  },
+  {
+    "worker_config": "market:bantul:nominatim",
+    "category": "market",
+    "city_token": "bantul",
+    "surface_token": "nominatim",
+    "cycles": "41",
+    "first_seen": "2026-08-23T18:35:50.423Z",
+    "last_seen": "2026-08-24T09:35:41.962Z"
+  },
+  {
+    "worker_config": "market:central-java-klaten:nominatim",
+    "category": "market",
+    "city_token": "central-java-klaten",
+    "surface_token": "nominatim",
+    "cycles": "69",
+    "first_seen": "2026-08-23T18:58:30.123Z",
+    "last_seen": "2026-08-24T09:41:42.061Z"
+  },
+  {
+    "worker_config": "market:central-java-magelang:nominatim",
+    "category": "market",
+    "city_token": "central-java-magelang",
+    "surface_token": "nominatim",
+    "cycles": "68",
+    "first_seen": "2026-08-23T18:58:30.116Z",
+    "last_seen": "2026-08-24T09:35:41.935Z"
+  },
+  {
+    "worker_config": "market:central-java-solo:nominatim",
+    "category": "market",
+    "city_token": "central-java-solo",
+    "surface_token": "nominatim",
+    "cycles": "69",
+    "first_seen": "2026-08-23T20:59:11.813Z",
+    "last_seen": "2026-08-24T09:31:55.694Z"
+  },
+  {
+    "worker_config": "market:gunungkidul:nominatim",
+    "category": "market",
+    "city_token": "gunungkidul",
+    "surface_token": "nominatim",
+    "cycles": "48",
+    "first_seen": "2026-08-23T18:58:30.210Z",
+    "last_seen": "2026-08-24T09:29:55.927Z"
+  },
+  {
+    "worker_config": "market:kulon-progo:nominatim",
+    "category": "market",
+    "city_token": "kulon-progo",
+    "surface_token": "nominatim",
+    "cycles": "44",
+    "first_seen": "2026-08-23T18:45:56.197Z",
+    "last_seen": "2026-08-24T09:41:42.176Z"
+  },
+  {
+    "worker_config": "market:sleman:nominatim",
+    "category": "market",
+    "city_token": "sleman",
+    "surface_token": "nominatim",
+    "cycles": "44",
+    "first_seen": "2026-08-23T17:26:53.011Z",
+    "last_seen": "2026-08-24T09:29:55.943Z"
+  },
+  {
+    "worker_config": "market:yogyakarta-city:nominatim",
+    "category": "market",
+    "city_token": "yogyakarta-city",
+    "surface_token": "nominatim",
+    "cycles": "57",
+    "first_seen": "2026-08-23T15:59:27.044Z",
+    "last_seen": "2026-08-24T09:23:55.898Z"
+  },
+  {
+    "worker_config": "transport:Bantul:query-universe-v1",
+    "category": "transport",
+    "city_token": "Bantul",
+    "surface_token": "query-universe-v1",
+    "cycles": "186",
+    "first_seen": "2026-08-23T20:38:16.466Z",
+    "last_seen": "2026-08-24T09:32:55.605Z"
+  },
+  {
+    "worker_config": "transport:Gunungkidul:query-universe-v1",
+    "category": "transport",
+    "city_token": "Gunungkidul",
+    "surface_token": "query-universe-v1",
+    "cycles": "236",
+    "first_seen": "2026-08-23T21:25:26.380Z",
+    "last_seen": "2026-08-24T09:26:55.744Z"
+  },
+  {
+    "worker_config": "transport:Klaten:query-universe-v1",
+    "category": "transport",
+    "city_token": "Klaten",
+    "surface_token": "query-universe-v1",
+    "cycles": "13",
+    "first_seen": "2026-08-23T21:35:26.335Z",
+    "last_seen": "2026-08-24T03:20:28.830Z"
+  },
+  {
+    "worker_config": "transport:Kulon Progo:query-universe-v1",
+    "category": "transport",
+    "city_token": "Kulon Progo",
+    "surface_token": "query-universe-v1",
+    "cycles": "209",
+    "first_seen": "2026-08-23T21:25:26.341Z",
+    "last_seen": "2026-08-24T09:23:55.891Z"
+  },
+  {
+    "worker_config": "transport:Magelang:query-universe-v1",
+    "category": "transport",
+    "city_token": "Magelang",
+    "surface_token": "query-universe-v1",
+    "cycles": "12",
+    "first_seen": "2026-08-23T21:25:26.423Z",
+    "last_seen": "2026-08-24T07:24:30.809Z"
+  },
+  {
+    "worker_config": "transport:Sleman:query-universe-v1",
+    "category": "transport",
+    "city_token": "Sleman",
+    "surface_token": "query-universe-v1",
+    "cycles": "231",
+    "first_seen": "2026-08-23T20:09:03.882Z",
+    "last_seen": "2026-08-24T09:33:55.712Z"
+  },
+  {
+    "worker_config": "transport:Solo:query-universe-v1",
+    "category": "transport",
+    "city_token": "Solo",
+    "surface_token": "query-universe-v1",
+    "cycles": "5",
+    "first_seen": "2026-08-23T20:59:11.864Z",
+    "last_seen": "2026-08-24T07:04:30.769Z"
+  },
+  {
+    "worker_config": "transport:Yogyakarta:consolidated",
+    "category": "transport",
+    "city_token": "Yogyakarta",
+    "surface_token": "consolidated",
+    "cycles": "1",
+    "first_seen": "2026-08-23T15:09:10.850Z",
+    "last_seen": "2026-08-23T15:09:10.850Z"
+  },
+  {
+    "worker_config": "transport:Yogyakarta:multiprovider",
+    "category": "transport",
+    "city_token": "Yogyakarta",
+    "surface_token": "multiprovider",
+    "cycles": "2",
+    "first_seen": "2026-08-23T15:41:19.283Z",
+    "last_seen": "2026-08-23T15:44:19.067Z"
+  },
+  {
+    "worker_config": "transport:Yogyakarta:query-universe-v1",
+    "category": "transport",
+    "city_token": "Yogyakarta",
+    "surface_token": "query-universe-v1",
+    "cycles": "1373",
+    "first_seen": "2026-08-23T16:08:10.636Z",
+    "last_seen": "2026-08-24T09:20:55.767Z"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §S2 · Per-worker_config metrics (last 48 hours)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "worker_config": "accommodation:Bantul:prambanan",
+    "cycles": "194",
+    "completed": "194",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "4992",
+    "records_persisted": "1896",
+    "zero_new_completed": "6",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T09:05:55.619Z"
+  },
+  {
+    "worker_config": "accommodation:Gunungkidul:prambanan",
+    "cycles": "3",
+    "completed": "3",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "0",
+    "records_persisted": "0",
+    "zero_new_completed": "3",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-23T21:38:26.666Z"
+  },
+  {
+    "worker_config": "accommodation:Klaten:prambanan",
+    "cycles": "4",
+    "completed": "4",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "0",
+    "records_persisted": "0",
+    "zero_new_completed": "4",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-23T21:24:28.095Z"
+  },
+  {
+    "worker_config": "accommodation:Kulon Progo:prambanan",
+    "cycles": "203",
+    "completed": "203",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "1393",
+    "records_persisted": "202",
+    "zero_new_completed": "7",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T09:15:55.786Z"
+  },
+  {
+    "worker_config": "accommodation:Magelang:prambanan",
+    "cycles": "3",
+    "completed": "3",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "0",
+    "records_persisted": "0",
+    "zero_new_completed": "3",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-23T22:02:26.624Z"
+  },
+  {
+    "worker_config": "accommodation:Sleman:prambanan",
+    "cycles": "245",
+    "completed": "245",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "13965",
+    "records_persisted": "297",
+    "zero_new_completed": "4",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T09:05:55.619Z"
+  },
+  {
+    "worker_config": "accommodation:Solo:prambanan",
+    "cycles": "9",
+    "completed": "9",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "1155",
+    "records_persisted": "165",
+    "zero_new_completed": "8",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T00:03:27.325Z"
+  },
+  {
+    "worker_config": "accommodation:Yogyakarta:borobudur",
+    "cycles": "459",
+    "completed": "459",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "14926",
+    "records_persisted": "34",
+    "zero_new_completed": "458",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T08:52:31.762Z"
+  },
+  {
+    "worker_config": "accommodation:Yogyakarta:kaliurang",
+    "cycles": "459",
+    "completed": "459",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "32339",
+    "records_persisted": "72",
+    "zero_new_completed": "458",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T08:51:58.410Z"
+  },
+  {
+    "worker_config": "accommodation:Yogyakarta:malioboro",
+    "cycles": "462",
+    "completed": "461",
+    "failed": "0",
+    "aborted": "1",
+    "records_processed": "47080",
+    "records_persisted": "107",
+    "zero_new_completed": "460",
+    "error_rate": "0.0022",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T08:53:38.646Z"
+  },
+  {
+    "worker_config": "accommodation:Yogyakarta:prawirotaman",
+    "cycles": "459",
+    "completed": "459",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "26962",
+    "records_persisted": "61",
+    "zero_new_completed": "458",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T08:51:24.968Z"
+  },
+  {
+    "worker_config": "accommodation:Yogyakarta:yogya-wider",
+    "cycles": "459",
+    "completed": "459",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "346020",
+    "records_persisted": "617",
+    "zero_new_completed": "458",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T08:53:05.158Z"
+  },
+  {
+    "worker_config": "food:Bantul:prambanan",
+    "cycles": "4",
+    "completed": "4",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "0",
+    "records_persisted": "0",
+    "zero_new_completed": "4",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-23T21:24:27.420Z"
+  },
+  {
+    "worker_config": "food:Gunungkidul:prambanan",
+    "cycles": "4",
+    "completed": "4",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "0",
+    "records_persisted": "0",
+    "zero_new_completed": "4",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-23T21:24:27.805Z"
+  },
+  {
+    "worker_config": "food:Klaten:prambanan",
+    "cycles": "10",
+    "completed": "10",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "642",
+    "records_persisted": "107",
+    "zero_new_completed": "9",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-23T21:34:26.406Z"
+  },
+  {
+    "worker_config": "food:Kulon Progo:prambanan",
+    "cycles": "4",
+    "completed": "4",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "0",
+    "records_persisted": "0",
+    "zero_new_completed": "4",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-23T21:24:27.690Z"
+  },
+  {
+    "worker_config": "food:Magelang:prambanan",
+    "cycles": "4",
+    "completed": "4",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "0",
+    "records_persisted": "0",
+    "zero_new_completed": "4",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-23T21:24:27.883Z"
+  },
+  {
+    "worker_config": "food:Sleman:prambanan",
+    "cycles": "4",
+    "completed": "4",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "0",
+    "records_persisted": "0",
+    "zero_new_completed": "4",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-23T21:24:27.958Z"
+  },
+  {
+    "worker_config": "food:Solo:prambanan",
+    "cycles": "4",
+    "completed": "4",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "1515",
+    "records_persisted": "505",
+    "zero_new_completed": "3",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T06:44:30.648Z"
+  },
+  {
+    "worker_config": "food:Yogyakarta:bantul-south",
+    "cycles": "419",
+    "completed": "419",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "26951",
+    "records_persisted": "68",
+    "zero_new_completed": "417",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T08:52:48.734Z"
+  },
+  {
+    "worker_config": "food:Yogyakarta:gamping-west",
+    "cycles": "419",
+    "completed": "419",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "31616",
+    "records_persisted": "71",
+    "zero_new_completed": "418",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T08:53:55.551Z"
+  },
+  {
+    "worker_config": "food:Yogyakarta:klaten-east",
+    "cycles": "420",
+    "completed": "420",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "10152",
+    "records_persisted": "25",
+    "zero_new_completed": "419",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T08:53:22.100Z"
+  },
+  {
+    "worker_config": "food:Yogyakarta:prambanan",
+    "cycles": "419",
+    "completed": "419",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "56414",
+    "records_persisted": "16",
+    "zero_new_completed": "418",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T08:51:30.540Z"
+  },
+  {
+    "worker_config": "food:Yogyakarta:prawirotaman",
+    "cycles": "1",
+    "completed": "1",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "28",
+    "records_persisted": "2",
+    "zero_new_completed": "0",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-22T11:19:27.137Z"
+  },
+  {
+    "worker_config": "food:Yogyakarta:sleman-north",
+    "cycles": "419",
+    "completed": "419",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "61433",
+    "records_persisted": "143",
+    "zero_new_completed": "417",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T08:52:11.307Z"
+  },
+  {
+    "worker_config": "market:bantul:nominatim",
+    "cycles": "41",
+    "completed": "2",
+    "failed": "38",
+    "aborted": "0",
+    "records_processed": "294",
+    "records_persisted": "7",
+    "zero_new_completed": "1",
+    "error_rate": "0.9500",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T09:35:41.962Z"
+  },
+  {
+    "worker_config": "market:central-java-klaten:nominatim",
+    "cycles": "69",
+    "completed": "8",
+    "failed": "59",
+    "aborted": "1",
+    "records_processed": "1519",
+    "records_persisted": "37",
+    "zero_new_completed": "2",
+    "error_rate": "0.8824",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T09:41:42.061Z"
+  },
+  {
+    "worker_config": "market:central-java-magelang:nominatim",
+    "cycles": "68",
+    "completed": "5",
+    "failed": "61",
+    "aborted": "1",
+    "records_processed": "488",
+    "records_persisted": "8",
+    "zero_new_completed": "3",
+    "error_rate": "0.9254",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T09:35:41.935Z"
+  },
+  {
+    "worker_config": "market:central-java-solo:nominatim",
+    "cycles": "69",
+    "completed": "4",
+    "failed": "63",
+    "aborted": "1",
+    "records_processed": "2320",
+    "records_persisted": "18",
+    "zero_new_completed": "3",
+    "error_rate": "0.9412",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T09:31:55.694Z"
+  },
+  {
+    "worker_config": "market:gunungkidul:nominatim",
+    "cycles": "48",
+    "completed": "8",
+    "failed": "39",
+    "aborted": "0",
+    "records_processed": "672",
+    "records_persisted": "35",
+    "zero_new_completed": "3",
+    "error_rate": "0.8298",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T09:29:55.927Z"
+  },
+  {
+    "worker_config": "market:kulon-progo:nominatim",
+    "cycles": "44",
+    "completed": "2",
+    "failed": "40",
+    "aborted": "1",
+    "records_processed": "719",
+    "records_persisted": "20",
+    "zero_new_completed": "1",
+    "error_rate": "0.9535",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T09:41:42.176Z"
+  },
+  {
+    "worker_config": "market:sleman:nominatim",
+    "cycles": "44",
+    "completed": "3",
+    "failed": "40",
+    "aborted": "0",
+    "records_processed": "476",
+    "records_persisted": "13",
+    "zero_new_completed": "2",
+    "error_rate": "0.9302",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T09:29:55.943Z"
+  },
+  {
+    "worker_config": "market:yogyakarta-city:nominatim",
+    "cycles": "57",
+    "completed": "4",
+    "failed": "52",
+    "aborted": "1",
+    "records_processed": "1384",
+    "records_persisted": "88",
+    "zero_new_completed": "1",
+    "error_rate": "0.9298",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-24T09:23:55.898Z"
+  },
+  {
+    "worker_config": "transport:Bantul:query-universe-v1",
+    "cycles": "186",
+    "completed": "1",
+    "failed": "183",
+    "aborted": "1",
+    "records_processed": "106",
+    "records_persisted": "0",
+    "zero_new_completed": "1",
+    "error_rate": "0.9946",
+    "serialization_errors": "183",
+    "last_started_at": "2026-08-24T09:32:55.605Z"
+  },
+  {
+    "worker_config": "transport:Gunungkidul:query-universe-v1",
+    "cycles": "236",
+    "completed": "0",
+    "failed": "235",
+    "aborted": "0",
+    "records_processed": "0",
+    "records_persisted": "0",
+    "zero_new_completed": "0",
+    "error_rate": "1.0000",
+    "serialization_errors": "234",
+    "last_started_at": "2026-08-24T09:26:55.744Z"
+  },
+  {
+    "worker_config": "transport:Klaten:query-universe-v1",
+    "cycles": "13",
+    "completed": "0",
+    "failed": "13",
+    "aborted": "0",
+    "records_processed": "0",
+    "records_persisted": "0",
+    "zero_new_completed": "0",
+    "error_rate": "1.0000",
+    "serialization_errors": "13",
+    "last_started_at": "2026-08-24T03:20:28.830Z"
+  },
+  {
+    "worker_config": "transport:Kulon Progo:query-universe-v1",
+    "cycles": "209",
+    "completed": "2",
+    "failed": "207",
+    "aborted": "0",
+    "records_processed": "105",
+    "records_persisted": "1",
+    "zero_new_completed": "1",
+    "error_rate": "0.9904",
+    "serialization_errors": "206",
+    "last_started_at": "2026-08-24T09:23:55.891Z"
+  },
+  {
+    "worker_config": "transport:Magelang:query-universe-v1",
+    "cycles": "12",
+    "completed": "0",
+    "failed": "12",
+    "aborted": "0",
+    "records_processed": "0",
+    "records_persisted": "0",
+    "zero_new_completed": "0",
+    "error_rate": "1.0000",
+    "serialization_errors": "12",
+    "last_started_at": "2026-08-24T07:24:30.809Z"
+  },
+  {
+    "worker_config": "transport:Sleman:query-universe-v1",
+    "cycles": "231",
+    "completed": "2",
+    "failed": "228",
+    "aborted": "0",
+    "records_processed": "105",
+    "records_persisted": "71",
+    "zero_new_completed": "1",
+    "error_rate": "0.9913",
+    "serialization_errors": "228",
+    "last_started_at": "2026-08-24T09:33:55.712Z"
+  },
+  {
+    "worker_config": "transport:Solo:query-universe-v1",
+    "cycles": "5",
+    "completed": "0",
+    "failed": "5",
+    "aborted": "0",
+    "records_processed": "0",
+    "records_persisted": "0",
+    "zero_new_completed": "0",
+    "error_rate": "1.0000",
+    "serialization_errors": "5",
+    "last_started_at": "2026-08-24T07:04:30.769Z"
+  },
+  {
+    "worker_config": "transport:Yogyakarta:consolidated",
+    "cycles": "1",
+    "completed": "0",
+    "failed": "1",
+    "aborted": "0",
+    "records_processed": "0",
+    "records_persisted": "0",
+    "zero_new_completed": "0",
+    "error_rate": "1.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-23T15:09:10.850Z"
+  },
+  {
+    "worker_config": "transport:Yogyakarta:multiprovider",
+    "cycles": "2",
+    "completed": "2",
+    "failed": "0",
+    "aborted": "0",
+    "records_processed": "12",
+    "records_persisted": "7",
+    "zero_new_completed": "0",
+    "error_rate": "0.0000",
+    "serialization_errors": "0",
+    "last_started_at": "2026-08-23T15:44:19.067Z"
+  },
+  {
+    "worker_config": "transport:Yogyakarta:query-universe-v1",
+    "cycles": "1373",
+    "completed": "3",
+    "failed": "1368",
+    "aborted": "2",
+    "records_processed": "239",
+    "records_persisted": "27",
+    "zero_new_completed": "2",
+    "error_rate": "0.9978",
+    "serialization_errors": "1365",
+    "last_started_at": "2026-08-24T09:20:55.767Z"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §S3 · Per-(city, category) surface count · how many distinct surfaces each combo has walked
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "category": "accommodation",
+    "city": "Bantul",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "prambanan"
+    ]
+  },
+  {
+    "category": "accommodation",
+    "city": "Gunungkidul",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "prambanan"
+    ]
+  },
+  {
+    "category": "accommodation",
+    "city": "Klaten",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "prambanan"
+    ]
+  },
+  {
+    "category": "accommodation",
+    "city": "Kulon Progo",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "prambanan"
+    ]
+  },
+  {
+    "category": "accommodation",
+    "city": "Magelang",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "prambanan"
+    ]
+  },
+  {
+    "category": "accommodation",
+    "city": "Sleman",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "prambanan"
+    ]
+  },
+  {
+    "category": "accommodation",
+    "city": "Solo",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "prambanan"
+    ]
+  },
+  {
+    "category": "accommodation",
+    "city": "Yogyakarta",
+    "distinct_surfaces_walked": "5",
+    "surfaces": [
+      "borobudur",
+      "kaliurang",
+      "malioboro",
+      "prawirotaman",
+      "yogya-wider"
+    ]
+  },
+  {
+    "category": "food",
+    "city": "Bantul",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "prambanan"
+    ]
+  },
+  {
+    "category": "food",
+    "city": "Gunungkidul",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "prambanan"
+    ]
+  },
+  {
+    "category": "food",
+    "city": "Klaten",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "prambanan"
+    ]
+  },
+  {
+    "category": "food",
+    "city": "Kulon Progo",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "prambanan"
+    ]
+  },
+  {
+    "category": "food",
+    "city": "Magelang",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "prambanan"
+    ]
+  },
+  {
+    "category": "food",
+    "city": "Sleman",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "prambanan"
+    ]
+  },
+  {
+    "category": "food",
+    "city": "Solo",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "prambanan"
+    ]
+  },
+  {
+    "category": "food",
+    "city": "Yogyakarta",
+    "distinct_surfaces_walked": "6",
+    "surfaces": [
+      "bantul-south",
+      "gamping-west",
+      "klaten-east",
+      "prambanan",
+      "prawirotaman",
+      "sleman-north"
+    ]
+  },
+  {
+    "category": "market",
+    "city": "bantul",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "nominatim"
+    ]
+  },
+  {
+    "category": "market",
+    "city": "central-java-klaten",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "nominatim"
+    ]
+  },
+  {
+    "category": "market",
+    "city": "central-java-magelang",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "nominatim"
+    ]
+  },
+  {
+    "category": "market",
+    "city": "central-java-solo",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "nominatim"
+    ]
+  },
+  {
+    "category": "market",
+    "city": "gunungkidul",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "nominatim"
+    ]
+  },
+  {
+    "category": "market",
+    "city": "kulon-progo",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "nominatim"
+    ]
+  },
+  {
+    "category": "market",
+    "city": "sleman",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "nominatim"
+    ]
+  },
+  {
+    "category": "market",
+    "city": "yogyakarta-city",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "nominatim"
+    ]
+  },
+  {
+    "category": "transport",
+    "city": "Bantul",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "query-universe-v1"
+    ]
+  },
+  {
+    "category": "transport",
+    "city": "Gunungkidul",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "query-universe-v1"
+    ]
+  },
+  {
+    "category": "transport",
+    "city": "Klaten",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "query-universe-v1"
+    ]
+  },
+  {
+    "category": "transport",
+    "city": "Kulon Progo",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "query-universe-v1"
+    ]
+  },
+  {
+    "category": "transport",
+    "city": "Magelang",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "query-universe-v1"
+    ]
+  },
+  {
+    "category": "transport",
+    "city": "Sleman",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "query-universe-v1"
+    ]
+  },
+  {
+    "category": "transport",
+    "city": "Solo",
+    "distinct_surfaces_walked": "1",
+    "surfaces": [
+      "query-universe-v1"
+    ]
+  },
+  {
+    "category": "transport",
+    "city": "Yogyakarta",
+    "distinct_surfaces_walked": "3",
+    "surfaces": [
+      "consolidated",
+      "multiprovider",
+      "query-universe-v1"
+    ]
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §S4 · Rotation state grain check · state key is (city, category, round) — NOT surface-aware
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Bantul",
+    "category": "accommodation",
+    "round": 1,
+    "state": "saturated",
+    "state_entered_at": "2026-08-24T09:05:55.292Z",
+    "last_cycle_started_at": "2026-08-24T09:05:55.619Z",
+    "last_productive_at": "2026-08-24T08:38:24.529Z",
+    "updated_at": "2026-08-24T09:36:11.619Z"
+  },
+  {
+    "city": "Bantul",
+    "category": "food",
+    "round": 1,
+    "state": "saturated",
+    "state_entered_at": "2026-08-23T21:24:26.500Z",
+    "last_cycle_started_at": "2026-08-23T21:24:27.420Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.625Z"
+  },
+  {
+    "city": "Bantul",
+    "category": "market",
+    "round": 1,
+    "state": "build",
+    "state_entered_at": "2026-08-23T18:22:37.646Z",
+    "last_cycle_started_at": "2026-08-24T09:35:41.962Z",
+    "last_productive_at": "2026-08-23T18:35:50.423Z",
+    "updated_at": "2026-08-24T09:36:11.635Z"
+  },
+  {
+    "city": "Bantul",
+    "category": "transport",
+    "round": 1,
+    "state": "build",
+    "state_entered_at": "2026-08-23T20:08:50.837Z",
+    "last_cycle_started_at": "2026-08-24T09:32:55.605Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.630Z"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "accommodation",
+    "round": 1,
+    "state": "saturated",
+    "state_entered_at": "2026-08-23T21:44:26.105Z",
+    "last_cycle_started_at": "2026-08-23T21:38:26.666Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.659Z"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "food",
+    "round": 1,
+    "state": "saturated",
+    "state_entered_at": "2026-08-23T21:24:26.553Z",
+    "last_cycle_started_at": "2026-08-23T21:24:27.805Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.663Z"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "market",
+    "round": 1,
+    "state": "saturated",
+    "state_entered_at": "2026-08-24T09:36:11.671Z",
+    "last_cycle_started_at": "2026-08-24T09:29:55.927Z",
+    "last_productive_at": "2026-08-24T08:01:31.450Z",
+    "updated_at": "2026-08-24T09:36:11.672Z"
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "transport",
+    "round": 1,
+    "state": "build",
+    "state_entered_at": "2026-08-23T20:08:50.875Z",
+    "last_cycle_started_at": "2026-08-24T09:26:55.744Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.667Z"
+  },
+  {
+    "city": "Klaten",
+    "category": "accommodation",
+    "round": 1,
+    "state": "saturated",
+    "state_entered_at": "2026-08-23T21:24:26.600Z",
+    "last_cycle_started_at": "2026-08-23T21:24:28.095Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.697Z"
+  },
+  {
+    "city": "Klaten",
+    "category": "food",
+    "round": 1,
+    "state": "saturated",
+    "state_entered_at": "2026-08-23T21:34:26.128Z",
+    "last_cycle_started_at": "2026-08-23T21:34:26.406Z",
+    "last_productive_at": "2026-08-23T21:29:26.466Z",
+    "updated_at": "2026-08-24T09:36:11.702Z"
+  },
+  {
+    "city": "Klaten",
+    "category": "market",
+    "round": 1,
+    "state": "build",
+    "state_entered_at": "2026-08-23T18:22:37.653Z",
+    "last_cycle_started_at": null,
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.712Z"
+  },
+  {
+    "city": "Klaten",
+    "category": "transport",
+    "round": 1,
+    "state": "build",
+    "state_entered_at": "2026-08-23T20:08:50.902Z",
+    "last_cycle_started_at": "2026-08-24T03:20:28.830Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.706Z"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "accommodation",
+    "round": 1,
+    "state": "saturated",
+    "state_entered_at": "2026-08-24T09:25:55.831Z",
+    "last_cycle_started_at": "2026-08-24T09:15:55.786Z",
+    "last_productive_at": "2026-08-24T08:48:24.082Z",
+    "updated_at": "2026-08-24T09:36:11.640Z"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "food",
+    "round": 1,
+    "state": "saturated",
+    "state_entered_at": "2026-08-23T21:24:26.525Z",
+    "last_cycle_started_at": "2026-08-23T21:24:27.690Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.645Z"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "market",
+    "round": 1,
+    "state": "build",
+    "state_entered_at": "2026-08-23T18:22:37.648Z",
+    "last_cycle_started_at": "2026-08-24T09:16:56.048Z",
+    "last_productive_at": "2026-08-23T18:45:56.197Z",
+    "updated_at": "2026-08-24T09:36:11.655Z"
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "transport",
+    "round": 1,
+    "state": "build",
+    "state_entered_at": "2026-08-23T20:08:50.855Z",
+    "last_cycle_started_at": "2026-08-24T09:23:55.891Z",
+    "last_productive_at": "2026-08-24T07:55:30.910Z",
+    "updated_at": "2026-08-24T09:36:11.650Z"
+  },
+  {
+    "city": "Magelang",
+    "category": "accommodation",
+    "round": 1,
+    "state": "saturated",
+    "state_entered_at": "2026-08-23T22:04:26.034Z",
+    "last_cycle_started_at": "2026-08-23T22:02:26.624Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.678Z"
+  },
+  {
+    "city": "Magelang",
+    "category": "food",
+    "round": 1,
+    "state": "saturated",
+    "state_entered_at": "2026-08-23T21:24:26.580Z",
+    "last_cycle_started_at": "2026-08-23T21:24:27.883Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.685Z"
+  },
+  {
+    "city": "Magelang",
+    "category": "market",
+    "round": 1,
+    "state": "build",
+    "state_entered_at": "2026-08-23T18:22:37.651Z",
+    "last_cycle_started_at": null,
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.693Z"
+  },
+  {
+    "city": "Magelang",
+    "category": "transport",
+    "round": 1,
+    "state": "build",
+    "state_entered_at": "2026-08-23T20:08:50.887Z",
+    "last_cycle_started_at": "2026-08-24T07:24:30.809Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.689Z"
+  },
+  {
+    "city": "Sleman",
+    "category": "accommodation",
+    "round": 1,
+    "state": "saturated",
+    "state_entered_at": "2026-08-24T09:05:55.249Z",
+    "last_cycle_started_at": "2026-08-24T09:05:55.619Z",
+    "last_productive_at": "2026-08-24T09:01:55.776Z",
+    "updated_at": "2026-08-24T09:36:11.593Z"
+  },
+  {
+    "city": "Sleman",
+    "category": "food",
+    "round": 1,
+    "state": "saturated",
+    "state_entered_at": "2026-08-23T21:24:26.475Z",
+    "last_cycle_started_at": "2026-08-23T21:24:27.958Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.600Z"
+  },
+  {
+    "city": "Sleman",
+    "category": "market",
+    "round": 1,
+    "state": "build",
+    "state_entered_at": "2026-08-23T18:22:37.643Z",
+    "last_cycle_started_at": "2026-08-24T09:29:55.943Z",
+    "last_productive_at": "2026-08-23T17:26:53.011Z",
+    "updated_at": "2026-08-24T09:36:11.612Z"
+  },
+  {
+    "city": "Sleman",
+    "category": "transport",
+    "round": 1,
+    "state": "build",
+    "state_entered_at": "2026-08-23T20:08:50.820Z",
+    "last_cycle_started_at": "2026-08-24T09:33:55.712Z",
+    "last_productive_at": "2026-08-23T20:09:03.882Z",
+    "updated_at": "2026-08-24T09:36:11.606Z"
+  },
+  {
+    "city": "Solo",
+    "category": "accommodation",
+    "round": 1,
+    "state": "saturated",
+    "state_entered_at": "2026-08-24T00:04:26.157Z",
+    "last_cycle_started_at": "2026-08-24T00:03:27.325Z",
+    "last_productive_at": "2026-08-23T20:59:11.878Z",
+    "updated_at": "2026-08-24T09:36:11.718Z"
+  },
+  {
+    "city": "Solo",
+    "category": "food",
+    "round": 1,
+    "state": "build",
+    "state_entered_at": "2026-08-23T19:11:04.009Z",
+    "last_cycle_started_at": "2026-08-24T06:44:30.648Z",
+    "last_productive_at": "2026-08-23T22:04:26.589Z",
+    "updated_at": "2026-08-24T09:36:11.723Z"
+  },
+  {
+    "city": "Solo",
+    "category": "market",
+    "round": 1,
+    "state": "build",
+    "state_entered_at": "2026-08-23T18:22:37.654Z",
+    "last_cycle_started_at": null,
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.733Z"
+  },
+  {
+    "city": "Solo",
+    "category": "transport",
+    "round": 1,
+    "state": "build",
+    "state_entered_at": "2026-08-23T20:08:50.918Z",
+    "last_cycle_started_at": "2026-08-24T07:04:30.769Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.728Z"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "accommodation",
+    "round": 1,
+    "state": "saturated",
+    "state_entered_at": "2026-08-23T18:22:37.626Z",
+    "last_cycle_started_at": "2026-08-24T08:53:38.646Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.558Z"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "food",
+    "round": 1,
+    "state": "saturated",
+    "state_entered_at": "2026-08-23T18:22:37.636Z",
+    "last_cycle_started_at": "2026-08-24T09:35:41.795Z",
+    "last_productive_at": null,
+    "updated_at": "2026-08-24T09:36:11.569Z"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "market",
+    "round": 1,
+    "state": "build",
+    "state_entered_at": "2026-08-23T18:22:37.641Z",
+    "last_cycle_started_at": "2026-08-24T09:23:55.898Z",
+    "last_productive_at": "2026-08-23T21:46:26.571Z",
+    "updated_at": "2026-08-24T09:36:11.586Z"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "transport",
+    "round": 1,
+    "state": "build",
+    "state_entered_at": "2026-08-23T18:22:37.639Z",
+    "last_cycle_started_at": "2026-08-24T09:20:55.767Z",
+    "last_productive_at": "2026-08-23T16:08:10.636Z",
+    "updated_at": "2026-08-24T09:36:11.580Z"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §S5 · Provider Rate Governor telemetry · leases per provider (last 48 hours)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "provider": "nominatim",
+    "total_leases": "23740",
+    "released": "23740",
+    "still_open": "0",
+    "first_lease": "2026-08-23T18:58:30.119Z",
+    "last_lease": "2026-08-24T09:44:15.070Z"
+  },
+  {
+    "provider": "overpass",
+    "total_leases": "23",
+    "released": "23",
+    "still_open": "0",
+    "first_lease": "2026-08-23T19:11:18.542Z",
+    "last_lease": "2026-08-23T22:04:26.637Z"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §S6 · summary.provider_results[] · per (worker_config × provider) since last cutover
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "worker_config": "market:bantul:nominatim",
+    "provider": "nominatim",
+    "status": "SUCCESS",
+    "cycles_touching_provider": "40",
+    "total_returned": "294",
+    "total_persisted": "7"
+  },
+  {
+    "worker_config": "market:central-java-klaten:nominatim",
+    "provider": "nominatim",
+    "status": "SUCCESS",
+    "cycles_touching_provider": "67",
+    "total_returned": "1519",
+    "total_persisted": "37"
+  },
+  {
+    "worker_config": "market:central-java-magelang:nominatim",
+    "provider": "nominatim",
+    "status": "SUCCESS",
+    "cycles_touching_provider": "66",
+    "total_returned": "488",
+    "total_persisted": "8"
+  },
+  {
+    "worker_config": "market:central-java-solo:nominatim",
+    "provider": "nominatim",
+    "status": "SUCCESS",
+    "cycles_touching_provider": "67",
+    "total_returned": "2320",
+    "total_persisted": "18"
+  },
+  {
+    "worker_config": "market:gunungkidul:nominatim",
+    "provider": "nominatim",
+    "status": "SUCCESS",
+    "cycles_touching_provider": "47",
+    "total_returned": "672",
+    "total_persisted": "35"
+  },
+  {
+    "worker_config": "market:kulon-progo:nominatim",
+    "provider": "nominatim",
+    "status": "SUCCESS",
+    "cycles_touching_provider": "42",
+    "total_returned": "719",
+    "total_persisted": "20"
+  },
+  {
+    "worker_config": "market:sleman:nominatim",
+    "provider": "nominatim",
+    "status": "SUCCESS",
+    "cycles_touching_provider": "42",
+    "total_returned": "476",
+    "total_persisted": "13"
+  },
+  {
+    "worker_config": "market:yogyakarta-city:nominatim",
+    "provider": "nominatim",
+    "status": "SUCCESS",
+    "cycles_touching_provider": "56",
+    "total_returned": "1384",
+    "total_persisted": "88"
+  },
+  {
+    "worker_config": "transport:Bantul:query-universe-v1",
+    "provider": "facebook_public",
+    "status": "NOT_CONFIGURED",
+    "cycles_touching_provider": "1",
+    "total_returned": "0",
+    "total_persisted": "0"
+  },
+  {
+    "worker_config": "transport:Bantul:query-universe-v1",
+    "provider": "nominatim",
+    "status": "SUCCESS",
+    "cycles_touching_provider": "1",
+    "total_returned": "5",
+    "total_persisted": "0"
+  },
+  {
+    "worker_config": "transport:Bantul:query-universe-v1",
+    "provider": "overpass",
+    "status": "SUCCESS",
+    "cycles_touching_provider": "1",
+    "total_returned": "101",
+    "total_persisted": "0"
+  },
+  {
+    "worker_config": "transport:Kulon Progo:query-universe-v1",
+    "provider": "facebook_public",
+    "status": "NOT_CONFIGURED",
+    "cycles_touching_provider": "2",
+    "total_returned": "0",
+    "total_persisted": "0"
+  },
+  {
+    "worker_config": "transport:Kulon Progo:query-universe-v1",
+    "provider": "nominatim",
+    "status": "SUCCESS",
+    "cycles_touching_provider": "2",
+    "total_returned": "4",
+    "total_persisted": "1"
+  },
+  {
+    "worker_config": "transport:Kulon Progo:query-universe-v1",
+    "provider": "overpass",
+    "status": "FAILED",
+    "cycles_touching_provider": "1",
+    "total_returned": "0",
+    "total_persisted": "0"
+  },
+  {
+    "worker_config": "transport:Kulon Progo:query-universe-v1",
+    "provider": "overpass",
+    "status": "SUCCESS",
+    "cycles_touching_provider": "1",
+    "total_returned": "101",
+    "total_persisted": "0"
+  },
+  {
+    "worker_config": "transport:Sleman:query-universe-v1",
+    "provider": "facebook_public",
+    "status": "NOT_CONFIGURED",
+    "cycles_touching_provider": "2",
+    "total_returned": "0",
+    "total_persisted": "0"
+  },
+  {
+    "worker_config": "transport:Sleman:query-universe-v1",
+    "provider": "nominatim",
+    "status": "SUCCESS",
+    "cycles_touching_provider": "2",
+    "total_returned": "4",
+    "total_persisted": "0"
+  },
+  {
+    "worker_config": "transport:Sleman:query-universe-v1",
+    "provider": "overpass",
+    "status": "FAILED",
+    "cycles_touching_provider": "1",
+    "total_returned": "0",
+    "total_persisted": "0"
+  },
+  {
+    "worker_config": "transport:Sleman:query-universe-v1",
+    "provider": "overpass",
+    "status": "SUCCESS",
+    "cycles_touching_provider": "1",
+    "total_returned": "101",
+    "total_persisted": "71"
+  },
+  {
+    "worker_config": "transport:Yogyakarta:multiprovider",
+    "provider": "nominatim",
+    "status": "SUCCESS",
+    "cycles_touching_provider": "2",
+    "total_returned": "12",
+    "total_persisted": "7"
+  },
+  {
+    "worker_config": "transport:Yogyakarta:multiprovider",
+    "provider": "overpass",
+    "status": "FAILED",
+    "cycles_touching_provider": "2",
+    "total_returned": "0",
+    "total_persisted": "0"
+  },
+  {
+    "worker_config": "transport:Yogyakarta:query-universe-v1",
+    "provider": "facebook_public",
+    "status": "NOT_CONFIGURED",
+    "cycles_touching_provider": "2",
+    "total_returned": "0",
+    "total_persisted": "0"
+  },
+  {
+    "worker_config": "transport:Yogyakarta:query-universe-v1",
+    "provider": "nominatim",
+    "status": "SUCCESS",
+    "cycles_touching_provider": "3",
+    "total_returned": "138",
+    "total_persisted": "27"
+  },
+  {
+    "worker_config": "transport:Yogyakarta:query-universe-v1",
+    "provider": "overpass",
+    "status": "FAILED",
+    "cycles_touching_provider": "2",
+    "total_returned": "0",
+    "total_persisted": "0"
+  },
+  {
+    "worker_config": "transport:Yogyakarta:query-universe-v1",
+    "provider": "overpass",
+    "status": "SUCCESS",
+    "cycles_touching_provider": "1",
+    "total_returned": "101",
+    "total_persisted": "0"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §S7 · Alternative-surface visibility · summary.provider_ladder (transport walker canonical shape)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "provider_id": "facebook_public",
+    "integration_status": "GATED_ENV",
+    "best_for": [
+      "individual_driver",
+      "transport_business"
+    ]
+  },
+  {
+    "provider_id": "google_places",
+    "integration_status": "NOT_YET_INTEGRATED",
+    "best_for": [
+      "transport_business",
+      "operator"
+    ]
+  },
+  {
+    "provider_id": "nominatim",
+    "integration_status": "READY",
+    "best_for": [
+      "transport_business",
+      "operator"
+    ]
+  },
+  {
+    "provider_id": "overpass",
+    "integration_status": "READY",
+    "best_for": [
+      "transport_business",
+      "operator"
+    ]
+  },
+  {
+    "provider_id": "public_directory_indonesia",
+    "integration_status": "NOT_YET_INTEGRATED",
+    "best_for": [
+      "transport_business",
+      "operator",
+      "individual_driver"
+    ]
+  },
+  {
+    "provider_id": "public_recruitment_advertisement",
+    "integration_status": "NOT_YET_INTEGRATED",
+    "best_for": [
+      "individual_driver"
+    ]
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §S8 · Category-level saturation summary · where can NEX still discover?
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "category": "accommodation",
+    "state": "saturated",
+    "combos": "8"
+  },
+  {
+    "category": "food",
+    "state": "build",
+    "combos": "1"
+  },
+  {
+    "category": "food",
+    "state": "saturated",
+    "combos": "7"
+  },
+  {
+    "category": "market",
+    "state": "build",
+    "combos": "7"
+  },
+  {
+    "category": "market",
+    "state": "saturated",
+    "combos": "1"
+  },
+  {
+    "category": "transport",
+    "state": "build",
+    "combos": "8"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  END · forensic inventory complete · design phase next
+════════════════════════════════════════════════════════════════════════

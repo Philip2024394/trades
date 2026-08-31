@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-08-30T18:17:05.065Z",
+  "polls": {
+    "live.bmkg.earthquake": [
+      "2026-08-30T14:52:31.770Z",
+      "2026-08-30T14:53:30.795Z",
+      "2026-08-30T14:54:30.770Z",
+      "2026-08-30T14:55:30.779Z",
+      "2026-08-30T14:56:30.788Z",
+      "2026-08-30T14:57:31.917Z",
+      "2026-08-30T14:58:31.863Z",
+      "2026-08-30T14:59:30.822Z",
+      "2026-08-30T15:00:30.821Z",
+      "2026-08-30T15:01:30.782Z",
+      "2026-08-30T15:02:30.885Z",
+      "2026-08-30T15:03:32.705Z",
+      "2026-08-30T15:04:30.822Z",
+      "2026-08-30T15:05:30.855Z",
+      "2026-08-30T15:06:30.863Z",
+      "2026-08-30T17:29:24.905Z",
+      "2026-08-30T17:59:13.899Z",
+      "2026-08-30T18:04:34.893Z",
+      "2026-08-30T18:05:50.693Z",
+      "2026-08-30T18:07:37.350Z",
+      "2026-08-30T18:11:28.243Z",
+      "2026-08-30T18:15:21.465Z",
+      "2026-08-30T18:17:05.064Z"
+    ]
+  },
+  "costs": {},
+  "policies": {
+    "live.bmkg.earthquake": {
+      "sourceId": "live.bmkg.earthquake",
+      "maxPerMinute": 2,
+      "maxPerDay": 1440
+    },
+    "live.bmkg.tsunami": {
+      "sourceId": "live.bmkg.tsunami",
+      "maxPerMinute": 2,
+      "maxPerDay": 1440
+    },
+    "live.bmkg.weather": {
+      "sourceId": "live.bmkg.weather",
+      "maxPerMinute": 4,
+      "maxPerDay": 500
+    },
+    "live.magma.volcano": {
+      "sourceId": "live.magma.volcano",
+      "maxPerMinute": 1,
+      "maxPerDay": 200
+    }
+  }
+}

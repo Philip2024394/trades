@@ -1,0 +1,40 @@
+[
+  {
+    "id": "F-ollama-ok",
+    "note": "healthy Ollama · resolver returns ollama:*",
+    "scenario": "ollama_healthy",
+    "role": "brain.fast_local",
+    "expect": { "providerIdPrefix": "ollama:", "isLive": true, "reasonPattern": "probe ok" }
+  },
+  {
+    "id": "F-ollama-unreachable-with-key",
+    "note": "bad URL + ANTHROPIC_API_KEY → anthropic fallback",
+    "scenario": "ollama_unreachable",
+    "role": "brain.primary_local",
+    "requiresAnthropicKey": true,
+    "expect": { "providerIdPrefix": "anthropic:", "isLive": true, "reasonPattern": "fallback from Ollama" }
+  },
+  {
+    "id": "F-ollama-unreachable-no-key",
+    "note": "bad URL + no key → stub with clear reason",
+    "scenario": "ollama_unreachable",
+    "role": "brain.primary_local",
+    "requiresAnthropicKey": false,
+    "expect": { "providerIdPrefix": "stub", "isLive": false, "reasonPattern": "Ollama unavailable" }
+  },
+  {
+    "id": "F-model-missing-no-key",
+    "note": "valid URL, missing model, no key → stub with 'model missing'",
+    "scenario": "model_missing",
+    "role": "brain.primary_local",
+    "requiresAnthropicKey": false,
+    "expect": { "providerIdPrefix": "stub", "isLive": false, "reasonPattern": "model missing" }
+  },
+  {
+    "id": "F-recovery",
+    "note": "after 'outage' clears, next resolver call returns ollama again (per-request probe · no bad-state cache)",
+    "scenario": "ollama_healthy",
+    "role": "brain.primary_local",
+    "expect": { "providerIdPrefix": "ollama:", "isLive": true, "reasonPattern": "probe ok" }
+  }
+]

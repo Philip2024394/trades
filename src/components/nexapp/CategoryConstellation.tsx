@@ -34,7 +34,7 @@ import type { LucideIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import { NEX } from "@/lib/nexapp/tokens";
 import { activeCategoriesForCountry, type CategoryEntry } from "@/lib/nex/category-registry";
-import type { NexState } from "./NexAppHome";
+import type { NexState } from "@/lib/nexapp/nex-state";
 import { CategoryBusinessCard } from "./CategoryBusinessCard";
 import type { DirectoryListing } from "@/app/api/nex-directory/listings/route";
 

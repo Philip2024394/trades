@@ -9,6 +9,14 @@
   to   { transform: translateY(0);    opacity: 1; }
 }
 
+/* NEX · hide scrollbars everywhere the class is applied · Philip 2026-08-27.
+   Was previously defined only inside NexAppHome's <style> block which is no
+   longer mounted (task #21 · NexAppHome retired) · promoting to global CSS
+   so every consumer (mascot drawer · chat transcript · HQ tables · etc)
+   gets scrollbar-free scrolling. Content still scrolls · scrollbar hidden. */
+.nex-no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.nex-no-scrollbar::-webkit-scrollbar { width: 0; height: 0; display: none; }
+
 :root {
   /* ── Existing brand tokens (unchanged) ── */
   --brand-bg: 0 0 0;

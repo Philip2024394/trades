@@ -1,0 +1,216 @@
+{
+  "jobId": "48609f52-12fb-46b2-a56e-4aaec3692fc9",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Sleman",
+  "bbox": {
+    "sw": [
+      -7.75,
+      110.29
+    ],
+    "ne": [
+      -7.62,
+      110.48
+    ],
+    "scope": "Sleman · DIY"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T05:12:47.559Z",
+  "finishedAt": "2026-08-27T05:14:59.529Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 460,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 460,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 460,
+    "records_persisted": 460,
+    "enriched": 8,
+    "gate3_contactable": 45,
+    "gate4_eligible": 45,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 45,
+    "rejected_by_gate": 415,
+    "errors": 0,
+    "insert_attempted": 460,
+    "insert_conflicts": 0,
+    "insert_returned": 460,
+    "insert_verified": 460,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 460,
+    "rejected_by_reason": {
+      "CONTACT_MISSING": 415
+    }
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#FL-2026-ZTBW6",
+        "name": "Moro Lejar",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTBW7",
+        "name": "Rumah Makan Pring Sewu",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTBW8",
+        "name": "Ayam Goreng Pak Parman",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTBW9",
+        "name": "Kedai 24",
+        "category": "coffee-cafe",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTBWA",
+        "name": "Soto Pak Jamal",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTBWB",
+        "name": "Siomay Kang Cepot",
+        "category": "fast-food",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTBWC",
+        "name": "Jimbaran Resto",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTBWD",
+        "name": "Iga Sapi Bali",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [
+      {
+        "publicRef": "#FL-2026-ZTBXR",
+        "name": "Tulip Living",
+        "whatsapp": null,
+        "phone": "+6285326261939",
+        "website": "http://tulipliving.com"
+      },
+      {
+        "publicRef": "#FL-2026-ZTBY3",
+        "name": "Swasana by Temata Yogyakarta",
+        "whatsapp": null,
+        "phone": "+6281228663338",
+        "website": "https://swasana.id/"
+      },
+      {
+        "publicRef": "#FL-2026-ZTBY4",
+        "name": "Dapur New Yorkarto",
+        "whatsapp": "+6282271604881",
+        "phone": "+6287838180001",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTBY6",
+        "name": "Angkringan Sempulur Jogja",
+        "whatsapp": null,
+        "phone": "+62 895-4251-73777",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTBY7",
+        "name": "Family Wader",
+        "whatsapp": null,
+        "phone": "+62 813-9868-1911",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTBY8",
+        "name": "Warung Kopi Tobong Boto",
+        "whatsapp": null,
+        "phone": "+62 857 0143 2593",
+        "website": "https://deskgram.net/tobongboto"
+      },
+      {
+        "publicRef": "#FL-2026-ZTBYA",
+        "name": "Alif Coffee & Space",
+        "whatsapp": null,
+        "phone": "+62 878 3810 4845",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTBYE",
+        "name": "Disawa Pawon",
+        "whatsapp": "+62821-3488-8035",
+        "phone": null,
+        "website": null
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#FL-2026-ZTBW6",
+        "name": "Moro Lejar",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTBW7",
+        "name": "Rumah Makan Pring Sewu",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTBW8",
+        "name": "Ayam Goreng Pak Parman",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTBW9",
+        "name": "Kedai 24",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTBWA",
+        "name": "Soto Pak Jamal",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 460,
+    "insert_verified": 460,
+    "delta": 0
+  },
+  "cycle_outcome": "PARTIAL"
+}

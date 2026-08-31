@@ -1,0 +1,197 @@
+[
+  {
+    "externalId": "airport-cgk",
+    "domain": "practical",
+    "topic": "airport.jakarta_cgk",
+    "region": "Jakarta",
+    "content": "Soekarno-Hatta International Airport (CGK) is Indonesia's main hub, west of Jakarta. Terminals 1, 2, 3, and 3-Ultimate handle domestic and international. The Airport Rail Link (Bandara Rail Link) runs to BNI City and Manggarai (~55 min · ~70k IDR one-way, faster than road at rush hour). Ride-hailing is only allowed from designated Grab/Gojek pickup zones on the P1/P2 arrival levels — avoid unofficial 'taxi' touts in the arrivals hall.",
+    "keywords": [
+      "cgk",
+      "soekarno-hatta",
+      "jakarta airport",
+      "bandara rail link",
+      "airport rail",
+      "terminal 3",
+      "airport",
+      "airports"
+    ],
+    "audience": [
+      "tourist",
+      "backpacker",
+      "family"
+    ],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:airports",
+    "confidence": 0.9
+  },
+  {
+    "externalId": "airport-dps",
+    "domain": "practical",
+    "topic": "airport.bali_dps",
+    "region": "Bali",
+    "content": "Ngurah Rai International Airport (DPS · Denpasar), near Kuta on the south coast. One terminal handles both domestic and international sides. Grab/Gojek pickups are ~5 minutes outside the arrivals hall — walk out and cross the road to the designated zone. Airport taxis have fixed zone-based prices posted on the wall. From DPS: Kuta 10 min, Seminyak 20 min, Canggu 40 min, Ubud 90 min, Uluwatu 30 min (varies with Bali traffic).",
+    "keywords": [
+      "dps",
+      "ngurah rai",
+      "bali airport",
+      "denpasar airport",
+      "kuta",
+      "airport",
+      "airports"
+    ],
+    "audience": [
+      "tourist",
+      "backpacker",
+      "family",
+      "couple"
+    ],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:airports",
+    "confidence": 0.9
+  },
+  {
+    "externalId": "airport-sub",
+    "domain": "practical",
+    "topic": "airport.surabaya_sub",
+    "region": "East Java",
+    "content": "Juanda International Airport (SUB) serves Surabaya from the town of Sedati. Two terminals: T1 for domestic + some regional international, T2 for most international. Damri airport buses go to central Surabaya (~30k IDR). SUB is a common connection point for Bromo + Ijen tours — many operators pick up direct from the airport.",
+    "keywords": [
+      "sub",
+      "juanda",
+      "surabaya airport",
+      "sedati",
+      "damri",
+      "airport",
+      "airports"
+    ],
+    "audience": [
+      "tourist",
+      "backpacker"
+    ],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:airports",
+    "confidence": 0.85
+  },
+  {
+    "externalId": "airport-lop",
+    "domain": "practical",
+    "topic": "airport.lombok_lop",
+    "region": "Lombok",
+    "content": "Lombok International Airport (LOP · Zainuddin Abdul Madjid Airport), in Praya in south Lombok. Roughly 40 minutes drive to Kuta Lombok, 60–90 minutes to Senggigi, 90 minutes to Bangsal ferry for the Gili Islands. Damri bus + Gojek/Grab both available. Fewer international flights than DPS — many travellers fly LOP via Jakarta or Denpasar.",
+    "keywords": [
+      "lop",
+      "lombok airport",
+      "praya",
+      "zainuddin abdul madjid",
+      "kuta lombok",
+      "airport",
+      "airports"
+    ],
+    "audience": [
+      "tourist",
+      "backpacker"
+    ],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:airports",
+    "confidence": 0.85
+  },
+  {
+    "externalId": "airport-jog",
+    "domain": "practical",
+    "topic": "airport.yogyakarta_yia",
+    "region": "Yogyakarta",
+    "content": "Yogyakarta International Airport (YIA · Kulon Progo) opened in 2020 and replaced the old JOG (Adisutjipto) for most flights. Located ~45 km west of central Yogyakarta. The KA Bandara airport train (~40 minutes, ~20k IDR) runs from YIA to Tugu Station in the city — cheap and reliable. Damri buses also serve the airport.",
+    "keywords": [
+      "yia",
+      "kulon progo",
+      "yogyakarta airport",
+      "ka bandara",
+      "tugu station",
+      "airport",
+      "airports"
+    ],
+    "audience": [
+      "tourist",
+      "backpacker",
+      "family"
+    ],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:airports",
+    "confidence": 0.85
+  },
+  {
+    "externalId": "airport-lbj",
+    "domain": "practical",
+    "topic": "airport.labuan_bajo_lbj",
+    "region": "East Nusa Tenggara",
+    "content": "Komodo Airport (LBJ · Labuan Bajo) is the gateway to Komodo National Park. Small airport, no Grab/Gojek — arrange hotel transfer or take an ojek/local taxi (~30k IDR to town, 5 minutes). Direct flights from Denpasar, Jakarta, and Surabaya. Buy park tickets in Labuan Bajo town, not on arrival — some agents at the airport overcharge.",
+    "keywords": [
+      "lbj",
+      "komodo airport",
+      "labuan bajo",
+      "flores airport",
+      "airport",
+      "airports"
+    ],
+    "audience": [
+      "tourist",
+      "backpacker"
+    ],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:airports",
+    "confidence": 0.85
+  },
+  {
+    "externalId": "airport-upg",
+    "domain": "practical",
+    "topic": "airport.makassar_upg",
+    "region": "South Sulawesi",
+    "content": "Sultan Hasanuddin International Airport (UPG · Makassar) is Sulawesi's main hub. ~20 km from central Makassar; airport-city taxis are around 150k IDR by meter. UPG is the typical connection for onward flights to Toraja (via Palopo/PLW), Bau-Bau, and eastern Indonesia.",
+    "keywords": [
+      "upg",
+      "sultan hasanuddin",
+      "makassar airport",
+      "sulawesi",
+      "airport",
+      "airports"
+    ],
+    "audience": [
+      "tourist",
+      "backpacker"
+    ],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:airports",
+    "confidence": 0.85
+  },
+  {
+    "externalId": "airport-mdc",
+    "domain": "practical",
+    "topic": "airport.manado_mdc",
+    "region": "North Sulawesi",
+    "content": "Sam Ratulangi International Airport (MDC · Manado) serves the North Sulawesi tip. Main gateway for Bunaken and Lembeh dive trips. ~13 km from Manado city, ~150k IDR by taxi. Direct flights from Jakarta, Denpasar, and Singapore.",
+    "keywords": [
+      "mdc",
+      "sam ratulangi",
+      "manado airport",
+      "bunaken",
+      "lembeh",
+      "airport",
+      "airports"
+    ],
+    "audience": [
+      "tourist",
+      "backpacker"
+    ],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:airports",
+    "confidence": 0.85
+  }
+]

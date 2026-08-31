@@ -1,0 +1,2285 @@
+{
+  "generatedAt": "2026-08-30T10:17:45.560Z",
+  "walkers": [
+    {
+      "id": "curated:seed",
+      "published": 34
+    },
+    {
+      "id": "walker.adat.communities",
+      "published": 5
+    },
+    {
+      "id": "walker.culture.festivals_ceremonies",
+      "published": 12
+    },
+    {
+      "id": "walker.spiritual.sacred_sites",
+      "published": 6
+    }
+  ],
+  "records": [
+    {
+      "id": "walker-curated-seed-0330e4bd01",
+      "topic": "airport.manado_mdc",
+      "region": "North Sulawesi",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.85,
+      "source": "seed.curated:airports",
+      "last_verified": "2026-08-30",
+      "content": "Sam Ratulangi International Airport (MDC · Manado) serves the North Sulawesi tip. Main gateway for Bunaken and Lembeh dive trips. ~13 km from Manado city, ~150k IDR by taxi. Direct flights from Jakarta, Denpasar, and Singapore.",
+      "keywords": [
+        "mdc",
+        "sam ratulangi",
+        "manado airport",
+        "bunaken",
+        "lembeh",
+        "airport",
+        "airports"
+      ],
+      "category": "practical",
+      "audience": [
+        "tourist",
+        "backpacker"
+      ],
+      "questions": [
+        "How do I handle Manado Mdc in Indonesia?",
+        "What should I know about Manado Mdc?",
+        "Tell me about Manado Mdc",
+        "Is Manado Mdc needed in Indonesia?"
+      ],
+      "aliases": [
+        "Manado Mdc",
+        "Manado Mdc in North Sulawesi",
+        "Manado Mdc Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-037ae6f77c",
+      "topic": "food.babi_guling",
+      "region": "Bali",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.95,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Babi guling is Balinese spit-roasted suckling pig, seasoned with a paste of turmeric, coriander, chilli, lemongrass, galangal, and shrimp paste. Served with rice, lawar (spiced vegetable-and-coconut mix), and crackling. Most famous at Ibu Oka in Ubud, Warung Babi Guling Pak Malen in Seminyak, and countless village stalls. Not halal — served openly in Bali because of the Hindu population.",
+      "keywords": [
+        "babi guling",
+        "suckling pig",
+        "balinese",
+        "ibu oka",
+        "pak malen",
+        "lawar"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "family",
+        "backpacker",
+        "luxury"
+      ],
+      "questions": [
+        "What is Babi Guling?",
+        "Tell me about Babi Guling",
+        "Where can I try Babi Guling?",
+        "Is Babi Guling spicy?",
+        "What's in Babi Guling?"
+      ],
+      "aliases": [
+        "Babi Guling",
+        "Babi Guling in Bali",
+        "Babi Guling Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-11f23e7f7f",
+      "topic": "food.bakmi",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Bakmi is Indonesian-Chinese egg noodles served either dry (bakmi ayam — with braised chicken, greens, and fried shallots) or in soup (bakmi kuah). Popular chains: Bakmi GM, Bakmi Naga, Bakmi Aloi. Almost always served with a side bowl of clear broth and sambal. A good option when you want something less spicy than most Indonesian food.",
+      "keywords": [
+        "bakmi",
+        "chinese indonesian",
+        "egg noodles",
+        "bakmi ayam",
+        "bakmi gm",
+        "bakmi naga"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "What is Bakmi?",
+        "Tell me about Bakmi",
+        "Where can I try Bakmi?",
+        "Is Bakmi spicy?",
+        "What's in Bakmi?"
+      ],
+      "aliases": [
+        "Bakmi",
+        "Bakmi in Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-20c60c0dfb",
+      "topic": "culture.tana_toraja",
+      "region": "South Sulawesi",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:destinations-extra",
+      "last_verified": "2026-08-30",
+      "content": "Tana Toraja (Toraja Land) is a highland region of South Sulawesi known for its dramatic funeral rites, boat-shaped tongkonan houses, and cliff-face gravesites. Traditional funerals are open to respectful visitors — bring cigarettes/candies as gifts for the family and dress modestly. Access via Makassar (UPG) then an 8-hour drive north to Rantepao. Culturally unique — very different from Bali or Java.",
+      "keywords": [
+        "tana toraja",
+        "toraja",
+        "tongkonan",
+        "funeral",
+        "rantepao",
+        "south sulawesi",
+        "cliff graves"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist",
+        "backpacker"
+      ],
+      "questions": [
+        "Tell me about Tana Toraja",
+        "What are the rules for Tana Toraja?",
+        "How should tourists handle Tana Toraja?",
+        "Is Tana Toraja important in Indonesia?"
+      ],
+      "aliases": [
+        "Tana Toraja",
+        "Tana Toraja in South Sulawesi",
+        "Tana Toraja Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-28edec8eb4",
+      "topic": "food.martabak",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.95,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Martabak comes in two very different forms. Martabak manis (sweet martabak, also called terang bulan) is a thick pancake stuffed with chocolate, cheese, condensed milk, peanuts, or Nutella — the classic Indonesian night snack. Martabak telur (savoury) is a thin dough wrap filled with minced meat, egg, and spring onion, pan-fried and served with pickles and curry sauce. Sold at street carts in every city, especially busy after 7 PM.",
+      "keywords": [
+        "martabak",
+        "martabak manis",
+        "martabak telur",
+        "terang bulan",
+        "street food",
+        "pancake"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "What is Martabak?",
+        "Tell me about Martabak",
+        "Where can I try Martabak?",
+        "Is Martabak spicy?",
+        "What's in Martabak?"
+      ],
+      "aliases": [
+        "Martabak",
+        "Martabak in Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-36103dc75a",
+      "topic": "landmark.ubud_monkey_forest",
+      "region": "Bali",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:destinations-extra",
+      "last_verified": "2026-08-30",
+      "content": "The Sacred Monkey Forest Sanctuary in Ubud is home to ~700 long-tailed macaques living around three ancient temples in a river gorge. Entry ~80k IDR foreigner. Rules: no plastic bags, no food, no eye contact with the alpha males, no fast movements. Toddlers should be carried — the monkeys can be aggressive.",
+      "keywords": [
+        "monkey forest",
+        "ubud",
+        "macaque",
+        "sacred forest",
+        "sanctuary"
+      ],
+      "category": "landmark",
+      "audience": [
+        "tourist",
+        "family",
+        "couple"
+      ],
+      "questions": [
+        "What is Ubud Monkey Forest?",
+        "Tell me about Ubud Monkey Forest",
+        "Where is Ubud Monkey Forest?",
+        "How do I visit Ubud Monkey Forest?",
+        "What is there to see at Ubud Monkey Forest?",
+        "Should I visit Ubud Monkey Forest?"
+      ],
+      "aliases": [
+        "Ubud Monkey Forest",
+        "Ubud Monkey Forest in Bali",
+        "Ubud Monkey Forest Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-3a9dc99d7c",
+      "topic": "hospital.yogyakarta_panti_rapih",
+      "region": "Yogyakarta",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.85,
+      "source": "seed.curated:hospitals",
+      "last_verified": "2026-08-30",
+      "content": "RS Panti Rapih and Siloam Hospitals Yogyakarta are the largest private hospitals in central Jogja with 24-hour emergency and English-speaking staff (limited). Sardjito Hospital is the largest public teaching hospital. For minor traveller ailments, private clinics on Jalan Malioboro or in Prawirotaman are cheaper.",
+      "keywords": [
+        "panti rapih",
+        "siloam yogyakarta",
+        "sardjito",
+        "jogja hospital",
+        "malioboro clinic",
+        "hospital",
+        "hospitals",
+        "medical",
+        "clinic"
+      ],
+      "category": "safety",
+      "audience": [
+        "tourist",
+        "family"
+      ],
+      "questions": [
+        "What number do I call for Yogyakarta Panti Rapih?",
+        "How do I handle Yogyakarta Panti Rapih?",
+        "What should I do about Yogyakarta Panti Rapih?",
+        "Where is the nearest Yogyakarta Panti Rapih?"
+      ],
+      "aliases": [
+        "Yogyakarta Panti Rapih",
+        "Yogyakarta Panti Rapih in Yogyakarta",
+        "Yogyakarta Panti Rapih Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-3cf26d813f",
+      "topic": "landmark.uluwatu_temple",
+      "region": "Bali",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:destinations-extra",
+      "last_verified": "2026-08-30",
+      "content": "Pura Luhur Uluwatu sits on a 70-metre cliff on the southern tip of Bali — one of the six major sea temples. The daily Kecak fire dance at sunset (starts around 18:00, book ahead) is a compact retelling of the Ramayana with chanting and fire. Watch out for macaque monkeys who steal sunglasses and phones — remove and pocket everything before entering.",
+      "keywords": [
+        "uluwatu",
+        "pura luhur uluwatu",
+        "sea temple",
+        "kecak",
+        "fire dance",
+        "sunset",
+        "macaque"
+      ],
+      "category": "landmark",
+      "audience": [
+        "tourist",
+        "family",
+        "couple"
+      ],
+      "questions": [
+        "What is Uluwatu Temple?",
+        "Tell me about Uluwatu Temple",
+        "Where is Uluwatu Temple?",
+        "How do I visit Uluwatu Temple?",
+        "What is there to see at Uluwatu Temple?",
+        "Should I visit Uluwatu Temple?"
+      ],
+      "aliases": [
+        "Uluwatu Temple",
+        "Uluwatu Temple in Bali",
+        "Uluwatu Temple Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-437a603ae6",
+      "topic": "food.es_teler",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.95,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Es teler is a classic Indonesian dessert drink — shredded ice, jackfruit, young coconut, avocado, condensed milk, and pandan syrup. Cooling, filling, and cheap (15–25k IDR at a warung). Sister dessert es campur (mixed ice) adds cendol (green rice-flour jelly) and grass jelly. Great after a spicy meal on a hot afternoon.",
+      "keywords": [
+        "es teler",
+        "es campur",
+        "cendol",
+        "shaved ice",
+        "dessert",
+        "avocado",
+        "jackfruit"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "What is es Teler?",
+        "Tell me about es Teler",
+        "Where can I try es Teler?",
+        "Is es Teler spicy?",
+        "What's in es Teler?"
+      ],
+      "aliases": [
+        "es Teler",
+        "es Teler in Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-44a687843e",
+      "topic": "airport.lombok_lop",
+      "region": "Lombok",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.85,
+      "source": "seed.curated:airports",
+      "last_verified": "2026-08-30",
+      "content": "Lombok International Airport (LOP · Zainuddin Abdul Madjid Airport), in Praya in south Lombok. Roughly 40 minutes drive to Kuta Lombok, 60–90 minutes to Senggigi, 90 minutes to Bangsal ferry for the Gili Islands. Damri bus + Gojek/Grab both available. Fewer international flights than DPS — many travellers fly LOP via Jakarta or Denpasar.",
+      "keywords": [
+        "lop",
+        "lombok airport",
+        "praya",
+        "zainuddin abdul madjid",
+        "kuta lombok",
+        "airport",
+        "airports"
+      ],
+      "category": "practical",
+      "audience": [
+        "tourist",
+        "backpacker"
+      ],
+      "questions": [
+        "How do I handle Lombok Lop in Indonesia?",
+        "What should I know about Lombok Lop?",
+        "Tell me about Lombok Lop",
+        "Is Lombok Lop needed in Indonesia?"
+      ],
+      "aliases": [
+        "Lombok Lop",
+        "Lombok Lop in Lombok",
+        "Lombok Lop Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-456115d58b",
+      "topic": "landmark.nusa_lembongan",
+      "region": "Bali",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:destinations-extra",
+      "last_verified": "2026-08-30",
+      "content": "Nusa Lembongan is Nusa Penida's smaller, gentler neighbour — 30 minutes from Sanur by fast-boat. Highlights: Devil's Tear (dramatic waves and blowholes), Dream Beach, mangrove tours, and the yellow suspension bridge to Nusa Ceningan. Much slower pace than Bali; good for a 2–3 night couple's / family stopover.",
+      "keywords": [
+        "nusa lembongan",
+        "nusa ceningan",
+        "devil's tear",
+        "dream beach",
+        "yellow bridge",
+        "mangrove"
+      ],
+      "category": "landmark",
+      "audience": [
+        "tourist",
+        "couple",
+        "family"
+      ],
+      "questions": [
+        "What is Nusa Lembongan?",
+        "Tell me about Nusa Lembongan",
+        "Where is Nusa Lembongan?",
+        "How do I visit Nusa Lembongan?",
+        "What is there to see at Nusa Lembongan?",
+        "Should I visit Nusa Lembongan?"
+      ],
+      "aliases": [
+        "Nusa Lembongan",
+        "Nusa Lembongan in Bali",
+        "Nusa Lembongan Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-47962adad3",
+      "topic": "landmark.lake_toba",
+      "region": "North Sumatra",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:destinations-extra",
+      "last_verified": "2026-08-30",
+      "content": "Lake Toba (Danau Toba) is the world's largest volcanic lake, formed by a supervolcanic eruption ~74,000 years ago. Samosir Island in the middle is the traditional home of the Batak people and the base for most travellers. Fly into Kualanamu (Medan · KNO) or Silangit (DTB · closer). Peaceful, cool, few crowds — a great non-Bali Indonesia experience.",
+      "keywords": [
+        "toba",
+        "lake toba",
+        "danau toba",
+        "samosir",
+        "batak",
+        "north sumatra",
+        "kualanamu",
+        "silangit"
+      ],
+      "category": "landmark",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "couple"
+      ],
+      "questions": [
+        "What is Lake Toba?",
+        "Tell me about Lake Toba",
+        "Where is Lake Toba?",
+        "How do I visit Lake Toba?",
+        "What is there to see at Lake Toba?",
+        "Should I visit Lake Toba?"
+      ],
+      "aliases": [
+        "Lake Toba",
+        "Lake Toba in North Sumatra",
+        "Lake Toba Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-497bc639fa",
+      "topic": "food.ayam_bakar",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.95,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Ayam bakar is Indonesian grilled chicken — marinated in kecap manis, garlic, tamarind, and turmeric, then finished over charcoal. Sold with rice, sambal, lalapan (raw leaves), and a small dish of soup broth. Regional variants: ayam bakar Taliwang (Lombok, super-spicy chilli glaze), ayam bakar Wong Solo (Central Java, sweeter). 30–50k IDR at a warung.",
+      "keywords": [
+        "ayam bakar",
+        "grilled chicken",
+        "kecap manis",
+        "taliwang",
+        "wong solo",
+        "warung"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "What is Ayam Bakar?",
+        "Tell me about Ayam Bakar",
+        "Where can I try Ayam Bakar?",
+        "Is Ayam Bakar spicy?",
+        "What's in Ayam Bakar?"
+      ],
+      "aliases": [
+        "Ayam Bakar",
+        "Ayam Bakar in Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-4bfa063519",
+      "topic": "landmark.derawan_islands",
+      "region": "East Kalimantan",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.85,
+      "source": "seed.curated:destinations-extra",
+      "last_verified": "2026-08-30",
+      "content": "The Derawan Islands (Kepulauan Derawan) in East Kalimantan are famous for stingless jellyfish lake on Kakaban, manta rays at Sangalaki, whale sharks at Talisayan, and green turtles nesting on Derawan. Access via Berau (BEJ) then a 2-hour speedboat. Remote, quiet, few international tourists. Best May–October.",
+      "keywords": [
+        "derawan",
+        "kepulauan derawan",
+        "kakaban",
+        "sangalaki",
+        "talisayan",
+        "stingless jellyfish",
+        "manta ray",
+        "whale shark",
+        "east kalimantan"
+      ],
+      "category": "landmark",
+      "audience": [
+        "tourist",
+        "backpacker"
+      ],
+      "questions": [
+        "What is Derawan Islands?",
+        "Tell me about Derawan Islands",
+        "Where is Derawan Islands?",
+        "How do I visit Derawan Islands?",
+        "What is there to see at Derawan Islands?",
+        "Should I visit Derawan Islands?"
+      ],
+      "aliases": [
+        "Derawan Islands",
+        "Derawan Islands in East Kalimantan",
+        "Derawan Islands Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-5a34a3f135",
+      "topic": "airport.makassar_upg",
+      "region": "South Sulawesi",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.85,
+      "source": "seed.curated:airports",
+      "last_verified": "2026-08-30",
+      "content": "Sultan Hasanuddin International Airport (UPG · Makassar) is Sulawesi's main hub. ~20 km from central Makassar; airport-city taxis are around 150k IDR by meter. UPG is the typical connection for onward flights to Toraja (via Palopo/PLW), Bau-Bau, and eastern Indonesia.",
+      "keywords": [
+        "upg",
+        "sultan hasanuddin",
+        "makassar airport",
+        "sulawesi",
+        "airport",
+        "airports"
+      ],
+      "category": "practical",
+      "audience": [
+        "tourist",
+        "backpacker"
+      ],
+      "questions": [
+        "How do I handle Makassar Upg in Indonesia?",
+        "What should I know about Makassar Upg?",
+        "Tell me about Makassar Upg",
+        "Is Makassar Upg needed in Indonesia?"
+      ],
+      "aliases": [
+        "Makassar Upg",
+        "Makassar Upg in South Sulawesi",
+        "Makassar Upg Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-5b392f236e",
+      "topic": "landmark.bunaken",
+      "region": "North Sulawesi",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.85,
+      "source": "seed.curated:destinations-extra",
+      "last_verified": "2026-08-30",
+      "content": "Bunaken Marine Park, off Manado (MDC), is one of Indonesia's premier diving destinations. Wall dives with reef sharks, turtles, and pelagics. Best season April–November (calm seas). Base yourself at Bunaken Island itself or on Manado Tua/Siladen for shorter boat rides. Combine with Lembeh Strait (muck diving, macro photography) on the same trip.",
+      "keywords": [
+        "bunaken",
+        "bunaken marine park",
+        "manado",
+        "wall dive",
+        "siladen",
+        "lembeh",
+        "diving"
+      ],
+      "category": "landmark",
+      "audience": [
+        "tourist",
+        "backpacker"
+      ],
+      "questions": [
+        "What is Bunaken?",
+        "Tell me about Bunaken",
+        "Where is Bunaken?",
+        "How do I visit Bunaken?",
+        "What is there to see at Bunaken?",
+        "Should I visit Bunaken?"
+      ],
+      "aliases": [
+        "Bunaken",
+        "Bunaken in North Sulawesi",
+        "Bunaken Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-5e6031c068",
+      "topic": "emergency.embassy",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:hospitals",
+      "last_verified": "2026-08-30",
+      "content": "For lost passport, serious legal trouble, or a fatality abroad, contact your country's embassy or consulate in Jakarta (most main embassies) or the consular office in Denpasar (Bali) — Australia, UK, and USA all maintain consular presence in Bali. Save the 24-hour emergency line before travel. Embassies do NOT pay medical bills or repatriate — that's your travel insurance's job.",
+      "keywords": [
+        "embassy",
+        "consulate",
+        "lost passport",
+        "consular",
+        "australia bali",
+        "uk bali",
+        "usa bali",
+        "emergency",
+        "help",
+        "urgent",
+        "passport",
+        "passports",
+        "documents",
+        "lost"
+      ],
+      "category": "safety",
+      "audience": [
+        "tourist",
+        "family",
+        "solo"
+      ],
+      "questions": [
+        "What number do I call for Embassy?",
+        "How do I handle Embassy?",
+        "What should I do about Embassy?",
+        "Where is the nearest Embassy?"
+      ],
+      "aliases": [
+        "Embassy",
+        "Embassy in Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-6c44a753e6",
+      "topic": "food.nasi_padang",
+      "region": "West Sumatra",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.95,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Nasi Padang is the classic Padang-style presentation from West Sumatra: rice served with 10–15 small dishes brought to your table — rendang, gulai ayam (chicken curry), sambal ijo (green chilli), telur balado (spicy egg), sayur nangka (jackfruit curry) — and you pay only for what you eat. Rumah Makan Padang (Padang restaurants) are everywhere in Indonesia. Very spicy by default; ask for 'tidak pedas' if you want mild.",
+      "keywords": [
+        "nasi padang",
+        "padang",
+        "rumah makan padang",
+        "rendang",
+        "gulai",
+        "west sumatra"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "What is Nasi Padang?",
+        "Tell me about Nasi Padang",
+        "Where can I try Nasi Padang?",
+        "Is Nasi Padang spicy?",
+        "What's in Nasi Padang?"
+      ],
+      "aliases": [
+        "Nasi Padang",
+        "Nasi Padang in West Sumatra",
+        "Nasi Padang Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-72985380d7",
+      "topic": "hospital.bali_bimc_nusa_dua",
+      "region": "Bali",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:hospitals",
+      "last_verified": "2026-08-30",
+      "content": "BIMC Hospital Nusa Dua is a private international hospital in Kawasan Wisata Nusa Dua Bali. 24/7 emergency, hyperbaric chamber (useful for dive accidents), international-standard billing. Serves the Nusa Dua / Jimbaran / Uluwatu resort strip.",
+      "keywords": [
+        "bimc",
+        "hospital nusa dua",
+        "bali hospital",
+        "hyperbaric",
+        "diving accident",
+        "hospital",
+        "hospitals",
+        "medical",
+        "clinic"
+      ],
+      "category": "safety",
+      "audience": [
+        "tourist",
+        "family"
+      ],
+      "questions": [
+        "What number do I call for Bali Bimc Nusa Dua?",
+        "How do I handle Bali Bimc Nusa Dua?",
+        "What should I do about Bali Bimc Nusa Dua?",
+        "Where is the nearest Bali Bimc Nusa Dua?"
+      ],
+      "aliases": [
+        "Bali Bimc Nusa Dua",
+        "Bali Bimc Nusa Dua in Bali",
+        "Bali Bimc Nusa Dua Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-729d99bb53",
+      "topic": "food.mie_goreng",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 1,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Mie goreng is Indonesian fried noodles — yellow egg noodles stir-fried with kecap manis (sweet soy), garlic, shallots, chilli, cabbage, and often chicken, prawn or egg. The instant version (Indomie Mi Goreng) is a cultural phenomenon in its own right and available worldwide. The warung version at 15–25k IDR is a filling, cheap comfort meal.",
+      "keywords": [
+        "mie goreng",
+        "fried noodles",
+        "indomie",
+        "kecap manis",
+        "warung",
+        "instant noodles"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "What is Mie Goreng?",
+        "Tell me about Mie Goreng",
+        "Where can I try Mie Goreng?",
+        "Is Mie Goreng spicy?",
+        "What's in Mie Goreng?"
+      ],
+      "aliases": [
+        "Mie Goreng",
+        "Mie Goreng in Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-90eede9e6a",
+      "topic": "food.nasi_campur",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.95,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Nasi campur (literally 'mixed rice') is a plate of rice with a small selection of side dishes chosen by the customer — typical items include tempeh, tofu, egg, sambal, sayur (vegetables), chicken, and fish. Each region has its own style: Balinese nasi campur is often served with satay lilit and lawar, while Chinese-Indonesian nasi campur includes char siu and braised pork. A cheap, honest lunch (25–50k IDR).",
+      "keywords": [
+        "nasi campur",
+        "mixed rice",
+        "balinese",
+        "chinese indonesian",
+        "tempeh",
+        "warung"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "What is Nasi Campur?",
+        "Tell me about Nasi Campur",
+        "Where can I try Nasi Campur?",
+        "Is Nasi Campur spicy?",
+        "What's in Nasi Campur?"
+      ],
+      "aliases": [
+        "Nasi Campur",
+        "Nasi Campur in Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-91de4b49ae",
+      "topic": "landmark.tanah_lot",
+      "region": "Bali",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:destinations-extra",
+      "last_verified": "2026-08-30",
+      "content": "Tanah Lot is a Hindu temple on a small rocky islet off Bali's west coast, ~30 km from Denpasar. Access is only possible at low tide across a rock causeway — the temple itself is off-limits to non-worshippers. Sunset is the classic time to visit but it gets very crowded; arrive 90 minutes before sunset for a good photo spot. Small entry fee (~75k IDR foreigner).",
+      "keywords": [
+        "tanah lot",
+        "temple",
+        "sunset",
+        "west bali",
+        "rocky islet"
+      ],
+      "category": "landmark",
+      "audience": [
+        "tourist",
+        "couple",
+        "family"
+      ],
+      "questions": [
+        "What is Tanah Lot?",
+        "Tell me about Tanah Lot",
+        "Where is Tanah Lot?",
+        "How do I visit Tanah Lot?",
+        "What is there to see at Tanah Lot?",
+        "Should I visit Tanah Lot?"
+      ],
+      "aliases": [
+        "Tanah Lot",
+        "Tanah Lot in Bali",
+        "Tanah Lot Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-99de0c94c8",
+      "topic": "hospital.jakarta_international_sos",
+      "region": "Jakarta",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.85,
+      "source": "seed.curated:hospitals",
+      "last_verified": "2026-08-30",
+      "content": "International SOS Clinic Jakarta (Menara Prima, Mega Kuningan) offers 24/7 medical assistance for expatriates and travellers, in-house pharmacy, and medical evacuation coordination. Preferred by many international insurers. RS Pondok Indah and RS Siloam TB Simatupang are the larger nearby hospitals for complex admissions.",
+      "keywords": [
+        "international sos",
+        "sos clinic jakarta",
+        "pondok indah",
+        "siloam tb simatupang",
+        "expat clinic",
+        "hospital",
+        "hospitals",
+        "medical",
+        "clinic"
+      ],
+      "category": "safety",
+      "audience": [
+        "tourist",
+        "family"
+      ],
+      "questions": [
+        "What number do I call for Jakarta International Sos?",
+        "How do I handle Jakarta International Sos?",
+        "What should I do about Jakarta International Sos?",
+        "Where is the nearest Jakarta International Sos?"
+      ],
+      "aliases": [
+        "Jakarta International Sos",
+        "Jakarta International Sos in Jakarta",
+        "Jakarta International Sos Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-9abf51af29",
+      "topic": "food.gado_gado",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 1,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Gado-gado is Indonesia's warm salad — steamed vegetables (long beans, cabbage, bean sprouts, potato, boiled egg, tofu, tempeh) topped with a spiced peanut sauce and prawn crackers. Naturally vegetarian if you skip the shrimp paste (terasi) in the sauce — ask 'tanpa terasi' for a fully vegan version. Excellent light lunch, especially in Jakarta and West Java.",
+      "keywords": [
+        "gado-gado",
+        "peanut salad",
+        "vegetarian",
+        "vegan",
+        "tanpa terasi",
+        "peanut sauce"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "What is Gado Gado?",
+        "Tell me about Gado Gado",
+        "Where can I try Gado Gado?",
+        "Is Gado Gado spicy?",
+        "What's in Gado Gado?"
+      ],
+      "aliases": [
+        "Gado Gado",
+        "Gado Gado in Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-9d40b9c851",
+      "topic": "hospital.bali_bimc_kuta",
+      "region": "Bali",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:hospitals",
+      "last_verified": "2026-08-30",
+      "content": "BIMC Hospital Kuta is a private international-standard hospital on Jalan Bypass Ngurah Rai in Kuta, Bali. 24/7 emergency, English-speaking staff, travel-insurance-friendly billing. One of two BIMC branches on the island (the other is at Nusa Dua). Common first stop for tourists needing serious care.",
+      "keywords": [
+        "bimc",
+        "hospital kuta",
+        "bali hospital",
+        "emergency room",
+        "international hospital",
+        "hospital",
+        "hospitals",
+        "medical",
+        "clinic"
+      ],
+      "category": "safety",
+      "audience": [
+        "tourist",
+        "family",
+        "senior"
+      ],
+      "questions": [
+        "What number do I call for Bali Bimc Kuta?",
+        "How do I handle Bali Bimc Kuta?",
+        "What should I do about Bali Bimc Kuta?",
+        "Where is the nearest Bali Bimc Kuta?"
+      ],
+      "aliases": [
+        "Bali Bimc Kuta",
+        "Bali Bimc Kuta in Bali",
+        "Bali Bimc Kuta Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-9fa7da1403",
+      "topic": "airport.jakarta_cgk",
+      "region": "Jakarta",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:airports",
+      "last_verified": "2026-08-30",
+      "content": "Soekarno-Hatta International Airport (CGK) is Indonesia's main hub, west of Jakarta. Terminals 1, 2, 3, and 3-Ultimate handle domestic and international. The Airport Rail Link (Bandara Rail Link) runs to BNI City and Manggarai (~55 min · ~70k IDR one-way, faster than road at rush hour). Ride-hailing is only allowed from designated Grab/Gojek pickup zones on the P1/P2 arrival levels — avoid unofficial 'taxi' touts in the arrivals hall.",
+      "keywords": [
+        "cgk",
+        "soekarno-hatta",
+        "jakarta airport",
+        "bandara rail link",
+        "airport rail",
+        "terminal 3",
+        "airport",
+        "airports"
+      ],
+      "category": "practical",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "How do I handle Jakarta Cgk in Indonesia?",
+        "What should I know about Jakarta Cgk?",
+        "Tell me about Jakarta Cgk",
+        "Is Jakarta Cgk needed in Indonesia?"
+      ],
+      "aliases": [
+        "Jakarta Cgk",
+        "Jakarta Cgk in Jakarta",
+        "Jakarta Cgk Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-afbe36100a",
+      "topic": "landmark.nusa_penida",
+      "region": "Bali",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:destinations-extra",
+      "last_verified": "2026-08-30",
+      "content": "Nusa Penida is a rugged island south-east of Bali, a 30-minute fast-boat from Sanur. Highlights: Kelingking Beach (the famous T-Rex-shaped cliff), Angel's Billabong, Broken Beach, Diamond Beach, Crystal Bay for snorkelling with manta rays. Roads are steep and narrow — hire a local driver rather than a scooter unless experienced. Day trip is possible but rushed; 2 nights is better.",
+      "keywords": [
+        "nusa penida",
+        "kelingking",
+        "angel's billabong",
+        "broken beach",
+        "diamond beach",
+        "manta ray",
+        "sanur ferry"
+      ],
+      "category": "landmark",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "couple"
+      ],
+      "questions": [
+        "What is Nusa Penida?",
+        "Tell me about Nusa Penida",
+        "Where is Nusa Penida?",
+        "How do I visit Nusa Penida?",
+        "What is there to see at Nusa Penida?",
+        "Should I visit Nusa Penida?"
+      ],
+      "aliases": [
+        "Nusa Penida",
+        "Nusa Penida in Bali",
+        "Nusa Penida Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-b4c66eba2a",
+      "topic": "airport.bali_dps",
+      "region": "Bali",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:airports",
+      "last_verified": "2026-08-30",
+      "content": "Ngurah Rai International Airport (DPS · Denpasar), near Kuta on the south coast. One terminal handles both domestic and international sides. Grab/Gojek pickups are ~5 minutes outside the arrivals hall — walk out and cross the road to the designated zone. Airport taxis have fixed zone-based prices posted on the wall. From DPS: Kuta 10 min, Seminyak 20 min, Canggu 40 min, Ubud 90 min, Uluwatu 30 min (varies with Bali traffic).",
+      "keywords": [
+        "dps",
+        "ngurah rai",
+        "bali airport",
+        "denpasar airport",
+        "kuta",
+        "airport",
+        "airports"
+      ],
+      "category": "practical",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family",
+        "couple"
+      ],
+      "questions": [
+        "How do I handle Bali Dps in Indonesia?",
+        "What should I know about Bali Dps?",
+        "Tell me about Bali Dps",
+        "Is Bali Dps needed in Indonesia?"
+      ],
+      "aliases": [
+        "Bali Dps",
+        "Bali Dps in Bali",
+        "Bali Dps Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-e0d1950894",
+      "topic": "airport.labuan_bajo_lbj",
+      "region": "East Nusa Tenggara",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.85,
+      "source": "seed.curated:airports",
+      "last_verified": "2026-08-30",
+      "content": "Komodo Airport (LBJ · Labuan Bajo) is the gateway to Komodo National Park. Small airport, no Grab/Gojek — arrange hotel transfer or take an ojek/local taxi (~30k IDR to town, 5 minutes). Direct flights from Denpasar, Jakarta, and Surabaya. Buy park tickets in Labuan Bajo town, not on arrival — some agents at the airport overcharge.",
+      "keywords": [
+        "lbj",
+        "komodo airport",
+        "labuan bajo",
+        "flores airport",
+        "airport",
+        "airports"
+      ],
+      "category": "practical",
+      "audience": [
+        "tourist",
+        "backpacker"
+      ],
+      "questions": [
+        "How do I handle Labuan Bajo Lbj in Indonesia?",
+        "What should I know about Labuan Bajo Lbj?",
+        "Tell me about Labuan Bajo Lbj",
+        "Is Labuan Bajo Lbj needed in Indonesia?"
+      ],
+      "aliases": [
+        "Labuan Bajo Lbj",
+        "Labuan Bajo Lbj in East Nusa Tenggara",
+        "Labuan Bajo Lbj Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-e53c69f503",
+      "topic": "landmark.tegalalang_rice_terraces",
+      "region": "Bali",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:destinations-extra",
+      "last_verified": "2026-08-30",
+      "content": "Tegalalang Rice Terraces, ~15 minutes north of Ubud, are Bali's most-photographed rice fields — cascading levels carved into a valley. Free entry to the walking path, though local farmers ask for a small 'donation' (10–20k IDR is fair). The famous Bali swings and 'love nest' installations add to the crowds. Go before 9 AM to avoid tour buses.",
+      "keywords": [
+        "tegalalang",
+        "rice terraces",
+        "ubud",
+        "sawah",
+        "bali swing"
+      ],
+      "category": "landmark",
+      "audience": [
+        "tourist",
+        "couple",
+        "family"
+      ],
+      "questions": [
+        "What is Tegalalang Rice Terraces?",
+        "Tell me about Tegalalang Rice Terraces",
+        "Where is Tegalalang Rice Terraces?",
+        "How do I visit Tegalalang Rice Terraces?",
+        "What is there to see at Tegalalang Rice Terraces?",
+        "Should I visit Tegalalang Rice Terraces?"
+      ],
+      "aliases": [
+        "Tegalalang Rice Terraces",
+        "Tegalalang Rice Terraces in Bali",
+        "Tegalalang Rice Terraces Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-e53dbf00f1",
+      "topic": "airport.yogyakarta_yia",
+      "region": "Yogyakarta",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.85,
+      "source": "seed.curated:airports",
+      "last_verified": "2026-08-30",
+      "content": "Yogyakarta International Airport (YIA · Kulon Progo) opened in 2020 and replaced the old JOG (Adisutjipto) for most flights. Located ~45 km west of central Yogyakarta. The KA Bandara airport train (~40 minutes, ~20k IDR) runs from YIA to Tugu Station in the city — cheap and reliable. Damri buses also serve the airport.",
+      "keywords": [
+        "yia",
+        "kulon progo",
+        "yogyakarta airport",
+        "ka bandara",
+        "tugu station",
+        "airport",
+        "airports"
+      ],
+      "category": "practical",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "How do I handle Yogyakarta Yia in Indonesia?",
+        "What should I know about Yogyakarta Yia?",
+        "Tell me about Yogyakarta Yia",
+        "Is Yogyakarta Yia needed in Indonesia?"
+      ],
+      "aliases": [
+        "Yogyakarta Yia",
+        "Yogyakarta Yia in Yogyakarta",
+        "Yogyakarta Yia Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-e7337afdf3",
+      "topic": "airport.surabaya_sub",
+      "region": "East Java",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.85,
+      "source": "seed.curated:airports",
+      "last_verified": "2026-08-30",
+      "content": "Juanda International Airport (SUB) serves Surabaya from the town of Sedati. Two terminals: T1 for domestic + some regional international, T2 for most international. Damri airport buses go to central Surabaya (~30k IDR). SUB is a common connection point for Bromo + Ijen tours — many operators pick up direct from the airport.",
+      "keywords": [
+        "sub",
+        "juanda",
+        "surabaya airport",
+        "sedati",
+        "damri",
+        "airport",
+        "airports"
+      ],
+      "category": "practical",
+      "audience": [
+        "tourist",
+        "backpacker"
+      ],
+      "questions": [
+        "How do I handle Surabaya Sub in Indonesia?",
+        "What should I know about Surabaya Sub?",
+        "Tell me about Surabaya Sub",
+        "Is Surabaya Sub needed in Indonesia?"
+      ],
+      "aliases": [
+        "Surabaya Sub",
+        "Surabaya Sub in East Java",
+        "Surabaya Sub Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-eb46069e8b",
+      "topic": "emergency.bali_tourist_hotline",
+      "region": "Bali",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:hospitals",
+      "last_verified": "2026-08-30",
+      "content": "Bali's Tourist Police Assistance line is +62 361 224111. English-speaking officers, help with scams, lost-property reports, and small-claims disputes. For genuine emergencies use 112 (unified) or 110 (police direct) first.",
+      "keywords": [
+        "tourist police",
+        "bali police",
+        "tourist hotline",
+        "224111",
+        "emergency",
+        "help",
+        "urgent"
+      ],
+      "category": "safety",
+      "audience": [
+        "tourist",
+        "solo"
+      ],
+      "questions": [
+        "What number do I call for Bali Tourist Hotline?",
+        "How do I handle Bali Tourist Hotline?",
+        "What should I do about Bali Tourist Hotline?",
+        "Where is the nearest Bali Tourist Hotline?"
+      ],
+      "aliases": [
+        "Bali Tourist Hotline",
+        "Bali Tourist Hotline in Bali",
+        "Bali Tourist Hotline Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-curated-seed-f929e0e234",
+      "topic": "hospital.bali_siloam_ubud",
+      "region": "Bali",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.85,
+      "source": "seed.curated:hospitals",
+      "last_verified": "2026-08-30",
+      "content": "Siloam Hospitals Bali (Denpasar branch) and BaliMed are the closest large private hospitals for the Ubud area. Ubud itself has smaller Ubud Care Clinic and Toya Medika Clinic for minor care. For any serious condition — accidents, chest pain, high fever — head straight to Denpasar rather than a village clinic.",
+      "keywords": [
+        "siloam",
+        "balimed",
+        "ubud clinic",
+        "toya medika",
+        "bali hospital",
+        "hospital",
+        "hospitals",
+        "medical",
+        "clinic"
+      ],
+      "category": "safety",
+      "audience": [
+        "tourist",
+        "family"
+      ],
+      "questions": [
+        "What number do I call for Bali Siloam Ubud?",
+        "How do I handle Bali Siloam Ubud?",
+        "What should I do about Bali Siloam Ubud?",
+        "Where is the nearest Bali Siloam Ubud?"
+      ],
+      "aliases": [
+        "Bali Siloam Ubud",
+        "Bali Siloam Ubud in Bali",
+        "Bali Siloam Ubud Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "curated:seed"
+    },
+    {
+      "id": "walker-walker-adat-communities-217680c113",
+      "topic": "adat.dayak_iban",
+      "region": "West Kalimantan",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.85,
+      "source": "seed.curated:adat_communities · AMAN + academic",
+      "last_verified": "2026-08-30",
+      "content": "The Dayak Iban are one of many Dayak subgroups spread across Kalimantan (Borneo). Traditional longhouse (rumah betang / rumah panjai) communities on major rivers. Aluk Todolo-like animist beliefs coexist with Christianity, with adat law regulating land, marriage, and dispute. Visiting a longhouse: approach through the tuai rumah (headman), remove shoes, accept offered tuak (rice wine) with the right hand (a small sip is respectful — full refusal can be rude).",
+      "keywords": [
+        "dayak",
+        "iban",
+        "kalimantan",
+        "borneo",
+        "longhouse",
+        "rumah betang",
+        "tuai rumah",
+        "adat"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist",
+        "backpacker"
+      ],
+      "questions": [
+        "Tell me about Dayak Iban",
+        "What are the rules for Dayak Iban?",
+        "How should tourists handle Dayak Iban?",
+        "Is Dayak Iban important in Indonesia?"
+      ],
+      "aliases": [
+        "Dayak Iban",
+        "Dayak Iban in West Kalimantan",
+        "Dayak Iban Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "walker.adat.communities"
+    },
+    {
+      "id": "walker-walker-adat-communities-261fd87226",
+      "topic": "adat.baduy",
+      "region": "Banten",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:adat_communities · AMAN + academic",
+      "last_verified": "2026-08-30",
+      "content": "The Baduy (Kanekes) are a Sundanese adat community in western Java, ~11,000 people. Divided into Baduy Dalam (Inner Baduy, ~1,200, strict adherence — no electricity, motorised transport, cameras, soap, or synthetic cloth) and Baduy Luar (Outer Baduy, more flexible). Visitors may enter Baduy Luar with a local guide; Baduy Dalam entry requires the guide's introduction and strict rule observance (no photos of people, no ATM/mobile use during the visit, respect for pikukuh customary law). Access: Ciboleger village, ~4 hours from Jakarta.",
+      "keywords": [
+        "baduy",
+        "kanekes",
+        "banten",
+        "sundanese",
+        "adat dalam",
+        "adat luar",
+        "pikukuh",
+        "ciboleger"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist",
+        "backpacker"
+      ],
+      "questions": [
+        "Tell me about Baduy",
+        "What are the rules for Baduy?",
+        "How should tourists handle Baduy?",
+        "Is Baduy important in Indonesia?"
+      ],
+      "aliases": [
+        "Baduy",
+        "Baduy in Banten",
+        "Baduy Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "walker.adat.communities"
+    },
+    {
+      "id": "walker-walker-adat-communities-26e1123ea4",
+      "topic": "adat.mentawai",
+      "region": "West Sumatra",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.85,
+      "source": "seed.curated:adat_communities · AMAN + academic",
+      "last_verified": "2026-08-30",
+      "content": "The Mentawai people live on the Mentawai Islands off West Sumatra's coast — culturally + linguistically distinct from mainland Minangkabau. Known for sikerei (shamans), extensive body tattooing (titi), sharpened teeth traditions (increasingly rare), and Arat Sabulungan animist religion (now a recognised penghayat kepercayaan). Deep-interior visits (Siberut) require multi-day trekking + local guide; respectful visits arranged through community-based tourism operators.",
+      "keywords": [
+        "mentawai",
+        "siberut",
+        "sikerei",
+        "titi",
+        "arat sabulungan",
+        "west sumatra",
+        "adat"
+      ],
+      "category": "culture",
+      "audience": [
+        "backpacker"
+      ],
+      "questions": [
+        "Tell me about Mentawai",
+        "What are the rules for Mentawai?",
+        "How should tourists handle Mentawai?",
+        "Is Mentawai important in Indonesia?"
+      ],
+      "aliases": [
+        "Mentawai",
+        "Mentawai in West Sumatra",
+        "Mentawai Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "walker.adat.communities"
+    },
+    {
+      "id": "walker-walker-adat-communities-3364a82c26",
+      "topic": "adat.sasak_sade",
+      "region": "Lombok",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.85,
+      "source": "seed.curated:adat_communities · AMAN + academic",
+      "last_verified": "2026-08-30",
+      "content": "Sade village (Rembitan, central Lombok) is a Sasak adat village widely opened to respectful tourism — thatched-roof lumbung (rice barn) houses, weaving demonstrations, and preserved marriage-by-elopement (kawin lari) tradition. Entry: donation to the community box (~30k IDR fair). Local guides offered — negotiate before starting. Do not enter houses uninvited. The nearby Ende village is a quieter alternative less on the tour circuit.",
+      "keywords": [
+        "sasak",
+        "sade",
+        "rembitan",
+        "lombok",
+        "lumbung",
+        "kawin lari",
+        "adat",
+        "ende village"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist",
+        "backpacker"
+      ],
+      "questions": [
+        "Tell me about Sasak Sade",
+        "What are the rules for Sasak Sade?",
+        "How should tourists handle Sasak Sade?",
+        "Is Sasak Sade important in Indonesia?"
+      ],
+      "aliases": [
+        "Sasak Sade",
+        "Sasak Sade in Lombok",
+        "Sasak Sade Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "walker.adat.communities"
+    },
+    {
+      "id": "walker-walker-adat-communities-a61fc73392",
+      "topic": "adat.toraja",
+      "region": "South Sulawesi",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:adat_communities · AMAN + academic",
+      "last_verified": "2026-08-30",
+      "content": "The Toraja are a highland South Sulawesi adat community (~1M people) organised around Aluk Todolo (their pre-Christian religion — now a recognised penghayat kepercayaan) alongside Protestant Christianity. Most famous for rambu solo' (elaborate multi-day funeral rites) and tongkonan (boat-shaped ancestral houses). Visitors are welcome at funerals as respectful guests; customary gifts (cigarettes, sugar, palm wine) are appropriate. Do not photograph without asking; wear dark colours; expect emotional intensity.",
+      "keywords": [
+        "toraja",
+        "tana toraja",
+        "rambu solo",
+        "tongkonan",
+        "aluk todolo",
+        "sulawesi",
+        "adat",
+        "funeral"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist"
+      ],
+      "questions": [
+        "Tell me about Toraja",
+        "What are the rules for Toraja?",
+        "How should tourists handle Toraja?",
+        "Is Toraja important in Indonesia?"
+      ],
+      "aliases": [
+        "Toraja",
+        "Toraja in South Sulawesi",
+        "Toraja Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "walker.adat.communities"
+    },
+    {
+      "id": "walker-walker-culture-festivals-ceremonies-1efe9d1df5",
+      "topic": "festival.galungan",
+      "region": "Bali",
+      "language": "en",
+      "stability": "seasonal",
+      "confidence": 0.95,
+      "source": "seed.curated:festivals · PHDI",
+      "last_verified": "2026-08-30",
+      "content": "Galungan celebrates the victory of dharma (good) over adharma (evil) — the Balinese Hindu equivalent of a major religious holiday, observed every 210 days on the Pawukon calendar. Homes and shops erect penjor (tall curved bamboo poles decorated with palm-leaf ornaments) along the streets. Many Balinese travel to their family home; expect quieter tourist zones but busier villages. Ends 10 days later with Kuningan. Most businesses stay open in tourist areas, but staff numbers thin — book restaurants ahead.",
+      "keywords": [
+        "galungan",
+        "kuningan",
+        "pawukon",
+        "penjor",
+        "dharma",
+        "balinese hindu",
+        "210-day cycle"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist"
+      ],
+      "questions": [
+        "Tell me about Galungan",
+        "What are the rules for Galungan?",
+        "How should tourists handle Galungan?",
+        "Is Galungan important in Indonesia?"
+      ],
+      "aliases": [
+        "Galungan",
+        "Galungan in Bali",
+        "Galungan Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2026-09-29",
+      "walker_id": "walker.culture.festivals_ceremonies"
+    },
+    {
+      "id": "walker-walker-culture-festivals-ceremonies-266c4ba47e",
+      "topic": "festival.cap_go_meh",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "seasonal",
+      "confidence": 0.9,
+      "source": "seed.curated:festivals · Kemenag",
+      "last_verified": "2026-08-30",
+      "content": "Cap Go Meh marks the 15th day (final day) of Chinese New Year celebrations, most vividly in Indonesia's Chinese-Indonesian communities — Singkawang (West Kalimantan) hosts arguably the largest, with tatung (spirit-medium) processions that draw international visitors. Also strong in Jakarta's Glodok, Semarang, Surabaya, Bogor, and Pontianak. Not a national public holiday but the underlying Imlek (Chinese New Year) is.",
+      "keywords": [
+        "cap go meh",
+        "imlek",
+        "chinese new year",
+        "singkawang",
+        "tatung",
+        "glodok",
+        "chinese-indonesian"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist"
+      ],
+      "questions": [
+        "Tell me about Cap go Meh",
+        "What are the rules for Cap go Meh?",
+        "How should tourists handle Cap go Meh?",
+        "Is Cap go Meh important in Indonesia?"
+      ],
+      "aliases": [
+        "Cap go Meh",
+        "Cap go Meh in Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2026-09-29",
+      "walker_id": "walker.culture.festivals_ceremonies"
+    },
+    {
+      "id": "walker-walker-culture-festivals-ceremonies-4e5b221ac3",
+      "topic": "festival.kuningan",
+      "region": "Bali",
+      "language": "en",
+      "stability": "seasonal",
+      "confidence": 0.95,
+      "source": "seed.curated:festivals · PHDI",
+      "last_verified": "2026-08-30",
+      "content": "Kuningan marks the end of the 10-day Galungan period on the Balinese Pawukon calendar. Ancestral spirits, believed to have visited the earthly realm during Galungan, return to the heavens at noon on Kuningan — so ceremonies traditionally end by midday. Yellow rice (nasi kuning) is the ceremonial food. Best time for visitors to observe: a village temple ceremony in the morning; ask permission before entering.",
+      "keywords": [
+        "kuningan",
+        "galungan",
+        "pawukon",
+        "nasi kuning",
+        "yellow rice",
+        "ancestral spirits"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist"
+      ],
+      "questions": [
+        "Tell me about Kuningan",
+        "What are the rules for Kuningan?",
+        "How should tourists handle Kuningan?",
+        "Is Kuningan important in Indonesia?"
+      ],
+      "aliases": [
+        "Kuningan",
+        "Kuningan in Bali",
+        "Kuningan Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2026-09-29",
+      "walker_id": "walker.culture.festivals_ceremonies"
+    },
+    {
+      "id": "walker-walker-culture-festivals-ceremonies-51adacfed7",
+      "topic": "festival.idul_fitri",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "seasonal",
+      "confidence": 0.95,
+      "source": "seed.curated:festivals · Kemenag",
+      "last_verified": "2026-08-30",
+      "content": "Idul Fitri (Lebaran, Eid al-Fitr) marks the end of Ramadan — Indonesia's biggest annual holiday. The two official public holidays surround a national exodus (mudik) as millions travel to their family village. Transport prices spike 2–3× for the week either side; airports, trains, ferries fully booked. Jakarta becomes eerily quiet; tourist areas continue normally. Halal bi halal (mutual forgiveness visits) fill the days after. Book any long-distance travel 2 months ahead of Lebaran week.",
+      "keywords": [
+        "idul fitri",
+        "lebaran",
+        "eid al-fitr",
+        "mudik",
+        "halal bi halal",
+        "public holiday",
+        "muslim"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist"
+      ],
+      "questions": [
+        "Tell me about Idul Fitri",
+        "What are the rules for Idul Fitri?",
+        "How should tourists handle Idul Fitri?",
+        "Is Idul Fitri important in Indonesia?"
+      ],
+      "aliases": [
+        "Idul Fitri",
+        "Idul Fitri in Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2026-09-29",
+      "walker_id": "walker.culture.festivals_ceremonies"
+    },
+    {
+      "id": "walker-walker-culture-festivals-ceremonies-5b03faba98",
+      "topic": "festival.ramadan",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "seasonal",
+      "confidence": 0.95,
+      "source": "seed.curated:festivals · Kemenag",
+      "last_verified": "2026-08-30",
+      "content": "Ramadan is the Islamic month of fasting — Muslims abstain from food, drink, and smoking from fajr (pre-dawn) to maghrib (sunset). In Indonesia (world's largest Muslim country) many warungs close during daylight or draw a curtain across the front; some fully close for the month. Business hours shift; expect reduced service. After sunset, buka puasa (breaking of the fast) begins — bazaars pop up nationwide selling takjil (sweet snacks) + iftar meals. Non-Muslims are welcome to eat at hotels and non-halal restaurants; being discreet in public during daylight is a courtesy. Runs a lunar month (varies annually).",
+      "keywords": [
+        "ramadan",
+        "puasa",
+        "fajr",
+        "maghrib",
+        "buka puasa",
+        "iftar",
+        "takjil",
+        "muslim",
+        "fasting"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist"
+      ],
+      "questions": [
+        "Tell me about Ramadan",
+        "What are the rules for Ramadan?",
+        "How should tourists handle Ramadan?",
+        "Is Ramadan important in Indonesia?"
+      ],
+      "aliases": [
+        "Ramadan",
+        "Ramadan in Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2026-09-29",
+      "walker_id": "walker.culture.festivals_ceremonies"
+    },
+    {
+      "id": "walker-walker-culture-festivals-ceremonies-601205e108",
+      "topic": "festival.melasti",
+      "region": "Bali",
+      "language": "en",
+      "stability": "seasonal",
+      "confidence": 0.9,
+      "source": "seed.curated:festivals · PHDI",
+      "last_verified": "2026-08-30",
+      "content": "Melasti is a Balinese purification ceremony held 3–4 days before Nyepi. Villages carry sacred temple objects (pratima) in procession to the sea or a holy spring for symbolic cleansing. Coastal beaches (Sanur, Kuta, Padang Padang) fill with white-clad worshippers. Non-Hindu visitors may respectfully observe from a distance; do not photograph individual worshippers without permission and do not walk between the procession and the sea.",
+      "keywords": [
+        "melasti",
+        "nyepi",
+        "purification",
+        "pratima",
+        "sanur beach",
+        "kuta beach",
+        "coastal procession"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist"
+      ],
+      "questions": [
+        "Tell me about Melasti",
+        "What are the rules for Melasti?",
+        "How should tourists handle Melasti?",
+        "Is Melasti important in Indonesia?"
+      ],
+      "aliases": [
+        "Melasti",
+        "Melasti in Bali",
+        "Melasti Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2026-09-29",
+      "walker_id": "walker.culture.festivals_ceremonies"
+    },
+    {
+      "id": "walker-walker-culture-festivals-ceremonies-7d696d5b42",
+      "topic": "festival.erau",
+      "region": "East Kalimantan",
+      "language": "en",
+      "stability": "seasonal",
+      "confidence": 0.85,
+      "source": "seed.curated:festivals · Kemendikbud",
+      "last_verified": "2026-08-30",
+      "content": "Erau is the annual cultural festival of the Kutai Kartanegara sultanate in Tenggarong, East Kalimantan — traditionally centred on the enthronement anniversary. Modern Erau (revived in the 1970s) runs about a week and includes Dayak dance, boat races on the Mahakam river, tepong tawar (blessing rituals), and the belimbur (mutual water-throwing) finale. Typically held in September or October.",
+      "keywords": [
+        "erau",
+        "kutai",
+        "kartanegara",
+        "tenggarong",
+        "mahakam",
+        "dayak",
+        "belimbur",
+        "east kalimantan"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist"
+      ],
+      "questions": [
+        "Tell me about Erau",
+        "What are the rules for Erau?",
+        "How should tourists handle Erau?",
+        "Is Erau important in Indonesia?"
+      ],
+      "aliases": [
+        "Erau",
+        "Erau in East Kalimantan",
+        "Erau Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2026-09-29",
+      "walker_id": "walker.culture.festivals_ceremonies"
+    },
+    {
+      "id": "walker-walker-culture-festivals-ceremonies-8cdc3fff77",
+      "topic": "festival.nyepi",
+      "region": "Bali",
+      "language": "en",
+      "stability": "seasonal",
+      "confidence": 0.95,
+      "source": "seed.curated:festivals · PHDI",
+      "last_verified": "2026-08-30",
+      "content": "Nyepi is Bali's Day of Silence — the Balinese Hindu new year according to the Saka calendar. For 24 hours (roughly 06:00 to 06:00 next day) the entire island observes silence: no travel, no lights, no fires, no work, no entertainment. The airport (DPS) closes to arrivals + departures. Tourists must stay inside their hotel compound; only emergency vehicles operate. The night before is Pengrupukan, when huge papier-mâché ogoh-ogoh monsters are paraded and burned. Falls in March (varies annually · Saka calendar).",
+      "keywords": [
+        "nyepi",
+        "day of silence",
+        "saka",
+        "balinese new year",
+        "ogoh-ogoh",
+        "pengrupukan",
+        "airport closure",
+        "bali silence"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist",
+        "family"
+      ],
+      "questions": [
+        "Tell me about Nyepi",
+        "What are the rules for Nyepi?",
+        "How should tourists handle Nyepi?",
+        "Is Nyepi important in Indonesia?"
+      ],
+      "aliases": [
+        "Nyepi",
+        "Nyepi in Bali",
+        "Nyepi Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2026-09-29",
+      "walker_id": "walker.culture.festivals_ceremonies"
+    },
+    {
+      "id": "walker-walker-culture-festivals-ceremonies-95e8d84eca",
+      "topic": "festival.odalan",
+      "region": "Bali",
+      "language": "en",
+      "stability": "seasonal",
+      "confidence": 0.9,
+      "source": "seed.curated:festivals · PHDI",
+      "last_verified": "2026-08-30",
+      "content": "Odalan is a Balinese temple anniversary — every temple celebrates one every 210 days (Pawukon) or 355 days (lunar), meaning multiple happen every day across Bali. The temple is filled with offerings, gamelan music, and dance performances. Visitors are welcome if respectful: sarong + sash required, do not walk in front of praying worshippers, do not sit higher than the priests, no menstruating women per Balinese Hindu convention. Ask a local or your accommodation whether a nearby odalan is happening.",
+      "keywords": [
+        "odalan",
+        "temple anniversary",
+        "pawukon",
+        "sarong",
+        "offerings",
+        "gamelan",
+        "balinese hindu"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist"
+      ],
+      "questions": [
+        "Tell me about Odalan",
+        "What are the rules for Odalan?",
+        "How should tourists handle Odalan?",
+        "Is Odalan important in Indonesia?"
+      ],
+      "aliases": [
+        "Odalan",
+        "Odalan in Bali",
+        "Odalan Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2026-09-29",
+      "walker_id": "walker.culture.festivals_ceremonies"
+    },
+    {
+      "id": "walker-walker-culture-festivals-ceremonies-b84da32471",
+      "topic": "festival.bau_nyale",
+      "region": "Lombok",
+      "language": "en",
+      "stability": "seasonal",
+      "confidence": 0.85,
+      "source": "seed.curated:festivals · Kemendikbud",
+      "last_verified": "2026-08-30",
+      "content": "Bau Nyale is an annual Sasak festival on Lombok's south coast (around Kuta Lombok) — thousands gather at night to catch nyale, a sea worm that surfaces once a year in February or March according to the traditional calendar. The worms are considered incarnations of the legendary Princess Mandalika. The event is preceded by a night of song, poetry (bepantun), and cultural performance. A significant recent-revival tradition tied to Sasak identity.",
+      "keywords": [
+        "bau nyale",
+        "sasak",
+        "kuta lombok",
+        "mandalika",
+        "sea worm",
+        "february",
+        "lombok festival"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist"
+      ],
+      "questions": [
+        "Tell me about Bau Nyale",
+        "What are the rules for Bau Nyale?",
+        "How should tourists handle Bau Nyale?",
+        "Is Bau Nyale important in Indonesia?"
+      ],
+      "aliases": [
+        "Bau Nyale",
+        "Bau Nyale in Lombok",
+        "Bau Nyale Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2026-09-29",
+      "walker_id": "walker.culture.festivals_ceremonies"
+    },
+    {
+      "id": "walker-walker-culture-festivals-ceremonies-beb955f418",
+      "topic": "festival.waisak",
+      "region": "Central Java",
+      "language": "en",
+      "stability": "seasonal",
+      "confidence": 0.95,
+      "source": "seed.curated:festivals · Kemenag",
+      "last_verified": "2026-08-30",
+      "content": "Waisak (Vesak) is the Buddhist commemoration of the Buddha's birth, enlightenment, and death — celebrated on the full moon of the lunar month of Vesakha (usually May). In Indonesia the largest observance is at Borobudur: thousands of monks and pilgrims gather, meditate, and release lanterns into the night sky. The lantern release is ticketed; access to the temple upper terraces is highly restricted that day. Book lantern tickets months ahead. Public holiday nationally.",
+      "keywords": [
+        "waisak",
+        "vesak",
+        "buddha",
+        "borobudur",
+        "lantern",
+        "full moon",
+        "vesakha",
+        "public holiday"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist"
+      ],
+      "questions": [
+        "Tell me about Waisak",
+        "What are the rules for Waisak?",
+        "How should tourists handle Waisak?",
+        "Is Waisak important in Indonesia?"
+      ],
+      "aliases": [
+        "Waisak",
+        "Waisak in Central Java",
+        "Waisak Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2026-09-29",
+      "walker_id": "walker.culture.festivals_ceremonies"
+    },
+    {
+      "id": "walker-walker-culture-festivals-ceremonies-dad987ddd3",
+      "topic": "festival.idul_adha",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "seasonal",
+      "confidence": 0.9,
+      "source": "seed.curated:festivals · Kemenag",
+      "last_verified": "2026-08-30",
+      "content": "Idul Adha (Eid al-Adha) is the Islamic 'Feast of Sacrifice', ~70 days after Idul Fitri. Sheep, goats, and cows are ritually sacrificed at mosques nationwide; meat is distributed to the poor. Public holiday. Less travel disruption than Idul Fitri but expect some restaurant menu changes (more mutton, goat curry). Non-Muslims visiting a mosque during the ceremony should ask permission and dress modestly.",
+      "keywords": [
+        "idul adha",
+        "eid al-adha",
+        "qurban",
+        "sacrifice",
+        "muslim",
+        "public holiday"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist"
+      ],
+      "questions": [
+        "Tell me about Idul Adha",
+        "What are the rules for Idul Adha?",
+        "How should tourists handle Idul Adha?",
+        "Is Idul Adha important in Indonesia?"
+      ],
+      "aliases": [
+        "Idul Adha",
+        "Idul Adha in Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2026-09-29",
+      "walker_id": "walker.culture.festivals_ceremonies"
+    },
+    {
+      "id": "walker-walker-spiritual-sacred-sites-40cbbaa0a0",
+      "topic": "sacred.besakih",
+      "region": "Bali",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:sacred_sites · PHDI",
+      "last_verified": "2026-08-30",
+      "content": "Pura Besakih (the 'Mother Temple') is Bali's largest and holiest Hindu temple complex — 23 separate temples on the slopes of Mount Agung. Belief tradition: Balinese Hindu (Agama Hindu Dharma). Observance type: doctrinal + traditional. Access rules: sarong + sash mandatory (rental available), no entry to inner sanctuaries during ceremonies except for worshippers, no menstruating women per Balinese Hindu convention, tourist entry via a paved path with local-guide encouragement (agree fee first — 100–200k IDR is fair). Entry fee ~60k IDR foreigner.",
+      "keywords": [
+        "besakih",
+        "mother temple",
+        "mount agung",
+        "hindu bali",
+        "pura",
+        "sarong",
+        "belief tradition"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist",
+        "family"
+      ],
+      "questions": [
+        "Tell me about Besakih",
+        "What are the rules for Besakih?",
+        "How should tourists handle Besakih?",
+        "Is Besakih important in Indonesia?"
+      ],
+      "aliases": [
+        "Besakih",
+        "Besakih in Bali",
+        "Besakih Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "walker.spiritual.sacred_sites"
+    },
+    {
+      "id": "walker-walker-spiritual-sacred-sites-58022a4999",
+      "topic": "sacred.istiqlal",
+      "region": "Jakarta",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:sacred_sites · MUI",
+      "last_verified": "2026-08-30",
+      "content": "Masjid Istiqlal is South-East Asia's largest mosque — Jakarta's national mosque, capacity 200,000+. Belief tradition: Sunni Islam. Observance type: doctrinal. Notably located directly across from the Catholic Jakarta Cathedral — a symbol of Indonesian religious pluralism. Non-Muslim visitors are welcome outside of prayer times; dress modestly (shoulders + knees covered, headscarf provided for women at the entrance). Free entry; a guide-tip is customary. Do not photograph worshippers mid-prayer.",
+      "keywords": [
+        "istiqlal",
+        "masjid istiqlal",
+        "jakarta cathedral",
+        "sunni islam",
+        "national mosque",
+        "mosque etiquette"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist",
+        "family"
+      ],
+      "questions": [
+        "Tell me about Istiqlal",
+        "What are the rules for Istiqlal?",
+        "How should tourists handle Istiqlal?",
+        "Is Istiqlal important in Indonesia?"
+      ],
+      "aliases": [
+        "Istiqlal",
+        "Istiqlal in Jakarta",
+        "Istiqlal Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "walker.spiritual.sacred_sites"
+    },
+    {
+      "id": "walker-walker-spiritual-sacred-sites-9a0c19165a",
+      "topic": "sacred.borobudur",
+      "region": "Yogyakarta",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:sacred_sites · UNESCO + Kemenag",
+      "last_verified": "2026-08-30",
+      "content": "Borobudur is the world's largest Buddhist temple (9th-century Sailendra dynasty) — a functioning Buddhist site as well as a UNESCO monument. Belief tradition: Theravada + Mahayana Buddhist. Observance type: doctrinal + tourist-facing. Timed entry to upper terraces (foreigner ~US$25–35) since 2022; sunrise access ticketed separately. Local Buddhist community observes Waisak here in May — access restricted that day. Visitors dress modestly, walk clockwise around the stupas, do not touch reliefs.",
+      "keywords": [
+        "borobudur",
+        "buddhist temple",
+        "sailendra",
+        "unesco",
+        "waisak",
+        "stupa",
+        "central java"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist",
+        "family",
+        "couple"
+      ],
+      "questions": [
+        "Tell me about Borobudur",
+        "What are the rules for Borobudur?",
+        "How should tourists handle Borobudur?",
+        "Is Borobudur important in Indonesia?"
+      ],
+      "aliases": [
+        "Borobudur",
+        "Borobudur in Yogyakarta",
+        "Borobudur Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "walker.spiritual.sacred_sites"
+    },
+    {
+      "id": "walker-walker-spiritual-sacred-sites-ad4bd81ef9",
+      "topic": "sacred.prambanan",
+      "region": "Yogyakarta",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:sacred_sites · UNESCO + PHDI",
+      "last_verified": "2026-08-30",
+      "content": "Prambanan is a 9th-century Hindu temple complex — the largest in Indonesia — dedicated to the Trimurti (Brahma, Vishnu, Shiva). Belief tradition: Historical + revived Hindu practice (mostly Balinese Hindus visit for observances). Observance type: doctrinal (revived) + tourist-facing. UNESCO listed. Sarong + sash required for the main temples (rental included with ticket). Combine-ticket with Borobudur available. Dry-season Ramayana ballet in the outdoor amphitheatre most weekends — book ahead.",
+      "keywords": [
+        "prambanan",
+        "trimurti",
+        "hindu temple",
+        "unesco",
+        "ramayana ballet",
+        "central java",
+        "yogyakarta"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist",
+        "family",
+        "couple"
+      ],
+      "questions": [
+        "Tell me about Prambanan",
+        "What are the rules for Prambanan?",
+        "How should tourists handle Prambanan?",
+        "Is Prambanan important in Indonesia?"
+      ],
+      "aliases": [
+        "Prambanan",
+        "Prambanan in Yogyakarta",
+        "Prambanan Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "walker.spiritual.sacred_sites"
+    },
+    {
+      "id": "walker-walker-spiritual-sacred-sites-d73e5a7c42",
+      "topic": "sacred.tirta_empul",
+      "region": "Bali",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:sacred_sites · PHDI",
+      "last_verified": "2026-08-30",
+      "content": "Pura Tirta Empul (in Tampaksiring, near Ubud) is the temple of holy spring water — a working Hindu pilgrimage site where Balinese come for melukat (purification bathing) at 30-plus spouts. Belief tradition: Balinese Hindu, active use. Observance type: doctrinal + contemporary practice. Visitors may bathe respectfully: change into a sarong + shorts in the changing area, do not use the two spouts reserved for funeral cleansing (marked; ask staff), do not photograph individuals mid-prayer, women should not enter the pools during menstruation.",
+      "keywords": [
+        "tirta empul",
+        "tampaksiring",
+        "melukat",
+        "purification",
+        "holy spring",
+        "hindu bali",
+        "ubud area"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist",
+        "couple"
+      ],
+      "questions": [
+        "Tell me about Tirta Empul",
+        "What are the rules for Tirta Empul?",
+        "How should tourists handle Tirta Empul?",
+        "Is Tirta Empul important in Indonesia?"
+      ],
+      "aliases": [
+        "Tirta Empul",
+        "Tirta Empul in Bali",
+        "Tirta Empul Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "walker.spiritual.sacred_sites"
+    },
+    {
+      "id": "walker-walker-spiritual-sacred-sites-fb8bf9413b",
+      "topic": "sacred.uluwatu_temple",
+      "region": "Bali",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:sacred_sites · PHDI",
+      "last_verified": "2026-08-30",
+      "content": "Pura Luhur Uluwatu is one of the six sad kahyangan (major sea temples) protecting Bali. Belief tradition: Balinese Hindu. Observance type: doctrinal. Dramatic clifftop setting on Bali's south peninsula. Sarong + sash mandatory (included with entry, ~50k IDR foreigner). Macaque monkeys will snatch sunglasses, phones, hats — bag them before entering. The daily Kecak fire dance at sunset (starts ~18:00) is a cultural performance held in a nearby amphitheatre — not part of the temple ritual itself.",
+      "keywords": [
+        "uluwatu",
+        "pura luhur uluwatu",
+        "sad kahyangan",
+        "sea temple",
+        "kecak",
+        "sarong",
+        "macaque",
+        "cliff temple"
+      ],
+      "category": "culture",
+      "audience": [
+        "tourist",
+        "family",
+        "couple"
+      ],
+      "questions": [
+        "Tell me about Uluwatu Temple",
+        "What are the rules for Uluwatu Temple?",
+        "How should tourists handle Uluwatu Temple?",
+        "Is Uluwatu Temple important in Indonesia?"
+      ],
+      "aliases": [
+        "Uluwatu Temple",
+        "Uluwatu Temple in Bali",
+        "Uluwatu Temple Indonesia"
+      ],
+      "acquired_at": "2026-08-30",
+      "refresh_after": "2027-02-26",
+      "walker_id": "walker.spiritual.sacred_sites"
+    }
+  ]
+}

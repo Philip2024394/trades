@@ -1,0 +1,68 @@
+[
+  {
+    "id": "IK-capital",
+    "note": "Capital lookup returns the capital record",
+    "input": { "message": "What is the capital of Indonesia?" },
+    "expect": { "topicPattern": "^indonesia\\.capital$", "contentPattern": "Jakarta" }
+  },
+  {
+    "id": "IK-timezones",
+    "note": "Time-zone question retrieves the time-zone record",
+    "input": { "message": "How many time zones does Indonesia have?" },
+    "expect": { "topicPattern": "^indonesia\\.time_zones$", "contentPattern": "WIB|WITA|WIT" }
+  },
+  {
+    "id": "IK-currency",
+    "note": "Currency question retrieves the currency record",
+    "input": { "message": "What is the currency in Indonesia?" },
+    "expect": { "topicPattern": "^indonesia\\.currency$", "contentPattern": "Rupiah" }
+  },
+  {
+    "id": "IK-bali",
+    "note": "Bali overview retrieves the Bali tourism record",
+    "input": { "message": "Tell me about Bali" },
+    "expect": { "topicPattern": "^tourism\\.bali$", "contentPattern": "Canggu|Seminyak|Ubud" }
+  },
+  {
+    "id": "IK-yogya",
+    "note": "Yogyakarta highlights → Yogyakarta record",
+    "input": { "message": "What should I do in Yogyakarta?" },
+    "expect": { "topicPattern": "^tourism\\.yogyakarta$", "contentPattern": "Borobudur|Prambanan|Malioboro" }
+  },
+  {
+    "id": "IK-nasi-goreng",
+    "note": "'What is nasi goreng?' → nasi goreng record",
+    "input": { "message": "What is nasi goreng?" },
+    "expect": { "topicPattern": "^food\\.nasi_goreng$", "contentPattern": "fried rice" }
+  },
+  {
+    "id": "IK-rendang",
+    "note": "Rendang question → rendang record",
+    "input": { "message": "Tell me about rendang" },
+    "expect": { "topicPattern": "^food\\.rendang$", "contentPattern": "beef" }
+  },
+  {
+    "id": "IK-halal",
+    "note": "Halal question → halal record",
+    "input": { "message": "Is Indonesian food halal?" },
+    "expect": { "topicPattern": "^food\\.halal$", "contentPattern": "Muslim|halal" }
+  },
+  {
+    "id": "IK-payment",
+    "note": "Payment question → payment record",
+    "input": { "message": "Can I use my card in Indonesia?" },
+    "expect": { "topicPattern": "^practical\\.payment$", "contentPattern": "QRIS|card|cash" }
+  },
+  {
+    "id": "IK-transport",
+    "note": "Ride-hailing question → transport record",
+    "input": { "message": "How do I use Gojek?" },
+    "expect": { "topicPattern": "^practical\\.transport$", "contentPattern": "Gojek|Grab|ride" }
+  },
+  {
+    "id": "IK-nomatch",
+    "note": "Unknown query returns empty (no hallucination)",
+    "input": { "message": "explain quantum chromodynamics in Indonesia" },
+    "expect": { "empty": true }
+  }
+]

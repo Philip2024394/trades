@@ -1,0 +1,206 @@
+[
+  {
+    "id": "R-fast-01",
+    "note": "short casual greeting → fast brain",
+    "input": { "message": "hi", "hasImage": false },
+    "expect": { "role": "brain.fast_local", "reason": "default_fast" }
+  },
+  {
+    "id": "R-fast-02",
+    "note": "short factual question → fast",
+    "input": { "message": "What is the capital of Bali?", "hasImage": false },
+    "expect": { "role": "brain.fast_local", "reason": "default_fast" }
+  },
+  {
+    "id": "R-fast-03",
+    "note": "short Indonesian greeting → fast",
+    "input": { "message": "Halo NEX, apa kabar?", "hasImage": false },
+    "expect": { "role": "brain.fast_local", "reason": "default_fast" }
+  },
+  {
+    "id": "R-fast-04",
+    "note": "short business ask (no hard hint) → fast",
+    "input": { "message": "Find me a coffee shop in Ubud", "hasImage": false },
+    "expect": { "role": "brain.fast_local", "reason": "default_fast" }
+  },
+  {
+    "id": "R-fast-05",
+    "note": "empty is still fast (route validates elsewhere)",
+    "input": { "message": "", "hasImage": false },
+    "expect": { "role": "brain.fast_local", "reason": "default_fast" }
+  },
+  {
+    "id": "R-fast-06",
+    "note": "hard-hint word inside a NON-hint context still fires (design constraint · document)",
+    "input": { "message": "The word `strategy` appears here but this is a short note", "hasImage": false },
+    "expect": { "role": "brain.primary_local", "reasonPattern": "^hard_hint:strategy$" }
+  },
+  {
+    "id": "R-fast-07",
+    "note": "short mixed-language chat WITHOUT hard hints → fast",
+    "input": { "message": "Halo, cari warung enak di sekitar sini", "hasImage": false },
+    "expect": { "role": "brain.fast_local", "reason": "default_fast" }
+  },
+  {
+    "id": "R-fast-08",
+    "note": "180-char reflection → fast (below length threshold)",
+    "input": { "message": "Yesterday I had a really nice meal at a small warung in Canggu. It was inexpensive, tasty, and the owner was very kind. Do you know any similar places nearby?", "hasImage": false },
+    "expect": { "role": "brain.fast_local", "reason": "default_fast" }
+  },
+
+  {
+    "id": "R-primary-01",
+    "note": "hard-hint 'should i' → primary",
+    "input": { "message": "Should I invest in TikTok Shop?", "hasImage": false },
+    "expect": { "role": "brain.primary_local", "reasonPattern": "^hard_hint:should i$" }
+  },
+  {
+    "id": "R-primary-02",
+    "note": "hard-hint 'analyse' (UK spelling)",
+    "input": { "message": "Please analyse my sales for the last week.", "hasImage": false },
+    "expect": { "role": "brain.primary_local", "reasonPattern": "^hard_hint:analyse$" }
+  },
+  {
+    "id": "R-primary-03",
+    "note": "hard-hint 'analyze' (US spelling)",
+    "input": { "message": "Analyze which product converted best on Facebook", "hasImage": false },
+    "expect": { "role": "brain.primary_local", "reasonPattern": "^hard_hint:analyze$" }
+  },
+  {
+    "id": "R-primary-04",
+    "note": "hard-hint 'compare' → primary",
+    "input": { "message": "Compare Tokopedia and Shopee for a new merchant.", "hasImage": false },
+    "expect": { "role": "brain.primary_local", "reasonPattern": "^hard_hint:compare$" }
+  },
+  {
+    "id": "R-primary-05",
+    "note": "hard-hint 'strategy'",
+    "input": { "message": "What is a good strategy for Instagram this month?", "hasImage": false },
+    "expect": { "role": "brain.primary_local", "reasonPattern": "^hard_hint:strategy$" }
+  },
+  {
+    "id": "R-primary-06",
+    "note": "hard-hint 'recommend' (careful · this differs from 'recommendation')",
+    "input": { "message": "Recommend three trades I could hire.", "hasImage": false },
+    "expect": { "role": "brain.primary_local", "reasonPattern": "^hard_hint:recommend$" }
+  },
+  {
+    "id": "R-primary-07",
+    "note": "hard-hint 'explain why'",
+    "input": { "message": "Explain why my conversion rate dropped.", "hasImage": false },
+    "expect": { "role": "brain.primary_local", "reasonPattern": "^hard_hint:explain why$" }
+  },
+  {
+    "id": "R-primary-08",
+    "note": "hard-hint 'break down'",
+    "input": { "message": "Break down my expenses by category.", "hasImage": false },
+    "expect": { "role": "brain.primary_local", "reasonPattern": "^hard_hint:break down$" }
+  },
+  {
+    "id": "R-primary-09",
+    "note": "hard-hint 'how am i doing'",
+    "input": { "message": "How am I doing versus last month?", "hasImage": false },
+    "expect": { "role": "brain.primary_local", "reasonPattern": "^hard_hint:how am i doing$" }
+  },
+  {
+    "id": "R-primary-10",
+    "note": "hard-hint 'trend'",
+    "input": { "message": "Is there a trend in my customer visits?", "hasImage": false },
+    "expect": { "role": "brain.primary_local", "reasonPattern": "^hard_hint:trend$" }
+  },
+  {
+    "id": "R-primary-11",
+    "note": "hard-hint 'why did'",
+    "input": { "message": "Why did my ROAS drop last week?", "hasImage": false },
+    "expect": { "role": "brain.primary_local", "reasonPattern": "^hard_hint:why did$" }
+  },
+  {
+    "id": "R-primary-12",
+    "note": "hard-hint 'growth'",
+    "input": { "message": "How's my growth trajectory?", "hasImage": false },
+    "expect": { "role": "brain.primary_local", "reasonPattern": "^hard_hint:growth$" }
+  },
+  {
+    "id": "R-primary-13",
+    "note": "long message > 260 chars, no hard hints → primary by length",
+    "input": {
+      "message": "I have been running my roofing business for four years and I want to know whether I should expand into gutter cleaning as an additional service line. My current customers often ask about it, and I already have the ladders and safety kit. But I am worried it might dilute my brand.",
+      "hasImage": false
+    },
+    "expect": { "role": "brain.primary_local", "reasonPattern": "^(hard_hint:should i|length_gt_260)$" }
+  },
+  {
+    "id": "R-primary-14",
+    "note": "long, ID, no hint → primary by length (>260 chars)",
+    "input": {
+      "message": "Saya baru saja pindah ke Bali dan sedang mencari tempat kos di daerah Canggu atau Kerobokan yang bersih, aman, tenang, dekat dengan pantai serta warung makan yang enak dan terjangkau. Budget saya sekitar 4 juta rupiah per bulan. Ada saran tempat yang cocok untuk saya?",
+      "hasImage": false
+    },
+    "expect": { "role": "brain.primary_local", "reason": "length_gt_260" }
+  },
+
+  {
+    "id": "R-vision-01",
+    "note": "any image attached → vision",
+    "input": { "message": "What is this?", "hasImage": true },
+    "expect": { "role": "vision.primary_local", "reason": "image_attached" }
+  },
+  {
+    "id": "R-vision-02",
+    "note": "image + hard-hint text still resolves to vision (image dominates)",
+    "input": { "message": "Analyze this product photo for me", "hasImage": true },
+    "expect": { "role": "vision.primary_local", "reason": "image_attached" }
+  },
+  {
+    "id": "R-vision-03",
+    "note": "image + Indonesian text → vision",
+    "input": { "message": "Apa isi gambar ini?", "hasImage": true },
+    "expect": { "role": "vision.primary_local", "reason": "image_attached" }
+  },
+  {
+    "id": "R-vision-04",
+    "note": "image + long text → vision (image wins over length)",
+    "input": {
+      "message": "This is a photo of my kitchen counter and I want you to look carefully at every item on it and tell me what each one is, whether it is expired, whether it looks safe to eat, and what I might cook for dinner tonight given these ingredients. Take your time and be thorough.",
+      "hasImage": true
+    },
+    "expect": { "role": "vision.primary_local", "reason": "image_attached" }
+  },
+  {
+    "id": "R-vision-05",
+    "note": "image + empty message → still vision",
+    "input": { "message": "", "hasImage": true },
+    "expect": { "role": "vision.primary_local", "reason": "image_attached" }
+  },
+
+  {
+    "id": "R-edge-01",
+    "note": "case-insensitive hard-hint",
+    "input": { "message": "COMPARE Tokopedia and Shopee", "hasImage": false },
+    "expect": { "role": "brain.primary_local", "reasonPattern": "^hard_hint:compare$" }
+  },
+  {
+    "id": "R-edge-02",
+    "note": "hint embedded in a word doesn't fire (careful design)",
+    "input": { "message": "The competitor is Tokopedia.", "hasImage": false },
+    "expect": { "role": "brain.fast_local", "reason": "default_fast" }
+  },
+  {
+    "id": "R-edge-03",
+    "note": "exactly at 260 chars is still fast",
+    "input": {
+      "message": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "hasImage": false
+    },
+    "expect": { "role": "brain.fast_local", "reason": "default_fast" }
+  },
+  {
+    "id": "R-edge-04",
+    "note": "261 chars tips into primary by length",
+    "input": {
+      "message": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab",
+      "hasImage": false
+    },
+    "expect": { "role": "brain.primary_local", "reason": "length_gt_260" }
+  }
+]

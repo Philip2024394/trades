@@ -1,0 +1,56 @@
+{
+  "scannedAt": "2026-08-27T23:09:46.717Z",
+  "frame": "C:\\Users\\Victus\\trades\\public\\nex\\hud-frame-v12-norail.png",
+  "raster": {
+    "width": 941,
+    "height": 1672,
+    "aspect": 0.562799043062201
+  },
+  "silhouette": {
+    "minX": 0,
+    "maxX": 940,
+    "minY": 0,
+    "maxY": 1660
+  },
+  "viewport": {
+    "topY": 131,
+    "bottomY": 1462,
+    "heightPx": 1332,
+    "topPct": "7.83",
+    "bottomPct": "12.50",
+    "heightPct": "79.67"
+  },
+  "header": {
+    "topY": 0,
+    "bottomY": 130,
+    "heightPx": 131,
+    "heightPct": "7.83"
+  },
+  "footer": {
+    "topY": 1463,
+    "bottomY": 1671,
+    "heightPx": 209,
+    "heightPct": "12.50"
+  },
+  "leftBezel": {
+    "maxX": 115,
+    "maxPct": "12.22",
+    "maxIntrusionPx": 115
+  },
+  "rightRail": {
+    "innerEdgeMinX": 826,
+    "widthPx": 114,
+    "widthPct": "12.11",
+    "rightInsetPct": "12.11"
+  },
+  "innerStrip": {
+    "widestPx": 811,
+    "widestPct": "86.18",
+    "widestY": 1026,
+    "narrowestPx": 712,
+    "narrowestPct": "75.66",
+    "narrowestY": 1462
+  },
+  "wordmarkPlate": null,
+  "headerIconPlates": null
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "TX-registry-size",
+    "note": "Walker taxonomy registry has at least 90 specialist walkers across 8 branches",
+    "expect": { "minTotalWalkers": 90, "branchCount": 8 }
+  },
+  {
+    "id": "TX-branches-present",
+    "note": "All 8 branches represented (destinations/culture/spiritual/adat/food/travel/safety/resident)",
+    "expect": { "branchesPresent": ["destinations", "culture", "spiritual", "adat", "food", "travel", "safety", "resident"] }
+  },
+  {
+    "id": "TX-adat-is-its-own-branch",
+    "note": "Adat has its own branch — Philip's insistence, not buried under culture",
+    "expect": { "walkersInBranch": { "branch": "adat", "min": 8 } }
+  },
+  {
+    "id": "TX-spiritual-not-just-religion",
+    "note": "Spiritual branch covers religions AND belief systems AND kejawen AND penghayat — not just doctrinal religion",
+    "expect": { "walkersInBranch": { "branch": "spiritual", "min": 10 } }
+  },
+  {
+    "id": "TX-config-orphans",
+    "note": "Every walker-config JSON references a taxonomy ID that exists",
+    "expect": { "noOrphanConfigs": true }
+  },
+  {
+    "id": "TX-active-walkers-publish",
+    "note": "Every walker marked 'active' in taxonomy actually appears in the walker-acquired records",
+    "expect": { "activeWalkersPublish": true }
+  },
+  {
+    "id": "TX-tier-a-not-empty",
+    "note": "There are Tier-A (priority 1) walkers still on the build queue — the roadmap has direction",
+    "expect": { "tierAPlanned": { "min": 5 } }
+  }
+]

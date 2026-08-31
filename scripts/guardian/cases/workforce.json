@@ -1,0 +1,37 @@
+[
+  {
+    "id": "WF-registry-empty-on-boot",
+    "note": "Fresh registry has empty workforce · no ghost workers",
+    "expect": { "freshRegistryEmpty": true }
+  },
+  {
+    "id": "WF-state-machine-transitions",
+    "note": "setWorkerState correctly stamps stateChangedAt",
+    "expect": { "stateTransitionStamped": true }
+  },
+  {
+    "id": "WF-lease-claim-single",
+    "note": "claimNextJob creates a lease and assigns currentJobId",
+    "expect": { "leaseCreatedOnClaim": true }
+  },
+  {
+    "id": "WF-lease-expiry-detects-hang",
+    "note": "reapExpiredLeases flips holder to DEAD and returns released job id",
+    "expect": { "leaseExpiryDetectsHang": true }
+  },
+  {
+    "id": "WF-supervisor-restarts-dead",
+    "note": "supervisorTick moves DEAD workers back to STARTING",
+    "expect": { "supervisorRestartsDead": true }
+  },
+  {
+    "id": "WF-circuit-breaker-opens",
+    "note": "3 consecutive failures on a source open the breaker",
+    "expect": { "breakerOpensAfter": 3 }
+  },
+  {
+    "id": "WF-workforce-continues-despite-fail",
+    "note": "One walker crashing does not stop the workforce · healthy walker still publishes",
+    "expect": { "workforceContinuesDespiteFail": true }
+  }
+]

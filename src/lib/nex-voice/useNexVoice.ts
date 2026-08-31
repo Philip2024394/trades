@@ -136,6 +136,15 @@ export type UseNexVoiceApi = {
   tap: () => void;
   /** Send typed text through the same brain. speak=false = silent (chat UI). */
   sendText: (text: string, opts?: { speak?: boolean }) => Promise<void>;
+  /**
+   * Speak canned text directly · bypasses /api/nex-conv/chat.
+   * Used for scripted first-run performances (activation ceremony intro)
+   * where routing through the brain would be wrong. Returns durationMs so
+   * callers can detect the "resolved instantly" pattern that indicates
+   * browser autoplay/audio-block (iOS Safari) vs. a real completed
+   * utterance. durationMs < ~1000 → silent block · caller decides fallback.
+   */
+  speak: (text: string) => Promise<{ durationMs: number }>;
   /** Clear conversation_id — starts a fresh thread on next turn. */
   reset: () => void;
 };
@@ -233,6 +242,7 @@ export function useNexVoice(options: UseNexVoiceOptions = {}): UseNexVoiceApi {
           body: JSON.stringify({
             conversation_id: conversationIdRef.current ?? undefined,
             message,
+            market: "ID",
           }),
         });
         res = (await r.json()) as ChatResponse;
@@ -418,6 +428,17 @@ export function useNexVoice(options: UseNexVoiceOptions = {}): UseNexVoiceApi {
     optsRef.current.onLanguageChange?.(lang);
   }, []);
 
+  // Direct canned-speech path · scripted intro / activation ceremony.
+  // Times the provider round-trip so callers can distinguish a real
+  // spoken utterance (>~1s of audio) from an instantaneously-resolved
+  // Promise (autoplay blocked · silent). See speak() docstring on the
+  // return type for detection semantics.
+  const speakDirect = useCallback(async (text: string): Promise<{ durationMs: number }> => {
+    const start = Date.now();
+    await speak(text);
+    return { durationMs: Date.now() - start };
+  }, [speak]);
+
   return {
     state,
     isSupported,
@@ -429,6 +450,7 @@ export function useNexVoice(options: UseNexVoiceOptions = {}): UseNexVoiceApi {
     cancel,
     tap,
     sendText,
+    speak: speakDirect,
     reset,
   };
 }

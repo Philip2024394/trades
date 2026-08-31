@@ -1,0 +1,513 @@
+
+════════════════════════════════════════════════════════════════════════
+  §P1 · Post-cutover cycles by worker_type + records_new
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "worker_type": "acquisition",
+    "cycles": "81",
+    "completed": "71",
+    "records_new_sum": "105",
+    "records_processed_sum": "8709"
+  },
+  {
+    "worker_type": "cle",
+    "cycles": "2",
+    "completed": "2",
+    "records_new_sum": "2",
+    "records_processed_sum": "2"
+  },
+  {
+    "worker_type": "promotion",
+    "cycles": "1",
+    "completed": "1",
+    "records_new_sum": "0",
+    "records_processed_sum": "439"
+  },
+  {
+    "worker_type": "social",
+    "cycles": "13",
+    "completed": "13",
+    "records_new_sum": "0",
+    "records_processed_sum": "0"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §P2 · Post-cutover by worker_config · which cycles claim records_new
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "worker_config": "accommodation:Bantul:prambanan",
+    "cycles": "10",
+    "records_new": "100",
+    "records_processed": "260"
+  },
+  {
+    "worker_config": "accommodation:Sleman:prambanan",
+    "cycles": "5",
+    "records_new": "5",
+    "records_processed": "285"
+  },
+  {
+    "worker_config": "staircase",
+    "cycles": "2",
+    "records_new": "2",
+    "records_processed": "2"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §P3 · Sample one accommodation:Bantul cycle summary to confirm scoring-not-discovery
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "worker_config": "accommodation:Bantul:prambanan",
+    "records_new": 10,
+    "finished_at": "2026-08-24T08:38:24.703Z",
+    "summary_text": "{\"eligible\": 2, \"ambiguous\": 0, \"contactable\": 2, \"matched_high\": 0, \"matched_exact\": 16, \"universe_after\": 86, \"universe_before\": 86, \"outreach_blocked_by_smoke\": 2, \"category_candidates_phase1\": {\"skipped\": 7, \"updated\": 0, \"proposed\": 0}, \"category_candidates_scored\": {\"scored\": 4, \"skipped\": 0}}"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §P4 · Every table with created_at/inserted_at since cutover — find where records land
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "tbl": "nex.accommodation_business",
+    "ts_column": "source_ingested_at"
+  },
+  {
+    "tbl": "nex.accommodation_business_source_snapshot",
+    "ts_column": "captured_at"
+  },
+  {
+    "tbl": "nex.alert_rules",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.analytics_events",
+    "ts_column": "ingested_at"
+  },
+  {
+    "tbl": "nex.analytics_records",
+    "ts_column": "ingested_at"
+  },
+  {
+    "tbl": "nex.audit_log",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.automation_rules",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.automation_runs",
+    "ts_column": "inserted_at"
+  },
+  {
+    "tbl": "nex.brain_memories",
+    "ts_column": "inserted_at"
+  },
+  {
+    "tbl": "nex.business_image",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.business_knowledge",
+    "ts_column": "captured_at"
+  },
+  {
+    "tbl": "nex.campaign_recipients",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.campaign_segments",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.campaigns",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.category_candidate",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.category_registry",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.compliance_events",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.confidence_scores",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.contact_segments",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.contacts",
+    "ts_column": "inserted_at"
+  },
+  {
+    "tbl": "nex.conv_edges",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.conv_entities",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.conv_feedback",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.conv_intents",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.conv_knowledge_items",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.conv_learning_candidate",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.conv_states",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.conv_turns",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.conversion_events",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.delivery_jobs",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.email_templates",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.events",
+    "ts_column": "inserted_at"
+  },
+  {
+    "tbl": "nex.experiment_variants",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.experiments",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.food_business",
+    "ts_column": "source_ingested_at"
+  },
+  {
+    "tbl": "nex.food_business_source_snapshot",
+    "ts_column": "source_ingested_at"
+  },
+  {
+    "tbl": "nex.food_commercial_event",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.food_enrichment_job",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.food_outreach_attempt",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.food_outreach_template",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.geo_landmark",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.graph_edges",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.import_mappings",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.jobs",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.journey_triggers",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.journeys",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.knowledge_dump_jobs",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.knowledge_feedback",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.knowledge_records",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.kpe_chunks",
+    "ts_column": "inserted_at"
+  },
+  {
+    "tbl": "nex.kpe_decisions",
+    "ts_column": "inserted_at"
+  },
+  {
+    "tbl": "nex.kpe_documents",
+    "ts_column": "ingested_at"
+  },
+  {
+    "tbl": "nex.kpe_duplicates",
+    "ts_column": "inserted_at"
+  },
+  {
+    "tbl": "nex.kpe_edges",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.kpe_human_reviews",
+    "ts_column": "inserted_at"
+  },
+  {
+    "tbl": "nex.kpe_metadata",
+    "ts_column": "inserted_at"
+  },
+  {
+    "tbl": "nex.kpe_processing_runs",
+    "ts_column": "inserted_at"
+  },
+  {
+    "tbl": "nex.llm_retry_queue",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.meaningful_area",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.mp_product",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.mp_seller",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.object_manifest",
+    "ts_column": "inserted_at"
+  },
+  {
+    "tbl": "nex.prediction_models",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.predictions",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.recovery_attempts",
+    "ts_column": "inserted_at"
+  },
+  {
+    "tbl": "nex.social_accounts",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.social_audit_events",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.social_content_drafts",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.social_content_sources",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.social_content_templates",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.social_dek_wraps",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.social_oauth_states",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.social_tenants",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.sources",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.tracking_events",
+    "ts_column": "inserted_at"
+  },
+  {
+    "tbl": "nex.worker_audit_events",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.worker_heartbeat",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.worker_jobs",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.worker_results",
+    "ts_column": "created_at"
+  },
+  {
+    "tbl": "nex.worker_schedule",
+    "ts_column": "created_at"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §P5 · Accommodation-promotion tables (scoring pipeline · where records_new likely maps)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "table_name": "category_candidate"
+  },
+  {
+    "table_name": "food_business_promotion"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §P6 · food_business_promotion insert activity since cutover
+════════════════════════════════════════════════════════════════════════
+(query failed: column "recorded_at" does not exist)
+
+════════════════════════════════════════════════════════════════════════
+  §P7 · category_candidate insert activity since cutover
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "added_since_cutover": "0"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §P8 · Category candidate score insert activity since cutover
+════════════════════════════════════════════════════════════════════════
+(query failed: column "recorded_at" does not exist)
+
+════════════════════════════════════════════════════════════════════════
+  §P9 · currently in-flight cycles · are they progressing or stuck?
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "worker_config": "market:central-java-magelang:nominatim",
+    "worker_id": "acquisition:market:Yogyakarta",
+    "started_at": "2026-08-24T08:28:24.792Z",
+    "age_s": 951,
+    "last_hb": null,
+    "hb_stale_s": null
+  },
+  {
+    "worker_config": "transport:Yogyakarta:query-universe-v1",
+    "worker_id": "acquisition:transport:Yogyakarta",
+    "started_at": "2026-08-24T08:28:27.180Z",
+    "age_s": 948,
+    "last_hb": null,
+    "hb_stale_s": null
+  },
+  {
+    "worker_config": "transport:Kulon Progo:query-universe-v1",
+    "worker_id": "acquisition:transport:Yogyakarta",
+    "started_at": "2026-08-24T08:29:24.125Z",
+    "age_s": 891,
+    "last_hb": null,
+    "hb_stale_s": null
+  },
+  {
+    "worker_config": "market:yogyakarta-city:nominatim",
+    "worker_id": "acquisition:market:Yogyakarta",
+    "started_at": "2026-08-24T08:30:24.134Z",
+    "age_s": 831,
+    "last_hb": null,
+    "hb_stale_s": null
+  },
+  {
+    "worker_config": "market:central-java-klaten:nominatim",
+    "worker_id": "acquisition:market:Yogyakarta",
+    "started_at": "2026-08-24T08:34:24.223Z",
+    "age_s": 591,
+    "last_hb": null,
+    "hb_stale_s": null
+  },
+  {
+    "worker_config": "market:sleman:nominatim",
+    "worker_id": "acquisition:market:Yogyakarta",
+    "started_at": "2026-08-24T08:38:24.432Z",
+    "age_s": 351,
+    "last_hb": null,
+    "hb_stale_s": null
+  },
+  {
+    "worker_config": "transport:Bantul:query-universe-v1",
+    "worker_id": "acquisition:transport:Yogyakarta",
+    "started_at": "2026-08-24T08:39:24.385Z",
+    "age_s": 291,
+    "last_hb": null,
+    "hb_stale_s": null
+  },
+  {
+    "worker_config": "transport:Sleman:query-universe-v1",
+    "worker_id": "acquisition:transport:Yogyakarta",
+    "started_at": "2026-08-24T08:40:24.354Z",
+    "age_s": 231,
+    "last_hb": null,
+    "hb_stale_s": null
+  },
+  {
+    "worker_config": "market:central-java-solo:nominatim",
+    "worker_id": "acquisition:market:Yogyakarta",
+    "started_at": "2026-08-24T08:40:24.356Z",
+    "age_s": 231,
+    "last_hb": null,
+    "hb_stale_s": null
+  },
+  {
+    "worker_config": "transport:Gunungkidul:query-universe-v1",
+    "worker_id": "acquisition:transport:Yogyakarta",
+    "started_at": "2026-08-24T08:41:24.536Z",
+    "age_s": 171,
+    "last_hb": null,
+    "hb_stale_s": null
+  }
+]

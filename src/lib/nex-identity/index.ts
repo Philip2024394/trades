@@ -16,6 +16,9 @@ export {
 export type { NexIdentity, NexIdentityInput } from "./useNexIdentity";
 export { useNexIdentity } from "./useNexIdentity";
 
+export type { NexActivation, NexActivationState, UseNexActivationReturn } from "./useNexActivation";
+export { useNexActivation } from "./useNexActivation";
+
 export {
   generateInternalId,
   generatePublicNexId,

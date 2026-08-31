@@ -1,0 +1,69 @@
+{
+  "jobId": "450f410b-20ba-4530-a477-120c09ccf79f",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Kulon Progo",
+  "bbox": {
+    "sw": [
+      -8,
+      110.09
+    ],
+    "ne": [
+      -7.62,
+      110.28
+    ],
+    "scope": "Kulon Progo · DIY"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T18:32:05.897Z",
+  "finishedAt": "2026-08-27T18:32:07.997Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 123,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 123,
+    "matched_exact": 123,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "records_persisted": 0,
+    "enriched": 1,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 0,
+    "enrichment_writes_applied": 1,
+    "insert_attempted": 0,
+    "insert_conflicts": 0,
+    "insert_returned": 0,
+    "insert_verified": 0,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 0,
+    "rejected_by_reason": {
+      "MATCHED_EXISTING": 123
+    }
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 0,
+    "insert_verified": 0,
+    "delta": 0
+  },
+  "cycle_outcome": "ALL_DEDUPED"
+}

@@ -1,0 +1,15 @@
+╔══════════════════════════════════════════════════════════════════════════╗
+║  NEX MARKET WALKER · Yogyakarta + Central Java discovery                  ║
+║  Nominatim primary · orchestrator-assigned city   · 0 outreach                ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+Orchestrator assigned: Sleman (sleman)
+
+
+── ZONE: Sleman · ID/DIY/Sleman ────────────────
+   52 keywords this cycle (32 curated + 20 taxonomy L2)
+   "toko" → Failed to acquire "nominatim" lease within 300000ms
+   "toko motor" → Failed to acquire "nominatim" lease within 300000ms
+   → returned 14 · persisted 0 · errors 2 · status=failed
+
+Runtime: 2212.4s

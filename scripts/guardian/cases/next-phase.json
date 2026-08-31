@@ -1,0 +1,52 @@
+[
+  {
+    "id": "NP-migration-preserves-all",
+    "note": "Every legacy KnowledgeRecord migrates to a valid EntityRecord (no data loss)",
+    "expect": { "migrationLossless": true }
+  },
+  {
+    "id": "NP-migration-quality-high",
+    "note": "Migrated records score high quality (95/97 ≥ 0.7 in the observed run)",
+    "expect": { "migrationQualityHi": 90 }
+  },
+  {
+    "id": "NP-gap-registry-empty",
+    "note": "Fresh GapRegistry starts empty",
+    "expect": { "gapRegistryEmpty": true }
+  },
+  {
+    "id": "NP-gap-observe-idempotent",
+    "note": "Same query observed twice bumps frequency, does not duplicate",
+    "expect": { "gapObserveIdempotent": true }
+  },
+  {
+    "id": "NP-gap-detector-no-hits",
+    "note": "Retrieval with no hits triggers no_hits gap",
+    "expect": { "gapNoHits": true }
+  },
+  {
+    "id": "NP-gap-detector-high-conf-noop",
+    "note": "Retrieval with high-confidence top hit produces no gap",
+    "expect": { "gapHighConfNoop": true }
+  },
+  {
+    "id": "NP-live-gated-off-by-default",
+    "note": "httpFetch returns disabled when NEX_LIVE_SOURCES_ENABLED is not set",
+    "expect": { "liveGatedOff": true }
+  },
+  {
+    "id": "NP-bmkg-earthquake-parses",
+    "note": "BMKG earthquake fixture parses into one government/safety.earthquake record with Tier-A provenance",
+    "expect": { "bmkgEarthquakeParses": true }
+  },
+  {
+    "id": "NP-magma-volcano-severity",
+    "note": "MAGMA SIAGA status maps to severity 3 + description mentions 'ELEVATED'",
+    "expect": { "magmaSeverity": true }
+  },
+  {
+    "id": "NP-scale-quality-throughput",
+    "note": "scoreEntity throughput at 10k records < 3s (empirical: ~400k/s)",
+    "expect": { "scaleQuality10kUnder": 3000 }
+  }
+]

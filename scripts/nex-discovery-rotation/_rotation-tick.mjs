@@ -15,6 +15,7 @@
 // Doctrine anchor: project_nex_discovery_rotation_controller_2026_08_24
 
 import pg from "pg";
+import { fileURLToPath } from "node:url";
 import {
   cooldownHoursFor,
   computeCooldownUntil,
@@ -29,7 +30,13 @@ const pool = new pg.Pool({ connectionString: NEX_POSTGRES_URL, max: 3 });
 // data/nex-city-catalogue.json (loaded via the shared catalogue loader).
 // Adding a city = one entry in the JSON · this file automatically picks it up.
 import { trackedCityNames } from "../nex-city-catalogue/loader.mjs";
-const WALKED_CATEGORIES = ["accommodation", "food", "transport", "market"];
+// Workforce Phase 1 (Philip 2026-08-27) · new category-jobs loaded from
+// data/nex-job-registry.json. Legacy categories (food/accommodation/market/
+// transport) stay untouched · new job categories are ADDED · both coexist.
+import { jobCategorySlugs, allJobs } from "../nex-workforce/_job-registry.mjs";
+const LEGACY_CATEGORIES = ["accommodation", "food", "transport", "market"];
+const JOB_CATEGORIES = jobCategorySlugs();
+const WALKED_CATEGORIES = [...LEGACY_CATEGORIES, ...JOB_CATEGORIES];
 const TRACKED_CITIES = trackedCityNames();
 
 // 2026-08-24 · P0 atomic · surface-aware. MUST mirror src/lib/nex-hq/discovery-rotation.ts.
@@ -43,6 +50,15 @@ function surfacesFor(city, category) {
     if (category === "food")          return YOGYAKARTA_FOOD_SURFACES;
     if (category === "accommodation") return YOGYAKARTA_ACCOMMODATION_SURFACES;
   }
+  // Workforce Phase 1 · new category jobs use provider name as the surface.
+  // Enables future multi-provider expansion per category (e.g. 'overpass' +
+  // 'wikipedia' + 'own-website') as independent rotation state rows.
+  if (JOB_CATEGORIES.includes(category)) {
+    // Each strategy provider becomes a distinct surface · Phase 1 = 'overpass'.
+    const job = allJobs().find((j) => j.category_slug === category);
+    const providers = [...new Set(job.strategies.map((s) => s.provider))];
+    return providers;
+  }
   return [citySlug(city)];
 }
 
@@ -51,7 +67,7 @@ function workItems() {
   for (const city of TRACKED_CITIES) {
     for (const category of WALKED_CATEGORIES) {
       let workerAvailable = false;
-      if (category === "market" || category === "transport" || category === "food" || category === "accommodation") {
+      if (LEGACY_CATEGORIES.includes(category) || JOB_CATEGORIES.includes(category)) {
         workerAvailable = true;
       }
       // 2026-08-24 · P0 atomic · one work-item per SURFACE. Rotation tick now
@@ -65,6 +81,9 @@ function workItems() {
           workerConfigLike = `market:${citySlug(city)}:${surface}`;
         } else if (category === "transport") {
           workerConfigLike = `transport:${city}:${surface}`;
+        } else if (JOB_CATEGORIES.includes(category)) {
+          // Phase 1 workforce · worker_config = `<slug>:<City>:<surface>`.
+          workerConfigLike = `${category}:${city}:${surface}`;
         } else {
           // food / accommodation
           workerConfigLike = `${category}:${city}:${surface}`;
@@ -91,7 +110,7 @@ const SATURATION_THRESHOLD_CYCLES = 3;
 //
 // Cooldown duration follows _reactivation-policy.mjs · doubles after 3
 // consecutive unproductive reactivations · reset on any productive cycle.
-function evaluate(cyclesNewestFirst, existing, category, nowMs = Date.now()) {
+export function evaluate(cyclesNewestFirst, existing, category, nowMs = Date.now()) {
   const currentState = existing?.state ?? null;
   const stateEnteredAt = existing?.state_entered_at ? new Date(existing.state_entered_at).getTime() : null;
   const cooldownUntil = existing?.cooldown_until ? new Date(existing.cooldown_until).getTime() : null;
@@ -156,6 +175,29 @@ function evaluate(cyclesNewestFirst, existing, category, nowMs = Date.now()) {
       reactivationReason: "cooldown-expired",
       reactivationCount: reactivationCount + 1,
       cooldownUntil: null,   // clear until next saturation
+    };
+  }
+
+  // ── Sliding-cooldown fix · Philip 2026-08-27 ─────────────────────────
+  // If a surface is already saturated AND cooldown is still in the
+  // future, preserve the existing cooldown_until unchanged. Without this
+  // pass-through, the "fresh saturation" branch below fires on every tick
+  // (because saturated surfaces trivially satisfy consecutiveZero >= 3)
+  // and refreshes cooldown_until to now()+6h — a sliding timer that
+  // never expires. The 6h policy is correct; the mistake was restarting
+  // the timer every time the controller looked at the surface.
+  //
+  // Evidence: at 2026-08-27T23:02Z, all 34 food+accom surfaces had
+  // cooldown_until = last_evaluated_at + 6h exactly, regardless of
+  // state_entered_at (which ranged from 2 days to 5h ago). No surface
+  // had entered "reactivate" for >5h. Fix keeps the cooldown anchored
+  // to the moment saturation actually began.
+  if (currentState === "saturated" && cooldownUntil && nowMs < cooldownUntil) {
+    return {
+      state: "saturated",
+      reason: `cooldown active until ${new Date(cooldownUntil).toISOString()} · no change`,
+      ...base,
+      // cooldownUntil already preserved via ...base (line ~108)
     };
   }
 
@@ -325,4 +367,9 @@ async function main() {
   await pool.end();
 }
 
-main().catch((e) => { console.error(e); process.exit(1); });
+// Only run main() when invoked as a CLI · lets tests import evaluate()
+// without opening a DB pool or running the tick.
+const invokedAsScript = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+if (invokedAsScript) {
+  main().catch((e) => { console.error(e); process.exit(1); });
+}

@@ -1,4 +1,20 @@
 #!/usr/bin/env node
+// ═══════════════════════════════════════════════════════════════════════════
+// PHASE 1a HARD ABORT · Philip 2026-08-27
+// ═══════════════════════════════════════════════════════════════════════════
+// This standalone script writes to nex.food_business but does NOT route
+// through the shared identity-resolver installed in Phase 1a. Running it
+// would recreate the dedup problem (currently 1,102 excess food_business
+// dupes). Frozen until Phase 1b integrates it with resolveIdentity() +
+// mergeEnrichment(). Doctrine: project_nex_dedup_and_identity_resolution_doctrine_2026_08_27.md
+if (process.env.NEX_ALLOW_LEGACY_STANDALONE_IMPORT !== "1") {
+  console.error("");
+  console.error("╔══════════════════════════════════════════════════════════════════════╗");
+  console.error("║  discover-from-google-places.mjs · FROZEN (Phase 1a · 2026-08-27)    ║");
+  console.error("║  Would bypass identity-resolver. Rewire in Phase 1b to unfreeze.     ║");
+  console.error("╚══════════════════════════════════════════════════════════════════════╝");
+  process.exit(2);
+}
 // NEX Food · DISCOVERY agent · Phase 8.2 (Philip 2026-08-21 · CONSTITUTIONAL).
 //
 // Distinct from `enrich-from-google-places.mjs`:

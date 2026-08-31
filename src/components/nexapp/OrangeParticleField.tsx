@@ -27,7 +27,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import type { NexState } from "./NexAppHome";
+import type { NexState } from "@/lib/nexapp/nex-state";
 
 // ─── Energy profiles per NEX state ──────────────────────────
 

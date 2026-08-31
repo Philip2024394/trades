@@ -1,0 +1,233 @@
+
+════════════════════════════════════════════════════════════════════════
+  Cutover 1 · code deploy: 07:56 UTC (lease retry helper)
+════════════════════════════════════════════════════════════════════════
+Cutover 2 · scheduler restart: 2026-08-24 08:28:23+00 (reconciler + fresh processes)
+
+════════════════════════════════════════════════════════════════════════
+  §1 · Headline BEFORE (last 7h before cutover 1)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "cycles": "3512",
+    "completed": "1845",
+    "failed": "1666",
+    "aborted": "1",
+    "failure_rate": "0.4747",
+    "serialization_errors": "1409",
+    "records_new": "1395",
+    "records_processed": "243950"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §2 · Headline AFTER (all cycles since cutover 2 2026-08-24 08:28:23+00)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "cycles": "68",
+    "completed": "59",
+    "failed": "0",
+    "aborted": "0",
+    "still_open": "9",
+    "failure_rate": "0.0000",
+    "serialization_errors": "0",
+    "records_new": "105",
+    "records_processed": "7072",
+    "avg_completed_ms": "1014"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §3 · Transport walker BEFORE (7h pre-cutover)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "cycles": "1411",
+    "completed": "1",
+    "failed": "1409",
+    "failure_rate": "0.9986",
+    "records_new": "1",
+    "records_processed": "103"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §4 · Transport walker AFTER (since cutover 2)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "worker_config": "transport:Bantul:query-universe-v1",
+    "cycles": "1",
+    "completed": "0",
+    "failed": "0",
+    "aborted": "0",
+    "still_open": "1",
+    "failure_rate": null,
+    "serialization_errors": "0",
+    "records_new": "0",
+    "records_processed": "0"
+  },
+  {
+    "worker_config": "transport:Kulon Progo:query-universe-v1",
+    "cycles": "1",
+    "completed": "0",
+    "failed": "0",
+    "aborted": "0",
+    "still_open": "1",
+    "failure_rate": null,
+    "serialization_errors": "0",
+    "records_new": "0",
+    "records_processed": "0"
+  },
+  {
+    "worker_config": "transport:Sleman:query-universe-v1",
+    "cycles": "1",
+    "completed": "0",
+    "failed": "0",
+    "aborted": "0",
+    "still_open": "1",
+    "failure_rate": null,
+    "serialization_errors": "0",
+    "records_new": "0",
+    "records_processed": "0"
+  },
+  {
+    "worker_config": "transport:Yogyakarta:query-universe-v1",
+    "cycles": "1",
+    "completed": "0",
+    "failed": "0",
+    "aborted": "0",
+    "still_open": "1",
+    "failure_rate": null,
+    "serialization_errors": "0",
+    "records_new": "0",
+    "records_processed": "0"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §5 · Market walker BEFORE (7h pre-cutover)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "cycles": "259",
+    "completed": "2",
+    "failed": "257",
+    "failure_rate": "0.9923",
+    "total_errors": "3119",
+    "records_new": "4",
+    "records_processed": "4499"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §6 · Market walker AFTER (since cutover 2)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "worker_config": "market:central-java-klaten:nominatim",
+    "cycles": "1",
+    "completed": "0",
+    "failed": "0",
+    "aborted": "0",
+    "failure_rate": null,
+    "total_errors": "0",
+    "returned_from_provider": "0",
+    "truly_new_sellers": "0",
+    "serialization_errors": "0"
+  },
+  {
+    "worker_config": "market:central-java-magelang:nominatim",
+    "cycles": "1",
+    "completed": "0",
+    "failed": "0",
+    "aborted": "0",
+    "failure_rate": null,
+    "total_errors": "0",
+    "returned_from_provider": "0",
+    "truly_new_sellers": "0",
+    "serialization_errors": "0"
+  },
+  {
+    "worker_config": "market:central-java-solo:nominatim",
+    "cycles": "1",
+    "completed": "0",
+    "failed": "0",
+    "aborted": "0",
+    "failure_rate": null,
+    "total_errors": "0",
+    "returned_from_provider": "0",
+    "truly_new_sellers": "0",
+    "serialization_errors": "0"
+  },
+  {
+    "worker_config": "market:sleman:nominatim",
+    "cycles": "1",
+    "completed": "0",
+    "failed": "0",
+    "aborted": "0",
+    "failure_rate": null,
+    "total_errors": "0",
+    "returned_from_provider": "0",
+    "truly_new_sellers": "0",
+    "serialization_errors": "0"
+  },
+  {
+    "worker_config": "market:yogyakarta-city:nominatim",
+    "cycles": "1",
+    "completed": "0",
+    "failed": "0",
+    "aborted": "0",
+    "failure_rate": null,
+    "total_errors": "0",
+    "returned_from_provider": "0",
+    "truly_new_sellers": "0",
+    "serialization_errors": "0"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §7 · Persistence proof · rows added since cutover 2
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "tbl": "mp_seller",
+    "rows_added": "0"
+  },
+  {
+    "tbl": "food_business",
+    "rows_added": "0"
+  },
+  {
+    "tbl": "accommodation_business",
+    "rows_added": "0"
+  },
+  {
+    "tbl": "food_snapshot",
+    "rows_added": "0"
+  },
+  {
+    "tbl": "accommodation_snapshot",
+    "rows_added": "0"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §8 · Reconciler activity since cutover 2
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "zombies_reconciled_since_cutover": "6",
+    "current_stuck_over_15min": "0"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §9 · Provider outcomes from summary.provider_results[] (since cutover 2)
+════════════════════════════════════════════════════════════════════════
+[]
+
+════════════════════════════════════════════════════════════════════════
+  END
+════════════════════════════════════════════════════════════════════════

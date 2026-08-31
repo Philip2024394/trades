@@ -1,0 +1,111 @@
+── LIVE CYCLE · start 2026-08-25T10:34:51.134Z ──
+  vertical=accommodation city=Sleman bbox=sleman mode=APPLY
+
+  [accommodation] ── UNIVERSAL ACQUISITION ENGINE ──
+  [accommodation]   vertical: accommodation
+  [accommodation]   country:  ID
+  [accommodation]   city:     Sleman
+  [accommodation]   bbox:     {"sw":[-7.75,110.29],"ne":[-7.62,110.48],"scope":"Sleman · DIY"}
+  [accommodation]   mode:     SMOKE (outreach hard-noop) · APPLY
+  [accommodation]   sources:  osm_overpass
+  [accommodation] 
+  [accommodation]   existing NEX universe (accommodation·Sleman): 56
+  [accommodation] 
+  [accommodation] ── DISCOVERY · source: osm_overpass ──
+  [accommodation]   osm_overpass: fetching Overpass · bbox {"sw":[-7.75,110.29],"ne":[-7.62,110.48],"scope":"Sleman · DIY"} · amenities [] · shopTypes [] · tourismTypes [hotel,guest_house,hostel,chalet,motel,apartment] · extendedTagPairs [building=hotel,hotel=resort,hotel=villa]
+  [accommodation]   osm_overpass: live fetch failed (https://overpass.private.coffee/api/interpreter: 502) · trying fallback cache
+  [accommodation]   ✗ discover failed: https://overpass.private.coffee/api/interpreter: 502
+  [accommodation] 
+  [accommodation] ── VALIDATION · dedupe + fuzzy match ──
+  [accommodation]   exact-match:  0
+  [accommodation]   high-fuzzy:   0
+  [accommodation]   ambiguous:    0
+  [accommodation]   unnamed:      0
+  [accommodation]   new:          0
+  [accommodation] 
+  [accommodation] ── GATES · discover → validate → contactable → eligible → outreach ──
+  [accommodation]   contactable (Gate 3): 0
+  [accommodation]   eligible    (Gate 4): 0
+  [accommodation]   outreach sent (Gate 5): 0
+  [accommodation]   outreach blocked by SMOKE: 0
+  [accommodation]   rejected by any gate: 0
+  [accommodation] 
+  [accommodation] ── PERSIST · inserting 0 new records ──
+  [accommodation]   inserted: 0 / 0 (records_persisted authoritative)
+  [accommodation] 
+  [accommodation] ── AUDIT REPORT WRITTEN ──
+  [accommodation]   C:\Users\Victus\trades\scripts\nex-acquisition\.cache\runs\fc98d759-c0f3-45e7-9c25-c3523d71ce8c.json
+
+── DIRECTORY FACTORY · PHASE 1 · CATEGORY CANDIDATES ──
+  phase1-candidates · proposed=0 updated=0 skipped=7
+  skipped   already-in-registry=7
+
+── DIRECTORY FACTORY · CALIBRATION HARNESS · SCORE RECORDER ──
+  phase-calib · scored=4 skipped=0
+
+════════════════════════════════════════════════════════════════════════
+NEX ACQUISITION · LIVE CYCLE REPORT · fc98d759-c0f3-45e7-9c25-c3523d71ce8c
+════════════════════════════════════════════════════════════════════════
+  vertical  : accommodation
+  city      : Sleman
+  bbox      : sleman {"sw":[-7.75,110.29],"ne":[-7.62,110.48],"scope":"Sleman · DIY"}
+  mode      : APPLY · smoke (outreach hard-noop)
+  started   : 2026-08-25T10:34:51.408Z
+  finished  : 2026-08-25T10:35:18.982Z
+
+── 1. DISCOVERY ──
+  candidates found         : 0
+  duplicates (exact hash)  : 0
+  duplicates (fuzzy high)  : 0
+  ambiguous matches        : 0
+  unnamed (skipped)        : 0
+  genuinely NEW            : 0
+
+── 2. ENRICHMENT ──
+  records improved         : 0
+  per-field gains          : (none · likely no website-enrichable candidates)
+
+── 3. COMMERCIAL ──
+  contactable (Gate 3)     : 0
+  eligible    (Gate 4)     : 0
+  outreach sent (Gate 5)   : 0   ← MUST BE 0 (Discovery ≠ Outreach)
+  outreach BLOCKED by smoke: 0   ← constitutional block firing
+  rejected by any gate     : 0
+
+  Commercial Universe · BEFORE : 86  (10.66%)
+  Commercial Universe · AFTER  : 86  (10.66%)
+  Discovery Universe  · BEFORE : 7045
+  Discovery Universe  · AFTER  : 7045   (+0)
+
+── 4. QUALITY ──
+  provenance rows · total       BEFORE=35966  AFTER=35966  (+0)
+  owner_verified rows           BEFORE=0  AFTER=0   ← MUST NOT DECREASE
+  admin_verified rows           BEFORE=0  AFTER=0   ← MUST NOT DECREASE
+  owner_verified untouched      : HELD ✓
+  admin_verified untouched      : HELD ✓
+  duplicate candidate count     : 0  (correctly deduped · none inserted)
+  ambiguous · needs admin review: 0
+  engine errors                 : 1
+
+── 5. COST / OPERATIONS ──
+  runtime (end-to-end)          : 27.94s
+  source osm_overpass         candidates=0  errors=1
+  API calls: 1× OSM Overpass (or fallback cache) · N× business-website fetch (up to 4 URLs per record with website)
+  cache: OSM response cached to .cache/overpass/ · TTL 24h · re-runs read from cache
+  monetary cost                 : $0.00  (OSM ODbL free · website enrichment public fetch)
+
+── DOCTRINE CHECKS ──
+  Discovery ≠ Outreach                     : HELD ✓
+  Never fabricate contact info             : HELD ✓
+  owner_verified never overwritten         : HELD ✓
+  admin_verified never overwritten         : HELD ✓
+  Kill switch respected (killSwitchEngaged): disengaged (default)
+  Provenance recorded on every new insert  : HELD ✓
+
+── ERRORS ──
+  [discover·osm_overpass] https://overpass.private.coffee/api/interpreter: 502
+
+════════════════════════════════════════════════════════════════════════
+  audit JSON: scripts/nex-acquisition/.cache/runs/fc98d759-c0f3-45e7-9c25-c3523d71ce8c.json
+  next step:  STOP · report to Philip · await go/no-go for scheduling
+════════════════════════════════════════════════════════════════════════

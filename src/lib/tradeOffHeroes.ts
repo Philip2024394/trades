@@ -8,41 +8,41 @@
 
 export const TRADE_OFF_HERO_IMAGES: Record<string, string> = {
   carpenter:
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/3643cc34433c-ChatGPT_Image_Jun_25__2026__12_21_55_PM.png",
+    "https://ik.imagekit.io/5vv5pw26q/Untitleddsdsaaaaaaadsasd.png?updatedAt=1784617900936",
   bricklayer:
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/e727a6f64778-Untitledasdasdasdsdsdsdasss.png",
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2006_05_51%20AM.png?updatedAt=1784243168614",
   plumber:
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/b976fea78218-ChatGPT_Image_Jun_25__2026__12_27_12_PM.png",
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_03_04%20PM.png?updatedAt=1783321401355",
   scaffolder:
     "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/337192aa1295-ChatGPT_Image_Jun_25__2026__12_31_55_PM.png",
   electrician:
     "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/ed1102196969-ChatGPT_Image_Jun_25__2026__12_32_51_PM.png",
   drywaller:
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/968696e6815f-ChatGPT_Image_Jun_25__2026__12_38_50_PM.png",
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_38_49%20AM.png?updatedAt=1784248755973",
   stonemason:
     "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/ee7d5c9fa9bb-ChatGPT_Image_Jun_25__2026__12_48_03_PM.png",
   tiler:
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/cf01981a20a3-ChatGPT_Image_Jun_25__2026__12_50_00_PM.png",
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_08_32%20AM.png?updatedAt=1784246934783",
   painter:
     "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/82f31612a3b4-ChatGPT_Image_Jun_25__2026__02_06_44_PM.png",
   roofer:
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/dcebd6ac4310-ChatGPT_Image_Jun_27__2026__10_41_47_AM.png",
+    "https://ik.imagekit.io/9mrgsv2rp/b7e8d507628ea97aaae03bdbd1a81154.jpg?updatedAt=1784124333716",
   joiner:
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/8a982c28982a-ChatGPT_Image_Jun_27__2026__10_42_41_AM.png",
+    "https://ik.imagekit.io/9mrgsv2rp/93bf4c7289b643b54c98fec085a28aa2.jpg?updatedAt=1784121207097",
   plasterer:
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/ba4a53a1cd81-ChatGPT_Image_Jun_27__2026__10_45_04_AM.png",
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2005_47_24%20AM.png?updatedAt=1784242063425",
   "general-builder":
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/6e66c24ee2e1-ChatGPT_Image_Jun_27__2026__10_46_08_AM.png",
+    "https://ik.imagekit.io/9mrgsv2rp/Untitleddfafddffsddddddddsd.png?updatedAt=1783724926573",
   "building-merchant":
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/6c94a12f7bc9-ChatGPT_Image_Jun_27__2026__10_48_59_AM.png",
+    "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2022,%202026,%2005_43_21%20AM.png?updatedAt=1784673816597",
   "metal-engineer":
     "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/a53af0684cfb-ChatGPT_Image_Jun_27__2026__10_51_31_AM.png",
   "heavy-machinery":
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/e01f86a92082-ChatGPT_Image_Jun_27__2026__10_52_36_AM.png",
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%202,%202026,%2001_29_50%20PM.png?updatedAt=1782973809295",
   "tool-hire":
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/e3897fc2b891-ChatGPT_Image_Jun_27__2026__10_55_22_AM.png",
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%201,%202026,%2010_17_59%20PM.png?updatedAt=1782919107938",
   landscaper:
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/438f1611c708-ChatGPT_Image_Jun_27__2026__10_57_48_AM.png",
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2007_21_23%20AM.png?updatedAt=1784074905020",
   "gas-engineer":
     "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/c3f53c88ca19-ChatGPT_Image_Jun_27__2026__10_59_11_AM.png",
   "concrete-finisher":
@@ -52,7 +52,7 @@ export const TRADE_OFF_HERO_IMAGES: Record<string, string> = {
   "stair-fitter":
     "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/00064b78c32e-ChatGPT_Image_Jun_27__2026__11_05_18_AM.png",
   "kitchen-fitter":
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/55584d588caf-ChatGPT_Image_Jun_27__2026__11_03_54_AM.png",
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2001_52_07%20PM.png?updatedAt=1783925545344",
   "kitchen-showroom":
     "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/2f468ab28af6-ChatGPT_Image_Jun_28__2026__01_57_34_PM.png",
   "kitchen-manufacturer":
@@ -98,7 +98,7 @@ export const TRADE_OFF_HERO_IMAGES: Record<string, string> = {
   "pest-control":
     "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/7a59176aaa15-ChatGPT_Image_Jun_28__2026__02_57_02_PM.png",
   "tree-surgeon":
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/82162e05d757-ChatGPT_Image_Jun_28__2026__03_02_19_PM.png",
+    "https://ik.imagekit.io/9mrgsv2rp/9a02b8ba5a1194ac6c1738ddcc8d9067.jpg?updatedAt=1783771301197",
   "asbestos-removal":
     "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/b3c67a9eac45-ChatGPT_Image_Jun_28__2026__03_02_58_PM.png",
   "lead-worker":
@@ -120,7 +120,17 @@ export const TRADE_OFF_HERO_IMAGES: Record<string, string> = {
   "mobile-mechanic":
     "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/c61011596ed6-ChatGPT_Image_Jun_28__2026__03_31_31_PM.png",
   "door-manufacturer":
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/a3f1da513ca6-ChatGPT_Image_Jun_28__2026__08_32_45_PM.png"
+    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/a3f1da513ca6-ChatGPT_Image_Jun_28__2026__08_32_45_PM.png",
+  "swimming-pool-installer":
+    "https://ik.imagekit.io/9mrgsv2rp/d1c00eddcda0dbc1960be21c05ba7cf4%20(1).jpg?updatedAt=1784134372034",
+  "estate-agent":
+    "https://ik.imagekit.io/9mrgsv2rp/d6401a8646cdba6db3d1fe46f665c8fd.jpg?updatedAt=1784126810194",
+  locksmith:
+    "https://ik.imagekit.io/9mrgsv2rp/Untitledfdfddd.png?updatedAt=1782889000676",
+  "logo-designer":
+    "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdv.png?updatedAt=1784690081752",
+  "social-media-marketer":
+    "https://ik.imagekit.io/5vv5pw26q/af981685a21ef236529576ba5c163fe2.jpg?updatedAt=1784596413569",
 };
 
 // Banner fallback map — every Phase 2 trade points at the closest
@@ -144,7 +154,8 @@ export const BANNER_FALLBACK_BY_TRADE: Record<string, string> = {
   "smart-home-installer": "electrician",
   "garage-door-installer": "window-fitter",
   "gutter-installer": "fascia-and-soffit",
-  "driveway-installer": "groundworker",
+  "driveway-installer":
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_26_13%20AM.png?updatedAt=1784247996214",
   "fencing-installer": "landscaper",
   "shutter-installer": "window-fitter",
   "aerial-satellite-installer": "electrician",
@@ -157,7 +168,8 @@ export const BANNER_FALLBACK_BY_TRADE: Record<string, string> = {
   "flooring-manufacturer": "joiner",
   "conservatory-manufacturer": "window-fitter",
   "wardrobe-maker": "kitchen-fitter",
-  "furniture-maker": "joiner",
+  "furniture-maker":
+    "https://ik.imagekit.io/9mrgsv2rp/f6906127ca6b272c347366e0ec1049f9.jpg?updatedAt=1784120794983",
   "joinery-workshop": "joiner",
   "worktop-manufacturer": "kitchen-fitter",
   "glass-manufacturer": "window-fitter",
@@ -165,7 +177,8 @@ export const BANNER_FALLBACK_BY_TRADE: Record<string, string> = {
   "garden-room-manufacturer": "general-builder",
   "steel-fabricator": "metal-engineer",
   // Sales additions
-  "timber-merchant": "building-merchant",
+  "timber-merchant":
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_51_24%20AM.png?updatedAt=1783281109102",
   "plumbing-merchant": "builders-supplies",
   "electrical-wholesaler": "builders-supplies",
   "tile-shop": "tiler",
@@ -175,7 +188,8 @@ export const BANNER_FALLBACK_BY_TRADE: Record<string, string> = {
   "bathroom-showroom": "plumber",
   "paint-merchant": "painter",
   ironmongery: "builders-supplies",
-  "ppe-supplier": "site-safety",
+  "ppe-supplier":
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%201,%202026,%2001_50_24%20PM.png?updatedAt=1782888644770",
   "tool-shop": "tool-hire",
   "landscape-supplies": "landscaper",
   "aggregate-supplier": "groundworker",

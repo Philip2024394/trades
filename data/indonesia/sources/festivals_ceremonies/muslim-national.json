@@ -1,0 +1,41 @@
+[
+  {
+    "externalId": "fest-ramadan",
+    "domain": "culture",
+    "topic": "festival.ramadan",
+    "region": "Indonesia",
+    "content": "Ramadan is the Islamic month of fasting — Muslims abstain from food, drink, and smoking from fajr (pre-dawn) to maghrib (sunset). In Indonesia (world's largest Muslim country) many warungs close during daylight or draw a curtain across the front; some fully close for the month. Business hours shift; expect reduced service. After sunset, buka puasa (breaking of the fast) begins — bazaars pop up nationwide selling takjil (sweet snacks) + iftar meals. Non-Muslims are welcome to eat at hotels and non-halal restaurants; being discreet in public during daylight is a courtesy. Runs a lunar month (varies annually).",
+    "keywords": ["ramadan", "puasa", "fajr", "maghrib", "buka puasa", "iftar", "takjil", "muslim", "fasting"],
+    "audience": ["tourist"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:festivals · Kemenag",
+    "confidence": 0.95
+  },
+  {
+    "externalId": "fest-idul-fitri",
+    "domain": "culture",
+    "topic": "festival.idul_fitri",
+    "region": "Indonesia",
+    "content": "Idul Fitri (Lebaran, Eid al-Fitr) marks the end of Ramadan — Indonesia's biggest annual holiday. The two official public holidays surround a national exodus (mudik) as millions travel to their family village. Transport prices spike 2–3× for the week either side; airports, trains, ferries fully booked. Jakarta becomes eerily quiet; tourist areas continue normally. Halal bi halal (mutual forgiveness visits) fill the days after. Book any long-distance travel 2 months ahead of Lebaran week.",
+    "keywords": ["idul fitri", "lebaran", "eid al-fitr", "mudik", "halal bi halal", "public holiday", "muslim"],
+    "audience": ["tourist"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:festivals · Kemenag",
+    "confidence": 0.95
+  },
+  {
+    "externalId": "fest-idul-adha",
+    "domain": "culture",
+    "topic": "festival.idul_adha",
+    "region": "Indonesia",
+    "content": "Idul Adha (Eid al-Adha) is the Islamic 'Feast of Sacrifice', ~70 days after Idul Fitri. Sheep, goats, and cows are ritually sacrificed at mosques nationwide; meat is distributed to the poor. Public holiday. Less travel disruption than Idul Fitri but expect some restaurant menu changes (more mutton, goat curry). Non-Muslims visiting a mosque during the ceremony should ask permission and dress modestly.",
+    "keywords": ["idul adha", "eid al-adha", "qurban", "sacrifice", "muslim", "public holiday"],
+    "audience": ["tourist"],
+    "language": "en",
+    "observedAt": "2026-08-30",
+    "source": "seed.curated:festivals · Kemenag",
+    "confidence": 0.9
+  }
+]

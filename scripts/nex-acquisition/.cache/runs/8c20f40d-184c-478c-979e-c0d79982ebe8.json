@@ -1,0 +1,69 @@
+{
+  "jobId": "8c20f40d-184c-478c-979e-c0d79982ebe8",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Magelang",
+  "bbox": {
+    "sw": [
+      -7.65,
+      110.15
+    ],
+    "ne": [
+      -7.42,
+      110.35
+    ],
+    "scope": "Magelang · Central Java"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T18:32:05.910Z",
+  "finishedAt": "2026-08-27T18:32:54.808Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 173,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 173,
+    "matched_exact": 173,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "records_persisted": 0,
+    "enriched": 2,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 0,
+    "enrichment_writes_applied": 2,
+    "insert_attempted": 0,
+    "insert_conflicts": 0,
+    "insert_returned": 0,
+    "insert_verified": 0,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 0,
+    "rejected_by_reason": {
+      "MATCHED_EXISTING": 173
+    }
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 0,
+    "insert_verified": 0,
+    "delta": 0
+  },
+  "cycle_outcome": "ALL_DEDUPED"
+}

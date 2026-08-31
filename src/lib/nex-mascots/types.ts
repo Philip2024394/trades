@@ -41,6 +41,16 @@ export interface Mascot {
   featured?: boolean;
   /** False when the source row is still using the mascot-placeholder image URL. */
   hasArtwork: boolean;
+  /**
+   * Emotional-postcard fields (Philip 2026-08-27 · mascots-as-vocabulary).
+   * `meaning` is the AUTHORITATIVE semantic identity (derived from the
+   * expression via meaning.ts). `personalTemplates` is a rotation pool of
+   * softer human phrasings the sender can pick from before sending.
+   * V2 extension point: `personalTemplates` may later be brain-generated
+   * from conversation context · see meaning.ts for the seam.
+   */
+  meaning: string;
+  personalTemplates: string[];
 }
 
 /** Row shape inside /data/nex-mascot-manifest.json · augmentation only. */
@@ -50,6 +60,10 @@ export interface MascotAugmentation {
   recommendedThemes?: string[];
   recommendedTagsMatch?: string[];
   featured?: boolean;
+  /** Override the expression-derived meaning for this specific mascot. */
+  meaning?: string;
+  /** Override the expression-derived personal-line templates for this mascot. */
+  personalTemplates?: string[];
 }
 
 export interface MascotManifest {

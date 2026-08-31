@@ -24,9 +24,24 @@ export type BusinessCard = {
   closesAt: string;         // "6PM" / "7PM"
 };
 
+// NEX FACT / NEX KNOWLEDGE badge on NEX messages (Philip 2026-08-28
+// project_nex_fact_vs_knowledge_doctrine_2026_08_28.md). truthClass drives
+// which pill renders next to the timestamp in NexWorkspaceChat. User
+// messages never carry it (own words don't need self-labeling).
+export type NexTruthClass =
+  | "confirmed_fact"      // NEX FACT
+  | "academic_reference"  // NEX FACT
+  | "traditional_folk"    // NEX KNOWLEDGE
+  | "spiritual_belief"    // NEX KNOWLEDGE
+  | "unconfirmed"         // NEX KNOWLEDGE
+  | "ai_generated";       // NEX KNOWLEDGE
+
 export type Message =
   | { id: string; sender: "user"; text: string; time: string }
-  | { id: string; sender: "nex";  text: string; time: string; cards?: BusinessCard[] };
+  | { id: string; sender: "nex";  text: string; time: string;
+      cards?: BusinessCard[];
+      truthClass?: NexTruthClass;
+      truthSource?: string; };
 
 // Placeholder tile-supplier photos from Unsplash (open licence).
 // Replaced by real NEX Listings entries in Priority 4.
@@ -76,6 +91,8 @@ export const INITIAL_CONVERSATION: Message[] = [
     text: "Here are some top-rated suppliers near you that have a wide range of bathroom tiles.",
     time: "09:40 AM",
     cards: DEMO_CARDS,
+    truthClass: "confirmed_fact",
+    truthSource: "NEX directory · 4 verified suppliers",
   },
   {
     id: "m3",
@@ -88,6 +105,8 @@ export const INITIAL_CONVERSATION: Message[] = [
     sender: "nex",
     text: "Sure, I can help you with that. What time works best for you?",
     time: "09:41 AM",
+    truthClass: "ai_generated",
+    truthSource: "NEX conversational response",
   },
 ];
 

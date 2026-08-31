@@ -112,7 +112,10 @@ async function loadData() {
     GREEN: 0, PARTIAL: 0, FAILED: 0, STUCK: 0, NOT_RUNNING: 0, BLOCKED: 0, UNKNOWN: 0,
   };
   for (const e of evaluations) verdictCounts[e.verdict] = (verdictCounts[e.verdict] ?? 0) + 1;
-  const counts = { HEALTHY: 0, WARNING: 0, CRITICAL: 0, UNKNOWN: 0, MISSED_RUN: 0 };
+  // Health bucket rollup · DEACTIVATED added 2026-08-29 (migration 142) for
+  // historical worker_ids with no cycle_run in 7 days. Informational, not
+  // an alert · counted separately so CRITICAL only surfaces active issues.
+  const counts = { HEALTHY: 0, WARNING: 0, CRITICAL: 0, MISSED_RUN: 0, DEACTIVATED: 0, UNKNOWN: 0 };
   for (const h of health.rows) counts[h.health as keyof typeof counts] = (counts[h.health as keyof typeof counts] ?? 0) + 1;
   return {
     health: health.rows,
@@ -272,7 +275,7 @@ export default async function WorkersPage() {
         <strong> NOT the six-criteria verdict</strong>. Kept during migration for reference. Do not use for operational decisions.
       </div>
       <div style={tilesRowStyle}>
-        {(["HEALTHY","WARNING","CRITICAL","MISSED_RUN","UNKNOWN"] as const).map((state) => (
+        {(["HEALTHY","WARNING","CRITICAL","MISSED_RUN","DEACTIVATED","UNKNOWN"] as const).map((state) => (
           <div key={state} style={healthTileStyle(state)}>
             <div style={tileCountStyle}>{d.counts[state] ?? 0}</div>
             <div style={tileLabelStyle}>{state.replace("_", " ").toLowerCase()}</div>
@@ -435,22 +438,24 @@ function verdictTileStyle(state: string): React.CSSProperties {
 }
 function healthTileStyle(state: string): React.CSSProperties {
   const accents: Record<string, { border: string; bg: string; text: string }> = {
-    HEALTHY:    { border: "rgba(16, 185, 129, 0.45)", bg: "rgba(16, 185, 129, 0.06)", text: "#047857" },
-    WARNING:    { border: "rgba(250, 204, 21, 0.45)", bg: "rgba(250, 204, 21, 0.06)", text: "#a16207" },
-    CRITICAL:   { border: "rgba(239, 68, 68, 0.55)",  bg: "rgba(239, 68, 68, 0.06)",  text: "#b91c1c" },
-    MISSED_RUN: { border: "rgba(220, 38, 38, 0.55)",  bg: "rgba(220, 38, 38, 0.08)",  text: "#991b1b" },
-    UNKNOWN:    { border: "var(--nex-neutral-200)",   bg: "var(--nex-neutral-0)",     text: "var(--nex-neutral-500)" },
+    HEALTHY:     { border: "rgba(16, 185, 129, 0.45)", bg: "rgba(16, 185, 129, 0.06)", text: "#047857" },
+    WARNING:     { border: "rgba(250, 204, 21, 0.45)", bg: "rgba(250, 204, 21, 0.06)", text: "#a16207" },
+    CRITICAL:    { border: "rgba(239, 68, 68, 0.55)",  bg: "rgba(239, 68, 68, 0.06)",  text: "#b91c1c" },
+    MISSED_RUN:  { border: "rgba(220, 38, 38, 0.55)",  bg: "rgba(220, 38, 38, 0.08)",  text: "#991b1b" },
+    DEACTIVATED: { border: "rgba(100, 116, 139, 0.35)", bg: "rgba(100, 116, 139, 0.06)", text: "#475569" },
+    UNKNOWN:     { border: "var(--nex-neutral-200)",   bg: "var(--nex-neutral-0)",     text: "var(--nex-neutral-500)" },
   };
   const a = accents[state] ?? accents.UNKNOWN;
   return { background: a.bg, border: `1px solid ${a.border}`, borderRadius: 12, padding: "16px 14px", display: "flex", flexDirection: "column", gap: 4, color: a.text };
 }
 function healthBadgeStyle(state: string): React.CSSProperties {
   const map: Record<string, { bg: string; text: string }> = {
-    HEALTHY:    { bg: "rgba(16, 185, 129, 0.12)", text: "#047857" },
-    WARNING:    { bg: "rgba(250, 204, 21, 0.15)", text: "#a16207" },
-    CRITICAL:   { bg: "rgba(239, 68, 68, 0.12)",  text: "#b91c1c" },
-    MISSED_RUN: { bg: "rgba(220, 38, 38, 0.15)",  text: "#991b1b" },
-    UNKNOWN:    { bg: "var(--nex-neutral-100)",   text: "var(--nex-neutral-500)" },
+    HEALTHY:     { bg: "rgba(16, 185, 129, 0.12)", text: "#047857" },
+    WARNING:     { bg: "rgba(250, 204, 21, 0.15)", text: "#a16207" },
+    CRITICAL:    { bg: "rgba(239, 68, 68, 0.12)",  text: "#b91c1c" },
+    MISSED_RUN:  { bg: "rgba(220, 38, 38, 0.15)",  text: "#991b1b" },
+    DEACTIVATED: { bg: "rgba(100, 116, 139, 0.12)", text: "#475569" },
+    UNKNOWN:     { bg: "var(--nex-neutral-100)",   text: "var(--nex-neutral-500)" },
   };
   const s = map[state] ?? map.UNKNOWN;
   return { display: "inline-block", padding: "3px 10px", borderRadius: 999, background: s.bg, color: s.text, fontSize: 11, fontWeight: 700, whiteSpace: "nowrap" };

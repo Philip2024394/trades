@@ -15,6 +15,7 @@
 import { NEX_ACTIONS } from "../nex-actions/registry";
 import type { NexAction } from "../nex-actions/types";
 import augmentationManifest from "../../../data/nex-mascot-manifest.json";
+import { resolveMeaning } from "./meaning";
 import type { Mascot, MascotAugmentation, MascotManifest, MascotSection } from "./types";
 
 const AUGMENTATION: MascotManifest = augmentationManifest as MascotManifest;
@@ -41,6 +42,11 @@ function augmentationFor(id: string): MascotAugmentation | undefined {
 function adapt(row: NexAction): Mascot {
   const aug = augmentationFor(row.id);
   const tags = new Set<string>([...autoTagsFor(row), ...(aug?.extraTags ?? [])]);
+  // Expression is the AUTHORITATIVE source · meaning + templates default from
+  // it. Augmentation manifest may override on a per-mascot basis, but the
+  // dictionary in meaning.ts covers all 12 expression values so unknown
+  // paths never produce robotic sentences (Philip 2026-08-27).
+  const base = resolveMeaning(row.mascot.expression);
   return {
     id:                   row.id,
     name:                 row.mascot.label,
@@ -53,6 +59,8 @@ function adapt(row: NexAction): Mascot {
     recommendedTagsMatch: aug?.recommendedTagsMatch,
     featured:             aug?.featured ?? false,
     hasArtwork:           !row.mascot.imageUrl.includes(PLACEHOLDER_URL_MARKER),
+    meaning:              aug?.meaning ?? base.meaning,
+    personalTemplates:    aug?.personalTemplates ?? base.templates,
   };
 }
 

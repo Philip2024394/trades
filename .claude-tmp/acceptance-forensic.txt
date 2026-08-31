@@ -1,0 +1,256 @@
+
+════════════════════════════════════════════════════════════════════════
+  §A0 · Window boundaries
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "before_window": "2026-08-24 08:55:54+00 minus 7h",
+    "after_window": "since 2026-08-24 08:55:54+00",
+    "now": {
+      "timezone": "2026-08-24T01:58:32.657Z"
+    }
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §A1 · No-bypass proof · every acquisition cycle since cutover 3 vs orchestrator picks
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "acquisition_cycles_since_cutover": "3",
+    "orchestrator_picks_since_cutover": "11",
+    "orphan_bypass_cycles": "-8"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §A2 · Saturation protection · post-saturation Yogyakarta food + accommodation
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Yogyakarta",
+    "category": "accommodation",
+    "saturated_since": "2026-08-24T08:55:55.662Z",
+    "cycles_after_saturation_since_cutover": "0"
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "food",
+    "saturated_since": "2026-08-24T08:55:55.677Z",
+    "cycles_after_saturation_since_cutover": "0"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §A3 · Yogyakarta concentration collapse
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "distinct_cities_walked": "3",
+    "total_cycles": 3,
+    "top_city": "Kulon Progo",
+    "top_city_cycles": "1",
+    "top_city_pct": "33.333333333333336",
+    "top_3_pct": "100"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §A4 · Geographic progression · picks per city since cutover 3
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Klaten",
+    "picks": "3"
+  },
+  {
+    "city": "Magelang",
+    "picks": "3"
+  },
+  {
+    "city": "Solo",
+    "picks": "3"
+  },
+  {
+    "city": "Kulon Progo",
+    "picks": "1"
+  },
+  {
+    "city": "Yogyakarta",
+    "picks": "1"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §A5 · Category balance since cutover 3
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "category": "market",
+    "cycles": "2"
+  },
+  {
+    "category": "transport",
+    "cycles": "1"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §A6 · Preserved rotation lifecycle · current saturation state
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "Solo",
+    "category": "accommodation",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:55:55.990Z",
+    "last_cycle_started_at": "2026-08-24T00:03:27.325Z",
+    "last_productive_at": "2026-08-23T20:59:11.878Z",
+    "updated_age_s": 157
+  },
+  {
+    "city": "Klaten",
+    "category": "food",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:55:55.956Z",
+    "last_cycle_started_at": "2026-08-23T21:34:26.406Z",
+    "last_productive_at": "2026-08-23T21:29:26.466Z",
+    "updated_age_s": 157
+  },
+  {
+    "city": "Klaten",
+    "category": "accommodation",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:55:55.945Z",
+    "last_cycle_started_at": "2026-08-23T21:24:28.095Z",
+    "last_productive_at": null,
+    "updated_age_s": 157
+  },
+  {
+    "city": "Magelang",
+    "category": "food",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:55:55.913Z",
+    "last_cycle_started_at": "2026-08-23T21:24:27.883Z",
+    "last_productive_at": null,
+    "updated_age_s": 157
+  },
+  {
+    "city": "Magelang",
+    "category": "accommodation",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:55:55.902Z",
+    "last_cycle_started_at": "2026-08-23T22:02:26.624Z",
+    "last_productive_at": null,
+    "updated_age_s": 157
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "food",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:55:55.864Z",
+    "last_cycle_started_at": "2026-08-23T21:24:27.805Z",
+    "last_productive_at": null,
+    "updated_age_s": 157
+  },
+  {
+    "city": "Gunungkidul",
+    "category": "accommodation",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:55:55.854Z",
+    "last_cycle_started_at": "2026-08-23T21:38:26.666Z",
+    "last_productive_at": null,
+    "updated_age_s": 157
+  },
+  {
+    "city": "Kulon Progo",
+    "category": "food",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:55:55.822Z",
+    "last_cycle_started_at": "2026-08-23T21:24:27.690Z",
+    "last_productive_at": null,
+    "updated_age_s": 157
+  },
+  {
+    "city": "Bantul",
+    "category": "food",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:55:55.782Z",
+    "last_cycle_started_at": "2026-08-23T21:24:27.420Z",
+    "last_productive_at": null,
+    "updated_age_s": 157
+  },
+  {
+    "city": "Sleman",
+    "category": "food",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:55:55.733Z",
+    "last_cycle_started_at": "2026-08-23T21:24:27.958Z",
+    "last_productive_at": null,
+    "updated_age_s": 157
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "food",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:55:55.677Z",
+    "last_cycle_started_at": "2026-08-24T08:53:55.551Z",
+    "last_productive_at": null,
+    "updated_age_s": 157
+  },
+  {
+    "city": "Yogyakarta",
+    "category": "accommodation",
+    "state": "saturated",
+    "updated_at": "2026-08-24T08:55:55.662Z",
+    "last_cycle_started_at": "2026-08-24T08:53:38.646Z",
+    "last_productive_at": null,
+    "updated_age_s": 157
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §A7 · Categories still receiving work per city (no starvation check)
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "city": "central-java-solo",
+    "categories_touched": [
+      "market"
+    ],
+    "cycles": "1"
+  },
+  {
+    "city": "Kulon Progo",
+    "categories_touched": [
+      "transport"
+    ],
+    "cycles": "1"
+  },
+  {
+    "city": "yogyakarta-city",
+    "categories_touched": [
+      "market"
+    ],
+    "cycles": "1"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  §A8 · BEFORE (7h ending at cutover 3) headline for direct comparison
+════════════════════════════════════════════════════════════════════════
+[
+  {
+    "total_cycles": "3276",
+    "orchestrator_picks": "2247",
+    "orphan_bypass": "1029",
+    "top_city": "Yogyakarta",
+    "top_city_cycles": "2166",
+    "top_city_pct": "66.11721611721612",
+    "distinct_cities_walked": "16"
+  }
+]
+
+════════════════════════════════════════════════════════════════════════
+  END
+════════════════════════════════════════════════════════════════════════

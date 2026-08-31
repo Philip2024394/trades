@@ -1,0 +1,216 @@
+{
+  "jobId": "96b3b87a-55df-4bdf-ae9b-63ebec84a0b9",
+  "vertical": "accommodation",
+  "country": "ID",
+  "city": "Bandung",
+  "bbox": {
+    "sw": [
+      -7,
+      107.53
+    ],
+    "ne": [
+      -6.85,
+      107.75
+    ],
+    "scope": "Bandung · West Java"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T12:05:55.633Z",
+  "finishedAt": "2026-08-27T12:08:55.498Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 417,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 417,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 417,
+    "records_persisted": 2,
+    "enriched": 14,
+    "gate3_contactable": 30,
+    "gate4_eligible": 30,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 30,
+    "rejected_by_gate": 387,
+    "errors": 0,
+    "insert_attempted": 417,
+    "insert_conflicts": 415,
+    "insert_returned": 2,
+    "insert_verified": 2,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 2,
+    "rejected_by_reason": {
+      "CONTACT_MISSING": 387
+    }
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#AC-2026-003HC",
+        "name": "Hotel Sukajadi",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003HD",
+        "name": "Imperium",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003HE",
+        "name": "Topaz",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003HF",
+        "name": "Grand Hotel Preanger",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003HG",
+        "name": "Padma Hotel Bandung",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003HH",
+        "name": "Grha Ciumbuleuit Guest House",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003HJ",
+        "name": "Arion Swiss Bell",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#AC-2026-003HK",
+        "name": "Jayakarta",
+        "category": "hotel",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [
+      {
+        "publicRef": "#AC-2026-003HZ",
+        "name": "Sheraton Bandung Hotel & Towers",
+        "whatsapp": null,
+        "phone": "+62 22 2500303",
+        "website": "https://www.marriott.com/hotels/travel/bdosi-sheraton-bandung-hotel-and-towers/"
+      },
+      {
+        "publicRef": "#AC-2026-003J1",
+        "name": "Sari Ater Kamboti Bandung",
+        "whatsapp": null,
+        "phone": "+62 222-011000",
+        "website": "https://sariater-hotel.com/kamboti"
+      },
+      {
+        "publicRef": "#AC-2026-003JM",
+        "name": "Dago Highland Resort",
+        "whatsapp": null,
+        "phone": "+62 22 2508080",
+        "website": "www.thedagohighland.com"
+      },
+      {
+        "publicRef": "#AC-2026-003JP",
+        "name": "Meize Hotel - Jl. Sumbawa",
+        "whatsapp": null,
+        "phone": "+62 22 426 3888",
+        "website": "https://www.meizehotel.com/"
+      },
+      {
+        "publicRef": "#AC-2026-003K7",
+        "name": "Bantal Guling Alun Alun",
+        "whatsapp": null,
+        "phone": "+62224211425",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-003PN",
+        "name": "Rompis Residence",
+        "whatsapp": null,
+        "phone": "+62212013422",
+        "website": null
+      },
+      {
+        "publicRef": "#AC-2026-003PR",
+        "name": "Chez Bon Hostel",
+        "whatsapp": null,
+        "phone": "+62-22-4260-600",
+        "website": "http://chez-bon.com"
+      },
+      {
+        "publicRef": "#AC-2026-003PV",
+        "name": "Kanaka Project",
+        "whatsapp": null,
+        "phone": "+62 812 2343 1606",
+        "website": null
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#AC-2026-003HC",
+        "name": "Hotel Sukajadi",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-003HD",
+        "name": "Imperium",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-003HE",
+        "name": "Topaz",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-003HF",
+        "name": "Grand Hotel Preanger",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#AC-2026-003HG",
+        "name": "Padma Hotel Bandung",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 2,
+    "insert_verified": 2,
+    "delta": 0
+  },
+  "cycle_outcome": "PARTIAL"
+}

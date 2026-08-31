@@ -1,0 +1,82 @@
+{
+  "jobId": "42c026ea-19f1-4b86-85c3-f4fe5219bb77",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Bantul",
+  "bbox": {
+    "sw": [
+      -8.02,
+      110.28
+    ],
+    "ne": [
+      -7.83,
+      110.48
+    ],
+    "scope": "Bantul · DIY"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T18:18:05.238Z",
+  "finishedAt": "2026-08-27T18:18:13.037Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 159,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 159,
+    "matched_exact": 154,
+    "matched_high": 3,
+    "ambiguous": 2,
+    "unnamed": 0,
+    "new_candidates": 0,
+    "records_persisted": 0,
+    "enriched": 2,
+    "gate3_contactable": 0,
+    "gate4_eligible": 0,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 0,
+    "rejected_by_gate": 0,
+    "errors": 0,
+    "enrichment_writes_applied": 2,
+    "insert_attempted": 0,
+    "insert_conflicts": 0,
+    "insert_returned": 0,
+    "insert_verified": 0,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 0,
+    "rejected_by_reason": {
+      "MATCHED_EXISTING": 159
+    }
+  },
+  "samples": {
+    "new": [],
+    "ambiguous": [
+      {
+        "candidateName": "Pasar Hewan Imogiri",
+        "existingName": "Pasar Imogiri",
+        "existingRef": "#FL-2026-ZTCEZ",
+        "score": "0.600"
+      },
+      {
+        "candidateName": "Pasar Wonokromo",
+        "existingName": "Pasar Desa Wonokromo",
+        "existingRef": "#FL-2026-ZTCFE",
+        "score": "0.800"
+      }
+    ],
+    "contactable": [],
+    "rejected": []
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 0,
+    "insert_verified": 0,
+    "delta": 0
+  },
+  "cycle_outcome": "ALL_DEDUPED"
+}

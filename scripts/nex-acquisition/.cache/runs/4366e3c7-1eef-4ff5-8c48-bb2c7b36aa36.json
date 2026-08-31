@@ -1,0 +1,216 @@
+{
+  "jobId": "4366e3c7-1eef-4ff5-8c48-bb2c7b36aa36",
+  "vertical": "food",
+  "country": "ID",
+  "city": "Jakarta",
+  "bbox": {
+    "sw": [
+      -6.37,
+      106.68
+    ],
+    "ne": [
+      -6.09,
+      106.98
+    ],
+    "scope": "Jakarta · DKI Jakarta"
+  },
+  "smokeMode": true,
+  "dryRun": false,
+  "startedAt": "2026-08-27T12:05:55.611Z",
+  "finishedAt": "2026-08-27T12:21:53.147Z",
+  "sources": [
+    {
+      "name": "osm_overpass",
+      "discovered": 4379,
+      "errors": []
+    }
+  ],
+  "counts": {
+    "discovered": 4379,
+    "matched_exact": 0,
+    "matched_high": 0,
+    "ambiguous": 0,
+    "unnamed": 0,
+    "new_candidates": 4379,
+    "records_persisted": 3958,
+    "enriched": 88,
+    "gate3_contactable": 419,
+    "gate4_eligible": 419,
+    "gate5_outreach_sent": 0,
+    "gate5_outreach_blocked_by_smoke": 419,
+    "rejected_by_gate": 3960,
+    "errors": 0,
+    "insert_attempted": 4379,
+    "insert_conflicts": 421,
+    "insert_returned": 3958,
+    "insert_verified": 3958,
+    "verification_failed": 0,
+    "persist_errors": 0,
+    "records_new_from_db": 3958,
+    "rejected_by_reason": {
+      "CONTACT_MISSING": 3960
+    }
+  },
+  "samples": {
+    "new": [
+      {
+        "publicRef": "#FL-2026-ZTDJC",
+        "name": "Burger King",
+        "category": "fast-food",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDJD",
+        "name": "Death by Chocolate",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDJE",
+        "name": "Tator",
+        "category": "coffee-cafe",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDJF",
+        "name": "Burger Bangor",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDJG",
+        "name": "McDonald's",
+        "category": "fast-food",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDJH",
+        "name": "Planet Hollywood Jakarta",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDJJ",
+        "name": "Titik Temu",
+        "category": "coffee-cafe",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDJK",
+        "name": "Soto kudus",
+        "category": "restaurant",
+        "hasCoord": true,
+        "hasContact": false,
+        "sourceName": "osm_overpass"
+      }
+    ],
+    "ambiguous": [],
+    "contactable": [
+      {
+        "publicRef": "#FL-2026-ZTDJS",
+        "name": "Warung Tekko",
+        "whatsapp": null,
+        "phone": "+62 21 5263137;+62 21 5263278",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTDKP",
+        "name": "HokBen",
+        "whatsapp": null,
+        "phone": "+62 21 5005 05",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTDP2",
+        "name": "Goma ramen",
+        "whatsapp": null,
+        "phone": "+62 818 0721 7074",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTDPM",
+        "name": "Bluegrass Bar & Grill",
+        "whatsapp": null,
+        "phone": "+62 21 29941660",
+        "website": "https://www.instagram.com/bluegrassjakarta"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDRQ",
+        "name": "Wareg Catering",
+        "whatsapp": null,
+        "phone": "+62 896 5804 6023",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTDSM",
+        "name": "황금식당",
+        "whatsapp": null,
+        "phone": "+62 21 2957 4369",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTDTD",
+        "name": "Kedai Es Pisang Ijo Pemuda (Tanjung Duren)",
+        "whatsapp": null,
+        "phone": "+6281312960237",
+        "website": null
+      },
+      {
+        "publicRef": "#FL-2026-ZTDW8",
+        "name": "Cafe Batavia",
+        "whatsapp": "+628111805246",
+        "phone": null,
+        "website": "https://cafebatavia.com/"
+      }
+    ],
+    "rejected": [
+      {
+        "publicRef": "#FL-2026-ZTDJC",
+        "name": "Burger King",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDJD",
+        "name": "Death by Chocolate",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDJE",
+        "name": "Tator",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDJF",
+        "name": "Burger Bangor",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      },
+      {
+        "publicRef": "#FL-2026-ZTDJG",
+        "name": "McDonald's",
+        "reason": "no verifiable contact channel (no WhatsApp · no phone)"
+      }
+    ]
+  },
+  "errors": [],
+  "persistenceInvariant": {
+    "held": true,
+    "db_count": 3958,
+    "insert_verified": 3958,
+    "delta": 0
+  },
+  "cycle_outcome": "PARTIAL"
+}

@@ -1,0 +1,4 @@
+{"at":"2026-08-30T22:38:40.692Z","kind":"spawn","detail":"node scripts/walkers/run-supervisor.mjs","restartCount":0}
+{"at":"2026-08-30T22:39:17.350Z","kind":"exit","detail":"code=4294967295 signal=null","restartCount":0}
+{"at":"2026-08-30T22:39:27.760Z","kind":"spawn","detail":"node scripts/walkers/run-supervisor.mjs","restartCount":1}
+{"at":"2026-08-31T03:10:35.996Z","kind":"spawn","detail":"node scripts/walkers/run-supervisor.mjs","restartCount":0}

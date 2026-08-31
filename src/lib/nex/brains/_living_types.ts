@@ -432,6 +432,18 @@ export type NexUserRow = {
   last_review_at: string | null;
   last_login_at: string | null;
   metadata: Record<string, unknown>;
+  /**
+   * Preferred app language · Stage 3.33 · Philip 2026-08-31.
+   *
+   * Populated at account creation by the sign-on prefix picker
+   * (Stage 3.31.a): +62 → "id" · +44/+1/+61/+65/+64/+91 → "en".
+   * NULL means no server preference · client falls back to
+   * localStorage.nex_user_lang → URL ?lang= → 'en' default (per
+   * resolveClientLang in src/lib/nex/i18n/lang.ts). CHECK constraint
+   * in migration 20260831000000_nex_users_preferred_lang.sql bounds
+   * accepted values to the shipped language packs.
+   */
+  preferred_lang: "en" | "id" | null;
   created_at: string;
   updated_at: string;
 };
