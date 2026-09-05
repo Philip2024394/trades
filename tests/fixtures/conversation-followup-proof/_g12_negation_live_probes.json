@@ -1,0 +1,661 @@
+{
+  "runAt": "2026-09-05T17:44:53.102Z",
+  "tests": [
+    {
+      "label": "BASIC-POS · I want a hotel",
+      "description": "affirmative · hotel task runs",
+      "conversation_id": "2635ed0e-857a-4a6c-b077-a20e9cad74f8",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I want a hotel",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "voice_intent": "discovery_hit",
+          "world_cards_count": 3,
+          "conv_function_detected": "UNCLASSIFIED",
+          "conv_function_reason": "not_gated_function:UNCLASSIFIED",
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "BASIC-NEG · I don't want a hotel (THE REGRESSION)",
+      "description": "NEGATED_REQUEST · MUST NOT execute hotel search",
+      "conversation_id": "a218474c-00d2-47e0-b5e5-de89066233e0",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I don't want a hotel",
+          "reply": "Got it — no problem. What would you like me to help with instead?",
+          "voice_en": "Got it — no problem. What would you like me to help with instead?",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 3,
+          "knowledge_count": 0,
+          "conv_function_detected": "NEGATED_REQUEST",
+          "conv_function_gate_fired": true,
+          "conv_function_reason": "gated:NEGATED_REQUEST:neg_request:first_person_neg_desire"
+        }
+      ]
+    },
+    {
+      "label": "ACTION-POS · Find me hotels",
+      "description": "affirmative · hotel task runs",
+      "conversation_id": "f9c651fe-79be-48ab-bb56-0cdc435ac1df",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "Find me hotels",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "voice_intent": "discovery_hit",
+          "world_cards_count": 3,
+          "conv_function_detected": "TASK_REQUEST",
+          "conv_function_reason": "not_gated_function:TASK_REQUEST",
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "ACTION-NEG · Don't find me hotels",
+      "description": "action-negated · MUST NOT execute hotel search",
+      "conversation_id": "8c84f9dd-684a-4cbf-9437-43e24b6ba220",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "Don't find me hotels",
+          "reply": "Got it — no problem. What would you like me to help with instead?",
+          "voice_en": "Got it — no problem. What would you like me to help with instead?",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 3,
+          "knowledge_count": 0,
+          "conv_function_detected": "NEGATED_REQUEST",
+          "conv_function_gate_fired": true,
+          "conv_function_reason": "gated:NEGATED_REQUEST:neg_action:neg_action:find"
+        }
+      ]
+    },
+    {
+      "label": "NEED-POS · I need a hotel",
+      "description": "affirmative",
+      "conversation_id": "504dade9-7e4f-492e-8f21-7fe2612d6b0b",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I need a hotel",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "voice_intent": "discovery_hit",
+          "world_cards_count": 3,
+          "conv_function_detected": "UNCLASSIFIED",
+          "conv_function_reason": "not_gated_function:UNCLASSIFIED",
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "NEED-NEG · I don't need a hotel",
+      "description": "negated · MUST NOT execute hotel search",
+      "conversation_id": "b862bbb1-276e-4517-b3a1-727727f4bdf0",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I don't need a hotel",
+          "reply": "Got it — no problem. What would you like me to help with instead?",
+          "voice_en": "Got it — no problem. What would you like me to help with instead?",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 3,
+          "knowledge_count": 0,
+          "conv_function_detected": "NEGATED_REQUEST",
+          "conv_function_gate_fired": true,
+          "conv_function_reason": "gated:NEGATED_REQUEST:neg_request:first_person_neg_desire"
+        }
+      ]
+    },
+    {
+      "label": "PREF-POS · I'm looking for a hotel",
+      "description": "affirmative",
+      "conversation_id": "0b0f6a92-eadf-47f4-a69a-838c47f8b943",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I'm looking for a hotel",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "voice_intent": "discovery_hit",
+          "world_cards_count": 3,
+          "conv_function_detected": "UNCLASSIFIED",
+          "conv_function_reason": "not_gated_function:UNCLASSIFIED",
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "PREF-NEG · I'm not looking for a hotel",
+      "description": "negated · MUST NOT execute hotel search",
+      "conversation_id": "1e7c0d91-e9f3-47a9-8635-a9a8ac3be0d2",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I'm not looking for a hotel",
+          "reply": "Got it — no problem. What would you like me to help with instead?",
+          "voice_en": "Got it — no problem. What would you like me to help with instead?",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 3,
+          "knowledge_count": 0,
+          "conv_function_detected": "NEGATED_REQUEST",
+          "conv_function_gate_fired": true,
+          "conv_function_reason": "gated:NEGATED_REQUEST:neg_request:first_person_neg_desire"
+        }
+      ]
+    },
+    {
+      "label": "ATTR · I want a hotel that's not expensive",
+      "description": "AFFIRMATIVE / ATTRIBUTE · hotel search MUST proceed",
+      "conversation_id": "e358a5eb-50cf-48f2-a8d1-4e87af127616",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I want a hotel that's not expensive",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "voice_intent": "discovery_hit",
+          "world_cards_count": 3,
+          "conv_function_detected": "UNCLASSIFIED",
+          "conv_function_reason": "not_gated_function:UNCLASSIFIED",
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "CONTRAST · Not a hotel — a restaurant",
+      "description": "CONTRASTIVE · surface restaurant · no hotel list",
+      "conversation_id": "292f422b-a689-434b-9612-25d5670bb32f",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "Not a hotel -- a restaurant",
+          "reply": "Got it — restaurant instead. What kind are you after?",
+          "voice_en": "Got it — restaurant instead. What kind are you after?",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "knowledge_count": 0,
+          "conv_function_detected": "NEGATED_REQUEST",
+          "conv_function_gate_fired": true,
+          "conv_function_reason": "gated:NEGATED_REQUEST:neg_contrastive:contrastive_connector:--"
+        }
+      ]
+    },
+    {
+      "label": "CORRECTION cross-turn · Find hotels then cancel",
+      "description": "T2 correction · MUST NOT rerun hotels",
+      "conversation_id": "7667cb2b-0eb2-4861-a757-2f03c48a31c7",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "Find me hotels",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "voice_intent": "discovery_hit",
+          "world_cards_count": 3,
+          "conv_function_detected": "TASK_REQUEST",
+          "conv_function_reason": "not_gated_function:TASK_REQUEST",
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "Actually, I don't want a hotel anymore",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "voice_intent": "discovery_hit",
+          "world_cards_count": 3,
+          "conv_function_detected": "TOPIC_SHIFT",
+          "conv_function_reason": "not_gated_function:TOPIC_SHIFT",
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "RESULT-NEG · Find hotels then don't want first",
+      "description": "T2 RESULT-scope negation · hotel task remains valid · MUST NOT gate",
+      "conversation_id": "f8b69096-f87c-4d1e-b80b-10e7c64b3d42",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "Find me hotels",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "voice_intent": "discovery_hit",
+          "world_cards_count": 3,
+          "conv_function_detected": "TASK_REQUEST",
+          "conv_function_reason": "not_gated_function:TASK_REQUEST",
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "I don't want the first one",
+          "reply": "let's look at the next option. Do you have a specific area or hotel in Yogyakarta in mind?",
+          "voice_en": "let's look at the next option. Do you have a specific area or hotel in Yogyakarta in mind?",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 3,
+          "knowledge_count": 1,
+          "conv_function_detected": "UNCLASSIFIED",
+          "conv_function_reason": "not_gated_function:UNCLASSIFIED",
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        }
+      ]
+    },
+    {
+      "label": "QUESTION-NEG · Don't you have any hotels?",
+      "description": "rhetorical question · MUST NOT gate as rejection",
+      "conversation_id": "8a445206-3111-46e9-b4a7-8da6f365e369",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "Don't you have any hotels?",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "voice_intent": "discovery_hit",
+          "world_cards_count": 3,
+          "conv_function_detected": "UNCLASSIFIED",
+          "conv_function_reason": "not_gated_function:UNCLASSIFIED",
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "QUESTION-ATTR · Which hotels don't have parking?",
+      "description": "attribute question · MUST NOT gate",
+      "conversation_id": "33d8c5fa-e01a-4bbf-8c3d-babd6f97d387",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "Which hotels don't have parking?",
+          "reply": "OpenStreetMap listings don't carry facility data (pool, wifi, breakfast, aircon), so I can't confidently filter for parking from what I have.",
+          "voice_en": "Hmm — nothing's coming back for that. Want me to loosen the search a bit?",
+          "intent": "accommodation",
+          "voice_intent": "discovery_empty",
+          "world_cards_count": 0,
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "conv_function_reason": "not_gated_function:INFORMATION_QUESTION",
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "SOCIAL · No thanks",
+      "description": "social · natural reply · NOT a rejection",
+      "conversation_id": "f9bc32b2-5593-4f46-aadf-d3280310919d",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "No thanks",
+          "reply": "You're welcome! Anything else I can help with?",
+          "voice_en": "You're welcome! Anything else I can help with?",
+          "intent": "conversation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "knowledge_count": 0,
+          "conv_function_detected": "GRATITUDE",
+          "conv_function_gate_fired": true,
+          "conv_function_reason": "gated:GRATITUDE:gratitude_marker"
+        }
+      ]
+    },
+    {
+      "label": "SOCIAL · I don't know",
+      "description": "social · MUST NOT gate as rejection",
+      "conversation_id": "5d532ae5-cf65-411d-b545-236a48fa9d47",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I don't know",
+          "reply": "how can I assist you today? If you're looking for information about Indonesia or need recommendations, feel free to ask!",
+          "voice_en": "how can I assist you today? If you're looking for information about Indonesia or need recommendations, feel free to ask!",
+          "intent": "conversation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "knowledge_count": 0,
+          "conv_function_detected": "UNCLASSIFIED",
+          "conv_function_reason": "not_gated_function:UNCLASSIFIED",
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        }
+      ]
+    },
+    {
+      "label": "SOCIAL · I don't mind",
+      "description": "social",
+      "conversation_id": "de864b59-c3db-44ac-810e-d75d915c9cec",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I don't mind",
+          "reply": "I understand. Is there anything specific you'd like to discuss or any questions you have about Indonesia?",
+          "voice_en": "I understand. Is there anything specific you'd like to discuss or any questions you have about Indonesia?",
+          "intent": "conversation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "knowledge_count": 0,
+          "conv_function_detected": "UNCLASSIFIED",
+          "conv_function_reason": "not_gated_function:UNCLASSIFIED",
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        }
+      ]
+    },
+    {
+      "label": "ADV · I want a hotel that's not expensive (§23-1)",
+      "description": "attribute-only · hotel search proceeds",
+      "conversation_id": "8a7b8d0c-ba5e-473d-b73f-df018817b771",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I want a hotel that's not expensive",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "voice_intent": "discovery_hit",
+          "world_cards_count": 3,
+          "conv_function_detected": "UNCLASSIFIED",
+          "conv_function_reason": "not_gated_function:UNCLASSIFIED",
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "ADV · I don't want an expensive hotel (§23-2)",
+      "description": "attribute-negation · entity affirmed",
+      "conversation_id": "1a3ba2b1-ba2e-44cb-9285-0a706dd4da5a",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I don't want an expensive hotel",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "voice_intent": "discovery_hit",
+          "world_cards_count": 3,
+          "conv_function_detected": "UNCLASSIFIED",
+          "conv_function_reason": "not_gated_function:UNCLASSIFIED",
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "ADV · I don't want a hotel but I do want a restaurant (§23-3)",
+      "description": "contrastive",
+      "conversation_id": "990c6127-6e28-4249-aa94-eda783b45bc0",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I don't want a hotel but I do want a restaurant",
+          "reply": "Got it — I instead. What kind are you after?",
+          "voice_en": "Got it — I instead. What kind are you after?",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "knowledge_count": 0,
+          "conv_function_detected": "NEGATED_REQUEST",
+          "conv_function_gate_fired": true,
+          "conv_function_reason": "gated:NEGATED_REQUEST:neg_contrastive:contrastive_connector:but"
+        }
+      ]
+    },
+    {
+      "label": "ADV · Don't search hotels yet (§23-4)",
+      "description": "action-negation with 'yet'",
+      "conversation_id": "dc5757b9-4fb8-44ba-9919-9da59f86b9ae",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "Don't search hotels yet",
+          "reply": "Got it — no problem. What would you like me to help with instead?",
+          "voice_en": "Got it — no problem. What would you like me to help with instead?",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 3,
+          "knowledge_count": 0,
+          "conv_function_detected": "NEGATED_REQUEST",
+          "conv_function_gate_fired": true,
+          "conv_function_reason": "gated:NEGATED_REQUEST:neg_action:neg_action:search"
+        }
+      ]
+    },
+    {
+      "label": "ADV · No thanks, I'm still looking for a hotel (§23-8)",
+      "description": "SCOPE MUST BE CORRECT · social 'no thanks' precedes affirmative task",
+      "conversation_id": "0cf84e86-b9b6-46cd-bc06-3de793e97398",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "No thanks, I'm still looking for a hotel",
+          "reply": "You're welcome! Anything else I can help with?",
+          "voice_en": "You're welcome! Anything else I can help with?",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 3,
+          "knowledge_count": 0,
+          "conv_function_detected": "GRATITUDE",
+          "conv_function_gate_fired": true,
+          "conv_function_reason": "gated:GRATITUDE:gratitude_marker"
+        }
+      ]
+    },
+    {
+      "label": "ID · saya tidak mau hotel",
+      "description": "ID · negated request · Indonesian reply",
+      "conversation_id": "9ac18f59-ae25-4a4f-93ad-35e05e27eb94",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "saya tidak mau hotel",
+          "reply": "Baik, saya batalkan. Apa yang Anda ingin cari sebagai gantinya?",
+          "voice_en": "Baik, saya batalkan. Apa yang Anda ingin cari sebagai gantinya?",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 3,
+          "knowledge_count": 0,
+          "conv_function_detected": "NEGATED_REQUEST",
+          "conv_function_gate_fired": true,
+          "conv_function_reason": "gated:NEGATED_REQUEST:neg_request:first_person_neg_desire"
+        }
+      ]
+    },
+    {
+      "label": "ID · jangan cari hotel",
+      "description": "ID · action-negated · Indonesian reply",
+      "conversation_id": "53cb778e-8e49-4747-a3b2-6495a325e0cb",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "jangan cari hotel",
+          "reply": "Got it — no problem. What would you like me to help with instead?",
+          "voice_en": "Got it — no problem. What would you like me to help with instead?",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 3,
+          "knowledge_count": 0,
+          "conv_function_detected": "NEGATED_REQUEST",
+          "conv_function_gate_fired": true,
+          "conv_function_reason": "gated:NEGATED_REQUEST:neg_action:neg_action:cari"
+        }
+      ]
+    },
+    {
+      "label": "ID · bukan hotel",
+      "description": "ID · bare entity negation",
+      "conversation_id": "3c938818-fcbd-4cd7-9e3d-86cf42c66986",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "bukan hotel",
+          "reply": "Got it — no problem. What would you like me to help with instead?",
+          "voice_en": "Got it — no problem. What would you like me to help with instead?",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 3,
+          "knowledge_count": 0,
+          "conv_function_detected": "NEGATED_REQUEST",
+          "conv_function_gate_fired": true,
+          "conv_function_reason": "gated:NEGATED_REQUEST:neg_entity:bare_neg_entity_id"
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · G24 · seafood in Japan",
+      "description": "G24 still blocks fabrication",
+      "conversation_id": "14f9f6e3-2fae-4481-abe7-bb2f618e141e",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "tell me about seafood in Japan",
+          "reply": "NEX doesn't have verified information about japan at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "voice_en": "NEX doesn't have verified information about japan at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "intent": "conversation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "knowledge_count": 0,
+          "conv_function_detected": "UNCLASSIFIED",
+          "conv_function_reason": "not_gated_function:UNCLASSIFIED",
+          "result_followup_fired": false,
+          "scope_gate_fired": true,
+          "ordinal_gate_fired": false
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · P0.3 · ordinal continuation",
+      "description": "hotel → first-one continuation",
+      "conversation_id": "5f6c6e61-7495-45e3-bc50-0cad2c1fb51d",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me a hotel in Yogyakarta",
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+          "voice_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "voice_intent": "discovery_hit",
+          "world_cards_count": 3,
+          "conv_function_detected": "TASK_REQUEST",
+          "conv_function_reason": "not_gated_function:TASK_REQUEST",
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "tell me more about the first one",
+          "reply": "The first hotel in the conversation is Gaotama Hotel in Yogyakarta. It is known for its comfortable accommodations and convenient location. However, please note that this listing is from OpenStreetMap and is for discovery purposes only, not for live booking.",
+          "voice_en": "The first hotel in the conversation is Gaotama Hotel in Yogyakarta. It is known for its comfortable accommodations and convenient location. However, please note that this listing is from OpenStreetMap",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 3,
+          "knowledge_count": 4,
+          "conv_function_detected": "UNCLASSIFIED",
+          "conv_function_reason": "not_gated_function:UNCLASSIFIED",
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · P0.4 · fresh 'the first hotel'",
+      "description": "ordinal boundary reply",
+      "conversation_id": "cbfdd525-efa8-4643-aa09-3a8cb94a9b66",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "Tell me about the first hotel.",
+          "reply": "Which hotel do you mean? I don't have a previous hotel list in this conversation. Want me to find some?",
+          "voice_en": "Which hotel do you mean? I don't have a previous hotel list in this conversation. Want me to find some?",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 3,
+          "knowledge_count": 0,
+          "conv_function_detected": "UNCLASSIFIED",
+          "conv_function_reason": "not_gated_function:UNCLASSIFIED",
+          "result_followup_fired": false,
+          "ordinal_gate_fired": true
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · L4 · social/personal frame reset",
+      "description": "T2 offer must gate (L4)",
+      "conversation_id": "1064a292-cd92-4ffa-9408-037efab3015e",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "any hotels nex",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "voice_intent": "discovery_hit",
+          "world_cards_count": 3,
+          "conv_function_detected": "TASK_REQUEST",
+          "conv_function_reason": "not_gated_function:TASK_REQUEST",
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "do you want to know where i am",
+          "reply": "Yeah — where are you? That'll help me make things more relevant.",
+          "voice_en": "Yeah — where are you? That'll help me make things more relevant.",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 3,
+          "knowledge_count": 0,
+          "conv_function_detected": "PERSONAL_CONTEXT_OFFER",
+          "conv_function_gate_fired": true,
+          "conv_function_reason": "gated:PERSONAL_CONTEXT_OFFER:offer_verb_pattern"
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · result-followup · provenance",
+      "description": "delegated to Milestone A",
+      "conversation_id": "4010a069-100f-4ddf-b94a-5e58797d097f",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "voice_intent": "discovery_hit",
+          "world_cards_count": 3,
+          "conv_function_detected": "TASK_REQUEST",
+          "conv_function_reason": "not_gated_function:TASK_REQUEST",
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "where did you find them?",
+          "reply": "These are OpenStreetMap community-contributed accommodation listings from the NEX directory (nex.accommodation_business). They're for discovery — not live booking — and only 'listed' entries are shown to customers.",
+          "voice_en": "These are OpenStreetMap community-contributed accommodation listings from the NEX directory (nex.accommodation_business). They're for discovery — not live booking — and only 'listed' entries are shown",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 3,
+          "conv_function_detected": "RESULT_FOLLOW_UP",
+          "conv_function_reason": "not_gated_function:RESULT_FOLLOW_UP",
+          "result_followup_fired": true
+        }
+      ]
+    }
+  ]
+}

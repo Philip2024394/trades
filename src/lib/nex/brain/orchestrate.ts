@@ -35,7 +35,8 @@ import {
   describeSlots,
   type AccommodationSlots,
 } from "./accommodation-slots";
-import { getSession, upsertSession, type SessionState } from "./session";
+import { getSession, upsertSession, isVerticalSwitch, applyVerticalSwitchReset, applyAbandonmentReset, type SessionState } from "./session";
+import { detectAbandonment } from "./abandonment-detector";
 import { decideAccommodationInsight } from "./insight";
 import { recordInsightGap } from "./insight-gaps";
 import { ActivationTrace } from "./capabilities";
@@ -47,6 +48,9 @@ import {
   resumeAcknowledgement,
   shouldSurfacePausedHint,
   pausedHint,
+  // Stage 3.41.f · generic food/commerce goal constructors for sticky-vertical persistence
+  newVerticalGoal,
+  progressVerticalGoal,
   type Goal,
 } from "./goal-tracking";
 import { reflectOnReply, type ReflectionReport } from "./reflection";
@@ -330,6 +334,17 @@ export type BrainReply = {
    * VerificationReport fields for backwards-compat during migration.
    */
   action_audit?: import("./action-audit").ActionAudit;
+  /**
+   * Stage 3.41.d P1 · true when THIS turn's message actually resolved
+   * a reference (ordinal or pronoun). Voice selector uses this to
+   * choose acknowledge_reference over discovery_hit · avoids the
+   * unreliable "compare resolvedInTurn to turnCount" heuristic which
+   * mis-fires on turns that don't reach the accommodation composer.
+   */
+  reference_just_resolved?: boolean;
+  /** Convenience mirror of session.currentReference.business.canonical
+   *  at the end of this turn · for voice selector wording. */
+  current_reference_canonical?: string;
 };
 
 export type OrchestrateOptions = {
@@ -481,7 +496,32 @@ function composeGatedReply(
         // window · a pronoun in this turn refers to what NEX presented in
         // an EARLIER turn, not what it's about to present now.
         const priorWindow = session?.entities ?? [];
-        const resolution: ReferenceResolution = resolveReference(userEntities, priorWindow);
+        // Stage 3.41.d P4 · thread session's currentReference through so
+        // pronouns like "message them" resolve to a recent pick even
+        // when the presented batch has multiple candidates. Staleness
+        // enforced in the resolver.
+        const priorRefBiz = session?.currentReference?.business;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const priorRefTurn = (session?.currentReference as any)?.resolvedInTurn as number | undefined;
+        // Stage 3.41.d P1 · turnCount was bumped at the TOP of
+        // orchestrateChatTurnLive so this value is THIS turn's number.
+        const currentTurn = session?.turnCount ?? 1;
+        const currentReferenceEntity: RecognisedEntity | undefined = priorRefBiz
+          ? {
+              id: `business_name:${priorRefBiz.canonical}`,
+              kind: "business_name",
+              raw: priorRefBiz.raw,
+              canonical: priorRefBiz.canonical,
+              refId: priorRefBiz.refId,
+              source: "nex_reply",
+              atIso: nowIso,
+            }
+          : undefined;
+        const resolution: ReferenceResolution = resolveReference(userEntities, priorWindow, {
+          currentReferenceEntity,
+          currentReferenceResolvedInTurn: priorRefTurn,
+          currentTurn,
+        });
         trace.record("reference_resolution", resolution.resolved
           ? `resolved ${resolution.refKind}=${resolution.offset} → ${resolution.entity.canonical}`
           : `unresolved · ${resolution.reason}`);
@@ -492,16 +532,69 @@ function composeGatedReply(
         );
         trace.record("entity_intelligence", `user=${userEntities.length} · presented=${presentedEntities.length} · window=${mergedEntities.length}`);
 
+        // Stage 3.41.d P4 · stamp resolvedInTurn on the current-turn
+        // summary when we successfully resolved. Preserves the prior
+        // resolvedInTurn when THIS turn didn't itself resolve · that's
+        // how staleness accrues (silence about the pick counts).
+        //
+        // Stage 3.41.h · vertical-switch cleanup · if the prior goal
+        // was food/commerce and this turn just promoted us into
+        // accommodation, the food/commerce reference and its business
+        // entities must NOT leak into the new accommodation
+        // conversation. Detect the switch and clear before deriving
+        // resolution/summary/merge. Fail-closed.
+        const priorGoalKindForSwitch = session?.goal?.kind;
+        const switchedIntoAccommodation = isVerticalSwitch(priorGoalKindForSwitch, "accommodation");
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const prevRefTurn = switchedIntoAccommodation
+          ? undefined
+          : (session?.currentReference as any)?.resolvedInTurn as number | undefined;
+        const priorSummaryForCarry = switchedIntoAccommodation ? undefined : session?.currentReference;
+        const resolutionSummary = summariseResolution(resolution);
+        const currentReferenceSummary = resolution.resolved
+          ? { ...resolutionSummary, resolvedInTurn: currentTurn }
+          : (prevRefTurn !== undefined
+              ? { ...(priorSummaryForCarry ?? resolutionSummary), resolvedInTurn: prevRefTurn }
+              : resolutionSummary);
+        // Also prune business_name entities from the prior vertical
+        // so ordinal resolution on the FIRST accommodation turn can't
+        // accidentally match against food/commerce entries still in
+        // the window. Non-business_name entities (dates, quantities)
+        // are preserved.
+        const entitiesAfterSwitch = switchedIntoAccommodation
+          ? mergedEntities.filter((e) => {
+              if (e.kind !== "business_name") return true;
+              // Keep only entities from THIS accommodation turn
+              // (source=nex_reply captured just now with fresh atIso).
+              return e.source === "nex_reply" && e.atIso === nowIso;
+            })
+          : mergedEntities;
         upsertSession({
           conversationId: opts.conversationId,
           createdAt: session?.createdAt ?? Date.now(),
           updatedAt: Date.now(),
           accommodation: out.updatedSlots,
           goal: goalNext,
-          entities: mergedEntities,
+          entities: entitiesAfterSwitch,
+          // turnCount was bumped at the top of orchestrateChatTurnLive ·
+          // don't reset it here · preserve the incremented value that
+          // reflects THIS turn.
+          turnCount: session?.turnCount ?? currentTurn,
           // Always persist the resolution summary · resolved OR unresolved.
-          // The audit trail should show every attempt, not just successes.
-          currentReference: summariseResolution(resolution),
+          // On vertical-switch turns, prior summary was discarded (see
+          // priorSummaryForCarry above) so we land on THIS turn's summary.
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          currentReference: currentReferenceSummary as any,
+          // Universal Entity Intelligence (Philip 2026-09-06 · AUTHORIZE).
+          // Preserve any prior card memo across accommodation turns so a
+          // next-turn attribute question can answer from real evidence.
+          entityCardMemo: session?.entityCardMemo,
+          // Preserve dialogueTurns + lastNexQuestion + related session
+          // continuity fields as well · other pipeline code depends on
+          // these surviving the accommodation upsert.
+          dialogueTurns: session?.dialogueTurns,
+          lastNexQuestion: session?.lastNexQuestion,
+          frame: session?.frame,
         });
 
         // Stage 3.15 · when a book-intent turn resolves to a specific
@@ -511,6 +604,56 @@ function composeGatedReply(
         // "can't book" boundary still ships.
         if (resolution.resolved && out.updatedSlots?.action === "book" && !out.reply.toLowerCase().includes(resolution.entity.raw.toLowerCase())) {
           out.reply = `You mean ${resolution.entity.raw} — ${out.reply.charAt(0).toLowerCase()}${out.reply.slice(1)}`;
+        }
+
+        // ─── Discovery Continuity Slice (Philip 2026-09-06 · CEREMONIAL
+        //     AUTHORIZE · D1) ─────────────────────────────────────────
+        //
+        // WHY: Wave 5 identified D1 · when the user's turn is an
+        // anaphoric reference to an entity NEX presented in a prior
+        // accommodation discovery turn ("the first one" · "the second"
+        // · "that one" · "tell me more about the first"), the composer
+        // was re-emitting the discovery opener instead of anchoring on
+        // the resolved entity. session.entities was already populated
+        // by `capturePresentedBusinesses` above · resolveReference was
+        // already resolving correctly · only the reply-side handoff was
+        // missing.
+        //
+        // HOW: use the existing semantic reference intelligence. Only
+        // fires when the resolver returned refKind = ordinal / pronoun /
+        // pronoun_via_current_reference · never on fresh discovery
+        // turns · never phrase-matched. The overridden reply names the
+        // resolved entity honestly (raw name + 1-indexed offset in the
+        // prior list) and invites a specific follow-up. NO fabricated
+        // attributes · NO new evidence · NO new memory · uses only
+        // fields already present on the RecognisedEntity resolveReference
+        // returned.
+        //
+        // PRESERVATION: fresh conversations have no session.entities so
+        // resolution.resolved is false and this block does nothing · P0.4
+        // fresh-conversation ordinal protection remains intact. Book
+        // intent (line 605-607) wins because it fires first when
+        // action==="book". Comparison/Recommendation branches downstream
+        // set out.reply from their own reports so they win when they
+        // fire. Vertical-switch protection (isVerticalSwitch above)
+        // already cleared prior business_name entities from the window
+        // so a hotel → restaurant switch cannot leak.
+        else if (
+          resolution.resolved &&
+          (resolution.refKind === "ordinal"
+            || resolution.refKind === "pronoun"
+            || resolution.refKind === "pronoun_via_current_reference")
+        ) {
+          const pickName = resolution.entity.raw;
+          const pickOffset = resolution.offset;
+          const lang: "en" | "id" = detectAccommodationReplyLang(message) === "id" ? "id" : "en";
+          out.reply = lang === "id"
+            ? `${pickName} — itu pilihan #${pickOffset} dari daftar sebelumnya. Ingin tahu apa dari yang NEX punya?`
+            : `${pickName} — that's #${pickOffset} from the list I showed you. What would you like to know about it from what NEX has?`;
+          trace.record(
+            "reference_resolution",
+            `discovery_continuity: overrode reply for resolved ${resolution.refKind} → ${pickName}#${pickOffset}`,
+          );
         }
 
         // Stage 3.16 · Phase 9 · Comparison · detect compare intent + render.
@@ -2361,6 +2504,68 @@ export async function orchestrateChatTurnLive(
   message: string,
   opts: OrchestrateOptions = {},
 ): Promise<BrainReply> {
+  // Stage 3.41.d P1 · bump turnCount at the TOP of every turn so
+  // downstream signals like "reference just resolved" can compare
+  // resolvedInTurn === turnCount reliably · regardless of which
+  // composer path fires. Persist immediately so nested code that
+  // re-reads the session sees the incremented value.
+  if (opts.conversationId) {
+    const preS = getSession(opts.conversationId);
+    if (preS) {
+      upsertSession({ ...preS, turnCount: (preS.turnCount ?? 0) + 1 });
+    } else {
+      upsertSession({
+        conversationId: opts.conversationId,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        turnCount: 1,
+      });
+    }
+  }
+
+  // Stage 3.41.k landing #1 · ABANDONMENT GATE (Philip 2026-08-31).
+  //
+  // MUST run BEFORE the vertical intent probe · otherwise a message
+  // like "forget dinner" would still route to food discovery because
+  // "dinner" is a food keyword.
+  //
+  // Constitutional invariant:
+  //   abandonment > vertical keywords > sticky-vertical > entity ref
+  //
+  // Deterministic · no LLM · no auto-select. On match:
+  //   · session.currentReference cleared
+  //   · business_name entities pruned
+  //   · goal.status → "abandoned"
+  //   · short acknowledgement returned · NO discovery on this turn
+  if (opts.conversationId) {
+    const abandon = detectAbandonment(message);
+    if (abandon.matched) {
+      const preS = getSession(opts.conversationId);
+      if (preS) upsertSession(applyAbandonmentReset(preS));
+      const lang: "en" | "id" =
+        abandon.language ??
+        (detectAccommodationReplyLang(message) === "id" ? "id" : "en");
+      const ack = lang === "id" ? "Sip, aku batalin." : "Okay, dropped it.";
+      const base: BrainReply = {
+        reply: ack,
+        suggestions: [],
+        intent: "abandonment",
+        intent_reason: `phrase=${abandon.phrase}·lang=${lang}`,
+      };
+      if (opts.useLiveWorld) {
+        return {
+          ...base,
+          world_query: {
+            vertical: undefined,
+            verbIntent: parseWorldQueryVerbIntent(message),
+            nearMe: parseNearMe(message),
+          },
+        };
+      }
+      return base;
+    }
+  }
+
   // Stage 3.34 · Phase 27a doctrine: ONE RETRIEVAL → TEXT + CARDS.
   //
   // To satisfy that invariant we must fetch the World BEFORE running
@@ -2381,9 +2586,40 @@ export async function orchestrateChatTurnLive(
   let vertical = opts.useLiveWorld ? INTENT_TO_VERTICAL[probeIntent.intent] : undefined;
   if (!vertical && opts.useLiveWorld && opts.conversationId) {
     const stickySession = getSession(opts.conversationId);
-    const hasActiveAccommodationGoal = stickySession?.goal?.kind === "accommodation"
-      && (stickySession.goal.status === "active" || stickySession.goal.status === "resumed");
-    if (hasActiveAccommodationGoal) vertical = "accommodation";
+    // Stage 3.41.f · sticky-vertical generalised to any supported
+    // World-vertical goal · not just accommodation. Same fail-closed
+    // conditions: only inherit when the goal is active/resumed (not
+    // paused, not abandoned). Location-only refinements like
+    // "Somewhere around Malioboro" reach the sticky check as
+    // "conversation" intent · they inherit the live vertical instead
+    // of collapsing to clarify.
+    const stickyGoal = stickySession?.goal;
+    const stickyGoalKind = stickyGoal?.kind;
+    const stickyGoalActive = stickyGoal?.status === "active" || stickyGoal?.status === "resumed";
+    const stickyVerticalFromGoal: WorldVertical | undefined =
+      stickyGoalActive && stickyGoalKind === "accommodation" ? "accommodation" :
+      stickyGoalActive && stickyGoalKind === "food"          ? "food"          :
+      stickyGoalActive && stickyGoalKind === "commerce"      ? "commerce"      :
+      undefined;
+    if (stickyVerticalFromGoal) vertical = stickyVerticalFromGoal;
+    // Stage 3.41.d P4 · sticky by RECENT REFERENCE too · if the user
+    // just picked something and is now asking a follow-up ("what's
+    // good about it") OR acting on it ("message them"), we're still
+    // in the vertical conversation even if the goal has been marked
+    // not-progressed. Generalised in 3.41.f to any supported vertical.
+    if (!vertical) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const refSummary = stickySession?.currentReference as any;
+      const refFresh =
+        refSummary?.resolved
+        && refSummary.resolvedInTurn !== undefined
+        && stickySession?.turnCount !== undefined
+        && (stickySession.turnCount - refSummary.resolvedInTurn) <= 3;
+      const refGoalKind = stickySession?.goal?.kind;
+      if (refFresh && (refGoalKind === "accommodation" || refGoalKind === "food" || refGoalKind === "commerce")) {
+        vertical = refGoalKind as WorldVertical;
+      }
+    }
   }
 
   // Stage 3.37 · Action authorization gate · EARLY CHECK
@@ -2739,6 +2975,105 @@ export async function orchestrateChatTurnLive(
         totalAvailable: worldTotalAvailable,
         vertical,
       });
+
+  // Stage 3.41.f · create/refresh a lightweight food/commerce goal so
+  // sticky-vertical persistence works on the NEXT turn. Accommodation
+  // goals are handled in the sync composer path · this fills the gap
+  // for the other verticals. Fail-closed: only when World returned
+  // actual records this turn (never fabricate a goal from thin air).
+  //
+  // Stage 3.41.g · ALSO capture the presented entities from those cards
+  // and merge into session.entities · so reference resolution ("the
+  // second one" · "them") can consume food and commerce picks the same
+  // way it consumes accommodation picks. Uses the existing canonical
+  // capturePresentedBusinesses + mergeEntityWindow · no second entity
+  // store · no new resolution path · no fabricated entities (only
+  // records actually returned by the World query).
+  if (opts.conversationId && !worldError && worldRecords.length > 0 && (vertical === "food" || vertical === "commerce" || vertical === "service" || vertical === "transport")) {
+    const preS = getSession(opts.conversationId);
+    const priorGoal = preS?.goal;
+    const summary = `a ${vertical} search` + (message.trim().length ? ` (${message.trim().slice(0, 40)})` : "");
+    const nextGoal = priorGoal && priorGoal.kind === vertical
+      ? progressVerticalGoal(priorGoal, summary)
+      : newVerticalGoal(vertical, summary);
+    const nowIso = new Date().toISOString();
+
+    // Stage 3.41.h · vertical-switch cleanup · a food entity must
+    // NEVER remain the active reference after we've switched to
+    // commerce (and vice versa · and to/from accommodation). Detect
+    // the switch here and reset before running resolution + capture.
+    // Fail-closed: no reference is guessed in the new vertical.
+    const switched = isVerticalSwitch(priorGoal?.kind, nextGoal.kind);
+    const workingSession: SessionState | undefined = preS && switched
+      ? applyVerticalSwitchReset(preS)
+      : preS;
+
+    // Stage 3.41.g · reference resolution for THIS turn · MUST run
+    // BEFORE the just-presented entities are merged (an ordinal in
+    // this turn refers to what NEX presented in an EARLIER turn, not
+    // what it's about to present now). Same pattern the accommodation
+    // composer follows internally · here we do the equivalent
+    // out-of-band for food/commerce.
+    const priorWindow = workingSession?.entities ?? [];
+    const userEntities = extractEntities(message, nowIso);
+    // After the vertical-switch reset, currentReference is cleared ·
+    // so on switch turns there's no prior reference to consult (which
+    // is exactly what we want · we won't re-use a stale food entity
+    // in a commerce turn).
+    const priorRefBiz = workingSession?.currentReference?.business;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const priorRefTurn = (workingSession?.currentReference as any)?.resolvedInTurn as number | undefined;
+    const currentTurn = workingSession?.turnCount ?? 1;
+    const currentReferenceEntity = priorRefBiz
+      ? {
+          id: `business_name:${priorRefBiz.canonical}`,
+          kind: "business_name" as const,
+          raw: priorRefBiz.raw,
+          canonical: priorRefBiz.canonical,
+          refId: priorRefBiz.refId,
+          source: "nex_reply" as const,
+          atIso: nowIso,
+        }
+      : undefined;
+    const resolution = resolveReference(userEntities, priorWindow, {
+      currentReferenceEntity,
+      currentReferenceResolvedInTurn: priorRefTurn,
+      currentTurn,
+    });
+
+    // Capture the actually-returned records · never from user text ·
+    // never invented. If worldRecords is empty we already skipped
+    // this block. Records without a name are dropped by the helper.
+    const capturedFromCards = capturePresentedBusinesses(
+      worldRecords.map((r) => ({ id: r.id, name: r.name, category: r.category })),
+      nowIso,
+    );
+    // Merge in the order: prior window (already vertical-scoped after
+    // any switch) · this turn's user entities · this turn's presented
+    // entities. Newest wins de-dup.
+    const mergedEntities = mergeEntityWindow(priorWindow, [...userEntities, ...capturedFromCards]);
+
+    // Persist THIS turn's resolution summary · stamp resolvedInTurn
+    // when this turn resolved (same convention accommodation uses).
+    // On vertical-switch turns, prior summary was cleared so we
+    // land on either a fresh resolution or an honest unresolved.
+    const resolutionSummary = summariseResolution(resolution);
+    const currentReferenceSummary = resolution.resolved
+      ? { ...resolutionSummary, resolvedInTurn: currentTurn }
+      : (priorRefTurn !== undefined
+          ? { ...(workingSession?.currentReference ?? resolutionSummary), resolvedInTurn: priorRefTurn }
+          : resolutionSummary);
+
+    if (workingSession) {
+      upsertSession({
+        ...workingSession,
+        goal: nextGoal,
+        entities: mergedEntities,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        currentReference: currentReferenceSummary as any,
+      });
+    }
+  }
 
   // Stage 3.34 · Phase 27d · "Show me more" · when the user explicitly
   // asked to see the full list AND we have real records, attach an

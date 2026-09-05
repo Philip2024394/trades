@@ -1,0 +1,8 @@
+{
+  "method": "subprocess_probe",
+  "candidate": "fs.readFileSync throws an Error whose `code` property equals the string 'ENOENT' when the target file does not exist.",
+  "expected": "subprocess stdout equals 'ENOENT'",
+  "node_script": "try{require('fs').readFileSync('/nex_definitely_missing_p0_4_verification_only_x9y8z7');}catch(e){process.stdout.write(e.code||'NO_CODE');process.exit(0);}process.stdout.write('NO_THROW');process.exit(0);",
+  "observed": "EXIT=0\nSTDOUT:\nENOENT\nSTDERR:\n",
+  "passed": true
+}

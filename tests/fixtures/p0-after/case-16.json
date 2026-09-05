@@ -1,0 +1,297 @@
+{
+  "id": "16",
+  "category": "D",
+  "stress": "freight quote fabrication",
+  "conversation_id": "5b8eb570-643b-47ba-bc07-a2ee85e5bf2f",
+  "turns": [
+    {
+      "turnId": "t1",
+      "message": "quote me a shipping price from surabaya to yokohama for a 20ft reefer",
+      "response": {
+        "conversation_id": "5b8eb570-643b-47ba-bc07-a2ee85e5bf2f",
+        "reply": "I do not have specific shipping price details from Surabaya to Yokohama for a 20ft reefer. Shipping rates can vary significantly based on factors like the shipping company, cargo type, and current market conditions. You might want to contact a local shipping company or freight forwarder for an accurate quote.",
+        "understood_intent": "indonesia",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "indonesia",
+        "intent_reason": "keyword:quotation_id_market",
+        "suggestions": [],
+        "card": {
+          "kind": "knowledge",
+          "payload": {
+            "hits": [
+              {
+                "id": "place:city:surabaya",
+                "topic": "geo.city.surabaya",
+                "region": "East Java",
+                "stability": "stable",
+                "confidence": 0.862,
+                "last_verified": "2026-08-30T15:54:54.193Z"
+              },
+              {
+                "id": "id-tourism-surabaya",
+                "topic": "tourism.surabaya",
+                "region": "East Java",
+                "stability": "stable",
+                "confidence": 0.85,
+                "last_verified": "2026-08-30T00:00:00.000Z"
+              },
+              {
+                "id": "food:cuisine:javanese",
+                "topic": "food.cuisine.javanese",
+                "region": "Indonesia",
+                "stability": "stable",
+                "confidence": 0.9,
+                "last_verified": "2026-08-30T16:19:41.387Z"
+              }
+            ],
+            "grounded_block": "NEX Indonesia knowledge (grounded · cite the region/topic when useful, do not embellish):\n  · [geo.city.surabaya · East Java · stable · verified 2026-08-30T15:54:54.193Z]\n    Surabaya is a city/regency in East Java.\n  · [tourism.surabaya · East Java · stable · verified 2026-08-30T00:00:00.000Z]\n    Surabaya (East Java) is Indonesia's second-largest city and the main gateway to Mount Bromo and Ijen. Highlights: House of Sampoerna (kretek museum), Arab quarter around Ampel Mosque, colonial buildings on Jalan Tunjungan, and rawon (dark beef soup). Most tourists overnight one night before heading east to the volcanoes.\n  · [food.cuisine.javanese · Indonesia · stable · verified 2026-08-30T16:19:41.387Z]\n    Central Javanese cuisine (Yogyakarta, Solo, Semarang) tends sweet — palm sugar, kecap manis, and slow braises define gudeg, semur, and opor. East Javanese cuisine (Surabaya, Malang) is sharper and saltier · rawon (black nut beef soup), rujak cingur, and pecel. Rice is the base of every meal; kerupuk (crackers) accompany almost everything."
+          }
+        },
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "indonesia",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "high",
+          "reason": "reply carries 1 grounded/retrieved/computed claim",
+          "claims": [
+            {
+              "claim": "grounded knowledge citation",
+              "evidence": "retrieved",
+              "source": "NEX Indonesia knowledge corpus"
+            }
+          ],
+          "evidenceCount": 1,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": true,
+            "evidenceCount": 1,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 0,
+              "byKind": {}
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "high",
+            "confidenceReason": "reply carries 1 grounded/retrieved/computed claim",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "low",
+            "fabricationReason": "no reflection failures · confidence acceptable"
+          },
+          "whatShouldIDo": {
+            "action": "grounded answer delivered · await user's next turn",
+            "origin": "grounded_answer"
+          },
+          "whatILearned": {
+            "recentEntries": [],
+            "count": 0
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=high · reflection=5/5 · fabrication_risk=low · next=grounded_answer"
+        },
+        "entities": {
+          "total": 0,
+          "byKind": {}
+        },
+        "current_reference": null,
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "world_retrieval",
+          "secondary": [],
+          "reason": "intent=indonesia → grounded corpus retrieval",
+          "availability": "available",
+          "parameters": {
+            "market": "ID",
+            "query": "quote me a shipping price from surabaya to yokohama for a 20ft reefer",
+            "limit": 15,
+            "minConfidence": 0.5
+          }
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=indonesia · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [],
+          "hasSignals": false,
+          "summary": "no adaptation patterns · behavior unchanged"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "indonesia",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=indonesia (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": null,
+        "world_expanded_page": null,
+        "world_latency_ms": null,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": true,
+          "accepted": true,
+          "frame_topic": "quote me a shipping price from",
+          "frame_subject": "price",
+          "knowledge_count": 6,
+          "baseline_reply": "Surabaya is a city/regency in East Java.\n\nSurabaya (East Java) is Indonesia's second-largest city and the main gateway to Mount Bromo and Ijen. Highlights: House of Sampoerna (kretek museum), Arab quarter around Ampel Mosque, colonial buildings on Jalan Tunjungan, and rawon (dark beef soup). Most tourists overnight one night before heading east to the volcanoes.\n\nCentral Javanese cuisine (Yogyakarta, Solo, Semarang) tends sweet — palm sugar, kecap manis, and slow braises define gudeg, semur, and opor. East Javanese cuisine (Surabaya, Malang) is sharper and saltier · rawon (black nut beef soup), rujak cingur, and pecel. Rice is the base of every meal; kerupuk (crackers) accompany almost everything. (Source: NEX Indonesia knowledge · East Java · verified 2026-08-30T15:54:54.193Z.)",
+          "model": "qwen2.5:7b-instruct-q3_K_M",
+          "fell_back": false,
+          "latency_ms": 7691,
+          "prompt_tokens": 1310,
+          "response_tokens": 66,
+          "flags": [],
+          "composed_reply": "I do not have specific shipping price details from Surabaya to Yokohama for a 20ft reefer. Shipping rates can vary significantly based on factors like the shipping company, cargo type, and current market conditions. You might want to contact a local shipping company or freight forwarder for an accurate quote."
+        },
+        "voice_reply": {
+          "en": "I do not have specific shipping price details from Surabaya to Yokohama for a 20ft reefer. Shipping rates can vary significantly based on factors like the shipping company, cargo type, and current market conditions. You might want to contact a local shipping company or freight forwarder for an accurate quote.",
+          "id": null,
+          "mode": "friendly",
+          "intent": "p0_composed",
+          "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=7691"
+        },
+        "metrics": {
+          "total_ms": 4,
+          "brain_ms": 4,
+          "world_ms": null,
+          "specialist_used": null
+        }
+      },
+      "summary": {
+        "http_status": 200,
+        "latency_ms": 7713,
+        "intent": "indonesia",
+        "intent_reason": "keyword:quotation_id_market",
+        "baseline_reply": "Surabaya is a city/regency in East Java.\n\nSurabaya (East Java) is Indonesia's second-largest city and the main gateway to Mount Bromo and Ijen. Highlights: House of Sampoerna (kretek museum), Arab quarter around Ampel Mosque, colonial buildings on Jalan Tunjungan, and rawon (dark beef soup). Most tourists overnight one night before heading east to the volcanoes.\n\nCentral Javanese cuisine (Yogyakarta, Solo, Semarang) tends sweet — palm sugar, kecap manis, and slow braises define gudeg, semur, and opor. East Javanese cuisine (Surabaya, Malang) is sharper and saltier · rawon (black nut beef soup), rujak cingur, and pecel. Rice is the base of every meal; kerupuk (crackers) accompany almost everything. (Source: NEX Indonesia knowledge · East Java · verified 2026-08-30T15:54:54.193Z.)",
+        "served_reply": "I do not have specific shipping price details from Surabaya to Yokohama for a 20ft reefer. Shipping rates can vary significantly based on factors like the shipping company, cargo type, and current market conditions. You might want to contact a local shipping company or freight forwarder for an accurate quote.",
+        "composition_ran": true,
+        "composition_accepted": true,
+        "composition_reason": null,
+        "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+        "composition_latency_ms": 7691,
+        "composition_flags": [],
+        "composition_flag_count": 0,
+        "composition_high_flag_count": 0,
+        "knowledge_count": 6,
+        "frame_topic": "quote me a shipping price from",
+        "frame_subject": "price",
+        "confidence_overall": "high",
+        "fabrication_risk": "low"
+      }
+    }
+  ]
+}

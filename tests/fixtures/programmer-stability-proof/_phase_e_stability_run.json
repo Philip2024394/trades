@@ -1,0 +1,2909 @@
+{
+  "ran_at": "2026-09-05T15:40:23.554Z",
+  "baseline_run_id": "stab_baseline",
+  "baseline_manifest": {
+    "benchmark_version": "programmer-benchmark-v1",
+    "benchmark_hash": "a8b24746e96fc6ddb2c910d6",
+    "reviewer_hash": "7fb39cb09ceb8f3153f80e9a",
+    "evaluator_hash": "d94b2663123266defde6c027",
+    "knowledge_snapshot_hash": "UNKNOWN",
+    "environment_identifier": "node:v24.18.0",
+    "captured_at": "2026-09-05T15:40:23.435Z"
+  },
+  "identical_runs": {
+    "count": 5,
+    "all_identical": true,
+    "fingerprints": [
+      "5d18f0d3a46559c501a55b66",
+      "5d18f0d3a46559c501a55b66",
+      "5d18f0d3a46559c501a55b66",
+      "5d18f0d3a46559c501a55b66",
+      "5d18f0d3a46559c501a55b66",
+      "5d18f0d3a46559c501a55b66"
+    ]
+  },
+  "controlled_changes": {
+    "reviewer": {
+      "run_id": "stab_change_A_reviewer",
+      "attribution": {
+        "reviewer_changed": true,
+        "evaluator_changed": false,
+        "benchmark_changed": false,
+        "knowledge_changed": false,
+        "environment_changed": false,
+        "summary": "reviewer(7fb39cb0→simulate)"
+      },
+      "direction": "STABLE"
+    },
+    "knowledge": {
+      "run_id": "stab_change_B_knowledge",
+      "attribution": {
+        "reviewer_changed": false,
+        "evaluator_changed": false,
+        "benchmark_changed": false,
+        "knowledge_changed": true,
+        "environment_changed": false,
+        "summary": "knowledge(UNKNOWN→kh_new_s)"
+      },
+      "direction": "STABLE"
+    },
+    "corpus": {
+      "run_id": "stab_change_C_corpus_v11",
+      "attribution": {
+        "reviewer_changed": false,
+        "evaluator_changed": false,
+        "benchmark_changed": true,
+        "knowledge_changed": false,
+        "environment_changed": false,
+        "summary": "benchmark(programmer-benchmark-v1@a8b24746→programmer-benchmark-v1.1@5723f0ad)"
+      },
+      "direction": "STABLE",
+      "historical_v1_preserved": 8
+    },
+    "evaluator": {
+      "run_id": "stab_change_D_evaluator",
+      "attribution": {
+        "reviewer_changed": false,
+        "evaluator_changed": true,
+        "benchmark_changed": false,
+        "knowledge_changed": false,
+        "environment_changed": false,
+        "summary": "evaluator(d94b2663→simulate)"
+      },
+      "direction": "STABLE"
+    }
+  },
+  "adversarial": {
+    "run_id": "stab_adversarial_mask",
+    "direction": "FAILED",
+    "class_regression_detected": true,
+    "reasons": [
+      "class regression FAILED: security.sql_injection · dropped below 0.8 threshold from a passing baseline"
+    ]
+  },
+  "all_drifts": {
+    "identical_runs": [
+      {
+        "baseline_run_id": "stab_baseline",
+        "current_run_id": "stab_identical_1",
+        "attribution": {
+          "reviewer_changed": false,
+          "evaluator_changed": false,
+          "benchmark_changed": false,
+          "knowledge_changed": false,
+          "environment_changed": false,
+          "summary": "no manifest change"
+        },
+        "fingerprints_identical": true,
+        "overall_direction": "STABLE",
+        "overall_delta": {
+          "defective_catch_rate": 0,
+          "false_positive_rate": 0,
+          "tests_pass_but_code_wrong_catch_rate": 1,
+          "uncertain_accuracy": 1
+        },
+        "per_class_drift": [
+          {
+            "defect_class": "api.incorrect_contract",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "api.missing_validation",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "concurrency.lost_update",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "concurrency.race_condition",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "concurrency.unsafe_shared_state",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.adversarial_unfamiliar_but_correct",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.correct",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.incomplete",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.uncertain",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.boundary_condition",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.error_propagation",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.null_handling",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.off_by_one",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.unit_conversion",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "data.constraint_assumption",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "data.schema_migration_hazard",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "data.transaction_boundary",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.missing_timeout",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.resource_leak",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.silent_error_swallow",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.unbounded_recursion",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.authorization_bypass",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.csrf",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.data_leakage",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.path_traversal",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.privilege_escalation",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.secret_exposure",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.sql_injection",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.unsafe_deserialization",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "temporal.clock_assumption",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "temporal.stale_cache",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "temporal.timing_boundary",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          }
+        ],
+        "verdict_flips": [],
+        "reasons": [
+          "no material change · all classes STABLE"
+        ]
+      },
+      {
+        "baseline_run_id": "stab_baseline",
+        "current_run_id": "stab_identical_2",
+        "attribution": {
+          "reviewer_changed": false,
+          "evaluator_changed": false,
+          "benchmark_changed": false,
+          "knowledge_changed": false,
+          "environment_changed": false,
+          "summary": "no manifest change"
+        },
+        "fingerprints_identical": true,
+        "overall_direction": "STABLE",
+        "overall_delta": {
+          "defective_catch_rate": 0,
+          "false_positive_rate": 0,
+          "tests_pass_but_code_wrong_catch_rate": 1,
+          "uncertain_accuracy": 1
+        },
+        "per_class_drift": [
+          {
+            "defect_class": "api.incorrect_contract",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "api.missing_validation",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "concurrency.lost_update",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "concurrency.race_condition",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "concurrency.unsafe_shared_state",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.adversarial_unfamiliar_but_correct",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.correct",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.incomplete",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.uncertain",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.boundary_condition",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.error_propagation",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.null_handling",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.off_by_one",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.unit_conversion",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "data.constraint_assumption",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "data.schema_migration_hazard",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "data.transaction_boundary",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.missing_timeout",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.resource_leak",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.silent_error_swallow",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.unbounded_recursion",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.authorization_bypass",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.csrf",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.data_leakage",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.path_traversal",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.privilege_escalation",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.secret_exposure",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.sql_injection",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.unsafe_deserialization",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "temporal.clock_assumption",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "temporal.stale_cache",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "temporal.timing_boundary",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          }
+        ],
+        "verdict_flips": [],
+        "reasons": [
+          "no material change · all classes STABLE"
+        ]
+      },
+      {
+        "baseline_run_id": "stab_baseline",
+        "current_run_id": "stab_identical_3",
+        "attribution": {
+          "reviewer_changed": false,
+          "evaluator_changed": false,
+          "benchmark_changed": false,
+          "knowledge_changed": false,
+          "environment_changed": false,
+          "summary": "no manifest change"
+        },
+        "fingerprints_identical": true,
+        "overall_direction": "STABLE",
+        "overall_delta": {
+          "defective_catch_rate": 0,
+          "false_positive_rate": 0,
+          "tests_pass_but_code_wrong_catch_rate": 1,
+          "uncertain_accuracy": 1
+        },
+        "per_class_drift": [
+          {
+            "defect_class": "api.incorrect_contract",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "api.missing_validation",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "concurrency.lost_update",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "concurrency.race_condition",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "concurrency.unsafe_shared_state",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.adversarial_unfamiliar_but_correct",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.correct",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.incomplete",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.uncertain",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.boundary_condition",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.error_propagation",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.null_handling",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.off_by_one",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.unit_conversion",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "data.constraint_assumption",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "data.schema_migration_hazard",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "data.transaction_boundary",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.missing_timeout",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.resource_leak",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.silent_error_swallow",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.unbounded_recursion",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.authorization_bypass",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.csrf",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.data_leakage",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.path_traversal",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.privilege_escalation",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.secret_exposure",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.sql_injection",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.unsafe_deserialization",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "temporal.clock_assumption",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "temporal.stale_cache",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "temporal.timing_boundary",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          }
+        ],
+        "verdict_flips": [],
+        "reasons": [
+          "no material change · all classes STABLE"
+        ]
+      },
+      {
+        "baseline_run_id": "stab_baseline",
+        "current_run_id": "stab_identical_4",
+        "attribution": {
+          "reviewer_changed": false,
+          "evaluator_changed": false,
+          "benchmark_changed": false,
+          "knowledge_changed": false,
+          "environment_changed": false,
+          "summary": "no manifest change"
+        },
+        "fingerprints_identical": true,
+        "overall_direction": "STABLE",
+        "overall_delta": {
+          "defective_catch_rate": 0,
+          "false_positive_rate": 0,
+          "tests_pass_but_code_wrong_catch_rate": 1,
+          "uncertain_accuracy": 1
+        },
+        "per_class_drift": [
+          {
+            "defect_class": "api.incorrect_contract",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "api.missing_validation",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "concurrency.lost_update",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "concurrency.race_condition",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "concurrency.unsafe_shared_state",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.adversarial_unfamiliar_but_correct",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.correct",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.incomplete",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.uncertain",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.boundary_condition",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.error_propagation",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.null_handling",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.off_by_one",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.unit_conversion",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "data.constraint_assumption",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "data.schema_migration_hazard",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "data.transaction_boundary",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.missing_timeout",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.resource_leak",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.silent_error_swallow",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.unbounded_recursion",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.authorization_bypass",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.csrf",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.data_leakage",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.path_traversal",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.privilege_escalation",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.secret_exposure",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.sql_injection",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.unsafe_deserialization",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "temporal.clock_assumption",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "temporal.stale_cache",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "temporal.timing_boundary",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          }
+        ],
+        "verdict_flips": [],
+        "reasons": [
+          "no material change · all classes STABLE"
+        ]
+      },
+      {
+        "baseline_run_id": "stab_baseline",
+        "current_run_id": "stab_identical_5",
+        "attribution": {
+          "reviewer_changed": false,
+          "evaluator_changed": false,
+          "benchmark_changed": false,
+          "knowledge_changed": false,
+          "environment_changed": false,
+          "summary": "no manifest change"
+        },
+        "fingerprints_identical": true,
+        "overall_direction": "STABLE",
+        "overall_delta": {
+          "defective_catch_rate": 0,
+          "false_positive_rate": 0,
+          "tests_pass_but_code_wrong_catch_rate": 1,
+          "uncertain_accuracy": 1
+        },
+        "per_class_drift": [
+          {
+            "defect_class": "api.incorrect_contract",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "api.missing_validation",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "concurrency.lost_update",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "concurrency.race_condition",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "concurrency.unsafe_shared_state",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.adversarial_unfamiliar_but_correct",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.correct",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.incomplete",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "control.uncertain",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.boundary_condition",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.error_propagation",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.null_handling",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.off_by_one",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "correctness.unit_conversion",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "data.constraint_assumption",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "data.schema_migration_hazard",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "data.transaction_boundary",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.missing_timeout",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.resource_leak",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.silent_error_swallow",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "reliability.unbounded_recursion",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.authorization_bypass",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.csrf",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.data_leakage",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.path_traversal",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.privilege_escalation",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.secret_exposure",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.sql_injection",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "security.unsafe_deserialization",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "temporal.clock_assumption",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "temporal.stale_cache",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          },
+          {
+            "defect_class": "temporal.timing_boundary",
+            "baseline_catch_rate": 1,
+            "current_catch_rate": 1,
+            "delta": 0,
+            "direction": "STABLE",
+            "reason": "no change"
+          }
+        ],
+        "verdict_flips": [],
+        "reasons": [
+          "no material change · all classes STABLE"
+        ]
+      }
+    ],
+    "change_A": {
+      "baseline_run_id": "stab_baseline",
+      "current_run_id": "stab_change_A_reviewer",
+      "attribution": {
+        "reviewer_changed": true,
+        "evaluator_changed": false,
+        "benchmark_changed": false,
+        "knowledge_changed": false,
+        "environment_changed": false,
+        "summary": "reviewer(7fb39cb0→simulate)"
+      },
+      "fingerprints_identical": true,
+      "overall_direction": "STABLE",
+      "overall_delta": {
+        "defective_catch_rate": 0,
+        "false_positive_rate": 0,
+        "tests_pass_but_code_wrong_catch_rate": 1,
+        "uncertain_accuracy": 1
+      },
+      "per_class_drift": [
+        {
+          "defect_class": "api.incorrect_contract",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "api.missing_validation",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "concurrency.lost_update",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "concurrency.race_condition",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "concurrency.unsafe_shared_state",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.adversarial_unfamiliar_but_correct",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.correct",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.incomplete",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.uncertain",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.boundary_condition",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.error_propagation",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.null_handling",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.off_by_one",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.unit_conversion",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "data.constraint_assumption",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "data.schema_migration_hazard",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "data.transaction_boundary",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.missing_timeout",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.resource_leak",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.silent_error_swallow",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.unbounded_recursion",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.authorization_bypass",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.csrf",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.data_leakage",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.path_traversal",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.privilege_escalation",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.secret_exposure",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.sql_injection",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.unsafe_deserialization",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "temporal.clock_assumption",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "temporal.stale_cache",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "temporal.timing_boundary",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        }
+      ],
+      "verdict_flips": [],
+      "reasons": [
+        "no material change · all classes STABLE"
+      ]
+    },
+    "change_B": {
+      "baseline_run_id": "stab_baseline",
+      "current_run_id": "stab_change_B_knowledge",
+      "attribution": {
+        "reviewer_changed": false,
+        "evaluator_changed": false,
+        "benchmark_changed": false,
+        "knowledge_changed": true,
+        "environment_changed": false,
+        "summary": "knowledge(UNKNOWN→kh_new_s)"
+      },
+      "fingerprints_identical": true,
+      "overall_direction": "STABLE",
+      "overall_delta": {
+        "defective_catch_rate": 0,
+        "false_positive_rate": 0,
+        "tests_pass_but_code_wrong_catch_rate": 1,
+        "uncertain_accuracy": 1
+      },
+      "per_class_drift": [
+        {
+          "defect_class": "api.incorrect_contract",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "api.missing_validation",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "concurrency.lost_update",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "concurrency.race_condition",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "concurrency.unsafe_shared_state",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.adversarial_unfamiliar_but_correct",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.correct",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.incomplete",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.uncertain",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.boundary_condition",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.error_propagation",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.null_handling",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.off_by_one",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.unit_conversion",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "data.constraint_assumption",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "data.schema_migration_hazard",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "data.transaction_boundary",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.missing_timeout",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.resource_leak",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.silent_error_swallow",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.unbounded_recursion",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.authorization_bypass",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.csrf",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.data_leakage",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.path_traversal",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.privilege_escalation",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.secret_exposure",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.sql_injection",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.unsafe_deserialization",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "temporal.clock_assumption",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "temporal.stale_cache",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "temporal.timing_boundary",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        }
+      ],
+      "verdict_flips": [],
+      "reasons": [
+        "no material change · all classes STABLE"
+      ]
+    },
+    "change_C": {
+      "baseline_run_id": "stab_baseline",
+      "current_run_id": "stab_change_C_corpus_v11",
+      "attribution": {
+        "reviewer_changed": false,
+        "evaluator_changed": false,
+        "benchmark_changed": true,
+        "knowledge_changed": false,
+        "environment_changed": false,
+        "summary": "benchmark(programmer-benchmark-v1@a8b24746→programmer-benchmark-v1.1@5723f0ad)"
+      },
+      "fingerprints_identical": true,
+      "overall_direction": "STABLE",
+      "overall_delta": {
+        "defective_catch_rate": 0,
+        "false_positive_rate": 0,
+        "tests_pass_but_code_wrong_catch_rate": 1,
+        "uncertain_accuracy": 1
+      },
+      "per_class_drift": [
+        {
+          "defect_class": "api.incorrect_contract",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "api.missing_validation",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "concurrency.lost_update",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "concurrency.race_condition",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "concurrency.unsafe_shared_state",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.adversarial_unfamiliar_but_correct",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.correct",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.incomplete",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.uncertain",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.boundary_condition",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.error_propagation",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.null_handling",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.off_by_one",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.unit_conversion",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "data.constraint_assumption",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "data.schema_migration_hazard",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "data.transaction_boundary",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.missing_timeout",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.resource_leak",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.silent_error_swallow",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.unbounded_recursion",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.authorization_bypass",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.csrf",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.data_leakage",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.path_traversal",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.privilege_escalation",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.secret_exposure",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.sql_injection",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.unsafe_deserialization",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "temporal.clock_assumption",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "temporal.stale_cache",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "temporal.timing_boundary",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        }
+      ],
+      "verdict_flips": [],
+      "reasons": [
+        "no material change · all classes STABLE"
+      ]
+    },
+    "change_D": {
+      "baseline_run_id": "stab_baseline",
+      "current_run_id": "stab_change_D_evaluator",
+      "attribution": {
+        "reviewer_changed": false,
+        "evaluator_changed": true,
+        "benchmark_changed": false,
+        "knowledge_changed": false,
+        "environment_changed": false,
+        "summary": "evaluator(d94b2663→simulate)"
+      },
+      "fingerprints_identical": true,
+      "overall_direction": "STABLE",
+      "overall_delta": {
+        "defective_catch_rate": 0,
+        "false_positive_rate": 0,
+        "tests_pass_but_code_wrong_catch_rate": 1,
+        "uncertain_accuracy": 1
+      },
+      "per_class_drift": [
+        {
+          "defect_class": "api.incorrect_contract",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "api.missing_validation",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "concurrency.lost_update",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "concurrency.race_condition",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "concurrency.unsafe_shared_state",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.adversarial_unfamiliar_but_correct",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.correct",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.incomplete",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.uncertain",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.boundary_condition",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.error_propagation",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.null_handling",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.off_by_one",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.unit_conversion",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "data.constraint_assumption",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "data.schema_migration_hazard",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "data.transaction_boundary",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.missing_timeout",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.resource_leak",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.silent_error_swallow",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.unbounded_recursion",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.authorization_bypass",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.csrf",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.data_leakage",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.path_traversal",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.privilege_escalation",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.secret_exposure",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.sql_injection",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.unsafe_deserialization",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "temporal.clock_assumption",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "temporal.stale_cache",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "temporal.timing_boundary",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        }
+      ],
+      "verdict_flips": [],
+      "reasons": [
+        "no material change · all classes STABLE"
+      ]
+    },
+    "adversarial": {
+      "baseline_run_id": "stab_baseline",
+      "current_run_id": "stab_adversarial_mask",
+      "attribution": {
+        "reviewer_changed": true,
+        "evaluator_changed": false,
+        "benchmark_changed": false,
+        "knowledge_changed": false,
+        "environment_changed": false,
+        "summary": "reviewer(7fb39cb0→simulate)"
+      },
+      "fingerprints_identical": true,
+      "overall_direction": "FAILED",
+      "overall_delta": {
+        "defective_catch_rate": 0,
+        "false_positive_rate": 0,
+        "tests_pass_but_code_wrong_catch_rate": 1,
+        "uncertain_accuracy": 1
+      },
+      "per_class_drift": [
+        {
+          "defect_class": "api.incorrect_contract",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "api.missing_validation",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "concurrency.lost_update",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "concurrency.race_condition",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "concurrency.unsafe_shared_state",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.adversarial_unfamiliar_but_correct",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.correct",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.incomplete",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "control.uncertain",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.boundary_condition",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.error_propagation",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.null_handling",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.off_by_one",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "correctness.unit_conversion",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "data.constraint_assumption",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "data.schema_migration_hazard",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "data.transaction_boundary",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.missing_timeout",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.resource_leak",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.silent_error_swallow",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "reliability.unbounded_recursion",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.authorization_bypass",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.csrf",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.data_leakage",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.path_traversal",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.privilege_escalation",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.secret_exposure",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "security.sql_injection",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 0.4,
+          "delta": -0.6,
+          "direction": "FAILED",
+          "reason": "dropped below 0.8 threshold from a passing baseline"
+        },
+        {
+          "defect_class": "security.unsafe_deserialization",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "temporal.clock_assumption",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "temporal.stale_cache",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        },
+        {
+          "defect_class": "temporal.timing_boundary",
+          "baseline_catch_rate": 1,
+          "current_catch_rate": 1,
+          "delta": 0,
+          "direction": "STABLE",
+          "reason": "no change"
+        }
+      ],
+      "verdict_flips": [],
+      "reasons": [
+        "class regression FAILED: security.sql_injection · dropped below 0.8 threshold from a passing baseline"
+      ]
+    }
+  },
+  "total_persisted_runs": 11
+}

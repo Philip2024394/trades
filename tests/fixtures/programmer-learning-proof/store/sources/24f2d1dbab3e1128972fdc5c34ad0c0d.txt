@@ -1,0 +1,10 @@
+# NEX Programmer-Learning Source Snapshot
+# url: https://www.typescriptlang.org/docs/handbook/2/narrowing.html
+# content_type: text/markdown
+# stored_at: 2026-09-05T14:22:52.225Z
+# sha256_prefix: 24f2d1dbab3e1128972fdc5c34ad0c0d
+SOURCE URL: https://www.typescriptlang.org/docs/handbook/2/narrowing.html
+RETRIEVED AT: 2026-09-05T14:22:52.224Z
+
+Quote (verbatim):
+"TypeScript follows possible paths of execution that our programs can take to analyze the most specific possible type of a value at a given position. It looks at these special checks (called type guards) and assignments, and the process of refining types to more specific types than declared is called narrowing."

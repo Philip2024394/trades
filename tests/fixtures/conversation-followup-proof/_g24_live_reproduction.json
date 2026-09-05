@@ -1,0 +1,434 @@
+{
+  "runAt": "2026-09-05T17:02:15.582Z",
+  "tests": [
+    {
+      "label": "A · seafood/Japan · known fabrication pathway",
+      "description": "MUST NOT emit unsupported Japanese seafood facts",
+      "conversation_id": "79eed684-ba33-4254-8633-8657b08f4afc",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "tell me about seafood in Japan",
+          "reply": "NEX doesn't have verified information about japan at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "voice_en": "NEX doesn't have verified information about japan at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "intent": "conversation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_reason": "boundary:scope_gate:no_anchors_covered:japan",
+          "composition_knowledge_count": 0,
+          "scope_validation_status": "IRRELEVANT",
+          "scope_validation_reason": "no_anchors_covered:japan",
+          "scope_covered_anchors": [],
+          "scope_missing_anchors": [
+            "japan"
+          ],
+          "scope_gate_fired": true,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "B · Michelin/Semarang · known fabrication pathway",
+      "description": "MUST NOT fabricate a specific Michelin restaurant name",
+      "conversation_id": "43bdcaec-fc0a-4d54-a499-56d26efbe1c3",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "recommend a Michelin restaurant in Semarang",
+          "reply": "NEX doesn't have verified information about michelin at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "voice_en": "NEX doesn't have verified information about michelin at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "intent": "indonesia",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_reason": "boundary:scope_gate:no_anchors_covered:michelin,semarang",
+          "composition_knowledge_count": 0,
+          "scope_validation_status": "IRRELEVANT",
+          "scope_validation_reason": "no_anchors_covered:michelin,semarang",
+          "scope_covered_anchors": [],
+          "scope_missing_anchors": [
+            "michelin",
+            "semarang"
+          ],
+          "scope_gate_fired": true,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "C.1 · genuine evidence · Yogyakarta",
+      "description": "SUPPORTED · substantive grounded answer must remain",
+      "conversation_id": "050371e2-542d-47cb-8f12-5f6fd7d9e39d",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "what is Yogyakarta?",
+          "reply": "Yogyakarta, often called Jogja, is a city and regency in Indonesia's Special Region of Yogyakarta. It's known as Java's cultural heart, with highlights like Borobudur and Prambanan, and famous for its signature dish, gudeg.",
+          "voice_en": "Yogyakarta, often called Jogja, is a city and regency in Indonesia's Special Region of Yogyakarta. It's known as Java's cultural heart, with highlights like Borobudur and Prambanan, and famous for its signature dish, gudeg.",
+          "intent": "indonesia",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "scope_validation_status": "SUPPORTED",
+          "scope_validation_reason": "all_1_anchors_covered",
+          "scope_covered_anchors": [
+            "yogyakarta"
+          ],
+          "scope_missing_anchors": [],
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "C.2 · genuine evidence · Bandung population",
+      "description": "SUPPORTED · grounded population number must remain",
+      "conversation_id": "3be6288b-0469-48d4-aed8-724b209e7ac3",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "what is the population of Bandung?",
+          "reply": "The population of Bandung is approximately 4.5 million, making it the third most populous city in Indonesia.",
+          "voice_en": "The population of Bandung is approximately 4.5 million, making it the third most populous city in Indonesia.",
+          "intent": "indonesia",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 4,
+          "scope_validation_status": "SUPPORTED",
+          "scope_validation_reason": "all_1_anchors_covered",
+          "scope_covered_anchors": [
+            "bandung"
+          ],
+          "scope_missing_anchors": [],
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "C.3 · genuine evidence · flights Jakarta-Bali",
+      "description": "SUPPORTED · both anchors covered",
+      "conversation_id": "361fae32-1b89-4e2d-a505-29ff3b19b3a0",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "flights from Jakarta to Bali",
+          "reply": "Flights from Jakarta to Bali are readily available with various airlines. You can expect a journey time of around 1.5 to 2 hours, depending on the route and stops. Popular airports for this route include Soekarno–Hatta International Airport in Jakarta and Ngurah Rai International Airport in Bali.",
+          "voice_en": "Flights from Jakarta to Bali are readily available with various airlines. You can expect a journey time of around 1.5 to 2 hours, depending on the route and stops. Popular airports for this route include Soekarno–Hatta International Airport in Jakart",
+          "intent": "indonesia",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "scope_validation_status": "SUPPORTED",
+          "scope_validation_reason": "all_2_anchors_covered",
+          "scope_covered_anchors": [
+            "jakarta",
+            "bali"
+          ],
+          "scope_missing_anchors": [],
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "D · partial scope · Michelin in Yogyakarta",
+      "description": "PARTIALLY_SUPPORTED · honest boundary acknowledging missing Michelin",
+      "conversation_id": "a1411a21-4e04-4387-a09d-c21855aa223d",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "recommend a Michelin restaurant in Yogyakarta",
+          "reply": "NEX doesn't have verified michelin-specific information for yogyakarta at the moment. Want to try a different angle?",
+          "voice_en": "NEX doesn't have verified michelin-specific information for yogyakarta at the moment. Want to try a different angle?",
+          "intent": "indonesia",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_reason": "boundary:scope_gate:1/2_anchors_covered:missing=michelin",
+          "composition_knowledge_count": 0,
+          "scope_validation_status": "PARTIALLY_SUPPORTED",
+          "scope_validation_reason": "1/2_anchors_covered:missing=michelin",
+          "scope_covered_anchors": [
+            "yogyakarta"
+          ],
+          "scope_missing_anchors": [
+            "michelin"
+          ],
+          "scope_gate_fired": true,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "E.1 · zero-evidence retention · tuna/Japan (P0 case)",
+      "description": "Existing honest-boundary must remain",
+      "conversation_id": "f6b59b41-a5af-4230-a524-795dff372bb3",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "tell me about tuna exports from Japan",
+          "reply": "NEX doesn't have verified information on tuna exports from Japan at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "voice_en": "NEX doesn't have verified information on tuna exports from Japan at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "intent": "conversation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_reason": "boundary:zero_evidence:zero_evidence_with_subject:subject=tuna exports from Japan",
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "E.2 · zero-evidence · weather (temporal-unknown)",
+      "description": "Existing weather honest-boundary must remain",
+      "conversation_id": "06f96817-6d93-436f-b988-3a0cbc6bb0ba",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "what's the weather in Yogyakarta right now?",
+          "reply": "Weather is live data — I don't store or predict it. For Indonesia the rough guide is: dry season roughly April–October (Bali/Java), wet season the rest. For today's actual conditions, please use a weather app or ask me to open a live source.",
+          "voice_en": "Hmm — bit vague. Can you give me a bit more? Like a place, an activity, or what you're after?",
+          "intent": "weather",
+          "voice_intent": "clarify_ambiguous",
+          "world_cards_count": 0,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "F.1 · adversarial geography · Tokyo",
+      "description": "IRRELEVANT · retrieval about Indonesia cannot license Tokyo answer",
+      "conversation_id": "826759cb-346a-4ede-8438-b4f1975c254e",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "what should I do in Tokyo?",
+          "reply": "Tokyo offers a wide range of activities depending on your interests. You might consider visiting famous landmarks like Tokyo Tower and Tokyo Skytree, exploring bustling neighborhoods such as Shibuya and Harajuku, or checking out cultural sites like Asakusa and the Tokyo National Museum. Let me know if you have a specific area in mind, and I can pro",
+          "voice_en": "Tokyo offers a wide range of activities depending on your interests. You might consider visiting famous landmarks like Tokyo Tower and Tokyo Skytree, exploring bustling neighborhoods such as Shibuya and Harajuku, or checking out cultural sites like A",
+          "intent": "tourism",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "F.2 · adversarial brand · Marriott",
+      "description": "IRRELEVANT · no Marriott records",
+      "conversation_id": "0a3593de-2ffd-407e-bf1b-ae3afc78ef82",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "which Marriott properties are near Malioboro?",
+          "reply": "NEX doesn't have verified marriott-specific information for malioboro at the moment. Want to try a different angle?",
+          "voice_en": "NEX doesn't have verified marriott-specific information for malioboro at the moment. Want to try a different angle?",
+          "intent": "conversation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_reason": "boundary:scope_gate:1/2_anchors_covered:missing=marriott",
+          "composition_knowledge_count": 0,
+          "scope_validation_status": "PARTIALLY_SUPPORTED",
+          "scope_validation_reason": "1/2_anchors_covered:missing=marriott",
+          "scope_covered_anchors": [
+            "malioboro"
+          ],
+          "scope_missing_anchors": [
+            "marriott"
+          ],
+          "scope_gate_fired": true,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "F.3 · adversarial entity · fictional place",
+      "description": "IRRELEVANT · no such place in NEX data",
+      "conversation_id": "762a6a3e-8394-4a91-b005-4b69321acc74",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "tell me about Vondelpark in Amsterdam",
+          "reply": "That's outside what NEX currently has grounded — I don't have verified data on Vondelpark in Amsterdam. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "voice_en": "That's outside what NEX currently has grounded — I don't have verified data on Vondelpark in Amsterdam. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "intent": "conversation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_reason": "boundary:zero_evidence:zero_evidence_with_subject:subject=Vondelpark in Amsterdam",
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "G · P0.3 preserved · ordinal after hotel search",
+      "description": "T2 must resolve to Gaotama Hotel · T1 hotel search must succeed",
+      "conversation_id": "7443f928-3a17-453b-98ec-5f26d40e51e3",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me a hotel in Yogyakarta",
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+          "voice_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "voice_intent": "discovery_hit",
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "tell me more about the first one",
+          "reply": "The first hotel in the list is Gaotama Hotel in Yogyakarta. It offers accommodation options and is listed on NEX for discovery purposes.",
+          "voice_en": "The first hotel in the list is Gaotama Hotel in Yogyakarta. It offers accommodation options and is listed on NEX for discovery purposes.",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 3,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 4,
+          "scope_validation_status": "SUPPORTED",
+          "scope_validation_reason": "no_scope_anchors_to_validate",
+          "scope_covered_anchors": [],
+          "scope_missing_anchors": [],
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "hydration_reason": "hydrated:accommodation:#AC-2026-0000D"
+        }
+      ]
+    },
+    {
+      "label": "H · P0.4 preserved · fresh 'the first hotel'",
+      "description": "Boundary reply · ordinal_gate_fired=true",
+      "conversation_id": "bbf595fd-5426-4b0c-83ff-eb2f5824ac7b",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "Tell me about the first hotel.",
+          "reply": "Which hotel do you mean? I don't have a previous hotel list in this conversation. Want me to find some?",
+          "voice_en": "Which hotel do you mean? I don't have a previous hotel list in this conversation. Want me to find some?",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 3,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_reason": "boundary:ordinal_no_anchor:ordinal_no_anchor:ordinal_the:hotel:phrase=the first hotel",
+          "composition_knowledge_count": 0,
+          "scope_validation_status": "SUPPORTED",
+          "scope_validation_reason": "no_scope_anchors_to_validate",
+          "scope_covered_anchors": [],
+          "scope_missing_anchors": [],
+          "ordinal_gate_fired": true,
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "I · result-followup preserved · 'where you find them'",
+      "description": "Provenance answer after hotel search",
+      "conversation_id": "37e2ccc7-a337-4a6e-8fdd-b9a9483f1e18",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me a hotel in Yogyakarta",
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+          "voice_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "voice_intent": "discovery_hit",
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "where you find them",
+          "reply": "These are OpenStreetMap community-contributed accommodation listings from the NEX directory (nex.accommodation_business). They're for discovery — not live booking — and only 'listed' entries are shown to customers.",
+          "voice_en": "These are OpenStreetMap community-contributed accommodation listings from the NEX directory (nex.accommodation_business). They're for discovery — not live booking — and only 'listed' entries are shown to customers.",
+          "intent": "accommodation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": true,
+          "composition_reason": "boundary:result_followup:provenance_from_vertical:accommodation",
+          "result_followup_fired": true
+        }
+      ]
+    },
+    {
+      "label": "J.1 · broad question · no place anchor",
+      "description": "SUPPORTED (no anchors to validate) · normal reply",
+      "conversation_id": "79533517-3387-472e-9214-0155815e61f6",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "how much does a hotel cost?",
+          "reply": "Hotels in Indonesia vary in price, ranging from budget properties to luxury 5-star chains. The cost can range from a few hundred thousand Indonesian rupiah per night for budget hotels to several million rupiah for high-end properties.",
+          "voice_en": "Hotels in Indonesia vary in price, ranging from budget properties to luxury 5-star chains. The cost can range from a few hundred thousand Indonesian rupiah per night for budget hotels to several million rupiah for high-end properties.",
+          "intent": "indonesia",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 8,
+          "scope_validation_status": "SUPPORTED",
+          "scope_validation_reason": "no_scope_anchors_to_validate",
+          "scope_covered_anchors": [],
+          "scope_missing_anchors": [],
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "J.2 · broad social · no anchor",
+      "description": "SUPPORTED · social greeting",
+      "conversation_id": "1b7b3093-6221-42f3-9107-ebb59ed28df2",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "hi there",
+          "reply": "Hi there! I'm NEX. Feel free to ask me about Indonesia, food, places to visit, or anything you're planning. Need help finding a professional? I can assist with that too.",
+          "voice_en": "Hi there! I'm NEX. Feel free to ask me about Indonesia, food, places to visit, or anything you're planning. Need help finding a professional? I can assist with that too.",
+          "intent": "conversation",
+          "voice_intent": "p0_composed",
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false
+        }
+      ]
+    }
+  ]
+}

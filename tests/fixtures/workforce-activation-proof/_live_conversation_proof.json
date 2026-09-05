@@ -1,0 +1,1109 @@
+{
+  "ranAt": "2026-09-05T13:38:58.978Z",
+  "results": [
+    {
+      "domain": "food",
+      "position": "restaurant_food + indonesia_knowledge",
+      "conversation_id": "9e7c6c96-040c-4055-9af9-a1f77fdd4de4",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "Tell me about Indonesian food.",
+          "conversation_id": "9e7c6c96-040c-4055-9af9-a1f77fdd4de4",
+          "intent": "food",
+          "intent_reason": "food_terms",
+          "reply_len": 283,
+          "reply_preview": "Nasi goreng, considered the national dish, is a staple of Indonesian cuisine. It's fried rice stir-fried with sweet soy sauce, garlic, shallots, and chilli, often served with a fried egg, prawn crackers, and cucumber slices. Available almost everywhere, from street stalls to hotels.",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "Nasi goreng, considered the national dish, is a staple of Indonesian cuisine. It's fried rice stir-fried with sweet soy sauce, garlic, shallots, and chilli, often served with a fried egg, prawn cracke",
+          "served_by": "nex-brain-orchestrator",
+          "turn_count": 1,
+          "current_topic": "food",
+          "card_kind": "knowledge",
+          "card_hits_count": 3,
+          "card_hits_sample": [
+            {
+              "id": "id-food-nasi-goreng",
+              "topic": "food.nasi_goreng",
+              "region": "Indonesia",
+              "source": "seed.curated",
+              "last_verified": "2026-08-30T00:00:00.000Z",
+              "stability": "stable",
+              "confidence": 1
+            },
+            {
+              "id": "id-food-rendang",
+              "topic": "food.rendang",
+              "region": "West Sumatra",
+              "source": "seed.curated",
+              "last_verified": "2026-08-30T00:00:00.000Z",
+              "stability": "stable",
+              "confidence": 1
+            },
+            {
+              "id": "id-food-sate",
+              "topic": "food.sate",
+              "region": "Indonesia",
+              "source": "seed.curated",
+              "last_verified": "2026-08-30T00:00:00.000Z",
+              "stability": "stable",
+              "confidence": 1
+            }
+          ],
+          "world_cards_count": 3,
+          "world_cards_total_available": 797,
+          "world_cards_headline": "Showing 3 of 797 real places.",
+          "world_cards_sample": [
+            {
+              "id": "#FL-2026-00091",
+              "name": "Thai Tea kiosk"
+            },
+            {
+              "id": "#FL-2026-000QD",
+              "name": "Omah Mie Miyada"
+            },
+            {
+              "id": "#FL-2026-000R3",
+              "name": "Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo"
+            }
+          ],
+          "confidence": "high",
+          "reflection_pass": false,
+          "reflection_pass_ratio": "4/5",
+          "fabrication_risk": "high",
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+          "composition_widened_for_info_query": true,
+          "composition_knowledge_count": 7,
+          "composition_composed_entity_count": 0,
+          "entities_total": 0,
+          "entities_byKind": {},
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "latency_ms": 9609,
+          "metrics": {
+            "total_ms": 246,
+            "brain_ms": 246,
+            "world_ms": 217.71229999512434,
+            "specialist_used": null
+          }
+        },
+        {
+          "turn": 2,
+          "question": "What about tuna?",
+          "conversation_id": "9e7c6c96-040c-4055-9af9-a1f77fdd4de4",
+          "intent": "conversation",
+          "intent_reason": "default_conversation_no_specialist_signal",
+          "reply_len": 171,
+          "reply_preview": "That's outside what NEX currently has grounded — I don't have verified data on tuna. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "That's outside what NEX currently has grounded — I don't have verified data on tuna. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "served_by": "nex-brain-orchestrator",
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "card_kind": null,
+          "card_hits_count": 0,
+          "card_hits_sample": [],
+          "world_cards_count": 3,
+          "world_cards_total_available": 797,
+          "world_cards_headline": "Showing 3 of 797 real places.",
+          "world_cards_sample": [
+            {
+              "id": "#FL-2026-00091",
+              "name": "Thai Tea kiosk"
+            },
+            {
+              "id": "#FL-2026-000QD",
+              "name": "Omah Mie Miyada"
+            },
+            {
+              "id": "#FL-2026-000R3",
+              "name": "Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo"
+            }
+          ],
+          "confidence": "low",
+          "reflection_pass": true,
+          "reflection_pass_ratio": "5/5",
+          "fabrication_risk": "medium",
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_reason": "boundary:zero_evidence:zero_evidence_with_subject:subject=tuna",
+          "composition_widened_for_info_query": true,
+          "composition_knowledge_count": 0,
+          "entities_total": 9,
+          "entities_byKind": {
+            "business_name": 9
+          },
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "latency_ms": 1030,
+          "metrics": {
+            "total_ms": 218,
+            "brain_ms": 218,
+            "world_ms": 215.1718999966979,
+            "specialist_used": null
+          }
+        },
+        {
+          "turn": 3,
+          "question": "Could I export it?",
+          "conversation_id": "9e7c6c96-040c-4055-9af9-a1f77fdd4de4",
+          "intent": "conversation",
+          "intent_reason": "default_conversation_no_specialist_signal",
+          "reply_len": 211,
+          "reply_preview": "I found 797 real places — Thai Tea kiosk, Omah Mie Miyada, Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo, and more. These are NEX directory listings for discovery — I never invent price or availability.",
+          "voice_reply_intent": "discovery_hit",
+          "voice_reply_preview": "Yep — found 3.",
+          "served_by": "nex-brain-orchestrator",
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "card_kind": null,
+          "card_hits_count": 0,
+          "card_hits_sample": [],
+          "world_cards_count": 3,
+          "world_cards_total_available": 797,
+          "world_cards_headline": "Showing 3 of 797 real places.",
+          "world_cards_sample": [
+            {
+              "id": "#FL-2026-00091",
+              "name": "Thai Tea kiosk"
+            },
+            {
+              "id": "#FL-2026-000QD",
+              "name": "Omah Mie Miyada"
+            },
+            {
+              "id": "#FL-2026-000R3",
+              "name": "Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo"
+            }
+          ],
+          "confidence": "low",
+          "reflection_pass": true,
+          "reflection_pass_ratio": "5/5",
+          "fabrication_risk": "medium",
+          "composition_ran": false,
+          "composition_accepted": false,
+          "entities_total": 9,
+          "entities_byKind": {
+            "business_name": 9
+          },
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "latency_ms": 242,
+          "metrics": {
+            "total_ms": 213,
+            "brain_ms": 213,
+            "world_ms": 210.70340000092983,
+            "specialist_used": null
+          }
+        },
+        {
+          "turn": 4,
+          "question": "What about Japan?",
+          "conversation_id": "9e7c6c96-040c-4055-9af9-a1f77fdd4de4",
+          "intent": "conversation",
+          "intent_reason": "default_conversation_no_specialist_signal",
+          "reply_len": 148,
+          "reply_preview": "NEX doesn't have verified information on Japan at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "NEX doesn't have verified information on Japan at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "served_by": "nex-brain-orchestrator",
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "card_kind": null,
+          "card_hits_count": 0,
+          "card_hits_sample": [],
+          "world_cards_count": 3,
+          "world_cards_total_available": 797,
+          "world_cards_headline": "Showing 3 of 797 real places.",
+          "world_cards_sample": [
+            {
+              "id": "#FL-2026-00091",
+              "name": "Thai Tea kiosk"
+            },
+            {
+              "id": "#FL-2026-000QD",
+              "name": "Omah Mie Miyada"
+            },
+            {
+              "id": "#FL-2026-000R3",
+              "name": "Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo"
+            }
+          ],
+          "confidence": "low",
+          "reflection_pass": true,
+          "reflection_pass_ratio": "5/5",
+          "fabrication_risk": "medium",
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_reason": "boundary:zero_evidence:zero_evidence_with_subject:subject=Japan",
+          "composition_widened_for_info_query": true,
+          "composition_knowledge_count": 0,
+          "entities_total": 9,
+          "entities_byKind": {
+            "business_name": 9
+          },
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "latency_ms": 1022,
+          "metrics": {
+            "total_ms": 208,
+            "brain_ms": 208,
+            "world_ms": 206.0625,
+            "specialist_used": null
+          }
+        }
+      ]
+    },
+    {
+      "domain": "hotels",
+      "position": "hotel_accommodation",
+      "conversation_id": "18ab8957-8caa-41dc-a8de-8a571014aa74",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "Find me somewhere to stay near Malioboro.",
+          "conversation_id": "18ab8957-8caa-41dc-a8de-8a571014aa74",
+          "intent": "accommodation",
+          "intent_reason": "keyword:somewhere to stay",
+          "reply_len": 269,
+          "reply_preview": "I've got 877 real listings for stays near Malioboro — Gaotama Hotel, Pego Homestay, Penginapan Kunthi, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want a hotel, guesthouse, homestay, hostel, or something else?",
+          "voice_reply_intent": "discovery_hit",
+          "voice_reply_preview": "Yep — found 3.",
+          "served_by": "nex-brain-orchestrator",
+          "turn_count": 1,
+          "current_topic": "accommodation",
+          "card_kind": "accommodation_discovery",
+          "card_hits_count": 5,
+          "card_hits_sample": [
+            {
+              "id": "place:accommodation:#AC-2026-0000D",
+              "region": "Yogyakarta",
+              "source": "seed.curated"
+            },
+            {
+              "id": "place:accommodation:#AC-2026-0000G",
+              "region": "Yogyakarta",
+              "source": "seed.curated"
+            },
+            {
+              "id": "place:accommodation:#AC-2026-0000P",
+              "region": "Yogyakarta",
+              "source": "seed.curated"
+            },
+            {
+              "id": "place:accommodation:#AC-2026-00008",
+              "region": "Yogyakarta",
+              "source": "seed.curated"
+            },
+            {
+              "id": "place:accommodation:#AC-2026-0001B",
+              "region": "Yogyakarta",
+              "source": "seed.curated"
+            }
+          ],
+          "world_cards_count": 3,
+          "world_cards_total_available": 877,
+          "world_cards_headline": "Showing 3 of 877 real stays.",
+          "world_cards_sample": [
+            {
+              "id": "#AC-2026-0000D",
+              "name": "Gaotama Hotel"
+            },
+            {
+              "id": "#AC-2026-0000G",
+              "name": "Pego Homestay"
+            },
+            {
+              "id": "#AC-2026-0000P",
+              "name": "Penginapan Kunthi"
+            }
+          ],
+          "confidence": "high",
+          "reflection_pass": true,
+          "reflection_pass_ratio": "5/5",
+          "fabrication_risk": "low",
+          "composition_ran": false,
+          "composition_accepted": false,
+          "entities_total": 6,
+          "entities_byKind": {
+            "area": 1,
+            "business_name": 5
+          },
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "latency_ms": 282,
+          "metrics": {
+            "total_ms": 257,
+            "brain_ms": 257,
+            "world_ms": 239.8572999984026,
+            "specialist_used": null
+          }
+        },
+        {
+          "turn": 2,
+          "question": "Which one would you choose?",
+          "conversation_id": "18ab8957-8caa-41dc-a8de-8a571014aa74",
+          "intent": "accommodation",
+          "intent_reason": "session_continuation",
+          "reply_len": 408,
+          "reply_preview": "Gaotama Hotel and Pego Homestay are essentially tied on the signals I have. Want me to tie-break on area (I could try a nearby cluster), or would you rather I open the directory so you can compare them yourself?\n\nBoth scored close on the honest signal I have (retrieval position #1 vs retrieval posit",
+          "voice_reply_intent": "discovery_hit",
+          "voice_reply_preview": "Yep — found 3.",
+          "served_by": "nex-brain-orchestrator",
+          "turn_count": 1,
+          "current_topic": "accommodation",
+          "card_kind": "accommodation_discovery",
+          "card_hits_count": 5,
+          "card_hits_sample": [
+            {
+              "id": "place:accommodation:#AC-2026-0000D",
+              "region": "Yogyakarta",
+              "source": "seed.curated"
+            },
+            {
+              "id": "place:accommodation:#AC-2026-0000G",
+              "region": "Yogyakarta",
+              "source": "seed.curated"
+            },
+            {
+              "id": "place:accommodation:#AC-2026-0000P",
+              "region": "Yogyakarta",
+              "source": "seed.curated"
+            },
+            {
+              "id": "place:accommodation:#AC-2026-00008",
+              "region": "Yogyakarta",
+              "source": "seed.curated"
+            },
+            {
+              "id": "place:accommodation:#AC-2026-0001B",
+              "region": "Yogyakarta",
+              "source": "seed.curated"
+            }
+          ],
+          "world_cards_count": 3,
+          "world_cards_total_available": 877,
+          "world_cards_headline": "Showing 3 of 877 real stays.",
+          "world_cards_sample": [
+            {
+              "id": "#AC-2026-0000D",
+              "name": "Gaotama Hotel"
+            },
+            {
+              "id": "#AC-2026-0000G",
+              "name": "Pego Homestay"
+            },
+            {
+              "id": "#AC-2026-0000P",
+              "name": "Penginapan Kunthi"
+            }
+          ],
+          "confidence": "high",
+          "reflection_pass": false,
+          "reflection_pass_ratio": "4/5",
+          "fabrication_risk": "high",
+          "composition_ran": false,
+          "composition_accepted": false,
+          "entities_total": 6,
+          "entities_byKind": {
+            "area": 1,
+            "business_name": 5
+          },
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "latency_ms": 301,
+          "metrics": {
+            "total_ms": 275,
+            "brain_ms": 275,
+            "world_ms": 240.08379999548197,
+            "specialist_used": null
+          }
+        },
+        {
+          "turn": 3,
+          "question": "What do you know about the first one?",
+          "conversation_id": "18ab8957-8caa-41dc-a8de-8a571014aa74",
+          "intent": "accommodation",
+          "intent_reason": "session_continuation",
+          "reply_len": 141,
+          "reply_preview": "Got it — stays near Malioboro. I don't have matching real listings yet. Do you want a hotel, guesthouse, homestay, hostel, or something else?",
+          "voice_reply_intent": "acknowledge_reference",
+          "voice_reply_preview": "Yep — gaotama hotel.",
+          "served_by": "nex-brain-orchestrator",
+          "turn_count": 1,
+          "current_topic": "accommodation",
+          "card_kind": null,
+          "card_hits_count": 0,
+          "card_hits_sample": [],
+          "world_cards_count": 0,
+          "world_cards_total_available": null,
+          "world_cards_headline": null,
+          "world_cards_sample": [],
+          "confidence": "high",
+          "reflection_pass": true,
+          "reflection_pass_ratio": "5/5",
+          "fabrication_risk": "low",
+          "composition_ran": false,
+          "composition_accepted": false,
+          "entities_total": 7,
+          "entities_byKind": {
+            "area": 1,
+            "business_name": 5,
+            "ordinal": 1
+          },
+          "current_reference": {
+            "resolved": true,
+            "refKind": "ordinal",
+            "offset": 1,
+            "business": {
+              "canonical": "gaotama hotel",
+              "raw": "Gaotama Hotel",
+              "refId": "place:accommodation:#AC-2026-0000D"
+            },
+            "resolvedInTurn": 3
+          },
+          "latency_ms": 45,
+          "metrics": {
+            "total_ms": 13,
+            "brain_ms": 13,
+            "world_ms": null,
+            "specialist_used": null
+          }
+        }
+      ]
+    },
+    {
+      "domain": "gym",
+      "position": "gym_fitness",
+      "conversation_id": "1d19e27e-f741-428d-9580-67b40fd51f55",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "Find me a gym.",
+          "conversation_id": "1d19e27e-f741-428d-9580-67b40fd51f55",
+          "intent": "business",
+          "intent_reason": "keyword:business_lookup",
+          "reply_len": 205,
+          "reply_preview": "I found 80 real providers — 360 MOVE Gym & Training Center, Abadi Star Gym, An Namiroh Gym & Fitness Center, and more. These are NEX directory listings for discovery — I never invent price or availability.",
+          "voice_reply_intent": "discovery_hit",
+          "voice_reply_preview": "Yep — found 3.",
+          "served_by": "nex-brain-orchestrator",
+          "turn_count": 1,
+          "current_topic": "business",
+          "card_kind": null,
+          "card_hits_count": 0,
+          "card_hits_sample": [],
+          "world_cards_count": 3,
+          "world_cards_total_available": 80,
+          "world_cards_headline": "Showing 3 of 80 real providers.",
+          "world_cards_sample": [
+            {
+              "id": "#SB-2026-10GX6",
+              "name": "360 MOVE Gym & Training Center"
+            },
+            {
+              "id": "#SB-2026-DZB4E",
+              "name": "Abadi Star Gym"
+            },
+            {
+              "id": "#SB-2026-WZCTZ",
+              "name": "An Namiroh Gym & Fitness Center"
+            }
+          ],
+          "confidence": "low",
+          "reflection_pass": false,
+          "reflection_pass_ratio": "4/5",
+          "fabrication_risk": "high",
+          "composition_ran": false,
+          "composition_accepted": false,
+          "entities_total": 0,
+          "entities_byKind": {},
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "latency_ms": 280,
+          "metrics": {
+            "total_ms": 252,
+            "brain_ms": 252,
+            "world_ms": 250.64000000059605,
+            "specialist_used": null
+          }
+        },
+        {
+          "turn": 2,
+          "question": "Which one would you choose?",
+          "conversation_id": "1d19e27e-f741-428d-9580-67b40fd51f55",
+          "intent": "conversation",
+          "intent_reason": "default_conversation_no_specialist_signal",
+          "reply_len": 158,
+          "reply_preview": "I've found three gyms, but without knowing your specific location or preferences, it's hard to choose one. Would you like me to provide details on those gyms?",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "I've found three gyms, but without knowing your specific location or preferences, it's hard to choose one. Would you like me to provide details on those gyms?",
+          "served_by": "nex-brain-orchestrator",
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "card_kind": null,
+          "card_hits_count": 0,
+          "card_hits_sample": [],
+          "world_cards_count": 0,
+          "world_cards_total_available": null,
+          "world_cards_headline": null,
+          "world_cards_sample": [],
+          "confidence": "low",
+          "reflection_pass": true,
+          "reflection_pass_ratio": "5/5",
+          "fabrication_risk": "medium",
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+          "composition_widened_for_info_query": false,
+          "composition_knowledge_count": 0,
+          "composition_composed_entity_count": 0,
+          "entities_total": 10,
+          "entities_byKind": {
+            "business_name": 10
+          },
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "latency_ms": 4900,
+          "metrics": {
+            "total_ms": 0,
+            "brain_ms": 0,
+            "world_ms": null,
+            "specialist_used": null
+          }
+        },
+        {
+          "turn": 3,
+          "question": "Tell me more about the first one.",
+          "conversation_id": "1d19e27e-f741-428d-9580-67b40fd51f55",
+          "intent": "conversation",
+          "intent_reason": "default_conversation_no_specialist_signal",
+          "reply_len": 180,
+          "reply_preview": "That's outside what NEX currently has grounded — I don't have verified data on the first one. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "That's outside what NEX currently has grounded — I don't have verified data on the first one. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "served_by": "nex-brain-orchestrator",
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "card_kind": null,
+          "card_hits_count": 0,
+          "card_hits_sample": [],
+          "world_cards_count": 0,
+          "world_cards_total_available": null,
+          "world_cards_headline": null,
+          "world_cards_sample": [],
+          "confidence": "low",
+          "reflection_pass": true,
+          "reflection_pass_ratio": "5/5",
+          "fabrication_risk": "medium",
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_reason": "boundary:zero_evidence:zero_evidence_with_subject:subject=the first one",
+          "composition_widened_for_info_query": false,
+          "composition_knowledge_count": 0,
+          "entities_total": 10,
+          "entities_byKind": {
+            "business_name": 10
+          },
+          "current_reference": {
+            "resolved": true,
+            "refKind": "ordinal",
+            "offset": 1,
+            "business": {
+              "canonical": "360 move gym & training center",
+              "raw": "360 MOVE Gym & Training Center",
+              "refId": "#SB-2026-10GX6"
+            },
+            "resolvedInTurn": 3
+          },
+          "latency_ms": 787,
+          "metrics": {
+            "total_ms": 0,
+            "brain_ms": 0,
+            "world_ms": null,
+            "specialist_used": null
+          }
+        }
+      ]
+    },
+    {
+      "domain": "travel",
+      "position": "travel_transport + indonesia_knowledge",
+      "conversation_id": "eefc9541-ea56-4927-830d-c9b89c88c5b5",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "I'm flying from Jakarta.",
+          "conversation_id": "eefc9541-ea56-4927-830d-c9b89c88c5b5",
+          "intent": "indonesia",
+          "intent_reason": "indonesia_place_or_country",
+          "reply_len": 235,
+          "reply_preview": "You're already in Jakarta! If you're traveling within the city, consider using Gojek or Grab for transportation, and plan to navigate the heavy traffic. Enjoy your stay and explore some of the city's highlights like Kota Tua and Monas.",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "You're already in Jakarta! If you're traveling within the city, consider using Gojek or Grab for transportation, and plan to navigate the heavy traffic. Enjoy your stay and explore some of the city's ",
+          "served_by": "nex-brain-orchestrator",
+          "turn_count": 1,
+          "current_topic": "indonesia",
+          "card_kind": "knowledge",
+          "card_hits_count": 3,
+          "card_hits_sample": [
+            {
+              "id": "id-tourism-jakarta",
+              "topic": "tourism.jakarta",
+              "region": "DKI Jakarta",
+              "source": "seed.curated",
+              "last_verified": "2026-08-30T00:00:00.000Z",
+              "stability": "stable",
+              "confidence": 0.9
+            },
+            {
+              "id": "id-basics-capital",
+              "topic": "indonesia.capital",
+              "region": "Indonesia",
+              "source": "seed.curated",
+              "last_verified": "2026-08-30T00:00:00.000Z",
+              "stability": "stable",
+              "confidence": 1
+            },
+            {
+              "id": "accommodation:regional:jakarta_business",
+              "topic": "accommodation.regional.jakarta_business",
+              "region": "DKI Jakarta",
+              "source": "seed.curated",
+              "last_verified": "2026-08-30T16:05:43.447Z",
+              "stability": "stable",
+              "confidence": 0.9
+            }
+          ],
+          "world_cards_count": 0,
+          "world_cards_total_available": null,
+          "world_cards_headline": null,
+          "world_cards_sample": [],
+          "confidence": "high",
+          "reflection_pass": true,
+          "reflection_pass_ratio": "5/5",
+          "fabrication_risk": "low",
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+          "composition_widened_for_info_query": false,
+          "composition_knowledge_count": 6,
+          "composition_composed_entity_count": 2,
+          "entities_total": 0,
+          "entities_byKind": {},
+          "current_reference": null,
+          "latency_ms": 7384,
+          "metrics": {
+            "total_ms": 14,
+            "brain_ms": 14,
+            "world_ms": null,
+            "specialist_used": null
+          }
+        },
+        {
+          "turn": 2,
+          "question": "Which airports could I use?",
+          "conversation_id": "eefc9541-ea56-4927-830d-c9b89c88c5b5",
+          "intent": "conversation",
+          "intent_reason": "default_conversation_no_specialist_signal",
+          "reply_len": 189,
+          "reply_preview": "If you're already in Jakarta, you might consider using Soekarno-Hatta International Airport (CGK) for your flights. This is the main hub and handles both domestic and international flights.",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "If you're already in Jakarta, you might consider using Soekarno-Hatta International Airport (CGK) for your flights. This is the main hub and handles both domestic and international flights.",
+          "served_by": "nex-brain-orchestrator",
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "card_kind": null,
+          "card_hits_count": 0,
+          "card_hits_sample": [],
+          "world_cards_count": 0,
+          "world_cards_total_available": null,
+          "world_cards_headline": null,
+          "world_cards_sample": [],
+          "confidence": "low",
+          "reflection_pass": true,
+          "reflection_pass_ratio": "5/5",
+          "fabrication_risk": "medium",
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+          "composition_widened_for_info_query": false,
+          "composition_knowledge_count": 6,
+          "composition_composed_entity_count": 0,
+          "entities_total": 2,
+          "entities_byKind": {
+            "place": 2
+          },
+          "current_reference": null,
+          "latency_ms": 6258,
+          "metrics": {
+            "total_ms": 1,
+            "brain_ms": 1,
+            "world_ms": null,
+            "specialist_used": null
+          }
+        },
+        {
+          "turn": 3,
+          "question": "What about Yogyakarta?",
+          "conversation_id": "eefc9541-ea56-4927-830d-c9b89c88c5b5",
+          "intent": "indonesia",
+          "intent_reason": "indonesia_place_or_country",
+          "reply_len": 154,
+          "reply_preview": "Yogyakarta is a cultural gem in Java, known for its historic sites like Borobudur and Prambanan, as well as its delicious gudeg and vibrant local culture.",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "Yogyakarta is a cultural gem in Java, known for its historic sites like Borobudur and Prambanan, as well as its delicious gudeg and vibrant local culture.",
+          "served_by": "nex-brain-orchestrator",
+          "turn_count": 1,
+          "current_topic": "indonesia",
+          "card_kind": "knowledge",
+          "card_hits_count": 3,
+          "card_hits_sample": [
+            {
+              "id": "id-tourism-yogyakarta",
+              "topic": "tourism.yogyakarta",
+              "region": "Special Region of Yogyakarta",
+              "source": "seed.curated",
+              "last_verified": "2026-08-30T00:00:00.000Z",
+              "stability": "stable",
+              "confidence": 0.95
+            },
+            {
+              "id": "place:city:yogyakarta",
+              "topic": "geo.city.yogyakarta",
+              "region": "Indonesia",
+              "source": "seed.curated",
+              "last_verified": "2026-08-30T15:54:54.193Z",
+              "stability": "stable",
+              "confidence": 0.862
+            },
+            {
+              "id": "id-food-gudeg",
+              "topic": "food.gudeg",
+              "region": "Special Region of Yogyakarta",
+              "source": "seed.curated",
+              "last_verified": "2026-08-30T00:00:00.000Z",
+              "stability": "stable",
+              "confidence": 1
+            }
+          ],
+          "world_cards_count": 0,
+          "world_cards_total_available": null,
+          "world_cards_headline": null,
+          "world_cards_sample": [],
+          "confidence": "high",
+          "reflection_pass": true,
+          "reflection_pass_ratio": "5/5",
+          "fabrication_risk": "low",
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+          "composition_widened_for_info_query": false,
+          "composition_knowledge_count": 6,
+          "composition_composed_entity_count": 2,
+          "entities_total": 2,
+          "entities_byKind": {
+            "place": 2
+          },
+          "current_reference": null,
+          "latency_ms": 6415,
+          "metrics": {
+            "total_ms": 8,
+            "brain_ms": 8,
+            "world_ms": null,
+            "specialist_used": null
+          }
+        }
+      ]
+    },
+    {
+      "domain": "indonesia_knowledge_history",
+      "position": "indonesia_knowledge",
+      "conversation_id": "08ceb753-1fe9-4576-bba4-9b79655fe521",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "Tell me about Yogyakarta.",
+          "conversation_id": "08ceb753-1fe9-4576-bba4-9b79655fe521",
+          "intent": "indonesia",
+          "intent_reason": "indonesia_place_or_country",
+          "reply_len": 290,
+          "reply_preview": "Yogyakarta, often called Jogja, is Java's cultural heart. Highlights include Borobudur, the world's largest Buddhist temple, and Prambanan, a massive Hindu temple complex. Don't miss the Sultan's Palace and Malioboro Street for shopping and local cuisine like gudeg, a sweet jackfruit stew.",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "Yogyakarta, often called Jogja, is Java's cultural heart. Highlights include Borobudur, the world's largest Buddhist temple, and Prambanan, a massive Hindu temple complex. Don't miss the Sultan's Pala",
+          "served_by": "nex-brain-orchestrator",
+          "turn_count": 1,
+          "current_topic": "indonesia",
+          "card_kind": "knowledge",
+          "card_hits_count": 3,
+          "card_hits_sample": [
+            {
+              "id": "id-tourism-yogyakarta",
+              "topic": "tourism.yogyakarta",
+              "region": "Special Region of Yogyakarta",
+              "source": "seed.curated",
+              "last_verified": "2026-08-30T00:00:00.000Z",
+              "stability": "stable",
+              "confidence": 0.95
+            },
+            {
+              "id": "place:city:yogyakarta",
+              "topic": "geo.city.yogyakarta",
+              "region": "Indonesia",
+              "source": "seed.curated",
+              "last_verified": "2026-08-30T15:54:54.193Z",
+              "stability": "stable",
+              "confidence": 0.862
+            },
+            {
+              "id": "id-food-gudeg",
+              "topic": "food.gudeg",
+              "region": "Special Region of Yogyakarta",
+              "source": "seed.curated",
+              "last_verified": "2026-08-30T00:00:00.000Z",
+              "stability": "stable",
+              "confidence": 1
+            }
+          ],
+          "world_cards_count": 0,
+          "world_cards_total_available": null,
+          "world_cards_headline": null,
+          "world_cards_sample": [],
+          "confidence": "high",
+          "reflection_pass": true,
+          "reflection_pass_ratio": "5/5",
+          "fabrication_risk": "low",
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+          "composition_widened_for_info_query": false,
+          "composition_knowledge_count": 13,
+          "composition_composed_entity_count": 2,
+          "entities_total": 0,
+          "entities_byKind": {},
+          "current_reference": null,
+          "latency_ms": 9330,
+          "metrics": {
+            "total_ms": 4,
+            "brain_ms": 4,
+            "world_ms": null,
+            "specialist_used": null
+          }
+        },
+        {
+          "turn": 2,
+          "question": "What are the main sacred sites there?",
+          "conversation_id": "08ceb753-1fe9-4576-bba4-9b79655fe521",
+          "intent": "conversation",
+          "intent_reason": "default_conversation_no_specialist_signal",
+          "reply_len": 268,
+          "reply_preview": "Yogyakarta is rich in sacred sites. Notably, Borobudur and Prambanan are major Buddhist and Hindu temples, respectively. For a more local experience, visit the Sultan's Palace and Ratu Boko Temple, which offer insights into the city's historical and cultural heritage.",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "Yogyakarta is rich in sacred sites. Notably, Borobudur and Prambanan are major Buddhist and Hindu temples, respectively. For a more local experience, visit the Sultan's Palace and Ratu Boko Temple, wh",
+          "served_by": "nex-brain-orchestrator",
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "card_kind": null,
+          "card_hits_count": 0,
+          "card_hits_sample": [],
+          "world_cards_count": 0,
+          "world_cards_total_available": null,
+          "world_cards_headline": null,
+          "world_cards_sample": [],
+          "confidence": "low",
+          "reflection_pass": true,
+          "reflection_pass_ratio": "5/5",
+          "fabrication_risk": "medium",
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+          "composition_widened_for_info_query": false,
+          "composition_knowledge_count": 6,
+          "composition_composed_entity_count": 0,
+          "entities_total": 2,
+          "entities_byKind": {
+            "place": 2
+          },
+          "current_reference": null,
+          "latency_ms": 8742,
+          "metrics": {
+            "total_ms": 0,
+            "brain_ms": 0,
+            "world_ms": null,
+            "specialist_used": null
+          }
+        }
+      ]
+    },
+    {
+      "domain": "NEGATIVE_boundary",
+      "position": "N/A · should return honest boundary",
+      "conversation_id": "b70b5570-aafa-4361-8fb0-3c785c78224c",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "What is the current export price of yellowfin tuna to Japan?",
+          "conversation_id": "b70b5570-aafa-4361-8fb0-3c785c78224c",
+          "intent": "indonesia",
+          "intent_reason": "keyword:quotation_id_market",
+          "reply_len": 200,
+          "reply_preview": "Maaf, informasi tentang harga ekspor ikan tuna hiu kuning ke Jepang tidak ada dalam data yang saya miliki. Anda bisa mencoba mencari informasi lebih lanjut dari sumber terpercaya atau lembaga ekonomi.",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "Maaf, informasi tentang harga ekspor ikan tuna hiu kuning ke Jepang tidak ada dalam data yang saya miliki. Anda bisa mencoba mencari informasi lebih lanjut dari sumber terpercaya atau lembaga ekonomi.",
+          "served_by": "nex-brain-orchestrator",
+          "turn_count": 1,
+          "current_topic": "indonesia",
+          "card_kind": "knowledge",
+          "card_hits_count": 1,
+          "card_hits_sample": [
+            {
+              "id": "food:ingredient:rice_types",
+              "topic": "food.ingredient.rice_types",
+              "region": "Indonesia",
+              "source": "seed.curated",
+              "last_verified": "2026-08-30T16:19:41.387Z",
+              "stability": "stable",
+              "confidence": 0.9
+            }
+          ],
+          "world_cards_count": 0,
+          "world_cards_total_available": null,
+          "world_cards_headline": null,
+          "world_cards_sample": [],
+          "confidence": "high",
+          "reflection_pass": true,
+          "reflection_pass_ratio": "5/5",
+          "fabrication_risk": "low",
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+          "composition_widened_for_info_query": false,
+          "composition_knowledge_count": 1,
+          "composition_composed_entity_count": 0,
+          "entities_total": 0,
+          "entities_byKind": {},
+          "current_reference": null,
+          "latency_ms": 7022,
+          "metrics": {
+            "total_ms": 4,
+            "brain_ms": 4,
+            "world_ms": null,
+            "specialist_used": null
+          }
+        }
+      ]
+    },
+    {
+      "domain": "ISOLATION_fresh_conversation",
+      "position": "N/A · should NOT resolve to any prior hotel",
+      "conversation_id": "bb7537ee-a6a6-4d23-b208-cc53f5f5e822",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "Tell me about the first hotel.",
+          "conversation_id": "bb7537ee-a6a6-4d23-b208-cc53f5f5e822",
+          "intent": "accommodation",
+          "intent_reason": "keyword:hotel",
+          "reply_len": 196,
+          "reply_preview": "The first hotel in the conversation is Griya Sentana, located in Special Region of Yogyakarta. It is a community-verified hotel, though specific details are not available in our current knowledge.",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "The first hotel in the conversation is Griya Sentana, located in Special Region of Yogyakarta. It is a community-verified hotel, though specific details are not available in our current knowledge.",
+          "served_by": "nex-brain-orchestrator",
+          "turn_count": 1,
+          "current_topic": "accommodation",
+          "card_kind": "knowledge",
+          "card_hits_count": 3,
+          "card_hits_sample": [
+            {
+              "id": "accommodation:type:hotel",
+              "topic": "accommodation.type.hotel",
+              "region": "Indonesia",
+              "source": "seed.curated",
+              "last_verified": "2026-08-30T16:05:43.447Z",
+              "stability": "stable",
+              "confidence": 0.9
+            },
+            {
+              "id": "place:accommodation:osm:node_492167658",
+              "topic": "accommodation.hotel.griya_sentana",
+              "region": "Special Region of Yogyakarta",
+              "source": "seed.curated",
+              "last_verified": "2026-08-30T18:17:05.131Z",
+              "stability": "stable",
+              "confidence": 0.8
+            },
+            {
+              "id": "place:accommodation:osm:node_1359116507",
+              "topic": "accommodation.hotel.hotel_trim_tiga",
+              "region": "Special Region of Yogyakarta",
+              "source": "seed.curated",
+              "last_verified": "2026-08-30T18:17:05.131Z",
+              "stability": "stable",
+              "confidence": 0.8
+            }
+          ],
+          "world_cards_count": 3,
+          "world_cards_total_available": 877,
+          "world_cards_headline": "Showing 3 of 877 real stays.",
+          "world_cards_sample": [
+            {
+              "id": "#AC-2026-0000D",
+              "name": "Gaotama Hotel"
+            },
+            {
+              "id": "#AC-2026-0000G",
+              "name": "Pego Homestay"
+            },
+            {
+              "id": "#AC-2026-0000P",
+              "name": "Penginapan Kunthi"
+            }
+          ],
+          "confidence": "high",
+          "reflection_pass": false,
+          "reflection_pass_ratio": "4/5",
+          "fabrication_risk": "high",
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+          "composition_widened_for_info_query": true,
+          "composition_knowledge_count": 9,
+          "composition_composed_entity_count": 0,
+          "entities_total": 1,
+          "entities_byKind": {
+            "ordinal": 1
+          },
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_prior_presentation"
+          },
+          "latency_ms": 5803,
+          "metrics": {
+            "total_ms": 241,
+            "brain_ms": 241,
+            "world_ms": 226.06469999998808,
+            "specialist_used": null
+          }
+        }
+      ]
+    }
+  ]
+}

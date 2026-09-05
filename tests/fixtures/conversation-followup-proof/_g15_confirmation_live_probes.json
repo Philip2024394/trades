@@ -1,0 +1,544 @@
+{
+  "runAt": "2026-09-05T18:36:05.905Z",
+  "tests": [
+    {
+      "label": "A · standalone 'yes' on fresh conv · MUST NOT execute",
+      "description": "no active proposition · gate clarifies",
+      "conversation_id": "31adb3c7-bc7c-4d77-b61c-ed41523fd5e4",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "yes",
+          "reply": "Sure — what would you like me to help with?",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "active_language": "EN",
+          "confirmation_form": "AFFIRM",
+          "confirmation_resolution": "NO_TARGET",
+          "confirmation_gate_fired": true,
+          "confirmation_gate_reason": "no_target_clarify"
+        }
+      ]
+    },
+    {
+      "label": "B · standalone 'no' on fresh conv · MUST NOT interpret as global cancel",
+      "description": "no active proposition · gate acknowledges",
+      "conversation_id": "8122043a-663c-4a91-aa82-d3fc7c36d9d6",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "no",
+          "reply": "Okay, no problem. What would you like to do instead?",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "active_language": "EN",
+          "confirmation_form": "REJECT",
+          "confirmation_resolution": "NO_TARGET",
+          "confirmation_gate_fired": true,
+          "confirmation_gate_reason": "no_target_clarify"
+        }
+      ]
+    },
+    {
+      "label": "C · 'no thanks' after NEX result · social protection",
+      "description": "SOCIAL detection · no action executed",
+      "conversation_id": "49f975a0-eec4-4019-bed9-fe42e7501e84",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jak",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "TASK_REQUEST",
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "no thanks",
+          "reply": "You're welcome!",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "EN",
+          "confirmation_form": "SOCIAL",
+          "confirmation_resolution": "SOCIAL",
+          "confirmation_gate_fired": true,
+          "confirmation_gate_reason": "social_ack"
+        }
+      ]
+    },
+    {
+      "label": "D · 'thanks' after NEX result · social protection",
+      "description": "SOCIAL · brief natural ack",
+      "conversation_id": "f73eb8c1-f194-4d17-becd-31c735eaf894",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jak",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "TASK_REQUEST",
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "thanks",
+          "reply": "You're welcome!",
+          "intent": "conversation",
+          "world_cards_count": 3,
+          "active_language": "EN",
+          "confirmation_form": "SOCIAL",
+          "confirmation_resolution": "SOCIAL",
+          "confirmation_gate_fired": true,
+          "confirmation_gate_reason": "social_ack"
+        }
+      ]
+    },
+    {
+      "label": "E · 'okay' as social ack after informational reply",
+      "description": "must NOT launch a new hotel search",
+      "conversation_id": "1c2be9eb-b86d-4fc0-91d0-3528c08780fa",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "what is Yogyakarta?",
+          "reply": "Yogyakarta, often called Jogja, is a city and regency in Indonesia's Special Region of Yogyakarta. It's known as Java's cultural heart, with highlights like Borobudur and Prambanan, and famous for its signature dish, gudeg.",
+          "intent": "indonesia",
+          "world_cards_count": 0,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "okay",
+          "reply": "Sure — what would you like me to help with?",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "active_language": "EN",
+          "confirmation_form": "AFFIRM",
+          "confirmation_resolution": "NO_TARGET",
+          "confirmation_gate_fired": true,
+          "confirmation_gate_reason": "no_target_clarify"
+        }
+      ]
+    },
+    {
+      "label": "F · CORRECTIVE 'no, restaurant' after hotels",
+      "description": "gate surfaces target · does not launch new hotel search",
+      "conversation_id": "142e2a7f-d9cf-4564-994d-88f6ae1ed7ed",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jak",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "TASK_REQUEST",
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "no, restaurant",
+          "reply": "Okay, no problem. What would you like to do instead?",
+          "intent": "accommodation",
+          "world_cards_count": 0,
+          "active_language": "EN",
+          "confirmation_form": "CORRECTIVE",
+          "confirmation_resolution": "NO_TARGET",
+          "confirmation_gate_fired": true,
+          "confirmation_gate_reason": "no_target_clarify"
+        }
+      ]
+    },
+    {
+      "label": "G · QUALIFIED 'yes but not expensive'",
+      "description": "affirm + qualifier",
+      "conversation_id": "2792d169-0d37-48ae-aff2-dfb7c4c41538",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jak",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "TASK_REQUEST",
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "yes but not expensive",
+          "reply": "Sure — what would you like me to help with?",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "EN",
+          "confirmation_form": "QUALIFIED",
+          "confirmation_resolution": "NO_TARGET",
+          "confirmation_gate_fired": true,
+          "confirmation_gate_reason": "no_target_clarify"
+        }
+      ]
+    },
+    {
+      "label": "H · UNCERTAIN 'I think so'",
+      "description": "uncertain · clarify",
+      "conversation_id": "1aad8622-c97f-4928-a391-8c5d8b2f9f24",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jak",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "TASK_REQUEST",
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "I think so",
+          "reply": "Okay — could you tell me a bit more?",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "EN",
+          "confirmation_form": "UNCERTAIN",
+          "confirmation_resolution": "NO_TARGET",
+          "confirmation_gate_fired": true,
+          "confirmation_gate_reason": "no_target_clarify"
+        }
+      ]
+    },
+    {
+      "label": "I · Indonesian 'iya' on fresh conv",
+      "description": "ID · no target · Indonesian clarification",
+      "conversation_id": "f77b1eb3-9542-43a0-9032-4f63c07a484c",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "iya",
+          "reply": "Baik — apa yang Anda ingin saya bantu?",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "active_language": "ID",
+          "confirmation_form": "AFFIRM",
+          "confirmation_resolution": "NO_TARGET",
+          "confirmation_gate_fired": true,
+          "confirmation_gate_reason": "no_target_clarify"
+        }
+      ]
+    },
+    {
+      "label": "J · Indonesian 'tidak, restoran' corrective",
+      "description": "ID CORRECTIVE",
+      "conversation_id": "cb15d938-5f6f-42f0-a792-b8eaca52e0d8",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "cari hotel",
+          "reply": "Saya punya 521 listingan asli untuk hotel — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, dan lainnya. Ini listingan komunitas OpenStreetMap, jadi untuk penemuan saja, bukan booking langsung. Kota atau area mana yang sedang kamu lihat — Yogyaka",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "ID",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "TASK_REQUEST",
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "tidak, restoran",
+          "reply": "Baik, tidak masalah. Ada yang bisa saya bantu?",
+          "intent": "accommodation",
+          "world_cards_count": 0,
+          "active_language": "ID",
+          "confirmation_form": "CORRECTIVE",
+          "confirmation_resolution": "NO_TARGET",
+          "confirmation_gate_fired": true,
+          "confirmation_gate_reason": "no_target_clarify"
+        }
+      ]
+    },
+    {
+      "label": "K · Indonesian 'terima kasih'",
+      "description": "ID SOCIAL",
+      "conversation_id": "654313f6-40f2-40e7-ad4a-47664671d740",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "cari hotel",
+          "reply": "Saya punya 521 listingan asli untuk hotel — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, dan lainnya. Ini listingan komunitas OpenStreetMap, jadi untuk penemuan saja, bukan booking langsung. Kota atau area mana yang sedang kamu lihat — Yogyaka",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "ID",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "TASK_REQUEST",
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "terima kasih",
+          "reply": "Sama-sama!",
+          "intent": "conversation",
+          "world_cards_count": 3,
+          "active_language": "ID",
+          "confirmation_form": "SOCIAL",
+          "confirmation_resolution": "SOCIAL",
+          "confirmation_gate_fired": true,
+          "confirmation_gate_reason": "social_ack"
+        }
+      ]
+    },
+    {
+      "label": "L · non-confirmation 'find me a hotel'",
+      "description": "gate does NOT fire",
+      "conversation_id": "b805f104-6f37-43d5-a985-973ab6d5236c",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me a hotel",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jak",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "TASK_REQUEST",
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "M · non-confirmation 'what is Yogyakarta?'",
+      "description": "gate does NOT fire",
+      "conversation_id": "cc6faf89-993c-443d-850f-29757e7f1545",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "what is Yogyakarta?",
+          "reply": "Yogyakarta, often called Jogja, is a city and regency in Indonesia's Special Region of Yogyakarta. It's known as Java's cultural heart, with highlights like Borobudur and the Kraton, offering a blend of history, culture, and delicious local dishes like gudeg.",
+          "intent": "indonesia",
+          "world_cards_count": 0,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · G12 · 'I don't want a hotel'",
+      "description": "NEGATED_REQUEST still gates",
+      "conversation_id": "a18907d6-5fcf-429a-aa40-db9a46e98460",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I don't want a hotel",
+          "reply": "Got it — no problem. What would you like me to help with instead?",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "NEGATED_REQUEST",
+          "conv_function_gate_fired": true
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · G23 · run restaurant + recall",
+      "description": "user-fact memory intact",
+      "conversation_id": "e43b1c34-befd-48be-913d-098083b6897e",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I run a restaurant",
+          "reply": "Great to hear about your restaurant! Are you looking for ideas on what dishes to feature or advice on how to attract customers in Indonesia?",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "UNCLASSIFIED",
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "What do you know about my business?",
+          "reply": "Here's what you've told me about business: role = restaurant_operator",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "memory_gate_fired": true
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · G24 · seafood in Japan",
+      "description": "scope-gate intact",
+      "conversation_id": "24b9bea3-138f-46e0-a4cc-77d632c7f58a",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "tell me about seafood in Japan",
+          "reply": "NEX doesn't have verified information about japan at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "UNCLASSIFIED",
+          "scope_gate_fired": true,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · G03 · Indonesian continuity",
+      "description": "explicit switch intact",
+      "conversation_id": "4c3a8bf1-fbb9-4519-be1d-d33a9c363ca5",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "Find me a hotel",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jak",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "TASK_REQUEST",
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "Please answer in Indonesian",
+          "reply": "Baik, saya akan menjawab dalam bahasa Indonesia. Ada yang bisa saya bantu?",
+          "intent": "translation",
+          "world_cards_count": 3,
+          "active_language": "ID",
+          "language_switch_gate_fired": true
+        },
+        {
+          "turn": 3,
+          "message": "Tell me more",
+          "reply": "I've got 14 real listings for hotels — Griya Sentana, Hotel Trim Tiga, Asia Afrika, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere el",
+          "intent": "accommodation",
+          "world_cards_count": 0,
+          "active_language": "ID",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "UNCLASSIFIED",
+          "result_followup_fired": false
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · L4 · social frame reset",
+      "description": "'do you want to know where i am' still gates",
+      "conversation_id": "ee0bb61b-7d70-4aa4-9b0a-3a8f5cd2eda3",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "any hotels nex",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jak",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "TASK_REQUEST",
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "do you want to know where i am",
+          "reply": "Yeah — where are you? That'll help me make things more relevant.",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "PERSONAL_CONTEXT_OFFER",
+          "conv_function_gate_fired": true
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · P0.4 · fresh 'the first hotel'",
+      "description": "ordinal boundary intact",
+      "conversation_id": "d3bbcfc0-d7da-4363-8c4c-637da2e795cb",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "Tell me about the first hotel.",
+          "reply": "Which hotel do you mean? I don't have a previous hotel list in this conversation. Want me to find some?",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "UNCLASSIFIED",
+          "result_followup_fired": false,
+          "ordinal_gate_fired": true
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · result-followup",
+      "description": "provenance answer intact",
+      "conversation_id": "5afb2295-3bc4-405f-b4ac-0058f560b9c6",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jak",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "TASK_REQUEST",
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "where did you find them?",
+          "reply": "These are OpenStreetMap community-contributed accommodation listings from the NEX directory (nex.accommodation_business). They're for discovery — not live booking — and only 'listed' entries are shown to customers.",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "active_language": "EN",
+          "confirmation_form": "NONE",
+          "confirmation_gate_reason": "not_confirmation",
+          "conv_function_detected": "RESULT_FOLLOW_UP",
+          "result_followup_fired": true
+        }
+      ]
+    }
+  ]
+}

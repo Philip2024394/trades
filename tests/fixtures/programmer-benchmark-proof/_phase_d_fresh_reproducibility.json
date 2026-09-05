@@ -1,0 +1,37 @@
+{
+  "process_pid": 18228,
+  "ran_at": "2026-09-05T15:26:04.959Z",
+  "prior_run_id": "run_phase_d_mtojb5mq_1",
+  "fresh_run_id": "run_phase_d_mtojc4v3_1",
+  "corpus_version": "programmer-benchmark-v1",
+  "case_count": 43,
+  "prior_fingerprint": "5d18f0d3a46559c501a55b66",
+  "fresh_fingerprint": "5d18f0d3a46559c501a55b66",
+  "deterministic": true,
+  "overall_matches": true,
+  "fresh_overall": {
+    "total_cases": 43,
+    "correct": 43,
+    "wrong": 0,
+    "execution_error": 0,
+    "overall_accuracy": 1,
+    "defective_correct": 32,
+    "defective_total": 32,
+    "defective_catch_rate": 1,
+    "correct_correctly_accepted": 8,
+    "correct_total": 8,
+    "false_positive_rate": 0,
+    "uncertain_correct": 3,
+    "uncertain_total": 3,
+    "uncertain_accuracy": 1,
+    "tests_pass_but_code_wrong_correct": 15,
+    "tests_pass_but_code_wrong_total": 15,
+    "tests_pass_but_code_wrong_catch_rate": 1
+  },
+  "fresh_verdict": {
+    "verdict": "GREEN",
+    "reasons": [
+      "all thresholds passed"
+    ]
+  }
+}

@@ -1,0 +1,4465 @@
+{
+  "runAt": "2026-09-05T22:54:14.512Z",
+  "conversation_id": "98439b59-3f12-4123-abac-de5ad4ad2c85",
+  "T1": {
+    "request": "need hotel tonight",
+    "response": {
+      "conversation_id": "98439b59-3f12-4123-abac-de5ad4ad2c85",
+      "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+      "understood_intent": "accommodation",
+      "understood_entities": [],
+      "retrieved_top_k_count": 0,
+      "served_by": "nex-brain-orchestrator",
+      "intent": "accommodation",
+      "intent_reason": "keyword:hotel",
+      "suggestions": [
+        {
+          "label": "Open directory",
+          "href": "/nex-app/centre"
+        }
+      ],
+      "card": {
+        "kind": "accommodation_discovery",
+        "payload": {
+          "slots": {
+            "type": "hotel",
+            "date": "tonight",
+            "action": "discover"
+          },
+          "insight": {
+            "reason": "missing_required_slot",
+            "priority": "required"
+          },
+          "hits": [
+            {
+              "id": "place:accommodation:#AC-2026-0000D",
+              "name": "Gaotama Hotel",
+              "category": "accommodation.hotel",
+              "region": "Yogyakarta"
+            },
+            {
+              "id": "place:accommodation:#AC-2026-00010",
+              "name": "Selaras Inn Hotel Yogyakarta",
+              "category": "accommodation.hotel",
+              "region": "Yogyakarta"
+            },
+            {
+              "id": "place:accommodation:#AC-2026-00019",
+              "name": "Indonesia Hotel",
+              "category": "accommodation.hotel",
+              "region": "Yogyakarta"
+            },
+            {
+              "id": "place:accommodation:#AC-2026-00086",
+              "name": "Le temple",
+              "category": "accommodation.hotel",
+              "region": "Yogyakarta"
+            },
+            {
+              "id": "place:accommodation:#AC-2026-0008V",
+              "name": "Dusun Jogja Village inn",
+              "category": "accommodation.hotel",
+              "region": "Yogyakarta"
+            }
+          ]
+        }
+      },
+      "state_summary": {
+        "turn_count": 1,
+        "current_topic": "accommodation",
+        "established_facts": {},
+        "entities_in_focus": [],
+        "constraints": [],
+        "stage": "brain",
+        "corrections_logged": 0,
+        "current_emotion": "neutral",
+        "handoff_recommended": false,
+        "thin_packet_strikes": 0,
+        "condensed_history_present": false,
+        "conversation_language": "en"
+      },
+      "brain_capabilities": [
+        "perception",
+        "self_awareness",
+        "intent",
+        "conversation_control",
+        "memory",
+        "world_knowledge",
+        "insight",
+        "curiosity",
+        "smart_questioning",
+        "truth_honesty",
+        "spatial_awareness",
+        "time_awareness",
+        "goal_tracking",
+        "reference_resolution",
+        "entity_intelligence",
+        "tool_selection",
+        "governance",
+        "verification",
+        "prediction",
+        "initiative",
+        "adaptation",
+        "long_term_memory",
+        "attention",
+        "planning",
+        "reflection",
+        "confidence",
+        "meta_cognition",
+        "personality"
+      ],
+      "goal": {
+        "kind": "accommodation",
+        "status": "active",
+        "summary": "hotels",
+        "turnsSinceProgress": 0
+      },
+      "reflection": {
+        "overallPass": true,
+        "findings": [
+          {
+            "check": "answersUserMessage",
+            "passed": true,
+            "reason": "reply is non-empty and appropriate to the turn shape"
+          },
+          {
+            "check": "internallyConsistent",
+            "passed": true,
+            "reason": "no slot/reply contradictions detected"
+          },
+          {
+            "check": "hasEvidenceForClaims",
+            "passed": true,
+            "reason": "count + names verified against live World evidence set"
+          },
+          {
+            "check": "respectsHonestBoundary",
+            "passed": true,
+            "reason": "no invented booking/price/availability detected"
+          },
+          {
+            "check": "respectsMarketBoundary",
+            "passed": true,
+            "reason": "no cross-market leakage"
+          }
+        ],
+        "passedCount": 5,
+        "totalChecks": 5
+      },
+      "confidence": {
+        "overall": "high",
+        "reason": "reply carries 2 grounded/retrieved/computed claims",
+        "claims": [
+          {
+            "claim": "real property names surfaced",
+            "evidence": "grounded_fact",
+            "source": "5 real records matched"
+          },
+          {
+            "claim": "count claim: 521 real listings",
+            "evidence": "grounded_fact",
+            "source": "real property retrieval count"
+          },
+          {
+            "claim": "next-step refining question",
+            "evidence": "conversational"
+          }
+        ],
+        "evidenceCount": 2,
+        "boundaryCount": 0
+      },
+      "meta_cognition": {
+        "whatIKnow": {
+          "hasGroundedEvidence": true,
+          "evidenceCount": 2,
+          "boundaryCount": 0,
+          "goal": {
+            "kind": "accommodation",
+            "status": "active",
+            "summary": "hotels"
+          },
+          "slotsFilled": [
+            "type",
+            "date",
+            "action"
+          ],
+          "entitiesSeen": {
+            "total": 6,
+            "byKind": {
+              "date_ref": 1,
+              "business_name": 5
+            }
+          }
+        },
+        "howSure": {
+          "confidenceLevel": "high",
+          "confidenceReason": "reply carries 2 grounded/retrieved/computed claims",
+          "reflectionOverallPass": true,
+          "reflectionPassRatio": "5/5"
+        },
+        "amIWrong": {
+          "reflectionFailures": [],
+          "fabricationRisk": "low",
+          "fabricationReason": "no reflection failures · confidence acceptable"
+        },
+        "whatShouldIDo": {
+          "action": "ask: \"Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?\"",
+          "origin": "insight_next_question"
+        },
+        "whatILearned": {
+          "recentEntries": [],
+          "count": 0
+        },
+        "didItWork": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "summary": "confidence=high · reflection=5/5 · fabrication_risk=low · goal=active · next=insight_next_question"
+      },
+      "entities": {
+        "total": 6,
+        "byKind": {
+          "date_ref": 1,
+          "business_name": 5
+        }
+      },
+      "current_reference": {
+        "resolved": false,
+        "reason": "no_reference_mentioned"
+      },
+      "comparison": null,
+      "recommendation": null,
+      "tool_decision": {
+        "primary": "world_retrieval",
+        "secondary": [],
+        "reason": "intent=accommodation → grounded corpus retrieval · preferCategory=accommodation",
+        "availability": "available",
+        "parameters": {
+          "preferCategory": "accommodation",
+          "market": "ID",
+          "query": "need hotel tonight",
+          "limit": 15,
+          "minConfidence": 0.5
+        }
+      },
+      "governance": {
+        "policy": "default",
+        "findings": [
+          {
+            "permission": "read.world_knowledge",
+            "decision": "allow",
+            "context": "retrieveKnowledge",
+            "policyName": "default"
+          },
+          {
+            "permission": "write.session",
+            "decision": "allow",
+            "context": "upsertSession (slots/goal/entities/reference)",
+            "policyName": "default"
+          },
+          {
+            "permission": "write.workforce_gap",
+            "decision": "allow",
+            "context": "recordInsightGap (when Insight fires learning_gap)",
+            "policyName": "default"
+          }
+        ],
+        "hasDenies": false,
+        "hasRequiresConsent": false,
+        "allowedCount": 3
+      },
+      "action_proposal": null,
+      "action_execution": null,
+      "verification": {
+        "applicable": false,
+        "reason": "no_proposal",
+        "summary": "no action proposed this turn"
+      },
+      "prediction": {
+        "candidates": [],
+        "reason": "no strong signal · empty prediction"
+      },
+      "initiative": {
+        "decision": {
+          "volunteered": false,
+          "reason": "no prediction top candidate to consider"
+        },
+        "sessionCount": 0,
+        "cap": 3
+      },
+      "adaptation": {
+        "signals": [],
+        "hasSignals": false,
+        "summary": "no adaptation patterns · behavior unchanged"
+      },
+      "long_term_memory": null,
+      "personalization": null,
+      "attention": {
+        "ranked": [
+          {
+            "kind": "goal",
+            "subject": "goal:accommodation",
+            "displayName": "accommodation goal (hotels)",
+            "score": 1.5,
+            "reason": "goal status=active"
+          },
+          {
+            "kind": "slot",
+            "subject": "slot:type",
+            "displayName": "type",
+            "score": 1,
+            "reason": "slot present: hotel"
+          },
+          {
+            "kind": "slot",
+            "subject": "slot:date",
+            "displayName": "date",
+            "score": 1,
+            "reason": "slot present: tonight"
+          },
+          {
+            "kind": "slot",
+            "subject": "slot:action",
+            "displayName": "action",
+            "score": 1,
+            "reason": "slot present: discover"
+          },
+          {
+            "kind": "entity",
+            "subject": "entity:gaotama hotel",
+            "displayName": "Gaotama Hotel",
+            "score": 0.8,
+            "reason": "presented entity"
+          },
+          {
+            "kind": "entity",
+            "subject": "entity:selaras inn hotel yogyakarta",
+            "displayName": "Selaras Inn Hotel Yogyakarta",
+            "score": 0.8,
+            "reason": "presented entity"
+          },
+          {
+            "kind": "entity",
+            "subject": "entity:indonesia hotel",
+            "displayName": "Indonesia Hotel",
+            "score": 0.8,
+            "reason": "presented entity"
+          },
+          {
+            "kind": "entity",
+            "subject": "entity:le temple",
+            "displayName": "Le temple",
+            "score": 0.8,
+            "reason": "presented entity"
+          },
+          {
+            "kind": "entity",
+            "subject": "entity:dusun jogja village inn",
+            "displayName": "Dusun Jogja Village inn",
+            "score": 0.8,
+            "reason": "presented entity"
+          }
+        ],
+        "top": {
+          "kind": "goal",
+          "subject": "goal:accommodation",
+          "displayName": "accommodation goal (hotels)",
+          "score": 1.5,
+          "reason": "goal status=active"
+        },
+        "summary": "top=goal:accommodation score=1.50 · 9 ranked"
+      },
+      "planning": {
+        "goalKind": "accommodation",
+        "steps": [
+          {
+            "number": 1,
+            "kind": "narrow_location",
+            "description": "know which city / region",
+            "status": "current",
+            "reason": "no location yet"
+          },
+          {
+            "number": 2,
+            "kind": "narrow_type",
+            "description": "know property type (hotel/guesthouse/etc)",
+            "status": "done",
+            "reason": "type=hotel"
+          },
+          {
+            "number": 3,
+            "kind": "narrow_budget",
+            "description": "know budget preference",
+            "status": "pending",
+            "reason": "budget unspecified"
+          },
+          {
+            "number": 4,
+            "kind": "narrow_area",
+            "description": "know sub-area (optional refinement)",
+            "status": "pending",
+            "reason": "area not narrowed"
+          },
+          {
+            "number": 5,
+            "kind": "present_candidates",
+            "description": "surface real properties from World",
+            "status": "done",
+            "reason": "5 candidates"
+          },
+          {
+            "number": 6,
+            "kind": "resolve_reference",
+            "description": "user picks a specific property",
+            "status": "pending",
+            "reason": "no ordinal/pronoun resolved yet"
+          },
+          {
+            "number": 7,
+            "kind": "confirm_action",
+            "description": "execute proposed action (open directory / contact / book)",
+            "status": "pending",
+            "reason": "no action executed yet"
+          },
+          {
+            "number": 8,
+            "kind": "complete",
+            "description": "user has what they need",
+            "status": "pending",
+            "reason": "flow in progress"
+          }
+        ],
+        "currentStepIndex": 0,
+        "turnsRemaining": 6,
+        "isPlanComplete": false,
+        "summary": "2/8 done · current: know which city / region · 6 steps remaining"
+      },
+      "personality_profile": {
+        "profile": "friendly",
+        "transformationsApplied": [
+          "friendly: passthrough (composer baseline)"
+        ],
+        "summary": "profile=friendly · 1 transformation(s)"
+      },
+      "world_cards": {
+        "vertical": "accommodation",
+        "cards": [
+          {
+            "id": "#AC-2026-0000D",
+            "vertical": "accommodation",
+            "name": "Gaotama Hotel",
+            "subline": "Hotel · Yogyakarta",
+            "location": "Yogyakarta",
+            "amenities": [],
+            "verified": false,
+            "provenanceLabel": "NEX directory · listed",
+            "ownershipState": "unclaimed",
+            "actions": [
+              {
+                "kind": "view",
+                "label": "View",
+                "href": "/nex-app/centre?ref=%23AC-2026-0000D"
+              },
+              {
+                "kind": "directions",
+                "label": "Directions",
+                "href": "https://maps.google.com/?q=-7.7937987,110.36758"
+              },
+              {
+                "kind": "book",
+                "label": "Book",
+                "disabled": true,
+                "reason": "no_live_booking_integration"
+              }
+            ]
+          },
+          {
+            "id": "#AC-2026-00010",
+            "vertical": "accommodation",
+            "name": "Selaras Inn Hotel Yogyakarta",
+            "subline": "Hotel · Yogyakarta",
+            "location": "Yogyakarta",
+            "amenities": [],
+            "verified": false,
+            "provenanceLabel": "NEX directory · listed",
+            "ownershipState": "unclaimed",
+            "actions": [
+              {
+                "kind": "view",
+                "label": "View",
+                "href": "/nex-app/centre?ref=%23AC-2026-00010"
+              },
+              {
+                "kind": "directions",
+                "label": "Directions",
+                "href": "https://maps.google.com/?q=-7.7916775,110.3630563"
+              },
+              {
+                "kind": "book",
+                "label": "Book",
+                "disabled": true,
+                "reason": "no_live_booking_integration"
+              }
+            ]
+          },
+          {
+            "id": "#AC-2026-00019",
+            "vertical": "accommodation",
+            "name": "Indonesia Hotel",
+            "subline": "Hotel · Yogyakarta",
+            "location": "Yogyakarta",
+            "amenities": [],
+            "verified": false,
+            "provenanceLabel": "NEX directory · listed",
+            "ownershipState": "unclaimed",
+            "actions": [
+              {
+                "kind": "view",
+                "label": "View",
+                "href": "/nex-app/centre?ref=%23AC-2026-00019"
+              },
+              {
+                "kind": "directions",
+                "label": "Directions",
+                "href": "https://maps.google.com/?q=-7.7918047,110.3653013"
+              },
+              {
+                "kind": "book",
+                "label": "Book",
+                "disabled": true,
+                "reason": "no_live_booking_integration"
+              }
+            ]
+          }
+        ],
+        "totalAvailable": 521,
+        "headline": "Showing 3 of 521 real stays."
+      },
+      "entity_result_cards": {
+        "vertical": "accommodation",
+        "cards": [
+          {
+            "card": {
+              "id": "#AC-2026-0000D",
+              "vertical": "accommodation",
+              "name": "Gaotama Hotel",
+              "subline": "Hotel · Yogyakarta",
+              "location": "Yogyakarta",
+              "amenities": [],
+              "verified": false,
+              "provenanceLabel": "NEX directory · listed",
+              "ownershipState": "unclaimed",
+              "actions": [
+                {
+                  "kind": "view",
+                  "label": "View",
+                  "href": "/nex-app/centre?ref=%23AC-2026-0000D"
+                },
+                {
+                  "kind": "directions",
+                  "label": "Directions",
+                  "href": "https://maps.google.com/?q=-7.7937987,110.36758"
+                },
+                {
+                  "kind": "book",
+                  "label": "Book",
+                  "disabled": true,
+                  "reason": "no_live_booking_integration"
+                }
+              ]
+            },
+            "position": 1,
+            "ref_id": "place:accommodation:#AC-2026-0000D",
+            "attributes": [
+              {
+                "attribute": {
+                  "id": "address",
+                  "category": "identity",
+                  "displayEn": "Address",
+                  "displayId": "Alamat",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "coordinates",
+                  "category": "identity",
+                  "displayEn": "Map location",
+                  "displayId": "Titik peta",
+                  "keywords": []
+                },
+                "state": "UNVERIFIED",
+                "evidence": "field",
+                "evidenceTier": "directory"
+              },
+              {
+                "attribute": {
+                  "id": "phone",
+                  "category": "contact",
+                  "displayEn": "Phone",
+                  "displayId": "Telepon",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "whatsapp",
+                  "category": "contact",
+                  "displayEn": "WhatsApp",
+                  "displayId": "WhatsApp",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "website",
+                  "category": "contact",
+                  "displayEn": "Website",
+                  "displayId": "Situs web",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "room_count",
+                  "category": "room",
+                  "displayEn": "Room count",
+                  "displayId": "Jumlah kamar",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "ac",
+                  "category": "room",
+                  "displayEn": "Air conditioning",
+                  "displayId": "AC",
+                  "keywords": [
+                    "ac",
+                    "aircon",
+                    "air-conditioning",
+                    "air conditioning",
+                    "airconditioner",
+                    "ac unit"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "wifi",
+                  "category": "facility",
+                  "displayEn": "Wi-Fi",
+                  "displayId": "Wi-Fi",
+                  "keywords": [
+                    "wifi",
+                    "wi-fi",
+                    "wi fi",
+                    "wireless",
+                    "internet"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "tv",
+                  "category": "room",
+                  "displayEn": "TV",
+                  "displayId": "TV",
+                  "keywords": [
+                    "tv",
+                    "television",
+                    "cable tv",
+                    "satellite tv"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "balcony",
+                  "category": "room",
+                  "displayEn": "Balcony",
+                  "displayId": "Balkon",
+                  "keywords": [
+                    "balcony",
+                    "balkon",
+                    "private balcony"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "kitchen",
+                  "category": "room",
+                  "displayEn": "Kitchen",
+                  "displayId": "Dapur",
+                  "keywords": [
+                    "kitchen",
+                    "kitchenette",
+                    "dapur"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "fridge",
+                  "category": "room",
+                  "displayEn": "Fridge",
+                  "displayId": "Kulkas",
+                  "keywords": [
+                    "fridge",
+                    "refrigerator",
+                    "mini fridge",
+                    "mini bar",
+                    "minibar"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "pool",
+                  "category": "facility",
+                  "displayEn": "Pool",
+                  "displayId": "Kolam renang",
+                  "keywords": [
+                    "pool",
+                    "swimming pool",
+                    "swimmingpool",
+                    "kolam",
+                    "kolam renang"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "parking",
+                  "category": "facility",
+                  "displayEn": "Parking",
+                  "displayId": "Parkir",
+                  "keywords": [
+                    "parking",
+                    "car park",
+                    "car parking",
+                    "carpark",
+                    "parkir"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "restaurant",
+                  "category": "facility",
+                  "displayEn": "Restaurant",
+                  "displayId": "Restoran",
+                  "keywords": [
+                    "restaurant",
+                    "resto",
+                    "restoran",
+                    "dining"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "cafe",
+                  "category": "facility",
+                  "displayEn": "Café",
+                  "displayId": "Kafe",
+                  "keywords": [
+                    "cafe",
+                    "café",
+                    "kafe",
+                    "coffee shop",
+                    "coffee"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bar",
+                  "category": "facility",
+                  "displayEn": "Bar",
+                  "displayId": "Bar",
+                  "keywords": [
+                    "bar",
+                    "lounge",
+                    "pub"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "gym",
+                  "category": "facility",
+                  "displayEn": "Gym",
+                  "displayId": "Gym",
+                  "keywords": [
+                    "gym",
+                    "fitness",
+                    "fitness centre",
+                    "fitness center",
+                    "workout"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "spa",
+                  "category": "facility",
+                  "displayEn": "Spa",
+                  "displayId": "Spa",
+                  "keywords": [
+                    "spa",
+                    "wellness",
+                    "massage"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "garden",
+                  "category": "facility",
+                  "displayEn": "Garden",
+                  "displayId": "Taman",
+                  "keywords": [
+                    "garden",
+                    "kebun",
+                    "taman"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "terrace",
+                  "category": "facility",
+                  "displayEn": "Terrace",
+                  "displayId": "Teras",
+                  "keywords": [
+                    "terrace",
+                    "rooftop",
+                    "teras",
+                    "rooftop terrace"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "elevator",
+                  "category": "facility",
+                  "displayEn": "Elevator",
+                  "displayId": "Lift",
+                  "keywords": [
+                    "elevator",
+                    "lift"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "laundry",
+                  "category": "service",
+                  "displayEn": "Laundry",
+                  "displayId": "Layanan cuci",
+                  "keywords": [
+                    "laundry",
+                    "laundry service",
+                    "cuci",
+                    "cuci baju",
+                    "washer"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "breakfast",
+                  "category": "service",
+                  "displayEn": "Breakfast",
+                  "displayId": "Sarapan",
+                  "keywords": [
+                    "breakfast",
+                    "sarapan",
+                    "breakfast included",
+                    "breakfast buffet"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "airport_transfer",
+                  "category": "service",
+                  "displayEn": "Airport transfer",
+                  "displayId": "Antar jemput bandara",
+                  "keywords": [
+                    "airport transfer",
+                    "airport shuttle",
+                    "shuttle",
+                    "antar jemput"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "room_service",
+                  "category": "service",
+                  "displayEn": "Room service",
+                  "displayId": "Layanan kamar",
+                  "keywords": [
+                    "room service",
+                    "24 hour room service"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "housekeeping",
+                  "category": "service",
+                  "displayEn": "Housekeeping",
+                  "displayId": "Kebersihan",
+                  "keywords": [
+                    "housekeeping",
+                    "daily cleaning",
+                    "cleaning"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "front_desk",
+                  "category": "service",
+                  "displayEn": "Front desk",
+                  "displayId": "Resepsionis",
+                  "keywords": [
+                    "front desk",
+                    "24 hour front desk",
+                    "24/7 front desk"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bedrooms",
+                  "category": "villa",
+                  "displayEn": "Bedrooms",
+                  "displayId": "Kamar tidur",
+                  "keywords": [
+                    "bedrooms",
+                    "bedroom",
+                    "kamar tidur"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bathrooms",
+                  "category": "villa",
+                  "displayEn": "Bathrooms",
+                  "displayId": "Kamar mandi",
+                  "keywords": [
+                    "bathrooms",
+                    "bathroom",
+                    "kamar mandi"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "capacity",
+                  "category": "villa",
+                  "displayEn": "Guest capacity",
+                  "displayId": "Kapasitas tamu",
+                  "keywords": [
+                    "capacity",
+                    "sleeps",
+                    "guests",
+                    "kapasitas",
+                    "maksimal"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "private_pool",
+                  "category": "villa",
+                  "displayEn": "Private pool",
+                  "displayId": "Kolam pribadi",
+                  "keywords": [
+                    "private pool",
+                    "private swimming pool",
+                    "kolam pribadi"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "full_kitchen",
+                  "category": "villa",
+                  "displayEn": "Full kitchen",
+                  "displayId": "Dapur lengkap",
+                  "keywords": [
+                    "full kitchen",
+                    "equipped kitchen",
+                    "dapur lengkap"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "star_rating",
+                  "category": "meta",
+                  "displayEn": "Star rating",
+                  "displayId": "Peringkat bintang",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "rating",
+                  "category": "meta",
+                  "displayEn": "Guest rating",
+                  "displayId": "Rating tamu",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              }
+            ],
+            "highlights": [],
+            "unverified_highlights": [],
+            "coverage": {
+              "vertical": "accommodation",
+              "total_attributes": 35,
+              "known_yes": 0,
+              "known_no": 0,
+              "unknown": 34,
+              "unverified": 1,
+              "conflicting": 0,
+              "stale": 0,
+              "coverage_pct": 0,
+              "evidence_pct": 3
+            }
+          },
+          {
+            "card": {
+              "id": "#AC-2026-00010",
+              "vertical": "accommodation",
+              "name": "Selaras Inn Hotel Yogyakarta",
+              "subline": "Hotel · Yogyakarta",
+              "location": "Yogyakarta",
+              "amenities": [],
+              "verified": false,
+              "provenanceLabel": "NEX directory · listed",
+              "ownershipState": "unclaimed",
+              "actions": [
+                {
+                  "kind": "view",
+                  "label": "View",
+                  "href": "/nex-app/centre?ref=%23AC-2026-00010"
+                },
+                {
+                  "kind": "directions",
+                  "label": "Directions",
+                  "href": "https://maps.google.com/?q=-7.7916775,110.3630563"
+                },
+                {
+                  "kind": "book",
+                  "label": "Book",
+                  "disabled": true,
+                  "reason": "no_live_booking_integration"
+                }
+              ]
+            },
+            "position": 2,
+            "ref_id": "place:accommodation:#AC-2026-00010",
+            "attributes": [
+              {
+                "attribute": {
+                  "id": "address",
+                  "category": "identity",
+                  "displayEn": "Address",
+                  "displayId": "Alamat",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "coordinates",
+                  "category": "identity",
+                  "displayEn": "Map location",
+                  "displayId": "Titik peta",
+                  "keywords": []
+                },
+                "state": "UNVERIFIED",
+                "evidence": "field",
+                "evidenceTier": "directory"
+              },
+              {
+                "attribute": {
+                  "id": "phone",
+                  "category": "contact",
+                  "displayEn": "Phone",
+                  "displayId": "Telepon",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "whatsapp",
+                  "category": "contact",
+                  "displayEn": "WhatsApp",
+                  "displayId": "WhatsApp",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "website",
+                  "category": "contact",
+                  "displayEn": "Website",
+                  "displayId": "Situs web",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "room_count",
+                  "category": "room",
+                  "displayEn": "Room count",
+                  "displayId": "Jumlah kamar",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "ac",
+                  "category": "room",
+                  "displayEn": "Air conditioning",
+                  "displayId": "AC",
+                  "keywords": [
+                    "ac",
+                    "aircon",
+                    "air-conditioning",
+                    "air conditioning",
+                    "airconditioner",
+                    "ac unit"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "wifi",
+                  "category": "facility",
+                  "displayEn": "Wi-Fi",
+                  "displayId": "Wi-Fi",
+                  "keywords": [
+                    "wifi",
+                    "wi-fi",
+                    "wi fi",
+                    "wireless",
+                    "internet"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "tv",
+                  "category": "room",
+                  "displayEn": "TV",
+                  "displayId": "TV",
+                  "keywords": [
+                    "tv",
+                    "television",
+                    "cable tv",
+                    "satellite tv"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "balcony",
+                  "category": "room",
+                  "displayEn": "Balcony",
+                  "displayId": "Balkon",
+                  "keywords": [
+                    "balcony",
+                    "balkon",
+                    "private balcony"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "kitchen",
+                  "category": "room",
+                  "displayEn": "Kitchen",
+                  "displayId": "Dapur",
+                  "keywords": [
+                    "kitchen",
+                    "kitchenette",
+                    "dapur"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "fridge",
+                  "category": "room",
+                  "displayEn": "Fridge",
+                  "displayId": "Kulkas",
+                  "keywords": [
+                    "fridge",
+                    "refrigerator",
+                    "mini fridge",
+                    "mini bar",
+                    "minibar"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "pool",
+                  "category": "facility",
+                  "displayEn": "Pool",
+                  "displayId": "Kolam renang",
+                  "keywords": [
+                    "pool",
+                    "swimming pool",
+                    "swimmingpool",
+                    "kolam",
+                    "kolam renang"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "parking",
+                  "category": "facility",
+                  "displayEn": "Parking",
+                  "displayId": "Parkir",
+                  "keywords": [
+                    "parking",
+                    "car park",
+                    "car parking",
+                    "carpark",
+                    "parkir"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "restaurant",
+                  "category": "facility",
+                  "displayEn": "Restaurant",
+                  "displayId": "Restoran",
+                  "keywords": [
+                    "restaurant",
+                    "resto",
+                    "restoran",
+                    "dining"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "cafe",
+                  "category": "facility",
+                  "displayEn": "Café",
+                  "displayId": "Kafe",
+                  "keywords": [
+                    "cafe",
+                    "café",
+                    "kafe",
+                    "coffee shop",
+                    "coffee"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bar",
+                  "category": "facility",
+                  "displayEn": "Bar",
+                  "displayId": "Bar",
+                  "keywords": [
+                    "bar",
+                    "lounge",
+                    "pub"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "gym",
+                  "category": "facility",
+                  "displayEn": "Gym",
+                  "displayId": "Gym",
+                  "keywords": [
+                    "gym",
+                    "fitness",
+                    "fitness centre",
+                    "fitness center",
+                    "workout"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "spa",
+                  "category": "facility",
+                  "displayEn": "Spa",
+                  "displayId": "Spa",
+                  "keywords": [
+                    "spa",
+                    "wellness",
+                    "massage"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "garden",
+                  "category": "facility",
+                  "displayEn": "Garden",
+                  "displayId": "Taman",
+                  "keywords": [
+                    "garden",
+                    "kebun",
+                    "taman"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "terrace",
+                  "category": "facility",
+                  "displayEn": "Terrace",
+                  "displayId": "Teras",
+                  "keywords": [
+                    "terrace",
+                    "rooftop",
+                    "teras",
+                    "rooftop terrace"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "elevator",
+                  "category": "facility",
+                  "displayEn": "Elevator",
+                  "displayId": "Lift",
+                  "keywords": [
+                    "elevator",
+                    "lift"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "laundry",
+                  "category": "service",
+                  "displayEn": "Laundry",
+                  "displayId": "Layanan cuci",
+                  "keywords": [
+                    "laundry",
+                    "laundry service",
+                    "cuci",
+                    "cuci baju",
+                    "washer"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "breakfast",
+                  "category": "service",
+                  "displayEn": "Breakfast",
+                  "displayId": "Sarapan",
+                  "keywords": [
+                    "breakfast",
+                    "sarapan",
+                    "breakfast included",
+                    "breakfast buffet"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "airport_transfer",
+                  "category": "service",
+                  "displayEn": "Airport transfer",
+                  "displayId": "Antar jemput bandara",
+                  "keywords": [
+                    "airport transfer",
+                    "airport shuttle",
+                    "shuttle",
+                    "antar jemput"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "room_service",
+                  "category": "service",
+                  "displayEn": "Room service",
+                  "displayId": "Layanan kamar",
+                  "keywords": [
+                    "room service",
+                    "24 hour room service"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "housekeeping",
+                  "category": "service",
+                  "displayEn": "Housekeeping",
+                  "displayId": "Kebersihan",
+                  "keywords": [
+                    "housekeeping",
+                    "daily cleaning",
+                    "cleaning"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "front_desk",
+                  "category": "service",
+                  "displayEn": "Front desk",
+                  "displayId": "Resepsionis",
+                  "keywords": [
+                    "front desk",
+                    "24 hour front desk",
+                    "24/7 front desk"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bedrooms",
+                  "category": "villa",
+                  "displayEn": "Bedrooms",
+                  "displayId": "Kamar tidur",
+                  "keywords": [
+                    "bedrooms",
+                    "bedroom",
+                    "kamar tidur"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bathrooms",
+                  "category": "villa",
+                  "displayEn": "Bathrooms",
+                  "displayId": "Kamar mandi",
+                  "keywords": [
+                    "bathrooms",
+                    "bathroom",
+                    "kamar mandi"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "capacity",
+                  "category": "villa",
+                  "displayEn": "Guest capacity",
+                  "displayId": "Kapasitas tamu",
+                  "keywords": [
+                    "capacity",
+                    "sleeps",
+                    "guests",
+                    "kapasitas",
+                    "maksimal"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "private_pool",
+                  "category": "villa",
+                  "displayEn": "Private pool",
+                  "displayId": "Kolam pribadi",
+                  "keywords": [
+                    "private pool",
+                    "private swimming pool",
+                    "kolam pribadi"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "full_kitchen",
+                  "category": "villa",
+                  "displayEn": "Full kitchen",
+                  "displayId": "Dapur lengkap",
+                  "keywords": [
+                    "full kitchen",
+                    "equipped kitchen",
+                    "dapur lengkap"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "star_rating",
+                  "category": "meta",
+                  "displayEn": "Star rating",
+                  "displayId": "Peringkat bintang",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "rating",
+                  "category": "meta",
+                  "displayEn": "Guest rating",
+                  "displayId": "Rating tamu",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              }
+            ],
+            "highlights": [],
+            "unverified_highlights": [],
+            "coverage": {
+              "vertical": "accommodation",
+              "total_attributes": 35,
+              "known_yes": 0,
+              "known_no": 0,
+              "unknown": 34,
+              "unverified": 1,
+              "conflicting": 0,
+              "stale": 0,
+              "coverage_pct": 0,
+              "evidence_pct": 3
+            }
+          },
+          {
+            "card": {
+              "id": "#AC-2026-00019",
+              "vertical": "accommodation",
+              "name": "Indonesia Hotel",
+              "subline": "Hotel · Yogyakarta",
+              "location": "Yogyakarta",
+              "amenities": [],
+              "verified": false,
+              "provenanceLabel": "NEX directory · listed",
+              "ownershipState": "unclaimed",
+              "actions": [
+                {
+                  "kind": "view",
+                  "label": "View",
+                  "href": "/nex-app/centre?ref=%23AC-2026-00019"
+                },
+                {
+                  "kind": "directions",
+                  "label": "Directions",
+                  "href": "https://maps.google.com/?q=-7.7918047,110.3653013"
+                },
+                {
+                  "kind": "book",
+                  "label": "Book",
+                  "disabled": true,
+                  "reason": "no_live_booking_integration"
+                }
+              ]
+            },
+            "position": 3,
+            "ref_id": "place:accommodation:#AC-2026-00019",
+            "attributes": [
+              {
+                "attribute": {
+                  "id": "address",
+                  "category": "identity",
+                  "displayEn": "Address",
+                  "displayId": "Alamat",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "coordinates",
+                  "category": "identity",
+                  "displayEn": "Map location",
+                  "displayId": "Titik peta",
+                  "keywords": []
+                },
+                "state": "UNVERIFIED",
+                "evidence": "field",
+                "evidenceTier": "directory"
+              },
+              {
+                "attribute": {
+                  "id": "phone",
+                  "category": "contact",
+                  "displayEn": "Phone",
+                  "displayId": "Telepon",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "whatsapp",
+                  "category": "contact",
+                  "displayEn": "WhatsApp",
+                  "displayId": "WhatsApp",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "website",
+                  "category": "contact",
+                  "displayEn": "Website",
+                  "displayId": "Situs web",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "room_count",
+                  "category": "room",
+                  "displayEn": "Room count",
+                  "displayId": "Jumlah kamar",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "ac",
+                  "category": "room",
+                  "displayEn": "Air conditioning",
+                  "displayId": "AC",
+                  "keywords": [
+                    "ac",
+                    "aircon",
+                    "air-conditioning",
+                    "air conditioning",
+                    "airconditioner",
+                    "ac unit"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "wifi",
+                  "category": "facility",
+                  "displayEn": "Wi-Fi",
+                  "displayId": "Wi-Fi",
+                  "keywords": [
+                    "wifi",
+                    "wi-fi",
+                    "wi fi",
+                    "wireless",
+                    "internet"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "tv",
+                  "category": "room",
+                  "displayEn": "TV",
+                  "displayId": "TV",
+                  "keywords": [
+                    "tv",
+                    "television",
+                    "cable tv",
+                    "satellite tv"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "balcony",
+                  "category": "room",
+                  "displayEn": "Balcony",
+                  "displayId": "Balkon",
+                  "keywords": [
+                    "balcony",
+                    "balkon",
+                    "private balcony"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "kitchen",
+                  "category": "room",
+                  "displayEn": "Kitchen",
+                  "displayId": "Dapur",
+                  "keywords": [
+                    "kitchen",
+                    "kitchenette",
+                    "dapur"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "fridge",
+                  "category": "room",
+                  "displayEn": "Fridge",
+                  "displayId": "Kulkas",
+                  "keywords": [
+                    "fridge",
+                    "refrigerator",
+                    "mini fridge",
+                    "mini bar",
+                    "minibar"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "pool",
+                  "category": "facility",
+                  "displayEn": "Pool",
+                  "displayId": "Kolam renang",
+                  "keywords": [
+                    "pool",
+                    "swimming pool",
+                    "swimmingpool",
+                    "kolam",
+                    "kolam renang"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "parking",
+                  "category": "facility",
+                  "displayEn": "Parking",
+                  "displayId": "Parkir",
+                  "keywords": [
+                    "parking",
+                    "car park",
+                    "car parking",
+                    "carpark",
+                    "parkir"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "restaurant",
+                  "category": "facility",
+                  "displayEn": "Restaurant",
+                  "displayId": "Restoran",
+                  "keywords": [
+                    "restaurant",
+                    "resto",
+                    "restoran",
+                    "dining"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "cafe",
+                  "category": "facility",
+                  "displayEn": "Café",
+                  "displayId": "Kafe",
+                  "keywords": [
+                    "cafe",
+                    "café",
+                    "kafe",
+                    "coffee shop",
+                    "coffee"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bar",
+                  "category": "facility",
+                  "displayEn": "Bar",
+                  "displayId": "Bar",
+                  "keywords": [
+                    "bar",
+                    "lounge",
+                    "pub"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "gym",
+                  "category": "facility",
+                  "displayEn": "Gym",
+                  "displayId": "Gym",
+                  "keywords": [
+                    "gym",
+                    "fitness",
+                    "fitness centre",
+                    "fitness center",
+                    "workout"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "spa",
+                  "category": "facility",
+                  "displayEn": "Spa",
+                  "displayId": "Spa",
+                  "keywords": [
+                    "spa",
+                    "wellness",
+                    "massage"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "garden",
+                  "category": "facility",
+                  "displayEn": "Garden",
+                  "displayId": "Taman",
+                  "keywords": [
+                    "garden",
+                    "kebun",
+                    "taman"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "terrace",
+                  "category": "facility",
+                  "displayEn": "Terrace",
+                  "displayId": "Teras",
+                  "keywords": [
+                    "terrace",
+                    "rooftop",
+                    "teras",
+                    "rooftop terrace"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "elevator",
+                  "category": "facility",
+                  "displayEn": "Elevator",
+                  "displayId": "Lift",
+                  "keywords": [
+                    "elevator",
+                    "lift"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "laundry",
+                  "category": "service",
+                  "displayEn": "Laundry",
+                  "displayId": "Layanan cuci",
+                  "keywords": [
+                    "laundry",
+                    "laundry service",
+                    "cuci",
+                    "cuci baju",
+                    "washer"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "breakfast",
+                  "category": "service",
+                  "displayEn": "Breakfast",
+                  "displayId": "Sarapan",
+                  "keywords": [
+                    "breakfast",
+                    "sarapan",
+                    "breakfast included",
+                    "breakfast buffet"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "airport_transfer",
+                  "category": "service",
+                  "displayEn": "Airport transfer",
+                  "displayId": "Antar jemput bandara",
+                  "keywords": [
+                    "airport transfer",
+                    "airport shuttle",
+                    "shuttle",
+                    "antar jemput"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "room_service",
+                  "category": "service",
+                  "displayEn": "Room service",
+                  "displayId": "Layanan kamar",
+                  "keywords": [
+                    "room service",
+                    "24 hour room service"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "housekeeping",
+                  "category": "service",
+                  "displayEn": "Housekeeping",
+                  "displayId": "Kebersihan",
+                  "keywords": [
+                    "housekeeping",
+                    "daily cleaning",
+                    "cleaning"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "front_desk",
+                  "category": "service",
+                  "displayEn": "Front desk",
+                  "displayId": "Resepsionis",
+                  "keywords": [
+                    "front desk",
+                    "24 hour front desk",
+                    "24/7 front desk"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bedrooms",
+                  "category": "villa",
+                  "displayEn": "Bedrooms",
+                  "displayId": "Kamar tidur",
+                  "keywords": [
+                    "bedrooms",
+                    "bedroom",
+                    "kamar tidur"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bathrooms",
+                  "category": "villa",
+                  "displayEn": "Bathrooms",
+                  "displayId": "Kamar mandi",
+                  "keywords": [
+                    "bathrooms",
+                    "bathroom",
+                    "kamar mandi"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "capacity",
+                  "category": "villa",
+                  "displayEn": "Guest capacity",
+                  "displayId": "Kapasitas tamu",
+                  "keywords": [
+                    "capacity",
+                    "sleeps",
+                    "guests",
+                    "kapasitas",
+                    "maksimal"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "private_pool",
+                  "category": "villa",
+                  "displayEn": "Private pool",
+                  "displayId": "Kolam pribadi",
+                  "keywords": [
+                    "private pool",
+                    "private swimming pool",
+                    "kolam pribadi"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "full_kitchen",
+                  "category": "villa",
+                  "displayEn": "Full kitchen",
+                  "displayId": "Dapur lengkap",
+                  "keywords": [
+                    "full kitchen",
+                    "equipped kitchen",
+                    "dapur lengkap"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "star_rating",
+                  "category": "meta",
+                  "displayEn": "Star rating",
+                  "displayId": "Peringkat bintang",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "rating",
+                  "category": "meta",
+                  "displayEn": "Guest rating",
+                  "displayId": "Rating tamu",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              }
+            ],
+            "highlights": [],
+            "unverified_highlights": [],
+            "coverage": {
+              "vertical": "accommodation",
+              "total_attributes": 35,
+              "known_yes": 0,
+              "known_no": 0,
+              "unknown": 34,
+              "unverified": 1,
+              "conflicting": 0,
+              "stale": 0,
+              "coverage_pct": 0,
+              "evidence_pct": 3
+            }
+          }
+        ],
+        "total_available": 521,
+        "headline": "Showing 3 of 521 real stays."
+      },
+      "world_expanded_page": null,
+      "world_latency_ms": 221.58489999175072,
+      "action_audit": null,
+      "pending_proposal_snapshot": null,
+      "composition_meta": {
+        "ran": false,
+        "accepted": false,
+        "stt_raw_length": 18,
+        "stt_normalized": "need hotel tonight",
+        "stt_changed": false,
+        "stt_confidence": "HIGH",
+        "stt_markers": [],
+        "stt_candidate_count": 0,
+        "stt_self_correction": false,
+        "stt_code_switch": false,
+        "stt_languages_seen": [
+          "EN"
+        ],
+        "active_language": "EN",
+        "detected_language_this_turn": "EN",
+        "language_confidence": "LOW",
+        "language_source": "detected_turn",
+        "confirmation_form": "NONE",
+        "confirmation_answer_polarity": "NONE",
+        "confirmation_gate_reason": "not_confirmation",
+        "temporal_tense": "UNKNOWN",
+        "temporal_entity": "hotel",
+        "quantity_kind": "UNSPECIFIED",
+        "semantic_intent": "NONE",
+        "spatial_concept": "NONE",
+        "spatial_polarity": "AFFIRM",
+        "spatial_is_change": false,
+        "implicit_constraint_count": 0,
+        "frame_transition": "UNKNOWN",
+        "frame_active_domain": "accommodation",
+        "frame_result_set_state": "ACTIVE_RESULT_SET",
+        "frame_is_elliptical": false,
+        "conv_function_detected": "UNCLASSIFIED",
+        "conv_function_confidence": "low",
+        "conv_function_reason": "not_gated_function:UNCLASSIFIED",
+        "memory_candidates_count": 0,
+        "memory_gate_reason": "no_memory_question_pattern",
+        "attribute_query_memo_count": 0,
+        "attribute_query_kind": "NONE",
+        "attribute_query_reference": "NONE",
+        "attribute_query_reason": "no_attribute_query:empty_or_no_vertical",
+        "social_emotional_act": "NONE",
+        "social_emotional_emotion": "NEUTRAL",
+        "social_emotional_reason": "no_social_emotional_act",
+        "capability_display_act": "NONE",
+        "capability_display_reason": "no_capability_or_display_act",
+        "result_followup_fired": false,
+        "result_followup_reason": "not_provenance_followup:ordinary",
+        "business_market_reason": "no_commercial_or_send_or_draft",
+        "business_market_observability": {
+          "business_context_present": false,
+          "business_id": null,
+          "business_name": null,
+          "commercial_objective": "NONE",
+          "target_market": null,
+          "target_product_hint": null,
+          "send_action_blocked": false,
+          "send_action_kind": "none",
+          "draft_action_offered": false,
+          "draft_action_kind": "none",
+          "companies_retrieved": 0,
+          "companies_source_classes": []
+        },
+        "entity_result_cards_count": 3,
+        "entity_result_cards_vertical": "accommodation",
+        "entity_result_cards_avg_coverage": 0,
+        "entity_result_cards_avg_evidence_pct": 3,
+        "entity_result_cards_total_unverified": 3,
+        "entity_result_cards_total_stale": 0,
+        "entity_result_cards_total_conflicting": 0,
+        "entity_result_cards_memoized": true,
+        "voice_compression_requested": false,
+        "voice_compressed_reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+        "voice_compression_applied": false,
+        "voice_compression_reduction_pct": 0,
+        "voice_compression_meaning_preserved": true
+      },
+      "voice_reply": {
+        "en": "Yep — found 3.",
+        "id": "Sip — ketemu 3.",
+        "mode": "HANGOUT",
+        "intent": "discovery_hit",
+        "chosen_reason": "world_cards produced 3 records"
+      },
+      "metrics": {
+        "total_ms": 245,
+        "brain_ms": 245,
+        "world_ms": 221.58489999175072,
+        "specialist_used": null
+      }
+    }
+  },
+  "T2": {
+    "request": "can i see details",
+    "response": {
+      "conversation_id": "98439b59-3f12-4123-abac-de5ad4ad2c85",
+      "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+      "understood_intent": "accommodation",
+      "understood_entities": [],
+      "retrieved_top_k_count": 0,
+      "served_by": "nex-brain-orchestrator",
+      "intent": "accommodation",
+      "intent_reason": "session_continuation",
+      "suggestions": [
+        {
+          "label": "Open directory",
+          "href": "/nex-app/centre"
+        }
+      ],
+      "card": {
+        "kind": "accommodation_discovery",
+        "payload": {
+          "slots": {
+            "type": "hotel",
+            "date": "tonight",
+            "action": "discover"
+          },
+          "insight": {
+            "reason": "missing_required_slot",
+            "priority": "required"
+          },
+          "hits": [
+            {
+              "id": "place:accommodation:#AC-2026-0000D",
+              "name": "Gaotama Hotel",
+              "category": "accommodation.hotel",
+              "region": "Yogyakarta"
+            },
+            {
+              "id": "place:accommodation:#AC-2026-00010",
+              "name": "Selaras Inn Hotel Yogyakarta",
+              "category": "accommodation.hotel",
+              "region": "Yogyakarta"
+            },
+            {
+              "id": "place:accommodation:#AC-2026-00019",
+              "name": "Indonesia Hotel",
+              "category": "accommodation.hotel",
+              "region": "Yogyakarta"
+            },
+            {
+              "id": "place:accommodation:#AC-2026-00086",
+              "name": "Le temple",
+              "category": "accommodation.hotel",
+              "region": "Yogyakarta"
+            },
+            {
+              "id": "place:accommodation:#AC-2026-0008V",
+              "name": "Dusun Jogja Village inn",
+              "category": "accommodation.hotel",
+              "region": "Yogyakarta"
+            }
+          ]
+        }
+      },
+      "state_summary": {
+        "turn_count": 1,
+        "current_topic": "accommodation",
+        "established_facts": {},
+        "entities_in_focus": [],
+        "constraints": [],
+        "stage": "brain",
+        "corrections_logged": 0,
+        "current_emotion": "neutral",
+        "handoff_recommended": false,
+        "thin_packet_strikes": 0,
+        "condensed_history_present": false,
+        "conversation_language": "en"
+      },
+      "brain_capabilities": [
+        "perception",
+        "self_awareness",
+        "intent",
+        "conversation_control",
+        "memory",
+        "world_knowledge",
+        "insight",
+        "curiosity",
+        "smart_questioning",
+        "truth_honesty",
+        "spatial_awareness",
+        "time_awareness",
+        "goal_tracking",
+        "reference_resolution",
+        "entity_intelligence",
+        "tool_selection",
+        "governance",
+        "verification",
+        "prediction",
+        "initiative",
+        "adaptation",
+        "long_term_memory",
+        "attention",
+        "planning",
+        "reflection",
+        "confidence",
+        "meta_cognition",
+        "personality"
+      ],
+      "goal": {
+        "kind": "accommodation",
+        "status": "paused",
+        "summary": "hotels",
+        "turnsSinceProgress": 1
+      },
+      "reflection": {
+        "overallPass": true,
+        "findings": [
+          {
+            "check": "answersUserMessage",
+            "passed": true,
+            "reason": "reply is non-empty and appropriate to the turn shape"
+          },
+          {
+            "check": "internallyConsistent",
+            "passed": true,
+            "reason": "no slot/reply contradictions detected"
+          },
+          {
+            "check": "hasEvidenceForClaims",
+            "passed": true,
+            "reason": "count + names verified against live World evidence set"
+          },
+          {
+            "check": "respectsHonestBoundary",
+            "passed": true,
+            "reason": "no invented booking/price/availability detected"
+          },
+          {
+            "check": "respectsMarketBoundary",
+            "passed": true,
+            "reason": "no cross-market leakage"
+          }
+        ],
+        "passedCount": 5,
+        "totalChecks": 5
+      },
+      "confidence": {
+        "overall": "high",
+        "reason": "reply carries 2 grounded/retrieved/computed claims",
+        "claims": [
+          {
+            "claim": "real property names surfaced",
+            "evidence": "grounded_fact",
+            "source": "5 real records matched"
+          },
+          {
+            "claim": "count claim: 521 real listings",
+            "evidence": "grounded_fact",
+            "source": "real property retrieval count"
+          },
+          {
+            "claim": "next-step refining question",
+            "evidence": "conversational"
+          }
+        ],
+        "evidenceCount": 2,
+        "boundaryCount": 0
+      },
+      "meta_cognition": {
+        "whatIKnow": {
+          "hasGroundedEvidence": true,
+          "evidenceCount": 2,
+          "boundaryCount": 0,
+          "goal": {
+            "kind": "accommodation",
+            "status": "paused",
+            "summary": "hotels"
+          },
+          "slotsFilled": [
+            "type",
+            "date",
+            "action"
+          ],
+          "entitiesSeen": {
+            "total": 6,
+            "byKind": {
+              "date_ref": 1,
+              "business_name": 5
+            }
+          }
+        },
+        "howSure": {
+          "confidenceLevel": "high",
+          "confidenceReason": "reply carries 2 grounded/retrieved/computed claims",
+          "reflectionOverallPass": true,
+          "reflectionPassRatio": "5/5"
+        },
+        "amIWrong": {
+          "reflectionFailures": [],
+          "fabricationRisk": "low",
+          "fabricationReason": "no reflection failures · confidence acceptable"
+        },
+        "whatShouldIDo": {
+          "action": "ask: \"Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?\"",
+          "origin": "insight_next_question"
+        },
+        "whatILearned": {
+          "recentEntries": [],
+          "count": 0
+        },
+        "didItWork": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "summary": "confidence=high · reflection=5/5 · fabrication_risk=low · goal=paused · next=insight_next_question"
+      },
+      "entities": {
+        "total": 6,
+        "byKind": {
+          "date_ref": 1,
+          "business_name": 5
+        }
+      },
+      "current_reference": {
+        "resolved": false,
+        "reason": "no_reference_mentioned"
+      },
+      "comparison": null,
+      "recommendation": null,
+      "tool_decision": {
+        "primary": "world_retrieval",
+        "secondary": [],
+        "reason": "intent=accommodation → grounded corpus retrieval · preferCategory=accommodation",
+        "availability": "available",
+        "parameters": {
+          "preferCategory": "accommodation",
+          "market": "ID",
+          "query": "can i see details",
+          "limit": 15,
+          "minConfidence": 0.5
+        }
+      },
+      "governance": {
+        "policy": "default",
+        "findings": [
+          {
+            "permission": "read.world_knowledge",
+            "decision": "allow",
+            "context": "retrieveKnowledge",
+            "policyName": "default"
+          },
+          {
+            "permission": "write.session",
+            "decision": "allow",
+            "context": "upsertSession (slots/goal/entities/reference)",
+            "policyName": "default"
+          },
+          {
+            "permission": "write.workforce_gap",
+            "decision": "allow",
+            "context": "recordInsightGap (when Insight fires learning_gap)",
+            "policyName": "default"
+          }
+        ],
+        "hasDenies": false,
+        "hasRequiresConsent": false,
+        "allowedCount": 3
+      },
+      "action_proposal": null,
+      "action_execution": null,
+      "verification": {
+        "applicable": false,
+        "reason": "no_proposal",
+        "summary": "no action proposed this turn"
+      },
+      "prediction": {
+        "candidates": [],
+        "reason": "no strong signal · empty prediction"
+      },
+      "initiative": {
+        "decision": {
+          "volunteered": false,
+          "reason": "no prediction top candidate to consider"
+        },
+        "sessionCount": 0,
+        "cap": 3
+      },
+      "adaptation": {
+        "signals": [],
+        "hasSignals": false,
+        "summary": "no adaptation patterns · behavior unchanged"
+      },
+      "long_term_memory": null,
+      "personalization": null,
+      "attention": {
+        "ranked": [
+          {
+            "kind": "slot",
+            "subject": "slot:type",
+            "displayName": "type",
+            "score": 1,
+            "reason": "slot present: hotel"
+          },
+          {
+            "kind": "slot",
+            "subject": "slot:date",
+            "displayName": "date",
+            "score": 1,
+            "reason": "slot present: tonight"
+          },
+          {
+            "kind": "slot",
+            "subject": "slot:action",
+            "displayName": "action",
+            "score": 1,
+            "reason": "slot present: discover"
+          },
+          {
+            "kind": "entity",
+            "subject": "entity:gaotama hotel",
+            "displayName": "Gaotama Hotel",
+            "score": 0.8,
+            "reason": "presented entity"
+          },
+          {
+            "kind": "entity",
+            "subject": "entity:selaras inn hotel yogyakarta",
+            "displayName": "Selaras Inn Hotel Yogyakarta",
+            "score": 0.8,
+            "reason": "presented entity"
+          },
+          {
+            "kind": "entity",
+            "subject": "entity:indonesia hotel",
+            "displayName": "Indonesia Hotel",
+            "score": 0.8,
+            "reason": "presented entity"
+          },
+          {
+            "kind": "entity",
+            "subject": "entity:le temple",
+            "displayName": "Le temple",
+            "score": 0.8,
+            "reason": "presented entity"
+          },
+          {
+            "kind": "entity",
+            "subject": "entity:dusun jogja village inn",
+            "displayName": "Dusun Jogja Village inn",
+            "score": 0.8,
+            "reason": "presented entity"
+          },
+          {
+            "kind": "goal",
+            "subject": "goal:accommodation",
+            "displayName": "accommodation goal (hotels)",
+            "score": 0.8,
+            "reason": "goal status=paused"
+          }
+        ],
+        "top": {
+          "kind": "slot",
+          "subject": "slot:type",
+          "displayName": "type",
+          "score": 1,
+          "reason": "slot present: hotel"
+        },
+        "summary": "top=slot:type score=1.00 · 9 ranked"
+      },
+      "planning": {
+        "goalKind": "accommodation",
+        "steps": [
+          {
+            "number": 1,
+            "kind": "narrow_location",
+            "description": "know which city / region",
+            "status": "current",
+            "reason": "no location yet"
+          },
+          {
+            "number": 2,
+            "kind": "narrow_type",
+            "description": "know property type (hotel/guesthouse/etc)",
+            "status": "done",
+            "reason": "type=hotel"
+          },
+          {
+            "number": 3,
+            "kind": "narrow_budget",
+            "description": "know budget preference",
+            "status": "pending",
+            "reason": "budget unspecified"
+          },
+          {
+            "number": 4,
+            "kind": "narrow_area",
+            "description": "know sub-area (optional refinement)",
+            "status": "pending",
+            "reason": "area not narrowed"
+          },
+          {
+            "number": 5,
+            "kind": "present_candidates",
+            "description": "surface real properties from World",
+            "status": "done",
+            "reason": "5 candidates"
+          },
+          {
+            "number": 6,
+            "kind": "resolve_reference",
+            "description": "user picks a specific property",
+            "status": "pending",
+            "reason": "no ordinal/pronoun resolved yet"
+          },
+          {
+            "number": 7,
+            "kind": "confirm_action",
+            "description": "execute proposed action (open directory / contact / book)",
+            "status": "pending",
+            "reason": "no action executed yet"
+          },
+          {
+            "number": 8,
+            "kind": "complete",
+            "description": "user has what they need",
+            "status": "pending",
+            "reason": "flow in progress"
+          }
+        ],
+        "currentStepIndex": 0,
+        "turnsRemaining": 6,
+        "isPlanComplete": false,
+        "summary": "2/8 done · current: know which city / region · 6 steps remaining"
+      },
+      "personality_profile": {
+        "profile": "friendly",
+        "transformationsApplied": [
+          "friendly: passthrough (composer baseline)"
+        ],
+        "summary": "profile=friendly · 1 transformation(s)"
+      },
+      "world_cards": {
+        "vertical": "accommodation",
+        "cards": [
+          {
+            "id": "#AC-2026-0000D",
+            "vertical": "accommodation",
+            "name": "Gaotama Hotel",
+            "subline": "Hotel · Yogyakarta",
+            "location": "Yogyakarta",
+            "amenities": [],
+            "verified": false,
+            "provenanceLabel": "NEX directory · listed",
+            "ownershipState": "unclaimed",
+            "actions": [
+              {
+                "kind": "view",
+                "label": "View",
+                "href": "/nex-app/centre?ref=%23AC-2026-0000D"
+              },
+              {
+                "kind": "directions",
+                "label": "Directions",
+                "href": "https://maps.google.com/?q=-7.7937987,110.36758"
+              },
+              {
+                "kind": "book",
+                "label": "Book",
+                "disabled": true,
+                "reason": "no_live_booking_integration"
+              }
+            ]
+          },
+          {
+            "id": "#AC-2026-00010",
+            "vertical": "accommodation",
+            "name": "Selaras Inn Hotel Yogyakarta",
+            "subline": "Hotel · Yogyakarta",
+            "location": "Yogyakarta",
+            "amenities": [],
+            "verified": false,
+            "provenanceLabel": "NEX directory · listed",
+            "ownershipState": "unclaimed",
+            "actions": [
+              {
+                "kind": "view",
+                "label": "View",
+                "href": "/nex-app/centre?ref=%23AC-2026-00010"
+              },
+              {
+                "kind": "directions",
+                "label": "Directions",
+                "href": "https://maps.google.com/?q=-7.7916775,110.3630563"
+              },
+              {
+                "kind": "book",
+                "label": "Book",
+                "disabled": true,
+                "reason": "no_live_booking_integration"
+              }
+            ]
+          },
+          {
+            "id": "#AC-2026-00019",
+            "vertical": "accommodation",
+            "name": "Indonesia Hotel",
+            "subline": "Hotel · Yogyakarta",
+            "location": "Yogyakarta",
+            "amenities": [],
+            "verified": false,
+            "provenanceLabel": "NEX directory · listed",
+            "ownershipState": "unclaimed",
+            "actions": [
+              {
+                "kind": "view",
+                "label": "View",
+                "href": "/nex-app/centre?ref=%23AC-2026-00019"
+              },
+              {
+                "kind": "directions",
+                "label": "Directions",
+                "href": "https://maps.google.com/?q=-7.7918047,110.3653013"
+              },
+              {
+                "kind": "book",
+                "label": "Book",
+                "disabled": true,
+                "reason": "no_live_booking_integration"
+              }
+            ]
+          }
+        ],
+        "totalAvailable": 521,
+        "headline": "Showing 3 of 521 real stays."
+      },
+      "entity_result_cards": {
+        "vertical": "accommodation",
+        "cards": [
+          {
+            "card": {
+              "id": "#AC-2026-0000D",
+              "vertical": "accommodation",
+              "name": "Gaotama Hotel",
+              "subline": "Hotel · Yogyakarta",
+              "location": "Yogyakarta",
+              "amenities": [],
+              "verified": false,
+              "provenanceLabel": "NEX directory · listed",
+              "ownershipState": "unclaimed",
+              "actions": [
+                {
+                  "kind": "view",
+                  "label": "View",
+                  "href": "/nex-app/centre?ref=%23AC-2026-0000D"
+                },
+                {
+                  "kind": "directions",
+                  "label": "Directions",
+                  "href": "https://maps.google.com/?q=-7.7937987,110.36758"
+                },
+                {
+                  "kind": "book",
+                  "label": "Book",
+                  "disabled": true,
+                  "reason": "no_live_booking_integration"
+                }
+              ]
+            },
+            "position": 1,
+            "ref_id": "place:accommodation:#AC-2026-0000D",
+            "attributes": [
+              {
+                "attribute": {
+                  "id": "address",
+                  "category": "identity",
+                  "displayEn": "Address",
+                  "displayId": "Alamat",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "coordinates",
+                  "category": "identity",
+                  "displayEn": "Map location",
+                  "displayId": "Titik peta",
+                  "keywords": []
+                },
+                "state": "UNVERIFIED",
+                "evidence": "field",
+                "evidenceTier": "directory"
+              },
+              {
+                "attribute": {
+                  "id": "phone",
+                  "category": "contact",
+                  "displayEn": "Phone",
+                  "displayId": "Telepon",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "whatsapp",
+                  "category": "contact",
+                  "displayEn": "WhatsApp",
+                  "displayId": "WhatsApp",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "website",
+                  "category": "contact",
+                  "displayEn": "Website",
+                  "displayId": "Situs web",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "room_count",
+                  "category": "room",
+                  "displayEn": "Room count",
+                  "displayId": "Jumlah kamar",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "ac",
+                  "category": "room",
+                  "displayEn": "Air conditioning",
+                  "displayId": "AC",
+                  "keywords": [
+                    "ac",
+                    "aircon",
+                    "air-conditioning",
+                    "air conditioning",
+                    "airconditioner",
+                    "ac unit"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "wifi",
+                  "category": "facility",
+                  "displayEn": "Wi-Fi",
+                  "displayId": "Wi-Fi",
+                  "keywords": [
+                    "wifi",
+                    "wi-fi",
+                    "wi fi",
+                    "wireless",
+                    "internet"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "tv",
+                  "category": "room",
+                  "displayEn": "TV",
+                  "displayId": "TV",
+                  "keywords": [
+                    "tv",
+                    "television",
+                    "cable tv",
+                    "satellite tv"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "balcony",
+                  "category": "room",
+                  "displayEn": "Balcony",
+                  "displayId": "Balkon",
+                  "keywords": [
+                    "balcony",
+                    "balkon",
+                    "private balcony"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "kitchen",
+                  "category": "room",
+                  "displayEn": "Kitchen",
+                  "displayId": "Dapur",
+                  "keywords": [
+                    "kitchen",
+                    "kitchenette",
+                    "dapur"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "fridge",
+                  "category": "room",
+                  "displayEn": "Fridge",
+                  "displayId": "Kulkas",
+                  "keywords": [
+                    "fridge",
+                    "refrigerator",
+                    "mini fridge",
+                    "mini bar",
+                    "minibar"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "pool",
+                  "category": "facility",
+                  "displayEn": "Pool",
+                  "displayId": "Kolam renang",
+                  "keywords": [
+                    "pool",
+                    "swimming pool",
+                    "swimmingpool",
+                    "kolam",
+                    "kolam renang"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "parking",
+                  "category": "facility",
+                  "displayEn": "Parking",
+                  "displayId": "Parkir",
+                  "keywords": [
+                    "parking",
+                    "car park",
+                    "car parking",
+                    "carpark",
+                    "parkir"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "restaurant",
+                  "category": "facility",
+                  "displayEn": "Restaurant",
+                  "displayId": "Restoran",
+                  "keywords": [
+                    "restaurant",
+                    "resto",
+                    "restoran",
+                    "dining"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "cafe",
+                  "category": "facility",
+                  "displayEn": "Café",
+                  "displayId": "Kafe",
+                  "keywords": [
+                    "cafe",
+                    "café",
+                    "kafe",
+                    "coffee shop",
+                    "coffee"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bar",
+                  "category": "facility",
+                  "displayEn": "Bar",
+                  "displayId": "Bar",
+                  "keywords": [
+                    "bar",
+                    "lounge",
+                    "pub"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "gym",
+                  "category": "facility",
+                  "displayEn": "Gym",
+                  "displayId": "Gym",
+                  "keywords": [
+                    "gym",
+                    "fitness",
+                    "fitness centre",
+                    "fitness center",
+                    "workout"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "spa",
+                  "category": "facility",
+                  "displayEn": "Spa",
+                  "displayId": "Spa",
+                  "keywords": [
+                    "spa",
+                    "wellness",
+                    "massage"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "garden",
+                  "category": "facility",
+                  "displayEn": "Garden",
+                  "displayId": "Taman",
+                  "keywords": [
+                    "garden",
+                    "kebun",
+                    "taman"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "terrace",
+                  "category": "facility",
+                  "displayEn": "Terrace",
+                  "displayId": "Teras",
+                  "keywords": [
+                    "terrace",
+                    "rooftop",
+                    "teras",
+                    "rooftop terrace"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "elevator",
+                  "category": "facility",
+                  "displayEn": "Elevator",
+                  "displayId": "Lift",
+                  "keywords": [
+                    "elevator",
+                    "lift"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "laundry",
+                  "category": "service",
+                  "displayEn": "Laundry",
+                  "displayId": "Layanan cuci",
+                  "keywords": [
+                    "laundry",
+                    "laundry service",
+                    "cuci",
+                    "cuci baju",
+                    "washer"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "breakfast",
+                  "category": "service",
+                  "displayEn": "Breakfast",
+                  "displayId": "Sarapan",
+                  "keywords": [
+                    "breakfast",
+                    "sarapan",
+                    "breakfast included",
+                    "breakfast buffet"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "airport_transfer",
+                  "category": "service",
+                  "displayEn": "Airport transfer",
+                  "displayId": "Antar jemput bandara",
+                  "keywords": [
+                    "airport transfer",
+                    "airport shuttle",
+                    "shuttle",
+                    "antar jemput"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "room_service",
+                  "category": "service",
+                  "displayEn": "Room service",
+                  "displayId": "Layanan kamar",
+                  "keywords": [
+                    "room service",
+                    "24 hour room service"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "housekeeping",
+                  "category": "service",
+                  "displayEn": "Housekeeping",
+                  "displayId": "Kebersihan",
+                  "keywords": [
+                    "housekeeping",
+                    "daily cleaning",
+                    "cleaning"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "front_desk",
+                  "category": "service",
+                  "displayEn": "Front desk",
+                  "displayId": "Resepsionis",
+                  "keywords": [
+                    "front desk",
+                    "24 hour front desk",
+                    "24/7 front desk"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bedrooms",
+                  "category": "villa",
+                  "displayEn": "Bedrooms",
+                  "displayId": "Kamar tidur",
+                  "keywords": [
+                    "bedrooms",
+                    "bedroom",
+                    "kamar tidur"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bathrooms",
+                  "category": "villa",
+                  "displayEn": "Bathrooms",
+                  "displayId": "Kamar mandi",
+                  "keywords": [
+                    "bathrooms",
+                    "bathroom",
+                    "kamar mandi"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "capacity",
+                  "category": "villa",
+                  "displayEn": "Guest capacity",
+                  "displayId": "Kapasitas tamu",
+                  "keywords": [
+                    "capacity",
+                    "sleeps",
+                    "guests",
+                    "kapasitas",
+                    "maksimal"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "private_pool",
+                  "category": "villa",
+                  "displayEn": "Private pool",
+                  "displayId": "Kolam pribadi",
+                  "keywords": [
+                    "private pool",
+                    "private swimming pool",
+                    "kolam pribadi"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "full_kitchen",
+                  "category": "villa",
+                  "displayEn": "Full kitchen",
+                  "displayId": "Dapur lengkap",
+                  "keywords": [
+                    "full kitchen",
+                    "equipped kitchen",
+                    "dapur lengkap"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "star_rating",
+                  "category": "meta",
+                  "displayEn": "Star rating",
+                  "displayId": "Peringkat bintang",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "rating",
+                  "category": "meta",
+                  "displayEn": "Guest rating",
+                  "displayId": "Rating tamu",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              }
+            ],
+            "highlights": [],
+            "unverified_highlights": [],
+            "coverage": {
+              "vertical": "accommodation",
+              "total_attributes": 35,
+              "known_yes": 0,
+              "known_no": 0,
+              "unknown": 34,
+              "unverified": 1,
+              "conflicting": 0,
+              "stale": 0,
+              "coverage_pct": 0,
+              "evidence_pct": 3
+            }
+          },
+          {
+            "card": {
+              "id": "#AC-2026-00010",
+              "vertical": "accommodation",
+              "name": "Selaras Inn Hotel Yogyakarta",
+              "subline": "Hotel · Yogyakarta",
+              "location": "Yogyakarta",
+              "amenities": [],
+              "verified": false,
+              "provenanceLabel": "NEX directory · listed",
+              "ownershipState": "unclaimed",
+              "actions": [
+                {
+                  "kind": "view",
+                  "label": "View",
+                  "href": "/nex-app/centre?ref=%23AC-2026-00010"
+                },
+                {
+                  "kind": "directions",
+                  "label": "Directions",
+                  "href": "https://maps.google.com/?q=-7.7916775,110.3630563"
+                },
+                {
+                  "kind": "book",
+                  "label": "Book",
+                  "disabled": true,
+                  "reason": "no_live_booking_integration"
+                }
+              ]
+            },
+            "position": 2,
+            "ref_id": "place:accommodation:#AC-2026-00010",
+            "attributes": [
+              {
+                "attribute": {
+                  "id": "address",
+                  "category": "identity",
+                  "displayEn": "Address",
+                  "displayId": "Alamat",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "coordinates",
+                  "category": "identity",
+                  "displayEn": "Map location",
+                  "displayId": "Titik peta",
+                  "keywords": []
+                },
+                "state": "UNVERIFIED",
+                "evidence": "field",
+                "evidenceTier": "directory"
+              },
+              {
+                "attribute": {
+                  "id": "phone",
+                  "category": "contact",
+                  "displayEn": "Phone",
+                  "displayId": "Telepon",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "whatsapp",
+                  "category": "contact",
+                  "displayEn": "WhatsApp",
+                  "displayId": "WhatsApp",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "website",
+                  "category": "contact",
+                  "displayEn": "Website",
+                  "displayId": "Situs web",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "room_count",
+                  "category": "room",
+                  "displayEn": "Room count",
+                  "displayId": "Jumlah kamar",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "ac",
+                  "category": "room",
+                  "displayEn": "Air conditioning",
+                  "displayId": "AC",
+                  "keywords": [
+                    "ac",
+                    "aircon",
+                    "air-conditioning",
+                    "air conditioning",
+                    "airconditioner",
+                    "ac unit"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "wifi",
+                  "category": "facility",
+                  "displayEn": "Wi-Fi",
+                  "displayId": "Wi-Fi",
+                  "keywords": [
+                    "wifi",
+                    "wi-fi",
+                    "wi fi",
+                    "wireless",
+                    "internet"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "tv",
+                  "category": "room",
+                  "displayEn": "TV",
+                  "displayId": "TV",
+                  "keywords": [
+                    "tv",
+                    "television",
+                    "cable tv",
+                    "satellite tv"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "balcony",
+                  "category": "room",
+                  "displayEn": "Balcony",
+                  "displayId": "Balkon",
+                  "keywords": [
+                    "balcony",
+                    "balkon",
+                    "private balcony"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "kitchen",
+                  "category": "room",
+                  "displayEn": "Kitchen",
+                  "displayId": "Dapur",
+                  "keywords": [
+                    "kitchen",
+                    "kitchenette",
+                    "dapur"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "fridge",
+                  "category": "room",
+                  "displayEn": "Fridge",
+                  "displayId": "Kulkas",
+                  "keywords": [
+                    "fridge",
+                    "refrigerator",
+                    "mini fridge",
+                    "mini bar",
+                    "minibar"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "pool",
+                  "category": "facility",
+                  "displayEn": "Pool",
+                  "displayId": "Kolam renang",
+                  "keywords": [
+                    "pool",
+                    "swimming pool",
+                    "swimmingpool",
+                    "kolam",
+                    "kolam renang"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "parking",
+                  "category": "facility",
+                  "displayEn": "Parking",
+                  "displayId": "Parkir",
+                  "keywords": [
+                    "parking",
+                    "car park",
+                    "car parking",
+                    "carpark",
+                    "parkir"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "restaurant",
+                  "category": "facility",
+                  "displayEn": "Restaurant",
+                  "displayId": "Restoran",
+                  "keywords": [
+                    "restaurant",
+                    "resto",
+                    "restoran",
+                    "dining"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "cafe",
+                  "category": "facility",
+                  "displayEn": "Café",
+                  "displayId": "Kafe",
+                  "keywords": [
+                    "cafe",
+                    "café",
+                    "kafe",
+                    "coffee shop",
+                    "coffee"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bar",
+                  "category": "facility",
+                  "displayEn": "Bar",
+                  "displayId": "Bar",
+                  "keywords": [
+                    "bar",
+                    "lounge",
+                    "pub"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "gym",
+                  "category": "facility",
+                  "displayEn": "Gym",
+                  "displayId": "Gym",
+                  "keywords": [
+                    "gym",
+                    "fitness",
+                    "fitness centre",
+                    "fitness center",
+                    "workout"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "spa",
+                  "category": "facility",
+                  "displayEn": "Spa",
+                  "displayId": "Spa",
+                  "keywords": [
+                    "spa",
+                    "wellness",
+                    "massage"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "garden",
+                  "category": "facility",
+                  "displayEn": "Garden",
+                  "displayId": "Taman",
+                  "keywords": [
+                    "garden",
+                    "kebun",
+                    "taman"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "terrace",
+                  "category": "facility",
+                  "displayEn": "Terrace",
+                  "displayId": "Teras",
+                  "keywords": [
+                    "terrace",
+                    "rooftop",
+                    "teras",
+                    "rooftop terrace"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "elevator",
+                  "category": "facility",
+                  "displayEn": "Elevator",
+                  "displayId": "Lift",
+                  "keywords": [
+                    "elevator",
+                    "lift"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "laundry",
+                  "category": "service",
+                  "displayEn": "Laundry",
+                  "displayId": "Layanan cuci",
+                  "keywords": [
+                    "laundry",
+                    "laundry service",
+                    "cuci",
+                    "cuci baju",
+                    "washer"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "breakfast",
+                  "category": "service",
+                  "displayEn": "Breakfast",
+                  "displayId": "Sarapan",
+                  "keywords": [
+                    "breakfast",
+                    "sarapan",
+                    "breakfast included",
+                    "breakfast buffet"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "airport_transfer",
+                  "category": "service",
+                  "displayEn": "Airport transfer",
+                  "displayId": "Antar jemput bandara",
+                  "keywords": [
+                    "airport transfer",
+                    "airport shuttle",
+                    "shuttle",
+                    "antar jemput"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "room_service",
+                  "category": "service",
+                  "displayEn": "Room service",
+                  "displayId": "Layanan kamar",
+                  "keywords": [
+                    "room service",
+                    "24 hour room service"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "housekeeping",
+                  "category": "service",
+                  "displayEn": "Housekeeping",
+                  "displayId": "Kebersihan",
+                  "keywords": [
+                    "housekeeping",
+                    "daily cleaning",
+                    "cleaning"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "front_desk",
+                  "category": "service",
+                  "displayEn": "Front desk",
+                  "displayId": "Resepsionis",
+                  "keywords": [
+                    "front desk",
+                    "24 hour front desk",
+                    "24/7 front desk"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bedrooms",
+                  "category": "villa",
+                  "displayEn": "Bedrooms",
+                  "displayId": "Kamar tidur",
+                  "keywords": [
+                    "bedrooms",
+                    "bedroom",
+                    "kamar tidur"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bathrooms",
+                  "category": "villa",
+                  "displayEn": "Bathrooms",
+                  "displayId": "Kamar mandi",
+                  "keywords": [
+                    "bathrooms",
+                    "bathroom",
+                    "kamar mandi"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "capacity",
+                  "category": "villa",
+                  "displayEn": "Guest capacity",
+                  "displayId": "Kapasitas tamu",
+                  "keywords": [
+                    "capacity",
+                    "sleeps",
+                    "guests",
+                    "kapasitas",
+                    "maksimal"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "private_pool",
+                  "category": "villa",
+                  "displayEn": "Private pool",
+                  "displayId": "Kolam pribadi",
+                  "keywords": [
+                    "private pool",
+                    "private swimming pool",
+                    "kolam pribadi"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "full_kitchen",
+                  "category": "villa",
+                  "displayEn": "Full kitchen",
+                  "displayId": "Dapur lengkap",
+                  "keywords": [
+                    "full kitchen",
+                    "equipped kitchen",
+                    "dapur lengkap"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "star_rating",
+                  "category": "meta",
+                  "displayEn": "Star rating",
+                  "displayId": "Peringkat bintang",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "rating",
+                  "category": "meta",
+                  "displayEn": "Guest rating",
+                  "displayId": "Rating tamu",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              }
+            ],
+            "highlights": [],
+            "unverified_highlights": [],
+            "coverage": {
+              "vertical": "accommodation",
+              "total_attributes": 35,
+              "known_yes": 0,
+              "known_no": 0,
+              "unknown": 34,
+              "unverified": 1,
+              "conflicting": 0,
+              "stale": 0,
+              "coverage_pct": 0,
+              "evidence_pct": 3
+            }
+          },
+          {
+            "card": {
+              "id": "#AC-2026-00019",
+              "vertical": "accommodation",
+              "name": "Indonesia Hotel",
+              "subline": "Hotel · Yogyakarta",
+              "location": "Yogyakarta",
+              "amenities": [],
+              "verified": false,
+              "provenanceLabel": "NEX directory · listed",
+              "ownershipState": "unclaimed",
+              "actions": [
+                {
+                  "kind": "view",
+                  "label": "View",
+                  "href": "/nex-app/centre?ref=%23AC-2026-00019"
+                },
+                {
+                  "kind": "directions",
+                  "label": "Directions",
+                  "href": "https://maps.google.com/?q=-7.7918047,110.3653013"
+                },
+                {
+                  "kind": "book",
+                  "label": "Book",
+                  "disabled": true,
+                  "reason": "no_live_booking_integration"
+                }
+              ]
+            },
+            "position": 3,
+            "ref_id": "place:accommodation:#AC-2026-00019",
+            "attributes": [
+              {
+                "attribute": {
+                  "id": "address",
+                  "category": "identity",
+                  "displayEn": "Address",
+                  "displayId": "Alamat",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "coordinates",
+                  "category": "identity",
+                  "displayEn": "Map location",
+                  "displayId": "Titik peta",
+                  "keywords": []
+                },
+                "state": "UNVERIFIED",
+                "evidence": "field",
+                "evidenceTier": "directory"
+              },
+              {
+                "attribute": {
+                  "id": "phone",
+                  "category": "contact",
+                  "displayEn": "Phone",
+                  "displayId": "Telepon",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "whatsapp",
+                  "category": "contact",
+                  "displayEn": "WhatsApp",
+                  "displayId": "WhatsApp",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "website",
+                  "category": "contact",
+                  "displayEn": "Website",
+                  "displayId": "Situs web",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "room_count",
+                  "category": "room",
+                  "displayEn": "Room count",
+                  "displayId": "Jumlah kamar",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "ac",
+                  "category": "room",
+                  "displayEn": "Air conditioning",
+                  "displayId": "AC",
+                  "keywords": [
+                    "ac",
+                    "aircon",
+                    "air-conditioning",
+                    "air conditioning",
+                    "airconditioner",
+                    "ac unit"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "wifi",
+                  "category": "facility",
+                  "displayEn": "Wi-Fi",
+                  "displayId": "Wi-Fi",
+                  "keywords": [
+                    "wifi",
+                    "wi-fi",
+                    "wi fi",
+                    "wireless",
+                    "internet"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "tv",
+                  "category": "room",
+                  "displayEn": "TV",
+                  "displayId": "TV",
+                  "keywords": [
+                    "tv",
+                    "television",
+                    "cable tv",
+                    "satellite tv"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "balcony",
+                  "category": "room",
+                  "displayEn": "Balcony",
+                  "displayId": "Balkon",
+                  "keywords": [
+                    "balcony",
+                    "balkon",
+                    "private balcony"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "kitchen",
+                  "category": "room",
+                  "displayEn": "Kitchen",
+                  "displayId": "Dapur",
+                  "keywords": [
+                    "kitchen",
+                    "kitchenette",
+                    "dapur"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "fridge",
+                  "category": "room",
+                  "displayEn": "Fridge",
+                  "displayId": "Kulkas",
+                  "keywords": [
+                    "fridge",
+                    "refrigerator",
+                    "mini fridge",
+                    "mini bar",
+                    "minibar"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "pool",
+                  "category": "facility",
+                  "displayEn": "Pool",
+                  "displayId": "Kolam renang",
+                  "keywords": [
+                    "pool",
+                    "swimming pool",
+                    "swimmingpool",
+                    "kolam",
+                    "kolam renang"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "parking",
+                  "category": "facility",
+                  "displayEn": "Parking",
+                  "displayId": "Parkir",
+                  "keywords": [
+                    "parking",
+                    "car park",
+                    "car parking",
+                    "carpark",
+                    "parkir"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "restaurant",
+                  "category": "facility",
+                  "displayEn": "Restaurant",
+                  "displayId": "Restoran",
+                  "keywords": [
+                    "restaurant",
+                    "resto",
+                    "restoran",
+                    "dining"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "cafe",
+                  "category": "facility",
+                  "displayEn": "Café",
+                  "displayId": "Kafe",
+                  "keywords": [
+                    "cafe",
+                    "café",
+                    "kafe",
+                    "coffee shop",
+                    "coffee"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bar",
+                  "category": "facility",
+                  "displayEn": "Bar",
+                  "displayId": "Bar",
+                  "keywords": [
+                    "bar",
+                    "lounge",
+                    "pub"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "gym",
+                  "category": "facility",
+                  "displayEn": "Gym",
+                  "displayId": "Gym",
+                  "keywords": [
+                    "gym",
+                    "fitness",
+                    "fitness centre",
+                    "fitness center",
+                    "workout"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "spa",
+                  "category": "facility",
+                  "displayEn": "Spa",
+                  "displayId": "Spa",
+                  "keywords": [
+                    "spa",
+                    "wellness",
+                    "massage"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "garden",
+                  "category": "facility",
+                  "displayEn": "Garden",
+                  "displayId": "Taman",
+                  "keywords": [
+                    "garden",
+                    "kebun",
+                    "taman"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "terrace",
+                  "category": "facility",
+                  "displayEn": "Terrace",
+                  "displayId": "Teras",
+                  "keywords": [
+                    "terrace",
+                    "rooftop",
+                    "teras",
+                    "rooftop terrace"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "elevator",
+                  "category": "facility",
+                  "displayEn": "Elevator",
+                  "displayId": "Lift",
+                  "keywords": [
+                    "elevator",
+                    "lift"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "laundry",
+                  "category": "service",
+                  "displayEn": "Laundry",
+                  "displayId": "Layanan cuci",
+                  "keywords": [
+                    "laundry",
+                    "laundry service",
+                    "cuci",
+                    "cuci baju",
+                    "washer"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "breakfast",
+                  "category": "service",
+                  "displayEn": "Breakfast",
+                  "displayId": "Sarapan",
+                  "keywords": [
+                    "breakfast",
+                    "sarapan",
+                    "breakfast included",
+                    "breakfast buffet"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "airport_transfer",
+                  "category": "service",
+                  "displayEn": "Airport transfer",
+                  "displayId": "Antar jemput bandara",
+                  "keywords": [
+                    "airport transfer",
+                    "airport shuttle",
+                    "shuttle",
+                    "antar jemput"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "room_service",
+                  "category": "service",
+                  "displayEn": "Room service",
+                  "displayId": "Layanan kamar",
+                  "keywords": [
+                    "room service",
+                    "24 hour room service"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "housekeeping",
+                  "category": "service",
+                  "displayEn": "Housekeeping",
+                  "displayId": "Kebersihan",
+                  "keywords": [
+                    "housekeeping",
+                    "daily cleaning",
+                    "cleaning"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "front_desk",
+                  "category": "service",
+                  "displayEn": "Front desk",
+                  "displayId": "Resepsionis",
+                  "keywords": [
+                    "front desk",
+                    "24 hour front desk",
+                    "24/7 front desk"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bedrooms",
+                  "category": "villa",
+                  "displayEn": "Bedrooms",
+                  "displayId": "Kamar tidur",
+                  "keywords": [
+                    "bedrooms",
+                    "bedroom",
+                    "kamar tidur"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "bathrooms",
+                  "category": "villa",
+                  "displayEn": "Bathrooms",
+                  "displayId": "Kamar mandi",
+                  "keywords": [
+                    "bathrooms",
+                    "bathroom",
+                    "kamar mandi"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "capacity",
+                  "category": "villa",
+                  "displayEn": "Guest capacity",
+                  "displayId": "Kapasitas tamu",
+                  "keywords": [
+                    "capacity",
+                    "sleeps",
+                    "guests",
+                    "kapasitas",
+                    "maksimal"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "private_pool",
+                  "category": "villa",
+                  "displayEn": "Private pool",
+                  "displayId": "Kolam pribadi",
+                  "keywords": [
+                    "private pool",
+                    "private swimming pool",
+                    "kolam pribadi"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "full_kitchen",
+                  "category": "villa",
+                  "displayEn": "Full kitchen",
+                  "displayId": "Dapur lengkap",
+                  "keywords": [
+                    "full kitchen",
+                    "equipped kitchen",
+                    "dapur lengkap"
+                  ]
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "star_rating",
+                  "category": "meta",
+                  "displayEn": "Star rating",
+                  "displayId": "Peringkat bintang",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              },
+              {
+                "attribute": {
+                  "id": "rating",
+                  "category": "meta",
+                  "displayEn": "Guest rating",
+                  "displayId": "Rating tamu",
+                  "keywords": []
+                },
+                "state": "UNKNOWN"
+              }
+            ],
+            "highlights": [],
+            "unverified_highlights": [],
+            "coverage": {
+              "vertical": "accommodation",
+              "total_attributes": 35,
+              "known_yes": 0,
+              "known_no": 0,
+              "unknown": 34,
+              "unverified": 1,
+              "conflicting": 0,
+              "stale": 0,
+              "coverage_pct": 0,
+              "evidence_pct": 3
+            }
+          }
+        ],
+        "total_available": 521,
+        "headline": "Showing 3 of 521 real stays."
+      },
+      "world_expanded_page": null,
+      "world_latency_ms": 220.84210000932217,
+      "action_audit": null,
+      "pending_proposal_snapshot": null,
+      "composition_meta": {
+        "ran": false,
+        "accepted": false,
+        "stt_raw_length": 17,
+        "stt_normalized": "can i see details",
+        "stt_changed": false,
+        "stt_confidence": "HIGH",
+        "stt_markers": [],
+        "stt_candidate_count": 0,
+        "stt_self_correction": false,
+        "stt_code_switch": false,
+        "stt_languages_seen": [],
+        "active_language": "EN",
+        "detected_language_this_turn": "EN",
+        "language_confidence": "HIGH",
+        "language_source": "inherited",
+        "confirmation_form": "NONE",
+        "confirmation_answer_polarity": "NONE",
+        "confirmation_gate_reason": "not_confirmation",
+        "temporal_tense": "UNKNOWN",
+        "quantity_kind": "UNSPECIFIED",
+        "semantic_intent": "NONE",
+        "spatial_concept": "NONE",
+        "spatial_polarity": "AFFIRM",
+        "spatial_is_change": false,
+        "implicit_constraint_count": 0,
+        "frame_transition": "UNKNOWN",
+        "frame_active_domain": "accommodation",
+        "frame_result_set_state": "ACTIVE_RESULT_SET",
+        "frame_is_elliptical": false,
+        "conv_function_detected": "UNCLASSIFIED",
+        "conv_function_confidence": "low",
+        "conv_function_reason": "not_gated_function:UNCLASSIFIED",
+        "memory_candidates_count": 0,
+        "memory_gate_reason": "no_memory_question_pattern",
+        "attribute_query_memo_count": 3,
+        "attribute_query_kind": "NONE",
+        "attribute_query_reference": "NONE",
+        "attribute_query_reason": "no_attribute_query:no_pattern_matched",
+        "social_emotional_act": "NONE",
+        "social_emotional_emotion": "NEUTRAL",
+        "social_emotional_reason": "no_social_emotional_act",
+        "capability_display_act": "NONE",
+        "capability_display_reason": "no_capability_or_display_act",
+        "result_followup_fired": false,
+        "result_followup_reason": "not_provenance_followup:ordinary",
+        "business_market_reason": "no_commercial_or_send_or_draft",
+        "business_market_observability": {
+          "business_context_present": false,
+          "business_id": null,
+          "business_name": null,
+          "commercial_objective": "NONE",
+          "target_market": null,
+          "target_product_hint": null,
+          "send_action_blocked": false,
+          "send_action_kind": "none",
+          "draft_action_offered": false,
+          "draft_action_kind": "none",
+          "companies_retrieved": 0,
+          "companies_source_classes": []
+        },
+        "entity_result_cards_count": 3,
+        "entity_result_cards_vertical": "accommodation",
+        "entity_result_cards_avg_coverage": 0,
+        "entity_result_cards_avg_evidence_pct": 3,
+        "entity_result_cards_total_unverified": 3,
+        "entity_result_cards_total_stale": 0,
+        "entity_result_cards_total_conflicting": 0,
+        "entity_result_cards_memoized": true,
+        "voice_compression_requested": false,
+        "voice_compressed_reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+        "voice_compression_applied": false,
+        "voice_compression_reduction_pct": 0,
+        "voice_compression_meaning_preserved": true
+      },
+      "voice_reply": {
+        "en": "Yep — found 3.",
+        "id": "Sip — ketemu 3.",
+        "mode": "HANGOUT",
+        "intent": "discovery_hit",
+        "chosen_reason": "world_cards produced 3 records"
+      },
+      "metrics": {
+        "total_ms": 242,
+        "brain_ms": 242,
+        "world_ms": 220.84210000932217,
+        "specialist_used": null
+      }
+    }
+  }
+}

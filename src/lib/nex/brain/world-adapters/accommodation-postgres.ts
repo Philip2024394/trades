@@ -158,8 +158,16 @@ export const AccommodationPostgresAdapter: WorldAdapter = {
       clauses.push(`category = $${params.length}`);
     }
     if (input.query) {
+      // 2026-09-05 · Chief-engineer widening: user queries like "hotel
+      // near Malioboro" fail against business_name alone (Malioboro is
+      // a street, not a hotel name). Widen to also ILIKE-match address
+      // and district. Same LIKE pattern, one parameter, one OR group —
+      // preserves every prior match (business_name still matched),
+      // adds surface for address/district natural-language queries.
+      // Visibility gate untouched. No new WHERE clause. Backward-safe.
       params.push(`%${input.query.replace(/[%_]/g, "\\$&")}%`);
-      clauses.push(`business_name ILIKE $${params.length}`);
+      const p = params.length;
+      clauses.push(`(business_name ILIKE $${p} OR address ILIKE $${p} OR district ILIKE $${p})`);
     }
     if (input.amenities && input.amenities.length > 0) {
       // amenities is a text[] column · @> is "contains all of".

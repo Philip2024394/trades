@@ -1,0 +1,10 @@
+# NEX Programmer-Learning Source Snapshot
+# url: https://www.postgresql.org/docs/current/mvcc-intro.html
+# content_type: text/markdown
+# stored_at: 2026-09-05T14:22:52.228Z
+# sha256_prefix: 66c030334a6a0d5146cc5b83908f8f12
+SOURCE URL: https://www.postgresql.org/docs/current/mvcc-intro.html
+RETRIEVED AT: 2026-09-05T14:22:52.228Z
+
+Quote (verbatim):
+"Each SQL statement sees a snapshot of data (a database version) as it was some time ago, regardless of the current state of the underlying data. This prevents statements from viewing inconsistent data produced by concurrent transactions performing updates on the same data rows, providing transaction isolation for each database session."

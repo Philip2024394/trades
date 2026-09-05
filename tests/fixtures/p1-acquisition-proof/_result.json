@@ -1,0 +1,609 @@
+{
+  "runAtIso": "2026-09-05T11:46:07.005Z",
+  "overall": "🟢 GREEN",
+  "results": [
+    {
+      "proof": "A",
+      "passed": true,
+      "assertions": [
+        {
+          "label": "acquisition directory exists",
+          "passed": true,
+          "detail": "path=C:\\Users\\Victus\\trades\\data\\knowledge-acquisition"
+        },
+        {
+          "label": "promoted-knowledge.json written",
+          "passed": true,
+          "detail": "path=C:\\Users\\Victus\\trades\\data\\knowledge-acquisition\\promoted-knowledge.json"
+        },
+        {
+          "label": "runs.json written",
+          "passed": true,
+          "detail": "path=C:\\Users\\Victus\\trades\\data\\knowledge-acquisition\\runs.json"
+        },
+        {
+          "label": "3 fixture-tagged records",
+          "passed": true,
+          "detail": "count=3"
+        },
+        {
+          "label": "run record has 8 evidence pointers (all 7 stages + creation)",
+          "passed": true,
+          "detail": "count=8"
+        },
+        {
+          "label": "run record final_status is null (never self-set per §OP.5)",
+          "passed": true,
+          "detail": "final_status=null"
+        }
+      ],
+      "run_id": "6840d79f-dbeb-4c4f-8a79-b9d1fdfdac87"
+    },
+    {
+      "proof": "B",
+      "passed": true,
+      "conversation_id": "d3ef2b19-33d0-4af4-974c-bd367df68833",
+      "turn1": {
+        "message": "List the three main species of Indonesian tuna commercially important for export as a numbered list, one species per line: 1. [species name] 2. [species name] 3. [species name]",
+        "status": 200,
+        "latencyMs": 2796,
+        "json": {
+          "conversation_id": "d3ef2b19-33d0-4af4-974c-bd367df68833",
+          "reply": "1. Skipjack tuna\n2. Yellowfin tuna\n3. Bigeye tuna",
+          "understood_intent": "conversation",
+          "understood_entities": [],
+          "retrieved_top_k_count": 0,
+          "served_by": "nex-brain-orchestrator",
+          "intent": "conversation",
+          "intent_reason": "default_conversation_no_specialist_signal",
+          "suggestions": [],
+          "card": null,
+          "state_summary": {
+            "turn_count": 1,
+            "current_topic": "conversation",
+            "established_facts": {},
+            "entities_in_focus": [],
+            "constraints": [],
+            "stage": "brain",
+            "corrections_logged": 0,
+            "current_emotion": "neutral",
+            "handoff_recommended": false,
+            "thin_packet_strikes": 0,
+            "condensed_history_present": false,
+            "conversation_language": "en"
+          },
+          "brain_capabilities": [
+            "perception",
+            "self_awareness",
+            "intent",
+            "conversation_control",
+            "tool_selection",
+            "governance",
+            "verification",
+            "prediction",
+            "initiative",
+            "adaptation",
+            "long_term_memory",
+            "attention",
+            "planning",
+            "reflection",
+            "confidence",
+            "learning",
+            "meta_cognition",
+            "personality"
+          ],
+          "goal": null,
+          "reflection": {
+            "overallPass": true,
+            "findings": [
+              {
+                "check": "answersUserMessage",
+                "passed": true,
+                "reason": "reply is non-empty and appropriate to the turn shape"
+              },
+              {
+                "check": "internallyConsistent",
+                "passed": true,
+                "reason": "no slot/reply contradictions detected"
+              },
+              {
+                "check": "hasEvidenceForClaims",
+                "passed": true,
+                "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+              },
+              {
+                "check": "respectsHonestBoundary",
+                "passed": true,
+                "reason": "no invented booking/price/availability detected"
+              },
+              {
+                "check": "respectsMarketBoundary",
+                "passed": true,
+                "reason": "no cross-market leakage"
+              }
+            ],
+            "passedCount": 5,
+            "totalChecks": 5
+          },
+          "confidence": {
+            "overall": "low",
+            "reason": "reply has no recognisable claims",
+            "claims": [],
+            "evidenceCount": 0,
+            "boundaryCount": 0
+          },
+          "meta_cognition": {
+            "whatIKnow": {
+              "hasGroundedEvidence": false,
+              "evidenceCount": 0,
+              "boundaryCount": 0,
+              "goal": null,
+              "slotsFilled": [],
+              "entitiesSeen": {
+                "total": 0,
+                "byKind": {}
+              }
+            },
+            "howSure": {
+              "confidenceLevel": "low",
+              "confidenceReason": "reply has no recognisable claims",
+              "reflectionOverallPass": true,
+              "reflectionPassRatio": "5/5"
+            },
+            "amIWrong": {
+              "reflectionFailures": [],
+              "fabricationRisk": "medium",
+              "fabricationReason": "Confidence assessor found no recognisable claims"
+            },
+            "whatShouldIDo": {
+              "action": "no explicit next-step signal",
+              "origin": "silence"
+            },
+            "whatILearned": {
+              "recentEntries": [
+                {
+                  "kind": "confidence_low",
+                  "scope": "conversation.confidence",
+                  "summary": "Confidence=low · reply has no recognisable claims",
+                  "atMs": 1788608755593
+                }
+              ],
+              "count": 1
+            },
+            "didItWork": {
+              "applicable": false,
+              "reason": "no_proposal",
+              "summary": "no action proposed this turn"
+            },
+            "summary": "confidence=low · reflection=5/5 · fabrication_risk=medium · next=silence · learned=1"
+          },
+          "entities": {
+            "total": 0,
+            "byKind": {}
+          },
+          "current_reference": null,
+          "comparison": null,
+          "recommendation": null,
+          "tool_decision": {
+            "primary": "none",
+            "secondary": [],
+            "reason": "conversational intent · composer replies directly",
+            "availability": "available"
+          },
+          "governance": {
+            "policy": "default",
+            "findings": [],
+            "hasDenies": false,
+            "hasRequiresConsent": false,
+            "allowedCount": 0
+          },
+          "action_proposal": null,
+          "action_execution": null,
+          "verification": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "prediction": {
+            "candidates": [],
+            "reason": "intent=conversation · no vertical-specific prediction v1"
+          },
+          "initiative": {
+            "decision": {
+              "volunteered": false,
+              "reason": "no prediction top candidate to consider"
+            },
+            "sessionCount": 0,
+            "cap": 3
+          },
+          "adaptation": {
+            "signals": [],
+            "hasSignals": false,
+            "summary": "no adaptation patterns · behavior unchanged"
+          },
+          "long_term_memory": null,
+          "personalization": null,
+          "attention": {
+            "ranked": [],
+            "summary": "no attention subjects (empty state)"
+          },
+          "planning": {
+            "goalKind": "conversation",
+            "steps": [],
+            "currentStepIndex": -1,
+            "turnsRemaining": 0,
+            "isPlanComplete": false,
+            "summary": "no plan built for intent=conversation (accommodation only v1)"
+          },
+          "personality_profile": {
+            "profile": "friendly",
+            "transformationsApplied": [
+              "friendly: passthrough (composer baseline)"
+            ],
+            "summary": "profile=friendly · 1 transformation(s)"
+          },
+          "world_cards": null,
+          "world_expanded_page": null,
+          "world_latency_ms": null,
+          "action_audit": null,
+          "pending_proposal_snapshot": null,
+          "composition_meta": {
+            "ran": true,
+            "accepted": true,
+            "widened_for_information_query": false,
+            "frame_topic": "List",
+            "frame_subject": "logistics",
+            "knowledge_count": 1,
+            "baseline_reply": "Happy to chat. If you're planning something in Indonesia, want restaurant ideas, or need to find a professional, just say the word.",
+            "model": "qwen2.5:7b-instruct-q3_K_M",
+            "fell_back": false,
+            "latency_ms": 2724,
+            "prompt_tokens": 757,
+            "response_tokens": 18,
+            "flags": [],
+            "post_composition_audit_ran": true,
+            "composed_reply": "1. Skipjack tuna\n2. Yellowfin tuna\n3. Bigeye tuna",
+            "composed_entity_count": 3
+          },
+          "voice_reply": {
+            "en": "1. Skipjack tuna\n2. Yellowfin tuna\n3. Bigeye tuna",
+            "id": null,
+            "mode": "friendly",
+            "intent": "p0_composed",
+            "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=2724"
+          },
+          "metrics": {
+            "total_ms": 1,
+            "brain_ms": 1,
+            "world_ms": null,
+            "specialist_used": null
+          }
+        }
+      },
+      "turn2": {
+        "message": "tell me more about the second one",
+        "status": 200,
+        "latencyMs": 4866,
+        "json": {
+          "conversation_id": "d3ef2b19-33d0-4af4-974c-bd367df68833",
+          "reply": "Yellowfin tuna, also known as skipjack, is the second most important species of tuna in Indonesia for export. It is known for its high-quality meat and is commonly used in canned tuna products due to its firm texture and flavor.",
+          "understood_intent": "conversation",
+          "understood_entities": [],
+          "retrieved_top_k_count": 0,
+          "served_by": "nex-brain-orchestrator",
+          "intent": "conversation",
+          "intent_reason": "default_conversation_no_specialist_signal",
+          "suggestions": [],
+          "card": null,
+          "state_summary": {
+            "turn_count": 1,
+            "current_topic": "conversation",
+            "established_facts": {},
+            "entities_in_focus": [],
+            "constraints": [],
+            "stage": "brain",
+            "corrections_logged": 0,
+            "current_emotion": "neutral",
+            "handoff_recommended": false,
+            "thin_packet_strikes": 0,
+            "condensed_history_present": false,
+            "conversation_language": "en"
+          },
+          "brain_capabilities": [
+            "perception",
+            "self_awareness",
+            "intent",
+            "conversation_control",
+            "tool_selection",
+            "governance",
+            "verification",
+            "prediction",
+            "initiative",
+            "adaptation",
+            "long_term_memory",
+            "attention",
+            "planning",
+            "reflection",
+            "confidence",
+            "learning",
+            "meta_cognition",
+            "personality"
+          ],
+          "goal": null,
+          "reflection": {
+            "overallPass": true,
+            "findings": [
+              {
+                "check": "answersUserMessage",
+                "passed": true,
+                "reason": "reply is non-empty and appropriate to the turn shape"
+              },
+              {
+                "check": "internallyConsistent",
+                "passed": true,
+                "reason": "no slot/reply contradictions detected"
+              },
+              {
+                "check": "hasEvidenceForClaims",
+                "passed": true,
+                "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+              },
+              {
+                "check": "respectsHonestBoundary",
+                "passed": true,
+                "reason": "no invented booking/price/availability detected"
+              },
+              {
+                "check": "respectsMarketBoundary",
+                "passed": true,
+                "reason": "no cross-market leakage"
+              }
+            ],
+            "passedCount": 5,
+            "totalChecks": 5
+          },
+          "confidence": {
+            "overall": "low",
+            "reason": "reply has no recognisable claims",
+            "claims": [],
+            "evidenceCount": 0,
+            "boundaryCount": 0
+          },
+          "meta_cognition": {
+            "whatIKnow": {
+              "hasGroundedEvidence": false,
+              "evidenceCount": 0,
+              "boundaryCount": 0,
+              "goal": null,
+              "slotsFilled": [],
+              "entitiesSeen": {
+                "total": 3,
+                "byKind": {
+                  "place": 3
+                }
+              }
+            },
+            "howSure": {
+              "confidenceLevel": "low",
+              "confidenceReason": "reply has no recognisable claims",
+              "reflectionOverallPass": true,
+              "reflectionPassRatio": "5/5"
+            },
+            "amIWrong": {
+              "reflectionFailures": [],
+              "fabricationRisk": "medium",
+              "fabricationReason": "Confidence assessor found no recognisable claims"
+            },
+            "whatShouldIDo": {
+              "action": "no explicit next-step signal",
+              "origin": "silence"
+            },
+            "whatILearned": {
+              "recentEntries": [
+                {
+                  "kind": "confidence_low",
+                  "scope": "conversation.confidence",
+                  "summary": "Confidence=low · reply has no recognisable claims",
+                  "atMs": 1788608758350
+                },
+                {
+                  "kind": "confidence_low",
+                  "scope": "conversation.confidence",
+                  "summary": "Confidence=low · reply has no recognisable claims",
+                  "atMs": 1788608755593
+                }
+              ],
+              "count": 2
+            },
+            "didItWork": {
+              "applicable": false,
+              "reason": "no_proposal",
+              "summary": "no action proposed this turn"
+            },
+            "summary": "confidence=low · reflection=5/5 · fabrication_risk=medium · next=silence · learned=2"
+          },
+          "entities": {
+            "total": 3,
+            "byKind": {
+              "place": 3
+            }
+          },
+          "current_reference": {
+            "resolved": true,
+            "refKind": "ordinal",
+            "offset": 2,
+            "business": {
+              "canonical": "yellowfin tuna",
+              "raw": "Yellowfin tuna"
+            },
+            "resolvedInTurn": 2
+          },
+          "comparison": null,
+          "recommendation": null,
+          "tool_decision": {
+            "primary": "none",
+            "secondary": [],
+            "reason": "conversational intent · composer replies directly",
+            "availability": "available"
+          },
+          "governance": {
+            "policy": "default",
+            "findings": [],
+            "hasDenies": false,
+            "hasRequiresConsent": false,
+            "allowedCount": 0
+          },
+          "action_proposal": null,
+          "action_execution": null,
+          "verification": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "prediction": {
+            "candidates": [],
+            "reason": "intent=conversation · no vertical-specific prediction v1"
+          },
+          "initiative": {
+            "decision": {
+              "volunteered": false,
+              "reason": "no prediction top candidate to consider"
+            },
+            "sessionCount": 0,
+            "cap": 3
+          },
+          "adaptation": {
+            "signals": [],
+            "hasSignals": false,
+            "summary": "no adaptation patterns · behavior unchanged"
+          },
+          "long_term_memory": null,
+          "personalization": null,
+          "attention": {
+            "ranked": [],
+            "summary": "no attention subjects (empty state)"
+          },
+          "planning": {
+            "goalKind": "conversation",
+            "steps": [],
+            "currentStepIndex": -1,
+            "turnsRemaining": 0,
+            "isPlanComplete": false,
+            "summary": "no plan built for intent=conversation (accommodation only v1)"
+          },
+          "personality_profile": {
+            "profile": "friendly",
+            "transformationsApplied": [
+              "friendly: passthrough (composer baseline)"
+            ],
+            "summary": "profile=friendly · 1 transformation(s)"
+          },
+          "world_cards": null,
+          "world_expanded_page": null,
+          "world_latency_ms": null,
+          "action_audit": null,
+          "pending_proposal_snapshot": null,
+          "composition_meta": {
+            "ran": true,
+            "accepted": true,
+            "widened_for_information_query": false,
+            "frame_topic": "tell me more about the second",
+            "knowledge_count": 0,
+            "baseline_reply": "Happy to chat. If you're planning something in Indonesia, want restaurant ideas, or need to find a professional, just say the word.",
+            "model": "qwen2.5:7b-instruct-q3_K_M",
+            "fell_back": false,
+            "latency_ms": 4839,
+            "prompt_tokens": 705,
+            "response_tokens": 48,
+            "flags": [],
+            "post_composition_audit_ran": true,
+            "composed_reply": "Yellowfin tuna, also known as skipjack, is the second most important species of tuna in Indonesia for export. It is known for its high-quality meat and is commonly used in canned tuna products due to its firm texture and flavor.",
+            "composed_entity_count": 0
+          },
+          "voice_reply": {
+            "en": "Yellowfin tuna, also known as skipjack, is the second most important species of tuna in Indonesia for export. It is known for its high-quality meat and is commonly used in canned tuna products due to its firm texture and flavor.",
+            "id": null,
+            "mode": "friendly",
+            "intent": "p0_composed",
+            "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=4839"
+          },
+          "metrics": {
+            "total_ms": 1,
+            "brain_ms": 1,
+            "world_ms": null,
+            "specialist_used": null
+          }
+        }
+      },
+      "assertions": [
+        {
+          "label": "T1 · HTTP 200",
+          "passed": true,
+          "detail": "status=200"
+        },
+        {
+          "label": "T1 · composition accepted",
+          "passed": true,
+          "detail": "accepted=true"
+        },
+        {
+          "label": "T1 · at least 2 composed entities fed into session",
+          "passed": true,
+          "detail": "count=3"
+        },
+        {
+          "label": "T2 · HTTP 200",
+          "passed": true,
+          "detail": "status=200"
+        },
+        {
+          "label": "T2 · current_reference.resolved === true",
+          "passed": true,
+          "detail": "resolved=true"
+        },
+        {
+          "label": "T2 · reference kind is ordinal",
+          "passed": true,
+          "detail": "kind=ordinal"
+        },
+        {
+          "label": "T2 · reference offset === 2",
+          "passed": true,
+          "detail": "offset=2"
+        },
+        {
+          "label": "T2 · resolved canonical present",
+          "passed": true,
+          "detail": "canonical=yellowfin tuna"
+        },
+        {
+          "label": "T2 · reply is substantive (>= 40 chars)",
+          "passed": true,
+          "detail": "len=228"
+        }
+      ]
+    },
+    {
+      "proof": "C",
+      "passed": true,
+      "conversation_id": "8fbb7f9b-d01a-49a1-ad79-e5906aa57e7b",
+      "assertions": [
+        {
+          "label": "HTTP 200",
+          "passed": true,
+          "detail": "status=200"
+        },
+        {
+          "label": "current_reference.resolved is not TRUE (no session to resolve against)",
+          "passed": true,
+          "detail": "resolved=undefined"
+        },
+        {
+          "label": "no false-positive resolution (session-null OR resolved=false OR no_prior reason)",
+          "passed": true,
+          "detail": "raw=null"
+        }
+      ]
+    }
+  ]
+}

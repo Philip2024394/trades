@@ -1,0 +1,572 @@
+{
+  "ran_at": "2026-09-05T15:04:13.216Z",
+  "total_cases": 10,
+  "passed": 10,
+  "failed": 0,
+  "results": [
+    {
+      "case_id": "A",
+      "label": "Correct implementation · thorough tests · claim matches",
+      "expected_verdict": "ACCEPT",
+      "actual_verdict": "ACCEPT",
+      "verdict_correct": true,
+      "confidence": "high",
+      "findings": [],
+      "evidence_inspected": [
+        "impl:fixture/case_a/safeReadExists.ts",
+        "test:fixture/case_a/safeReadExists.test.ts",
+        "runtime:fixture/case_a/probe_output.log"
+      ],
+      "knowledge_used": [],
+      "reasoning_trace": [
+        "review_id=rev_A_1",
+        "claimed_by=claude · treated as CLAIM not authority (§13)",
+        "R1 requirement_mismatch → 0 finding(s) so far",
+        "R2 security → 0 finding(s) so far",
+        "R3 unsupported_claim → 0 finding(s) so far",
+        "R4 runtime_evidence → 0 finding(s) so far",
+        "R5 test_quality → +0 finding(s) · total 0",
+        "knowledge consulted: 0 item(s)",
+        "findings tally: INFO=0 WARNING=0 MATERIAL=0 CRITICAL=0",
+        "no findings AND tests passed → ACCEPT",
+        "FINAL verdict=ACCEPT · confidence=high"
+      ],
+      "expected_categories": [],
+      "categories_ok": true
+    },
+    {
+      "case_id": "B",
+      "label": "Correct normal path · missing documented edge case",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "verdict_correct": true,
+      "confidence": "high",
+      "findings": [
+        {
+          "finding_id": "f_mtoik0pq_1",
+          "severity": "MATERIAL",
+          "category": "requirement_mismatch",
+          "message": "Requirement mandates 'must handle' but implementation summary does not describe 'handle'.",
+          "rationale": "A required behavior absent from the implementation summary suggests the behavior was not implemented or was not considered.",
+          "evidence_pointer": "review:rev_B_2:requirement vs implementation.summary",
+          "affected_behavior": "handle",
+          "recommended_correction": "Confirm 'handle' is implemented and describe it in the implementation summary; add a test if missing."
+        },
+        {
+          "severity": "MATERIAL",
+          "category": "test_gap",
+          "message": "4 required edge case(s) not covered by tests: empty input array, negative page number, page beyond last, limit=0",
+          "rationale": "Test suite passes for the covered cases but does not exercise the required edge behaviors. Green tests do not prove correctness for uncovered branches.",
+          "evidence_pointer": "review:rev_B_2:requirement_details.edge_cases_required vs edge_cases_covered",
+          "affected_behavior": "Behaviors relying on: empty input array, negative page number, page beyond last, limit=0",
+          "recommended_correction": "Add explicit tests exercising each uncovered edge case, then re-verify.",
+          "finding_id": "f_mtoik0pr_1"
+        },
+        {
+          "severity": "WARNING",
+          "category": "test_weakness",
+          "message": "Tests appear to cover only positive/happy-path behaviors (no error/negative/boundary coverage mentioned).",
+          "rationale": "A test suite that never asserts negative behavior can pass while genuine defects remain in error handling, boundary conditions, or failure paths.",
+          "evidence_pointer": "review:rev_B_2:tests.summary",
+          "affected_behavior": "Error paths · boundary conditions · negative inputs",
+          "recommended_correction": "Add negative tests · boundary tests · error-path assertions.",
+          "finding_id": "f_mtoik0pr_2"
+        }
+      ],
+      "evidence_inspected": [
+        "impl:fixture/case_b/paginate.ts",
+        "test:fixture/case_b/paginate.test.ts"
+      ],
+      "knowledge_used": [],
+      "reasoning_trace": [
+        "review_id=rev_B_2",
+        "claimed_by=claude · treated as CLAIM not authority (§13)",
+        "R1 requirement_mismatch → 1 finding(s) so far",
+        "R2 security → 1 finding(s) so far",
+        "R3 unsupported_claim → 1 finding(s) so far",
+        "R4 runtime_evidence → 1 finding(s) so far",
+        "R5 test_quality → +2 finding(s) · total 3",
+        "knowledge consulted: 0 item(s)",
+        "findings tally: INFO=0 WARNING=1 MATERIAL=2 CRITICAL=0",
+        "MATERIAL finding(s) present → NEEDS_CHANGES",
+        "FINAL verdict=NEEDS_CHANGES · confidence=high"
+      ],
+      "expected_categories": [
+        "test_gap"
+      ],
+      "categories_ok": true
+    },
+    {
+      "case_id": "C",
+      "label": "Tests pass but code semantically wrong (off-by-one in parser)",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "verdict_correct": true,
+      "confidence": "high",
+      "findings": [
+        {
+          "finding_id": "f_mtoik0pr_2",
+          "severity": "MATERIAL",
+          "category": "unsupported_claim",
+          "message": "Claim uses 4 distinctive term(s) not backed by test summary or runtime evidence: parseintstrict, parses, integer, strings",
+          "rationale": "The implementer's claim contains substantive terms with no corresponding evidence in tests or runtime observations.",
+          "evidence_pointer": "review:rev_C_3:implementation.claim vs (tests.summary + runtime_evidence)",
+          "affected_behavior": "Any behavior asserted by the unsupported claim",
+          "recommended_correction": "Add tests or runtime evidence covering: parseintstrict, parses, integer, strings. Or narrow the claim to match evidence."
+        },
+        {
+          "severity": "MATERIAL",
+          "category": "test_gap",
+          "message": "4 required edge case(s) not covered by tests: decimal like '1.5', empty string, hex prefix '0x1a', trailing whitespace '5 '",
+          "rationale": "Test suite passes for the covered cases but does not exercise the required edge behaviors. Green tests do not prove correctness for uncovered branches.",
+          "evidence_pointer": "review:rev_C_3:requirement_details.edge_cases_required vs edge_cases_covered",
+          "affected_behavior": "Behaviors relying on: decimal like '1.5', empty string, hex prefix '0x1a', trailing whitespace '5 '",
+          "recommended_correction": "Add explicit tests exercising each uncovered edge case, then re-verify.",
+          "finding_id": "f_mtoik0pr_3"
+        },
+        {
+          "severity": "MATERIAL",
+          "category": "test_gap",
+          "message": "Implementer acknowledged 3 known test gap(s): decimal strings like '1.5' not tested; empty string not tested; hex prefix not tested",
+          "rationale": "Known gaps mean the passing test suite explicitly does not establish correctness for those cases.",
+          "evidence_pointer": "review:rev_C_3:tests.known_gaps",
+          "affected_behavior": "decimal strings like '1.5' not tested, empty string not tested, hex prefix not tested",
+          "recommended_correction": "Add tests covering each declared gap.",
+          "finding_id": "f_mtoik0pr_4"
+        },
+        {
+          "severity": "WARNING",
+          "category": "test_weakness",
+          "message": "Tests appear to cover only positive/happy-path behaviors (no error/negative/boundary coverage mentioned).",
+          "rationale": "A test suite that never asserts negative behavior can pass while genuine defects remain in error handling, boundary conditions, or failure paths.",
+          "evidence_pointer": "review:rev_C_3:tests.summary",
+          "affected_behavior": "Error paths · boundary conditions · negative inputs",
+          "recommended_correction": "Add negative tests · boundary tests · error-path assertions.",
+          "finding_id": "f_mtoik0pr_5"
+        }
+      ],
+      "evidence_inspected": [
+        "impl:fixture/case_c/parseIntStrict.ts",
+        "test:fixture/case_c/parseIntStrict.test.ts"
+      ],
+      "knowledge_used": [],
+      "reasoning_trace": [
+        "review_id=rev_C_3",
+        "claimed_by=claude · treated as CLAIM not authority (§13)",
+        "R1 requirement_mismatch → 0 finding(s) so far",
+        "R2 security → 0 finding(s) so far",
+        "R3 unsupported_claim → 1 finding(s) so far",
+        "R4 runtime_evidence → 1 finding(s) so far",
+        "R5 test_quality → +3 finding(s) · total 4",
+        "knowledge consulted: 0 item(s)",
+        "findings tally: INFO=0 WARNING=1 MATERIAL=3 CRITICAL=0",
+        "MATERIAL finding(s) present → NEEDS_CHANGES",
+        "FINAL verdict=NEEDS_CHANGES · confidence=high"
+      ],
+      "expected_categories": [
+        "test_gap"
+      ],
+      "categories_ok": true
+    },
+    {
+      "case_id": "D",
+      "label": "Unsupported claim · claim mentions distinctive behaviors absent from evidence",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "verdict_correct": true,
+      "confidence": "high",
+      "findings": [
+        {
+          "finding_id": "f_mtoik0pr_3",
+          "severity": "MATERIAL",
+          "category": "requirement_mismatch",
+          "message": "Requirement mandates 'must validate' but implementation summary does not describe 'validate'.",
+          "rationale": "A required behavior absent from the implementation summary suggests the behavior was not implemented or was not considered.",
+          "evidence_pointer": "review:rev_D_4:requirement vs implementation.summary",
+          "affected_behavior": "validate",
+          "recommended_correction": "Confirm 'validate' is implemented and describe it in the implementation summary; add a test if missing."
+        },
+        {
+          "finding_id": "f_mtoik0pr_4",
+          "severity": "WARNING",
+          "category": "security",
+          "message": "Security requirement 'HMAC validation' has no evidence in implementation summary.",
+          "rationale": "The requirement is stated but the summary does not describe how it is enforced.",
+          "evidence_pointer": "review:rev_D_4:security_requirements",
+          "affected_behavior": "HMAC validation",
+          "recommended_correction": "Document where and how 'HMAC validation' is enforced. Add a security test asserting it."
+        },
+        {
+          "finding_id": "f_mtoik0pr_5",
+          "severity": "WARNING",
+          "category": "security",
+          "message": "Security requirement 'timing-safe comparison' has no evidence in implementation summary.",
+          "rationale": "The requirement is stated but the summary does not describe how it is enforced.",
+          "evidence_pointer": "review:rev_D_4:security_requirements",
+          "affected_behavior": "timing-safe comparison",
+          "recommended_correction": "Document where and how 'timing-safe comparison' is enforced. Add a security test asserting it."
+        },
+        {
+          "finding_id": "f_mtoik0pr_6",
+          "severity": "MATERIAL",
+          "category": "unsupported_claim",
+          "message": "Claim uses 14 distinctive term(s) not backed by test summary or runtime evidence: endpoint, validates, signatures, timing, comparison",
+          "rationale": "The implementer's claim contains substantive terms with no corresponding evidence in tests or runtime observations.",
+          "evidence_pointer": "review:rev_D_4:implementation.claim vs (tests.summary + runtime_evidence)",
+          "affected_behavior": "Any behavior asserted by the unsupported claim",
+          "recommended_correction": "Add tests or runtime evidence covering: endpoint, validates, signatures, timing, comparison. Or narrow the claim to match evidence."
+        },
+        {
+          "severity": "MATERIAL",
+          "category": "test_gap",
+          "message": "4 required edge case(s) not covered by tests: missing signature, invalid hmac, replayed idempotency key, redis unavailable",
+          "rationale": "Test suite passes for the covered cases but does not exercise the required edge behaviors. Green tests do not prove correctness for uncovered branches.",
+          "evidence_pointer": "review:rev_D_4:requirement_details.edge_cases_required vs edge_cases_covered",
+          "affected_behavior": "Behaviors relying on: missing signature, invalid hmac, replayed idempotency key, redis unavailable",
+          "recommended_correction": "Add explicit tests exercising each uncovered edge case, then re-verify.",
+          "finding_id": "f_mtoik0pr_6"
+        },
+        {
+          "severity": "MATERIAL",
+          "category": "test_gap",
+          "message": "Implementer acknowledged 4 known test gap(s): no hmac test; no dedup test; no redis test…",
+          "rationale": "Known gaps mean the passing test suite explicitly does not establish correctness for those cases.",
+          "evidence_pointer": "review:rev_D_4:tests.known_gaps",
+          "affected_behavior": "no hmac test, no dedup test, no redis test, no timing-safe test",
+          "recommended_correction": "Add tests covering each declared gap.",
+          "finding_id": "f_mtoik0pr_7"
+        }
+      ],
+      "evidence_inspected": [
+        "impl:fixture/case_d/handleWebhook.ts",
+        "test:fixture/case_d/handleWebhook.test.ts"
+      ],
+      "knowledge_used": [],
+      "reasoning_trace": [
+        "review_id=rev_D_4",
+        "claimed_by=claude · treated as CLAIM not authority (§13)",
+        "R1 requirement_mismatch → 1 finding(s) so far",
+        "R2 security → 3 finding(s) so far",
+        "R3 unsupported_claim → 4 finding(s) so far",
+        "R4 runtime_evidence → 4 finding(s) so far",
+        "R5 test_quality → +2 finding(s) · total 6",
+        "knowledge consulted: 0 item(s)",
+        "findings tally: INFO=0 WARNING=2 MATERIAL=4 CRITICAL=0",
+        "MATERIAL finding(s) present → NEEDS_CHANGES",
+        "FINAL verdict=NEEDS_CHANGES · confidence=high"
+      ],
+      "expected_categories": [
+        "unsupported_claim",
+        "test_gap",
+        "security"
+      ],
+      "categories_ok": true
+    },
+    {
+      "case_id": "E",
+      "label": "Security defect · authentication check occurs after sensitive data retrieval",
+      "expected_verdict": "REJECT",
+      "actual_verdict": "REJECT",
+      "verdict_correct": true,
+      "confidence": "high",
+      "findings": [
+        {
+          "finding_id": "f_mtoik0pr_7",
+          "severity": "MATERIAL",
+          "category": "requirement_mismatch",
+          "message": "Requirement mandates 'must verify' but implementation summary does not describe 'verify'.",
+          "rationale": "A required behavior absent from the implementation summary suggests the behavior was not implemented or was not considered.",
+          "evidence_pointer": "review:rev_E_5:requirement vs implementation.summary",
+          "affected_behavior": "verify",
+          "recommended_correction": "Confirm 'verify' is implemented and describe it in the implementation summary; add a test if missing."
+        },
+        {
+          "finding_id": "f_mtoik0pr_8",
+          "severity": "CRITICAL",
+          "category": "security",
+          "message": "Security violation observed: database fetch executes with unauthorized user context · returned to callee via non-owner path leaks metadata via timing side channel and error propagation",
+          "rationale": "Security violations block acceptance regardless of functional test outcome.",
+          "evidence_pointer": "review:rev_E_5:security_violations_observed",
+          "affected_behavior": "Security posture · access control · data protection",
+          "recommended_correction": "Remove the violation before this implementation may ship. Add negative security tests to prevent regression."
+        }
+      ],
+      "evidence_inspected": [
+        "impl:fixture/case_e/getUserOrder.ts",
+        "test:fixture/case_e/getUserOrder.test.ts"
+      ],
+      "knowledge_used": [],
+      "reasoning_trace": [
+        "review_id=rev_E_5",
+        "claimed_by=claude · treated as CLAIM not authority (§13)",
+        "R1 requirement_mismatch → 1 finding(s) so far",
+        "R2 security → 2 finding(s) so far",
+        "R3 unsupported_claim → 2 finding(s) so far",
+        "R4 runtime_evidence → 2 finding(s) so far",
+        "R5 test_quality → +0 finding(s) · total 2",
+        "knowledge consulted: 0 item(s)",
+        "findings tally: INFO=0 WARNING=0 MATERIAL=1 CRITICAL=1",
+        "CRITICAL finding(s) present → REJECT",
+        "FINAL verdict=REJECT · confidence=high"
+      ],
+      "expected_categories": [
+        "security"
+      ],
+      "categories_ok": true
+    },
+    {
+      "case_id": "F",
+      "label": "Fix for one bug breaks a previously-working case",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "verdict_correct": true,
+      "confidence": "high",
+      "findings": [
+        {
+          "finding_id": "f_mtoik0pr_9",
+          "severity": "MATERIAL",
+          "category": "unsupported_claim",
+          "message": "Claim uses 3 distinctive term(s) not backed by test summary or runtime evidence: normalization, sensitivity, slashes",
+          "rationale": "The implementer's claim contains substantive terms with no corresponding evidence in tests or runtime observations.",
+          "evidence_pointer": "review:rev_F_6:implementation.claim vs (tests.summary + runtime_evidence)",
+          "affected_behavior": "Any behavior asserted by the unsupported claim",
+          "recommended_correction": "Add tests or runtime evidence covering: normalization, sensitivity, slashes. Or narrow the claim to match evidence."
+        },
+        {
+          "severity": "MATERIAL",
+          "category": "test_gap",
+          "message": "1 required edge case(s) not covered by tests: fragment preservation",
+          "rationale": "Test suite passes for the covered cases but does not exercise the required edge behaviors. Green tests do not prove correctness for uncovered branches.",
+          "evidence_pointer": "review:rev_F_6:requirement_details.edge_cases_required vs edge_cases_covered",
+          "affected_behavior": "Behaviors relying on: fragment preservation",
+          "recommended_correction": "Add explicit tests exercising each uncovered edge case, then re-verify.",
+          "finding_id": "f_mtoik0pr_8"
+        },
+        {
+          "severity": "MATERIAL",
+          "category": "test_gap",
+          "message": "Implementer acknowledged 1 known test gap(s): fragment preservation test was removed in this change",
+          "rationale": "Known gaps mean the passing test suite explicitly does not establish correctness for those cases.",
+          "evidence_pointer": "review:rev_F_6:tests.known_gaps",
+          "affected_behavior": "fragment preservation test was removed in this change",
+          "recommended_correction": "Add tests covering each declared gap.",
+          "finding_id": "f_mtoik0pr_9"
+        }
+      ],
+      "evidence_inspected": [
+        "impl:fixture/case_f/normalizeUrl.ts",
+        "test:fixture/case_f/normalizeUrl.test.ts"
+      ],
+      "knowledge_used": [],
+      "reasoning_trace": [
+        "review_id=rev_F_6",
+        "claimed_by=claude · treated as CLAIM not authority (§13)",
+        "R1 requirement_mismatch → 0 finding(s) so far",
+        "R2 security → 0 finding(s) so far",
+        "R3 unsupported_claim → 1 finding(s) so far",
+        "R4 runtime_evidence → 1 finding(s) so far",
+        "R5 test_quality → +2 finding(s) · total 3",
+        "knowledge consulted: 0 item(s)",
+        "findings tally: INFO=0 WARNING=0 MATERIAL=3 CRITICAL=0",
+        "MATERIAL finding(s) present → NEEDS_CHANGES",
+        "FINAL verdict=NEEDS_CHANGES · confidence=high"
+      ],
+      "expected_categories": [
+        "test_gap"
+      ],
+      "categories_ok": true
+    },
+    {
+      "case_id": "G",
+      "label": "Correct but unfamiliar idiom · reviewer must not reject unfamiliar code",
+      "expected_verdict": "ACCEPT",
+      "actual_verdict": "ACCEPT",
+      "verdict_correct": true,
+      "confidence": "high",
+      "findings": [],
+      "evidence_inspected": [
+        "impl:fixture/case_g/chunkedSum.ts",
+        "test:fixture/case_g/chunkedSum.test.ts",
+        "runtime:fixture/case_g/repl_probe.log"
+      ],
+      "knowledge_used": [],
+      "reasoning_trace": [
+        "review_id=rev_G_7",
+        "claimed_by=human · treated as CLAIM not authority (§13)",
+        "R1 requirement_mismatch → 0 finding(s) so far",
+        "R2 security → 0 finding(s) so far",
+        "R3 unsupported_claim → 0 finding(s) so far",
+        "R4 runtime_evidence → 0 finding(s) so far",
+        "R5 test_quality → +0 finding(s) · total 0",
+        "knowledge consulted: 0 item(s)",
+        "findings tally: INFO=0 WARNING=0 MATERIAL=0 CRITICAL=0",
+        "no findings AND tests passed → ACCEPT",
+        "FINAL verdict=ACCEPT · confidence=high"
+      ],
+      "expected_categories": [],
+      "categories_ok": true
+    },
+    {
+      "case_id": "H",
+      "label": "Insufficient evidence to establish correctness",
+      "expected_verdict": "UNCERTAIN",
+      "actual_verdict": "UNCERTAIN",
+      "verdict_correct": true,
+      "confidence": "high",
+      "findings": [
+        {
+          "finding_id": "f_mtoik0ps_10",
+          "severity": "MATERIAL",
+          "category": "requirement_mismatch",
+          "message": "Requirement mandates 'must correctly' but implementation summary does not describe 'correctly'.",
+          "rationale": "A required behavior absent from the implementation summary suggests the behavior was not implemented or was not considered.",
+          "evidence_pointer": "review:rev_H_8:requirement vs implementation.summary",
+          "affected_behavior": "correctly",
+          "recommended_correction": "Confirm 'correctly' is implemented and describe it in the implementation summary; add a test if missing."
+        },
+        {
+          "finding_id": "f_mtoik0ps_11",
+          "severity": "MATERIAL",
+          "category": "insufficient_evidence",
+          "message": "Behavioral requirement with neither tests nor runtime evidence.",
+          "rationale": "A behavioral requirement (does X when Y) needs at least one of: unit tests or runtime evidence. Neither is present.",
+          "evidence_pointer": "review:rev_H_8:runtime_evidence + tests.passed",
+          "affected_behavior": "All behaviors described by the requirement",
+          "recommended_correction": "Provide runtime evidence (log / HTTP probe / test-runner output) or unit tests exercising the requirement."
+        },
+        {
+          "severity": "MATERIAL",
+          "category": "test_gap",
+          "message": "2 required edge case(s) not covered by tests: malformed input, logging",
+          "rationale": "Test suite passes for the covered cases but does not exercise the required edge behaviors. Green tests do not prove correctness for uncovered branches.",
+          "evidence_pointer": "review:rev_H_8:requirement_details.edge_cases_required vs edge_cases_covered",
+          "affected_behavior": "Behaviors relying on: malformed input, logging",
+          "recommended_correction": "Add explicit tests exercising each uncovered edge case, then re-verify.",
+          "finding_id": "f_mtoik0ps_10"
+        },
+        {
+          "severity": "INFO",
+          "category": "test_gap",
+          "message": "No tests present for this implementation.",
+          "rationale": "Absence of tests is not itself proof of incorrectness, but it removes one source of independent evidence for correctness.",
+          "evidence_pointer": "review:rev_H_8:tests.passed=0",
+          "affected_behavior": "All behaviors",
+          "recommended_correction": "Add tests covering the declared requirement and its edge cases.",
+          "finding_id": "f_mtoik0ps_11"
+        }
+      ],
+      "evidence_inspected": [],
+      "knowledge_used": [],
+      "reasoning_trace": [
+        "review_id=rev_H_8",
+        "claimed_by=claude · treated as CLAIM not authority (§13)",
+        "R1 requirement_mismatch → 1 finding(s) so far",
+        "R2 security → 1 finding(s) so far",
+        "R3 unsupported_claim → 1 finding(s) so far",
+        "R4 runtime_evidence → 2 finding(s) so far",
+        "R5 test_quality → +2 finding(s) · total 4",
+        "knowledge consulted: 0 item(s)",
+        "findings tally: INFO=1 WARNING=0 MATERIAL=3 CRITICAL=0",
+        "no tests AND no runtime evidence → UNCERTAIN",
+        "FINAL verdict=UNCERTAIN · confidence=high"
+      ],
+      "expected_categories": [],
+      "categories_ok": true
+    },
+    {
+      "case_id": "REAL_NEX",
+      "label": "Real NEX P0.3 hotel resolved-reference continuity slice",
+      "expected_verdict": "ACCEPT",
+      "actual_verdict": "ACCEPT",
+      "verdict_correct": true,
+      "confidence": "high",
+      "findings": [],
+      "evidence_inspected": [
+        "impl:src/lib/nex/brain/reference-hydration.ts",
+        "impl:src/app/api/nex-conv/chat/route.ts",
+        "test:src/lib/nex/brain/reference-hydration.test.ts",
+        "runtime:tests/fixtures/workforce-activation-proof/_reproduce_hotel_t3.json",
+        "runtime:tests/fixtures/workforce-activation-proof/_hotel_negative_proof.json",
+        "runtime:tests/fixtures/workforce-activation-proof/_p0_3_hotel_reference_continuity_report.md"
+      ],
+      "knowledge_used": [],
+      "reasoning_trace": [
+        "review_id=rev_REAL_NEX_9",
+        "claimed_by=claude · treated as CLAIM not authority (§13)",
+        "R1 requirement_mismatch → 0 finding(s) so far",
+        "R2 security → 0 finding(s) so far",
+        "R3 unsupported_claim → 0 finding(s) so far",
+        "R4 runtime_evidence → 0 finding(s) so far",
+        "R5 test_quality → +0 finding(s) · total 0",
+        "knowledge consulted: 0 item(s)",
+        "findings tally: INFO=0 WARNING=0 MATERIAL=0 CRITICAL=0",
+        "no findings AND tests passed → ACCEPT",
+        "FINAL verdict=ACCEPT · confidence=high"
+      ],
+      "expected_categories": [],
+      "categories_ok": true
+    },
+    {
+      "case_id": "REAL_DEFECT",
+      "label": "Real defect · rate limiter resets counter on wrong tick boundary",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "verdict_correct": true,
+      "confidence": "high",
+      "findings": [
+        {
+          "finding_id": "f_mtoik0ps_12",
+          "severity": "WARNING",
+          "category": "security",
+          "message": "Security requirement 'rate limiting must not be bypassable via rapid burst' has no evidence in implementation summary.",
+          "rationale": "The requirement is stated but the summary does not describe how it is enforced.",
+          "evidence_pointer": "review:rev_REAL_DEFECT_10:security_requirements",
+          "affected_behavior": "rate limiting must not be bypassable via rapid burst",
+          "recommended_correction": "Document where and how 'rate limiting must not be bypassable via rapid burst' is enforced. Add a security test asserting it."
+        },
+        {
+          "severity": "MATERIAL",
+          "category": "test_gap",
+          "message": "2 required edge case(s) not covered by tests: counter resets on windowms boundary (time-based), counter does not reset on count reaching n+1",
+          "rationale": "Test suite passes for the covered cases but does not exercise the required edge behaviors. Green tests do not prove correctness for uncovered branches.",
+          "evidence_pointer": "review:rev_REAL_DEFECT_10:requirement_details.edge_cases_required vs edge_cases_covered",
+          "affected_behavior": "Behaviors relying on: counter resets on windowms boundary (time-based), counter does not reset on count reaching n+1",
+          "recommended_correction": "Add explicit tests exercising each uncovered edge case, then re-verify.",
+          "finding_id": "f_mtoik0ps_12"
+        },
+        {
+          "severity": "MATERIAL",
+          "category": "test_gap",
+          "message": "Implementer acknowledged 2 known test gap(s): no test for time-based window reset (implementation resets on count, not time); no test with rapid succession of >2N requests to observe window boundary behavior",
+          "rationale": "Known gaps mean the passing test suite explicitly does not establish correctness for those cases.",
+          "evidence_pointer": "review:rev_REAL_DEFECT_10:tests.known_gaps",
+          "affected_behavior": "no test for time-based window reset (implementation resets on count, not time), no test with rapid succession of >2N requests to observe window boundary behavior",
+          "recommended_correction": "Add tests covering each declared gap.",
+          "finding_id": "f_mtoik0ps_13"
+        }
+      ],
+      "evidence_inspected": [
+        "impl:fixture/real_defect/rateLimit.ts",
+        "test:fixture/real_defect/rateLimit.test.ts"
+      ],
+      "knowledge_used": [],
+      "reasoning_trace": [
+        "review_id=rev_REAL_DEFECT_10",
+        "claimed_by=claude · treated as CLAIM not authority (§13)",
+        "R1 requirement_mismatch → 0 finding(s) so far",
+        "R2 security → 1 finding(s) so far",
+        "R3 unsupported_claim → 1 finding(s) so far",
+        "R4 runtime_evidence → 1 finding(s) so far",
+        "R5 test_quality → +2 finding(s) · total 3",
+        "knowledge consulted: 0 item(s)",
+        "findings tally: INFO=0 WARNING=1 MATERIAL=2 CRITICAL=0",
+        "MATERIAL finding(s) present → NEEDS_CHANGES",
+        "FINAL verdict=NEEDS_CHANGES · confidence=high"
+      ],
+      "expected_categories": [
+        "test_gap"
+      ],
+      "categories_ok": true
+    }
+  ]
+}

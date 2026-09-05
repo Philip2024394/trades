@@ -1,0 +1,1878 @@
+{
+  "runAt": "2026-09-05T16:31:06.667Z",
+  "categories": [
+    {
+      "category": "01 · question-words · English",
+      "description": "Test each of what/where/when/why/how/who/which independently.",
+      "conversation_id": "9a4fdbb1-6118-4a6f-aab8-54951f90ca13",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "what is Yogyakarta?",
+          "expected_gap": "definition/description response",
+          "intent": "indonesia",
+          "reply": "Yogyakarta, often called Jogja, is a city and regency in Indonesia's Special Region of Yogyakarta. It's known as Java's cultural heart, with highlights like Borobudur and Prambanan, and famous for its signature dish, gudeg.",
+          "voice_intent": "p0_composed",
+          "voice_en": "Yogyakarta, often called Jogja, is a city and regency in Indonesia's Special Region of Yogyakarta. It's known as Java's cultural heart, with highlights like Borobudur and Prambanan, and famous for its",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 19453
+        },
+        {
+          "turn": 2,
+          "question": "when is peak tourist season?",
+          "expected_gap": "temporal answer or honest 'I don't know'",
+          "intent": "conversation",
+          "reply": "Peak tourist season in Yogyakarta typically occurs during the dry season, from June to September, when the weather is pleasant and the temperatures are mild. This is a great time to visit for both cultural and natural attractions.",
+          "voice_intent": "p0_composed",
+          "voice_en": "Peak tourist season in Yogyakarta typically occurs during the dry season, from June to September, when the weather is pleasant and the temperatures are mild. This is a great time to visit for both cul",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 6396
+        },
+        {
+          "turn": 3,
+          "question": "why do people visit Bali?",
+          "expected_gap": "reasoning response",
+          "intent": "indonesia",
+          "reply": "People visit Bali for its beautiful beaches, vibrant culture, rich history, and stunning natural landscapes. The province offers something for everyone, from surfers and digital nomads in Canggu to those interested in traditional arts and rice terrac",
+          "voice_intent": "p0_composed",
+          "voice_en": "People visit Bali for its beautiful beaches, vibrant culture, rich history, and stunning natural landscapes. The province offers something for everyone, from surfers and digital nomads in Canggu to th",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 7639
+        },
+        {
+          "turn": 4,
+          "question": "how do I book a hotel?",
+          "expected_gap": "procedural response",
+          "intent": "booking",
+          "reply": "Booking flows (hotels, tables, drivers) are handled through NEX's directory partners rather than by me directly — I won't invent an availability or a price. Tell me what you're trying to book and where, and I'll surface the right partner surface.",
+          "voice_intent": "clarify_ambiguous",
+          "voice_en": "Hmm — bit vague. Can you give me a bit more? Like a place, an activity, or what you're after?",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 20
+        },
+        {
+          "turn": 5,
+          "question": "who owns this hotel?",
+          "expected_gap": "identity or honest boundary",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta,",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 278
+        },
+        {
+          "turn": 6,
+          "question": "which hotel is best for families?",
+          "expected_gap": "comparative response",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta,",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 267
+        }
+      ]
+    },
+    {
+      "category": "02 · question-words · Indonesian",
+      "description": "Same probes in Bahasa Indonesia.",
+      "conversation_id": "aa5834fe-5fa9-45e7-9b4a-c0f3a4924dd1",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "apa itu Yogyakarta?",
+          "intent": "indonesia",
+          "reply": "Yogyakarta, atau Jogja, adalah ibu kota provinsi DI Yogyakarta di Jawa Tengah. Kota ini terkenal dengan budayanya yang kaya, seperti Borobudur dan Prambanan, serta makanan khasnya seperti gudeg.",
+          "voice_intent": "p0_composed",
+          "voice_en": "Yogyakarta, atau Jogja, adalah ibu kota provinsi DI Yogyakarta di Jawa Tengah. Kota ini terkenal dengan budayanya yang kaya, seperti Borobudur dan Prambanan, serta makanan khasnya seperti gudeg.",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 13,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 8359
+        },
+        {
+          "turn": 2,
+          "question": "dimana hotel terdekat?",
+          "intent": "accommodation",
+          "reply": "Saya punya 521 listingan asli untuk hotel — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, dan lainnya. Ini listingan komunitas OpenStreetMap, jadi untuk penemuan saja, bukan booking langsung. Kota atau area mana yang sedang kamu lihat",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 247
+        },
+        {
+          "turn": 3,
+          "question": "bagaimana cara memesan hotel?",
+          "intent": "accommodation",
+          "reply": "Hotels in Indonesia range from budget properties to international 5-star chains, rated on the bintang (star) system 1-5. Business hotels cluster in Jakarta CBD (SCBD, Sudirman, Thamrin) and provincial capitals; resort hotels dominate Bali, Lombok, an",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 259
+        },
+        {
+          "turn": 4,
+          "question": "kenapa banyak turis ke Bali?",
+          "intent": "indonesia",
+          "reply": "Banyak wisatawan yang berkunjung ke Bali karena keindahan alamnya, budaya yang unik, dan suasana yang santai. Tempat ini menawarkan aktivitas seperti surfing di Canggu, makanan lezat di Seminyak, serta kegiatan spiritual di Ubud.",
+          "voice_intent": "p0_composed",
+          "voice_en": "Banyak wisatawan yang berkunjung ke Bali karena keindahan alamnya, budaya yang unik, dan suasana yang santai. Tempat ini menawarkan aktivitas seperti surfing di Canggu, makanan lezat di Seminyak, sert",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 8928
+        }
+      ]
+    },
+    {
+      "category": "03 · pronouns/reference · deictic + anaphoric",
+      "description": "Multi-turn: establish entity then use it/this/that/them/those.",
+      "conversation_id": "96ae9c8b-2f61-4948-a69a-a87eb2e4fc54",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "find me a hotel in Yogyakarta",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or som",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 263
+        },
+        {
+          "turn": 2,
+          "question": "tell me more about it",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or som",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 277
+        },
+        {
+          "turn": 3,
+          "question": "and this one?",
+          "intent": "accommodation",
+          "reply": "I've got 14 real listings for hotels in Yogyakarta — Griya Sentana, Hotel Trim Tiga, Asia Afrika, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmark",
+          "voice_intent": "clarify_ambiguous",
+          "voice_en": "Hmm — bit vague. Can you give me a bit more? Like a place, an activity, or what you're after?",
+          "current_reference": {
+            "resolved": false,
+            "reason": "ambiguous_pronoun"
+          },
+          "world_cards_count": 0,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 45
+        },
+        {
+          "turn": 4,
+          "question": "what about those?",
+          "intent": "accommodation",
+          "reply": "I've found 14 hotels in Yogyakarta, including Griya Sentana, Hotel Trim Tiga, and Asia Afrika. These are community listings on OpenStreetMap, so they're for discovery rather than live booking. Are you looking for budget, mid-range, or higher-end opti",
+          "voice_intent": "p0_composed",
+          "voice_en": "I've found 14 hotels in Yogyakarta, including Griya Sentana, Hotel Trim Tiga, and Asia Afrika. These are community listings on OpenStreetMap, so they're for discovery rather than live booking. Are you",
+          "current_reference": {
+            "resolved": false,
+            "reason": "ambiguous_pronoun"
+          },
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 6805
+        }
+      ]
+    },
+    {
+      "category": "04 · verbs · basic action + cognition",
+      "description": "Verbs from the owner-supplied lexicon in natural sentences.",
+      "conversation_id": "e212a3c0-b9fd-401f-ba3f-6ae6153d6f0c",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "I want to eat somewhere good",
+          "intent": "food",
+          "reply": "To help you find a great place, could you tell me about the type of cuisine you're in the mood for, or any specific dishes you'd like to try?",
+          "voice_intent": "p0_composed",
+          "voice_en": "To help you find a great place, could you tell me about the type of cuisine you're in the mood for, or any specific dishes you'd like to try?",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 6005
+        },
+        {
+          "turn": 2,
+          "question": "I don't understand what you mean",
+          "intent": "conversation",
+          "reply": "I understand you're looking for a good place to eat. Could you tell me what kind of cuisine you're interested in, or any specific dishes you'd like to try?",
+          "voice_intent": "p0_composed",
+          "voice_en": "I understand you're looking for a good place to eat. Could you tell me what kind of cuisine you're interested in, or any specific dishes you'd like to try?",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 4537
+        },
+        {
+          "turn": 3,
+          "question": "can you show me hotels?",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta,",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 279
+        },
+        {
+          "turn": 4,
+          "question": "I love this place",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta,",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 269
+        }
+      ]
+    },
+    {
+      "category": "05 · tense/aspect · past · present · future · perfect",
+      "description": "Tense variations of essentially the same request.",
+      "conversation_id": "9a0ae7ce-93df-4851-80ba-f221fc82af3b",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "I visited Yogyakarta last year",
+          "intent": "indonesia",
+          "reply": "That sounds like a wonderful trip! Yogyakarta is a vibrant city with plenty to see and do, from historical temples to delicious local cuisine. If you have any specific questions or need recommendations, feel free to ask!",
+          "voice_intent": "p0_composed",
+          "voice_en": "That sounds like a wonderful trip! Yogyakarta is a vibrant city with plenty to see and do, from historical temples to delicious local cuisine. If you have any specific questions or need recommendation",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 6853
+        },
+        {
+          "turn": 2,
+          "question": "I am visiting Yogyakarta tomorrow",
+          "intent": "indonesia",
+          "reply": "That sounds exciting! Yogyakarta has so much to offer. Be sure to check out the Kraton and Malioboro Street for a taste of local culture and cuisine.",
+          "voice_intent": "p0_composed",
+          "voice_en": "That sounds exciting! Yogyakarta has so much to offer. Be sure to check out the Kraton and Malioboro Street for a taste of local culture and cuisine.",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 6426
+        },
+        {
+          "turn": 3,
+          "question": "I will visit Yogyakarta next month",
+          "intent": "indonesia",
+          "reply": "That sounds exciting! Yogyakarta has so much to offer, from its rich cultural heritage to delicious local cuisine like gudeg. Be sure to check out Borobudur and Prambanan, and don't miss the Kraton and Malioboro Street. Enjoy your trip!",
+          "voice_intent": "p0_composed",
+          "voice_en": "That sounds exciting! Yogyakarta has so much to offer, from its rich cultural heritage to delicious local cuisine like gudeg. Be sure to check out Borobudur and Prambanan, and don't miss the Kraton an",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 11298
+        },
+        {
+          "turn": 4,
+          "question": "I have already visited Yogyakarta",
+          "intent": "indonesia",
+          "reply": "That sounds exciting! Yogyakarta has so much to offer, from its rich cultural heritage to delicious local dishes. Did you try the gudeg? It's a must-try!",
+          "voice_intent": "p0_composed",
+          "voice_en": "That sounds exciting! Yogyakarta has so much to offer, from its rich cultural heritage to delicious local dishes. Did you try the gudeg? It's a must-try!",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 6440
+        },
+        {
+          "turn": 5,
+          "question": "I haven't visited Yogyakarta yet",
+          "intent": "indonesia",
+          "reply": "Yogyakarta is a must-visit for anyone interested in Indonesian culture and history. Be sure to explore the Borobudur and Prambanan temples, try the local dish gudeg, and stroll through Malioboro Street. A 2-3 day visit is recommended to see everythin",
+          "voice_intent": "p0_composed",
+          "voice_en": "Yogyakarta is a must-visit for anyone interested in Indonesian culture and history. Be sure to explore the Borobudur and Prambanan temples, try the local dish gudeg, and stroll through Malioboro Stree",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 8819
+        }
+      ]
+    },
+    {
+      "category": "06 · prepositions · in/on/at/near/from/to",
+      "description": "Location/relation prepositions.",
+      "conversation_id": "04cafb1c-5fc3-4d73-a582-249c610203f6",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "hotels in Yogyakarta",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or som",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 267
+        },
+        {
+          "turn": 2,
+          "question": "hotels near Malioboro",
+          "intent": "accommodation",
+          "reply": "Got it — hotels near Malioboro. Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 271
+        },
+        {
+          "turn": 3,
+          "question": "flights from Jakarta to Bali",
+          "intent": "indonesia",
+          "reply": "Flights from Jakarta to Bali are readily available, with multiple daily departures from airports like Soekarno-Hatta and Juanda. Popular airlines include Lion Air, Garuda Indonesia, and Air Asia.",
+          "voice_intent": "p0_composed",
+          "voice_en": "Flights from Jakarta to Bali are readily available, with multiple daily departures from airports like Soekarno-Hatta and Juanda. Popular airlines include Lion Air, Garuda Indonesia, and Air Asia.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 6853
+        },
+        {
+          "turn": 4,
+          "question": "restaurants on Jalan Prawirotaman",
+          "intent": "accommodation",
+          "reply": "Coming back to hotels near Prawirotaman. Got it — hotels near Prawirotaman. I don't have matching real listings yet. Do you want budget, mid-range, or something more upmarket?",
+          "voice_intent": "clarify_ambiguous",
+          "voice_en": "Hmm — bit vague. Can you give me a bit more? Like a place, an activity, or what you're after?",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 22
+        }
+      ]
+    },
+    {
+      "category": "07 · spatial · left/right/above/below/inside/outside",
+      "description": "Spatial relations that require real interpretation.",
+      "conversation_id": "084e18b0-07b1-42b1-9364-2c1d0ec2d6db",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "what is next to the palace?",
+          "intent": "conversation",
+          "reply": "In Yogyakarta, the Grand Palace is located on Jalan Mangkuyudan. However, I couldn't find what's next to it from my records. You might want to check local maps or ask a local for more details.",
+          "voice_intent": "p0_composed",
+          "voice_en": "In Yogyakarta, the Grand Palace is located on Jalan Mangkuyudan. However, I couldn't find what's next to it from my records. You might want to check local maps or ask a local for more details.",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 2,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 6168
+        },
+        {
+          "turn": 2,
+          "question": "what is inside the mall?",
+          "intent": "conversation",
+          "reply": "I don't have grounded information about inside the mall in NEX's knowledge yet. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "voice_intent": "p0_composed",
+          "voice_en": "I don't have grounded information about inside the mall in NEX's knowledge yet. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_reason": "boundary:zero_evidence:zero_evidence_with_subject:subject=inside the mall",
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 702
+        },
+        {
+          "turn": 3,
+          "question": "which hotels are north of Malioboro?",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels near Malioboro — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or so",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 272
+        },
+        {
+          "turn": 4,
+          "question": "what's beside the airport?",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels near Malioboro — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or so",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 262
+        }
+      ]
+    },
+    {
+      "category": "08 · temporal · before/after/already/still/yet/again",
+      "description": "Temporal reasoning across turns.",
+      "conversation_id": "2ecb8e28-462f-406b-b7d7-e284892781a1",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "what should I do before checking in?",
+          "intent": "conversation",
+          "reply": "Before checking in, make sure to have your identification and booking confirmation handy. It's also a good idea to review the hotel's amenities and policies, especially if you're traveling with specific needs.",
+          "voice_intent": "p0_composed",
+          "voice_en": "Before checking in, make sure to have your identification and booking confirmation handy. It's also a good idea to review the hotel's amenities and policies, especially if you're traveling with specif",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 4965
+        },
+        {
+          "turn": 2,
+          "question": "and after that?",
+          "intent": "conversation",
+          "reply": "After checking in, you might want to explore the area or relax. Many hotels offer amenities like pools or spas, and there are plenty of local attractions nearby.",
+          "voice_intent": "p0_composed",
+          "voice_en": "After checking in, you might want to explore the area or relax. Many hotels offer amenities like pools or spas, and there are plenty of local attractions nearby.",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 1,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 4407
+        },
+        {
+          "turn": 3,
+          "question": "have I already asked you this?",
+          "intent": "conversation",
+          "reply": "You've asked about what to do before and after checking in, so it seems like you're planning your stay. If you have more questions or need help with anything else, feel free to ask!",
+          "voice_intent": "p0_composed",
+          "voice_en": "You've asked about what to do before and after checking in, so it seems like you're planning your stay. If you have more questions or need help with anything else, feel free to ask!",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 5223
+        },
+        {
+          "turn": 4,
+          "question": "ask me again later",
+          "intent": "conversation",
+          "reply": "feel free to reach out if you have more questions later. I'm here whenever you need travel or local advice in Indonesia.",
+          "voice_intent": "p0_composed",
+          "voice_en": "feel free to reach out if you have more questions later. I'm here whenever you need travel or local advice in Indonesia.",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 5662
+        }
+      ]
+    },
+    {
+      "category": "09 · quantities/comparisons · how much · how many · cheaper",
+      "description": "Numeric and comparative reasoning.",
+      "conversation_id": "e3b061d9-698d-4db9-807b-00fdfb8cb10a",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "how much does a hotel cost?",
+          "intent": "indonesia",
+          "reply": "Hotels in Indonesia range from budget properties to luxury 5-star chains, with prices varying significantly. In Yogyakarta, for example, hotels like Griya Sentana and Hotel Trim Tiga offer different price ranges depending on their amenities and star ",
+          "voice_intent": "p0_composed",
+          "voice_en": "Hotels in Indonesia range from budget properties to luxury 5-star chains, with prices varying significantly. In Yogyakarta, for example, hotels like Griya Sentana and Hotel Trim Tiga offer different p",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 8,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 6875
+        },
+        {
+          "turn": 2,
+          "question": "how many hotels do you have?",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta,",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 276
+        },
+        {
+          "turn": 3,
+          "question": "which is cheaper — Yogyakarta or Bali?",
+          "intent": "indonesia",
+          "reply": "Comparing 3 stays: Gaotama Hotel · Selaras Inn Hotel Yogyakarta · Indonesia Hotel. I can't make any defensible claim from this comparison · none of the ranking-relevant fields are published for these candidates. I can't compare on: rating · reviewCou",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 287
+        },
+        {
+          "turn": 4,
+          "question": "show me the top 3 hotels",
+          "intent": "accommodation",
+          "reply": "Coming back to hotels. Got it — hotels. Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta,",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 285
+        }
+      ]
+    },
+    {
+      "category": "10 · negation · not · don't · never · no",
+      "description": "Negation must invert or block.",
+      "conversation_id": "e476f94b-044e-4a9a-b7c9-61cf7b70cca7",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "I don't want a hotel",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta,",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 290
+        },
+        {
+          "turn": 2,
+          "question": "not near the airport",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta,",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 279
+        },
+        {
+          "turn": 3,
+          "question": "I never eat spicy food",
+          "intent": "food",
+          "reply": "let's explore some non-spicy options. In Yogyakarta, you can try Gudeg, which is sweet and not spicy. Another good choice is Nasi Goreng, a popular Indonesian fried rice dish that comes in various spice levels, but many places offer a milder version.",
+          "voice_intent": "p0_composed",
+          "voice_en": "let's explore some non-spicy options. In Yogyakarta, you can try Gudeg, which is sweet and not spicy. Another good choice is Nasi Goreng, a popular Indonesian fried rice dish that comes in various spi",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 8535
+        },
+        {
+          "turn": 4,
+          "question": "show me hotels that are NOT expensive",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta,",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 266
+        }
+      ]
+    },
+    {
+      "category": "11 · polysemy · lead/bass/bank/watch/spring",
+      "description": "Words with multiple senses catalogued in the lexicon.",
+      "conversation_id": "f7d57c44-e8d6-4e35-93c4-a2b14b076b9e",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "who will lead the tour?",
+          "intent": "conversation",
+          "reply": "The tour leader will be one of our experienced guides. They will ensure you have a great experience. If you have any specific preferences or need more details, feel free to let me know.",
+          "voice_intent": "p0_composed",
+          "voice_en": "The tour leader will be one of our experienced guides. They will ensure you have a great experience. If you have any specific preferences or need more details, feel free to let me know.",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 4640
+        },
+        {
+          "turn": 2,
+          "question": "I want to catch bass here",
+          "intent": "conversation",
+          "reply": "The tour leader will be one of our experienced guides. They will ensure you have a great experience catching bass. Let me know if you need more details or help with anything else.",
+          "voice_intent": "p0_composed",
+          "voice_en": "The tour leader will be one of our experienced guides. They will ensure you have a great experience catching bass. Let me know if you need more details or help with anything else.",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 4828
+        },
+        {
+          "turn": 3,
+          "question": "where is the nearest bank?",
+          "intent": "conversation",
+          "reply": "The nearest bank is likely nearby your current location. If you provide your address or a nearby landmark, I can help you find it more precisely.",
+          "voice_intent": "p0_composed",
+          "voice_en": "The nearest bank is likely nearby your current location. If you provide your address or a nearby landmark, I can help you find it more precisely.",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 4161
+        },
+        {
+          "turn": 4,
+          "question": "I need a new watch",
+          "intent": "conversation",
+          "reply": "I can help with that. Are you looking for a specific type of watch, like a sports watch or a classic one?",
+          "voice_intent": "p0_composed",
+          "voice_en": "I can help with that. Are you looking for a specific type of watch, like a sports watch or a classic one?",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 4138
+        }
+      ]
+    },
+    {
+      "category": "12 · homophones · their/there · to/too · your/you're",
+      "description": "Homophone alternates typed to see if NEX cares about the distinction.",
+      "conversation_id": "3f99f667-46a1-42f6-ab59-c4f532245f62",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "there are hotels here",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta,",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 257
+        },
+        {
+          "turn": 2,
+          "question": "their prices are high",
+          "intent": "accommodation",
+          "reply": "OpenStreetMap listings don't carry price data, so I can't quote a rate honestly. I have candidates — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel — but you'd need to check their prices directly or via a booking platform.",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 265
+        },
+        {
+          "turn": 3,
+          "question": "they're too expensive",
+          "intent": "accommodation",
+          "reply": "I've got 14 real listings for hotels — Griya Sentana, Hotel Trim Tiga, Asia Afrika, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, so",
+          "voice_intent": "clarify_ambiguous",
+          "voice_en": "Hmm — bit vague. Can you give me a bit more? Like a place, an activity, or what you're after?",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 32
+        },
+        {
+          "turn": 4,
+          "question": "your welcome to book two rooms",
+          "intent": "accommodation",
+          "reply": "Coming back to hotels. I can't book accommodation for you yet — the World has discovery listings but no live booking connection. You'd need to contact the property directly or use a booking platform. I can put Griya Sentana, Hotel Trim Tiga, Asia Afr",
+          "voice_intent": "clarify_ambiguous",
+          "voice_en": "Hmm — bit vague. Can you give me a bit more? Like a place, an activity, or what you're after?",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 23
+        }
+      ]
+    },
+    {
+      "category": "13 · shorthand · sms-style · dropped articles",
+      "description": "Truncated inputs typical of chat/voice.",
+      "conversation_id": "645230d7-eb4b-4bd6-a771-f6b02eecb36d",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "hotel yogya cheap",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for budget hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogy",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 263
+        },
+        {
+          "turn": 2,
+          "question": "y",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for budget hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogy",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 263
+        },
+        {
+          "turn": 3,
+          "question": "n",
+          "intent": "accommodation",
+          "reply": "I've got 14 real listings for budget hotels — Griya Sentana, Hotel Trim Tiga, Asia Afrika, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jaka",
+          "voice_intent": "clarify_ambiguous",
+          "voice_en": "Hmm — bit vague. Can you give me a bit more? Like a place, an activity, or what you're after?",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 32
+        },
+        {
+          "turn": 4,
+          "question": "ok",
+          "intent": "conversation",
+          "reply": "could you tell me which city or area you're interested in staying in? That would help me find some budget-friendly hotels for you.",
+          "voice_intent": "p0_composed",
+          "voice_en": "could you tell me which city or area you're interested in staying in? That would help me find some budget-friendly hotels for you.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 3967
+        }
+      ]
+    },
+    {
+      "category": "14 · incomplete · missing subject/verb/object",
+      "description": "Grammatically incomplete inputs.",
+      "conversation_id": "195102c3-61ee-482e-b717-e16e411e9561",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "hotel",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta,",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 234
+        },
+        {
+          "turn": 2,
+          "question": "cheap one",
+          "intent": "accommodation",
+          "reply": "Got it — budget hotels. Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, ",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 257
+        },
+        {
+          "turn": 3,
+          "question": "the beach",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for budget hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogy",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 251
+        },
+        {
+          "turn": 4,
+          "question": "yes and also",
+          "intent": "accommodation",
+          "reply": "I've got 14 real listings for budget hotels — Griya Sentana, Hotel Trim Tiga, Asia Afrika, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jaka",
+          "voice_intent": "clarify_ambiguous",
+          "voice_en": "Hmm — bit vague. Can you give me a bit more? Like a place, an activity, or what you're after?",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 27
+        }
+      ]
+    },
+    {
+      "category": "15 · natural follow-ups · and/also/what about",
+      "description": "Elliptical extension of a prior topic.",
+      "conversation_id": "dfbceddd-ddf1-4702-ab46-7deac9e4b576",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "find hotels in Yogyakarta",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or som",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 237
+        },
+        {
+          "turn": 2,
+          "question": "and Bali?",
+          "intent": "indonesia",
+          "reply": "Bali is Indonesia's most-visited province, known for its beautiful beaches, rich culture, and vibrant tourism scene. Key areas include Canggu, Seminyak, Ubud, and Uluwatu, each offering unique experiences.",
+          "voice_intent": "p0_composed",
+          "voice_en": "Bali is Indonesia's most-visited province, known for its beautiful beaches, rich culture, and vibrant tourism scene. Key areas include Canggu, Seminyak, Ubud, and Uluwatu, each offering unique experie",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 6909
+        },
+        {
+          "turn": 3,
+          "question": "what about Jakarta?",
+          "intent": "indonesia",
+          "reply": "Jakarta is Indonesia's capital and largest city, known for its business and cultural attractions like Kota Tua, Monas, and Taman Mini Indonesia Indah. Traffic can be heavy, so plan indoor activities and use public transportation like Gojek, Grab, or ",
+          "voice_intent": "p0_composed",
+          "voice_en": "Jakarta is Indonesia's capital and largest city, known for its business and cultural attractions like Kota Tua, Monas, and Taman Mini Indonesia Indah. Traffic can be heavy, so plan indoor activities a",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 11,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 8193
+        },
+        {
+          "turn": 4,
+          "question": "also gyms",
+          "intent": "accommodation",
+          "reply": "I've got 14 real listings for hotels in Yogyakarta — Griya Sentana, Hotel Trim Tiga, Asia Afrika, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmark",
+          "voice_intent": "clarify_ambiguous",
+          "voice_en": "Hmm — bit vague. Can you give me a bit more? Like a place, an activity, or what you're after?",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 24
+        }
+      ]
+    },
+    {
+      "category": "16 · topic shifts · abrupt switch mid-conversation",
+      "description": "Complete category change without transition.",
+      "conversation_id": "6ebdee47-9f0a-403c-b311-62bc55610f25",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "find me a hotel",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta,",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 256
+        },
+        {
+          "turn": 2,
+          "question": "actually forget that, I need a restaurant",
+          "intent": "abandonment",
+          "reply": "Okay, dropped it.",
+          "voice_intent": "clarify_ambiguous",
+          "voice_en": "Hmm — bit vague. Can you give me a bit more? Like a place, an activity, or what you're after?",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 39
+        },
+        {
+          "turn": 3,
+          "question": "no wait, tell me about wood carving",
+          "intent": "accommodation",
+          "reply": "I don't have grounded information about wood carving in NEX's knowledge yet. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "voice_intent": "p0_composed",
+          "voice_en": "I don't have grounded information about wood carving in NEX's knowledge yet. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_reason": "boundary:zero_evidence:zero_evidence_with_subject:subject=wood carving",
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 2003
+        }
+      ]
+    },
+    {
+      "category": "17 · implied · indirect requests",
+      "description": "The user's actual intent is not the surface question.",
+      "conversation_id": "c703e4e6-9cc9-4dd0-a64e-c231f7b2c4d1",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "it's really hot today",
+          "intent": "conversation",
+          "reply": "It's really hot today, so you might want to stay indoors and try some refreshing drinks like es campur or jasmin tea. Looking for more ideas or help with something specific?",
+          "voice_intent": "p0_composed",
+          "voice_en": "It's really hot today, so you might want to stay indoors and try some refreshing drinks like es campur or jasmin tea. Looking for more ideas or help with something specific?",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 6280
+        },
+        {
+          "turn": 2,
+          "question": "my wife hates spicy food",
+          "intent": "food",
+          "reply": "I found 797 real places — Thai Tea kiosk, Omah Mie Miyada, Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo, and more. These are NEX directory listings for discovery — I never invent price or availability.",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 262
+        },
+        {
+          "turn": 3,
+          "question": "we have a baby with us",
+          "intent": "conversation",
+          "reply": "I found 797 real places — Thai Tea kiosk, Omah Mie Miyada, Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo, and more. These are NEX directory listings for discovery — I never invent price or availability.",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 286
+        }
+      ]
+    },
+    {
+      "category": "18 · corrections · user says 'actually I meant X'",
+      "description": "User revises a prior utterance mid-conversation.",
+      "conversation_id": "93262ff5-cd2c-4fcc-8d4d-05e520008fb1",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "find me a hotel in Bali",
+          "intent": "accommodation",
+          "reply": "Got it — hotels in Bali. I don't have matching real listings yet. Do you want budget, mid-range, or something more upmarket?",
+          "voice_intent": "discovery_empty",
+          "voice_en": "Hmm — nothing's coming back for that. Want me to loosen the search a bit?",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 269
+        },
+        {
+          "turn": 2,
+          "question": "actually I meant Yogyakarta",
+          "intent": "indonesia",
+          "reply": "Yogyakarta (Jogja) is Java's cultural heart. Highlights: Borobudur (world's largest Buddhist temple, sunrise visits limited to timed tickets), Prambanan (Hindu temple complex, evening Ramayana ballet in dry season), Kraton (Sultan's Palace), Maliobor",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 282
+        },
+        {
+          "turn": 3,
+          "question": "sorry not Yogyakarta — Jakarta",
+          "intent": "indonesia",
+          "reply": "Jakarta is Indonesia's capital and largest city, more of a business hub. Highlights include Kota Tua (old Dutch quarter), Monas (National Monument), and Istiqlal Mosque (South-East Asia's largest). Traffic can be heavy, so plan indoor activities and ",
+          "voice_intent": "p0_composed",
+          "voice_en": "Jakarta is Indonesia's capital and largest city, more of a business hub. Highlights include Kota Tua (old Dutch quarter), Monas (National Monument), and Istiqlal Mosque (South-East Asia's largest). Tr",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 8087
+        }
+      ]
+    },
+    {
+      "category": "19 · emotion/social · thanks · frustration · greetings",
+      "description": "Social openers and emotional signals.",
+      "conversation_id": "b989a45c-fd65-4fb5-81f3-70b7d30b2b3f",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "hi",
+          "intent": "conversation",
+          "reply": "Hello! I'm NEX, and I can help you with Indonesia, food, places to visit, or anything you're planning. Feel free to ask!",
+          "voice_intent": "p0_composed",
+          "voice_en": "Hello! I'm NEX, and I can help you with Indonesia, food, places to visit, or anything you're planning. Feel free to ask!",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 3718
+        },
+        {
+          "turn": 2,
+          "question": "thanks for your help!",
+          "intent": "conversation",
+          "reply": "You're welcome! If you have any more questions or need help with something else, feel free to ask.",
+          "voice_intent": "p0_composed",
+          "voice_en": "You're welcome! If you have any more questions or need help with something else, feel free to ask.",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 4363
+        },
+        {
+          "turn": 3,
+          "question": "this is really frustrating",
+          "intent": "conversation",
+          "reply": "I'm sorry to hear that. Is there something specific causing the frustration, or is it related to accommodation or travel in general?",
+          "voice_intent": "p0_composed",
+          "voice_en": "I'm sorry to hear that. Is there something specific causing the frustration, or is it related to accommodation or travel in general?",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 1,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 4050
+        },
+        {
+          "turn": 4,
+          "question": "goodbye",
+          "intent": "conversation",
+          "reply": "You're welcome! If you have any more questions or need help with something else, feel free to reach out. Goodbye!",
+          "voice_intent": "p0_composed",
+          "voice_en": "You're welcome! If you have any more questions or need help with something else, feel free to reach out. Goodbye!",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 4007
+        }
+      ]
+    },
+    {
+      "category": "20 · indonesian · natural sentences",
+      "description": "Full Indonesian utterances, not just marker words.",
+      "conversation_id": "b107ecfb-7f4d-476e-8d39-20e15908ffe1",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "saya ingin hotel yang murah",
+          "intent": "accommodation",
+          "reply": "Saya punya 521 listingan asli untuk hotel murah — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, dan lainnya. Ini listingan komunitas OpenStreetMap, jadi untuk penemuan saja, bukan booking langsung. Kota atau area mana yang sedang kamu",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 250
+        },
+        {
+          "turn": 2,
+          "question": "tolong cari restoran di dekat sini",
+          "intent": "business",
+          "reply": "I can help with that. Could you tell me your location or the area you're interested in?",
+          "voice_intent": "p0_composed",
+          "voice_en": "I can help with that. Could you tell me your location or the area you're interested in?",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 4169
+        },
+        {
+          "turn": 3,
+          "question": "terima kasih banyak",
+          "intent": "accommodation",
+          "reply": "I've got 14 real listings for budget hotels — Griya Sentana, Hotel Trim Tiga, Asia Afrika, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jaka",
+          "voice_intent": "clarify_ambiguous",
+          "voice_en": "Hmm — bit vague. Can you give me a bit more? Like a place, an activity, or what you're after?",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 24
+        }
+      ]
+    },
+    {
+      "category": "21 · code-switching · English/Indonesian mid-sentence",
+      "description": "Sentence mixes both languages.",
+      "conversation_id": "0056367b-2bbd-4f00-83eb-15e347d9f71d",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "cari hotel yang cheap",
+          "intent": "accommodation",
+          "reply": "Saya punya 521 listingan asli untuk hotel murah — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, dan lainnya. Ini listingan komunitas OpenStreetMap, jadi untuk penemuan saja, bukan booking langsung. Kota atau area mana yang sedang kamu",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 262
+        },
+        {
+          "turn": 2,
+          "question": "berapa harga per night?",
+          "intent": "indonesia",
+          "reply": "I don't have that in my grounded knowledge yet — I'd rather say so than guess. If you tell me a specific city or area, I can point you at real places from NEX's directory. (I'll keep the budget hotels search in mind — just say the word to continue.)",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 269
+        },
+        {
+          "turn": 3,
+          "question": "ok bookkan yang first one",
+          "intent": "accommodation",
+          "reply": "let's book the first one. It looks like you're interested in Gaotama Hotel in Yogyakarta. Shall we proceed with the booking?",
+          "voice_intent": "p0_composed",
+          "voice_en": "let's book the first one. It looks like you're interested in Gaotama Hotel in Yogyakarta. Shall we proceed with the booking?",
+          "current_reference": {
+            "resolved": true,
+            "refKind": "ordinal",
+            "offset": 1,
+            "business": {
+              "canonical": "gaotama hotel",
+              "raw": "Gaotama Hotel",
+              "refId": "place:accommodation:#AC-2026-0000D"
+            },
+            "resolvedInTurn": 3
+          },
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 1,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "hydration_reason": "hydrated:accommodation:#AC-2026-0000D",
+          "latency_ms": 4924
+        }
+      ]
+    },
+    {
+      "category": "22 · STT-style errors · misheard words",
+      "description": "Inputs shaped like plausible STT errors.",
+      "conversation_id": "5b37da9b-2411-4b36-85be-7d46f087d472",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "find me a hotel near a leo boro",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta,",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 261
+        },
+        {
+          "turn": 2,
+          "question": "gari sentana hotel",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta,",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 282
+        },
+        {
+          "turn": 3,
+          "question": "book yogurt karta",
+          "intent": "accommodation",
+          "reply": "Coming back to hotels. I can't book accommodation for you yet — the World has discovery listings but no live booking connection. You'd need to contact the property directly or use a booking platform. I can put Griya Sentana, Hotel Trim Tiga, Asia Afr",
+          "voice_intent": "clarify_ambiguous",
+          "voice_en": "Hmm — bit vague. Can you give me a bit more? Like a place, an activity, or what you're after?",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 44
+        }
+      ]
+    },
+    {
+      "category": "23 · voice · same intent should produce speak-safe text",
+      "description": "Check voice_reply.en for template markers, ellipsis, or lists ill-suited to speech.",
+      "conversation_id": "4564a773-6751-48f8-a1de-60ccc9357239",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "hi there",
+          "intent": "conversation",
+          "reply": "Hello! I'm NEX. Feel free to ask me about Indonesia, food, places to visit, or anything you're planning. I can also help you find a professional if needed.",
+          "voice_intent": "p0_composed",
+          "voice_en": "Hello! I'm NEX. Feel free to ask me about Indonesia, food, places to visit, or anything you're planning. I can also help you find a professional if needed.",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 4621
+        },
+        {
+          "turn": 2,
+          "question": "find me hotels near Malioboro",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels near Malioboro — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or so",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 248
+        },
+        {
+          "turn": 3,
+          "question": "tell me more about the first one",
+          "intent": "accommodation",
+          "reply": "Gaotama Hotel is a hotel in Yogyakarta. Listed on NEX (discovered from public directory data · not owner-verified).",
+          "voice_intent": "p0_composed",
+          "voice_en": "Gaotama Hotel is a hotel in Yogyakarta. Listed on NEX (discovered from public directory data · not owner-verified).",
+          "current_reference": {
+            "resolved": true,
+            "refKind": "ordinal",
+            "offset": 1,
+            "business": {
+              "canonical": "gaotama hotel",
+              "raw": "Gaotama Hotel",
+              "refId": "place:accommodation:#AC-2026-0000D"
+            },
+            "resolvedInTurn": 3
+          },
+          "world_cards_count": 3,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_reason": "record_summary_fallback:accommodation:#AC-2026-0000D · after:claim_verification_rejected: high_risk_flag(s): semantic_contradiction",
+          "composition_knowledge_count": 4,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "hydration_reason": "hydrated:accommodation:#AC-2026-0000D",
+          "latency_ms": 7676
+        }
+      ]
+    },
+    {
+      "category": "24 · memory · does NEX remember 4 turns ago",
+      "description": "Establish fact early, ask about it later.",
+      "conversation_id": "3a184a0c-83ea-40e8-988a-f14884e9ef89",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "I have a food allergy to shellfish",
+          "intent": "food",
+          "reply": "I found 797 real places — Thai Tea kiosk, Omah Mie Miyada, Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo, and more. These are NEX directory listings for discovery — I never invent price or availability.",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 255
+        },
+        {
+          "turn": 2,
+          "question": "find me a restaurant",
+          "intent": "business",
+          "reply": "could you tell me more about the type of cuisine you're in the mood for, or the area of Yogyakarta you're considering? This will help me find a suitable restaurant for you.",
+          "voice_intent": "p0_composed",
+          "voice_en": "could you tell me more about the type of cuisine you're in the mood for, or the area of Yogyakarta you're considering? This will help me find a suitable restaurant for you.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 8,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 6337
+        },
+        {
+          "turn": 3,
+          "question": "any good ones with seafood?",
+          "intent": "conversation",
+          "reply": "I found 797 real places — Thai Tea kiosk, Omah Mie Miyada, Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo, and more. These are NEX directory listings for discovery — I never invent price or availability.",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 260
+        },
+        {
+          "turn": 4,
+          "question": "what did I tell you about my allergy?",
+          "intent": "conversation",
+          "reply": "I found 797 real places — Thai Tea kiosk, Omah Mie Miyada, Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo, and more. These are NEX directory listings for discovery — I never invent price or availability.",
+          "voice_intent": "discovery_hit",
+          "voice_en": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 273
+        }
+      ]
+    },
+    {
+      "category": "25 · ask-vs-answer · when to clarify vs when to try",
+      "description": "Should clarify vs try; should also admit ignorance honestly.",
+      "conversation_id": "5124554f-fa1b-453a-a973-4f6a0ee4feeb",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "book it",
+          "intent": "conversation",
+          "reply": "what would you like to book? Travel, accommodation, or something else in Indonesia?",
+          "voice_intent": "p0_composed",
+          "voice_en": "what would you like to book? Travel, accommodation, or something else in Indonesia?",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 3065
+        },
+        {
+          "turn": 2,
+          "question": "what's the weather in Yogyakarta right now?",
+          "intent": "weather",
+          "reply": "Weather is live data — I don't store or predict it. For Indonesia the rough guide is: dry season roughly April–October (Bali/Java), wet season the rest. For today's actual conditions, please use a weather app or ask me to open a live source.",
+          "voice_intent": "clarify_ambiguous",
+          "voice_en": "Hmm — bit vague. Can you give me a bit more? Like a place, an activity, or what you're after?",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "latency_ms": 15
+        },
+        {
+          "turn": 3,
+          "question": "what's tomorrow's exchange rate?",
+          "intent": "conversation",
+          "reply": "I don't have the specific exchange rate for tomorrow. Exchange rates can vary, and I'd recommend checking a reliable financial news website or your bank for the most accurate and up-to-date information.",
+          "voice_intent": "p0_composed",
+          "voice_en": "I don't have the specific exchange rate for tomorrow. Exchange rates can vary, and I'd recommend checking a reliable financial news website or your bank for the most accurate and up-to-date informatio",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 5170
+        },
+        {
+          "turn": 4,
+          "question": "who won the 2028 election?",
+          "intent": "conversation",
+          "reply": "I don't have information on who won the 2028 election. Elections can be complex, and results are usually announced shortly after voting ends. Would you like to know more about upcoming elections or current political events in Indonesia?",
+          "voice_intent": "p0_composed",
+          "voice_en": "I don't have information on who won the 2028 election. Elections can be complex, and results are usually announced shortly after voting ends. Would you like to know more about upcoming elections or cu",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 5985
+        }
+      ]
+    },
+    {
+      "category": "26 · evidence-aware · never invent when knowledge_count=0",
+      "description": "Zero-evidence subjects must produce honest boundary, not fabrication.",
+      "conversation_id": "959b96a1-8e38-4f28-aaef-ab569c954ab7",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "tell me about seafood in Japan",
+          "intent": "conversation",
+          "reply": "Jepang terkenal dengan aneka seafood berkualitas. Tempat makan seafood terkenal di Tokyo antara lain Tsukiji Outer Market dan Oshoan. Di Jepang, seafood sering dimasak dengan metode sashimi, sushi, atau grilled. Harga dapat bervariasi, jadi sebaiknya",
+          "voice_intent": "p0_composed",
+          "voice_en": "Jepang terkenal dengan aneka seafood berkualitas. Tempat makan seafood terkenal di Tokyo antara lain Tsukiji Outer Market dan Oshoan. Di Jepang, seafood sering dimasak dengan metode sashimi, sushi, at",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 10969
+        },
+        {
+          "turn": 2,
+          "question": "what's the population of Bandung?",
+          "intent": "indonesia",
+          "reply": "Bandung, a city in West Java, has a population of around 2.5 million people.",
+          "voice_intent": "p0_composed",
+          "voice_en": "Bandung, a city in West Java, has a population of around 2.5 million people.",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 4,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 4356
+        },
+        {
+          "turn": 3,
+          "question": "recommend a Michelin restaurant in Semarang",
+          "intent": "indonesia",
+          "reply": "Semarang, being a city in Central Java, has a few Michelin-starred restaurants. One recommendation is Restoran Sinar Mas, known for its high-quality local cuisine and fine dining experience.",
+          "voice_intent": "p0_composed",
+          "voice_en": "Semarang, being a city in Central Java, has a few Michelin-starred restaurants. One recommendation is Restoran Sinar Mas, known for its high-quality local cuisine and fine dining experience.",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 8,
+          "ordinal_gate_fired": false,
+          "result_followup_fired": false,
+          "latency_ms": 5849
+        }
+      ]
+    }
+  ]
+}

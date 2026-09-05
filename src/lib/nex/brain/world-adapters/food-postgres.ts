@@ -129,8 +129,15 @@ export const FoodPostgresAdapter: WorldAdapter = {
       clauses.push(`category = $${params.length}`);
     }
     if (input.query) {
+      // 2026-09-05 · Chief-engineer widening: user queries like
+      // "warung near Malioboro" fail against business_name alone.
+      // Widen to also ILIKE-match address and district. Backward-safe:
+      // every prior business_name match still matches. Visibility gate
+      // untouched. `area` filter (structured intent) remains a
+      // separate stricter filter above.
       params.push(`%${input.query.replace(/[%_]/g, "\\$&")}%`);
-      clauses.push(`business_name ILIKE $${params.length}`);
+      const p = params.length;
+      clauses.push(`(business_name ILIKE $${p} OR address ILIKE $${p} OR district ILIKE $${p})`);
     }
     // Stage 3.35 · Phase 1 · Structured query · area filter matches the
     // vertical's `district` column when the user says "near Malioboro"

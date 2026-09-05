@@ -1,0 +1,605 @@
+{
+  "runAt": "2026-09-05T18:06:25.603Z",
+  "tests": [
+    {
+      "label": "§31 · REQUIRED · run restaurant → hotels → what do you remember",
+      "description": "T3 must retrieve the restaurant business fact from T1",
+      "conversation_id": "a8179cc9-6e46-4c68-bbf2-1b16c1dad938",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I run a restaurant",
+          "reply": "Great to hear about your restaurant! Are you looking for ideas on what dishes to serve or advice on running a food business in Indonesia?",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "UNCLASSIFIED",
+          "memory_candidates_count": 1,
+          "memory_written_count": 1,
+          "memory_superseded_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "knowledge_count": 6,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "Tell me about hotels near Malioboro",
+          "reply": "Hotels near Malioboro in Yogyakarta include Griya Sentana and Hotel Trim Tiga. Both are community-verified and located in the heart of the city, offering convenient access to shopping and dining options along Malioboro Street.",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "conv_function_detected": "UNCLASSIFIED",
+          "memory_candidates_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "knowledge_count": 10,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 3,
+          "message": "What do you remember about my business?",
+          "reply": "Here's what you've told me about business: role = restaurant_operator",
+          "intent": "conversation",
+          "world_cards_count": 3,
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "memory_candidates_count": 0,
+          "memory_gate_fired": true,
+          "memory_gate_reason": "topic_reply:business",
+          "memory_retrieved_count": 1,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    {
+      "label": "§31 · CORRECTION · Actually, I don't run a restaurant anymore",
+      "description": "Cross-turn negation retracts the prior fact",
+      "conversation_id": "d3e2cb43-93dd-42ea-bedf-c6decbbacb15",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I run a restaurant",
+          "reply": "Great to hear about your restaurant! Are you looking for ideas to feature local Indonesian dishes, or do you need advice on how to attract customers?",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "UNCLASSIFIED",
+          "memory_candidates_count": 1,
+          "memory_written_count": 1,
+          "memory_superseded_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "knowledge_count": 8,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "Actually, I don't run a restaurant anymore",
+          "reply": "That's okay! If you're still interested in Indonesian cuisine or need ideas for other businesses, feel free to ask.",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "TOPIC_SHIFT",
+          "memory_candidates_count": 1,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "knowledge_count": 8,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 3,
+          "message": "What do you know about my business now?",
+          "reply": "I don't have any recorded business information from this conversation yet.",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "memory_candidates_count": 0,
+          "memory_gate_fired": true,
+          "memory_gate_reason": "memory_empty",
+          "memory_retrieved_count": 0,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    {
+      "label": "§27 · explicit fact · I run a restaurant",
+      "description": "T1 candidate detected · T2 recall via memory-question gate",
+      "conversation_id": "96e0a464-1637-4e53-86b7-7fc00090cb62",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I run a restaurant",
+          "reply": "Great to hear about your restaurant! Are you looking for ideas on what dishes to feature, or perhaps tips on how to attract customers in Indonesia?",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "UNCLASSIFIED",
+          "memory_candidates_count": 1,
+          "memory_written_count": 1,
+          "memory_superseded_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "knowledge_count": 8,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "What do you know about my business?",
+          "reply": "Here's what you've told me about business: role = restaurant_operator",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "memory_candidates_count": 0,
+          "memory_gate_fired": true,
+          "memory_gate_reason": "topic_reply:business",
+          "memory_retrieved_count": 1,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    {
+      "label": "§27 · preference · I prefer Indonesian",
+      "description": "language preference recorded and recallable",
+      "conversation_id": "72c5ff63-1c09-4312-ba49-9f48f949a3a2",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I prefer Indonesian",
+          "reply": "NEX doesn't have verified information about indonesian at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "UNCLASSIFIED",
+          "memory_candidates_count": 1,
+          "memory_written_count": 1,
+          "memory_superseded_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "knowledge_count": 0,
+          "scope_gate_fired": true,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "What do you remember about my preferences?",
+          "reply": "Here's what you've told me in this conversation: preferred_language = indonesian",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "memory_candidates_count": 0,
+          "memory_gate_fired": true,
+          "memory_gate_reason": "list_all_reply",
+          "memory_retrieved_count": 1,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    {
+      "label": "§27 · allergy · I have an allergy to shellfish",
+      "description": "constraint recorded",
+      "conversation_id": "8a47fff4-0034-4309-9ecb-9d07f7e919e1",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I have an allergy to shellfish",
+          "reply": "I understand. When dining out in Indonesia, look for restaurants that offer a variety of dishes and ask about ingredients. Many Indonesian dishes can be adapted to be shellfish-free. Let me know if you need recommendations or tips!",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "UNCLASSIFIED",
+          "memory_candidates_count": 1,
+          "memory_written_count": 1,
+          "memory_superseded_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "knowledge_count": 0,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "What did I tell you about my allergy?",
+          "reply": "You told me: allergy = shellfish.",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "memory_candidates_count": 0,
+          "memory_gate_fired": true,
+          "memory_gate_reason": "recall:allergy",
+          "memory_retrieved_count": 1,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    {
+      "label": "§27 · residence · correction",
+      "description": "'I live in Yogyakarta' then 'Actually, I live in Jakarta now' — supersession",
+      "conversation_id": "fe4442bc-612b-4d15-bf4c-2d3abaab5e4a",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I live in Yogyakarta",
+          "reply": "Got it. Anything I can help you find there?",
+          "intent": "indonesia",
+          "world_cards_count": 0,
+          "conv_function_detected": "PERSONAL_CONTEXT_STATEMENT",
+          "conv_function_gate_fired": true,
+          "memory_candidates_count": 1,
+          "memory_written_count": 1,
+          "memory_superseded_count": 0,
+          "knowledge_count": 0
+        },
+        {
+          "turn": 2,
+          "message": "Actually, I live in Jakarta now",
+          "reply": "Got it. Jakarta is a business hub with many attractions like Kota Tua, Monas, and Istiqlal Mosque. Traffic can be heavy, so consider using Gojek, Grab, or public transit.",
+          "intent": "indonesia",
+          "world_cards_count": 0,
+          "conv_function_detected": "TOPIC_SHIFT",
+          "memory_candidates_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "knowledge_count": 11,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 3,
+          "message": "What do you know about my location?",
+          "reply": "Here's what you've told me about location: residence = yogyakarta",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "memory_candidates_count": 0,
+          "memory_gate_fired": true,
+          "memory_gate_reason": "topic_reply:location",
+          "memory_retrieved_count": 1,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    {
+      "label": "§28 · question · 'Do I run a restaurant?' must NOT create fact",
+      "description": "T1 is a question · T2 recall shows no business fact",
+      "conversation_id": "85b71be4-452b-42e2-8000-52135acf591c",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "Do I run a restaurant?",
+          "reply": "Based on the conversation, it seems like you're interested in running a restaurant in Indonesia. There are many popular dishes you could consider serving, such as nasi goreng, rendang, sate, gudeg, bakso, and soto. Each has its unique flavors and can attract different types of customers. If you need",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "UNCLASSIFIED",
+          "memory_candidates_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "knowledge_count": 8,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "What do you know about my business?",
+          "reply": "I don't have any recorded business information from this conversation yet.",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "memory_candidates_count": 0,
+          "memory_gate_fired": true,
+          "memory_gate_reason": "memory_empty",
+          "memory_retrieved_count": 0,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    {
+      "label": "§28 · attribution · 'People say I run a restaurant' must NOT create fact",
+      "description": "attribution rejected",
+      "conversation_id": "b5bd6a13-c22c-4e50-8101-5373d0f60ce8",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "People say I run a restaurant",
+          "reply": "That's great! What kind of cuisine does your restaurant offer? Are there any specific dishes or themes you're focusing on?",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "UNCLASSIFIED",
+          "memory_candidates_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "knowledge_count": 8,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "What do you know about my business?",
+          "reply": "I don't have any recorded business information from this conversation yet.",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "memory_candidates_count": 0,
+          "memory_gate_fired": true,
+          "memory_gate_reason": "memory_empty",
+          "memory_retrieved_count": 0,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    {
+      "label": "§28 · third-party · 'My friend runs a restaurant' must NOT create user fact",
+      "description": "friend's fact is not user's fact",
+      "conversation_id": "32609f42-977d-4b0e-913c-ebc2276ea097",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "My friend runs a restaurant",
+          "reply": "That's great! Where is your friend's restaurant located? Are they serving any of the traditional Indonesian dishes like nasi goreng, rendang, or sate?",
+          "intent": null,
+          "world_cards_count": 0,
+          "conv_function_detected": "UNCLASSIFIED",
+          "memory_candidates_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "knowledge_count": 8,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "What do you know about my business?",
+          "reply": "I don't have any recorded business information from this conversation yet.",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "memory_candidates_count": 0,
+          "memory_gate_fired": true,
+          "memory_gate_reason": "memory_empty",
+          "memory_retrieved_count": 0,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    {
+      "label": "§28 · intention · 'I want to run a restaurant' must NOT create durable fact",
+      "description": "aspiration rejected",
+      "conversation_id": "81c1edd5-4af5-4228-a15b-8cec44a83592",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I want to run a restaurant",
+          "reply": "Great idea! For a successful restaurant in Indonesia, consider featuring local dishes like nasi goreng, rendang, or sate. These are popular and can attract a wide range of customers. Let me know if you need more details on any of these dishes or if you have other questions!",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "UNCLASSIFIED",
+          "memory_candidates_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "knowledge_count": 8,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "What do you know about my business?",
+          "reply": "I don't have any recorded business information from this conversation yet.",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "memory_candidates_count": 0,
+          "memory_gate_fired": true,
+          "memory_gate_reason": "memory_empty",
+          "memory_retrieved_count": 0,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    {
+      "label": "§28 · negation · 'I don't run a restaurant' must NOT create positive fact",
+      "description": "G12 blocks positive-fact creation",
+      "conversation_id": "62667883-9a36-47af-b964-13e85002b1d7",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I don't run a restaurant",
+          "reply": "That's great! If you need recommendations for restaurants or have any questions about Indonesian cuisine, feel free to ask.",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "UNCLASSIFIED",
+          "memory_candidates_count": 1,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "knowledge_count": 8,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "What do you know about my business?",
+          "reply": "I don't have any recorded business information from this conversation yet.",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "memory_candidates_count": 0,
+          "memory_gate_fired": true,
+          "memory_gate_reason": "memory_empty",
+          "memory_retrieved_count": 0,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    {
+      "label": "provenance · 'Why do you think I run a restaurant?'",
+      "description": "reply cites the source turn text",
+      "conversation_id": "52b9359c-22f1-40f9-8885-f136fc2bbef1",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I run a restaurant",
+          "reply": "Great to hear about your restaurant! What kind of cuisine are you planning to serve, or are you looking for ideas for your menu? Indonesia has a diverse food scene with dishes like nasi goreng, rendang, and bakso that could be popular choices.",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "UNCLASSIFIED",
+          "memory_candidates_count": 1,
+          "memory_written_count": 1,
+          "memory_superseded_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "knowledge_count": 8,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "Why do you think I run a restaurant?",
+          "reply": "You told me on this turn: \"I run a restaurant\" — recorded 2026-09-05 18:07:31.",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "memory_candidates_count": 0,
+          "memory_gate_fired": true,
+          "memory_gate_reason": "provenance_reply",
+          "memory_retrieved_count": 1,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    {
+      "label": "Indonesian · saya tinggal di Yogyakarta",
+      "description": "residence in Indonesian",
+      "conversation_id": "48d90494-4985-4de5-ad0e-63f8db6aa0f7",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "saya tinggal di Yogyakarta",
+          "reply": "Yogyakarta (Jogja) is Java's cultural heart. Highlights: Borobudur (world's largest Buddhist temple, sunrise visits limited to timed tickets), Prambanan (Hindu temple complex, evening Ramayana ballet in dry season), Kraton (Sultan's Palace), Malioboro Street (shopping + street food), Kotagede (silve",
+          "intent": "indonesia",
+          "world_cards_count": 0,
+          "conv_function_detected": "UNCLASSIFIED",
+          "memory_candidates_count": 1,
+          "memory_written_count": 1,
+          "memory_superseded_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "knowledge_count": 6,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "What do you know about my location?",
+          "reply": "Here's what you've told me about location: residence = yogyakarta",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "memory_candidates_count": 0,
+          "memory_gate_fired": true,
+          "memory_gate_reason": "topic_reply:location",
+          "memory_retrieved_count": 1,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · G12 · 'I don't want a hotel' still gates",
+      "description": "G12 NEGATED_REQUEST intact after G23 wiring",
+      "conversation_id": "bea80cfd-8770-4669-b14b-256c77577b1e",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I don't want a hotel",
+          "reply": "Got it — no problem. What would you like me to help with instead?",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "conv_function_detected": "NEGATED_REQUEST",
+          "conv_function_gate_fired": true,
+          "memory_candidates_count": 0,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · G24 · seafood in Japan still blocked",
+      "description": "G24 scope gate intact",
+      "conversation_id": "fbb8ed35-9530-46c9-8c13-a1b79426c5ca",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "tell me about seafood in Japan",
+          "reply": "NEX doesn't have verified information about japan at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "conv_function_detected": "UNCLASSIFIED",
+          "memory_candidates_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "knowledge_count": 0,
+          "scope_gate_fired": true,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": false
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · P0.4 · fresh 'the first hotel'",
+      "description": "P0.4 ordinal-boundary intact",
+      "conversation_id": "539465ad-4c89-45d0-8a7b-85161bfe05b4",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "Tell me about the first hotel.",
+          "reply": "Which hotel do you mean? I don't have a previous hotel list in this conversation. Want me to find some?",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "conv_function_detected": "UNCLASSIFIED",
+          "memory_candidates_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "knowledge_count": 0,
+          "result_followup_fired": false,
+          "ordinal_gate_fired": true
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · L4 · social frame reset",
+      "description": "'do you want to know where i am' still gates",
+      "conversation_id": "4921b9bb-703c-4f1d-9e79-905c5052a655",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "any hotels nex",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "conv_function_detected": "TASK_REQUEST",
+          "memory_candidates_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "do you want to know where i am",
+          "reply": "Yeah — where are you? That'll help me make things more relevant.",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "conv_function_detected": "PERSONAL_CONTEXT_OFFER",
+          "conv_function_gate_fired": true,
+          "memory_candidates_count": 0,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · result-followup",
+      "description": "provenance follow-up still fires",
+      "conversation_id": "b741d8a3-10eb-4f99-bcb0-3d412e18a221",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "conv_function_detected": "TASK_REQUEST",
+          "memory_candidates_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "result_followup_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "where did you find them?",
+          "reply": "These are OpenStreetMap community-contributed accommodation listings from the NEX directory (nex.accommodation_business). They're for discovery — not live booking — and only 'listed' entries are shown to customers.",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "conv_function_detected": "RESULT_FOLLOW_UP",
+          "memory_candidates_count": 0,
+          "memory_gate_reason": "no_memory_question_pattern",
+          "result_followup_fired": true
+        }
+      ]
+    }
+  ]
+}

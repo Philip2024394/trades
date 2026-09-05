@@ -1,0 +1,277 @@
+{
+  "ranAt": "2026-09-05T13:05:40.423Z",
+  "results": [
+    {
+      "vertical": "accommodation",
+      "position": "hotel_accommodation",
+      "query": "hotel near Malioboro",
+      "city": "Yogyakarta",
+      "category": null,
+      "note": "raw-multi-word",
+      "returned": 0,
+      "total_available": 0,
+      "latency_ms": 2363.2379,
+      "degraded_reason": null,
+      "top_records": [],
+      "error": null
+    },
+    {
+      "vertical": "accommodation",
+      "position": "hotel_accommodation",
+      "query": "cheap guesthouse",
+      "city": "Yogyakarta",
+      "category": null,
+      "note": "raw-multi-word",
+      "returned": 0,
+      "total_available": 0,
+      "latency_ms": 228.01990000000023,
+      "degraded_reason": null,
+      "top_records": [],
+      "error": null
+    },
+    {
+      "vertical": "accommodation",
+      "position": "hotel_accommodation",
+      "query": "villa in Bali",
+      "city": "Denpasar",
+      "category": null,
+      "note": "raw-multi-word",
+      "returned": 0,
+      "total_available": 0,
+      "latency_ms": 229.76760000000013,
+      "degraded_reason": null,
+      "top_records": [],
+      "error": null
+    },
+    {
+      "vertical": "accommodation",
+      "position": "hotel_accommodation",
+      "query": "Malioboro",
+      "city": "Yogyakarta",
+      "category": null,
+      "note": "S2-tokenized",
+      "returned": 3,
+      "total_available": 36,
+      "latency_ms": 228.69519999999966,
+      "degraded_reason": null,
+      "top_records": [
+        {
+          "id": "#AC-2026-000VG",
+          "name": "1O1 STYLE Yogyakarta Malioboro",
+          "category": "hotel",
+          "city": "Yogyakarta",
+          "district": null,
+          "has_phone": true,
+          "has_website": true,
+          "has_hero_image": false
+        },
+        {
+          "id": "#AC-2026-0001E",
+          "name": "Abadi Hotel Malioboro",
+          "category": "hotel",
+          "city": "Yogyakarta",
+          "district": null,
+          "has_phone": false,
+          "has_website": false,
+          "has_hero_image": false
+        },
+        {
+          "id": "#AC-2026-00025",
+          "name": "Amaris Hotel Malioboro",
+          "category": "hotel",
+          "city": "Yogyakarta",
+          "district": null,
+          "has_phone": false,
+          "has_website": false,
+          "has_hero_image": false
+        }
+      ],
+      "error": null
+    },
+    {
+      "vertical": "accommodation",
+      "position": "hotel_accommodation",
+      "query": "Jakarta",
+      "city": null,
+      "category": null,
+      "note": "S2-tokenized",
+      "returned": 1,
+      "total_available": 1,
+      "latency_ms": 230.19209999999975,
+      "degraded_reason": null,
+      "top_records": [
+        {
+          "id": "#AC-2026-000T4",
+          "name": "Septia Hotel Jogjakarta",
+          "category": "hotel",
+          "city": "Yogyakarta",
+          "district": null,
+          "has_phone": false,
+          "has_website": false,
+          "has_hero_image": false
+        }
+      ],
+      "error": null
+    },
+    {
+      "vertical": "service",
+      "position": "gym_fitness",
+      "query": "gym",
+      "city": "Jakarta",
+      "category": "gyms",
+      "note": "raw-worked-already",
+      "returned": 3,
+      "total_available": 11,
+      "latency_ms": 233.85440000000017,
+      "degraded_reason": null,
+      "top_records": [
+        {
+          "id": "#SB-2026-DZB4E",
+          "name": "Abadi Star Gym",
+          "category": "gyms",
+          "city": "Jakarta",
+          "district": null,
+          "has_phone": false,
+          "has_website": false,
+          "has_hero_image": false
+        },
+        {
+          "id": "#SB-2026-EFF5Q",
+          "name": "Columbus Circle Gymnasium",
+          "category": "gyms",
+          "city": "Jakarta",
+          "district": null,
+          "has_phone": false,
+          "has_website": false,
+          "has_hero_image": false
+        },
+        {
+          "id": "#SB-2026-J7RVS",
+          "name": "FTL Gym",
+          "category": "gyms",
+          "city": "Jakarta",
+          "district": null,
+          "has_phone": false,
+          "has_website": false,
+          "has_hero_image": false
+        }
+      ],
+      "error": null
+    },
+    {
+      "vertical": "service",
+      "position": "gym_fitness",
+      "query": "gym near me",
+      "city": "Denpasar",
+      "category": "gyms",
+      "note": "raw-multi-word",
+      "returned": 0,
+      "total_available": 0,
+      "latency_ms": 228.20479999999998,
+      "degraded_reason": null,
+      "top_records": [],
+      "error": null
+    },
+    {
+      "vertical": "service",
+      "position": "gym_fitness",
+      "query": "fitness",
+      "city": null,
+      "category": "gyms",
+      "note": "S2-tokenized",
+      "returned": 3,
+      "total_available": 58,
+      "latency_ms": 224.9771999999998,
+      "degraded_reason": null,
+      "top_records": [
+        {
+          "id": "#SB-2026-RPF48",
+          "name": "Ade Rai Fitness Club Pekanbaru",
+          "category": "gyms",
+          "city": "Pekanbaru",
+          "district": null,
+          "has_phone": false,
+          "has_website": false,
+          "has_hero_image": false
+        },
+        {
+          "id": "#SB-2026-WZCTZ",
+          "name": "An Namiroh Gym & Fitness Center",
+          "category": "gyms",
+          "city": "Pekanbaru",
+          "district": null,
+          "has_phone": false,
+          "has_website": false,
+          "has_hero_image": false
+        },
+        {
+          "id": "#SB-2026-P1AY8",
+          "name": "Anton Fitness",
+          "category": "gyms",
+          "city": "Palembang",
+          "district": null,
+          "has_phone": false,
+          "has_website": false,
+          "has_hero_image": false
+        }
+      ],
+      "error": null
+    },
+    {
+      "vertical": "food",
+      "position": "restaurant_food_business",
+      "query": "spicy seafood",
+      "city": "Yogyakarta",
+      "category": null,
+      "note": "raw-multi-word",
+      "returned": 0,
+      "total_available": 0,
+      "latency_ms": 227.4994999999999,
+      "degraded_reason": null,
+      "top_records": [],
+      "error": null
+    },
+    {
+      "vertical": "food",
+      "position": "restaurant_food_business",
+      "query": "warung",
+      "city": "Jakarta",
+      "category": null,
+      "note": "S2-tokenized",
+      "returned": 0,
+      "total_available": 0,
+      "latency_ms": 225.73840000000018,
+      "degraded_reason": null,
+      "top_records": [],
+      "error": null
+    },
+    {
+      "vertical": "commerce",
+      "position": "marketplace_commerce",
+      "query": "batik",
+      "city": null,
+      "category": null,
+      "note": "single-word",
+      "returned": 0,
+      "total_available": 0,
+      "latency_ms": 224.40010000000075,
+      "degraded_reason": null,
+      "top_records": [],
+      "error": null
+    },
+    {
+      "vertical": "transport",
+      "position": "travel_transport",
+      "query": "airport",
+      "city": "Denpasar",
+      "category": null,
+      "note": "S2-tokenized",
+      "returned": 0,
+      "total_available": 0,
+      "latency_ms": 225.09870000000046,
+      "degraded_reason": null,
+      "top_records": [],
+      "error": null
+    }
+  ]
+}

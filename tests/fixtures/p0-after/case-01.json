@@ -1,0 +1,261 @@
+{
+  "id": "01",
+  "category": "A",
+  "stress": "greeting + open knowledge",
+  "conversation_id": "a2d1deb7-52db-4697-a7dd-18e7e36fb21a",
+  "turns": [
+    {
+      "turnId": "t1",
+      "message": "hi, what's kos-kosan in Indonesia?",
+      "response": {
+        "conversation_id": "a2d1deb7-52db-4697-a7dd-18e7e36fb21a",
+        "reply": "Kos-kosan in Indonesia is a type of monthly-rented boarding-house accommodation, often used by students, workers, and long-stay visitors, particularly in popular cities like Bali, Yogyakarta, and Bandung.",
+        "understood_intent": "conversation",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "conversation",
+        "intent_reason": "greeting",
+        "suggestions": [],
+        "card": null,
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "learning",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "low",
+          "reason": "reply has no recognisable claims",
+          "claims": [],
+          "evidenceCount": 0,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": false,
+            "evidenceCount": 0,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 0,
+              "byKind": {}
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "low",
+            "confidenceReason": "reply has no recognisable claims",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "medium",
+            "fabricationReason": "Confidence assessor found no recognisable claims"
+          },
+          "whatShouldIDo": {
+            "action": "no explicit next-step signal",
+            "origin": "silence"
+          },
+          "whatILearned": {
+            "recentEntries": [
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788600153990
+              }
+            ],
+            "count": 1
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=low · reflection=5/5 · fabrication_risk=medium · next=silence · learned=1"
+        },
+        "entities": {
+          "total": 0,
+          "byKind": {}
+        },
+        "current_reference": null,
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "none",
+          "secondary": [],
+          "reason": "conversational intent · composer replies directly",
+          "availability": "available"
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=conversation · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [],
+          "hasSignals": false,
+          "summary": "no adaptation patterns · behavior unchanged"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "conversation",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=conversation (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": null,
+        "world_expanded_page": null,
+        "world_latency_ms": null,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": true,
+          "accepted": true,
+          "frame_topic": "Indonesia",
+          "knowledge_count": 1,
+          "baseline_reply": "Hi! I'm NEX. Ask me about Indonesia, food, places to visit, or something you'd like to plan — and if you need a professional, I can help you find one.",
+          "model": "qwen2.5:7b-instruct-q3_K_M",
+          "fell_back": false,
+          "latency_ms": 5357,
+          "prompt_tokens": 750,
+          "response_tokens": 49,
+          "flags": [],
+          "composed_reply": "Kos-kosan in Indonesia is a type of monthly-rented boarding-house accommodation, often used by students, workers, and long-stay visitors, particularly in popular cities like Bali, Yogyakarta, and Bandung."
+        },
+        "voice_reply": {
+          "en": "Kos-kosan in Indonesia is a type of monthly-rented boarding-house accommodation, often used by students, workers, and long-stay visitors, particularly in popular cities like Bali, Yogyakarta, and Bandung.",
+          "id": null,
+          "mode": "friendly",
+          "intent": "p0_composed",
+          "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=5357"
+        },
+        "metrics": {
+          "total_ms": 6,
+          "brain_ms": 6,
+          "world_ms": null,
+          "specialist_used": null
+        }
+      },
+      "summary": {
+        "http_status": 200,
+        "latency_ms": 5516,
+        "intent": "conversation",
+        "intent_reason": "greeting",
+        "baseline_reply": "Hi! I'm NEX. Ask me about Indonesia, food, places to visit, or something you'd like to plan — and if you need a professional, I can help you find one.",
+        "served_reply": "Kos-kosan in Indonesia is a type of monthly-rented boarding-house accommodation, often used by students, workers, and long-stay visitors, particularly in popular cities like Bali, Yogyakarta, and Bandung.",
+        "composition_ran": true,
+        "composition_accepted": true,
+        "composition_reason": null,
+        "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+        "composition_latency_ms": 5357,
+        "composition_flags": [],
+        "composition_flag_count": 0,
+        "composition_high_flag_count": 0,
+        "knowledge_count": 1,
+        "frame_topic": "Indonesia",
+        "frame_subject": null,
+        "confidence_overall": "low",
+        "fabrication_risk": "medium"
+      }
+    }
+  ]
+}

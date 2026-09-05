@@ -86,7 +86,7 @@ describe("postgres outbox driver · recordAttempt", () => {
     await expect(driver.recordAttempt({
       correlationId: "c1", providerId: "meta_cloud",
       targetCanonical: "X", toE164: "+62", bodyHash: "abc", now: NOW,
-    })).rejects.toThrow(/NEX_POSTGRES_URL not set/);
+    })).rejects.toThrow(/withClient returned null/);
   });
 });
 

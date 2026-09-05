@@ -1,0 +1,75 @@
+{
+  "runAt": "2026-09-05T14:37:51.308Z",
+  "conversation_id": "de8b6992-49bf-4464-a28c-b56a4871866e",
+  "turns": [
+    {
+      "turn": 1,
+      "question": "Tell me about Indonesian food.",
+      "intent": "food",
+      "reply": "Nasi goreng, considered the national dish, is Indonesian fried rice stir-fried with kecap manis (sweet soy sauce), garlic, shallots, and chilli, often served with a fried egg, prawn crackers, and cucumber slices. It's widely available from street stalls to hotels across the country.",
+      "voice_reply_en": "Nasi goreng, considered the national dish, is Indonesian fried rice stir-fried with kecap manis (sweet soy sauce), garlic, shallots, and chilli, often served with a fried egg, prawn crackers, and cucumber slices. It's widely available from street stalls to hotels across the country.",
+      "voice_reply_intent": "p0_composed",
+      "composition_ran": true,
+      "composition_accepted": true,
+      "composition_knowledge_count": 7,
+      "composition_composed_reply": "Nasi goreng, considered the national dish, is Indonesian fried rice stir-fried with kecap manis (sweet soy sauce), garlic, shallots, and chilli, often served with a fried egg, prawn crackers, and cucumber slices. It's widely available from street stalls to hotels across the country.",
+      "composition_baseline_reply": "Nasi goreng is Indonesian fried rice — rice stir-fried with kecap manis (sweet soy sauce), garlic, shallots, chilli and often chicken, egg or prawn. Usually served with a fried egg on top, prawn crackers and slices of cucumber and tomato. Considered the national dish and available almost everywhere from street stalls to hotels. (Source: NEX Indonesia knowledge · Indonesia · verified 2026-08-30T00:00:00.000Z.)",
+      "card_hits": [
+        {
+          "topic": "food.nasi_goreng"
+        },
+        {
+          "topic": "food.rendang"
+        },
+        {
+          "topic": "food.sate"
+        }
+      ],
+      "world_cards_count": 3
+    },
+    {
+      "turn": 2,
+      "question": "What about tuna?",
+      "intent": "conversation",
+      "reply": "That's outside what NEX currently has grounded — I don't have verified data on tuna. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+      "voice_reply_en": "That's outside what NEX currently has grounded — I don't have verified data on tuna. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+      "voice_reply_intent": "p0_composed",
+      "composition_ran": true,
+      "composition_accepted": true,
+      "composition_reason": "boundary:zero_evidence:zero_evidence_with_subject:subject=tuna",
+      "composition_knowledge_count": 0,
+      "composition_composed_reply": "That's outside what NEX currently has grounded — I don't have verified data on tuna. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+      "composition_baseline_reply": "I found 797 real places — Thai Tea kiosk, Omah Mie Miyada, Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo, and more. These are NEX directory listings for discovery — I never invent price or availability.",
+      "card_hits": [],
+      "world_cards_count": 3
+    },
+    {
+      "turn": 3,
+      "question": "Could I export it?",
+      "intent": "conversation",
+      "reply": "I found 797 real places — Thai Tea kiosk, Omah Mie Miyada, Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo, and more. These are NEX directory listings for discovery — I never invent price or availability.",
+      "voice_reply_en": "Yep — found 3.",
+      "voice_reply_intent": "discovery_hit",
+      "composition_ran": false,
+      "composition_accepted": false,
+      "card_hits": [],
+      "world_cards_count": 3
+    },
+    {
+      "turn": 4,
+      "question": "What about Japan?",
+      "intent": "conversation",
+      "reply": "NEX doesn't have verified information on Japan at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+      "voice_reply_en": "NEX doesn't have verified information on Japan at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+      "voice_reply_intent": "p0_composed",
+      "composition_ran": true,
+      "composition_accepted": true,
+      "composition_reason": "boundary:zero_evidence:zero_evidence_with_subject:subject=Japan",
+      "composition_knowledge_count": 0,
+      "composition_composed_reply": "NEX doesn't have verified information on Japan at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+      "composition_baseline_reply": "I found 797 real places — Thai Tea kiosk, Omah Mie Miyada, Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo, and more. These are NEX directory listings for discovery — I never invent price or availability.",
+      "card_hits": [],
+      "world_cards_count": 3
+    }
+  ]
+}

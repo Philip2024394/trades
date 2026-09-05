@@ -1,0 +1,288 @@
+{
+  "id": "17",
+  "category": "D",
+  "stress": "time-sensitive political fact",
+  "conversation_id": "2a952b8a-837d-4518-b0df-75fc2afca527",
+  "turns": [
+    {
+      "turnId": "t1",
+      "message": "who's the current governor of jakarta?",
+      "response": {
+        "conversation_id": "2a952b8a-837d-4518-b0df-75fc2afca527",
+        "reply": "Jakarta is Indonesia's capital and largest city — a business hub rather than a classic tourist destination. Highlights: Kota Tua (old Dutch quarter with cafés and museums), Monas (National Monument), Istiqlal Mosque (South-East Asia's largest, next door to the Catholic cathedral), Taman Mini Indonesia Indah (culture park), night markets in Glodok (Chinatown), and Pantai Indah Kapuk for modern food streets. Traffic is heavy — plan indoor blocks and use Gojek/Grab or MRT/TransJakarta buses.\n\nThe capital of Indonesia is Jakarta, on the north-west coast of Java. Since 2019 the government has been progressively moving parts of the administrative capital to Nusantara (IKN) in East Kalimantan; Jakarta remains the largest city and economic centre.\n\nJakarta's business-hotel inventory concentrates in the SCBD, Sudirman, Thamrin, and Kuningan corridors, with international chains including Ritz-Carlton, Grand Hyatt, Fairmont, Mandarin Oriental, and Four Seasons. Mid-market properties spread through South Jakarta (Kemang, Blok M). Airport hotels cluster at Soekarno-Hatta. (Source: NEX Indonesia knowledge · DKI Jakarta · verified 2026-08-30T00:00:00.000Z.)",
+        "understood_intent": "indonesia",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "indonesia",
+        "intent_reason": "indonesia_place_or_country",
+        "suggestions": [],
+        "card": {
+          "kind": "knowledge",
+          "payload": {
+            "hits": [
+              {
+                "id": "id-tourism-jakarta",
+                "topic": "tourism.jakarta",
+                "region": "DKI Jakarta",
+                "stability": "stable",
+                "confidence": 0.9,
+                "last_verified": "2026-08-30T00:00:00.000Z"
+              },
+              {
+                "id": "id-basics-capital",
+                "topic": "indonesia.capital",
+                "region": "Indonesia",
+                "stability": "stable",
+                "confidence": 1,
+                "last_verified": "2026-08-30T00:00:00.000Z"
+              },
+              {
+                "id": "accommodation:regional:jakarta_business",
+                "topic": "accommodation.regional.jakarta_business",
+                "region": "DKI Jakarta",
+                "stability": "stable",
+                "confidence": 0.9,
+                "last_verified": "2026-08-30T16:05:43.447Z"
+              }
+            ],
+            "grounded_block": "NEX Indonesia knowledge (grounded · cite the region/topic when useful, do not embellish):\n  · [tourism.jakarta · DKI Jakarta · stable · verified 2026-08-30T00:00:00.000Z]\n    Jakarta is Indonesia's capital and largest city — a business hub rather than a classic tourist destination. Highlights: Kota Tua (old Dutch quarter with cafés and museums), Monas (National Monument), Istiqlal Mosque (South-East Asia's largest, next door to the Catholic cathedral), Taman Mini Indonesia Indah (culture park), night markets in Glodok (Chinatown), and Pantai Indah Kapuk for modern food streets. Traffic is heavy — plan indoor blocks and use Gojek/Grab or MRT/TransJakarta buses.\n  · [indonesia.capital · Indonesia · stable · verified 2026-08-30T00:00:00.000Z]\n    The capital of Indonesia is Jakarta, on the north-west coast of Java. Since 2019 the government has been progressively moving parts of the administrative capital to Nusantara (IKN) in East Kalimantan; Jakarta remains the largest city and economic centre.\n  · [accommodation.regional.jakarta_business · DKI Jakarta · stable · verified 2026-08-30T16:05:43.447Z]\n    Jakarta's business-hotel inventory concentrates in the SCBD, Sudirman, Thamrin, and Kuningan corridors, with international chains including Ritz-Carlton, Grand Hyatt, Fairmont, Mandarin Oriental, and Four Seasons. Mid-market properties spread through South Jakarta (Kemang, Blok M). Airport hotels cluster at Soekarno-Hatta."
+          }
+        },
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "indonesia",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "high",
+          "reason": "reply carries 1 grounded/retrieved/computed claim",
+          "claims": [
+            {
+              "claim": "grounded knowledge citation",
+              "evidence": "retrieved",
+              "source": "NEX Indonesia knowledge corpus"
+            }
+          ],
+          "evidenceCount": 1,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": true,
+            "evidenceCount": 1,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 0,
+              "byKind": {}
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "high",
+            "confidenceReason": "reply carries 1 grounded/retrieved/computed claim",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "low",
+            "fabricationReason": "no reflection failures · confidence acceptable"
+          },
+          "whatShouldIDo": {
+            "action": "grounded answer delivered · await user's next turn",
+            "origin": "grounded_answer"
+          },
+          "whatILearned": {
+            "recentEntries": [],
+            "count": 0
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=high · reflection=5/5 · fabrication_risk=low · next=grounded_answer"
+        },
+        "entities": {
+          "total": 0,
+          "byKind": {}
+        },
+        "current_reference": null,
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "world_retrieval",
+          "secondary": [],
+          "reason": "intent=indonesia → grounded corpus retrieval",
+          "availability": "available",
+          "parameters": {
+            "market": "ID",
+            "query": "who's the current governor of jakarta?",
+            "limit": 15,
+            "minConfidence": 0.5
+          }
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=indonesia · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [],
+          "hasSignals": false,
+          "summary": "no adaptation patterns · behavior unchanged"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "indonesia",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=indonesia (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": null,
+        "world_expanded_page": null,
+        "world_latency_ms": null,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "voice_reply": {
+          "en": "Hmm — bit vague. Can you give me a bit more? Like a place, an activity, or what you're after?",
+          "id": "Hmm — masih ambigu nih. Boleh kasih detail dikit? Misal tempat, aktivitas, atau lagi cari apa?",
+          "mode": "HANGOUT",
+          "intent": "clarify_ambiguous",
+          "chosen_reason": "fallback · no matching signal in BrainReply"
+        },
+        "metrics": {
+          "total_ms": 6,
+          "brain_ms": 6,
+          "world_ms": null,
+          "specialist_used": null
+        }
+      },
+      "summary": {
+        "http_status": 200,
+        "latency_ms": 52,
+        "reply": "Jakarta is Indonesia's capital and largest city — a business hub rather than a classic tourist destination. Highlights: Kota Tua (old Dutch quarter with cafés and museums), Monas (National Monument), Istiqlal Mosque (South-East Asia's largest, next door to the Catholic cathedral), Taman Mini Indonesia Indah (culture park), night markets in Glodok (Chinatown), and Pantai Indah Kapuk for modern food streets. Traffic is heavy — plan indoor blocks and use Gojek/Grab or MRT/TransJakarta buses.\n\nThe capital of Indonesia is Jakarta, on the north-west coast of Java. Since 2019 the government has been progressively moving parts of the administrative capital to Nusantara (IKN) in East Kalimantan; Jakarta remains the largest city and economic centre.\n\nJakarta's business-hotel inventory concentrates in the SCBD, Sudirman, Thamrin, and Kuningan corridors, with international chains including Ritz-Carlton, Grand Hyatt, Fairmont, Mandarin Oriental, and Four Seasons. Mid-market properties spread through South Jakarta (Kemang, Blok M). Airport hotels cluster at Soekarno-Hatta. (Source: NEX Indonesia knowledge · DKI Jakarta · verified 2026-08-30T00:00:00.000Z.)",
+        "voice_reply_en": "Hmm — bit vague. Can you give me a bit more? Like a place, an activity, or what you're after?",
+        "voice_reply_id": "Hmm — masih ambigu nih. Boleh kasih detail dikit? Misal tempat, aktivitas, atau lagi cari apa?",
+        "voice_intent": "clarify_ambiguous",
+        "voice_chosen_reason": "fallback · no matching signal in BrainReply",
+        "intent": "indonesia",
+        "intent_reason": "indonesia_place_or_country",
+        "confidence_overall": "high",
+        "confidence_reason": "reply carries 1 grounded/retrieved/computed claim",
+        "claim_count": 1,
+        "evidence_count": 1,
+        "boundary_count": 0,
+        "reflection_pass": true,
+        "reflection_ratio": "5/5",
+        "fabrication_risk": "low",
+        "entity_count": 0,
+        "current_reference": null,
+        "world_cards_count": null,
+        "knowledge_result_kind": null,
+        "action_audit_final": null,
+        "goal_kind": null,
+        "goal_status": null,
+        "total_ms": 6
+      }
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "process_pid": 4264,
+  "ran_at": "2026-09-05T14:49:38.243Z",
+  "store_dir": "C:\\Users\\Victus\\trades\\tests\\fixtures\\programmer-learning-proof\\phase_b_store",
+  "retrieved_knowledge_id": "know_0a2c9086-2353-40da-aabf-606f6563d02e",
+  "retrieved_knowledge_statement": "fs.readFileSync throws an Error whose `code` property equals the string 'ENOENT' when the target file does not exist.",
+  "retrieved_knowledge_provenance": {
+    "source": "verifier:subprocess_probe",
+    "source_type": "internal_artifact",
+    "authority_tier": "TIER_1",
+    "evidence_pointer": "programmer-learning/verifications/run_7d3434dd-bb58-4a24-bed8-da2af9a3e7d0.json",
+    "observed_by": "system",
+    "retrieved_at": "2026-09-05T14:49:34.975Z"
+  },
+  "retrieved_skill_id": "skill_f679bc91-add2-44b8-bfca-e3d6898a9c13",
+  "retrieved_skill_name": "Safely detect missing-file condition via err.code === 'ENOENT'",
+  "retrieved_skill_promotion_state": "VERIFIED",
+  "reuse_test": {
+    "passed": true,
+    "existing_result": {
+      "exists": true,
+      "errorCode": null
+    },
+    "missing_result": {
+      "exists": false,
+      "errorCode": "ENOENT"
+    },
+    "directory_result": {
+      "exists": false,
+      "errorCode": "EISDIR"
+    }
+  },
+  "stats": {
+    "events_total": 4,
+    "events_by_kind": {
+      "external_source_read": 1,
+      "verification": 1,
+      "experience_created": 1,
+      "learning": 1
+    },
+    "knowledge_total": 2,
+    "knowledge_by_status": {
+      "CHECKED": 1,
+      "VERIFIED": 1
+    },
+    "knowledge_by_tier": {
+      "TIER_1": 2
+    },
+    "skills_total": 2,
+    "skills_by_promotion": {
+      "OBSERVED": 1,
+      "VERIFIED": 1
+    },
+    "experiences_total": 1,
+    "experiences_by_outcome": {
+      "success": 1
+    },
+    "learning_runs_total": 1,
+    "latest_event_timestamp": "2026-09-05T14:49:34.980Z",
+    "latest_experience_timestamp": "2026-09-05T14:49:34.978Z"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "process_pid": 33132,
+  "ran_at": "2026-09-05T15:40:26.471Z",
+  "baseline_loaded_from_disk": "stab_baseline",
+  "baseline_fingerprint": "5d18f0d3a46559c501a55b66",
+  "fresh_fingerprint": "5d18f0d3a46559c501a55b66",
+  "fingerprint_match": true,
+  "manifest_hashes_match": true,
+  "fresh_manifest": {
+    "benchmark_version": "programmer-benchmark-v1",
+    "benchmark_hash": "a8b24746e96fc6ddb2c910d6",
+    "reviewer_hash": "7fb39cb09ceb8f3153f80e9a",
+    "evaluator_hash": "d94b2663123266defde6c027",
+    "knowledge_snapshot_hash": "UNKNOWN",
+    "environment_identifier": "node:v24.18.0",
+    "captured_at": "2026-09-05T15:40:26.467Z"
+  },
+  "baseline_manifest": {
+    "benchmark_version": "programmer-benchmark-v1",
+    "benchmark_hash": "a8b24746e96fc6ddb2c910d6",
+    "reviewer_hash": "7fb39cb09ceb8f3153f80e9a",
+    "evaluator_hash": "d94b2663123266defde6c027",
+    "knowledge_snapshot_hash": "UNKNOWN",
+    "environment_identifier": "node:v24.18.0",
+    "captured_at": "2026-09-05T15:40:23.435Z"
+  }
+}

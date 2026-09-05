@@ -1,0 +1,791 @@
+{
+  "id": "13",
+  "category": "C",
+  "stress": "cross-cultural comparison from established referent",
+  "conversation_id": "9f79d1bd-69f9-4af0-9f62-1cc1a2033e36",
+  "turns": [
+    {
+      "turnId": "t1",
+      "message": "explain indonesian rendang",
+      "response": {
+        "conversation_id": "9f79d1bd-69f9-4af0-9f62-1cc1a2033e36",
+        "reply": "Rendang is a slow-cooked beef curry from West Sumatra (Padang cuisine). Beef is simmered for hours in coconut milk with lemongrass, galangal, turmeric, kaffir lime and chilli until the liquid reduces and the meat turns dark and rich. Best found at Padang restaurants (rumah makan Padang) — the classic ordering style is a bench of small dishes brought to your table, you pay for what you eat. (Source: NEX Indonesia knowledge · West Sumatra · verified 2026-08-30T00:00:00.000Z.)",
+        "understood_intent": "food",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "food",
+        "intent_reason": "food_terms",
+        "suggestions": [
+          {
+            "label": "Find nearby",
+            "href": "/nex-app/centre"
+          }
+        ],
+        "card": {
+          "kind": "knowledge",
+          "payload": {
+            "hits": [
+              {
+                "id": "id-food-rendang",
+                "topic": "food.rendang",
+                "region": "West Sumatra",
+                "stability": "stable",
+                "confidence": 1,
+                "last_verified": "2026-08-30T00:00:00.000Z"
+              },
+              {
+                "id": "id-basics-language",
+                "topic": "indonesia.language",
+                "region": "Indonesia",
+                "stability": "stable",
+                "confidence": 1,
+                "last_verified": "2026-08-30T00:00:00.000Z"
+              },
+              {
+                "id": "walker-curated-seed-6c44a753e6",
+                "topic": "food.nasi_padang",
+                "region": "West Sumatra",
+                "stability": "stable",
+                "confidence": 0.95,
+                "last_verified": "2026-08-30T00:00:00.000Z"
+              }
+            ],
+            "grounded_block": "NEX Indonesia knowledge (grounded · cite the region/topic when useful, do not embellish):\n  · [food.rendang · West Sumatra · stable · verified 2026-08-30T00:00:00.000Z]\n    Rendang is a slow-cooked beef curry from West Sumatra (Padang cuisine). Beef is simmered for hours in coconut milk with lemongrass, galangal, turmeric, kaffir lime and chilli until the liquid reduces and the meat turns dark and rich. Best found at Padang restaurants (rumah makan Padang) — the classic ordering style is a bench of small dishes brought to your table, you pay for what you eat.\n  · [indonesia.language · Indonesia · stable · verified 2026-08-30T00:00:00.000Z]\n    The official language is Bahasa Indonesia. English is common in tourist areas (Bali, Jakarta, Yogyakarta) but limited elsewhere. Learning a handful of phrases (terima kasih = thank you, permisi = excuse me, tolong = please) is warmly received.\n  · [food.nasi_padang · West Sumatra · stable · verified 2026-08-30T00:00:00.000Z]\n    Nasi Padang is the classic Padang-style presentation from West Sumatra: rice served with 10–15 small dishes brought to your table — rendang, gulai ayam (chicken curry), sambal ijo (green chilli), telur balado (spicy egg), sayur nangka (jackfruit curry) — and you pay only for what you eat. Rumah Makan Padang (Padang restaurants) are everywhere in Indonesia. Very spicy by default; ask for 'tidak pedas' if you want mild."
+          }
+        },
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "food",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "learning",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": false,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": false,
+              "reason": "reply names 4 business(es) not in the World result set: cooked beef curry from West Sumatra (Padang cuisine). Beef is simmered for hours in coconut milk with lemongrass, galangal, turmeric, kaffir lime and chilli until the liquid reduces and the meat turns dark and rich. Best found at Padang restaurants (rumah makan Padang)"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 4,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "high",
+          "reason": "reply carries 1 grounded/retrieved/computed claim",
+          "claims": [
+            {
+              "claim": "grounded knowledge citation",
+              "evidence": "retrieved",
+              "source": "NEX Indonesia knowledge corpus"
+            }
+          ],
+          "evidenceCount": 1,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": true,
+            "evidenceCount": 1,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 0,
+              "byKind": {}
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "high",
+            "confidenceReason": "reply carries 1 grounded/retrieved/computed claim",
+            "reflectionOverallPass": false,
+            "reflectionPassRatio": "4/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [
+              "hasEvidenceForClaims: reply names 4 business(es) not in the World result set: cooked beef curry from West Sumatra (Padang cuisine). Beef is simmered for hours in coconut milk with lemongrass, galangal, turmeric, kaffir lime and chilli until the liquid reduces and the meat turns dark and rich. Best found at Padang restaurants (rumah makan Padang)"
+            ],
+            "fabricationRisk": "high",
+            "fabricationReason": "Reflection caught 1 evidence/honesty failure(s)"
+          },
+          "whatShouldIDo": {
+            "action": "grounded answer delivered · await user's next turn",
+            "origin": "grounded_answer"
+          },
+          "whatILearned": {
+            "recentEntries": [
+              {
+                "kind": "reflection_failure",
+                "scope": "food.reflection",
+                "summary": "1 check(s) failed: hasEvidenceForClaims",
+                "atMs": 1788600246435
+              }
+            ],
+            "count": 1
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=high · reflection=4/5 · fabrication_risk=high · next=grounded_answer · learned=1"
+        },
+        "entities": {
+          "total": 0,
+          "byKind": {}
+        },
+        "current_reference": {
+          "resolved": false,
+          "reason": "no_reference_mentioned"
+        },
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "world_retrieval",
+          "secondary": [],
+          "reason": "intent=food → grounded corpus retrieval",
+          "availability": "available",
+          "parameters": {
+            "market": "ID",
+            "query": "explain indonesian rendang",
+            "limit": 15,
+            "minConfidence": 0.5
+          }
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=food · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [],
+          "hasSignals": false,
+          "summary": "no adaptation patterns · behavior unchanged"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "food",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=food (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": {
+          "vertical": "food",
+          "cards": [
+            {
+              "id": "#FL-2026-00091",
+              "vertical": "food",
+              "name": "Thai Tea kiosk",
+              "subline": "Fast-food · Yogyakarta",
+              "location": "Yogyakarta",
+              "verified": false,
+              "provenanceLabel": "NEX directory · listed",
+              "ownershipState": "unclaimed",
+              "actions": [
+                {
+                  "kind": "view",
+                  "label": "View",
+                  "href": "/nex-app/centre?ref=%23FL-2026-00091"
+                },
+                {
+                  "kind": "directions",
+                  "label": "Directions",
+                  "href": "https://maps.google.com/?q=-7.818006,110.36814"
+                }
+              ]
+            },
+            {
+              "id": "#FL-2026-000QD",
+              "vertical": "food",
+              "name": "Omah Mie Miyada",
+              "subline": "Fast-food · Yogyakarta",
+              "location": "Yogyakarta",
+              "verified": false,
+              "provenanceLabel": "NEX directory · listed",
+              "ownershipState": "unclaimed",
+              "actions": [
+                {
+                  "kind": "view",
+                  "label": "View",
+                  "href": "/nex-app/centre?ref=%23FL-2026-000QD"
+                },
+                {
+                  "kind": "directions",
+                  "label": "Directions",
+                  "href": "https://maps.google.com/?q=-7.811574,110.416091"
+                }
+              ]
+            },
+            {
+              "id": "#FL-2026-000R3",
+              "vertical": "food",
+              "name": "Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo",
+              "subline": "Fast-food · Yogyakarta",
+              "location": "Yogyakarta",
+              "verified": false,
+              "provenanceLabel": "NEX directory · listed",
+              "ownershipState": "unclaimed",
+              "actions": [
+                {
+                  "kind": "view",
+                  "label": "View",
+                  "href": "/nex-app/centre?ref=%23FL-2026-000R3"
+                },
+                {
+                  "kind": "directions",
+                  "label": "Directions",
+                  "href": "https://maps.google.com/?q=-7.752302,110.419729"
+                }
+              ]
+            }
+          ],
+          "totalAvailable": 797,
+          "headline": "Showing 3 of 797 real places."
+        },
+        "world_expanded_page": null,
+        "world_latency_ms": 2488.0606999993324,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": false,
+          "accepted": false
+        },
+        "voice_reply": {
+          "en": "Yep — found 3.",
+          "id": "Sip — ketemu 3.",
+          "mode": "HANGOUT",
+          "intent": "discovery_hit",
+          "chosen_reason": "world_cards produced 3 records"
+        },
+        "metrics": {
+          "total_ms": 2499,
+          "brain_ms": 2499,
+          "world_ms": 2488.0606999993324,
+          "specialist_used": null
+        }
+      },
+      "summary": {
+        "http_status": 200,
+        "latency_ms": 2516,
+        "intent": "food",
+        "intent_reason": "food_terms",
+        "baseline_reply": "Rendang is a slow-cooked beef curry from West Sumatra (Padang cuisine). Beef is simmered for hours in coconut milk with lemongrass, galangal, turmeric, kaffir lime and chilli until the liquid reduces and the meat turns dark and rich. Best found at Padang restaurants (rumah makan Padang) — the classic ordering style is a bench of small dishes brought to your table, you pay for what you eat. (Source: NEX Indonesia knowledge · West Sumatra · verified 2026-08-30T00:00:00.000Z.)",
+        "served_reply": "Yep — found 3.",
+        "composition_ran": false,
+        "composition_accepted": false,
+        "composition_reason": null,
+        "composition_model": null,
+        "composition_latency_ms": null,
+        "composition_flags": [],
+        "composition_flag_count": 0,
+        "composition_high_flag_count": 0,
+        "knowledge_count": null,
+        "frame_topic": null,
+        "frame_subject": null,
+        "confidence_overall": "high",
+        "fabrication_risk": "high"
+      }
+    },
+    {
+      "turnId": "t2",
+      "message": "how is that different from beef curry?",
+      "response": {
+        "conversation_id": "9f79d1bd-69f9-4af0-9f62-1cc1a2033e36",
+        "reply": "I found 797 real places — Thai Tea kiosk, Omah Mie Miyada, Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo, and more. These are NEX directory listings for discovery — I never invent price or availability.",
+        "understood_intent": "conversation",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "conversation",
+        "intent_reason": "default_conversation_no_specialist_signal",
+        "suggestions": [],
+        "card": null,
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "learning",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": {
+          "kind": "food",
+          "status": "active",
+          "summary": "a food search (explain indonesian rendang)",
+          "turnsSinceProgress": 0
+        },
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "count + names verified against live World evidence set"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "low",
+          "reason": "reply has no recognisable claims",
+          "claims": [],
+          "evidenceCount": 0,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": false,
+            "evidenceCount": 0,
+            "boundaryCount": 0,
+            "goal": {
+              "kind": "food",
+              "status": "active",
+              "summary": "a food search (explain indonesian rendang)"
+            },
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 9,
+              "byKind": {
+                "business_name": 9
+              }
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "low",
+            "confidenceReason": "reply has no recognisable claims",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "medium",
+            "fabricationReason": "Confidence assessor found no recognisable claims"
+          },
+          "whatShouldIDo": {
+            "action": "presented candidates for a food search (explain indonesian rendang) · await refinement",
+            "origin": "goal_progress"
+          },
+          "whatILearned": {
+            "recentEntries": [
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788600246698
+              },
+              {
+                "kind": "reflection_failure",
+                "scope": "food.reflection",
+                "summary": "1 check(s) failed: hasEvidenceForClaims",
+                "atMs": 1788600246435
+              }
+            ],
+            "count": 2
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=low · reflection=5/5 · fabrication_risk=medium · goal=active · next=goal_progress · learned=2"
+        },
+        "entities": {
+          "total": 9,
+          "byKind": {
+            "business_name": 9
+          }
+        },
+        "current_reference": {
+          "resolved": false,
+          "reason": "no_reference_mentioned"
+        },
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "none",
+          "secondary": [],
+          "reason": "conversational intent · composer replies directly",
+          "availability": "available"
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=conversation · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [],
+          "hasSignals": false,
+          "summary": "no adaptation patterns · behavior unchanged"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [
+            {
+              "kind": "goal",
+              "subject": "goal:food",
+              "displayName": "food goal (a food search (explain indonesian rendang))",
+              "score": 1.5,
+              "reason": "goal status=active"
+            },
+            {
+              "kind": "entity",
+              "subject": "entity:thai tea kiosk",
+              "displayName": "Thai Tea kiosk",
+              "score": 0.8,
+              "reason": "presented entity"
+            },
+            {
+              "kind": "entity",
+              "subject": "entity:omah mie miyada",
+              "displayName": "Omah Mie Miyada",
+              "score": 0.8,
+              "reason": "presented entity"
+            },
+            {
+              "kind": "entity",
+              "subject": "entity:ubi madu cilembu berbakar kang mas - stad. maguwoharjo",
+              "displayName": "Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo",
+              "score": 0.8,
+              "reason": "presented entity"
+            },
+            {
+              "kind": "entity",
+              "subject": "entity:just juice",
+              "displayName": "Just Juice",
+              "score": 0.8,
+              "reason": "presented entity"
+            },
+            {
+              "kind": "entity",
+              "subject": "entity:melu cafe",
+              "displayName": "Melu Cafe",
+              "score": 0.8,
+              "reason": "presented entity"
+            },
+            {
+              "kind": "entity",
+              "subject": "entity:jogja chicken",
+              "displayName": "Jogja Chicken",
+              "score": 0.8,
+              "reason": "presented entity"
+            },
+            {
+              "kind": "entity",
+              "subject": "entity:silol cafe",
+              "displayName": "Silol Cafe",
+              "score": 0.8,
+              "reason": "presented entity"
+            },
+            {
+              "kind": "entity",
+              "subject": "entity:j.co",
+              "displayName": "J.Co",
+              "score": 0.8,
+              "reason": "presented entity"
+            },
+            {
+              "kind": "entity",
+              "subject": "entity:omah mapan coworking space & cafe",
+              "displayName": "Omah Mapan Coworking Space & Cafe",
+              "score": 0.8,
+              "reason": "presented entity"
+            }
+          ],
+          "top": {
+            "kind": "goal",
+            "subject": "goal:food",
+            "displayName": "food goal (a food search (explain indonesian rendang))",
+            "score": 1.5,
+            "reason": "goal status=active"
+          },
+          "summary": "top=goal:food score=1.50 · 10 ranked"
+        },
+        "planning": {
+          "goalKind": "conversation",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=conversation (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": {
+          "vertical": "food",
+          "cards": [
+            {
+              "id": "#FL-2026-00091",
+              "vertical": "food",
+              "name": "Thai Tea kiosk",
+              "subline": "Fast-food · Yogyakarta",
+              "location": "Yogyakarta",
+              "verified": false,
+              "provenanceLabel": "NEX directory · listed",
+              "ownershipState": "unclaimed",
+              "actions": [
+                {
+                  "kind": "view",
+                  "label": "View",
+                  "href": "/nex-app/centre?ref=%23FL-2026-00091"
+                },
+                {
+                  "kind": "directions",
+                  "label": "Directions",
+                  "href": "https://maps.google.com/?q=-7.818006,110.36814"
+                }
+              ]
+            },
+            {
+              "id": "#FL-2026-000QD",
+              "vertical": "food",
+              "name": "Omah Mie Miyada",
+              "subline": "Fast-food · Yogyakarta",
+              "location": "Yogyakarta",
+              "verified": false,
+              "provenanceLabel": "NEX directory · listed",
+              "ownershipState": "unclaimed",
+              "actions": [
+                {
+                  "kind": "view",
+                  "label": "View",
+                  "href": "/nex-app/centre?ref=%23FL-2026-000QD"
+                },
+                {
+                  "kind": "directions",
+                  "label": "Directions",
+                  "href": "https://maps.google.com/?q=-7.811574,110.416091"
+                }
+              ]
+            },
+            {
+              "id": "#FL-2026-000R3",
+              "vertical": "food",
+              "name": "Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo",
+              "subline": "Fast-food · Yogyakarta",
+              "location": "Yogyakarta",
+              "verified": false,
+              "provenanceLabel": "NEX directory · listed",
+              "ownershipState": "unclaimed",
+              "actions": [
+                {
+                  "kind": "view",
+                  "label": "View",
+                  "href": "/nex-app/centre?ref=%23FL-2026-000R3"
+                },
+                {
+                  "kind": "directions",
+                  "label": "Directions",
+                  "href": "https://maps.google.com/?q=-7.752302,110.419729"
+                }
+              ]
+            }
+          ],
+          "totalAvailable": 797,
+          "headline": "Showing 3 of 797 real places."
+        },
+        "world_expanded_page": null,
+        "world_latency_ms": 216.430300001055,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": false,
+          "accepted": false
+        },
+        "voice_reply": {
+          "en": "Yep — found 3.",
+          "id": "Sip — ketemu 3.",
+          "mode": "HANGOUT",
+          "intent": "discovery_hit",
+          "chosen_reason": "world_cards produced 3 records"
+        },
+        "metrics": {
+          "total_ms": 218,
+          "brain_ms": 218,
+          "world_ms": 216.430300001055,
+          "specialist_used": null
+        }
+      },
+      "summary": {
+        "http_status": 200,
+        "latency_ms": 256,
+        "intent": "conversation",
+        "intent_reason": "default_conversation_no_specialist_signal",
+        "baseline_reply": "I found 797 real places — Thai Tea kiosk, Omah Mie Miyada, Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo, and more. These are NEX directory listings for discovery — I never invent price or availability.",
+        "served_reply": "Yep — found 3.",
+        "composition_ran": false,
+        "composition_accepted": false,
+        "composition_reason": null,
+        "composition_model": null,
+        "composition_latency_ms": null,
+        "composition_flags": [],
+        "composition_flag_count": 0,
+        "composition_high_flag_count": 0,
+        "knowledge_count": null,
+        "frame_topic": null,
+        "frame_subject": null,
+        "confidence_overall": "low",
+        "fabrication_risk": "medium"
+      }
+    }
+  ]
+}

@@ -97,19 +97,73 @@ const ORDINALS: Array<[RegExp, string]> = [
   [/\b(third|3rd)\b/i, "third"],
   [/\b(fourth|4th)\b/i, "fourth"],
   [/\b(fifth|5th)\b/i, "fifth"],
+  // Indonesian bare ordinals · pertama/kedua/ketiga/keempat/kelima.
+  // Word-boundary anchored · "yang pertama" naturally contains
+  // "pertama" · "yang kedua" naturally contains "kedua" · etc.
   [/\bpertama\b/i, "first"],
   [/\bkedua\b/i, "second"],
   [/\bketiga\b/i, "third"],
+  [/\bkeempat\b/i, "fourth"],
+  [/\bkelima\b/i, "fifth"],
+  // Stage 3.41.j · composite Indonesian ordinals · "nomor satu" ·
+  // "nomor dua" · "nomor tiga" · "nomor empat" · "nomor lima" ·
+  // plus digit form "nomor 1" · "nomor 2" etc. Also naturally covers
+  // "yang nomor dua" (because the word-boundary matches between
+  // "yang " and "nomor"). Requires an explicit number after "nomor"
+  // so bare "nomor" does not resolve · fail-closed.
+  [/\bnomor\s+(satu|1)\b/i, "first"],
+  [/\bnomor\s+(dua|2)\b/i, "second"],
+  [/\bnomor\s+(tiga|3)\b/i, "third"],
+  [/\bnomor\s+(empat|4)\b/i, "fourth"],
+  [/\bnomor\s+(lima|5)\b/i, "fifth"],
+  // Stage 3.41.m · code-switch reference glue (Philip 2026-08-31).
+  //
+  // Positional / temporal references — resolved dynamically against the
+  // presented batch + session.currentReference. Kept intentionally
+  // narrow with the "yang X" / "the X one" scaffolding so bare "last" /
+  // "previous" in mid-sentence contexts ("last week" · "at last" ·
+  // "the previous meeting") do NOT extract as reference tokens.
+  //
+  //   canonical="last"      → resolves to batch.length (last presented)
+  //   canonical="previous"  → resolves to currentReference.offset - 1
+  //   canonical="yang_tadi" → resolves to currentReference (fresh only)
+  //                            OR to a single-entity batch
+  //
+  // Failure modes: `previous_without_current` · `yang_tadi_without_current`
+  // — never guesses.
+  [/\b(the\s+)?last\s+one\b/i, "last"],
+  [/\byang\s+(last(\s+one)?|terakhir)\b/i, "last"],
+  [/\b(the\s+)?previous\s+one\b/i, "previous"],
+  [/\byang\s+(previous(\s+(one|page|slide))?|sebelumnya)\b/i, "previous"],
+  [/\byang\s+(tadi|barusan)\b/i, "yang_tadi"],
+  // Stage 3.41.m addendum · symmetric counterpart to `previous` ·
+  // Corpus R (ride) exposed "yang next ride" / "yang next" / "the next
+  // one" / "yang selanjutnya" / "yang berikutnya". Guards mirror the
+  // `previous` scaffolding — bare "next meeting" mid-sentence does
+  // NOT extract because we require the `yang X` / `the X one` frame.
+  [/\b(the\s+)?next\s+one\b/i, "next"],
+  [/\byang\s+(next(\s+one)?|selanjutnya|berikutnya)\b/i, "next"],
 ];
 
 const PRONOUNS: Array<[RegExp, string]> = [
   [/\bthat one\b/i, "that_one"],
+  [/\bthis one\b/i, "this_one"],                    // Stage 3.41.d P4
   [/\bthese\b/i, "these"],
   [/\bthose\b/i, "those"],
   [/\byang (ini|itu)\b/i, "yang_this"],
   [/\bitu\b/i, "itu"],
   // "it" alone is highly ambiguous — only capture in strong contexts
-  [/\b(book|buy|reserve|open) it\b/i, "it"],
+  [/\b(book|buy|reserve|open|message|contact|tell|call|text|whatsapp) it\b/i, "it"],
+  // Stage 3.41.d P4 · "them" is common in action-target contexts
+  // ("message them" · "call them"). Kept unconditional like "that one"
+  // because the resolver enforces unambiguous-referent discipline.
+  [/\bthem\b/i, "them"],
+  // "him"/"her" only in action-target contexts · avoids matching
+  // pronouns in casual sentences like "she's from Jakarta".
+  [/\b(message|contact|call|text|whatsapp|book|tell) (him|her)\b/i, "him_her"],
+  // Indonesian conversational references · gender-neutral.
+  [/\bmereka\b/i, "mereka"],
+  [/\b(hubungi|kirim|pesan(kan)?|kontak|telepon) dia\b/i, "dia"],
 ];
 
 const DATE_REFS: Array<[RegExp, string]> = [
@@ -245,7 +299,18 @@ export function findPresentedBusinessByOffset(
   offset: number,
 ): RecognisedEntity | undefined {
   // Group by atIso to find "the most recent presentation batch".
-  const presented = window.filter((e) => e.kind === "business_name" && e.source === "nex_reply");
+  // P1 REDIRECT (Philip 2026-09-05): widened to accept `place` and
+  // `area` kinds when source === "nex_reply", matching the widened
+  // filter in reference-resolution.ts. Enables ordinal resolution
+  // against composed lists (e.g., "list three regions" → session
+  // has 3 place entities → "the second one" resolves correctly).
+  // The `nex_reply` source restriction is preserved so user-generated
+  // entities never become ordinally-resolvable.
+  const presented = window.filter(
+    (e) =>
+      (e.kind === "business_name" || e.kind === "place" || e.kind === "area") &&
+      e.source === "nex_reply",
+  );
   if (presented.length === 0) return undefined;
   const mostRecentIso = presented[presented.length - 1].atIso;
   const batch = presented.filter((e) => e.atIso === mostRecentIso);

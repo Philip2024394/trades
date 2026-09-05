@@ -1,0 +1,2463 @@
+{
+  "runAtIso": "2026-09-05T10:26:27.856Z",
+  "conversation_id": "4fc56ce5-d16b-4f1c-89f7-477131ffa6a1",
+  "turns": [
+    {
+      "label": "T1 · broad topic",
+      "message": "Tell me about the Indonesian seafood industry.",
+      "reply": "Indonesian seafood is a significant part of the country's food culture and economy. Key markets include Jimbaran Bay in Bali, Muara Karang in Jakarta, and various fishing villages across islands like Flores and Lombok. Seafood is prepared in classic styles such as grilled, fried, or in a spicy sour broth, and prices should be verified before cooking, especially at tourist-facing spots.",
+      "intent": "conversation",
+      "composition_ran": true,
+      "composition_accepted": true,
+      "composition_reason": null,
+      "widened_for_information_query": false,
+      "frame_topic": "Tell",
+      "frame_subject": null,
+      "flags": [],
+      "knowledge_count": 6,
+      "composed_entity_count": 3,
+      "latency_ms": 9270,
+      "response": {
+        "conversation_id": "4fc56ce5-d16b-4f1c-89f7-477131ffa6a1",
+        "reply": "Indonesian seafood is a significant part of the country's food culture and economy. Key markets include Jimbaran Bay in Bali, Muara Karang in Jakarta, and various fishing villages across islands like Flores and Lombok. Seafood is prepared in classic styles such as grilled, fried, or in a spicy sour broth, and prices should be verified before cooking, especially at tourist-facing spots.",
+        "understood_intent": "conversation",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "conversation",
+        "intent_reason": "default_conversation_no_specialist_signal",
+        "suggestions": [],
+        "card": null,
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "learning",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "low",
+          "reason": "reply has no recognisable claims",
+          "claims": [],
+          "evidenceCount": 0,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": false,
+            "evidenceCount": 0,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 0,
+              "byKind": {}
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "low",
+            "confidenceReason": "reply has no recognisable claims",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "medium",
+            "fabricationReason": "Confidence assessor found no recognisable claims"
+          },
+          "whatShouldIDo": {
+            "action": "no explicit next-step signal",
+            "origin": "silence"
+          },
+          "whatILearned": {
+            "recentEntries": [
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788603987926
+              }
+            ],
+            "count": 1
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=low · reflection=5/5 · fabrication_risk=medium · next=silence · learned=1"
+        },
+        "entities": {
+          "total": 0,
+          "byKind": {}
+        },
+        "current_reference": null,
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "none",
+          "secondary": [],
+          "reason": "conversational intent · composer replies directly",
+          "availability": "available"
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=conversation · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [],
+          "hasSignals": false,
+          "summary": "no adaptation patterns · behavior unchanged"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "conversation",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=conversation (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": null,
+        "world_expanded_page": null,
+        "world_latency_ms": null,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": true,
+          "accepted": true,
+          "widened_for_information_query": false,
+          "frame_topic": "Tell",
+          "knowledge_count": 6,
+          "baseline_reply": "Happy to chat. If you're planning something in Indonesia, want restaurant ideas, or need to find a professional, just say the word.",
+          "model": "qwen2.5:7b-instruct-q3_K_M",
+          "fell_back": false,
+          "latency_ms": 9193,
+          "prompt_tokens": 1308,
+          "response_tokens": 81,
+          "flags": [],
+          "post_composition_audit_ran": true,
+          "composed_reply": "Indonesian seafood is a significant part of the country's food culture and economy. Key markets include Jimbaran Bay in Bali, Muara Karang in Jakarta, and various fishing villages across islands like Flores and Lombok. Seafood is prepared in classic styles such as grilled, fried, or in a spicy sour broth, and prices should be verified before cooking, especially at tourist-facing spots.",
+          "composed_entity_count": 3
+        },
+        "voice_reply": {
+          "en": "Indonesian seafood is a significant part of the country's food culture and economy. Key markets include Jimbaran Bay in Bali, Muara Karang in Jakarta, and various fishing villages across islands like Flores and Lombok. Seafood is prepared in classic styles such as grilled, fried, or in a spicy sour broth, and prices should be verified before cooking, especially at tourist-facing spots.",
+          "id": null,
+          "mode": "friendly",
+          "intent": "p0_composed",
+          "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=9193"
+        },
+        "metrics": {
+          "total_ms": 1,
+          "brain_ms": 1,
+          "world_ms": null,
+          "specialist_used": null
+        }
+      }
+    },
+    {
+      "label": "T2 · specific subtopic",
+      "message": "What about tuna?",
+      "reply": "Indonesian tuna is a key export, particularly from regions like East Java and North Sulawesi. It's used in various dishes and is important for the country's seafood industry.",
+      "intent": "conversation",
+      "composition_ran": true,
+      "composition_accepted": true,
+      "composition_reason": null,
+      "widened_for_information_query": false,
+      "frame_topic": "What",
+      "frame_subject": null,
+      "flags": [],
+      "knowledge_count": 0,
+      "composed_entity_count": 2,
+      "latency_ms": 4120,
+      "response": {
+        "conversation_id": "4fc56ce5-d16b-4f1c-89f7-477131ffa6a1",
+        "reply": "Indonesian tuna is a key export, particularly from regions like East Java and North Sulawesi. It's used in various dishes and is important for the country's seafood industry.",
+        "understood_intent": "conversation",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "conversation",
+        "intent_reason": "default_conversation_no_specialist_signal",
+        "suggestions": [],
+        "card": null,
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "learning",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "low",
+          "reason": "reply has no recognisable claims",
+          "claims": [],
+          "evidenceCount": 0,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": false,
+            "evidenceCount": 0,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 3,
+              "byKind": {
+                "place": 3
+              }
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "low",
+            "confidenceReason": "reply has no recognisable claims",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "medium",
+            "fabricationReason": "Confidence assessor found no recognisable claims"
+          },
+          "whatShouldIDo": {
+            "action": "no explicit next-step signal",
+            "origin": "silence"
+          },
+          "whatILearned": {
+            "recentEntries": [
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788603997147
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788603987926
+              }
+            ],
+            "count": 2
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=low · reflection=5/5 · fabrication_risk=medium · next=silence · learned=2"
+        },
+        "entities": {
+          "total": 3,
+          "byKind": {
+            "place": 3
+          }
+        },
+        "current_reference": null,
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "none",
+          "secondary": [],
+          "reason": "conversational intent · composer replies directly",
+          "availability": "available"
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=conversation · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [],
+          "hasSignals": false,
+          "summary": "no adaptation patterns · behavior unchanged"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "conversation",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=conversation (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": null,
+        "world_expanded_page": null,
+        "world_latency_ms": null,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": true,
+          "accepted": true,
+          "widened_for_information_query": false,
+          "frame_topic": "What",
+          "knowledge_count": 0,
+          "baseline_reply": "Happy to chat. If you're planning something in Indonesia, want restaurant ideas, or need to find a professional, just say the word.",
+          "model": "qwen2.5:7b-instruct-q3_K_M",
+          "fell_back": false,
+          "latency_ms": 4099,
+          "prompt_tokens": 675,
+          "response_tokens": 38,
+          "flags": [],
+          "post_composition_audit_ran": true,
+          "composed_reply": "Indonesian tuna is a key export, particularly from regions like East Java and North Sulawesi. It's used in various dishes and is important for the country's seafood industry.",
+          "composed_entity_count": 2
+        },
+        "voice_reply": {
+          "en": "Indonesian tuna is a key export, particularly from regions like East Java and North Sulawesi. It's used in various dishes and is important for the country's seafood industry.",
+          "id": null,
+          "mode": "friendly",
+          "intent": "p0_composed",
+          "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=4099"
+        },
+        "metrics": {
+          "total_ms": 0,
+          "brain_ms": 0,
+          "world_ms": null,
+          "specialist_used": null
+        }
+      }
+    },
+    {
+      "label": "T3 · related entity",
+      "message": "And Japan?",
+      "reply": "Jepang juga memiliki industri ikan laut yang signifikan. Negara tersebut terkenal dengan ikan tuna kualitas tinggi yang banyak diekspor.",
+      "intent": "conversation",
+      "composition_ran": true,
+      "composition_accepted": true,
+      "composition_reason": null,
+      "widened_for_information_query": false,
+      "frame_topic": "And Japan",
+      "frame_subject": null,
+      "flags": [],
+      "knowledge_count": 0,
+      "composed_entity_count": 0,
+      "latency_ms": 3826,
+      "response": {
+        "conversation_id": "4fc56ce5-d16b-4f1c-89f7-477131ffa6a1",
+        "reply": "Jepang juga memiliki industri ikan laut yang signifikan. Negara tersebut terkenal dengan ikan tuna kualitas tinggi yang banyak diekspor.",
+        "understood_intent": "conversation",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "conversation",
+        "intent_reason": "default_conversation_no_specialist_signal",
+        "suggestions": [],
+        "card": null,
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "learning",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "low",
+          "reason": "reply has no recognisable claims",
+          "claims": [],
+          "evidenceCount": 0,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": false,
+            "evidenceCount": 0,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 5,
+              "byKind": {
+                "place": 5
+              }
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "low",
+            "confidenceReason": "reply has no recognisable claims",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "medium",
+            "fabricationReason": "Confidence assessor found no recognisable claims"
+          },
+          "whatShouldIDo": {
+            "action": "no explicit next-step signal",
+            "origin": "silence"
+          },
+          "whatILearned": {
+            "recentEntries": [
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604001268
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788603997147
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788603987926
+              }
+            ],
+            "count": 3
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=low · reflection=5/5 · fabrication_risk=medium · next=silence · learned=3"
+        },
+        "entities": {
+          "total": 5,
+          "byKind": {
+            "place": 5
+          }
+        },
+        "current_reference": null,
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "none",
+          "secondary": [],
+          "reason": "conversational intent · composer replies directly",
+          "availability": "available"
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=conversation · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [],
+          "hasSignals": false,
+          "summary": "no adaptation patterns · behavior unchanged"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "conversation",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=conversation (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": null,
+        "world_expanded_page": null,
+        "world_latency_ms": null,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": true,
+          "accepted": true,
+          "widened_for_information_query": false,
+          "frame_topic": "And Japan",
+          "knowledge_count": 0,
+          "baseline_reply": "Happy to chat. If you're planning something in Indonesia, want restaurant ideas, or need to find a professional, just say the word.",
+          "model": "qwen2.5:7b-instruct-q3_K_M",
+          "fell_back": false,
+          "latency_ms": 3806,
+          "prompt_tokens": 700,
+          "response_tokens": 37,
+          "flags": [],
+          "post_composition_audit_ran": true,
+          "composed_reply": "Jepang juga memiliki industri ikan laut yang signifikan. Negara tersebut terkenal dengan ikan tuna kualitas tinggi yang banyak diekspor.",
+          "composed_entity_count": 0
+        },
+        "voice_reply": {
+          "en": "Jepang juga memiliki industri ikan laut yang signifikan. Negara tersebut terkenal dengan ikan tuna kualitas tinggi yang banyak diekspor.",
+          "id": null,
+          "mode": "friendly",
+          "intent": "p0_composed",
+          "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=3806"
+        },
+        "metrics": {
+          "total_ms": 1,
+          "brain_ms": 1,
+          "world_ms": null,
+          "specialist_used": null
+        }
+      }
+    },
+    {
+      "label": "T4 · commercial",
+      "message": "Could I export it?",
+      "reply": "Yes, you can export Indonesian tuna. It's a significant export from regions like East Java and North Sulawesi. However, you'll need to comply with export regulations and find a market willing to import it.",
+      "intent": "conversation",
+      "composition_ran": true,
+      "composition_accepted": true,
+      "composition_reason": null,
+      "widened_for_information_query": false,
+      "frame_topic": "Could",
+      "frame_subject": "logistics",
+      "flags": [],
+      "knowledge_count": 0,
+      "composed_entity_count": 2,
+      "latency_ms": 4557,
+      "response": {
+        "conversation_id": "4fc56ce5-d16b-4f1c-89f7-477131ffa6a1",
+        "reply": "Yes, you can export Indonesian tuna. It's a significant export from regions like East Java and North Sulawesi. However, you'll need to comply with export regulations and find a market willing to import it.",
+        "understood_intent": "conversation",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "conversation",
+        "intent_reason": "default_conversation_no_specialist_signal",
+        "suggestions": [],
+        "card": null,
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "learning",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "low",
+          "reason": "reply has no recognisable claims",
+          "claims": [],
+          "evidenceCount": 0,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": false,
+            "evidenceCount": 0,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 5,
+              "byKind": {
+                "place": 5
+              }
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "low",
+            "confidenceReason": "reply has no recognisable claims",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "medium",
+            "fabricationReason": "Confidence assessor found no recognisable claims"
+          },
+          "whatShouldIDo": {
+            "action": "no explicit next-step signal",
+            "origin": "silence"
+          },
+          "whatILearned": {
+            "recentEntries": [
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604005093
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604001268
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788603997147
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788603987926
+              }
+            ],
+            "count": 4
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=low · reflection=5/5 · fabrication_risk=medium · next=silence · learned=4"
+        },
+        "entities": {
+          "total": 5,
+          "byKind": {
+            "place": 5
+          }
+        },
+        "current_reference": null,
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "none",
+          "secondary": [],
+          "reason": "conversational intent · composer replies directly",
+          "availability": "available"
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=conversation · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [
+            {
+              "kind": "persistent_low_confidence",
+              "occurrenceCount": 3,
+              "suggestedAdjustment": "conversation lacks grounding · surface knowledge fetch or ask user to clarify goal to re-anchor",
+              "reason": "3 low-confidence turns in this conversation"
+            }
+          ],
+          "hasSignals": true,
+          "summary": "1 pattern detected · persistent_low_confidence"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "conversation",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=conversation (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": null,
+        "world_expanded_page": null,
+        "world_latency_ms": null,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": true,
+          "accepted": true,
+          "widened_for_information_query": false,
+          "frame_topic": "Could",
+          "frame_subject": "logistics",
+          "knowledge_count": 0,
+          "baseline_reply": "Happy to chat. If you're planning something in Indonesia, want restaurant ideas, or need to find a professional, just say the word.",
+          "model": "qwen2.5:7b-instruct-q3_K_M",
+          "fell_back": false,
+          "latency_ms": 4540,
+          "prompt_tokens": 725,
+          "response_tokens": 44,
+          "flags": [],
+          "post_composition_audit_ran": true,
+          "composed_reply": "Yes, you can export Indonesian tuna. It's a significant export from regions like East Java and North Sulawesi. However, you'll need to comply with export regulations and find a market willing to import it.",
+          "composed_entity_count": 2
+        },
+        "voice_reply": {
+          "en": "Yes, you can export Indonesian tuna. It's a significant export from regions like East Java and North Sulawesi. However, you'll need to comply with export regulations and find a market willing to import it.",
+          "id": null,
+          "mode": "friendly",
+          "intent": "p0_composed",
+          "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=4540"
+        },
+        "metrics": {
+          "total_ms": 1,
+          "brain_ms": 1,
+          "world_ms": null,
+          "specialist_used": null
+        }
+      }
+    },
+    {
+      "label": "T5 · follow-up",
+      "message": "What would affect the price?",
+      "reply": "Several factors can affect the price of Indonesian tuna, including supply and demand, production costs, market regulations, and global market conditions.",
+      "intent": "conversation",
+      "composition_ran": true,
+      "composition_accepted": true,
+      "composition_reason": null,
+      "widened_for_information_query": false,
+      "frame_topic": "What",
+      "frame_subject": "price",
+      "flags": [],
+      "knowledge_count": 1,
+      "composed_entity_count": 0,
+      "latency_ms": 3290,
+      "response": {
+        "conversation_id": "4fc56ce5-d16b-4f1c-89f7-477131ffa6a1",
+        "reply": "Several factors can affect the price of Indonesian tuna, including supply and demand, production costs, market regulations, and global market conditions.",
+        "understood_intent": "conversation",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "conversation",
+        "intent_reason": "default_conversation_no_specialist_signal",
+        "suggestions": [],
+        "card": null,
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "learning",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "low",
+          "reason": "reply has no recognisable claims",
+          "claims": [],
+          "evidenceCount": 0,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": false,
+            "evidenceCount": 0,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 5,
+              "byKind": {
+                "place": 5
+              }
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "low",
+            "confidenceReason": "reply has no recognisable claims",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "medium",
+            "fabricationReason": "Confidence assessor found no recognisable claims"
+          },
+          "whatShouldIDo": {
+            "action": "no explicit next-step signal",
+            "origin": "silence"
+          },
+          "whatILearned": {
+            "recentEntries": [
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604009652
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604005093
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604001268
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788603997147
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788603987926
+              }
+            ],
+            "count": 5
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=low · reflection=5/5 · fabrication_risk=medium · next=silence · learned=5"
+        },
+        "entities": {
+          "total": 5,
+          "byKind": {
+            "place": 5
+          }
+        },
+        "current_reference": null,
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "none",
+          "secondary": [],
+          "reason": "conversational intent · composer replies directly",
+          "availability": "available"
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=conversation · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [
+            {
+              "kind": "persistent_low_confidence",
+              "occurrenceCount": 4,
+              "suggestedAdjustment": "conversation lacks grounding · surface knowledge fetch or ask user to clarify goal to re-anchor",
+              "reason": "4 low-confidence turns in this conversation"
+            }
+          ],
+          "hasSignals": true,
+          "summary": "1 pattern detected · persistent_low_confidence"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "conversation",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=conversation (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": null,
+        "world_expanded_page": null,
+        "world_latency_ms": null,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": true,
+          "accepted": true,
+          "widened_for_information_query": false,
+          "frame_topic": "What",
+          "frame_subject": "price",
+          "knowledge_count": 1,
+          "baseline_reply": "Happy to chat. If you're planning something in Indonesia, want restaurant ideas, or need to find a professional, just say the word.",
+          "model": "qwen2.5:7b-instruct-q3_K_M",
+          "fell_back": false,
+          "latency_ms": 3270,
+          "prompt_tokens": 818,
+          "response_tokens": 27,
+          "flags": [],
+          "post_composition_audit_ran": true,
+          "composed_reply": "Several factors can affect the price of Indonesian tuna, including supply and demand, production costs, market regulations, and global market conditions.",
+          "composed_entity_count": 0
+        },
+        "voice_reply": {
+          "en": "Several factors can affect the price of Indonesian tuna, including supply and demand, production costs, market regulations, and global market conditions.",
+          "id": null,
+          "mode": "friendly",
+          "intent": "p0_composed",
+          "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=3270"
+        },
+        "metrics": {
+          "total_ms": 0,
+          "brain_ms": 0,
+          "world_ms": null,
+          "specialist_used": null
+        }
+      }
+    },
+    {
+      "label": "T6 · comparison",
+      "message": "How does farmed shrimp compare to wild tuna commercially?",
+      "reply": "Farmed shrimp and wild tuna have different commercial advantages. Shrimp farming is generally more efficient and can be practiced in various locations, making it easier to scale. However, wild tuna is often considered higher quality and commands a premium price, which can affect market demand and pricing. Both have their markets, with shrimp being more widely available and tuna sought after for its perceived health benefits and flavor.",
+      "intent": "conversation",
+      "composition_ran": true,
+      "composition_accepted": true,
+      "composition_reason": null,
+      "widened_for_information_query": false,
+      "frame_topic": "How",
+      "frame_subject": "comparison",
+      "flags": [],
+      "knowledge_count": 0,
+      "composed_entity_count": 0,
+      "latency_ms": 7756,
+      "response": {
+        "conversation_id": "4fc56ce5-d16b-4f1c-89f7-477131ffa6a1",
+        "reply": "Farmed shrimp and wild tuna have different commercial advantages. Shrimp farming is generally more efficient and can be practiced in various locations, making it easier to scale. However, wild tuna is often considered higher quality and commands a premium price, which can affect market demand and pricing. Both have their markets, with shrimp being more widely available and tuna sought after for its perceived health benefits and flavor.",
+        "understood_intent": "conversation",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "conversation",
+        "intent_reason": "default_conversation_no_specialist_signal",
+        "suggestions": [],
+        "card": null,
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "learning",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "low",
+          "reason": "reply has no recognisable claims",
+          "claims": [],
+          "evidenceCount": 0,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": false,
+            "evidenceCount": 0,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 5,
+              "byKind": {
+                "place": 5
+              }
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "low",
+            "confidenceReason": "reply has no recognisable claims",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "medium",
+            "fabricationReason": "Confidence assessor found no recognisable claims"
+          },
+          "whatShouldIDo": {
+            "action": "no explicit next-step signal",
+            "origin": "silence"
+          },
+          "whatILearned": {
+            "recentEntries": [
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604012946
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604009652
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604005093
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604001268
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788603997147
+              }
+            ],
+            "count": 5
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=low · reflection=5/5 · fabrication_risk=medium · next=silence · learned=5"
+        },
+        "entities": {
+          "total": 5,
+          "byKind": {
+            "place": 5
+          }
+        },
+        "current_reference": null,
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "none",
+          "secondary": [],
+          "reason": "conversational intent · composer replies directly",
+          "availability": "available"
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=conversation · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [
+            {
+              "kind": "persistent_low_confidence",
+              "occurrenceCount": 5,
+              "suggestedAdjustment": "conversation lacks grounding · surface knowledge fetch or ask user to clarify goal to re-anchor",
+              "reason": "5 low-confidence turns in this conversation"
+            }
+          ],
+          "hasSignals": true,
+          "summary": "1 pattern detected · persistent_low_confidence"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "conversation",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=conversation (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": null,
+        "world_expanded_page": null,
+        "world_latency_ms": null,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": true,
+          "accepted": true,
+          "widened_for_information_query": false,
+          "frame_topic": "How",
+          "frame_subject": "comparison",
+          "knowledge_count": 0,
+          "baseline_reply": "Happy to chat. If you're planning something in Indonesia, want restaurant ideas, or need to find a professional, just say the word.",
+          "model": "qwen2.5:7b-instruct-q3_K_M",
+          "fell_back": false,
+          "latency_ms": 7732,
+          "prompt_tokens": 738,
+          "response_tokens": 79,
+          "flags": [],
+          "post_composition_audit_ran": true,
+          "composed_reply": "Farmed shrimp and wild tuna have different commercial advantages. Shrimp farming is generally more efficient and can be practiced in various locations, making it easier to scale. However, wild tuna is often considered higher quality and commands a premium price, which can affect market demand and pricing. Both have their markets, with shrimp being more widely available and tuna sought after for its perceived health benefits and flavor.",
+          "composed_entity_count": 0
+        },
+        "voice_reply": {
+          "en": "Farmed shrimp and wild tuna have different commercial advantages. Shrimp farming is generally more efficient and can be practiced in various locations, making it easier to scale. However, wild tuna is often considered higher quality and commands a premium price, which can affect market demand and pricing. Both have their markets, with shrimp being more widely available and tuna sought after for its perceived health benefits and flavor.",
+          "id": null,
+          "mode": "friendly",
+          "intent": "p0_composed",
+          "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=7732"
+        },
+        "metrics": {
+          "total_ms": 1,
+          "brain_ms": 1,
+          "world_ms": null,
+          "specialist_used": null
+        }
+      }
+    },
+    {
+      "label": "T7 · topic switch",
+      "message": "Actually, what about the seafood market generally?",
+      "reply": "The seafood market in Indonesia is quite vibrant, with a mix of farmed and wild catches. Prices can vary based on supply and demand, with farmed shrimp often being more consistent in quality and availability compared to wild tuna, which can be influenced by seasonal fishing patterns and environmental factors.",
+      "intent": "conversation",
+      "composition_ran": true,
+      "composition_accepted": true,
+      "composition_reason": null,
+      "widened_for_information_query": false,
+      "frame_topic": "Actually",
+      "frame_subject": null,
+      "flags": [],
+      "knowledge_count": 6,
+      "composed_entity_count": 0,
+      "latency_ms": 6890,
+      "response": {
+        "conversation_id": "4fc56ce5-d16b-4f1c-89f7-477131ffa6a1",
+        "reply": "The seafood market in Indonesia is quite vibrant, with a mix of farmed and wild catches. Prices can vary based on supply and demand, with farmed shrimp often being more consistent in quality and availability compared to wild tuna, which can be influenced by seasonal fishing patterns and environmental factors.",
+        "understood_intent": "conversation",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "conversation",
+        "intent_reason": "default_conversation_no_specialist_signal",
+        "suggestions": [],
+        "card": null,
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "learning",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "low",
+          "reason": "reply has no recognisable claims",
+          "claims": [],
+          "evidenceCount": 0,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": false,
+            "evidenceCount": 0,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 5,
+              "byKind": {
+                "place": 5
+              }
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "low",
+            "confidenceReason": "reply has no recognisable claims",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "medium",
+            "fabricationReason": "Confidence assessor found no recognisable claims"
+          },
+          "whatShouldIDo": {
+            "action": "no explicit next-step signal",
+            "origin": "silence"
+          },
+          "whatILearned": {
+            "recentEntries": [
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604020699
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604012946
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604009652
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604005093
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604001268
+              }
+            ],
+            "count": 5
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=low · reflection=5/5 · fabrication_risk=medium · next=silence · learned=5"
+        },
+        "entities": {
+          "total": 5,
+          "byKind": {
+            "place": 5
+          }
+        },
+        "current_reference": null,
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "none",
+          "secondary": [],
+          "reason": "conversational intent · composer replies directly",
+          "availability": "available"
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=conversation · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [
+            {
+              "kind": "persistent_low_confidence",
+              "occurrenceCount": 6,
+              "suggestedAdjustment": "conversation lacks grounding · surface knowledge fetch or ask user to clarify goal to re-anchor",
+              "reason": "6 low-confidence turns in this conversation"
+            }
+          ],
+          "hasSignals": true,
+          "summary": "1 pattern detected · persistent_low_confidence"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "conversation",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=conversation (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": null,
+        "world_expanded_page": null,
+        "world_latency_ms": null,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": true,
+          "accepted": true,
+          "widened_for_information_query": false,
+          "frame_topic": "Actually",
+          "knowledge_count": 6,
+          "baseline_reply": "Happy to chat. If you're planning something in Indonesia, want restaurant ideas, or need to find a professional, just say the word.",
+          "model": "qwen2.5:7b-instruct-q3_K_M",
+          "fell_back": false,
+          "latency_ms": 6872,
+          "prompt_tokens": 1388,
+          "response_tokens": 58,
+          "flags": [],
+          "post_composition_audit_ran": true,
+          "composed_reply": "The seafood market in Indonesia is quite vibrant, with a mix of farmed and wild catches. Prices can vary based on supply and demand, with farmed shrimp often being more consistent in quality and availability compared to wild tuna, which can be influenced by seasonal fishing patterns and environmental factors.",
+          "composed_entity_count": 0
+        },
+        "voice_reply": {
+          "en": "The seafood market in Indonesia is quite vibrant, with a mix of farmed and wild catches. Prices can vary based on supply and demand, with farmed shrimp often being more consistent in quality and availability compared to wild tuna, which can be influenced by seasonal fishing patterns and environmental factors.",
+          "id": null,
+          "mode": "friendly",
+          "intent": "p0_composed",
+          "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=6872"
+        },
+        "metrics": {
+          "total_ms": 1,
+          "brain_ms": 1,
+          "world_ms": null,
+          "specialist_used": null
+        }
+      }
+    },
+    {
+      "label": "T8 · return to earlier",
+      "message": "OK back to tuna — what's the biggest challenge for a small exporter?",
+      "reply": "The biggest challenge for a small exporter of tuna in Indonesia is often navigating the complex regulatory environment and ensuring compliance with local and international standards. Additionally, competing in a market with larger, more established players can be difficult.",
+      "intent": "conversation",
+      "composition_ran": true,
+      "composition_accepted": true,
+      "composition_reason": null,
+      "widened_for_information_query": false,
+      "frame_topic": "OK back to tuna — what's",
+      "frame_subject": "logistics",
+      "flags": [],
+      "knowledge_count": 0,
+      "composed_entity_count": 0,
+      "latency_ms": 4537,
+      "response": {
+        "conversation_id": "4fc56ce5-d16b-4f1c-89f7-477131ffa6a1",
+        "reply": "The biggest challenge for a small exporter of tuna in Indonesia is often navigating the complex regulatory environment and ensuring compliance with local and international standards. Additionally, competing in a market with larger, more established players can be difficult.",
+        "understood_intent": "conversation",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "conversation",
+        "intent_reason": "default_conversation_no_specialist_signal",
+        "suggestions": [],
+        "card": null,
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "learning",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "low",
+          "reason": "reply has no recognisable claims",
+          "claims": [],
+          "evidenceCount": 0,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": false,
+            "evidenceCount": 0,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 5,
+              "byKind": {
+                "place": 5
+              }
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "low",
+            "confidenceReason": "reply has no recognisable claims",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "medium",
+            "fabricationReason": "Confidence assessor found no recognisable claims"
+          },
+          "whatShouldIDo": {
+            "action": "no explicit next-step signal",
+            "origin": "silence"
+          },
+          "whatILearned": {
+            "recentEntries": [
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604027596
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604020699
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604012946
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604009652
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604005093
+              }
+            ],
+            "count": 5
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=low · reflection=5/5 · fabrication_risk=medium · next=silence · learned=5"
+        },
+        "entities": {
+          "total": 5,
+          "byKind": {
+            "place": 5
+          }
+        },
+        "current_reference": null,
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "none",
+          "secondary": [],
+          "reason": "conversational intent · composer replies directly",
+          "availability": "available"
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=conversation · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [
+            {
+              "kind": "persistent_low_confidence",
+              "occurrenceCount": 7,
+              "suggestedAdjustment": "conversation lacks grounding · surface knowledge fetch or ask user to clarify goal to re-anchor",
+              "reason": "7 low-confidence turns in this conversation"
+            }
+          ],
+          "hasSignals": true,
+          "summary": "1 pattern detected · persistent_low_confidence"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "conversation",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=conversation (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": null,
+        "world_expanded_page": null,
+        "world_latency_ms": null,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": true,
+          "accepted": true,
+          "widened_for_information_query": false,
+          "frame_topic": "OK back to tuna — what's",
+          "frame_subject": "logistics",
+          "knowledge_count": 0,
+          "baseline_reply": "Happy to chat. If you're planning something in Indonesia, want restaurant ideas, or need to find a professional, just say the word.",
+          "model": "qwen2.5:7b-instruct-q3_K_M",
+          "fell_back": false,
+          "latency_ms": 4511,
+          "prompt_tokens": 758,
+          "response_tokens": 44,
+          "flags": [],
+          "post_composition_audit_ran": true,
+          "composed_reply": "The biggest challenge for a small exporter of tuna in Indonesia is often navigating the complex regulatory environment and ensuring compliance with local and international standards. Additionally, competing in a market with larger, more established players can be difficult.",
+          "composed_entity_count": 0
+        },
+        "voice_reply": {
+          "en": "The biggest challenge for a small exporter of tuna in Indonesia is often navigating the complex regulatory environment and ensuring compliance with local and international standards. Additionally, competing in a market with larger, more established players can be difficult.",
+          "id": null,
+          "mode": "friendly",
+          "intent": "p0_composed",
+          "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=4511"
+        },
+        "metrics": {
+          "total_ms": 3,
+          "brain_ms": 3,
+          "world_ms": null,
+          "specialist_used": null
+        }
+      }
+    },
+    {
+      "label": "T9 · reference check",
+      "message": "You mentioned Japan earlier — is it still the primary market for that?",
+      "reply": "Ya, Jepang masih menjadi pasar utama untuk ekspor tuna di Indonesia. Namun, pasar lain seperti Cina dan Eropa juga menjadi pilihan yang penting.",
+      "intent": "conversation",
+      "composition_ran": true,
+      "composition_accepted": true,
+      "composition_reason": null,
+      "widened_for_information_query": false,
+      "frame_topic": "You",
+      "frame_subject": null,
+      "flags": [],
+      "knowledge_count": 0,
+      "composed_entity_count": 0,
+      "latency_ms": 4084,
+      "response": {
+        "conversation_id": "4fc56ce5-d16b-4f1c-89f7-477131ffa6a1",
+        "reply": "Ya, Jepang masih menjadi pasar utama untuk ekspor tuna di Indonesia. Namun, pasar lain seperti Cina dan Eropa juga menjadi pilihan yang penting.",
+        "understood_intent": "conversation",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "conversation",
+        "intent_reason": "default_conversation_no_specialist_signal",
+        "suggestions": [],
+        "card": null,
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "learning",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "low",
+          "reason": "reply has no recognisable claims",
+          "claims": [],
+          "evidenceCount": 0,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": false,
+            "evidenceCount": 0,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 5,
+              "byKind": {
+                "place": 5
+              }
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "low",
+            "confidenceReason": "reply has no recognisable claims",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "medium",
+            "fabricationReason": "Confidence assessor found no recognisable claims"
+          },
+          "whatShouldIDo": {
+            "action": "no explicit next-step signal",
+            "origin": "silence"
+          },
+          "whatILearned": {
+            "recentEntries": [
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604032128
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604027596
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604020699
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604012946
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788604009652
+              }
+            ],
+            "count": 5
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=low · reflection=5/5 · fabrication_risk=medium · next=silence · learned=5"
+        },
+        "entities": {
+          "total": 5,
+          "byKind": {
+            "place": 5
+          }
+        },
+        "current_reference": null,
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "none",
+          "secondary": [],
+          "reason": "conversational intent · composer replies directly",
+          "availability": "available"
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=conversation · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [
+            {
+              "kind": "persistent_low_confidence",
+              "occurrenceCount": 8,
+              "suggestedAdjustment": "conversation lacks grounding · surface knowledge fetch or ask user to clarify goal to re-anchor",
+              "reason": "8 low-confidence turns in this conversation"
+            }
+          ],
+          "hasSignals": true,
+          "summary": "1 pattern detected · persistent_low_confidence"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "conversation",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=conversation (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": null,
+        "world_expanded_page": null,
+        "world_latency_ms": null,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": true,
+          "accepted": true,
+          "widened_for_information_query": false,
+          "frame_topic": "You",
+          "knowledge_count": 0,
+          "baseline_reply": "Happy to chat. If you're planning something in Indonesia, want restaurant ideas, or need to find a professional, just say the word.",
+          "model": "qwen2.5:7b-instruct-q3_K_M",
+          "fell_back": false,
+          "latency_ms": 4066,
+          "prompt_tokens": 750,
+          "response_tokens": 38,
+          "flags": [],
+          "post_composition_audit_ran": true,
+          "composed_reply": "Ya, Jepang masih menjadi pasar utama untuk ekspor tuna di Indonesia. Namun, pasar lain seperti Cina dan Eropa juga menjadi pilihan yang penting.",
+          "composed_entity_count": 0
+        },
+        "voice_reply": {
+          "en": "Ya, Jepang masih menjadi pasar utama untuk ekspor tuna di Indonesia. Namun, pasar lain seperti Cina dan Eropa juga menjadi pilihan yang penting.",
+          "id": null,
+          "mode": "friendly",
+          "intent": "p0_composed",
+          "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=4066"
+        },
+        "metrics": {
+          "total_ms": 1,
+          "brain_ms": 1,
+          "world_ms": null,
+          "specialist_used": null
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+# NEX Programmer-Learning Source Snapshot
+# url: https://nodejs.org/api/fs.html
+# content_type: text/markdown
+# stored_at: 2026-09-05T14:22:52.227Z
+# sha256_prefix: 7e9377235d68c54cbd6d48599e585afd
+SOURCE URL: https://nodejs.org/api/fs.html
+RETRIEVED AT: 2026-09-05T14:22:52.227Z
+
+Quote (verbatim):
+"The synchronous APIs block the Node.js event loop and further JavaScript execution until the operation is complete. Exceptions are thrown immediately and can be handled using try…catch, or can be allowed to bubble up."
+
+Note on retrieval integrity: for fs.readFileSync specifically, the WebFetch snapshot did NOT include an explicit "throws ENOENT on missing file" sentence. The statement above is what the docs ACTUALLY provide about synchronous fs behavior. Any further specificity (e.g. exact error code) must come from an independent verification event (test result), not from this doc.

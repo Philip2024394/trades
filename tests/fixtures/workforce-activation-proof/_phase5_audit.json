@@ -1,0 +1,38 @@
+{
+  "startedAt": "2026-09-05T12:35:38.336Z",
+  "completedAt": "2026-09-05T12:35:42.831Z",
+  "status": "PROVEN",
+  "service_business_by_category": [
+    {
+      "category_slug": "pharmacies",
+      "n": 1907
+    },
+    {
+      "category_slug": "salons",
+      "n": 615
+    },
+    {
+      "category_slug": "car-repair",
+      "n": 606
+    },
+    {
+      "category_slug": "dentists",
+      "n": 326
+    },
+    {
+      "category_slug": "gyms",
+      "n": 292
+    },
+    {
+      "category_slug": "opticians",
+      "n": 176
+    }
+  ],
+  "food_business_count": 23328,
+  "mp_seller_count": 23580,
+  "transport_record_count": 107,
+  "business_country_count": "relation \"nex.business_country\" does not exist",
+  "location_intelligence_count": "relation \"nex.location_intelligence\" does not exist",
+  "category_registry_count": 13,
+  "error": null
+}

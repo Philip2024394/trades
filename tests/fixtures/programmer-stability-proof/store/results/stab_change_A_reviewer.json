@@ -1,0 +1,1185 @@
+{
+  "run_id": "run_phase_d_mtojujbm_7",
+  "corpus_version": "programmer-benchmark-v1",
+  "started_at": "2026-09-05T15:40:23.504Z",
+  "completed_at": "2026-09-05T15:40:23.506Z",
+  "triggered_by": "runner",
+  "results": [
+    {
+      "case_id": "bench_001",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "correctness.off_by_one",
+      "difficulty": "FOUNDATIONAL",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "expected_finding_categories": [
+        "test_gap"
+      ],
+      "actual_finding_categories": [
+        "test_gap",
+        "test_gap",
+        "test_weakness"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_1",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.504Z"
+    },
+    {
+      "case_id": "bench_002",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "correctness.boundary_condition",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "expected_finding_categories": [
+        "test_gap"
+      ],
+      "actual_finding_categories": [
+        "test_gap",
+        "test_gap",
+        "test_weakness"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_2",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.504Z"
+    },
+    {
+      "case_id": "bench_003",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "correctness.null_handling",
+      "difficulty": "FOUNDATIONAL",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "expected_finding_categories": [
+        "test_gap"
+      ],
+      "actual_finding_categories": [
+        "requirement_mismatch",
+        "test_gap",
+        "test_gap",
+        "test_weakness"
+      ],
+      "actual_finding_count": 4,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_3",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.504Z"
+    },
+    {
+      "case_id": "bench_004",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "correctness.error_propagation",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "unsupported_claim",
+        "test_gap",
+        "test_gap",
+        "test_weakness"
+      ],
+      "actual_finding_count": 4,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_4",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.504Z"
+    },
+    {
+      "case_id": "bench_005",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "correctness.unit_conversion",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 2,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_5",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.504Z"
+    },
+    {
+      "case_id": "bench_006",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "control.correct",
+      "difficulty": "FOUNDATIONAL",
+      "ground_truth": "CORRECT",
+      "expected_verdict": "ACCEPT",
+      "actual_verdict": "ACCEPT",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [],
+      "actual_finding_count": 0,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_6",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.504Z"
+    },
+    {
+      "case_id": "bench_007",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "concurrency.race_condition",
+      "difficulty": "ADVANCED",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "expected_finding_categories": [
+        "test_gap"
+      ],
+      "actual_finding_categories": [
+        "unsupported_claim",
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_7",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.504Z"
+    },
+    {
+      "case_id": "bench_008",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "concurrency.lost_update",
+      "difficulty": "ADVANCED",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 2,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_8",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.504Z"
+    },
+    {
+      "case_id": "bench_009",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "concurrency.unsafe_shared_state",
+      "difficulty": "ADVANCED",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 2,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_9",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_010",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "security.sql_injection",
+      "difficulty": "FOUNDATIONAL",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "REJECT",
+      "actual_verdict": "REJECT",
+      "match_status": "CORRECT",
+      "expected_finding_categories": [
+        "security"
+      ],
+      "actual_finding_categories": [
+        "security",
+        "test_gap"
+      ],
+      "actual_finding_count": 2,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_10",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_011",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "security.authorization_bypass",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "REJECT",
+      "actual_verdict": "REJECT",
+      "match_status": "CORRECT",
+      "expected_finding_categories": [
+        "security"
+      ],
+      "actual_finding_categories": [
+        "security",
+        "unsupported_claim",
+        "test_gap"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_11",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_012",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "security.privilege_escalation",
+      "difficulty": "ADVANCED",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "REJECT",
+      "actual_verdict": "REJECT",
+      "match_status": "CORRECT",
+      "expected_finding_categories": [
+        "security"
+      ],
+      "actual_finding_categories": [
+        "security",
+        "test_gap",
+        "test_weakness"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_12",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_013",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "security.data_leakage",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "REJECT",
+      "actual_verdict": "REJECT",
+      "match_status": "CORRECT",
+      "expected_finding_categories": [
+        "security"
+      ],
+      "actual_finding_categories": [
+        "security",
+        "unsupported_claim",
+        "test_gap"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_13",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_014",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "security.csrf",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "REJECT",
+      "actual_verdict": "REJECT",
+      "match_status": "CORRECT",
+      "expected_finding_categories": [
+        "security"
+      ],
+      "actual_finding_categories": [
+        "security",
+        "unsupported_claim",
+        "test_gap",
+        "test_weakness"
+      ],
+      "actual_finding_count": 4,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_14",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_015",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "security.unsafe_deserialization",
+      "difficulty": "ADVANCED",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "REJECT",
+      "actual_verdict": "REJECT",
+      "match_status": "CORRECT",
+      "expected_finding_categories": [
+        "security"
+      ],
+      "actual_finding_categories": [
+        "security",
+        "unsupported_claim",
+        "test_gap"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_15",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_016",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "security.path_traversal",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "REJECT",
+      "actual_verdict": "REJECT",
+      "match_status": "CORRECT",
+      "expected_finding_categories": [
+        "security"
+      ],
+      "actual_finding_categories": [
+        "security",
+        "test_gap"
+      ],
+      "actual_finding_count": 2,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_16",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_017",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "security.secret_exposure",
+      "difficulty": "FOUNDATIONAL",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "REJECT",
+      "actual_verdict": "REJECT",
+      "match_status": "CORRECT",
+      "expected_finding_categories": [
+        "security"
+      ],
+      "actual_finding_categories": [
+        "security",
+        "test_gap"
+      ],
+      "actual_finding_count": 2,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_17",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_018",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "reliability.silent_error_swallow",
+      "difficulty": "FOUNDATIONAL",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "unsupported_claim",
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_18",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_019",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "reliability.missing_timeout",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 2,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_19",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_020",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "reliability.resource_leak",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "unsupported_claim",
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_20",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_021",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "reliability.unbounded_recursion",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 2,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_21",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_022",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "data.schema_migration_hazard",
+      "difficulty": "ADVANCED",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "unsupported_claim",
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_22",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_023",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "data.transaction_boundary",
+      "difficulty": "ADVANCED",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 2,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_23",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_024",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "data.constraint_assumption",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 2,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_24",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_025",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "temporal.timing_boundary",
+      "difficulty": "ADVANCED",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "unsupported_claim",
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_25",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_026",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "temporal.clock_assumption",
+      "difficulty": "ADVANCED",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "test_gap",
+        "test_gap",
+        "test_weakness"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_26",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_027",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "temporal.stale_cache",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 2,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_27",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_028",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "api.incorrect_contract",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 2,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_28",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_029",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "api.missing_validation",
+      "difficulty": "FOUNDATIONAL",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "unsupported_claim",
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_29",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_030",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "control.correct",
+      "difficulty": "FOUNDATIONAL",
+      "ground_truth": "CORRECT",
+      "expected_verdict": "ACCEPT",
+      "actual_verdict": "ACCEPT",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [],
+      "actual_finding_count": 0,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_30",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_031",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "control.correct",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "CORRECT",
+      "expected_verdict": "ACCEPT",
+      "actual_verdict": "ACCEPT",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [],
+      "actual_finding_count": 0,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_31",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_032",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "control.correct",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "CORRECT",
+      "expected_verdict": "ACCEPT",
+      "actual_verdict": "ACCEPT",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [],
+      "actual_finding_count": 0,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_32",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.505Z"
+    },
+    {
+      "case_id": "bench_033",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "control.correct",
+      "difficulty": "ADVANCED",
+      "ground_truth": "CORRECT",
+      "expected_verdict": "ACCEPT",
+      "actual_verdict": "ACCEPT",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [],
+      "actual_finding_count": 0,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_33",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.506Z"
+    },
+    {
+      "case_id": "bench_034",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "control.adversarial_unfamiliar_but_correct",
+      "difficulty": "ADVERSARIAL",
+      "ground_truth": "CORRECT",
+      "expected_verdict": "ACCEPT",
+      "actual_verdict": "ACCEPT",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [],
+      "actual_finding_count": 0,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_34",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.506Z"
+    },
+    {
+      "case_id": "bench_035",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "control.incomplete",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "INCOMPLETE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "unsupported_claim",
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_35",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.506Z"
+    },
+    {
+      "case_id": "bench_036",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "control.incomplete",
+      "difficulty": "FOUNDATIONAL",
+      "ground_truth": "INCOMPLETE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 2,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_36",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.506Z"
+    },
+    {
+      "case_id": "bench_037",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "control.uncertain",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "UNCERTAIN",
+      "expected_verdict": "UNCERTAIN",
+      "actual_verdict": "UNCERTAIN",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "requirement_mismatch",
+        "insufficient_evidence",
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 4,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_37",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.506Z"
+    },
+    {
+      "case_id": "bench_038",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "control.uncertain",
+      "difficulty": "INTERMEDIATE",
+      "ground_truth": "UNCERTAIN",
+      "expected_verdict": "UNCERTAIN",
+      "actual_verdict": "UNCERTAIN",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "requirement_mismatch",
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_38",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.506Z"
+    },
+    {
+      "case_id": "bench_039",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "control.uncertain",
+      "difficulty": "ADVANCED",
+      "ground_truth": "UNCERTAIN",
+      "expected_verdict": "UNCERTAIN",
+      "actual_verdict": "UNCERTAIN",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "insufficient_evidence",
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_39",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.506Z"
+    },
+    {
+      "case_id": "bench_040",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "control.adversarial_unfamiliar_but_correct",
+      "difficulty": "ADVERSARIAL",
+      "ground_truth": "CORRECT",
+      "expected_verdict": "ACCEPT",
+      "actual_verdict": "ACCEPT",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [],
+      "actual_finding_count": 0,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_40",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.506Z"
+    },
+    {
+      "case_id": "bench_041",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "correctness.error_propagation",
+      "difficulty": "ADVERSARIAL",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "unsupported_claim",
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_41",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.506Z"
+    },
+    {
+      "case_id": "bench_042",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "correctness.error_propagation",
+      "difficulty": "ADVERSARIAL",
+      "ground_truth": "DEFECTIVE",
+      "expected_verdict": "NEEDS_CHANGES",
+      "actual_verdict": "NEEDS_CHANGES",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [
+        "unsupported_claim",
+        "test_gap",
+        "test_gap"
+      ],
+      "actual_finding_count": 3,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_42",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.506Z"
+    },
+    {
+      "case_id": "bench_043",
+      "corpus_version": "programmer-benchmark-v1",
+      "defect_class": "control.correct",
+      "difficulty": "ADVERSARIAL",
+      "ground_truth": "CORRECT",
+      "expected_verdict": "ACCEPT",
+      "actual_verdict": "ACCEPT",
+      "match_status": "CORRECT",
+      "actual_finding_categories": [],
+      "actual_finding_count": 0,
+      "actual_confidence": "high",
+      "actual_review_id": "bench_rev_43",
+      "knowledge_used": [],
+      "reasoning_trace_length": 11,
+      "timestamp": "2026-09-05T15:40:23.506Z"
+    }
+  ],
+  "overall": {
+    "total_cases": 43,
+    "correct": 43,
+    "wrong": 0,
+    "execution_error": 0,
+    "overall_accuracy": 1,
+    "defective_correct": 32,
+    "defective_total": 32,
+    "defective_catch_rate": 1,
+    "correct_correctly_accepted": 8,
+    "correct_total": 8,
+    "false_positive_rate": 0,
+    "uncertain_correct": 3,
+    "uncertain_total": 3,
+    "uncertain_accuracy": 1,
+    "tests_pass_but_code_wrong_correct": 15,
+    "tests_pass_but_code_wrong_total": 15,
+    "tests_pass_but_code_wrong_catch_rate": 1
+  },
+  "per_class": [
+    {
+      "defect_class": "api.incorrect_contract",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "api.missing_validation",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "concurrency.lost_update",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "concurrency.race_condition",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "concurrency.unsafe_shared_state",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "control.adversarial_unfamiliar_but_correct",
+      "total": 2,
+      "correct": 2,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "control.correct",
+      "total": 6,
+      "correct": 6,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "control.incomplete",
+      "total": 2,
+      "correct": 2,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "control.uncertain",
+      "total": 3,
+      "correct": 3,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "correctness.boundary_condition",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "correctness.error_propagation",
+      "total": 3,
+      "correct": 3,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "correctness.null_handling",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "correctness.off_by_one",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "correctness.unit_conversion",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "data.constraint_assumption",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "data.schema_migration_hazard",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "data.transaction_boundary",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "reliability.missing_timeout",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "reliability.resource_leak",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "reliability.silent_error_swallow",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "reliability.unbounded_recursion",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "security.authorization_bypass",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "security.csrf",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "security.data_leakage",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "security.path_traversal",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "security.privilege_escalation",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "security.secret_exposure",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "security.sql_injection",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "security.unsafe_deserialization",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "temporal.clock_assumption",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "temporal.stale_cache",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    },
+    {
+      "defect_class": "temporal.timing_boundary",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0,
+      "execution_error": 0,
+      "catch_rate": 1
+    }
+  ],
+  "final_status": null
+}

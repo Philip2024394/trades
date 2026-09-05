@@ -1,0 +1,482 @@
+{
+  "runAt": "2026-09-05T16:17:09.086Z",
+  "tracks": [
+    {
+      "label": "PRIMARY · exact reported regression",
+      "conversation_id": "d3076a63-2a74-43be-8ab5-c58e2e196749",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "i am looking for hotel",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_reply_intent": "discovery_hit",
+          "voice_reply_preview": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary"
+        },
+        {
+          "turn": 2,
+          "question": "where you find them",
+          "intent": "accommodation",
+          "reply": "These are OpenStreetMap community-contributed accommodation listings from the NEX directory (nex.accommodation_business). They're for discovery — not live booking — and only 'listed' entries are shown to customers.",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "These are OpenStreetMap community-contributed accommodation listings from the NEX directory (nex.accommodation_business). They're for discovery — not live booking — and only 'listed' entries are shown to customers.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "ambiguous_pronoun"
+          },
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "composition_ran": false,
+          "composition_accepted": true,
+          "composition_reason": "boundary:result_followup:provenance_from_vertical:accommodation",
+          "result_followup_fired": true,
+          "result_followup_reason": "provenance_from_vertical:accommodation"
+        }
+      ]
+    },
+    {
+      "label": "VARIANT · where did you find these?",
+      "conversation_id": "4208e03d-1c15-46c1-bbe5-5a58aaf24bf0",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "i am looking for hotel",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_reply_intent": "discovery_hit",
+          "voice_reply_preview": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary"
+        },
+        {
+          "turn": 2,
+          "question": "where did you find these?",
+          "intent": "accommodation",
+          "reply": "These are OpenStreetMap community-contributed accommodation listings from the NEX directory (nex.accommodation_business). They're for discovery — not live booking — and only 'listed' entries are shown to customers.",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "These are OpenStreetMap community-contributed accommodation listings from the NEX directory (nex.accommodation_business). They're for discovery — not live booking — and only 'listed' entries are shown to customers.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "ambiguous_pronoun"
+          },
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "composition_ran": false,
+          "composition_accepted": true,
+          "composition_reason": "boundary:result_followup:provenance_from_vertical:accommodation",
+          "result_followup_fired": true,
+          "result_followup_reason": "provenance_from_vertical:accommodation"
+        }
+      ]
+    },
+    {
+      "label": "VARIANT · where are these from?",
+      "conversation_id": "f6f8a5d2-cd67-4c51-958e-da49b0c2d78b",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "i am looking for hotel",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_reply_intent": "discovery_hit",
+          "voice_reply_preview": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary"
+        },
+        {
+          "turn": 2,
+          "question": "where are these from?",
+          "intent": "accommodation",
+          "reply": "These are OpenStreetMap community-contributed accommodation listings from the NEX directory (nex.accommodation_business). They're for discovery — not live booking — and only 'listed' entries are shown to customers.",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "These are OpenStreetMap community-contributed accommodation listings from the NEX directory (nex.accommodation_business). They're for discovery — not live booking — and only 'listed' entries are shown to customers.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "ambiguous_pronoun"
+          },
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "composition_ran": false,
+          "composition_accepted": true,
+          "composition_reason": "boundary:result_followup:provenance_from_vertical:accommodation",
+          "result_followup_fired": true,
+          "result_followup_reason": "provenance_from_vertical:accommodation"
+        }
+      ]
+    },
+    {
+      "label": "VARIANT · how did you find them?",
+      "conversation_id": "afd9b214-d872-4907-84cd-486e880c908a",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "i am looking for hotel",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_reply_intent": "discovery_hit",
+          "voice_reply_preview": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary"
+        },
+        {
+          "turn": 2,
+          "question": "how did you find them?",
+          "intent": "accommodation",
+          "reply": "These are OpenStreetMap community-contributed accommodation listings from the NEX directory (nex.accommodation_business). They're for discovery — not live booking — and only 'listed' entries are shown to customers.",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "These are OpenStreetMap community-contributed accommodation listings from the NEX directory (nex.accommodation_business). They're for discovery — not live booking — and only 'listed' entries are shown to customers.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "ambiguous_pronoun"
+          },
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "composition_ran": false,
+          "composition_accepted": true,
+          "composition_reason": "boundary:result_followup:provenance_from_vertical:accommodation",
+          "result_followup_fired": true,
+          "result_followup_reason": "provenance_from_vertical:accommodation"
+        }
+      ]
+    },
+    {
+      "label": "NEGATIVE · find me a hotel",
+      "conversation_id": "63033a9c-0d66-47fc-a810-0e647b4983c6",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "find me a hotel",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_reply_intent": "discovery_hit",
+          "voice_reply_preview": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary"
+        }
+      ]
+    },
+    {
+      "label": "NEGATIVE · find me another hotel",
+      "conversation_id": "70684e4f-3e20-4de6-90ca-b8ba908265bd",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "find me another hotel",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_reply_intent": "discovery_hit",
+          "voice_reply_preview": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary"
+        }
+      ]
+    },
+    {
+      "label": "NEGATIVE · show me hotels near Malioboro",
+      "conversation_id": "2dd6c2f0-5658-4de9-8ae4-0d1fe7b6d9ef",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "show me hotels near Malioboro",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels near Malioboro — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+          "voice_reply_intent": "discovery_hit",
+          "voice_reply_preview": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary"
+        }
+      ]
+    },
+    {
+      "label": "NEGATIVE · find a hotel in Jakarta",
+      "conversation_id": "08e554d1-2c61-44ab-a574-eb6a45ee4bee",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "find a hotel in Jakarta",
+          "intent": "accommodation",
+          "reply": "Got it — hotels in Jakarta. I don't have matching real listings yet. Do you want budget, mid-range, or something more upmarket?",
+          "voice_reply_intent": "discovery_empty",
+          "voice_reply_preview": "Hmm — nothing's coming back for that. Want me to loosen the search a bit?",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 0,
+          "world_cards_names": [],
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary"
+        }
+      ]
+    },
+    {
+      "label": "NEGATIVE · where is the hotel?",
+      "conversation_id": "5b9c6005-9fc4-4309-91ba-2299be97195d",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "where is the hotel?",
+          "intent": "accommodation",
+          "reply": "I have information on several hotels in Yogyakarta, such as Griya Sentana, Hotel Trim Tiga, and Asia Afrika. Are you looking for a hotel in Yogyakarta specifically?",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "I have information on several hotels in Yogyakarta, such as Griya Sentana, Hotel Trim Tiga, and Asia Afrika. Are you looking for a hotel in Yogyakarta specifically?",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 6,
+          "ordinal_gate_fired": false,
+          "ordinal_gate_reason": "no_ordinal_pattern",
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:location_query"
+        }
+      ]
+    },
+    {
+      "label": "CONTEXT · anchor survives follow-up",
+      "conversation_id": "ec642d26-48a9-49e4-8aa7-25dea6d3f11b",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "i am looking for hotel",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "voice_reply_intent": "discovery_hit",
+          "voice_reply_preview": "Yep — found 3.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "composition_ran": false,
+          "composition_accepted": false,
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary"
+        },
+        {
+          "turn": 2,
+          "question": "where did you find them?",
+          "intent": "accommodation",
+          "reply": "These are OpenStreetMap community-contributed accommodation listings from the NEX directory (nex.accommodation_business). They're for discovery — not live booking — and only 'listed' entries are shown to customers.",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "These are OpenStreetMap community-contributed accommodation listings from the NEX directory (nex.accommodation_business). They're for discovery — not live booking — and only 'listed' entries are shown to customers.",
+          "current_reference": {
+            "resolved": false,
+            "reason": "ambiguous_pronoun"
+          },
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "composition_ran": false,
+          "composition_accepted": true,
+          "composition_reason": "boundary:result_followup:provenance_from_vertical:accommodation",
+          "result_followup_fired": true,
+          "result_followup_reason": "provenance_from_vertical:accommodation"
+        },
+        {
+          "turn": 3,
+          "question": "tell me more about the first one",
+          "intent": "accommodation",
+          "reply": "Gaotama Hotel is the first hotel in the list for Yogyakarta. It's a community listing on NEX, so it's great for discovery but not for live booking.",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "Gaotama Hotel is the first hotel in the list for Yogyakarta. It's a community listing on NEX, so it's great for discovery but not for live booking.",
+          "current_reference": {
+            "resolved": true,
+            "refKind": "ordinal",
+            "offset": 1,
+            "business": {
+              "canonical": "gaotama hotel",
+              "raw": "Gaotama Hotel",
+              "refId": "place:accommodation:#AC-2026-0000D"
+            },
+            "resolvedInTurn": 3
+          },
+          "world_cards_count": 0,
+          "world_cards_names": [],
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_knowledge_count": 1,
+          "ordinal_gate_fired": false,
+          "ordinal_gate_reason": "valid_anchor_present",
+          "hydration_reason": "hydrated:accommodation:#AC-2026-0000D",
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary"
+        }
+      ]
+    },
+    {
+      "label": "FRESH-CONV · no anchor",
+      "conversation_id": "ede85ac3-7db5-4054-a203-dbb70e702f97",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "where did you find them?",
+          "intent": "conversation",
+          "reply": "I haven't shown you any results yet in this conversation. Want me to find some?",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "I haven't shown you any results yet in this conversation. Want me to find some?",
+          "current_reference": null,
+          "world_cards_count": 0,
+          "world_cards_names": [],
+          "composition_ran": false,
+          "composition_accepted": true,
+          "composition_reason": "boundary:result_followup:no_anchor:where_provenance",
+          "result_followup_fired": true,
+          "result_followup_reason": "no_anchor:where_provenance"
+        }
+      ]
+    },
+    {
+      "label": "P0.4 PRESERVED · fresh 'the first hotel'",
+      "conversation_id": "7f4c28b9-30aa-488e-b636-05224e25117d",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "Tell me about the first hotel.",
+          "intent": "accommodation",
+          "reply": "Which hotel do you mean? I don't have a previous hotel list in this conversation. Want me to find some?",
+          "voice_reply_intent": "p0_composed",
+          "voice_reply_preview": "Which hotel do you mean? I don't have a previous hotel list in this conversation. Want me to find some?",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_prior_presentation"
+          },
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Pego Homestay",
+            "Penginapan Kunthi"
+          ],
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_reason": "boundary:ordinal_no_anchor:ordinal_no_anchor:ordinal_the:hotel:phrase=the first hotel",
+          "composition_knowledge_count": 0,
+          "ordinal_gate_fired": true,
+          "ordinal_gate_reason": "ordinal_no_anchor:ordinal_the:hotel",
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary"
+        }
+      ]
+    }
+  ]
+}

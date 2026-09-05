@@ -1,0 +1,395 @@
+{
+  "runAtIso": "2026-09-05T12:36:59.088Z",
+  "positions": [
+    {
+      "position_id": "hotel_accommodation",
+      "mission": "Deep knowledge of every accommodation entity · property type · rooms · facilities · services · policies · nearby context.",
+      "domain": [
+        "accommodation",
+        "hotels",
+        "guesthouses",
+        "villas",
+        "kos",
+        "homestays",
+        "resorts",
+        "hostels",
+        "apartments",
+        "room_types",
+        "amenities",
+        "policies"
+      ],
+      "machinery": "p1_acquisition_pipeline",
+      "source_availability": "sources_available",
+      "source_details": "canonical directory: nex.accommodation_business (local PG17 :5433 · NEX_POSTGRES_URL) · 4 companion tables: source_snapshot · field_provenance · enrichment_evidence · schema per deploy/postgres/init/078_nex_accommodation_business.sql · read adapter tests/fixtures/workforce-activation-proof/_hotel_adapter_probe.mjs",
+      "activation_notes": "hotel adapter probe PROVEN · 9,203 rows across 7 categories (hotel 6840 · guesthouse 1706 · hostel 267 · kos 215 · apartment 96 · villa 78 · homestay 1) · 877 claim_status=listed customer-visible · 8326 discovered pending admin promotion",
+      "registered_at": "2026-09-05T12:36:59.069Z"
+    },
+    {
+      "position_id": "programmer",
+      "mission": "Build NEX's engineering intelligence · continuously improve NEX's ability to reason about, review, test, and explain software engineering.",
+      "domain": [
+        "programming",
+        "software architecture",
+        "code review",
+        "security",
+        "performance",
+        "engineering experience"
+      ],
+      "machinery": "programmer_agent",
+      "source_availability": "sources_missing",
+      "source_details": "Programmer Agent formal spec ratified · Phase A implementation requires its own AUTHORIZE literal · not activated in this Indonesian-workforce slice",
+      "activation_notes": "PHASE_A_PENDING · not activated by this authorization",
+      "registered_at": "2026-09-05T12:36:59.068Z"
+    },
+    {
+      "position_id": "indonesia_knowledge",
+      "mission": "Build broad NEX-owned Indonesian knowledge across geography, culture, food, industries, tourism, transport, commerce.",
+      "domain": [
+        "geography",
+        "culture",
+        "food",
+        "industries",
+        "tourism",
+        "transport",
+        "commerce",
+        "practices"
+      ],
+      "machinery": "indonesia_walker",
+      "source_availability": "sources_available",
+      "source_details": "3 existing walker configs (adat.communities · culture.festivals_ceremonies · spiritual.sacred_sites) + curated dir (destinations-extra · hospitals) · food_dishes and airports now split into their own walker configs owned by restaurant_food / travel_transport positions",
+      "walker_taxonomy_ids": [
+        "walker.adat.communities",
+        "walker.culture.festivals_ceremonies",
+        "walker.spiritual.sacred_sites"
+      ],
+      "activation_notes": "walker pipeline attribution proven · 23 records verified+promoted via adat/festivals/sacred_sites walkers · fresh acquisition run 2026-09-05",
+      "registered_at": "2026-09-05T12:36:59.069Z"
+    },
+    {
+      "position_id": "restaurant_food",
+      "mission": "Restaurants + cuisine + ingredients + seafood + food knowledge · Indonesian regional dishes and preparation.",
+      "domain": [
+        "restaurants",
+        "cuisine",
+        "dishes",
+        "ingredients",
+        "seafood",
+        "culinary_terminology"
+      ],
+      "machinery": "indonesia_walker",
+      "source_availability": "sources_partial",
+      "source_details": "local source: data/indonesia/sources/food_dishes/dishes.json (dish-level food knowledge) · walker config data/indonesia/walker-configs/walker.food.dishes.json AUTHORED · restaurant business directory lives in Supabase (nex.food_business et al · sees 054-060 migrations) · restaurant-business walker config would need Supabase adapter",
+      "walker_taxonomy_ids": [
+        "walker.food.dishes"
+      ],
+      "activation_notes": "food dishes walker activated · dishes flow through pipeline · restaurant business acquisition (Supabase adapter) is a separate future authorisation",
+      "registered_at": "2026-09-05T12:36:59.069Z"
+    },
+    {
+      "position_id": "gym_fitness",
+      "mission": "Knowledge of Indonesian gyms and fitness businesses · facilities · equipment · memberships · trainers · policies.",
+      "domain": [
+        "gyms",
+        "fitness",
+        "equipment",
+        "classes",
+        "memberships",
+        "trainers"
+      ],
+      "machinery": "p1_acquisition_pipeline",
+      "source_availability": "sources_available",
+      "source_details": "canonical directory: nex.service_business WHERE category_slug='gyms' (local PG17 :5433 · NEX_POSTGRES_URL) · 3 companion tables: source_snapshot · field_provenance · schema per deploy/postgres/init/110_nex_service_business.sql · read adapter tests/fixtures/workforce-activation-proof/_gym_adapter_probe.mjs",
+      "activation_notes": "prior audit 'sources_missing' was incorrect · gym adapter probe PROVEN 292 gym rows across Indonesian cities · all owner_status=null (unclaimed) · knowledge composition to NEX brain retrieval is next expansion",
+      "registered_at": "2026-09-05T12:36:59.069Z"
+    },
+    {
+      "position_id": "travel_transport",
+      "mission": "Indonesian travel + transport knowledge · flights · trains · cars · bikes · buses · ferries · routes.",
+      "domain": [
+        "flights",
+        "airports",
+        "airlines",
+        "trains",
+        "buses",
+        "ferries",
+        "cars",
+        "car_rental",
+        "motorcycles",
+        "motorbike_rental",
+        "routes"
+      ],
+      "machinery": "indonesia_walker",
+      "source_availability": "sources_partial",
+      "source_details": "local source: data/indonesia/sources/airports/airports.json (airport hubs · IATA/ICAO · region · operator) · walker config data/indonesia/walker-configs/walker.travel.airports.json AUTHORED · travel-guides SQL schema exists (deploy/postgres/init/120_nex_brain_travel_guides.sql) · bike rental SQL exists (deploy/postgres/init/132_nex_bike_rental_listing.sql)",
+      "walker_taxonomy_ids": [
+        "walker.travel.airports"
+      ],
+      "activation_notes": "airports walker activated · flights/trains/buses/ferries still need authorised source registration",
+      "registered_at": "2026-09-05T12:36:59.069Z"
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "cb8995cf-b5c5-4ebf-a4c2-67c59d5c522f",
+      "position_id": "indonesia_knowledge",
+      "started_at": "2026-09-05T12:36:59.080Z",
+      "last_progress_at": "2026-09-05T12:36:59.080Z",
+      "completed_at": "2026-09-05T12:36:59.080Z",
+      "machinery_used": "indonesia_walker",
+      "sources_accessed": [
+        "walker.adat.communities",
+        "walker.culture.festivals_ceremonies",
+        "walker.spiritual.sacred_sites"
+      ],
+      "snapshots_created": 3,
+      "claims_extracted": 23,
+      "claims_verified": 23,
+      "claims_rejected": 0,
+      "claims_promoted": 23,
+      "failure_stage": null,
+      "failure_reason": null,
+      "evidence_pointers": [
+        "data/indonesia/knowledge-acquired.json@generatedAt=2026-09-05T12:21:54.267Z",
+        "walker=walker.adat.communities·records=5",
+        "walker=walker.culture.festivals_ceremonies·records=12",
+        "walker=walker.spiritual.sacred_sites·records=6"
+      ],
+      "final_status": null
+    },
+    {
+      "run_id": "3ce930a4-0f20-40a9-b425-b1434b537571",
+      "position_id": "restaurant_food",
+      "started_at": "2026-09-05T12:36:59.081Z",
+      "last_progress_at": "2026-09-05T12:36:59.081Z",
+      "completed_at": "2026-09-05T12:36:59.081Z",
+      "machinery_used": "indonesia_walker",
+      "sources_accessed": [
+        "C:\\Users\\Victus\\trades\\data\\indonesia\\sources\\food_dishes\\dishes.json",
+        "walker.food.dishes"
+      ],
+      "snapshots_created": 1,
+      "claims_extracted": 9,
+      "claims_verified": 9,
+      "claims_rejected": 0,
+      "claims_promoted": 9,
+      "failure_stage": null,
+      "failure_reason": null,
+      "evidence_pointers": [
+        "config=C:\\Users\\Victus\\trades\\data\\indonesia\\walker-configs\\walker.food.dishes.json",
+        "source=C:\\Users\\Victus\\trades\\data\\indonesia\\sources\\food_dishes\\dishes.json",
+        "data/indonesia/knowledge-acquired.json@generatedAt=2026-09-05T12:21:54.267Z",
+        "walker_id=walker.food.dishes·records=9",
+        "sample=food.mie_goreng",
+        "sample=food.nasi_campur",
+        "sample=food.es_teler"
+      ],
+      "final_status": null
+    },
+    {
+      "run_id": "91fe12d1-b46b-42a7-bee9-769aecba0f34",
+      "position_id": "travel_transport",
+      "started_at": "2026-09-05T12:36:59.083Z",
+      "last_progress_at": "2026-09-05T12:36:59.083Z",
+      "completed_at": "2026-09-05T12:36:59.083Z",
+      "machinery_used": "indonesia_walker",
+      "sources_accessed": [
+        "C:\\Users\\Victus\\trades\\data\\indonesia\\sources\\airports\\airports.json",
+        "walker.travel.airports"
+      ],
+      "snapshots_created": 1,
+      "claims_extracted": 8,
+      "claims_verified": 8,
+      "claims_rejected": 0,
+      "claims_promoted": 8,
+      "failure_stage": null,
+      "failure_reason": null,
+      "evidence_pointers": [
+        "config=C:\\Users\\Victus\\trades\\data\\indonesia\\walker-configs\\walker.travel.airports.json",
+        "source=C:\\Users\\Victus\\trades\\data\\indonesia\\sources\\airports\\airports.json",
+        "data/indonesia/knowledge-acquired.json@generatedAt=2026-09-05T12:21:54.267Z",
+        "walker_id=walker.travel.airports·records=8",
+        "sample=airport.manado_mdc",
+        "sample=airport.jakarta_cgk",
+        "sample=airport.surabaya_sub"
+      ],
+      "final_status": null
+    },
+    {
+      "run_id": "b88d1256-f176-4257-929f-965a8b094a15",
+      "position_id": "hotel_accommodation",
+      "started_at": "2026-09-05T12:27:25.612Z",
+      "last_progress_at": "2026-09-05T12:27:28.373Z",
+      "completed_at": "2026-09-05T12:27:28.373Z",
+      "machinery_used": "p1_acquisition_pipeline",
+      "sources_accessed": [
+        "nex.accommodation_business"
+      ],
+      "snapshots_created": 9203,
+      "claims_extracted": 9203,
+      "claims_verified": 9203,
+      "claims_rejected": 0,
+      "claims_promoted": 877,
+      "failure_stage": null,
+      "failure_reason": null,
+      "evidence_pointers": [
+        "probe=C:\\Users\\Victus\\trades\\tests\\fixtures\\workforce-activation-proof\\_hotel_probe.json",
+        "row_count=9203",
+        "categories=hotel=6840 · guesthouse=1706 · hostel=267 · kos=215 · apartment=96 · villa=78 · homestay=1",
+        "cities=Denpasar=2145 · Jakarta=906 · Yogyakarta=882 · Badung=697 · Kuta=613",
+        "claim_status_listed=877",
+        "claim_status_discovered=8326"
+      ],
+      "final_status": null
+    },
+    {
+      "run_id": "9fb764d1-e78c-4938-838c-7022cfbc6a03",
+      "position_id": "gym_fitness",
+      "started_at": "2026-09-05T12:34:05.342Z",
+      "last_progress_at": "2026-09-05T12:34:08.278Z",
+      "completed_at": "2026-09-05T12:34:08.278Z",
+      "machinery_used": "p1_acquisition_pipeline",
+      "sources_accessed": [
+        "nex.service_business:gyms"
+      ],
+      "snapshots_created": 292,
+      "claims_extracted": 292,
+      "claims_verified": 292,
+      "claims_rejected": 0,
+      "claims_promoted": 0,
+      "failure_stage": null,
+      "failure_reason": null,
+      "evidence_pointers": [
+        "probe=C:\\Users\\Victus\\trades\\tests\\fixtures\\workforce-activation-proof\\_gym_probe.json",
+        "row_count=292",
+        "cities=Jakarta=57 · Denpasar=42 · Badung=32 · Bandung=22 · Kuta=21",
+        "owner_status=null=292"
+      ],
+      "final_status": null
+    }
+  ],
+  "activations": [
+    {
+      "position_id": "indonesia_knowledge",
+      "attempted": true,
+      "run_id": "cb8995cf-b5c5-4ebf-a4c2-67c59d5c522f",
+      "walkers": [
+        "walker.adat.communities",
+        "walker.culture.festivals_ceremonies",
+        "walker.spiritual.sacred_sites"
+      ],
+      "records_count": 23,
+      "detail": "walker pipeline attribution: walker.adat.communities, walker.culture.festivals_ceremonies, walker.spiritual.sacred_sites → 23 records verified+promoted"
+    },
+    {
+      "position_id": "restaurant_food",
+      "attempted": true,
+      "run_id": "3ce930a4-0f20-40a9-b425-b1434b537571",
+      "source": "food_dishes/dishes.json → walker.food.dishes",
+      "records_available": 9,
+      "detail": "walker pipeline SOURCE→SNAPSHOT→EXTRACT→VERIFY→PROMOTE completed · 9 records with walker_id=walker.food.dishes"
+    },
+    {
+      "position_id": "travel_transport",
+      "attempted": true,
+      "run_id": "91fe12d1-b46b-42a7-bee9-769aecba0f34",
+      "source": "airports/airports.json → walker.travel.airports",
+      "records_available": 8,
+      "detail": "walker pipeline SOURCE→SNAPSHOT→EXTRACT→VERIFY→PROMOTE completed · 8 records with walker_id=walker.travel.airports"
+    },
+    {
+      "position_id": "hotel_accommodation",
+      "attempted": true,
+      "run_id": "b88d1256-f176-4257-929f-965a8b094a15",
+      "source": "nex.accommodation_business",
+      "records_available": 9203,
+      "detail": "directory adapter read PROVEN · 9203 rows across 7 categories · 877 customer-visible · 8326 discovered pending promotion"
+    },
+    {
+      "position_id": "gym_fitness",
+      "attempted": true,
+      "run_id": "9fb764d1-e78c-4938-838c-7022cfbc6a03",
+      "source": "nex.service_business:gyms",
+      "records_available": 292,
+      "detail": "directory adapter read PROVEN · 292 gym rows · 0 currently owner-verified · discovery complete"
+    },
+    {
+      "position_id": "programmer",
+      "attempted": false,
+      "reason": "PHASE_A_PENDING · separate AUTHORIZE required · not activated by Indonesian-workforce authorization"
+    }
+  ],
+  "statuses": [
+    {
+      "position_id": "programmer",
+      "status": "PHASE_A_PENDING",
+      "reason": "Programmer Agent Phase A requires separate AUTHORIZE literal",
+      "evidence": {
+        "total_runs": 0,
+        "last_run_at": null,
+        "last_successful_run_at": null,
+        "verification_rate": null,
+        "claims_promoted_total": 0
+      }
+    },
+    {
+      "position_id": "indonesia_knowledge",
+      "status": "PROVEN_HEALTHY",
+      "reason": "last success 2026-09-05T12:36:59.080Z · 23 promoted total",
+      "evidence": {
+        "total_runs": 1,
+        "last_run_at": "2026-09-05T12:36:59.080Z",
+        "last_successful_run_at": "2026-09-05T12:36:59.080Z",
+        "verification_rate": 1,
+        "claims_promoted_total": 23
+      }
+    },
+    {
+      "position_id": "hotel_accommodation",
+      "status": "PROVEN_HEALTHY",
+      "reason": "last success 2026-09-05T12:27:28.373Z · 877 promoted total",
+      "evidence": {
+        "total_runs": 1,
+        "last_run_at": "2026-09-05T12:27:25.612Z",
+        "last_successful_run_at": "2026-09-05T12:27:28.373Z",
+        "verification_rate": 1,
+        "claims_promoted_total": 877
+      }
+    },
+    {
+      "position_id": "restaurant_food",
+      "status": "PROVEN_HEALTHY",
+      "reason": "last success 2026-09-05T12:36:59.081Z · 9 promoted total",
+      "evidence": {
+        "total_runs": 1,
+        "last_run_at": "2026-09-05T12:36:59.081Z",
+        "last_successful_run_at": "2026-09-05T12:36:59.081Z",
+        "verification_rate": 1,
+        "claims_promoted_total": 9
+      }
+    },
+    {
+      "position_id": "gym_fitness",
+      "status": "PROVEN_HEALTHY",
+      "reason": "last success 2026-09-05T12:34:08.278Z · 0 promoted total",
+      "evidence": {
+        "total_runs": 1,
+        "last_run_at": "2026-09-05T12:34:05.342Z",
+        "last_successful_run_at": "2026-09-05T12:34:08.278Z",
+        "verification_rate": 1,
+        "claims_promoted_total": 0
+      }
+    },
+    {
+      "position_id": "travel_transport",
+      "status": "PROVEN_HEALTHY",
+      "reason": "last success 2026-09-05T12:36:59.083Z · 8 promoted total",
+      "evidence": {
+        "total_runs": 1,
+        "last_run_at": "2026-09-05T12:36:59.083Z",
+        "last_successful_run_at": "2026-09-05T12:36:59.083Z",
+        "verification_rate": 1,
+        "claims_promoted_total": 8
+      }
+    }
+  ]
+}

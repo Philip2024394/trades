@@ -24,8 +24,10 @@ import { describeSlots } from "./accommodation-slots";
 
 export type GoalKind =
   | "accommodation"
-  | "food"          // future
-  | "commerce"      // future
+  | "food"
+  | "commerce"
+  | "service"       // gyms, salons, dentists, opticians, pharmacies, car-repair
+  | "transport"     // airport transfer, mobility (future adapters)
   | "conversation"; // catch-all when no discovery goal is active
 
 export type GoalStatus =
@@ -60,6 +62,48 @@ export function newAccommodationGoal(slots: AccommodationSlots, now: number = Da
     updatedAt: now,
     turnsSinceProgress: 0,
     summary: describeSlots(slots) || "an accommodation search",
+  };
+}
+
+/**
+ * Stage 3.41.f · Generic active goal for non-accommodation verticals
+ * (food · commerce · service · transport). Enables sticky-vertical
+ * persistence beyond accommodation without introducing per-vertical
+ * composer state.
+ *
+ * Kept intentionally lightweight · these goals track only what sticky
+ * persistence needs (kind + status + turn accounting). Slot-shaped
+ * refinement lives elsewhere for future work.
+ */
+export function newVerticalGoal(
+  kind: "food" | "commerce" | "service" | "transport",
+  summary: string,
+  now: number = Date.now(),
+): Goal {
+  return {
+    id: `goal:${kind}:${now}`,
+    kind,
+    status: "active",
+    createdAt: now,
+    updatedAt: now,
+    turnsSinceProgress: 0,
+    summary,
+  };
+}
+
+/**
+ * Stage 3.41.f · Refresh an existing food/commerce goal after a
+ * progressing turn. Same semantics as progressAccommodationGoal but
+ * doesn't require a slot payload · the summary carries any refinement.
+ */
+export function progressVerticalGoal(goal: Goal, summary: string, now: number = Date.now()): Goal {
+  const nextStatus: GoalStatus = goal.status === "paused" ? "resumed" : "active";
+  return {
+    ...goal,
+    status: nextStatus,
+    updatedAt: now,
+    turnsSinceProgress: 0,
+    summary: summary || goal.summary,
   };
 }
 

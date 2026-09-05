@@ -1,0 +1,520 @@
+{
+  "id": "11",
+  "category": "C",
+  "stress": "ordinal reference to prior-turn list",
+  "conversation_id": "3f60c507-2485-4d2b-9fc1-c64c7bda6f92",
+  "turns": [
+    {
+      "turnId": "t1",
+      "message": "list three indonesian textile hubs",
+      "response": {
+        "conversation_id": "3f60c507-2485-4d2b-9fc1-c64c7bda6f92",
+        "reply": "Three notable textile hubs in Indonesia are Surabaya, Yogyakarta, and Cirebon. Each has a rich history in textile production and craftsmanship.",
+        "understood_intent": "conversation",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "conversation",
+        "intent_reason": "default_conversation_no_specialist_signal",
+        "suggestions": [],
+        "card": null,
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "learning",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "low",
+          "reason": "reply has no recognisable claims",
+          "claims": [],
+          "evidenceCount": 0,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": false,
+            "evidenceCount": 0,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 0,
+              "byKind": {}
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "low",
+            "confidenceReason": "reply has no recognisable claims",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "medium",
+            "fabricationReason": "Confidence assessor found no recognisable claims"
+          },
+          "whatShouldIDo": {
+            "action": "no explicit next-step signal",
+            "origin": "silence"
+          },
+          "whatILearned": {
+            "recentEntries": [
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788600224290
+              }
+            ],
+            "count": 1
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=low · reflection=5/5 · fabrication_risk=medium · next=silence · learned=1"
+        },
+        "entities": {
+          "total": 0,
+          "byKind": {}
+        },
+        "current_reference": null,
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "none",
+          "secondary": [],
+          "reason": "conversational intent · composer replies directly",
+          "availability": "available"
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=conversation · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [],
+          "hasSignals": false,
+          "summary": "no adaptation patterns · behavior unchanged"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "conversation",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=conversation (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": null,
+        "world_expanded_page": null,
+        "world_latency_ms": null,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": true,
+          "accepted": true,
+          "frame_topic": "list three indonesian textile hubs",
+          "knowledge_count": 1,
+          "baseline_reply": "Happy to chat. If you're planning something in Indonesia, want restaurant ideas, or need to find a professional, just say the word.",
+          "model": "qwen2.5:7b-instruct-q3_K_M",
+          "fell_back": false,
+          "latency_ms": 3801,
+          "prompt_tokens": 717,
+          "response_tokens": 35,
+          "flags": [],
+          "composed_reply": "Three notable textile hubs in Indonesia are Surabaya, Yogyakarta, and Cirebon. Each has a rich history in textile production and craftsmanship."
+        },
+        "voice_reply": {
+          "en": "Three notable textile hubs in Indonesia are Surabaya, Yogyakarta, and Cirebon. Each has a rich history in textile production and craftsmanship.",
+          "id": null,
+          "mode": "friendly",
+          "intent": "p0_composed",
+          "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=3801"
+        },
+        "metrics": {
+          "total_ms": 0,
+          "brain_ms": 0,
+          "world_ms": null,
+          "specialist_used": null
+        }
+      },
+      "summary": {
+        "http_status": 200,
+        "latency_ms": 3820,
+        "intent": "conversation",
+        "intent_reason": "default_conversation_no_specialist_signal",
+        "baseline_reply": "Happy to chat. If you're planning something in Indonesia, want restaurant ideas, or need to find a professional, just say the word.",
+        "served_reply": "Three notable textile hubs in Indonesia are Surabaya, Yogyakarta, and Cirebon. Each has a rich history in textile production and craftsmanship.",
+        "composition_ran": true,
+        "composition_accepted": true,
+        "composition_reason": null,
+        "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+        "composition_latency_ms": 3801,
+        "composition_flags": [],
+        "composition_flag_count": 0,
+        "composition_high_flag_count": 0,
+        "knowledge_count": 1,
+        "frame_topic": "list three indonesian textile hubs",
+        "frame_subject": null,
+        "confidence_overall": "low",
+        "fabrication_risk": "medium"
+      }
+    },
+    {
+      "turnId": "t2",
+      "message": "tell me more about the second one",
+      "response": {
+        "conversation_id": "3f60c507-2485-4d2b-9fc1-c64c7bda6f92",
+        "reply": "The second textile hub in Indonesia is Yogyakarta. Known for its rich cultural heritage, Yogyakarta's textile industry is particularly famous for batik and silk products, which are highly regarded both domestically and internationally.",
+        "understood_intent": "conversation",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "conversation",
+        "intent_reason": "default_conversation_no_specialist_signal",
+        "suggestions": [],
+        "card": null,
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "conversation",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "learning",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "low",
+          "reason": "reply has no recognisable claims",
+          "claims": [],
+          "evidenceCount": 0,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": false,
+            "evidenceCount": 0,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 0,
+              "byKind": {}
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "low",
+            "confidenceReason": "reply has no recognisable claims",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "medium",
+            "fabricationReason": "Confidence assessor found no recognisable claims"
+          },
+          "whatShouldIDo": {
+            "action": "no explicit next-step signal",
+            "origin": "silence"
+          },
+          "whatILearned": {
+            "recentEntries": [
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788600228110
+              },
+              {
+                "kind": "confidence_low",
+                "scope": "conversation.confidence",
+                "summary": "Confidence=low · reply has no recognisable claims",
+                "atMs": 1788600224290
+              }
+            ],
+            "count": 2
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=low · reflection=5/5 · fabrication_risk=medium · next=silence · learned=2"
+        },
+        "entities": {
+          "total": 0,
+          "byKind": {}
+        },
+        "current_reference": null,
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "none",
+          "secondary": [],
+          "reason": "conversational intent · composer replies directly",
+          "availability": "available"
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=conversation · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [],
+          "hasSignals": false,
+          "summary": "no adaptation patterns · behavior unchanged"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "conversation",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=conversation (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": null,
+        "world_expanded_page": null,
+        "world_latency_ms": null,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": true,
+          "accepted": true,
+          "frame_topic": "tell me more about the second",
+          "knowledge_count": 0,
+          "baseline_reply": "Happy to chat. If you're planning something in Indonesia, want restaurant ideas, or need to find a professional, just say the word.",
+          "model": "qwen2.5:7b-instruct-q3_K_M",
+          "fell_back": false,
+          "latency_ms": 4683,
+          "prompt_tokens": 694,
+          "response_tokens": 46,
+          "flags": [],
+          "composed_reply": "The second textile hub in Indonesia is Yogyakarta. Known for its rich cultural heritage, Yogyakarta's textile industry is particularly famous for batik and silk products, which are highly regarded both domestically and internationally."
+        },
+        "voice_reply": {
+          "en": "The second textile hub in Indonesia is Yogyakarta. Known for its rich cultural heritage, Yogyakarta's textile industry is particularly famous for batik and silk products, which are highly regarded both domestically and internationally.",
+          "id": null,
+          "mode": "friendly",
+          "intent": "p0_composed",
+          "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=4683"
+        },
+        "metrics": {
+          "total_ms": 0,
+          "brain_ms": 0,
+          "world_ms": null,
+          "specialist_used": null
+        }
+      },
+      "summary": {
+        "http_status": 200,
+        "latency_ms": 4701,
+        "intent": "conversation",
+        "intent_reason": "default_conversation_no_specialist_signal",
+        "baseline_reply": "Happy to chat. If you're planning something in Indonesia, want restaurant ideas, or need to find a professional, just say the word.",
+        "served_reply": "The second textile hub in Indonesia is Yogyakarta. Known for its rich cultural heritage, Yogyakarta's textile industry is particularly famous for batik and silk products, which are highly regarded both domestically and internationally.",
+        "composition_ran": true,
+        "composition_accepted": true,
+        "composition_reason": null,
+        "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+        "composition_latency_ms": 4683,
+        "composition_flags": [],
+        "composition_flag_count": 0,
+        "composition_high_flag_count": 0,
+        "knowledge_count": 0,
+        "frame_topic": "tell me more about the second",
+        "frame_subject": null,
+        "confidence_overall": "low",
+        "fabrication_risk": "medium"
+      }
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "startedAt": "2026-09-05T12:34:05.342Z",
+  "completedAt": "2026-09-05T12:34:08.278Z",
+  "status": "PROVEN",
+  "db_url_present": true,
+  "category_slug": "gyms",
+  "row_count": 292,
+  "sample_rows": [
+    {
+      "public_listing_ref": "#SB-2026-F4DWP",
+      "business_name": "VOC Gym & Fitness",
+      "city": "Kabupaten Kediri",
+      "district": null,
+      "phone": null,
+      "website": null,
+      "owner_status": null,
+      "source": "osm_overpass"
+    },
+    {
+      "public_listing_ref": "#SB-2026-318XM",
+      "business_name": "Sanggar Senam Sokaraja Diva",
+      "city": "Banyumas",
+      "district": null,
+      "phone": null,
+      "website": null,
+      "owner_status": null,
+      "source": "osm_overpass"
+    },
+    {
+      "public_listing_ref": "#SB-2026-DSQ3K",
+      "business_name": "Fit Hub",
+      "city": "Tangerang",
+      "district": null,
+      "phone": null,
+      "website": "https://fithub.id",
+      "owner_status": null,
+      "source": "osm_overpass"
+    },
+    {
+      "public_listing_ref": "#SB-2026-CZZ90",
+      "business_name": "Anytime Fitness",
+      "city": "Tangerang",
+      "district": null,
+      "phone": null,
+      "website": null,
+      "owner_status": null,
+      "source": "osm_overpass"
+    },
+    {
+      "public_listing_ref": "#SB-2026-26A0K",
+      "business_name": "MG Fitness",
+      "city": "Tangerang",
+      "district": null,
+      "phone": null,
+      "website": null,
+      "owner_status": null,
+      "source": "osm_overpass"
+    },
+    {
+      "public_listing_ref": "#SB-2026-S0AWE",
+      "business_name": "Gloria Gym",
+      "city": "Tangerang",
+      "district": null,
+      "phone": null,
+      "website": null,
+      "owner_status": null,
+      "source": "osm_overpass"
+    },
+    {
+      "public_listing_ref": "#SB-2026-1P0SY",
+      "business_name": "Duo Shine",
+      "city": "Tangerang",
+      "district": null,
+      "phone": null,
+      "website": null,
+      "owner_status": null,
+      "source": "osm_overpass"
+    },
+    {
+      "public_listing_ref": "#SB-2026-MQJ32",
+      "business_name": "Fit Hub Go",
+      "city": "Kabupaten Cirebon",
+      "district": null,
+      "phone": null,
+      "website": null,
+      "owner_status": null,
+      "source": "osm_overpass"
+    },
+    {
+      "public_listing_ref": "#SB-2026-B56A6",
+      "business_name": "Shegia Aerobic Studio",
+      "city": "Kabupaten Cirebon",
+      "district": null,
+      "phone": null,
+      "website": null,
+      "owner_status": null,
+      "source": "osm_overpass"
+    },
+    {
+      "public_listing_ref": "#SB-2026-444W1",
+      "business_name": "Pemuda Gym",
+      "city": "Kabupaten Cirebon",
+      "district": null,
+      "phone": null,
+      "website": null,
+      "owner_status": null,
+      "source": "osm_overpass"
+    }
+  ],
+  "cities_seen": [
+    {
+      "city": "Jakarta",
+      "n": 57
+    },
+    {
+      "city": "Denpasar",
+      "n": 42
+    },
+    {
+      "city": "Badung",
+      "n": 32
+    },
+    {
+      "city": "Bandung",
+      "n": 22
+    },
+    {
+      "city": "Kuta",
+      "n": 21
+    },
+    {
+      "city": "Surabaya",
+      "n": 14
+    },
+    {
+      "city": "Kabupaten Cirebon",
+      "n": 12
+    },
+    {
+      "city": "Pekanbaru",
+      "n": 11
+    },
+    {
+      "city": "Yogyakarta",
+      "n": 9
+    },
+    {
+      "city": "Kabupaten Bogor",
+      "n": 6
+    }
+  ],
+  "claim_status_seen": [],
+  "owner_status_seen": [
+    {
+      "owner_status": "null",
+      "n": 292
+    }
+  ],
+  "error": null
+}

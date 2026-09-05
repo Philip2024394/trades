@@ -200,7 +200,10 @@ export function makePostgresOutboxDriver(
       if (out == null) {
         // No DB URL · programmer misconfiguration when postgres driver
         // is explicitly selected. Loud throw · never silently degrade.
-        throw new Error("postgres outbox driver: NEX_POSTGRES_URL not set · cannot record attempt · check config");
+        // Driver is polymorphic (nex-wide URL vs whatsapp-outbox-specific
+        // URL supplied by whatsapp-outbox-db.ts) · the caller supplies
+        // withClient, so we don't name a specific env var here.
+        throw new Error("postgres outbox driver: withClient returned null · outbox DB URL env var is unset · cannot record attempt");
       }
       return out;
     },
@@ -234,7 +237,7 @@ export function makePostgresOutboxDriver(
         }
         return rowToEntry(r.rows[0]);
       });
-      if (out == null) throw new Error("postgres outbox driver: NEX_POSTGRES_URL not set");
+      if (out == null) throw new Error("postgres outbox driver: withClient returned null · outbox DB URL env var is unset");
       return out;
     },
     async getEntry(correlationId) {

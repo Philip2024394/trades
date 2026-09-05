@@ -1,0 +1,212 @@
+{
+  "startedAt": "2026-09-05T12:27:25.612Z",
+  "completedAt": "2026-09-05T12:27:28.373Z",
+  "status": "PROVEN",
+  "db_url_present": true,
+  "row_count": 9203,
+  "sample_rows": [
+    {
+      "public_listing_ref": "#AC-2026-YNX38",
+      "business_name": "Lala Golden Bengkayang",
+      "category": "hotel",
+      "city": "Bengkayang",
+      "district": null,
+      "claim_status": "discovered",
+      "coordinates_lat": "0.8164331",
+      "coordinates_lng": "109.4885653",
+      "worker_id": null,
+      "cycle_run_id": null
+    },
+    {
+      "public_listing_ref": "#AC-2026-MYXHV",
+      "business_name": "Patra Dumai",
+      "category": "hotel",
+      "city": "Dumai",
+      "district": null,
+      "claim_status": "discovered",
+      "coordinates_lat": "1.6784896",
+      "coordinates_lng": "101.4630352",
+      "worker_id": null,
+      "cycle_run_id": null
+    },
+    {
+      "public_listing_ref": "#AC-2026-F21QA",
+      "business_name": "HOTEL GAJAH MADA",
+      "category": "hotel",
+      "city": "Dumai",
+      "district": null,
+      "claim_status": "discovered",
+      "coordinates_lat": "1.6776708",
+      "coordinates_lng": "101.4452002",
+      "worker_id": null,
+      "cycle_run_id": null
+    },
+    {
+      "public_listing_ref": "#AC-2026-SDEZ0",
+      "business_name": "Hotel Gadjah Mada",
+      "category": "hotel",
+      "city": "Dumai",
+      "district": null,
+      "claim_status": "discovered",
+      "coordinates_lat": "1.6779035",
+      "coordinates_lng": "101.4451026",
+      "worker_id": null,
+      "cycle_run_id": null
+    },
+    {
+      "public_listing_ref": "#AC-2026-7J61J",
+      "business_name": "Superstar hotel",
+      "category": "hotel",
+      "city": "Dumai",
+      "district": null,
+      "claim_status": "discovered",
+      "coordinates_lat": "1.6698164",
+      "coordinates_lng": "101.4312518",
+      "worker_id": null,
+      "cycle_run_id": null
+    },
+    {
+      "public_listing_ref": "#AC-2026-HGT2Q",
+      "business_name": "Mollya hotel",
+      "category": "hotel",
+      "city": "Dumai",
+      "district": null,
+      "claim_status": "discovered",
+      "coordinates_lat": "1.6767607",
+      "coordinates_lng": "101.44911",
+      "worker_id": null,
+      "cycle_run_id": null
+    },
+    {
+      "public_listing_ref": "#AC-2026-Q6C19",
+      "business_name": "Palapa Hotel",
+      "category": "hotel",
+      "city": "Dumai",
+      "district": null,
+      "claim_status": "discovered",
+      "coordinates_lat": "1.6783631",
+      "coordinates_lng": "101.4555583",
+      "worker_id": null,
+      "cycle_run_id": null
+    },
+    {
+      "public_listing_ref": "#AC-2026-H5NEQ",
+      "business_name": "Hotel Sri Kembar",
+      "category": "hotel",
+      "city": "Dumai",
+      "district": null,
+      "claim_status": "discovered",
+      "coordinates_lat": "1.6945958",
+      "coordinates_lng": "101.4134796",
+      "worker_id": null,
+      "cycle_run_id": null
+    },
+    {
+      "public_listing_ref": "#AC-2026-8CZHA",
+      "business_name": "Grand Zuri",
+      "category": "hotel",
+      "city": "Dumai",
+      "district": null,
+      "claim_status": "discovered",
+      "coordinates_lat": "1.6755385",
+      "coordinates_lng": "101.448592",
+      "worker_id": null,
+      "cycle_run_id": null
+    },
+    {
+      "public_listing_ref": "#AC-2026-WGQJZ",
+      "business_name": "Comfort Hotel",
+      "category": "hotel",
+      "city": "Dumai",
+      "district": null,
+      "claim_status": "discovered",
+      "coordinates_lat": "1.6820805",
+      "coordinates_lng": "101.4474164",
+      "worker_id": null,
+      "cycle_run_id": null
+    }
+  ],
+  "categories_seen": [
+    {
+      "category": "hotel",
+      "n": 6840
+    },
+    {
+      "category": "guesthouse",
+      "n": 1706
+    },
+    {
+      "category": "hostel",
+      "n": 267
+    },
+    {
+      "category": "kos",
+      "n": 215
+    },
+    {
+      "category": "apartment",
+      "n": 96
+    },
+    {
+      "category": "villa",
+      "n": 78
+    },
+    {
+      "category": "homestay",
+      "n": 1
+    }
+  ],
+  "cities_seen": [
+    {
+      "city": "Denpasar",
+      "n": 2145
+    },
+    {
+      "city": "Jakarta",
+      "n": 906
+    },
+    {
+      "city": "Yogyakarta",
+      "n": 882
+    },
+    {
+      "city": "Badung",
+      "n": 697
+    },
+    {
+      "city": "Kuta",
+      "n": 613
+    },
+    {
+      "city": "Bandung",
+      "n": 402
+    },
+    {
+      "city": "Surabaya",
+      "n": 329
+    },
+    {
+      "city": "Makassar",
+      "n": 268
+    },
+    {
+      "city": "Semarang",
+      "n": 204
+    },
+    {
+      "city": "Medan",
+      "n": 166
+    }
+  ],
+  "claim_status_seen": [
+    {
+      "claim_status": "discovered",
+      "n": 8326
+    },
+    {
+      "claim_status": "listed",
+      "n": 877
+    }
+  ],
+  "error": null
+}

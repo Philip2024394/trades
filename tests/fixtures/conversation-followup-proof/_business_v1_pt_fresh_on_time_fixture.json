@@ -1,0 +1,26 @@
+{
+  "_authoritative_comment": "PT Fresh On Time Seafood → Japan · v1 fixture (Philip 2026-09-06). NEX Business v1. Seed values sourced from OWNER-authorised recruitment flyer; no data is fabricated. This fixture is loaded ONLY by the live-probes runner via /admin route or direct JSONL append into $NEX_BUSINESS_DIR. It is NOT loaded by production traffic.",
+  "identity": {
+    "legal_name": "PT Fresh On Time Seafood",
+    "display_name": "PT Fresh On Time Seafood",
+    "country": "Indonesia",
+    "industry": "seafood",
+    "description": "Indonesian seafood exporter · frozen tuna, salmon, shrimp for international markets",
+    "source": "owner_recruitment_flyer_2026",
+    "source_type": "authorised_document"
+  },
+  "products": [
+    { "product_id": "p_tuna",   "name": "Frozen Tuna",   "category": "seafood", "target_markets": ["Japan", "USA", "Europe"] },
+    { "product_id": "p_salmon", "name": "Frozen Salmon", "category": "seafood", "target_markets": ["Japan", "USA"] },
+    { "product_id": "p_shrimp", "name": "Frozen Shrimp", "category": "seafood", "target_markets": ["Japan", "USA", "Europe"] }
+  ],
+  "objectives": [
+    {
+      "objective_id": "obj_japan_buyers",
+      "objective_kind": "FIND_BUYERS",
+      "target_market": "Japan",
+      "target_industry": "seafood",
+      "product_ids": ["p_tuna", "p_salmon", "p_shrimp"]
+    }
+  ]
+}

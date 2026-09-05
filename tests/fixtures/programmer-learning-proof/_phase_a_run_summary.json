@@ -1,0 +1,91 @@
+{
+  "run": {
+    "run_id": "run_5a9fa96e-5c1e-411b-bd56-dab527eec316",
+    "started_at": "2026-09-05T14:22:52.224Z",
+    "completed_at": "2026-09-05T14:22:52.239Z",
+    "triggered_by": "manual",
+    "events_captured": 8,
+    "knowledge_ingested": 4,
+    "skills_touched": 1,
+    "experiences_created": 1,
+    "external_sources_read": 3,
+    "errors": [],
+    "evidence_pointers": [
+      "programmer-learning/sources/24f2d1dbab3e1128972fdc5c34ad0c0d.txt",
+      "programmer-learning/sources/7e9377235d68c54cbd6d48599e585afd.txt",
+      "programmer-learning/sources/66c030334a6a0d5146cc5b83908f8f12.txt",
+      "programmer-learning/events.jsonl",
+      "programmer-learning/knowledge.jsonl",
+      "programmer-learning/skills.jsonl",
+      "programmer-learning/experiences.jsonl"
+    ],
+    "final_status": null
+  },
+  "stats": {
+    "events_total": 10,
+    "events_by_kind": {
+      "external_source_read": 3,
+      "observation": 1,
+      "implementation_attempt": 1,
+      "test_result": 1,
+      "runtime_result": 1,
+      "regression": 1,
+      "verification": 1,
+      "experience_created": 1
+    },
+    "knowledge_total": 4,
+    "knowledge_by_status": {
+      "CHECKED": 3,
+      "VERIFIED": 1
+    },
+    "knowledge_by_tier": {
+      "TIER_1": 4
+    },
+    "skills_total": 1,
+    "skills_by_promotion": {
+      "PRACTICED": 1
+    },
+    "experiences_total": 1,
+    "experiences_by_outcome": {
+      "success": 1
+    },
+    "learning_runs_total": 1,
+    "latest_event_timestamp": "2026-09-05T14:22:52.235Z",
+    "latest_experience_timestamp": "2026-09-05T14:22:52.234Z"
+  },
+  "ts_knowledge": {
+    "id": "know_fa44d176-1a77-47a6-8497-7cba892a669f",
+    "status": "CHECKED",
+    "tier": "TIER_1"
+  },
+  "ts_verified": {
+    "id": "know_d19c334c-1d9f-4468-8d07-5009b24ed689",
+    "status": "VERIFIED"
+  },
+  "nodejs_knowledge": {
+    "id": "know_c2adefdb-dbc5-4ce7-8bff-4d6c5581d522",
+    "status": "CHECKED"
+  },
+  "postgres_knowledge": {
+    "id": "know_104d6201-3bd6-4ff2-a6a1-cbf3de7c0898",
+    "status": "CHECKED"
+  },
+  "p03_experience": {
+    "id": "exp_7dec7f4d-142d-4555-b41f-14d4cd6a0613",
+    "outcome": "success"
+  },
+  "p03_skill": {
+    "id": "skill_5f30e9d2-82ae-4579-a0ce-2b03a8d55279",
+    "promotion": "PRACTICED",
+    "supporting_experiences": [
+      "exp_7dec7f4d-142d-4555-b41f-14d4cd6a0613"
+    ]
+  },
+  "retrieval_check": {
+    "typescript_records": 2,
+    "nodejs_records": 1,
+    "postgres_records": 1,
+    "p03_experiences": 1,
+    "p03_skills": 1
+  }
+}

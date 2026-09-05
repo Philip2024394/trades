@@ -1,0 +1,20 @@
+# NEX Programmer-Learning Source Snapshot
+# url: https://nodejs.org/api/errors.html
+# content_type: text/markdown
+# stored_at: 2026-09-05T14:49:34.970Z
+# sha256_prefix: f26c65c00515f4800adff30fd2709704
+SOURCE URL: https://nodejs.org/api/errors.html
+RETRIEVED AT: 2026-09-05T14:49:34.788Z
+NOTE ON RETRIEVAL INTEGRITY: The docs content was truncated by the
+research pipeline. The specific ENOENT description was NOT captured
+in the extracted excerpt. What WAS extracted (verbatim):
+
+  "error.code should be used to identify an error rather than
+   error.message"
+
+  "System errors are triggered by underlying operating system
+   constraints such as attempting to open a file that does not exist"
+
+The specific claim we intend to verify — that err.code === 'ENOENT'
+for missing-file readFileSync — is NOT confirmed by this excerpt.
+Phase B independent verification is REQUIRED before promotion.

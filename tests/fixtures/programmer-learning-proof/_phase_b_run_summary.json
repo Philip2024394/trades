@@ -1,0 +1,204 @@
+{
+  "run": {
+    "run": {
+      "run_id": "run_365283c7-63c0-403a-a7ae-c01812a9b021",
+      "started_at": "2026-09-05T14:49:34.788Z",
+      "completed_at": "2026-09-05T14:49:34.981Z",
+      "triggered_by": "manual",
+      "events_captured": 4,
+      "knowledge_ingested": 2,
+      "skills_touched": 2,
+      "experiences_created": 1,
+      "external_sources_read": 1,
+      "errors": [],
+      "evidence_pointers": [
+        "question:run_e058c59f-4448-413c-9d9c-f2c4cf46e4f3:What error code (err.code) does Node.js fs.readFileSync throw when the file does",
+        "ingest:know_3949372d-c3ff-4949-a65f-c4caa6b81b03",
+        "verification_event:evt_9ea52b31-00d7-478b-9501-46038d60b18a",
+        "verified_knowledge:know_0a2c9086-2353-40da-aabf-606f6563d02e:VERIFIED",
+        "skill_derived:skill_82ed21be-0199-4d2d-90e0-2558fb062b87:OBSERVED",
+        "applied_skill:skill_82ed21be-0199-4d2d-90e0-2558fb062b87:success",
+        "skill_promoted:skill_f679bc91-add2-44b8-bfca-e3d6898a9c13:VERIFIED"
+      ],
+      "final_status": null
+    }
+  },
+  "stats": {
+    "events_total": 4,
+    "events_by_kind": {
+      "external_source_read": 1,
+      "verification": 1,
+      "experience_created": 1,
+      "learning": 1
+    },
+    "knowledge_total": 2,
+    "knowledge_by_status": {
+      "CHECKED": 1,
+      "VERIFIED": 1
+    },
+    "knowledge_by_tier": {
+      "TIER_1": 2
+    },
+    "skills_total": 2,
+    "skills_by_promotion": {
+      "OBSERVED": 1,
+      "VERIFIED": 1
+    },
+    "experiences_total": 1,
+    "experiences_by_outcome": {
+      "success": 1
+    },
+    "learning_runs_total": 1,
+    "latest_event_timestamp": "2026-09-05T14:49:34.980Z",
+    "latest_experience_timestamp": "2026-09-05T14:49:34.978Z"
+  },
+  "question": {
+    "gap_statement": "Phase A knowledge for Node.js fs contains only the general 'sync APIs throw' statement. It does NOT specify the error code that fs.readFileSync throws when the file does not exist. NEX cannot safely program error-handling for missing files without this specific knowledge.",
+    "question": "What error code (err.code) does Node.js fs.readFileSync throw when the file does not exist, and how can NEX safely detect that specific condition versus other filesystem errors?",
+    "technology": "nodejs",
+    "domain": "runtime.filesystem.errors",
+    "scope_bound": "fs.readFileSync missing-file case specifically · not covering EACCES / EISDIR / EMFILE etc.",
+    "testable_via": "subprocess_probe",
+    "question_id": "run_e058c59f-4448-413c-9d9c-f2c4cf46e4f3",
+    "created_at": "2026-09-05T14:49:34.787Z"
+  },
+  "candidate_knowledge": {
+    "knowledge_id": "know_3949372d-c3ff-4949-a65f-c4caa6b81b03",
+    "statement": "fs.readFileSync throws an Error whose `code` property equals the string 'ENOENT' when the target file does not exist.",
+    "domain": "runtime.filesystem.errors",
+    "technology": "nodejs",
+    "provenance": {
+      "source": "Node.js API · Errors (Common System Errors)",
+      "source_type": "external_documentation",
+      "source_url": "https://nodejs.org/api/errors.html",
+      "authority_tier": "TIER_1",
+      "evidence_pointer": "programmer-learning/sources/f26c65c00515f4800adff30fd2709704.txt",
+      "observed_by": "system",
+      "retrieved_at": "2026-09-05T14:49:34.970Z"
+    },
+    "verification_status": "CHECKED",
+    "confidence": 0.9,
+    "superseded_by": null,
+    "content_hash": "bc12a6dfe8027b7e13ecbeb85eb9d9f1",
+    "created_at": "2026-09-05T14:49:34.970Z"
+  },
+  "verified_knowledge": {
+    "knowledge_id": "know_0a2c9086-2353-40da-aabf-606f6563d02e",
+    "statement": "fs.readFileSync throws an Error whose `code` property equals the string 'ENOENT' when the target file does not exist.",
+    "domain": "runtime.filesystem.errors",
+    "technology": "nodejs",
+    "provenance": {
+      "source": "verifier:subprocess_probe",
+      "source_type": "internal_artifact",
+      "authority_tier": "TIER_1",
+      "evidence_pointer": "programmer-learning/verifications/run_7d3434dd-bb58-4a24-bed8-da2af9a3e7d0.json",
+      "observed_by": "system",
+      "retrieved_at": "2026-09-05T14:49:34.975Z"
+    },
+    "verification_status": "VERIFIED",
+    "confidence": 1,
+    "superseded_by": null,
+    "content_hash": "d58750810df57a69601a2e6a7c749188",
+    "created_at": "2026-09-05T14:49:34.975Z",
+    "related_knowledge": [
+      "know_3949372d-c3ff-4949-a65f-c4caa6b81b03"
+    ]
+  },
+  "skill_initial": {
+    "skill_id": "skill_82ed21be-0199-4d2d-90e0-2558fb062b87",
+    "name": "Safely detect missing-file condition via err.code === 'ENOENT'",
+    "domain": "nodejs.filesystem.errorHandling",
+    "description": "Given a file path, safely determine whether the path exists by attempting to open/read it via fs.readFileSync inside try/catch, then check err.code === 'ENOENT' to distinguish 'file missing' from other error conditions (EACCES · EISDIR · etc.). Return a typed { exists: boolean; errorCode: string | null } result.",
+    "knowledge_dependencies": [
+      "know_0a2c9086-2353-40da-aabf-606f6563d02e"
+    ],
+    "verification_recipe": "1. Attempt fs.readFileSync(path). 2. If throws, inspect err.code. 3. Report { exists: false, errorCode: 'ENOENT' } iff err.code === 'ENOENT'. 4. Report { exists: false, errorCode: err.code } for other errors. 5. Report { exists: true, errorCode: null } on success.",
+    "promotion_state": "OBSERVED",
+    "confidence": 0.2,
+    "created_at": "2026-09-05T14:49:34.975Z"
+  },
+  "skill_promoted": {
+    "skill_id": "skill_f679bc91-add2-44b8-bfca-e3d6898a9c13",
+    "name": "Safely detect missing-file condition via err.code === 'ENOENT'",
+    "domain": "nodejs.filesystem.errorHandling",
+    "description": "Given a file path, safely determine whether the path exists by attempting to open/read it via fs.readFileSync inside try/catch, then check err.code === 'ENOENT' to distinguish 'file missing' from other error conditions (EACCES · EISDIR · etc.). Return a typed { exists: boolean; errorCode: string | null } result.",
+    "knowledge_dependencies": [
+      "know_0a2c9086-2353-40da-aabf-606f6563d02e"
+    ],
+    "verification_recipe": "1. Attempt fs.readFileSync(path). 2. If throws, inspect err.code. 3. Report { exists: false, errorCode: 'ENOENT' } iff err.code === 'ENOENT'. 4. Report { exists: false, errorCode: err.code } for other errors. 5. Report { exists: true, errorCode: null } on success.",
+    "promotion_state": "VERIFIED",
+    "supporting_experiences": [
+      "exp_fcd968d4-303f-44c8-8128-b1e7659dacca"
+    ],
+    "confidence": 0.8,
+    "created_at": "2026-09-05T14:49:34.980Z"
+  },
+  "application_experience_id": "exp_fcd968d4-303f-44c8-8128-b1e7659dacca",
+  "application_outcome": "success",
+  "verification_evidence": {
+    "verification_id": "run_7d3434dd-bb58-4a24-bed8-da2af9a3e7d0",
+    "method": "subprocess_probe",
+    "candidate_claim": "fs.readFileSync throws an Error whose `code` property equals the string 'ENOENT' when the target file does not exist.",
+    "expected_outcome": "subprocess stdout equals 'ENOENT'",
+    "observed_output": "EXIT=0\nSTDOUT:\nENOENT\nSTDERR:\n",
+    "passed": true,
+    "evidence_pointer": "programmer-learning/verifications/run_7d3434dd-bb58-4a24-bed8-da2af9a3e7d0.json",
+    "duration_ms": 180,
+    "timestamp": "2026-09-05T14:49:34.968Z",
+    "mechanism_detail": "spawn(node, [-e, script]) · fixed argv · no shell · 8s timeout"
+  },
+  "fresh_retrieval": {
+    "exit_code": 0,
+    "stdout_len": 2012,
+    "stderr_len": 264
+  },
+  "latest_verified_retrieval": {
+    "knowledge_id": "know_0a2c9086-2353-40da-aabf-606f6563d02e",
+    "statement": "fs.readFileSync throws an Error whose `code` property equals the string 'ENOENT' when the target file does not exist.",
+    "domain": "runtime.filesystem.errors",
+    "technology": "nodejs",
+    "provenance": {
+      "source": "verifier:subprocess_probe",
+      "source_type": "internal_artifact",
+      "authority_tier": "TIER_1",
+      "evidence_pointer": "programmer-learning/verifications/run_7d3434dd-bb58-4a24-bed8-da2af9a3e7d0.json",
+      "observed_by": "system",
+      "retrieved_at": "2026-09-05T14:49:34.975Z"
+    },
+    "verification_status": "VERIFIED",
+    "confidence": 1,
+    "superseded_by": null,
+    "content_hash": "d58750810df57a69601a2e6a7c749188",
+    "created_at": "2026-09-05T14:49:34.975Z",
+    "related_knowledge": [
+      "know_3949372d-c3ff-4949-a65f-c4caa6b81b03"
+    ]
+  },
+  "all_learning_runs": [
+    {
+      "run_id": "run_365283c7-63c0-403a-a7ae-c01812a9b021",
+      "started_at": "2026-09-05T14:49:34.788Z",
+      "completed_at": "2026-09-05T14:49:34.981Z",
+      "triggered_by": "manual",
+      "events_captured": 4,
+      "knowledge_ingested": 2,
+      "skills_touched": 2,
+      "experiences_created": 1,
+      "external_sources_read": 1,
+      "errors": [],
+      "evidence_pointers": [
+        "question:run_e058c59f-4448-413c-9d9c-f2c4cf46e4f3:What error code (err.code) does Node.js fs.readFileSync throw when the file does",
+        "ingest:know_3949372d-c3ff-4949-a65f-c4caa6b81b03",
+        "verification_event:evt_9ea52b31-00d7-478b-9501-46038d60b18a",
+        "verified_knowledge:know_0a2c9086-2353-40da-aabf-606f6563d02e:VERIFIED",
+        "skill_derived:skill_82ed21be-0199-4d2d-90e0-2558fb062b87:OBSERVED",
+        "applied_skill:skill_82ed21be-0199-4d2d-90e0-2558fb062b87:success",
+        "skill_promoted:skill_f679bc91-add2-44b8-bfca-e3d6898a9c13:VERIFIED"
+      ],
+      "final_status": null
+    }
+  ],
+  "experiences_total": 1,
+  "knowledge_total": 2,
+  "skills_total": 2
+}

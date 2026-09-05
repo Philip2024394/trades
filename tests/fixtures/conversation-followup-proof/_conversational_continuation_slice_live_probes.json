@@ -1,0 +1,449 @@
+{
+  "runAt": "2026-09-05T23:29:42.572Z",
+  "campaigns": [
+    {
+      "label": "A · Hotel quantity continuation",
+      "description": "T1 hotels · T2 one more · T3 two more · T4 tell me about the first one",
+      "conversation_id": "fdc6ffd0-3a84-4ab4-bc3a-0d6fdbc67389",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "need hotel tonight",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jak",
+          "voice_reply_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "quantity_kind": "UNSPECIFIED",
+          "frame_transition": "UNKNOWN",
+          "frame_active_domain": "accommodation",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          }
+        },
+        {
+          "turn": 2,
+          "message": "one more",
+          "fabricated": null,
+          "reply": "Here is 1 more from the list: Le temple. Want me to widen the search too?",
+          "voice_reply_en": "Here is 1 more from the list: Le temple. Want me to widen the search too?",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "quantity_gate_fired": true,
+          "quantity_kind": "INCREMENTAL",
+          "wave1_gate_reason": "quantity:incremental_continuation:+1:shown=1",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "reason": "boundary:quantity:incremental_continuation:+1:shown=1"
+        },
+        {
+          "turn": 3,
+          "message": "two more",
+          "fabricated": null,
+          "reply": "Here are 2 more from the list: Le temple, Indraloka. Want me to widen the search too?",
+          "voice_reply_en": "Here are 2 more from the list: Le temple, Indraloka. Want me to widen the search too?",
+          "intent": "accommodation",
+          "world_cards_count": 0,
+          "world_cards_names": [],
+          "quantity_gate_fired": true,
+          "quantity_kind": "INCREMENTAL",
+          "wave1_gate_reason": "quantity:incremental_continuation:+2:shown=2",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          },
+          "reason": "boundary:quantity:incremental_continuation:+2:shown=2"
+        },
+        {
+          "turn": 4,
+          "message": "tell me about the first one",
+          "fabricated": null,
+          "reply": "I don't have many verified details about Gaotama Hotel yet. Want me to help find their contact info?",
+          "voice_reply_en": "I don't have many verified details about Gaotama Hotel yet. Want me to help find their contact info?",
+          "intent": "accommodation",
+          "world_cards_count": 0,
+          "world_cards_names": [],
+          "quantity_kind": "ORDINAL_RANGE",
+          "frame_transition": "UNKNOWN",
+          "frame_active_domain": "accommodation",
+          "current_reference": {
+            "resolved": true,
+            "refKind": "ordinal",
+            "offset": 1,
+            "business": {
+              "canonical": "griya sentana",
+              "raw": "Griya Sentana",
+              "refId": "place:accommodation:osm:node_492167658"
+            },
+            "resolvedInTurn": 4
+          },
+          "reason": "boundary:attribute_query:LIST_ATTRIBUTES_OF:list:1:0"
+        }
+      ]
+    },
+    {
+      "label": "B · Hotel → restaurant topic switch",
+      "description": "T1 hotels · T2 actually restaurant · T3 first one (must be restaurant NOT hotel)",
+      "conversation_id": "0e154673-2308-4f00-aa83-52dbbf97cee5",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "need hotel tonight",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jak",
+          "voice_reply_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "quantity_kind": "UNSPECIFIED",
+          "frame_transition": "UNKNOWN",
+          "frame_active_domain": "accommodation",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          }
+        },
+        {
+          "turn": 2,
+          "message": "actually, I need a restaurant",
+          "fabricated": null,
+          "reply": "Got it — switching to restaurants. What area or type are you looking for?",
+          "voice_reply_en": "Got it — switching to restaurants. What area or type are you looking for?",
+          "intent": "accommodation",
+          "world_cards_count": 0,
+          "world_cards_names": [],
+          "quantity_kind": "UNSPECIFIED",
+          "frame_gate_fired": true,
+          "frame_transition": "TOPIC_SHIFT",
+          "frame_active_domain": "restaurant",
+          "wave2_gate_reason": "frame:topic_shift_vertical_switch:accommodation->food:reset_applied",
+          "current_reference": null,
+          "reason": "boundary:frame:topic_shift_vertical_switch:accommodation->food"
+        },
+        {
+          "turn": 3,
+          "message": "show me the first one",
+          "fabricated": null,
+          "reply": "I haven't shown any results yet in this conversation. Want me to search first?",
+          "voice_reply_en": "I haven't shown any results yet in this conversation. Want me to search first?",
+          "intent": "accommodation",
+          "world_cards_count": 0,
+          "world_cards_names": [],
+          "quantity_gate_fired": true,
+          "quantity_kind": "ORDINAL_RANGE",
+          "wave1_gate_reason": "quantity:ordinal_range_without_result_set",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_prior_presentation"
+          },
+          "reason": "boundary:quantity:ordinal_range_without_result_set"
+        }
+      ]
+    },
+    {
+      "label": "C · Explicit new hotel search after prior hotels",
+      "description": "T1 hotels · T2 explicit new hotel search near airport — must be fresh discovery",
+      "conversation_id": "72da45c0-7a02-41ea-ac90-7e06c3e6dffc",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "need hotel tonight",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jak",
+          "voice_reply_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "quantity_kind": "UNSPECIFIED",
+          "frame_transition": "UNKNOWN",
+          "frame_active_domain": "accommodation",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          }
+        },
+        {
+          "turn": 2,
+          "message": "find me another hotel near the airport",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jak",
+          "voice_reply_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "quantity_kind": "UNSPECIFIED",
+          "frame_transition": "TOPIC_SHIFT",
+          "frame_active_domain": "hotel",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          }
+        }
+      ]
+    },
+    {
+      "label": "D · Reference + quantity",
+      "description": "T1 hotels · T2 second one · T3 one more like that",
+      "conversation_id": "3e935146-10d4-4066-a358-80b6143c6296",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "need hotel tonight",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jak",
+          "voice_reply_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "quantity_kind": "UNSPECIFIED",
+          "frame_transition": "UNKNOWN",
+          "frame_active_domain": "accommodation",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          }
+        },
+        {
+          "turn": 2,
+          "message": "tell me about the second one",
+          "fabricated": null,
+          "reply": "I don't have many verified details about Selaras Inn Hotel Yogyakarta yet. Want me to help find their contact info?",
+          "voice_reply_en": "I don't have many verified details about Selaras Inn Hotel Yogyakarta yet. Want me to help find their contact info?",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "quantity_kind": "EXACT",
+          "frame_transition": "UNKNOWN",
+          "frame_active_domain": "accommodation",
+          "current_reference": {
+            "resolved": true,
+            "refKind": "ordinal",
+            "offset": 2,
+            "business": {
+              "canonical": "selaras inn hotel yogyakarta",
+              "raw": "Selaras Inn Hotel Yogyakarta",
+              "refId": "place:accommodation:#AC-2026-00010"
+            },
+            "resolvedInTurn": 2
+          },
+          "reason": "boundary:attribute_query:LIST_ATTRIBUTES_OF:list:2:0"
+        },
+        {
+          "turn": 3,
+          "message": "show me one more like that",
+          "fabricated": null,
+          "reply": "Here is 1 more from the list: Le temple. Want me to widen the search too?",
+          "voice_reply_en": "Here is 1 more from the list: Le temple. Want me to widen the search too?",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "quantity_gate_fired": true,
+          "quantity_kind": "INCREMENTAL",
+          "wave1_gate_reason": "quantity:incremental_continuation:+1:shown=1",
+          "current_reference": {
+            "resolved": true,
+            "refKind": "ordinal",
+            "offset": 2,
+            "business": {
+              "canonical": "selaras inn hotel yogyakarta",
+              "raw": "Selaras Inn Hotel Yogyakarta",
+              "refId": "place:accommodation:#AC-2026-00010"
+            },
+            "resolvedInTurn": 2
+          },
+          "reason": "boundary:quantity:incremental_continuation:+1:shown=1"
+        }
+      ]
+    },
+    {
+      "label": "E · Negation preservation",
+      "description": "T1 hotels · T2 'I don't want another one' → G12 negation wins",
+      "conversation_id": "e9243e82-497b-41b6-8663-1c242c1b0f8e",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "need hotel tonight",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jak",
+          "voice_reply_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "quantity_kind": "UNSPECIFIED",
+          "frame_transition": "UNKNOWN",
+          "frame_active_domain": "accommodation",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          }
+        },
+        {
+          "turn": 2,
+          "message": "I don't want another one",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jak",
+          "voice_reply_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "quantity_kind": "EXACT",
+          "frame_transition": "CONTINUATION",
+          "frame_active_domain": "accommodation",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          }
+        }
+      ]
+    },
+    {
+      "label": "F · Fresh session quantity",
+      "description": "Fresh session · 'one more' → honest clarification, no fabrication",
+      "conversation_id": "095a7ad2-e25b-4926-bf03-b0a6b41f1cb3",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "one more",
+          "fabricated": null,
+          "reply": "Sure — 1 more of what? I haven't shown any results yet to expand on.",
+          "voice_reply_en": "Sure — 1 more of what? I haven't shown any results yet to expand on.",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "world_cards_names": [],
+          "quantity_gate_fired": true,
+          "quantity_kind": "INCREMENTAL",
+          "wave1_gate_reason": "quantity:incremental_without_result_set",
+          "current_reference": null,
+          "reason": "boundary:quantity:incremental_without_result_set"
+        }
+      ]
+    },
+    {
+      "label": "G · Fresh session ordinal",
+      "description": "Fresh session · 'show me the first one' → P0.4 honest clarification",
+      "conversation_id": "6ba1e270-88db-4c8c-bd6b-d0ab610a15f8",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "show me the first one",
+          "fabricated": null,
+          "reply": "I haven't shown any results yet in this conversation. Want me to search first?",
+          "voice_reply_en": "I haven't shown any results yet in this conversation. Want me to search first?",
+          "intent": "conversation",
+          "world_cards_count": 0,
+          "world_cards_names": [],
+          "quantity_gate_fired": true,
+          "quantity_kind": "ORDINAL_RANGE",
+          "wave1_gate_reason": "quantity:ordinal_range_without_result_set",
+          "current_reference": null,
+          "reason": "boundary:quantity:ordinal_range_without_result_set"
+        }
+      ]
+    },
+    {
+      "label": "H · Quantity + explicit different vertical",
+      "description": "T1 hotels · T2 'I need one more restaurant' — must NOT answer with hotels",
+      "conversation_id": "27600970-fe8c-44f4-b8b3-42e84595a205",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "need hotel tonight",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jak",
+          "voice_reply_en": "Yep — found 3.",
+          "intent": "accommodation",
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "quantity_kind": "UNSPECIFIED",
+          "frame_transition": "UNKNOWN",
+          "frame_active_domain": "accommodation",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_reference_mentioned"
+          }
+        },
+        {
+          "turn": 2,
+          "message": "I need one more restaurant",
+          "fabricated": null,
+          "reply": "Got it — switching to restaurants. What area or type are you looking for?",
+          "voice_reply_en": "Got it — switching to restaurants. What area or type are you looking for?",
+          "intent": "accommodation",
+          "world_cards_count": 0,
+          "world_cards_names": [],
+          "quantity_kind": "INCREMENTAL",
+          "frame_gate_fired": true,
+          "frame_transition": "TOPIC_SHIFT",
+          "frame_active_domain": "restaurant",
+          "wave2_gate_reason": "frame:topic_shift_vertical_switch:accommodation->food:reset_applied",
+          "current_reference": null,
+          "reason": "boundary:frame:topic_shift_vertical_switch:accommodation->food"
+        }
+      ]
+    }
+  ],
+  "verdicts": {
+    "a_t2_quantity": true,
+    "a_t2_no_repeat": true,
+    "a_t4_ordinal": true,
+    "b_t2_topic_shift": true,
+    "b_t2_reply_restaurants": true,
+    "b_t3_no_stale_hotel": true,
+    "c_new_search_fresh": true,
+    "d_ref_second": true,
+    "e_no_quantity_continuation": true,
+    "f_defensive": true,
+    "g_p04_honest": true,
+    "h_topic_shift_wins": true,
+    "zero_fabrications": true
+  }
+}

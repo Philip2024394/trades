@@ -1,0 +1,101 @@
+{
+  "runAt": "2026-09-05T14:37:42.936Z",
+  "conversation_id": "18c6719d-daf2-49c8-a53d-d455762565fe",
+  "turns": [
+    {
+      "turn": 1,
+      "question": "Find me a hotel near Malioboro.",
+      "intent": "accommodation",
+      "reply": "I've got 521 real listings for hotels near Malioboro — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+      "voice_reply_en": "Yep — found 3.",
+      "voice_reply_intent": "discovery_hit",
+      "current_reference": {
+        "resolved": false,
+        "reason": "no_reference_mentioned"
+      },
+      "world_cards_count": 3,
+      "world_cards_names": [
+        {
+          "name": "Gaotama Hotel",
+          "id": "#AC-2026-0000D"
+        },
+        {
+          "name": "Selaras Inn Hotel Yogyakarta",
+          "id": "#AC-2026-00010"
+        },
+        {
+          "name": "Indonesia Hotel",
+          "id": "#AC-2026-00019"
+        }
+      ],
+      "card_hits": [
+        {},
+        {},
+        {},
+        {},
+        {}
+      ],
+      "composition_ran": false,
+      "composition_accepted": false
+    },
+    {
+      "turn": 2,
+      "question": "Tell me more about the first one.",
+      "intent": "accommodation",
+      "reply": "Gaotama Hotel is a hotel in Yogyakarta. Listed on NEX (discovered from public directory data · not owner-verified).",
+      "voice_reply_en": "Gaotama Hotel is a hotel in Yogyakarta. Listed on NEX (discovered from public directory data · not owner-verified).",
+      "voice_reply_intent": "p0_composed",
+      "current_reference": {
+        "resolved": true,
+        "refKind": "ordinal",
+        "offset": 1,
+        "business": {
+          "canonical": "gaotama hotel",
+          "raw": "Gaotama Hotel",
+          "refId": "place:accommodation:#AC-2026-0000D"
+        },
+        "resolvedInTurn": 2
+      },
+      "world_cards_count": 3,
+      "world_cards_names": [
+        {
+          "name": "Gaotama Hotel",
+          "id": "#AC-2026-0000D"
+        },
+        {
+          "name": "Selaras Inn Hotel Yogyakarta",
+          "id": "#AC-2026-00010"
+        },
+        {
+          "name": "Indonesia Hotel",
+          "id": "#AC-2026-00019"
+        }
+      ],
+      "card_hits": [
+        {},
+        {},
+        {},
+        {},
+        {}
+      ],
+      "composition_ran": true,
+      "composition_accepted": true,
+      "composition_reason": "record_summary_fallback:accommodation:#AC-2026-0000D · after:claim_verification_rejected: high_risk_flag(s): semantic_contradiction",
+      "composition_knowledge_count": 4,
+      "composition_baseline_reply": "I've got 521 real listings for hotels near Malioboro — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+      "composition_composed_reply": "Gaotama Hotel is a hotel in Yogyakarta. Listed on NEX (discovered from public directory data · not owner-verified).",
+      "composition_flags": [
+        {
+          "kind": "semantic_contradiction",
+          "severity": "high",
+          "matched_text": "Gaotama Hotel is a popular choice near Malioboro",
+          "reason": "definitional predicate for \"Gaotama Hotel\" has 0% keyword overlap with knowledge · below 25% threshold · suspected fluent-but-wrong claim"
+        }
+      ],
+      "composition_widened_for_information_query": true,
+      "hydrated_reference_id": "#AC-2026-0000D",
+      "hydrated_reference_vertical": "accommodation",
+      "hydration_reason": "hydrated:accommodation:#AC-2026-0000D"
+    }
+  ]
+}

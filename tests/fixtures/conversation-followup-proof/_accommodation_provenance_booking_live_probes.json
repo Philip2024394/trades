@@ -1,0 +1,449 @@
+{
+  "runAt": "2026-09-05T19:26:38.055Z",
+  "tests": [
+    {
+      "label": "LIVE A · Hotel · full flow (provenance → clarification → display)",
+      "description": "hotels → where you find them → what you mean I can't book → ok so lets see them",
+      "conversation_id": "37bce33d-faf1-4bf6-8162-0c02f17eb0a9",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels in Yogyakarta",
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+          "intent": "accommodation",
+          "capability_display_act": "NONE",
+          "capability_display_reason": "no_capability_or_display_act",
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary",
+          "active_language": "EN",
+          "conv_function_detected": "TASK_REQUEST",
+          "frame_transition": "TOPIC_SHIFT",
+          "frame_active_domain": "hotels"
+        },
+        {
+          "turn": 2,
+          "message": "where did you find them?",
+          "reply": "I found them through NEX's accommodation directory for the area. Some of the underlying listing information was contributed via OpenStreetMap.",
+          "intent": "accommodation",
+          "capability_display_act": "NONE",
+          "capability_display_reason": "no_capability_or_display_act",
+          "result_followup_fired": true,
+          "result_followup_reason": "provenance_from_vertical:accommodation",
+          "active_language": "EN",
+          "conv_function_detected": "RESULT_FOLLOW_UP",
+          "frame_transition": "UNKNOWN",
+          "frame_active_domain": "accommodation"
+        },
+        {
+          "turn": 3,
+          "message": "what you mean i cant book",
+          "reply": "I don't mean the listings themselves can't be booked. I mean NEX doesn't have verified booking access for these yet, so I don't want to say I can book when I can't confirm it.",
+          "intent": "accommodation",
+          "capability_display_act": "CAPABILITY_CLARIFICATION",
+          "capability_display_reason": "capability_clarification:BOOKING:UNKNOWN",
+          "capability_display_gate_fired": true,
+          "capability_kind": "BOOKING",
+          "capability_state": "UNKNOWN",
+          "capability_display_vertical": "accommodation",
+          "active_language": "EN",
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "frame_transition": "UNKNOWN",
+          "frame_active_domain": "accommodation"
+        },
+        {
+          "turn": 4,
+          "message": "ok so lets see them",
+          "reply": "Sure — here are the 5 hotels I found: Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, Le temple, Dusun Jogja Village inn.",
+          "intent": "accommodation",
+          "capability_display_act": "RESULT_DISPLAY_REQUEST",
+          "capability_display_reason": "display_from_result_set",
+          "capability_display_gate_fired": true,
+          "capability_display_vertical": "accommodation",
+          "display_entities_count": 5,
+          "active_language": "EN",
+          "conv_function_detected": "UNCLASSIFIED",
+          "frame_transition": "UNKNOWN",
+          "frame_active_domain": "accommodation"
+        }
+      ]
+    },
+    {
+      "label": "LIVE B · Food · provenance + capability clarification + display",
+      "description": "food → provenance → capability → display",
+      "conversation_id": "e3593af3-9ddf-439f-a1f2-a00e5ccd8b02",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me some food places in Yogyakarta",
+          "reply": "For a traditional Yogyakarta experience, try Gudeg Yu Djum for their famous gudeg. In the evening, head to Angkringan stalls like Warung Ngemplak for a communal dining experience. Both offer authentic local flavors and are popular among locals and tourists alike.",
+          "intent": "food",
+          "capability_display_act": "NONE",
+          "capability_display_reason": "no_capability_or_display_act",
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary",
+          "active_language": "EN",
+          "conv_function_detected": "TASK_REQUEST",
+          "frame_transition": "UNKNOWN",
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "where did you find them?",
+          "reply": "I don't have detailed source information for those results in the current conversation.",
+          "intent": "conversation",
+          "capability_display_act": "NONE",
+          "capability_display_reason": "no_capability_or_display_act",
+          "result_followup_fired": true,
+          "result_followup_reason": "anchored_unknown_provenance:no_vertical_inferred",
+          "active_language": "EN",
+          "conv_function_detected": "RESULT_FOLLOW_UP",
+          "frame_transition": "UNKNOWN"
+        },
+        {
+          "turn": 3,
+          "message": "can I book?",
+          "reply": "I don't have verified booking access for these listings through NEX yet, so I don't want to say I can when I can't confirm it. I can help you get more info instead.",
+          "intent": "conversation",
+          "capability_display_act": "CAPABILITY_QUESTION",
+          "capability_display_reason": "capability_question:BOOKING:UNKNOWN",
+          "capability_display_gate_fired": true,
+          "capability_kind": "BOOKING",
+          "capability_state": "UNKNOWN",
+          "active_language": "EN",
+          "conv_function_detected": "UNCLASSIFIED",
+          "frame_transition": "UNKNOWN"
+        },
+        {
+          "turn": 4,
+          "message": "ok show me them",
+          "reply": "Sure — here are the 1 results I found: Warung Ngemplak for a communal dining experience.",
+          "intent": "conversation",
+          "capability_display_act": "RESULT_DISPLAY_REQUEST",
+          "capability_display_reason": "display_from_result_set",
+          "capability_display_gate_fired": true,
+          "display_entities_count": 1,
+          "active_language": "EN",
+          "conv_function_detected": "UNCLASSIFIED",
+          "frame_transition": "UNKNOWN"
+        }
+      ]
+    },
+    {
+      "label": "LIVE C · Restaurant · capability question first (no prior provenance turn)",
+      "description": "restaurants → can I book? → let's see them",
+      "conversation_id": "4fb096fe-bf84-495a-ba94-f8c22db8b1e5",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me restaurants near Malioboro",
+          "reply": "Near Malioboro, you can try Sate Malioboro or Gudeg Yu Djum. Both are known for their delicious food and convenient locations.",
+          "intent": "conversation",
+          "capability_display_act": "NONE",
+          "capability_display_reason": "no_capability_or_display_act",
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary",
+          "active_language": "EN",
+          "conv_function_detected": "TASK_REQUEST",
+          "frame_transition": "NEW_REQUEST",
+          "frame_active_domain": "restaurants",
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "can I reserve?",
+          "reply": "I don't have verified booking access for these listings through NEX yet, so I don't want to say I can when I can't confirm it. I can help you get more info instead.",
+          "intent": "conversation",
+          "capability_display_act": "CAPABILITY_QUESTION",
+          "capability_display_reason": "capability_question:BOOKING:UNKNOWN",
+          "capability_display_gate_fired": true,
+          "capability_kind": "BOOKING",
+          "capability_state": "UNKNOWN",
+          "active_language": "EN",
+          "conv_function_detected": "UNCLASSIFIED",
+          "frame_transition": "UNKNOWN"
+        },
+        {
+          "turn": 3,
+          "message": "let's see them",
+          "reply": "I haven't shown you any results yet in this conversation. Want me to search for something first?",
+          "intent": "conversation",
+          "capability_display_act": "RESULT_DISPLAY_REQUEST",
+          "capability_display_reason": "display_no_result_set",
+          "capability_display_gate_fired": true,
+          "display_entities_count": 0,
+          "active_language": "EN",
+          "conv_function_detected": "UNCLASSIFIED",
+          "frame_transition": "UNKNOWN"
+        }
+      ]
+    },
+    {
+      "label": "LIVE D · Transport · capability question",
+      "description": "transport → can I book?",
+      "conversation_id": "36b4196e-2f14-4752-8cc3-68907c38a7ef",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me some transport options in Yogyakarta",
+          "reply": "In Yogyakarta, ride-hailing services like Gojek and Grab are widely available and convenient for getting around the city. You can also use motorbikes (ojek) for a more local experience. For longer distances or tours, consider hiring a car with a driver, which can be arranged through your hotel or directly.",
+          "intent": "indonesia",
+          "capability_display_act": "NONE",
+          "capability_display_reason": "no_capability_or_display_act",
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary",
+          "active_language": "EN",
+          "conv_function_detected": "TASK_REQUEST",
+          "frame_transition": "UNKNOWN",
+          "ordinal_gate_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "can I book?",
+          "reply": "I don't have verified booking access for these listings through NEX yet, so I don't want to say I can when I can't confirm it. I can help you get more info instead.",
+          "intent": "conversation",
+          "capability_display_act": "CAPABILITY_QUESTION",
+          "capability_display_reason": "capability_question:BOOKING:UNKNOWN",
+          "capability_display_gate_fired": true,
+          "capability_kind": "BOOKING",
+          "capability_state": "UNKNOWN",
+          "active_language": "EN",
+          "conv_function_detected": "UNCLASSIFIED",
+          "frame_transition": "UNKNOWN"
+        },
+        {
+          "turn": 3,
+          "message": "ok show me the options",
+          "reply": "Sure — here are the 1 results I found: Gojek.",
+          "intent": "conversation",
+          "capability_display_act": "RESULT_DISPLAY_REQUEST",
+          "capability_display_reason": "display_from_result_set",
+          "capability_display_gate_fired": true,
+          "display_entities_count": 1,
+          "active_language": "EN",
+          "conv_function_detected": "UNCLASSIFIED",
+          "frame_transition": "UNKNOWN"
+        }
+      ]
+    },
+    {
+      "label": "LIVE E · Negation · 'I don't want to book the first one'",
+      "description": "hotels → I don't want to book the first one",
+      "conversation_id": "eb9b1384-244a-4be9-9af4-b0673fe8f5a6",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "intent": "accommodation",
+          "capability_display_act": "NONE",
+          "capability_display_reason": "no_capability_or_display_act",
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary",
+          "active_language": "EN",
+          "conv_function_detected": "TASK_REQUEST",
+          "frame_transition": "TOPIC_SHIFT",
+          "frame_active_domain": "hotels"
+        },
+        {
+          "turn": 2,
+          "message": "I don't want to book the first one",
+          "reply": "let's consider another option. How about Selaras Inn Hotel in Yogyakarta?",
+          "intent": "accommodation",
+          "capability_display_act": "NONE",
+          "capability_display_reason": "no_capability_or_display_act",
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary",
+          "active_language": "EN",
+          "conv_function_detected": "UNCLASSIFIED",
+          "frame_transition": "UNKNOWN",
+          "frame_active_domain": "accommodation",
+          "ordinal_gate_fired": false
+        }
+      ]
+    },
+    {
+      "label": "LIVE F · Reference · 'where did you find that one?'",
+      "description": "hotels → where did you find that one?",
+      "conversation_id": "ee561153-ce67-4f6e-908c-3260bc7b830b",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels in Yogyakarta",
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+          "intent": "accommodation",
+          "capability_display_act": "NONE",
+          "capability_display_reason": "no_capability_or_display_act",
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary",
+          "active_language": "EN",
+          "conv_function_detected": "TASK_REQUEST",
+          "frame_transition": "TOPIC_SHIFT",
+          "frame_active_domain": "hotels"
+        },
+        {
+          "turn": 2,
+          "message": "where did you find that one?",
+          "reply": "I found that information by looking at community listings on OpenStreetMap. These listings are great for discovering options but aren't for live booking. Do you have a preference for budget, mid-range, or luxury hotels?",
+          "intent": "accommodation",
+          "capability_display_act": "NONE",
+          "capability_display_reason": "no_capability_or_display_act",
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary",
+          "active_language": "EN",
+          "conv_function_detected": "INFORMATION_QUESTION",
+          "frame_transition": "UNKNOWN",
+          "frame_active_domain": "accommodation",
+          "ordinal_gate_fired": false
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · plain provenance still works",
+      "description": "no capability language · standard provenance flow",
+      "conversation_id": "713c9c58-36d9-470b-9835-2ddf0e946681",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "intent": "accommodation",
+          "capability_display_act": "NONE",
+          "capability_display_reason": "no_capability_or_display_act",
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary",
+          "active_language": "EN",
+          "conv_function_detected": "TASK_REQUEST",
+          "frame_transition": "TOPIC_SHIFT",
+          "frame_active_domain": "hotels"
+        },
+        {
+          "turn": 2,
+          "message": "where did you find them?",
+          "reply": "I found them through NEX's accommodation directory for the area. Some of the underlying listing information was contributed via OpenStreetMap.",
+          "intent": "accommodation",
+          "capability_display_act": "NONE",
+          "capability_display_reason": "no_capability_or_display_act",
+          "result_followup_fired": true,
+          "result_followup_reason": "provenance_from_vertical:accommodation",
+          "active_language": "EN",
+          "conv_function_detected": "RESULT_FOLLOW_UP",
+          "frame_transition": "UNKNOWN",
+          "frame_active_domain": "accommodation"
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · G12 negated request",
+      "description": "'I don't want a hotel' still gated by G12",
+      "conversation_id": "e24d81e6-4739-41dd-8aab-2927e01cc527",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I don't want a hotel",
+          "reply": "Got it — no problem. What would you like me to help with instead?",
+          "intent": "accommodation",
+          "active_language": "EN",
+          "conv_function_detected": "NEGATED_REQUEST",
+          "conv_function_gate_fired": true,
+          "frame_transition": "UNKNOWN",
+          "frame_active_domain": "accommodation"
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · L4 social",
+      "description": "'do you want to know where I am' still social-frame reset",
+      "conversation_id": "b14fd968-7a7a-4654-aa99-16db0dc5ddf6",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "any hotels nex",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "intent": "accommodation",
+          "capability_display_act": "NONE",
+          "capability_display_reason": "no_capability_or_display_act",
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary",
+          "active_language": "EN",
+          "conv_function_detected": "TASK_REQUEST",
+          "frame_transition": "UNKNOWN",
+          "frame_active_domain": "accommodation"
+        },
+        {
+          "turn": 2,
+          "message": "do you want to know where i am",
+          "reply": "Yeah — where are you? That'll help me make things more relevant.",
+          "intent": "accommodation",
+          "active_language": "EN",
+          "conv_function_detected": "PERSONAL_CONTEXT_OFFER",
+          "conv_function_gate_fired": true,
+          "frame_transition": "UNKNOWN",
+          "frame_active_domain": "accommodation"
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · G24 scope",
+      "description": "'seafood in Japan' still scope-blocked",
+      "conversation_id": "0cf9f7ab-8045-4656-bae4-520fe7d9ae72",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "tell me about seafood in Japan",
+          "reply": "NEX doesn't have verified information about japan at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "intent": "conversation",
+          "capability_display_act": "NONE",
+          "capability_display_reason": "no_capability_or_display_act",
+          "result_followup_fired": false,
+          "result_followup_reason": "not_provenance_followup:ordinary",
+          "active_language": "EN",
+          "conv_function_detected": "UNCLASSIFIED",
+          "frame_transition": "UNKNOWN",
+          "scope_gate_fired": true,
+          "ordinal_gate_fired": false
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · fresh capability question no prior results",
+      "description": "'can I book?' fresh conv · honest UNKNOWN answer",
+      "conversation_id": "53c986c9-f1a7-4b9c-ac95-1057b2806934",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "can I book?",
+          "reply": "I don't have verified booking access for these listings through NEX yet, so I don't want to say I can when I can't confirm it. I can help you get more info instead.",
+          "intent": "conversation",
+          "capability_display_act": "CAPABILITY_QUESTION",
+          "capability_display_reason": "capability_question:BOOKING:UNKNOWN",
+          "capability_display_gate_fired": true,
+          "capability_kind": "BOOKING",
+          "capability_state": "UNKNOWN",
+          "active_language": "EN",
+          "conv_function_detected": "UNCLASSIFIED",
+          "frame_transition": "UNKNOWN"
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · fresh display request no result set",
+      "description": "'show me them' fresh conv · honest no-result reply",
+      "conversation_id": "22a9df38-e354-48cf-9077-1b88251ce06b",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "show me them",
+          "reply": "I haven't shown you any results yet in this conversation. Want me to search for something first?",
+          "intent": "conversation",
+          "capability_display_act": "RESULT_DISPLAY_REQUEST",
+          "capability_display_reason": "display_no_result_set",
+          "capability_display_gate_fired": true,
+          "display_entities_count": 0,
+          "active_language": "EN",
+          "conv_function_detected": "TASK_REQUEST",
+          "frame_transition": "UNKNOWN"
+        }
+      ]
+    }
+  ]
+}

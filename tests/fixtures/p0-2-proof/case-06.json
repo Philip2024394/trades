@@ -1,0 +1,693 @@
+{
+  "id": "06",
+  "category": "B",
+  "stress": "anaphoric 'there' after topic set",
+  "conversation_id": "0d29437d-7db6-42f1-9d7e-b281aec7341c",
+  "turns": [
+    {
+      "turnId": "t1",
+      "message": "tell me about jakarta",
+      "response": {
+        "conversation_id": "0d29437d-7db6-42f1-9d7e-b281aec7341c",
+        "reply": "Jakarta is Indonesia's capital and largest city, a business hub with notable attractions like Kota Tua, Monas, and Istiqlal Mosque. Traffic can be heavy, so consider using ride-hailing services or public transportation.",
+        "understood_intent": "indonesia",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "indonesia",
+        "intent_reason": "indonesia_place_or_country",
+        "suggestions": [],
+        "card": {
+          "kind": "knowledge",
+          "payload": {
+            "hits": [
+              {
+                "id": "id-tourism-jakarta",
+                "topic": "tourism.jakarta",
+                "region": "DKI Jakarta",
+                "stability": "stable",
+                "confidence": 0.9,
+                "last_verified": "2026-08-30T00:00:00.000Z"
+              },
+              {
+                "id": "id-basics-capital",
+                "topic": "indonesia.capital",
+                "region": "Indonesia",
+                "stability": "stable",
+                "confidence": 1,
+                "last_verified": "2026-08-30T00:00:00.000Z"
+              },
+              {
+                "id": "accommodation:regional:jakarta_business",
+                "topic": "accommodation.regional.jakarta_business",
+                "region": "DKI Jakarta",
+                "stability": "stable",
+                "confidence": 0.9,
+                "last_verified": "2026-08-30T16:05:43.447Z"
+              }
+            ],
+            "grounded_block": "NEX Indonesia knowledge (grounded · cite the region/topic when useful, do not embellish):\n  · [tourism.jakarta · DKI Jakarta · stable · verified 2026-08-30T00:00:00.000Z]\n    Jakarta is Indonesia's capital and largest city — a business hub rather than a classic tourist destination. Highlights: Kota Tua (old Dutch quarter with cafés and museums), Monas (National Monument), Istiqlal Mosque (South-East Asia's largest, next door to the Catholic cathedral), Taman Mini Indonesia Indah (culture park), night markets in Glodok (Chinatown), and Pantai Indah Kapuk for modern food streets. Traffic is heavy — plan indoor blocks and use Gojek/Grab or MRT/TransJakarta buses.\n  · [indonesia.capital · Indonesia · stable · verified 2026-08-30T00:00:00.000Z]\n    The capital of Indonesia is Jakarta, on the north-west coast of Java. Since 2019 the government has been progressively moving parts of the administrative capital to Nusantara (IKN) in East Kalimantan; Jakarta remains the largest city and economic centre.\n  · [accommodation.regional.jakarta_business · DKI Jakarta · stable · verified 2026-08-30T16:05:43.447Z]\n    Jakarta's business-hotel inventory concentrates in the SCBD, Sudirman, Thamrin, and Kuningan corridors, with international chains including Ritz-Carlton, Grand Hyatt, Fairmont, Mandarin Oriental, and Four Seasons. Mid-market properties spread through South Jakarta (Kemang, Blok M). Airport hotels cluster at Soekarno-Hatta."
+          }
+        },
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "indonesia",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "high",
+          "reason": "reply carries 1 grounded/retrieved/computed claim",
+          "claims": [
+            {
+              "claim": "grounded knowledge citation",
+              "evidence": "retrieved",
+              "source": "NEX Indonesia knowledge corpus"
+            }
+          ],
+          "evidenceCount": 1,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": true,
+            "evidenceCount": 1,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 0,
+              "byKind": {}
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "high",
+            "confidenceReason": "reply carries 1 grounded/retrieved/computed claim",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "low",
+            "fabricationReason": "no reflection failures · confidence acceptable"
+          },
+          "whatShouldIDo": {
+            "action": "grounded answer delivered · await user's next turn",
+            "origin": "grounded_answer"
+          },
+          "whatILearned": {
+            "recentEntries": [],
+            "count": 0
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=high · reflection=5/5 · fabrication_risk=low · next=grounded_answer"
+        },
+        "entities": {
+          "total": 0,
+          "byKind": {}
+        },
+        "current_reference": null,
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "world_retrieval",
+          "secondary": [],
+          "reason": "intent=indonesia → grounded corpus retrieval",
+          "availability": "available",
+          "parameters": {
+            "market": "ID",
+            "query": "tell me about jakarta",
+            "limit": 15,
+            "minConfidence": 0.5
+          }
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=indonesia · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [],
+          "hasSignals": false,
+          "summary": "no adaptation patterns · behavior unchanged"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "indonesia",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=indonesia (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": null,
+        "world_expanded_page": null,
+        "world_latency_ms": null,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": true,
+          "accepted": true,
+          "widened_for_information_query": false,
+          "frame_topic": "tell me about jakarta",
+          "knowledge_count": 6,
+          "baseline_reply": "Jakarta is Indonesia's capital and largest city — a business hub rather than a classic tourist destination. Highlights: Kota Tua (old Dutch quarter with cafés and museums), Monas (National Monument), Istiqlal Mosque (South-East Asia's largest, next door to the Catholic cathedral), Taman Mini Indonesia Indah (culture park), night markets in Glodok (Chinatown), and Pantai Indah Kapuk for modern food streets. Traffic is heavy — plan indoor blocks and use Gojek/Grab or MRT/TransJakarta buses.\n\nThe capital of Indonesia is Jakarta, on the north-west coast of Java. Since 2019 the government has been progressively moving parts of the administrative capital to Nusantara (IKN) in East Kalimantan; Jakarta remains the largest city and economic centre.\n\nJakarta's business-hotel inventory concentrates in the SCBD, Sudirman, Thamrin, and Kuningan corridors, with international chains including Ritz-Carlton, Grand Hyatt, Fairmont, Mandarin Oriental, and Four Seasons. Mid-market properties spread through South Jakarta (Kemang, Blok M). Airport hotels cluster at Soekarno-Hatta. (Source: NEX Indonesia knowledge · DKI Jakarta · verified 2026-08-30T00:00:00.000Z.)",
+          "model": "qwen2.5:7b-instruct-q3_K_M",
+          "fell_back": false,
+          "latency_ms": 6074,
+          "prompt_tokens": 1363,
+          "response_tokens": 48,
+          "flags": [],
+          "post_composition_audit_ran": true,
+          "composed_reply": "Jakarta is Indonesia's capital and largest city, a business hub with notable attractions like Kota Tua, Monas, and Istiqlal Mosque. Traffic can be heavy, so consider using ride-hailing services or public transportation.",
+          "composed_entity_count": 3
+        },
+        "voice_reply": {
+          "en": "Jakarta is Indonesia's capital and largest city, a business hub with notable attractions like Kota Tua, Monas, and Istiqlal Mosque. Traffic can be heavy, so consider using ride-hailing services or public transportation.",
+          "id": null,
+          "mode": "friendly",
+          "intent": "p0_composed",
+          "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=6074"
+        },
+        "metrics": {
+          "total_ms": 6,
+          "brain_ms": 6,
+          "world_ms": null,
+          "specialist_used": null
+        }
+      },
+      "summary": {
+        "http_status": 200,
+        "latency_ms": 6118,
+        "intent": "indonesia",
+        "served_reply": "Jakarta is Indonesia's capital and largest city, a business hub with notable attractions like Kota Tua, Monas, and Istiqlal Mosque. Traffic can be heavy, so consider using ride-hailing services or public transportation.",
+        "baseline_deterministic": "Jakarta is Indonesia's capital and largest city — a business hub rather than a classic tourist destination. Highlights: Kota Tua (old Dutch quarter with cafés and museums), Monas (National Monument), Istiqlal Mosque (South-East Asia's largest, next door to the Catholic cathedral), Taman Mini Indonesia Indah (culture park), night markets in Glodok (Chinatown), and Pantai Indah Kapuk for modern food streets. Traffic is heavy — plan indoor blocks and use Gojek/Grab or MRT/TransJakarta buses.\n\nThe capital of Indonesia is Jakarta, on the north-west coast of Java. Since 2019 the government has been progressively moving parts of the administrative capital to Nusantara (IKN) in East Kalimantan; Jakarta remains the largest city and economic centre.\n\nJakarta's business-hotel inventory concentrates in the SCBD, Sudirman, Thamrin, and Kuningan corridors, with international chains including Ritz-Carlton, Grand Hyatt, Fairmont, Mandarin Oriental, and Four Seasons. Mid-market properties spread through South Jakarta (Kemang, Blok M). Airport hotels cluster at Soekarno-Hatta. (Source: NEX Indonesia knowledge · DKI Jakarta · verified 2026-08-30T00:00:00.000Z.)",
+        "composition_ran": true,
+        "composition_accepted": true,
+        "composition_reason": null,
+        "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+        "composition_latency_ms": 6074,
+        "composition_flags": [],
+        "composition_flag_count": 0,
+        "composition_high_flag_count": 0,
+        "composition_semantic_flag_count": 0,
+        "knowledge_count": 6,
+        "frame_topic": "tell me about jakarta",
+        "frame_subject": null,
+        "widened_for_information_query": false,
+        "post_composition_audit_ran": true,
+        "composed_entity_count": 3,
+        "confidence_overall": "high",
+        "fabrication_risk": "low",
+        "current_reference": null
+      }
+    },
+    {
+      "turnId": "t2",
+      "message": "what about the food scene there?",
+      "response": {
+        "conversation_id": "0d29437d-7db6-42f1-9d7e-b281aec7341c",
+        "reply": "Jakarta's food scene is diverse, with options ranging from street food to high-end restaurants. You can find everything from traditional Indonesian dishes like nasi goreng and sate to international cuisine. Be sure to try local favorites such as bakso and soto ayam for a taste of the city.",
+        "understood_intent": "food",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "food",
+        "intent_reason": "food_terms",
+        "suggestions": [
+          {
+            "label": "Find nearby",
+            "href": "/nex-app/centre"
+          }
+        ],
+        "card": {
+          "kind": "knowledge",
+          "payload": {
+            "hits": [
+              {
+                "id": "id-food-nasi-goreng",
+                "topic": "food.nasi_goreng",
+                "region": "Indonesia",
+                "stability": "stable",
+                "confidence": 1,
+                "last_verified": "2026-08-30T00:00:00.000Z"
+              },
+              {
+                "id": "id-food-rendang",
+                "topic": "food.rendang",
+                "region": "West Sumatra",
+                "stability": "stable",
+                "confidence": 1,
+                "last_verified": "2026-08-30T00:00:00.000Z"
+              },
+              {
+                "id": "id-food-sate",
+                "topic": "food.sate",
+                "region": "Indonesia",
+                "stability": "stable",
+                "confidence": 1,
+                "last_verified": "2026-08-30T00:00:00.000Z"
+              }
+            ],
+            "grounded_block": "NEX Indonesia knowledge (grounded · cite the region/topic when useful, do not embellish):\n  · [food.nasi_goreng · Indonesia · stable · verified 2026-08-30T00:00:00.000Z]\n    Nasi goreng is Indonesian fried rice — rice stir-fried with kecap manis (sweet soy sauce), garlic, shallots, chilli and often chicken, egg or prawn. Usually served with a fried egg on top, prawn crackers and slices of cucumber and tomato. Considered the national dish and available almost everywhere from street stalls to hotels.\n  · [food.rendang · West Sumatra · stable · verified 2026-08-30T00:00:00.000Z]\n    Rendang is a slow-cooked beef curry from West Sumatra (Padang cuisine). Beef is simmered for hours in coconut milk with lemongrass, galangal, turmeric, kaffir lime and chilli until the liquid reduces and the meat turns dark and rich. Best found at Padang restaurants (rumah makan Padang) — the classic ordering style is a bench of small dishes brought to your table, you pay for what you eat.\n  · [food.sate · Indonesia · stable · verified 2026-08-30T00:00:00.000Z]\n    Sate (satay) is skewered grilled meat served with a dipping sauce. Common types: sate ayam (chicken, sweet peanut sauce), sate kambing (goat), sate lilit (Balinese minced fish/meat wrapped on lemongrass stems). Look for sate stalls with lit charcoal in the evening — that's when they're at their best."
+          }
+        },
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "food",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "learning",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": false,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": false,
+              "reason": "reply names 1 business(es) not in the World result set: rice stir"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 4,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "high",
+          "reason": "reply carries 1 grounded/retrieved/computed claim",
+          "claims": [
+            {
+              "claim": "grounded knowledge citation",
+              "evidence": "retrieved",
+              "source": "NEX Indonesia knowledge corpus"
+            }
+          ],
+          "evidenceCount": 1,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": true,
+            "evidenceCount": 1,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 3,
+              "byKind": {
+                "place": 3
+              }
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "high",
+            "confidenceReason": "reply carries 1 grounded/retrieved/computed claim",
+            "reflectionOverallPass": false,
+            "reflectionPassRatio": "4/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [
+              "hasEvidenceForClaims: reply names 1 business(es) not in the World result set: rice stir"
+            ],
+            "fabricationRisk": "high",
+            "fabricationReason": "Reflection caught 1 evidence/honesty failure(s)"
+          },
+          "whatShouldIDo": {
+            "action": "grounded answer delivered · await user's next turn",
+            "origin": "grounded_answer"
+          },
+          "whatILearned": {
+            "recentEntries": [
+              {
+                "kind": "reflection_failure",
+                "scope": "food.reflection",
+                "summary": "1 check(s) failed: hasEvidenceForClaims",
+                "atMs": 1788603854165
+              }
+            ],
+            "count": 1
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=high · reflection=4/5 · fabrication_risk=high · next=grounded_answer · learned=1"
+        },
+        "entities": {
+          "total": 3,
+          "byKind": {
+            "place": 3
+          }
+        },
+        "current_reference": {
+          "resolved": false,
+          "reason": "no_reference_mentioned"
+        },
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "world_retrieval",
+          "secondary": [],
+          "reason": "intent=food → grounded corpus retrieval",
+          "availability": "available",
+          "parameters": {
+            "market": "ID",
+            "query": "what about the food scene there?",
+            "limit": 15,
+            "minConfidence": 0.5
+          }
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=food · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [],
+          "hasSignals": false,
+          "summary": "no adaptation patterns · behavior unchanged"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "food",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=food (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": {
+          "vertical": "food",
+          "cards": [
+            {
+              "id": "#FL-2026-00091",
+              "vertical": "food",
+              "name": "Thai Tea kiosk",
+              "subline": "Fast-food · Yogyakarta",
+              "location": "Yogyakarta",
+              "verified": false,
+              "provenanceLabel": "NEX directory · listed",
+              "ownershipState": "unclaimed",
+              "actions": [
+                {
+                  "kind": "view",
+                  "label": "View",
+                  "href": "/nex-app/centre?ref=%23FL-2026-00091"
+                },
+                {
+                  "kind": "directions",
+                  "label": "Directions",
+                  "href": "https://maps.google.com/?q=-7.818006,110.36814"
+                }
+              ]
+            },
+            {
+              "id": "#FL-2026-000QD",
+              "vertical": "food",
+              "name": "Omah Mie Miyada",
+              "subline": "Fast-food · Yogyakarta",
+              "location": "Yogyakarta",
+              "verified": false,
+              "provenanceLabel": "NEX directory · listed",
+              "ownershipState": "unclaimed",
+              "actions": [
+                {
+                  "kind": "view",
+                  "label": "View",
+                  "href": "/nex-app/centre?ref=%23FL-2026-000QD"
+                },
+                {
+                  "kind": "directions",
+                  "label": "Directions",
+                  "href": "https://maps.google.com/?q=-7.811574,110.416091"
+                }
+              ]
+            },
+            {
+              "id": "#FL-2026-000R3",
+              "vertical": "food",
+              "name": "Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo",
+              "subline": "Fast-food · Yogyakarta",
+              "location": "Yogyakarta",
+              "verified": false,
+              "provenanceLabel": "NEX directory · listed",
+              "ownershipState": "unclaimed",
+              "actions": [
+                {
+                  "kind": "view",
+                  "label": "View",
+                  "href": "/nex-app/centre?ref=%23FL-2026-000R3"
+                },
+                {
+                  "kind": "directions",
+                  "label": "Directions",
+                  "href": "https://maps.google.com/?q=-7.752302,110.419729"
+                }
+              ]
+            }
+          ],
+          "totalAvailable": 797,
+          "headline": "Showing 3 of 797 real places."
+        },
+        "world_expanded_page": null,
+        "world_latency_ms": 1122.2848000004888,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": true,
+          "accepted": true,
+          "widened_for_information_query": true,
+          "frame_topic": "what about the food scene there?",
+          "frame_subject": "food scene",
+          "knowledge_count": 6,
+          "baseline_reply": "I found 797 real places — Thai Tea kiosk, Omah Mie Miyada, Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo, and more. These are NEX directory listings for discovery — I never invent price or availability.",
+          "model": "qwen2.5:7b-instruct-q3_K_M",
+          "fell_back": false,
+          "latency_ms": 7126,
+          "prompt_tokens": 1382,
+          "response_tokens": 62,
+          "flags": [],
+          "post_composition_audit_ran": true,
+          "composed_reply": "Jakarta's food scene is diverse, with options ranging from street food to high-end restaurants. You can find everything from traditional Indonesian dishes like nasi goreng and sate to international cuisine. Be sure to try local favorites such as bakso and soto ayam for a taste of the city.",
+          "composed_entity_count": 0
+        },
+        "voice_reply": {
+          "en": "Jakarta's food scene is diverse, with options ranging from street food to high-end restaurants. You can find everything from traditional Indonesian dishes like nasi goreng and sate to international cuisine. Be sure to try local favorites such as bakso and soto ayam for a taste of the city.",
+          "id": null,
+          "mode": "friendly",
+          "intent": "p0_composed",
+          "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=7126"
+        },
+        "metrics": {
+          "total_ms": 1135,
+          "brain_ms": 1135,
+          "world_ms": 1122.2848000004888,
+          "specialist_used": null
+        }
+      },
+      "summary": {
+        "http_status": 200,
+        "latency_ms": 8281,
+        "intent": "food",
+        "served_reply": "Jakarta's food scene is diverse, with options ranging from street food to high-end restaurants. You can find everything from traditional Indonesian dishes like nasi goreng and sate to international cuisine. Be sure to try local favorites such as bakso and soto ayam for a taste of the city.",
+        "baseline_deterministic": "I found 797 real places — Thai Tea kiosk, Omah Mie Miyada, Ubi Madu Cilembu Berbakar Kang Mas - Stad. Maguwoharjo, and more. These are NEX directory listings for discovery — I never invent price or availability.",
+        "composition_ran": true,
+        "composition_accepted": true,
+        "composition_reason": null,
+        "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+        "composition_latency_ms": 7126,
+        "composition_flags": [],
+        "composition_flag_count": 0,
+        "composition_high_flag_count": 0,
+        "composition_semantic_flag_count": 0,
+        "knowledge_count": 6,
+        "frame_topic": "what about the food scene there?",
+        "frame_subject": "food scene",
+        "widened_for_information_query": true,
+        "post_composition_audit_ran": true,
+        "composed_entity_count": 0,
+        "confidence_overall": "high",
+        "fabrication_risk": "high",
+        "current_reference": false
+      }
+    }
+  ]
+}

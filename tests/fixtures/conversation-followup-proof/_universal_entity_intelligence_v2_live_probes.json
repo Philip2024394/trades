@@ -1,0 +1,402 @@
+{
+  "runAt": "2026-09-05T20:41:05.668Z",
+  "tests": [
+    {
+      "label": "LIVE HOTEL v2 · full flow",
+      "description": "hotels → does first have pool? → what does first have? → which has laundry? → tell me more about second → provenance → book?",
+      "conversation_id": "c78a4cf8-c568-4fc8-8c8b-2e31ab397856",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "have you got hotels?",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": false,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        },
+        {
+          "turn": 2,
+          "message": "does the first one have a pool?",
+          "reply": "I don't have information on whether Gaotama Hotel has a pool. We can check their official website or review travel reviews for that detail.",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": false,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        },
+        {
+          "turn": 3,
+          "message": "what does the first one have?",
+          "reply": "I don't have information on what amenities the First Living hotel has, such as a pool. We can check their official website or review sites for more details.",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": false,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        },
+        {
+          "turn": 4,
+          "message": "which one has laundry?",
+          "reply": "Got it — hotels. I don't have matching real listings yet. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": false,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        },
+        {
+          "turn": 5,
+          "message": "tell me more about the second one",
+          "reply": "I don't have specific details on the second hotel you're referring to. Could you please provide more information or another hotel name so I can help you better?",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": false,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        },
+        {
+          "turn": 6,
+          "message": "where did you find them?",
+          "reply": "I found them through NEX's accommodation directory for the area. Some of the underlying listing information was contributed via OpenStreetMap.",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": true,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        },
+        {
+          "turn": 7,
+          "message": "can I book the first one?",
+          "reply": "I don't have verified booking access for these listings through NEX yet, so I don't want to say I can when I can't confirm it. I can help you get more info instead.",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "CAPABILITY_QUESTION",
+          "capability_display_gate_fired": true,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        }
+      ]
+    },
+    {
+      "label": "LIVE VILLA · category-aware attributes",
+      "description": "'find me villas in Bali' → does the first have private pool? → how many bedrooms?",
+      "conversation_id": "fe511fd4-fb7e-4928-aa49-7c7797a1c55c",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me villas in Bali",
+          "reply": "Got it — villas in Bali. I don't have matching real listings yet. Do you want budget, mid-range, or something more upmarket?",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": false,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        },
+        {
+          "turn": 2,
+          "message": "does the first one have a private pool?",
+          "reply": "I haven't shown any results yet in this conversation. Want me to search first?",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        },
+        {
+          "turn": 3,
+          "message": "how many bedrooms?",
+          "reply": "Got it — villas in Bali. I don't have matching real listings yet. Do you want budget, mid-range, or something more upmarket?",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": false,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        }
+      ]
+    },
+    {
+      "label": "EVIDENCE · UNKNOWN ≠ FALSE (helicopter pad)",
+      "description": "'does the first have a helicopter pad?' → honest UNKNOWN not 'no'",
+      "conversation_id": "4c798ce9-58a7-4859-b471-1ceba01de436",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": false,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        },
+        {
+          "turn": 2,
+          "message": "does the first one have a helicopter pad?",
+          "reply": "The Gaotama Hotel in Yogyakarta does have a helicopter pad.",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": false,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · result-followup",
+      "description": "'where did you find them?' still works",
+      "conversation_id": "993ddfad-0bce-4b6a-8e96-d1ee0a7c62c6",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": false,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        },
+        {
+          "turn": 2,
+          "message": "where did you find them?",
+          "reply": "I found them through NEX's accommodation directory for the area. Some of the underlying listing information was contributed via OpenStreetMap.",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": true,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · capability CAPABILITY_CLARIFICATION",
+      "description": "'what you mean I can't book' after provenance",
+      "conversation_id": "2d4042d7-dbb5-4c55-91f8-ff7b4eb08f18",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": false,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        },
+        {
+          "turn": 2,
+          "message": "where did you find them?",
+          "reply": "I found them through NEX's accommodation directory for the area. Some of the underlying listing information was contributed via OpenStreetMap.",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": true,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        },
+        {
+          "turn": 3,
+          "message": "what you mean i cant book",
+          "reply": "I don't mean the listings themselves can't be booked. I mean NEX doesn't have verified booking access for these yet, so I don't want to say I can book when I can't confirm it.",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "CAPABILITY_CLARIFICATION",
+          "capability_display_gate_fired": true,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        },
+        {
+          "turn": 4,
+          "message": "ok lets see them",
+          "reply": "Sure — here are the 5 hotels I found: Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, Le temple, Dusun Jogja Village inn.",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "RESULT_DISPLAY_REQUEST",
+          "capability_display_gate_fired": true,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · G12 negation",
+      "description": "'I don't want a hotel'",
+      "conversation_id": "0f84810c-fbb8-42a0-bcce-ada593012194",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "I don't want a hotel",
+          "reply": "Got it — no problem. What would you like me to help with instead?",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · G24 scope block",
+      "description": "'seafood in Japan'",
+      "conversation_id": "d7629e36-b196-4e18-88c7-7c39d4b92027",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "tell me about seafood in Japan",
+          "reply": "NEX doesn't have verified information about japan at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": false,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · P0.4 fresh ordinal",
+      "description": "'Tell me about the first hotel.'",
+      "conversation_id": "13f9a006-63e1-4db5-b23b-8f52661efce1",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "Tell me about the first hotel.",
+          "reply": "Which hotel do you mean? I don't have a previous hotel list in this conversation. Want me to find some?",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": false,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · social 'wow nice'",
+      "description": "hotels → wow nice",
+      "conversation_id": "2eb13f73-9fe1-4eb8-b222-df22e0b99221",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels",
+          "reply": "I've got 521 real listings for hotels — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Which city or area are you looking at — Yogyakarta, Bali, Jakarta, somewhere else?",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": false,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        },
+        {
+          "turn": 2,
+          "message": "wow nice",
+          "reply": "Glad to hear that. Anything I can help with next?",
+          "attribute_query_kind": "NONE",
+          "social_emotional_act": "EMOTIONAL_REACTION",
+          "social_emotional_gate_fired": true,
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        }
+      ]
+    },
+    {
+      "label": "PRESERVE · Wave 3 STT normalization",
+      "description": "'find me a hotal'",
+      "conversation_id": "d54ef423-48cb-41fc-af26-6f29667177da",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me a hotal near malioboro",
+          "reply": "there are several options near Malioboro. Check out hotels like Hotel Malioboro or Kafe Pecinan, both offering convenient locations for shopping and dining.",
+          "attribute_query_kind": "NONE",
+          "capability_display_act": "NONE",
+          "result_followup_fired": false,
+          "social_emotional_act": "NONE",
+          "card_names": [],
+          "card_verified_highlights": [],
+          "card_unverified_highlights": [],
+          "card_coverage_pcts": [],
+          "card_evidence_pcts": []
+        }
+      ]
+    }
+  ]
+}

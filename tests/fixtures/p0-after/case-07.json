@@ -1,0 +1,584 @@
+{
+  "id": "07",
+  "category": "B",
+  "stress": "topic shift with continuity 'and X?'",
+  "conversation_id": "32ebdba0-9189-450e-80d6-dad64d4adc98",
+  "turns": [
+    {
+      "turnId": "t1",
+      "message": "what industries drive surabaya?",
+      "response": {
+        "conversation_id": "32ebdba0-9189-450e-80d6-dad64d4adc98",
+        "reply": "Surabaya's economy is driven by industries such as manufacturing, transportation, and logistics. It is a major industrial hub in Indonesia, with a strong presence in automotive parts, textiles, and food processing. The city also has a significant port, which contributes to its role as a logistics center.",
+        "understood_intent": "indonesia",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "indonesia",
+        "intent_reason": "indonesia_place_or_country",
+        "suggestions": [],
+        "card": {
+          "kind": "knowledge",
+          "payload": {
+            "hits": [
+              {
+                "id": "place:city:surabaya",
+                "topic": "geo.city.surabaya",
+                "region": "East Java",
+                "stability": "stable",
+                "confidence": 0.862,
+                "last_verified": "2026-08-30T15:54:54.193Z"
+              },
+              {
+                "id": "id-tourism-surabaya",
+                "topic": "tourism.surabaya",
+                "region": "East Java",
+                "stability": "stable",
+                "confidence": 0.85,
+                "last_verified": "2026-08-30T00:00:00.000Z"
+              },
+              {
+                "id": "food:cuisine:javanese",
+                "topic": "food.cuisine.javanese",
+                "region": "Indonesia",
+                "stability": "stable",
+                "confidence": 0.9,
+                "last_verified": "2026-08-30T16:19:41.387Z"
+              }
+            ],
+            "grounded_block": "NEX Indonesia knowledge (grounded · cite the region/topic when useful, do not embellish):\n  · [geo.city.surabaya · East Java · stable · verified 2026-08-30T15:54:54.193Z]\n    Surabaya is a city/regency in East Java.\n  · [tourism.surabaya · East Java · stable · verified 2026-08-30T00:00:00.000Z]\n    Surabaya (East Java) is Indonesia's second-largest city and the main gateway to Mount Bromo and Ijen. Highlights: House of Sampoerna (kretek museum), Arab quarter around Ampel Mosque, colonial buildings on Jalan Tunjungan, and rawon (dark beef soup). Most tourists overnight one night before heading east to the volcanoes.\n  · [food.cuisine.javanese · Indonesia · stable · verified 2026-08-30T16:19:41.387Z]\n    Central Javanese cuisine (Yogyakarta, Solo, Semarang) tends sweet — palm sugar, kecap manis, and slow braises define gudeg, semur, and opor. East Javanese cuisine (Surabaya, Malang) is sharper and saltier · rawon (black nut beef soup), rujak cingur, and pecel. Rice is the base of every meal; kerupuk (crackers) accompany almost everything."
+          }
+        },
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "indonesia",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "high",
+          "reason": "reply carries 1 grounded/retrieved/computed claim",
+          "claims": [
+            {
+              "claim": "grounded knowledge citation",
+              "evidence": "retrieved",
+              "source": "NEX Indonesia knowledge corpus"
+            }
+          ],
+          "evidenceCount": 1,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": true,
+            "evidenceCount": 1,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 0,
+              "byKind": {}
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "high",
+            "confidenceReason": "reply carries 1 grounded/retrieved/computed claim",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "low",
+            "fabricationReason": "no reflection failures · confidence acceptable"
+          },
+          "whatShouldIDo": {
+            "action": "grounded answer delivered · await user's next turn",
+            "origin": "grounded_answer"
+          },
+          "whatILearned": {
+            "recentEntries": [],
+            "count": 0
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=high · reflection=5/5 · fabrication_risk=low · next=grounded_answer"
+        },
+        "entities": {
+          "total": 0,
+          "byKind": {}
+        },
+        "current_reference": null,
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "world_retrieval",
+          "secondary": [],
+          "reason": "intent=indonesia → grounded corpus retrieval",
+          "availability": "available",
+          "parameters": {
+            "market": "ID",
+            "query": "what industries drive surabaya?",
+            "limit": 15,
+            "minConfidence": 0.5
+          }
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=indonesia · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [],
+          "hasSignals": false,
+          "summary": "no adaptation patterns · behavior unchanged"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "indonesia",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=indonesia (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": null,
+        "world_expanded_page": null,
+        "world_latency_ms": null,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": true,
+          "accepted": true,
+          "frame_topic": "what industries drive surabaya?",
+          "knowledge_count": 5,
+          "baseline_reply": "Surabaya is a city/regency in East Java.\n\nSurabaya (East Java) is Indonesia's second-largest city and the main gateway to Mount Bromo and Ijen. Highlights: House of Sampoerna (kretek museum), Arab quarter around Ampel Mosque, colonial buildings on Jalan Tunjungan, and rawon (dark beef soup). Most tourists overnight one night before heading east to the volcanoes.\n\nCentral Javanese cuisine (Yogyakarta, Solo, Semarang) tends sweet — palm sugar, kecap manis, and slow braises define gudeg, semur, and opor. East Javanese cuisine (Surabaya, Malang) is sharper and saltier · rawon (black nut beef soup), rujak cingur, and pecel. Rice is the base of every meal; kerupuk (crackers) accompany almost everything. (Source: NEX Indonesia knowledge · East Java · verified 2026-08-30T15:54:54.193Z.)",
+          "model": "qwen2.5:7b-instruct-q3_K_M",
+          "fell_back": false,
+          "latency_ms": 7065,
+          "prompt_tokens": 1166,
+          "response_tokens": 60,
+          "flags": [],
+          "composed_reply": "Surabaya's economy is driven by industries such as manufacturing, transportation, and logistics. It is a major industrial hub in Indonesia, with a strong presence in automotive parts, textiles, and food processing. The city also has a significant port, which contributes to its role as a logistics center."
+        },
+        "voice_reply": {
+          "en": "Surabaya's economy is driven by industries such as manufacturing, transportation, and logistics. It is a major industrial hub in Indonesia, with a strong presence in automotive parts, textiles, and food processing. The city also has a significant port, which contributes to its role as a logistics center.",
+          "id": null,
+          "mode": "friendly",
+          "intent": "p0_composed",
+          "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=7065"
+        },
+        "metrics": {
+          "total_ms": 4,
+          "brain_ms": 4,
+          "world_ms": null,
+          "specialist_used": null
+        }
+      },
+      "summary": {
+        "http_status": 200,
+        "latency_ms": 7103,
+        "intent": "indonesia",
+        "intent_reason": "indonesia_place_or_country",
+        "baseline_reply": "Surabaya is a city/regency in East Java.\n\nSurabaya (East Java) is Indonesia's second-largest city and the main gateway to Mount Bromo and Ijen. Highlights: House of Sampoerna (kretek museum), Arab quarter around Ampel Mosque, colonial buildings on Jalan Tunjungan, and rawon (dark beef soup). Most tourists overnight one night before heading east to the volcanoes.\n\nCentral Javanese cuisine (Yogyakarta, Solo, Semarang) tends sweet — palm sugar, kecap manis, and slow braises define gudeg, semur, and opor. East Javanese cuisine (Surabaya, Malang) is sharper and saltier · rawon (black nut beef soup), rujak cingur, and pecel. Rice is the base of every meal; kerupuk (crackers) accompany almost everything. (Source: NEX Indonesia knowledge · East Java · verified 2026-08-30T15:54:54.193Z.)",
+        "served_reply": "Surabaya's economy is driven by industries such as manufacturing, transportation, and logistics. It is a major industrial hub in Indonesia, with a strong presence in automotive parts, textiles, and food processing. The city also has a significant port, which contributes to its role as a logistics center.",
+        "composition_ran": true,
+        "composition_accepted": true,
+        "composition_reason": null,
+        "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+        "composition_latency_ms": 7065,
+        "composition_flags": [],
+        "composition_flag_count": 0,
+        "composition_high_flag_count": 0,
+        "knowledge_count": 5,
+        "frame_topic": "what industries drive surabaya?",
+        "frame_subject": null,
+        "confidence_overall": "high",
+        "fabrication_risk": "low"
+      }
+    },
+    {
+      "turnId": "t2",
+      "message": "and yogyakarta?",
+      "response": {
+        "conversation_id": "32ebdba0-9189-450e-80d6-dad64d4adc98",
+        "reply": "Yogyakarta, also known as Jogja, is Java's cultural heart, featuring highlights like Borobudur and Prambanan. The city is known for its rich history, traditional cuisine such as gudeg, and vibrant street life on Malioboro Street.",
+        "understood_intent": "indonesia",
+        "understood_entities": [],
+        "retrieved_top_k_count": 0,
+        "served_by": "nex-brain-orchestrator",
+        "intent": "indonesia",
+        "intent_reason": "indonesia_place_or_country",
+        "suggestions": [],
+        "card": {
+          "kind": "knowledge",
+          "payload": {
+            "hits": [
+              {
+                "id": "id-tourism-yogyakarta",
+                "topic": "tourism.yogyakarta",
+                "region": "Special Region of Yogyakarta",
+                "stability": "stable",
+                "confidence": 0.95,
+                "last_verified": "2026-08-30T00:00:00.000Z"
+              },
+              {
+                "id": "place:city:yogyakarta",
+                "topic": "geo.city.yogyakarta",
+                "region": "Indonesia",
+                "stability": "stable",
+                "confidence": 0.862,
+                "last_verified": "2026-08-30T15:54:54.193Z"
+              },
+              {
+                "id": "id-food-gudeg",
+                "topic": "food.gudeg",
+                "region": "Special Region of Yogyakarta",
+                "stability": "stable",
+                "confidence": 1,
+                "last_verified": "2026-08-30T00:00:00.000Z"
+              }
+            ],
+            "grounded_block": "NEX Indonesia knowledge (grounded · cite the region/topic when useful, do not embellish):\n  · [tourism.yogyakarta · Special Region of Yogyakarta · stable · verified 2026-08-30T00:00:00.000Z]\n    Yogyakarta (Jogja) is Java's cultural heart. Highlights: Borobudur (world's largest Buddhist temple, sunrise visits limited to timed tickets), Prambanan (Hindu temple complex, evening Ramayana ballet in dry season), Kraton (Sultan's Palace), Malioboro Street (shopping + street food), Kotagede (silver workshops), Mount Merapi jeep tours, and cheap batik courses. A 2–3 day stop is typical.\n  · [geo.city.yogyakarta · Indonesia · stable · verified 2026-08-30T15:54:54.193Z]\n    Yogyakarta is a city/regency in DIY.\n  · [food.gudeg · Special Region of Yogyakarta · stable · verified 2026-08-30T00:00:00.000Z]\n    Gudeg is Yogyakarta's signature dish — young jackfruit stewed for hours with coconut milk, palm sugar and spices until sweet, dark and tender. Served with rice, krecek (spicy cattle-skin stew), chicken and egg. Try it at Gudeg Yu Djum (multiple branches) or the row of night stalls on Jalan Wijilan near the Kraton. Sweet-heavy — expect a heavier palate than most other Indonesian dishes."
+          }
+        },
+        "state_summary": {
+          "turn_count": 1,
+          "current_topic": "indonesia",
+          "established_facts": {},
+          "entities_in_focus": [],
+          "constraints": [],
+          "stage": "brain",
+          "corrections_logged": 0,
+          "current_emotion": "neutral",
+          "handoff_recommended": false,
+          "thin_packet_strikes": 0,
+          "condensed_history_present": false,
+          "conversation_language": "en"
+        },
+        "brain_capabilities": [
+          "perception",
+          "self_awareness",
+          "intent",
+          "conversation_control",
+          "tool_selection",
+          "governance",
+          "verification",
+          "prediction",
+          "initiative",
+          "adaptation",
+          "long_term_memory",
+          "attention",
+          "planning",
+          "reflection",
+          "confidence",
+          "meta_cognition",
+          "personality"
+        ],
+        "goal": null,
+        "reflection": {
+          "overallPass": true,
+          "findings": [
+            {
+              "check": "answersUserMessage",
+              "passed": true,
+              "reason": "reply is non-empty and appropriate to the turn shape"
+            },
+            {
+              "check": "internallyConsistent",
+              "passed": true,
+              "reason": "no slot/reply contradictions detected"
+            },
+            {
+              "check": "hasEvidenceForClaims",
+              "passed": true,
+              "reason": "numeric claims match evidence · surfaced names are trusted from retrieval"
+            },
+            {
+              "check": "respectsHonestBoundary",
+              "passed": true,
+              "reason": "no invented booking/price/availability detected"
+            },
+            {
+              "check": "respectsMarketBoundary",
+              "passed": true,
+              "reason": "no cross-market leakage"
+            }
+          ],
+          "passedCount": 5,
+          "totalChecks": 5
+        },
+        "confidence": {
+          "overall": "high",
+          "reason": "reply carries 1 grounded/retrieved/computed claim",
+          "claims": [
+            {
+              "claim": "grounded knowledge citation",
+              "evidence": "retrieved",
+              "source": "NEX Indonesia knowledge corpus"
+            }
+          ],
+          "evidenceCount": 1,
+          "boundaryCount": 0
+        },
+        "meta_cognition": {
+          "whatIKnow": {
+            "hasGroundedEvidence": true,
+            "evidenceCount": 1,
+            "boundaryCount": 0,
+            "goal": null,
+            "slotsFilled": [],
+            "entitiesSeen": {
+              "total": 0,
+              "byKind": {}
+            }
+          },
+          "howSure": {
+            "confidenceLevel": "high",
+            "confidenceReason": "reply carries 1 grounded/retrieved/computed claim",
+            "reflectionOverallPass": true,
+            "reflectionPassRatio": "5/5"
+          },
+          "amIWrong": {
+            "reflectionFailures": [],
+            "fabricationRisk": "low",
+            "fabricationReason": "no reflection failures · confidence acceptable"
+          },
+          "whatShouldIDo": {
+            "action": "grounded answer delivered · await user's next turn",
+            "origin": "grounded_answer"
+          },
+          "whatILearned": {
+            "recentEntries": [],
+            "count": 0
+          },
+          "didItWork": {
+            "applicable": false,
+            "reason": "no_proposal",
+            "summary": "no action proposed this turn"
+          },
+          "summary": "confidence=high · reflection=5/5 · fabrication_risk=low · next=grounded_answer"
+        },
+        "entities": {
+          "total": 0,
+          "byKind": {}
+        },
+        "current_reference": null,
+        "comparison": null,
+        "recommendation": null,
+        "tool_decision": {
+          "primary": "world_retrieval",
+          "secondary": [],
+          "reason": "intent=indonesia → grounded corpus retrieval",
+          "availability": "available",
+          "parameters": {
+            "market": "ID",
+            "query": "and yogyakarta?",
+            "limit": 15,
+            "minConfidence": 0.5
+          }
+        },
+        "governance": {
+          "policy": "default",
+          "findings": [],
+          "hasDenies": false,
+          "hasRequiresConsent": false,
+          "allowedCount": 0
+        },
+        "action_proposal": null,
+        "action_execution": null,
+        "verification": {
+          "applicable": false,
+          "reason": "no_proposal",
+          "summary": "no action proposed this turn"
+        },
+        "prediction": {
+          "candidates": [],
+          "reason": "intent=indonesia · no vertical-specific prediction v1"
+        },
+        "initiative": {
+          "decision": {
+            "volunteered": false,
+            "reason": "no prediction top candidate to consider"
+          },
+          "sessionCount": 0,
+          "cap": 3
+        },
+        "adaptation": {
+          "signals": [],
+          "hasSignals": false,
+          "summary": "no adaptation patterns · behavior unchanged"
+        },
+        "long_term_memory": null,
+        "personalization": null,
+        "attention": {
+          "ranked": [],
+          "summary": "no attention subjects (empty state)"
+        },
+        "planning": {
+          "goalKind": "indonesia",
+          "steps": [],
+          "currentStepIndex": -1,
+          "turnsRemaining": 0,
+          "isPlanComplete": false,
+          "summary": "no plan built for intent=indonesia (accommodation only v1)"
+        },
+        "personality_profile": {
+          "profile": "friendly",
+          "transformationsApplied": [
+            "friendly: passthrough (composer baseline)"
+          ],
+          "summary": "profile=friendly · 1 transformation(s)"
+        },
+        "world_cards": null,
+        "world_expanded_page": null,
+        "world_latency_ms": null,
+        "action_audit": null,
+        "pending_proposal_snapshot": null,
+        "composition_meta": {
+          "ran": true,
+          "accepted": true,
+          "frame_topic": "and yogyakarta?",
+          "knowledge_count": 6,
+          "baseline_reply": "Yogyakarta (Jogja) is Java's cultural heart. Highlights: Borobudur (world's largest Buddhist temple, sunrise visits limited to timed tickets), Prambanan (Hindu temple complex, evening Ramayana ballet in dry season), Kraton (Sultan's Palace), Malioboro Street (shopping + street food), Kotagede (silver workshops), Mount Merapi jeep tours, and cheap batik courses. A 2–3 day stop is typical.\n\nYogyakarta is a city/regency in DIY.\n\nGudeg is Yogyakarta's signature dish — young jackfruit stewed for hours with coconut milk, palm sugar and spices until sweet, dark and tender. Served with rice, krecek (spicy cattle-skin stew), chicken and egg. Try it at Gudeg Yu Djum (multiple branches) or the row of night stalls on Jalan Wijilan near the Kraton. Sweet-heavy — expect a heavier palate than most other Indonesian dishes. (Source: NEX Indonesia knowledge · Special Region of Yogyakarta · verified 2026-08-30T00:00:00.000Z.)",
+          "model": "qwen2.5:7b-instruct-q3_K_M",
+          "fell_back": false,
+          "latency_ms": 7047,
+          "prompt_tokens": 1452,
+          "response_tokens": 57,
+          "flags": [],
+          "composed_reply": "Yogyakarta, also known as Jogja, is Java's cultural heart, featuring highlights like Borobudur and Prambanan. The city is known for its rich history, traditional cuisine such as gudeg, and vibrant street life on Malioboro Street."
+        },
+        "voice_reply": {
+          "en": "Yogyakarta, also known as Jogja, is Java's cultural heart, featuring highlights like Borobudur and Prambanan. The city is known for its rich history, traditional cuisine such as gudeg, and vibrant street life on Malioboro Street.",
+          "id": null,
+          "mode": "friendly",
+          "intent": "p0_composed",
+          "chosen_reason": "p0_composition_layer · model=qwen2.5:7b-instruct-q3_K_M · fell_back=false · latency_ms=7047"
+        },
+        "metrics": {
+          "total_ms": 3,
+          "brain_ms": 3,
+          "world_ms": null,
+          "specialist_used": null
+        }
+      },
+      "summary": {
+        "http_status": 200,
+        "latency_ms": 7070,
+        "intent": "indonesia",
+        "intent_reason": "indonesia_place_or_country",
+        "baseline_reply": "Yogyakarta (Jogja) is Java's cultural heart. Highlights: Borobudur (world's largest Buddhist temple, sunrise visits limited to timed tickets), Prambanan (Hindu temple complex, evening Ramayana ballet in dry season), Kraton (Sultan's Palace), Malioboro Street (shopping + street food), Kotagede (silver workshops), Mount Merapi jeep tours, and cheap batik courses. A 2–3 day stop is typical.\n\nYogyakarta is a city/regency in DIY.\n\nGudeg is Yogyakarta's signature dish — young jackfruit stewed for hours with coconut milk, palm sugar and spices until sweet, dark and tender. Served with rice, krecek (spicy cattle-skin stew), chicken and egg. Try it at Gudeg Yu Djum (multiple branches) or the row of night stalls on Jalan Wijilan near the Kraton. Sweet-heavy — expect a heavier palate than most other Indonesian dishes. (Source: NEX Indonesia knowledge · Special Region of Yogyakarta · verified 2026-08-30T00:00:00.000Z.)",
+        "served_reply": "Yogyakarta, also known as Jogja, is Java's cultural heart, featuring highlights like Borobudur and Prambanan. The city is known for its rich history, traditional cuisine such as gudeg, and vibrant street life on Malioboro Street.",
+        "composition_ran": true,
+        "composition_accepted": true,
+        "composition_reason": null,
+        "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+        "composition_latency_ms": 7047,
+        "composition_flags": [],
+        "composition_flag_count": 0,
+        "composition_high_flag_count": 0,
+        "knowledge_count": 6,
+        "frame_topic": "and yogyakarta?",
+        "frame_subject": null,
+        "confidence_overall": "high",
+        "fabrication_risk": "low"
+      }
+    }
+  ]
+}

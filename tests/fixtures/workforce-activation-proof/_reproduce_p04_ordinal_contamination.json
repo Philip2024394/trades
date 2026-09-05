@@ -1,0 +1,95 @@
+{
+  "ranAt": "2026-09-05T14:37:24.308Z",
+  "cases": [
+    {
+      "label": "Case B · Fresh 'first hotel'",
+      "conversation_id": "7e99e27f-108b-4502-9e38-1984d7d21270",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "Tell me about the first hotel.",
+          "intent": "accommodation",
+          "reply": "Which hotel do you mean? I don't have a previous hotel list in this conversation. Want me to find some?",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_prior_presentation"
+          },
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_reason": "boundary:ordinal_no_anchor:ordinal_no_anchor:ordinal_the:hotel:phrase=the first hotel",
+          "composition_knowledge_count": 0,
+          "composition_composed_reply": "Which hotel do you mean? I don't have a previous hotel list in this conversation. Want me to find some?",
+          "ordinal_gate_fired": true,
+          "ordinal_gate_reason": "ordinal_no_anchor:ordinal_the:hotel",
+          "ordinal_matched_phrase": "the first hotel",
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Pego Homestay",
+            "Penginapan Kunthi"
+          ],
+          "card_hits_topics": [
+            "accommodation.type.hotel",
+            "accommodation.hotel.griya_sentana",
+            "accommodation.hotel.hotel_trim_tiga"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Case C · Fresh 'first one'",
+      "conversation_id": "9bd797bf-9100-4e0f-a8ef-eac3429fca6d",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "Tell me about the first one.",
+          "intent": "conversation",
+          "reply": "Which one do you mean? I don't have a previous list in this conversation. Want me to find some?",
+          "current_reference": null,
+          "composition_ran": true,
+          "composition_accepted": true,
+          "composition_reason": "boundary:ordinal_no_anchor:ordinal_no_anchor:ordinal_the:one:phrase=the first one",
+          "composition_knowledge_count": 0,
+          "composition_composed_reply": "Which one do you mean? I don't have a previous list in this conversation. Want me to find some?",
+          "ordinal_gate_fired": true,
+          "ordinal_gate_reason": "ordinal_no_anchor:ordinal_the:one",
+          "ordinal_matched_phrase": "the first one",
+          "world_cards_count": 0,
+          "world_cards_names": [],
+          "card_hits_topics": []
+        }
+      ]
+    },
+    {
+      "label": "Case E · Explicit entity search",
+      "conversation_id": "8c648280-5812-44b9-a2e9-ed182ee70483",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "Find First Living Hotel in Yogyakarta.",
+          "intent": "accommodation",
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+          "current_reference": {
+            "resolved": false,
+            "reason": "no_prior_presentation"
+          },
+          "composition_ran": false,
+          "composition_accepted": false,
+          "world_cards_count": 3,
+          "world_cards_names": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "card_hits_topics": [
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ]
+    }
+  ]
+}
