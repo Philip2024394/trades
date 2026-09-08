@@ -21,6 +21,9 @@
 
 import { NextResponse, type NextRequest } from "next/server";
 import { orchestrateChatTurn, orchestrateChatTurnLive } from "@/lib/nex/brain/orchestrate";
+// Phase D · natural-language Live discovery routing
+import { detectLiveDiscoveryScope } from "@/lib/nex/brain/live-discovery-intent";
+import { runLiveDiscoveryHandler } from "@/lib/nex/brain/live-discovery-handler";
 import { getSession, upsertSession, appendDialogueTurn, applyVerticalSwitchReset } from "@/lib/nex/brain/session";
 import { renderVoice } from "@/lib/nex/brain/personality-voice";
 import { selectVoiceIntent } from "@/lib/nex/brain/voice-intent-selector";
@@ -42,6 +45,12 @@ import { retrieveDirectoryAsKnowledge } from "@/lib/nex/indonesia/directory-know
 // and return an honest boundary. Prevents proven FOOD T4 Japan/tuna
 // fabrication where composition ran with knowledge_count=0.
 import { decideHonestBoundary } from "@/lib/nex/brain/honest-boundary-reply";
+// Founder BEGIN 2026-09-09 · SHADOW-MODE deterministic composer (P1-P5 + R1-R3).
+// Attached as a non-blocking parallel path · never changes the customer's reply ·
+// records paired {chat, deterministic} outputs for offline agreement analysis.
+// Enabled by env NEX_DETERMINISTIC_SHADOW=1. Hard timeout budget.
+import { runShadowMode, SHADOW_MODE_ENABLED } from "@/lib/nex/intelligence-storage-grid/accommodation/shadow-mode";
+import { getAccommodationDbPool } from "@/lib/nex-accommodation/db";
 // P0.3 · Hotel Resolved-Reference Continuity (Philip 2026-09-05 · AUTHORIZE
 // P0.3). When session.currentReference resolves to a directory entity this
 // turn, hydrate the full record via getWorldRecordById and inject as
@@ -344,9 +353,22 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  // Founder BEGIN · NEX CHAT RESPONSE SPEED AUDIT (2026-09-09) · minimal timers
+  // wrapped in try/catch so instrumentation errors NEVER break the response.
+  // Emits a `_debug_timings` field in the response body. Zero logic change.
+  const _perfNow: () => number = (() => {
+    try { const { performance } = require("node:perf_hooks"); return () => performance.now(); }
+    catch { return () => Date.now(); }
+  })();
+  const _t_request_start = _perfNow();
+  const _stage_ms: Record<string, number> = {};
+  let _t_body_parsed = 0;
+
   let body: ChatRequest;
   try {
     body = await req.json();
+    _t_body_parsed = _perfNow();
+    try { _stage_ms.body_parse = Math.round((_t_body_parsed - _t_request_start) * 100) / 100; } catch {}
   } catch {
     return badRequest("body must be valid JSON");
   }
@@ -385,6 +407,7 @@ export async function POST(req: NextRequest) {
   // staircase specialist only sees turns the Brain explicitly hands
   // off (intent="staircase" AND userMarket="UK").
   const brainT0 = Date.now();
+  const _t_brain_start = _perfNow();
   // Stage 3.26 · Long-Term Memory · pass userId + consent through.
   const userId = typeof body.user_id === "string" && body.user_id.length > 0 ? body.user_id : undefined;
   const consentLongTermMemory = body.consent?.long_term_memory === true;
@@ -406,6 +429,50 @@ export async function POST(req: NextRequest) {
     useLiveWorld: true,
   });
   const brainMs = Date.now() - brainT0;
+  try { _stage_ms.orchestrator = Math.round((_perfNow() - _t_brain_start) * 100) / 100; } catch {}
+
+  // ─── Phase D · LIVE_DISCOVERY_REQUEST dispatch (Philip 2026-09-06) ──
+  //
+  // §16-§24 · Natural-language "what's live" / "what's happening
+  // tonight" routes to the existing Live discovery system. Deterministic
+  // pre-classification lives in classifyConversationIntent · the actual
+  // Live data + honest conversational summary come from runLive-
+  // DiscoveryHandler which never fabricates. Preserves G03/G12/G15/G23/
+  // G24 (they operate on session state and reply composition, both of
+  // which remain unchanged for this intent — we only replace the reply
+  // text and attach cards).
+  if (composed.intent === "live_discovery") {
+    try {
+      const scope = detectLiveDiscoveryScope(message);
+      const sessionForCity = conversation_id ? getSession(conversation_id) : null;
+      const sessionCity = sessionForCity?.accommodation?.location ?? null;
+      const liveReply = await runLiveDiscoveryHandler({ scope, session_city: sessionCity });
+      composed.reply = liveReply.summary;
+      // Attach the live cards as suggestions so the chat surface can
+      // render them alongside the natural-language answer.
+      const liveSuggestions = liveReply.cards.slice(0, 4).map((c) => ({
+        label: c.title ?? "Open Live",
+        href: `/nex-live?media=${encodeURIComponent(c.media_id)}`,
+      }));
+      composed.suggestions = [...liveSuggestions, ...(composed.suggestions ?? [])];
+      // Observability trail attached alongside the reply — never a
+      // silent action.
+      (composed as unknown as { live_discovery?: unknown }).live_discovery = {
+        scope,
+        city_used: liveReply.city_used,
+        category_used: liveReply.category_used,
+        status_counts: liveReply.status_counts,
+        empty_reason: liveReply.empty_reason,
+        cards: liveReply.cards,
+      };
+    } catch (e) {
+      // Never break the response · fall back to composed.reply and
+      // record the failure honestly.
+      (composed as unknown as { live_discovery?: unknown }).live_discovery = {
+        error: e instanceof Error ? e.message.slice(0, 200) : String(e),
+      };
+    }
+  }
 
   const isUkStaircase =
     userMarket === "UK" && composed.intent === "staircase";
@@ -1133,6 +1200,74 @@ export async function POST(req: NextRequest) {
     } catch { /* memory gate must never break the response */ }
   }
 
+  // ─── Wave 7 · Conversational Entity Reasoning ───────────────────
+  // (Philip 2026-09-06 · CEREMONIAL AUTHORIZE ·
+  //  Integration Recovery 2026-09-06: reordered above attribute-query)
+  //
+  // Handles the 10 reasoning-level dialogue acts (ENTITY_*_REQUEST):
+  // recommendation · comparison · pros/cons · best-for · suitability ·
+  // ranking · why · what-don't-you-know · evidence-request · opinion.
+  //
+  // Runs BEFORE the attribute-query / interest / social / capability /
+  // result-followup gates so a semantic reasoning act like
+  // "what are you basing that on?" is not intercepted by the attribute-
+  // query LIST_ATTRIBUTES_OF starter ["what","are"] + pronoun "that".
+  //
+  // Semantic priority (founder rule): SEMANTIC INTENT >
+  //   REASONING / EVIDENCE REQUEST > ATTRIBUTE QUERY.
+  //
+  // Ordinary attribute questions ("does it have a pool?", "which has
+  // laundry?") classify via classifyDecisionIntent as NONE and pass
+  // straight through to the attribute-query gate unchanged.
+  //
+  // Never fabricates: all claims decompose to evidence; unsupported
+  // claims are filtered before rendering.
+  let entityReasoningGateFired = false;
+  if (P0_COMPOSITION_ENABLED && !isUkStaircase && conversation_id
+      && !conversationalFunctionGateFired && !memoryGateFired
+      && !languageSwitchGateFired && !confirmationGateFired
+      && !wave1GateFired && !wave2GateFired) {
+    try {
+      const { classifyDecisionIntent } = await import("@/lib/nex/brain/reasoning/decision-intent");
+      const { composeReasoning } = await import("@/lib/nex/brain/reasoning/entity-reasoning");
+      const { renderReasoningReply } = await import("@/lib/nex/brain/reasoning/reasoning-reply");
+      const decision = classifyDecisionIntent(message);
+      composition_meta.entity_reasoning_kind = decision.kind;
+      if (decision.kind !== "NONE") {
+        const erSession = getSession(conversation_id);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const memo = (erSession as any)?.entityCardMemo as import("@/lib/nex/brain/entity-result-cards").EntityCardMemo[] | undefined;
+        const activeLang: "EN" | "ID" = decision.language === "ID" ? "ID"
+          : (g03State?.active === "ID" ? "ID" : "EN");
+        // Explicit-only user context (§4)
+        const userContext = { explicit_facts: {}, current_turn_preferences: [] };
+        const payload = composeReasoning({
+          intent: decision.kind,
+          language: activeLang,
+          entityCardMemo: memo,
+          userContext,
+        });
+        composition_meta.entity_reasoning_has_result_set = payload.has_active_result_set;
+        composition_meta.entity_reasoning_claim_count = payload.claims.length;
+        composition_meta.entity_reasoning_missing_evidence_count = payload.missing_evidence.length;
+        composition_meta.entity_reasoning_recommendation = payload.recommendation?.winner_name;
+        const rendered = renderReasoningReply(payload);
+        if (rendered.shouldReply && rendered.reply.trim().length > 0) {
+          entityReasoningGateFired = true;
+          composition_meta.entity_reasoning_gate_fired = true;
+          composition_meta.entity_reasoning_reason = rendered.reason;
+          composition_meta.accepted = true;
+          composition_meta.baseline_reply = composition_meta.baseline_reply ?? composed.reply;
+          composition_meta.composed_reply = rendered.reply;
+          composition_meta.reason = `boundary:entity_reasoning:${decision.kind}:${rendered.reason}`;
+          composition_meta.post_composition_audit_ran = false;
+          composed.reply = rendered.reply;
+          composition_meta.knowledge_count = 0;
+        }
+      }
+    } catch { /* reasoning gate must never break the response */ }
+  }
+
   // ─── Universal Entity Attribute Query Gate ───────────────────────
   // (Philip 2026-09-06 · AUTHORIZE · UNIVERSAL ENTITY INTELLIGENCE)
   //
@@ -1140,28 +1275,52 @@ export async function POST(req: NextRequest) {
   // · "tell me more about the second one" · "do any have breakfast?"
   // from the session's memoized EntityCardMemo — never fabricates.
   //
-  // Runs AFTER Wave 2 (frame/scope), G23 memory, L4 conv-function so
-  // those higher-priority signals still win when applicable. Runs
-  // BEFORE the social-emotional / capability-display / result-followup
-  // gates so an attribute question ("do any have a pool?") never
-  // routes to CAPABILITY_QUESTION or CONFUSION by mistake.
+  // Runs AFTER entity-reasoning (semantic reasoning acts like
+  // "what are you basing that on?" win first), Wave 2 (frame/scope),
+  // G23 memory, L4 conv-function. Runs BEFORE the social-emotional /
+  // capability-display / result-followup gates so an attribute question
+  // never routes to CAPABILITY_QUESTION or CONFUSION by mistake.
   //
   // Requires vertical + card memo · fresh conversations without prior
   // results emit an honest no-anchor boundary.
   let attributeQueryGateFired = false;
   if (P0_COMPOSITION_ENABLED && !isUkStaircase && conversation_id
       && !conversationalFunctionGateFired && !memoryGateFired
+      && !entityReasoningGateFired
       && !languageSwitchGateFired && !confirmationGateFired
       && !wave1GateFired && !wave2GateFired) {
     try {
       const aqSession = getSession(conversation_id);
       const aqLang = g03State?.active ?? "EN";
-      // Diagnostic observability: expose memo state
-      const aqMemo = (aqSession as unknown as { entityCardMemo?: unknown[] })?.entityCardMemo;
+      // Wave 6 · viewed-entity augmentation (Philip 2026-09-06)
+      // When the user just returned from a detail page, prepend the
+      // viewed entity's memoized attribute state to entityCardMemo so a
+      // pronoun follow-up like "does it have a pool?" resolves against
+      // the entity the user was viewing (not the first ordinal). Never
+      // fabricates the memo; falls through to standard memo when the
+      // viewed entity is stale or lacks a memo.
+      let aqEffectiveSession = aqSession;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const viewed = (aqSession as any)?.viewedEntity as import("@/lib/nex/brain/universal-discovery/viewed-entity").ViewedEntitySnapshot | undefined;
+      if (viewed && viewed.memo && aqSession) {
+        const aqCurrentTurn = aqSession.turnCount ?? 1;
+        const { isViewedEntityFresh } = await import("@/lib/nex/brain/universal-discovery/viewed-entity");
+        if (isViewedEntityFresh(viewed, aqCurrentTurn)) {
+          const priorMemo = Array.isArray(aqSession.entityCardMemo) ? aqSession.entityCardMemo : [];
+          const isAlreadyFirst = priorMemo[0]?.ref_id === viewed.memo.ref_id;
+          if (!isAlreadyFirst) {
+            const augmented = [viewed.memo, ...priorMemo].slice(0, 3);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            aqEffectiveSession = { ...aqSession, entityCardMemo: augmented } as any;
+            composition_meta.attribute_query_reason = `viewed_entity_prepended:${viewed.ref_id}`;
+          }
+        }
+      }
+      const aqMemo = (aqEffectiveSession as unknown as { entityCardMemo?: unknown[] })?.entityCardMemo;
       composition_meta.attribute_query_memo_count = Array.isArray(aqMemo) ? aqMemo.length : 0;
       const aqDecision = decideAttributeQueryGate({
         userMessage: message,
-        session: aqSession,
+        session: aqEffectiveSession,
         activeLanguage: aqLang,
       });
       composition_meta.attribute_query_kind = aqDecision.detection.kind;
@@ -1184,6 +1343,66 @@ export async function POST(req: NextRequest) {
         composition_meta.knowledge_count = 0;
       }
     } catch { /* attribute-query gate must never break the response */ }
+  }
+
+  // ─── Interest Gate · Entity → Interest → Owner Conversation ─────
+  // (Philip 2026-09-06 · CEREMONIAL AUTHORIZE · Interest Slice ·
+  //  Integration Recovery 2026-09-06: guard now also gates on
+  //  !entityReasoningGateFired since reasoning moved above)
+  //
+  // Handles the "I'm interested" / "I want to contact them" / "bisa
+  // hubungi mereka" semantic act. Runs AFTER entity-reasoning (a
+  // reasoning act wins first when applicable) and AFTER attribute-
+  // query. G12 negation preserved · verified-contact rule (§3 · §4)
+  // preserved · never fabricates a contact route or auto-sends.
+  let interestGateFired = false;
+  if (P0_COMPOSITION_ENABLED && !isUkStaircase && conversation_id
+      && !conversationalFunctionGateFired && !memoryGateFired
+      && !attributeQueryGateFired && !entityReasoningGateFired
+      && !languageSwitchGateFired && !confirmationGateFired
+      && !wave1GateFired && !wave2GateFired) {
+    try {
+      const { decideInterestGate } = await import("@/lib/nex/brain/interest/interest-gate");
+      const { getWorldRecordById } = await import("@/lib/nex/brain/world-adapters");
+      const { parseRefId } = await import("@/lib/nex/brain/reference-hydration");
+      const igSession = getSession(conversation_id);
+      const igLang: "EN" | "ID" = g03State?.active === "ID" ? "ID" : "EN";
+      const decision = await decideInterestGate({
+        message,
+        session: igSession,
+        activeLanguage: igLang,
+        fetchRecord: async (refId: string) => {
+          const parsed = parseRefId(refId);
+          if (!parsed) return null;
+          try {
+            return await getWorldRecordById({
+              vertical: parsed.vertical,
+              id: parsed.id,
+              market: userMarket,
+            });
+          } catch { return null; }
+        },
+      });
+      composition_meta.interest_intent_kind = decision.intent.kind;
+      composition_meta.interest_gate_reason = decision.reason;
+      if (decision.shouldGate) {
+        interestGateFired = true;
+        composition_meta.interest_gate_fired = true;
+        composition_meta.interest_gate_kind = decision.kind;
+        composition_meta.interest_entity_ref_id = decision.entity_ref_id;
+        composition_meta.interest_entity_name = decision.entity_name;
+        composition_meta.interest_contactability = decision.contactability?.state;
+        composition_meta.interest_send_enabled = decision.contactability?.interest_send_enabled ?? false;
+        composition_meta.interest_open_url = decision.open_url;
+        composition_meta.accepted = true;
+        composition_meta.baseline_reply = composition_meta.baseline_reply ?? composed.reply;
+        composition_meta.composed_reply = decision.reply;
+        composition_meta.reason = `boundary:interest:${decision.kind}:${decision.reason}`;
+        composition_meta.post_composition_audit_ran = false;
+        composed.reply = decision.reply;
+        composition_meta.knowledge_count = 0;
+      }
+    } catch { /* interest gate must never break the response */ }
   }
 
   // ─── Wave 3 · Social / Emotional / Confusion Gate ────────────────
@@ -1210,7 +1429,7 @@ export async function POST(req: NextRequest) {
   let socialEmotionalGateFired = false;
   if (P0_COMPOSITION_ENABLED && !isUkStaircase && conversation_id
       && !conversationalFunctionGateFired && !memoryGateFired
-      && !attributeQueryGateFired
+      && !attributeQueryGateFired && !interestGateFired && !entityReasoningGateFired
       && !languageSwitchGateFired && !confirmationGateFired
       && !wave1GateFired && !wave2GateFired) {
     try {
@@ -1263,7 +1482,7 @@ export async function POST(req: NextRequest) {
   // G15 confirmation, Wave 1 and Wave 2 so those higher-priority
   // signals still win when applicable.
   let capabilityDisplayGateFired = false;
-  if (P0_COMPOSITION_ENABLED && !isUkStaircase && !conversationalFunctionGateFired && !memoryGateFired && !attributeQueryGateFired && !socialEmotionalGateFired && !languageSwitchGateFired && !confirmationGateFired && !wave1GateFired && !wave2GateFired) {
+  if (P0_COMPOSITION_ENABLED && !isUkStaircase && !conversationalFunctionGateFired && !memoryGateFired && !attributeQueryGateFired && !interestGateFired && !entityReasoningGateFired && !socialEmotionalGateFired && !languageSwitchGateFired && !confirmationGateFired && !wave1GateFired && !wave2GateFired) {
     try {
       const capSession = conversation_id ? getSession(conversation_id) : null;
       const capActiveLang = g03State?.active ?? "EN";
@@ -1310,7 +1529,7 @@ export async function POST(req: NextRequest) {
   // follow-up gets a provenance answer regardless of how the intent
   // classifier routed the message.
   let resultFollowupFired = false;
-  if (P0_COMPOSITION_ENABLED && !isUkStaircase && !conversationalFunctionGateFired && !memoryGateFired && !attributeQueryGateFired && !socialEmotionalGateFired && !capabilityDisplayGateFired && !languageSwitchGateFired && !confirmationGateFired && !wave1GateFired && !wave2GateFired) {
+  if (P0_COMPOSITION_ENABLED && !isUkStaircase && !conversationalFunctionGateFired && !memoryGateFired && !attributeQueryGateFired && !interestGateFired && !entityReasoningGateFired && !socialEmotionalGateFired && !capabilityDisplayGateFired && !languageSwitchGateFired && !confirmationGateFired && !wave1GateFired && !wave2GateFired) {
     const preFollowupSession = conversation_id ? getSession(conversation_id) : null;
     const followupOwnerLanguage: "en" | "id" =
       /[a-z]/i.test(message) &&
@@ -1350,7 +1569,7 @@ export async function POST(req: NextRequest) {
   // capability-display, and result-followup keep priority when they
   // apply. Isolated from accommodation and Programmer agents.
   let businessMarketGateFired = false;
-  if (P0_COMPOSITION_ENABLED && !isUkStaircase && !conversationalFunctionGateFired && !memoryGateFired && !attributeQueryGateFired && !socialEmotionalGateFired && !capabilityDisplayGateFired && !resultFollowupFired && !languageSwitchGateFired && !confirmationGateFired && !wave1GateFired && !wave2GateFired) {
+  if (P0_COMPOSITION_ENABLED && !isUkStaircase && !conversationalFunctionGateFired && !memoryGateFired && !attributeQueryGateFired && !interestGateFired && !entityReasoningGateFired && !socialEmotionalGateFired && !capabilityDisplayGateFired && !resultFollowupFired && !languageSwitchGateFired && !confirmationGateFired && !wave1GateFired && !wave2GateFired) {
     try {
       const bmSession = conversation_id ? getSession(conversation_id) : null;
       const bmLang = g03State?.active ?? "EN";
@@ -1379,7 +1598,7 @@ export async function POST(req: NextRequest) {
     } catch { /* business gate must never break the response */ }
   }
 
-  if (P0_COMPOSITION_ENABLED && !isUkStaircase && !conversationalFunctionGateFired && !memoryGateFired && !attributeQueryGateFired && !socialEmotionalGateFired && !capabilityDisplayGateFired && !resultFollowupFired && !businessMarketGateFired && !languageSwitchGateFired && !confirmationGateFired && !wave1GateFired && !wave2GateFired && (shouldComposeOpenKnowledge(composed, message) || hydrationResult.hydrated)) {
+  if (P0_COMPOSITION_ENABLED && !isUkStaircase && !conversationalFunctionGateFired && !memoryGateFired && !attributeQueryGateFired && !interestGateFired && !entityReasoningGateFired && !socialEmotionalGateFired && !capabilityDisplayGateFired && !resultFollowupFired && !businessMarketGateFired && !languageSwitchGateFired && !confirmationGateFired && !wave1GateFired && !wave2GateFired && (shouldComposeOpenKnowledge(composed, message) || hydrationResult.hydrated)) {
     composition_meta.ran = true;
     // P0.2 · Record whether gate widened for a misrouted info query.
     // Used by the after-runner to prove gap #1 / #2 improvements.
@@ -1790,6 +2009,49 @@ export async function POST(req: NextRequest) {
   } catch { /* voice compression must never break the response */ }
 
   if (!isUkStaircase) {
+    // Founder speed audit · attach _debug_timings BEFORE build so any thrown
+    // access is caught. try/catch keeps instrumentation from ever breaking the
+    // response body shape.
+    let _debug_timings: Record<string, unknown> | null = null;
+
+    // Founder BEGIN 2026-09-09 · SHADOW-MODE deterministic composer.
+    // Runs in parallel with the customer's real reply. Non-blocking · budgeted.
+    // Any error is captured · customer never sees it.
+    let deterministic_shadow: unknown = { enabled: false, skipped_reason: "flag_off" };
+    if (SHADOW_MODE_ENABLED) {
+      try {
+        const shadowPool = getAccommodationDbPool();
+        deterministic_shadow = await runShadowMode({
+          message: String(message ?? ""),
+          conversation_id: conversation_id ?? null,
+          language: "en", // Chat brain language detection happens further up · shadow defaults en for now
+          pool: shadowPool,
+          chatBrainReply: composed as unknown,
+          chatBrainVisibleText: String(composed?.reply ?? ""),
+          chatBrainIntent: (composed?.intent as string | null) ?? null,
+        });
+      } catch (e) {
+        deterministic_shadow = { enabled: true, skipped_reason: "wire_error", error: e instanceof Error ? e.message : String(e) };
+      }
+    }
+
+    try {
+      _stage_ms.total_before_response_send = Math.round((_perfNow() - _t_request_start) * 100) / 100;
+      _debug_timings = {
+        stage_ms: _stage_ms,
+        // Founder BEGIN 2026-09-09 · CHAT-ORCHESTRATOR-SUB-INSTRUMENTATION
+        orchestrator_sub_timings: (composed as any)?.sub_timings ?? null,
+        composition_latency_ms: (typeof (composition_meta as any)?.latency_ms === "number") ? (composition_meta as any).latency_ms : null,
+        composition_accepted: (composition_meta as any)?.accepted ?? null,
+        composition_model: (composition_meta as any)?.model ?? null,
+        composition_fell_back: (composition_meta as any)?.fell_back ?? null,
+        llm_invoked: (composition_meta as any)?.accepted === true && typeof (composition_meta as any)?.latency_ms === "number",
+        intent_resolved: composed.intent ?? null,
+        brain_ms_legacy: brainMs,
+        deterministic_shadow,
+        instrument_version: "chat-shadow-mode-v3-deterministic-2026-09-09",
+      };
+    } catch { _debug_timings = { error: "instrumentation_failed" }; }
     return NextResponse.json({
       conversation_id,
       reply: composed.reply,
@@ -1801,6 +2063,10 @@ export async function POST(req: NextRequest) {
       intent_reason: composed.intent_reason ?? null,
       suggestions: composed.suggestions,
       card: composed.card ?? null,
+      // Phase D · natural-language Live discovery payload · null unless
+      // the intent was live_discovery. Never fabricated. Includes real
+      // cards, city_used, status_counts, and empty_reason for honesty.
+      live_discovery: (composed as unknown as { live_discovery?: unknown }).live_discovery ?? null,
       state_summary: {
         turn_count: 1,
         current_topic: composed.intent ?? null,
@@ -1870,6 +2136,11 @@ export async function POST(req: NextRequest) {
       // records for the current goal. Both derive from the SAME live
       // World retrieval that fed the composer's spoken reply.
       world_cards: composed.world_cards ?? null,
+      // Chat Result Experience Integration (Philip 2026-09-06) · pass
+      // through theme_command from the sync orchestrator so /nex-app/chat's
+      // Theme Engine client continues to work. Server-side theme_persisted
+      // is not ported (deferred).
+      theme_command: (composed as unknown as { theme_command?: unknown }).theme_command ?? null,
       // Universal Entity Intelligence · structured card contract with
       // per-attribute state (KNOWN_YES / UNKNOWN) + highlights. Never
       // fabricated · derived from the same PresentedCardSet the UI
@@ -2007,6 +2278,8 @@ export async function POST(req: NextRequest) {
         world_ms: composed.world_latency_ms ?? null,
         specialist_used: null,
       },
+      // Founder speed audit · minimal per-stage timings · safe under any error
+      _debug_timings,
     });
   }
 
