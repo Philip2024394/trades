@@ -151,6 +151,16 @@ deploy/minio/data/
 deploy/minio/*.log
 deploy/minio/*.log.err
 
+# 2026-09-13 · WO-WORKSTATION-01 durable-store runtime data.
+# nex1_workflow_traces / nex1_audit_events / nex1_idempotency_lookup
+# are the actual persisted state of workstation projects. They live
+# on disk in the jsonl backend; they are NOT source of truth for git.
+# On Vercel, the postgres/dual-write backend takes over and these
+# files never exist. Locally they accumulate per test/dev run.
+data/nex-storage/nex1_workflow_traces.jsonl
+data/nex-storage/nex1_audit_events.jsonl
+data/nex-storage/nex1_idempotency_lookup.jsonl
+
 # 2026-09-12 · Content-addressed Wikidata cache written by the lab
 # harvester. Keyed by content hash; regenerates on demand.
 data/nex-lab/wikidata-cache/

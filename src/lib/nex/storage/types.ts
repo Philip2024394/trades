@@ -154,6 +154,16 @@ export const COLLECTIONS = {
   kpe_processing_runs:    "kpe_processing_runs",
   kpe_human_reviews:      "kpe_human_reviews",
   object_manifest:        "object_manifest",
+  // WO-WORKSTATION-01 · Founder-authorised 2026-09-13.
+  // nex1_workflow_traces: durable projection of WorkflowTrace (the workstation's
+  //   canonical project entity). Replaces the in-memory Map in trace-store.ts.
+  //   snapshot-per-transition; latest-per-trace_id gives current state.
+  // nex1_audit_events: append-only audit stream with content_hash chain.
+  //   Every state transition + capability event emits one record. Chain-of-
+  //   custody + hash mismatch detection lets a corrupted event stream be
+  //   caught rather than trusted.
+  nex1_workflow_traces:   "nex1_workflow_traces",
+  nex1_audit_events:      "nex1_audit_events",
 } as const;
 
 export type CollectionName = keyof typeof COLLECTIONS;
