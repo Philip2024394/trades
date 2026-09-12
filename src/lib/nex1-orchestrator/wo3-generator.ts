@@ -106,6 +106,9 @@ export function validateSyntax(candidate: CandidateFile): SyntaxValidationResult
         return { ok: false, reason: `JSON.parse failed: ${(err as Error).message}`, reason_code: "JSON_PARSE_FAILED", path: candidate.path };
       }
     }
+    case "js":
+    case "mjs":
+    case "cjs":
     case "ts":
     case "tsx": {
       const brackets = checkBalancedBrackets(candidate.content);
