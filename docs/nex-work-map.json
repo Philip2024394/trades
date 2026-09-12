@@ -1,0 +1,2761 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "map_version": "1.1.0",
+  "last_updated": "2026-09-11",
+  "authored_by": "Master AI",
+  "authorised_by": "Philip 2026-09-11",
+  "purpose": "Canonical registry of NEX capabilities. Prevents duplicate audits. Every capability has one permanent identity, one status, one physical home. NEX must consult this map before initiating any audit, architecture exercise, implementation, migration, consolidation, or crawler work.",
+  "constitutional_rule": "Master AI MUST consult this map before beginning any audit, architecture exercise, implementation, migration, consolidation, or crawler work. No new audit may be initiated when an existing audit already covers the area, unless the map identifies a specific unresolved question requiring a targeted re-audit.",
+  "status_legend": {
+    "DISCOVERED": {
+      "colour": "#3b82f6",
+      "label": "🔵 Discovered",
+      "meaning": "We know it exists. No design or implementation yet."
+    },
+    "AUDITED": {
+      "colour": "#eab308",
+      "label": "🟡 Audited/Designed",
+      "meaning": "Understood + architecture decision made (ADR exists)."
+    },
+    "IMPLEMENTED": {
+      "colour": "#f97316",
+      "label": "🟠 Implemented",
+      "meaning": "Code/schema exists and passes tests. Not yet active in production."
+    },
+    "ACTIVE": {
+      "colour": "#22c55e",
+      "label": "🟢 Active",
+      "meaning": "Operating in the NEX production system."
+    },
+    "DEFERRED": {
+      "colour": "#6b7280",
+      "label": "⚫ Deferred",
+      "meaning": "Explicitly postponed. Reason recorded."
+    },
+    "BLOCKED": {
+      "colour": "#ef4444",
+      "label": "🔴 Blocked",
+      "meaning": "Cannot proceed until a named dependency/decision exists."
+    }
+  },
+  "groups": [
+    "Constitutional Layer",
+    "Truth Engine + Guardians",
+    "Acquisition Fabric",
+    "Processing Layer",
+    "Knowledge Substrate",
+    "Domain Workloads",
+    "Multimodal",
+    "Agents / Workers",
+    "English Brain / Language",
+    "UI Surfaces",
+    "Governance + Observability",
+    "Country / Language Expansion"
+  ],
+  "capabilities": [
+    {
+      "id": "CAP-001",
+      "name": "Nine Canonical Domains + Five-Axis Architecture",
+      "group": "Constitutional Layer",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0314a.2.s-canonical-domain-and-category-taxonomies.md"
+      ],
+      "architecture_refs": [
+        "ADR-0314a.2.s canonical (§7.10 M1)"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/classifier/*",
+        "src/lib/nex/agent-runtime/worker-*.ts"
+      ],
+      "storage_home": "constitutional doctrine · not a substrate",
+      "active_components": [
+        "9 Domains: accommodation · food · transport · business · travel · attractions · code · commerce · services"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "Domain axis closed at 9 · trades meta-Domain deferred"
+      ],
+      "dependencies": [],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "none · locked",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "R-DOMAIN-01 locked · §7.10 M1"
+      },
+      "build_sequence_number": null,
+      "is_currently_building": false,
+      "impact_score": 0,
+      "build_sequence_note": null,
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-002",
+      "name": "R-DOMAIN-01 Anti-Substitution Rule",
+      "group": "Constitutional Layer",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "docs/DECISIONS/0314a.2.s-canonical-domain-and-category-taxonomies.md"
+      ],
+      "architecture_refs": [
+        "ADR-0314a.2.s §7.3-B1"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/truth-engine/verifier/rules/*"
+      ],
+      "storage_home": "constitutional doctrine",
+      "active_components": [
+        "Three-axis anti-substitution (LAM Object Type ≠ Domain ≠ Category)"
+      ],
+      "tests": [],
+      "known_gaps": [],
+      "dependencies": [],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "none · locked",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "locked v1.0.0"
+      },
+      "build_sequence_number": null,
+      "is_currently_building": false,
+      "impact_score": 0,
+      "build_sequence_note": null,
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-003",
+      "name": "R-10 Gate-Model + Promotion Doctrine",
+      "group": "Constitutional Layer",
+      "status": "AUDITED",
+      "audit_refs": [
+        "ADR-0314f",
+        "ADR-0314h",
+        "ADR-0314i"
+      ],
+      "architecture_refs": [
+        "ADR-0314f §3.3 · ADR-0314h §3.1"
+      ],
+      "implementation_refs": [],
+      "storage_home": "pending Stage 2",
+      "active_components": [],
+      "tests": [],
+      "known_gaps": [
+        "R-10 policies per LAM Object Type / Domain pending founder authoring"
+      ],
+      "dependencies": [
+        "CAP-014 (Stage 1b complete)"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "Stage 2 · post-1b.8 · founder authors R-10 policies",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "gate-model locked · implementation pending"
+      },
+      "build_sequence_number": null,
+      "is_currently_building": false,
+      "impact_score": 0,
+      "build_sequence_note": null,
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-004",
+      "name": "Feedback Memory Discipline (constitutional principles)",
+      "group": "Constitutional Layer",
+      "status": "ACTIVE",
+      "audit_refs": [],
+      "architecture_refs": [
+        "auto-memory feedback_*.md files (13 principles at 2026-09-11)"
+      ],
+      "implementation_refs": [
+        ".claude/projects/C--Users-Victus/memory/feedback_*.md"
+      ],
+      "storage_home": "auto-memory (session-persistent)",
+      "active_components": [
+        "Domain vs operational scope · architecture not linguistics · no orphan Domain inflation · Activity ≠ Domain · other ≠ unknown · thresholds are founder policy · observation ≠ constitutional authority · Guardian duality · one canonical Knowledge · calendar time is not constitutional authority · no crawler zoo · entity/location first-class · knowledge-gap-driven acquisition"
+      ],
+      "tests": [],
+      "known_gaps": [],
+      "dependencies": [],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "none · continuous",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "memory principles are founder-locked"
+      },
+      "build_sequence_number": null,
+      "is_currently_building": false,
+      "impact_score": 0,
+      "build_sequence_note": null,
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-005",
+      "name": "Phase A → B → C → Stage 1b Sequencing",
+      "group": "Constitutional Layer",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0314a.2.s-stage-1a-exit-report-2026-09-11.md",
+        "ADR-0314f",
+        "ADR-0314g",
+        "ADR-0314h",
+        "ADR-0314i"
+      ],
+      "architecture_refs": [
+        "project_nex_phase_abc_sequencing_and_acquisition_fabric_2026_09_11.md"
+      ],
+      "implementation_refs": [],
+      "storage_home": "doctrine",
+      "active_components": [
+        "Phase A COMPLETE · Phase B LOCKED · Phase C LOCKED · Stage 1b Wiring LOCKED · Stage 1b Founder Decisions LOCKED · Stage 1b apply HALTED (nex.evidence collision)"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "Stage 1b apply awaits collision resolution"
+      ],
+      "dependencies": [],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "founder resolves nex.evidence collision (α / β / γ / δ)",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "sequencing locked"
+      },
+      "build_sequence_number": null,
+      "is_currently_building": false,
+      "impact_score": 0,
+      "build_sequence_note": null,
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-011",
+      "name": "Truth Engine Verifier (Stage 1a)",
+      "group": "Truth Engine + Guardians",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0314e",
+        "ADR-0314a.2.s Stage 1a Exit Report"
+      ],
+      "architecture_refs": [
+        "ADR-0314e",
+        "ADR-0314g §4.4 D2"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/truth-engine/verifier/"
+      ],
+      "storage_home": "nex_test.* (Stage 1a) · nex.* pending Stage 1b apply",
+      "active_components": [
+        "types.ts · envelope.ts · rule-registry.ts · verifier.ts · fail-closed.ts · version-manifest.ts · index.ts (8 files · 18 tests)"
+      ],
+      "tests": [
+        "src/lib/nex/truth-engine/verifier/verifier.test.ts (18)"
+      ],
+      "known_gaps": [],
+      "dependencies": [
+        "CAP-012",
+        "CAP-013"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "Stage 1b.4 (production adapter)",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "Stage 1a exit report locked · 123/123 tests pass"
+      },
+      "build_sequence_number": null,
+      "is_currently_building": false,
+      "impact_score": 0,
+      "build_sequence_note": null,
+      "impact_boost_to": [],
+      "retro_benefits_available": [
+        {
+          "target_cap": "CAP-011",
+          "suggested_sub_capability": "Batch verification path (verify N Claims in one pass · deterministic aggregate)",
+          "intelligence_uplift": "CAP-033 production adapter (Stage 1b.4) would throughput 10-50× faster once Evidence lands at production scale",
+          "priority": "medium",
+          "surfaced_by": "CAP-032"
+        }
+      ]
+    },
+    {
+      "id": "CAP-012",
+      "name": "Ten Rule Modules (R-01, R-03, R-05, R-07, R-11, R-12, R-13, R-17, R-18, R-20)",
+      "group": "Truth Engine + Guardians",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0314a.2.j",
+        "ADR-0314a.2.k",
+        "ADR-0314a.2.l",
+        "ADR-0314a.2.m",
+        "ADR-0314a.2.n",
+        "ADR-0314a.2.p",
+        "ADR-0314a.2.q",
+        "ADR-0314a.2.r",
+        "ADR-0317",
+        "ADR-0314e"
+      ],
+      "architecture_refs": [
+        "ADR-0314a.2.n (14 R-01 thresholds)",
+        "ADR-0314a.2.j (6-band R-11)",
+        "ADR-0314a.2.l (8-value R-13)",
+        "ADR-0314a.2.m (30% R-17)"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/truth-engine/verifier/rules/"
+      ],
+      "storage_home": "code + policies from founder-authored ADRs",
+      "active_components": [
+        "5 POPULATED (R-01 · R-11 · R-13 · R-17 · R-18) · 5 PENDING founder authoring (R-03 · R-05 · R-07 · R-12 · R-20)"
+      ],
+      "tests": [
+        "src/lib/nex/truth-engine/verifier/rules/rules.test.ts (52)"
+      ],
+      "known_gaps": [
+        "5 pending rules return deterministic UNKNOWN · not fabricated verdicts"
+      ],
+      "dependencies": [
+        "CAP-011"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "founder authors ADR-0317 (R-03) · ADR-0314a.2.p (R-05) · ADR-0314a.2.q (R-07) · ADR-0314a.2.k (R-12) · ADR-0314a.2.r (R-20) values",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "structure locked · values pending founder policy"
+      },
+      "build_sequence_number": null,
+      "is_currently_building": false,
+      "impact_score": 0,
+      "build_sequence_note": null,
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-013",
+      "name": "TE-Guardian (Truth-Engine Guardian)",
+      "group": "Truth Engine + Guardians",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0314f"
+      ],
+      "architecture_refs": [
+        "ADR-0314f §3.2 · ADR-0314g §4.4 D3"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/truth-engine/guardian/"
+      ],
+      "storage_home": "nex_test.gate_*_event (Stage 1a) · nex.te_guardian_*_event pending Stage 1b apply",
+      "active_components": [
+        "types.ts · inspect-envelope.ts · inspect-action.ts · guardian.ts · index.ts (6 files · 32 tests · 24 rejection codes · anti-invention public surface)"
+      ],
+      "tests": [
+        "src/lib/nex/truth-engine/guardian/guardian.test.ts (32)"
+      ],
+      "known_gaps": [],
+      "dependencies": [
+        "CAP-011"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "Stage 1b apply · then 1b.4 wire into production adapter",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "ADR-0314f + Stage 1a exit locked"
+      },
+      "build_sequence_number": null,
+      "is_currently_building": false,
+      "impact_score": 0,
+      "build_sequence_note": null,
+      "impact_boost_to": [],
+      "retro_benefits_available": [
+        {
+          "target_cap": "CAP-013",
+          "suggested_sub_capability": "te.evidence_source_unregistered rejection code (when Source Registry lands)",
+          "intelligence_uplift": "CAP-021 Source Registry gets a first-class Guardian gate · unregistered sources fail-closed at TE-Guardian boundary",
+          "priority": "medium",
+          "surfaced_by": "CAP-021"
+        }
+      ]
+    },
+    {
+      "id": "CAP-014",
+      "name": "Lab-Guardian (legacy · preserved)",
+      "group": "Truth Engine + Guardians",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0314f"
+      ],
+      "architecture_refs": [
+        "ADR-0314f §3.1"
+      ],
+      "implementation_refs": [
+        "existing production Guardian at Lab-verification tier"
+      ],
+      "storage_home": "nex.gate_kept_event (2,300 rows) · nex.gate_rejection_event (368 rows)",
+      "active_components": [
+        "candidate acceptance at Lab boundary · lab. rejection prefix"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "formal Lab-Guardian class implementation pending Stage 1b.3 (does not modify existing ledger)"
+      ],
+      "dependencies": [],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "Stage 1b.3 (author LabGuardian class per ADR-0314f responsibility split)",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "ADR-0314f responsibility split locked"
+      },
+      "build_sequence_number": 3,
+      "is_currently_building": false,
+      "impact_score": 90,
+      "build_sequence_note": "Lab-Guardian formal implementation (Stage 1b.3)",
+      "impact_boost_to": [
+        "CAP-033",
+        "CAP-011",
+        "CAP-024"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-015",
+      "name": "R-10 Authorisation Layer",
+      "group": "Truth Engine + Guardians",
+      "status": "DEFERRED",
+      "audit_refs": [
+        "ADR-0314f",
+        "ADR-0314h §3.1",
+        "ADR-0314i D-1b-1"
+      ],
+      "architecture_refs": [
+        "ADR-0314f §3.3 · ADR-0314g §4.4 D4"
+      ],
+      "implementation_refs": [],
+      "storage_home": "authorisation_policy_ref column on nex.verifier_verdict + nex.claim_verification_state (CHECK IS NULL at Stage 1b)",
+      "active_components": [],
+      "tests": [],
+      "known_gaps": [
+        "R-10 policies per LAM Object Type / Domain pending Stage 2"
+      ],
+      "dependencies": [
+        "CAP-013",
+        "Stage 1b.8 exit"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "Stage 2 · post-1b.8 · founder authors per-LAM/per-Domain policies",
+      "do_not_repeat": {
+        "audit": false,
+        "reason": "responsibility clarified · policies pending"
+      },
+      "build_sequence_number": 6,
+      "is_currently_building": false,
+      "impact_score": 100,
+      "build_sequence_note": "R-10 Authorisation (Stage 2 · unlocks AUTHORITATIVE)",
+      "impact_boost_to": [
+        "CAP-042",
+        "CAP-041",
+        "CAP-046",
+        "CAP-063",
+        "CAP-082",
+        "CAP-081"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-016",
+      "name": "Baseline Fixture Set + Deterministic Runner",
+      "group": "Truth Engine + Guardians",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0314a.1"
+      ],
+      "architecture_refs": [
+        "ADR-0314a.1"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/truth-engine/runner/",
+        "scripts/nex-truth-engine-fixture-runner.ts",
+        "db/migrations/stage-1a-fixture-population.sql"
+      ],
+      "storage_home": "nex_test.fixture_row (33) · nex_test.fixture_expected (33) · nex_test.verifier_verdict (150) · nex_test.reproducibility_run (5)",
+      "active_components": [
+        "33 fixtures · 5-run byte-identical determinism proven"
+      ],
+      "tests": [
+        "src/lib/nex/truth-engine/runner/runner.test.ts (21)"
+      ],
+      "known_gaps": [
+        "3 cross_substrate fixtures NOT_RUNNABLE · deferred to Stage 1b"
+      ],
+      "dependencies": [
+        "CAP-011",
+        "CAP-012",
+        "CAP-013"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "Stage 1b.7 (production determinism proof) after 1b.4-1b.6",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "Stage 1a 1a.7 five-run proof locked"
+      },
+      "build_sequence_number": 5,
+      "is_currently_building": false,
+      "impact_score": 85,
+      "build_sequence_note": "Production determinism proof (Stage 1b.7)",
+      "impact_boost_to": [
+        "CAP-011",
+        "CAP-033"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-017",
+      "name": "Cross-Substrate Contradiction Detection Framework",
+      "group": "Truth Engine + Guardians",
+      "status": "AUDITED",
+      "audit_refs": [
+        "ADR-0314c"
+      ],
+      "architecture_refs": [
+        "ADR-0314c · ADR-0314g §4.4 D5"
+      ],
+      "implementation_refs": [],
+      "storage_home": "pending",
+      "active_components": [],
+      "tests": [],
+      "known_gaps": [
+        "R-20 per-attribute rules pending founder authoring (ADR-0314a.2.r)"
+      ],
+      "dependencies": [
+        "CAP-043 (Bridge)",
+        "CAP-012 (R-20)"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "founder authors ADR-0314a.2.r rule specifications",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "framework locked · rules pending"
+      },
+      "build_sequence_number": 16,
+      "is_currently_building": false,
+      "impact_score": 75,
+      "build_sequence_note": "R-20 Cross-Substrate Contradiction rule specs (ADR-0314a.2.r)",
+      "impact_boost_to": [
+        "CAP-033",
+        "CAP-013",
+        "CAP-041"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-021",
+      "name": "Source Registry",
+      "group": "Acquisition Fabric",
+      "status": "AUDITED",
+      "audit_refs": [
+        "ADR-0314g §4.1 · ADR-0314g §3.3 machine-readable source characteristics"
+      ],
+      "architecture_refs": [
+        "ADR-0314g Layer A"
+      ],
+      "implementation_refs": [],
+      "storage_home": "pending",
+      "active_components": [],
+      "tests": [],
+      "known_gaps": [
+        "20+ per-Source characteristic fields pending schema authoring"
+      ],
+      "dependencies": [],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "Phase C implementation · founder-authorised sub-phase",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "ADR-0314g §4.1 architecturally locked"
+      },
+      "build_sequence_number": 7,
+      "is_currently_building": false,
+      "impact_score": 85,
+      "build_sequence_note": "Source Registry · Layer A foundation for every downstream stage",
+      "impact_boost_to": [
+        "CAP-022",
+        "CAP-024",
+        "CAP-023",
+        "CAP-027",
+        "CAP-032",
+        "CAP-034",
+        "CAP-112"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-022",
+      "name": "Discovery Orchestrator",
+      "group": "Acquisition Fabric",
+      "status": "AUDITED",
+      "audit_refs": [
+        "ADR-0314g §4.2 B1"
+      ],
+      "architecture_refs": [
+        "ADR-0314g Layer B1"
+      ],
+      "implementation_refs": [],
+      "storage_home": "pending",
+      "active_components": [],
+      "tests": [],
+      "known_gaps": [
+        "reads Knowledge Gap Registry (CAP-034) · consumes Source Registry (CAP-021) · both pending"
+      ],
+      "dependencies": [
+        "CAP-021",
+        "CAP-034"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "Phase C implementation sub-phase",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "architecture locked"
+      },
+      "build_sequence_number": 11,
+      "is_currently_building": false,
+      "impact_score": 75,
+      "build_sequence_note": "Discovery Orchestrator · consumes gap registry + source registry",
+      "impact_boost_to": [
+        "CAP-023",
+        "CAP-024",
+        "CAP-034"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-023",
+      "name": "Crawl + Fetch Queues (rate-limit · robots · politeness · retry · backoff)",
+      "group": "Acquisition Fabric",
+      "status": "AUDITED",
+      "audit_refs": [
+        "ADR-0314g §4.2 B2-B3-B4-B5"
+      ],
+      "architecture_refs": [
+        "ADR-0314g Layer B2-B5"
+      ],
+      "implementation_refs": [],
+      "storage_home": "pending",
+      "active_components": [
+        "current partial: scripts/nex-lab-harvest*.mjs (13 crawler/scraper scripts)"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "per-source rate-limit budgets · content-addressable raw capture · acquisition ledger"
+      ],
+      "dependencies": [
+        "CAP-021"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "Phase C implementation sub-phase",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "architecture locked · consolidation candidates in ADR-0314g §6.2"
+      },
+      "build_sequence_number": 12,
+      "is_currently_building": false,
+      "impact_score": 70,
+      "build_sequence_note": "Crawl + Fetch Queues · unify 26 existing scripts",
+      "impact_boost_to": [
+        "CAP-024"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-024",
+      "name": "Existing Crawler / Fetch Worker Scripts (26)",
+      "group": "Acquisition Fabric",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0314a.2.s Lab Audit §2.1"
+      ],
+      "architecture_refs": [
+        "ADR-0314g §6.1 fit map"
+      ],
+      "implementation_refs": [
+        "scripts/nex-lab-harvest.mjs · scripts/nex-lab-harvest-nominatim.mjs · scripts/nex-lab-harvest-wikidata.mjs · scripts/nex-lab-harvest-image.mjs · scripts/nex-lab-gov-harvester.mjs · scripts/nex-lab-news-harvester.mjs · scripts/nex-lab-instagram-enricher.mjs · scripts/nex-lab-email-enricher.mjs · scripts/nex-lab-directory-crawler.mjs · scripts/nex-lab-crawler-router.mjs · scripts/nex-lab-image-fetcher.mjs · scripts/nex-lab-freshness-decay.mjs · scripts/nex-lab-quality-agent.mjs · scripts/nex-lab-business-categoriser.mjs · scripts/nex-lab-verify.mjs · scripts/nex-lab-supervisor.mjs · scripts/nex-lab-ideas-seed.mjs · scripts/nex-lab-clean.mjs · scripts/nex-lab-router-audit.mjs · scripts/nex-lab-data-audit.mjs · scripts/nex-lab-wikidata.mjs · scripts/nex-lab-harvest-continuous.mjs · scripts/nex-lab-harvest-watchdog.mjs · scripts/nex-lab-crawler-seed.mjs · scripts/nex-lab-ideas-seed-batch2.mjs · scripts/nex-lab-ideas-seed-images.mjs (26 scripts)"
+      ],
+      "storage_home": "nex_lab_accommodation · nex_lab_food · nex_lab_transport · nex_lab_business · nex_lab_activities · nex_lab_image · nex_lab_news · (3 idle: voice · chat · monetization)",
+      "active_components": [
+        "28,358 harvest_raw · 8,113 verified across 5 active Lab schemas"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "Wikidata × 3 · Image × 3 · Knowledge extraction × 2 · Verification × 2+ duplicated (ADR-0314g §6.2 consolidation candidates)"
+      ],
+      "dependencies": [],
+      "ui_url": "/nex-head-quarters/walker",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "consolidation ADRs per ADR-0314g §6.2 · each own founder authorisation",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "Lab Audit + Fabric ADR-0314g both cover this space"
+      },
+      "build_sequence_number": 36,
+      "is_currently_building": false,
+      "impact_score": 50,
+      "build_sequence_note": "Consolidate duplicated crawler machinery (Wikidata × 3 · Image × 3)",
+      "impact_boost_to": [
+        "CAP-023",
+        "CAP-027"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-025",
+      "name": "Normaliser",
+      "group": "Processing Layer",
+      "status": "AUDITED",
+      "audit_refs": [
+        "ADR-0314g §4.3 C1"
+      ],
+      "architecture_refs": [
+        "ADR-0314g Layer C1"
+      ],
+      "implementation_refs": [
+        "partial · scattered across specialist adapters"
+      ],
+      "storage_home": "not centralised · pending consolidation",
+      "active_components": [],
+      "tests": [],
+      "known_gaps": [
+        "shared normaliser not yet built · per-Domain code today"
+      ],
+      "dependencies": [
+        "CAP-023"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "Phase C consolidation sub-phase",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "architecture locked"
+      },
+      "build_sequence_number": 13,
+      "is_currently_building": false,
+      "impact_score": 65,
+      "build_sequence_note": "Normaliser · shared across Domains",
+      "impact_boost_to": [
+        "CAP-026",
+        "CAP-031"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-026",
+      "name": "Deduplicator + Content Hash",
+      "group": "Processing Layer",
+      "status": "AUDITED",
+      "audit_refs": [
+        "ADR-0314g §4.3 C2"
+      ],
+      "architecture_refs": [
+        "ADR-0314g Layer C2"
+      ],
+      "implementation_refs": [],
+      "storage_home": "pending",
+      "active_components": [],
+      "tests": [],
+      "known_gaps": [],
+      "dependencies": [
+        "CAP-025"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "Phase C implementation sub-phase",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "architecture locked"
+      },
+      "build_sequence_number": 14,
+      "is_currently_building": false,
+      "impact_score": 60,
+      "build_sequence_note": "Deduplicator + Content Hash",
+      "impact_boost_to": [
+        "CAP-028",
+        "CAP-031"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-027",
+      "name": "Change Detection (unchanged · changed · disappeared · contradiction)",
+      "group": "Processing Layer",
+      "status": "AUDITED",
+      "audit_refs": [
+        "ADR-0314g §4.3 C3 · feedback_knowledge_gap_driven_acquisition.md"
+      ],
+      "architecture_refs": [
+        "ADR-0314g Layer C3"
+      ],
+      "implementation_refs": [
+        "partial · scripts/nex-lab-freshness-decay.mjs"
+      ],
+      "storage_home": "pending",
+      "active_components": [],
+      "tests": [],
+      "known_gaps": [
+        "four-case handling not yet unified · source-disappearance NEVER cascades into knowledge deletion invariant enforced only in doctrine"
+      ],
+      "dependencies": [
+        "CAP-024"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "Phase C implementation sub-phase",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "architecture locked"
+      },
+      "build_sequence_number": 15,
+      "is_currently_building": false,
+      "impact_score": 70,
+      "build_sequence_note": "Change Detection · four-case handling per founder lock",
+      "impact_boost_to": [
+        "CAP-034",
+        "CAP-024",
+        "CAP-017"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-028",
+      "name": "Entity Resolution / Identity Graph",
+      "group": "Processing Layer",
+      "status": "AUDITED",
+      "audit_refs": [
+        "ADR-0314g §4.3 C4 · feedback_entity_resolution_location_first_class.md · ADR-0312 Bridge"
+      ],
+      "architecture_refs": [
+        "ADR-0314g Layer C4 · first-class shared infrastructure"
+      ],
+      "implementation_refs": [
+        "partial · scattered · Bridge substrate empty"
+      ],
+      "storage_home": "nex.relationships (0 rows) · ADR-0312 Bridge",
+      "active_components": [],
+      "tests": [],
+      "known_gaps": [
+        "dedicated Entity Resolution service not yet built · Bridge relations unpopulated"
+      ],
+      "dependencies": [
+        "CAP-043"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "founder-authorised Phase C sub-phase · parallel with Stage 1b per ADR-0314i D-1b-6",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "architecture locked · first-class shared per feedback memory"
+      },
+      "build_sequence_number": 8,
+      "is_currently_building": false,
+      "impact_score": 95,
+      "build_sequence_note": "Entity Resolution · first-class shared per feedback memory",
+      "impact_boost_to": [
+        "CAP-063",
+        "CAP-081",
+        "CAP-082",
+        "CAP-041",
+        "CAP-042",
+        "CAP-072",
+        "CAP-026"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-029",
+      "name": "Classifier (multi-axis)",
+      "group": "Processing Layer",
+      "status": "IMPLEMENTED",
+      "audit_refs": [
+        "ADR-0314g §4.3 C5"
+      ],
+      "architecture_refs": [
+        "ADR-0314g Layer C5 · §7.3-B1 five-axis"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/classifier/",
+        "src/lib/nex-lab-business-categoriser.mjs"
+      ],
+      "storage_home": "in code",
+      "active_components": [
+        "Domain classifier · intent-parser · concept-resolver"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "Category axis pending ADR-0314a.2.k values · Activity axis pending ADR-0314a.2.v · Location axis §7.10 M1 candidate"
+      ],
+      "dependencies": [],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "founder authors ADR-0314a.2.k Category values · ADR-0314a.2.v Activity registry",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "structure locked"
+      },
+      "build_sequence_number": 17,
+      "is_currently_building": false,
+      "impact_score": 70,
+      "build_sequence_note": "Classifier · needs ADR-0314a.2.k Category values first",
+      "impact_boost_to": [
+        "CAP-033",
+        "CAP-041",
+        "CAP-046",
+        "CAP-051",
+        "CAP-052",
+        "CAP-055"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-030",
+      "name": "Location Intelligence (first-class hierarchical axis)",
+      "group": "Processing Layer",
+      "status": "AUDITED",
+      "audit_refs": [
+        "ADR-0314g §4.3 C6 · feedback_entity_resolution_location_first_class.md"
+      ],
+      "architecture_refs": [
+        "ADR-0314g Layer C6 · §7.10 M1 candidate 6th axis"
+      ],
+      "implementation_refs": [
+        "partial · row-metadata on every entity today (city · coordinates)"
+      ],
+      "storage_home": "distributed across specialist tables · no dedicated hierarchy",
+      "active_components": [],
+      "tests": [],
+      "known_gaps": [
+        "Country → Region → City → District → Neighbourhood → Place → Entity hierarchy with precision + provenance not yet implemented · not first-class axis yet"
+      ],
+      "dependencies": [],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "founder-authorised Phase C sub-phase · parallel with Stage 1b per ADR-0314i D-1b-6",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "architecture locked · elevation to first-class per feedback memory"
+      },
+      "build_sequence_number": 9,
+      "is_currently_building": false,
+      "impact_score": 90,
+      "build_sequence_note": "Location Intelligence · first-class shared",
+      "impact_boost_to": [
+        "CAP-041",
+        "CAP-051",
+        "CAP-052",
+        "CAP-053",
+        "CAP-054",
+        "CAP-055",
+        "CAP-056",
+        "CAP-057",
+        "CAP-081",
+        "CAP-082",
+        "CAP-042",
+        "CAP-063",
+        "CAP-112"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-031",
+      "name": "Claim Extractor",
+      "group": "Processing Layer",
+      "status": "AUDITED",
+      "audit_refs": [
+        "ADR-0314g §4.3 C7 · ADR-0314h §4.4"
+      ],
+      "architecture_refs": [
+        "ADR-0314g Layer C7"
+      ],
+      "implementation_refs": [
+        "partial · src/lib/nex/brain/workers/knowledge-extractor.ts (has §7.8 J1 double-NEX bug)",
+        "Master AI research-engine (parallel path)"
+      ],
+      "storage_home": "pending nex.claim (Stage 1b apply)",
+      "active_components": [],
+      "tests": [],
+      "known_gaps": [
+        "duplicated extraction paths · J1 bug pending · unified extractor pending"
+      ],
+      "dependencies": [
+        "CAP-023"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "consolidate + fix J1 · Stage 1b apply establishes nex.claim schema",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "architecture locked · consolidation candidate"
+      },
+      "build_sequence_number": 2,
+      "is_currently_building": false,
+      "impact_score": 90,
+      "build_sequence_note": "Claim Extractor · consolidate + fix §7.8 J1 double-NEX bug",
+      "impact_boost_to": [
+        "CAP-033",
+        "CAP-042",
+        "CAP-041",
+        "CAP-063"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-032",
+      "name": "Evidence Recorder",
+      "group": "Processing Layer",
+      "status": "AUDITED",
+      "audit_refs": [
+        "ADR-0314g §4.3 C8 · ADR-0314h §4.4"
+      ],
+      "architecture_refs": [
+        "ADR-0314g Layer C8 · ADR-0314i §9 pipeline provenance"
+      ],
+      "implementation_refs": [],
+      "storage_home": "pending nex.evidence (Stage 1b apply BLOCKED · collision with pre-existing nex.evidence 173 rows)",
+      "active_components": [],
+      "tests": [],
+      "known_gaps": [
+        "nex.evidence collision resolution pending founder decision"
+      ],
+      "dependencies": [
+        "CAP-031"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "founder resolves nex.evidence collision (α / β / γ / δ)",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "architecture locked · schema collision blocks 1b.2"
+      },
+      "build_sequence_number": 1,
+      "is_currently_building": true,
+      "impact_score": 95,
+      "build_sequence_note": "Evidence Recorder · resolve nex.evidence collision · unblocks Stage 1b apply",
+      "impact_boost_to": [
+        "CAP-011",
+        "CAP-013",
+        "CAP-033",
+        "CAP-042",
+        "CAP-041"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-033",
+      "name": "Fact Verification (bridged to Truth Engine)",
+      "group": "Processing Layer",
+      "status": "IMPLEMENTED",
+      "audit_refs": [
+        "ADR-0314g §4.4 D2"
+      ],
+      "architecture_refs": [
+        "ADR-0314g Layer D2 = the Truth Engine verifier CAP-011"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/truth-engine/verifier/"
+      ],
+      "storage_home": "nex_test.* (Stage 1a) · pending Stage 1b production wiring",
+      "active_components": [
+        "identical to CAP-011 · Fact Verification IS the Truth Engine in fabric terminology"
+      ],
+      "tests": [
+        "CAP-011 tests"
+      ],
+      "known_gaps": [],
+      "dependencies": [
+        "CAP-011"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "Stage 1b.4 production adapter",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "CAP-011 covers"
+      },
+      "build_sequence_number": 4,
+      "is_currently_building": false,
+      "impact_score": 100,
+      "build_sequence_note": "Fact Verification wired to production (Stage 1b.4-1b.6)",
+      "impact_boost_to": [
+        "CAP-042",
+        "CAP-041",
+        "CAP-046",
+        "CAP-063",
+        "CAP-082"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-034",
+      "name": "Knowledge Gap Registry (autonomous acquisition loop)",
+      "group": "Processing Layer",
+      "status": "AUDITED",
+      "audit_refs": [
+        "ADR-0314g §4.6 Layer F · feedback_knowledge_gap_driven_acquisition.md"
+      ],
+      "architecture_refs": [
+        "ADR-0314g Layer F1-F5"
+      ],
+      "implementation_refs": [],
+      "storage_home": "pending",
+      "active_components": [],
+      "tests": [],
+      "known_gaps": [
+        "gap detection · reacquisition trigger · freshness monitor · source-quality feedback all pending"
+      ],
+      "dependencies": [
+        "CAP-021",
+        "CAP-022"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "founder-authorised Phase C sub-phase · parallel with Stage 1b per ADR-0314i D-1b-6",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "architecture locked"
+      },
+      "build_sequence_number": 10,
+      "is_currently_building": false,
+      "impact_score": 90,
+      "build_sequence_note": "Knowledge Gap Registry · autonomous acquisition loop",
+      "impact_boost_to": [
+        "CAP-024",
+        "CAP-022",
+        "CAP-023",
+        "CAP-027",
+        "CAP-071"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-041",
+      "name": "Specialist Knowledge Substrates (accommodation · food · service · attractions · commerce)",
+      "group": "Knowledge Substrate",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0314a.2.s Lab Audit §1"
+      ],
+      "architecture_refs": [
+        "ADR-0314g §4.5 E1 · ADR-0314i §9 canonical Knowledge · Domain views"
+      ],
+      "implementation_refs": [
+        "nex.accommodation_business (9,230 rows) · nex.food_business (22,757 rows) · nex.service_business (3,922 rows) · nex.brain_attractions · nex.mp_seller · nex.mp_product"
+      ],
+      "storage_home": "nex.*",
+      "active_components": [
+        "4 active promotion executors: accommodation-executor · food-executor · business-lead-executor · activities-executor"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "Transport has 133 verified · no executor · 748 attractions rows stranded · orphan attraction_kind='other' 27/32 rows"
+      ],
+      "dependencies": [],
+      "ui_url": "/nex-head-quarters/nex-storage",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "Stage 1b.6 rejection-active per D-1b-4 narrow scope · legacy freezes per D-1b-1 C-β",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "Lab Audit inventoried"
+      },
+      "build_sequence_number": null,
+      "is_currently_building": false,
+      "impact_score": 0,
+      "build_sequence_note": null,
+      "impact_boost_to": [],
+      "retro_benefits_available": [
+        {
+          "target_cap": "CAP-041",
+          "suggested_sub_capability": "Cross-Domain entity dedup index (once Entity Resolution lands)",
+          "intelligence_uplift": "CAP-063 chat + CAP-082 Q&A can answer 'the same hotel across Google/Booking' as one canonical entity",
+          "priority": "high",
+          "surfaced_by": "CAP-028"
+        },
+        {
+          "target_cap": "CAP-041",
+          "suggested_sub_capability": "gap-flagging column (once Knowledge Gap Registry lands)",
+          "intelligence_uplift": "CAP-034 gap detection reads specialist substrates without full scan · re-acquisition planner O(gaps) not O(rows)",
+          "priority": "medium",
+          "surfaced_by": "CAP-034"
+        }
+      ]
+    },
+    {
+      "id": "CAP-042",
+      "name": "NEX Knowledge Records (canonical)",
+      "group": "Knowledge Substrate",
+      "status": "ACTIVE",
+      "audit_refs": [],
+      "architecture_refs": [
+        "ADR-0314i §9 canonical Knowledge"
+      ],
+      "implementation_refs": [
+        "nex.knowledge_records (1 row)"
+      ],
+      "storage_home": "nex.knowledge_records",
+      "active_components": [],
+      "tests": [],
+      "known_gaps": [
+        "substrate under-populated · population happens via constitutional pipeline post-R-10"
+      ],
+      "dependencies": [
+        "CAP-015"
+      ],
+      "ui_url": "/nex-head-quarters/knowledge-control-centre",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "Stage 2 R-10 authorises writes",
+      "do_not_repeat": {
+        "audit": false,
+        "reason": "row-level audit not yet done"
+      },
+      "build_sequence_number": 33,
+      "is_currently_building": false,
+      "impact_score": 60,
+      "build_sequence_note": "Knowledge Records write-through via R-10 (Stage 2)",
+      "impact_boost_to": [
+        "CAP-046",
+        "CAP-063",
+        "CAP-082",
+        "CAP-081"
+      ],
+      "retro_benefits_available": [
+        {
+          "target_cap": "CAP-042",
+          "suggested_sub_capability": "Location-scoped index on knowledge_records (once Location Intelligence lands)",
+          "intelligence_uplift": "CAP-046 Knowledge Router serves 'find X near me' queries 100× faster · geospatial pruning at index level",
+          "priority": "high",
+          "surfaced_by": "CAP-030"
+        }
+      ]
+    },
+    {
+      "id": "CAP-043",
+      "name": "Bridge Relations (Semantic Cross-Substrate Bridge)",
+      "group": "Knowledge Substrate",
+      "status": "IMPLEMENTED",
+      "audit_refs": [
+        "ADR-0312"
+      ],
+      "architecture_refs": [
+        "ADR-0312 · ADR-0314g §4.3 C4 substrate"
+      ],
+      "implementation_refs": [
+        "nex.relationships (0 rows) · schema exists"
+      ],
+      "storage_home": "nex.relationships",
+      "active_components": [],
+      "tests": [],
+      "known_gaps": [
+        "0 rows populated · Entity Resolution needs this to be non-empty"
+      ],
+      "dependencies": [],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "populated by Phase C Entity Resolution build (CAP-028)",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "ADR-0312 covers"
+      },
+      "build_sequence_number": 26,
+      "is_currently_building": false,
+      "impact_score": 60,
+      "build_sequence_note": "Bridge relations population (via Entity Resolution)",
+      "impact_boost_to": [
+        "CAP-028",
+        "CAP-081",
+        "CAP-063"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-044",
+      "name": "Concept Substrate (concepts · senses · contexts)",
+      "group": "Knowledge Substrate",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0308 English Brain v1"
+      ],
+      "architecture_refs": [
+        "ADR-0308 · ADR-0309 · ADR-0309.1 · ADR-0310 · ADR-0311"
+      ],
+      "implementation_refs": [
+        "db/migrations/006_nex_english_brain_v1.sql",
+        "src/lib/nex/language/concept-resolver.ts",
+        "src/lib/nex/language/question-resolver.ts"
+      ],
+      "storage_home": "nex.concepts · nex.concept_senses · nex.contexts · nex.canonical_answers · nex.evidence (pre-existing 173 rows) · nex.rejections",
+      "active_components": [
+        "21 Layer-1 concepts · 24 senses · 103 contexts · 24 canonical answers · 48 evidence rows"
+      ],
+      "tests": [
+        "21 language tests"
+      ],
+      "known_gaps": [
+        "only 21 concepts seeded · full English corpus deferred"
+      ],
+      "dependencies": [],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "post Stage 1b · post Acquisition Fabric · founder authorises corpus expansion",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "ADR-0308 covers English Brain v1"
+      },
+      "build_sequence_number": 34,
+      "is_currently_building": false,
+      "impact_score": 55,
+      "build_sequence_note": "Concept substrate extension (per Domain)",
+      "impact_boost_to": [
+        "CAP-081",
+        "CAP-082",
+        "CAP-059"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-045",
+      "name": "Supabase Knowledge Mirror (cloud view)",
+      "group": "Knowledge Substrate",
+      "status": "ACTIVE",
+      "audit_refs": [],
+      "architecture_refs": [
+        "ADR-0314i §9.3 · §7.8 J1 physical vs logical authority"
+      ],
+      "implementation_refs": [
+        "Supabase knowledge_records (3,627 rows per prior audit)"
+      ],
+      "storage_home": "Supabase (cloud)",
+      "active_components": [
+        "read by knowledge-extractor.ts (has §7.8 J1 double-NEX bug)"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "§7.8 J1 double-NEX bug pending fix · not a competing truth · same canonical Knowledge as CAP-042"
+      ],
+      "dependencies": [
+        "CAP-042"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "J1 bug fix under separate ADR",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "§7.8 J1 doctrine covers"
+      },
+      "build_sequence_number": 35,
+      "is_currently_building": false,
+      "impact_score": 50,
+      "build_sequence_note": "Supabase §7.8 J1 double-NEX bug fix",
+      "impact_boost_to": [
+        "CAP-042",
+        "CAP-046"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-046",
+      "name": "Knowledge Router",
+      "group": "Knowledge Substrate",
+      "status": "IMPLEMENTED",
+      "audit_refs": [
+        "ADR-0311 Knowledge Router Reference Interface"
+      ],
+      "architecture_refs": [
+        "ADR-0311 · ADR-0314g §4.5 E2"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/brain/world-adapters/"
+      ],
+      "storage_home": "code · reads specialist tables",
+      "active_components": [
+        "5 world adapters: accommodation-postgres · food-postgres · commerce-postgres · service-postgres · transport-postgres"
+      ],
+      "tests": [
+        "world-adapters/*.test.ts"
+      ],
+      "known_gaps": [
+        "4 missing adapters: attractions · code · places · travel"
+      ],
+      "dependencies": [
+        "CAP-041"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "author missing adapters over time",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "ADR-0311 covers"
+      },
+      "build_sequence_number": 25,
+      "is_currently_building": false,
+      "impact_score": 60,
+      "build_sequence_note": "Missing world adapters (attractions · code · places · travel)",
+      "impact_boost_to": [
+        "CAP-063",
+        "CAP-082",
+        "CAP-042"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-051",
+      "name": "Accommodation Domain Workload",
+      "group": "Domain Workloads",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0119 · ADR-0314a.2.s accommodation rule book v3/v4"
+      ],
+      "architecture_refs": [
+        "ADR-0119 · ADR-0314g §6.1 fit map"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/brain/world-adapters/accommodation-postgres.ts",
+        "src/lib/nex/intelligence-storage-grid/accommodation/ (21 files)",
+        "src/lib/nex/agent-runtime/worker-accommodation.ts",
+        "src/lib/nex/lab/executors/accommodation-executor.ts"
+      ],
+      "storage_home": "nex.accommodation_business · nex_lab_accommodation · nex.accommodation_business_field_provenance (46,114 rows)",
+      "active_components": [
+        "9,230 rows · 32.1% Lab verification rate · 21 ISG files · deterministic Q&A P1-P5 shadow-mode LIVE"
+      ],
+      "tests": [
+        "accommodation-postgres.test.ts",
+        "rule-book-v3.test.ts",
+        "rule-book-v4-founder-42.test.ts",
+        "127 rule-book tests"
+      ],
+      "known_gaps": [
+        "worker activation · gap engine · observatory continuation · Food/Transport crossdomain integration"
+      ],
+      "dependencies": [
+        "CAP-011",
+        "CAP-041"
+      ],
+      "ui_url": "/nex-head-quarters/accommodation-agent",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "Stage 1b when apply resolves · Phase B accommodation continuous integration",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "extensively covered by 42-section rule book"
+      },
+      "build_sequence_number": 43,
+      "is_currently_building": false,
+      "impact_score": 40,
+      "build_sequence_note": "Accommodation continuous integration (Rule Book v4 Phase B items)",
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-052",
+      "name": "Food Domain Workload",
+      "group": "Domain Workloads",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0314a.2.s Lab Audit"
+      ],
+      "architecture_refs": [
+        "ADR-0314g §6.1 fit map"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/brain/world-adapters/food-postgres.ts",
+        "src/lib/nex/agent-runtime/worker-food.ts",
+        "src/lib/nex/lab/executors/food-executor.ts"
+      ],
+      "storage_home": "nex.food_business (22,757 rows) · nex_lab_food · food provenance stack (105K rows)",
+      "active_components": [
+        "22,757 rows · 25% Lab verification rate · direct promotion executor"
+      ],
+      "tests": [],
+      "known_gaps": [],
+      "dependencies": [],
+      "ui_url": "/nex-head-quarters/food-ops",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "Stage 1b integration",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "Lab Audit inventoried"
+      },
+      "build_sequence_number": 44,
+      "is_currently_building": false,
+      "impact_score": 40,
+      "build_sequence_note": "Food Domain gap-closure",
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-053",
+      "name": "Transport Domain Workload",
+      "group": "Domain Workloads",
+      "status": "IMPLEMENTED",
+      "audit_refs": [
+        "ADR-0314a.2.s Lab Audit"
+      ],
+      "architecture_refs": [
+        "ADR-0314g §6.1"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/brain/world-adapters/transport-postgres.ts",
+        "src/lib/nex/agent-runtime/worker-transport.ts"
+      ],
+      "storage_home": "nex_lab_transport (133 verified · no executor · rows stranded in Lab)",
+      "active_components": [
+        "133 verified rows · no promotion pipeline"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "missing promotion executor · rows stranded"
+      ],
+      "dependencies": [],
+      "ui_url": "/nex-head-quarters/transport-data",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "author transport-executor OR reclassify as source-adapter",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "Lab Audit inventoried"
+      },
+      "build_sequence_number": 19,
+      "is_currently_building": false,
+      "impact_score": 55,
+      "build_sequence_note": "Transport promotion executor · 133 rows stranded",
+      "impact_boost_to": [
+        "CAP-041",
+        "CAP-046"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-054",
+      "name": "Attractions Domain Workload",
+      "group": "Domain Workloads",
+      "status": "IMPLEMENTED",
+      "audit_refs": [
+        "ADR-0314a.2.s Lab Audit",
+        "ADR-0314a.2.v activity slug applicable domain registry"
+      ],
+      "architecture_refs": [
+        "ADR-0314g §6.1 · ADR-0314a.2.v"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/lab/executors/activities-executor.ts"
+      ],
+      "storage_home": "nex.brain_attractions (attraction_kind 12-value CHECK) · nex_lab_activities",
+      "active_components": [
+        "785 verified · 32 promoted · 748 stranded (attraction_kind coverage 12% clean)"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "748 stranded rows · 27/32 (84%) attraction_kind='other' dumping-ground failure"
+      ],
+      "dependencies": [],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "founder authors ADR-0314a.2.v activity registry values",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "load-bearing evidence documented"
+      },
+      "build_sequence_number": 20,
+      "is_currently_building": false,
+      "impact_score": 55,
+      "build_sequence_note": "Attractions cleanup · 748 stranded + attraction_kind='other'",
+      "impact_boost_to": [
+        "CAP-041",
+        "CAP-046"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-055",
+      "name": "Commerce / Marketplace Domain Workload",
+      "group": "Domain Workloads",
+      "status": "IMPLEMENTED",
+      "audit_refs": [
+        "ADR-0314a.2.s Lab Audit"
+      ],
+      "architecture_refs": [
+        "ADR-0314g §6.3"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/brain/world-adapters/commerce-postgres.ts"
+      ],
+      "storage_home": "nex.mp_product (5 rows) · nex.mp_seller (23,580 discovered · 0 claimed)",
+      "active_components": [
+        "5 products · 23,580 seller candidates unclaimed"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "no commerce (product) crawler · sellers not claimed by owners"
+      ],
+      "dependencies": [],
+      "ui_url": "/nex-head-quarters/commerce",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "commerce crawler + claim pipeline (Phase C · founder-authorised)",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "Lab Audit inventoried"
+      },
+      "build_sequence_number": 21,
+      "is_currently_building": false,
+      "impact_score": 60,
+      "build_sequence_note": "Commerce crawler + product claim pipeline",
+      "impact_boost_to": [
+        "CAP-041",
+        "CAP-046",
+        "CAP-095"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-056",
+      "name": "Services Domain Workload",
+      "group": "Domain Workloads",
+      "status": "IMPLEMENTED",
+      "audit_refs": [
+        "ADR-0314a.2.s Lab Audit"
+      ],
+      "architecture_refs": [
+        "ADR-0314g §6.3"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/brain/world-adapters/service-postgres.ts",
+        "src/lib/nex/lab/executors/business-lead-executor.ts (routing subs)"
+      ],
+      "storage_home": "nex.service_business (3,922 rows)",
+      "active_components": [
+        "3,922 rows routed indirectly via business-lead-executor (fitness · beauty-wellness · dentist · optical · pharmacy · auto-service · clinic)"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "no direct Services-specific crawler · Services data enters via business-lead routing only"
+      ],
+      "dependencies": [
+        "CAP-058"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "founder decision · dedicated Services crawler vs continue routing",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "routing pattern documented in Lab Audit"
+      },
+      "build_sequence_number": 22,
+      "is_currently_building": false,
+      "impact_score": 50,
+      "build_sequence_note": "Services dedicated crawler (currently routing indirect)",
+      "impact_boost_to": [
+        "CAP-041",
+        "CAP-046",
+        "CAP-058"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-057",
+      "name": "Travel Domain Workload",
+      "group": "Domain Workloads",
+      "status": "DISCOVERED",
+      "audit_refs": [],
+      "architecture_refs": [
+        "ADR-0314g §6.3"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/agent-runtime/worker-travel.ts"
+      ],
+      "storage_home": "no specialist substrate yet",
+      "active_components": [
+        "worker exists · no substrate"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "no specialist substrate · no crawler · no Lab room"
+      ],
+      "dependencies": [],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "founder decides Travel Domain build",
+      "do_not_repeat": {
+        "audit": false,
+        "reason": "domain not yet audited in detail"
+      },
+      "build_sequence_number": 23,
+      "is_currently_building": false,
+      "impact_score": 45,
+      "build_sequence_note": "Travel Domain build",
+      "impact_boost_to": [
+        "CAP-041",
+        "CAP-046"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-058",
+      "name": "Business Domain Workload (cross-Domain classifier tier)",
+      "group": "Domain Workloads",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0314a.2.s Lab Audit §4.5 mis-classification"
+      ],
+      "architecture_refs": [
+        "ADR-0314g §6.4 reclassification candidate"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/lab/executors/business-lead-executor.ts",
+        "src/lib/nex/agent-runtime/worker-business.ts"
+      ],
+      "storage_home": "nex_lab_business (1,390 verified · 4,872 raw · 29 gov_source_raw)",
+      "active_components": [
+        "cross-Domain routing to food · accommodation · services · retail · health"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "mis-scoped as Business-Domain-specific · actually functions as broad classifier · reclassification candidate per ADR-0314g §6.4"
+      ],
+      "dependencies": [],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "reclassification ADR (founder-authorised · Phase C)",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "Lab Audit identified mis-classification"
+      },
+      "build_sequence_number": 24,
+      "is_currently_building": false,
+      "impact_score": 50,
+      "build_sequence_note": "Business Lab reclassification (cross-Domain classifier tier)",
+      "impact_boost_to": [
+        "CAP-055",
+        "CAP-056",
+        "CAP-024"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-059",
+      "name": "Code Domain (NEX1 · programmer)",
+      "group": "Domain Workloads",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0308 English Brain v1"
+      ],
+      "architecture_refs": [
+        "ADR-0308"
+      ],
+      "implementation_refs": [
+        "src/lib/nex-agent/language/code-intent-registry.ts",
+        "src/lib/nex/agent-runtime/worker-programmer.ts"
+      ],
+      "storage_home": "nex.concepts (code-domain slice)",
+      "active_components": [
+        "9 nex1 intents · code as a domain of NEX in live-chat-completion"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "code corpus limited · no external code documentation crawler"
+      ],
+      "dependencies": [
+        "CAP-081"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "future English Brain expansion",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "ADR-0308 covers"
+      },
+      "build_sequence_number": 45,
+      "is_currently_building": false,
+      "impact_score": 40,
+      "build_sequence_note": "Code Domain corpus expansion",
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-061",
+      "name": "Image Intelligence / Visual Intelligence",
+      "group": "Multimodal",
+      "status": "IMPLEMENTED",
+      "audit_refs": [
+        "ADR-0028 NEX Intelligence Constitution",
+        "ADR-0029 Image Tagger Directive",
+        "ADR-0030 Intelligence Layers Before Admin",
+        "ADR-0033 Quality Over Quantity + Brain Isolation",
+        "ADR-0034 NEX identity"
+      ],
+      "architecture_refs": [
+        "ADR-0027 Golden Rules · ADR-0314g §6.4 reclassification"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/brain/workers/image-analyst.ts",
+        "src/lib/nex/refacing/image-schema.ts",
+        "src/lib/nex/intake/image-plus-description-worker.ts",
+        "src/lib/nex/brain/providers/image-normalize.ts",
+        "src/lib/nex/vision-intelligence/analyze.ts",
+        "scripts/image-library-audit.mjs",
+        "scripts/nex-conv/parsers/image-batches.mjs",
+        "src/lib/nex/multimodal/*",
+        "scripts/nex-lab-image-fetcher.mjs",
+        "scripts/nex-lab-harvest-image.mjs"
+      ],
+      "storage_home": "nex_lab_image (234 raw · 0 verified) · Supabase image storage (large population · not integrated) · data/nex-image-manifest.json (ADR-0024)",
+      "active_components": [
+        "image-analyst worker · vision-intelligence.analyze · refacing schema · large existing image asset population"
+      ],
+      "tests": [
+        "vision.test.ts"
+      ],
+      "known_gaps": [
+        "EXISTING SUPABASE IMAGE POPULATION NOT INTEGRATED with new architecture · image verification pipeline missing (0 verified rows despite 234 raw) · Image Asset Registry missing · Entity ↔ image association missing · duplicated 3× across image-fetcher · harvest-image · image-analyst"
+      ],
+      "dependencies": [],
+      "ui_url": "/nex-head-quarters/image-intake",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "🎯 TARGETED FOLLOW-UP: audit existing image DATABASE/storage specifically · map existing records · design migration/adapter · implement Visual Intelligence per Phase C consolidation · DO NOT re-audit general image architecture",
+      "do_not_repeat": {
+        "audit": "general architecture already audited twice (ADR-0028/29/30/33/34 + ADR-0314g §6.4) · targeted database/storage audit still needed",
+        "reason": "double-audit warning"
+      },
+      "build_sequence_number": 18,
+      "is_currently_building": false,
+      "impact_score": 75,
+      "build_sequence_note": "Visual Intelligence · targeted DB/storage migration only · NOT re-audit",
+      "impact_boost_to": [
+        "CAP-041",
+        "CAP-051",
+        "CAP-052",
+        "CAP-064",
+        "CAP-071",
+        "CAP-063"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-062",
+      "name": "Voice Pipeline (Phase 12)",
+      "group": "Multimodal",
+      "status": "IMPLEMENTED",
+      "audit_refs": [
+        "ADR-0317 NEX Voice Mandate (structure locked · values pending)"
+      ],
+      "architecture_refs": [
+        "ADR-0317 · ADR-0314g §4 Layer D reclassify"
+      ],
+      "implementation_refs": [
+        "src/app/api/nex/voice/transcribe · src/app/api/nex/voice/synthesize · src/lib/nex-voice/useNexVoice.ts"
+      ],
+      "storage_home": "endpoints · migration 158 applied local · nex_lab_voice (0/0 · idle)",
+      "active_components": [
+        "STT + TTS contract · mock + real (whisper.cpp + Piper) · honest fallback · 11-track smoke green"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "Supabase migration + WebRTC UI deferred · voice mandate values pending founder authoring"
+      ],
+      "dependencies": [],
+      "ui_url": "/nex-voice-demo",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "founder authors ADR-0317 voice mandate values",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "ADR-0317 structure locked"
+      },
+      "build_sequence_number": 28,
+      "is_currently_building": false,
+      "impact_score": 55,
+      "build_sequence_note": "Voice mandate values (ADR-0317)",
+      "impact_boost_to": [
+        "CAP-063",
+        "CAP-081",
+        "CAP-071"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-063",
+      "name": "Chat / Conversation",
+      "group": "Multimodal",
+      "status": "ACTIVE",
+      "audit_refs": [],
+      "architecture_refs": [
+        "ADR-0120 live-chat-completion · ADR-0121 NEX is a System not a Model"
+      ],
+      "implementation_refs": [
+        "src/app/api/nex-conv/chat/",
+        "src/app/api/nex/chat/",
+        "src/lib/nex/conversation-intent.ts"
+      ],
+      "storage_home": "conversation_ledger · nex_lab_chat (0/0 · idle)",
+      "active_components": [
+        "live-chat-completion · conversation-intent · shadow-mode deterministic Q&A live"
+      ],
+      "tests": [
+        "conversation-intent.test.ts",
+        "conversation-intent-bare-noun.test.ts"
+      ],
+      "known_gaps": [
+        "Lab room idle · reclassify as Operational Scope per ADR-0314g §6.4"
+      ],
+      "dependencies": [],
+      "ui_url": "/nex-appchat",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "reclassification (Phase C · founder-authorised)",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "conversation architecture in ADR-0120"
+      },
+      "build_sequence_number": 30,
+      "is_currently_building": false,
+      "impact_score": 45,
+      "build_sequence_note": "Chat Lab reclassification as Operational Scope",
+      "impact_boost_to": [
+        "CAP-082",
+        "CAP-081"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-064",
+      "name": "Vision Intelligence (analyze)",
+      "group": "Multimodal",
+      "status": "IMPLEMENTED",
+      "audit_refs": [],
+      "architecture_refs": [
+        "ADR-0314g §4 Layer D3"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/vision-intelligence/analyze.ts",
+        "src/lib/nex/agent-runtime/worker-vision.ts"
+      ],
+      "storage_home": "code · not persisted",
+      "active_components": [
+        "vision worker · analyze function · types"
+      ],
+      "tests": [
+        "vision.test.ts"
+      ],
+      "known_gaps": [
+        "Vision worker per §7.3-B1 Agent/Runtime axis · not yet integrated with Truth Engine claim path"
+      ],
+      "dependencies": [
+        "CAP-061"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "wire into Layer C7 Claim Extractor as extraction_method='vision'",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "code exists · covered by CAP-061 audit"
+      },
+      "build_sequence_number": 29,
+      "is_currently_building": false,
+      "impact_score": 50,
+      "build_sequence_note": "Vision wire into Claim Extractor (extraction_method='vision')",
+      "impact_boost_to": [
+        "CAP-061",
+        "CAP-033",
+        "CAP-041"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-071",
+      "name": "Master AI Intelligence Layer",
+      "group": "Agents / Workers",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0034 identity"
+      ],
+      "architecture_refs": [
+        "ADR-0034"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/master-ai/ (77 files)"
+      ],
+      "storage_home": "code · runtime observatory records",
+      "active_components": [
+        "observation · knowledge-ledger · capability-registry · research-engine · autonomous-cycle · autonomous-evolution · learning-cycle · integrated-intelligence-loop · reconciliation · multi-domain-verifier · self-criticism · agent-3state-report · connectivity intelligence (7 modules) · Wave 4 world-first capabilities (5 modules) · delegation · storage rotation · statistics"
+      ],
+      "tests": [
+        "master-ai-*.test.ts (multiple)"
+      ],
+      "known_gaps": [
+        "77 modules · maintainability watchpoint"
+      ],
+      "dependencies": [],
+      "ui_url": "/nex-head-quarters/vitals",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "continuous · new capabilities added per founder authorisation",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "ADR-0034 covers · autonomous evolution active"
+      },
+      "build_sequence_number": 38,
+      "is_currently_building": false,
+      "impact_score": 60,
+      "build_sequence_note": "Master AI continuous capability additions",
+      "impact_boost_to": [
+        "CAP-072",
+        "CAP-073",
+        "CAP-034"
+      ],
+      "retro_benefits_available": [
+        {
+          "target_cap": "CAP-071",
+          "suggested_sub_capability": "Language-aware research prompt template (once Language Engine expanded)",
+          "intelligence_uplift": "CAP-081 gains multilingual research pathways · Master AI research-engine can operate in EN + ID + other locked languages",
+          "priority": "medium",
+          "surfaced_by": "CAP-081"
+        }
+      ]
+    },
+    {
+      "id": "CAP-072",
+      "name": "Programmer Worker (NEX1 code agent)",
+      "group": "Agents / Workers",
+      "status": "ACTIVE",
+      "audit_refs": [],
+      "architecture_refs": [
+        "Y-W4-3 wave 4 complete · delegation delegation-executor"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/agent-runtime/worker-programmer.ts"
+      ],
+      "storage_home": "runtime · delegation ledger",
+      "active_components": [
+        "PID 29476 (last live) · 60s delegation poll · Phase A observation-only (does not mutate code)"
+      ],
+      "tests": [
+        "master-ai-y-w4-3.test.ts (12)"
+      ],
+      "known_gaps": [
+        "autonomous code writing needs programmer-improvement loop authorisation"
+      ],
+      "dependencies": [
+        "CAP-071"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-07",
+      "next_authorised_action": "Phase B programmer-improvement authorisation (separate)",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "Wave 4 complete"
+      },
+      "build_sequence_number": 37,
+      "is_currently_building": false,
+      "impact_score": 65,
+      "build_sequence_note": "Programmer improvement loop authorisation (NEX1 code-writing)",
+      "impact_boost_to": [
+        "CAP-071",
+        "CAP-073",
+        "CAP-081",
+        "CAP-082"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-073",
+      "name": "Specialist Domain Workers (11)",
+      "group": "Agents / Workers",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0314a.2.s Lab Audit §2.6"
+      ],
+      "architecture_refs": [
+        "§7.3-B1 Agent/Runtime Identity axis"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/agent-runtime/worker-accommodation.ts · worker-food.ts · worker-transport.ts · worker-business.ts · worker-travel.ts · worker-programmer.ts · worker-master-ai.ts · worker-speaking.ts · worker-vision.ts · worker-construction.ts · worker-healthcare.ts · worker-legal.ts"
+      ],
+      "storage_home": "runtime",
+      "active_components": [
+        "3 currently running (Programmer · Accommodation · Master AI) · 8 registered not-spawned"
+      ],
+      "tests": [
+        "worker-specialists-registration.test.ts"
+      ],
+      "known_gaps": [],
+      "dependencies": [],
+      "ui_url": "/nex-head-quarters/workers",
+      "last_verified": "2026-09-07",
+      "next_authorised_action": "continuous · spawn additional workers per founder authorisation",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "Lab Audit inventoried"
+      },
+      "build_sequence_number": 39,
+      "is_currently_building": false,
+      "impact_score": 50,
+      "build_sequence_note": "Additional specialist worker activation",
+      "impact_boost_to": [
+        "CAP-071",
+        "CAP-041"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-081",
+      "name": "Language Engine (normaliser · slang · intent-parser · question-resolver · concept-resolver)",
+      "group": "English Brain / Language",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0308 English Brain v1",
+        "project_nex_language_engine_phase1_2026_09_10.md"
+      ],
+      "architecture_refs": [
+        "ADR-0308 · ADR-0309 · ADR-0309.1"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/language/ (11 files)"
+      ],
+      "storage_home": "nex.concepts · nex.concept_senses · nex.contexts (see CAP-044)",
+      "active_components": [
+        "types · slang-en-gb · normaliser · guardian · intent-parser · question-resolver · concept-resolver + 3 test files"
+      ],
+      "tests": [
+        "language.test.ts",
+        "question-resolver.test.ts",
+        "concept-resolver.test.ts (21 tests)"
+      ],
+      "known_gaps": [
+        "only Layer-1 21 concepts seeded · full 100K corpus deferred (feedback_finish_constitutional_layer_before_100k_questions.md)"
+      ],
+      "dependencies": [
+        "CAP-044"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "constitutional layer completion before 100K corpus authoring",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "ADR-0308 Phase 1 complete"
+      },
+      "build_sequence_number": 32,
+      "is_currently_building": false,
+      "impact_score": 70,
+      "build_sequence_note": "English corpus expansion beyond Layer-1 · post constitutional layer",
+      "impact_boost_to": [
+        "CAP-063",
+        "CAP-082",
+        "CAP-072",
+        "CAP-059"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-082",
+      "name": "Deterministic Q&A (P1-P5)",
+      "group": "English Brain / Language",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "project_nex_deterministic_qa_p1_p5_2026_09_09.md"
+      ],
+      "architecture_refs": [
+        "Yogyakarta 16-turn replay · hot-tier · shadow-mode LIVE"
+      ],
+      "implementation_refs": [
+        "src/lib/nex/intelligence-storage-grid/accommodation/intent-registry.ts · language-normaliser · intent-parser · fact-computer · hot-tier-facts · deterministic-composer · shadow-mode"
+      ],
+      "storage_home": "hot-tier (in-memory LRU 4096) + nex.accommodation_business",
+      "active_components": [
+        "50 canonical intents · EN+ID+slang ~160 aliases · 5-step trust ladder · P50 700ns · shadow-mode LIVE on /api/nex-conv/chat"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "3 known refinements: wifi-array-contains predicate · list-composer for multi-property Q2 · vertical-switch re-search"
+      ],
+      "dependencies": [
+        "CAP-051",
+        "CAP-081"
+      ],
+      "ui_url": "/nex-appchat",
+      "last_verified": "2026-09-09",
+      "next_authorised_action": "founder decides refinement priority · continue shadow · precompute-in-worker",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "P1-P5 memory covers"
+      },
+      "build_sequence_number": 31,
+      "is_currently_building": false,
+      "impact_score": 65,
+      "build_sequence_note": "Deterministic Q&A refinements (3 known: wifi-array · list-composer · vertical-switch)",
+      "impact_boost_to": [
+        "CAP-081",
+        "CAP-063",
+        "CAP-072"
+      ],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-091",
+      "name": "NEX HQ (Headquarters UI · 33 pages)",
+      "group": "UI Surfaces",
+      "status": "ACTIVE",
+      "audit_refs": [],
+      "architecture_refs": [],
+      "implementation_refs": [
+        "src/app/nex-head-quarters/"
+      ],
+      "storage_home": "UI",
+      "active_components": [
+        "33 pages · accommodation-agent · audit · calling · category-images · claim-review · cle-review · collector · commerce · commercial · comms-social · comms-social-hq · conversations · data-platform-centre · directory · directory-factory · discovery · draft-review · factory · food-ops · image-intake · journal · knowledge-control-centre · live-chat-completion · m4-results · m4-survey · media · nex-storage · operations-centre · review · transport-data · vitals · walker · walker-health · wallet-anomalies · workers · workforce"
+      ],
+      "tests": [],
+      "known_gaps": [],
+      "dependencies": [],
+      "ui_url": "/nex-head-quarters",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "add work-map page (this ADR)",
+      "do_not_repeat": {
+        "audit": false,
+        "reason": "individual pages not audited for orphan status yet"
+      },
+      "build_sequence_number": null,
+      "is_currently_building": false,
+      "impact_score": 0,
+      "build_sequence_note": null,
+      "impact_boost_to": [],
+      "retro_benefits_available": [
+        {
+          "target_cap": "CAP-091",
+          "suggested_sub_capability": "Add /nex-head-quarters pages for gap-registry · source-registry · entity-resolution when those Layers activate",
+          "intelligence_uplift": "Founder gains live visibility into acquisition-fabric health once Layers C/F are implemented",
+          "priority": "low",
+          "surfaced_by": "CAP-021"
+        }
+      ]
+    },
+    {
+      "id": "CAP-092",
+      "name": "NEX App / NEX-App Shell",
+      "group": "UI Surfaces",
+      "status": "ACTIVE",
+      "audit_refs": [],
+      "architecture_refs": [],
+      "implementation_refs": [
+        "src/app/nex-app/",
+        "src/app/nexapp/",
+        "src/app/nex-app-lab/"
+      ],
+      "storage_home": "UI",
+      "active_components": [
+        "NexAppShell · discover · frame-preview · messages · nex-app-lab"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "duplication between /nex-app and /nexapp"
+      ],
+      "dependencies": [],
+      "ui_url": "/nexapp",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "consolidation review",
+      "do_not_repeat": {
+        "audit": false,
+        "reason": "duplication not resolved"
+      },
+      "build_sequence_number": 40,
+      "is_currently_building": false,
+      "impact_score": 40,
+      "build_sequence_note": "NEX-App shell consolidation (/nex-app + /nexapp duplication)",
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-093",
+      "name": "NEX-Live",
+      "group": "UI Surfaces",
+      "status": "ACTIVE",
+      "audit_refs": [],
+      "architecture_refs": [],
+      "implementation_refs": [
+        "src/app/nex-live/"
+      ],
+      "storage_home": "UI",
+      "active_components": [
+        "NexLiveClient"
+      ],
+      "tests": [],
+      "known_gaps": [],
+      "dependencies": [],
+      "ui_url": "/nex-live",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "none",
+      "do_not_repeat": {
+        "audit": false,
+        "reason": "not yet audited in detail"
+      },
+      "build_sequence_number": null,
+      "is_currently_building": false,
+      "impact_score": 0,
+      "build_sequence_note": null,
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-094",
+      "name": "NEX-Door (single-door merchant page)",
+      "group": "UI Surfaces",
+      "status": "ACTIVE",
+      "audit_refs": [],
+      "architecture_refs": [],
+      "implementation_refs": [
+        "src/app/nex-door/"
+      ],
+      "storage_home": "UI",
+      "active_components": [],
+      "tests": [],
+      "known_gaps": [],
+      "dependencies": [],
+      "ui_url": "/nex-door",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "none",
+      "do_not_repeat": {
+        "audit": false,
+        "reason": "not yet audited"
+      },
+      "build_sequence_number": null,
+      "is_currently_building": false,
+      "impact_score": 0,
+      "build_sequence_note": null,
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-095",
+      "name": "NEX Provider Suite (bike rental · driver · provider inbox/wallet)",
+      "group": "UI Surfaces",
+      "status": "ACTIVE",
+      "audit_refs": [],
+      "architecture_refs": [],
+      "implementation_refs": [
+        "src/app/nex-bike-rental-register/",
+        "src/app/nex-driver-register/",
+        "src/app/nex-provider-inbox/",
+        "src/app/nex-provider-register/",
+        "src/app/nex-provider-wallet/"
+      ],
+      "storage_home": "specialist tables · attribution",
+      "active_components": [
+        "provider registration · inbox · wallet · bike rental register · driver register"
+      ],
+      "tests": [],
+      "known_gaps": [],
+      "dependencies": [],
+      "ui_url": "/nex-provider-register",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "none",
+      "do_not_repeat": {
+        "audit": false,
+        "reason": "not yet audited"
+      },
+      "build_sequence_number": null,
+      "is_currently_building": false,
+      "impact_score": 0,
+      "build_sequence_note": null,
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-096",
+      "name": "Trade Centre + Merchant Directory + Homeowner + Yard",
+      "group": "UI Surfaces",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0001 manifest-first · ADR-0022 no third-party image copy · ADR-0023 directory import"
+      ],
+      "architecture_refs": [],
+      "implementation_refs": [
+        "src/app/[slug]/",
+        "src/app/find/",
+        "src/app/directory/",
+        "src/app/homeowners/",
+        "src/app/feed/"
+      ],
+      "storage_home": "merchant listings · Yard posts",
+      "active_components": [
+        "merchant canteen pages · marketplace · homeowner OS · community feed"
+      ],
+      "tests": [],
+      "known_gaps": [],
+      "dependencies": [],
+      "ui_url": "/find",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "none",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "ADR-0001 · ADR-0022 · ADR-0023 cover"
+      },
+      "build_sequence_number": null,
+      "is_currently_building": false,
+      "impact_score": 0,
+      "build_sequence_note": null,
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-101",
+      "name": "Provenance Layer (accommodation field provenance)",
+      "group": "Governance + Observability",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0314a.2.s Lab Audit"
+      ],
+      "architecture_refs": [
+        "ADR-0314g §4.5 E3 Provenance / Source Graph"
+      ],
+      "implementation_refs": [
+        "nex.accommodation_business_field_provenance table"
+      ],
+      "storage_home": "nex.accommodation_business_field_provenance (46,114 rows)",
+      "active_components": [
+        "per-field provenance (trust_layer + source_reference + cycle_run_id) already live for accommodation"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "only accommodation has per-field provenance · other Domains do not"
+      ],
+      "dependencies": [],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "extend per-field provenance to other Domains (Phase C consolidation)",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "Lab Audit inventoried"
+      },
+      "build_sequence_number": 27,
+      "is_currently_building": false,
+      "impact_score": 55,
+      "build_sequence_note": "Extend per-field provenance to Domains beyond accommodation",
+      "impact_boost_to": [
+        "CAP-042",
+        "CAP-013",
+        "CAP-051",
+        "CAP-052",
+        "CAP-055",
+        "CAP-056"
+      ],
+      "retro_benefits_available": [
+        {
+          "target_cap": "CAP-101",
+          "suggested_sub_capability": "Extend per-field provenance to food/service/attractions/commerce (accommodation already has it · 46,114 rows)",
+          "intelligence_uplift": "CAP-013 TE-Guardian gains provenance-source rejection on 100% of Domains not just accommodation · CAP-042 Router surfaces evidence chains uniformly",
+          "priority": "high",
+          "surfaced_by": "CAP-032"
+        }
+      ]
+    },
+    {
+      "id": "CAP-102",
+      "name": "Memory System (auto-memory)",
+      "group": "Governance + Observability",
+      "status": "ACTIVE",
+      "audit_refs": [],
+      "architecture_refs": [
+        "Claude Code auto-memory instructions"
+      ],
+      "implementation_refs": [
+        ".claude/projects/C--Users-Victus/memory/"
+      ],
+      "storage_home": ".claude/projects/C--Users-Victus/memory/MEMORY.md + individual .md files",
+      "active_components": [
+        "MEMORY.md index · project + feedback + reference memory types · 13+ feedback principles locked"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "MEMORY.md size watchpoint · currently 1503 lines · target ~200 lines usable"
+      ],
+      "dependencies": [],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "continuous",
+      "do_not_repeat": {
+        "audit": false,
+        "reason": "system-level not audited"
+      },
+      "build_sequence_number": 41,
+      "is_currently_building": false,
+      "impact_score": 45,
+      "build_sequence_note": "Memory system size management (MEMORY.md target ~200 lines)",
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-103",
+      "name": "Gate 3 Constitutional Discipline",
+      "group": "Governance + Observability",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "ADR-0314a.2.s-gate-3-opened-2026-09-11.md"
+      ],
+      "architecture_refs": [
+        "ADR-0314e Gate 3 CANDIDATE · resolved by Gate 3 OPEN 2026-09-11"
+      ],
+      "implementation_refs": [],
+      "storage_home": "doctrine · not substrate",
+      "active_components": [
+        "Gate 3 OPEN 2026-09-11 · Stage 1a authorisation event"
+      ],
+      "tests": [],
+      "known_gaps": [],
+      "dependencies": [],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "founder controls gate state",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "gate discipline locked"
+      },
+      "build_sequence_number": null,
+      "is_currently_building": false,
+      "impact_score": 0,
+      "build_sequence_note": null,
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-111",
+      "name": "Indonesia (populated country)",
+      "group": "Country / Language Expansion",
+      "status": "ACTIVE",
+      "audit_refs": [
+        "project_nex_accommodation_rulebook_v4_founder_42_2026_09_08.md"
+      ],
+      "architecture_refs": [
+        "ADR-0314g §7"
+      ],
+      "implementation_refs": [
+        "data/indonesia/",
+        "src/lib/nex/indonesia/"
+      ],
+      "storage_home": "specialist tables (all rows scoped to Indonesia today)",
+      "active_components": [
+        "9,203 accommodation · 22,757 food · 3,922 service · 8,326 unclaimed prospects · country-scoped seed profiles"
+      ],
+      "tests": [],
+      "known_gaps": [],
+      "dependencies": [],
+      "ui_url": "/nex-did-you-know-indonesia",
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "gap-closure via Phase C acquisition fabric",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "extensively covered"
+      },
+      "build_sequence_number": null,
+      "is_currently_building": false,
+      "impact_score": 0,
+      "build_sequence_note": null,
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    },
+    {
+      "id": "CAP-112",
+      "name": "Country Expansion (UK · USA · Australia · Ireland · Japan · Morocco etc.)",
+      "group": "Country / Language Expansion",
+      "status": "DEFERRED",
+      "audit_refs": [
+        "ADR-0314g §7 country expansion pattern"
+      ],
+      "architecture_refs": [
+        "ADR-0314g §7 · Layer X3"
+      ],
+      "implementation_refs": [],
+      "storage_home": "pending",
+      "active_components": [
+        "8 seed profiles authored (JP/MA/PT/ES/IT/FR/IN/ID) in accommodation Country Profile Registry"
+      ],
+      "tests": [],
+      "known_gaps": [
+        "deferred to Stage 6 · pending per-country founder-authored ADRs (R-01 threshold overrides · R-05 authority entries · Source Registry country registrations)"
+      ],
+      "dependencies": [
+        "CAP-021"
+      ],
+      "ui_url": null,
+      "last_verified": "2026-09-11",
+      "next_authorised_action": "founder authorises per-country ADRs when ready · Stage 6",
+      "do_not_repeat": {
+        "audit": true,
+        "reason": "expansion pattern locked in ADR-0314g §7"
+      },
+      "build_sequence_number": 42,
+      "is_currently_building": false,
+      "impact_score": 55,
+      "build_sequence_note": "Country expansion pattern activation (UK · USA · etc.)",
+      "impact_boost_to": [],
+      "retro_benefits_available": []
+    }
+  ],
+  "completed_investigations": [
+    {
+      "id": "AUD-001",
+      "name": "NEX Lab / Crawler / Scraper / Acquisition Architecture Audit",
+      "adr": "docs/DECISIONS/0314a.2.s-nex-lab-crawler-scraper-acquisition-audit-2026-09-11.md",
+      "date": "2026-09-11",
+      "status": "COMPLETE",
+      "do_not_repeat": true,
+      "reason": "Phase C architecture locked in ADR-0314g. Any acquisition-fabric question consults the Fabric ADR. Consolidation candidates listed in §6.4. Targeted per-consolidation ADRs authored on demand."
+    },
+    {
+      "id": "AUD-002",
+      "name": "Image Capability Audits (multiple times · ADR-0028 through 0034)",
+      "adr": "docs/DECISIONS/0028 · 0029 · 0030 · 0033 · 0034 + ADR-0314g §6.4",
+      "date": "multiple",
+      "status": "COMPLETE",
+      "do_not_repeat": true,
+      "reason": "General image architecture already audited multiple times. See CAP-061. TARGETED FOLLOW-UP still needed: existing Supabase image DATABASE/storage mapping into the Phase C architecture. Do NOT re-audit general image architecture."
+    },
+    {
+      "id": "AUD-003",
+      "name": "Stage 1 Constitutional Completion Audit",
+      "adr": "docs/DECISIONS/0314a.2.s-constitutional-completion-audit-2026-09-11.md",
+      "date": "2026-09-11",
+      "status": "COMPLETE",
+      "do_not_repeat": true,
+      "reason": "18/18 dimensions PASS. All constitutional rules locked. Any constitutional question consults ADR-0314a.2.s."
+    },
+    {
+      "id": "AUD-004",
+      "name": "Domain Brain Coverage Audit",
+      "adr": "docs/DECISIONS/ (referenced in project_nex_intelligence_storage_grid_build_2026_09_08.md)",
+      "date": "2026-09-08",
+      "status": "COMPLETE",
+      "do_not_repeat": true,
+      "reason": "204 nex tables · 46,114 provenance rows · 8,326 unclaimed prospects · relationship P50 0.09ms measured. Any Domain-coverage question consults the ISG project memory."
+    },
+    {
+      "id": "AUD-005",
+      "name": "Accommodation Rule Book v4 (42-section founder BEGIN)",
+      "adr": "project_nex_accommodation_rulebook_v4_founder_42_2026_09_08.md",
+      "date": "2026-09-08",
+      "status": "COMPLETE",
+      "do_not_repeat": true,
+      "reason": "42 sections authored · 127 tests · 8 country profiles · 50-question acceptance corpus. Any accommodation question consults the Rule Book v4."
+    },
+    {
+      "id": "AUD-006",
+      "name": "Stage 1a Fixture-Runner Determinism Proof",
+      "adr": "docs/DECISIONS/0314a.2.s-stage-1a-exit-report-2026-09-11.md",
+      "date": "2026-09-11",
+      "status": "COMPLETE",
+      "do_not_repeat": true,
+      "reason": "33/33 fixtures · 5-run byte-identical determinism · 0 unexpected divergences · substrate isolation intact. Stage 1a exit criteria met."
+    }
+  ],
+  "rogue_pages": [
+    {
+      "path": "src/app/nex-anim-test/",
+      "url": "/nex-anim-test",
+      "flag": "review",
+      "reason": "animation test page · likely dev-only · no capability owner identified"
+    },
+    {
+      "path": "src/app/nex-frame-preview/",
+      "url": "/nex-frame-preview",
+      "flag": "review",
+      "reason": "frame preview · likely dev-only · candidate for removal or namespacing under /dev/"
+    },
+    {
+      "path": "src/app/nex-device-preview/",
+      "url": "/nex-device-preview",
+      "flag": "review",
+      "reason": "device preview · dev-only · candidate for namespacing under /dev/"
+    },
+    {
+      "path": "src/app/nex-sample-pink/",
+      "url": "/nex-sample-pink",
+      "flag": "review",
+      "reason": "sample page · dev-only · candidate for removal"
+    },
+    {
+      "path": "src/app/face-scan-debug/",
+      "url": "/face-scan-debug",
+      "flag": "review",
+      "reason": "debug page · candidate for namespacing under /dev/ or removal"
+    },
+    {
+      "path": "src/app/hero-swap-demo/",
+      "url": "/hero-swap-demo",
+      "flag": "review",
+      "reason": "demo page"
+    },
+    {
+      "path": "src/app/live-edit-demo/",
+      "url": "/live-edit-demo",
+      "flag": "review",
+      "reason": "demo page"
+    },
+    {
+      "path": "src/app/nex-bike-rental-demo/",
+      "url": "/nex-bike-rental-demo",
+      "flag": "review",
+      "reason": "demo page (production has /nex-bike-rental-register)"
+    },
+    {
+      "path": "src/app/nex-driver-directory-demo/",
+      "url": "/nex-driver-directory-demo",
+      "flag": "review",
+      "reason": "demo page"
+    },
+    {
+      "path": "src/app/nex-ride-status-demo/",
+      "url": "/nex-ride-status-demo",
+      "flag": "review",
+      "reason": "demo page"
+    },
+    {
+      "path": "src/app/nex-mobility-connection-demo/",
+      "url": "/nex-mobility-connection-demo",
+      "flag": "review",
+      "reason": "demo page"
+    },
+    {
+      "path": "src/app/nex-voice-demo/",
+      "url": "/nex-voice-demo",
+      "flag": "keep",
+      "reason": "Voice Pipeline demo · maps to CAP-062"
+    },
+    {
+      "path": "src/app/homepage-split/",
+      "url": "/homepage-split",
+      "flag": "review",
+      "reason": "likely A/B variant · not clearly owned"
+    },
+    {
+      "path": "src/app/header-off/",
+      "url": "/header-off",
+      "flag": "keep",
+      "reason": "Header-Off Observatory · maps to ISG audit · founder-facing"
+    }
+  ],
+  "duplicate_ui_paths": [
+    {
+      "paths": [
+        "src/app/nex-app/",
+        "src/app/nexapp/"
+      ],
+      "flag": "consolidate",
+      "reason": "two NEX app shells · candidate for consolidation ADR"
+    }
+  ],
+  "active_build": "CAP-032",
+  "next_suggested_build": "CAP-031",
+  "build_sequence_rationale": "Priority ordered by (a) unblocking Stage 1b production Truth Engine · (b) foundational Acquisition Fabric shared infrastructure · (c) pending rule policy authoring · (d) Domain gap-closure · (e) English Brain expansion · (f) country expansion. Values are founder-authored priority (Master AI records · does not autonomously reorder).",
+  "constitutional_rule_v2": "Master AI + NEX1/NEX2/NEX3 programmer agents MUST consult this map before any audit · architecture · implementation · migration · consolidation · crawler work · or code change. Programmer agents MUST additionally: (1) identify which capabilities a proposed code change touches · (2) evaluate cross-section impact via impact_boost_to graph · (3) verify no sibling capability breaks · (4) surface retro_benefits_available where relevant · (5) preserve Stage 1a foundation invariants. Every capability update must strengthen NEX overall · never weaken · never break siblings. NEX must always remain the most advanced system."
+}

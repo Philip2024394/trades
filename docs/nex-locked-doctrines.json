@@ -1,0 +1,520 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "map_version": "1.0.0",
+  "last_updated": "2026-09-11",
+  "authored_by": "Master AI",
+  "authorised_by": "Philip 2026-09-11",
+  "purpose": "Enumerates every founder-locked doctrine that the HQ Security Agent (ADR-0316a) enforces at code-inspection time. Each doctrine carries: identity · source ADR · check type · concrete forbidden patterns · rejection code under the sec.* namespace.",
+  "constitutional_rule": "Every proposed code change MUST be checked against every doctrine below. Violation of any locked doctrine = HQ Security Agent REJECT. Doctrines are additive · never subtractive · founder-authored amendment ADR required to modify or remove any doctrine here.",
+  "amendment_path": "Adding a new doctrine requires a founder-authored ADR referencing this registry. Removing or relaxing an existing doctrine requires an amendment ADR with explicit provenance footer + version tag (per D-17 amendment pattern locked in ADR-0314a.2.m).",
+  "doctrines": [
+    {
+      "id": "DOC-001",
+      "name": "§7.3-B1 five-axis architecture",
+      "principle": "LAM Object Type ≠ Domain ≠ Category ≠ Operational Scope ≠ Agent/Runtime Identity. No axis may be substituted for another.",
+      "source_adr": "docs/DECISIONS/0314a.2.s-canonical-domain-and-category-taxonomies.md §7.3-B1",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Code that treats 'accommodation' (Domain) as if it were a Category value",
+        "Code that treats 'master_ai' (Operational Scope) as if it were a Domain",
+        "Any classifier that collapses two axes into one field without explicit five-axis expansion"
+      ],
+      "rejection_code": "sec.axis_substitution_attempted",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-002",
+      "name": "§7.6.5 G4 · Activity ≠ Domain",
+      "principle": "Activity concepts (rental · booking · subscription · delivery · service-request · ownership-transfer) are cross-Domain classifications applied to assets whose Domains remain authoritative. Never create *-Brain from an activity.",
+      "source_adr": "docs/DECISIONS/0314a.2.s-canonical-domain-and-category-taxonomies.md §7.6.5 · feedback_accommodation_does_not_own_rental.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "New Domain named after an activity (rental_brain · booking_brain · delivery_brain)",
+        "Executor that routes activity slugs to a new Domain rather than applicable_domains registry",
+        "Classifier code that promotes 'rental' to a Domain axis value"
+      ],
+      "rejection_code": "sec.activity_promoted_to_domain",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-003",
+      "name": "§7.7 H1 · `other` ≠ `unknown`",
+      "principle": "`other` = classified into governed bounded catch-all Category. `unknown` = classification unresolved. Silent conversion between the two is forbidden. UNKNOWN never silently becomes FALSE · never silently becomes very_low · never silently becomes contradiction.",
+      "source_adr": "docs/DECISIONS/0314a.2.s-canonical-domain-and-category-taxonomies.md §7.7 · feedback_other_vs_unknown_never_silently_converted.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "if (score == null) return 'very_low' — must return 'unknown'",
+        "if (missingEvidence) return 'FALSE' — must return 'UNKNOWN'",
+        "Silent conversion of null to zero or other proxy",
+        "Reason strings for UNKNOWN/FAIL that are null or non-canonical (not in CANONICAL_FAIL_CLOSED_REASONS)"
+      ],
+      "rejection_code": "sec.unknown_to_pass_conversion_detected",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-004",
+      "name": "§7.8 J1 · physical ≠ logical authority",
+      "principle": "Physical location (Supabase · nex_dev) does not determine logical authority. The knowledge-extractor.ts §7.8 J1 double-NEX bug is a violation of this doctrine.",
+      "source_adr": "docs/DECISIONS/0314a.2.s-canonical-domain-and-category-taxonomies.md §7.8",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Code assuming Supabase-hosted rows are less authoritative than nex_dev-hosted rows",
+        "Code with the 'NEX NEX' or 'nex.nex_' double-namespace anti-pattern"
+      ],
+      "rejection_code": "sec.physical_vs_logical_authority_conflated",
+      "priority": "medium"
+    },
+    {
+      "id": "DOC-005",
+      "name": "§7.9 L1 · Business ≠ Services",
+      "principle": "Business is classifier tier + Lab. Services is brain-vertical tier + service_business substrate. Never conflated.",
+      "source_adr": "docs/DECISIONS/0314a.2.s-canonical-domain-and-category-taxonomies.md §7.9",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Code that stores service_business rows in business_lead_directory or vice versa",
+        "Classifier that routes 'business' as if it were a specialist Services sub-Category"
+      ],
+      "rejection_code": "sec.business_services_conflated",
+      "priority": "medium"
+    },
+    {
+      "id": "DOC-006",
+      "name": "§7.10 M1 · Domain axis closed at 9",
+      "principle": "The nine canonical Domains (accommodation · food · transport · business · travel · attractions · code · commerce · services) are locked. No new Domain may be created without founder-authored amendment ADR.",
+      "source_adr": "docs/DECISIONS/0314a.2.s-canonical-domain-and-category-taxonomies.md §7.10",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "New Domain enum value added anywhere in code",
+        "Classifier that emits a 10th Domain",
+        "Table that stores a Domain not in the canonical 9"
+      ],
+      "rejection_code": "sec.domain_axis_inflation_attempted",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-007",
+      "name": "R-DOMAIN-01 · Anti-Substitution",
+      "principle": "The three-axis anti-substitution rule (LAM Object Type ≠ Domain ≠ Category) is enforced at every axis boundary. Silent substitution between axes is a G-2 non-bypass violation.",
+      "source_adr": "docs/DECISIONS/0314a.2.s-canonical-domain-and-category-taxonomies.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Any code path where an axis value is assigned to a different axis without explicit reclassification"
+      ],
+      "rejection_code": "sec.axis_substitution_violation",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-008",
+      "name": "R-10 gate-model doctrine",
+      "principle": "R-10 authorisation is the only path to AUTHORITATIVE. Not TE-Guardian ACCEPT. Not Truth Engine PASS. Only R-10.",
+      "source_adr": "docs/DECISIONS/0314f-guardian-responsibility-reconciliation-2026-09-11.md · docs/DECISIONS/0314h-stage-1b-wiring-2026-09-11.md §3.1",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Code that writes AUTHORITATIVE without an authorisation_policy_ref field being set",
+        "Code that promotes a Claim to AUTHORITATIVE outside the R-10 code path",
+        "Silent shim that routes new rows to specialist tables bypassing Truth Engine + R-10"
+      ],
+      "rejection_code": "sec.r10_bypass_attempted",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-009",
+      "name": "ADR-0314f · Guardian responsibility split (four-way with ADR-0316a)",
+      "principle": "Lab-Guardian (data) · TE-Guardian (verdicts) · R-10 (authorisation) · HQ Security Agent (code). No rule may live in two Guardian tiers. Rejection codes namespaced with lab. / te. / r10. / sec. prefixes.",
+      "source_adr": "docs/DECISIONS/0314f-guardian-responsibility-reconciliation-2026-09-11.md · docs/DECISIONS/0316a-hq-security-agent-design-2026-09-11.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Lab-Guardian code that enforces constitutional truth",
+        "TE-Guardian code that decides candidate acceptance",
+        "R-10 code that decides truth",
+        "Security Agent code that decides truth · candidate acceptance · or authorisation",
+        "Rejection code emitted from wrong namespace (e.g. Lab-Guardian emitting te.* code)"
+      ],
+      "rejection_code": "sec.guardian_responsibility_conflated",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-010",
+      "name": "ADR-0314i §9 · Anti-competing-substrate invariant",
+      "principle": "There is ONE canonical Knowledge substrate. Claim + Evidence + verifier_verdict + verification_state are PIPELINE substrates · never canonical Knowledge · never queried by the Router as truth.",
+      "source_adr": "docs/DECISIONS/0314i-stage-1b-founder-decisions-2026-09-11.md §9 · feedback_one_canonical_knowledge_substrate.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Router code that queries nex.claim or nex.evidence or nex.verifier_verdict as if they were knowledge",
+        "Any code that stores Claim rows alongside Knowledge rows in the same table without an authoritative marker",
+        "Code that lets pipeline substrates escape their PIPELINE label"
+      ],
+      "rejection_code": "sec.canonical_knowledge_conflation",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-011",
+      "name": "Observation ≠ Constitutional Authority",
+      "principle": "Observed data can tell NEX what IS happening. It cannot tell NEX what the constitutional policy SHOULD BE.",
+      "source_adr": "feedback_observation_is_not_constitutional_authority.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Code that autonomously modifies a threshold based on runtime observations",
+        "Code that computes a 'best' threshold from observed data and applies it silently",
+        "Statistical curve-fitting that updates constitutional values without an ADR"
+      ],
+      "rejection_code": "sec.observation_as_authority_attempted",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-012",
+      "name": "Calendar time ≠ Constitutional Authority",
+      "principle": "Rollout stages advance on founder-approved acceptance criteria + explicit founder gate. NEVER on 'N days elapsed'. Absence-of-problems ≠ presence-of-acceptance.",
+      "source_adr": "feedback_calendar_time_is_not_constitutional_authority.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Setter or scheduler that auto-advances a stage after N days",
+        "Timer-based auto-promotion",
+        "Code that treats absence of failure as authorisation to advance"
+      ],
+      "rejection_code": "sec.calendar_time_authority_attempted",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-013",
+      "name": "Thresholds are founder policy",
+      "principle": "Every threshold (R-01 min/max · R-11 band boundary · R-17 versioning % · R-20 tolerance · authority scores) is founder-authored. Master AI may recommend · never autonomously amend.",
+      "source_adr": "feedback_thresholds_are_founder_policy_not_ai_statistics.md · docs/DECISIONS/0314a.2.n-per-domain-plausibility-thresholds-2026-09-11.md · docs/DECISIONS/0314a.2.j-confidence-band-derivation-2026-09-11.md · docs/DECISIONS/0314a.2.m-versioning-thresholds-2026-09-11.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Hardcoded threshold literals in rule modules (must consult versioned config)",
+        "Threshold values that don't carry 'Founder-authored threshold' provenance",
+        "Any code that computes a threshold from runtime data and writes it back"
+      ],
+      "rejection_code": "sec.threshold_invention_attempted",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-014",
+      "name": "No crawler zoo",
+      "principle": "NEX must NOT become a zoo of per-domain crawlers (hotel · food · transport · dentist · etc.). Target = general-purpose Acquisition Fabric where new domains are configuration + source-adapters + extraction policies.",
+      "source_adr": "feedback_no_crawler_zoo_acquisition_fabric_target.md · docs/DECISIONS/0314g-nex-acquisition-fabric-target-architecture-2026-09-11.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "New file src/lib/nex/agent-runtime/worker-<newdomain>.ts for a Domain that isn't in the canonical 9",
+        "Per-Domain crawler script (nex-lab-<newdomain>-harvester.mjs) when a shared source-adapter already exists",
+        "New Lab room for what should be Layer B4 source-adapter configuration"
+      ],
+      "rejection_code": "sec.crawler_zoo_attempted",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-015",
+      "name": "Knowledge-gap-driven acquisition",
+      "principle": "NEX asks 'what does NEX lack + which sources close the gap?' NOT 'what URLs can I scrape?' Autonomous acquisition loop is gap-driven · sources have machine-readable characteristics · change detection first-class · source disappearance NEVER cascades into knowledge deletion.",
+      "source_adr": "feedback_knowledge_gap_driven_acquisition.md · docs/DECISIONS/0314g-nex-acquisition-fabric-target-architecture-2026-09-11.md §4.6 §5",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Crawler that operates without consulting a knowledge-gap registry",
+        "Fixed-cadence re-crawl code without change-detection first",
+        "Code that deletes verified knowledge when its source disappears"
+      ],
+      "rejection_code": "sec.url_driven_acquisition_attempted",
+      "priority": "medium"
+    },
+    {
+      "id": "DOC-016",
+      "name": "Entity Resolution + Location = first-class shared infrastructure",
+      "principle": "Neither a per-domain feature nor an English-Brain feature. Core NEX infrastructure. One shared service per axis.",
+      "source_adr": "feedback_entity_resolution_location_first_class.md · docs/DECISIONS/0314g-nex-acquisition-fabric-target-architecture-2026-09-11.md §4.3 C4 · C6",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Per-domain Entity Resolution module (accommodation-entity-resolver.ts · food-entity-resolver.ts)",
+        "Row-metadata-only location handling when a full precision hierarchy is needed",
+        "Location logic reimplemented inside English Brain instead of consumed from shared service"
+      ],
+      "rejection_code": "sec.entity_or_location_fragmented",
+      "priority": "medium"
+    },
+    {
+      "id": "DOC-017",
+      "name": "Do-not-repeat register (from Work Map)",
+      "principle": "Master AI must not re-audit any investigation in the do-not-repeat register without a specifically identified unresolved question.",
+      "source_adr": "docs/nex-work-map.json completed_investigations · docs/NEX-MASTER-WORK-MAP.md Do-Not-Repeat register",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "New audit ADR that duplicates an AUD-XXX already flagged do_not_repeat: true"
+      ],
+      "rejection_code": "sec.audit_duplication_attempted",
+      "priority": "medium"
+    },
+    {
+      "id": "DOC-018",
+      "name": "R-01 · plausibility thresholds locked",
+      "principle": "14 founder-authored plausibility thresholds locked in ADR-0314a.2.n. Master AI may not add · remove · or modify.",
+      "source_adr": "docs/DECISIONS/0314a.2.n-per-domain-plausibility-thresholds-2026-09-11.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Changes to R01_THRESHOLDS constant in src/lib/nex/truth-engine/verifier/rules/r-01-plausibility.ts without founder amendment ADR",
+        "New attributes added to R-01 thresholds without founder authoring"
+      ],
+      "rejection_code": "sec.r01_threshold_invention_attempted",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-019",
+      "name": "R-11 · 6-band confidence + unknown sentinel locked",
+      "principle": "The 6-band table (very_high 99-100 · high 95-98 · good 85-94 · moderate 70-84 · low 50-69 · very_low 0-49 · unknown null) is founder-authored. Unknown never silently converted to very_low.",
+      "source_adr": "docs/DECISIONS/0314a.2.j-confidence-band-derivation-2026-09-11.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Changes to R11_BANDS constant without founder amendment ADR",
+        "New band boundary values in code",
+        "unknown-to-very_low silent conversion"
+      ],
+      "rejection_code": "sec.r11_band_invention_attempted",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-020",
+      "name": "R-13 · 8-value relationship vocabulary baseline locked",
+      "principle": "The 8 baseline relationship kinds (synonym · antonym · hypernym · hyponym · related · domain_of · derived_from · part_of) are founder-ratified. Extensions require founder-authored extension ADR.",
+      "source_adr": "docs/DECISIONS/0314a.2.l-relationship-vocabulary-2026-09-11.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Changes to R13_BASELINE constant without founder amendment ADR",
+        "New relation_kind value used in code without registry extension"
+      ],
+      "rejection_code": "sec.r13_vocabulary_invention_attempted",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-021",
+      "name": "R-17 · 30% Levenshtein initial threshold locked",
+      "principle": "The 30% Levenshtein threshold + 6 versioning triggers are founder-authored (D-17). Master AI cannot tune based on observed change rates.",
+      "source_adr": "docs/DECISIONS/0314a.2.m-versioning-thresholds-2026-09-11.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Changes to LEVENSHTEIN_INITIAL_THRESHOLD constant",
+        "New versioning trigger added to shouldVersion() without founder amendment ADR"
+      ],
+      "rejection_code": "sec.r17_threshold_invention_attempted",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-022",
+      "name": "R-18 envelope shape locked",
+      "principle": "Every verdict envelope must carry verifier_instance_id · rule_set_version · guardian_version · object_snapshot_ref · authorisation_policy_ref (null at Stage 1a) · truth_engine_ok · per_rule_verdicts. R-18 is envelope-audit only · never a promotion mechanism.",
+      "source_adr": "docs/DECISIONS/0314e-truth-engine-verifier-implementation-2026-09-11.md · src/lib/nex/truth-engine/verifier/types.ts",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "VerdictEnvelope shape change without founder amendment ADR",
+        "Code that treats R-18 PASS as promotion signal"
+      ],
+      "rejection_code": "sec.r18_envelope_invariant_violated",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-023",
+      "name": "R-20 · contradiction forbidden bases",
+      "principle": "Wording difference · scope difference · missing information · difference alone · unknown never automatically become CONTRADICTION_RECORDED. Only founder-authored per-attribute rules can promote a delta to contradiction.",
+      "source_adr": "docs/DECISIONS/0314a.2.r-contradiction-rule-specifications-2026-09-11.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Code that emits CONTRADICTION_RECORDED for wording or scope differences",
+        "R-20 rule that promotes UNKNOWN to CONTRADICTION_RECORDED"
+      ],
+      "rejection_code": "sec.r20_forbidden_basis_used",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-024",
+      "name": "Stage 1b R-10-absent safety boundary",
+      "principle": "At Stage 1b, no Claim reaches AUTHORITATIVE via the constitutional pipeline. authorisation_policy_ref must remain NULL on all Stage 1b verdicts and state rows.",
+      "source_adr": "docs/DECISIONS/0314h-stage-1b-wiring-2026-09-11.md §3.1 · docs/DECISIONS/0314i-stage-1b-founder-decisions-2026-09-11.md D-1b-1",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Code that writes non-null authorisation_policy_ref at Stage 1b",
+        "Code that transitions claim_verification_state.current_state to AUTHORITATIVE at Stage 1b",
+        "Any legacy executor code that writes to specialist tables during Stage 1b (C-β freeze)"
+      ],
+      "rejection_code": "sec.stage_1b_r10_boundary_violated",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-025",
+      "name": "Stage 1b · Lab-Guardian before production candidates (D-1b-2)",
+      "principle": "Sub-step 1b.3 (Lab-Guardian implementation) must complete + be founder-approved before 1b.4 (production adapter) commences.",
+      "source_adr": "docs/DECISIONS/0314i-stage-1b-founder-decisions-2026-09-11.md D-1b-2",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Production adapter code shipped before Lab-Guardian class exists",
+        "No-op Lab-Guardian placeholder in production adapter"
+      ],
+      "rejection_code": "sec.lab_guardian_out_of_order",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-026",
+      "name": "Stage 1b · rejection-active starts narrow (D-1b-4)",
+      "principle": "Rejection-active mode applies ONLY to explicitly-adapted production write paths. Wholesale activation across all Domains is forbidden.",
+      "source_adr": "docs/DECISIONS/0314i-stage-1b-founder-decisions-2026-09-11.md D-1b-4",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Code that toggles rejection-active on multiple Domains simultaneously without per-Domain founder authorisation"
+      ],
+      "rejection_code": "sec.rejection_scope_expansion_attempted",
+      "priority": "medium"
+    },
+    {
+      "id": "DOC-027",
+      "name": "Stage 1b · production determinism failure stops path (D-1b-7)",
+      "principle": "Determinism canary failure STOPS the relevant constitutional path. No silent auto-recovery.",
+      "source_adr": "docs/DECISIONS/0314i-stage-1b-founder-decisions-2026-09-11.md D-1b-7",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Retry-until-passes loop for determinism canaries",
+        "Silent handler that treats intermittent divergence as 'flakiness'",
+        "Auto-recovery code that resumes a path after determinism failure without founder gate"
+      ],
+      "rejection_code": "sec.determinism_failure_bypassed",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-028",
+      "name": "Guardian public surface anti-invention",
+      "principle": "Guardian classes (Lab-Guardian · TE-Guardian · HQ Security Agent) must not expose methods with prefixes set*, update*, create*, promote*, authoris*, register*, install*, invent*, mutate*, persist*, apply*. Only inspect/read methods.",
+      "source_adr": "docs/DECISIONS/0314f-guardian-responsibility-reconciliation-2026-09-11.md · Stage 1a Guardian test anti-invention invariant",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Guardian class adds a method starting with set/update/create/promote/authoris/register/install/invent/mutate/persist/apply"
+      ],
+      "rejection_code": "sec.guardian_surface_invention_attempted",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-029",
+      "name": "ADR-0022 · no third-party image copy on merchant import",
+      "principle": "Free listings import ONLY business text. Never copy logos · gallery · covers · products · video from Google Business Profile · Facebook · Instagram · any third party at any tier.",
+      "source_adr": "docs/DECISIONS/0022-*.md · CLAUDE.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Crawler code that fetches image URLs from Google Business Profile / Instagram / Facebook and stores them",
+        "Any code that copies third-party media into NEX storage"
+      ],
+      "rejection_code": "sec.third_party_image_copy_attempted",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-030",
+      "name": "ADR-0023 · seed listing rules",
+      "principle": "Seed listings store text only per the ADR field list · never invent data · never create login credentials · never mark verified. Every record starts status=listed · claimed=false · verified=false · visibility=public.",
+      "source_adr": "docs/DECISIONS/0023-*.md · CLAUDE.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Seed import that marks new listings verified=true",
+        "Seed import that creates login credentials",
+        "Directory crawler that fabricates fields not in the ADR-0023 approved list"
+      ],
+      "rejection_code": "sec.seed_listing_rule_violated",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-031",
+      "name": "ADR-0024 · image manifest",
+      "principle": "Every image added to NEX MUST be recorded in data/nex-image-manifest.json at creation time. No image URL lands anywhere without a manifest row.",
+      "source_adr": "docs/DECISIONS/0024-*.md · CLAUDE.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Hardcoded image URL in component code (must read from manifest by tag)",
+        "Image upload endpoint that doesn't write a manifest row"
+      ],
+      "rejection_code": "sec.image_manifest_bypassed",
+      "priority": "medium"
+    },
+    {
+      "id": "DOC-032",
+      "name": "ADR-0025 · tiered image matcher thresholds",
+      "principle": "Never a single global threshold. Per-surface confident floors: directory cards 0.65 · brain chat 0.80 · marketing hero 0.90 · banner recs 0.75 · workshop diagrams 0.85 · search grid 0.60. Three-band response (Confident · Soft-caveat · Clarify).",
+      "source_adr": "docs/DECISIONS/0025-*.md · CLAUDE.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Image matcher code using a single global threshold",
+        "Confident response emitted below the per-surface floor"
+      ],
+      "rejection_code": "sec.image_matcher_threshold_violated",
+      "priority": "medium"
+    },
+    {
+      "id": "DOC-033",
+      "name": "UI theme · CLAUDE.md rules",
+      "principle": "Theme rules the Security Agent enforces on every UI-touching change.",
+      "source_adr": "CLAUDE.md · project rules section",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Em dashes in hero copy",
+        "AI-star or Sparkles icons anywhere (star icons in review chips are fine)",
+        "object-cover on non-hero images (default must be object-contain)",
+        "Text below 13px in donut app / dashboards · below 12px WCAG floor elsewhere",
+        "Yellow CTA outside the packages page (dark green #166534 elsewhere)",
+        "In-stock indicator green #10B981 used for CTAs (reserved colour)",
+        "Fabricated stats or metrics without evidence chain",
+        "Emojis outside explicit user request"
+      ],
+      "rejection_code": "sec.ui_theme_violation",
+      "priority": "medium"
+    },
+    {
+      "id": "DOC-034",
+      "name": "Founder-only destructive git operations",
+      "principle": "Never run destructive git operations (push --force · reset --hard · checkout . · restore . · clean -f · branch -D) unless founder explicitly requests.",
+      "source_adr": "Global CLAUDE Code system rules",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Automation script that runs git push --force",
+        "Automation script that runs git reset --hard",
+        "Automation script that skips hooks (--no-verify)"
+      ],
+      "rejection_code": "sec.destructive_git_op_attempted",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-035",
+      "name": "Never modify Stage 1a foundation",
+      "principle": "src/lib/nex/truth-engine/verifier/* · src/lib/nex/truth-engine/verifier/rules/* · src/lib/nex/truth-engine/guardian/* · src/lib/nex/truth-engine/runner/* · db/migrations/stage-1a-* are the constitutional foundation. Modifications require founder-authored amendment ADR.",
+      "source_adr": "docs/DECISIONS/0314a.2.s-stage-1a-exit-report-2026-09-11.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Change to any Stage 1a file without a founder amendment ADR cited in commit message",
+        "Deletion of any Stage 1a test file"
+      ],
+      "rejection_code": "sec.stage_1a_foundation_modified",
+      "priority": "high"
+    },
+    {
+      "id": "DOC-036",
+      "name": "Never bypass Work Map",
+      "principle": "docs/nex-work-map.json is the source of truth for capability identity. Every code change must be attributable to a CAP-XXX in the Work Map · or introduce one via ADR-authored amendment.",
+      "source_adr": "docs/NEX-MASTER-WORK-MAP.md · docs/DECISIONS/0316a-hq-security-agent-design-2026-09-11.md",
+      "check_type": "code_pattern",
+      "forbidden_patterns": [
+        "Code change touching a file not owned by a CAP-XXX (per file-capability-map.json)",
+        "Change to Work Map JSON without an ADR authored"
+      ],
+      "rejection_code": "sec.work_map_bypassed",
+      "priority": "high"
+    }
+  ],
+  "check_type_meanings": {
+    "code_pattern": "Static analysis of proposed code changes · regex or syntactic pattern matching · AST inspection where needed. Fast · deterministic · runs on every proposed change.",
+    "migration_check": "Analysis of proposed SQL migrations for schema safety · substrate isolation · CHECK constraint preservation.",
+    "runtime_check": "Requires running the code to observe behaviour. Reserved for cases where static analysis is insufficient. Rare · founder-authorised only."
+  },
+  "priority_meanings": {
+    "high": "Load-bearing constitutional rule. Any violation blocks the code change absolutely.",
+    "medium": "Important but with founder-override escape hatch · founder must approve override explicitly.",
+    "low": "Style / hygiene rule. Warning surfaced but does not block."
+  },
+  "notes_for_maintainers": [
+    "This registry consolidates the Security Agent's rule surface. Adding new doctrines requires an ADR referencing this file.",
+    "Each doctrine has ONE rejection code (sec.<name>) so audit trails are unambiguous.",
+    "Doctrines never merge · never split without an ADR trail.",
+    "The Security Agent MUST enforce every doctrine at every inspection · no cherry-picking.",
+    "When a new locked doctrine is added (via new feedback memory · new ADR clause), a corresponding entry MUST be added here in the same PR."
+  ]
+}

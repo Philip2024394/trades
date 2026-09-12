@@ -1,0 +1,76 @@
+{
+  "version": "v1.0.0",
+  "issued_at": "2026-09-11",
+  "authored_by": "founder-authorized via ADR-0316d",
+  "revision_source": "ADR-0316d NEX UI Reference Standard · 5 canonical ImageKit screens + 18 visual DNA rules",
+  "note": "Structural constants (not code) — mirrored into src/lib/nex/ui-theme-linter/tokens.ts by build. If out of sync, linter reports sec.ui_tokens_drift.",
+
+  "palette": {
+    "deep_navy_base":       { "hex": "#0B1220", "role": "primary background · full-screen dark" },
+    "electric_cyan_tech":   { "hex": "#22D3EE", "role": "accent · data / info / tech gradients" },
+    "nex_orange_action":    { "hex": "#F97316", "role": "primary action · CTA · confirmed state" },
+    "soft_white":           { "hex": "#F9FAFB", "role": "primary text on dark" },
+    "muted_slate":          { "hex": "#94A3B8", "role": "secondary text · borders on dark" },
+    "success_green":        { "hex": "#22C55E", "role": "verified · approved · live" },
+    "warning_amber":        { "hex": "#F59E0B", "role": "pending review · awaiting" },
+    "danger_red":           { "hex": "#EF4444", "role": "rejected · reverted · security fail" },
+    "verified_gold":        { "hex": "#EAB308", "role": "founder-signature-bearing rows only" }
+  },
+
+  "typography": {
+    "primary_family": "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif",
+    "code_family":    "JetBrains Mono, Menlo, Consolas, monospace",
+    "hero_scale":     "clamp(2.5rem, 5vw, 4rem)",
+    "section_scale":  "clamp(1.5rem, 3vw, 2.25rem)",
+    "body_scale":     "1rem"
+  },
+
+  "radii": {
+    "card":   "12px",
+    "button": "10px",
+    "pill":   "9999px"
+  },
+
+  "spacing_unit": 4,
+
+  "elevation": {
+    "card_shadow":  "0 4px 24px rgba(0,0,0,0.32)",
+    "modal_shadow": "0 20px 60px rgba(0,0,0,0.5)"
+  },
+
+  "gradients": {
+    "hero_navy_to_cyan": ["#0B1220", "#0E1B33", "#0B3B4F"],
+    "action_orange_glow": ["#F97316", "#EA580C"]
+  },
+
+  "forbidden_hex_families": {
+    "note": "Colours outside sanctioned palette + safe utility greys · violate 18-rule DNA · surfaced as sec.ui_forbidden_colour",
+    "allow_family_prefixes": [
+      "#0", "#1", "#2", "#3", "#4", "#5",
+      "#F", "#E", "#D", "#C", "#B", "#A", "#9"
+    ]
+  },
+
+  "banned_lightmode_backgrounds": [
+    "bg-white",
+    "background: #FFFFFF",
+    "background:#fff",
+    "background:white"
+  ],
+
+  "banned_shadcn_bare_defaults": [
+    "bg-background",
+    "text-foreground"
+  ],
+
+  "component_conventions": {
+    "primary_button_bg": "nex_orange_action",
+    "primary_button_text": "soft_white",
+    "danger_button_bg": "danger_red",
+    "card_bg_family": ["deep_navy_base", "shade of #0E1B33-#111827"],
+    "card_border": "1px solid rgba(148,163,184,0.16)",
+    "input_bg": "rgba(255,255,255,0.03)",
+    "input_border": "1px solid rgba(148,163,184,0.24)",
+    "focus_ring": "electric_cyan_tech"
+  }
+}

@@ -1,0 +1,835 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "map_version": "1.0.0",
+  "last_updated": "2026-09-11",
+  "authored_by": "Master AI",
+  "authorised_by": "Philip 2026-09-11",
+  "purpose": "Deterministic mapping from source-tree paths to the CAP-XXX capabilities they belong to. Consumed by the HQ Security Agent (ADR-0316a) at every proposed code change. If a proposed change touches a file whose path does not match any pattern here, the Security Agent rejects with `sec.file_outside_registry`. This registry is the file-level manifestation of NEX's capability map · Work Map (docs/nex-work-map.json) is the capability-level manifestation.",
+  "constitutional_rule": "Every file in src/**/* · db/**/* · scripts/**/* · docs/**/* MUST map to exactly one owning CAP-XXX via the patterns below. Missing map = HQ Security Agent REJECT (sec.file_outside_registry). Overlapping patterns resolved by precedence (higher precedence wins).",
+  "constitutional_rule_v2": "Adding a new file requires either (a) an existing pattern already covering it · or (b) an ADR-authorised amendment to this registry adding a new pattern. Silent introduction of files under unregistered paths is a Guardian violation.",
+  "fallback_action": "reject",
+  "fallback_rejection_code": "sec.file_outside_registry",
+  "precedence_rule": "Later entries override earlier entries when patterns overlap. Author more specific patterns AFTER more general ones.",
+  "capability_reference": "docs/nex-work-map.json",
+  "mappings": [
+    {
+      "id": "map-001",
+      "path_pattern": "docs/DECISIONS/**/*.md",
+      "owning_capability": "CAP-005",
+      "capability_name": "Phase A/B/C/Stage 1b Sequencing",
+      "rationale": "All ADRs are constitutional artefacts under Phase sequencing.",
+      "precedence": 10
+    },
+    {
+      "id": "map-002",
+      "path_pattern": "docs/NEX-MASTER-WORK-MAP.md",
+      "owning_capability": "CAP-091",
+      "capability_name": "NEX HQ",
+      "rationale": "Work Map is HQ meta-view.",
+      "precedence": 20
+    },
+    {
+      "id": "map-003",
+      "path_pattern": "docs/nex-work-map.json",
+      "owning_capability": "CAP-091",
+      "capability_name": "NEX HQ",
+      "rationale": "Work Map JSON is the canonical source for the HQ Work Map page.",
+      "precedence": 20
+    },
+    {
+      "id": "map-004",
+      "path_pattern": "docs/nex-file-capability-map.json",
+      "owning_capability": "CAP-091",
+      "capability_name": "NEX HQ · file-capability registry",
+      "rationale": "This registry lives under HQ governance.",
+      "precedence": 20
+    },
+    {
+      "id": "map-005",
+      "path_pattern": "docs/nex-locked-doctrines.json",
+      "owning_capability": "CAP-091",
+      "capability_name": "NEX HQ · locked doctrines registry",
+      "rationale": "The Security Agent's constitutional index lives under HQ governance.",
+      "precedence": 20
+    },
+    {
+      "id": "map-010",
+      "path_pattern": "src/lib/nex/truth-engine/verifier/*.ts",
+      "owning_capability": "CAP-011",
+      "capability_name": "Truth Engine Verifier",
+      "precedence": 30
+    },
+    {
+      "id": "map-011",
+      "path_pattern": "src/lib/nex/truth-engine/verifier/rules/**/*.ts",
+      "owning_capability": "CAP-012",
+      "capability_name": "Ten Rule Modules (R-01…R-20)",
+      "precedence": 40
+    },
+    {
+      "id": "map-012",
+      "path_pattern": "src/lib/nex/truth-engine/guardian/**/*.ts",
+      "owning_capability": "CAP-013",
+      "capability_name": "TE-Guardian",
+      "precedence": 40
+    },
+    {
+      "id": "map-013",
+      "path_pattern": "src/lib/nex/truth-engine/runner/**/*.ts",
+      "owning_capability": "CAP-016",
+      "capability_name": "Baseline Fixture + Runner",
+      "precedence": 40
+    },
+    {
+      "id": "map-014",
+      "path_pattern": "scripts/nex-truth-engine-fixture-runner.ts",
+      "owning_capability": "CAP-016",
+      "capability_name": "Baseline Fixture + Runner (CLI)",
+      "precedence": 50
+    },
+    {
+      "id": "map-015",
+      "path_pattern": "db/migrations/stage-1a-nex-test-schema.sql",
+      "owning_capability": "CAP-016",
+      "capability_name": "Baseline Fixture · isolated schema",
+      "precedence": 50
+    },
+    {
+      "id": "map-016",
+      "path_pattern": "db/migrations/stage-1a-fixture-population.sql",
+      "owning_capability": "CAP-016",
+      "capability_name": "Baseline Fixture · 33 rows",
+      "precedence": 50
+    },
+    {
+      "id": "map-017",
+      "path_pattern": "db/migrations/stage-1b-production-verification-schema.sql",
+      "owning_capability": "CAP-032",
+      "capability_name": "Evidence Recorder (Stage 1b substrates)",
+      "precedence": 50,
+      "notes": "Stage 1b apply currently BLOCKED at nex.evidence collision."
+    },
+    {
+      "id": "map-020",
+      "path_pattern": "src/lib/nex/language/**/*.ts",
+      "owning_capability": "CAP-081",
+      "capability_name": "Language Engine",
+      "precedence": 30
+    },
+    {
+      "id": "map-021",
+      "path_pattern": "src/lib/nex-agent/language/**/*.ts",
+      "owning_capability": "CAP-059",
+      "capability_name": "Code Domain (NEX1 language intent)",
+      "precedence": 30
+    },
+    {
+      "id": "map-022",
+      "path_pattern": "src/lib/nex/intelligence-storage-grid/accommodation/**/*.ts",
+      "owning_capability": "CAP-082",
+      "capability_name": "Deterministic Q&A (P1-P5)",
+      "precedence": 30
+    },
+    {
+      "id": "map-023",
+      "path_pattern": "src/lib/nex/intelligence-storage-grid/accommodation/rule-book-*.test.ts",
+      "owning_capability": "CAP-051",
+      "capability_name": "Accommodation · Rule Book v3/v4 tests",
+      "precedence": 40
+    },
+    {
+      "id": "map-030",
+      "path_pattern": "src/lib/nex/brain/world-adapters/*.ts",
+      "owning_capability": "CAP-046",
+      "capability_name": "Knowledge Router",
+      "precedence": 30
+    },
+    {
+      "id": "map-031",
+      "path_pattern": "src/lib/nex/brain/world-adapters/accommodation-postgres*.ts",
+      "owning_capability": "CAP-051",
+      "capability_name": "Accommodation Workload · adapter",
+      "precedence": 40
+    },
+    {
+      "id": "map-032",
+      "path_pattern": "src/lib/nex/brain/world-adapters/food-postgres*.ts",
+      "owning_capability": "CAP-052",
+      "capability_name": "Food Workload · adapter",
+      "precedence": 40
+    },
+    {
+      "id": "map-033",
+      "path_pattern": "src/lib/nex/brain/world-adapters/transport-postgres*.ts",
+      "owning_capability": "CAP-053",
+      "capability_name": "Transport Workload · adapter",
+      "precedence": 40
+    },
+    {
+      "id": "map-034",
+      "path_pattern": "src/lib/nex/brain/world-adapters/commerce-postgres*.ts",
+      "owning_capability": "CAP-055",
+      "capability_name": "Commerce Workload · adapter",
+      "precedence": 40
+    },
+    {
+      "id": "map-035",
+      "path_pattern": "src/lib/nex/brain/world-adapters/service-postgres*.ts",
+      "owning_capability": "CAP-056",
+      "capability_name": "Services Workload · adapter",
+      "precedence": 40
+    },
+    {
+      "id": "map-040",
+      "path_pattern": "src/lib/nex/lab/executors/accommodation-executor.ts",
+      "owning_capability": "CAP-051",
+      "capability_name": "Accommodation · promotion executor",
+      "precedence": 40
+    },
+    {
+      "id": "map-041",
+      "path_pattern": "src/lib/nex/lab/executors/food-executor.ts",
+      "owning_capability": "CAP-052",
+      "capability_name": "Food · promotion executor",
+      "precedence": 40
+    },
+    {
+      "id": "map-042",
+      "path_pattern": "src/lib/nex/lab/executors/business-lead-executor.ts",
+      "owning_capability": "CAP-058",
+      "capability_name": "Business Workload · cross-Domain routing",
+      "precedence": 40
+    },
+    {
+      "id": "map-043",
+      "path_pattern": "src/lib/nex/lab/executors/activities-executor.ts",
+      "owning_capability": "CAP-054",
+      "capability_name": "Attractions Workload · promotion executor",
+      "precedence": 40
+    },
+    {
+      "id": "map-044",
+      "path_pattern": "src/lib/nex/lab/**/*.ts",
+      "owning_capability": "CAP-014",
+      "capability_name": "Lab-Guardian pipeline (existing)",
+      "precedence": 25,
+      "notes": "Fallback for lab module files not owned by a specific executor above."
+    },
+    {
+      "id": "map-050",
+      "path_pattern": "src/lib/nex/master-ai/**/*.ts",
+      "owning_capability": "CAP-071",
+      "capability_name": "Master AI Intelligence Layer (77 modules)",
+      "precedence": 30
+    },
+    {
+      "id": "map-051",
+      "path_pattern": "src/lib/nex/agent-runtime/worker-programmer.ts",
+      "owning_capability": "CAP-072",
+      "capability_name": "Programmer Worker (NEX1)",
+      "precedence": 40
+    },
+    {
+      "id": "map-052",
+      "path_pattern": "src/lib/nex/agent-runtime/worker-master-ai.ts",
+      "owning_capability": "CAP-071",
+      "capability_name": "Master AI Worker",
+      "precedence": 40
+    },
+    {
+      "id": "map-053",
+      "path_pattern": "src/lib/nex/agent-runtime/worker-*.ts",
+      "owning_capability": "CAP-073",
+      "capability_name": "Specialist Domain Workers (11)",
+      "precedence": 30,
+      "notes": "Precedence 30 ensures map-051/052 (precedence 40) win for programmer/master-ai."
+    },
+    {
+      "id": "map-060",
+      "path_pattern": "src/lib/nex/vision-intelligence/**/*.ts",
+      "owning_capability": "CAP-064",
+      "capability_name": "Vision Intelligence (analyze)",
+      "precedence": 30
+    },
+    {
+      "id": "map-061",
+      "path_pattern": "src/lib/nex/brain/workers/image-analyst.ts",
+      "owning_capability": "CAP-061",
+      "capability_name": "Visual Intelligence · analyst",
+      "precedence": 40
+    },
+    {
+      "id": "map-062",
+      "path_pattern": "src/lib/nex/refacing/image-schema.ts",
+      "owning_capability": "CAP-061",
+      "capability_name": "Visual Intelligence · refacing schema",
+      "precedence": 40
+    },
+    {
+      "id": "map-063",
+      "path_pattern": "src/lib/nex/intake/image-*.ts",
+      "owning_capability": "CAP-061",
+      "capability_name": "Visual Intelligence · intake workers",
+      "precedence": 40
+    },
+    {
+      "id": "map-064",
+      "path_pattern": "src/lib/nex/brain/providers/image-*.ts",
+      "owning_capability": "CAP-061",
+      "capability_name": "Visual Intelligence · brain providers",
+      "precedence": 40
+    },
+    {
+      "id": "map-065",
+      "path_pattern": "scripts/nex-lab-image-fetcher.mjs",
+      "owning_capability": "CAP-061",
+      "capability_name": "Visual Intelligence · Lab fetcher",
+      "precedence": 40
+    },
+    {
+      "id": "map-066",
+      "path_pattern": "scripts/nex-lab-harvest-image.mjs",
+      "owning_capability": "CAP-061",
+      "capability_name": "Visual Intelligence · Lab harvester",
+      "precedence": 40
+    },
+    {
+      "id": "map-067",
+      "path_pattern": "scripts/image-library-audit.mjs",
+      "owning_capability": "CAP-061",
+      "capability_name": "Visual Intelligence · library audit",
+      "precedence": 40
+    },
+    {
+      "id": "map-070",
+      "path_pattern": "src/lib/nex-voice/**/*.ts",
+      "owning_capability": "CAP-062",
+      "capability_name": "Voice Pipeline",
+      "precedence": 30
+    },
+    {
+      "id": "map-071",
+      "path_pattern": "src/app/api/nex/voice/**/*.ts",
+      "owning_capability": "CAP-062",
+      "capability_name": "Voice API endpoints",
+      "precedence": 40
+    },
+    {
+      "id": "map-072",
+      "path_pattern": "src/app/nex-voice-demo/**/*.tsx",
+      "owning_capability": "CAP-062",
+      "capability_name": "Voice demo UI",
+      "precedence": 40
+    },
+    {
+      "id": "map-080",
+      "path_pattern": "src/app/api/nex-conv/chat/**/*.ts",
+      "owning_capability": "CAP-063",
+      "capability_name": "Chat API (live-chat-completion)",
+      "precedence": 40
+    },
+    {
+      "id": "map-081",
+      "path_pattern": "src/app/api/nex/chat/**/*.ts",
+      "owning_capability": "CAP-063",
+      "capability_name": "Chat API (secondary route)",
+      "precedence": 40
+    },
+    {
+      "id": "map-082",
+      "path_pattern": "src/lib/nex/conversation-intent.ts",
+      "owning_capability": "CAP-063",
+      "capability_name": "Chat · conversation intent",
+      "precedence": 40
+    },
+    {
+      "id": "map-083",
+      "path_pattern": "src/lib/nex/conversation-intent*.test.ts",
+      "owning_capability": "CAP-063",
+      "capability_name": "Chat · conversation intent tests",
+      "precedence": 40
+    },
+    {
+      "id": "map-090",
+      "path_pattern": "src/lib/nex/classifier/**/*.ts",
+      "owning_capability": "CAP-029",
+      "capability_name": "Classifier (multi-axis)",
+      "precedence": 30
+    },
+    {
+      "id": "map-091",
+      "path_pattern": "src/lib/nex/category-registry*.ts",
+      "owning_capability": "CAP-029",
+      "capability_name": "Category registry (classifier)",
+      "precedence": 40
+    },
+    {
+      "id": "map-092",
+      "path_pattern": "src/lib/nex/city-registry*.ts",
+      "owning_capability": "CAP-030",
+      "capability_name": "Location · city registry",
+      "precedence": 40
+    },
+    {
+      "id": "map-100",
+      "path_pattern": "src/lib/nex/live-chat-completion/web-acquisition/**/*.ts",
+      "owning_capability": "CAP-024",
+      "capability_name": "Acquisition · web-acquisition providers",
+      "precedence": 40
+    },
+    {
+      "id": "map-101",
+      "path_pattern": "scripts/nex-lab-*.mjs",
+      "owning_capability": "CAP-024",
+      "capability_name": "Existing crawler/scraper scripts (26)",
+      "precedence": 30,
+      "notes": "Precedence 30 · image-specific Lab scripts (map-065/066) override at 40."
+    },
+    {
+      "id": "map-102",
+      "path_pattern": "scripts/nex-conv/parsers/image-batches.mjs",
+      "owning_capability": "CAP-061",
+      "capability_name": "Visual Intelligence · image batches parser",
+      "precedence": 40
+    },
+    {
+      "id": "map-110",
+      "path_pattern": "src/lib/nex/brain/workers/knowledge-extractor.ts",
+      "owning_capability": "CAP-031",
+      "capability_name": "Claim Extractor (has §7.8 J1 double-NEX bug)",
+      "precedence": 40
+    },
+    {
+      "id": "map-111",
+      "path_pattern": "src/lib/nex/brain/workers/quality-checker.ts",
+      "owning_capability": "CAP-033",
+      "capability_name": "Fact Verification · quality checker",
+      "precedence": 40
+    },
+    {
+      "id": "map-112",
+      "path_pattern": "scripts/nex-lab-verify.mjs",
+      "owning_capability": "CAP-033",
+      "capability_name": "Fact Verification · Lab verifier",
+      "precedence": 40
+    },
+    {
+      "id": "map-120",
+      "path_pattern": "src/app/nex-head-quarters/**",
+      "owning_capability": "CAP-091",
+      "capability_name": "NEX HQ (33 pages)",
+      "precedence": 30
+    },
+    {
+      "id": "map-121",
+      "path_pattern": "src/components/nex-head-quarters/**",
+      "owning_capability": "CAP-091",
+      "capability_name": "NEX HQ · shared components",
+      "precedence": 30
+    },
+    {
+      "id": "map-122",
+      "path_pattern": "src/lib/nex-hq/**",
+      "owning_capability": "CAP-091",
+      "capability_name": "NEX HQ · shared libraries",
+      "precedence": 30
+    },
+    {
+      "id": "map-123",
+      "path_pattern": "src/app/nex-head-quarters/work-map/**",
+      "owning_capability": "CAP-091",
+      "capability_name": "NEX HQ · Work Map page",
+      "precedence": 45
+    },
+    {
+      "id": "map-124",
+      "path_pattern": "src/app/api/nex/work-map/**",
+      "owning_capability": "CAP-091",
+      "capability_name": "NEX HQ · Work Map API",
+      "precedence": 45
+    },
+    {
+      "id": "map-125",
+      "path_pattern": "scripts/nex-work-map-annotate.mjs",
+      "owning_capability": "CAP-091",
+      "capability_name": "NEX HQ · Work Map annotation script",
+      "precedence": 45
+    },
+    {
+      "id": "map-130",
+      "path_pattern": "src/app/nex-app/**",
+      "owning_capability": "CAP-092",
+      "capability_name": "NEX-App shell (nex-app path)",
+      "precedence": 30
+    },
+    {
+      "id": "map-131",
+      "path_pattern": "src/app/nexapp/**",
+      "owning_capability": "CAP-092",
+      "capability_name": "NEX-App shell (nexapp path · duplicate to reconcile)",
+      "precedence": 30
+    },
+    {
+      "id": "map-132",
+      "path_pattern": "src/components/nex-app/**",
+      "owning_capability": "CAP-092",
+      "capability_name": "NEX-App · shared components",
+      "precedence": 30
+    },
+    {
+      "id": "map-133",
+      "path_pattern": "src/components/nexapp/**",
+      "owning_capability": "CAP-092",
+      "capability_name": "NEX-App · shared components (duplicate)",
+      "precedence": 30
+    },
+    {
+      "id": "map-134",
+      "path_pattern": "src/app/nexapp/hq/**",
+      "owning_capability": "CAP-091",
+      "capability_name": "NEX HQ · legacy live-graph (to relocate D.3)",
+      "precedence": 45,
+      "notes": "Consolidates into /nex-head-quarters/live-graph under ADR-0316."
+    },
+    {
+      "id": "map-140",
+      "path_pattern": "src/app/nex-live/**",
+      "owning_capability": "CAP-093",
+      "capability_name": "NEX-Live",
+      "precedence": 30
+    },
+    {
+      "id": "map-141",
+      "path_pattern": "src/app/nex-door/**",
+      "owning_capability": "CAP-094",
+      "capability_name": "NEX-Door",
+      "precedence": 30
+    },
+    {
+      "id": "map-142",
+      "path_pattern": "src/app/nex-provider-*/**",
+      "owning_capability": "CAP-095",
+      "capability_name": "NEX Provider Suite (inbox · register · wallet)",
+      "precedence": 30
+    },
+    {
+      "id": "map-143",
+      "path_pattern": "src/app/nex-bike-rental-*/**",
+      "owning_capability": "CAP-095",
+      "capability_name": "NEX Provider · bike rental",
+      "precedence": 30
+    },
+    {
+      "id": "map-144",
+      "path_pattern": "src/app/nex-driver-*/**",
+      "owning_capability": "CAP-095",
+      "capability_name": "NEX Provider · driver",
+      "precedence": 30
+    },
+    {
+      "id": "map-150",
+      "path_pattern": "src/app/[slug]/**",
+      "owning_capability": "CAP-096",
+      "capability_name": "Trade Centre · merchant canteen pages",
+      "precedence": 30
+    },
+    {
+      "id": "map-151",
+      "path_pattern": "src/app/find/**",
+      "owning_capability": "CAP-096",
+      "capability_name": "Trade Centre · directory search",
+      "precedence": 30
+    },
+    {
+      "id": "map-152",
+      "path_pattern": "src/app/directory/**",
+      "owning_capability": "CAP-096",
+      "capability_name": "Trade Centre · directory browse",
+      "precedence": 30
+    },
+    {
+      "id": "map-153",
+      "path_pattern": "src/app/homeowners/**",
+      "owning_capability": "CAP-096",
+      "capability_name": "Homeowner OS · SiteBook / Construction Notebook",
+      "precedence": 30
+    },
+    {
+      "id": "map-154",
+      "path_pattern": "src/app/community/**",
+      "owning_capability": "CAP-096",
+      "capability_name": "The Yard · community feed",
+      "precedence": 30
+    },
+    {
+      "id": "map-155",
+      "path_pattern": "src/app/feed/**",
+      "owning_capability": "CAP-096",
+      "capability_name": "The Yard · feed alt path",
+      "precedence": 30
+    },
+    {
+      "id": "map-160",
+      "path_pattern": "src/app/nex-did-you-know-indonesia/**",
+      "owning_capability": "CAP-111",
+      "capability_name": "Indonesia (populated country)",
+      "precedence": 30
+    },
+    {
+      "id": "map-161",
+      "path_pattern": "src/lib/nex/indonesia/**",
+      "owning_capability": "CAP-111",
+      "capability_name": "Indonesia · data + libraries",
+      "precedence": 30
+    },
+    {
+      "id": "map-162",
+      "path_pattern": "data/indonesia/**",
+      "owning_capability": "CAP-111",
+      "capability_name": "Indonesia · data files",
+      "precedence": 30
+    },
+    {
+      "id": "map-170",
+      "path_pattern": "src/app/api/nex/**",
+      "owning_capability": "CAP-091",
+      "capability_name": "NEX API surface (HQ operational)",
+      "precedence": 20,
+      "notes": "Fallback for API routes not covered by more specific patterns above."
+    },
+    {
+      "id": "map-171",
+      "path_pattern": "src/app/api/nex-conv/**",
+      "owning_capability": "CAP-063",
+      "capability_name": "NEX Conversation API (Chat)",
+      "precedence": 30
+    },
+    {
+      "id": "map-172",
+      "path_pattern": "src/app/api/nex-calling/**",
+      "owning_capability": "CAP-091",
+      "capability_name": "NEX Calling API (pending capability assignment · audit under ADR-0316 §4.2)",
+      "precedence": 30
+    },
+    {
+      "id": "map-173",
+      "path_pattern": "src/app/api/nex-video/**",
+      "owning_capability": "CAP-091",
+      "capability_name": "NEX Video API (pending capability assignment)",
+      "precedence": 30
+    },
+    {
+      "id": "map-180",
+      "path_pattern": "src/lib/nex/config/**/*.ts",
+      "owning_capability": "CAP-091",
+      "capability_name": "NEX configuration + database bindings",
+      "precedence": 25
+    },
+    {
+      "id": "map-181",
+      "path_pattern": "src/lib/nex/db.ts",
+      "owning_capability": "CAP-091",
+      "capability_name": "NEX shared DB helper",
+      "precedence": 40
+    },
+    {
+      "id": "map-190",
+      "path_pattern": "src/app/nex-anim-test/**",
+      "owning_capability": "ROGUE",
+      "capability_name": "Rogue · flagged in Work Map for removal (D.5)",
+      "precedence": 50,
+      "notes": "REJECT any code change · pending removal under ADR-0316 D.5."
+    },
+    {
+      "id": "map-191",
+      "path_pattern": "src/app/nex-frame-preview/**",
+      "owning_capability": "ROGUE",
+      "capability_name": "Rogue · flagged for removal",
+      "precedence": 50
+    },
+    {
+      "id": "map-192",
+      "path_pattern": "src/app/nex-device-preview/**",
+      "owning_capability": "ROGUE",
+      "capability_name": "Rogue · flagged for removal",
+      "precedence": 50
+    },
+    {
+      "id": "map-193",
+      "path_pattern": "src/app/nex-sample-pink/**",
+      "owning_capability": "ROGUE",
+      "capability_name": "Rogue · flagged for removal",
+      "precedence": 50
+    },
+    {
+      "id": "map-194",
+      "path_pattern": "src/app/face-scan-debug/**",
+      "owning_capability": "ROGUE",
+      "capability_name": "Rogue · flagged for removal",
+      "precedence": 50
+    },
+    {
+      "id": "map-195",
+      "path_pattern": "src/app/hero-swap-demo/**",
+      "owning_capability": "ROGUE",
+      "capability_name": "Rogue · flagged for removal",
+      "precedence": 50
+    },
+    {
+      "id": "map-196",
+      "path_pattern": "src/app/live-edit-demo/**",
+      "owning_capability": "ROGUE",
+      "capability_name": "Rogue · flagged for removal",
+      "precedence": 50
+    },
+    {
+      "id": "map-197",
+      "path_pattern": "src/app/nex-bike-rental-demo/**",
+      "owning_capability": "ROGUE",
+      "capability_name": "Rogue · flagged for removal",
+      "precedence": 50
+    },
+    {
+      "id": "map-198",
+      "path_pattern": "src/app/nex-driver-directory-demo/**",
+      "owning_capability": "ROGUE",
+      "capability_name": "Rogue · flagged for removal",
+      "precedence": 50
+    },
+    {
+      "id": "map-199",
+      "path_pattern": "src/app/nex-ride-status-demo/**",
+      "owning_capability": "ROGUE",
+      "capability_name": "Rogue · flagged for removal",
+      "precedence": 50
+    },
+    {
+      "id": "map-200",
+      "path_pattern": "src/app/nex-mobility-connection-demo/**",
+      "owning_capability": "ROGUE",
+      "capability_name": "Rogue · flagged for removal",
+      "precedence": 50
+    },
+    {
+      "id": "map-201",
+      "path_pattern": "src/app/homepage-split/**",
+      "owning_capability": "ROGUE",
+      "capability_name": "Rogue · flagged for removal",
+      "precedence": 50
+    },
+    {
+      "id": "map-210",
+      "path_pattern": "deploy/postgres/init/**/*.sql",
+      "owning_capability": "CAP-041",
+      "capability_name": "Specialist substrates · init scripts (164 files)",
+      "precedence": 20,
+      "notes": "Fallback for init SQL not covered by more specific patterns."
+    },
+    {
+      "id": "map-211",
+      "path_pattern": "db/migrations/**/*.sql",
+      "owning_capability": "CAP-041",
+      "capability_name": "Specialist substrates · migrations",
+      "precedence": 20,
+      "notes": "Fallback · Stage 1a/1b specific migrations override at precedence 50 above."
+    },
+    {
+      "id": "map-220",
+      "path_pattern": "src/components/nex-app/**",
+      "owning_capability": "CAP-092",
+      "capability_name": "NEX-App · nex-app path components",
+      "precedence": 30
+    },
+    {
+      "id": "map-221",
+      "path_pattern": "src/components/nexapp/**",
+      "owning_capability": "CAP-092",
+      "capability_name": "NEX-App · nexapp path components (duplicate)",
+      "precedence": 30
+    },
+    {
+      "id": "map-230",
+      "path_pattern": "src/lib/nex/**/*.ts",
+      "owning_capability": "CAP-UNASSIGNED",
+      "capability_name": "Fallback · any src/lib/nex file not owned by a specific pattern above",
+      "precedence": 5,
+      "notes": "MUST BE OVERRIDDEN by specific patterns · precedence 5 fallback. Files hitting this pattern (i.e. not covered by any capability-specific rule) trigger sec.file_outside_registry when the Security Agent inspects a proposed change."
+    },
+    {
+      "id": "map-231",
+      "path_pattern": "src/app/api/**/*.ts",
+      "owning_capability": "CAP-UNASSIGNED",
+      "capability_name": "Fallback · API routes not covered by specific patterns",
+      "precedence": 5,
+      "notes": "MUST BE OVERRIDDEN. sec.file_outside_registry applies."
+    },
+    {
+      "id": "map-232",
+      "path_pattern": "src/app/**/*.tsx",
+      "owning_capability": "CAP-UNASSIGNED",
+      "capability_name": "Fallback · app pages not covered by specific patterns",
+      "precedence": 5,
+      "notes": "MUST BE OVERRIDDEN. sec.file_outside_registry applies · candidate for capability assignment or rogue-page classification."
+    },
+    {
+      "id": "map-240",
+      "path_pattern": "src/lib/nex/refacing/**/*.ts",
+      "owning_capability": "CAP-041",
+      "capability_name": "Refacing · case + provenance schemas (specialist substrate)",
+      "precedence": 30
+    },
+    {
+      "id": "map-241",
+      "path_pattern": "src/lib/nex/entity-universe/**/*.ts",
+      "owning_capability": "CAP-028",
+      "capability_name": "Entity Resolution · early implementation (pending elevation)",
+      "precedence": 30
+    },
+    {
+      "id": "map-242",
+      "path_pattern": "src/lib/nex/multimodal/**/*.ts",
+      "owning_capability": "CAP-061",
+      "capability_name": "Multimodal · types + ingest (Visual Intelligence bridge)",
+      "precedence": 30
+    },
+    {
+      "id": "map-243",
+      "path_pattern": "src/lib/nex/knowledge-acquisition/**/*.ts",
+      "owning_capability": "CAP-024",
+      "capability_name": "Knowledge Acquisition · pipeline + extractors",
+      "precedence": 30
+    },
+    {
+      "id": "map-250",
+      "path_pattern": "scripts/**/*.mjs",
+      "owning_capability": "CAP-UNASSIGNED",
+      "capability_name": "Fallback · scripts not covered by specific patterns",
+      "precedence": 5,
+      "notes": "MUST BE OVERRIDDEN. 172 nex-*.mjs scripts exist · specific patterns cover the major ones."
+    },
+    {
+      "id": "map-251",
+      "path_pattern": "scripts/**/*.ts",
+      "owning_capability": "CAP-UNASSIGNED",
+      "capability_name": "Fallback · TS scripts not covered by specific patterns",
+      "precedence": 5
+    }
+  ],
+  "special_owners": {
+    "ROGUE": {
+      "meaning": "File is under a path that is deliberately flagged for removal or reclassification. Security Agent REJECTS any code change on this path with sec.rogue_path_modified · founder-authorised removal (ADR-0316 sub-phase D.5) is the only permitted change.",
+      "rejection_code": "sec.rogue_path_modified"
+    },
+    "CAP-UNASSIGNED": {
+      "meaning": "File matches a low-precedence fallback but no capability-specific pattern. Security Agent REJECTS with sec.file_outside_registry · founder authorises the capability assignment via an ADR-authored amendment to this registry.",
+      "rejection_code": "sec.file_outside_registry"
+    }
+  },
+  "notes_for_maintainers": [
+    "This registry is a JSON MANIFEST · not code. Modification requires an ADR-authored amendment naming the capability the file belongs to.",
+    "Precedence values encode override order: higher number wins when multiple patterns match a path.",
+    "Glob patterns follow standard **/* semantics · single-star matches one path segment · double-star matches any depth.",
+    "New capability introductions in Work Map must be accompanied by a corresponding mapping here before any file bearing that capability is authored.",
+    "Every entry that lists 'CAP-UNASSIGNED' or 'ROGUE' as the owner is a fail-closed sentinel · the Security Agent uses these to reject proposed changes on unmapped or rogue paths."
+  ]
+}

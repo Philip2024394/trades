@@ -75,3 +75,21 @@ data/directory-seeds/_staircase_uk_stage2/*.html
 *.traineddata
 # Ad-hoc QA screenshots · not source of truth
 tmp-nex-qa-screenshots-chat/
+
+# V.5.4.3 L4 bakeoff transcripts · Founder-authorization-scoped · no secrets · never version-controlled
+data/l4-bakeoff/transcripts/*/*.json
+data/l4-bakeoff/transcripts/*/*.jsonl
+
+# 2026-09-12 · Root pollution cleanup
+# AI-generated Master AI Engineer / NEX reports written to repo root during long sessions.
+# Kept locally for reference; not source of truth. Move to docs/reports/ if you want them shared.
+/_master_ai_*.md
+/_nex_*.md
+/_apply_*.sql
+# One-off model stream logs and post-run test artefacts
+/.qwen3-*.jsonl
+/.vitest-post.json
+# Phase 8 T3 test workspaces — ephemeral attack harness output
+.nex/workspaces-*/
+# Ad-hoc measurement / scratch scripts left at repo root
+/tmp-measure-*.mjs
