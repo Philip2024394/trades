@@ -167,6 +167,13 @@ data/nex-storage/nex1_idempotency_lookup.jsonl
 # for git. Founder key manifest lives separately at a path defined by
 # NEX_FOUNDER_KEY_MANIFEST_PATH (never committed regardless).
 data/nex-storage/nex1_founder_authorizations.jsonl
+# WO-WORKSTATION-08 · Engineering evidence runtime files. Every project's
+# reports land here on the jsonl backend; on Vercel the postgres backend
+# takes over and these never exist. Not source of truth.
+data/nex-storage/nex1_execution_reports.jsonl
+data/nex-storage/nex1_build_reports.jsonl
+data/nex-storage/nex1_runtime_reports.jsonl
+data/nex-storage/nex1_specialist_results.jsonl
 # Local founder key manifests -- private material never lands in git,
 # and public-key-only manifests should live in secure config, not repo.
 .founder-keys.local.json

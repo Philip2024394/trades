@@ -172,6 +172,15 @@ export const COLLECTIONS = {
   //   FA-WORKSTATION-<timestamp> plain-text tokens that ADR-0318 G15
   //   identified as CRITICAL SECURITY GAP.
   nex1_founder_authorizations: "nex1_founder_authorizations",
+  // WO-WORKSTATION-08 · Founder-authorised 2026-09-13.
+  // Engineering evidence persistence -- so WO-04/05/06/07 reports survive
+  // process restart and become the substrate WO-09 (correction loop) reads.
+  // Every collection is keyed by its report's primary id; all carry
+  // trace_id + work_order_id + project_id for cross-collection joining.
+  nex1_execution_reports:      "nex1_execution_reports",   // WO-04 write outcome
+  nex1_build_reports:          "nex1_build_reports",       // WO-05 build outcome
+  nex1_runtime_reports:        "nex1_runtime_reports",     // WO-06 runtime + health
+  nex1_specialist_results:     "nex1_specialist_results",  // WO-07 tool findings
 } as const;
 
 export type CollectionName = keyof typeof COLLECTIONS;
