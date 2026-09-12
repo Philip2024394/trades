@@ -1,0 +1,43 @@
+{
+  "runAt": "2026-09-06T07:14:51.362Z",
+  "chat_url": "http://localhost:3008/nex-app/chat",
+  "campaigns": {
+    "A_full_flow": {
+      "turns": [],
+      "asserts": {},
+      "screenshots": [],
+      "error": "TimeoutError: page.goto: Timeout 120000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3008/nex-app/chat\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    "B_direct_detail": {
+      "asserts": {
+        "direct_detail_name": "Gaotama Hotel"
+      },
+      "screenshots": [
+        "B_direct_detail.png"
+      ]
+    },
+    "C_unavailable": {
+      "asserts": {
+        "unavailable_shown": true
+      },
+      "screenshots": [
+        "C_unavailable.png"
+      ]
+    }
+  },
+  "verdicts": {
+    "cards_visible": false,
+    "landscape_layout": false,
+    "card_tap_navigates": false,
+    "detail_page_renders": false,
+    "interested_button_present": false,
+    "draft_visible": false,
+    "draft_names_entity": false,
+    "draft_no_fabricated_specifics": false,
+    "sent_toast_visible": false,
+    "outbox_has_item": false,
+    "outbox_names_match": false,
+    "direct_detail_url_works": true,
+    "unavailable_honest": true
+  }
+}

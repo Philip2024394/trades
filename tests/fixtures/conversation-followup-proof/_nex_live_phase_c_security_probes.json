@@ -1,0 +1,103 @@
+{
+  "runAt": "2026-09-06T11:47:14.339Z",
+  "checks": {
+    "1_upload_file_rejects_unauthenticated": {
+      "pass": true,
+      "http_status": 401,
+      "error_code": "AUTHENTICATION_REQUIRED"
+    },
+    "2_upload_declaration_rejects_unauthenticated": {
+      "pass": true,
+      "http_status": 401
+    },
+    "3_verify_media_ownership_rejects_foreign": {
+      "pass": true,
+      "error_code": "MEDIA_NOT_OWNED",
+      "reason": "owner_mismatch"
+    },
+    "4_verify_media_ownership_accepts_matching_owner": {
+      "pass": true,
+      "owner_id": "nex-live-mock",
+      "state": "ready",
+      "mime_type": "video/mp4"
+    },
+    "5_publication_gate_all_5_cases": {
+      "pass": true,
+      "detail": [
+        {
+          "name": "no_session",
+          "pass": true,
+          "code": "AUTHENTICATION_REQUIRED"
+        },
+        {
+          "name": "no_declaration",
+          "pass": true,
+          "code": "RIGHTS_DECLARATION_REQUIRED"
+        },
+        {
+          "name": "wrong_owner",
+          "pass": true,
+          "code": "MEDIA_NOT_OWNED"
+        },
+        {
+          "name": "not_ready",
+          "pass": true,
+          "code": "MEDIA_NOT_READY"
+        },
+        {
+          "name": "all_ok",
+          "pass": true
+        }
+      ]
+    },
+    "6_filename_safety_all_6_cases": {
+      "pass": true,
+      "detail": [
+        {
+          "name": "path_traversal",
+          "pass": true,
+          "code": "FILENAME_UNSAFE"
+        },
+        {
+          "name": "null_byte",
+          "pass": true,
+          "code": "FILENAME_UNSAFE"
+        },
+        {
+          "name": "newline",
+          "pass": true,
+          "code": "FILENAME_UNSAFE"
+        },
+        {
+          "name": "backslash",
+          "pass": true,
+          "code": "FILENAME_UNSAFE"
+        },
+        {
+          "name": "very_long",
+          "pass": true,
+          "code": "FILENAME_TOO_LONG"
+        },
+        {
+          "name": "unicode_safe",
+          "pass": true
+        }
+      ]
+    },
+    "7_discover_returns_real_playback_url": {
+      "pass": true,
+      "playback_reason": "resolved",
+      "url_prefix": "/api/nex/objects/nex-media/owner/nex-live-mock/video/mtbr9zs"
+    },
+    "8_no_bypass_mechanism_exists": {
+      "pass": true,
+      "attempts": 3,
+      "all_rejected": true
+    }
+  },
+  "summary": {
+    "pass": 8,
+    "fail": 0,
+    "total": 8
+  }
+}

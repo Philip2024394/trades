@@ -1,0 +1,361 @@
+{
+  "runAt": "2026-09-06T08:02:28.871Z",
+  "campaigns": {
+    "A_recommendation": {
+      "id": "A_recommendation",
+      "description": "Discovery → 'which would you choose?' → grounded recommendation",
+      "conversation_id": "87f2c649-19d4-492d-a962-469ef826dac5",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels in Yogyakarta",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+          "voice_reply_en": "Yep — found 3.",
+          "entity_reasoning_kind": "NONE",
+          "world_cards_count": 3
+        },
+        {
+          "turn": 2,
+          "message": "which would you choose?",
+          "fabricated": null,
+          "reply": "I don't have enough verified evidence to honestly recommend one over the others. Want me to name what I'd need to know?",
+          "voice_reply_en": "I don't have enough verified evidence to honestly recommend one over the others. Want me to name what I'd need to know?",
+          "entity_reasoning_kind": "ENTITY_RECOMMENDATION_REQUEST",
+          "entity_reasoning_gate_fired": true,
+          "entity_reasoning_has_result_set": true,
+          "entity_reasoning_claim_count": 0,
+          "entity_reasoning_missing_evidence_count": 0,
+          "entity_reasoning_reason": "no_recommendation_evidence",
+          "world_cards_count": 3,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    "B_comparison": {
+      "id": "B_comparison",
+      "description": "'compare the first two' → structured comparison, no fabricated equality",
+      "conversation_id": "8f30976e-9992-44d7-804b-287df8821e5b",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels in Yogyakarta",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+          "voice_reply_en": "Yep — found 3.",
+          "entity_reasoning_kind": "NONE",
+          "world_cards_count": 3
+        },
+        {
+          "turn": 2,
+          "message": "compare the first two",
+          "fabricated": null,
+          "reply": "I don't have enough verified evidence to compare Gaotama Hotel and Selaras Inn Hotel Yogyakarta honestly.",
+          "voice_reply_en": "I don't have enough verified evidence to compare Gaotama Hotel and Selaras Inn Hotel Yogyakarta honestly.",
+          "entity_reasoning_kind": "ENTITY_COMPARISON",
+          "entity_reasoning_gate_fired": true,
+          "entity_reasoning_has_result_set": true,
+          "entity_reasoning_claim_count": 0,
+          "entity_reasoning_missing_evidence_count": 0,
+          "entity_reasoning_reason": "no_comparable_evidence",
+          "world_cards_count": 3,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    "C_reason": {
+      "id": "C_reason",
+      "description": "Recommendation then 'why?' → cited reason",
+      "conversation_id": "c1b132c5-3dfa-46c6-aa46-14b44cd3a773",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels in Yogyakarta",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+          "voice_reply_en": "Yep — found 3.",
+          "entity_reasoning_kind": "NONE",
+          "world_cards_count": 3
+        },
+        {
+          "turn": 2,
+          "message": "which would you choose?",
+          "fabricated": null,
+          "reply": "I don't have enough verified evidence to honestly recommend one over the others. Want me to name what I'd need to know?",
+          "voice_reply_en": "I don't have enough verified evidence to honestly recommend one over the others. Want me to name what I'd need to know?",
+          "entity_reasoning_kind": "ENTITY_RECOMMENDATION_REQUEST",
+          "entity_reasoning_gate_fired": true,
+          "entity_reasoning_has_result_set": true,
+          "entity_reasoning_claim_count": 0,
+          "entity_reasoning_missing_evidence_count": 0,
+          "entity_reasoning_reason": "no_recommendation_evidence",
+          "world_cards_count": 3,
+          "knowledge_count": 0
+        },
+        {
+          "turn": 3,
+          "message": "why?",
+          "fabricated": null,
+          "reply": "I don't actually have strong evidence to back a specific pick. If I sounded certain earlier, I was overreaching — I'll walk that back.",
+          "voice_reply_en": "I don't actually have strong evidence to back a specific pick. If I sounded certain earlier, I was overreaching — I'll walk that back.",
+          "entity_reasoning_kind": "ENTITY_REASON_REQUEST",
+          "entity_reasoning_gate_fired": true,
+          "entity_reasoning_has_result_set": true,
+          "entity_reasoning_claim_count": 0,
+          "entity_reasoning_missing_evidence_count": 0,
+          "entity_reasoning_reason": "no_supported_reason",
+          "world_cards_count": 0,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    "D_cheapest_no_data": {
+      "id": "D_cheapest_no_data",
+      "description": "'which is cheapest?' when price is UNKNOWN → honest boundary, no fabricated ranking",
+      "conversation_id": "e0313c80-02bd-4508-b9b0-6d75050f1df1",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels in Yogyakarta",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+          "voice_reply_en": "Yep — found 3.",
+          "entity_reasoning_kind": "NONE",
+          "world_cards_count": 3
+        },
+        {
+          "turn": 2,
+          "message": "which is cheapest?",
+          "fabricated": null,
+          "reply": "For an honest ranking I need verified data for that attribute. I don't have it — I'd rather say so than make one up.",
+          "voice_reply_en": "For an honest ranking I need verified data for that attribute. I don't have it — I'd rather say so than make one up.",
+          "entity_reasoning_kind": "ENTITY_RANKING",
+          "entity_reasoning_gate_fired": true,
+          "entity_reasoning_has_result_set": true,
+          "entity_reasoning_claim_count": 0,
+          "entity_reasoning_missing_evidence_count": 4,
+          "entity_reasoning_reason": "no_rankable_data",
+          "world_cards_count": 3,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    "E_are_you_sure": {
+      "id": "E_are_you_sure",
+      "description": "'are you sure?' after recommendation → honest evidence citation",
+      "conversation_id": "91d5fffb-a21a-4ce9-b504-333050a8dc55",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels in Yogyakarta",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+          "voice_reply_en": "Yep — found 3.",
+          "entity_reasoning_kind": "NONE",
+          "world_cards_count": 3
+        },
+        {
+          "turn": 2,
+          "message": "which would you choose?",
+          "fabricated": null,
+          "reply": "I don't have enough verified evidence to honestly recommend one over the others. Want me to name what I'd need to know?",
+          "voice_reply_en": "I don't have enough verified evidence to honestly recommend one over the others. Want me to name what I'd need to know?",
+          "entity_reasoning_kind": "ENTITY_RECOMMENDATION_REQUEST",
+          "entity_reasoning_gate_fired": true,
+          "entity_reasoning_has_result_set": true,
+          "entity_reasoning_claim_count": 0,
+          "entity_reasoning_missing_evidence_count": 0,
+          "entity_reasoning_reason": "no_recommendation_evidence",
+          "world_cards_count": 3,
+          "knowledge_count": 0
+        },
+        {
+          "turn": 3,
+          "message": "are you sure?",
+          "fabricated": null,
+          "reply": "Honestly, I don't have enough verified evidence to back that up. I'd rather say so than make something up.",
+          "voice_reply_en": "Honestly, I don't have enough verified evidence to back that up. I'd rather say so than make something up.",
+          "entity_reasoning_kind": "ENTITY_EVIDENCE_REQUEST",
+          "entity_reasoning_gate_fired": true,
+          "entity_reasoning_has_result_set": true,
+          "entity_reasoning_claim_count": 0,
+          "entity_reasoning_missing_evidence_count": 0,
+          "entity_reasoning_reason": "no_evidence_to_cite",
+          "world_cards_count": 0,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    "F_what_dont_you_know": {
+      "id": "F_what_dont_you_know",
+      "description": "'what don't you know?' → lists missing attributes",
+      "conversation_id": "9e415555-c79c-49d8-86c1-91cd7f054a1c",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels in Yogyakarta",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+          "voice_reply_en": "Yep — found 3.",
+          "entity_reasoning_kind": "NONE",
+          "world_cards_count": 3
+        },
+        {
+          "turn": 2,
+          "message": "what don't you know?",
+          "fabricated": null,
+          "reply": "What I don't have verified yet: price, rating, reviewCount, area proximity, bedrooms. If any of those matter for your decision, I'd rather flag it than guess.",
+          "voice_reply_en": "What I don't have verified yet: price, rating, reviewCount, area proximity, bedrooms. If any of those matter for your decision, I'd rather flag it than guess.",
+          "entity_reasoning_kind": "ENTITY_UNKNOWN_REQUEST",
+          "entity_reasoning_gate_fired": true,
+          "entity_reasoning_has_result_set": true,
+          "entity_reasoning_claim_count": 0,
+          "entity_reasoning_missing_evidence_count": 27,
+          "entity_reasoning_reason": "listed_missing",
+          "world_cards_count": 3,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    "G_indonesian_comparison": {
+      "id": "G_indonesian_comparison",
+      "description": "Indonesian 'bandingkan yang pertama dan kedua' → ID reply",
+      "conversation_id": "1e5c8c49-0500-46cd-90db-37f6efb13c5b",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "cari hotel di Yogyakarta",
+          "fabricated": null,
+          "reply": "Saya punya 521 listingan asli untuk hotel di Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, dan lainnya. Ini listingan komunitas OpenStreetMap, jadi untuk penemuan saja, bukan booking langsung. Kamu mau yang murah, menengah, atau lebih mewah?",
+          "voice_reply_en": "Yep — found 3.",
+          "entity_reasoning_kind": "NONE",
+          "world_cards_count": 3
+        },
+        {
+          "turn": 2,
+          "message": "bandingkan yang pertama dan kedua",
+          "fabricated": null,
+          "reply": "Untuk perbandingan yang jujur antara Gaotama Hotel dan Selaras Inn Hotel Yogyakarta, saya belum punya cukup evidensi terverifikasi.",
+          "voice_reply_en": "Untuk perbandingan yang jujur antara Gaotama Hotel dan Selaras Inn Hotel Yogyakarta, saya belum punya cukup evidensi terverifikasi.",
+          "entity_reasoning_kind": "ENTITY_COMPARISON",
+          "entity_reasoning_gate_fired": true,
+          "entity_reasoning_has_result_set": true,
+          "entity_reasoning_claim_count": 0,
+          "entity_reasoning_missing_evidence_count": 0,
+          "entity_reasoning_reason": "no_comparable_evidence",
+          "world_cards_count": 3,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    "H_fresh_adversarial": {
+      "id": "H_fresh_adversarial",
+      "description": "Fresh session · 'which would you choose?' → honest 'no results' boundary",
+      "conversation_id": "064508c9-eb3e-444d-8af0-82f020a0ae45",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "which would you choose?",
+          "fabricated": null,
+          "reply": "I don't have any results to reason over in this conversation yet. Want me to search first?",
+          "voice_reply_en": "I don't have any results to reason over in this conversation yet. Want me to search first?",
+          "entity_reasoning_kind": "ENTITY_RECOMMENDATION_REQUEST",
+          "entity_reasoning_gate_fired": true,
+          "entity_reasoning_has_result_set": false,
+          "entity_reasoning_claim_count": 0,
+          "entity_reasoning_missing_evidence_count": 0,
+          "entity_reasoning_reason": "no_active_result_set",
+          "world_cards_count": 0,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    "I_pros_cons": {
+      "id": "I_pros_cons",
+      "description": "'pros and cons?' after result set",
+      "conversation_id": "13a5a5f5-7b22-4d48-9062-2168413d2452",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels in Yogyakarta",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+          "voice_reply_en": "Yep — found 3.",
+          "entity_reasoning_kind": "NONE",
+          "world_cards_count": 3
+        },
+        {
+          "turn": 2,
+          "message": "pros and cons?",
+          "fabricated": null,
+          "reply": "I don't have enough verified evidence about Gaotama Hotel to give an honest pros/cons yet.",
+          "voice_reply_en": "I don't have enough verified evidence about Gaotama Hotel to give an honest pros/cons yet.",
+          "entity_reasoning_kind": "ENTITY_PROS_CONS",
+          "entity_reasoning_gate_fired": true,
+          "entity_reasoning_has_result_set": true,
+          "entity_reasoning_claim_count": 0,
+          "entity_reasoning_missing_evidence_count": 0,
+          "entity_reasoning_reason": "no_pros_cons_evidence",
+          "world_cards_count": 3,
+          "knowledge_count": 0
+        }
+      ]
+    },
+    "J_evidence_request": {
+      "id": "J_evidence_request",
+      "description": "'what are you basing that on?' → evidence citation",
+      "conversation_id": "da700fcf-d404-4ffc-81a4-e93e63213412",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels in Yogyakarta",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something more upmarket?",
+          "voice_reply_en": "Yep — found 3.",
+          "entity_reasoning_kind": "NONE",
+          "world_cards_count": 3
+        },
+        {
+          "turn": 2,
+          "message": "which would you choose?",
+          "fabricated": null,
+          "reply": "I don't have enough verified evidence to honestly recommend one over the others. Want me to name what I'd need to know?",
+          "voice_reply_en": "I don't have enough verified evidence to honestly recommend one over the others. Want me to name what I'd need to know?",
+          "entity_reasoning_kind": "ENTITY_RECOMMENDATION_REQUEST",
+          "entity_reasoning_gate_fired": true,
+          "entity_reasoning_has_result_set": true,
+          "entity_reasoning_claim_count": 0,
+          "entity_reasoning_missing_evidence_count": 0,
+          "entity_reasoning_reason": "no_recommendation_evidence",
+          "world_cards_count": 3,
+          "knowledge_count": 0
+        },
+        {
+          "turn": 3,
+          "message": "what are you basing that on?",
+          "fabricated": null,
+          "reply": "I don't have many verified details about Gaotama Hotel yet. Want me to help find their contact info?",
+          "voice_reply_en": "I don't have many verified details about Gaotama Hotel yet. Want me to help find their contact info?",
+          "world_cards_count": 0,
+          "knowledge_count": 0
+        }
+      ]
+    }
+  },
+  "verdicts": {
+    "A_recommendation_gate_fired": true,
+    "A_recommendation_has_result_set": true,
+    "A_recommendation_produced": true,
+    "B_comparison_gate_fired": true,
+    "B_comparison_kind": true,
+    "C_reason_cited": true,
+    "D_cheapest_honest": true,
+    "E_are_you_sure_honest": true,
+    "F_missing_attributes_listed": true,
+    "G_indonesian_reply": true,
+    "H_fresh_honest_boundary": true,
+    "I_pros_cons_gate_fired": true,
+    "J_evidence_gate_fired": false,
+    "zero_fabrications_overall": true
+  }
+}

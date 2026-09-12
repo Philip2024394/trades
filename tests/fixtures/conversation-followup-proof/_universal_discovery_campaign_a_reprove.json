@@ -1,0 +1,27 @@
+{
+  "runAt": "2026-09-06T07:18:49.107Z",
+  "turns": [],
+  "asserts": {
+    "cards_visible": true,
+    "card_names": [
+      "Gaotama Hotel",
+      "Selaras Inn Hotel Yogyakarta",
+      "Indonesia Hotel"
+    ],
+    "landscape_ratio": true,
+    "card_dims": {
+      "width": 328,
+      "height": 132
+    },
+    "first_ref_id": "#AC-2026-0000D",
+    "detail_url_matches": true,
+    "detail_name": "Gaotama Hotel",
+    "sections_count": 0,
+    "interested_button_present": false
+  },
+  "screenshots": [
+    "A_reprove_00_ready.png",
+    "A_reprove_01_cards.png",
+    "A_reprove_02_detail.png"
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "runAt": "2026-09-06T12:04:22.420Z",
+  "checks": {
+    "A1_tonight_http": {
+      "pass": true,
+      "http_status": 200
+    },
+    "A2_city_selector_visible": {
+      "pass": true,
+      "aria_pressed": "true"
+    },
+    "A3_entity_carousel_rendered": {
+      "pass": true,
+      "count": 7
+    },
+    "A4_live_now_cards_present": {
+      "pass": true,
+      "count": 5
+    },
+    "B1_city_switch_completes": {
+      "pass": true,
+      "jakarta_card_count": 1
+    },
+    "C1_music_feed_populated": {
+      "pass": true,
+      "data_item_count": "3"
+    },
+    "C2_media_element_has_real_src": {
+      "pass": false,
+      "error": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid^=\"nex-live-media-player-\"]').first() to be visible\u001b[22m\n\u001b[2m    13 × locator resolved to hidden <audio aut"
+    },
+    "C3_video_mode_switch_populated": {
+      "pass": true,
+      "data_item_count": "1"
+    },
+    "D1_free_content_intro_component_shipped": {
+      "pass": true,
+      "note": "component built · integration into a live-flow deferred to a later slice per §34 frequency policy"
+    },
+    "E1_no_fabricated_engagement_metrics": {
+      "pass": true
+    },
+    "F1_mock_badge_visible": {
+      "pass": true
+    }
+  },
+  "artifacts": [
+    "C:\\Users\\Victus\\trades\\tests\\fixtures\\conversation-followup-proof\\_master_experience_screenshots\\01-tonight-yogyakarta.png",
+    "C:\\Users\\Victus\\trades\\tests\\fixtures\\conversation-followup-proof\\_master_experience_screenshots\\02-tonight-jakarta.png",
+    "C:\\Users\\Victus\\trades\\tests\\fixtures\\conversation-followup-proof\\_master_experience_screenshots\\03-nex-live-music-mode.png"
+  ],
+  "summary": {
+    "pass": 10,
+    "fail": 1,
+    "total": 11
+  }
+}

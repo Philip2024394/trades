@@ -1,0 +1,630 @@
+{
+  "runAt": "2026-09-06T08:54:17.851Z",
+  "campaigns": {
+    "R1_reasoning_gate_primary_target": {
+      "id": "R1_reasoning_gate_primary_target",
+      "description": "what are you basing that on must reach reasoning NOT attribute",
+      "conversation_id": "3a54783d-f70f-41aa-bfc6-e120e00f067f",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find hotels in Yogyakarta",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something mor",
+          "aq_fired": false,
+          "aq_kind": "NONE",
+          "er_fired": false,
+          "er_kind": "NONE",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "which would you choose?",
+          "fabricated": null,
+          "reply": "I don't have enough verified evidence to honestly recommend one over the others. Want me to name what I'd need to know?",
+          "reason": "boundary:entity_reasoning:ENTITY_RECOMMENDATION_REQUEST:no_recommendation_evidence",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_RECOMMENDATION_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 3,
+          "message": "what are you basing that on?",
+          "fabricated": null,
+          "reply": "Honestly, I don't have enough verified evidence to back that up. I'd rather say so than make something up.",
+          "reason": "boundary:entity_reasoning:ENTITY_EVIDENCE_REQUEST:no_evidence_to_cite",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_EVIDENCE_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 4,
+          "message": "are you sure?",
+          "fabricated": null,
+          "reply": "Honestly, I don't have enough verified evidence to back that up. I'd rather say so than make something up.",
+          "reason": "boundary:entity_reasoning:ENTITY_EVIDENCE_REQUEST:no_evidence_to_cite",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_EVIDENCE_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 5,
+          "message": "what dont you know?",
+          "fabricated": null,
+          "reply": "What I don't have verified yet: price, rating, reviewCount, area proximity, bedrooms. If any of those matter for your decision, I'd rather flag it than guess.",
+          "reason": "boundary:entity_reasoning:ENTITY_UNKNOWN_REQUEST:listed_missing",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_UNKNOWN_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        }
+      ]
+    },
+    "R2_attribute_still_wins_for_attribute_questions": {
+      "id": "R2_attribute_still_wins_for_attribute_questions",
+      "description": "does it have a pool must remain attribute-query",
+      "conversation_id": "dd6fd472-2d14-4ec0-983e-b399db68cbbb",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find hotels in Yogyakarta",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something mor",
+          "aq_fired": false,
+          "aq_kind": "NONE",
+          "er_fired": false,
+          "er_kind": "NONE",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "does it have a pool?",
+          "fabricated": null,
+          "reply": "I don't have verified information about Pool for Gaotama Hotel yet. Want me to help you confirm?",
+          "reason": "boundary:attribute_query:HAS_ATTRIBUTE_SINGLE:has_single:pool:UNKNOWN",
+          "aq_fired": true,
+          "aq_kind": "HAS_ATTRIBUTE_SINGLE",
+          "er_fired": false,
+          "er_kind": "NONE",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 3,
+          "message": "which one has laundry?",
+          "fabricated": null,
+          "reply": "I don't have verified Laundry information for the current list. Want me to search for ones that specifically offer Laundry?",
+          "reason": "boundary:attribute_query:WHICH_HAS_ATTRIBUTE:which_has:laundry:count=0",
+          "aq_fired": true,
+          "aq_kind": "WHICH_HAS_ATTRIBUTE",
+          "er_fired": false,
+          "er_kind": "NONE",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 4,
+          "message": "tell me more about the first one",
+          "fabricated": null,
+          "reply": "I don't have many verified details about Gaotama Hotel yet. Want me to help find their contact info?",
+          "reason": "boundary:attribute_query:LIST_ATTRIBUTES_OF:list:1:0",
+          "aq_fired": true,
+          "aq_kind": "LIST_ATTRIBUTES_OF",
+          "er_fired": false,
+          "er_kind": "NONE",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 5,
+          "message": "what does the second have?",
+          "fabricated": null,
+          "reply": "I don't have many verified details about Selaras Inn Hotel Yogyakarta yet. Want me to help find their contact info?",
+          "reason": "boundary:attribute_query:LIST_ATTRIBUTES_OF:list:2:0",
+          "aq_fired": true,
+          "aq_kind": "LIST_ATTRIBUTES_OF",
+          "er_fired": false,
+          "er_kind": "NONE",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        }
+      ]
+    },
+    "R3_reasoning_natural_variations": {
+      "id": "R3_reasoning_natural_variations",
+      "description": "semantic equivalents all classify as reasoning",
+      "conversation_id": "93de3fa1-17aa-40e4-a359-1eaa71afb008",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find hotels in Yogyakarta",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something mor",
+          "aq_fired": false,
+          "aq_kind": "NONE",
+          "er_fired": false,
+          "er_kind": "NONE",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "which would you choose?",
+          "fabricated": null,
+          "reply": "I don't have enough verified evidence to honestly recommend one over the others. Want me to name what I'd need to know?",
+          "reason": "boundary:entity_reasoning:ENTITY_RECOMMENDATION_REQUEST:no_recommendation_evidence",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_RECOMMENDATION_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 3,
+          "message": "what evidence supports that?",
+          "fabricated": null,
+          "reply": "Honestly, I don't have enough verified evidence to back that up. I'd rather say so than make something up.",
+          "reason": "boundary:entity_reasoning:ENTITY_EVIDENCE_REQUEST:no_evidence_to_cite",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_EVIDENCE_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 4,
+          "message": "what makes you say that?",
+          "fabricated": null,
+          "reply": "I don't actually have strong evidence to back a specific pick. If I sounded certain earlier, I was overreaching — I'll walk that back.",
+          "reason": "boundary:entity_reasoning:ENTITY_REASON_REQUEST:no_supported_reason",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_REASON_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 5,
+          "message": "on what basis?",
+          "fabricated": null,
+          "reply": "Honestly, I don't have enough verified evidence to back that up. I'd rather say so than make something up.",
+          "reason": "boundary:entity_reasoning:ENTITY_EVIDENCE_REQUEST:no_evidence_to_cite",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_EVIDENCE_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 6,
+          "message": "what is that based on?",
+          "fabricated": null,
+          "reply": "Honestly, I don't have enough verified evidence to back that up. I'd rather say so than make something up.",
+          "reason": "boundary:entity_reasoning:ENTITY_EVIDENCE_REQUEST:no_evidence_to_cite",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_EVIDENCE_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        }
+      ]
+    },
+    "R4_d3_quantity_continuation": {
+      "id": "R4_d3_quantity_continuation",
+      "description": "one more / another one continues result set",
+      "conversation_id": "9a58f402-7bcb-4186-a880-49c3787cb928",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find hotels in Yogyakarta",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something mor",
+          "aq_fired": false,
+          "aq_kind": "NONE",
+          "er_fired": false,
+          "er_kind": "NONE",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "one more",
+          "fabricated": null,
+          "reply": "Here is 1 more from the list: Le temple. Want me to widen the search too?",
+          "reason": "boundary:quantity:incremental_continuation:+1:shown=1",
+          "aq_fired": false,
+          "er_fired": false,
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": true
+        },
+        {
+          "turn": 3,
+          "message": "another one",
+          "fabricated": null,
+          "reply": "Here is 1 more from the list: Le temple. Want me to widen the search too?",
+          "reason": "boundary:quantity:incremental_continuation:+1:shown=1",
+          "aq_fired": false,
+          "er_fired": false,
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": true
+        },
+        {
+          "turn": 4,
+          "message": "2 more",
+          "fabricated": null,
+          "reply": "Here are 2 more from the list: Indraloka, Le temple. Want me to widen the search too?",
+          "reason": "boundary:quantity:incremental_continuation:+2:shown=2",
+          "aq_fired": false,
+          "er_fired": false,
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": true
+        }
+      ]
+    },
+    "R5_d4_vertical_switch_and_post_shift_ordinal": {
+      "id": "R5_d4_vertical_switch_and_post_shift_ordinal",
+      "description": "actually I need a restaurant shifts vertical; post-shift ordinal honest",
+      "conversation_id": "013de6c1-5df2-4cee-b4b7-bf5b23c1acfc",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "show me hotels",
+          "fabricated": null,
+          "reply": "Sure — here are the 5 hotels I found: Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, Le temple, Dusun Jogja Village inn.",
+          "reason": "boundary:capability_display:RESULT_DISPLAY_REQUEST:display_from_result_set",
+          "aq_fired": false,
+          "aq_kind": "NONE",
+          "er_fired": false,
+          "er_kind": "NONE",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "actually I need a restaurant",
+          "fabricated": null,
+          "reply": "Got it — switching to restaurants. What area or type are you looking for?",
+          "reason": "boundary:frame:topic_shift_vertical_switch:accommodation->food",
+          "aq_fired": false,
+          "er_fired": false,
+          "interest_fired": false,
+          "frame_fired": true,
+          "qty_fired": false
+        },
+        {
+          "turn": 3,
+          "message": "show me the first one",
+          "fabricated": null,
+          "reply": "I haven't shown any results yet in this conversation. Want me to search first?",
+          "reason": "boundary:quantity:ordinal_range_without_result_set",
+          "aq_fired": false,
+          "er_fired": false,
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": true
+        }
+      ]
+    },
+    "R6_fresh_conversation_reasoning_boundary": {
+      "id": "R6_fresh_conversation_reasoning_boundary",
+      "description": "which would you choose fresh convo honest boundary",
+      "conversation_id": "929586ef-2e7d-4e38-bd16-4678d5b5fce0",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "which would you choose?",
+          "fabricated": null,
+          "reply": "I don't have any results to reason over in this conversation yet. Want me to search first?",
+          "reason": "boundary:entity_reasoning:ENTITY_RECOMMENDATION_REQUEST:no_active_result_set",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_RECOMMENDATION_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        }
+      ]
+    },
+    "R7_fresh_conversation_evidence_challenge": {
+      "id": "R7_fresh_conversation_evidence_challenge",
+      "description": "what are you basing that on fresh convo honest boundary",
+      "conversation_id": "9e6ad503-f229-480c-a0e0-463fdbbcfadd",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "what are you basing that on?",
+          "fabricated": null,
+          "reply": "I don't have any results to reason over in this conversation yet. Want me to search first?",
+          "reason": "boundary:entity_reasoning:ENTITY_EVIDENCE_REQUEST:no_active_result_set",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_EVIDENCE_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        }
+      ]
+    },
+    "R8_g12_negation_preserved": {
+      "id": "R8_g12_negation_preserved",
+      "description": "I dont want the first one rejects first, not the task",
+      "conversation_id": "0ff20ff0-ae35-408c-88c5-e5e8b7b2fb52",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find hotels in Yogyakarta",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something mor",
+          "aq_fired": false,
+          "aq_kind": "NONE",
+          "er_fired": false,
+          "er_kind": "NONE",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "I dont want the first one",
+          "fabricated": null,
+          "reply": "let's look at the next hotel on the list.",
+          "aq_fired": false,
+          "aq_kind": "NONE",
+          "er_fired": false,
+          "er_kind": "NONE",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        }
+      ]
+    },
+    "R9_indonesian_reasoning_equivalents": {
+      "id": "R9_indonesian_reasoning_equivalents",
+      "description": "ID variants classify as reasoning, no EN leakage",
+      "conversation_id": "21ce42a5-f7bd-4353-bcb6-cd00da04d49e",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "cari hotel di Yogyakarta",
+          "fabricated": null,
+          "reply": "Saya punya 521 listingan asli untuk hotel di Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, dan lainnya. Ini listingan komunitas OpenStreetMap, jadi untuk penemuan saja, bukan booking langsung. Kamu mau yang murah, menengah, atau le",
+          "aq_fired": false,
+          "aq_kind": "NONE",
+          "er_fired": false,
+          "er_kind": "NONE",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "mana yang akan kamu pilih?",
+          "fabricated": null,
+          "reply": "Saya belum punya dasar terverifikasi yang cukup untuk merekomendasikan satu di atas yang lain. Mau saya sebutkan apa yang saya perlu tahu?",
+          "reason": "boundary:entity_reasoning:ENTITY_RECOMMENDATION_REQUEST:no_recommendation_evidence",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_RECOMMENDATION_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 3,
+          "message": "kamu yakin?",
+          "fabricated": null,
+          "reply": "Terus terang, saya belum punya bukti yang cukup untuk membuat pernyataan itu. Saya lebih baik jujur bilang begitu daripada mengarang.",
+          "reason": "boundary:entity_reasoning:ENTITY_EVIDENCE_REQUEST:no_evidence_to_cite",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_EVIDENCE_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 4,
+          "message": "dasarnya apa?",
+          "fabricated": null,
+          "reply": "Terus terang, saya belum punya bukti yang cukup untuk membuat pernyataan itu. Saya lebih baik jujur bilang begitu daripada mengarang.",
+          "reason": "boundary:entity_reasoning:ENTITY_EVIDENCE_REQUEST:no_evidence_to_cite",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_EVIDENCE_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 5,
+          "message": "apa yang belum kamu ketahui?",
+          "fabricated": null,
+          "reply": "Yang belum saya ketahui secara terverifikasi: price, rating, reviewCount, area proximity, bedrooms. Kalau salah satu penting untuk keputusan Anda, saya harus jujur bilang saya belum tahu.",
+          "reason": "boundary:entity_reasoning:ENTITY_UNKNOWN_REQUEST:listed_missing",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_UNKNOWN_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        }
+      ]
+    },
+    "R10_adversarial_attribute_shaped_reasoning": {
+      "id": "R10_adversarial_attribute_shaped_reasoning",
+      "description": "what evidence... starts with what but must not become attribute",
+      "conversation_id": "6a7b1f44-52de-4c08-af4a-c32304c3ab52",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find hotels in Yogyakarta",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something mor",
+          "aq_fired": false,
+          "aq_kind": "NONE",
+          "er_fired": false,
+          "er_kind": "NONE",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "which would you choose?",
+          "fabricated": null,
+          "reply": "I don't have enough verified evidence to honestly recommend one over the others. Want me to name what I'd need to know?",
+          "reason": "boundary:entity_reasoning:ENTITY_RECOMMENDATION_REQUEST:no_recommendation_evidence",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_RECOMMENDATION_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 3,
+          "message": "what evidence do you have?",
+          "fabricated": null,
+          "reply": "Honestly, I don't have enough verified evidence to back that up. I'd rather say so than make something up.",
+          "reason": "boundary:entity_reasoning:ENTITY_EVIDENCE_REQUEST:no_evidence_to_cite",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_EVIDENCE_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 4,
+          "message": "how do you know?",
+          "fabricated": null,
+          "reply": "I don't actually have strong evidence to back a specific pick. If I sounded certain earlier, I was overreaching — I'll walk that back.",
+          "reason": "boundary:entity_reasoning:ENTITY_REASON_REQUEST:no_supported_reason",
+          "aq_fired": false,
+          "er_fired": true,
+          "er_kind": "ENTITY_REASON_REQUEST",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        }
+      ]
+    },
+    "R11_zero_evidence_boundary": {
+      "id": "R11_zero_evidence_boundary",
+      "description": "What about Japan fresh no fabrication",
+      "conversation_id": "3015b628-41cf-4a11-a840-f3a2645e9cdb",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "What about Japan?",
+          "fabricated": null,
+          "reply": "NEX doesn't have verified information on Japan at the moment. Want to try an Indonesian topic I can speak to — food, regions, tourism, or transport?",
+          "reason": "boundary:zero_evidence:zero_evidence_with_subject:subject=Japan",
+          "aq_fired": false,
+          "aq_kind": "NONE",
+          "er_fired": false,
+          "er_kind": "NONE",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        }
+      ]
+    },
+    "R12_interest_gate_preserved": {
+      "id": "R12_interest_gate_preserved",
+      "description": "Im interested still gates via interest, not intercepted by reasoning",
+      "conversation_id": "f570d324-eb25-47c7-ba8e-3ff9dc5f5f3d",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find hotels in Yogyakarta",
+          "fabricated": null,
+          "reply": "I've got 521 real listings for hotels in Yogyakarta — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not live booking. Do you want budget, mid-range, or something mor",
+          "aq_fired": false,
+          "aq_kind": "NONE",
+          "er_fired": false,
+          "er_kind": "NONE",
+          "interest_fired": false,
+          "frame_fired": false,
+          "qty_fired": false
+        },
+        {
+          "turn": 2,
+          "message": "Im interested",
+          "fabricated": null,
+          "reply": "Sure — which one? Gaotama Hotel · Selaras Inn Hotel Yogyakarta · Indonesia Hotel.",
+          "reason": "boundary:interest:INTEREST_AMBIGUOUS_ENTITY:ambiguous:3_candidates",
+          "aq_fired": false,
+          "aq_kind": "NONE",
+          "er_fired": false,
+          "er_kind": "NONE",
+          "interest_fired": true,
+          "interest_kind": "INTEREST_AMBIGUOUS_ENTITY",
+          "frame_fired": false,
+          "qty_fired": false
+        }
+      ]
+    }
+  },
+  "verdicts": {
+    "R1_which_reaches_reasoning": true,
+    "R1_basing_reaches_reasoning_not_attribute": true,
+    "R1_sure_reaches_reasoning": true,
+    "R1_dont_know_reaches_reasoning": true,
+    "R2_pool_still_attribute": true,
+    "R2_laundry_still_attribute": true,
+    "R2_tell_me_more_still_attribute": true,
+    "R2_what_does_have_still_attribute": true,
+    "R3_evidence_supports": true,
+    "R3_makes_you_say": true,
+    "R3_on_what_basis": true,
+    "R3_that_based_on": true,
+    "R4_one_more": true,
+    "R4_another_one": true,
+    "R4_two_more": true,
+    "R5_vertical_switch": true,
+    "R5_post_shift_ordinal_honest": true,
+    "R6_fresh_recommend_honest": true,
+    "R7_fresh_evidence_honest": true,
+    "R8_negation_no_new_search": true,
+    "R9_id_which_choose": true,
+    "R9_id_yakin": true,
+    "R9_id_dasarnya": true,
+    "R9_id_belum_ketahui": true,
+    "R10_evidence_do_you_have": true,
+    "R10_how_do_you_know": true,
+    "R11_zero_ev_japan_no_fabrication": true,
+    "R12_interest_still_gates_via_interest": true,
+    "zero_fabrications": true
+  }
+}

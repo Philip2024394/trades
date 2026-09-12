@@ -1,0 +1,118 @@
+{
+  "base_url": "http://localhost:3008",
+  "results": [
+    {
+      "label": "A1 · /nex-app responds",
+      "ok": true,
+      "detail": "status=200"
+    },
+    {
+      "label": "A2 · frameless home viewport mounts",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "F1 · NO phone frame resurrected (.nex-console-viewport absent)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "A3 · wordmark shows NEX",
+      "ok": true,
+      "detail": "text=\"NEX\""
+    },
+    {
+      "label": "A4 · empty state shows 'Ask NEX anything'",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "C1 · console (composer host) visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "C2 · composer textarea present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "K1 · keypad opens on composer focus",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "K2 · keypad zone has meaningful height",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "K3 · keypad keys append characters to composer",
+      "ok": true,
+      "detail": "value=\"hi\""
+    },
+    {
+      "label": "K4 · Enter submits · echo appears",
+      "ok": true,
+      "detail": "count=1"
+    },
+    {
+      "label": "K5 · composer text clears after submit",
+      "ok": true,
+      "detail": "value=\"\""
+    },
+    {
+      "label": "B1 · lower-right kebab (3-dot) button visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "B2 · kebab opens · quick panel visible (Live/Chat/Social)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "B3 · panel shows Live + Chat + Social tiles",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "N1 · NexSectionsNav drawer hidden on /nex-app",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "V1 · no horizontal scroll at 390x844",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "V2 · home viewport fills 390x844",
+      "ok": true,
+      "detail": "390x844"
+    },
+    {
+      "label": "R1 · Glass Gate /nex-app/enter still loads",
+      "ok": true,
+      "detail": "status=200"
+    },
+    {
+      "label": "R2 · Glass Gate root still mounts",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "R3 · Discover /nex-app/discover still loads",
+      "ok": true,
+      "detail": "status=200"
+    },
+    {
+      "label": "R4 · Discover selector still mounts (Phase Social intact)",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "passed": 22,
+  "failed": 0,
+  "total": 22
+}

@@ -1,0 +1,62 @@
+{
+  "runAt": "2026-09-06T10:56:41.799Z",
+  "campaigns": {
+    "A_movement_yog_to_jak": {
+      "business_id": "biz_6371d6f6",
+      "intent": "MOVE_MARK_PRIOR_HISTORICAL",
+      "active_locations": [
+        "jakarta"
+      ],
+      "historical_locations": [
+        "yogyakarta"
+      ],
+      "customer_query_yogyakarta_active_count": 0,
+      "customer_query_jakarta_active_count": 1,
+      "pass": true
+    },
+    "B_multi_location_gym_3_cities": {
+      "business_id": "biz_0f86c923",
+      "sibling_active_locations": [
+        "bandung",
+        "jakarta",
+        "yogyakarta"
+      ],
+      "discovery_flags": {
+        "has_active_location": true,
+        "has_multiple_active_locations": true,
+        "has_any_historical_location": false,
+        "has_ambiguity": false
+      },
+      "pass": true
+    },
+    "C_ambiguous_same_name_different_city": {
+      "verdict": "NO_MATCH",
+      "score": 0.45,
+      "best_business_id": null,
+      "competing_matches": [],
+      "pass": true
+    },
+    "D_no_blind_overwrite_phone_change_recorded": {
+      "history_count": 1,
+      "first_change_kind": "PHONE_CHANGED",
+      "first_change_prev": "+62 old",
+      "first_change_new": "+62 new",
+      "pass": true
+    },
+    "E_category_evolution_retains_history": {
+      "evolved": true,
+      "next_sub_category": "restaurant",
+      "next_additional_sub_categories": [
+        "cafe"
+      ],
+      "pass": true
+    }
+  },
+  "verdicts": {
+    "A_movement_yog_to_jak": true,
+    "B_multi_location_gym_3_cities": true,
+    "C_ambiguous_same_name_different_city": true,
+    "D_no_blind_overwrite_phone_change_recorded": true,
+    "E_category_evolution_retains_history": true
+  }
+}

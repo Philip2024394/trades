@@ -1,0 +1,114 @@
+{
+  "runAt": "2026-09-06T10:39:16.919Z",
+  "checks": {
+    "1_nex_live_loads": {
+      "pass": true,
+      "http_status": 200
+    },
+    "2_music_video_nav_visible": {
+      "pass": true
+    },
+    "3_creator_entry_visible_lower_right": {
+      "pass": true,
+      "box": {
+        "x": 326,
+        "y": 780,
+        "width": 48,
+        "height": 48
+      }
+    },
+    "4_panel_initially_closed": {
+      "pass": true,
+      "aria_expanded": "false"
+    },
+    "5_panel_opens_on_tap": {
+      "pass": true
+    },
+    "5b_aria_expanded_true_when_open": {
+      "pass": true
+    },
+    "6_action_record_visible": {
+      "pass": true,
+      "text": "Record\nCamera + microphone",
+      "availability": "AVAILABLE"
+    },
+    "6_action_upload_visible": {
+      "pass": true,
+      "text": "Upload\nExisting media\nUSES CAMERA CAPTURE",
+      "availability": "REDIRECT_TO_CAPTURE"
+    },
+    "6_action_go_live_visible": {
+      "pass": true,
+      "text": "Go Live\nBroadcast in real time\nNOT AVAILABLE YET",
+      "availability": "NOT_YET_AVAILABLE"
+    },
+    "6_action_edit_visible": {
+      "pass": true,
+      "text": "Edit\nTrim, cut, cover\nNOT AVAILABLE YET",
+      "availability": "NOT_YET_AVAILABLE"
+    },
+    "6_action_my_live_visible": {
+      "pass": true,
+      "text": "My Live\nYour published items",
+      "availability": "AVAILABLE"
+    },
+    "7_go_live_disabled_and_honest": {
+      "pass": true,
+      "aria_disabled": "true",
+      "availability": "NOT_YET_AVAILABLE"
+    },
+    "7_edit_disabled_and_honest": {
+      "pass": true,
+      "aria_disabled": "true",
+      "availability": "NOT_YET_AVAILABLE"
+    },
+    "8_record_is_link": {
+      "pass": true,
+      "tag": "a",
+      "href": "/nex-video/create"
+    },
+    "8_upload_is_link": {
+      "pass": true,
+      "tag": "a",
+      "href": "/nex-video/create"
+    },
+    "8_my_live_is_link": {
+      "pass": true,
+      "tag": "a",
+      "href": "/nex-live/my"
+    },
+    "9_honesty_text": {
+      "pass": true
+    },
+    "10_escape_closes_panel": {
+      "pass": true
+    },
+    "10b_aria_expanded_false_after_close": {
+      "pass": true
+    },
+    "11_outside_click_closes_panel": {
+      "pass": true
+    },
+    "12_back_to_nex_link_present": {
+      "pass": true,
+      "href": "/nexapp"
+    },
+    "13_my_live_navigates": {
+      "pass": true,
+      "url": "http://localhost:3008/nex-live/my"
+    },
+    "13b_my_live_honest_empty_state": {
+      "pass": true
+    }
+  },
+  "artifacts": [
+    "C:\\Users\\Victus\\trades\\tests\\fixtures\\conversation-followup-proof\\_phase_b_screenshots\\01-nex-live-initial.png",
+    "C:\\Users\\Victus\\trades\\tests\\fixtures\\conversation-followup-proof\\_phase_b_screenshots\\02-creator-panel-open.png",
+    "C:\\Users\\Victus\\trades\\tests\\fixtures\\conversation-followup-proof\\_phase_b_screenshots\\03-my-live-surface.png"
+  ],
+  "summary": {
+    "pass": 23,
+    "fail": 0,
+    "total": 23
+  }
+}

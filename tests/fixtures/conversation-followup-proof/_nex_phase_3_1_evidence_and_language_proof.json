@@ -1,0 +1,54 @@
+{
+  "runAt": "2026-09-06T14:08:10.944Z",
+  "base_url": "http://localhost:3009",
+  "results": {
+    "EN_full_loop": {
+      "pass": true,
+      "cards": 3,
+      "live_now": 0
+    },
+    "EN_G03_no_language_leak": {
+      "pass": true,
+      "snippet": "I don't know which city yet — tell me the city and I'll check what's live."
+    },
+    "ID_full_loop_jogja_alias": {
+      "pass": true,
+      "cards": 3,
+      "city": "yogyakarta"
+    },
+    "ID_G03_reply_matches_language": {
+      "pass": true,
+      "snippet": "Ada beberapa hal live di Yogyakarta malam ini — 3 akan mulai segera."
+    },
+    "TRUTH_unknown_not_false": {
+      "pass": true,
+      "snippet": "I don't know which city yet — tell me the city and I'll check what's live.",
+      "reason": "no_city_context"
+    },
+    "TRUTH_unverified_never_labeled_verified": {
+      "pass": true,
+      "items": 1
+    },
+    "TRUTH_mock_preserved_end_to_end": {
+      "pass": true,
+      "items": 3,
+      "some_mock": true
+    },
+    "TRUTH_live_never_popularity": {
+      "pass": true,
+      "checked": 7
+    },
+    "TRUTH_reply_never_machine_intent_string": {
+      "pass": true
+    },
+    "TRUTH_greeting_no_over_trigger": {
+      "pass": true,
+      "intent": "conversation"
+    }
+  },
+  "summary": {
+    "pass": 10,
+    "fail": 0,
+    "total": 10
+  }
+}

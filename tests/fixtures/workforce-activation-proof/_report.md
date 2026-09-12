@@ -1,4 +1,4 @@
-# NEX Specialist Workforce · Activation Proof · 2026-09-05T12:36:59.088Z
+# NEX Specialist Workforce · Activation Proof · 2026-09-07T05:46:27.304Z
 
 **All findings below are PROVEN (persisted to disk · reproducible via re-run) unless explicitly marked CLAIMED.**
 **No positions self-asserted their status. Status is derived from append-only run history per Op-Truth §16.**
@@ -39,11 +39,11 @@ cd C:/Users/Victus/trades && node tests/fixtures/workforce-activation-proof/_run
 ---
 ## Activation attempts
 
-- **indonesia_knowledge** · attempted · run_id `cb8995cf-b5c5-4ebf-a4c2-67c59d5c522f` · walker pipeline attribution: walker.adat.communities, walker.culture.festivals_ceremonies, walker.spiritual.sacred_sites → 23 records verified+promoted
-- **restaurant_food** · attempted · run_id `3ce930a4-0f20-40a9-b425-b1434b537571` · walker pipeline SOURCE→SNAPSHOT→EXTRACT→VERIFY→PROMOTE completed · 9 records with walker_id=walker.food.dishes
-- **travel_transport** · attempted · run_id `91fe12d1-b46b-42a7-bee9-769aecba0f34` · walker pipeline SOURCE→SNAPSHOT→EXTRACT→VERIFY→PROMOTE completed · 8 records with walker_id=walker.travel.airports
-- **hotel_accommodation** · attempted · run_id `b88d1256-f176-4257-929f-965a8b094a15` · directory adapter read PROVEN · 9203 rows across 7 categories · 877 customer-visible · 8326 discovered pending promotion
-- **gym_fitness** · attempted · run_id `9fb764d1-e78c-4938-838c-7022cfbc6a03` · directory adapter read PROVEN · 292 gym rows · 0 currently owner-verified · discovery complete
+- **indonesia_knowledge** · attempted · run_id `62590211-a4d9-4889-a9de-3ee4adf7e318` · walker pipeline attribution: walker.adat.communities, walker.culture.festivals_ceremonies, walker.spiritual.sacred_sites → 23 records verified+promoted
+- **restaurant_food** · attempted · run_id `5197f059-fce6-4b47-aeb6-43ca6186b30e` · walker pipeline SOURCE→SNAPSHOT→EXTRACT→VERIFY→PROMOTE completed · 9 records with walker_id=walker.food.dishes
+- **travel_transport** · attempted · run_id `aaf78af5-0053-4774-8d98-96dae2334498` · walker pipeline SOURCE→SNAPSHOT→EXTRACT→VERIFY→PROMOTE completed · 8 records with walker_id=walker.travel.airports
+- **hotel_accommodation** · attempted · run_id `5f2ff023-661f-43ad-9d15-a9e2817af59e` · directory adapter read PROVEN · 9203 rows across 7 categories · 877 customer-visible · 8326 discovered pending promotion
+- **gym_fitness** · attempted · run_id `e6fbf74e-ad28-4a56-b9db-477cd64064ea` · directory adapter read PROVEN · 292 gym rows · 0 currently owner-verified · discovery complete
 - **programmer** · NOT attempted · reason: PHASE_A_PENDING · separate AUTHORIZE required · not activated by Indonesian-workforce authorization
 
 ---
@@ -53,20 +53,20 @@ cd C:/Users/Victus/trades && node tests/fixtures/workforce-activation-proof/_run
   - reason: Programmer Agent Phase A requires separate AUTHORIZE literal
   - evidence: runs=0 · promoted=0 · verified_rate=n/a · last_successful=none
 - 🟢 **indonesia_knowledge** → **PROVEN_HEALTHY**
-  - reason: last success 2026-09-05T12:36:59.080Z · 23 promoted total
-  - evidence: runs=1 · promoted=23 · verified_rate=100% · last_successful=2026-09-05T12:36:59.080Z
+  - reason: last success 2026-09-07T05:46:27.295Z · 23 promoted total
+  - evidence: runs=1 · promoted=23 · verified_rate=100% · last_successful=2026-09-07T05:46:27.295Z
 - 🟢 **hotel_accommodation** → **PROVEN_HEALTHY**
   - reason: last success 2026-09-05T12:27:28.373Z · 877 promoted total
   - evidence: runs=1 · promoted=877 · verified_rate=100% · last_successful=2026-09-05T12:27:28.373Z
 - 🟢 **restaurant_food** → **PROVEN_HEALTHY**
-  - reason: last success 2026-09-05T12:36:59.081Z · 9 promoted total
-  - evidence: runs=1 · promoted=9 · verified_rate=100% · last_successful=2026-09-05T12:36:59.081Z
+  - reason: last success 2026-09-07T05:46:27.296Z · 9 promoted total
+  - evidence: runs=1 · promoted=9 · verified_rate=100% · last_successful=2026-09-07T05:46:27.296Z
 - 🟢 **gym_fitness** → **PROVEN_HEALTHY**
   - reason: last success 2026-09-05T12:34:08.278Z · 0 promoted total
   - evidence: runs=1 · promoted=0 · verified_rate=100% · last_successful=2026-09-05T12:34:08.278Z
 - 🟢 **travel_transport** → **PROVEN_HEALTHY**
-  - reason: last success 2026-09-05T12:36:59.083Z · 8 promoted total
-  - evidence: runs=1 · promoted=8 · verified_rate=100% · last_successful=2026-09-05T12:36:59.083Z
+  - reason: last success 2026-09-07T05:46:27.298Z · 8 promoted total
+  - evidence: runs=1 · promoted=8 · verified_rate=100% · last_successful=2026-09-07T05:46:27.298Z
 
 ---
 ## Honest run counts

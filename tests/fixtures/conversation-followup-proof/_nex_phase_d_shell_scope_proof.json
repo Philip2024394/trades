@@ -1,0 +1,129 @@
+{
+  "runAt": "2026-09-06T13:18:20.423Z",
+  "base_url": "http://localhost:3008",
+  "viewports": {
+    "mobile": {
+      "name": "phone-390x844",
+      "width": 390,
+      "height": 844,
+      "isMobile": true,
+      "results": {
+        "A_shell_loads_200": {
+          "pass": true
+        },
+        "B_hero_has_profile_and_control_center_entries": {
+          "pass": true,
+          "profile": true,
+          "control_center": true
+        },
+        "C_profile_panel_scoped_inside_phone_frame": {
+          "pass": true,
+          "panel_width": 390,
+          "viewport_width": 390
+        },
+        "D_profile_panel_closes_on_escape": {
+          "pass": true
+        },
+        "E_control_center_panel_scoped_inside_phone_frame": {
+          "pass": true,
+          "panel_width": 390,
+          "viewport_width": 390
+        },
+        "F_control_center_has_live_destination": {
+          "pass": true,
+          "availability": "AVAILABLE",
+          "href": "/nex-app/live"
+        },
+        "G_city_live_loads_200": {
+          "pass": true
+        },
+        "H_city_live_inside_phone_frame": {
+          "pass": true,
+          "width": 390,
+          "scope": "phone-frame",
+          "city": "yogyakarta"
+        },
+        "I_city_live_status_sections_present": {
+          "pass": true,
+          "sections": 3
+        },
+        "J_entity_page_loads_200": {
+          "pass": true,
+          "url": "http://localhost:3008/nex-app/entity/%23AC-2026-0000D"
+        },
+        "K_entity_page_inside_phone_frame": {
+          "pass": true,
+          "width": 390,
+          "scope": "phone-frame"
+        }
+      },
+      "pass_count": 11,
+      "fail_count": 0,
+      "total": 11
+    },
+    "desktop": {
+      "name": "desktop-1440x900",
+      "width": 1440,
+      "height": 900,
+      "isMobile": false,
+      "results": {
+        "A_shell_loads_200": {
+          "pass": true
+        },
+        "B_hero_has_profile_and_control_center_entries": {
+          "pass": true,
+          "profile": true,
+          "control_center": true
+        },
+        "C_profile_panel_scoped_inside_phone_frame": {
+          "pass": true,
+          "panel_width": 448,
+          "viewport_width": 1440
+        },
+        "D_profile_panel_closes_on_escape": {
+          "pass": true
+        },
+        "E_control_center_panel_scoped_inside_phone_frame": {
+          "pass": true,
+          "panel_width": 448,
+          "viewport_width": 1440
+        },
+        "F_control_center_has_live_destination": {
+          "pass": true,
+          "availability": "AVAILABLE",
+          "href": "/nex-app/live"
+        },
+        "G_city_live_loads_200": {
+          "pass": true
+        },
+        "H_city_live_inside_phone_frame": {
+          "pass": true,
+          "width": 448,
+          "scope": "phone-frame",
+          "city": "yogyakarta"
+        },
+        "I_city_live_status_sections_present": {
+          "pass": true,
+          "sections": 3
+        },
+        "J_entity_page_loads_200": {
+          "pass": true,
+          "url": "http://localhost:3008/nex-app/entity/%23AC-2026-0000D"
+        },
+        "K_entity_page_inside_phone_frame": {
+          "pass": true,
+          "width": 448,
+          "scope": "phone-frame"
+        }
+      },
+      "pass_count": 11,
+      "fail_count": 0,
+      "total": 11
+    }
+  },
+  "summary": {
+    "pass": 22,
+    "fail": 0,
+    "total": 22
+  }
+}

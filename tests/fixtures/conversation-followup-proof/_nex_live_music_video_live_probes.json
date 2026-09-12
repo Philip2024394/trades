@@ -1,0 +1,86 @@
+{
+  "runAt": "2026-09-06T10:27:38.291Z",
+  "campaigns": {
+    "A_upload_owner_declared": {
+      "media_id": "media:5eb1b4d9-995a-4f30-b8ea-6f37211f4e22",
+      "declaration_id": "c3e25342-89ee-45d8-92ea-40a222604a0d",
+      "publish_allowed": true,
+      "visible_to_public": true,
+      "customer_facing_label": "Uploader-declared ownership",
+      "label_never_says_verified": true,
+      "active_declaration_recovered": "OWNER_DECLARED"
+    },
+    "B_missing_declaration_blocks_publish": {
+      "media_id": "media:f3c40d40-c714-4011-ac0f-868bd9e6ff7c",
+      "discoverable_before_declaration": 0,
+      "expected": 0,
+      "pass": true
+    },
+    "C_mode_routing": {
+      "music_items_count": 1,
+      "music_items_ids": [
+        "media:d28aa6c2-daf5-492f-b33a-50e851bc4357"
+      ],
+      "video_items_count": 2,
+      "video_items_ids": [
+        "media:4496a6c7-76a9-40e6-b031-bdd754a0f79d",
+        "media:5eb1b4d9-995a-4f30-b8ea-6f37211f4e22"
+      ],
+      "pass": true
+    },
+    "D_report_content_transitions_active_to_reported": {
+      "media_id": "media:5eb1b4d9-995a-4f30-b8ea-6f37211f4e22",
+      "report_id": "c92bf762-a3f5-4b97-9d13-b7fba3550ffc",
+      "visibility_before": "ACTIVE",
+      "visibility_after": "REPORTED",
+      "pass": true
+    },
+    "E_reported_still_visible_pending_review": {
+      "media_id": "media:5eb1b4d9-995a-4f30-b8ea-6f37211f4e22",
+      "visibility": "REPORTED",
+      "still_discoverable": 1,
+      "expected": 1,
+      "pass": true
+    },
+    "F_review_remove_takes_down": {
+      "media_id": "media:5eb1b4d9-995a-4f30-b8ea-6f37211f4e22",
+      "previous_state": "REPORTED",
+      "new_state": "REMOVED",
+      "current_visibility": "REMOVED",
+      "still_discoverable": 0,
+      "expected": 0,
+      "pass": true
+    },
+    "G_audit_history_survives_removal": {
+      "media_id": "media:5eb1b4d9-995a-4f30-b8ea-6f37211f4e22",
+      "reports_count": 1,
+      "reviews_count": 1,
+      "report_status_after_resolution": "RESOLVED",
+      "report_resolution_review_id_set": true,
+      "pass": true
+    },
+    "H_dispute_accepted_restores": {
+      "media_id": "media:5eb1b4d9-995a-4f30-b8ea-6f37211f4e22",
+      "previous_state": "REMOVED",
+      "new_state": "RESTORED",
+      "current_visibility": "RESTORED",
+      "pass": true
+    },
+    "I_truthfulness_never_calls_declared_verified": {
+      "all_customer_labels_avoid_verified": true,
+      "declaration_still_present_after_review": "OWNER_DECLARED",
+      "pass": true
+    }
+  },
+  "verdicts": {
+    "B_missing_declaration_blocks_publish": true,
+    "C_mode_routing": true,
+    "D_report_content_transitions_active_to_reported": true,
+    "E_reported_still_visible_pending_review": true,
+    "F_review_remove_takes_down": true,
+    "G_audit_history_survives_removal": true,
+    "H_dispute_accepted_restores": true,
+    "I_truthfulness_never_calls_declared_verified": true,
+    "zero_fabrications": true
+  }
+}

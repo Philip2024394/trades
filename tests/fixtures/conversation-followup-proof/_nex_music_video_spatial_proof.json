@@ -1,0 +1,244 @@
+{
+  "runAt": "2026-09-06T16:13:50.341Z",
+  "base_url": "http://localhost:3008",
+  "viewports": [
+    {
+      "name": "iphone-14-390x844",
+      "w": 390,
+      "h": 844,
+      "results": {
+        "A_nex_live_loads_200": {
+          "pass": true
+        },
+        "B_tutorial_first_paint": {
+          "pass": true,
+          "skipped": "no feed items"
+        },
+        "C_left_swipe_opens_artist_world": {
+          "pass": true,
+          "skipped": "no feed"
+        },
+        "D_escape_closes_artist_world": {
+          "pass": true
+        },
+        "E_right_swipe_opens_create_world": {
+          "pass": true,
+          "skipped": "no feed"
+        },
+        "F_create_world_honest_actions": {
+          "pass": true,
+          "uploadMusic": "AVAILABLE",
+          "goLive": "NOT_YET_AVAILABLE"
+        },
+        "G_escape_closes_create_world": {
+          "pass": true
+        },
+        "H_no_tall_live_inside_swipe_feed": {
+          "pass": true,
+          "skipped": "no feed"
+        },
+        "I_reduced_motion_ok": {
+          "pass": true,
+          "animation": "none"
+        },
+        "J_diagonal_swipe_rejected": {
+          "pass": true,
+          "skipped": "no feed"
+        }
+      },
+      "pass": 10,
+      "fail": 0,
+      "total": 10
+    },
+    {
+      "name": "iphone-12mini-375x812",
+      "w": 375,
+      "h": 812,
+      "results": {
+        "A_nex_live_loads_200": {
+          "pass": true
+        },
+        "B_tutorial_first_paint": {
+          "pass": true,
+          "lesson": "down"
+        },
+        "C_left_swipe_opens_artist_world": {
+          "pass": true
+        },
+        "D_escape_closes_artist_world": {
+          "pass": true
+        },
+        "E_right_swipe_opens_create_world": {
+          "pass": true
+        },
+        "F_create_world_honest_actions": {
+          "pass": true,
+          "uploadMusic": "AVAILABLE",
+          "goLive": "NOT_YET_AVAILABLE"
+        },
+        "G_escape_closes_create_world": {
+          "pass": true
+        },
+        "H_no_tall_live_inside_swipe_feed": {
+          "pass": true,
+          "entity_carousels_inside": 0
+        },
+        "I_reduced_motion_ok": {
+          "pass": true,
+          "animation": "none"
+        },
+        "J_diagonal_swipe_rejected": {
+          "pass": true
+        }
+      },
+      "pass": 10,
+      "fail": 0,
+      "total": 10
+    },
+    {
+      "name": "iphone-15-393x852",
+      "w": 393,
+      "h": 852,
+      "results": {
+        "A_nex_live_loads_200": {
+          "pass": true
+        },
+        "B_tutorial_first_paint": {
+          "pass": true,
+          "lesson": "down"
+        },
+        "C_left_swipe_opens_artist_world": {
+          "pass": true
+        },
+        "D_escape_closes_artist_world": {
+          "pass": true
+        },
+        "E_right_swipe_opens_create_world": {
+          "pass": true
+        },
+        "F_create_world_honest_actions": {
+          "pass": true,
+          "uploadMusic": "AVAILABLE",
+          "goLive": "NOT_YET_AVAILABLE"
+        },
+        "G_escape_closes_create_world": {
+          "pass": true
+        },
+        "H_no_tall_live_inside_swipe_feed": {
+          "pass": true,
+          "entity_carousels_inside": 0
+        },
+        "I_reduced_motion_ok": {
+          "pass": true,
+          "animation": "none"
+        },
+        "J_diagonal_swipe_rejected": {
+          "pass": true
+        }
+      },
+      "pass": 10,
+      "fail": 0,
+      "total": 10
+    },
+    {
+      "name": "iphone-15pm-430x932",
+      "w": 430,
+      "h": 932,
+      "results": {
+        "A_nex_live_loads_200": {
+          "pass": true
+        },
+        "B_tutorial_first_paint": {
+          "pass": true,
+          "skipped": "no feed items"
+        },
+        "C_left_swipe_opens_artist_world": {
+          "pass": true,
+          "skipped": "no feed"
+        },
+        "D_escape_closes_artist_world": {
+          "pass": true
+        },
+        "E_right_swipe_opens_create_world": {
+          "pass": true,
+          "skipped": "no feed"
+        },
+        "F_create_world_honest_actions": {
+          "pass": true,
+          "uploadMusic": "AVAILABLE",
+          "goLive": "NOT_YET_AVAILABLE"
+        },
+        "G_escape_closes_create_world": {
+          "pass": true
+        },
+        "H_no_tall_live_inside_swipe_feed": {
+          "pass": true,
+          "skipped": "no feed"
+        },
+        "I_reduced_motion_ok": {
+          "pass": true,
+          "animation": "none"
+        },
+        "J_diagonal_swipe_rejected": {
+          "pass": true,
+          "skipped": "no feed"
+        }
+      },
+      "pass": 10,
+      "fail": 0,
+      "total": 10
+    },
+    {
+      "name": "desktop-1440x900",
+      "w": 1440,
+      "h": 900,
+      "results": {
+        "A_nex_live_loads_200": {
+          "pass": true
+        },
+        "B_tutorial_first_paint": {
+          "pass": true,
+          "lesson": "down"
+        },
+        "C_left_swipe_opens_artist_world": {
+          "pass": true,
+          "skipped": "desktop"
+        },
+        "D_escape_closes_artist_world": {
+          "pass": true
+        },
+        "E_right_swipe_opens_create_world": {
+          "pass": true,
+          "skipped": "desktop"
+        },
+        "F_create_world_honest_actions": {
+          "pass": true,
+          "skipped": "desktop"
+        },
+        "G_escape_closes_create_world": {
+          "pass": true
+        },
+        "H_no_tall_live_inside_swipe_feed": {
+          "pass": true,
+          "entity_carousels_inside": 0
+        },
+        "I_reduced_motion_ok": {
+          "pass": true,
+          "animation": "none"
+        },
+        "J_diagonal_swipe_rejected": {
+          "pass": true,
+          "skipped": "desktop"
+        }
+      },
+      "pass": 10,
+      "fail": 0,
+      "total": 10
+    }
+  ],
+  "summary": {
+    "pass": 50,
+    "fail": 0,
+    "total": 50
+  }
+}

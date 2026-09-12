@@ -1,0 +1,30 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "src/lib/nex/config/pg.ts",
+    "src/lib/nex-hq/media-observability.ts",
+    "src/lib/nex-hq/calling-observability.ts",
+    "src/lib/nex-mobility/pool.ts",
+    "src/lib/nex-media/media-object.ts",
+    "src/instrumentation.ts",
+    "src/lib/nex/brain/adapters/whatsapp-outbox-db.ts",
+    "src/lib/nex/brain/adapters/whatsapp-outbox.ts",
+    "src/app/api/nex/ambient-knowledge/route.ts",
+    "src/app/api/nex/bike-rentals/route.ts",
+    "src/app/api/nex/bike-rental/register/route.ts",
+    "src/app/api/nex/bike-models/route.ts",
+    "src/app/api/nex/did-you-know/route.ts",
+    "src/app/api/nex/did-you-know/save/route.ts",
+    "src/app/api/nex/provider/wallet/route.ts",
+    "src/app/api/nex/provider/register/route.ts",
+    "src/app/api/nex/provider/inbox/route.ts",
+    "src/app/api/nex/service-request/broadcast/route.ts",
+    "src/app/api/nex-video/impression/route.ts",
+    "src/app/api/nex-video/feed/route.ts",
+    "src/app/api/nex-calling/call-record/route.ts",
+    "src/app/nex-head-quarters/walker-health/page.tsx"
+  ]
+}

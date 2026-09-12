@@ -1,0 +1,116 @@
+{
+  "runAt": "2026-09-06T07:36:31.024Z",
+  "campaigns": {
+    "A_p0_sanity": {
+      "cid": "3f395cd5-1d43-4c2c-a5b1-46bdb82728f8",
+      "turns": [
+        {
+          "message": "hi",
+          "latency_ms": 71,
+          "reply": "Hi! What can I help you with?",
+          "voice_reply_en": "Hi! What can I help you with?",
+          "world_cards_count": 0
+        },
+        {
+          "message": "how are you?",
+          "latency_ms": 21,
+          "reply": "Good, thanks! What can I help you with?",
+          "voice_reply_en": "Good, thanks! What can I help you with?",
+          "world_cards_count": 0
+        }
+      ],
+      "asserts": {
+        "hi_responded": true,
+        "hi_latency_ok": true,
+        "chat_responded": true
+      }
+    },
+    "B_discovery": {
+      "cid": "b0e95128-a2e6-4aae-9a00-54324c45d82c",
+      "world_cards_count": 3,
+      "card_names": [
+        "Gaotama Hotel",
+        "Selaras Inn Hotel Yogyakarta",
+        "Indonesia Hotel"
+      ],
+      "asserts": {
+        "three_cards": true,
+        "real_names": true
+      }
+    },
+    "C_beacon_pronoun": {
+      "cid": "f4516c78-84a3-424e-b59d-ba0479a0431f",
+      "beacon_ok": true,
+      "beacon_memoized": true,
+      "first_card_name": "Gaotama Hotel",
+      "t3_reply": "I don't have verified information about Pool for Gaotama Hotel yet. Want me to help you confirm?",
+      "t3_attribute_kind": "HAS_ATTRIBUTE_SINGLE",
+      "t3_attribute_resolved": "Gaotama Hotel",
+      "t3_attribute_reason": "has_single:pool:UNKNOWN",
+      "asserts": {
+        "beacon_accepted": true,
+        "viewed_entity_memoized": true,
+        "attribute_query_fired": true,
+        "resolved_to_viewed_entity": true,
+        "no_fabrication": true
+      }
+    },
+    "D_fresh_honest": {
+      "cid": "bb05c128-f191-4a0b-a51a-e1c8b83ba250",
+      "reply": "I don't have specific information about a particular place you're referring to. Could you provide more details or let me know which location you're interested in?",
+      "asserts": {
+        "honest_no_fabricated_pool": true,
+        "no_fabrication": true
+      }
+    },
+    "E_restaurant": {
+      "cid": "f1ff0e8a-af16-4016-bf01-b15f3a5bb033",
+      "world_cards_count": 0,
+      "reply": "There are several great restaurants in Yogyakarta where you can try Gudeg, the city's signature dish. Gudeg Yu Djum is a popular spot with multiple branches, while the night stalls on Jalan Wijilan ne",
+      "asserts": {
+        "any_cards_or_honest": false
+      }
+    },
+    "F_browser_flow": {
+      "screenshots": [
+        "F_01_hotels_cards.png",
+        "F_02_detail.png",
+        "F_03_back_to_chat.png",
+        "F_04_pronoun_after_return.png"
+      ],
+      "asserts": {
+        "hi_browser_latency_ms": 1664,
+        "hi_browser_responded_fast": true,
+        "cards_visible": true,
+        "card_names": [
+          "Gaotama Hotel",
+          "Selaras Inn Hotel Yogyakarta",
+          "Indonesia Hotel"
+        ],
+        "first_ref_id": "#AC-2026-0000D",
+        "detail_url_matches": false,
+        "pronoun_reply_tail": "ain.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 14:37\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\ndoes it have a pool?\nN\nNex\nI don't have specific information about a particular place you're referring to. Could you provide more details or let me know which location you're interested in?\nContacts\nTasks\nPlay",
+        "pronoun_names_first_hotel": false
+      }
+    }
+  },
+  "verdicts": {
+    "A_hi_responded": true,
+    "A_hi_latency_ok": true,
+    "A_chat_responded": true,
+    "B_three_cards": true,
+    "B_real_names_no_fabrication": true,
+    "C_beacon_accepted": true,
+    "C_viewed_entity_memoized": true,
+    "C_attribute_query_fired": true,
+    "C_resolved_to_viewed_entity": true,
+    "C_no_fabrication": true,
+    "D_fresh_honest_no_fabricated_pool": true,
+    "D_no_fabrication": true,
+    "E_restaurant_any_or_honest": false,
+    "F_hi_browser_responded_fast": true,
+    "F_cards_visible": true,
+    "F_detail_url_matches": false,
+    "F_pronoun_names_first_hotel": false
+  }
+}

@@ -1,0 +1,295 @@
+{
+  "runAt": "2026-09-06T14:02:42.600Z",
+  "base_url": "http://localhost:3009",
+  "viewports": [
+    {
+      "name": "iphone-14-390x844",
+      "width": 390,
+      "height": 844,
+      "results": {
+        "A_shell_loads_200": {
+          "pass": true
+        },
+        "B_hero_separation_profile_and_control_center": {
+          "pass": true
+        },
+        "C_profile_scoped_inside_frame": {
+          "pass": true,
+          "panel_width": 390
+        },
+        "D_escape_closes_profile": {
+          "pass": true
+        },
+        "E_control_center_scoped_inside_frame": {
+          "pass": true,
+          "panel_width": 390
+        },
+        "F_control_center_live_avail_and_honesty": {
+          "pass": true,
+          "avail": "AVAILABLE",
+          "href": "/nex-app/live",
+          "security_avail": "NOT_YET_AVAILABLE",
+          "chips": 11
+        },
+        "G_city_live_loads_200": {
+          "pass": true
+        },
+        "H_city_live_inside_frame": {
+          "pass": true,
+          "width": 390,
+          "scope": "phone-frame"
+        },
+        "I_status_sections_render_after_fetch": {
+          "pass": true,
+          "sections": 3
+        },
+        "J_category_chips_honest_never_empty": {
+          "pass": true,
+          "chip_count": 7
+        },
+        "K_entity_loads_200": {
+          "pass": true
+        },
+        "L_entity_scoped_inside_frame": {
+          "pass": true,
+          "width": 390
+        },
+        "M_entity_live_belongs_to_entity": {
+          "pass": true,
+          "cards": 3,
+          "mock_chips": 3
+        },
+        "N_entity_contact_path_honest": {
+          "pass": true,
+          "interested_button": 0,
+          "honest_fallback": 1
+        },
+        "O_back_returns_to_city_live": {
+          "pass": true,
+          "url": "http://localhost:3009/nex-app/live"
+        }
+      },
+      "pass": 15,
+      "fail": 0,
+      "total": 15
+    },
+    {
+      "name": "iphone-12mini-375x812",
+      "width": 375,
+      "height": 812,
+      "results": {
+        "A_shell_loads_200": {
+          "pass": true
+        },
+        "B_hero_separation_profile_and_control_center": {
+          "pass": true
+        },
+        "C_profile_scoped_inside_frame": {
+          "pass": true,
+          "panel_width": 375
+        },
+        "D_escape_closes_profile": {
+          "pass": true
+        },
+        "E_control_center_scoped_inside_frame": {
+          "pass": true,
+          "panel_width": 375
+        },
+        "F_control_center_live_avail_and_honesty": {
+          "pass": true,
+          "avail": "AVAILABLE",
+          "href": "/nex-app/live",
+          "security_avail": "NOT_YET_AVAILABLE",
+          "chips": 11
+        },
+        "G_city_live_loads_200": {
+          "pass": true
+        },
+        "H_city_live_inside_frame": {
+          "pass": true,
+          "width": 375,
+          "scope": "phone-frame"
+        },
+        "I_status_sections_render_after_fetch": {
+          "pass": true,
+          "sections": 3
+        },
+        "J_category_chips_honest_never_empty": {
+          "pass": true,
+          "chip_count": 7
+        },
+        "K_entity_loads_200": {
+          "pass": true
+        },
+        "L_entity_scoped_inside_frame": {
+          "pass": true,
+          "width": 375
+        },
+        "M_entity_live_belongs_to_entity": {
+          "pass": true,
+          "cards": 3,
+          "mock_chips": 3
+        },
+        "N_entity_contact_path_honest": {
+          "pass": true,
+          "interested_button": 0,
+          "honest_fallback": 1
+        },
+        "O_back_returns_to_city_live": {
+          "pass": true,
+          "url": "http://localhost:3009/nex-app/live"
+        }
+      },
+      "pass": 15,
+      "fail": 0,
+      "total": 15
+    },
+    {
+      "name": "iphone-15-393x852",
+      "width": 393,
+      "height": 852,
+      "results": {
+        "A_shell_loads_200": {
+          "pass": true
+        },
+        "B_hero_separation_profile_and_control_center": {
+          "pass": true
+        },
+        "C_profile_scoped_inside_frame": {
+          "pass": true,
+          "panel_width": 393
+        },
+        "D_escape_closes_profile": {
+          "pass": true
+        },
+        "E_control_center_scoped_inside_frame": {
+          "pass": true,
+          "panel_width": 393
+        },
+        "F_control_center_live_avail_and_honesty": {
+          "pass": true,
+          "avail": "AVAILABLE",
+          "href": "/nex-app/live",
+          "security_avail": "NOT_YET_AVAILABLE",
+          "chips": 11
+        },
+        "G_city_live_loads_200": {
+          "pass": true
+        },
+        "H_city_live_inside_frame": {
+          "pass": true,
+          "width": 393,
+          "scope": "phone-frame"
+        },
+        "I_status_sections_render_after_fetch": {
+          "pass": true,
+          "sections": 3
+        },
+        "J_category_chips_honest_never_empty": {
+          "pass": true,
+          "chip_count": 7
+        },
+        "K_entity_loads_200": {
+          "pass": true
+        },
+        "L_entity_scoped_inside_frame": {
+          "pass": true,
+          "width": 393
+        },
+        "M_entity_live_belongs_to_entity": {
+          "pass": true,
+          "cards": 3,
+          "mock_chips": 3
+        },
+        "N_entity_contact_path_honest": {
+          "pass": true,
+          "interested_button": 0,
+          "honest_fallback": 1
+        },
+        "O_back_returns_to_city_live": {
+          "pass": true,
+          "url": "http://localhost:3009/nex-app/live"
+        }
+      },
+      "pass": 15,
+      "fail": 0,
+      "total": 15
+    },
+    {
+      "name": "iphone-15promax-430x932",
+      "width": 430,
+      "height": 932,
+      "results": {
+        "A_shell_loads_200": {
+          "pass": true
+        },
+        "B_hero_separation_profile_and_control_center": {
+          "pass": true
+        },
+        "C_profile_scoped_inside_frame": {
+          "pass": true,
+          "panel_width": 430
+        },
+        "D_escape_closes_profile": {
+          "pass": true
+        },
+        "E_control_center_scoped_inside_frame": {
+          "pass": true,
+          "panel_width": 430
+        },
+        "F_control_center_live_avail_and_honesty": {
+          "pass": true,
+          "avail": "AVAILABLE",
+          "href": "/nex-app/live",
+          "security_avail": "NOT_YET_AVAILABLE",
+          "chips": 11
+        },
+        "G_city_live_loads_200": {
+          "pass": true
+        },
+        "H_city_live_inside_frame": {
+          "pass": true,
+          "width": 430,
+          "scope": "phone-frame"
+        },
+        "I_status_sections_render_after_fetch": {
+          "pass": true,
+          "sections": 3
+        },
+        "J_category_chips_honest_never_empty": {
+          "pass": true,
+          "chip_count": 7
+        },
+        "K_entity_loads_200": {
+          "pass": true
+        },
+        "L_entity_scoped_inside_frame": {
+          "pass": true,
+          "width": 430
+        },
+        "M_entity_live_belongs_to_entity": {
+          "pass": true,
+          "cards": 3,
+          "mock_chips": 3
+        },
+        "N_entity_contact_path_honest": {
+          "pass": true,
+          "interested_button": 0,
+          "honest_fallback": 1
+        },
+        "O_back_returns_to_city_live": {
+          "pass": true,
+          "url": "http://localhost:3009/nex-app/live"
+        }
+      },
+      "pass": 15,
+      "fail": 0,
+      "total": 15
+    }
+  ],
+  "summary": {
+    "pass": 60,
+    "fail": 0,
+    "total": 60
+  }
+}

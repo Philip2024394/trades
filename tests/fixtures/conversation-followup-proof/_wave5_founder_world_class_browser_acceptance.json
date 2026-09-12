@@ -1,0 +1,1393 @@
+{
+  "runAt": "2026-09-06T06:40:53.819Z",
+  "chat_url": "http://localhost:3008/nex-app/chat",
+  "campaigns": {
+    "A_hotel_discovery": {
+      "id": "A_hotel_discovery",
+      "description": "Fresh conversation · 'need a hotel tonight' · cards must appear",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "need a hotel tonight",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "go\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:41\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nneed a hotel tonight\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nContacts\nTasks\nPlay"
+        }
+      ],
+      "consoleLogs": [
+        {
+          "type": "log",
+          "text": "[HMR] connected"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Speed Insights]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Web Analytics]%c [view] http://localhost:3008/nex-app/chat color: rgb(120, 120, 120) color: inherit {o: http://localhost:3008/nex-app/chat, sv: 0.1.3, sdkn: @vercel/analytics/react, sdkv: 2."
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 5040ms"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 2304ms"
+        }
+      ],
+      "pageErrors": [
+        "Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math"
+      ],
+      "screenshots": [
+        "A_hotel_discovery_00_initial.png",
+        "A_hotel_discovery_T01.png"
+      ]
+    },
+    "B_card_continuation": {
+      "id": "B_card_continuation",
+      "description": "Full T1-T5 continuation · details / first / second / one more / last",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "need a hotel tonight",
+          "fabricated": null,
+          "worldCardCount": 0,
+          "inlineExists": false,
+          "cardNames": [],
+          "cardOrdinals": [],
+          "cardRefIds": [],
+          "tailText": "u think”\n1h\n2\nPEOPLE\n3\nEmma Whitmore\nFamily\nBristol\n·\nLast seen 4h ago\nJames Okafor\nColleague\nLondon\n·\nLast seen yesterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:41\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nContacts\nTasks\nPlay\nWe use cookies\n\nTo keep you signed in, remember your preferences, and understand how the site is used. Manage.\n\nAccept"
+        },
+        {
+          "turn": 2,
+          "message": "can i see details",
+          "fabricated": null,
+          "worldCardCount": 0,
+          "inlineExists": false,
+          "cardNames": [],
+          "cardOrdinals": [],
+          "cardRefIds": [],
+          "tailText": "l\n·\nLast seen 4h ago\nJames Okafor\nColleague\nLondon\n·\nLast seen yesterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:41\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\ncan i see details\nN\nNex\nI understand you're looking for details. Could you please clarify what specific details you need or what area of Indonesia you're interested in?\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 3,
+          "message": "tell me about the first one",
+          "fabricated": null,
+          "worldCardCount": 0,
+          "inlineExists": false,
+          "cardNames": [],
+          "cardOrdinals": [],
+          "cardRefIds": [],
+          "tailText": "2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:41\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\ncan i see details\nN\nNex\nI understand you're looking for details. Could you please clarify what specific details you need or what area of Indonesia you're interested in?\ntell me about the first one\nN\nNex\nI haven't shown any results yet in this conversation. Want me to search first?\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 4,
+          "message": "tell me about the second one",
+          "fabricated": null,
+          "worldCardCount": 0,
+          "inlineExists": false,
+          "cardNames": [],
+          "cardOrdinals": [],
+          "cardRefIds": [],
+          "tailText": "2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:41\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\ncan i see details\nN\nNex\nI understand you're looking for details. Could you please clarify what specific details you need or what area of Indonesia you're interested in?\ntell me about the first one\nN\nNex\nI haven't shown any results yet in this conversation. Want me to search first?\ntell me about the second one\nN\nNex\nWhich one do you mean? I don't have a previous list in this conversation. Want me to find some?\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 5,
+          "message": "one more",
+          "fabricated": null,
+          "worldCardCount": 0,
+          "inlineExists": false,
+          "cardNames": [],
+          "cardOrdinals": [],
+          "cardRefIds": [],
+          "tailText": "rch everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:41\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\ncan i see details\nN\nNex\nI understand you're looking for details. Could you please clarify what specific details you need or what area of Indonesia you're interested in?\ntell me about the first one\nN\nNex\nI haven't shown any results yet in this conversation. Want me to search first?\ntell me about the second one\nN\nNex\nWhich one do you mean? I don't have a previous list in this conversation. Want me to find some?\none more\nN\nNex\nSure — 1 more of what? I haven't shown any results yet to expand on.\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 6,
+          "message": "tell me about the last one",
+          "fabricated": null,
+          "worldCardCount": 0,
+          "inlineExists": false,
+          "cardNames": [],
+          "cardOrdinals": [],
+          "cardRefIds": [],
+          "tailText": "n background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:41\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\ncan i see details\nN\nNex\nI understand you're looking for details. Could you please clarify what specific details you need or what area of Indonesia you're interested in?\ntell me about the first one\nN\nNex\nI haven't shown any results yet in this conversation. Want me to search first?\ntell me about the second one\nN\nNex\nWhich one do you mean? I don't have a previous list in this conversation. Want me to find some?\none more\nN\nNex\nSure — 1 more of what? I haven't shown any results yet to expand on.\ntell me about the last one\nN\nNex\nI haven't shown any results yet in this conversation. Want me to search first?\nContacts\nTasks\nPlay"
+        }
+      ],
+      "consoleLogs": [
+        {
+          "type": "log",
+          "text": "[HMR] connected"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Web Analytics]%c [view] http://localhost:3008/nex-app/chat color: rgb(120, 120, 120) color: inherit {o: http://localhost:3008/nex-app/chat, sv: 0.1.3, sdkn: @vercel/analytics/react, sdkv: 2."
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Speed Insights]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 5075ms"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 2628ms"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 2444ms"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 5090ms"
+        }
+      ],
+      "pageErrors": [
+        "Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math"
+      ],
+      "screenshots": [
+        "B_card_continuation_00_initial.png",
+        "B_card_continuation_T01.png",
+        "B_card_continuation_T02.png",
+        "B_card_continuation_T03.png",
+        "B_card_continuation_T04.png",
+        "B_card_continuation_T05.png",
+        "B_card_continuation_T06.png"
+      ]
+    },
+    "C_topic_switch": {
+      "id": "C_topic_switch",
+      "description": "Hotel → restaurant · show me the first one → must be restaurant not hotel",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "need a hotel tonight",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "go\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:42\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nneed a hotel tonight\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 2,
+          "message": "actually, I need a restaurant",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:42\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nneed a hotel tonight\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nactually, I need a restaurant\nN\nNex\nGot it — switching to restaurants. What area or type are you looking for?\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 3,
+          "message": "show me the first one",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:42\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nneed a hotel tonight\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nactually, I need a restaurant\nN\nNex\nGot it — switching to restaurants. What area or type are you looking for?\nOpen directory\nshow me the first one\nN\nNex\nI haven't shown any results yet in this conversation. Want me to search first?\nOpen directory\nContacts\nTasks\nPlay"
+        }
+      ],
+      "consoleLogs": [
+        {
+          "type": "log",
+          "text": "[HMR] connected"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Web Analytics]%c [view] http://localhost:3008/nex-app/chat color: rgb(120, 120, 120) color: inherit {o: http://localhost:3008/nex-app/chat, sv: 0.1.3, sdkn: @vercel/analytics/react, sdkv: 2."
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Speed Insights]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 3432ms"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 1649ms"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 5061ms"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 1927ms"
+        }
+      ],
+      "pageErrors": [
+        "Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math"
+      ],
+      "screenshots": [
+        "C_topic_switch_00_initial.png",
+        "C_topic_switch_T01.png",
+        "C_topic_switch_T02.png",
+        "C_topic_switch_T03.png"
+      ]
+    },
+    "D_fresh_protection": {
+      "id": "D_fresh_protection",
+      "description": "Fresh session · 'tell me about the first hotel' → honest clarification · then find + first",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "tell me about the first hotel",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Pego Homestay",
+            "Penginapan Kunthi"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-0000G",
+            "#AC-2026-0000P"
+          ],
+          "tailText": "ng\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:43\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\ntell me about the first hotel\nN\nNex\nWhich hotel do you mean? I don't have a previous hotel list in this conversation. Want me to find some?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nPego Homestay\nGUESTHOUSE\nYogyakarta\nno price published\nno rating published\n3\nPenginapan Kunthi\nGUESTHOUSE\nYogyakarta\nno price published\nno rating published\nFind nearby\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 2,
+          "message": "find me hotels near Malioboro",
+          "fabricated": null,
+          "worldCardCount": 6,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Pego Homestay",
+            "Penginapan Kunthi",
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3",
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-0000G",
+            "#AC-2026-0000P",
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "s due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:43\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\ntell me about the first hotel\nN\nNex\nWhich hotel do you mean? I don't have a previous hotel list in this conversation. Want me to find some?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nPego Homestay\nGUESTHOUSE\nYogyakarta\nno price published\nno rating published\n3\nPenginapan Kunthi\nGUESTHOUSE\nYogyakarta\nno price published\nno rating published\nFind nearby\nfind me hotels near Malioboro\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 3,
+          "message": "tell me about the first one",
+          "fabricated": null,
+          "worldCardCount": 9,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Pego Homestay",
+            "Penginapan Kunthi",
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel",
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3",
+            "1",
+            "2",
+            "3",
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-0000G",
+            "#AC-2026-0000P",
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019",
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": " straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\ntell me about the first hotel\nN\nNex\nWhich hotel do you mean? I don't have a previous hotel list in this conversation. Want me to find some?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nPego Homestay\nGUESTHOUSE\nYogyakarta\nno price published\nno rating published\n3\nPenginapan Kunthi\nGUESTHOUSE\nYogyakarta\nno price published\nno rating published\nFind nearby\nfind me hotels near Malioboro\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\ntell me about the first one\nN\nNex\nI don't have many verified details about Gaotama Hotel yet. Want me to help find their contact info?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nFind nearby\nContacts\nTasks\nPlay"
+        }
+      ],
+      "consoleLogs": [
+        {
+          "type": "log",
+          "text": "[HMR] connected"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Web Analytics]%c [view] http://localhost:3008/nex-app/chat color: rgb(120, 120, 120) color: inherit {o: http://localhost:3008/nex-app/chat, sv: 0.1.3, sdkn: @vercel/analytics/react, sdkv: 2."
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Speed Insights]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 3212ms"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 1871ms"
+        }
+      ],
+      "pageErrors": [
+        "Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math"
+      ],
+      "screenshots": [
+        "D_fresh_protection_00_initial.png",
+        "D_fresh_protection_T01.png",
+        "D_fresh_protection_T02.png",
+        "D_fresh_protection_T03.png"
+      ]
+    },
+    "E_evidence_safety": {
+      "id": "E_evidence_safety",
+      "description": "Cards visible · unsupported attribute / booking / price / facility",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:43\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nfind me hotels\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 2,
+          "message": "does it have a helicopter pad?",
+          "fabricated": null,
+          "worldCardCount": 6,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel",
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3",
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019",
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "der is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:43\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nfind me hotels\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\ndoes it have a helicopter pad?\nN\nNex\nI don't have verified information about helicopter pad for Gaotama Hotel yet. Want me to help you confirm?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 3,
+          "message": "can I book it?",
+          "fabricated": null,
+          "worldCardCount": 6,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel",
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3",
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019",
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": " September · 13:43\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nfind me hotels\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\ndoes it have a helicopter pad?\nN\nNex\nI don't have verified information about helicopter pad for Gaotama Hotel yet. Want me to help you confirm?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\ncan I book it?\nN\nNex\nI don't have verified booking access for these listings through NEX yet, so I don't want to say I can when I can't confirm it. I can help you get more info instead.\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 4,
+          "message": "how much is the room tonight?",
+          "fabricated": null,
+          "worldCardCount": 9,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel",
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel",
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3",
+            "1",
+            "2",
+            "3",
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019",
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019",
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "th customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nfind me hotels\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\ndoes it have a helicopter pad?\nN\nNex\nI don't have verified information about helicopter pad for Gaotama Hotel yet. Want me to help you confirm?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\ncan I book it?\nN\nNex\nI don't have verified booking access for these listings through NEX yet, so I don't want to say I can when I can't confirm it. I can help you get more info instead.\nOpen directory\nhow much is the room tonight?\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nBrowse businesses\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 5,
+          "message": "does it have a gym?",
+          "fabricated": null,
+          "worldCardCount": 9,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel",
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel",
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3",
+            "1",
+            "2",
+            "3",
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019",
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019",
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "h — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nfind me hotels\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\ndoes it have a helicopter pad?\nN\nNex\nI don't have verified information about helicopter pad for Gaotama Hotel yet. Want me to help you confirm?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\ncan I book it?\nN\nNex\nI don't have verified booking access for these listings through NEX yet, so I don't want to say I can when I can't confirm it. I can help you get more info instead.\nOpen directory\nhow much is the room tonight?\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nBrowse businesses\ndoes it have a gym?\nN\nNex\nI don't have verified information about Gym for Gaotama Hotel yet. Want me to help you confirm?\nOpen directory\nContacts\nTasks\nPlay"
+        }
+      ],
+      "consoleLogs": [
+        {
+          "type": "log",
+          "text": "[HMR] connected"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Web Analytics]%c [view] http://localhost:3008/nex-app/chat color: rgb(120, 120, 120) color: inherit {o: http://localhost:3008/nex-app/chat, sv: 0.1.3, sdkn: @vercel/analytics/react, sdkv: 2."
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Speed Insights]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 3550ms"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 5085ms"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 5093ms"
+        }
+      ],
+      "pageErrors": [
+        "Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math"
+      ],
+      "screenshots": [
+        "E_evidence_safety_00_initial.png",
+        "E_evidence_safety_T01.png",
+        "E_evidence_safety_T02.png",
+        "E_evidence_safety_T03.png",
+        "E_evidence_safety_T04.png",
+        "E_evidence_safety_T05.png"
+      ]
+    },
+    "F_negation": {
+      "id": "F_negation",
+      "description": "Negation preservation · 'I don't want the first one' → 'show me the second one'",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "find me hotels",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:44\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nfind me hotels\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 2,
+          "message": "I don't want the first one.",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:44\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nfind me hotels\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nI don't want the first one.\nN\nNex\nlet's look at the next ones.\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 3,
+          "message": "show me the second one.",
+          "fabricated": null,
+          "worldCardCount": 6,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel",
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3",
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019",
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": ", then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:44\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nfind me hotels\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nI don't want the first one.\nN\nNex\nlet's look at the next ones.\nOpen directory\nshow me the second one.\nN\nNex\nSelaras Inn Hotel Yogyakarta is the second hotel on the list. Would you like to know about its location, amenities, or availability?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 4,
+          "message": "not a hotel — I need a restaurant.",
+          "fabricated": null,
+          "worldCardCount": 6,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel",
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3",
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019",
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "mber · 13:44\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nfind me hotels\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nI don't want the first one.\nN\nNex\nlet's look at the next ones.\nOpen directory\nshow me the second one.\nN\nNex\nSelaras Inn Hotel Yogyakarta is the second hotel on the list. Would you like to know about its location, amenities, or availability?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nnot a hotel — I need a restaurant.\nN\nNex\nGot it — restaurant instead. What kind are you after?\nOpen directory\nContacts\nTasks\nPlay"
+        }
+      ],
+      "consoleLogs": [
+        {
+          "type": "log",
+          "text": "[HMR] connected"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Speed Insights]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Web Analytics]%c [view] http://localhost:3008/nex-app/chat color: rgb(120, 120, 120) color: inherit {o: http://localhost:3008/nex-app/chat, sv: 0.1.3, sdkn: @vercel/analytics/react, sdkv: 2."
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 5078ms"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 5075ms"
+        }
+      ],
+      "pageErrors": [
+        "Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math"
+      ],
+      "screenshots": [
+        "F_negation_00_initial.png",
+        "F_negation_T01.png",
+        "F_negation_T02.png",
+        "F_negation_T03.png",
+        "F_negation_T04.png"
+      ]
+    },
+    "G_language": {
+      "id": "G_language",
+      "description": "English → 'Speak Indonesian' → Cari hotel dekat Malioboro → 'Actually speak English'",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "hello",
+          "fabricated": null,
+          "worldCardCount": 0,
+          "inlineExists": false,
+          "cardNames": [],
+          "cardOrdinals": [],
+          "cardRefIds": [],
+          "tailText": "chen Fitter\nCheshire\n·\nLast seen 1h ago\n“Quote attached — let me know what you think”\n1h\n2\nPEOPLE\n3\nEmma Whitmore\nFamily\nBristol\n·\nLast seen 4h ago\nJames Okafor\nColleague\nLondon\n·\nLast seen yesterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:45\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nhello\nN\nNex\nHi! What can I help you with?\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 2,
+          "message": "Speak Indonesian.",
+          "fabricated": null,
+          "worldCardCount": 0,
+          "inlineExists": false,
+          "cardNames": [],
+          "cardOrdinals": [],
+          "cardRefIds": [],
+          "tailText": "\nEmma Whitmore\nFamily\nBristol\n·\nLast seen 4h ago\nJames Okafor\nColleague\nLondon\n·\nLast seen yesterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:45\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nhello\nN\nNex\nHi! What can I help you with?\nSpeak Indonesian.\nN\nNex\nBaik, saya akan menjawab dalam bahasa Indonesia. Ada yang bisa saya bantu?\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 3,
+          "message": "Cari hotel dekat Malioboro.",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "fern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:45\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nhello\nN\nNex\nHi! What can I help you with?\nSpeak Indonesian.\nN\nNex\nBaik, saya akan menjawab dalam bahasa Indonesia. Ada yang bisa saya bantu?\nCari hotel dekat Malioboro.\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 4,
+          "message": "Actually, speak English.",
+          "fabricated": null,
+          "worldCardCount": 6,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel",
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3",
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019",
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:45\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nhello\nN\nNex\nHi! What can I help you with?\nSpeak Indonesian.\nN\nNex\nBaik, saya akan menjawab dalam bahasa Indonesia. Ada yang bisa saya bantu?\nCari hotel dekat Malioboro.\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nActually, speak English.\nN\nNex\nBaik, tidak masalah. Ada yang bisa saya bantu?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 5,
+          "message": "find me hotels",
+          "fabricated": null,
+          "worldCardCount": 9,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel",
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel",
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3",
+            "1",
+            "2",
+            "3",
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019",
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019",
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nhello\nN\nNex\nHi! What can I help you with?\nSpeak Indonesian.\nN\nNex\nBaik, saya akan menjawab dalam bahasa Indonesia. Ada yang bisa saya bantu?\nCari hotel dekat Malioboro.\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nActually, speak English.\nN\nNex\nBaik, tidak masalah. Ada yang bisa saya bantu?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nfind me hotels\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nContacts\nTasks\nPlay"
+        }
+      ],
+      "consoleLogs": [
+        {
+          "type": "log",
+          "text": "[HMR] connected"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Web Analytics]%c [view] http://localhost:3008/nex-app/chat color: rgb(120, 120, 120) color: inherit {o: http://localhost:3008/nex-app/chat, sv: 0.1.3, sdkn: @vercel/analytics/react, sdkv: 2."
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Speed Insights]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 3338ms"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 1654ms"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 5058ms"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 2026ms"
+        }
+      ],
+      "pageErrors": [
+        "Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math"
+      ],
+      "screenshots": [
+        "G_language_00_initial.png",
+        "G_language_T01.png",
+        "G_language_T02.png",
+        "G_language_T03.png",
+        "G_language_T04.png",
+        "G_language_T05.png"
+      ]
+    },
+    "H_messy_human": {
+      "id": "H_messy_human",
+      "description": "Realistic messy natural conversation with corrections, negation, references, evidence questions",
+      "turns": [
+        {
+          "turn": 1,
+          "message": "need somewhere tonight",
+          "fabricated": null,
+          "worldCardCount": 0,
+          "inlineExists": false,
+          "cardNames": [],
+          "cardOrdinals": [],
+          "cardRefIds": [],
+          "tailText": "you think”\n1h\n2\nPEOPLE\n3\nEmma Whitmore\nFamily\nBristol\n·\nLast seen 4h ago\nJames Okafor\nColleague\nLondon\n·\nLast seen yesterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:45\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nneed somewhere tonight\nN\nNex\nWhere do you mean? I don't have a specific location in mind from this conversation yet.\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 2,
+          "message": "near town",
+          "fabricated": null,
+          "worldCardCount": 0,
+          "inlineExists": false,
+          "cardNames": [],
+          "cardOrdinals": [],
+          "cardRefIds": [],
+          "tailText": "esterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:45\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nneed somewhere tonight\nN\nNex\nWhere do you mean? I don't have a specific location in mind from this conversation yet.\nnear town\nN\nNex\nCould you be a bit more specific? I haven't shown any results yet in this conversation to build on.\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 3,
+          "message": "cheaper",
+          "fabricated": null,
+          "worldCardCount": 0,
+          "inlineExists": false,
+          "cardNames": [],
+          "cardOrdinals": [],
+          "cardRefIds": [],
+          "tailText": "ast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:45\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nneed somewhere tonight\nN\nNex\nWhere do you mean? I don't have a specific location in mind from this conversation yet.\nnear town\nN\nNex\nCould you be a bit more specific? I haven't shown any results yet in this conversation to build on.\ncheaper\nN\nNex\nI haven't shown any results yet in this conversation to compare by price. Want me to search first?\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 4,
+          "message": "no actually not a hotel",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "eminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:45\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nneed somewhere tonight\nN\nNex\nWhere do you mean? I don't have a specific location in mind from this conversation yet.\nnear town\nN\nNex\nCould you be a bit more specific? I haven't shown any results yet in this conversation to build on.\ncheaper\nN\nNex\nI haven't shown any results yet in this conversation to compare by price. Want me to search first?\nno actually not a hotel\nN\nNex\nGot it — actually. What would you like to know?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 5,
+          "message": "restaurant",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "n try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nSUNDAY\n6 September · 13:45\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nneed somewhere tonight\nN\nNex\nWhere do you mean? I don't have a specific location in mind from this conversation yet.\nnear town\nN\nNex\nCould you be a bit more specific? I haven't shown any results yet in this conversation to build on.\ncheaper\nN\nNex\nI haven't shown any results yet in this conversation to compare by price. Want me to search first?\nno actually not a hotel\nN\nNex\nGot it — actually. What would you like to know?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nrestaurant\nN\nNex\nGot it — switching to restaurants. What area or type are you looking for?\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 6,
+          "message": "something nice",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "ack.\nSUNDAY\n6 September · 13:45\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nneed somewhere tonight\nN\nNex\nWhere do you mean? I don't have a specific location in mind from this conversation yet.\nnear town\nN\nNex\nCould you be a bit more specific? I haven't shown any results yet in this conversation to build on.\ncheaper\nN\nNex\nI haven't shown any results yet in this conversation to compare by price. Want me to search first?\nno actually not a hotel\nN\nNex\nGot it — actually. What would you like to know?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nrestaurant\nN\nNex\nGot it — switching to restaurants. What area or type are you looking for?\nOpen directory\nsomething nice\nN\nNex\nGlad to hear that. Anything I can help with next?\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 7,
+          "message": "not too expensive",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nneed somewhere tonight\nN\nNex\nWhere do you mean? I don't have a specific location in mind from this conversation yet.\nnear town\nN\nNex\nCould you be a bit more specific? I haven't shown any results yet in this conversation to build on.\ncheaper\nN\nNex\nI haven't shown any results yet in this conversation to compare by price. Want me to search first?\nno actually not a hotel\nN\nNex\nGot it — actually. What would you like to know?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nrestaurant\nN\nNex\nGot it — switching to restaurants. What area or type are you looking for?\nOpen directory\nsomething nice\nN\nNex\nGlad to hear that. Anything I can help with next?\nOpen directory\nnot too expensive\nN\nNex\nGot it. What would you like to do?\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 8,
+          "message": "the second one",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nneed somewhere tonight\nN\nNex\nWhere do you mean? I don't have a specific location in mind from this conversation yet.\nnear town\nN\nNex\nCould you be a bit more specific? I haven't shown any results yet in this conversation to build on.\ncheaper\nN\nNex\nI haven't shown any results yet in this conversation to compare by price. Want me to search first?\nno actually not a hotel\nN\nNex\nGot it — actually. What would you like to know?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nrestaurant\nN\nNex\nGot it — switching to restaurants. What area or type are you looking for?\nOpen directory\nsomething nice\nN\nNex\nGlad to hear that. Anything I can help with next?\nOpen directory\nnot too expensive\nN\nNex\nGot it. What would you like to do?\nOpen directory\nthe second one\nN\nNex\nYep — hotel trim tiga.\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 9,
+          "message": "what about parking",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": " and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nneed somewhere tonight\nN\nNex\nWhere do you mean? I don't have a specific location in mind from this conversation yet.\nnear town\nN\nNex\nCould you be a bit more specific? I haven't shown any results yet in this conversation to build on.\ncheaper\nN\nNex\nI haven't shown any results yet in this conversation to compare by price. Want me to search first?\nno actually not a hotel\nN\nNex\nGot it — actually. What would you like to know?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nrestaurant\nN\nNex\nGot it — switching to restaurants. What area or type are you looking for?\nOpen directory\nsomething nice\nN\nNex\nGlad to hear that. Anything I can help with next?\nOpen directory\nnot too expensive\nN\nNex\nGot it. What would you like to do?\nOpen directory\nthe second one\nN\nNex\nYep — hotel trim tiga.\nOpen directory\nwhat about parking\nN\nNex\nI don't have verified Parking information for the current list. Want me to search for ones that specifically offer Parking?\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 10,
+          "message": "can i contact them",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "something.\n☀️\nGood morning\nSunday 6 September\nTODAY\nNothing scheduled — a rare quiet one.\nOpen Tasks\nGood morning.\nneed somewhere tonight\nN\nNex\nWhere do you mean? I don't have a specific location in mind from this conversation yet.\nnear town\nN\nNex\nCould you be a bit more specific? I haven't shown any results yet in this conversation to build on.\ncheaper\nN\nNex\nI haven't shown any results yet in this conversation to compare by price. Want me to search first?\nno actually not a hotel\nN\nNex\nGot it — actually. What would you like to know?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nrestaurant\nN\nNex\nGot it — switching to restaurants. What area or type are you looking for?\nOpen directory\nsomething nice\nN\nNex\nGlad to hear that. Anything I can help with next?\nOpen directory\nnot too expensive\nN\nNex\nGot it. What would you like to do?\nOpen directory\nthe second one\nN\nNex\nYep — hotel trim tiga.\nOpen directory\nwhat about parking\nN\nNex\nI don't have verified Parking information for the current list. Want me to search for ones that specifically offer Parking?\nOpen directory\ncan i contact them\nN\nNex\nI don't have verified contact access for these listings through NEX yet, so I don't want to say I can when I can't confirm it. I can help you get more info instead.\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 11,
+          "message": "how did you find these",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "location in mind from this conversation yet.\nnear town\nN\nNex\nCould you be a bit more specific? I haven't shown any results yet in this conversation to build on.\ncheaper\nN\nNex\nI haven't shown any results yet in this conversation to compare by price. Want me to search first?\nno actually not a hotel\nN\nNex\nGot it — actually. What would you like to know?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nrestaurant\nN\nNex\nGot it — switching to restaurants. What area or type are you looking for?\nOpen directory\nsomething nice\nN\nNex\nGlad to hear that. Anything I can help with next?\nOpen directory\nnot too expensive\nN\nNex\nGot it. What would you like to do?\nOpen directory\nthe second one\nN\nNex\nYep — hotel trim tiga.\nOpen directory\nwhat about parking\nN\nNex\nI don't have verified Parking information for the current list. Want me to search for ones that specifically offer Parking?\nOpen directory\ncan i contact them\nN\nNex\nI don't have verified contact access for these listings through NEX yet, so I don't want to say I can when I can't confirm it. I can help you get more info instead.\nOpen directory\nhow did you find these\nN\nNex\nI found them through NEX's accommodation directory for the area. Some of the underlying listing information was contributed via OpenStreetMap.\nOpen directory\nContacts\nTasks\nPlay"
+        },
+        {
+          "turn": 12,
+          "message": "are these verified",
+          "fabricated": null,
+          "worldCardCount": 3,
+          "inlineExists": true,
+          "cardNames": [
+            "Gaotama Hotel",
+            "Selaras Inn Hotel Yogyakarta",
+            "Indonesia Hotel"
+          ],
+          "cardOrdinals": [
+            "1",
+            "2",
+            "3"
+          ],
+          "cardRefIds": [
+            "#AC-2026-0000D",
+            "#AC-2026-00010",
+            "#AC-2026-00019"
+          ],
+          "tailText": "uld you be a bit more specific? I haven't shown any results yet in this conversation to build on.\ncheaper\nN\nNex\nI haven't shown any results yet in this conversation to compare by price. Want me to search first?\nno actually not a hotel\nN\nNex\nGot it — actually. What would you like to know?\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nrestaurant\nN\nNex\nGot it — switching to restaurants. What area or type are you looking for?\nOpen directory\nsomething nice\nN\nNex\nGlad to hear that. Anything I can help with next?\nOpen directory\nnot too expensive\nN\nNex\nGot it. What would you like to do?\nOpen directory\nthe second one\nN\nNex\nYep — hotel trim tiga.\nOpen directory\nwhat about parking\nN\nNex\nI don't have verified Parking information for the current list. Want me to search for ones that specifically offer Parking?\nOpen directory\ncan i contact them\nN\nNex\nI don't have verified contact access for these listings through NEX yet, so I don't want to say I can when I can't confirm it. I can help you get more info instead.\nOpen directory\nhow did you find these\nN\nNex\nI found them through NEX's accommodation directory for the area. Some of the underlying listing information was contributed via OpenStreetMap.\nOpen directory\nare these verified\nN\nNex\nYep — hotel trim tiga.\nOpen directory\nContacts\nTasks\nPlay"
+        }
+      ],
+      "consoleLogs": [
+        {
+          "type": "log",
+          "text": "[HMR] connected"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit"
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Web Analytics]%c [view] http://localhost:3008/nex-app/chat color: rgb(120, 120, 120) color: inherit {o: http://localhost:3008/nex-app/chat, sv: 0.1.3, sdkn: @vercel/analytics/react, sdkv: 2."
+        },
+        {
+          "type": "log",
+          "text": "%c[Vercel Speed Insights]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 3350ms"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 1676ms"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] rebuilding"
+        },
+        {
+          "type": "log",
+          "text": "[Fast Refresh] done in 1707ms"
+        }
+      ],
+      "pageErrors": [
+        "Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math"
+      ],
+      "screenshots": [
+        "H_messy_human_00_initial.png",
+        "H_messy_human_T01.png",
+        "H_messy_human_T02.png",
+        "H_messy_human_T03.png",
+        "H_messy_human_T04.png",
+        "H_messy_human_T05.png",
+        "H_messy_human_T06.png",
+        "H_messy_human_T07.png",
+        "H_messy_human_T08.png",
+        "H_messy_human_T09.png",
+        "H_messy_human_T10.png",
+        "H_messy_human_T11.png",
+        "H_messy_human_T12.png"
+      ]
+    }
+  },
+  "verdicts": {
+    "A_cards_visible": true,
+    "B_T1_cards": false,
+    "B_T2_cards_still": false,
+    "B_T3_first_named": false,
+    "B_T4_second_named": false,
+    "B_T5_one_more_ack": false,
+    "B_T6_last_resolves": true,
+    "C_T2_topic_shift_ack": true,
+    "C_T3_no_stale_hotel": false,
+    "D_T1_honest_boundary": true,
+    "D_T2_new_cards": true,
+    "D_T3_first_from_new": true,
+    "E_helicopter_unknown": true,
+    "E_booking_boundary": true,
+    "E_price_no_fab": true,
+    "F_topic_switch": true,
+    "G_language_switch": true,
+    "G_id_query_works": true,
+    "G_english_back": true,
+    "H_survives": true,
+    "H_no_fabrications": true,
+    "zero_fabrications_overall": true,
+    "fabrication_hit": null
+  }
+}

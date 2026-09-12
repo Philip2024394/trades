@@ -1,0 +1,178 @@
+{
+  "base_url": "http://localhost:3008",
+  "results": [
+    {
+      "label": "A1 · /nex-app/enter responds",
+      "ok": true,
+      "detail": "status=200"
+    },
+    {
+      "label": "A2 · gate root mounts",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "A3 · foreground layer mounted (glass surface superseded by reference composition)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "A4 · environment renders behind foreground",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "A5 · gate orb present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "A6 · wordmark shows NEX",
+      "ok": true,
+      "detail": "text=\"NEX\""
+    },
+    {
+      "label": "A7 · sign-in inputs + submit present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "A8 · sign-in disabled with empty inputs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "A9 · EMAIL + PASSWORD labels present (uppercase)",
+      "ok": true,
+      "detail": "labels=[\"EMAIL\",\"PASSWORD\"]"
+    },
+    {
+      "label": "A10 · password eye toggle present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "A10b · eye toggle flips password input type",
+      "ok": true,
+      "detail": "password -> text"
+    },
+    {
+      "label": "A11 · Create Account button present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "A11b · Create Account row has decorative side lines",
+      "ok": true,
+      "detail": "lines=2"
+    },
+    {
+      "label": "A12 · Bottom circular N mark present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "A12b · Bottom mark reads 'N'",
+      "ok": true,
+      "detail": "text=\"N\""
+    },
+    {
+      "label": "A13 · reference-scaled positions land near expected % (wordmark ~12.3% · orb ~33% · bottom mark ~88.7%)",
+      "ok": true,
+      "detail": "wordmark=12.31% · orb=32.97% · mark=88.67%"
+    },
+    {
+      "label": "N1 · NexSectionsNav hidden on gate route",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "V1a · no horizontal scroll at 390x844",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "V1b · gate fills mobile viewport",
+      "ok": true,
+      "detail": "390x844"
+    },
+    {
+      "label": "D0 · submit enabled once both inputs filled",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "D1 · phase became 'error' (no faked success)",
+      "ok": true,
+      "detail": "phase=\"error\""
+    },
+    {
+      "label": "D2 · error banner visible + calm (no giant red box)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "D3 · gate atmosphere preserved after failure",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "D4 · submit re-enabled for retry after error",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "AUTH-1 · Project B (ijvqdvsvwtwxzcqmoqit) received Glass Gate traffic",
+      "ok": true,
+      "detail": "count=1"
+    },
+    {
+      "label": "AUTH-2 · Project A (msdonkkechxzgagyguoe) received ZERO Glass Gate traffic",
+      "ok": true,
+      "detail": "count=0"
+    },
+    {
+      "label": "AUTH-3 · No other Supabase project contacted",
+      "ok": true,
+      "detail": "count=0"
+    },
+    {
+      "label": "AUTH-4 · sign-in POST /auth/v1/token targeted Project B",
+      "ok": true,
+      "detail": "verified"
+    },
+    {
+      "label": "S · real sign-in journey",
+      "ok": true,
+      "detail": "SKIPPED · NEX_P2_TEST_USER_A_* not in env (honest skip · no fake success)"
+    },
+    {
+      "label": "R1 · reduced-motion disables orb animation",
+      "ok": true,
+      "detail": "animationName=\"none\""
+    },
+    {
+      "label": "V2 · no horizontal scroll at 1440x900",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "V2b · wordmark still renders at desktop",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "R2a · /nex-app/discover still loads",
+      "ok": true,
+      "detail": "status=200"
+    },
+    {
+      "label": "R2b · Discover selector still mounts (Phase Social preserved)",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "passed": 34,
+  "failed": 0,
+  "total": 34
+}

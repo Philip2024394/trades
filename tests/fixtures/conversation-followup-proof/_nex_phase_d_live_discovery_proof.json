@@ -1,0 +1,49 @@
+{
+  "runAt": "2026-09-06T13:37:48.355Z",
+  "base_url": "http://localhost:3008",
+  "results": {
+    "A_english_tonight_routes_to_live_discovery": {
+      "pass": true,
+      "intent": "live_discovery",
+      "city": "yogyakarta",
+      "cards": 8,
+      "empty_reason": null
+    },
+    "B_indonesian_routes_and_resolves_jogja_alias": {
+      "pass": true,
+      "intent": "live_discovery",
+      "city": "yogyakarta",
+      "cards": 8
+    },
+    "C_category_scoped_music_only": {
+      "pass": true,
+      "intent": "live_discovery",
+      "category": "music",
+      "cards": 2
+    },
+    "D_zero_evidence_no_fabrication": {
+      "pass": true,
+      "intent": "live_discovery",
+      "cards": 0,
+      "empty_reason": "no_city_context"
+    },
+    "E_greeting_does_not_over_trigger_live_discovery": {
+      "pass": true,
+      "intent": "conversation"
+    },
+    "F_reply_is_calm_conversational": {
+      "pass": true,
+      "snippet": "Ada beberapa hal live di Yogyakarta sekarang — 5 sedang live sekarang, 3 akan mulai segera."
+    },
+    "G_suggestions_route_to_nex_live": {
+      "pass": true,
+      "suggestions": 6,
+      "sample_href": "/nex-live?media=23ddb66f-66a6-44c7-9cdc-560f5a853946"
+    }
+  },
+  "summary": {
+    "pass": 7,
+    "fail": 0,
+    "total": 7
+  }
+}

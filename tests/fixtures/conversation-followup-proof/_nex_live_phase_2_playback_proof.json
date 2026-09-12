@@ -1,0 +1,30 @@
+{
+  "runAt": "2026-09-06T11:30:46.888Z",
+  "checks": {
+    "A_media_swipe_feed_populated": {
+      "pass": true,
+      "data_active_index": "0",
+      "data_item_count": "1"
+    },
+    "B_video_element_has_real_src": {
+      "pass": true,
+      "data_state": "BUFFERING",
+      "tag": "video",
+      "src_prefix": "/api/nex/objects/nex-media/owner/nex-live-mock/video/mtbr9zs"
+    },
+    "C_player_state_indicates_real_playback": {
+      "pass": true,
+      "data_state": "BUFFERING"
+    },
+    "D_creator_handoff_shows_honest_rights_label": {
+      "pass": true,
+      "has_declared_label": true,
+      "avoids_verified": true
+    }
+  },
+  "summary": {
+    "pass": 4,
+    "fail": 0,
+    "total": 4
+  }
+}

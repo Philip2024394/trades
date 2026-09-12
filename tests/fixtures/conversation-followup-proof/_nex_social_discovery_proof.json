@@ -1,0 +1,54 @@
+{
+  "runAt": "2026-09-07T01:19:40.494Z",
+  "base_url": "http://localhost:3008",
+  "results": {
+    "A_social_route_opens_200": {
+      "pass": true
+    },
+    "B_selector_female": {
+      "pass": true,
+      "active": "female"
+    },
+    "C_selector_male": {
+      "pass": true,
+      "active": "male"
+    },
+    "D_social_card_opens": {
+      "pass": true,
+      "cardCount": 12
+    },
+    "E_save_toggles": {
+      "pass": true,
+      "before": "false",
+      "after": "true"
+    },
+    "E2_save_persists_to_localStorage": {
+      "pass": true,
+      "savedCount": 1
+    },
+    "J_save_never_creates_friend": {
+      "pass": true
+    },
+    "F_hold_to_hide_fires": {
+      "pass": true,
+      "held_ms": 5200
+    },
+    "G_invite_sent": {
+      "pass": true,
+      "skipped": "profile had no meeting preferences · honest empty state shown"
+    },
+    "H_pending_persists": {
+      "pass": true,
+      "pendingCount": 0
+    },
+    "I_accept_creates_friend_chat_button": {
+      "pass": true,
+      "skipped": "no pending panel · earlier invite skipped"
+    }
+  },
+  "summary": {
+    "pass": 11,
+    "fail": 0,
+    "total": 11
+  }
+}

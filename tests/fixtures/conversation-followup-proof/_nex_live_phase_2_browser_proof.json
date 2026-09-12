@@ -1,0 +1,79 @@
+{
+  "runAt": "2026-09-06T11:24:47.756Z",
+  "checks": {
+    "1_nex_live_loads": {
+      "pass": true,
+      "http_status": 200
+    },
+    "2_music_video_nav_visible": {
+      "pass": true
+    },
+    "2b_video_mode_switch": {
+      "pass": true,
+      "aria_pressed": "true"
+    },
+    "2c_music_mode_switch": {
+      "pass": true,
+      "aria_pressed": "true"
+    },
+    "3_honest_empty_state_visible": {
+      "pass": true,
+      "has_items": false
+    },
+    "4_upload_now_routes_to_phase2": {
+      "pass": true,
+      "href": "/nex-live/upload",
+      "availability": "AVAILABLE"
+    },
+    "4b_navigated_to_upload_page": {
+      "pass": true,
+      "url": "http://localhost:3008/nex-live/upload"
+    },
+    "5_upload_client_renders": {
+      "pass": true
+    },
+    "5b_file_input_present": {
+      "pass": true
+    },
+    "6_publish_hidden_without_file": {
+      "pass": true
+    },
+    "7a_title_prefilled_from_filename": {
+      "pass": true,
+      "title": "phase2-test"
+    },
+    "7b_publish_enabled_after_completing_form": {
+      "pass": true,
+      "data_can_publish": "true"
+    },
+    "8_uncheck_reblocks_publish": {
+      "pass": true,
+      "data_can_publish": "false"
+    },
+    "9_returned_to_nex_live_shell_intact": {
+      "pass": true
+    },
+    "10_discover_returns_playback_enrichment_fields": {
+      "pass": true,
+      "item_count": 0,
+      "sample_playback_reason": "no_items"
+    },
+    "11_nex_video_feed_returns_real_playback_url": {
+      "pass": true,
+      "media_id": "23ddb66f-66a6-44c7-9cdc-560f5a853946",
+      "has_url": true,
+      "note": "Real signed playback URL from ObjectStorage · same pipeline media-resolver.ts uses"
+    }
+  },
+  "artifacts": [
+    "C:\\Users\\Victus\\trades\\tests\\fixtures\\conversation-followup-proof\\_phase_2_screenshots\\01-nex-live-initial.png",
+    "C:\\Users\\Victus\\trades\\tests\\fixtures\\conversation-followup-proof\\_phase_2_screenshots\\02-creator-panel-open.png",
+    "C:\\Users\\Victus\\trades\\tests\\fixtures\\conversation-followup-proof\\_phase_2_screenshots\\03-upload-page-initial.png",
+    "C:\\Users\\Victus\\trades\\tests\\fixtures\\conversation-followup-proof\\_phase_2_screenshots\\04-upload-form-complete.png"
+  ],
+  "summary": {
+    "pass": 16,
+    "fail": 0,
+    "total": 16
+  }
+}
