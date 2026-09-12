@@ -68,7 +68,7 @@ export async function POST(req: Request) {
           data: {
             // Session param ensures the fresh tab hydrates with the
             // right identity so it can drain the offer from the inbox.
-            url: `/nex-app/chat?session=${encodeURIComponent(signal.to)}&callId=${encodeURIComponent(signal.callId)}`,
+            url: `/nex-appchat?session=${encodeURIComponent(signal.to)}&callId=${encodeURIComponent(signal.callId)}`,
             kind: "incoming_call",
             callId: signal.callId,
           },
@@ -83,7 +83,7 @@ export async function POST(req: Request) {
           tag,
           requireInteraction: false,
           data: {
-            url: `/nex-app/chat?session=${encodeURIComponent(signal.to)}`,
+            url: `/nex-appchat?session=${encodeURIComponent(signal.to)}`,
             kind: "missed_call",
             callId: signal.callId,
           },

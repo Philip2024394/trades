@@ -5,18 +5,28 @@
 // arrow returns to canvas without losing message history.
 
 import { ArrowLeft, Mic, Send, MoreVertical } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useConversationState } from "../state/ConversationStateProvider";
 import { ChatToolTilesRow } from "./ChatToolTilesRow";
 import { InlineComparisonCards } from "./InlineComparisonCards";
 import type { WoodCardSummary } from "../state/ConversationStateProvider";
 import { NexIcon } from "./NexIcons";
 import { classifyIntent, type ChatIntent } from "./classifyIntent";
+// Stage 3.41.b · Chat surface integration · render NEX artifacts inline
+import type { ChatArtifacts } from "./chat-artifacts";
+import { WorldCardsInline } from "./WorldCardsInline";
+import { ActionProposalPrompt } from "./ActionProposalPrompt";
+import { ActionAuditPill } from "./ActionAuditPill";
+// NEX Phase 3 · P0 · Control Center wired into the three-dot header
+import { ControlCenterPanel } from "./ControlCenterPanel";
 
 export function ChatSurface() {
   const { chatOpen, closeChat, history, sendUserMessage, config, state, canvasPayload, thinking } = useConversationState();
   const [draft, setDraft] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+  // NEX Phase 3 · P0 · Control Center open/close + return-focus
+  const [controlCenterOpen, setControlCenterOpen] = useState(false);
+  const controlCenterEntryRef = useRef<HTMLButtonElement | null>(null);
 
   // Freeze the intent of the LAST user turn so the thinking rotation
   // is derived from what the user just asked (Philip 2026-07-29). Reads
@@ -105,14 +115,28 @@ export function ChatSurface() {
             </div>
           </div>
           <button
+            ref={controlCenterEntryRef}
             type="button"
-            aria-label="Chat options"
+            aria-label="Open Control Center"
+            aria-haspopup="dialog"
+            aria-expanded={controlCenterOpen}
+            aria-controls="nex-control-center-chat"
+            data-control-center-entry="chat"
+            data-testid="nex-chat-control-center-entry"
+            onClick={() => setControlCenterOpen((v) => !v)}
             className="grid h-9 w-9 place-items-center rounded-full"
             style={{ color: "var(--nex-neutral-500)" }}
           >
             <MoreVertical size={20} strokeWidth={1.75} />
           </button>
         </header>
+
+        <ControlCenterPanel
+          isOpen={controlCenterOpen}
+          onClose={() => setControlCenterOpen(false)}
+          panelId="nex-control-center-chat"
+          returnFocusRef={controlCenterEntryRef}
+        />
 
         {/* Merchant identity banner */}
         <MerchantIdentityBanner />
@@ -130,6 +154,22 @@ export function ChatSurface() {
               content={m.content}
               timestamp={m.timestamp}
               woodCards={m.wood_cards}
+              nexArtifacts={m.nex_artifacts}
+              errored={m.errored}
+              onConfirmAction={() => {
+                // Button click flows through the SAME send path as typed
+                // input. The 3.37 authorization gate handles both
+                // identically. Zero parallel authorization path.
+                const proposal = m.nex_artifacts?.pendingProposal;
+                const isID = proposal?.language === "id";
+                void sendUserMessage(isID ? "iya kirim" : "yes send it");
+              }}
+              onDeclineAction={() => {
+                const proposal = m.nex_artifacts?.pendingProposal;
+                const isID = proposal?.language === "id";
+                void sendUserMessage(isID ? "jangan" : "no");
+              }}
+              actionsDisabled={thinking}
             />
           ))}
           {thinking && <ThinkingIndicator lastUserText={lastUserText} />}
@@ -226,12 +266,20 @@ function MerchantIdentityBanner() {
 }
 
 function ChatBubble({
-  role, content, timestamp, woodCards
+  role, content, timestamp, woodCards, nexArtifacts, errored, onConfirmAction, onDeclineAction, actionsDisabled,
 }: {
   role: "user" | "nex";
   content: string;
   timestamp: number;
   woodCards?: WoodCardSummary[];
+  // Stage 3.41.b · NEX artifacts (world cards · proposal · audit)
+  nexArtifacts?: ChatArtifacts;
+  errored?: boolean;
+  // Button callbacks · MUST route through the same sendUserMessage as
+  // typed input so the 3.37 authorization gate handles both identically.
+  onConfirmAction?: () => void;
+  onDeclineAction?: () => void;
+  actionsDisabled?: boolean;
 }) {
   const time = new Date(timestamp).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
   if (role === "user") {
@@ -252,15 +300,34 @@ function ChatBubble({
     );
   }
   return (
-    <div className="mb-3 flex items-start gap-2">
+    <div className="mb-3 flex items-start gap-2" data-testid="nex-bubble">
       <NexAvatar size={32} />
       <div className="min-w-0 flex-1">
         <div className="mb-1 flex items-center gap-2">
           <span className="text-[12px] font-bold" style={{ color: "var(--nex-neutral-900)" }}>NEX</span>
           <span className="text-[10px]" style={{ color: "var(--nex-neutral-500)" }}>{time}</span>
         </div>
-        <NexStructuredResponse content={content} />
+        <div style={errored ? { color: "var(--nex-neutral-700)" } : undefined}>
+          <NexStructuredResponse content={content} />
+        </div>
         {woodCards && woodCards.length > 0 && <WoodCardCarousel cards={woodCards} />}
+        {/* Stage 3.41.b · inline conversational artifacts.
+            Order: world cards → proposal prompt → audit pill.
+            The proposal buttons route through the SAME sendUserMessage
+            as typed input · same 3.37 authorization gate · zero parallel
+            authorization path is architecturally possible from this UI. */}
+        {nexArtifacts?.worldCards && nexArtifacts.worldCards.length > 0 && (
+          <WorldCardsInline cards={nexArtifacts.worldCards} />
+        )}
+        {nexArtifacts?.pendingProposal && onConfirmAction && onDeclineAction && (
+          <ActionProposalPrompt
+            proposal={nexArtifacts.pendingProposal}
+            disabled={actionsDisabled}
+            onConfirm={onConfirmAction}
+            onDecline={onDeclineAction}
+          />
+        )}
+        {nexArtifacts?.audit && <ActionAuditPill audit={nexArtifacts.audit} />}
       </div>
     </div>
   );

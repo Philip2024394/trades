@@ -18,6 +18,7 @@ import {
   Home,
   Search,
   MessageSquare,
+  MessageCircle,
   Users,
   Store,
   Ruler,
@@ -35,8 +36,13 @@ type Section = {
 
 const SECTIONS: Section[] = [
   { href: "/nex-app",                        label: "Home",                 description: "Nex Platform overview",              icon: Home },
+  // Stage 3.41.c · NEX Talk · the friend-voice conversational surface
+  // where World cards · action proposals · verified/unknown outcomes all
+  // render inline in one stream. This is the primary conversational
+  // entry point going forward · legacy /nex-appchat remains untouched.
+  { href: "/nex-appchat",                   label: "NEX Talk",             description: "Talk to NEX like a friend",          icon: MessageCircle },
   { href: "/nex-app/discover",               label: "Discover",             description: "Meet new people nearby",             icon: Search },
-  { href: "/nex-app/messages",               label: "Messages",             description: "Direct chats with your contacts",    icon: MessageSquare },
+  // Messages entry removed 2026-09-06 · /nex-app/messages deleted.
   { href: "/nex-app/contacts",               label: "Contacts",             description: "Your saved connections + groups",    icon: Users },
   { href: "/nex-app/centre",                 label: "Trade Centre",         description: "Marketplace: products · services",   icon: Store },
   { href: "/nex-market",                     label: "NEX Market · Yogyakarta", description: "Marketplace · buy from local sellers", icon: Store },
@@ -83,7 +89,23 @@ export function NexSectionsNav() {
   // Philip 2026-08-03 · hide on the general chat too. The chat page has
   // its own black burger in the header (opens Play) — the shell-level
   // yellow floating button competed visually and duplicated the intent.
-  if (pathname?.startsWith("/nex-app/chat")) return null;
+  // Founder BEGIN 2026-09-09 · /nex-app/chat + /nex-app/talk merged into
+  // canonical /nex-appchat. One check covers both (redirects also in place).
+  if (pathname?.startsWith("/nex-appchat")) return null;
+  // Philip 2026-09-07 · Glass Gate · authentication-entry surface. The
+  // drawer must not render for pre-auth visitors · showing a "sections"
+  // menu before sign-in would leak navigation shape and break the
+  // "world behind the glass" identity.
+  if (pathname?.startsWith("/nex-app/enter")) return null;
+  // Philip 2026-09-07 · Frameless Recovery Slice 1. The new /nex-app
+  // home owns its own lower-right 3-dot HomeKebabButton (the frameless
+  // replacement for the phone-frame's rightKebab affordance) · the
+  // section drawer's top-right yellow menu would visually compete with
+  // it and duplicate navigation intent. Check the pathname EQUALITY
+  // rather than startsWith so /nex-app/discover, /nex-app/contacts,
+  // /nex-app/enter, etc. keep their existing behaviour (they either
+  // handle their own suppression above or continue to show the drawer).
+  if (pathname === "/nex-app") return null;
 
   return (
     <>

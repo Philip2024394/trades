@@ -59,7 +59,7 @@ export function ContactProfileSheet({
     const q = personal
       ? `Tell me about my relationship with ${subject.name}.`
       : `What do I know about ${subject.name}?`;
-    router.push(`/nex-app/chat?q=${encodeURIComponent(q)}`);
+    router.push(`/nex-appchat?q=${encodeURIComponent(q)}`);
   }
 
   return (

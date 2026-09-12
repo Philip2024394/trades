@@ -6,8 +6,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader2, CheckCircle2, XCircle, Send, Calendar, ShieldCheck, ShieldOff, Plug, ArrowLeft } from "lucide-react";
-import type { SocialAccount, SocialPost, SocialPlatform } from "@/lib/nex/social";
-import { SOCIAL_PLATFORMS, formatInTz } from "@/lib/nex/social";
+import type { SocialAccount, SocialPost, SocialPlatform } from "@/lib/nex/social/types";
+import { SOCIAL_PLATFORMS } from "@/lib/nex/social/types";
+import { formatInTz } from "@/lib/nex/social/timezone";
 
 // Brand icons banned in this codebase (memory rule). Two-letter code
 // per platform inside a mono badge instead.

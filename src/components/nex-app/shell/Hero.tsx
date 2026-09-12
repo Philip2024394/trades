@@ -8,12 +8,22 @@
 // left portion.
 
 import Image from "next/image";
-import { Bell } from "lucide-react";
+import { Bell, MoreVertical, User } from "lucide-react";
+import { useRef, useState } from "react";
 import { useConversationState } from "../state/ConversationStateProvider";
 import { AskNexBar } from "./AskNexBar";
+// NEX Phase 3 · P0 · Control Center wired into hero header
+import { ControlCenterPanel } from "./ControlCenterPanel";
+// NEX Phase D · §5 · Profile is a distinct surface from Control Center
+import { ProfilePanel } from "./ProfilePanel";
 
 export function Hero() {
   const { config } = useConversationState();
+  const [controlCenterOpen, setControlCenterOpen] = useState(false);
+  const controlCenterEntryRef = useRef<HTMLButtonElement | null>(null);
+  // Phase D · Profile identity · separate from Control Center per §5
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileEntryRef = useRef<HTMLButtonElement | null>(null);
 
   const heroImage =
     config.trade_slug === "staircase"
@@ -72,15 +82,61 @@ export function Hero() {
             {tradeLabel}
           </span>
         </div>
-        <button
-          type="button"
-          aria-label="Notifications"
-          className="grid h-9 w-9 place-items-center rounded-full transition-colors"
-          style={{ color: "var(--nex-neutral-700)" }}
-        >
-          <Bell size={20} strokeWidth={1.75} />
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            aria-label="Notifications"
+            className="grid h-9 w-9 place-items-center rounded-full transition-colors"
+            style={{ color: "var(--nex-neutral-700)" }}
+          >
+            <Bell size={20} strokeWidth={1.75} />
+          </button>
+          {/* Phase D §5 · Profile identity · SEPARATE from Control Center */}
+          <button
+            ref={profileEntryRef}
+            type="button"
+            aria-label="Open Profile"
+            aria-haspopup="dialog"
+            aria-expanded={profileOpen}
+            aria-controls="nex-profile-hero"
+            data-profile-entry="hero"
+            data-testid="nex-hero-profile-entry"
+            onClick={() => setProfileOpen((v) => !v)}
+            className="grid h-9 w-9 place-items-center rounded-full transition-colors"
+            style={{ color: "var(--nex-neutral-700)" }}
+          >
+            <User size={20} strokeWidth={1.75} />
+          </button>
+          <button
+            ref={controlCenterEntryRef}
+            type="button"
+            aria-label="Open Control Center"
+            aria-haspopup="dialog"
+            aria-expanded={controlCenterOpen}
+            aria-controls="nex-control-center-hero"
+            data-control-center-entry="hero"
+            data-testid="nex-hero-control-center-entry"
+            onClick={() => setControlCenterOpen((v) => !v)}
+            className="grid h-9 w-9 place-items-center rounded-full transition-colors"
+            style={{ color: "var(--nex-neutral-700)" }}
+          >
+            <MoreVertical size={20} strokeWidth={1.75} />
+          </button>
+        </div>
       </div>
+
+      <ControlCenterPanel
+        isOpen={controlCenterOpen}
+        onClose={() => setControlCenterOpen(false)}
+        panelId="nex-control-center-hero"
+        returnFocusRef={controlCenterEntryRef}
+      />
+      <ProfilePanel
+        isOpen={profileOpen}
+        onClose={() => setProfileOpen(false)}
+        panelId="nex-profile-hero"
+        returnFocusRef={profileEntryRef}
+      />
 
       {/* Headline + Ask NEX bar — width capped to match the paragraph
           text so nothing collides with the character on the right. */}

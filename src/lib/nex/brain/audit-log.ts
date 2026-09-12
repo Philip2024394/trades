@@ -126,13 +126,13 @@ export type EmitAuditEventInput = {
 let _client: SupabaseClient | null = null;
 function getClient(): SupabaseClient | null {
   if (_client) return _client;
+  // NEX SUPABASE AUTHORITY (2026-09-07) · NEX-scoped env vars only ·
+  // no Project A fallback. Legacy SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY
+  // belong to the trades/hammerex platform and must never carry NEX traffic.
   const url =
     process.env.NEX_SUPABASE_URL ||
-    process.env.NEXT_PUBLIC_NEX_SUPABASE_URL ||
-    process.env.SUPABASE_URL;
-  const key =
-    process.env.NEX_SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.SUPABASE_SERVICE_ROLE_KEY;
+    process.env.NEXT_PUBLIC_NEX_SUPABASE_URL;
+  const key = process.env.NEX_SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) return null;
   _client = createClient(url, key, { auth: { persistSession: false } });
   return _client;

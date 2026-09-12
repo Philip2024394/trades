@@ -21,6 +21,7 @@
 // machine · you want HQ to say something like 🔴 WALKER FLEET OFFLINE …"
 
 import pg from "pg";
+import { getPostgresUrl } from "@/lib/nex/config/pg";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -29,10 +30,10 @@ const { Pool } = pg;
 let pool: pg.Pool | null = null;
 function getPool(): pg.Pool {
   if (!pool) {
+    // Fail closed · no silent localhost fallback. Rejects dev-DB URLs
+    // in production (getPostgresUrl · CFG12).
     pool = new Pool({
-      connectionString:
-        process.env.NEX_POSTGRES_URL ??
-        "postgresql://postgres:Admin1phil@localhost:5433/nex_dev",
+      connectionString: getPostgresUrl(),
       max: 3,
     });
   }

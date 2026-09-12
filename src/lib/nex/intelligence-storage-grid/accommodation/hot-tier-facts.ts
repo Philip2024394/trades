@@ -215,3 +215,20 @@ export function factHotEnumerate(): { listing_ref: string; age_ms: number; hit_c
     hit_count: e.hit_count,
   }));
 }
+
+/**
+ * Founder BEGIN LCC 2026-09-09 · read all canonical business names in hot tier.
+ * Used by the intent parser to detect specific-entity questions
+ * (e.g. "how many rooms does Hotel Melia Purosani have?").
+ * Zero I/O · pure in-memory.
+ */
+export function factHotAllNames(): { listing_ref: string; business_name: string }[] {
+  const out: { listing_ref: string; business_name: string }[] = [];
+  for (const entry of _cache.values()) {
+    const name = entry.bundle.business_name;
+    if (name && typeof name === "string" && name.length > 0) {
+      out.push({ listing_ref: entry.listing_ref, business_name: name });
+    }
+  }
+  return out;
+}

@@ -36,7 +36,9 @@ async function getPool(): Promise<PgPoolLike | null> {
     const needsSsl = /supabase\.co|render\.com|neon\.tech|amazonaws\.com/.test(url);
     return new Pool({
       connectionString: url,
-      max: 3,
+      // Founder 2026-09-10 · was max: 3, caused pool exhaustion under
+      // any concurrent load. Env override via NEX_PG_POOL_MAX.
+      max: Number(process.env.NEX_PG_POOL_MAX ?? "20"),
       ssl: needsSsl ? { rejectUnauthorized: false } : undefined,
       // T-3 · fail-fast on pool exhaustion · env-var override via
       // NEX_PG_CONNECTION_TIMEOUT_MS (default 10s). Prevents blocked
@@ -54,3 +56,8 @@ export async function withClient<T>(fn: (c: PgClientLike) => Promise<T>): Promis
   try { return await fn(client); }
   finally { client.release(); }
 }
+
+// Founder 2026-09-10 · exported for founder-window + marketing subsystems
+// that need Pool-level operations (streaming SSE, LISTEN/NOTIFY, etc).
+// Use withClient() for typical query patterns.
+export { getPool };

@@ -50,13 +50,23 @@ export async function evaluateWorker(pool: Pool, worker: WorkerRef): Promise<Wor
   };
 }
 
-export async function listAllWorkers(pool: Pool): Promise<WorkerRef[]> {
+export async function listAllWorkers(pool: Pool, allowedTypes?: string[]): Promise<WorkerRef[]> {
   // Union of registered heartbeats + scheduled workers · deduped by worker_id.
+  // C12-adjacent 2026-09-05 (Philip · HQ fan-out fix): optional allowedTypes
+  // filter narrows the worker set at SQL level so Reception evaluation does
+  // not fan out over 26k+ heartbeat rows whose worker_type isn't surfaced by
+  // any HQ_SYSTEMS entry. Preserves both UNION branches. If allowedTypes is
+  // undefined/empty, behaviour is identical to the pre-fix "all workers"
+  // query (backward compatible for any other caller).
+  const useFilter = Array.isArray(allowedTypes) && allowedTypes.length > 0;
+  const filter = useFilter ? "WHERE worker_type = ANY($1::text[])" : "";
+  const filterAndEnabled = useFilter ? "WHERE enabled = true AND worker_type = ANY($1::text[])" : "WHERE enabled = true";
+  const params = useFilter ? [allowedTypes] : [];
   const r = await pool.query(`
-    SELECT worker_id, worker_type, worker_config FROM nex.worker_heartbeat
+    SELECT worker_id, worker_type, worker_config FROM nex.worker_heartbeat ${filter}
     UNION
-    SELECT worker_id, worker_type, worker_config FROM nex.worker_schedule WHERE enabled = true
+    SELECT worker_id, worker_type, worker_config FROM nex.worker_schedule ${filterAndEnabled}
     ORDER BY worker_type, worker_id
-  `);
+  `, params);
   return r.rows as WorkerRef[];
 }

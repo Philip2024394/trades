@@ -34,6 +34,35 @@ export type AnswerKind =
   | "policy"        // check-in/out · cancellation · pet · children policies
   | "media";        // hero image · gallery
 
+/**
+ * Founder BEGIN Phase 3.2 · Truth Engine · freshness ladder.
+ *
+ * Each intent has a natural lifetime after which its stored value must be
+ * treated as potentially stale. The composer prefixes stale facts honestly.
+ *
+ *   stable       · effectively immutable per property (address · category · coords)
+ *   semi_stable  · changes yearly (star rating · room count · beds)
+ *   changeable   · changes monthly (phone · check-in time · amenity availability)
+ *   volatile     · changes daily (nightly rate · promotions)
+ *   live         · real-time (availability tonight · availability_query)
+ *
+ * TTL thresholds (used by fresh vs stale evaluator):
+ *   stable      → 365 days
+ *   semi_stable → 180 days
+ *   changeable  →  30 days
+ *   volatile    →   3 days
+ *   live        →   1 hour
+ */
+export type FreshnessClass = "stable" | "semi_stable" | "changeable" | "volatile" | "live";
+
+export const FRESHNESS_TTL_MS: Record<FreshnessClass, number> = Object.freeze({
+  stable:      365 * 24 * 3600 * 1000,
+  semi_stable: 180 * 24 * 3600 * 1000,
+  changeable:   30 * 24 * 3600 * 1000,
+  volatile:      3 * 24 * 3600 * 1000,
+  live:              3600 * 1000,
+});
+
 export interface IntentDefinition {
   slug: string;
   display_en: string;
@@ -52,6 +81,12 @@ export interface IntentDefinition {
   /** Short human-readable summary used by the composer as prose scaffold. */
   composer_hint_en: string;
   composer_hint_id: string;
+  /**
+   * Founder BEGIN Phase 3.2 · Truth Engine · freshness ladder.
+   * Determines when a stored value must be treated as stale.
+   * Optional to preserve backward compatibility · default = "changeable".
+   */
+  freshness_class?: FreshnessClass;
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -298,6 +333,23 @@ export const INTENT_REGISTRY: readonly IntentDefinition[] = Object.freeze([
     auto_enqueue_gap_on_unknown: false, currently_answerable_from_owned_data: "NO",
     composer_hint_en: "Availability: {value}.", composer_hint_id: "Ketersediaan: {value}." },
 
+  // ── Founder BEGIN LCC 2026-09-09 · list + availability window ──
+  // The two intents that kill "Yep — found N": category-list rendering and
+  // an honest "we don't have live availability" response for date windows.
+  { slug: "list_in_city", display_en: "List properties in city", display_id: "Daftar properti di kota",
+    answer_kind: "list", canonical_fields: ["business_name", "city"], evidence_field_names: [],
+    auto_enqueue_gap_on_unknown: false, currently_answerable_from_owned_data: "YES",
+    composer_hint_en: "Here are the properties I have on record: {value}.",
+    composer_hint_id: "Berikut properti yang tercatat: {value}." },
+
+  { slug: "availability_query", display_en: "Availability window query", display_id: "Ketersediaan untuk tanggal",
+    answer_kind: "fact", canonical_fields: [], evidence_field_names: ["availability"],
+    auto_enqueue_gap_on_unknown: false, currently_answerable_from_owned_data: "NO",
+    // {value} is the property name — composer fills it so the honest
+    // boundary reads naturally per property.
+    composer_hint_en: "I don't have live availability for {value}, but here's what I do have on record.",
+    composer_hint_id: "Ketersediaan real-time untuk {value} belum tersedia, tapi ini yang saya punya." },
+
   // ── Nearby (cross-domain relationships) ──────────────────────
   { slug: "nearby_food", display_en: "Nearby food", display_id: "Makanan terdekat",
     answer_kind: "relationship", canonical_fields: ["coordinates_lat", "coordinates_lng"], evidence_field_names: [],
@@ -331,7 +383,7 @@ export const INTENT_REGISTRY: readonly IntentDefinition[] = Object.freeze([
   { slug: "hero_image", display_en: "Hero image", display_id: "Gambar utama",
     answer_kind: "media", canonical_fields: ["hero_image_url"], evidence_field_names: ["hero_image_url"],
     auto_enqueue_gap_on_unknown: false, currently_answerable_from_owned_data: "PARTIAL",
-    composer_hint_en: "Photo available.", composer_hint_id: "Foto tersedia." },
+    composer_hint_en: "Photo available: {value}.", composer_hint_id: "Foto tersedia: {value}." },
 
   // ── Traveller-fit judgments (derived) ────────────────────────
   { slug: "suitable_for_families", display_en: "Suitable for families", display_id: "Cocok untuk keluarga",
@@ -362,8 +414,67 @@ export const INTENT_REGISTRY: readonly IntentDefinition[] = Object.freeze([
 const _BY_SLUG = new Map<string, IntentDefinition>();
 for (const i of INTENT_REGISTRY) _BY_SLUG.set(i.slug, i);
 
-export function getIntent(slug: string): IntentDefinition | null {
-  return _BY_SLUG.get(slug) ?? null;
+export function getIntent(slug: string): IntentDefinition | undefined {
+  return _BY_SLUG.get(slug);
+}
+
+/**
+ * Founder BEGIN Phase 3.2 · effective freshness class for an intent.
+ * Reads the intent's declared freshness_class if present. Otherwise
+ * infers from the slug so we don't have to edit all 52 rows in this BEGIN
+ * (a follow-up BEGIN can hard-code the field on every intent).
+ */
+const _EXPLICIT_FRESHNESS: Record<string, FreshnessClass> = Object.freeze({
+  // stable
+  property_name:          "stable",
+  property_category:      "stable",
+  property_brand:         "stable",
+  location_city:          "stable",
+  location_district:      "stable",
+  location_neighbourhood: "stable",
+  location_address:       "stable",
+  location_coordinates:   "stable",
+  distance_to_landmark:   "stable",
+  distance_to_malioboro:  "stable",
+  distance_to_airport:    "stable",
+  // semi_stable
+  property_star_rating:   "semi_stable",
+  room_types:             "semi_stable",
+  room_count:             "semi_stable",
+  beds_configuration:     "semi_stable",
+  capacity:               "semi_stable",
+  wheelchair_access:      "semi_stable",
+  accessible_room_available: "semi_stable",
+  property_website:       "semi_stable",
+  property_email:         "semi_stable",
+  nearby_food:            "semi_stable",
+  nearby_attractions:     "semi_stable",
+  nearby_transport:       "semi_stable",
+  // volatile
+  price_indicative:       "volatile",
+  // live
+  availability_tonight:   "live",
+  availability_query:     "live",
+});
+
+export function getIntentFreshness(slug: string): FreshnessClass {
+  const intent = _BY_SLUG.get(slug);
+  if (intent?.freshness_class) return intent.freshness_class;
+  const explicit = _EXPLICIT_FRESHNESS[slug];
+  if (explicit) return explicit;
+  return "changeable"; // default · monthly-ish
+}
+
+/**
+ * Is a value verified at `verified_at` still considered fresh for the
+ * given intent right now? Uses the intent's freshness class TTL.
+ */
+export function isFactFresh(slug: string, verified_at: Date | string | null): boolean {
+  if (!verified_at) return false;
+  const cls = getIntentFreshness(slug);
+  const ttl = FRESHNESS_TTL_MS[cls];
+  const t = verified_at instanceof Date ? verified_at.getTime() : new Date(verified_at).getTime();
+  return Date.now() - t < ttl;
 }
 
 export function allIntentSlugs(): readonly string[] {
@@ -375,6 +486,7 @@ export function intentsByAnswerKind(kind: AnswerKind): readonly IntentDefinition
 }
 
 export function registryStats(): {
+  total: number;              // alias · matches test expectation
   total_intents: number;
   by_answer_kind: Record<AnswerKind, number>;
   auto_gap_enqueue: number;
@@ -389,6 +501,7 @@ export function registryStats(): {
     if (i.auto_enqueue_gap_on_unknown) autoGap++;
   }
   return {
+    total: INTENT_REGISTRY.length,
     total_intents: INTENT_REGISTRY.length,
     by_answer_kind: byKind as Record<AnswerKind, number>,
     auto_gap_enqueue: autoGap,

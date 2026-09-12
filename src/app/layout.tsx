@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import "./globals.css";
 import { BRAND } from "@/lib/seo";
 import { CookieConsentBanner } from "@/components/xrated/CookieConsentBanner";
@@ -165,7 +166,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             for any "you did a thing, here's the outcome" moment
             (post scheduled, cutout ready, cap reached, etc). */}
         <ToastProvider>
-          {children}
+          {/* Root-level Suspense boundary — Next.js 15/16 requires a
+              suspense boundary above any useSearchParams()/useParams()
+              call in the tree for static prerender. Placing it here
+              at the root prevents individual pages (and shared
+              components like GlobalHeader/AppShell) from needing
+              their own wrapper. Fallback is null because the page
+              chrome renders synchronously on the server side; the
+              params-dependent client parts hydrate seamlessly. */}
+          <Suspense fallback={null}>
+            {children}
+          </Suspense>
         </ToastProvider>
         {/* GDPR / UK PECR consent banner — first-party cookie, no SDK.
             Renders nothing on the server and self-hides once the visitor

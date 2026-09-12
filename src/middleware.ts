@@ -283,6 +283,15 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     }
   }
 
+  // Founder Phase 30 (2026-09-10) · NEX unification · founder confirmed
+  // canonical is /nexapp (no hyphen). /nex-app remains a mirror for
+  // backward compat. /nex/chat was a duplicate surface (wrong theme).
+  if (pathname === "/nex/chat" || pathname === "/nex") {
+    const target = req.nextUrl.clone();
+    target.pathname = "/nexapp";
+    return attachCid(NextResponse.redirect(target, 302), cid);
+  }
+
   const rawHost = req.headers.get("host") ?? "";
   const host = rawHost.toLowerCase().replace(/:\d+$/, "");
   if (!host || SYSTEM_HOSTS.has(host)) {

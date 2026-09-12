@@ -16,7 +16,7 @@ import React from "react";
 const SLIDER_BG_URL =
   "https://ik.imagekit.io/ctlxgvqcm/ChatGPT%20Image%20Aug%2029,%202026,%2003_15_20%20AM.png";
 
-const FRAME_SRC = "/nex/hud-frame-v12.png";
+const FRAME_SRC = "/nex/hud-frame-master.png";
 // Presentation aspect · matches BEZEL_METAL in geometry.ts (850×1850).
 const BEZEL_W  = "min(100dvw, calc(100dvh * 850 / 1850))";
 const BEZEL_H  = "min(100dvh, calc(100dvw * 1850 / 850))";

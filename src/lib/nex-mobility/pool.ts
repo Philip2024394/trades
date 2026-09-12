@@ -7,6 +7,7 @@
 // vitest for the pure fee module) don't open a Postgres connection.
 
 import pg from "pg";
+import { getPostgresUrl } from "@/lib/nex/config/pg";
 
 const { Pool } = pg;
 
@@ -14,10 +15,10 @@ let pool: pg.Pool | null = null;
 
 export function getMobilityPool(): pg.Pool {
   if (!pool) {
+    // Fail closed · no silent localhost fallback. In production, this also
+    // rejects URLs pointing at the local dev DB (getPostgresUrl · CFG12).
     pool = new Pool({
-      connectionString:
-        process.env.NEX_POSTGRES_URL ??
-        "postgresql://postgres:Admin1phil@localhost:5433/nex_dev",
+      connectionString: getPostgresUrl(),
       max: 5,
     });
   }

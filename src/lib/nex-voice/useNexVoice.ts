@@ -67,6 +67,15 @@ export type NexReplyMeta = {
   /** Priority 2 V2: language the brain used for THIS reply. Client should
    *  adopt it for the next STT + TTS turn. */
   conversationLanguage: NexVoiceLanguage;
+  /** Stage 3.41.b · voice-layer text (friend voice) when server produced
+   *  one. Consumers that render visible text should prefer this over
+   *  `reply` when non-null · this is what the user actually HEARS. */
+  voiceReplyText?: string | null;
+  voiceReplyMode?: string | null;
+  voiceReplyIntent?: string | null;
+  /** Raw pass-throughs · consumers can render confirm/decline UI + pill. */
+  actionAudit?: unknown;
+  pendingProposalSnapshot?: unknown;
 };
 
 type ChatResponse = {
@@ -79,6 +88,20 @@ type ChatResponse = {
     turn_count?: number;
     conversation_language?: string;
   };
+  // Stage 3.41.b · Chat surface integration ·
+  // voice-layer output produced by /api/nex-conv/chat. When present,
+  // this is what NEX ACTUALLY says (friend voice). `reply` remains
+  // the raw honest constitutional composer output for HQ/audit.
+  voice_reply?: {
+    en?: string | null;
+    id?: string | null;
+    mode?: string | null;
+    intent?: string | null;
+  } | null;
+  // Stage 3.36/3.37 · action state + pending proposal snapshot ·
+  // consumers can render confirm/decline UI + audit pill.
+  action_audit?: unknown;
+  pending_proposal_snapshot?: unknown;
   error?: string;
 };
 
@@ -186,6 +209,12 @@ export function useNexVoice(options: UseNexVoiceOptions = {}): UseNexVoiceApi {
   // permission/start failure (mic ended immediately without capture).
   const sessionStartRef = useRef<number>(0);
   const sawPartialRef = useRef<boolean>(false);
+  // Stage 3.42 · Conversation Layer (Philip 2026-09-01) · remember the
+  // last NEX reply so the next request can include it as
+  // `previous_nex_reply`. Lets the server-side conversation-router
+  // interpret bare answers ("Indonesia" · "im good and you") as
+  // context continuations even when session state is missing.
+  const lastNexReplyRef = useRef<string>("");
 
   // Provider lifecycle — mount once, tear down on unmount.
   useEffect(() => {
@@ -243,6 +272,12 @@ export function useNexVoice(options: UseNexVoiceOptions = {}): UseNexVoiceApi {
             conversation_id: conversationIdRef.current ?? undefined,
             message,
             market: "ID",
+            // Stage 3.42 · Conversation Layer (Philip 2026-09-01).
+            // Client-provided fallback for server-side session gaps
+            // in dev mode. Only sent when there IS a prior NEX reply.
+            ...(lastNexReplyRef.current
+              ? { previous_nex_reply: lastNexReplyRef.current }
+              : {}),
           }),
         });
         res = (await r.json()) as ChatResponse;
@@ -280,6 +315,15 @@ export function useNexVoice(options: UseNexVoiceOptions = {}): UseNexVoiceApi {
         }
       }
 
+      // Stage 3.41.b · prefer voice_reply text · what NEX says out loud
+      // must match what would appear on screen · both come from the
+      // personality voice layer when it produced one. Fall back to raw
+      // reply otherwise.
+      const voiceLang = activeLanguageRef.current;
+      const voiceText: string | null =
+        (voiceLang === "id" ? res.voice_reply?.id : res.voice_reply?.en) ?? null;
+      const spokenText = voiceText ?? res.reply;
+
       const meta: NexReplyMeta = {
         conversationId: res.conversation_id ?? conversationIdRef.current,
         intent: res.understood_intent ?? null,
@@ -287,10 +331,21 @@ export function useNexVoice(options: UseNexVoiceOptions = {}): UseNexVoiceApi {
         establishedFacts: res.state_summary?.established_facts ?? null,
         turnCount: res.state_summary?.turn_count ?? null,
         conversationLanguage: activeLanguageRef.current,
+        voiceReplyText:   voiceText,
+        voiceReplyMode:   res.voice_reply?.mode ?? null,
+        voiceReplyIntent: res.voice_reply?.intent ?? null,
+        actionAudit:              res.action_audit ?? null,
+        pendingProposalSnapshot:  res.pending_proposal_snapshot ?? null,
       };
-      optsRef.current.onNexReply?.(res.reply, meta);
+      optsRef.current.onNexReply?.(spokenText, meta);
 
-      if (opts.speak) await speak(res.reply);
+      // Stage 3.42 · Conversation Layer (Philip 2026-09-01) · remember
+      // the just-rendered NEX text so the NEXT request can send it as
+      // `previous_nex_reply` and the router can interpret a bare
+      // follow-up ("Indonesia" · "im good") as a context continuation.
+      if (spokenText) lastNexReplyRef.current = spokenText;
+
+      if (opts.speak) await speak(spokenText);
       else setState("idle");
     },
     [speak],

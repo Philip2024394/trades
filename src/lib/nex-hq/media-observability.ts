@@ -4,9 +4,13 @@
 // Read-only aggregator for /nex-head-quarters/media.
 
 import { Pool } from "pg";
+import { getPostgresUrl } from "@/lib/nex/config/pg";
 
+// getPostgresUrl fails closed on missing/malformed URL in every NODE_ENV
+// and additionally rejects localhost/nex_dev in production. No silent
+// fallback to the local dev DB.
 const POOL = new Pool({
-  connectionString: process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev",
+  connectionString: getPostgresUrl(),
   max: 3,
 });
 

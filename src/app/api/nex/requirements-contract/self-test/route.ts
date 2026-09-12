@@ -1,0 +1,22 @@
+import { NextResponse } from "next/server";
+import { performRequirementsAnalysis, requirementsVocabGuard } from "@/lib/nex-requirements-contract/engine";
+import { validateEvidence } from "@/lib/nex-evidence-validation/validator";
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+export async function GET() {
+  const cases: { id: string; ok: boolean; detail: string }[] = [];
+  const run = (id: string, fn: () => { ok: boolean; detail: string }) => { try { cases.push({ id, ...fn() }); } catch (e) { cases.push({ id, ok: false, detail: "harness: " + (e as Error).message }); } };
+  run("REQ.contract-held", () => { const r = performRequirementsAnalysis({ seed: "s", work_order_id: "WO", user_objective: "obj", acceptance_criteria: [{ requirement_id: "R1", criterion_text: "x", implementation_trace: ["src/a.ts"], observed_behaviour: "SATISFIED" }] }); return { ok: r.outcome === "CONTRACT_HELD", detail: r.outcome }; });
+  run("REQ.unmet", () => { const r = performRequirementsAnalysis({ seed: "s", work_order_id: "WO", user_objective: "obj", acceptance_criteria: [{ requirement_id: "R1", criterion_text: "x", implementation_trace: ["src/a.ts"], observed_behaviour: "NOT_SATISFIED" }] }); return { ok: r.outcome === "REQUIREMENT_UNMET", detail: r.outcome }; });
+  run("REQ.missing", () => { const r = performRequirementsAnalysis({ seed: "s", work_order_id: "WO", user_objective: "obj", acceptance_criteria: [{ requirement_id: "R1", criterion_text: "x" }] }); return { ok: r.outcome === "REQUIREMENT_MISSING", detail: r.outcome }; });
+  run("REQ.undecidable", () => { const r = performRequirementsAnalysis({ seed: "s", work_order_id: "WO", user_objective: "obj", acceptance_criteria: [{ requirement_id: "R1", criterion_text: "ambiguous", undecidable: true }] }); return { ok: r.outcome === "CONTRACT_UNDECIDABLE", detail: r.outcome }; });
+  run("REQ.acceptance-missing", () => { const r = performRequirementsAnalysis({ seed: "s", work_order_id: "WO", user_objective: "obj", acceptance_criteria: [] }); return { ok: r.outcome === "ACCEPTANCE_CRITERION_MISSING", detail: r.outcome }; });
+  run("REQ.llm-rejected", () => { const r = performRequirementsAnalysis({ seed: "s", work_order_id: "WO", user_objective: "obj", acceptance_criteria: [{ requirement_id: "R1", criterion_text: "x", implementation_trace: ["src/a.ts"], observed_behaviour: "SATISFIED" }], reject_llm_attempt: true }); return { ok: r.outcome === "INSUFFICIENT_EVIDENCE", detail: r.outcome }; });
+  run("REQ.attribution", () => { const r = performRequirementsAnalysis({ seed: "s", work_order_id: "WO", user_objective: "obj", acceptance_criteria: [{ requirement_id: "R1", criterion_text: "x", implementation_trace: ["src/a.ts"], observed_behaviour: "SATISFIED" }] }); return { ok: r.attribution.produced_by === "nex_requirements_contract_evidence_specialist", detail: r.attribution.authority }; });
+  run("REQ.no-forbidden-vocab", () => { const r = performRequirementsAnalysis({ seed: "s", work_order_id: "WO", user_objective: "obj", acceptance_criteria: [{ requirement_id: "R1", criterion_text: "x", implementation_trace: ["src/a.ts"], observed_behaviour: "SATISFIED" }] }); const chk = requirementsVocabGuard.walkForForbiddenVocab(r); return { ok: !chk.hit, detail: chk.hit ? "HIT " + chk.word : "clean" }; });
+  run("REQ.evidence-validation-passes", () => { const r = performRequirementsAnalysis({ seed: "s", work_order_id: "WO", user_objective: "obj", acceptance_criteria: [{ requirement_id: "R1", criterion_text: "x", implementation_trace: ["src/a.ts"], observed_behaviour: "SATISFIED" }] }); const aer = validateEvidence(r as any); return { ok: aer.validation_verdict === "VALIDATED", detail: aer.validation_verdict }; });
+  run("REQ.deterministic", () => { const p: any = { seed: "s", work_order_id: "WO", user_objective: "obj", acceptance_criteria: [{ requirement_id: "R1", criterion_text: "x", implementation_trace: ["src/a.ts"], observed_behaviour: "SATISFIED" }] }; const a = performRequirementsAnalysis(p); const b = performRequirementsAnalysis(p); return { ok: a.determinism_witness.first_run_hash === b.determinism_witness.first_run_hash, detail: a.determinism_witness.first_run_hash }; });
+  const pass = cases.filter(c => c.ok).length;
+  return NextResponse.json({ at: new Date().toISOString(), total: cases.length, pass, fail: cases.length - pass, cases }, { headers: { "Cache-Control": "no-store" } });
+}

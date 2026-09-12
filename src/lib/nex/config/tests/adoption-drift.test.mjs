@@ -45,6 +45,12 @@ function walk(dir) {
       if (entry === "tests" || entry === "__tests__" || entry === "node_modules") continue;
       out.push(...walk(p));
     } else if (entry.endsWith(".ts") || entry.endsWith(".mjs")) {
+      // Skip test files that live alongside production sources (e.g.
+      // `postgres.wc-companion.test.ts`). The walker already excludes
+      // `tests/` directories · this catches the neighbour-file style.
+      // Test files may legitimately read `process.env.NEX_POSTGRES_URL`
+      // to gate live-integration behaviour · they are not production.
+      if (/\.test\.(ts|mjs|tsx)$/.test(entry)) continue;
       out.push(p);
     }
   }

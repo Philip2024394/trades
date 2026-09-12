@@ -21,6 +21,19 @@
   --nex-cream:        #FBF5E9;
   --nex-cream-elev:   #FEFBF3;
 
+  /* ── App-wide background image · Philip 2026-09-07 ──
+   * Full-bleed image behind every /nex-app/* route. Currently served
+   * from /public because the Supabase project host (msdonkkech...)
+   * didn't resolve at upload time; run
+   *   node scripts/upload-nex-app-background.mjs
+   * once the Supabase project is back online — it will publish the
+   * same file at network-uploads/nex-app/backgrounds/main-2026-09-07.png
+   * and this constant can then swap to that public URL. */
+  --nex-bg-image:     url("/nex/backgrounds/main-2026-09-07.jpg");
+  /* Soft cream overlay layered above the image so text stays readable
+   * without hiding the artwork. Adjust alpha to tune contrast. */
+  --nex-bg-overlay:   linear-gradient(rgba(251, 245, 233, 0.72), rgba(251, 245, 233, 0.72));
+
   /* ── Nex accent orange (unified accent + CTA per v1.1) ── */
   --nex-accent-50:    #FFF7ED;
   --nex-accent-100:   #FED7AA;
@@ -47,14 +60,31 @@
   --nex-motion-hero:   600ms;
   --nex-ease-signature: cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* ── Structural surface reset ── */
-  background: var(--nex-cream);
+  /* ── Structural surface reset ──
+   * Layered background: soft cream overlay above the founder image ·
+   * cream solid color as ultimate fallback if the image 404s. */
+  background-color: var(--nex-cream);
+  background-image: var(--nex-bg-overlay), var(--nex-bg-image);
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
   color: var(--nex-neutral-900);
   min-height: 100vh;
   min-height: 100dvh;
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Desktop · larger viewports get the image fixed so content scrolls
+ * over a still backdrop. iOS Safari doesn't reliably support
+ * background-attachment: fixed on mobile, so we scope this to
+ * pointer:fine (desktop / laptop). */
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .nex-app-root {
+    background-attachment: fixed;
+  }
 }
 
 /* Ensure the whole viewport under a trade app reads as cream, not the

@@ -32,6 +32,7 @@ import {
   ImagePlus,
   Footprints,
   ClipboardList,
+  Map as MapIcon,
 } from "lucide-react";
 import { WALKER_VERTICALS, type WalkerLiveTier, type WalkerSidebarStatus } from "@/lib/nex-hq/walker-verticals";
 
@@ -50,6 +51,8 @@ const SECTIONS: SectionDef[] = [
   // Reception IS the operations-centre · /nex-head-quarters aliases it.
   // No separate "Operations" link — it would be a duplicate URL.
   { href: "/nex-head-quarters",                          label: "Reception",            icon: Home,        group: "core" },
+  // Master Work & Architecture Map · founder-facing progress dashboard (2026-09-11)
+  { href: "/nex-head-quarters/work-map",                 label: "Work Map",             icon: MapIcon,     group: "core" },
   // Discovery workforce matrix (2026-08-24) · cities × categories LIVE state
   // Reuses existing subordinate walker/commerce/transport-data pages · no new dashboard.
   { href: "/nex-head-quarters/discovery",                label: "Discovery · Workforce Matrix", icon: Radio,      group: "core" },
@@ -96,6 +99,15 @@ const SECTIONS: SectionDef[] = [
   { href: "/nex-head-quarters/journal",                  label: "Journal",              icon: FileClock,   group: "review" },
   { href: "/nex-head-quarters/audit",                    label: "Audit",                icon: ScrollText,  group: "review" },
   { href: "/nex-head-quarters/comms-social-hq",          label: "Comms Social · HQ",    icon: Radio,       group: "external" },
+  // ─── NEX1 Controlled Builder · workstation + review surfaces (BUILD PLAN v2.0)
+  { href: "/nex-head-quarters/workstation",              label: "Workstation",          icon: Activity,    group: "core" },
+  { href: "/nex-head-quarters/review-queue",             label: "Review Queue",         icon: CheckSquare, group: "review" },
+  { href: "/nex-head-quarters/idea-lab",                 label: "Idea Lab",             icon: BookOpen,    group: "review" },
+  { href: "/nex-head-quarters/security",                 label: "Security HQ",          icon: ScrollText,  group: "review" },
+  { href: "/nex-head-quarters/section-intervention",     label: "Section Intervention", icon: Hammer,      group: "review" },
+  { href: "/nex-head-quarters/component-registry",       label: "Component Registry",   icon: Database,    group: "core" },
+  { href: "/nex-head-quarters/email-marketing",          label: "Email Marketing · HQ", icon: Radio,       group: "external" },
+  { href: "/nex-head-quarters/connection-audit",         label: "Connection Audit",     icon: MapIcon,     group: "core" },
 ];
 
 // ── Indonesia sidebar tree (2026-08-24) ────────────────────────────────
@@ -496,21 +508,57 @@ export function HQShell({
               {active?.label ?? "Headquarters"}
             </div>
           </div>
-          <Link
-            href="/nex-app"
-            style={{
-              fontSize: 12,
-              fontWeight: 600,
-              color: "var(--nex-neutral-500)",
-              textDecoration: "none",
-              padding: "7px 14px",
-              borderRadius: 8,
-              border: "1px solid var(--nex-neutral-200)",
-              background: "var(--nex-neutral-0)",
-            }}
-          >
-            Exit → nex-app
-          </Link>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <style dangerouslySetInnerHTML={{
+              __html: `
+                @keyframes hq-work-map-pulse {
+                  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55); }
+                  50%      { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+                }
+                .hq-work-map-btn { animation: hq-work-map-pulse 2s ease-in-out infinite; }
+                .hq-work-map-btn:hover { filter: brightness(0.95); }
+              `,
+            }} />
+            <Link
+              href="/nex-head-quarters/work-map"
+              className="hq-work-map-btn"
+              style={{
+                fontSize: 14,
+                fontWeight: 800,
+                color: "#ffffff",
+                textDecoration: "none",
+                padding: "10px 20px",
+                borderRadius: 10,
+                border: "2px solid #059669",
+                background: "linear-gradient(90deg, #10b981 0%, #059669 100%)",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                letterSpacing: "0.02em",
+                boxShadow: "0 2px 8px rgba(16, 185, 129, 0.3)",
+                textTransform: "uppercase",
+              }}
+              title="NEX Master Work & Architecture Map · founder-facing progress dashboard · build sequence · heartbeat · retro-benefits · rogue pages"
+            >
+              <MapIcon size={18} strokeWidth={2.5} />
+              Work Map
+            </Link>
+            <Link
+              href="/nex-app"
+              style={{
+                fontSize: 12,
+                fontWeight: 600,
+                color: "var(--nex-neutral-500)",
+                textDecoration: "none",
+                padding: "7px 14px",
+                borderRadius: 8,
+                border: "1px solid var(--nex-neutral-200)",
+                background: "var(--nex-neutral-0)",
+              }}
+            >
+              Exit → nex-app
+            </Link>
+          </div>
         </header>
 
         <div style={{ flex: 1, minWidth: 0 }}>{children}</div>

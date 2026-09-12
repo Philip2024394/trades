@@ -1,7 +1,7 @@
 // /homeowners/signup — client-side signup form for SiteBook.
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Sparkles, Gift, ShieldCheck, Zap, Timer } from "lucide-react";
@@ -11,7 +11,18 @@ import { XratedFooter } from "@/components/xrated/XratedFooter";
 const BRAND_YELLOW: string = "#FFB300";
 const BRAND_GREEN:  string = "#166534";
 
+// Suspense wrapper required because HomeownerSignupPageInner calls
+// useSearchParams() — Next.js 15/16 refuses to prerender pages that
+// read search params without a boundary.
 export default function HomeownerSignupPage() {
+  return (
+    <Suspense fallback={null}>
+      <HomeownerSignupPageInner/>
+    </Suspense>
+  );
+}
+
+function HomeownerSignupPageInner() {
   const router                       = useRouter();
   const searchParams                 = useSearchParams();
   const intent                       = searchParams.get("intent");        // 'create-project' → skip hub

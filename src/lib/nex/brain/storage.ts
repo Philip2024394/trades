@@ -100,18 +100,18 @@ import type {
 // (rather than duplicating inside the adapter) preserves ONE resolution
 // path — a Brain × Env-var invariant that the F12 drift-catcher enforces.
 export function resolveSupabaseUrl(): string | undefined {
+  // NEX SUPABASE AUTHORITY (2026-09-07) · NEX-scoped env vars only ·
+  // no Project A fallback. Legacy SUPABASE_URL belongs to the
+  // trades/hammerex platform (Project A) and must never carry NEX traffic.
   return (
     process.env.NEX_SUPABASE_URL ||
-    process.env.NEXT_PUBLIC_NEX_SUPABASE_URL ||
-    process.env.SUPABASE_URL
+    process.env.NEXT_PUBLIC_NEX_SUPABASE_URL
   );
 }
 
 export function resolveSupabaseServiceRoleKey(): string | undefined {
-  return (
-    process.env.NEX_SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.SUPABASE_SERVICE_ROLE_KEY
-  );
+  // NEX-scoped only · SUPABASE_SERVICE_ROLE_KEY is the Project A key.
+  return process.env.NEX_SUPABASE_SERVICE_ROLE_KEY;
 }
 
 function isSupabaseConfigured(): boolean {

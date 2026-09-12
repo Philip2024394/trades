@@ -176,7 +176,7 @@ export async function scheduleTaskPush(params: {
           title: params.title,
           body: params.body,
           tag: `nex-task-${params.taskId}`,
-          data: { url: "/nex-app/chat", kind: "task_reminder", taskId: params.taskId },
+          data: { url: "/nex-appchat", kind: "task_reminder", taskId: params.taskId },
         },
       }),
     });

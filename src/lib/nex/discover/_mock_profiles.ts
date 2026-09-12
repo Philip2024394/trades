@@ -16,7 +16,9 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     interests: ["Travel", "Photography", "Coffee"],
     bio: "I love modern homes and coffee.",
     rating: 5, accepts_from: ["friends", "business", "community"],
-    gender: "female", availability: "available_now", distance_km: 2
+    gender: "female", availability: "available_now", distance_km: 2,
+    business_info: "Interior Design Studio",
+    meeting_preferences: ["coffee", "walk", "meal"],
   },
   {
     id: "james-leeds",
@@ -28,7 +30,9 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     interests: ["Woodworking", "Cycling", "Real Ale"],
     bio: "Bespoke joinery. Twenty years in the trade.",
     rating: 5, accepts_from: ["business", "community"],
-    gender: "male", availability: "available_this_week", distance_km: 62
+    gender: "male", availability: "available_this_week", distance_km: 62,
+    business_info: "Joinery Workshop",
+    meeting_preferences: ["meal", "drink", "office"],
   },
   {
     id: "aisha-bristol",
@@ -40,7 +44,9 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     interests: ["Sustainable Design", "Yoga", "Hiking"],
     bio: "Passive-house specialist. Always up for a coffee chat.",
     rating: 5, accepts_from: ["friends", "business"],
-    gender: "female", availability: "available_now", distance_km: 210
+    gender: "female", availability: "available_now", distance_km: 210,
+    business_info: "Passive-House Architecture",
+    meeting_preferences: ["coffee", "walk"],
   },
   {
     id: "michael-birmingham",
@@ -52,7 +58,9 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     interests: ["Renovation", "Football", "Investing"],
     bio: "Renovating my third Victorian terrace this year.",
     accepts_from: ["business"],
-    gender: "male", availability: "available_now", distance_km: 88
+    gender: "male", availability: "available_now", distance_km: 88,
+    business_info: "Property Development",
+    meeting_preferences: ["office", "meal", "golf"],
   },
   {
     id: "priya-edinburgh",

@@ -33,13 +33,32 @@ export type PgConfigError = Error & {
   code:
     | "missing-postgres-url-in-production"
     | "missing-postgres-url"
-    | "invalid-postgres-url";
+    | "invalid-postgres-url"
+    | "production-url-points-at-dev";
 };
 
 function makeErr(code: PgConfigError["code"], msg: string): PgConfigError {
   const e = new Error(msg) as PgConfigError;
   e.code = code;
   return e;
+}
+
+// Dev-URL sentinel · rejected only when NODE_ENV=production.
+// Matches: localhost · 127.0.0.1 · :5433 (the local dev PG17 port) · /nex_dev
+// database. Intentionally NOT matched: :5432 (may be a valid prod pooler port)
+// or Supabase pooler hostnames. The point is to catch the exact silent-fallback
+// URL that the pre-Wave-11 code hardcoded.
+function looksLikeDevUrl(url: string): boolean {
+  return /localhost|127\.0\.0\.1|:5433\b|\/nex_dev\b/.test(url);
+}
+
+/**
+ * Redact the password segment of a Postgres URL so it can safely appear in
+ * error messages and logs. Never emit the raw URL — it always contains a
+ * credential in production.
+ */
+function redactUrl(url: string): string {
+  return url.replace(/:[^:@/]+@/, ":****@");
 }
 
 // Injection point for tests · production callers pass no argument.
@@ -103,6 +122,16 @@ export function getPostgresUrl(env?: EnvLike): string {
       `[nex-config] ${ENV_NAME} must start with postgres:// or postgresql:// · got: ${url.slice(0, 24)}…`,
     );
   }
+  // Production must never point at the local dev DB. This closes the exact
+  // silent-fallback loop the pre-Wave-11 code opened (`?? "postgresql://…
+  // localhost:5433/nex_dev"`). Dev/test/CI URLs pointing at localhost are
+  // still allowed because NODE_ENV !== "production" there.
+  if (isProduction(e) && looksLikeDevUrl(url)) {
+    throw makeErr(
+      "production-url-points-at-dev",
+      `[nex-config] ${ENV_NAME} points at a dev/local database in production · refusing to boot · url=${redactUrl(url)}`,
+    );
+  }
   return url;
 }
 
@@ -114,6 +143,12 @@ export function getPostgresUrl(env?: EnvLike): string {
  *   · URL present but malformed → throws `PgConfigError` with
  *     `code="invalid-postgres-url"` (a bad URL is a real bug worth
  *     surfacing even in the nullable variant).
+ *   · NODE_ENV=production AND URL looks like the local dev DB
+ *     (localhost/127.0.0.1/:5433/nex_dev) → throws
+ *     `code="production-url-points-at-dev"`. Callers that "degrade
+ *     gracefully" must still fail closed when the URL is present but
+ *     dangerous — a silent connection to nex_dev in prod is exactly
+ *     what this whole system is engineered to prevent.
  *
  * Use this in code paths that MAY degrade gracefully — the shared pool
  * factory (`src/lib/nex/db.ts::withClient`) is the canonical example:
@@ -130,7 +165,33 @@ export function getPostgresUrlOrNull(env?: EnvLike): string | null {
       `[nex-config] ${ENV_NAME} must start with postgres:// or postgresql:// · got: ${url.slice(0, 24)}…`,
     );
   }
+  if (isProduction(e) && looksLikeDevUrl(url)) {
+    throw makeErr(
+      "production-url-points-at-dev",
+      `[nex-config] ${ENV_NAME} points at a dev/local database in production · refusing to boot · url=${redactUrl(url)}`,
+    );
+  }
   return url;
+}
+
+/**
+ * Boot-time fail-closed guard for the Next.js production process.
+ *
+ * · NODE_ENV !== "production" → no-op (dev/test may run against localhost).
+ * · production + missing / malformed / localhost / nex_dev → throws with
+ *   a stable `code` field so the deploy pipeline can grep for it.
+ *
+ * Intended for exactly ONE call at process boot (Next.js
+ * `src/instrumentation.ts`). Downstream code keeps using `getPostgresUrl`
+ * / `getPostgresUrlOrNull` and inherits the same tightening for free.
+ */
+export function assertProductionPostgresUrl(env?: EnvLike): void {
+  const e = readEnv(env);
+  if (!isProduction(e)) return;
+  // getPostgresUrl re-runs the missing / malformed / dev-url checks. If
+  // any of them fire, the PgConfigError propagates unchanged with its
+  // stable .code · that's the intentional contract with the boot caller.
+  getPostgresUrl(e);
 }
 
 /**

@@ -9,15 +9,14 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import pg from "pg";
+import { getPostgresUrl } from "@/lib/nex/config/pg";
 
 const { Pool } = pg;
 let pool: pg.Pool | null = null;
 function getPool() {
   if (!pool) {
     pool = new Pool({
-      connectionString:
-        process.env.NEX_POSTGRES_URL ??
-        "postgresql://postgres:Admin1phil@localhost:5433/nex_dev",
+      connectionString: getPostgresUrl(),
       max: 3,
     });
   }

@@ -1,4 +1,4 @@
-// Isolated preview page · shows the existing /nex-app/chat inside
+// Isolated preview page · shows the existing /nex-appchat inside
 // the new bezel PNG. Does NOT touch NexAppShell / NexHudFrame or the
 // chat page itself. Sample viewer only.
 
@@ -24,7 +24,7 @@ export default function FramePreviewPage() {
       }}>
         {/* Existing chat page rendered inside the frame */}
         <iframe
-          src="/nex-app/chat"
+          src="/nex-appchat"
           style={{
             position: "absolute",
             inset: 0,

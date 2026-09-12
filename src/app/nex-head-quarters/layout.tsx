@@ -10,6 +10,7 @@
 // The counts come from the SAME Supabase directory_seeds table the Collector
 // Dashboard reads · no new endpoint, no new table, no duplicate workflow.
 
+import Link from "next/link";
 import { HQShell, type HQNotificationCounts } from "@/components/nex-head-quarters/HQShell";
 import { HQAutoRefresh } from "@/components/nex-head-quarters/HQAutoRefresh";
 import { supabaseNexAdmin } from "@/lib/supabaseNexAdmin";
@@ -216,13 +217,72 @@ export default async function NexBrainLayout({ children }: { children: React.Rea
     loadCityWorkforceDetails(),
   ]);
   return (
-    <HQShell
-      notificationCounts={notificationCounts}
-      walkerStatuses={walkerStatuses}
-      cityWorkforceDetails={cityWorkforceDetails}
-    >
-      <HQAutoRefresh />
-      {children}
-    </HQShell>
+    <>
+      {/* Floating Work Map button · fixed-position · always visible on every HQ page.
+          Belt-and-braces backup to the HQShell header button + Reception hero card.
+          Guaranteed to render regardless of HQShell client-component hot-reload state. */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes nex-wm-fab-pulse {
+            0%, 100% { box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35), 0 0 0 0 rgba(16, 185, 129, 0.6); }
+            50%      { box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35), 0 0 0 12px rgba(16, 185, 129, 0); }
+          }
+          .nex-wm-fab { animation: nex-wm-fab-pulse 2s ease-in-out infinite; }
+          .nex-wm-fab:hover { filter: brightness(0.95); transform: translateY(-1px); }
+        `,
+      }} />
+      <Link
+        href="/nex-head-quarters/work-map"
+        className="nex-wm-fab"
+        style={{
+          position: "fixed",
+          top: 14,
+          right: 24,
+          zIndex: 9999,
+          background: "linear-gradient(90deg, #10b981 0%, #059669 100%)",
+          color: "#ffffff",
+          fontSize: 15,
+          fontWeight: 900,
+          letterSpacing: "0.05em",
+          textDecoration: "none",
+          textTransform: "uppercase",
+          padding: "12px 22px",
+          borderRadius: 12,
+          border: "3px solid #ffffff",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 10,
+          transition: "transform 0.15s ease, filter 0.15s ease",
+        }}
+        title="Open the NEX Master Work & Architecture Map · founder-facing progress dashboard"
+      >
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 24,
+            height: 24,
+            borderRadius: "50%",
+            background: "#ffffff",
+            color: "#059669",
+            fontWeight: 900,
+            fontSize: 16,
+          }}
+          aria-hidden="true"
+        >
+          ▶
+        </span>
+        Work Map
+      </Link>
+      <HQShell
+        notificationCounts={notificationCounts}
+        walkerStatuses={walkerStatuses}
+        cityWorkforceDetails={cityWorkforceDetails}
+      >
+        <HQAutoRefresh />
+        {children}
+      </HQShell>
+    </>
   );
 }

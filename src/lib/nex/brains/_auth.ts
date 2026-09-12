@@ -43,14 +43,23 @@ export type AuthResult =
  * session — that's just `ok: false, status: 401`.
  */
 export async function getAuthenticatedUser(): Promise<AuthResult> {
-  const url = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  // NEX SUPABASE AUTHORITY (2026-09-07) · NEX authenticates against the
+  // NEX Supabase project (Project B · ijvqdvsvwtwxzcqmoqit) ONLY. The
+  // generic SUPABASE_URL vars belong to the legacy trades/hammerex
+  // platform and must NEVER be consumed by NEX auth. No Project A
+  // fallback here.
+  const url =
+    process.env.NEX_SUPABASE_URL ??
+    process.env.NEXT_PUBLIC_NEX_SUPABASE_URL;
+  const anonKey =
+    process.env.NEX_SUPABASE_ANON_KEY ??
+    process.env.NEXT_PUBLIC_NEX_SUPABASE_ANON_KEY;
 
   if (!url || !anonKey) {
     return {
       ok: false,
       status: 500,
-      error: "server_misconfigured · SUPABASE_URL / SUPABASE_ANON_KEY not set",
+      error: "server_misconfigured · NEX_SUPABASE_URL / NEXT_PUBLIC_NEX_SUPABASE_URL and NEX_SUPABASE_ANON_KEY / NEXT_PUBLIC_NEX_SUPABASE_ANON_KEY not set",
     };
   }
 

@@ -17,6 +17,7 @@
 // the shared HQ sidebar (see components/nex-head-quarters/HQShell.tsx).
 
 import RealityStrip from "@/components/nex-head-quarters/RealityStrip";
+import WorkMapHeroCard from "@/components/nex-head-quarters/WorkMapHeroCard";
 import OperationsCentre from "./operations-centre/page";
 
 export const dynamic = "force-dynamic";
@@ -28,6 +29,7 @@ export const metadata = {
 export default async function ReceptionPage() {
   return (
     <>
+      <WorkMapHeroCard />
       <RealityStrip />
       <OperationsCentre />
     </>

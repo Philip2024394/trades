@@ -123,6 +123,11 @@ export const AccommodationPostgresAdapter: WorldAdapter = {
   async search(input: WorldSearchInput): Promise<WorldSearchResult> {
     const t0 = performance.now();
     const readAt = new Date().toISOString();
+    // Founder BEGIN 2026-09-09 · SEARCHWORLD-SUB-INSTRUMENTATION
+    const _st: Record<string, number> = {};
+    const _mark = (name: string, since: number) => {
+      try { _st[name] = Math.round((performance.now() - since) * 100) / 100; } catch {}
+    };
 
     // Market gate — this adapter is Indonesia only. Return empty for
     // any other market rather than leak Yogyakarta hotels to UK users.
@@ -133,11 +138,15 @@ export const AccommodationPostgresAdapter: WorldAdapter = {
         records:  [],
         totalAvailable: 0,
         latencyMs: performance.now() - t0,
+        subTimings: _st,
         degradedReason: "market_not_supported",
       };
     }
 
+    const _t_pool = performance.now();
     const pool = await getPool();
+    _mark("pool_acquire", _t_pool);
+    const _t_build = performance.now();
 
     // Build the WHERE clauses with parameterised inputs. Order:
     //   1. country = 'ID' (locked, this adapter is Indonesia)
@@ -188,33 +197,45 @@ export const AccommodationPostgresAdapter: WorldAdapter = {
       input.sort === "recent" ? "updated_at DESC NULLS LAST" :
       "business_name ASC";
 
+    _mark("query_build", _t_build);
+
     // Count + paginated rows in one round trip when possible. The two
     // queries share the same params · Postgres plans them independently
     // but the pool reuses the connection.
-    const [countRes, rowsRes] = await Promise.all([
-      pool.query(
-        `SELECT COUNT(*)::int AS n FROM nex.accommodation_business WHERE ${where}`,
-        params,
-      ),
-      pool.query(
-        `SELECT ${SELECT_COLS}
-           FROM nex.accommodation_business
-          WHERE ${where}
-          ORDER BY ${orderBy}
-          LIMIT ${limit} OFFSET ${offset}`,
-        params,
-      ),
-    ]);
+    const _t_sql = performance.now();
+    const _t_count = performance.now();
+    const countP = pool.query(
+      `SELECT COUNT(*)::int AS n FROM nex.accommodation_business WHERE ${where}`,
+      params,
+    ).then((r) => { try { _st.sql_count = Math.round((performance.now() - _t_count) * 100) / 100; } catch {} return r; });
+    const _t_rows = performance.now();
+    const rowsP = pool.query(
+      `SELECT ${SELECT_COLS}
+         FROM nex.accommodation_business
+        WHERE ${where}
+        ORDER BY ${orderBy}
+        LIMIT ${limit} OFFSET ${offset}`,
+      params,
+    ).then((r) => { try { _st.sql_rows = Math.round((performance.now() - _t_rows) * 100) / 100; } catch {} return r; });
+    const [countRes, rowsRes] = await Promise.all([countP, rowsP]);
+    _mark("sql_promise_all", _t_sql);
 
+    const _t_hydrate = performance.now();
     const records = rowsRes.rows.map((r) => rowToRecord(r as Record<string, unknown>, readAt));
+    _mark("row_hydration", _t_hydrate);
 
-    return {
-      vertical: "accommodation",
-      market:   "ID",
+    const _t_result = performance.now();
+    const result = {
+      vertical: "accommodation" as const,
+      market:   "ID" as const,
       records,
       totalAvailable: Number(countRes.rows[0]?.n ?? 0),
       latencyMs: performance.now() - t0,
+      subTimings: _st,
     };
+    _mark("result_build", _t_result);
+    try { _st.adapter_total = Math.round((performance.now() - t0) * 100) / 100; } catch {}
+    return result;
   },
 
   async getById({ id, market }): Promise<WorldRecord | null> {

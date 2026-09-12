@@ -40,7 +40,7 @@ export interface ComposedReply {
   /** Optional short suffix for voice channels (usually identical). */
   voice_reply_text: string;
   /** Structured breakdown so downstream chat brain can log/telemeter honestly. */
-  reply_kind: "fact" | "list" | "unknown" | "clarify" | "list_reference" | "multi_property_list" | "research_needed";
+  reply_kind: "fact" | "list" | "unknown" | "clarify" | "list_reference" | "multi_property_list" | "research_needed" | "availability_unknown";
   /** Which intent was answered · null if we couldn't route. */
   intent_slug: string | null;
   /** Which listing was answered about · null if aggregate. */
@@ -82,6 +82,19 @@ const LANG = {
     list_row_unknown: "• {name} — I don't have that on record yet",
     // Research-needed handoff (vertical switch)
     research_needed:  "Let me pull up {category}s for you.",
+    // Founder BEGIN LCC 2026-09-09 · list_in_city + availability_unknown
+    list_in_city_header_named:   "I have {n} verified {category} listings in {city}: {names}. Want prices, rooms, or amenities on any of them?",
+    list_in_city_header_uncity:  "I have {n} verified {category} listings on record: {names}. Which city are you looking at?",
+    list_in_city_no_city:        "I don't have any {category} listings I can vouch for in {city} yet. Try a different city or ask me for verified ones anywhere.",
+    list_in_city_empty:          "I don't have any verified {category} listings yet. Want to try a different vertical?",
+    availability_window_suffix:  " I can't verify live availability for {window} yet, but every listing above exists in my records.",
+    availability_window_labels: {
+      tonight: "tonight",
+      tomorrow: "tomorrow",
+      today: "today",
+      this_weekend: "this weekend",
+      next_week: "next week",
+    } as Record<string, string>,
     // Composer-hint template markers
     yes: "Yes",
     no:  "No",
@@ -102,6 +115,19 @@ const LANG = {
     list_row:         "• {name} — {answer}",
     list_row_unknown: "• {name} — belum ada catatan",
     research_needed:  "Sebentar, saya carikan {category}.",
+    // Founder BEGIN LCC 2026-09-09 · list_in_city + availability_unknown (ID)
+    list_in_city_header_named:   "Saya punya {n} {category} yang tercatat di {city}: {names}. Mau harga, jumlah kamar, atau fasilitasnya?",
+    list_in_city_header_uncity:  "Saya punya {n} {category} yang tercatat: {names}. Di kota mana?",
+    list_in_city_no_city:        "Belum ada {category} tercatat di {city}. Coba kota lain atau saya carikan yang mana saja.",
+    list_in_city_empty:          "Belum ada {category} tercatat. Coba kategori lain?",
+    availability_window_suffix:  " Ketersediaan real-time untuk {window} belum bisa saya cek, tapi semua yang di atas benar-benar ada.",
+    availability_window_labels: {
+      tonight: "malam ini",
+      tomorrow: "besok",
+      today: "hari ini",
+      this_weekend: "akhir pekan ini",
+      next_week: "minggu depan",
+    } as Record<string, string>,
     yes: "Ya",
     no:  "Tidak",
   },
@@ -117,6 +143,11 @@ const CATEGORY_LABEL_EN: Record<string, string> = {
 // ═══════════════════════════════════════════════════════════════════
 // Rendering helpers
 // ═══════════════════════════════════════════════════════════════════
+
+function capitalise(s: string): string {
+  if (!s) return s;
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
 
 function trustPrefix(lang: ComposerLanguage, trust: TrustLayer): string {
   const L = LANG[lang];
@@ -203,11 +234,101 @@ export function composeReply(input: {
     };
   }
 
+  // ── Founder BEGIN LCC 2026-09-09 · list_in_city / availability_query ──
+  // The founder's chief symptom was "Yep — found 3". That happened because
+  // the composer had no way to render "here are 3 verified hotels in <city>"
+  // from a list bundle. This branch does that — at canonical_verified trust
+  // when every prior_list item resolved to a bundle we own. When the user
+  // also asked about a date window (tomorrow/tonight/this weekend/etc.),
+  // append an honest "I can't verify live availability" clause and mark the
+  // reply as availability_unknown so the promotion gate can accept it.
+  if (parsed.intent_slug === "list_in_city" || parsed.intent_slug === "availability_query") {
+    const category = parsed.slots.property_category ?? "hotel";
+    const city     = parsed.slots.city ?? "";
+    const catLabel = CATEGORY_LABEL_EN[category] ?? category;
+    // Build a name list from prior_list (each item must map to a bundle we
+    // own for the trust badge to be canonical_verified; the composer never
+    // includes a name it didn't get from stored data).
+    const priorList = context.prior_list ?? [];
+    const verifiedNames: string[] = [];
+    let allVerified = true;
+    for (const item of priorList) {
+      const bundle = bundles.find((b) => b.listing_ref === item.listing_ref);
+      if (bundle && bundle.business_name) {
+        verifiedNames.push(bundle.business_name);
+      } else if (item.business_name) {
+        // We have the name from chat brain but couldn't resolve a bundle.
+        // Include it but downgrade trust below canonical_verified.
+        verifiedNames.push(item.business_name);
+        allVerified = false;
+      } else {
+        allVerified = false;
+      }
+    }
+    const n = verifiedNames.length;
+    let text: string;
+    let trust: TrustLayer | "mixed";
+    let answered: boolean;
+    let replyKind: "list" | "availability_unknown" | "unknown";
+
+    if (n === 0) {
+      // Honest "no verified listings" — that IS an answer, not a search handoff.
+      text = city
+        ? L.list_in_city_no_city.replace(/\{category\}/g, catLabel).replace(/\{city\}/g, capitalise(city))
+        : L.list_in_city_empty.replace(/\{category\}/g, catLabel);
+      trust = "unknown";
+      answered = true;
+      replyKind = "unknown";
+      reasoning.push(`list_in_city · zero verified ${category}s${city ? ` in ${city}` : ""}`);
+    } else {
+      const namesJoined = verifiedNames.slice(0, 6).join(", ") + (verifiedNames.length > 6 ? ", …" : "");
+      const header = city
+        ? L.list_in_city_header_named
+            .replace(/\{n\}/g, String(n))
+            .replace(/\{category\}/g, catLabel)
+            .replace(/\{city\}/g, capitalise(city))
+            .replace(/\{names\}/g, namesJoined)
+        : L.list_in_city_header_uncity
+            .replace(/\{n\}/g, String(n))
+            .replace(/\{category\}/g, catLabel)
+            .replace(/\{names\}/g, namesJoined);
+      text = header;
+      trust = allVerified ? "canonical_verified" : "mixed";
+      answered = true;
+      replyKind = "list";
+      reasoning.push(`list_in_city · rendered ${n} verified ${category}${n === 1 ? "" : "s"}${city ? ` in ${city}` : ""} (allVerified=${allVerified})`);
+    }
+
+    // Availability window suffix + reply_kind promotion
+    if (parsed.slots.time) {
+      const label = L.availability_window_labels[parsed.slots.time] ?? parsed.slots.time;
+      text += L.availability_window_suffix.replace(/\{window\}/g, label);
+      // availability_unknown is honest — mark it so the promotion gate lets
+      // it through even though trust is now mixed (we know the entities,
+      // we don't know availability for the window).
+      replyKind = "availability_unknown";
+      trust = allVerified ? "canonical_verified" : "mixed";
+      reasoning.push(`availability window=${parsed.slots.time} · appended honest disclaimer`);
+    }
+
+    return {
+      reply_text: text,
+      voice_reply_text: text,
+      reply_kind: replyKind,
+      intent_slug: parsed.intent_slug,
+      listing_ref: null,
+      trust,
+      answered,
+      reasoning,
+    };
+  }
+
   // ── Refinement 3 · Vertical switch → research_needed ──
-  // "what about guesthouses" / "any villas" — user wants a NEW search
-  // with a different category. The composer is the wrong tool; it flags
-  // the chat brain to re-run the search adapter with the new slot.
-  if (parsed.slots.is_vertical_switch && parsed.slots.property_category) {
+  // "what about guesthouses" — user wants a NEW search with a different
+  // category. Only fires when the parser actually routed to property_category
+  // (a real "what about" phrasing). Fresh list requests now route to
+  // list_in_city and are handled by the list-composer above.
+  if (parsed.intent_slug === "property_category" && parsed.slots.property_category) {
     const cat = parsed.slots.property_category;
     const label = CATEGORY_LABEL_EN[cat] ?? cat;
     const text = L.research_needed.replace(/\{category\}/g, label);

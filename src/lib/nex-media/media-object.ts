@@ -4,6 +4,7 @@
 // Read/write helpers used by the API routes + HQ page. Keeps SQL in one place.
 
 import { Pool } from "pg";
+import { getPostgresUrl } from "@/lib/nex/config/pg";
 import {
   NEX_MEDIA_BUCKET,
   NEX_MEDIA_GRACE_DAYS,
@@ -18,8 +19,7 @@ let poolInstance: Pool | null = null;
 export function getMediaPool(): Pool {
   if (!poolInstance) {
     poolInstance = new Pool({
-      connectionString: process.env.NEX_POSTGRES_URL
-        ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev",
+      connectionString: getPostgresUrl(),
       max: 3,
     });
   }

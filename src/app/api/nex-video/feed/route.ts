@@ -23,6 +23,7 @@
 import { NextResponse } from "next/server";
 import { Pool } from "pg";
 import { getObjectStorage } from "@/lib/nex/storage/object-registry";
+import { getPostgresUrl } from "@/lib/nex/config/pg";
 
 export const dynamic = "force-dynamic";
 
@@ -30,8 +31,7 @@ let poolInstance: Pool | null = null;
 function getPool(): Pool {
   if (!poolInstance) {
     poolInstance = new Pool({
-      connectionString: process.env.NEX_POSTGRES_URL
-        ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev",
+      connectionString: getPostgresUrl(),
       max: 3,
     });
   }

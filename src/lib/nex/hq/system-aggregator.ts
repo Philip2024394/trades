@@ -130,6 +130,38 @@ export interface SystemEvaluation {
   evaluated_at: string;
 }
 
+// C12-adjacent 2026-09-05 (Philip · HQ fan-out fix):
+// Single source of truth for HQ-visible worker types. Used as a SQL allowlist
+// in listAllWorkers so Reception never evaluates workers whose worker_type is
+// not surfaced by any HQ_SYSTEMS entry. Adding a new system with a new
+// workerTypeFilter automatically extends this allowlist · no other edits.
+const HQ_WORKER_TYPES: string[] = HQ_SYSTEMS.map((s) => s.workerTypeFilter);
+
+/**
+ * Runs `fn` over `items` with a bounded number of in-flight promises. Results
+ * preserve input order. Chosen over an unbounded Promise.all fan-out so that
+ * the pg pool (currently max: 8 in src/lib/nex-food/db.ts) is not overwhelmed
+ * by tens or hundreds of concurrent connections queueing past
+ * `connectionTimeoutMillis`.
+ *
+ * Concurrency default here is 4: each evaluateWorker fires up to ~5 inner
+ * queries (spec + heartbeat + recentFailures + hasEverRun + spec sub-queries),
+ * so 4 outer * 5 inner = ~20 potential in-flight against a pool of 8 · the
+ * pool queues the surplus without triggering the 15s connection timeout.
+ */
+async function mapWithConcurrency<T, R>(items: T[], concurrency: number, fn: (item: T) => Promise<R>): Promise<R[]> {
+  const results: R[] = new Array(items.length);
+  let index = 0;
+  const runners = Array.from({ length: Math.min(concurrency, items.length) }, async () => {
+    while (index < items.length) {
+      const i = index++;
+      results[i] = await fn(items[i]);
+    }
+  });
+  await Promise.all(runners);
+  return results;
+}
+
 export async function evaluateSystem(
   pool: Pool,
   system: HqSystem,
@@ -140,8 +172,10 @@ export async function evaluateSystem(
   if (allWorkers) {
     workers = allWorkers.filter((w) => w.worker_type === system.workerTypeFilter);
   } else {
-    const refs = (await listAllWorkers(pool)).filter((r) => r.worker_type === system.workerTypeFilter);
-    workers = await Promise.all(refs.map((r) => evaluateWorker(pool, r)));
+    // Filter at SQL level to this single system's worker_type · bounded outer
+    // concurrency for defense-in-depth (evaluateSystem standalone path).
+    const refs = await listAllWorkers(pool, [system.workerTypeFilter]);
+    workers = await mapWithConcurrency(refs, 4, (r) => evaluateWorker(pool, r));
   }
   const verdict = aggregateVerdict(workers.map((w) => w.verdict));
   return {
@@ -158,7 +192,9 @@ export async function evaluateSystem(
 export async function evaluateAllSystems(pool: Pool): Promise<SystemEvaluation[]> {
   // Evaluate all workers ONCE · then bucket into systems · guarantees the
   // Reception view and per-system aggregation use the exact same evaluations.
-  const refs = await listAllWorkers(pool);
-  const workers = await Promise.all(refs.map((r) => evaluateWorker(pool, r)));
+  // SQL-level filter to HQ_WORKER_TYPES + bounded outer concurrency (see
+  // mapWithConcurrency).
+  const refs = await listAllWorkers(pool, HQ_WORKER_TYPES);
+  const workers = await mapWithConcurrency(refs, 4, (r) => evaluateWorker(pool, r));
   return Promise.all(HQ_SYSTEMS.map((s) => evaluateSystem(pool, s, workers)));
 }

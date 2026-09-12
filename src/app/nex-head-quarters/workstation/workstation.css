@@ -1,0 +1,164 @@
+/* src/app/nex-head-quarters/workstation/workstation.css
+ * NEX Workstation · deep-navy scope. Applied to .nex-workstation-root.
+ * DOES NOT MODIFY the existing cream nex-app.css scope · this is additive.
+ */
+
+.nex-workstation-root {
+  --nws-navy: #0B1220;
+  --nws-navy-soft: #0E1B33;
+  --nws-navy-mid: #111827;
+  --nws-cyan: #22D3EE;
+  --nws-orange: #F97316;
+  --nws-orange-deep: #EA580C;
+  --nws-soft-white: #F9FAFB;
+  --nws-slate: #94A3B8;
+  --nws-success: #22C55E;
+  --nws-warning: #F59E0B;
+  --nws-danger: #EF4444;
+  --nws-gold: #EAB308;
+  --nws-card-bg: rgba(14, 27, 51, 0.6);
+  --nws-card-border: rgba(148, 163, 184, 0.18);
+  --nws-input-bg: rgba(255, 255, 255, 0.03);
+  --nws-input-border: rgba(148, 163, 184, 0.24);
+
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(34, 211, 238, 0.06), transparent 60%),
+    linear-gradient(180deg, #0B1220 0%, #0E1B33 40%, #0B1220 100%);
+  color: var(--nws-soft-white);
+  min-height: 100vh;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.nex-workstation-root .nws-card {
+  background: var(--nws-card-bg);
+  border: 1px solid var(--nws-card-border);
+  border-radius: 12px;
+  padding: 16px;
+  backdrop-filter: blur(8px);
+}
+
+.nex-workstation-root .nws-card:hover {
+  border-color: rgba(34, 211, 238, 0.35);
+}
+
+.nex-workstation-root .nws-btn-primary {
+  background: linear-gradient(180deg, #F97316 0%, #EA580C 100%);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.nex-workstation-root .nws-btn-primary:hover { filter: brightness(1.08); }
+.nex-workstation-root .nws-btn-primary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.6);
+}
+
+.nex-workstation-root .nws-btn-secondary {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--nws-soft-white);
+  border: 1px solid var(--nws-card-border);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+
+.nex-workstation-root .nws-btn-secondary:hover {
+  border-color: var(--nws-cyan);
+  background: rgba(34, 211, 238, 0.08);
+}
+
+.nex-workstation-root .nws-btn-danger {
+  background: transparent;
+  color: var(--nws-danger);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.nex-workstation-root .nws-btn-danger:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: var(--nws-danger);
+}
+
+.nex-workstation-root .nws-input {
+  background: var(--nws-input-bg);
+  color: var(--nws-soft-white);
+  border: 1px solid var(--nws-input-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.nex-workstation-root .nws-input:focus-visible {
+  outline: none;
+  border-color: var(--nws-cyan);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.2);
+}
+
+.nex-workstation-root .nws-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.nex-workstation-root .nws-badge-cyan   { background: rgba(34, 211, 238, 0.14); color: var(--nws-cyan);   border: 1px solid rgba(34, 211, 238, 0.3); }
+.nex-workstation-root .nws-badge-orange { background: rgba(249, 115, 22, 0.14); color: var(--nws-orange); border: 1px solid rgba(249, 115, 22, 0.3); }
+.nex-workstation-root .nws-badge-green  { background: rgba(34, 197, 94, 0.14);  color: var(--nws-success); border: 1px solid rgba(34, 197, 94, 0.3); }
+.nex-workstation-root .nws-badge-amber  { background: rgba(245, 158, 11, 0.14); color: var(--nws-warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+.nex-workstation-root .nws-badge-red    { background: rgba(239, 68, 68, 0.14);  color: var(--nws-danger);  border: 1px solid rgba(239, 68, 68, 0.3); }
+.nex-workstation-root .nws-badge-gold   { background: rgba(234, 179, 8, 0.14);  color: var(--nws-gold);    border: 1px solid rgba(234, 179, 8, 0.3); }
+.nex-workstation-root .nws-badge-slate  { background: rgba(148, 163, 184, 0.14);color: var(--nws-slate);  border: 1px solid rgba(148, 163, 184, 0.3); }
+
+.nex-workstation-root h1, .nex-workstation-root h2, .nex-workstation-root h3 {
+  color: var(--nws-soft-white);
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+.nex-workstation-root a { color: var(--nws-cyan); text-decoration: none; }
+.nex-workstation-root a:hover { text-decoration: underline; }
+
+.nex-workstation-root code, .nex-workstation-root pre {
+  font-family: "JetBrains Mono", Menlo, Consolas, monospace;
+  color: var(--nws-cyan);
+  font-size: 12px;
+}
+
+.nex-workstation-root pre {
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--nws-card-border);
+  border-radius: 8px;
+  padding: 12px;
+  overflow-x: auto;
+}
+
+.nex-workstation-root .nws-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  height: calc(100vh - 140px);
+  min-height: 640px;
+}
+
+@media (max-width: 1200px) {
+  .nex-workstation-root .nws-split { grid-template-columns: 1fr; height: auto; min-height: 0; }
+}

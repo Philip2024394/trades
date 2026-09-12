@@ -9,7 +9,7 @@
 import React from "react";
 import { NexInterfaceHero } from "@/components/nexapp/NexInterfaceHero";
 
-const FRAME_SRC = "/nex/hud-frame-v12.png";
+const FRAME_SRC = "/nex/hud-frame-master.png";
 const BEZEL_W  = "min(100dvw, calc(100dvh * 850 / 1850))";
 const BEZEL_H  = "min(100dvh, calc(100dvw * 1850 / 850))";
 const H_GUTTER = `max(0px, calc((100dvw - ${BEZEL_W}) / 2))`;

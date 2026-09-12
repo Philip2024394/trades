@@ -1,7 +1,7 @@
 // /homeowners/login — client-side homeowner login.
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { XratedHeader } from "@/components/xrated/XratedHeader";
@@ -10,7 +10,18 @@ import { XratedFooter } from "@/components/xrated/XratedFooter";
 const BRAND_YELLOW = "#FFB300";
 const BRAND_GREEN  = "#166534";
 
+// Suspense wrapper required because HomeownerLoginPageInner calls
+// useSearchParams() — Next.js 15/16 refuses to prerender pages that
+// read search params without a boundary.
 export default function HomeownerLoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <HomeownerLoginPageInner/>
+    </Suspense>
+  );
+}
+
+function HomeownerLoginPageInner() {
   const router     = useRouter();
   const params     = useSearchParams();
   const next       = params.get("next") || "/sitebook";

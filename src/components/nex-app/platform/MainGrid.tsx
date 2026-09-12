@@ -38,7 +38,8 @@ const TILES: Tile[] = [
   { label: "NEX Tools",        subtitle: "Smart calculators",     icon: Wrench,            route: "/nex-app/tools" },
   { label: "NEX Documents",    subtitle: "Files & documents",     icon: FolderClosed,      route: "/nex-app/documents" },
 
-  { label: "NEX Messages",     subtitle: "Chats & conversations", icon: MessagesSquare,    route: "/nex-app/messages" },
+  // NEX Messages tile removed 2026-09-06 · /nex-app/messages deleted
+  // per Founder direction · not part of NEX.
   { label: "NEX Contacts",     subtitle: "People & groups",       icon: Users,             route: "/nex-app/contacts" },
   { label: "NEX Writer",       subtitle: "AI writing assistant",  icon: PenLine,           route: "/nex-app/tools/writer" },
   { label: "NEX Images",       subtitle: "Edit & create images",  icon: ImageIcon,         route: "/nex-app/tools/image" },

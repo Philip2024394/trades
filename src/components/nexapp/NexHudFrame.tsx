@@ -39,9 +39,11 @@ import type { NexVoiceState } from "@/lib/nex-voice";
 import {
   NEX_HUD_THEME_REGISTRY,
   DEFAULT_THEME_ID,
+  NEX_FRAME_DISABLE_ACCENT_STACK,
   type NexHudTheme,
 } from "./hud/theme";
 import { MODE_LABEL, type NexHudMode } from "./hud/modes";
+import { TouchButton } from "./primitives/TouchButton";
 
 export type { NexHudMode } from "./hud/modes";
 
@@ -130,6 +132,12 @@ interface Props {
    *  screen during page transitions and back in on the new page ·
    *  Philip 2026-08-29. */
   voiceOrbTransitStyle?: React.CSSProperties;
+  /** When true, the voice orb container is not rendered · used by
+   *  workspaces where the orb would visually compete with the interior
+   *  content (Philip 2026-09-05 · Products workspace). This is a
+   *  visibility gate only · voice/tap wiring is unaffected · the orb
+   *  returns whenever this flag is false again. */
+  voiceOrbHidden?: boolean;
   /** When false, the hero image layer fades out to reveal the black
    *  background · used in full-width chat mode (Philip 2026-08-28). */
   heroVisible?: boolean;
@@ -159,6 +167,12 @@ interface Props {
    * The user CAN tap the rail and voice orb in any mode.
    */
   frameMode?: "normal" | "dim" | "cinema" | "off";
+  /** Bezel image src override · Philip 2026-09-01 · per-artifact frames.
+   *  When set, this replaces the theme's imageSrc / imageSrcNoRail for the
+   *  bezel overlay only (chroma-key + mask pipeline still applied).
+   *  Used to render a distinct frame on the chat screen without switching
+   *  themes globally. Pass undefined to fall back to the theme default. */
+  bezelSrcOverride?: string;
   /**
    * Right-side kebab (3-dot vertical) menu · Philip 2026-08-28.
    * Sits under the last rail button (Food) in the dead space between rail
@@ -205,6 +219,25 @@ interface Props {
    * (all-or-nothing) so pre-BATCH-7 callers behave identically.
    */
   visibleRailButtonCount?: number;
+  /**
+   * Surgical frame-removal mode · Philip 2026-09-07.
+   *
+   * When true, NexHudFrame skips rendering the phone chassis / bezel
+   * overlay / rail housing accents / interior hero background / voice
+   * orb, and the app content fills the entire mobile viewport
+   * (100vw · 100dvh) instead of the old 850×1850 aspect-locked
+   * container.
+   *
+   * The `.nex-console-viewport` class stays on the inner container so
+   * every component that portals into it (ControlCenterPanel,
+   * NexLiveClient inShell mount, etc.) keeps working unchanged.
+   *
+   * IMPORTANT: this must NOT change hook order between frameless and
+   * legacy paths. The one hook this component calls
+   * (`useChromaKeyedBezel`) runs unconditionally before we branch on
+   * `frameless` so Fast Refresh never sees a hook-count mismatch.
+   */
+  frameless?: boolean;
 }
 
 function resolveTheme(themeId?: string): NexHudTheme {
@@ -322,11 +355,10 @@ function HeaderIconSlot({
 }) {
   const attach = useGuidanceTarget(btn.guidanceTarget ?? btn.id);
   return (
-    <button
+    <TouchButton
       ref={attach as (el: HTMLButtonElement | null) => void}
-      type="button"
       aria-label={btn.label}
-      onClick={btn.onClick}
+      onTap={btn.onClick}
       style={{
         position: "absolute",
         top:    slot.top,
@@ -353,7 +385,7 @@ function HeaderIconSlot({
       >
         {btn.icon}
       </span>
-    </button>
+    </TouchButton>
   );
 }
 
@@ -363,11 +395,10 @@ function RailButtonSlot({ btn, accent }: { btn: RailButton; accent: string }) {
   // active room can be tinted while the rest of the rail dims.
   const effectiveColor = btn.accentOverride ?? accent;
   return (
-    <button
+    <TouchButton
       ref={attach as (el: HTMLButtonElement | null) => void}
-      type="button"
       aria-label={btn.label}
-      onClick={btn.onClick}
+      onTap={btn.onClick}
       style={{
         appearance: "none",
         border: "none",
@@ -380,7 +411,6 @@ function RailButtonSlot({ btn, accent }: { btn: RailButton; accent: string }) {
         justifyContent: "center",
         width: "100%",
         height: "100%",
-        transition: "color 220ms ease, opacity 220ms ease",
         opacity: btn.active ? 1 : 0.85,
       }}
     >
@@ -405,7 +435,7 @@ function RailButtonSlot({ btn, accent }: { btn: RailButton; accent: string }) {
       >
         {btn.icon}
       </span>
-    </button>
+    </TouchButton>
   );
 }
 
@@ -418,6 +448,7 @@ export function NexHudFrame({
   composerSlot,
   overlaySlot,
   hideInteriorControls = false,
+  voiceOrbHidden = false,
   interiorHeader,
   onBezelButton,
   children,
@@ -443,18 +474,294 @@ export function NexHudFrame({
   hideRail = false,
   accentRegionOpacities,
   visibleRailButtonCount,
+  bezelSrcOverride,
+  frameless = false,
 }: Props) {
   const theme = resolveTheme(themeId);
+
   const accent = theme.accents.primary;
   // Frame variant swap (Philip 2026-08-28): when rail is hidden AND the
   // theme ships a no-rail alternate frame, use it. Otherwise reuse the
   // default frame (rail housing still visible · only buttons disappear).
+  // Per-artifact override (Philip 2026-09-01) wins over both when present.
   const activeBezelSrc =
-    hideRail && theme.bezel.imageSrcNoRail
+    bezelSrcOverride ??
+    (hideRail && theme.bezel.imageSrcNoRail
       ? theme.bezel.imageSrcNoRail
-      : theme.bezel.imageSrc;
+      : theme.bezel.imageSrc);
   // Chroma-key JPEGs; PNG/SVG/WebP pass through untouched (v6 has native alpha).
+  // NOTE: this hook MUST run unconditionally on every render, whether
+  // `frameless` is true or false, so Fast Refresh never sees a hook-count
+  // mismatch between the two paths.
   const bezelSrc = useChromaKeyedBezel(activeBezelSrc) ?? activeBezelSrc;
+
+  // ── FRAMELESS MODE · Philip 2026-09-07 ────────────────────────
+  //
+  // Surgical: strip the phone chassis and let the existing NEX app page
+  // fill the entire viewport. Preserves `.nex-console-viewport` on the
+  // inner container so ControlCenterPanel + NexLiveClient portals still
+  // work. Renders the existing header icons + kebab so the shell nav
+  // survives. Skips bezel img, accent stack, interior hero, voice orb,
+  // frameOverlaySlot, and the aspect-ratio lock — those ARE the frame.
+  // Returns EARLY, but the single hook above already ran.
+  if (frameless) {
+    return (
+      <>
+        <style>{`
+          .nex-console-viewport {
+            position: relative;
+            width: 100vw;
+            width: 100svw;
+            width: 100dvw;
+            /* HEIGHT (not min-height) locks the frameless shell to the
+               real mobile viewport · Philip 2026-09-07. Previously used
+               min-height:100dvh which allowed the container to GROW
+               when a workspace rendered content taller than the mobile
+               viewport (e.g., Products SECTION at 875px pushed the
+               viewport to 931px, dragging the composer + kebab below
+               the mobile screen). Locking to height:100dvh + the body
+               internal overflow-y:auto keeps the shell at exactly the
+               mobile viewport and lets long workspace content scroll
+               INSIDE the body zone. */
+            height: 100vh;
+            height: 100svh;
+            height: 100dvh;
+            max-height: 100vh;
+            max-height: 100svh;
+            max-height: 100dvh;
+            margin: 0;
+            /* Founder background image · full-viewport · center/cover so
+               it never distorts. Black fallback if the asset 404s. */
+            background-color: #000000;
+            background-image: url("/nex/backgrounds/main-2026-09-07.jpg");
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            color: ${theme.accents.onDark};
+          }
+          @media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+            .nex-console-viewport {
+              background-attachment: fixed;
+            }
+          }
+          .nex-frameless-header {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 4px;
+            padding: calc(8px + env(safe-area-inset-top, 0px)) calc(8px + env(safe-area-inset-right, 0px)) 8px calc(8px + env(safe-area-inset-left, 0px));
+            position: sticky;
+            top: 0;
+            z-index: 30;
+          }
+          .nex-frameless-body {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            /* overflow-y: auto so long workspaces scroll INSIDE the body
+               zone instead of pushing the shell past the mobile viewport
+               (Philip 2026-09-07 · pairs with the viewport height lock
+               above · every page now fits 100dvh exactly and long content
+               scrolls naturally). overflow-x: hidden guards against any
+               accidental horizontal creep from workspace children. */
+            overflow-x: hidden;
+            overflow-y: auto;
+            /* Preserve momentum scroll on iOS Safari. */
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+          }
+          .nex-frameless-icon-btn {
+            appearance: none;
+            background: transparent;
+            border: none;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            color: currentColor;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .nex-frameless-icon-btn:active { background: rgba(255,255,255,0.06); }
+          /* Frameless composer · CLOSED-state compensation for
+             NexComposer's marginBottom:-16. Applies only when the NEX
+             keypad is NOT a descendant of the composer wrapper. When
+             the keypad opens it becomes a sibling of the composer form
+             and NexAppShell's flex gap:16 cancels the -16 internally —
+             so this extra +16 must NOT be applied then, or the whole
+             assembly rides 16px above the viewport bottom. Modern
+             browsers (Chrome/Safari/Firefox 2023+) all support :has(). */
+          [data-testid="nex-frameless-composer"]:not(:has([role="group"][aria-label="NEX keypad"])) {
+            bottom: calc(env(safe-area-inset-bottom, 0px) + calc(min(100dvh, 100dvw * 1850 / 850) * 0.032) + 16px) !important;
+          }
+        `}</style>
+        <div className="nex-console-viewport" data-testid="nex-frameless-viewport" data-scope="full-viewport">
+          <div className="nex-frameless-header" role="banner">
+            {headerIcons.map((btn) => (
+              <button
+                key={btn.id}
+                type="button"
+                className="nex-frameless-icon-btn"
+                aria-label={btn.label}
+                onClick={btn.onClick}
+                data-testid={`nex-frameless-header-${btn.id}`}
+              >
+                {btn.icon}
+              </button>
+            ))}
+            {onRightKebabTap && (
+              <button
+                type="button"
+                className="nex-frameless-icon-btn"
+                aria-label="More"
+                aria-pressed={rightKebabActive}
+                onClick={onRightKebabTap}
+                data-testid="nex-frameless-header-kebab"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <circle cx="5" cy="12" r="1.5" />
+                  <circle cx="12" cy="12" r="1.5" />
+                  <circle cx="19" cy="12" r="1.5" />
+                </svg>
+              </button>
+            )}
+          </div>
+          <div className="nex-frameless-body">
+            {children}
+          </div>
+
+          {/* NEX Composer / Keypad · restored to the frameless shell
+              2026-09-07. Anchored to the bottom edge · full width ·
+              safe-area padded so it never sits under the home-indicator
+              gesture bar. Higher z-index than the orb so the composer
+              is always tappable when open. Only rendered when NexAppShell
+              provided a composerSlot (workspaces that hide the composer
+              simply pass nothing). */}
+          {composerSlot && (
+            <div
+              data-testid="nex-frameless-composer"
+              style={{
+                position: "absolute",
+                left: 0,
+                right: 0,
+                // Bottom offset compensates for the -3.2% inner assembly
+                // offset NexAppShell line ~2311 applies to the composer
+                // stack (calibrated for the framed world where composerSlot
+                // sat at bottom:3.2% inside the frame). Frameless
+                // composerSlot has bottom:0, so that inner -3.2% pushes
+                // composer BELOW the viewport by ~27px at 390×844 without
+                // this compensation. Plus env(safe-area) for iOS home-
+                // indicator clearance. Philip 2026-09-07 · frameless fix.
+                //
+                // The +16px "keypad-closed" compensation for NexComposer's
+                // marginBottom:-16 is applied via the :has()-conditional
+                // style block below (line ~700 injected style), so it
+                // only fires when the composer is the LAST element in the
+                // assembly. When the keypad opens, it becomes a sibling
+                // and NexAppShell's own `gap: 16` (line ~2334) cancels
+                // the -16 automatically — the wrapper must stay at its
+                // base offset in that case or the whole assembly rises
+                // 16px above the viewport bottom.
+                bottom: "calc(env(safe-area-inset-bottom, 0px) + calc(min(100dvh, 100dvw * 1850 / 850) * 0.032))",
+                paddingLeft: "env(safe-area-inset-left, 0px)",
+                paddingRight: "env(safe-area-inset-right, 0px)",
+                zIndex: 50,
+                display: "flex",
+                alignItems: "stretch",
+                justifyContent: "center",
+                pointerEvents: "none",
+                // overflow visible so the composer + keypad assembly
+                // (which uses absolute positioning inside the wrapper)
+                // can render above the wrapper's own bounds without
+                // being clipped. Horizontal overshoot is prevented by
+                // the inner width-clamp below.
+                overflow: "visible",
+              }}
+            >
+              <div
+                style={{
+                  // Match the width the composer + shared-console wrapper
+                  // expect to live inside: `min(100dvw, 100dvh * 850/1850)`.
+                  // That's the exact expression NexAppShell uses to compute
+                  // the shared-console's edge-to-edge extent · giving the
+                  // composer that width means its internal −10.82% margins
+                  // resolve to the correct pixel values instead of pushing
+                  // content off-screen. On a 390×844 phone this is ~388px
+                  // (essentially full screen width). On desktop it produces
+                  // a phone-shaped composer bar (~413px) so the keypad
+                  // never stretches into a broken wide-screen row.
+                  width: "min(100dvw, calc(100dvh * 850 / 1850))",
+                  maxWidth: "100%",
+                  height: "100%",
+                  position: "relative",
+                  pointerEvents: "auto",
+                }}
+              >
+                {composerSlot}
+              </div>
+            </div>
+          )}
+
+          {/* NEX Voice Orb · restored to the frameless shell 2026-09-07.
+              Absolute-positioned in the top-right corner (matches the
+              legacy "perched" park position) · respects the same
+              voiceOrbHidden gate the workspaces already use · honors
+              voiceOrbTransitStyle so page-navigation flights keep
+              working · the eye bubble mounts alongside as before. */}
+          {!voiceOrbHidden && (
+            <div
+              style={{
+                position: "absolute",
+                // Park in the top-right AREA · sits below the sticky
+                // header (~56px total: 40px icon + 8px padding + safe-
+                // area-inset) so it never collides with the Profile /
+                // Control Center icons on the chat page.
+                top: `calc(env(safe-area-inset-top, 0px) + 64px)`,
+                right: `calc(env(safe-area-inset-right, 0px) + 12px)`,
+                width: 72,
+                height: 72,
+                zIndex: 40,
+                transform: voiceOrbPerched
+                  ? "translate(0%, 0%)"
+                  : "translate(0, 0)",
+                transition: "transform 1200ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                pointerEvents: "auto",
+                ...voiceOrbTransitStyle,
+              }}
+              data-testid="nex-frameless-voice-orb"
+            >
+              <NexVoiceOrb
+                nexState={voiceState}
+                onTap={onVoiceOrbTap}
+                lookAt={voiceOrbLookAt}
+                pupilTransitionMs={voiceOrbPupilTransitionMs}
+                autoReturn={voiceOrbAutoReturn}
+                flashRed={voiceOrbFlashRed}
+                hopped={voiceOrbHopped}
+                hyperMode={voiceOrbHyperMode}
+                perched={voiceOrbPerched}
+              />
+              <NexEyeBubble
+                message={eyeBubbleMessage}
+                dwellMs={eyeBubbleDwellMs}
+                onDismiss={onEyeBubbleDismiss}
+              />
+            </div>
+          )}
+        </div>
+      </>
+    );
+  }
+  // ── /FRAMELESS ────────────────────────────────────────────────
 
   // Frame mode filter · Philip 2026-08-27. Applied on top of any theme-level
   // filter. Ordering: theme filter first · then mode filter · CSS composes.
@@ -508,20 +815,54 @@ export function NexHudFrame({
         }}
       />
 
-      {/* Frame container · aspect-locked to v6 · fits inside phone viewport
-          preserving aspect · all zone %s below are relative to this box. */}
+      {/* Frame container · Philip 2026-09-01 Option B responsive sizing:
+          · Default (tablet / desktop · aspect > 0.65): phone-column at
+            locked aspect 850/1850 · letterboxed on wide viewports.
+          · Phone-shaped device (aspect ≤ 0.65): fills viewport edge-to-
+            edge · aspect stretches to device (rivets flex slightly on
+            wider phones like iPhone SE) so every mobile gets full width.
+          Sizing is driven by CSS class rules (see the <style> block just
+          below · media query at `max-aspect-ratio: 65/100`) rather than
+          inline styles so the media query can override. */}
+      <style>{`
+        /* Fallback chain for viewport units · Philip 2026-09-02 hard req.
+           Order matters: dvh (dynamic · adjusts with browser UI) is the
+           target. Older browsers fall back to vh. Middle browsers get svh
+           (smallest viewport height, safe under all UI). Last declaration
+           for each property wins in supporting browsers. */
+        .nex-console-viewport {
+          position: relative;
+          z-index: 1;
+          aspect-ratio: ${BEZEL_METAL.w} / ${BEZEL_METAL.h};
+          width: min(100vw,  calc(100vh  * ${BEZEL_METAL.w} / ${BEZEL_METAL.h}));
+          width: min(100svw, calc(100svh * ${BEZEL_METAL.w} / ${BEZEL_METAL.h}));
+          width: min(100dvw, calc(100dvh * ${BEZEL_METAL.w} / ${BEZEL_METAL.h}));
+          height: auto;
+          max-height: 100vh;
+          max-height: 100svh;
+          max-height: 100dvh;
+          background: #000000;
+          overflow: hidden;
+        }
+        @media (max-aspect-ratio: 65/100) {
+          .nex-console-viewport {
+            aspect-ratio: auto;
+            width: 100vw;
+            width: 100svw;
+            width: 100dvw;
+            height: 100vh;
+            height: 100svh;
+            height: 100dvh;
+            max-height: none;
+          }
+        }
+      `}</style>
+      {/* Inline style intentionally empty · all sizing/background/overflow
+          rules live in the .nex-console-viewport class above so the media
+          query can override them (inline styles beat class in specificity). */}
       <div
         className="nex-console-viewport"
-        style={{
-          position: "relative",
-          zIndex: 1,
-          aspectRatio: BEZEL_ASPECT_RATIO,
-          width: `min(100dvw, calc(100dvh * ${BEZEL_METAL.w} / ${BEZEL_METAL.h}))`,
-          height: "auto",
-          maxHeight: "100dvh",
-          background: "#000000",
-          overflow: "hidden",
-        }}
+        style={{}}
       >
         {/* LAYER 0 · Interior background · with speaking-state random swap.
             Philip 2026-08-26: base image (v1) is always default. When NEX
@@ -591,9 +932,15 @@ export function NexHudFrame({
           {contextSlot}
         </div>
 
-        {/* LAYER 20 · Frame overlay artwork · transparent interior · sits
-            ABOVE live content. Metal chassis + rail housings + bottom pill
-            + orange glow are all opaque parts of this image. */}
+        {/* LAYER 20 · Frame overlay artwork · sits ABOVE live content.
+            When the frame image ships without a transparent interior
+            (fully opaque palette PNG, external preview render, etc.)
+            we cut a rectangular hole through the middle so the app
+            UI beneath the frame stays visible in the phone-screen
+            zone. Interior rectangle matches DEFAULT_ZONES.content
+            (measured against the master chassis).
+            NEX_FRAME_DISABLE_ACCENT_STACK doubles as the flag for
+            "external frame image · needs interior mask". */}
         <img
           src={bezelSrc}
           alt=""
@@ -608,8 +955,37 @@ export function NexHudFrame({
             zIndex: 20,
             filter: composedBezelFilter,
             transition: "filter 320ms ease",
+            // Mask · white=visible, black=hidden. SVG defines a full-canvas
+            // white rect with a black inner rect covering the transparent
+            // interior zone. Uses the same 7.27/8.32/89.10/91.91 numbers
+            // that DEFAULT_ZONES.content pins to (see hud/geometry.ts).
+            ...(NEX_FRAME_DISABLE_ACCENT_STACK ? {
+              maskImage:
+                "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><rect width='100' height='100' fill='white'/><rect x='8.32' y='7.27' width='83.59' height='81.83' fill='black'/></svg>\")",
+              WebkitMaskImage:
+                "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><rect width='100' height='100' fill='white'/><rect x='8.32' y='7.27' width='83.59' height='81.83' fill='black'/></svg>\")",
+              maskSize: "100% 100%",
+              WebkitMaskSize: "100% 100%",
+            } : {}),
           }}
         />
+
+        {/* DEV OVERLAY · camera/earpiece cutout indicator · REMOVED
+            Philip 2026-09-05 per explicit request "remove the camer red
+            position in center header". The temporary red-circle marker
+            (originally added 2026-09-03 to visualise where a modern
+            iPhone Dynamic Island / front camera would physically sit)
+            is no longer required · the position has been noted. */}
+
+        {/* Rail-housing MASK REMOVED · Philip 2026-09-03. The dark
+            overlay was itself reading as a visible black rectangle
+            on the right side (didn't blend with the surrounding
+            metallic chassis color). The 5 hexagonal rail housings are
+            baked into the master frame PNG · to actually hide them
+            cleanly we'd need either a proper `hud-frame-master-norail.png`
+            variant (requires image editing) or a CSS mask-image on the
+            frame img. Leaving the housings visible as chassis art for
+            now · they're decorative rather than interactive. */}
 
         {/* Brand-orange accent regions · Philip 2026-08-28. When frameMode is
             not "normal", the base bezel image above is greyscaled/dimmed.
@@ -620,7 +996,7 @@ export function NexHudFrame({
             metal pixels within the clip rectangle are effectively invisible.
             Result: no visible clip-boundary artifacts · the accent regions
             blend seamlessly with the cinema-mode base. */}
-        {frameMode !== "normal" && NEX_BRAND_ACCENT_REGIONS.map((region) => {
+        {!NEX_FRAME_DISABLE_ACCENT_STACK && frameMode !== "normal" && NEX_BRAND_ACCENT_REGIONS.map((region) => {
           // Per-region opacity resolution · Philip 2026-08-29 · BATCH 7.
           // Rail housings (id railHousing1..5) are ceremony-controlled and
           // default to 0 · this preserves pre-BATCH-6 LIVE mode where the
@@ -735,7 +1111,11 @@ export function NexHudFrame({
             stays tappable when drawer closed (nothing at z:10-15 sits over
             the orb region). Bezel img at z:20 is pointerEvents:none · doesn't
             block taps. Voice orb visible through bezel's transparent interior.
-            Doctrine: workspace identity 2026-08-25 · voice is core NEX. */}
+            Doctrine: workspace identity 2026-08-25 · voice is core NEX.
+            Philip 2026-09-05 · voiceOrbHidden gate: workspaces (e.g. Products)
+            can hide the orb so it doesn't visually compete with interior
+            content · orb stays functional · returns when flag is false. */}
+        {!voiceOrbHidden && (
         <div
           style={{
             position: "absolute",
@@ -773,14 +1153,14 @@ export function NexHudFrame({
             onDismiss={onEyeBubbleDismiss}
           />
         </div>
+        )}
 
         {/* NEX wordmark hit target · top-left of top bezel · hidden when
             an interior-blackout overlay (mascot stage) is active. */}
         {!hideInteriorControls && (
-          <button
-            type="button"
+          <TouchButton
             aria-label="NEX home"
-            onClick={() => onBezelButton?.("nex-wordmark")}
+            onTap={() => onBezelButton?.("nex-wordmark")}
             style={{
               position: "absolute",
               top:    BEZEL_AFFORDANCES.wordmark.top,
@@ -794,52 +1174,15 @@ export function NexHudFrame({
               cursor: "pointer",
               padding: 0,
             }}
-          />
+          >{null}</TouchButton>
         )}
 
-        {/* Header-top-centre deep orange bar · Philip 2026-08-29.
-            Connected single bar · width 46px (prior 38px + 8px),
-            thickness 5px. Deep orange (burnt-amber core, not neon
-            yellow) with tight saturated glow · reads richer and more
-            recessed against the metal chrome. Sits at z:22. */}
-        {!hideInteriorControls && (
-          <>
-            <div
-              aria-hidden
-              className="nex-header-lights"
-              style={{
-                position: "absolute",
-                top:    "calc(2.6% - 7px)",
-                left:   "calc(50% - 23px)",
-                width:  "46px",
-                height: "5px",
-                background:
-                  // Deep orange · burnt-amber core, no yellow tint.
-                  //   edge  = #c2410c (deep orange, 0.9)
-                  //   core  = #ea580c (rich orange, 1.0)
-                  "linear-gradient(90deg, rgba(194, 65, 12, 0.9) 0%, rgba(234, 88, 12, 1) 50%, rgba(194, 65, 12, 0.9) 100%)",
-                boxShadow:
-                  // Warmer, tighter glow matching the deeper core.
-                  "0 0 4px rgba(234, 88, 12, 0.95), 0 0 10px rgba(194, 65, 12, 0.85), 0 0 22px rgba(154, 52, 18, 0.55)",
-                borderRadius: 3,
-                zIndex: 22,
-                pointerEvents: "none",
-              }}
-            />
-            <style>{`
-              @keyframes nex-header-lights-pulse {
-                0%, 100% { opacity: 0.78; }
-                50%      { opacity: 1; }
-              }
-              .nex-header-lights {
-                animation: nex-header-lights-pulse 3.4s ease-in-out infinite;
-              }
-              @media (prefers-reduced-motion: reduce) {
-                .nex-header-lights { animation: none !important; opacity: 0.95 !important; }
-              }
-            `}</style>
-          </>
-        )}
+        {/* Header-top-centre orange bar removed · Philip 2026-09-01.
+            The CSS-drawn `.nex-header-lights` pulsing orange bar has been
+            deleted from all frame surfaces. If a future surface needs an
+            explicit top-centre affordance (e.g. friend identity), it should
+            render as its own portalled overlay (see NexWorkspaceFriends'
+            FriendHeaderIdentity for the pattern). */}
 
         {/* 3 header icons · top-right · rendered on top of the frame's header
             icon housings. 2026-08-26 · Philip · white + 2x size. */}
@@ -915,10 +1258,9 @@ export function NexHudFrame({
             panel via overlaySlot. z:100 matches rail so both stay on top. */}
         {!hideInteriorControls && onRightKebabTap && (
           <>
-            <button
-              type="button"
+            <TouchButton
               aria-label="More options"
-              onClick={onRightKebabTap}
+              onTap={onRightKebabTap}
               style={{
                 position: "absolute",
                 // Philip 2026-08-29 · nudged left 5px + down 5px from
@@ -964,7 +1306,7 @@ export function NexHudFrame({
                   }}
                 />
               ))}
-            </button>
+            </TouchButton>
             <style>{`
               @keyframes nex-kebab-heartbeat {
                 0%, 40%, 100% { opacity: 0.55; transform: scale(1); }
@@ -982,8 +1324,36 @@ export function NexHudFrame({
           </>
         )}
 
-        {/* BOTTOM · composer · sits over the bottom pill housing artwork.
-            Hidden when an interior-blackout overlay (mascot stage) is active. */}
+        {/* BOTTOM FADE (z:15) · Philip 2026-09-02 · "shade should be
+            behind the phone frame in footer not overlay". Sits BELOW the
+            frame image (z:20) so the metallic chassis chrome paints on
+            top of the gradient in the bezel area. Only the transparent
+            centre of the frame lets the fade show through. */}
+        {!hideInteriorControls && (
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              bottom: DEFAULT_ZONES.bottom.bottom,
+              left:   DEFAULT_ZONES.bottom.left,
+              width:  DEFAULT_ZONES.bottom.width,
+              height: DEFAULT_ZONES.bottom.height,
+              zIndex: 15,
+              pointerEvents: "none",
+              background:
+                "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 40%, rgba(0,0,0,0.95) 65%, rgba(0,0,0,1) 73%, rgba(0,0,0,1) 100%)",
+            }}
+          />
+        )}
+
+        {/* BOTTOM · composer stack · Philip 2026-09-01 seamless HUD.
+            Zone grew from 5% → 18% tall (see geometry.ts DEFAULT_ZONES.bottom)
+            to hold the composer's own fade region + chips row + input bar.
+            Wrapper is transparent · pointer-events pass through the fade
+            to chat below · composer contents own their own hit targets.
+            z:30 keeps the interactive INPUT ROW in front of the frame
+            chassis so the user can see + tap it; only the fade below
+            renders behind the frame. */}
         {!hideInteriorControls && (
           <div
             style={{
@@ -994,8 +1364,9 @@ export function NexHudFrame({
               height: DEFAULT_ZONES.bottom.height,
               zIndex: 30,
               display: "flex",
-              alignItems: "center",
+              alignItems: "stretch",
               justifyContent: "center",
+              pointerEvents: "none", // gradient part passes through · form re-enables
             }}
           >
             {composerSlot}

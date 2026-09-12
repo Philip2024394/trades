@@ -36,11 +36,16 @@ let cachedTried = false;
 export function brainSupabase(): SupabaseClient | null {
   if (cached || cachedTried) return cached;
   cachedTried = true;
-  const url = process.env.SUPABASE_URL;
-  const key =
-    process.env.SUPABASE_SERVICE_ROLE_KEY ??
-    process.env.SERVICE_ROLE_KEY ??
+  // NEX SUPABASE AUTHORITY (2026-09-07) · NEX has ONE Supabase project
+  // (Project B · ijvqdvsvwtwxzcqmoqit). The generic SUPABASE_URL /
+  // SUPABASE_SERVICE_ROLE_KEY vars belong to the legacy trades/hammerex
+  // platform (Project A) and MUST NOT be consumed by NEX runtime.
+  // NEX-scoped env vars only · no Project A fallback.
+  const url =
+    process.env.NEX_SUPABASE_URL ??
+    process.env.NEXT_PUBLIC_NEX_SUPABASE_URL ??
     null;
+  const key = process.env.NEX_SUPABASE_SERVICE_ROLE_KEY ?? null;
   if (!url || !key) return null;
   cached = createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },

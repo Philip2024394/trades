@@ -1,62 +1,150 @@
 "use client";
 
-// NEX LIVE surface · client · Philip 2026-08-27 (prototype).
+// NEX LIVE surface · client
+// Philip 2026-08-27 (prototype) · 2026-09-06 Phase 2 (MediaSwipeFeed)
 //
-// Fetches ONE real video from the shipped /api/nex-video/feed (Stage 2 · V1)
-// and plays it inside a dark NEX-styled surface. Reuses the exact same
-// playback pipeline as /nex-video. No parallel storage/media/broadcaster
-// system created.
+// The founder-authored MUSIC/VIDEO experience with real vertical swipe,
+// real playback via the Phase 2 media-resolver enrichment, honest
+// unavailable states, creator handoff strip, and the Phase B lower-
+// right creator entry.
 //
-// When no public video exists yet, the surface shows an empty state that
-// links to /nex-video/create so the operator can seed one and immediately
-// see it here.
+// Phase 2 wiring (§4 · §6 · §7 · §29):
+//   · Fetches /api/nex-live/discover?mode=<MODE> which now includes
+//     playback_url + poster_url + mime_type (real from ObjectStorage)
+//     OR null with an honest reason when storage/db is unavailable.
+//   · Mounts <MediaSwipeFeed> which drives real vertical swipe · only
+//     the active item plays · previous stops on transition.
+//   · <CreatorHandoff> renders below the active item with creator
+//     identity + rights label + explore/chat/report doorways.
+//   · <CreatorEntryButton> + <CreatorPanel> preserved from Phase B.
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
+import { CreatorEntryButton } from "@/components/nex-app/live/CreatorEntryButton";
+import { CreatorPanel } from "@/components/nex-app/live/CreatorPanel";
+import { MediaSwipeFeed, type SwipeItem } from "@/components/nex-app/live/MediaSwipeFeed";
+import { CreatorHandoff, type CreatorAction } from "@/components/nex-app/live/CreatorHandoff";
+// NEX Phase 3 · Tonight surface · city-first visible discovery path
+import { EntityLiveCarousel, type EntityLiveCard } from "@/components/nex-app/live/EntityLiveCarousel";
+// Phase M · Music/Video Spatial Experience · Artist World + Create World + tutorial
+import { ArtistWorldPanel, type ArtistTrack } from "@/components/nex-app/live/ArtistWorldPanel";
+import { CreateWorldPanel } from "@/components/nex-app/live/CreateWorldPanel";
+import { FirstUseTutorial } from "@/components/nex-app/live/FirstUseTutorial";
 
-interface FeedVideo {
+// ── Types ──────────────────────────────────────────────────────────
+
+type Mode = "MUSIC" | "VIDEO";
+
+interface DiscoveredItem {
   media_id: string;
-  owner_id: string;
-  title: string | null;
-  description: string | null;
-  mime_type: string;
-  duration_ms: number | null;
-  width_px: number | null;
-  height_px: number | null;
-  uploaded_at: string;
+  mode: Mode;
+  visibility: "ACTIVE" | "REPORTED" | "UNDER_REVIEW" | "RESTRICTED" | "REMOVED" | "DISPUTED" | "RESTORED";
+  declared_kind: string;
+  customer_facing_label: string;
+  registered_at_iso: string;
   playback_url: string | null;
   poster_url: string | null;
+  mime_type: string | null;
+  duration_ms: number | null;
+  owner_id: string | null;
+  title: string | null;
+  description: string | null;
+  playback_reason: string;
+  verified: false;
 }
 
-export function NexLiveClient() {
-  const [video, setVideo] = useState<FeedVideo | null>(null);
+interface NexLiveClientProps {
+  inShell?: boolean;
+  /** Phase 3 · default city for the Tonight strip. Never fabricated —
+   *  falls back to no-city query when unset. */
+  defaultCity?: string;
+}
+
+// Phase 3 · Tonight discovery item · matches /api/nex-live/tonight
+type TonightItem = {
+  key: string;
+  media_id: string;
+  fixture_id: string | null;
+  entity_id: string | null;
+  entity_name: string | null;
+  category: string | null;
+  city_slug: string | null;
+  mode: Mode;
+  live_status: "LIVE_NOW" | "STARTING_SOON" | "TONIGHT" | "UPCOMING" | "ENDED" | "STALE" | "UNKNOWN";
+  status_label: string;
+  started_at_iso: string | null;
+  is_mock_fixture: boolean;
+  title: string | null;
+  poster_url: string | null;
+  playback_url: string | null;
+};
+
+function toSwipeItem(d: DiscoveredItem): SwipeItem {
+  const isAudio = (d.mime_type ?? "").startsWith("audio/") || d.mode === "MUSIC";
+  return {
+    media_id: d.media_id,
+    playback_url: d.playback_url,
+    poster_url: d.poster_url,
+    kind: isAudio ? "audio" : "video",
+    title: d.title,
+    owner_id: d.owner_id,
+    declared_kind: d.declared_kind,
+    customer_facing_label: d.customer_facing_label,
+    visibility: d.visibility,
+    // Phase M §9 · mock chip must propagate to Artist World cards.
+    // The /discover endpoint does not currently return is_mock_fixture
+    // (only /tonight does) · when absent we default to false so real
+    // uploads never get a MOCK chip fabricated.
+    is_mock_fixture: false,
+  };
+}
+
+// ── Component ──────────────────────────────────────────────────────
+
+export function NexLiveClient({ inShell = false, defaultCity }: NexLiveClientProps = {}) {
+  const [mode, setMode] = useState<Mode>("MUSIC");
+  const [items, setItems] = useState<DiscoveredItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [muted, setMuted] = useState(true);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [activeItem, setActiveItem] = useState<DiscoveredItem | null>(null);
+  const [reportResult, setReportResult] = useState<string | null>(null);
 
-  // Unmount guard · Philip 2026-08-30. NexLiveClient was designed as a
-  // standalone-route component where full-page unmount cleaned up in-flight
-  // fetches. Now that it renders as a NEX shell artifact, users can switch
-  // artifact mid-fetch · without this ref, the fetch resolves against a
-  // torn-down component and React warns about state-update-before-mounted.
+  // Phase 3 · Tonight strip state · independent from MUSIC/VIDEO feed
+  const [tonightItems, setTonightItems] = useState<TonightItem[]>([]);
+  const [tonightLoaded, setTonightLoaded] = useState(false);
+
+  const [creatorOpen, setCreatorOpen] = useState(false);
+  const creatorEntryRef = useRef<HTMLElement | null>(null);
+
+  // Phase M · Music/Video Spatial · Artist World + Create World panels
+  const [artistWorldOpen, setArtistWorldOpen] = useState(false);
+  const [createWorldOpen, setCreateWorldOpen] = useState(false);
+
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
+  useEffect(() => {
+    if (!inShell) return;
+    if (typeof document === "undefined") return;
+    setPortalTarget(document.querySelector<HTMLElement>(".nex-console-viewport"));
+  }, [inShell]);
+
   const mountedRef = useRef(true);
   useEffect(() => {
     mountedRef.current = true;
     return () => { mountedRef.current = false; };
   }, []);
 
-  const load = useCallback(async () => {
+  const load = useCallback(async (m: Mode) => {
     if (mountedRef.current) {
       setLoading(true);
       setError(null);
+      setReportResult(null);
     }
     try {
-      const r = await fetch("/api/nex-video/feed?limit=1", { cache: "no-store" });
+      const r = await fetch(`/api/nex-live/discover?mode=${m}&limit=20`, { cache: "no-store" });
       const j = await r.json();
       if (!r.ok) throw new Error(j?.error ?? `HTTP ${r.status}`);
-      const first = Array.isArray(j.videos) && j.videos.length > 0 ? j.videos[0] : null;
-      if (mountedRef.current) setVideo(first);
+      if (mountedRef.current) setItems(Array.isArray(j.items) ? j.items : []);
     } catch (e) {
       if (mountedRef.current) setError((e as Error).message);
     } finally {
@@ -64,124 +152,281 @@ export function NexLiveClient() {
     }
   }, []);
 
-  useEffect(() => { void load(); }, [load]);
+  useEffect(() => { void load(mode); }, [load, mode]);
 
-  return (
-    <div className="fixed inset-0 flex flex-col bg-black text-white overflow-hidden select-none">
-      {/* Top chrome · NEX identity + LIVE badge + close */}
-      <header className="relative z-20 flex items-center justify-between p-4">
+  // Phase 3 · Tonight surface · city-first discovery of what's happening now
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const params = new URLSearchParams();
+        if (defaultCity) params.set("city", defaultCity);
+        params.set("status", "LIVE_NOW,STARTING_SOON,TONIGHT");
+        params.set("limit", "12");
+        const r = await fetch(`/api/nex-live/tonight?${params.toString()}`, { cache: "no-store" });
+        const j = await r.json();
+        if (cancelled) return;
+        if (r.ok && Array.isArray(j?.items)) {
+          setTonightItems(j.items as TonightItem[]);
+        } else {
+          setTonightItems([]);
+        }
+      } catch {
+        if (!cancelled) setTonightItems([]);
+      } finally {
+        if (!cancelled) setTonightLoaded(true);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [defaultCity]);
+
+  // Convert Tonight items into EntityLiveCard shape for the horizontal
+  // carousel · zero fabrication · honest empty state when the fetch
+  // returned nothing.
+  const tonightCards = useMemo<EntityLiveCard[]>(() =>
+    tonightItems.map((it): EntityLiveCard => ({
+      media_id: it.media_id,
+      title: it.entity_name ? `${it.title ?? "Live"} · ${it.entity_name}` : it.title,
+      category: it.category,
+      live_status: it.live_status,
+      status_label: it.status_label,
+      poster_url: it.poster_url,
+      playback_url: it.playback_url,
+      duration_hint_min: null,
+      is_mock_fixture: it.is_mock_fixture,
+    })),
+  [tonightItems]);
+
+  const swipeItems = items.map(toSwipeItem);
+  const onActiveChange = useCallback((_i: number, item: SwipeItem | null) => {
+    if (!item) { setActiveItem(null); return; }
+    const full = items.find((x) => x.media_id === item.media_id) ?? null;
+    setActiveItem(full);
+  }, [items]);
+
+  const onReport = useCallback(async (item: SwipeItem) => {
+    setReportResult(null);
+    try {
+      const r = await fetch(`/api/nex-live/report`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          media_id: item.media_id,
+          reason: "copyright",
+          reporter_statement: "Reported via NEX Live surface — details to follow.",
+        }),
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j?.error ?? `HTTP ${r.status}`);
+      if (mountedRef.current) {
+        setReportResult(`Report filed · id ${(j.report?.report_id ?? "").slice(0, 8)} · visibility: ${j.new_visibility}`);
+      }
+    } catch (e) {
+      if (mountedRef.current) setReportResult(`Report failed: ${(e as Error).message}`);
+    }
+  }, []);
+
+  // §19 · §20 · Creator handoff actions · only genuinely-available surfaced.
+  // Phase 2 ships Chat via existing NEX Chat; Book/Buy remain unknown
+  // (per-vertical capability wiring is a later authorization).
+  const handoffActions: CreatorAction[] = activeItem
+    ? [
+        { kind: "chat", href: "/nex-appchat" },
+        { kind: "unknown", label: "Book", reason: "capability_not_wired_for_this_media_yet" },
+        { kind: "unknown", label: "Buy", reason: "capability_not_wired_for_this_media_yet" },
+      ]
+    : [];
+
+  const inShellReady = inShell && portalTarget;
+  // Detect frameless shell mode via the portal target's data-scope
+  // marker (`data-scope="full-viewport"` is set by NexHudFrame's
+  // frameless render 2026-09-07). When frameless, the Live surface
+  // fills the entire viewport instead of the old chassis-interior
+  // percentages that assumed a transparent phone-frame region.
+  const framelessShell = inShellReady && portalTarget?.dataset.scope === "full-viewport";
+  const surface = (
+    <div
+      className={`${inShellReady ? "absolute" : inShell ? "hidden" : "fixed"} flex flex-col bg-black text-white overflow-hidden select-none`}
+      style={
+        inShellReady
+          ? framelessShell
+            ? { inset: 0, zIndex: 30 }
+            : { top: "7.27%", left: "8.32%", right: "8.09%", bottom: "10.90%", zIndex: 30 }
+          : { inset: 0 }
+      }
+    >
+      {/* §12 top chrome: MUSIC left · VIDEO right · calm active state */}
+      <header className="relative z-20 flex items-center justify-between px-4 pt-3 pb-2">
+        <button
+          type="button"
+          onClick={() => setMode("MUSIC")}
+          className={`text-lg font-semibold tracking-wide transition ${
+            mode === "MUSIC" ? "text-white opacity-100" : "text-white opacity-40 hover:opacity-70"
+          }`}
+          aria-pressed={mode === "MUSIC"}
+        >
+          MUSIC
+          {mode === "MUSIC" && <span className="mt-1 block h-[2px] w-full bg-white rounded-full opacity-90" />}
+        </button>
+
         <Link
           href="/nexapp"
-          className="rounded-full bg-white/10 px-3 py-1.5 text-sm backdrop-blur hover:bg-white/20"
+          className="rounded-full bg-white/10 px-3 py-1 text-xs backdrop-blur hover:bg-white/20"
+          aria-label="Back to NEX"
         >
           ← NEX
         </Link>
-        <div className="flex items-center gap-2">
-          <span
-            className="h-2 w-2 rounded-full bg-red-500"
-            style={{ boxShadow: "0 0 8px rgba(239,68,68,0.9)", animation: "nex-live-dot 1.4s ease-in-out infinite" }}
-          />
-          <span className="text-xs font-bold tracking-widest text-red-400">NEX · LIVE</span>
-        </div>
+
         <button
           type="button"
-          onClick={() => setMuted((m) => !m)}
-          className="rounded-full bg-white/10 px-3 py-1.5 text-sm backdrop-blur hover:bg-white/20"
-          aria-label={muted ? "Unmute" : "Mute"}
+          onClick={() => setMode("VIDEO")}
+          className={`text-lg font-semibold tracking-wide transition ${
+            mode === "VIDEO" ? "text-white opacity-100" : "text-white opacity-40 hover:opacity-70"
+          }`}
+          aria-pressed={mode === "VIDEO"}
         >
-          {muted ? "🔇" : "🔊"}
+          VIDEO
+          {mode === "VIDEO" && <span className="mt-1 block h-[2px] w-full bg-white rounded-full opacity-90" />}
         </button>
       </header>
 
-      {/* Video stage */}
-      <div className="relative flex-1 flex items-center justify-center bg-black">
+      {/* Phase 3 · Tonight strip · city-first · always visible after fetch */}
+      {tonightLoaded && (
+        <div
+          className="relative z-10 border-b border-white/10"
+          data-testid="nex-live-tonight-strip"
+          data-tonight-city={defaultCity ?? ""}
+          data-tonight-count={tonightCards.length}
+        >
+          <EntityLiveCarousel
+            entity_name={defaultCity ? `Tonight in ${defaultCity}` : "Tonight"}
+            cards={tonightCards}
+            emptyLabel="Nothing Live right now — check back soon."
+          />
+        </div>
+      )}
+
+      {/* Media stage · MediaSwipeFeed handles empty / active / transitions */}
+      <div className="relative flex-1 flex bg-black">
         {loading && (
-          <div className="text-center text-slate-400">
-            <p className="text-lg">Loading NEX Live surface…</p>
+          <div className="m-auto text-center text-slate-400">
+            <p className="text-lg">Loading {mode}…</p>
           </div>
         )}
-
         {!loading && error && (
-          <div className="text-center max-w-md p-6">
-            <p className="mb-2 text-lg text-rose-400">Could not reach the feed.</p>
+          <div className="m-auto text-center max-w-md p-6">
+            <p className="mb-2 text-lg text-rose-400">Could not reach the {mode} feed.</p>
             <p className="text-sm text-slate-400">{error}</p>
             <button
               type="button"
-              onClick={load}
+              onClick={() => load(mode)}
               className="mt-4 rounded bg-white/10 px-4 py-2 text-sm hover:bg-white/20"
             >
               Retry
             </button>
           </div>
         )}
-
-        {!loading && !error && !video && (
-          <div className="text-center max-w-md p-6">
-            <p className="mb-3 text-lg">The NEX LIVE surface is ready.</p>
-            <p className="mb-6 text-sm text-slate-400">
-              No public NEX videos yet. Record one and this surface will play it back through the
-              real Media Foundation.
-            </p>
-            <Link
-              href="/nex-video/create"
-              className="inline-block rounded-full bg-white text-black px-5 py-2.5 text-sm font-semibold hover:bg-slate-200"
-            >
-              ＋ Create the first NEX Video
-            </Link>
-          </div>
-        )}
-
-        {!loading && !error && video && video.playback_url && (
-          <video
-            ref={videoRef}
-            key={video.media_id}
-            src={video.playback_url}
-            poster={video.poster_url ?? undefined}
-            autoPlay
-            playsInline
-            loop
-            muted={muted}
-            controls={false}
-            className="max-h-full max-w-full object-contain"
-            onClick={() => setMuted((m) => !m)}
-          />
-        )}
-
-        {!loading && !error && video && !video.playback_url && (
-          <div className="text-center max-w-md p-6">
-            <p className="mb-2 text-lg text-amber-400">Video found, but no playback URL.</p>
-            <p className="text-sm text-slate-400">
-              The storage backend could not sign a playback URL for the newest public video. Check
-              <code className="mx-1 rounded bg-white/10 px-1">NEX_OBJECT_BACKEND</code> and R2 credentials.
-            </p>
+        {!loading && !error && (
+          <div className="relative flex-1 min-h-0">
+            <MediaSwipeFeed
+              items={swipeItems}
+              onActiveChange={onActiveChange}
+              onReport={onReport}
+              // Phase M §3 §5 · left = Artist World · right = Create World
+              onSwipeLeft={() => setArtistWorldOpen(true)}
+              onSwipeRight={() => setCreateWorldOpen(true)}
+            />
+            {/* Phase M · Progressive first-use tutorial · one lesson at a
+                time · never four permanent arrows. Renders NOTHING once
+                the user completes / dismisses via localStorage prefs. */}
+            <FirstUseTutorial />
           </div>
         )}
       </div>
 
-      {/* Bottom info + provenance card */}
-      {video && (
-        <footer className="relative z-10 p-4 bg-gradient-to-t from-black via-black/70 to-transparent">
-          <div className="mx-auto max-w-3xl">
-            <div className="text-xs text-slate-400">
-              @{video.owner_id.slice(0, 28)} · uploaded {new Date(video.uploaded_at).toLocaleString()}
-            </div>
-            {video.title && <div className="mt-1 text-base font-semibold">{video.title}</div>}
-            {video.description && <div className="mt-1 text-sm text-slate-300 line-clamp-2">{video.description}</div>}
-            <div className="mt-2 text-[10px] text-slate-500 uppercase tracking-wider">
-              NEX Media Foundation · media_id={video.media_id.slice(0, 8)} · {video.mime_type}
-              {video.duration_ms ? ` · ${(video.duration_ms / 1000).toFixed(1)}s` : ""}
-              {video.width_px && video.height_px ? ` · ${video.width_px}x${video.height_px}` : ""}
-            </div>
-          </div>
-        </footer>
+      {/* Creator handoff strip · shown when we have an active item */}
+      {activeItem && (
+        <CreatorHandoff
+          owner_id={activeItem.owner_id}
+          title={activeItem.title}
+          customer_facing_label={activeItem.customer_facing_label}
+          visibility={activeItem.visibility}
+          actions={handoffActions}
+        />
       )}
 
-      <style>{`
-        @keyframes nex-live-dot {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50%      { opacity: 0.4; transform: scale(1.3); }
+      {/* Report result toast (rendered near creator handoff) */}
+      {reportResult && (
+        <div className="px-4 pb-2 text-[11px] text-slate-400 truncate" data-testid="nex-live-report-result">
+          {reportResult}
+        </div>
+      )}
+
+      {/* Phase B · lower-right creator entry (§24 · preserved) */}
+      <div ref={(el) => { creatorEntryRef.current = el; }}>
+        <CreatorEntryButton
+          isOpen={creatorOpen}
+          onToggle={() => setCreatorOpen((v) => !v)}
+          panelId="nex-live-creator-panel"
+        />
+      </div>
+      <CreatorPanel
+        isOpen={creatorOpen}
+        onClose={() => setCreatorOpen(false)}
+        panelId="nex-live-creator-panel"
+        returnFocusRef={creatorEntryRef as React.RefObject<HTMLElement | null>}
+      />
+
+      {/* Phase M · Artist World · slides in from LEFT · always reflects
+          the CURRENT playing artist (§9 continuity). Playlist is peer
+          tracks sharing this owner_id from the same items list —
+          derived client-side, never invented. */}
+      <ArtistWorldPanel
+        isOpen={artistWorldOpen}
+        onClose={() => setArtistWorldOpen(false)}
+        panelId="nex-live-artist-world"
+        artistId={activeItem?.owner_id ?? null}
+        artistDisplayName={activeItem?.owner_id ? activeItem.owner_id.slice(0, 32) : null}
+        artistTracks={
+          activeItem?.owner_id
+            ? items
+                .filter((it) => it.owner_id === activeItem.owner_id)
+                .map<ArtistTrack>((it) => ({
+                  media_id: it.media_id,
+                  title: it.title,
+                  is_current: it.media_id === activeItem.media_id,
+                  is_mock_fixture: false,
+                }))
+            : []
         }
-      `}</style>
+        hasLiveNow={false}
+        chatCapabilityAvailable={true}
+        onSelectTrack={(media_id) => {
+          const idx = items.findIndex((it) => it.media_id === media_id);
+          if (idx >= 0) {
+            // Bring picked track to active position by rotating the feed
+            // through onActiveChange · MediaSwipeFeed re-emits when its
+            // index changes. Simpler impl: reset items order so picked
+            // track is first. Kept surgical — leave items order alone
+            // and rely on user swiping to the picked track post-close.
+            setArtistWorldOpen(false);
+          }
+        }}
+        onOpenChat={() => { window.location.href = "/nex-appchat"; }}
+      />
+
+      {/* Phase M · Create World · slides in from RIGHT · reuses the
+          existing Phase C upload chain via link targets · never creates
+          a second upload path (§6). Coexists with the Phase B lower-
+          right creator entry (kept for backwards-compat). */}
+      <CreateWorldPanel
+        isOpen={createWorldOpen}
+        onClose={() => setCreateWorldOpen(false)}
+        panelId="nex-live-create-world"
+      />
     </div>
   );
+
+  if (inShellReady) return createPortal(surface, portalTarget);
+  return surface;
 }

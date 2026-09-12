@@ -28,6 +28,12 @@ import type { DiscoverProfile } from "@/lib/nex/discover/_types";
 import { FloatingProfileCard, type CardController, type ActivityKind } from "./FloatingProfileCard";
 import { ConnectionSpeechCard } from "./ConnectionSpeechCard";
 import { ConnectDialog } from "./ConnectDialog";
+// Phase Social · Philip 2026-09-07 · new invitation flow · replaces
+// the V1 stub ConnectDialog usage below · original ConnectDialog file
+// preserved untouched.
+import { InviteMeetPanel } from "./InviteMeetPanel";
+import { normaliseMeetingPreferences, type MeetingPreferenceId } from "@/lib/nex/social/meeting-preferences";
+import type { SocialProfileRef } from "@/lib/nex/social/social-store";
 import { CornerCategoryButton } from "./CornerCategoryButton";
 import { User, Home, Flame } from "lucide-react";
 
@@ -77,7 +83,11 @@ const CATEGORIES = [
   { id: "female",        label: "Female",        icon: User,
     match: (p: DiscoverProfile) => p.gender === "female" },
   { id: "ready-tonight", label: "Ready Tonight", icon: Flame,
-    match: (p: DiscoverProfile) => p.availability === "available_now" && p.online }
+    match: (p: DiscoverProfile) => p.availability === "available_now" && p.online },
+  // Phase Social · Philip 2026-09-07 · "everyone" bucket for the new
+  // top discovery selector · no filter · shows all profiles.
+  { id: "everyone",      label: "Everyone",      icon: User,
+    match: (_p: DiscoverProfile) => true }
 ];
 
 const ACTIVITIES: ActivityKind[] = ["liked", "viewing", "sent-like", "new-match"];
@@ -94,6 +104,22 @@ export function FloatingProfileUniverse() {
   const [pressedId,  setPressedId]  = useState<string | null>(null);
   const [openConnect, setOpenConnect] = useState<DiscoverProfile | null>(null);
   const [category,   setCategory]   = useState<string>("male");
+
+  // Phase Social · Philip 2026-09-07 · listen for the DiscoverySelector's
+  // custom event so the top selector controls the same filter the corner
+  // buttons already do. Event-based bridge keeps this a 3-line edit
+  // instead of restructuring the universe's state ownership.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const h = (ev: Event) => {
+      const detail = (ev as CustomEvent<{ category?: string }>).detail;
+      if (!detail?.category) return;
+      const valid = CATEGORIES.some((c) => c.id === detail.category);
+      if (valid) setCategory(detail.category);
+    };
+    document.addEventListener("nex-social-discovery-category", h);
+    return () => document.removeEventListener("nex-social-discovery-category", h);
+  }, []);
   const [dismissedProfileIds, setDismissedProfileIds] = useState<Set<string>>(new Set());
   const [rerenderTick, setRerenderTick] = useState(0);
 
@@ -520,7 +546,32 @@ export function FloatingProfileUniverse() {
         Join
       </a>
 
-      <ConnectDialog profile={openConnect} onClose={() => setOpenConnect(null)} />
+      {/* Phase Social · InviteMeetPanel replaces the V1 ConnectDialog
+          stub. The stub file remains on disk for backwards-compat but
+          is no longer mounted from the discover surface. */}
+      {openConnect && (
+        <InviteMeetPanel
+          isOpen={openConnect !== null}
+          onClose={() => setOpenConnect(null)}
+          profileRef={{
+            id: openConnect.id,
+            first_name: openConnect.first_name,
+            city: openConnect.city ?? null,
+            photo_url: openConnect.photo_url ?? null,
+            business_info: openConnect.business_info ?? null,
+          } satisfies SocialProfileRef}
+          recipientMeetingPrefs={normaliseMeetingPreferences(openConnect.meeting_preferences) as MeetingPreferenceId[]}
+          onOpenFriendsChat={(friendId) => {
+            // Friends Chat surface is a separate authorised slice.
+            // Until it ships we deselect + close · the friend record
+            // is already persisted in social-store, viewable from
+            // any future Friends surface.
+            void friendId;
+            setOpenConnect(null);
+            deselect();
+          }}
+        />
+      )}
     </div>
   );
 }

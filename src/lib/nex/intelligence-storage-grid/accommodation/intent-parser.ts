@@ -139,10 +139,20 @@ export interface ParsedIntent {
     price_preference?: "cheap" | "expensive";
     /** Ordinal (1/2/3) when a follow-up references a prior list item */
     ordinal?: number;
-    /** Time filter (tonight/tomorrow) */
-    time?: "tonight" | "tomorrow";
+    /** Time filter · Founder BEGIN LCC 2026-09-09 expanded window vocabulary */
+    time?: "tonight" | "tomorrow" | "today" | "this_weekend" | "next_week";
     /** Traveller-type filter */
     traveller_type?: "family" | "couples" | "business_traveller" | "backpackers" | "children";
+    /** Founder BEGIN LCC 2026-09-09 · property-name resolution.
+     *  When `known_names` are provided AND a canonical business_name (or
+     *  substring long enough) appears in the message · fill this. Fixes the
+     *  Melia bug where "how many rooms does Hotel Melia Purosani have?"
+     *  collapsed to property_category=hotel. */
+    property_name_match?: {
+      listing_ref: string;
+      business_name: string;
+      matched_span: string;
+    };
     /** Structural signals */
     is_question: boolean;
     is_follow_up_where: boolean;
@@ -157,6 +167,16 @@ export interface ParsedIntent {
   reasoning: readonly string[];
 }
 
+/**
+ * Founder BEGIN LCC 2026-09-09 · optional known-names dictionary the parser
+ * can use to detect specific-entity questions. The chat route passes in the
+ * hot-tier's canonical names on every turn. Empty dictionary = pure legacy
+ * behaviour (no property-name detection).
+ */
+export interface ParseOptions {
+  known_names?: Iterable<{ listing_ref: string; business_name: string }>;
+}
+
 // ═══════════════════════════════════════════════════════════════════
 // Parser · pure function · zero side effects
 // ═══════════════════════════════════════════════════════════════════
@@ -165,10 +185,33 @@ const CITIES = new Set(["yogyakarta", "bali", "jakarta", "bandung", "surabaya", 
 const AREAS = new Set(["malioboro"]);
 const CATEGORIES = new Set(["hotel", "villa", "guesthouse", "homestay", "hostel", "apartment", "resort", "kos", "penginapan", "wisma", "losmen"]);
 
-export function parseIntent(raw: string): ParsedIntent {
+// Founder BEGIN LCC 2026-09-09 · which intents count as "per-property fact"
+// intents that should WIN over property_category when both a property name
+// and a fact trigger are present. property_category by itself means "list
+// this category" (list_in_city). But "how many ROOMS does <hotel-name> have"
+// must resolve to room_count, not property_category.
+const PER_PROPERTY_FACT_INTENTS = new Set([
+  "room_count", "room_types", "beds_configuration", "capacity",
+  "wifi_available", "air_conditioning_available", "parking_available",
+  "pool_available", "gym_available", "spa_available", "laundry_available",
+  "elevator_available", "balcony_available", "view_available", "smoking_policy",
+  "breakfast_available", "restaurant_available", "bar_available", "room_service_available",
+  "check_in_time", "check_out_time", "cancellation_policy", "pet_policy",
+  "children_policy", "opening_hours", "payment_methods",
+  "wheelchair_access", "accessible_room_available",
+  "price_indicative",
+  "property_phone", "property_whatsapp", "property_website", "property_email",
+  "location_district", "location_neighbourhood", "location_address", "location_coordinates",
+  "distance_to_landmark", "distance_to_malioboro", "distance_to_airport",
+  "property_star_rating", "property_rating", "reviews_count", "property_brand",
+  "hero_image",
+]);
+
+export function parseIntent(raw: string, options?: ParseOptions): ParsedIntent {
   const normalised = normalise(raw);
   const canonSet = new Set(normalised.canonical_tokens);
   const reasoning: string[] = [];
+  const lowerRaw = raw.toLowerCase();
 
   // Extract slots first · they inform intent choice
   const slots: ParsedIntent["slots"] = {
@@ -197,6 +240,64 @@ export function parseIntent(raw: string): ParsedIntent {
     if (t === "backpackers") slots.traveller_type = "backpackers";
     if (t === "children") slots.traveller_type = "children";
   }
+  // Founder BEGIN LCC 2026-09-09 · expanded date/window vocabulary picked up
+  // directly from the raw message. The language-normaliser doesn't tokenise
+  // multi-word windows so we substring-scan here. Deterministic.
+  if (!slots.time) {
+    if (/\bthis weekend\b/i.test(lowerRaw)) slots.time = "this_weekend";
+    else if (/\bnext week\b/i.test(lowerRaw)) slots.time = "next_week";
+    else if (/\btoday\b/i.test(lowerRaw)) slots.time = "today";
+    else if (/\btomorrow\b/i.test(lowerRaw)) slots.time = "tomorrow";
+    else if (/\btonight\b/i.test(lowerRaw)) slots.time = "tonight";
+  }
+  // Founder BEGIN LCC 2026-09-09 · alias "jogja" → "yogyakarta" (colloquial
+  // Indonesian). The normaliser doesn't fold this yet.
+  if (!slots.city && /\bjogja\b/i.test(lowerRaw)) {
+    slots.city = "yogyakarta";
+  }
+
+  // Founder BEGIN LCC 2026-09-09 · property-name resolution. Fixes Melia bug.
+  // Try longest substring match of any known business_name against the raw
+  // message (case-insensitive · alphanumeric-tolerant). Longest hit wins so
+  // "Grand Aston Yogyakarta" beats "Grand" if both are in the dictionary.
+  if (options?.known_names) {
+    let best: { listing_ref: string; business_name: string; matched_span: string } | null = null;
+    for (const cand of options.known_names) {
+      if (!cand?.business_name) continue;
+      const nameLower = cand.business_name.toLowerCase().trim();
+      if (nameLower.length < 4) continue; // avoid noise from very short names
+      if (lowerRaw.includes(nameLower)) {
+        if (!best || nameLower.length > best.matched_span.length) {
+          best = {
+            listing_ref: cand.listing_ref,
+            business_name: cand.business_name,
+            matched_span: nameLower,
+          };
+        }
+        continue;
+      }
+      // Try token-subset match: all tokens of the name must appear as words
+      // in the raw message. Handles "Melia Purosani" → "Hotel Melia Purosani".
+      const nameTokens = nameLower.split(/\s+/).filter((t) => t.length >= 3);
+      if (nameTokens.length >= 2) {
+        const allPresent = nameTokens.every((t) => new RegExp(`\\b${escapeRegex(t)}\\b`, "i").test(lowerRaw));
+        if (allPresent) {
+          const span = nameTokens.join(" ");
+          if (!best || span.length > best.matched_span.length) {
+            best = {
+              listing_ref: cand.listing_ref,
+              business_name: cand.business_name,
+              matched_span: span,
+            };
+          }
+        }
+      }
+    }
+    if (best) {
+      slots.property_name_match = best;
+      reasoning.push(`property_name matched: ${best.business_name} (${best.listing_ref})`);
+    }
+  }
   if (slots.property_category) reasoning.push(`category=${slots.property_category}`);
   if (slots.city) reasoning.push(`city=${slots.city}`);
   if (slots.area) reasoning.push(`area=${slots.area}`);
@@ -214,28 +315,71 @@ export function parseIntent(raw: string): ParsedIntent {
   }
   scores.sort((a, b) => b.hits - a.hits);
 
+  // Founder BEGIN LCC 2026-09-09 · When a property_name is matched, per-property
+  // fact intents beat property_category. Rerank so a fact-intent hit (even if
+  // tied on token count) wins over property_category if a name is present.
+  if (slots.property_name_match) {
+    const factHit = scores.find((s) => PER_PROPERTY_FACT_INTENTS.has(s.slug));
+    if (factHit) {
+      const catIdx = scores.findIndex((s) => s.slug === "property_category");
+      if (catIdx !== -1) scores.splice(catIdx, 1);
+      // Move the fact hit to the top
+      const fi = scores.findIndex((s) => s.slug === factHit.slug);
+      if (fi > 0) {
+        const [it] = scores.splice(fi, 1);
+        scores.unshift(it);
+      }
+      reasoning.push(`property_name present · reranked ${factHit.slug} above property_category`);
+    }
+  }
+
   // Structural override: some patterns are stronger than raw hit count
   let intent_slug: string | null = null;
+
+  // Founder BEGIN LCC 2026-09-09 · vertical_switch tightening.
+  // The original vertical_switch pattern (any category token in ≤4 tokens)
+  // stole every fresh list request. A real vertical switch is a follow-up
+  // like "what about guesthouses" or "any villas" — the "what about/how
+  // about/any" phrasing must be present in the raw message.
+  const rawHasSwitchPhrase = /\b(what about|how about)\b/i.test(lowerRaw);
+  const isRealVerticalSwitch = slots.is_vertical_switch && rawHasSwitchPhrase && normalised.canonical_tokens.length <= 4;
 
   // Follow-up "where are they" · "location?" → location_city
   if (slots.is_follow_up_where && !intent_slug) {
     intent_slug = "location_city";
     reasoning.push("structural: follow-up 'where' → location_city");
   }
-  // Price question → price_indicative
-  if (STRUCTURAL_PATTERNS.price_question.test(normalised.canonical_tokens.join(" ")) && !intent_slug) {
+  // Price question → price_indicative (only when NOT combined with a category-list
+  // — "cheap hotels in jogja" should be list_in_city with a cheap slot, not
+  // a single-property price question).
+  const hasCategoryOrList = !!(slots.property_category || slots.property_name_match);
+  if (
+    STRUCTURAL_PATTERNS.price_question.test(normalised.canonical_tokens.join(" "))
+    && !intent_slug
+    && !hasCategoryOrList
+  ) {
     intent_slug = "price_indicative";
     reasoning.push("structural: price question → price_indicative");
-  }
-  // Vertical switch ("what about guesthouses" → route back to search-adapter with new category)
-  if (slots.is_vertical_switch && !intent_slug && normalised.canonical_tokens.length <= 4) {
-    intent_slug = "property_category";  // The composer will interpret this as a re-search request
-    reasoning.push("structural: vertical switch → property_category (composer should re-run adapter)");
   }
   // Ordinal reference → property_name (customer wants details about the Nth item)
   if (slots.is_follow_up_ordinal && !intent_slug) {
     intent_slug = "property_name";
     reasoning.push("structural: ordinal reference → property_name (of Nth item in current list)");
+  }
+  // Founder BEGIN LCC 2026-09-09 · list_in_city routing.
+  // Fires when: category token present · no property-name match · no per-property
+  // fact intent hit · not a real vertical-switch follow-up.
+  if (!intent_slug && slots.property_category && !slots.property_name_match && !isRealVerticalSwitch) {
+    const hasFactHit = scores.some((s) => PER_PROPERTY_FACT_INTENTS.has(s.slug));
+    if (!hasFactHit) {
+      intent_slug = "list_in_city";
+      reasoning.push(`structural: category-only query · routing to list_in_city (category=${slots.property_category})`);
+    }
+  }
+  // Vertical switch ("what about guesthouses" → route back to search-adapter with new category)
+  if (isRealVerticalSwitch && !intent_slug) {
+    intent_slug = "property_category";  // The composer will interpret this as a re-search request
+    reasoning.push("structural: vertical switch → property_category (composer should re-run adapter)");
   }
   // Otherwise pick the top-scored trigger match
   if (!intent_slug && scores.length > 0) {
@@ -263,4 +407,12 @@ export function parseIntent(raw: string): ParsedIntent {
     normalised,
     reasoning,
   };
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// Local helpers
+// ═══════════════════════════════════════════════════════════════════
+
+function escapeRegex(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }

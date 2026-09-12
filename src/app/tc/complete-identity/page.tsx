@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ShieldCheck, ChevronDown } from "lucide-react";
 import { useCurrentTrade } from "@/lib/useCurrentTrade";
@@ -14,7 +14,18 @@ const DISCIPLINES = [
   "General Builder", "Groundworker"
 ];
 
+// Suspense wrapper required because CompleteIdentityPageInner calls
+// useSearchParams() — Next.js 15/16 refuses to prerender pages that
+// read search params without a boundary.
 export default function CompleteIdentityPage() {
+  return (
+    <Suspense fallback={null}>
+      <CompleteIdentityPageInner/>
+    </Suspense>
+  );
+}
+
+function CompleteIdentityPageInner() {
   const router = useRouter();
   const params = useSearchParams();
   const { trade } = useCurrentTrade();

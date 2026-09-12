@@ -1,32 +1,40 @@
-// NEX home experience · route entry (server component · metadata carrier).
+// src/app/nexapp/page.tsx
 //
-// UI + interactivity lives in ./NexAppShell (client). This file only exports
-// route-level metadata + viewport per Next 13 rules (metadata cannot be
-// exported from a client component).
+// Founder 2026-09-10 · unified NEX chat home.
 //
-// 2026-08-25 · Phase 1 install of the console HUD frame per Philip. See
-// project_nex_workspace_identity_doctrine_2026_08_25 for the shell doctrine.
+// One chat page. One URL: /nexapp. The polished, fully-wired chat
+// surface (previously at /nex/chat, and briefly duplicated at
+// /nexapp/chat) now lives here as `NexPolishedChat`. Middleware
+// redirects /nex/chat → /nexapp so old links keep working.
+//
+// This file stays a server component so it can carry PWA metadata +
+// viewport (Next.js does not allow those exports from client files).
 
-import { NexAppShell } from "./NexAppShell";
+import type { Metadata, Viewport } from "next";
+import NexPolishedChat from "./NexPolishedChat";
 
 export const dynamic = "force-dynamic";
-export const metadata = {
+
+export const metadata: Metadata = {
   title: "NEX",
   description: "NEX · Ask. Discover. Connect.",
+  appleWebApp: {
+    capable: true,
+    title: "NEX",
+    statusBarStyle: "black-translucent",
+  },
+  manifest: "/nex.webmanifest",
 };
 
-// 2026-08-25 · Philip · frame must be the device boundary · viewportFit
-// changed from "cover" (which painted the bezel behind notches) to
-// "auto" so the browser gives us a viewport that already excludes the
-// notch area. Prevents top clipping on notched phones.
-export const viewport = {
+export const viewport: Viewport = {
   themeColor: "#050505",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  viewportFit: "cover",
 };
 
 export default function NexAppRoute() {
-  return <NexAppShell />;
+  return <NexPolishedChat />;
 }

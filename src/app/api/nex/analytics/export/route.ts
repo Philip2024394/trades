@@ -13,6 +13,18 @@ const SCOPES = new Set(["campaigns","daily","monthly","country","provider","segm
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
+  // ── Founder 2026-09-10 · Access control (was unauth · exposed
+  // raw analytics rows to public). Accept either the admin cookie
+  // OR an explicit X-Analytics-Token header matching env secret.
+  const cookieHeader = request.headers.get("cookie") ?? "";
+  const hasAdminCookie = /(?:^|;\s*)(x-admin-sig|admin_authed|nex_session)=/i.test(cookieHeader);
+  const providedToken = request.headers.get("x-analytics-token") ?? "";
+  const envToken = process.env.NEX_ANALYTICS_EXPORT_TOKEN ?? process.env.CRON_SECRET ?? "";
+  const tokenOk = envToken.length >= 16 && providedToken === envToken;
+  if (!hasAdminCookie && !tokenOk) {
+    return NextResponse.json({ ok: false, error: "unauthorised" }, { status: 401 });
+  }
+
   const scope  = (url.searchParams.get("scope")  ?? "campaigns").toLowerCase();
   const format = (url.searchParams.get("format") ?? "csv").toLowerCase();
   const limit  = Math.max(1, Math.min(10_000, Number(url.searchParams.get("limit") ?? 1000)));

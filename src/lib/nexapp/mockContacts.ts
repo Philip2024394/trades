@@ -39,6 +39,78 @@ export type MockGroup = {
   unread: number;
 };
 
+// ── Business contacts · Philip 2026-09-05 · M0 slice ──────────────────
+// Business Contacts live as a SECTION inside the same NEX Contacts list
+// (per one-unified-contacts-list doctrine · not a separate destination).
+// Tap → same universal NEX Chat surface used by personal contacts.
+// Category/location surface where personal contacts would show
+// last-message/time · same visual rhythm · different metadata.
+// Japan is a first-class NEX market from Day 1 (per Japan doctrine).
+// PT Fresh on Time Seafood = primary NEX Business demonstration business
+// (per Business/Marketing doctrine · demo only · never real customer
+// without explicit agreement).
+
+export type MockBusinessContact = {
+  id: string;
+  publicNexId: string;           // NEX-XXXX-XXXX shareable identifier
+  name: string;
+  avatarUrl?: string;            // undefined → generated initial avatar (logo tile)
+  category: string;              // e.g. "Seafood · International Trade"
+  location: string;              // e.g. "Tokyo, Japan"
+  lastInteractionAt?: string;    // ISO · optional · absent = "no interactions yet"
+  favorite?: boolean;
+};
+
+export const MOCK_BUSINESS_CONTACTS: readonly MockBusinessContact[] = [
+  {
+    id: "biz-fresh-on-time-seafood",
+    publicNexId: "NEX-FOT9-S3AF",
+    name: "PT Fresh on Time Seafood",
+    category: "Seafood · International Trade",
+    location: "Indonesia",
+    lastInteractionAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),   // 3h
+    favorite: true,
+  },
+  {
+    id: "biz-bali-seafood-export",
+    publicNexId: "NEX-BSE4-XP07",
+    name: "Bali Seafood Export",
+    category: "Seafood Export",
+    location: "Bali, Indonesia",
+    lastInteractionAt: new Date(Date.now() - 26 * 60 * 60 * 1000).toISOString(),  // 1d+
+  },
+  {
+    // Japan-first-class demo · Japanese business name variant available for
+    // future bilingual display · M0 renders the Latin name only, but the
+    // layout is designed to safely render Japanese characters (敬語 register
+    // for business context lands in a later slice).
+    id: "biz-tokyo-foods",
+    publicNexId: "NEX-TKY0-F00D",
+    name: "Tokyo Foods",
+    category: "Food Import · Distribution",
+    location: "Tokyo, Japan",
+    lastInteractionAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),   // 2h
+  },
+  {
+    id: "biz-jakarta-trading",
+    publicNexId: "NEX-JKT5-TRD1",
+    name: "Jakarta Trading",
+    category: "International Trading",
+    location: "Jakarta, Indonesia",
+    // No lastInteractionAt → renders as "not yet contacted" style
+  },
+];
+
+/**
+ * Compact business-location + interaction-time summary.
+ * "Tokyo, Japan · 2h"   (with interaction)
+ * "Tokyo, Japan"        (never interacted)
+ */
+export function formatBusinessSubline(bc: MockBusinessContact, now: number = Date.now()): string {
+  if (!bc.lastInteractionAt) return bc.location;
+  return `${bc.location} · ${formatRelativeTime(bc.lastInteractionAt, now)}`;
+}
+
 // ── Mock data ──────────────────────────────────────────────
 
 // pravatar.cc serves a deterministic avatar per `?u=<seed>` query.

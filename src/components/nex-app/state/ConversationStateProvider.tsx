@@ -27,6 +27,9 @@ import {
   frustrationReply,
   SOCIAL_INTENTS,
 } from "../shell/classifyIntent";
+// Stage 3.41.b · consume the artifacts /api/nex-conv/chat returns
+// (voice_reply · world_cards · pending_proposal_snapshot · action_audit).
+import { mapChatResponseToArtifacts, extractVoiceReplyID, type ChatArtifacts } from "../shell/chat-artifacts";
 
 // ─── Chat message shape ───────────────────────────────────────────
 export type WoodCardSummary = {
@@ -52,6 +55,17 @@ export type ChatMessage = {
   // If the AI response summoned a state transition, we record it so
   // the message can be replayed as "I showed you the compare view".
   transitioned_to?: ConversationState;
+  // Stage 3.41.b · Chat surface integration ·
+  // NEX-turn artifacts extracted from /api/nex-conv/chat response.
+  // Present on assistant turns whose response carries any of:
+  //   · voice_reply (friend-voice text)
+  //   · world_cards (inline card carousel)
+  //   · pending_proposal_snapshot (confirm/decline UI)
+  //   · action_audit (terminal state pill)
+  // Absent on user turns · absent on legacy staircase turns.
+  nex_artifacts?: ChatArtifacts;
+  // Error flag · muted rendering + suppression from LLM history.
+  errored?:   boolean;
 };
 
 // ─── Canvas variant + payload — what the state should render ──────
@@ -84,6 +98,66 @@ type StateCtx = {
 };
 
 const ConversationStateContext = createContext<StateCtx | null>(null);
+
+// ─── Pure helpers · Stage 3.41.b · testable without React DOM ─────
+
+export type ChatApiHistoryTurn = { role: "assistant" | "user"; content: string };
+
+export type ChatApiRequestBody = {
+  message:         string;
+  conversation_id: string;
+  history:         ChatApiHistoryTurn[];
+  intent?:         string;
+  market:          "ID" | "UK" | "US";
+  useLiveWorld:    boolean;
+};
+
+/**
+ * Build the exact JSON body /api/nex-conv/chat expects. Extracted so
+ * tests can assert the payload shape without mounting React. The
+ * button-flow guarantee is enforced here: whether the user typed
+ * "yes send it" or clicked the Yes button (which calls the same
+ * sendUserMessage), the payload is identical.
+ */
+export function buildChatRequestBody(input: {
+  message:        string;
+  conversationId: string;
+  history:        ChatApiHistoryTurn[];
+  intent?:        string;
+  market?:        "ID" | "UK" | "US";
+  useLiveWorld?:  boolean;
+}): ChatApiRequestBody {
+  return {
+    message:         input.message,
+    conversation_id: input.conversationId,
+    history:         input.history,
+    intent:          input.intent,
+    market:          input.market ?? "ID",
+    useLiveWorld:    input.useLiveWorld ?? true,
+  };
+}
+
+/**
+ * Turn the raw /api/nex-conv/chat JSON response into the pair of
+ * (renderedText, artifacts) that pushNexMessage needs. Prefers
+ * voice_reply text · falls back to base reply · falls back to legacy
+ * `answer` field for staircase-flow responses. Pure · testable.
+ */
+export function parseChatResponseForRender(json: unknown, opts: { language?: "en" | "id" } = {}): {
+  text: string;
+  artifacts: ChatArtifacts;
+} {
+  const j = (json ?? {}) as Record<string, unknown>;
+  const artifacts = mapChatResponseToArtifacts(j);
+  const voice = opts.language === "id" ? extractVoiceReplyID(j.voice_reply) : artifacts.voiceReply;
+  const base  = typeof j.reply === "string" ? j.reply
+              : typeof j.answer === "string" ? j.answer
+              : "";
+  return {
+    text: voice?.text ?? base,
+    artifacts: { ...artifacts, voiceReply: voice ?? artifacts.voiceReply },
+  };
+}
 
 // ─── Provider ─────────────────────────────────────────────────────
 export function ConversationStateProvider({
@@ -159,7 +233,12 @@ export function ConversationStateProvider({
   // ─── Nex speaks a message (helper) ─────────────────────────────
   const pushNexMessage = useCallback((
     content: string,
-    opts?: { transitioned_to?: ConversationState; wood_cards?: WoodCardSummary[] }
+    opts?: {
+      transitioned_to?: ConversationState;
+      wood_cards?:     WoodCardSummary[];
+      nex_artifacts?:  ChatArtifacts;
+      errored?:        boolean;
+    }
   ) => {
     setHistory((h) => [...h, {
       id:              `m${nextIdRef.current++}`,
@@ -167,7 +246,9 @@ export function ConversationStateProvider({
       content,
       timestamp:       Date.now(),
       transitioned_to: opts?.transitioned_to,
-      wood_cards:      opts?.wood_cards
+      wood_cards:      opts?.wood_cards,
+      nex_artifacts:   opts?.nex_artifacts,
+      errored:         opts?.errored ?? false
     }]);
   }, []);
 
@@ -256,44 +337,51 @@ export function ConversationStateProvider({
       return;
     }
 
-    if (config.trade_slug === "staircase") {
-      try {
-        const res = await fetch("/api/nex/staircase-chat", {
-          method:  "POST",
-          headers: { "Content-Type": "application/json" },
-          body:    JSON.stringify({
-            message:         content,
-            history:         historyForApi,
-            conversation_id: conversationIdRef.current,
-            intent:          userIntent,
-            recent_ids:      recentGoldenIdsRef.current,
-          })
-        });
-        const j = await res.json();
-        if (j.ok && j.answer) {
-          // Update recency window with what the server retrieved
-          // this turn. Keep last 6 IDs — enough for a natural
-          // conversation without starving the retriever.
-          if (Array.isArray(j.retrieved_ids) && j.retrieved_ids.length > 0) {
-            const next = [
-              ...j.retrieved_ids.filter((x: unknown): x is string => typeof x === "string"),
-              ...recentGoldenIdsRef.current,
-            ].slice(0, 6);
-            recentGoldenIdsRef.current = next;
-          }
-          const woodCards: WoodCardSummary[] | undefined =
-            Array.isArray(j.wood_cards) && j.wood_cards.length > 0 && j.visual_intent !== "procedural"
-              ? j.wood_cards as WoodCardSummary[]
-              : undefined;
-          pushNexMessage(String(j.answer), { wood_cards: woodCards });
-        } else {
-          pushNexMessage("Something's not quite right my end — give me a second and try that again.");
-        }
-      } catch {
-        pushNexMessage("I'm having a slow moment — try that again in a second.");
+    // Stage 3.41.b · Chat surface integration (Philip 2026-08-31).
+    //
+    // Every non-social turn now flows through /api/nex-conv/chat · the
+    // canonical NEX Brain endpoint. That endpoint returns:
+    //   · voice_reply               friend-voice text
+    //   · world_cards               inline card carousel
+    //   · pending_proposal_snapshot confirm/decline UI hook
+    //   · action_audit              terminal state pill
+    // We store the artifacts on the NEX ChatMessage so the ChatBubble
+    // can render them inline. Base reply stays available as `content`
+    // fallback for consumers that don't understand artifacts.
+    //
+    // UK staircase remains handled inside /api/nex-conv/chat via its
+    // built-in fallthrough (route.ts line ~250 · Qwen pipeline preserved)
+    // so we don't need trade-slug branching client-side.
+    try {
+      const res = await fetch("/api/nex-conv/chat", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify(buildChatRequestBody({
+          message:        content,
+          conversationId: conversationIdRef.current,
+          history:        historyForApi,
+          intent:         userIntent,
+          market:         "ID",
+          useLiveWorld:   true,
+        })),
+      });
+      const j = await res.json().catch(() => null);
+      if (!res.ok || !j) {
+        pushNexMessage("Something's not quite right my end — give me a second and try that again.", { errored: true });
+      } else {
+        const artifacts = mapChatResponseToArtifacts(j);
+        // Prefer voice_reply text · fall back to base reply · fall back
+        // to legacy `answer` field so staircase specialist responses
+        // (if they still come through) still render.
+        const voice = artifacts.voiceReply?.text;
+        const base  = typeof j.reply === "string" ? j.reply
+                    : typeof j.answer === "string" ? j.answer
+                    : "";
+        const text  = voice ?? base;
+        pushNexMessage(text || "…", { nex_artifacts: artifacts });
       }
-    } else {
-      pushNexMessage(`I'm still learning about ${config.trade_slug} and I don't want to guess. Take my details and pass this to the team, or ask me about a related area I can help with confidently.`);
+    } catch {
+      pushNexMessage("I'm having a slow moment — try that again in a second.", { errored: true });
     }
     setThinking(false);
     inFlightRef.current = false;

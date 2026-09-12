@@ -91,7 +91,7 @@ export async function POST(req: Request) {
         title: "Nex is listening 🔔",
         body: "Reminders will now reach you even when Nex isn't open.",
         tag: "nex-test",
-        data: { url: "/nex-app/chat", kind: "test" },
+        data: { url: "/nex-appchat", kind: "test" },
       };
       const res = await sendPushNow(sub, payload);
       return NextResponse.json(res);

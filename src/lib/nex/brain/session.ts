@@ -85,6 +85,22 @@ export type SessionState = {
    *  deterministically from evidence. Overwritten on every new result
    *  set. Bounded (≤ 3 entries per policy). */
   entityCardMemo?: import("./entity-result-cards").EntityCardMemo[];
+  /** World-Class Result Card Interaction & Entity Detail Slice
+   *  (Philip 2026-09-06 · CEREMONIAL AUTHORIZE) · when the user opens
+   *  the /nex-app/entity/[refId] detail page for an entity, the client
+   *  posts a beacon that populates this field. Consumed by the
+   *  attribute-query + reference-resolution gates so a follow-up like
+   *  "does it have a pool?" after returning from the detail page
+   *  resolves against the ENTITY THE USER WAS JUST VIEWING (rather
+   *  than the first ordinal on the memoized card set).
+   *
+   *  Freshness: `viewedInTurn` marks the session turn when the beacon
+   *  fired. Consumers should check that this turn is recent (within a
+   *  small window like current turn or current-1) before using it as
+   *  an anchor · older viewed entities decay to memo[0] fallback.
+   *
+   *  Never fabricates · always mirrors a real client navigation. */
+  viewedEntity?: import("./universal-discovery/viewed-entity").ViewedEntitySnapshot;
 };
 
 export const DIALOGUE_TURN_WINDOW = 12;

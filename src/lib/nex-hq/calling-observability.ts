@@ -13,10 +13,10 @@
 // Read-only.
 
 import { Pool } from "pg";
+import { getPostgresUrl } from "@/lib/nex/config/pg";
 
 const POOL = new Pool({
-  connectionString: process.env.NEX_POSTGRES_URL
-    ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev",
+  connectionString: getPostgresUrl(),
   max: 3,
 });
 

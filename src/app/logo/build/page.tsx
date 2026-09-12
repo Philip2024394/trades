@@ -12,7 +12,7 @@
 //   3  Name + generate
 //   4  Preview + tweak + buy
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import * as Icons from "lucide-react";
@@ -25,7 +25,18 @@ const BRAND_BLACK  = "#0A0A0A";
 
 type Step = 1 | 2 | 3 | 4;
 
+// Suspense wrapper required because LogoBuilderPageInner calls
+// useSearchParams() — Next.js 15/16 refuses to prerender pages that
+// read search params without a boundary.
 export default function LogoBuilderPage() {
+  return (
+    <Suspense fallback={null}>
+      <LogoBuilderPageInner/>
+    </Suspense>
+  );
+}
+
+function LogoBuilderPageInner() {
   const params = useSearchParams();
   const [step, setStep]           = useState<Step>(1);
   const [tradeSlug, setTradeSlug] = useState<string | null>(null);

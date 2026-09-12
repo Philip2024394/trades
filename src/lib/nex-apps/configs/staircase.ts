@@ -58,13 +58,13 @@ export const staircaseConfig: TradeConfig = {
       chat_intro: "Describe the website you want in plain English — I'll design and build it." },
     // Was "AI Assistant" · rebranded as the Nex Chat entry point.
     // Philip 2026-08-03 · this tile now navigates to the CLEAN GENERAL
-    // Nex Chat surface (/nex-app/chat) · NOT the trade-flavoured ChatSurface
+    // Nex Chat surface (/nex-appchat) · NOT the trade-flavoured ChatSurface
     // slide-up. General chat is user-scoped · staircase questions still work
     // (routed inside the general chat's intent engine) but the surface is
     // no longer branded "AI Assistant for Master Carpentry" and does NOT
     // show the Gallery/Calculator/Materials/Regulations/Contact toolbox.
     { label: "Nex Chat",            target_state: "discover",
-      href: "/nex-app/chat",
+      href: "/nex-appchat",
       chat_intro: "Ask Nex anything." }
   ],
 

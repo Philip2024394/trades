@@ -135,6 +135,11 @@ export type BrainReply = {
   theme_command?: ThemeCommand;
   intent?: string;
   intent_reason?: string;
+  /** Founder BEGIN 2026-09-09 · CHAT-ORCHESTRATOR-SUB-INSTRUMENTATION.
+   *  Per-stage millisecond timings attached ONLY when orchestrateChatTurnLive
+   *  is the composer. Never fabricated · always try/catch wrapped so
+   *  instrumentation cannot break the response. */
+  sub_timings?: Record<string, number>;
   /** Stage 3.9 · which Brain capabilities activated on this turn.
    *  Honest audit trail · exposed via metrics in the HTTP layer. */
   capabilities?: string[];
@@ -595,6 +600,13 @@ function composeGatedReply(
           dialogueTurns: session?.dialogueTurns,
           lastNexQuestion: session?.lastNexQuestion,
           frame: session?.frame,
+          // Entity → Interest → Owner Conversation Slice (Philip 2026-09-06):
+          // preserve the beacon-populated viewedEntity across accommodation
+          // turns so the interest-gate can resolve "I'm interested" against
+          // the entity the user was just viewing on the detail page.
+          // Without this, the accommodation branch wipes the beacon
+          // between the view event and the interest turn.
+          viewedEntity: session?.viewedEntity,
         });
 
         // Stage 3.15 · when a book-intent turn resolves to a specific
@@ -2504,6 +2516,26 @@ export async function orchestrateChatTurnLive(
   message: string,
   opts: OrchestrateOptions = {},
 ): Promise<BrainReply> {
+  // Founder BEGIN 2026-09-09 · CHAT-ORCHESTRATOR-SUB-INSTRUMENTATION.
+  // Minimal try/catch-wrapped perf timers · zero logic change · never throws.
+  const _st_perf: () => number = (() => {
+    try { const { performance } = require("node:perf_hooks"); return () => performance.now(); }
+    catch { return () => Date.now(); }
+  })();
+  const _st_all_start = _st_perf();
+  const _st_timings: Record<string, number> = {};
+  const _st_mark = (name: string, since: number) => {
+    try { _st_timings[name] = Math.round((_st_perf() - since) * 100) / 100; } catch {}
+  };
+  let _st_last = _st_all_start;
+  const _st_lap = (name: string) => {
+    try {
+      const now = _st_perf();
+      _st_timings[name] = Math.round((now - _st_last) * 100) / 100;
+      _st_last = now;
+    } catch {}
+  };
+
   // Stage 3.41.d P1 · bump turnCount at the TOP of every turn so
   // downstream signals like "reference just resolved" can compare
   // resolvedInTurn === turnCount reliably · regardless of which
@@ -2522,6 +2554,7 @@ export async function orchestrateChatTurnLive(
       });
     }
   }
+  _st_lap("stage_01_turn_bump");
 
   // Stage 3.41.k landing #1 · ABANDONMENT GATE (Philip 2026-08-31).
   //
@@ -2562,9 +2595,10 @@ export async function orchestrateChatTurnLive(
           },
         };
       }
-      return base;
+      return { ...base, sub_timings: _st_timings };
     }
   }
+  _st_lap("stage_02_abandonment");
 
   // Stage 3.34 · Phase 27a doctrine: ONE RETRIEVAL → TEXT + CARDS.
   //
@@ -2583,6 +2617,7 @@ export async function orchestrateChatTurnLive(
   // the World so the composer's sticky-flow promotion has live records
   // to work with.
   const probeIntent = classifyConversationIntent(message, { userMarket: opts.userMarket });
+  _st_lap("stage_03_intent_probe");
   let vertical = opts.useLiveWorld ? INTENT_TO_VERTICAL[probeIntent.intent] : undefined;
   if (!vertical && opts.useLiveWorld && opts.conversationId) {
     const stickySession = getSession(opts.conversationId);
@@ -2621,6 +2656,7 @@ export async function orchestrateChatTurnLive(
       }
     }
   }
+  _st_lap("stage_04_sticky_vertical");
 
   // Stage 3.37 · Action authorization gate · EARLY CHECK
   //
@@ -2721,11 +2757,12 @@ export async function orchestrateChatTurnLive(
               action_audit: earlyAudit,
             };
           }
-          return { ...base, action_audit: earlyAudit };
+          return { ...base, action_audit: earlyAudit, sub_timings: _st_timings };
         }
       }
     }
   }
+  _st_lap("stage_05_action_gate");
 
   // If not a wired vertical OR useLiveWorld false → sync path is enough.
   // Stage 3.35 · Phase 1 · still attach world_query so downstream code
@@ -2733,7 +2770,9 @@ export async function orchestrateChatTurnLive(
   // + near-me + area still meaningful (Phase 2's Recommendation may
   // fire on the composer's own hits without needing a wired vertical).
   if (!vertical) {
+    const _t_sync = _st_perf();
     const base = orchestrateChatTurn(message, opts);
+    try { _st_timings.stage_06_sync_orchestrator_no_vertical = Math.round((_st_perf() - _t_sync) * 100) / 100; } catch {}
     if (opts.useLiveWorld) {
       return {
         ...base,
@@ -2742,10 +2781,12 @@ export async function orchestrateChatTurnLive(
           verbIntent: parseWorldQueryVerbIntent(message),
           nearMe: parseNearMe(message),
         },
+        sub_timings: _st_timings,
       };
     }
-    return base;
+    return { ...base, sub_timings: _st_timings };
   }
+  _st_lap("stage_06_pre_slot_merge_marker");
 
   // Build the World search input by MERGING the persisted session slots
   // with slots extracted from THIS turn's message. Ordering matters:
@@ -2806,20 +2847,35 @@ export async function orchestrateChatTurnLive(
     sort: extractedMaxPriceIdr != null && vertical === "commerce" ? "price_asc" : "rating",
   };
 
+  _st_lap("stage_07_slot_merge_and_world_query_build");
   let worldRecords: readonly import("./world-adapters/types").WorldRecord[] = [];
   let worldTotalAvailable = 0;
   let latencyMs = 0;
   let worldError: string | undefined;
+  const _t_search_world = _st_perf();
+  let _world_sub_timings: Record<string, number> | undefined;
   try {
     const world = await searchWorld(input);
     latencyMs = world.latencyMs;
     worldRecords = world.records;
     worldTotalAvailable = world.totalAvailable;
+    _world_sub_timings = (world as unknown as { subTimings?: Record<string, number> }).subTimings;
   } catch (err) {
     worldError = err instanceof Error ? err.message : String(err);
     // Fall through · sync composer will use JSON fallback for text ·
     // and we surface an error-caveat card set below.
   }
+  try { _st_timings.stage_08_searchWorld = Math.round((_st_perf() - _t_search_world) * 100) / 100; } catch {}
+  // Founder SEARCHWORLD-SUB-INSTRUMENTATION · attach adapter's per-sub-stage
+  // timings alongside stage_08 total so the tail root cause is visible.
+  try {
+    if (_world_sub_timings) {
+      for (const [k, v] of Object.entries(_world_sub_timings)) {
+        _st_timings[`stage_08_searchWorld__${k}`] = v;
+      }
+    }
+  } catch {}
+  _st_last = _st_perf();
 
   // Run the sync orchestrator with the pre-fetched World records so the
   // composer's discovery branch names those exact businesses and quotes
@@ -2830,7 +2886,10 @@ export async function orchestrateChatTurnLive(
     __worldRecords: worldRecords,
     __worldTotalAvailable: worldTotalAvailable,
   };
+  const _t_sync_orchestrator = _st_perf();
   const base = orchestrateChatTurn(message, injectedOpts);
+  try { _st_timings.stage_09_sync_orchestrator = Math.round((_st_perf() - _t_sync_orchestrator) * 100) / 100; } catch {}
+  _st_last = _st_perf();
 
   // Stage 3.34d · Phase 27h · Non-accommodation verticals don't have a
   // specialised sync-composer branch that consumes injected World
@@ -3409,6 +3468,8 @@ export async function orchestrateChatTurnLive(
     }
   }
 
+  _st_lap("stage_10_post_orchestrator_reasoning_and_cards");
+  try { _st_timings.stage_TOTAL_orchestrator_live = Math.round((_st_perf() - _st_all_start) * 100) / 100; } catch {}
   return {
     ...base,
     world_cards: cards,
@@ -3437,5 +3498,7 @@ export async function orchestrateChatTurnLive(
     weather_result: weatherResult,
     knowledge_result: knowledgeResult,
     action_audit: actionAudit,
+    // Founder BEGIN CHAT-ORCHESTRATOR-SUB-INSTRUMENTATION · attach timings
+    sub_timings: _st_timings,
   };
 }

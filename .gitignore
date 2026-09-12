@@ -147,6 +147,9 @@ data/nex-agent-runtime/
 # nex-network-uploads, nex-notebook-receipts, nex-sitebook-cost-docs.
 # MinIO storage belongs on the filesystem, not in git.
 deploy/minio/data/
+# MinIO server-side logs written to the deploy dir root, outside data/
+deploy/minio/*.log
+deploy/minio/*.log.err
 
 # 2026-09-12 · Content-addressed Wikidata cache written by the lab
 # harvester. Keyed by content hash; regenerates on demand.

@@ -38,9 +38,9 @@ const stripped = SRC.replace(/^export\s+/gm, "");
 const transformed = await esbuild.transform(stripped, { loader: "ts", format: "cjs", target: "node20" });
 const mod = { exports: {} };
 new Function("module", "process", "exports", "require",
-  transformed.code + `\nmodule.exports = { getPostgresUrl, getPostgresUrlOrNull, hasPostgresUrl };`,
+  transformed.code + `\nmodule.exports = { getPostgresUrl, getPostgresUrlOrNull, hasPostgresUrl, assertProductionPostgresUrl };`,
 )(mod, process, mod.exports, () => ({}));
-const { getPostgresUrl, getPostgresUrlOrNull, hasPostgresUrl } = mod.exports;
+const { getPostgresUrl, getPostgresUrlOrNull, hasPostgresUrl, assertProductionPostgresUrl } = mod.exports;
 
 const VALID = "postgresql://postgres:secret@localhost:5433/nex_dev";
 
@@ -162,12 +162,14 @@ test("CFG11 · every thrown error carries a stable .code field", () => {
     "missing-postgres-url-in-production",
     "missing-postgres-url",
     "invalid-postgres-url",
+    "production-url-points-at-dev",
   ]);
   const attempts = [
     () => getPostgresUrl({ NODE_ENV: "production" }),
     () => getPostgresUrl({ NODE_ENV: "development" }),
     () => getPostgresUrl({ NEX_POSTGRES_URL: "bad" }),
     () => getPostgresUrlOrNull({ NEX_POSTGRES_URL: "bad" }),
+    () => getPostgresUrl({ NEX_POSTGRES_URL: VALID, NODE_ENV: "production" }),
   ];
   for (const attempt of attempts) {
     try { attempt(); assert.fail("expected throw"); }
@@ -176,4 +178,76 @@ test("CFG11 · every thrown error carries a stable .code field", () => {
         `unknown error code emitted: ${err.code} · vocabulary must be one of ${[...CODES].join("|")}`);
     }
   }
+});
+
+// ── CFG12 · production dev-URL rejection ─────────────────────────────
+
+test("CFG12 · getPostgresUrl throws in production when URL points at localhost / 127.0.0.1 / :5433 / nex_dev", () => {
+  const devUrls = [
+    "postgresql://postgres:secret@localhost:5432/appdb",
+    "postgresql://postgres:secret@127.0.0.1:5432/appdb",
+    "postgresql://postgres:secret@some-host:5433/appdb",
+    "postgresql://postgres:secret@aws-0-eu-west-1.pooler.supabase.com:5432/nex_dev",
+  ];
+  for (const url of devUrls) {
+    try {
+      getPostgresUrl({ NEX_POSTGRES_URL: url, NODE_ENV: "production" });
+      assert.fail(`expected throw for prod dev-url: ${url}`);
+    } catch (err) {
+      assert.equal(err.code, "production-url-points-at-dev",
+        `prod + ${url} must throw production-url-points-at-dev · got ${err.code}`);
+      // Redacted URL in message · never leak the password segment.
+      assert.doesNotMatch(err.message, /:secret@/,
+        "error message must redact the password segment");
+    }
+  }
+});
+
+test("CFG12b · getPostgresUrl ACCEPTS dev-looking URLs when NODE_ENV !== production", () => {
+  const devUrl = "postgresql://postgres:secret@localhost:5433/nex_dev";
+  assert.equal(getPostgresUrl({ NEX_POSTGRES_URL: devUrl, NODE_ENV: "development" }), devUrl);
+  assert.equal(getPostgresUrl({ NEX_POSTGRES_URL: devUrl, NODE_ENV: "test" }), devUrl);
+});
+
+test("CFG12c · getPostgresUrlOrNull ALSO applies the production dev-url rejection", () => {
+  const devUrl = "postgresql://postgres:secret@localhost:5433/nex_dev";
+  try {
+    getPostgresUrlOrNull({ NEX_POSTGRES_URL: devUrl, NODE_ENV: "production" });
+    assert.fail("nullable variant must ALSO fail closed on prod dev-url");
+  } catch (err) {
+    assert.equal(err.code, "production-url-points-at-dev");
+  }
+  // Non-prod → returns URL unchanged.
+  assert.equal(getPostgresUrlOrNull({ NEX_POSTGRES_URL: devUrl, NODE_ENV: "development" }), devUrl);
+});
+
+// ── CFG13 · production boot guard ────────────────────────────────────
+
+test("CFG13 · assertProductionPostgresUrl is a no-op in dev/test", () => {
+  assertProductionPostgresUrl({ NODE_ENV: "development" });
+  assertProductionPostgresUrl({ NODE_ENV: "test" });
+  assertProductionPostgresUrl({}); // no NODE_ENV → treated as non-prod
+});
+
+test("CFG13b · assertProductionPostgresUrl throws in production on missing / dev-url", () => {
+  try {
+    assertProductionPostgresUrl({ NODE_ENV: "production" });
+    assert.fail("prod + missing must throw");
+  } catch (err) { assert.equal(err.code, "missing-postgres-url-in-production"); }
+
+  try {
+    assertProductionPostgresUrl({ NEX_POSTGRES_URL: "postgresql://postgres:pw@localhost:5433/nex_dev", NODE_ENV: "production" });
+    assert.fail("prod + dev-url must throw");
+  } catch (err) { assert.equal(err.code, "production-url-points-at-dev"); }
+
+  try {
+    assertProductionPostgresUrl({ NEX_POSTGRES_URL: "not-a-url", NODE_ENV: "production" });
+    assert.fail("prod + malformed must throw");
+  } catch (err) { assert.equal(err.code, "invalid-postgres-url"); }
+});
+
+test("CFG13c · assertProductionPostgresUrl PASSES for a real prod URL (Supabase pooler shape)", () => {
+  const prodUrl = "postgresql://postgres.abcdef123:secret@aws-0-eu-west-1.pooler.supabase.com:5432/postgres";
+  assertProductionPostgresUrl({ NEX_POSTGRES_URL: prodUrl, NODE_ENV: "production" });
+  // No throw → pass.
 });

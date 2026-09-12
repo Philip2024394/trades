@@ -49,7 +49,181 @@ import { decideHonestBoundary } from "@/lib/nex/brain/honest-boundary-reply";
 // Attached as a non-blocking parallel path · never changes the customer's reply ·
 // records paired {chat, deterministic} outputs for offline agreement analysis.
 // Enabled by env NEX_DETERMINISTIC_SHADOW=1. Hard timeout budget.
-import { runShadowMode, SHADOW_MODE_ENABLED } from "@/lib/nex/intelligence-storage-grid/accommodation/shadow-mode";
+import { runShadowMode, SHADOW_MODE_ENABLED, REPLY_MODE_ENABLED } from "@/lib/nex/intelligence-storage-grid/accommodation/shadow-mode";
+// Founder BEGIN LCC 2026-09-09 · Live Chat Completion · domain-neutral pipeline.
+// Chat route routes each turn to a domain adapter which composes a reply
+// from stored facts. The composed reply is promoted to composed.reply when
+// the adapter honestly answered at verified trust. See docs in
+// src/lib/nex/live-chat-completion/contract.ts.
+import { classifyDomain } from "@/lib/nex/live-chat-completion/domain-classifier";
+// Founder 2026-09-10 · Master AI Engineer supervisor · per-request truth score.
+// Signals trust deterministically, NEVER blocks content.
+import { computeTruthScore } from "@/lib/nex/master-ai/truth-score-envelope";
+import { makeAccommodationAdapter } from "@/lib/nex/live-chat-completion/adapters/accommodation-adapter";
+// Founder Path B · Phase B2 · Thin domain adapters (food, transport).
+// Founder Phase 5 · P5-1 · adds markets, travel, attractions, business.
+// All return honest UNKNOWN when no data → Research Brain / cross-domain fires.
+import { makeFoodAdapter } from "@/lib/nex/live-chat-completion/adapters/food-adapter";
+import { makeTransportAdapter } from "@/lib/nex/live-chat-completion/adapters/transport-adapter";
+import { makeMarketsAdapter } from "@/lib/nex/live-chat-completion/adapters/markets-adapter";
+import { makeTravelAdapter } from "@/lib/nex/live-chat-completion/adapters/travel-adapter";
+import { makeAttractionsAdapter } from "@/lib/nex/live-chat-completion/adapters/attractions-adapter";
+import { makeBusinessAdapter } from "@/lib/nex/live-chat-completion/adapters/business-adapter";
+// Founder BEGIN 2026-09-10 · code as a domain of NEX (Phase 2 of language work · ADR-0308).
+import { makeCodeAdapter } from "@/lib/nex/live-chat-completion/adapters/code-adapter";
+import { shouldPromoteReply, type AdapterReply, type PromotionRecord, type Domain } from "@/lib/nex/live-chat-completion/contract";
+import { getKnowledgeFactoryDbPool } from "@/lib/nex/live-chat-completion/kf-pool";
+import { makeKnowledgeGapQueue } from "@/lib/nex/live-chat-completion/knowledge-gap-queue";
+import { makeConversationStateStore, type ConversationState } from "@/lib/nex/live-chat-completion/conversation-brain/state-store";
+import { interpretTurn, applyTurnResultToState } from "@/lib/nex/live-chat-completion/conversation-brain/turn-interpreter";
+// Founder BEGIN Phase 3.3 · Streaming SSE. Content-negotiated via Accept.
+import { makeSseController, sseResponse } from "@/lib/nex/live-chat-completion/streaming/sse-writer";
+import { iterateChunks } from "@/lib/nex/live-chat-completion/streaming/chunker";
+// Founder BEGIN Phase 3.4 · LLM rescue (Truth-Engine-gated · never bypass).
+import { makeOllamaRescueProvider } from "@/lib/nex/live-chat-completion/llm-rescue/ollama-provider";
+import { makeMockRescueProvider } from "@/lib/nex/live-chat-completion/llm-rescue/mock-provider";
+import { assembleRetrievalBundle } from "@/lib/nex/live-chat-completion/llm-rescue/retrieval-bundle";
+import { gateLlmOutput } from "@/lib/nex/live-chat-completion/llm-rescue/gate";
+import type { RescueVerdict } from "@/lib/nex/live-chat-completion/llm-rescue/contract";
+// Founder BEGIN Phase 3.6 · Model router (fast vs reasoning).
+import { routeModel, type RouterDecision } from "@/lib/nex/live-chat-completion/llm-rescue/model-router";
+// Founder BEGIN Phase 3.7 · Safety guardrails (rate limit + input moderation + output PII).
+import {
+  registerInputGuardrail, registerOutputGuardrail,
+  runInputGuardrails, runOutputGuardrails,
+} from "@/lib/nex/live-chat-completion/safety/guardrails";
+import { makeRateLimitGuardrail } from "@/lib/nex/live-chat-completion/safety/rate-limiter";
+import { makeInputModerationGuardrail } from "@/lib/nex/live-chat-completion/safety/input-moderation";
+import { makeOutputPiiGuardrail } from "@/lib/nex/live-chat-completion/safety/output-pii";
+// Founder BEGIN Phase 3.7 Safe Actionable Intelligence · action authorization.
+import { authorizeAction } from "@/lib/nex/live-chat-completion/actions/authorize";
+// Founder AIW-1 · NEX AI-WiFi · NEX_LOCAL_ONLY=1 sentinel (module-load side-effect).
+import "@/lib/nex/live-chat-completion/local-only";
+// Founder Path A · ACT-1 · route through Action Brain facade (Doctrine #2 · single call site).
+import { makeActionBrain } from "@/lib/nex/action-brain";
+const _actionBrain = makeActionBrain();
+import type { AuthorizedActionRecord } from "@/lib/nex/live-chat-completion/actions/contract";
+// Founder BEGIN Phase 3.8 · Vision input · extracts structured facts before rescue.
+import { makeDefaultVisionProvider, visionFactsToEvidence } from "@/lib/nex/live-chat-completion/vision";
+import type { EvidenceItem as _EvidenceItem } from "@/lib/nex/live-chat-completion/llm-rescue/contract";
+const _visionProvider = makeDefaultVisionProvider();
+const _VISION_BUDGET_MS = (() => {
+  const raw = Number(process.env.NEX_VISION_BUDGET_MS ?? 8000);
+  return Number.isFinite(raw) && raw >= 500 && raw <= 60_000 ? raw : 8000;
+})();
+// Founder BEGIN Phase 3.9 · File uploads · extracts structured facts before rescue.
+import { makeDefaultFileProvider, fileFactsToEvidence } from "@/lib/nex/live-chat-completion/files";
+const _fileProvider = makeDefaultFileProvider();
+const _FILE_BUDGET_MS = (() => {
+  const raw = Number(process.env.NEX_FILE_BUDGET_MS ?? 10_000);
+  return Number.isFinite(raw) && raw >= 500 && raw <= 60_000 ? raw : 10_000;
+})();
+const _FILE_MAX_COUNT = (() => {
+  const raw = Number(process.env.NEX_FILE_MAX_COUNT ?? 3);
+  return Number.isFinite(raw) && raw >= 1 && raw <= 20 ? Math.floor(raw) : 3;
+})();
+const _FILE_MAX_BYTES = (() => {
+  const raw = Number(process.env.NEX_FILE_MAX_BYTES ?? 5_000_000);
+  return Number.isFinite(raw) && raw >= 1_000 && raw <= 50_000_000 ? Math.floor(raw) : 5_000_000;
+})();
+// Founder Path A · KB-2 · Knowledge Brain supplementary evidence for LLM rescue.
+import { makeDefaultKnowledgeBrain } from "@/lib/nex/knowledge-brain";
+// Founder Path A · Phase OBS-2 · per-turn latency telemetry writer.
+import { writeTurnTelemetry } from "@/lib/nex/observatory-brain/turn-telemetry";
+import type { PromotionPath } from "@/lib/nex/observatory-brain/turn-telemetry";
+// Founder Path A · Phase A2 · Research Brain · Deep Research loop.
+// Doctrine anchors: #1 (Fabrication Gate v2 alignment) · #2 (actions
+// only via Action Brain) · #3 (web capped at evidence_provisional) ·
+// #4 (memory never seeds research). Composition-first: fires ONLY when
+// adapter did not promote AND rescue did not verify.
+import { makeDefaultResearchBrain } from "@/lib/nex/research-brain";
+// Founder Phase 5 · P5-5 · cross-domain orchestrator.
+import { decomposeCrossDomain } from "@/lib/nex/cross-domain/decomposer";
+import { orchestrateCrossDomain } from "@/lib/nex/cross-domain/orchestrator";
+// Founder Phase 8 · P8-6 · image generation intent + delegation.
+import { makeDefaultImageGenProvider, persistGeneratedImages } from "@/lib/nex/live-chat-completion/image-gen";
+import { sanitiseUntrustedContent } from "@/lib/nex/live-chat-completion/safety/untrusted-content-sanitiser";
+const _researchBrain = makeDefaultResearchBrain();
+const _RESEARCH_BUDGET_MS = (() => {
+  const raw = Number(process.env.NEX_RESEARCH_BUDGET_MS ?? 20_000);
+  return Number.isFinite(raw) && raw >= 500 && raw <= 120_000 ? raw : 20_000;
+})();
+const _RESEARCH_DEPTH = (() => {
+  const raw = Number(process.env.NEX_RESEARCH_DEPTH ?? 2);
+  return Number.isFinite(raw) && raw >= 1 && raw <= 5 ? Math.floor(raw) : 2;
+})();
+// Founder BEGIN Phase 3.10 · L2 memory · user identity + custom instructions.
+// Doctrine #4 (MEMORY IS NOT TRUTH): memories NEVER become EvidenceItem ·
+// they surface only as bundle.user_context.
+import { makePostgresMemoryStore } from "@/lib/nex/live-chat-completion/memory/postgres-store";
+import { extractMemoryCandidates, extractForgetDirectives } from "@/lib/nex/live-chat-completion/memory/writer";
+import { buildPersonalizationContext, hashUserId } from "@/lib/nex/live-chat-completion/memory/contract";
+import type { UserProfile } from "@/lib/nex/live-chat-completion/memory/contract";
+const _MEMORY_ENABLED = (() => {
+  const raw = process.env.NEX_MEMORY;
+  return raw === "1" || raw === "true" || raw === "on";
+})();
+const _memoryStore = _MEMORY_ENABLED ? makePostgresMemoryStore() : null;
+const _MEMORY_MAX_PER_BUCKET = (() => {
+  const raw = Number(process.env.NEX_MEMORY_MAX_PER_BUCKET ?? 8);
+  return Number.isFinite(raw) && raw >= 1 && raw <= 50 ? Math.floor(raw) : 8;
+})();
+
+// Register guardrails once at module load (order matters · rate limit
+// fires first because it's the cheapest and covers all traffic).
+registerInputGuardrail(makeRateLimitGuardrail());
+registerInputGuardrail(makeInputModerationGuardrail());
+registerOutputGuardrail(makeOutputPiiGuardrail());
+
+// Founder rule 2026-09-09: LLM rescue must never bypass the Truth Engine.
+// Disabled by default · founder flips NEX_LLM_RESCUE=1 to enable.
+const _LLM_RESCUE_ENABLED = (() => {
+  const raw = process.env.NEX_LLM_RESCUE;
+  return raw === "1" || raw === "true" || raw === "on";
+})();
+// NEX_LLM_RESCUE_PROVIDER selects the backend. Default = ollama (real).
+// Set to "mock" for deterministic regression testing without Ollama.
+const _rescueProvider = _LLM_RESCUE_ENABLED
+  ? (process.env.NEX_LLM_RESCUE_PROVIDER === "mock" ? makeMockRescueProvider() : makeOllamaRescueProvider())
+  : null;
+const _LLM_RESCUE_BUDGET_MS = (() => {
+  const raw = Number(process.env.NEX_LLM_RESCUE_BUDGET_MS ?? 8000);
+  return Number.isFinite(raw) && raw >= 1000 && raw <= 30000 ? raw : 8000;
+})();
+
+// Adapters are stateless per turn — construct once per process.
+// Founder BEGIN Phase 2 · adapter gets a gap-emission callback so honest
+// per-entity unknowns turn into knowledge_gap rows for background workers.
+const _lccGapQueue = (() => {
+  try { return makeKnowledgeGapQueue({ kfPool: getKnowledgeFactoryDbPool() }); }
+  catch { return null; }
+})();
+const _lccAdapters = {
+  accommodation: makeAccommodationAdapter({
+    getPool: () => getAccommodationDbPool(),
+    // Founder BEGIN Phase 3.2 · KF pool for question_variant + retrieval_hit
+    // lookups. May be a different Postgres than the canonical source.
+    getKfPool: () => getKnowledgeFactoryDbPool(),
+    enqueueGap: _lccGapQueue
+      ? async (input) => { await _lccGapQueue.enqueue({ ...input, source: "live_chat" }); }
+      : undefined,
+  }),
+  // Founder Path B · Phase B2 · thin domain adapters.
+  // Founder Phase 5 · P5-1 · extended to markets, travel, attractions, business.
+  food: makeFoodAdapter(),
+  transport: makeTransportAdapter(),
+  markets: makeMarketsAdapter(),
+  travel: makeTravelAdapter(),
+  attractions: makeAttractionsAdapter(),
+  business: makeBusinessAdapter(),
+  code: makeCodeAdapter(),
+} as const;
+
+// Founder BEGIN Phase 3.1 · conversation state store singleton.
+const _lccConversationStore = (() => {
+  try { return makeConversationStateStore({ kfPool: getKnowledgeFactoryDbPool() }); }
+  catch { return null; }
+})();
 import { getAccommodationDbPool } from "@/lib/nex-accommodation/db";
 // P0.3 · Hotel Resolved-Reference Continuity (Philip 2026-09-05 · AUTHORIZE
 // P0.3). When session.currentReference resolves to a directory entity this
@@ -353,6 +527,13 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  // ── FOUNDER 2026-09-10 · Chat Resilience Wrapper ────────────────
+  // The founder's rule: NEX never returns a raw 500 to the user.
+  // Every uncaught exception from the 3000-line pipeline below is
+  // converted into a graceful envelope so the chat surface always
+  // renders SOMETHING intelligent. Traces still land in server logs
+  // for debugging.
+  try {
   // Founder BEGIN · NEX CHAT RESPONSE SPEED AUDIT (2026-09-09) · minimal timers
   // wrapped in try/catch so instrumentation errors NEVER break the response.
   // Emits a `_debug_timings` field in the response body. Zero logic change.
@@ -382,6 +563,35 @@ export async function POST(req: NextRequest) {
     typeof body.conversation_id === "string" && /^[0-9a-f-]{8,}$/i.test(body.conversation_id)
       ? body.conversation_id
       : crypto.randomUUID();
+
+  // Founder BEGIN Phase 3.7 · Safety · input guardrails run BEFORE
+  // domain classification / retrieval / rescue so blocked traffic never
+  // touches downstream pipelines. Rate limit first (cheapest), then
+  // input moderation (jailbreak detection).
+  const _inputGuardrailRun = await runInputGuardrails({
+    message, conversation_id, language: "en",
+    request_ip: (req.headers.get("x-forwarded-for") ?? req.headers.get("x-real-ip") ?? null),
+    request_headers: Object.fromEntries(req.headers.entries()),
+  });
+  if (_inputGuardrailRun.fired_guardrail) {
+    // Honest customer-visible refusal · never returns 500 for safety.
+    // Rate-limit uses 429 · other categories use 200 with block_reply.
+    const status = _inputGuardrailRun.category === "rate_limit" ? 429 : 200;
+    const headers: Record<string, string> = {};
+    if (_inputGuardrailRun.retry_after_seconds) {
+      headers["Retry-After"] = String(_inputGuardrailRun.retry_after_seconds);
+    }
+    return NextResponse.json({
+      conversation_id,
+      reply: _inputGuardrailRun.block_reply,
+      understood_intent: null,
+      voice_reply: { en: _inputGuardrailRun.block_reply, id: null, mode: "friendly", intent: "safety_block", chosen_reason: `guardrail:${_inputGuardrailRun.fired_guardrail}:${_inputGuardrailRun.category}` },
+      _debug_timings: {
+        input_guardrail_run: _inputGuardrailRun,
+        instrument_version: "chat-safety-v1-2026-09-09",
+      },
+    }, { status, headers });
+  }
 
   // Stage 3.42 · Conversation Layer (Philip 2026-09-01) · optional
   // client-provided previous NEX reply. When session state is missing
@@ -2015,16 +2225,790 @@ export async function POST(req: NextRequest) {
     let _debug_timings: Record<string, unknown> | null = null;
 
     // Founder BEGIN 2026-09-09 · SHADOW-MODE deterministic composer.
-    // Runs in parallel with the customer's real reply. Non-blocking · budgeted.
-    // Any error is captured · customer never sees it.
+    // Founder BEGIN LCC 2026-09-09 · Live Chat Completion supersedes B-mode.
+    //
+    // Two independent tracks meet here:
+    //   1. LCC · domain-neutral adapter pipeline. Runs when REPLY_MODE_ENABLED.
+    //      Classifies the turn to a domain, hands to that adapter, promotes
+    //      the composed reply when it clears the shouldPromoteReply() bar.
+    //      This is the customer-visible path. Legacy discovery_hit only
+    //      renders when the adapter honestly returned nothing promotable.
+    //   2. Legacy shadow-mode · unchanged JSONL observability of the raw
+    //      accommodation deterministic pipeline. Fires when SHADOW_MODE_ENABLED
+    //      regardless of REPLY_MODE_ENABLED, so we can still measure the raw
+    //      pipeline's behaviour without going through the adapter.
     let deterministic_shadow: unknown = { enabled: false, skipped_reason: "flag_off" };
+    let lcc_domain: Domain = "unknown";
+    let lcc_adapter_reply: AdapterReply | null = null;
+    let deterministic_reply_promotion: PromotionRecord = {
+      attempted: false,
+      accepted: false,
+      reason: "flag_off",
+      domain: "unknown",
+      intent_slug: null,
+    };
+    // Founder BEGIN Phase 3.2 · per-stage timing container (hoisted so
+    // both the adapter block and the _debug_timings emit point can see it).
+    const _lcc_stage_ms: Record<string, number> = {};
+    const _stage = (name: string, start: number) => {
+      _lcc_stage_ms[name] = Math.round((_perfNow() - start) * 100) / 100;
+    };
+
+    if (REPLY_MODE_ENABLED) {
+      try {
+        // Build the domain-neutral turn input from the chat brain's output.
+        const worldCards = (composed as unknown as { world_cards?: { cards?: unknown[] } })?.world_cards;
+        const priorEntities: { entity_ref: string; display_name: string; category?: string }[] = [];
+        if (Array.isArray(worldCards?.cards)) {
+          for (const c of worldCards!.cards!) {
+            const co = c as { id?: string; listing_ref?: string; public_listing_ref?: string; business_name?: string; name?: string; category?: string };
+            // Presented cards use `id` (see brain/presentation.ts) which is the
+            // canonical public_listing_ref from accommodation-postgres.ts.
+            const ref = co?.listing_ref ?? co?.public_listing_ref ?? co?.id ?? null;
+            const name = co?.business_name ?? co?.name ?? null;
+            if (ref && name) priorEntities.push({ entity_ref: ref, display_name: name, category: co?.category });
+          }
+        }
+        // Founder BEGIN Phase 3.1 · load durable state + interpret turn.
+        let convState: ConversationState | null = null;
+        let turnPlan: NonNullable<Parameters<typeof _lccAdapters.accommodation.compose>[0]["turn_plan"]> | undefined;
+        if (_lccConversationStore && conversation_id) {
+          const _tStateLoad = _perfNow();
+          try {
+            convState = await _lccConversationStore.load(conversation_id);
+            _stage("state_load", _tStateLoad);
+            const _tInterpret = _perfNow();
+            const raw = interpretTurn({ message: String(message ?? ""), state: convState });
+            _stage("interpretation", _tInterpret);
+            // Look up the current result_set if the interpretation needs it.
+            let resolvedResultSet: NonNullable<typeof turnPlan>["result_set"] | undefined = undefined;
+            let resolvedOrdinal: number | null = null;
+            const _tResolve = _perfNow();
+            if (raw.classification === "follow_up_on_list" && convState.current_result_set_id) {
+              const rs = await _lccConversationStore.loadResultSet(convState.current_result_set_id);
+              if (rs) {
+                resolvedResultSet = {
+                  result_set_id: rs.result_set_id,
+                  entity_refs: rs.entity_refs,
+                  city: rs.city,
+                  category: rs.category,
+                  intent_slug: rs.intent_slug,
+                };
+                // The turn interpreter set ambiguous with an ordinal if applicable.
+                // For simplicity we extract the ordinal from the reasoning trail.
+                const ord = raw.reasoning.map((s) => s.match(/ordinal_index=(\d+)/)).find((m) => m);
+                if (ord) resolvedOrdinal = parseInt(ord[1], 10);
+              }
+            }
+            turnPlan = {
+              classification: raw.classification,
+              inferred_intent_slug: raw.inferred_intent_slug,
+              resolved_entity_ref: raw.resolved_entity_ref,
+              resolved_ordinal: resolvedOrdinal,
+              result_set: resolvedResultSet,
+              list_filter: raw.list_filter,
+              ambiguous: raw.ambiguous,
+              ambiguity_reason: raw.ambiguity_reason,
+            };
+            _stage("resolution", _tResolve);
+          } catch (e) {
+            // State-store failure must never block the reply. Silently proceed
+            // without a turn_plan — adapter falls back to its own parse.
+            convState = null;
+            turnPlan = undefined;
+          }
+        }
+
+        const turnInput = {
+          message: String(message ?? ""),
+          language: "en" as const,
+          prior_entities: priorEntities,
+          conversation_id: conversation_id ?? null,
+          chat_brain_intent: (composed?.intent as string | null) ?? null,
+          chat_brain_reply_text: String(composed?.reply ?? ""),
+          chat_brain_world_cards_count: priorEntities.length,
+          turn_plan: turnPlan,
+        };
+
+        const cls = classifyDomain(turnInput);
+        lcc_domain = cls.domain;
+        deterministic_reply_promotion = {
+          attempted: true,
+          accepted: false,
+          reason: "not_qualified",
+          domain: cls.domain,
+          intent_slug: null,
+        };
+
+        // Founder 2026-09-10 · ALL DOMAINS wired. Previously only
+        // accommodation was dispatched; food, transport, markets, travel,
+        // attractions, business adapters existed but never called. Now
+        // any classified domain that has an adapter gets dispatched
+        // through the same promotion gate.
+        const _domainAdapter = cls.domain !== "unknown"
+          ? (_lccAdapters as Record<string, typeof _lccAdapters.accommodation | undefined>)[cls.domain]
+          : undefined;
+        if (_domainAdapter) {
+          const adapter = _domainAdapter;
+          if (await Promise.resolve(adapter.canHandle(turnInput))) {
+            const _tAdapter = _perfNow();
+            lcc_adapter_reply = await adapter.compose(turnInput);
+            _stage("adapter", _tAdapter);
+            deterministic_reply_promotion.intent_slug = lcc_adapter_reply.intent_slug;
+            deterministic_reply_promotion.reply_kind = lcc_adapter_reply.reply_kind;
+            deterministic_reply_promotion.trust = lcc_adapter_reply.trust;
+            deterministic_reply_promotion.known_count = lcc_adapter_reply.known.length;
+            deterministic_reply_promotion.unknown_count = lcc_adapter_reply.unknown.length;
+            deterministic_reply_promotion.requested_count = lcc_adapter_reply.requested.length;
+            deterministic_reply_promotion.latency_ms = lcc_adapter_reply.latency_ms;
+
+            const decision = shouldPromoteReply(lcc_adapter_reply);
+            // Founder doctrine 2026-09-10 · Truth Engine wins over LLM rescue.
+            // When the classified-domain adapter has a canonical_verified fact
+            // (or list), it MUST override any earlier legacy composer / research
+            // brain acceptance for THIS domain. Otherwise the Research Brain can
+            // hallucinate a wrong-domain reply and block the correct canonical one.
+            const isCanonicalFact =
+              lcc_adapter_reply.trust === "canonical_verified" &&
+              (lcc_adapter_reply.reply_kind === "fact" || lcc_adapter_reply.reply_kind === "list");
+            const shouldOverrideLegacy = isCanonicalFact && decision.promote;
+
+            if (composition_meta.accepted === true && !shouldOverrideLegacy) {
+              deterministic_reply_promotion.reason = "legacy_composer_already_accepted";
+            } else {
+              if (decision.promote) {
+                composition_meta.baseline_reply = composition_meta.baseline_reply ?? String(composed?.reply ?? "");
+                composed.reply = lcc_adapter_reply.reply_text;
+                composition_meta.ran = true;
+                composition_meta.accepted = true;
+                composition_meta.composed_reply = lcc_adapter_reply.reply_text;
+                composition_meta.model = `lcc-adapter:${cls.domain}`;
+                composition_meta.fell_back = false;
+                composition_meta.latency_ms = lcc_adapter_reply.latency_ms;
+                composition_meta.reason = shouldOverrideLegacy
+                  ? "lcc_adapter_reply_promoted_over_legacy_canonical_wins"
+                  : "lcc_adapter_reply_promoted";
+                deterministic_reply_promotion.accepted = true;
+                deterministic_reply_promotion.reason = decision.reason;
+              } else {
+                deterministic_reply_promotion.reason = decision.reason;
+              }
+            }
+          } else {
+            deterministic_reply_promotion.reason = `adapter_cannot_handle:${cls.domain}`;
+          }
+        } else {
+          deterministic_reply_promotion.reason = `no_adapter_for_domain:${cls.domain}`;
+        }
+
+        // Founder BEGIN Phase 3.1 · after adapter compose, persist conversation state.
+        // Register result_set if the adapter surfaced a list, then update
+        // active_entity, previous_intents, dialogue_turns.
+        if (_lccConversationStore && conversation_id && convState && lcc_adapter_reply) {
+          const _tPersist = _perfNow();
+          try {
+            let registered_result_set_id: string | null = null;
+            if (lcc_adapter_reply.list_rendered && lcc_adapter_reply.list_rendered.entity_refs.length > 0) {
+              const rs = await _lccConversationStore.registerResultSet({
+                conversation_id,
+                domain: cls.domain,
+                intent_slug: lcc_adapter_reply.list_rendered.intent_slug,
+                city: lcc_adapter_reply.list_rendered.city,
+                category: lcc_adapter_reply.list_rendered.category,
+                entity_refs: [...lcc_adapter_reply.list_rendered.entity_refs],
+                render_summary: lcc_adapter_reply.list_rendered.render_summary,
+              });
+              registered_result_set_id = rs.result_set_id;
+            }
+            const nextState = applyTurnResultToState({
+              state: convState,
+              message: String(message ?? ""),
+              reply_text: lcc_adapter_reply.reply_text,
+              intent_slug: lcc_adapter_reply.intent_slug,
+              entity_ref: lcc_adapter_reply.entity_ref,
+              reply_kind: lcc_adapter_reply.reply_kind,
+              registered_result_set_id,
+            });
+            // Update active_domain + minimal goal state machine
+            nextState.active_domain = cls.domain;
+            const nextGoal: ConversationState["active_goal"] =
+              lcc_adapter_reply.reply_kind === "list" || lcc_adapter_reply.reply_kind === "availability_unknown"
+                ? "search"
+                : lcc_adapter_reply.entity_ref
+                  ? (convState.active_goal === "search" ? "refine" : convState.active_goal)
+                  : convState.active_goal;
+            nextState.active_goal = nextGoal;
+            await _lccConversationStore.save(nextState);
+          } catch { /* state persistence failure never breaks the reply */ }
+          _stage("persistence", _tPersist);
+        }
+      } catch (e) {
+        deterministic_reply_promotion.reason = `wire_error:${e instanceof Error ? e.message : String(e)}`;
+      }
+    }
+
+    // Founder BEGIN Phase 3.4 · LLM RESCUE (Truth-Engine-gated).
+    // Founder rule 2026-09-09: LLM rescue MUST NEVER bypass the Truth Engine.
+    // Fires ONLY when:
+    //   - NEX_LLM_RESCUE=1
+    //   - Adapter did NOT promote (no verified deterministic answer)
+    //   - Adapter did NOT emit honest per-entity unknown (those are answers)
+    //   - Legacy composer did NOT accept
+    // The LLM receives a retrieval bundle · its output is validated against
+    // that evidence · claims without matching source_refs are rejected as
+    // fabrication · trust caps at evidence_provisional · knowledge_gap
+    // recorded on every rescue.
+    let llm_rescue_verdict: RescueVerdict | null = null;
+    let llm_router_decision: RouterDecision | null = null;
+    // Founder BEGIN Phase 3.7 SAI · action authorization outcome (if any).
+    let authorized_action: AuthorizedActionRecord | null = null;
+    let raw_rescue_output_for_action: { proposed_action?: unknown } | null = null;
+    // Founder BEGIN Phase 3.8 · vision extraction (before rescue bundle assembly).
+    let vision_extra_items: _EvidenceItem[] = [];
+    let vision_provider_meta: unknown = null;
+    const _imageBase64 = typeof body.image_base64 === "string" && body.image_base64.length > 0
+      ? String(body.image_base64).replace(/^data:image\/[a-z]+;base64,/i, "").trim()
+      : null;
+    if (_visionProvider && _imageBase64 && _imageBase64.length > 32) {
+      const _tVision = _perfNow();
+      try {
+        const vres = await _visionProvider.extract({
+          image_base64: _imageBase64,
+          hint: String(message ?? ""),
+          language: "en",
+          budget_ms: _VISION_BUDGET_MS,
+        });
+        vision_provider_meta = vres.provider_meta;
+        if (vres.output?.facts && vres.output.facts.length > 0) {
+          vision_extra_items = visionFactsToEvidence(_imageBase64, vres.output.facts);
+        }
+        _stage("vision_extract", _tVision);
+      } catch (e) {
+        vision_provider_meta = { error: e instanceof Error ? e.message.slice(0, 100) : "vision_error" };
+      }
+    }
+
+    // Founder BEGIN Phase 3.9 · FILE UPLOADS · zero to N attached_files[].
+    // Each file: { filename?, mime_type, content_base64, hint? }.
+    // Non-fatal at every layer — provider errors become empty evidence,
+    // not a 500. Trust CAPPED at evidence_provisional in fileFactsToEvidence.
+    let file_extra_items: _EvidenceItem[] = [];
+    const file_provider_meta_list: unknown[] = [];
+    const _attachedFiles: Array<{ filename?: string; mime_type: string; content_base64: string; hint?: string }> = [];
+    if (Array.isArray(body.attached_files)) {
+      for (const raw of body.attached_files.slice(0, _FILE_MAX_COUNT)) {
+        if (!raw || typeof raw !== "object") continue;
+        const mime = typeof (raw as { mime_type?: unknown }).mime_type === "string"
+          ? String((raw as { mime_type: string }).mime_type) : "";
+        const b64raw = typeof (raw as { content_base64?: unknown }).content_base64 === "string"
+          ? String((raw as { content_base64: string }).content_base64) : "";
+        if (!mime || !b64raw) continue;
+        const b64 = b64raw.replace(/^data:[^;]+;base64,/i, "").trim();
+        const sizeBytes = Math.floor((b64.length * 3) / 4);
+        if (sizeBytes > _FILE_MAX_BYTES) continue;
+        _attachedFiles.push({
+          filename: typeof (raw as { filename?: unknown }).filename === "string"
+            ? String((raw as { filename: string }).filename).slice(0, 200) : undefined,
+          mime_type: mime,
+          content_base64: b64,
+          hint: typeof (raw as { hint?: unknown }).hint === "string"
+            ? String((raw as { hint: string }).hint).slice(0, 500) : undefined,
+        });
+      }
+    }
+    if (_fileProvider && _attachedFiles.length > 0) {
+      const _tFile = _perfNow();
+      for (const f of _attachedFiles) {
+        try {
+          const fres = await _fileProvider.extract({
+            filename: f.filename,
+            mime_type: f.mime_type,
+            content_base64: f.content_base64,
+            hint: (f.hint ?? String(message ?? "")).slice(0, 500),
+            language: "en",
+            budget_ms: _FILE_BUDGET_MS,
+          });
+          file_provider_meta_list.push(fres.provider_meta);
+          if (fres.output?.facts && fres.output.facts.length > 0) {
+            const items = fileFactsToEvidence(f.content_base64, fres.output.facts, {
+              filename: f.filename,
+              mime_type: f.mime_type,
+            });
+            file_extra_items = file_extra_items.concat(items);
+          }
+        } catch (e) {
+          file_provider_meta_list.push({
+            error: e instanceof Error ? e.message.slice(0, 100) : "file_error",
+            filename: f.filename ?? null,
+            mime_type: f.mime_type,
+          });
+        }
+      }
+      _stage("file_extract", _tFile);
+    }
+
+    // Founder BEGIN Phase 3.10 · L2 MEMORY · Doctrine #4 (MEMORY IS NOT TRUTH).
+    // Memories NEVER become EvidenceItem. They flow to bundle.user_context.
+    // Body fields:
+    //   user_id                → opaque per-user identifier
+    //   custom_instructions    → { about_user?, response_style?, preferred_language? }
+    //   consent_memory: false  → per-turn opt-out (no reads · no writes)
+    let user_context_for_bundle: Awaited<ReturnType<typeof buildPersonalizationContext>> | undefined = undefined;
+    let memory_meta: { user_id_hash?: string; preferences_count?: number; user_asserted_count?: number; tier_counts?: { semantic: number; episodic: number; procedural: number }; saved_memory_ids?: string[]; forgot_memory_ids?: string[]; error?: string } | null = null;
+    // Founder Phase 10 · P10-6 · resolve user_id from session cookie first,
+    // fall back to body.user_id for anonymous / legacy callers. Cookie wins
+    // when present so the chat surface respects the authenticated user.
+    let _rawUserId: string | null = null;
+    try {
+      const _cookieHeader = req.headers.get("cookie") ?? "";
+      let _cookieToken: string | null = null;
+      for (const p of _cookieHeader.split(/;\s*/)) {
+        const idx = p.indexOf("=");
+        if (idx > 0 && p.slice(0, idx) === "nex_session") {
+          _cookieToken = decodeURIComponent(p.slice(idx + 1));
+          break;
+        }
+      }
+      if (_cookieToken) {
+        const sess = await (await import("@/lib/nex/identity-auth")).resolveSession(_cookieToken);
+        if (sess?.user_id) _rawUserId = sess.user_id;
+      }
+    } catch { /* non-fatal · fall back to body */ }
+    if (!_rawUserId) {
+      _rawUserId = typeof body.user_id === "string" ? String(body.user_id).slice(0, 200) : null;
+    }
+    const _memoryConsent = body.consent_memory !== false;
+    if (_memoryStore && _rawUserId && _memoryConsent) {
+      const _tMem = _perfNow();
+      try {
+        // Optional per-turn custom instructions update.
+        if (body.custom_instructions && typeof body.custom_instructions === "object") {
+          const ci = body.custom_instructions as {
+            about_user?: string; response_style?: string; preferred_language?: "en" | "id";
+          };
+          await _memoryStore.setCustomInstructions(_rawUserId, {
+            about_user: typeof ci.about_user === "string" ? ci.about_user.slice(0, 1500) : undefined,
+            response_style: typeof ci.response_style === "string" ? ci.response_style.slice(0, 1500) : undefined,
+            preferred_language: ci.preferred_language === "id" || ci.preferred_language === "en" ? ci.preferred_language : undefined,
+          });
+        }
+
+        // Extract new memory candidates from the user turn · persist.
+        const candidates = extractMemoryCandidates(_rawUserId, String(message ?? ""), {
+          source_turn_id: typeof body.conversation_id === "string" ? String(body.conversation_id).slice(0, 80) : undefined,
+        });
+        const saved_ids: string[] = [];
+        for (const c of candidates) {
+          try { await _memoryStore.saveMemory(c.memory); saved_ids.push(c.memory.memory_id); }
+          catch { /* non-fatal */ }
+        }
+
+        // Handle "forget X" directives · substring match against existing memories.
+        const forgetTargets = extractForgetDirectives(String(message ?? ""));
+        const forgot_ids: string[] = [];
+        if (forgetTargets.length > 0) {
+          const existing = await _memoryStore.listMemories(_rawUserId, { limit: 50 });
+          for (const target of forgetTargets) {
+            const t = target.toLowerCase();
+            const hits = existing.filter((m) => m.claim_text.toLowerCase().includes(t)).slice(0, 5);
+            for (const h of hits) {
+              try { await _memoryStore.deleteMemory(_rawUserId, h.memory_id); forgot_ids.push(h.memory_id); }
+              catch { /* non-fatal */ }
+            }
+          }
+        }
+
+        // Load profile (fresh · includes anything we just saved) → build PersonalizationContext.
+        const profile: UserProfile | null = await _memoryStore.loadProfile(_rawUserId);
+        if (profile) {
+          user_context_for_bundle = buildPersonalizationContext(profile, {
+            max_per_bucket: _MEMORY_MAX_PER_BUCKET,
+          });
+          memory_meta = {
+            user_id_hash: user_context_for_bundle.user_id_hash,
+            preferences_count: user_context_for_bundle.preferences.length,
+            user_asserted_count: user_context_for_bundle.user_asserted.length,
+            tier_counts: {
+              semantic: user_context_for_bundle.tiered.semantic.length,
+              episodic: user_context_for_bundle.tiered.episodic.length,
+              procedural: user_context_for_bundle.tiered.procedural.length,
+            },
+            saved_memory_ids: saved_ids,
+            forgot_memory_ids: forgot_ids,
+          };
+        } else {
+          memory_meta = {
+            user_id_hash: hashUserId(_rawUserId),
+            preferences_count: 0,
+            user_asserted_count: 0,
+            saved_memory_ids: saved_ids,
+            forgot_memory_ids: forgot_ids,
+          };
+        }
+        _stage("memory_load", _tMem);
+      } catch (e) {
+        memory_meta = { error: e instanceof Error ? e.message.slice(0, 100) : "memory_error" };
+      }
+    }
+
+    // Founder Path A · KB-2 · Knowledge Brain supplementary evidence.
+    // Cheap hybrid retrieval before the LLM rescue. Every KB hit becomes
+    // a gate-validated EvidenceItem in the bundle. Doctrine-safe by
+    // construction: Fabrication Gate v2 alignment scores each cited claim.
+    let kb_extra_items: _EvidenceItem[] = [];
+    let kb_meta: { fired: boolean; hits?: number; error?: string; total_ms?: number } | null = null;
+    if (
+      _LLM_RESCUE_ENABLED
+      && _rescueProvider
+      && deterministic_reply_promotion.accepted !== true
+      && composition_meta.accepted !== true
+    ) {
+      // Only fetch KB when we're about to invoke rescue · avoids
+      // unnecessary Postgres work on routine adapter-promoted queries.
+      const _kbBrain = makeDefaultKnowledgeBrain();
+      if (_kbBrain) {
+        const _tKb = _perfNow();
+        try {
+          const kbAns = await _kbBrain.answer({
+            query: String(message ?? ""),
+            language: "en",
+            domain_hint: (lcc_domain === "unknown" ? "accommodation" : lcc_domain),
+            entity_hint: lcc_adapter_reply?.entity_ref ?? undefined,
+            top_k: 5,
+            budget_ms: 2_000,
+          });
+          if (kbAns.answered && kbAns.hits.length > 0) {
+            kb_extra_items = _kbBrain.answerToEvidenceItems(kbAns);
+          }
+          kb_meta = { fired: true, hits: kb_extra_items.length, total_ms: Math.round(_perfNow() - _tKb) };
+        } catch (e) {
+          kb_meta = { fired: true, error: e instanceof Error ? e.message.slice(0, 100) : "kb_error" };
+        }
+      } else {
+        kb_meta = { fired: false };
+      }
+    }
+
+    if (
+      _LLM_RESCUE_ENABLED
+      && _rescueProvider
+      && deterministic_reply_promotion.accepted !== true
+      && composition_meta.accepted !== true
+    ) {
+      const _tRescue = _perfNow();
+      try {
+        const kfPool = getKnowledgeFactoryDbPool();
+        const bundle = await assembleRetrievalBundle({
+          message: String(message ?? ""),
+          language: "en",
+          domain: (lcc_domain === "unknown" ? "accommodation" : lcc_domain),
+          entity_ref: lcc_adapter_reply?.entity_ref ?? null,
+          intent_slug: lcc_adapter_reply?.intent_slug ?? null,
+          kfPool,
+          extra_items: [...vision_extra_items, ...file_extra_items, ...kb_extra_items],
+          user_context: user_context_for_bundle,
+        });
+        // Founder BEGIN Phase 3.6 · route model class before invoking.
+        llm_router_decision = routeModel({
+          bundle,
+          provider_name_hint: _rescueProvider.name,
+        });
+        const invocation = await _rescueProvider.invoke({
+          bundle,
+          budget_ms: _LLM_RESCUE_BUDGET_MS,
+        });
+        // Drain tokens (this BEGIN: no pass-through streaming from LLM →
+        // outer SSE · that's a Phase 3.5 refinement). Provider captures TTFT.
+        for await (const _tok of invocation.tokens) { /* accumulate silently */ }
+        const rescueOutput = await invocation.output;
+        raw_rescue_output_for_action = rescueOutput as unknown as { proposed_action?: unknown };
+        llm_rescue_verdict = await gateLlmOutput({
+          bundle,
+          output: rescueOutput,
+          provider_meta: invocation.provider_meta,
+          conversation_id: conversation_id ?? null,
+        });
+        _stage("llm_rescue", _tRescue);
+
+        // Founder rule 2026-09-09: promote rescue verdict UNCONDITIONALLY.
+        // - When verified: the customer sees the gated LLM answer with cited
+        //   sources at evidence_provisional trust.
+        // - When unverified: the customer sees the honest "couldn't verify"
+        //   limitation instead of whatever the legacy discovery path had
+        //   fallen back to (which could be a misleading world_cards list).
+        // This preserves the zero-fabrication invariant AND makes the honest
+        // limitation visible to the user rather than swallowed by legacy.
+        if (llm_rescue_verdict.reply_text) {
+          composed.reply = llm_rescue_verdict.reply_text;
+          composition_meta.ran = true;
+          composition_meta.accepted = true;
+          composition_meta.composed_reply = llm_rescue_verdict.reply_text;
+          composition_meta.baseline_reply = String(composed?.reply ?? "");
+          composition_meta.model = `llm-rescue:${llm_rescue_verdict.provider_meta.model}`;
+          composition_meta.fell_back = true;
+          composition_meta.latency_ms = llm_rescue_verdict.provider_meta.total_ms;
+          composition_meta.reason = llm_rescue_verdict.verified
+            ? "llm_rescue_gated_and_promoted"
+            : "llm_rescue_gated_honest_limitation";
+          deterministic_reply_promotion.accepted = true;
+          deterministic_reply_promotion.reason = llm_rescue_verdict.verified
+            ? "llm_rescue_promoted"
+            : "llm_rescue_honest_limitation_promoted";
+        }
+
+        // Record the rescue trigger as a knowledge_gap so background workers
+        // can resolve it. Idempotent on (domain, entity_ref, intent_slug).
+        if (_lccGapQueue) {
+          try {
+            const gapDomain = (lcc_domain === "unknown" ? "accommodation" : lcc_domain) as Parameters<typeof _lccGapQueue.enqueue>[0]["domain"];
+            await _lccGapQueue.enqueue({
+              domain: gapDomain,
+              entity_ref: lcc_adapter_reply?.entity_ref ?? bundle.entity_ref ?? "unresolved",
+              intent_slug: lcc_adapter_reply?.intent_slug ?? bundle.intent_slug ?? "unresolved",
+              source: "live_chat",
+              source_conversation_id: conversation_id ?? null,
+            });
+            llm_rescue_verdict = { ...llm_rescue_verdict, gap_created: true };
+          } catch { /* best-effort */ }
+        }
+      } catch (e) {
+        _stage("llm_rescue", _tRescue);
+        llm_rescue_verdict = {
+          verified: false,
+          reply_text: "",
+          trust: "unknown",
+          cited_source_refs: [],
+          rejected_claims: [],
+          provider_meta: { model: "ollama", ttft_ms: null, total_ms: null, completed: false },
+        };
+      }
+    }
+
+    // Founder Path A · Phase A2 · RESEARCH BRAIN · Deep Research loop.
+    // Composition-first: fires ONLY when adapter did not promote AND
+    // rescue did not verify. This preserves the "LLM only when
+    // necessary" discipline · 99.4% of accommodation queries never
+    // reach here (per Composition Pilot n=354).
+    let research_report: import("@/lib/nex/research-brain/contract").CitedReport | null = null;
+    let research_meta: { fired: boolean; reason?: string; answered?: boolean; latency_ms?: number; claim_count?: number; span_count?: number; disagreement_count?: number } | null = null;
+    // Fires when nothing gave a SUBSTANTIVE answer:
+    //   · adapter did not promote (or only promoted honest-limitation from unverified rescue)
+    //   · composer either not accepted, OR accepted with reason
+    //     starting "boundary:zero_evidence:" (P0 fabrication-guard) OR
+    //     "llm_rescue_gated_honest_limitation" (rescue abstained)
+    //   · rescue did not verify
+    // Other composer boundaries (social_emotional/conv_function/
+    // confirmation/etc.) are legitimate non-research answers and do
+    // NOT trigger Research. This preserves composition-first discipline.
+    const _composerNonSubstantiveReasons = [
+      "boundary:zero_evidence:",
+      "llm_rescue_gated_honest_limitation",
+    ];
+    const _composerAnsweredSubstantively =
+      composition_meta.accepted === true
+      && !(typeof composition_meta.reason === "string"
+           && _composerNonSubstantiveReasons.some((p) => (composition_meta.reason as string).startsWith(p)));
+    const _deterministicPromotedHonestOnly =
+      deterministic_reply_promotion.accepted === true
+      && deterministic_reply_promotion.reason === "llm_rescue_honest_limitation_promoted";
+    const _researchShouldFire =
+      _researchBrain
+      && (deterministic_reply_promotion.accepted !== true || _deterministicPromotedHonestOnly)
+      && !_composerAnsweredSubstantively
+      && (!llm_rescue_verdict || llm_rescue_verdict.verified !== true);
+    if (_researchShouldFire && _researchBrain) {
+      const _tResearch = _perfNow();
+      try {
+        research_report = await _researchBrain.research({
+          objective: String(message ?? "").slice(0, 1000),
+          language: "en",
+          domain_hint: lcc_domain === "unknown" ? "accommodation" : lcc_domain,
+          entity_hint: lcc_adapter_reply?.entity_ref ?? undefined,
+          budget_ms: _RESEARCH_BUDGET_MS,
+          depth: _RESEARCH_DEPTH,
+        });
+        research_meta = {
+          fired: true,
+          answered: research_report.answered,
+          latency_ms: research_report.latency_ms,
+          claim_count: research_report.claims.length,
+          span_count: research_report.spans.length,
+          disagreement_count: research_report.disagreements.length,
+        };
+        _stage("research_brain", _tResearch);
+      } catch (e) {
+        research_meta = {
+          fired: true,
+          reason: e instanceof Error ? `error:${e.message.slice(0, 80)}` : "research_error",
+        };
+      }
+    } else {
+      research_meta = {
+        fired: false,
+        reason: deterministic_reply_promotion.accepted === true
+          ? "adapter_promoted"
+          : _composerAnsweredSubstantively
+          ? "composer_answered_substantively"
+          : llm_rescue_verdict?.verified === true
+          ? "rescue_verified"
+          : !_researchBrain
+          ? "research_brain_disabled"
+          : "no_trigger",
+      };
+    }
+
+    // Founder Phase 8 · P8-6 · IMAGE GENERATION INTENT DETECTION.
+    // Detects text-to-image requests and delegates to the image gen
+    // provider. Runs before cross-domain because generation intent is
+    // orthogonal to knowledge queries. Doctrine label attached to the
+    // response envelope so downstream never treats the image as fact.
+    let image_gen_meta: { fired: boolean; provider?: string; images?: number; safety_verdict?: string; latency_ms?: number; error?: string; ref_ids?: string[]; data_urls?: string[] } | null = null;
+    try {
+      const _msg = String(message ?? "");
+      const _IMAGE_INTENT_RE = /\b(generate|create|draw|render|make|paint|design|imagine|buatkan|gambarkan|lukiskan)\b[^.!?\n]{0,80}\b(image|picture|photo|art|logo|drawing|illustration|painting|gambar|lukisan|foto|desain)\b/i;
+      if (_IMAGE_INTENT_RE.test(_msg)) {
+        const _tImg = _perfNow();
+        const _prov = makeDefaultImageGenProvider();
+        if (_prov) {
+          // Extract prompt · use the message directly (Doctrine #5
+          // sanitiser runs inside the endpoint · we replicate here for
+          // parity).
+          const _sanit = sanitiseUntrustedContent({ text: _msg, source_kind: "tool" });
+          if (_sanit.safe_to_cite) {
+            const _r = await _prov.generate({
+              prompt: _sanit.clean_text.slice(0, 500),
+              width: 512, height: 512, seed: -1, n: 1,
+              conversation_id: conversation_id ?? undefined,
+              budget_ms: 30_000,
+            });
+            persistGeneratedImages(_r, conversation_id ?? null);
+            image_gen_meta = {
+              fired: true,
+              provider: _r.provider,
+              images: _r.images.length,
+              safety_verdict: _r.safety_verdict,
+              latency_ms: Math.round(_perfNow() - _tImg),
+              error: _r.error,
+              ref_ids: _r.images.map((i) => i.ref_id),
+              data_urls: _r.images.map((i) => `data:${i.mime_type};base64,${i.content_base64}`),
+            };
+          } else {
+            image_gen_meta = { fired: true, error: "prompt_rejected_by_doctrine_5", latency_ms: Math.round(_perfNow() - _tImg) };
+          }
+        } else {
+          image_gen_meta = { fired: false, error: "image_gen_disabled" };
+        }
+      }
+    } catch (e) {
+      image_gen_meta = { fired: true, error: e instanceof Error ? e.message.slice(0, 100) : "img_error" };
+    }
+
+    // Founder Phase 5 · P5-5 · CROSS-DOMAIN ORCHESTRATOR.
+    // Fires only when the query is multi-domain (2+ domain tokens) AND
+    // nothing upstream produced a substantive answer. Composition-first
+    // discipline preserved.
+    let cross_domain_meta: { fired: boolean; is_multi_domain?: boolean; domains?: string[]; answered?: boolean; latency_ms?: number; headline?: string; per_domain_hits?: Record<string, number>; join_summary?: Array<{ kind: string; from: string; to: string; pair_count: number; unknown_reason?: string }>; temporal_hint?: string; temporal_parsed?: boolean; reason?: string } | null = null;
+    try {
+      const decomposed = decomposeCrossDomain(String(message ?? ""));
+      // Fires when multi-domain AND either:
+      //   (a) explicit proximity/temporal signal (user wants a joined answer)
+      //   (b) nothing upstream produced a substantive answer
+      // Preserves composition-first: single-domain queries never touch this.
+      const _hasProximityOrTemporal = decomposed.joins.length > 0 || !!decomposed.temporal_constraint;
+      const _nothingSubstantiveUpstream =
+        deterministic_reply_promotion.accepted !== true
+        && !_composerAnsweredSubstantively
+        && (!llm_rescue_verdict || llm_rescue_verdict.verified !== true)
+        && !(research_report && research_report.answered);
+      const shouldFire = decomposed.is_multi_domain && (_hasProximityOrTemporal || _nothingSubstantiveUpstream);
+      if (shouldFire) {
+        const _tCross = _perfNow();
+        const r = await orchestrateCrossDomain({
+          decomposed,
+          language: "en",
+          budget_ms: 4000,
+        });
+        cross_domain_meta = {
+          fired: true,
+          is_multi_domain: true,
+          domains: [...decomposed.domains],
+          answered: r.answered,
+          latency_ms: r.latency_ms,
+          headline: r.headline,
+          per_domain_hits: r.per_domain.reduce((acc, p) => { acc[p.domain] = p.hit_count; return acc; }, {} as Record<string, number>),
+          join_summary: r.joins.map((j) => ({ kind: j.kind, from: j.from_domain, to: j.to_domain, pair_count: j.pair_count, unknown_reason: j.unknown_reason })),
+          temporal_hint: r.temporal_window?.hint,
+          temporal_parsed: !!r.temporal_window,
+        };
+        _stage("cross_domain", _tCross);
+      } else {
+        cross_domain_meta = {
+          fired: false,
+          is_multi_domain: decomposed.is_multi_domain,
+          domains: [...decomposed.domains],
+          reason: !decomposed.is_multi_domain ? "single_domain"
+            : deterministic_reply_promotion.accepted === true ? "adapter_promoted"
+            : _composerAnsweredSubstantively ? "composer_substantive"
+            : llm_rescue_verdict?.verified === true ? "rescue_verified"
+            : research_report?.answered ? "research_answered"
+            : "no_trigger",
+        };
+      }
+    } catch (e) {
+      cross_domain_meta = { fired: true, reason: e instanceof Error ? e.message.slice(0, 100) : "cross_domain_error" };
+    }
+
+    // Founder BEGIN Phase 3.7 Safe Actionable Intelligence · action authorization.
+    // Founder rule 2026-09-09: LLM NEVER EXECUTES AN ACTION WITHOUT NEX AUTHORIZATION.
+    //
+    // Two paths reach this block:
+    //   1. LLM's rescue output included a proposed_action → authorize it now.
+    //   2. Client sent action_confirmation_token in the body (echoing a
+    //      previously-issued pending confirmation) → run authorize with the
+    //      token to complete the execute step.
+    const _actionConfirmationToken = typeof body.action_confirmation_token === "string" && body.action_confirmation_token.length > 0
+      ? body.action_confirmation_token
+      : null;
+    const _proposedActionFromLlm = raw_rescue_output_for_action?.proposed_action ?? null;
+    if (_actionConfirmationToken || _proposedActionFromLlm) {
+      // Founder Path A · ACT-1 · single call site via Action Brain facade.
+      // Behavior identical to prior direct authorizeAction() call · the
+      // facade routes through the same 7-stage pipeline (Doctrine #2).
+      try {
+        if (_actionConfirmationToken) {
+          authorized_action = await _actionBrain.confirm({
+            confirmation_token: _actionConfirmationToken,
+            conversation_id: conversation_id ?? null,
+          });
+        } else if (_proposedActionFromLlm && typeof _proposedActionFromLlm === "object") {
+          const p = _proposedActionFromLlm as { action_id?: unknown; args?: unknown; rationale?: unknown };
+          authorized_action = await _actionBrain.propose({
+            action_id: typeof p.action_id === "string" ? p.action_id : "",
+            args: (p.args && typeof p.args === "object") ? p.args as Record<string, unknown> : {},
+            rationale: typeof p.rationale === "string" ? p.rationale : undefined,
+            conversation_id: conversation_id ?? null,
+            entity_ref: lcc_adapter_reply?.entity_ref ?? null,
+            language: "en",
+            user_id: null,
+          });
+        }
+      } catch (e) {
+        // Authorization pipeline exceptions are non-fatal · the customer
+        // still gets the composed reply. The audit table receives a row
+        // via authorize.ts's own writeAudit best-effort.
+        authorized_action = null;
+      }
+    }
+
+    // Legacy shadow-mode observation · runs iff SHADOW_MODE_ENABLED. Keeps
+    // the JSONL sink writing so we can compare adapter vs raw pipeline.
     if (SHADOW_MODE_ENABLED) {
       try {
         const shadowPool = getAccommodationDbPool();
         deterministic_shadow = await runShadowMode({
           message: String(message ?? ""),
           conversation_id: conversation_id ?? null,
-          language: "en", // Chat brain language detection happens further up · shadow defaults en for now
+          language: "en",
           pool: shadowPool,
           chatBrainReply: composed as unknown,
           chatBrainVisibleText: String(composed?.reply ?? ""),
@@ -2032,6 +3016,54 @@ export async function POST(req: NextRequest) {
         });
       } catch (e) {
         deterministic_shadow = { enabled: true, skipped_reason: "wire_error", error: e instanceof Error ? e.message : String(e) };
+      }
+    }
+
+    // Founder Path A · Phase C2 · RESEARCH BRAIN ACTIVATION.
+    // Surface the CitedReport headline as the customer reply when we
+    // have a research answer AND nothing higher-quality upstream:
+    //   · adapter did NOT promote (no verified deterministic answer)
+    //   · rescue did NOT verify (no LLM-verified citations)
+    // Research fires from _researchShouldFire (upstream) which itself
+    // requires composer to be either not-accepted or on the
+    // `boundary:zero_evidence:` path · so getting here already means
+    // we're strictly upgrading a "we don't have that" reply.
+    //
+    // Every research claim already passed Fabrication Gate v2 alignment.
+    let research_activated = false;
+    if (
+      research_report && research_report.answered
+      && (deterministic_reply_promotion.accepted !== true || _deterministicPromotedHonestOnly)
+      && (!llm_rescue_verdict || llm_rescue_verdict.verified !== true)
+    ) {
+      const cited = research_report.claims[0]?.cites ?? [];
+      const cite_note = cited.length > 0
+        ? ` (research · ${cited.length} cited source${cited.length === 1 ? "" : "s"})`
+        : "";
+      const headline = String(research_report.headline ?? "").trim();
+      if (headline.length > 0) {
+        composed.reply = `Based on research: ${headline}${cite_note}`;
+        composition_meta.accepted = true;
+        composition_meta.reason = "research_brain_activated";
+        composition_meta.composed_reply = composed.reply;
+        research_activated = true;
+      }
+    }
+
+    // Founder BEGIN Phase 3.7 · output guardrails BEFORE _debug_timings builds
+    // (so the guardrail's summary is available for observability + scrubbed
+    // text is what downstream envelope + SSE consume).
+    const _outputGuardrailRun = await runOutputGuardrails({
+      reply_text: String(composed?.reply ?? ""),
+      entity_ref: lcc_adapter_reply?.entity_ref ?? null,
+      intent_slug: (composed?.intent as string | null) ?? null,
+      language: "en",
+      cited_source_refs: llm_rescue_verdict?.cited_source_refs ?? [],
+    });
+    if (_outputGuardrailRun.final_reply !== composed.reply) {
+      composed.reply = _outputGuardrailRun.final_reply;
+      if (composition_meta.accepted && composition_meta.composed_reply) {
+        composition_meta.composed_reply = _outputGuardrailRun.final_reply;
       }
     }
 
@@ -2049,12 +3081,164 @@ export async function POST(req: NextRequest) {
         intent_resolved: composed.intent ?? null,
         brain_ms_legacy: brainMs,
         deterministic_shadow,
-        instrument_version: "chat-shadow-mode-v3-deterministic-2026-09-09",
+        deterministic_reply_promotion,
+        lcc_stage_ms: _lcc_stage_ms,
+        lcc_domain,
+        // Founder BEGIN Phase 3.4 · LLM rescue verdict (Truth-Engine-gated).
+        // Present only when rescue fired. Never contains raw LLM output —
+        // only the gated verdict (what actually reached the customer).
+        llm_rescue_verdict: llm_rescue_verdict ? {
+          verified: llm_rescue_verdict.verified,
+          trust: llm_rescue_verdict.trust,
+          cited_source_refs: llm_rescue_verdict.cited_source_refs,
+          rejected_claims_count: llm_rescue_verdict.rejected_claims.length,
+          rejected_claims: llm_rescue_verdict.rejected_claims,
+          provider_model: llm_rescue_verdict.provider_meta.model,
+          provider_ttft_ms: llm_rescue_verdict.provider_meta.ttft_ms,
+          provider_total_ms: llm_rescue_verdict.provider_meta.total_ms,
+          provider_completed: llm_rescue_verdict.provider_meta.completed,
+          gap_created: llm_rescue_verdict.gap_created ?? false,
+          // Founder Path A · Phase A1 · Fabrication Gate v2 · alignment observability.
+          alignment_scores: llm_rescue_verdict.alignment_scores ?? [],
+          alignment_summary: llm_rescue_verdict.alignment_summary ?? null,
+        } : null,
+        // Founder BEGIN Phase 3.6 · router observability.
+        llm_router_decision: llm_router_decision,
+        // Founder BEGIN Phase 3.7 · safety observability.
+        input_guardrail_run: _inputGuardrailRun,
+        output_guardrail_run: {
+          blocked: _outputGuardrailRun.blocked,
+          blocked_by: _outputGuardrailRun.blocked_by,
+          scrubbed_by: _outputGuardrailRun.scrubbed_by,
+          ran: _outputGuardrailRun.ran,
+          latency_ms: _outputGuardrailRun.latency_ms,
+          text_changed: _outputGuardrailRun.final_reply !== _outputGuardrailRun.original_reply,
+        },
+        // Founder BEGIN Phase 3.7 Safe Actionable Intelligence · action observability.
+        authorized_action: authorized_action,
+        // Founder BEGIN Phase 3.8 · vision observability.
+        vision_provider_meta: vision_provider_meta,
+        vision_extra_items_count: vision_extra_items.length,
+        // Founder BEGIN Phase 3.9 · file-upload observability.
+        file_provider_meta_list: file_provider_meta_list,
+        file_extra_items_count: file_extra_items.length,
+        file_upload_count: _attachedFiles.length,
+        // Founder BEGIN Phase 3.10 · L2 memory observability · Doctrine #4.
+        memory_meta: memory_meta,
+        // Founder Path A · KB-2 · Knowledge Brain supplementary evidence observability.
+        kb_meta: kb_meta,
+        // Founder Path A · Phase A2 · Research Brain observability.
+        research_meta: research_meta,
+        // Founder Phase 5 · P5-5 · Cross-Domain orchestrator observability.
+        cross_domain_meta: cross_domain_meta,
+        // Founder Phase 8 · P8-6 · Image generation observability.
+        image_gen_meta: image_gen_meta,
+        // Founder Path A · Phase C2 · Research Brain activation flag.
+        research_activated: research_activated,
+        research_report: research_report ? {
+          report_id: research_report.report_id,
+          plan_id: research_report.plan_id,
+          answered: research_report.answered,
+          headline: research_report.headline,
+          claim_count: research_report.claims.length,
+          span_count: research_report.spans.length,
+          disagreement_count: research_report.disagreements.length,
+          latency_ms: research_report.latency_ms,
+          stage_ms: research_report.stage_ms,
+          top_claims: research_report.claims.slice(0, 5).map((c) => ({
+            text: c.text,
+            cites: c.cites,
+            alignment_score: c.alignment_score,
+            trust: c.trust,
+          })),
+        } : null,
+        lcc_adapter_reply: lcc_adapter_reply ? {
+          answered: lcc_adapter_reply.answered,
+          reply_kind: lcc_adapter_reply.reply_kind,
+          trust: lcc_adapter_reply.trust,
+          intent_slug: lcc_adapter_reply.intent_slug,
+          entity_ref: lcc_adapter_reply.entity_ref,
+          known: lcc_adapter_reply.known,
+          unknown: lcc_adapter_reply.unknown,
+          requested: lcc_adapter_reply.requested,
+          latency_ms: lcc_adapter_reply.latency_ms,
+          reasoning: lcc_adapter_reply.reasoning,
+        } : null,
+        instrument_version: "chat-lcc-v1-live-chat-completion-2026-09-09",
       };
     } catch { _debug_timings = { error: "instrumentation_failed" }; }
-    return NextResponse.json({
+
+    // Founder BEGIN Phase 3.3 · Build the response envelope ONCE, then
+    // decide between JSON return vs SSE streaming based on Accept header.
+    // The SSE done event carries the FULL envelope so streaming clients
+    // consume everything the JSON client would (suggestions, cards,
+    // world_cards, theme_command, voice_reply, action_proposal, etc).
+    // Founder Phase 4 · P4-5 · Trust/provenance surface on the response envelope.
+    // Every substantive reply carries cited_sources so the UI can render source cards.
+    // Data flows from (a) research_report.claims + spans, (b) rescue verdict's cited_source_refs
+    // reconciled against the retrieval bundle, (c) canonical adapter facts (source_reference).
+    const _citedSources: Array<{
+      title?: string;
+      url?: string;
+      source_type: string;
+      trust_band: string;
+      alignment_score?: number;
+      verified_at?: string;
+      snippet?: string;
+    }> = [];
+    try {
+      if (research_report && research_report.answered) {
+        for (const claim of research_report.claims.slice(0, 8)) {
+          for (const cite of claim.cites.slice(0, 2)) {
+            const span = research_report.spans.find((s) => s.ref_id === cite);
+            if (!span) continue;
+            _citedSources.push({
+              title: span.text.slice(0, 80),
+              url: span.source_url,
+              source_type: "web_research",
+              trust_band: claim.trust,
+              alignment_score: claim.alignment_score,
+              verified_at: span.extracted_at,
+              snippet: span.text.slice(0, 200),
+            });
+          }
+        }
+      }
+      if (llm_rescue_verdict && llm_rescue_verdict.verified) {
+        const refToScore = new Map((llm_rescue_verdict.alignment_scores ?? []).map((s) => [s.source_ref, s.score]));
+        for (const ref of llm_rescue_verdict.cited_source_refs.slice(0, 8)) {
+          _citedSources.push({
+            source_type: ref.startsWith("web:") ? "web_search"
+              : ref.startsWith("vision:") ? "vision"
+              : ref.startsWith("file:") ? "file"
+              : ref.startsWith("research:") ? "web_research"
+              : ref.startsWith("qv:") ? "question_variant"
+              : ref.startsWith("fact:") ? "canonical_fact"
+              : "evidence",
+            trust_band: llm_rescue_verdict.trust,
+            alignment_score: refToScore.get(ref),
+            verified_at: new Date().toISOString(),
+          });
+        }
+      }
+    } catch { /* provenance surface never crashes the reply */ }
+
+    const _envelope = {
       conversation_id,
       reply: composed.reply,
+      // Founder Phase 4 · P4-5 · trust/provenance surface (moat).
+      cited_sources: _citedSources,
+      // Founder Phase 8 · P8-6 · generated images (doctrine-labelled).
+      generated_images: image_gen_meta && Array.isArray(image_gen_meta.data_urls)
+        ? image_gen_meta.data_urls.map((u, i) => ({
+            image_kind: "generated",
+            ref_id: image_gen_meta!.ref_ids?.[i] ?? null,
+            data_url: u,
+            provider: image_gen_meta!.provider,
+            safety_verdict: image_gen_meta!.safety_verdict,
+            doctrine_note: "IMAGE GENERATION EXTRACTS INTENT · IMAGE OUTPUT NEVER ESTABLISHES TRUTH",
+          }))
+        : [],
       understood_intent: composed.intent ?? null,
       understood_entities: [],
       retrieved_top_k_count: 0,
@@ -2280,7 +3464,84 @@ export async function POST(req: NextRequest) {
       },
       // Founder speed audit · minimal per-stage timings · safe under any error
       _debug_timings,
-    });
+    };
+
+    // Founder Path A · Phase OBS-2 · per-turn telemetry (fire-and-forget).
+    // Composition-first discipline monitor: llm_invoked should be < 5%.
+    try {
+      const _promotionPath: PromotionPath = research_activated ? "research"
+        : (llm_rescue_verdict && llm_rescue_verdict.verified) ? "rescue"
+        : deterministic_reply_promotion.accepted === true ? "adapter"
+        : composition_meta.accepted === true ? "composer"
+        : "none";
+      const _llmInvoked = !!(llm_rescue_verdict && llm_rescue_verdict.provider_meta.model && llm_rescue_verdict.provider_meta.total_ms !== null);
+      writeTurnTelemetry({
+        conversation_id: conversation_id ?? null,
+        domain: lcc_domain ?? null,
+        promotion_path: _promotionPath,
+        llm_invoked: _llmInvoked,
+        research_activated,
+        total_ms: Math.round(_perfNow() - _t_request_start),
+        adapter_ms: lcc_adapter_reply?.latency_ms ?? null,
+        composer_ms: typeof composition_meta.latency_ms === "number" ? composition_meta.latency_ms : null,
+        rescue_ms: llm_rescue_verdict?.provider_meta?.total_ms ?? null,
+        research_ms: research_report?.latency_ms ?? null,
+        vision_ms: _lcc_stage_ms.vision_extract ?? null,
+        file_ms: _lcc_stage_ms.file_extract ?? null,
+        memory_ms: _lcc_stage_ms.memory_load ?? null,
+        gate_alignment_mean: llm_rescue_verdict?.alignment_summary?.mean ?? null,
+      });
+    } catch { /* telemetry never breaks response */ }
+
+    // Founder BEGIN Phase 3.3 · content-negotiated response.
+    const _acceptsStream = (req.headers.get("accept") ?? "").toLowerCase().includes("text/event-stream");
+    if (_acceptsStream) {
+      const ctrl = makeSseController();
+      const _finalReply = String((_envelope as { reply?: string }).reply ?? "");
+      const _adapter = lcc_adapter_reply;
+      const _fingerprintHit = Array.isArray(_adapter?.reasoning)
+        ? _adapter.reasoning.some((r) => r.includes("fingerprint_hit"))
+        : false;
+      ctrl.send("hello", {
+        conversation_id,
+        server: "nex-lcc",
+        streaming_version: "v1-2026-09-09",
+        deterministic_reply: composition_meta.accepted === true,
+      });
+      for (const [name, ms] of Object.entries(_lcc_stage_ms)) ctrl.send("stage", { name, ms });
+      ctrl.send("meta", {
+        intent: composed.intent ?? null,
+        entity_ref: _adapter?.entity_ref ?? null,
+        reply_kind: _adapter?.reply_kind ?? null,
+        trust: _adapter?.trust ?? null,
+        promoted: deterministic_reply_promotion.accepted === true,
+        promotion_reason: deterministic_reply_promotion.reason,
+        fingerprint_hit: _fingerprintHit,
+        composition_model: (composition_meta as { model?: string | null }).model ?? null,
+      });
+      (async () => {
+        try {
+          for await (const chunk of iterateChunks(_finalReply, { words_per_chunk: 2, delay_ms_between: 12 })) {
+            if (ctrl.isClosed()) break;
+            ctrl.send("token", chunk);
+          }
+          if (!ctrl.isClosed()) ctrl.send("done", _envelope);
+        } catch (err) { ctrl.error(err); }
+        finally { ctrl.close(); }
+      })();
+      return sseResponse(ctrl.stream);
+    }
+
+    // Founder 2026-09-10 · Master AI Engineer per-request truth score.
+    // Aggregates existing signals (reflection, confidence, citation trust,
+    // deterministic promotion, cross-domain) into a single 0-1 band.
+    // NEVER blocks · always ships alongside the reply so the user can
+    // see how much to trust it. Only Fabrication Gate v2 can suppress
+    // content — this scorer is purely additive UX.
+    try {
+      (_envelope as unknown as { truth_score: unknown }).truth_score = computeTruthScore(_envelope as never);
+    } catch { /* truth score never breaks a reply */ }
+    return NextResponse.json(_envelope);
   }
 
   // ─── UK staircase fallthrough: existing Qwen pipeline ───────────
@@ -2383,6 +3644,42 @@ export async function POST(req: NextRequest) {
       specialist_used: "uk-staircase-qwen",
     },
   });
+  // ── close chat-resilience wrapper opened at top of POST ────────
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error("[nex-conv/chat] uncaught_pipeline_exception:", err);
+    // ── Founder 2026-09-10 · CREDENTIAL SCRUB ──────────────────────
+    // Postgres URLs (postgresql://user:PASSWORD@host) and Bearer
+    // tokens can appear in exception messages when a DB pool init
+    // fails or an upstream API 401s. Strip them BEFORE slicing so we
+    // never echo secrets into a client-visible `reason` field.
+    const rawMsg = err instanceof Error ? err.message : String(err);
+    const scrubbed = rawMsg
+      .replace(/postgres(?:ql)?:\/\/[^:@]+:[^@\s]+@/gi, "postgres://[credential-scrubbed]@")
+      .replace(/\b(Bearer|Basic|Token)\s+[A-Za-z0-9_\-.=+/]+/gi, "$1 [credential-scrubbed]")
+      .replace(/\bey[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{5,}\b/g, "[jwt-scrubbed]")
+      .replace(/\b[A-Fa-f0-9]{40,}\b/g, "[hex-secret-scrubbed]");
+    const msg = scrubbed;
+    return NextResponse.json({
+      conversation_id: null,
+      reply: "I hit a hiccup for a second — give me one more moment and try that again.",
+      cited_sources: [],
+      generated_images: [],
+      understood_intent: null,
+      intent: null,
+      intent_reason: null,
+      suggestions: [],
+      card: null,
+      composition_meta: { ran: false, accepted: false, reason: `handler_exception:${msg.slice(0, 200)}` },
+      state_summary: {
+        turn_count: 0, current_topic: null, established_facts: {},
+        entities_in_focus: [], constraints: [], stage: "error",
+        corrections_logged: 0, current_emotion: "neutral",
+        handoff_recommended: false, thin_packet_strikes: 0,
+        condensed_history_present: false, conversation_language: "en",
+      },
+    }, { status: 200 });
+  }
 }
 
 function shapeStateSummary(state: any) {

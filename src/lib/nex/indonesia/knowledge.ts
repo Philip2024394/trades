@@ -70,6 +70,18 @@ export type KnowledgeRecord = {
    * composer for honest distance-based area filtering. Stage 3.8+.
    */
   geo?: { lat?: number; lng?: number };
+  /**
+   * P1 · Explicit contradiction list · evidence-first semantic rejection
+   * (Philip 2026-09-05 P1 doctrine).
+   * Predicate keywords/phrases the record's SUBJECT explicitly is NOT.
+   * Used by claim-verification to hard-reject fluent-but-wrong
+   * definitional claims. Example: seafood.hs.0304 declares
+   * `contradictions: ["canned", "canning", "tinned", "prepared or preserved"]`
+   * so a composed reply saying "HS 0304 covers canned fish" is
+   * rejected on the strength of the record's own denial.
+   * Not overlap-based · exact substring match on lowercase.
+   */
+  contradictions?: string[];
 };
 
 let CORPUS: KnowledgeRecord[] | null = null;
@@ -193,6 +205,8 @@ function loadCorpus(): KnowledgeRecord[] {
   const here = path.dirname(fileURLToPath(import.meta.url));
   const seedPath = path.resolve(here, "../../../../data/indonesia/knowledge-seed.json");
   const acquiredPath = path.resolve(here, "../../../../data/indonesia/knowledge-acquired.json");
+  const seafoodPath = path.resolve(here, "../../../../data/indonesia/knowledge-seafood.json");
+  const promotedPath = path.resolve(here, "../../../../data/knowledge-acquisition/promoted-knowledge.json");
   const merged: KnowledgeRecord[] = [];
   const seenIds = new Set<string>();
 
@@ -204,6 +218,18 @@ function loadCorpus(): KnowledgeRecord[] {
     }
   } catch { /* seed file missing · corpus still usable via acquired */ }
 
+  // P1 · Indonesian Seafood Knowledge Slice (Philip 2026-09-05).
+  // Sibling file loaded on the same seed path so seafood records
+  // participate in retrieval alongside the general seed. Kept as its
+  // own file so the seafood slice can be reversed independently
+  // (delete the file · loader silently skips).
+  try {
+    const raw = readFileSync(seafoodPath, "utf8");
+    for (const r of JSON.parse(raw) as KnowledgeRecord[]) {
+      if (!seenIds.has(r.id)) { seenIds.add(r.id); merged.push(r); }
+    }
+  } catch { /* seafood file missing · P1 slice not deployed · corpus unaffected */ }
+
   // Walker-acquired records (published by the pipeline).
   try {
     const raw = readFileSync(acquiredPath, "utf8");
@@ -212,6 +238,57 @@ function loadCorpus(): KnowledgeRecord[] {
       if (!seenIds.has(r.id)) { seenIds.add(r.id); merged.push(r); }
     }
   } catch { /* acquired file not published yet · corpus is seed-only */ }
+
+  // P1 REDIRECT · Knowledge Acquisition Capability promoted knowledge
+  // (Philip 2026-09-05). Reads the pipeline's promoted-knowledge.json
+  // output, converts to KnowledgeRecord shape, and merges into
+  // retrieval. Superseded records are filtered out. Fixture-derived
+  // promotions are filtered out unless NEX_P1_ALLOW_FIXTURE_KNOWLEDGE=true.
+  //
+  // Deliberately does NOT import from ../knowledge-acquisition/pipeline.ts
+  // (Indonesia knowledge module shouldn't take a hard dep on the
+  // acquisition module · loader reads the persisted file directly).
+  try {
+    const raw = readFileSync(promotedPath, "utf8");
+    const allowFixtures = process.env.NEX_P1_ALLOW_FIXTURE_KNOWLEDGE === "true";
+    type PromotedShape = {
+      knowledge_id: string;
+      subject: string;
+      predicate: string;
+      confidence: number;
+      stability: "stable" | "seasonal" | "time_sensitive";
+      promoted_at: string;
+      superseded_at: string | null;
+      provenance_kind: "authoritative" | "fixture";
+      contradictions?: string[];
+      qualifiers?: Record<string, string>;
+      from_run_id?: string;
+    };
+    const promoted = JSON.parse(raw) as PromotedShape[];
+    for (const p of promoted) {
+      if (p.superseded_at !== null) continue;
+      if (p.provenance_kind === "fixture" && !allowFixtures) continue;
+      const id = `acquired:${p.knowledge_id}`;
+      if (seenIds.has(id)) continue;
+      const topic = p.qualifiers?.topic ?? `acquired.${p.subject.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+      const record: KnowledgeRecord = {
+        id,
+        topic,
+        region: p.qualifiers?.region ?? "Indonesia",
+        language: "en",
+        stability: p.stability,
+        confidence: p.confidence,
+        source: `acquisition-pipeline:${p.from_run_id ?? "unknown"}`,
+        last_verified: p.promoted_at,
+        content: `${p.subject}: ${p.predicate}`,
+        keywords: [p.subject.toLowerCase(), ...(p.subject.toLowerCase().split(/\s+/).filter((w) => w.length > 3))],
+        contradictions: p.contradictions,
+        market: (p.qualifiers?.market as "ID" | "UK" | "US" | "UNIVERSAL" | undefined) ?? "UNIVERSAL",
+      };
+      seenIds.add(id);
+      merged.push(record);
+    }
+  } catch { /* no acquisition-promoted knowledge yet · corpus unaffected */ }
 
   CORPUS = merged;
   return CORPUS;
@@ -259,10 +336,21 @@ export type KnowledgeHit = KnowledgeRecord & {
  *  this gate blocks it at retrieval so the LLM cannot cite it. */
 export function retrieveKnowledge(message: string, opts: RetrievalOptions = {}): KnowledgeHit[] {
   // Doctrine (Philip 2026-08-30): retrieval consumes the canonical
-  // EntityRecord corpus. Legacy corpus is a fallback ONLY when the
-  // entity corpus is empty (fresh checkout · migration not yet run).
+  // EntityRecord corpus.
+  //
+  // P1 amendment (Philip 2026-09-05): also MERGE the seed corpus
+  // (which includes the P1 Indonesian Seafood knowledge). Prior
+  // behaviour treated seed as a fallback-only path, meaning seed
+  // records were silently ignored once the entity corpus was
+  // populated — a bug that hid the P1 seafood records. Merge is
+  // by id: entity records take precedence on collision (larger
+  // curated set + walker-produced provenance chain).
   const entityView = loadEntityCorpus();
-  const corpus = entityView.length > 0 ? entityView : loadCorpus();
+  const seedView = loadCorpus();
+  const corpus: KnowledgeRecord[] = [];
+  const seenIds = new Set<string>();
+  for (const r of entityView) { if (!seenIds.has(r.id)) { seenIds.add(r.id); corpus.push(r); } }
+  for (const r of seedView)   { if (!seenIds.has(r.id)) { seenIds.add(r.id); corpus.push(r); } }
   if (corpus.length === 0) return [];
   const limit = opts.limit ?? 3;
   const minConfidence = opts.minConfidence ?? 0;
@@ -419,3 +507,12 @@ export function listAllRecords(): readonly KnowledgeRecord[] {
 export function listAllEntities(): readonly KnowledgeRecord[] {
   return loadEntityCorpus();
 }
+
+// ─── Machinery-only tail (Philip 2026-09-05) ──
+// Seafood-specific context helpers were part of the pre-redirect P1
+// slice · REMOVED with the seafood JSON file when P1 was redirected
+// toward Knowledge Acquisition Agent. Domain-context helpers should
+// be produced by the agent framework, not authored by hand. The
+// loader merge (line ~297) and the `contradictions?: string[]` field
+// on KnowledgeRecord (near line ~72) remain as universal machinery
+// improvements independent of any specific domain.

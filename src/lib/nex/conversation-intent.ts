@@ -1,5 +1,8 @@
 // NEX AI · Conversation Intent Gate.
 //
+// Phase D imports the pure LIVE_DISCOVERY_REQUEST detector so
+// "what's happening tonight?" wins over generic specialists.
+//
 // A deterministic-first classifier that runs BEFORE any specialist
 // agent or deterministic keyword router. Its job is a safety
 // boundary: prevent specialist agents from receiving ordinary
@@ -29,6 +32,8 @@
 //   · Indonesia-first: knowledge / tourism / food are first-class
 //     intents, not fallthrough cases.
 
+import { detectLiveDiscoveryScope } from "@/lib/nex/brain/live-discovery-intent";
+
 export type NexConversationIntent =
   | "conversation"     // greetings, chit-chat, meta questions about NEX
   | "indonesia"        // stable knowledge about Indonesia
@@ -48,6 +53,7 @@ export type NexConversationIntent =
   | "trades"           // plumber, electrician, kitchen, bathroom, other UK-trade
   | "quotation"        // generic quote / price / estimate
   | "documents"        // upload/parse a doc, invoice, receipt
+  | "live_discovery"   // Phase D · "what's happening tonight" / "apa yang sedang berlangsung"
   | "other";           // deliberately-classified as none-of-the-above
 
 export type ConversationClassification = {
@@ -102,6 +108,30 @@ const FOOD_TERMS = [
   /\b(what|apa) (to eat|should i eat|makan)\b/i,
   /\brestaurant recommendation\b/i,
   /\bhalal\b/i,
+  // Stage 3.41.e · bare-noun food signals · standalone meal-time words
+  // are enough of a food signal to open the conversation. Deterministic ·
+  // no LLM. Word-boundary anchored so "dinner" doesn't fire on
+  // "dinnertime pyjamas" etc. ID equivalents included.
+  /\b(dinner|lunch|breakfast|brunch)\b/i,
+  /\b(makan\s+(malam|siang|pagi)|sarapan|makan\s+malam|makan\s+siang)\b/i,
+  // "meal" alone (+ ID "makanan berat"/"makan besar"). Not too broad ·
+  // "a good meal" · "grab a meal" · "meal for two" are all food signals.
+  /\b(a\s+meal|meal for|grab\s+a\s+meal|make\s+a\s+meal)\b/i,
+  // Standalone eat/eating verb forms in obvious food-search framings.
+  // Bounded to avoid catching sentences like "I saw him eating cake"
+  // where we already have the food noun signalled elsewhere. Keep
+  // deliberately tight · "eat" alone is too loose · "to eat" / "let's
+  // eat" / "want to eat" / "makan yuk" are good signals.
+  /\b(let['’]?s\s+eat|want\s+to\s+eat|going\s+to\s+eat|to\s+eat|makan\s+yuk|mau\s+makan)\b/i,
+  // Stage 3.41.d P3 · natural food-discovery vocabulary · semantic group.
+  // "somewhere nice to eat" · "a place to eat" · "somewhere good for
+  // dinner" · "I'm hungry" · "let's grab something" · deterministic ·
+  // no LLM. Allows adjectives between noun and verb phrase.
+  /\b(?:a\s+|an\s+|some\s+)?(place|places|somewhere|spot)(?:\s+\w+){0,3}\s+(?:to\s+(?:eat|grab\s+(?:a\s+)?(?:bite|lunch|dinner|breakfast))|for\s+(?:dinner|lunch|breakfast|brunch))\b/i,
+  /\bi['’]?m\s+hungry\b/i,
+  /\b(let['’]?s|shall\s+we)\s+(grab|get)\s+(some\s+)?(?:food|dinner|lunch|breakfast|a\s+bite)\b/i,
+  /\b(cari|mau)\s+(?:\w+\s+){0,3}(tempat\s+makan|warung)/i,
+  /\b(lapar|laper)\b/i,
 ];
 
 // ACCOMMODATION · Philip 2026-08-31 · a distinct NEX vertical that beats
@@ -129,6 +159,15 @@ const ACCOMMODATION = [
   // "menginap" (Indonesian verb for staying overnight) covers "mau
   // menginap di Ubud" · "nginep" is the informal spelling.
   /\b(menginap|nginep)\b/i,
+  // Stage 3.41.d P3 · natural discovery vocabulary · semantic group.
+  // Users don't always say "hotel" · they say "somewhere nice to stay",
+  // "a room for tonight", "a place to sleep", etc. We match on the
+  // ACT of seeking-shelter · shelter noun + "to stay/sleep" or
+  // "for tonight/the night". Allows adjectives between noun and
+  // verb phrase ("somewhere NICE to stay" · "a room FOR TWO for tonight").
+  /\b(?:a\s+|an\s+|some\s+)?(place|places|somewhere|spot|room|bed|pad|crib|bunk)(?:\s+\w+){0,3}\s+(?:to\s+(?:stay|sleep|crash|kip|rest)|for\s+(?:tonight|the\s+night|tomorrow|the\s+weekend|two|us))\b/i,
+  // Indonesian natural discovery · "cari tempat nginep" / "mau nginep di X" / "penginapan bagus dekat X"
+  /\b(cari|butuh|mau|perlu)\s+(?:\w+\s+){0,3}(tempat\s+(?:nginep|menginap|tidur)|kamar\s+untuk\s+malam\s+ini)\b/i,
   // "book me a hotel" · booking action still routes here so the reply
   // can carry accommodation guidance (BOOKING handler intercepts later
   // when the classifier sees `book`).
@@ -164,12 +203,20 @@ const COMMERCE = [
   // English · "buy/find/looking for/need/order [me|for me]? [a|an|some]? [product]"
   //   · "buy headphones", "buy me headphones", "buy me a phone",
   //     "find me a laptop", "get me some earbuds", "shopping for a bag"
-  /\b(buy|purchase|order|shop for|shopping for|get me|need|looking for|find me|find a|show me)\s+(me\s+|for me\s+)?(a |an |some )?(headphones?|earbuds?|speaker|phone|smartphone|laptop|computer|camera|tablet|tv|television|monitor|shoes|clothes|clothing|bag|watch|book|game|toy|appliance|furniture|electronics)\b/i,
-  // Bahasa · "beli/cari/mau/butuh [product]"
-  /\b(beli|belanja|cari|pesan|mau|butuh|perlu)\s+(sebuah\s+)?(headphone|earbud|speaker|hp|handphone|smartphone|laptop|komputer|kamera|tablet|tv|monitor|sepatu|baju|pakaian|tas|jam|buku|mainan|elektronik)\b/i,
+  //   · Stage 3.41.e · added jewellery/jewelry to product list.
+  /\b(buy|purchase|order|shop for|shopping for|get me|need|looking for|find me|find a|show me)\s+(me\s+|for me\s+)?(a |an |some )?(headphones?|earbuds?|speaker|phone|smartphone|laptop|computer|camera|tablet|tv|television|monitor|shoes|clothes|clothing|bag|watch|book|game|toy|appliance|furniture|electronics|jewellery|jewelry|necklace|ring|earrings?|bracelet)\b/i,
+  // Bahasa · "beli/cari/mau/butuh [product]" · added perhiasan/kalung/cincin/gelang
+  /\b(beli|belanja|cari|pesan|mau|butuh|perlu)\s+(sebuah\s+)?(headphone|earbud|speaker|hp|handphone|smartphone|laptop|komputer|kamera|tablet|tv|monitor|sepatu|baju|pakaian|tas|jam|buku|mainan|elektronik|perhiasan|kalung|cincin|gelang|anting)\b/i,
   // Where to buy / recommend a product
-  /\b(where can i buy|where to buy)\b.*\b(headphones?|phone|laptop|camera|shoes|bag|watch|electronics)\b/i,
+  /\b(where can i buy|where to buy)\b.*\b(headphones?|phone|laptop|camera|shoes|bag|watch|electronics|jewellery|jewelry)\b/i,
   /\b(recommend|suggest)\s+(a |an )?(brand of|model of)\s+\w+/i,
+  // Stage 3.41.e · bare-noun product signals.
+  // Two patterns · one truly unbounded (jewellery — almost always
+  // commerce context), one context-anchored (phone/laptop/shoes/bag
+  // — need a determiner or shopping adjective to avoid false
+  // positives like "phone call" · "shoes are wet" · "bag of chips").
+  /\b(jewellery|jewelry|perhiasan)\b/i,
+  /\b(some|a|an|any|new|nice|good|cheap|expensive|another|the)\s+(phones?|laptops?|shoes?|bags?|watches?)\b/i,
 ];
 
 const BOOKING = [
@@ -264,6 +311,19 @@ export function classifyConversationIntent(
   for (const rx of GREETINGS) if (rx.test(raw)) return { intent: "conversation", confidence: 1, reason: "greeting" };
   for (const rx of META_ABOUT_NEX) if (rx.test(raw)) return { intent: "conversation", confidence: 0.95, reason: "meta_about_nex" };
   for (const rx of SMALL_TALK) if (rx.test(raw)) return { intent: "conversation", confidence: 0.9, reason: "small_talk" };
+
+  // Phase D · LIVE_DISCOVERY_REQUEST (§16-§20 · Philip 2026-09-06)
+  //
+  // "What's happening tonight?" / "what's live" / "apa yang sedang
+  // berlangsung malam ini?" MUST beat tourism/food/business/staircase
+  // routing so the city-Live surface answers. Deterministic detector
+  // lives in src/lib/nex/brain/live-discovery-intent.ts · never LLM.
+  // Preserves G03/G12/G15/G23/G24 · this only classifies the intent,
+  // never composes a reply here.
+  const liveScope = detectLiveDiscoveryScope(raw);
+  if (liveScope.is_live_discovery) {
+    return { intent: "live_discovery", confidence: 0.92, reason: `live_discovery:${liveScope.reason}` };
+  }
 
   // 2. Explicit specialist signals · staircase, image, documents.
   //    These must match BEFORE the more general Indonesia/food/tourism

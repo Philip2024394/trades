@@ -28,4 +28,13 @@ export type DiscoverProfile = {
   gender?:       "male" | "female" | "other";
   availability?: "available_now" | "available_this_week" | "busy";
   distance_km?:  number;                    // rough distance from the user's home
+  // ── Phase Social · added 2026-09-07 · optional · additive ──
+  /** Meeting-preference ids from src/lib/nex/social/meeting-preferences.ts
+   *  · what kind of first meeting this person is open to. Absent = we
+   *  don't display anything · never invented. */
+  meeting_preferences?: string[];
+  /** Voluntarily-declared business/occupation label · displayed on the
+   *  Social Card ONLY when present. Absent = we don't display an empty
+   *  field. Never fabricated. */
+  business_info?: string;
 };

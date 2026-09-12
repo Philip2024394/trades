@@ -43,11 +43,19 @@ function cacheKey(src: string) { return `${CHROMA_KEY_VERSION}:${src}`; }
  * PNG assets already ship with an alpha channel · no chroma-key needed.
  * JPEGs need chroma-key to peel off baked-in white/black backgrounds.
  * Also skips data-URLs (they're runtime-produced · probably already keyed).
+ *
+ * Query strings (?updatedAt=…, cache-busters, ImageKit transforms) are
+ * stripped before extension matching so an https URL like
+ * "https://cdn.example/frame.png?v=123" still resolves as PNG. Prior
+ * behavior missed those and ran chroma-key over an already-alpha PNG,
+ * which stripped its white/black pixels and looked blurred/washed.
  */
 function needsChromaKey(src: string): boolean {
   const s = src.toLowerCase();
   if (s.startsWith("data:")) return false;
-  if (s.endsWith(".png") || s.endsWith(".svg") || s.endsWith(".webp") || s.endsWith(".avif")) return false;
+  // Strip ?query and #hash so extension check works for cache-busted URLs
+  const path = s.split("?", 1)[0].split("#", 1)[0];
+  if (path.endsWith(".png") || path.endsWith(".svg") || path.endsWith(".webp") || path.endsWith(".avif")) return false;
   return true; // .jpg / .jpeg / anything else
 }
 

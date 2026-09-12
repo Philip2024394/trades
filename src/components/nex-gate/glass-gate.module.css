@@ -1,0 +1,644 @@
+/* src/components/nex-gate/glass-gate.module.css
+ *
+ * NEX Glass Gate · reference-match composition
+ * Philip 2026-09-07
+ *
+ * Reference render: 853 x 1844 (aspect 1:2.16). Mobile primary: 390 x 844
+ * (aspect 1:2.16). Same aspect ratio, so a single set of percentage/svh
+ * positions reproduces the reference at both sizes without visual drift.
+ *
+ * All positions expressed against the viewport with `svh` (small
+ * viewport height) so browser chrome doesn't push things off-screen on
+ * mobile. Absolute positions from the reference are annotated inline as
+ * `[ref: X px @ 1844 -> Y%]` so a future editor can re-audit against the
+ * source composition.
+ *
+ * Layers (paint order):
+ *   1. Deep graphite base                (.root background)
+ *   2. Atmospheric world                 (.environment)
+ *   3. NEX orb + orbital ring            (.orbWrap)
+ *   4. Foreground (logo, tagline, form)  (.foreground)
+ *
+ * No glass surface between the world and the user any more (per reference
+ * the atmosphere reads as continuous with the foreground). The reveal
+ * transition still fades the foreground on successful auth.
+ */
+
+.root {
+  /* Palette · graphite + ocean blue + restrained NEX orange + cyan accent */
+  --gate-graphite-deep: #05070c;
+  --gate-graphite:      #0a0f18;
+  --gate-graphite-elev: #10161f;
+  --gate-ocean-deep:    #0a1a2e;
+  --gate-ocean:         #123356;
+  --gate-ocean-bright:  #1e5691;
+  --gate-orange:        #F97316;
+  --gate-orange-soft:   rgba(249, 115, 22, 0.28);
+  --gate-cyan:          #4fc9ff;
+  --gate-cyan-soft:     rgba(79, 201, 255, 0.55);
+  --gate-input-bg:      rgba(6, 12, 22, 0.72);
+  --gate-input-edge:    rgba(120, 170, 220, 0.18);
+  --gate-input-edge-fx: rgba(140, 190, 240, 0.45);
+  --gate-text:          #e8ecf3;
+  --gate-text-mute:     rgba(220, 230, 245, 0.62);
+  --gate-text-hint:     rgba(220, 230, 245, 0.32);
+  --gate-label:         rgba(220, 230, 245, 0.78);
+
+  /* Motion */
+  --gate-drift-slow:    120s;
+  --gate-drift-slower:  180s;
+  --gate-breath:        6s;
+  --gate-transition:    1000ms;
+  --gate-ease:          cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout */
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 30%, #0b1a2c 0%, #06090f 55%, #04060a 100%);
+  color: var(--gate-text);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  isolation: isolate;
+}
+
+/* --------------------------------------------------------------------
+ * Environment · atmospheric NEX world drifting behind everything
+ * -------------------------------------------------------------------- */
+
+.environment {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.55;
+  will-change: transform;
+}
+.blob1 {
+  width: 65vmax; height: 65vmax;
+  top: -22vmax;  left: -18vmax;
+  background: radial-gradient(circle at 30% 30%, var(--gate-ocean-bright), transparent 55%);
+  animation: driftA var(--gate-drift-slow) ease-in-out infinite;
+}
+.blob2 {
+  width: 55vmax; height: 55vmax;
+  bottom: -25vmax; right: -20vmax;
+  background: radial-gradient(circle at 50% 50%, var(--gate-ocean), transparent 60%);
+  animation: driftB var(--gate-drift-slower) ease-in-out infinite;
+}
+.blob3 {
+  width: 42vmax; height: 42vmax;
+  top: 32%; left: 55%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 40% 40%, var(--gate-ocean-deep), transparent 65%);
+  animation: driftC calc(var(--gate-drift-slow) * 1.4) ease-in-out infinite;
+  opacity: 0.4;
+}
+
+@keyframes driftA {
+  0%,100% { transform: translate3d(0,0,0)     scale(1);    }
+  50%     { transform: translate3d(6vw,4vh,0) scale(1.06); }
+}
+@keyframes driftB {
+  0%,100% { transform: translate3d(0,0,0)       scale(1);    }
+  50%     { transform: translate3d(-5vw,-6vh,0) scale(1.08); }
+}
+@keyframes driftC {
+  0%,100% { transform: translate(-50%,-50%)   scale(0.95); }
+  50%     { transform: translate(-46%,-53%)   scale(1.02); }
+}
+
+.lightingSweep {
+  position: absolute;
+  inset: -40% -20%;
+  background: radial-gradient(ellipse at 30% 20%,
+    rgba(120, 170, 220, 0.05) 0%,
+    transparent 55%);
+  animation: sweep 240s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+@keyframes sweep {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* --------------------------------------------------------------------
+ * Orb · centred around the reference orb bounding box
+ *   [ref bounds: x 195-638 (443px), y 390-827 (437px), center 416,608]
+ *   [center Y @ 1844 = 32.97svh   size Y @ 1844 = 23.70svh]
+ *   Width uses 51.93svw (443/853). At 390 wide that = 202px, at 853 = 443px.
+ * -------------------------------------------------------------------- */
+
+.orbWrap {
+  position: absolute;
+  top: 32.97svh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 51.93svw;
+  aspect-ratio: 1 / 1;
+  max-width: 443px;
+  z-index: 1;
+  pointer-events: none;
+  contain: layout paint;
+}
+
+.orb {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 32%,
+      rgba(180, 220, 255, 0.85) 0%,
+      rgba(60, 140, 220, 0.55)  22%,
+      rgba(20, 60, 110, 0.72)   50%,
+      rgba(6, 14, 28, 0.98)     82%);
+  box-shadow:
+    inset 0 0 24% rgba(30, 86, 145, 0.55),
+    0 0 22% rgba(59, 130, 246, 0.22),
+    0 0 10% rgba(140, 190, 240, 0.14);
+  animation: orbBreath var(--gate-breath) ease-in-out infinite;
+}
+.orbHighlight {
+  position: absolute;
+  inset: 10% 44% 55% 20%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%,
+    rgba(255, 255, 255, 0.35) 0%,
+    transparent 60%);
+  filter: blur(6px);
+  pointer-events: none;
+}
+.orbRim {
+  position: absolute;
+  inset: -4%;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 40px rgba(120, 180, 240, 0.28),
+    0 0 60px rgba(30, 100, 180, 0.20);
+  pointer-events: none;
+}
+.orbEnergy {
+  position: absolute;
+  inset: 40%;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    var(--gate-orange-soft) 0%,
+    transparent 65%);
+  opacity: 0.5;
+  filter: blur(6px);
+  animation: energyBreath calc(var(--gate-breath) * 1.35) ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Orbital ring rotating around the orb.
+   Sits slightly outside the orb radius. Faint blue with two small
+   markers riding it. */
+.orbitalRing {
+  position: absolute;
+  inset: -6%;
+  border-radius: 50%;
+  border: 1px solid rgba(140, 200, 255, 0.16);
+  box-shadow: 0 0 30px rgba(80, 160, 240, 0.10) inset;
+  animation: ringSpin 42s linear infinite;
+  pointer-events: none;
+}
+.orbitalRing::before,
+.orbitalRing::after {
+  content: "";
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(180, 220, 255, 0.9);
+  box-shadow: 0 0 10px rgba(120, 200, 255, 0.9);
+}
+.orbitalRing::before { top: -3px;   left: 50%; transform: translateX(-50%); }
+.orbitalRing::after  { bottom: -3px; left: 50%; transform: translateX(-50%); background: rgba(140, 210, 255, 0.55); box-shadow: 0 0 8px rgba(90, 170, 240, 0.6); }
+
+@keyframes ringSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes orbBreath {
+  0%,100% { transform: scale(1);    opacity: 0.98; }
+  50%     { transform: scale(1.02); opacity: 1;    }
+}
+@keyframes energyBreath {
+  0%,100% { opacity: 0.35; transform: scale(1);    }
+  50%     { opacity: 0.65; transform: scale(1.15); }
+}
+
+/* --------------------------------------------------------------------
+ * Foreground · logo + tagline + form
+ *   [ref logo:    center 416,227  size ~190x75  -> top 12.31svh, w 22.27svw]
+ *   [ref tagline: center 416,309                -> top 16.76svh]
+ * -------------------------------------------------------------------- */
+
+.foreground {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.wordmark {
+  position: absolute;
+  top: 12.31svh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: baseline;
+  font-weight: 200;
+  font-size: clamp(28px, 4.07svh, 68px);
+  letter-spacing: -0.035em;
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+.wordmarkX {
+  color: var(--gate-orange);
+  font-weight: 300;
+  margin-left: 0.02em;
+  text-shadow: 0 0 22px rgba(249, 115, 22, 0.42);
+}
+
+.tagline {
+  position: absolute;
+  top: 16.76svh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(12px, 1.68svh, 24px);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: var(--gate-text-mute);
+  white-space: nowrap;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+/* Form container spans reference input bounds:
+     left  95 / 853 = 11.14%
+     right 736/ 853 = 86.28%
+     top   916/1844 = 49.67svh (email label baseline)
+     bottom~1421/1844 = 77.06svh (button bottom)
+   Panel is width 75.15svw wide, positioned via absolute so we anchor to
+   the reference coordinates instead of relying on flex end-alignment. */
+.panel {
+  position: absolute;
+  left: 50%;
+  top: 49.67svh;
+  transform: translateX(-50%);
+  width: 75.15svw;
+  max-width: 641px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  pointer-events: auto;
+}
+
+.fieldLabel {
+  display: block;
+  font-size: clamp(10px, 1.14svh, 16px);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gate-label);
+  padding: 0 0 clamp(6px, 0.87svh, 12px) 2px;
+  pointer-events: none;
+}
+
+.inputWrap {
+  position: relative;
+  width: 100%;
+  height: clamp(44px, 5.91svh, 88px);
+  display: flex;
+  align-items: center;
+}
+.inputIcon {
+  position: absolute;
+  left: clamp(12px, 1.87svw, 18px);
+  top: 50%;
+  transform: translateY(-50%);
+  width:  clamp(16px, 2.11svh, 28px);
+  height: clamp(16px, 2.11svh, 28px);
+  color: rgba(180, 210, 245, 0.7);
+  pointer-events: none;
+}
+.input {
+  width: 100%;
+  height: 100%;
+  padding: 0 clamp(44px, 6svw, 68px) 0 clamp(38px, 5svw, 60px);
+  background: var(--gate-input-bg);
+  border: 1px solid var(--gate-input-edge);
+  border-radius: clamp(14px, 1.19svh, 24px);
+  color: #ffffff;
+  font-size: clamp(14px, 1.68svh, 22px);
+  font-family: inherit;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  outline: none;
+  transition:
+    border-color 220ms var(--gate-ease),
+    background 220ms var(--gate-ease),
+    box-shadow 220ms var(--gate-ease);
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.35);
+}
+.input:focus {
+  border-color: var(--gate-input-edge-fx);
+  background: rgba(10, 20, 34, 0.85);
+  box-shadow:
+    0 4px 22px rgba(0, 0, 0, 0.4),
+    0 0 0 3px rgba(120, 180, 240, 0.08);
+}
+.input::placeholder { color: var(--gate-text-hint); }
+
+.eyeButton {
+  position: absolute;
+  right: clamp(10px, 1.5svw, 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  padding: 6px;
+  color: rgba(180, 210, 245, 0.75);
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.eyeButton:hover { color: #ffffff; }
+.eyeButton:focus-visible {
+  outline: 2px solid rgba(140, 190, 240, 0.5);
+  outline-offset: 2px;
+}
+.eyeIcon {
+  width:  clamp(18px, 2.28svh, 32px);
+  height: clamp(18px, 2.28svh, 32px);
+}
+
+/* Vertical gap between EMAIL block and PASSWORD block:
+   ref: password label top 1103, email input bottom 1062 -> 41px @ 1844 = 2.22svh */
+.fieldGap { height: 2.22svh; }
+
+/* Gap between PASSWORD input and SIGN IN button:
+   ref: sign-in button top 1303, password input bottom 1244 -> 59px @ 1844 = 3.20svh */
+.buttonGap { height: 3.20svh; }
+
+.primary {
+  position: relative;
+  width: 100%;
+  height: clamp(48px, 6.40svh, 96px);
+  background: linear-gradient(180deg, rgba(12, 20, 32, 0.85) 0%, rgba(6, 12, 22, 0.92) 100%);
+  border: 1.5px solid rgba(249, 115, 22, 0.75);
+  border-radius: clamp(16px, 1.30svh, 26px);
+  color: #ffffff;
+  font-size: clamp(16px, 1.90svh, 32px);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+  font-family: inherit;
+  overflow: hidden;
+  transition:
+    border-color 220ms var(--gate-ease),
+    background 220ms var(--gate-ease),
+    transform 180ms var(--gate-ease),
+    box-shadow 220ms var(--gate-ease);
+  box-shadow:
+    0 0 24px rgba(249, 115, 22, 0.18),
+    inset 0 0 22px rgba(249, 115, 22, 0.06);
+}
+.primary:hover:not(:disabled) {
+  border-color: rgba(249, 165, 60, 0.95);
+  background: linear-gradient(180deg, rgba(20, 28, 40, 0.85) 0%, rgba(10, 18, 30, 0.92) 100%);
+  box-shadow:
+    0 0 32px rgba(249, 115, 22, 0.28),
+    inset 0 0 24px rgba(249, 115, 22, 0.10);
+}
+.primary:active:not(:disabled) { transform: translateY(1px); }
+.primary:disabled { opacity: 0.55; cursor: default; }
+
+/* Subtle shine passing across the button on a long cycle. Compositor-
+   friendly (transform + opacity). Never distracts. */
+.primaryShine {
+  position: absolute;
+  top: 0; left: -30%;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.10) 45%,
+    rgba(255, 210, 170, 0.14) 50%,
+    rgba(255, 255, 255, 0.10) 55%,
+    transparent 100%);
+  transform: skewX(-18deg);
+  animation: primaryShine 6.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes primaryShine {
+  0%   { transform: translateX(0)    skewX(-18deg); opacity: 0; }
+  8%   { opacity: 1; }
+  40%  { transform: translateX(440%) skewX(-18deg); opacity: 0.85; }
+  50%  { transform: translateX(440%) skewX(-18deg); opacity: 0; }
+  100% { transform: translateX(440%) skewX(-18deg); opacity: 0; }
+}
+
+/* Create account row · centred text with cyan energy lines terminating
+   in small dots (ref shows two short glowing horizontal lines flanking
+   the "Create account" text with a small dot at the outer end of each
+   line, and a subtle dot at the inner end). */
+.createRow {
+  position: absolute;
+  top: 82.00svh;   /* ref center 1512/1844 */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.5svw, 16px);
+  pointer-events: auto;
+}
+.createLine {
+  display: block;
+  width: clamp(28px, 8svw, 68px);
+  height: 1px;
+  position: relative;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--gate-cyan-soft) 30%,
+    var(--gate-cyan) 70%,
+    transparent 100%);
+  opacity: 0.85;
+}
+.createLine::before,
+.createLine::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--gate-cyan);
+  box-shadow: 0 0 8px var(--gate-cyan-soft);
+  transform: translateY(-50%);
+}
+.createLineLeft::before  { left: 0; opacity: 0.6; }
+.createLineLeft::after   { right: 0; opacity: 1;   }
+.createLineRight::before { left: 0; opacity: 1;   }
+.createLineRight::after  { right: 0; opacity: 0.6; }
+
+.createButton {
+  background: transparent;
+  border: none;
+  color: rgba(220, 230, 245, 0.9);
+  font-size: clamp(13px, 1.62svh, 26px);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  padding: 6px 8px;
+  font-family: inherit;
+  transition: color 180ms var(--gate-ease);
+}
+.createButton:hover:not(:disabled) { color: #ffffff; }
+.createButton:disabled { opacity: 0.55; cursor: default; }
+
+/* Bottom N mark · circular, centred, 112px diameter at reference.
+   [ref center: 416, 1635  size: ~112x112  -> 6.07svh, top 88.67svh] */
+.bottomMark {
+  position: absolute;
+  top: 88.67svh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(44px, 6.07svh, 120px);
+  height: clamp(44px, 6.07svh, 120px);
+  border-radius: 50%;
+  background: linear-gradient(140deg, rgba(30, 42, 60, 0.9) 0%, rgba(10, 16, 26, 0.9) 100%);
+  border: 1px solid rgba(120, 170, 220, 0.28);
+  box-shadow:
+    inset 0 0 12px rgba(80, 140, 220, 0.15),
+    0 6px 22px rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: clamp(20px, 3.10svh, 60px);
+  font-weight: 300;
+  letter-spacing: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* Status + error text · quiet, single line, sits ABOVE the SIGN IN button
+   so it never clashes with the Create Account row below. Positioned
+   absolute so it never shifts the reference layout. */
+.status {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 68.4svh;                   /* just above button top 70.66svh */
+  color: var(--gate-text-mute);
+  font-size: clamp(10px, 1.14svh, 16px);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 2px 0;
+  font-weight: 600;
+  pointer-events: none;
+  z-index: 4;
+  white-space: nowrap;
+}
+.error {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 68.0svh;                   /* sits above SIGN IN · does not clash Create Account */
+  max-width: 78svw;
+  background: rgba(255, 90, 60, 0.10);
+  border: 1px solid rgba(255, 90, 60, 0.30);
+  border-radius: 10px;
+  padding: 6px 12px;
+  color: rgba(255, 190, 175, 0.94);
+  font-size: clamp(11px, 1.22svh, 16px);
+  line-height: 1.3;
+  text-align: center;
+  pointer-events: none;
+  z-index: 4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Focus visibility for keyboard users */
+.input:focus-visible,
+.primary:focus-visible,
+.createButton:focus-visible {
+  outline: 2px solid rgba(140, 190, 240, 0.6);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------
+ * Success transition · foreground fades, orb brightens
+ * -------------------------------------------------------------------- */
+
+.opening .wordmark,
+.opening .tagline,
+.opening .panel,
+.opening .createRow,
+.opening .bottomMark {
+  animation: contentFade calc(var(--gate-transition) * 0.55) var(--gate-ease) forwards;
+}
+.opening .orb {
+  animation: orbFocus var(--gate-transition) var(--gate-ease) forwards;
+}
+.opening .blob { filter: blur(40px); transition: filter var(--gate-transition) var(--gate-ease); }
+.opening .orbEnergy {
+  animation: energyPulse var(--gate-transition) var(--gate-ease) forwards;
+}
+
+@keyframes contentFade {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes orbFocus {
+  0%   { transform: scale(1);    filter: brightness(1);                     }
+  40%  { transform: scale(1.08); filter: brightness(1.30) saturate(1.18);   }
+  100% { transform: scale(1.04); filter: brightness(1.18) saturate(1.10);   }
+}
+@keyframes energyPulse {
+  from { opacity: 0.5; transform: scale(1);   }
+  60%  { opacity: 1;   transform: scale(1.6); }
+  to   { opacity: 0;   transform: scale(2.4); }
+}
+
+/* --------------------------------------------------------------------
+ * Reduced motion · atmosphere without cinematic motion
+ * -------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .blob,
+  .orb,
+  .orbEnergy,
+  .orbitalRing,
+  .lightingSweep,
+  .primaryShine {
+    animation: none !important;
+  }
+  .opening .wordmark,
+  .opening .tagline,
+  .opening .panel,
+  .opening .createRow,
+  .opening .bottomMark,
+  .opening .orb,
+  .opening .orbEnergy {
+    animation-duration: 1ms !important;
+  }
+  .opening .blob { transition: none !important; }
+}

@@ -13,7 +13,7 @@
 import React, { useState } from "react";
 import { BEZEL_ASPECT_RATIO, BEZEL_METAL } from "@/components/nexapp/hud/geometry";
 
-const FRAME_SRC = "/nex/hud-frame-v12.png";
+const FRAME_SRC = "/nex/hud-frame-master.png";
 
 async function downloadDesaturatedPng() {
   // Load the raw frame image, redraw through canvas with grayscale filter,

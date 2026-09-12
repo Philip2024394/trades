@@ -10,6 +10,22 @@
 
 import type { NexHudMode } from "./modes";
 
+// ── Phone-frame artwork · single source of truth ──────────────────
+//
+// Swap the URL here (or override per theme) to change the chassis.
+// External URLs render via a plain <img> · no next/image domain
+// config required.
+//
+// Sample preview 2026-09-06 · ImageKit hosted phone-frame model.
+export const NEX_FRAME_IMAGE = "https://ik.imagekit.io/ctlxgvqcm/ChatGPT%20Image%20Sep%204,%202026,%2003_49_05%20PM.png?updatedAt=1788511763903";
+
+// When true, NexHudFrame skips the 5+ clipped accent-overlay <img>
+// copies that used to composite the rail-housing highlights. Those
+// overlays only made sense with the original transparent-interior
+// chassis PNG · a full-scene preview like the ImageKit render would
+// stack copies of itself and hide the app content underneath.
+export const NEX_FRAME_DISABLE_ACCENT_STACK = true;
+
 export interface NexHudTheme {
   id:       string;                                          // "titanium" | "pink" | "gold" | ...
   name:     string;                                          // display name for a future theme picker
@@ -107,8 +123,10 @@ export const TITANIUM_THEME: NexHudTheme = {
     // Kept as .png variants: v13.png (rail visible) · v13-norail.png (rail
     // collapsed) · v13-arrival.png (muted for the pre-auth sign-on shell,
     // used by the SIGNON_THEME below).
-    imageSrc: "/nex/hud-frame-v13.png",
-    imageSrcNoRail: "/nex/hud-frame-v13-norail.png",
+    // Stage 3.43 · master frame (Philip 2026-09-01). One frame for
+    // every NEX screen interaction · removes v13/v13-norail variants.
+    imageSrc: NEX_FRAME_IMAGE,
+    imageSrcNoRail: NEX_FRAME_IMAGE,
     fit: "fill",
     // No tint · titanium keeps the raster's native brushed-steel finish.
   },
@@ -185,8 +203,10 @@ export const PINK_METAL_THEME: NexHudTheme = {
   name: "Pink Metal",
   material: "metal",
   bezel: {
-    imageSrc: "/nex/hud-frame-v13.png",
-    imageSrcNoRail: "/nex/hud-frame-v13-norail.png",
+    // Stage 3.43 · master frame (Philip 2026-09-01). One frame for
+    // every NEX screen interaction · removes v13/v13-norail variants.
+    imageSrc: NEX_FRAME_IMAGE,
+    imageSrcNoRail: NEX_FRAME_IMAGE,
     fit: "fill",
     tint: { color: "#ec4899", blendMode: "color", opacity: 0.9 },
   },
@@ -257,8 +277,10 @@ export const GOLD_THEME: NexHudTheme = {
   name: "Gold / Luxury",
   material: "metal",
   bezel: {
-    imageSrc: "/nex/hud-frame-v13.png",
-    imageSrcNoRail: "/nex/hud-frame-v13-norail.png",
+    // Stage 3.43 · master frame (Philip 2026-09-01). One frame for
+    // every NEX screen interaction · removes v13/v13-norail variants.
+    imageSrc: NEX_FRAME_IMAGE,
+    imageSrcNoRail: NEX_FRAME_IMAGE,
     fit: "fill",
     tint: { color: "#d4a544", blendMode: "color", opacity: 0.92 },
   },
@@ -340,8 +362,9 @@ export const SIGNON_THEME: NexHudTheme = {
   name: "Sign-on / Arrival",
   material: "metal",
   bezel: {
-    imageSrc: "/nex/hud-frame-v13-arrival.png",
-    imageSrcNoRail: "/nex/hud-frame-v13-arrival.png",
+    // Stage 3.43 · sign-on uses the same master frame (Philip 2026-09-01).
+    imageSrc: NEX_FRAME_IMAGE,
+    imageSrcNoRail: NEX_FRAME_IMAGE,
     fit: "fill",
     // No tint · the arrival PNG already carries its own muted palette.
   },

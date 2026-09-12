@@ -40,10 +40,24 @@ export const SHADOW_MODE_ENABLED = (() => {
   return raw === "1" || raw === "true" || raw === "on";
 })();
 
+// Founder BEGIN B 2026-09-09 · NEX_DETERMINISTIC_REPLY promotes qualifying
+// deterministic composer output to the customer-visible reply. Reply mode
+// implies shadow (the pipeline is the same), so runShadowMode fires when
+// EITHER flag is on. Promotion itself lives in the chat route, gated by
+// REPLY_MODE_ENABLED + trust threshold + composition_meta.accepted guard.
+export const REPLY_MODE_ENABLED = (() => {
+  const raw = process.env.NEX_DETERMINISTIC_REPLY;
+  return raw === "1" || raw === "true" || raw === "on";
+})();
+
 export const SHADOW_BUDGET_MS = (() => {
   const raw = process.env.NEX_DETERMINISTIC_SHADOW_BUDGET_MS;
+  // Founder BEGIN B 2026-09-09 · raised cap 500 → 10000 because reply-mode
+  // needs enough headroom for the cold-boot hot-tier bootstrap (~2-6s per
+  // memory) + lazy per-ref Postgres fetch (~200-500ms) on top of compose
+  // (<1ms warm). Observation-only default (60ms) unchanged when unset.
   const n = raw ? Number(raw) : 60;
-  return Number.isFinite(n) && n >= 1 && n <= 500 ? n : 60;
+  return Number.isFinite(n) && n >= 1 && n <= 10000 ? n : 60;
 })();
 
 const JSONL_DIR = path.join(process.cwd(), "data", "deterministic-shadow");
@@ -184,7 +198,7 @@ export async function runShadowMode(input: {
   chatBrainIntent: string | null;
 }): Promise<ShadowRunResult> {
   const t0 = performance.now();
-  if (!SHADOW_MODE_ENABLED) {
+  if (!SHADOW_MODE_ENABLED && !REPLY_MODE_ENABLED) {
     return {
       enabled: false,
       skipped_reason: "flag_off",

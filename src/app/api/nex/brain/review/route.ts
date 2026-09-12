@@ -116,11 +116,11 @@ interface WorkerJobRow {
 }
 
 function openNexSupabase() {
+  // NEX SUPABASE AUTHORITY (2026-09-07) · NEX-scoped env vars only ·
+  // no Project A fallback.
   const url = process.env.NEX_SUPABASE_URL
-    || process.env.NEXT_PUBLIC_NEX_SUPABASE_URL
-    || process.env.SUPABASE_URL;
-  const key = process.env.NEX_SUPABASE_SERVICE_ROLE_KEY
-    || process.env.SUPABASE_SERVICE_ROLE_KEY;
+    || process.env.NEXT_PUBLIC_NEX_SUPABASE_URL;
+  const key = process.env.NEX_SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) return null;
   return createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
 }

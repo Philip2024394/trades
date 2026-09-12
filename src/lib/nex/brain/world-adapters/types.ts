@@ -158,6 +158,11 @@ export type WorldSearchResult = {
   totalAvailable: number;
   /** How long the underlying query took (ms). For latency budgeting. */
   latencyMs: number;
+  /** Founder BEGIN 2026-09-09 · SEARCHWORLD-SUB-INSTRUMENTATION.
+   *  Per-sub-stage millisecond timings from inside the adapter.
+   *  Optional · non-breaking · always try/catch-wrapped in the adapter.
+   *  Keys: pool_acquire · query_build · sql_promise_all · row_hydration · result_build */
+  subTimings?: Record<string, number>;
   /** Non-null when the adapter had to degrade (e.g. skipped geo filter
    *  because coords are missing on most rows). The Brain surfaces this
    *  as an honesty caveat. */

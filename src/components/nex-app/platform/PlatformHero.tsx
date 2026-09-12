@@ -5,12 +5,13 @@
 //      cream on the left, tells the story of what NEX is for.
 //   2. Character overlay — transparent NEX Woman in black T-shirt,
 //      positioned on the right on top of the background.
-// Text stack (headline + subtitle + FreeChatCard) sits on the left
+// Text stack (headline + subtitle + Ask NEX bar) sits on the left
 // on top of both, constrained to the cream-safe left portion.
+// FreeChatCard removed 2026-09-06 · Messages surface deleted per
+// Founder direction.
 
 import Image from "next/image";
 import { Bell } from "lucide-react";
-import { FreeChatCard } from "./FreeChatCard";
 import { PlatformAskBar } from "./PlatformAskBar";
 
 export function PlatformHero() {
@@ -106,15 +107,12 @@ export function PlatformHero() {
         >
           Endless Possibilities.
         </h2>
-        <div className="mt-3">
-          <FreeChatCard />
-        </div>
       </div>
 
-      {/* Ask NEX search bar — full width, tight to the Free Chat card
-          above. Same gap here as the MainGrid uses below the hero so
-          Free Chat → Ask NEX → Grid form a visually equal-spaced stack. */}
-      <div className="relative z-10 mt-2">
+      {/* Ask NEX search bar — full width, sits directly under the
+          headline stack. Gap matches the MainGrid spacing below the
+          hero for a clean rhythm. */}
+      <div className="relative z-10 mt-3">
         <PlatformAskBar />
       </div>
     </section>

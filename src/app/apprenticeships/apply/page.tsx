@@ -9,6 +9,7 @@
 // Wraps the client form (all interactivity lives in ./client.tsx).
 
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { BRAND, absolute } from "@/lib/seo";
 import { ApplyForm } from "./client";
 
@@ -27,5 +28,13 @@ export const metadata: Metadata = {
 };
 
 export default function ApplyPage() {
-  return <ApplyForm/>;
+  // Suspense boundary required because ApplyForm (client) calls
+  // useSearchParams() — Next.js 15/16 refuses to statically generate
+  // pages that read search params without a boundary. The boundary
+  // lets the static shell render while the client hydrates params.
+  return (
+    <Suspense fallback={null}>
+      <ApplyForm/>
+    </Suspense>
+  );
 }

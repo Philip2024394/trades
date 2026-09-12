@@ -25,10 +25,9 @@ export function PlatformAskBar() {
       router.push(intent.target);
       return;
     }
-    if (intent.kind === "messenger") {
-      router.push("/nex-app/messages");
-      return;
-    }
+    // Messenger intent removed 2026-09-06 · /nex-app/messages deleted.
+    // Requests that would have routed there fall through to the brain
+    // path so the AI can handle them conversationally.
     if (intent.kind === "brain" && intent.target) {
       // Route to the specific Brain (staircases → its route; general → general route)
       // and pass the question as a chat seed.

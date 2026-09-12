@@ -63,7 +63,7 @@ export default function NexSamplePinkPage() {
             brightness(1.12)· polished-metal feels LIT, not painted
             contrast(1.08)  · deepens shadows for metallic depth */}
         <img
-          src="/nex/hud-frame-v12.png"
+          src="/nex/hud-frame-master.png"
           alt="NEX frame · rose gold metal preview"
           style={{
             position: "absolute",

@@ -41,9 +41,13 @@ import { normalisePublicNexId } from "@/lib/nex-identity";
 import {
   MOCK_CONTACTS,
   MOCK_GROUPS,
+  MOCK_BUSINESS_CONTACTS,
+  formatBusinessSubline,
   pravatarUrl,
+  nameInitials,
   type MockContact,
   type MockGroup,
+  type MockBusinessContact,
 } from "@/lib/nexapp/mockContacts";
 import { pickCopy } from "./contactsCopy";
 import { ContactCard, GroupCard } from "./ContactCards";
@@ -69,11 +73,18 @@ export function ContactsPanel({
   myName,
   onClose,
   language,
+  onOpenChat,
 }: {
   myNexId: string;
   myName: string;
   onClose: () => void;
   language: "en" | "id";
+  /** Fired when the user taps a business contact · shell opens the
+   *  universal NEX Chat surface for that contact. Optional so the panel
+   *  still compiles in isolation (tests, storybook). Personal contact
+   *  taps intentionally do NOT call this in M0 (per Philip 2026-09-05
+   *  · "personal contact tap · preserve existing behavior"). */
+  onOpenChat?: (contact: { id: string; name: string; kind: "person" | "business" }) => void;
 }) {
   const t = pickCopy(language);
 
@@ -81,6 +92,9 @@ export function ContactsPanel({
   // hooks slot in here when Priority 4 NEX-to-NEX ships.
   const [contacts, setContacts] = useState<MockContact[]>(() => [...MOCK_CONTACTS]);
   const [groups, setGroups] = useState<MockGroup[]>(() => [...MOCK_GROUPS]);
+  // Business contacts · Philip 2026-09-05 · M0. Simple mock array
+  // · same isolation as personal contacts · real API drops in later.
+  const [businessContacts] = useState<MockBusinessContact[]>(() => [...MOCK_BUSINESS_CONTACTS]);
   const [view, setView] = useState<View>({ name: "list" });
   const [actionSheet, setActionSheet] = useState<ActionSheetState>({ open: false });
   const [connectInput, setConnectInput] = useState("");
@@ -113,6 +127,7 @@ export function ContactsPanel({
           <ListView
             contacts={contacts}
             groups={groups}
+            businessContacts={businessContacts}
             language={language}
             onCreateGroup={() => setView({ name: "select-members" })}
             onOpenConnectId={() => {
@@ -126,6 +141,16 @@ export function ContactsPanel({
             }}
             onLongPressContact={(c) => setActionSheet({ open: true, contact: c })}
             onTapGroup={() => showToast(t.toastGroupSoon)}
+            onTapBusiness={(bc) => {
+              // Business Contact → open the existing universal NEX Chat
+              // surface via the shell callback. Universal-chat doctrine
+              // (Friend Chat = Business Chat = NEX Chat). If the shell
+              // did not provide onOpenChat, fall back to the same toast
+              // the personal path uses (defensive · panel stays usable
+              // in isolated tests/storybook).
+              if (onOpenChat) onOpenChat({ id: bc.id, name: bc.name, kind: "business" });
+              else showToast(t.toastConversationSoon);
+            }}
             myNexId={myNexId}
           />
         )}
@@ -208,26 +233,30 @@ export function ContactsPanel({
 function ListView({
   contacts,
   groups,
+  businessContacts,
   language,
   onCreateGroup,
   onOpenConnectId,
   onTapContact,
   onLongPressContact,
   onTapGroup,
+  onTapBusiness,
   myNexId,
 }: {
   contacts: MockContact[];
   groups: MockGroup[];
+  businessContacts: MockBusinessContact[];
   language: "en" | "id";
   onCreateGroup: () => void;
   onOpenConnectId: () => void;
   onTapContact: (c: MockContact) => void;
   onLongPressContact: (c: MockContact) => void;
   onTapGroup: (g: MockGroup) => void;
+  onTapBusiness: (bc: MockBusinessContact) => void;
   myNexId: string;
 }) {
   const t = pickCopy(language);
-  const hasAnyContent = contacts.length > 0 || groups.length > 0;
+  const hasAnyContent = contacts.length > 0 || groups.length > 0 || businessContacts.length > 0;
   return (
     <>
       <button type="button" onClick={onCreateGroup} style={createGroupCardStyle}>
@@ -270,11 +299,73 @@ function ListView({
         </>
       )}
 
+      {/* Business Contacts · Philip 2026-09-05 · single subtle section
+          below personal contacts · same scrolling list · tap → universal
+          NEX Chat via onOpenChat callback (one-unified-contacts + one-
+          universal-chat doctrines). Never a separate destination. */}
+      {businessContacts.length > 0 && (
+        <>
+          <div style={businessSectionHeaderStyle}>BUSINESS CONTACTS</div>
+          {businessContacts.map((bc) => (
+            <BusinessContactCard
+              key={bc.id}
+              contact={bc}
+              onTap={() => onTapBusiness(bc)}
+            />
+          ))}
+        </>
+      )}
+
       <div style={ownIdFooterStyle}>
         <div style={ownIdLabelStyle}>{t.yourNexId}</div>
         <div style={ownIdValueStyle}>{myNexId}</div>
       </div>
     </>
+  );
+}
+
+// ── Business contact card · Philip 2026-09-05 · M0 ────────────────────
+// Chassis-dark palette · same visual rhythm as ContactCard · minimum
+// inline styles kept here to preserve 3-file scope authorization (no
+// new component file). Logo tile uses first-two-letters initial on the
+// existing orange chassis accent · matches ContactCard's fallback avatar.
+// Renders category · location · relative interaction time (or "not yet
+// contacted" if no interaction). Japanese business names render safely
+// via wordBreak: break-word + line-clamp.
+function BusinessContactCard({
+  contact,
+  onTap,
+}: {
+  contact: MockBusinessContact;
+  onTap: () => void;
+}) {
+  const initials = nameInitials(contact.name);
+  return (
+    <button
+      type="button"
+      onClick={onTap}
+      style={businessCardStyle}
+      aria-label={`Open conversation with ${contact.name}`}
+    >
+      {/* Logo tile · rounded square (differs from personal-contact circle
+          avatar · matches "business" visual language) */}
+      <div style={businessLogoTileStyle} aria-hidden>
+        {contact.avatarUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={contact.avatarUrl} alt="" style={businessLogoImgStyle} />
+        ) : (
+          <span style={businessLogoInitialStyle}>{initials}</span>
+        )}
+      </div>
+      <div style={businessBodyStyle}>
+        <div style={businessTopRowStyle}>
+          <span style={businessNameStyle}>{contact.name}</span>
+          {contact.favorite && <span style={businessFavoriteDotStyle} aria-hidden>★</span>}
+        </div>
+        <div style={businessCategoryStyle}>{contact.category}</div>
+        <div style={businessSublineStyle}>{formatBusinessSubline(contact)}</div>
+      </div>
+    </button>
   );
 }
 
@@ -512,4 +603,123 @@ const toastStyle: CSSProperties = {
   border: `1px solid rgba(255,255,255,0.10)`,
   boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
   zIndex: 15,
+};
+
+// ── Business contact section styles · Philip 2026-09-05 ────────────────
+// Sit alongside the existing personal-contact styles · same NEX chassis
+// palette · slightly more restrained than personal section header to
+// communicate "second section" not "second app".
+const businessSectionHeaderStyle: CSSProperties = {
+  color: "rgba(255,255,255,0.35)",
+  fontSize: 10,
+  fontWeight: 700,
+  letterSpacing: 2.2,
+  padding: "18px 4px 6px",
+  textTransform: "uppercase",
+  borderTop: `1px solid rgba(255,255,255,0.05)`,
+  marginTop: 12,
+};
+
+const businessCardStyle: CSSProperties = {
+  display: "flex",
+  gap: 12,
+  alignItems: "center",
+  width: "100%",
+  maxWidth: "100%",
+  minWidth: 0,
+  boxSizing: "border-box",
+  padding: "10px 12px",
+  background: "rgba(20, 20, 24, 0.72)",
+  border: "1px solid rgba(255, 255, 255, 0.06)",
+  borderRadius: 14,
+  color: NEX.text,
+  textAlign: "left" as const,
+  cursor: "pointer",
+  appearance: "none" as const,
+  transition: "background 120ms ease, border-color 120ms ease",
+};
+
+const businessLogoTileStyle: CSSProperties = {
+  flexShrink: 0,
+  width: 44,
+  height: 44,
+  borderRadius: 10,
+  background: "linear-gradient(140deg, rgba(249,115,22,0.20) 0%, rgba(249,115,22,0.08) 100%)",
+  border: "1px solid rgba(249,115,22,0.28)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  overflow: "hidden",
+};
+
+const businessLogoImgStyle: CSSProperties = {
+  width: "100%",
+  height: "100%",
+  objectFit: "cover" as const,
+  display: "block",
+};
+
+const businessLogoInitialStyle: CSSProperties = {
+  fontSize: 14,
+  fontWeight: 800,
+  letterSpacing: 0.4,
+  color: NEX.orange,
+};
+
+const businessBodyStyle: CSSProperties = {
+  flex: 1,
+  minWidth: 0,
+  display: "flex",
+  flexDirection: "column",
+  gap: 2,
+};
+
+const businessTopRowStyle: CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  gap: 6,
+  minWidth: 0,
+};
+
+const businessNameStyle: CSSProperties = {
+  fontSize: 14,
+  fontWeight: 700,
+  color: NEX.text,
+  lineHeight: 1.2,
+  letterSpacing: -0.005,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap" as const,
+  minWidth: 0,
+  flex: 1,
+  wordBreak: "break-word" as const,
+};
+
+const businessFavoriteDotStyle: CSSProperties = {
+  fontSize: 11,
+  color: NEX.orange,
+  flexShrink: 0,
+  lineHeight: 1,
+};
+
+const businessCategoryStyle: CSSProperties = {
+  fontSize: 11.5,
+  color: "rgba(255,255,255,0.62)",
+  lineHeight: 1.25,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap" as const,
+  minWidth: 0,
+};
+
+const businessSublineStyle: CSSProperties = {
+  fontSize: 10.5,
+  color: "rgba(255,255,255,0.40)",
+  lineHeight: 1.2,
+  letterSpacing: 0.15,
+  marginTop: 1,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap" as const,
+  minWidth: 0,
 };

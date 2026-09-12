@@ -1,8 +1,21 @@
 // NEX HUD · GEOMETRY (stable · never themeable · never redesigned to fit a skin).
 //
-// v6 bezel (Philip 2026-08-26): 941×1672 · aspect 0.5628 · transparent
-// alpha channel · interior opening cut out · rail housing + bottom pill
-// are opaque frame artwork (hit targets overlay on top of them).
+// MASTER frame (Philip 2026-09-02 v3 · re-confirmed at fit-perfect aspect):
+//   853 × 1844 · aspect 0.4626 · matches BEZEL_METAL 850×1850 phone shape
+//   within 0.68% — zero distortion on any device. Transparent alpha centre.
+//   NEX wordmark top-left · 2 small indicators top-right · oval pill footer.
+//
+// TRUE TRANSPARENT INTERIOR (pixel-scan alpha ≤ 8, run 2026-09-02):
+//   top    inset  7.27%   ·   bottom inset  10.90%
+//   left   inset  8.32%   ·   right  inset   8.09%   (near-symmetric)
+//   interior width 83.59% · height 81.83%
+//
+// Previous chassis retained for recovery:
+//   hud-frame-master-prev-851x1847.png · aspect 0.4607 · v2
+//   hud-frame-master-prev-940x1672.png · aspect 0.5622 · v1
+//
+// Content zone below wraps a 2.5% safe pad inside the transparent interior
+// per Philip's "little back from transparent edge" ask (2026-09-01).
 
 export type ZoneId =
   | "top"           // NEX identity strip (header icons: search, bell, menu)
@@ -40,7 +53,9 @@ export interface ZoneRect {
  *     bottom dock, or any physical frame component.
  *   · The frame is IDENTICAL across all NEX pages.
  *
- * Source asset: public/nex/hud-frame-v12.png · 941 × 1672 · aspect 0.5628.
+ * Source asset: public/nex/hud-frame-master.png · 853 × 1844 · aspect 0.4626
+ * (matches BEZEL_METAL 850×1850 within 0.68% · zero distortion on any device).
+ * Previous chassis kept as hud-frame-master-prev-{851x1847,940x1672}.png.
  *
  * PRESENTATION aspect (Philip 2026-08-28 · "want tall/skinny phone shape"):
  * 850 × 1850 · aspect 0.4595 (9:19.5 · modern phone). The source PNG has a
@@ -59,100 +74,172 @@ export const BEZEL_METAL = { w: 850, h: 1850 } as const;
  * scripts (measure-frame-viewport / measure-frame-accents). Never render
  * containers at these dimensions · use BEZEL_METAL for presentation.
  */
-export const BEZEL_METAL_SOURCE = { w: 941, h: 1672 } as const;
+export const BEZEL_METAL_SOURCE = { w: 853, h: 1844 } as const;
 export const BEZEL_ASPECT_RATIO = `${BEZEL_METAL.w} / ${BEZEL_METAL.h}` as const;
 
 /**
- * v7 INTERIOR OPENING (transparent · pixel-scan verified):
- *   vertical   : metal-y  5.6% –  86.1%  (main opening · 80% tall)
- *   horizontal : metal-x  8.1% – 82.5%  (main opening · 74% wide)
- * v7 RAIL HOUSING (opaque frame artwork · 5 labelled slots visible):
- *   horizontal : metal-x 82.5% – 99%    (~16% wide · roomier than v6)
- * v7 BOTTOM PILL HOUSING (opaque · dark pill face):
- *   vertical   : metal-y 86.1% – 99.3%
- * v7 TOP BEZEL (NEX wordmark + 3 header icon slots):
- *   vertical   : metal-y  0% – 5.6%
+ * MASTER INTERIOR OPENING (transparent · pixel-scan verified 2026-09-02 v3):
+ *   vertical   : metal-y  7.27% – 89.10%   (interior 81.83% tall)
+ *   horizontal : metal-x  8.32% – 91.91%   (interior 83.59% wide)
+ * MASTER BOTTOM FOOTER (opaque oval pill artwork):
+ *   vertical   : metal-y 89.10% – 100%     (10.90% tall)
+ * MASTER TOP BEZEL (NEX wordmark + 2 indicators):
+ *   vertical   : metal-y  0% –  7.27%      (7.27% tall)
+ * NOTE: NO right-rail housing. Interior insets near-symmetric L=8.32 /
+ * R=8.09 (~0.23% asymmetry · below visible threshold).
  */
 export const DEFAULT_ZONES: Record<ZoneId, ZoneRect> = {
-  // TOP · NEX identity band (measured header height from v12 alpha = 7.83%).
-  top:       { top: "0%",   left: "0%",  width: "100%", height: "7.83%" },
-  // CONTENT · main interactive area · sits inside the measured safe strip
-  // (left 11.80% clears bezel · width 70.13% clears rail).
-  content:   { top: "7.83%",   left: "11.80%",  width: "70.13%",  height: "79.78%" },
+  // TOP · NEX identity band (measured top-bezel height on master = 7.27%).
+  top:       { top: "0%",   left: "0%",  width: "100%", height: "7.27%" },
   // ═══════════════════════════════════════════════════════════════════════
-  // WORKSPACE · CHAT BUBBLE CONTAINER · Philip 2026-08-28 · LOCKED · CONSTITUTIONAL
+  // CONTENT · CHAT / WORKSPACE CONTAINER · Philip 2026-09-02 · MASTER v3
   //
-  // These bounds are the CANONICAL locked position when the right rail is
-  // ACTIVE. They MUST scale identically across every phone size because they
-  // are expressed as % of the aspect-locked bezel · not absolute px.
+  // Measured transparent interior on master v3:
+  //   top 7.27%  ·  bottom 10.90%  ·  left 8.32%  ·  right 8.09%
+  //   interior: 83.59% wide  ·  81.83% tall
   //
-  //   left  = calc(11.80% − 8px)   — 8px inside the measured bezel silhouette
-  //   width = calc(70.13% + 4px)   — right edge locked 4px inside rail housing
+  // Applied 2.5% safe pad inside each transparent edge so content sits
+  // SLIGHTLY BACK from the bezel · never touches the metal:
+  //   top 9.77% · left 10.82% · width 78.59% · height 76.83%
   //
-  // Bubble RULES (enforced in NexWorkspaceChat.tsx):
-  //   · Bubbles size to CONTENT · short messages render small
-  //   · Bubbles are ALWAYS left-aligned (user + NEX both)
-  //   · Bubbles can be SMALLER than this container · NEVER bigger
-  //   · No user-bubble-right / NEX-bubble-left split · all left-anchored
-  //
-  // NEVER re-measure or nudge these values in response to visual tuning.
-  // They are the pixel-locked design contract for chat.
+  // All values expressed as % of the aspect-locked bezel · content scales
+  // identically across every phone size (drift from BEZEL_METAL = 0.68%).
   // ═══════════════════════════════════════════════════════════════════════
-  // Philip 2026-08-28 · workspace TOP extended from 28% → 8% so messages can
-  // FLOW UP into the hero area · orb (z:10) is layered above chat (z:1) so
-  // it naturally shields itself · height 80% extends down to the footer band.
-  workspace: { top: "8%",   left: "calc(11.80% - 8px)",  width: "calc(70.13% + 4px)",  height: "80%" },
-  belowChat: { top: "79%",  left: "calc(11.80% - 8px)",  width: "calc(70.13% + 4px)",  height: "12%" },
-  // SIDE · right-rail hit targets · 5 labelled slots · MEASURED rail width
-  // = 18.07% of frame (Philip 2026-08-28 · v12 alpha scan).
-  side:      { top: "24%",  right: "0%",  width: "18.07%", height: "52%" },
-  // BOTTOM · composer · inside the footer band (measured 12.38% tall).
-  // Sits above the footer's very bottom edge with a small clearance.
-  bottom:    { bottom: "3.2%", left: "11.80%", width: "76.13%", height: "5%" },
+  content:   { top: "9.77%",  left: "10.82%",  width: "78.59%",  height: "76.83%" },
+  // WORKSPACE mirrors CONTENT · fills the transparent interior with pad.
+  workspace: { top: "9.77%",  left: "10.82%",  width: "78.59%",  height: "76.83%" },
+  belowChat: { top: "76%",    left: "10.82%",  width: "78.59%",  height: "12%"    },
+  // SIDE · legacy right-rail hit-target zone · master chassis has NO rail
+  // housing. Retained for source-compat with pages still referencing 5
+  // rail slots · consumers should stop reading this zone on master.
+  side:      { top: "24%",   right: "0%",   width: "8.09%",  height: "52%" },
+  // BOTTOM · composer stack · Philip 2026-09-01 seamless HUD treatment.
+  // Height 18% holds fade region → input bar → chips row · fade is
+  // rendered inside the composer so chat above scrolls underneath it
+  // and dissolves smoothly with no hard top edge.
+  // Safe-area-inset-bottom pushes the entire composer stack ABOVE the
+  // iOS home indicator / Android gesture bar (Philip 2026-09-02 HARD
+  // REQUIREMENT · interactive controls must not sit under system UI).
+  bottom:    {
+    bottom: "calc(3.2% + env(safe-area-inset-bottom, 0px))",
+    left:   "10.82%",
+    width:  "78.59%",
+    height: "18%",
+  },
 };
 
 /**
  * Hero image height as % of bezel · Philip 2026-08-28 "reduce to give more
- * chat space, keep NEX centered on the image". Single source of truth · the
- * voice-orb position below derives from this so orb + hero always stay in
- * sync when the hero size changes.
+ * chat space, keep NEX centered on the image". Single source of truth for
+ * the hero.
  *
- * Orb VERTICAL CENTER lands at HERO_HEIGHT_PCT / 2. Orb height is 12%, so
- * orb-top = (HERO_HEIGHT_PCT / 2) − 6.
+ * The orb no longer derives ORB_TOP_PCT from HERO_HEIGHT_PCT — that
+ * derivation assumed the hero started at y=0, but hero actually starts at
+ * HERO_TOP_OFFSET_PX so the orb ended up anchored above the master
+ * frame's transparent interior top (7.06%). Its glow spilled into the top
+ * bezel. Orb is now positioned EXPLICITLY inside the interior.
  */
 export const HERO_HEIGHT_PCT = 22.5 as const;
-/** Vertical pixel offset for hero + orb · Philip 2026-08-28 "move down 50px" then "up 3px". */
+/** Vertical pixel offset for hero · Philip 2026-08-28 "move down 50px" then "up 3px". */
 export const HERO_TOP_OFFSET_PX = 47 as const;
-/** Fine-tune the orb ONLY (does NOT move hero) · Philip 2026-08-28 cumulative: −5, −4, −5, −3 = −17px. */
-const ORB_FINE_TUNE_Y_PX = -17;
-// Philip 2026-08-29 · orb size reduced from 12 → 11 (~8%) for a slightly
-// tighter footprint against the brushed-metal chat bg. ORB_TOP_PCT auto-
-// adjusts so the orb stays vertically centred on HERO_HEIGHT_PCT.
+// Philip 2026-08-29 · orb size 11 (~8%) for a tighter footprint.
 const ORB_HEIGHT_PCT = 11;
-const ORB_TOP_PCT = HERO_HEIGHT_PCT / 2 - ORB_HEIGHT_PCT / 2;
-const ORB_TOTAL_OFFSET_PX = HERO_TOP_OFFSET_PX + ORB_FINE_TUNE_Y_PX;
+/**
+ * ORB TOP-RIGHT PARKED POSITION · Philip 2026-09-01 · LOCKED.
+ *
+ * The canonical parked slot where the voice orb lives when the user is
+ * chatting. Actual TOP-RIGHT of the transparent interior (previous tuning
+ * ended up left-of-centre because of large negative pixel nudges — that
+ * has been corrected). Measured from the transparent-interior corners so
+ * the position stays anchored to the interior even if the bezel is swapped:
+ *
+ *   TRANSPARENT INTERIOR (master frame · pixel-scan verified):
+ *     top-edge    = 7.06% of frame
+ *     right-edge  = 92.98% of frame  (100% − 7.02% right inset)
+ *
+ *   Orb parked position:
+ *     orb width   = 24% of frame
+ *     top-inset from interior top  =  5.44% of frame  → orb.top  = 12.5%
+ *     right-inset from interior right =  2.98% of frame → orb.right = 90%
+ *                                                       → orb.left  = 66%
+ *
+ *   Fine-tune vertical nudge · −17px (Philip 2026-09-01 iterative -25/+8).
+ *
+ * Do NOT edit these constants for visual tuning of the ACTIVE orb (living
+ * on the hero) — that would drag the parked destination out of the corner.
+ * If a different active-orb position is needed, add a separate constant.
+ */
+// Interior corner constants re-measured on master v3 (2026-09-02).
+// Orb-park insets rebalanced so the composed absolute values
+// (ORB_TOP_PCT = 12.5 · ORB_LEFT_PCT = 66) stay VISUALLY IDENTICAL to
+// the previous locked position — Philip's park slot doesn't move despite
+// the frame's interior insets shifting from 8.11 → 8.32 on the left.
+const INTERIOR_TOP_PCT        = 7.27;
+const INTERIOR_LEFT_PCT       = 8.32;
+const ORB_PARK_TOP_INSET_PCT  = 5.23;  // 7.27 + 5.23 = 12.5 · orb top unchanged
+const ORB_PARK_LEFT_INSET_PCT = 57.68; // 8.32 + 57.68 = 66  · orb left unchanged
+const ORB_PARK_TOP_NUDGE_PX   = -17;
+const ORB_PARK_LEFT_NUDGE_PX  = 0;
+const ORB_TOP_PCT  = INTERIOR_TOP_PCT + ORB_PARK_TOP_INSET_PCT;   // 12.5
+const ORB_LEFT_PCT = INTERIOR_LEFT_PCT + ORB_PARK_LEFT_INSET_PCT; // 66.0
+const ORB_TOTAL_OFFSET_PX = ORB_PARK_TOP_NUDGE_PX;                // −17
 
 /**
  * Bezel affordances (NEX wordmark · 3 header icons in top-right).
  * v6 shows 3 header icon slots in the top-right beside NEX wordmark.
+ *
+ * SAFE-AREA HANDLING · Philip 2026-09-02 HARD REQUIREMENT.
+ * `env(safe-area-inset-*)` is added to every INTERACTIVE affordance so
+ * that on iOS PWA install (viewport-fit=cover · black-translucent status
+ * bar) the wordmark + header icons + kebab render BELOW the status bar
+ * area / gesture bar, not underneath them. The frame chassis itself
+ * still extends behind the OS system UI — only interactive controls are
+ * inset. `env(*, 0px)` fallback keeps browsers without safe-area support
+ * unaffected. Left/right insets handle iPhone landscape + Android cutouts.
  */
 export const BEZEL_AFFORDANCES = {
-  wordmark:   { top: "0.3%", left: "1%",   width: "22%", height: "5%" },
-  // Voice orb · vertically CENTERED on the hero image (Philip 2026-08-28).
-  // ORB_TOP_PCT computed from HERO_HEIGHT_PCT so orb tracks hero automatically.
-  // Horizontal: 37% − 5px matches previous tuning · MAIN NEX feature · always alive.
-  voiceOrb:   { top: `calc(${ORB_TOP_PCT}% + ${ORB_TOTAL_OFFSET_PX}px)`, left: "38%", width: "24%", height: `${ORB_HEIGHT_PCT}%` },
+  wordmark:   {
+    top:   "calc(0.3% + env(safe-area-inset-top, 0px))",
+    left:  "calc(1% + env(safe-area-inset-left, 0px))",
+    width: "22%", height: "5%",
+  },
+  // Voice orb · LOCKED to the TOP-RIGHT PARKED POSITION (Philip 2026-09-01).
+  // Coordinates derived from transparent-interior corner + inset constants
+  // above · anchor stays fixed to the interior at any viewport size, and
+  // survives future bezel swaps as long as INTERIOR_TOP_PCT / LEFT_PCT are
+  // updated to match the new transparent alpha bounds.
+  voiceOrb:   {
+    top:    `calc(${ORB_TOP_PCT}%  + ${ORB_PARK_TOP_NUDGE_PX}px)`,
+    left:   `calc(${ORB_LEFT_PCT}% + ${ORB_PARK_LEFT_NUDGE_PX}px)`,
+    width:  "24%",
+    height: `${ORB_HEIGHT_PCT}%`,
+  },
   // 3 header icon hit targets · pixel-scan (v8 2026-08-26).
   // Cumulative nudges: -35px left → back 3px = -32px left · down 5px.
-  headerIcon1: { top: "calc(2% + 5px)", right: "calc(19.5% + 32px)", width: "5%", height: "3%" },
-  headerIcon2: { top: "calc(2% + 5px)", right: "calc(10.5% + 32px)", width: "5%", height: "3%" },
-  headerIcon3: { top: "calc(2% + 5px)", right: "calc(2% + 32px)",    width: "5%", height: "3%" },
+  // Safe-area-inset-top pushes them BELOW the iOS status bar/Dynamic Island.
+  // Safe-area-inset-right pushes them IN from Android cutouts.
+  headerIcon1: {
+    top:   "calc(2% + 5px + env(safe-area-inset-top, 0px))",
+    right: "calc(19.5% + 32px + env(safe-area-inset-right, 0px))",
+    width: "5%", height: "3%",
+  },
+  headerIcon2: {
+    top:   "calc(2% + 5px + env(safe-area-inset-top, 0px))",
+    right: "calc(10.5% + 32px + env(safe-area-inset-right, 0px))",
+    width: "5%", height: "3%",
+  },
+  headerIcon3: {
+    top:   "calc(2% + 5px + env(safe-area-inset-top, 0px))",
+    right: "calc(2% + 32px + env(safe-area-inset-right, 0px))",
+    width: "5%", height: "3%",
+  },
   // 3-dot vertical kebab under the Food rail button · Philip 2026-08-28.
-  // Opens a landscape panel that slides in from the right over the footer.
-  // Rail ends at DEFAULT_ZONES.side bottom (24% + 52% = 76%) · kebab lives
-  // in the dead space between rail and composer (76-92%).
-  // Fine-tune: +5px left · +5px down (Philip 2026-08-28).
-  rightKebab: { top: "calc(77% + 5px)", right: "calc(3% + 5px)", width: "9%", height: "5%" },
+  // Right-inset only (kebab sits vertically mid-frame · no status bar risk).
+  rightKebab: {
+    top:   "calc(77% + 5px)",
+    right: "calc(3% + 5px + env(safe-area-inset-right, 0px))",
+    width: "9%", height: "5%",
+  },
 } as const;
 
 /**
@@ -236,16 +323,20 @@ export const CHAT_BUBBLE_MAX_WIDTH_WIDE = `calc(${BEZEL_W_CSS} * 0.75)` as const
 export const FEED_LANE_INSET_PCT = 5 as const;
 
 /**
- * NEX ANCHOR POSITION · Philip 2026-08-28 · Phase 1 spatial canvas.
+ * NEX ANCHOR POSITION · Philip 2026-08-28 · Phase 1 spatial canvas · LOCKED.
  *
- * The permanent (x, y) coordinate of the first NEX message. Never moves.
- * Aligned with the same right-side spatial system as normal NEX messages.
- * Y matches the currently visually-approved NEX-line position from the
- * previous padding-top phase (calc(22% + 65px)) but exposed as a named
- * coordinate so we can relocate it later without touching the flow logic.
+ * The permanent (x, y) coordinate of the first NEX message and every
+ * subsequent message in the vertical timeline. This is the START POSITION
+ * for the greeting text ("Hi. Ask me anything…") and every message that
+ * follows — timeline flows down from here.
+ *
+ * Iteration history:
+ *   · Original padding-top phase → calc(22% + 65px)
+ *   · Philip 2026-08-29 · nudged up 15px more → 22%
+ *   · Philip 2026-09-01 · nudged up 20px more → calc(22% - 20px) · LOCKED
  */
 export const NEX_ANCHOR_POSITION = Object.freeze({
-  yCss: "22%",                // Philip 2026-08-29 · nudged up ANOTHER 15px (was calc(22% + 15px) · cumulative 65px total from original)
+  yCss: "calc(22% - 20px)",   // Philip 2026-09-01 · -20px lock · start position for greeting text
   leftCss: "4%",              // left-inset · NEX = LEFT (Philip 2026-08-28 locked)
 } as const);
 

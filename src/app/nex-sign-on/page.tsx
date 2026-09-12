@@ -677,7 +677,7 @@ export default function NexSignOnPage() {
             any modal overlays a future toast/error surface might add. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/nex/hud-frame-v13-arrival.png"
+          src="/nex/hud-frame-master.png"
           alt=""
           aria-hidden="true"
           style={{

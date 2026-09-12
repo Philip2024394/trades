@@ -9,7 +9,7 @@
 
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
@@ -56,7 +56,18 @@ import { useIsTrade } from "@/apps/hub/lib/useIsTrade";
 
 type SectionKey = "regulars" | "past-orders" | "offers" | "quotes" | "substitutes" | "templates" | "trending";
 
+// Suspense wrapper required because TradeNotebookPageInner calls
+// useSearchParams() — Next.js 15/16 refuses to prerender pages that
+// read search params without a boundary.
 export default function TradeNotebookPage() {
+  return (
+    <Suspense fallback={null}>
+      <TradeNotebookPageInner/>
+    </Suspense>
+  );
+}
+
+function TradeNotebookPageInner() {
   const trade = currentViewerTrade();
   const isTrade = useIsTrade();
   const params = useSearchParams();

@@ -109,15 +109,25 @@ export const FoodPostgresAdapter: WorldAdapter = {
   async search(input: WorldSearchInput): Promise<WorldSearchResult> {
     const t0 = performance.now();
     const readAt = new Date().toISOString();
+    // Founder BEGIN 2026-09-09 · SEARCHWORLD-SUB-INSTRUMENTATION
+    // All timings try/catch wrapped so instrumentation NEVER breaks queries.
+    const _st: Record<string, number> = {};
+    const _mark = (name: string, since: number) => {
+      try { _st[name] = Math.round((performance.now() - since) * 100) / 100; } catch {}
+    };
     if (input.market !== "ID") {
       return {
         vertical: "food", market: input.market,
         records: [], totalAvailable: 0,
         latencyMs: performance.now() - t0,
+        subTimings: _st,
         degradedReason: "market_not_supported",
       };
     }
+    const _t_pool = performance.now();
     const pool = await getPool();
+    _mark("pool_acquire", _t_pool);
+    const _t_build = performance.now();
     const params: unknown[] = ["ID"];
     const clauses: string[] = ["country = $1", VISIBILITY_FILTER];
     if (input.city) {
@@ -155,25 +165,40 @@ export const FoodPostgresAdapter: WorldAdapter = {
       input.sort === "rating" ? "rating DESC NULLS LAST, review_count DESC NULLS LAST" :
       input.sort === "recent" ? "updated_at DESC NULLS LAST" :
       "business_name ASC";
+    _mark("query_build", _t_build);
 
-    const [countRes, rowsRes] = await Promise.all([
-      pool.query(`SELECT COUNT(*)::int AS n FROM nex.food_business WHERE ${where}`, params),
-      pool.query(
-        `SELECT ${SELECT_COLS}
-           FROM nex.food_business
-          WHERE ${where}
-          ORDER BY ${orderBy}
-          LIMIT ${limit} OFFSET ${offset}`,
-        params,
-      ),
-    ]);
+    // Measure both parallel queries individually so we can see if COUNT is the
+    // straggler (common when Postgres seq-scans for ILIKE). Promise.all still
+    // dominates end-to-end · but individual per-query time is now visible.
+    const _t_sql = performance.now();
+    const _t_count = performance.now();
+    const countP = pool.query(`SELECT COUNT(*)::int AS n FROM nex.food_business WHERE ${where}`, params)
+      .then((r) => { try { _st.sql_count = Math.round((performance.now() - _t_count) * 100) / 100; } catch {} return r; });
+    const _t_rows = performance.now();
+    const rowsP = pool.query(
+      `SELECT ${SELECT_COLS}
+         FROM nex.food_business
+        WHERE ${where}
+        ORDER BY ${orderBy}
+        LIMIT ${limit} OFFSET ${offset}`,
+      params,
+    ).then((r) => { try { _st.sql_rows = Math.round((performance.now() - _t_rows) * 100) / 100; } catch {} return r; });
+    const [countRes, rowsRes] = await Promise.all([countP, rowsP]);
+    _mark("sql_promise_all", _t_sql);
+    const _t_hydrate = performance.now();
     const records = rowsRes.rows.map((r) => rowToRecord(r as Record<string, unknown>, readAt));
-    return {
-      vertical: "food", market: "ID",
+    _mark("row_hydration", _t_hydrate);
+    const _t_result = performance.now();
+    const result = {
+      vertical: "food" as const, market: "ID" as const,
       records,
       totalAvailable: Number(countRes.rows[0]?.n ?? 0),
       latencyMs: performance.now() - t0,
+      subTimings: _st,
     };
+    _mark("result_build", _t_result);
+    try { _st.adapter_total = Math.round((performance.now() - t0) * 100) / 100; } catch {}
+    return result;
   },
 
   async getById({ id, market }): Promise<WorldRecord | null> {

@@ -629,7 +629,7 @@ export default function NexDoorPage() {
             none · door + inner content receive taps through the
             transparent interior. */}
         <img
-          src="/nex/hud-frame-v12-norail.png"
+          src="/nex/hud-frame-master.png"
           alt=""
           aria-hidden
           draggable={false}

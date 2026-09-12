@@ -27,7 +27,7 @@ export type IntentResult = {
 // ─── Pattern tables ──────────────────────────────────────────────
 
 const NAVIGATION_PATTERNS: Array<{ re: RegExp; target: string; reason: string }> = [
-  { re: /\b(open|show|go to|take me to)\s+(my\s+)?(messages?|chats?|inbox)\b/, target: "/nex-app/messages", reason: "user wants messages" },
+  // Messages navigation removed 2026-09-06 · /nex-app/messages deleted.
   { re: /\b(open|show|go to|take me to)\s+(my\s+)?(profile|account|settings)\b/, target: "/nex-app/profile", reason: "user wants profile/settings" },
   { re: /\b(open|show|go to|take me to)\s+(my\s+)?(home|dashboard)\b/, target: "/nex-app", reason: "user wants home" },
   { re: /\b(open|show|go to|take me to)\s+(my\s+)?(marketplace|market)\b/, target: "/nex-app/marketplace", reason: "user wants marketplace" },
