@@ -437,8 +437,11 @@ describe("WO-WORKSTATION-12 · real failure-driven correction cycle", () => {
   it(
     "PQ · a corrective plan attempting to expand authority is REJECTED (not silently allowed)",
     async () => {
-      await cleanWo8Collections();
-
+      // NOTE · we do NOT cleanWo8Collections() here: this test never
+      // reaches persistCycle (challenger rejects the malicious plan first),
+      // so wiping storage would erase the previous test's real evidence
+      // without repopulating it. Trace IDs are unique per test so no
+      // cross-test contamination is possible.
       const kp = generateKeyPair("founder-wo12-pq");
       const manifest: FounderKeyManifest = {
         version: "wo2.v0.1",
