@@ -160,6 +160,14 @@ const nextConfig = {
       { source: "/trade/:slug/trade-center-picks", destination: "/:slug/trade-center-picks", permanent: true },
       { source: "/trade/:slug/picks/:pickId", destination: "/:slug/picks/:pickId", permanent: true },
 
+      // Founder BEGIN 2026-09-09 · NEX Chat page canonical URL rename.
+      // /nex-app/chat is the huge legacy general-chat page (Phase 3.1 tested).
+      // Canonical URL is now /nex-appchat — single path segment · one file.
+      // Old URLs 308 so existing bookmarks + external links keep working.
+      // /nex-app/talk was a duplicate front-door surface — retired 2026-09-09.
+      { source: "/nex-app/chat", destination: "/nex-appchat", permanent: true },
+      { source: "/nex-app/talk", destination: "/nex-appchat", permanent: true },
+
       // Trade Center Week 4 · ADR-053 — canteens migrate under
       // /community/*. Permanent redirect + edge cache invalidation
       // per TRADE_CENTER_2_SPEC.md §19.9.
