@@ -161,6 +161,17 @@ data/nex-storage/nex1_workflow_traces.jsonl
 data/nex-storage/nex1_audit_events.jsonl
 data/nex-storage/nex1_idempotency_lookup.jsonl
 
+# 2026-09-13 · WO-WORKSTATION-02 durable authorization storage.
+# nex1_founder_authorizations holds signed Ed25519 envelopes with
+# nonce + chain-of-custody. Real persisted state; not source of truth
+# for git. Founder key manifest lives separately at a path defined by
+# NEX_FOUNDER_KEY_MANIFEST_PATH (never committed regardless).
+data/nex-storage/nex1_founder_authorizations.jsonl
+# Local founder key manifests -- private material never lands in git,
+# and public-key-only manifests should live in secure config, not repo.
+.founder-keys.local.json
+config/founder-keys.local.json
+
 # 2026-09-12 · Content-addressed Wikidata cache written by the lab
 # harvester. Keyed by content hash; regenerates on demand.
 data/nex-lab/wikidata-cache/

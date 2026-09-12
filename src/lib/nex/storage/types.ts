@@ -164,6 +164,14 @@ export const COLLECTIONS = {
   //   caught rather than trusted.
   nex1_workflow_traces:   "nex1_workflow_traces",
   nex1_audit_events:      "nex1_audit_events",
+  // WO-WORKSTATION-02 · Founder-authorised 2026-09-13.
+  // nex1_founder_authorizations: signed Ed25519 authorization envelopes.
+  //   Each record binds a founder key to a specific (trace_id, work_order_id)
+  //   with an expiry, nonce, and chain-of-custody link to the prior
+  //   authorization for the same trace. Replaces the spoofable
+  //   FA-WORKSTATION-<timestamp> plain-text tokens that ADR-0318 G15
+  //   identified as CRITICAL SECURITY GAP.
+  nex1_founder_authorizations: "nex1_founder_authorizations",
 } as const;
 
 export type CollectionName = keyof typeof COLLECTIONS;
