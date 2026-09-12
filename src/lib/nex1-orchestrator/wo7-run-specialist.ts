@@ -135,23 +135,55 @@ async function runNodeSyntaxAdapter(inv: SpecialistInvocation): Promise<Speciali
 }
 
 function parseNodeSyntaxError(stderr: string, target: string): SpecialistFinding | null {
-  // node --check prints something like:
+  // Case 1 — real syntax error. `node --check` prints:
   //   file:3
   //   const x = ;
   //             ^
-  //
   //   SyntaxError: Unexpected token ';'
-  const match = /SyntaxError:\s*([^\n]+)/.exec(stderr);
-  if (!match) return null;
-  const lineMatch = /:(\d+)/.exec(stderr);
-  return {
-    path: target,
-    line: lineMatch ? Number(lineMatch[1]) : null,
-    column: null,
-    severity: "error",
-    rule: "syntax-error",
-    message: match[1].trim(),
-  };
+  const syntax = /SyntaxError:\s*([^\n]+)/.exec(stderr);
+  if (syntax) {
+    const lineMatch = /:(\d+)/.exec(stderr);
+    return {
+      path: target,
+      line: lineMatch ? Number(lineMatch[1]) : null,
+      column: null,
+      severity: "error",
+      rule: "syntax-error",
+      message: syntax[1].trim(),
+    };
+  }
+  // Case 2 — target file itself is absent. `node --check` prints:
+  //   Error: Cannot find module '<absolute-path-to-target>'
+  // We normalise this into an ENOENT-shaped message so downstream signal
+  // extractors already tuned for "no such file or directory" match it
+  // without needing tool-specific parsers at every layer.
+  const cannotFind = /Cannot find module ['"]([^'"]+)['"]/.exec(stderr);
+  if (cannotFind) {
+    const modulePath = cannotFind[1].replace(/\\/g, "/");
+    const targetPosix = target.replace(/\\/g, "/");
+    // If the module path resolves to (or ends with) our target file, the
+    // target file itself is missing — treat as file-not-found. Otherwise
+    // it is a genuine external module resolution failure.
+    if (modulePath.endsWith(targetPosix) || modulePath.endsWith("/" + targetPosix)) {
+      return {
+        path: target,
+        line: null,
+        column: null,
+        severity: "error",
+        rule: "file-not-found",
+        message: `ENOENT: no such file or directory, open '${target}'`,
+      };
+    }
+    return {
+      path: target,
+      line: null,
+      column: null,
+      severity: "error",
+      rule: "module-not-found",
+      message: `Cannot find module '${modulePath}'`,
+    };
+  }
+  return null;
 }
 
 // ── Adapter · tsc ───────────────────────────────────────────────────────

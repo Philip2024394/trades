@@ -22,6 +22,11 @@ export type FailureDiagnosis =
        *  and a retry with the same plan is a reasonable correction. */
       readonly is_transient: boolean;
       readonly stderr_excerpt: string;
+      /** Signals extracted from build stderr by the diagnoser. Populated
+       *  for build_failed as of WO-12 so the corrector can match failures
+       *  across stages (specialist + build both reporting missing-file
+       *  root cause). */
+      readonly signals: readonly SpecialistSignal[];
     }
   | {
       readonly kind: "runtime_failed";
@@ -35,6 +40,9 @@ export type FailureDiagnosis =
         | "HEALTH_UNEXPECTED_BODY";
       readonly is_transient: boolean;
       readonly stderr_excerpt: string;
+      /** Signals extracted from runtime stderr by the diagnoser. Same
+       *  purpose as on build_failed — cross-stage correlation. */
+      readonly signals: readonly SpecialistSignal[];
     }
   | {
       readonly kind: "specialist_failed";

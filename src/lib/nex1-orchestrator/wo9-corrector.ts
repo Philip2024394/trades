@@ -121,27 +121,37 @@ export function proposeCorrection(input: {
   }
 
   // RULE 2 · REINVOKE_PLAN_MISSING_FILES
-  // Every failure that mentions a "missing target file" for a path that
-  // WAS in the previous plan. The most likely root cause is that the
-  // WO-04 execution didn't actually write the file, so re-invoking the
-  // same plan re-attempts the write.
-  const missingPaths = collectMissingTargetPaths(input.diagnosis.failures);
-  if (missingPaths.length > 0) {
-    const planned = new Set(input.previous_plan.ops.map((op) => op.path));
-    const allInPlan = missingPaths.every((p) => planned.has(p));
-    // Only apply if EVERY failure is a missing-target-file for a planned path.
-    // Mixing this with other failures would silently drop them.
-    const allFailuresAreMissingFile = input.diagnosis.failures.every((f) =>
-      f.kind === "specialist_failed" && f.signals.every((s) => s.kind === "missing_target_file"),
-    );
+  // Every failure whose signals point at a "missing target file" for a
+  // path that WAS in the previous plan. Signals from any diagnosis kind
+  // (specialist_failed, build_failed, runtime_failed) are considered so a
+  // real failed cycle where BOTH build and specialist reported the same
+  // missing file is still recognised as a coherent root cause.
+  //
+  // Candidate paths may arrive as absolute (from build/runtime stderr) or
+  // as workspace-relative (from specialist findings). matchCandidateToPlan
+  // reconciles them against the plan's canonical relative paths.
+  const rawCandidates = collectMissingCandidatePaths(input.diagnosis.failures);
+  if (rawCandidates.length > 0) {
+    const plannedPaths = input.previous_plan.ops.map((op) => op.path);
+    const resolved = rawCandidates.map((c) => matchCandidateToPlan(c, plannedPaths));
+    const allInPlan = resolved.every((r) => r !== null);
+    // Only apply if EVERY failure is a missing-file failure for a planned
+    // path. Mixed failures (e.g. syntax error + missing file) must escalate
+    // rather than silently ignoring the harder half.
+    const allFailuresAreMissingFile = input.diagnosis.failures.every((f) => {
+      if (f.kind === "specialist_unavailable" || f.kind === "execution_failed") return false;
+      const sigs = getSignals(f);
+      return sigs.length > 0 && sigs.every((s) => s.kind === "missing_target_file");
+    });
     if (allInPlan && allFailuresAreMissingFile) {
+      const missingRelative = resolved.filter((r): r is string => r !== null);
       rules_applied.push("REINVOKE_PLAN_MISSING_FILES");
       return {
         ok: true,
         kind: "reinvoke_plan_missing_files",
         next_plan: freshenPlanId(input.previous_plan),
         rules_applied,
-        reasoning: `missing files ${JSON.stringify(missingPaths)} were in the previous plan; the WO-04 write did not land — re-invoking the plan`,
+        reasoning: `missing files ${JSON.stringify(missingRelative)} were in the previous plan; the WO-04 write did not land — re-invoking the plan`,
       };
     }
   }
@@ -222,6 +232,48 @@ function collectMissingTargetPaths(failures: readonly FailureDiagnosis[]): strin
     }
   }
   return Array.from(paths);
+}
+
+/** Extract missing_target_file candidate paths from every signal-bearing
+ *  failure diagnosis (specialist_failed, build_failed, runtime_failed).
+ *  Paths may be absolute or workspace-relative — the caller reconciles. */
+function collectMissingCandidatePaths(failures: readonly FailureDiagnosis[]): string[] {
+  const paths = new Set<string>();
+  for (const f of failures) {
+    const sigs = getSignals(f);
+    for (const s of sigs) {
+      if (s.kind === "missing_target_file") paths.add(s.path);
+    }
+  }
+  return Array.from(paths);
+}
+
+/** Return the signal array for any diagnosis kind that carries signals.
+ *  execution_failed and specialist_unavailable have no signals field. */
+function getSignals(f: FailureDiagnosis): readonly import("./wo9-types").SpecialistSignal[] {
+  if (f.kind === "specialist_failed" || f.kind === "build_failed" || f.kind === "runtime_failed") {
+    return f.signals;
+  }
+  return [];
+}
+
+/** Reconcile a candidate missing-file path (which may be absolute from
+ *  build/runtime stderr, or workspace-relative from a specialist finding)
+ *  against the plan's workspace-relative op paths. Returns the plan-form
+ *  path if a match is found, else null.
+ *
+ *  Matching rules, in order:
+ *    - exact posix-normalised equality
+ *    - candidate ends with "/" + planned (candidate is an absolute path
+ *      that resolves to the planned relative path inside a workspace) */
+function matchCandidateToPlan(candidate: string, plannedPaths: readonly string[]): string | null {
+  const c = candidate.replace(/\\/g, "/");
+  const p = plannedPaths.map((x) => x.replace(/\\/g, "/"));
+  if (p.includes(c)) return c;
+  for (const pp of p) {
+    if (c.endsWith("/" + pp) || c === pp) return pp;
+  }
+  return null;
 }
 
 /** Return a copy of the plan with a fresh plan_id + created_at so

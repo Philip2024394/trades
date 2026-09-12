@@ -40,6 +40,7 @@ export function diagnoseHistory(input: {
           signal: r.signal,
           is_transient: isTransient,
           stderr_excerpt: excerpt(r.stderr, 500),
+          signals: extractSignalsFromStderr(r.stderr),
         });
       }
     } else if (entry.kind === "runtime") {
@@ -63,6 +64,7 @@ export function diagnoseHistory(input: {
           failure_class,
           is_transient: isTransient,
           stderr_excerpt: excerpt(r.stderr, 500),
+          signals: extractSignalsFromStderr(r.stderr),
         });
       }
     } else if (entry.kind === "specialist") {
@@ -138,10 +140,18 @@ function extractSignals(findings: readonly SpecialistFinding[]): SpecialistSigna
       signals.push({ kind: "missing_target_file", path: enoent[1] ?? enoent[2] ?? f.path ?? "(unknown)", detail: f.message });
       continue;
     }
-    // 2. TypeScript "Cannot find module"
+    // 2. "Cannot find module" — TypeScript TS2307 or Node module-loader.
+    //    Distinguish target-file-missing (path-like argument) from
+    //    external-dep-missing (bare package name).
     if (/^TS2307$/.test(f.rule ?? "") || /Cannot find module ['"]([^'"]+)['"]/.test(f.message)) {
       const m = /Cannot find module ['"]([^'"]+)['"]/.exec(f.message);
-      signals.push({ kind: "unknown_module", module_name: m ? m[1] : "(unknown)", path: f.path, line: f.line });
+      const modulePath = m ? m[1] : "";
+      const isPathLike = modulePath.includes("/") || modulePath.includes("\\") || /\.[a-z]+$/i.test(modulePath);
+      if (isPathLike) {
+        signals.push({ kind: "missing_target_file", path: modulePath, detail: f.message });
+      } else {
+        signals.push({ kind: "unknown_module", module_name: modulePath || "(unknown)", path: f.path, line: f.line });
+      }
       continue;
     }
     // 3. Syntax error (Node --check output)
@@ -199,4 +209,37 @@ function classifyRuntimeFailure(r: import("./wo6-types").RuntimeReport):
 function excerpt(s: string, cap: number): string {
   if (s.length <= cap) return s;
   return s.slice(0, cap) + "\n…[truncated]";
+}
+
+/**
+ * Extract signals from raw stderr (build or runtime output). Constructs a
+ * synthetic finding envelope so the same signal-extractor used for
+ * specialist findings applies uniformly. Returns [] when nothing matches.
+ *
+ * Added in WO-12 to make the corrector able to correlate cross-stage
+ * failures (build + specialist both reporting the same missing file).
+ */
+function extractSignalsFromStderr(stderr: string): SpecialistSignal[] {
+  if (typeof stderr !== "string" || stderr.length === 0) return [];
+  // Try each stderr line as a candidate finding so multi-line node output
+  // (which prints the stack, then Error: ..., then the message) is scanned
+  // for patterns the extractor understands.
+  const findings: SpecialistFinding[] = [];
+  for (const line of stderr.split("\n")) {
+    const t = line.trim();
+    if (t.length === 0) continue;
+    findings.push({
+      path: null,
+      line: null,
+      column: null,
+      severity: "error",
+      rule: null,
+      message: t,
+    });
+  }
+  // Drop "unrecognised" fallbacks — every stack-trace line would otherwise
+  // dilute the signal set and prevent the corrector's homogeneity check
+  // (all signals same kind) from firing on real single-cause failures.
+  // If a stderr line has no matching pattern, it contributes no signal.
+  return extractSignals(findings).filter((s) => s.kind !== "unrecognised");
 }
