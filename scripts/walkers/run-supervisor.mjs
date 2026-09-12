@@ -15,16 +15,37 @@
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { writeFile } from "node:fs/promises";
+import { writeFile, readFile } from "node:fs/promises";
+import { readFileSync, existsSync } from "node:fs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, "..", "..");
+
+// System A isolation gate · same pattern as run-outer-watchdog.mjs. If this
+// supervisor is invoked directly (not via the outer watchdog), we still
+// substitute NEX_TAXONOMY_POSTGRES_URL into NEX_POSTGRES_URL so the child
+// tsx process never sees the production NEX URL.
+if (existsSync(path.join(repoRoot, ".env.local"))) {
+  for (const line of readFileSync(path.join(repoRoot, ".env.local"), "utf8").split(/\r?\n/)) {
+    const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
+    if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, "");
+  }
+}
+const TAX_URL = process.env.NEX_TAXONOMY_POSTGRES_URL;
+if (!TAX_URL || TAX_URL.trim().length === 0) {
+  console.error(
+    "[supervisor] FAIL-CLOSED · NEX_TAXONOMY_POSTGRES_URL is not set · " +
+    "System A refuses to boot pointed at the production NEX database.",
+  );
+  process.exit(2);
+}
+const SYSTEM_A_ENV = { ...process.env, NEX_POSTGRES_URL: TAX_URL };
 
 if (!process.env.__SUPERVISOR_INNER__) {
   const child = spawn(
     "npx",
     ["tsx", "--env-file=.env.local", fileURLToPath(import.meta.url), ...process.argv.slice(2)],
-    { stdio: "inherit", cwd: repoRoot, shell: true, env: { ...process.env, __SUPERVISOR_INNER__: "1" } },
+    { stdio: "inherit", cwd: repoRoot, shell: true, env: { ...SYSTEM_A_ENV, __SUPERVISOR_INNER__: "1" } },
   );
   child.on("exit", (code) => process.exit(code ?? 1));
 } else {

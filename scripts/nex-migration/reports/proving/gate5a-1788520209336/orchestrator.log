@@ -1,0 +1,6 @@
+# orchestrator started at 2026-09-04T11:10:21.849Z · script=C:\Users\Victus\trades\scripts\nex-workforce-v2\orchestrator.mjs
+{"ts":"2026-09-04T11:10:24.803Z","msg":"orch.created","interval_ms":4000,"max_consecutive_errors":3}
+{"ts":"2026-09-04T11:10:24.804Z","msg":"orch.loop.start","interval_ms":4000}
+{"ts":"2026-09-04T11:10:24.804Z","msg":"orch.tick.begin","tick_n":1}
+{"ts":"2026-09-04T11:10:26.230Z","msg":"orch.eligible","eligible_count":1,"duration_ms":1426}
+# orchestrator exited code=null signal=SIGTERM at 2026-09-04T11:10:26.575Z

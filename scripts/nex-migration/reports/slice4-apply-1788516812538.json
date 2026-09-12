@@ -1,0 +1,54 @@
+{
+  "started_at": "2026-09-04T10:13:12.991Z",
+  "phases": {
+    "integrity": {
+      "sha": "7a6d2167bc135c46636436af0edd32838142d6183fcbeb0189b35933304ba408",
+      "bytes": 16076
+    },
+    "preflight": {
+      "targetId": {
+        "db": "postgres",
+        "ver": "17.6",
+        "usr": "postgres"
+      },
+      "pre": {
+        "wi_bbox_col": 0,
+        "cc_bbox_col": 1,
+        "view_bbox": 0,
+        "fn_bbox": 0,
+        "wf_policies": 11,
+        "food_policies": 5,
+        "enqueue_admin_owned": 1,
+        "admin_bypass": false,
+        "food_rows": 22750,
+        "wi_rows": 1
+      },
+      "preTaskState": "Disabled"
+    },
+    "apply": {
+      "ok": true,
+      "duration_ms": 2009
+    },
+    "postflight": {
+      "post": {
+        "wi_bbox_col": 1,
+        "wi_bbox_nullable": "YES",
+        "view_bbox": 1,
+        "fn_bbox": 1,
+        "wf_policies": 11,
+        "food_policies": 5,
+        "enqueue_admin_owned": 1,
+        "enqueue_secdef": true,
+        "admin_create": false,
+        "food_rows": 22750,
+        "wi_rows": 1,
+        "wi_with_bbox": 0
+      },
+      "postTaskState": "Disabled"
+    }
+  },
+  "finished_at": "2026-09-04T10:13:32.538Z",
+  "final_ok": true,
+  "pass": 22,
+  "fail": 0
+}

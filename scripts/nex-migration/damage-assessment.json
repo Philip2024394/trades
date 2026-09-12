@@ -1,0 +1,1649 @@
+{
+  "health": {
+    "status": 201,
+    "body": [
+      {
+        "pg_version": "PostgreSQL 17.6 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 15.2.0, 64-bit",
+        "db": "postgres",
+        "role": "postgres",
+        "ts": "2026-09-02 20:12:11.560706+00"
+      }
+    ]
+  },
+  "db_size": [
+    {
+      "total_size": "934 MB",
+      "bytes": 978947219
+    }
+  ],
+  "schema_sizes": [
+    {
+      "schema": "nex",
+      "total_size": "841 MB",
+      "bytes": 881483776,
+      "tables": 191
+    },
+    {
+      "schema": "public",
+      "total_size": "296 MB",
+      "bytes": 310140928,
+      "tables": 17
+    },
+    {
+      "schema": "storage",
+      "total_size": "2392 kB",
+      "bytes": 2449408,
+      "tables": 8
+    },
+    {
+      "schema": "auth",
+      "total_size": "1752 kB",
+      "bytes": 1794048,
+      "tables": 23
+    },
+    {
+      "schema": "realtime",
+      "total_size": "96 kB",
+      "bytes": 98304,
+      "tables": 2
+    },
+    {
+      "schema": "vault",
+      "total_size": "40 kB",
+      "bytes": 40960,
+      "tables": 1
+    }
+  ],
+  "wal_settings": [
+    {
+      "name": "archive_mode",
+      "setting": "on",
+      "unit": null,
+      "source": "configuration file"
+    },
+    {
+      "name": "autovacuum",
+      "setting": "on",
+      "unit": null,
+      "source": "default"
+    },
+    {
+      "name": "checkpoint_timeout",
+      "setting": "300",
+      "unit": "s",
+      "source": "default"
+    },
+    {
+      "name": "data_directory",
+      "setting": "/data/pgdata",
+      "unit": null,
+      "source": "override"
+    },
+    {
+      "name": "effective_cache_size",
+      "setting": "49152",
+      "unit": "8kB",
+      "source": "configuration file"
+    },
+    {
+      "name": "fsync",
+      "setting": "on",
+      "unit": null,
+      "source": "default"
+    },
+    {
+      "name": "maintenance_work_mem",
+      "setting": "32768",
+      "unit": "kB",
+      "source": "configuration file"
+    },
+    {
+      "name": "max_connections",
+      "setting": "60",
+      "unit": null,
+      "source": "configuration file"
+    },
+    {
+      "name": "max_wal_size",
+      "setting": "1024",
+      "unit": "MB",
+      "source": "configuration file"
+    },
+    {
+      "name": "min_wal_size",
+      "setting": "128",
+      "unit": "MB",
+      "source": "configuration file"
+    },
+    {
+      "name": "shared_buffers",
+      "setting": "28672",
+      "unit": "8kB",
+      "source": "configuration file"
+    },
+    {
+      "name": "wal_keep_size",
+      "setting": "0",
+      "unit": "MB",
+      "source": "default"
+    },
+    {
+      "name": "wal_level",
+      "setting": "logical",
+      "unit": null,
+      "source": "configuration file"
+    },
+    {
+      "name": "work_mem",
+      "setting": "2184",
+      "unit": "kB",
+      "source": "configuration file"
+    }
+  ],
+  "nex_row_counts": [
+    {
+      "table": "accommodation_business",
+      "row_estimate": 0,
+      "total_size": "11 MB",
+      "bytes": 11935744
+    },
+    {
+      "table": "accommodation_business_field_provenance",
+      "row_estimate": 0,
+      "total_size": "11 MB",
+      "bytes": 11321344
+    },
+    {
+      "table": "accommodation_business_source_snapshot",
+      "row_estimate": 0,
+      "total_size": "4080 kB",
+      "bytes": 4177920
+    },
+    {
+      "table": "accommodation_enrichment_evidence",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "alert_dispatches",
+      "row_estimate": 0,
+      "total_size": "64 kB",
+      "bytes": 65536
+    },
+    {
+      "table": "alert_rules",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "alerts",
+      "row_estimate": 0,
+      "total_size": "88 kB",
+      "bytes": 90112
+    },
+    {
+      "table": "analytics_events",
+      "row_estimate": 0,
+      "total_size": "416 kB",
+      "bytes": 425984
+    },
+    {
+      "table": "analytics_records",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "analytics_rollup_queue",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "attributions",
+      "row_estimate": 0,
+      "total_size": "128 kB",
+      "bytes": 131072
+    },
+    {
+      "table": "audit_log",
+      "row_estimate": 0,
+      "total_size": "64 kB",
+      "bytes": 65536
+    },
+    {
+      "table": "automation_rules",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "automation_runs",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "benchmark_runs",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "bike_model",
+      "row_estimate": 0,
+      "total_size": "112 kB",
+      "bytes": 114688
+    },
+    {
+      "table": "bike_rental_listing",
+      "row_estimate": 0,
+      "total_size": "80 kB",
+      "bytes": 81920
+    },
+    {
+      "table": "brain_accommodation_prices",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "brain_activities",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "brain_attractions",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "brain_did_you_know_indonesia",
+      "row_estimate": 0,
+      "total_size": "160 kB",
+      "bytes": 163840
+    },
+    {
+      "table": "brain_english_grammar",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "brain_english_lesson",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "brain_english_practice",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "brain_english_progress",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "brain_english_vocabulary",
+      "row_estimate": 0,
+      "total_size": "120 kB",
+      "bytes": 122880
+    },
+    {
+      "table": "brain_local_guide",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "brain_location",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "brain_memories",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "brain_seasons",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "brain_transport",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "brain_traveler_rating",
+      "row_estimate": 0,
+      "total_size": "24 kB",
+      "bytes": 24576
+    },
+    {
+      "table": "brain_user_saved_facts",
+      "row_estimate": 0,
+      "total_size": "64 kB",
+      "bytes": 65536
+    },
+    {
+      "table": "business_calling_config",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "business_image",
+      "row_estimate": 0,
+      "total_size": "792 kB",
+      "bytes": 811008
+    },
+    {
+      "table": "business_knowledge",
+      "row_estimate": 0,
+      "total_size": "840 kB",
+      "bytes": 860160
+    },
+    {
+      "table": "call_record",
+      "row_estimate": 0,
+      "total_size": "96 kB",
+      "bytes": 98304
+    },
+    {
+      "table": "campaign_recipients",
+      "row_estimate": 0,
+      "total_size": "224 kB",
+      "bytes": 229376
+    },
+    {
+      "table": "campaign_segments",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "campaigns",
+      "row_estimate": 0,
+      "total_size": "80 kB",
+      "bytes": 81920
+    },
+    {
+      "table": "category_candidate",
+      "row_estimate": 0,
+      "total_size": "96 kB",
+      "bytes": 98304
+    },
+    {
+      "table": "category_candidate_calibration_annotation",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "category_candidate_score",
+      "row_estimate": 0,
+      "total_size": "43 MB",
+      "bytes": 44646400
+    },
+    {
+      "table": "category_image_library",
+      "row_estimate": 0,
+      "total_size": "24 kB",
+      "bytes": 24576
+    },
+    {
+      "table": "category_registry",
+      "row_estimate": 0,
+      "total_size": "104 kB",
+      "bytes": 106496
+    },
+    {
+      "table": "chat_message",
+      "row_estimate": 0,
+      "total_size": "96 kB",
+      "bytes": 98304
+    },
+    {
+      "table": "chat_message_archive",
+      "row_estimate": 0,
+      "total_size": "64 kB",
+      "bytes": 65536
+    },
+    {
+      "table": "chat_message_deletion",
+      "row_estimate": 0,
+      "total_size": "64 kB",
+      "bytes": 65536
+    },
+    {
+      "table": "compliance_events",
+      "row_estimate": 0,
+      "total_size": "80 kB",
+      "bytes": 81920
+    },
+    {
+      "table": "confidence_scores",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "contact_duplicate_suggestions",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "contact_merges",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "contact_segments",
+      "row_estimate": 0,
+      "total_size": "64 kB",
+      "bytes": 65536
+    },
+    {
+      "table": "contact_sources",
+      "row_estimate": 0,
+      "total_size": "56 kB",
+      "bytes": 57344
+    },
+    {
+      "table": "contacts",
+      "row_estimate": 0,
+      "total_size": "208 kB",
+      "bytes": 212992
+    },
+    {
+      "table": "contradictions",
+      "row_estimate": 0,
+      "total_size": "24 kB",
+      "bytes": 24576
+    },
+    {
+      "table": "conv_edges",
+      "row_estimate": 0,
+      "total_size": "1776 kB",
+      "bytes": 1818624
+    },
+    {
+      "table": "conv_entities",
+      "row_estimate": 0,
+      "total_size": "144 kB",
+      "bytes": 147456
+    },
+    {
+      "table": "conv_feedback",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "conv_intents",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "conv_knowledge_items",
+      "row_estimate": 0,
+      "total_size": "5736 kB",
+      "bytes": 5873664
+    },
+    {
+      "table": "conv_learning_candidate",
+      "row_estimate": 0,
+      "total_size": "1320 kB",
+      "bytes": 1351680
+    },
+    {
+      "table": "conv_outcomes",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "conv_states",
+      "row_estimate": 0,
+      "total_size": "1696 kB",
+      "bytes": 1736704
+    },
+    {
+      "table": "conv_turns",
+      "row_estimate": 0,
+      "total_size": "544 kB",
+      "bytes": 557056
+    },
+    {
+      "table": "conversion_events",
+      "row_estimate": 0,
+      "total_size": "88 kB",
+      "bytes": 90112
+    },
+    {
+      "table": "cost_budget",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "delivery_job_attempts",
+      "row_estimate": 0,
+      "total_size": "416 kB",
+      "bytes": 425984
+    },
+    {
+      "table": "delivery_jobs",
+      "row_estimate": 0,
+      "total_size": "376 kB",
+      "bytes": 385024
+    },
+    {
+      "table": "delivery_workers_archive_2026_08_22",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "deprecations",
+      "row_estimate": 0,
+      "total_size": "24 kB",
+      "bytes": 24576
+    },
+    {
+      "table": "discovery_orchestrator_pick",
+      "row_estimate": 0,
+      "total_size": "4488 kB",
+      "bytes": 4595712
+    },
+    {
+      "table": "discovery_rotation_state",
+      "row_estimate": 0,
+      "total_size": "26 MB",
+      "bytes": 27140096
+    },
+    {
+      "table": "email_templates",
+      "row_estimate": 0,
+      "total_size": "104 kB",
+      "bytes": 106496
+    },
+    {
+      "table": "events",
+      "row_estimate": 0,
+      "total_size": "88 kB",
+      "bytes": 90112
+    },
+    {
+      "table": "experiment_assignments",
+      "row_estimate": 0,
+      "total_size": "280 kB",
+      "bytes": 286720
+    },
+    {
+      "table": "experiment_variants",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "experiments",
+      "row_estimate": 0,
+      "total_size": "80 kB",
+      "bytes": 81920
+    },
+    {
+      "table": "food_business",
+      "row_estimate": 0,
+      "total_size": "22 MB",
+      "bytes": 23355392
+    },
+    {
+      "table": "food_business_field_provenance",
+      "row_estimate": 0,
+      "total_size": "23 MB",
+      "bytes": 24330240
+    },
+    {
+      "table": "food_business_next_action",
+      "row_estimate": 0,
+      "total_size": "712 kB",
+      "bytes": 729088
+    },
+    {
+      "table": "food_business_promotion",
+      "row_estimate": 0,
+      "total_size": "440 kB",
+      "bytes": 450560
+    },
+    {
+      "table": "food_business_promotion_audit",
+      "row_estimate": 0,
+      "total_size": "272 kB",
+      "bytes": 278528
+    },
+    {
+      "table": "food_business_promotion_decision",
+      "row_estimate": 0,
+      "total_size": "96 kB",
+      "bytes": 98304
+    },
+    {
+      "table": "food_business_source_snapshot",
+      "row_estimate": 0,
+      "total_size": "9520 kB",
+      "bytes": 9748480
+    },
+    {
+      "table": "food_claim_code",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "food_commercial_event",
+      "row_estimate": 0,
+      "total_size": "64 kB",
+      "bytes": 65536
+    },
+    {
+      "table": "food_enrichment_evidence",
+      "row_estimate": 0,
+      "total_size": "704 kB",
+      "bytes": 720896
+    },
+    {
+      "table": "food_enrichment_job",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "food_hq_rule",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "food_next_action_audit",
+      "row_estimate": 0,
+      "total_size": "712 kB",
+      "bytes": 729088
+    },
+    {
+      "table": "food_outreach_attempt",
+      "row_estimate": 0,
+      "total_size": "64 kB",
+      "bytes": 65536
+    },
+    {
+      "table": "food_outreach_suppression",
+      "row_estimate": 0,
+      "total_size": "72 kB",
+      "bytes": 73728
+    },
+    {
+      "table": "food_outreach_template",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "geo_landmark",
+      "row_estimate": 0,
+      "total_size": "72 kB",
+      "bytes": 73728
+    },
+    {
+      "table": "graph_edges",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "identity_merge_log",
+      "row_estimate": 0,
+      "total_size": "455 MB",
+      "bytes": 477069312
+    },
+    {
+      "table": "import_mappings",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "jobs",
+      "row_estimate": 0,
+      "total_size": "56 kB",
+      "bytes": 57344
+    },
+    {
+      "table": "journey_campaign_executions",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "journey_events",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "journey_inbound_events",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "journey_states",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "journey_triggers",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "journeys",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "knowledge_dump_jobs",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "knowledge_feedback",
+      "row_estimate": 0,
+      "total_size": "64 kB",
+      "bytes": 65536
+    },
+    {
+      "table": "knowledge_inbox",
+      "row_estimate": 0,
+      "total_size": "88 kB",
+      "bytes": 90112
+    },
+    {
+      "table": "knowledge_inbox_stats",
+      "row_estimate": 0,
+      "total_size": "8192 bytes",
+      "bytes": 8192
+    },
+    {
+      "table": "knowledge_records",
+      "row_estimate": 0,
+      "total_size": "56 kB",
+      "bytes": 57344
+    },
+    {
+      "table": "kpe_chunks",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "kpe_decisions",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "kpe_documents",
+      "row_estimate": 0,
+      "total_size": "56 kB",
+      "bytes": 57344
+    },
+    {
+      "table": "kpe_duplicates",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "kpe_edges",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "kpe_human_reviews",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "kpe_metadata",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "kpe_processing_runs",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "llm_retry_queue",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "meaningful_area",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "media_object",
+      "row_estimate": 0,
+      "total_size": "64 kB",
+      "bytes": 65536
+    },
+    {
+      "table": "mp_category",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "mp_commerce_policy",
+      "row_estimate": 0,
+      "total_size": "16 kB",
+      "bytes": 16384
+    },
+    {
+      "table": "mp_product",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "mp_product_image",
+      "row_estimate": 0,
+      "total_size": "24 kB",
+      "bytes": 24576
+    },
+    {
+      "table": "mp_product_option",
+      "row_estimate": 0,
+      "total_size": "24 kB",
+      "bytes": 24576
+    },
+    {
+      "table": "mp_product_option_value",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "mp_product_variant",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "mp_seller",
+      "row_estimate": 0,
+      "total_size": "56 kB",
+      "bytes": 57344
+    },
+    {
+      "table": "object_blob_current",
+      "row_estimate": 0,
+      "total_size": "16 kB",
+      "bytes": 16384
+    },
+    {
+      "table": "object_blobs",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "object_manifest",
+      "row_estimate": 0,
+      "total_size": "64 kB",
+      "bytes": 65536
+    },
+    {
+      "table": "prediction_models",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "predictions",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "predictive_controls",
+      "row_estimate": 0,
+      "total_size": "16 kB",
+      "bytes": 16384
+    },
+    {
+      "table": "provider_profile",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "provider_rate_config",
+      "row_estimate": 0,
+      "total_size": "16 kB",
+      "bytes": 16384
+    },
+    {
+      "table": "provider_rate_lease",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "provider_registry",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "provider_topup_intent",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "provider_wallet",
+      "row_estimate": 0,
+      "total_size": "8192 bytes",
+      "bytes": 8192
+    },
+    {
+      "table": "provider_wallet_transaction",
+      "row_estimate": 0,
+      "total_size": "56 kB",
+      "bytes": 57344
+    },
+    {
+      "table": "record_versions",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "recovery_attempts",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "recovery_runs",
+      "row_estimate": 0,
+      "total_size": "24 kB",
+      "bytes": 24576
+    },
+    {
+      "table": "rollup_campaigns",
+      "row_estimate": 0,
+      "total_size": "8192 bytes",
+      "bytes": 8192
+    },
+    {
+      "table": "rollup_country",
+      "row_estimate": 0,
+      "total_size": "16 kB",
+      "bytes": 16384
+    },
+    {
+      "table": "rollup_daily",
+      "row_estimate": 0,
+      "total_size": "8192 bytes",
+      "bytes": 8192
+    },
+    {
+      "table": "rollup_monthly",
+      "row_estimate": 0,
+      "total_size": "8192 bytes",
+      "bytes": 8192
+    },
+    {
+      "table": "rollup_provider",
+      "row_estimate": 0,
+      "total_size": "16 kB",
+      "bytes": 16384
+    },
+    {
+      "table": "rollup_segment",
+      "row_estimate": 0,
+      "total_size": "8192 bytes",
+      "bytes": 8192
+    },
+    {
+      "table": "safety_audit_config",
+      "row_estimate": 0,
+      "total_size": "16 kB",
+      "bytes": 16384
+    },
+    {
+      "table": "safety_audit_event",
+      "row_estimate": 0,
+      "total_size": "56 kB",
+      "bytes": 57344
+    },
+    {
+      "table": "service_business",
+      "row_estimate": 0,
+      "total_size": "80 kB",
+      "bytes": 81920
+    },
+    {
+      "table": "service_business_source_snapshot",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "service_request",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "service_request_offer",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "social_accounts",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "social_admin_access_log",
+      "row_estimate": 0,
+      "total_size": "24 kB",
+      "bytes": 24576
+    },
+    {
+      "table": "social_audit_events",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "social_brand_profiles",
+      "row_estimate": 0,
+      "total_size": "16 kB",
+      "bytes": 16384
+    },
+    {
+      "table": "social_category_automation",
+      "row_estimate": 0,
+      "total_size": "16 kB",
+      "bytes": 16384
+    },
+    {
+      "table": "social_content_drafts",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "social_content_sources",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "social_content_templates",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "social_controls",
+      "row_estimate": 0,
+      "total_size": "16 kB",
+      "bytes": 16384
+    },
+    {
+      "table": "social_dek_wraps",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "social_oauth_states",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "social_publish_intents",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "social_role_grants",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "social_scheduled_posts",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "social_tenants",
+      "row_estimate": 0,
+      "total_size": "56 kB",
+      "bytes": 57344
+    },
+    {
+      "table": "social_validator_runs",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "sources",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "sparks_product",
+      "row_estimate": 0,
+      "total_size": "16 kB",
+      "bytes": 16384
+    },
+    {
+      "table": "sparks_product_price",
+      "row_estimate": 0,
+      "total_size": "16 kB",
+      "bytes": 16384
+    },
+    {
+      "table": "tracking_events",
+      "row_estimate": 0,
+      "total_size": "56 kB",
+      "bytes": 57344
+    },
+    {
+      "table": "transport_acquisition_outreach",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "transport_acquisition_record",
+      "row_estimate": 0,
+      "total_size": "80 kB",
+      "bytes": 81920
+    },
+    {
+      "table": "transport_acquisition_source_snapshot",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "user_wallet",
+      "row_estimate": 0,
+      "total_size": "16 kB",
+      "bytes": 16384
+    },
+    {
+      "table": "video_feed_impression",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "wallet_transaction",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "work_item",
+      "row_estimate": 0,
+      "total_size": "56 kB",
+      "bytes": 57344
+    },
+    {
+      "table": "worker_audit_events",
+      "row_estimate": 0,
+      "total_size": "48 kB",
+      "bytes": 49152
+    },
+    {
+      "table": "worker_cycle_run",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "worker_heartbeat",
+      "row_estimate": 0,
+      "total_size": "32 kB",
+      "bytes": 32768
+    },
+    {
+      "table": "worker_heartbeats_archive_2026_08_22",
+      "row_estimate": 0,
+      "total_size": "16 kB",
+      "bytes": 16384
+    },
+    {
+      "table": "worker_jobs",
+      "row_estimate": 0,
+      "total_size": "56 kB",
+      "bytes": 57344
+    },
+    {
+      "table": "worker_results",
+      "row_estimate": 0,
+      "total_size": "40 kB",
+      "bytes": 40960
+    },
+    {
+      "table": "worker_schedule",
+      "row_estimate": 0,
+      "total_size": "24 kB",
+      "bytes": 24576
+    }
+  ],
+  "identity_merge_log_exact": [
+    {
+      "exact_rows": 0
+    }
+  ],
+  "nex_fks": [
+    {
+      "n": 0
+    }
+  ],
+  "nex_rls": [
+    {
+      "rls_enabled": 0,
+      "rls_disabled": 191,
+      "total": 191
+    }
+  ],
+  "rls_disabled_with_policies": [
+    {
+      "relname": "alert_dispatches"
+    },
+    {
+      "relname": "alert_rules"
+    },
+    {
+      "relname": "alerts"
+    },
+    {
+      "relname": "analytics_events"
+    },
+    {
+      "relname": "analytics_records"
+    },
+    {
+      "relname": "analytics_rollup_queue"
+    },
+    {
+      "relname": "attributions"
+    },
+    {
+      "relname": "audit_log"
+    },
+    {
+      "relname": "automation_rules"
+    },
+    {
+      "relname": "automation_runs"
+    },
+    {
+      "relname": "benchmark_runs"
+    },
+    {
+      "relname": "brain_memories"
+    },
+    {
+      "relname": "campaign_recipients"
+    },
+    {
+      "relname": "campaign_segments"
+    },
+    {
+      "relname": "campaigns"
+    },
+    {
+      "relname": "compliance_events"
+    },
+    {
+      "relname": "confidence_scores"
+    },
+    {
+      "relname": "contact_duplicate_suggestions"
+    },
+    {
+      "relname": "contact_merges"
+    },
+    {
+      "relname": "contact_segments"
+    },
+    {
+      "relname": "contact_sources"
+    },
+    {
+      "relname": "contacts"
+    },
+    {
+      "relname": "contradictions"
+    },
+    {
+      "relname": "conversion_events"
+    },
+    {
+      "relname": "delivery_job_attempts"
+    },
+    {
+      "relname": "delivery_jobs"
+    },
+    {
+      "relname": "deprecations"
+    },
+    {
+      "relname": "email_templates"
+    },
+    {
+      "relname": "events"
+    },
+    {
+      "relname": "experiment_assignments"
+    },
+    {
+      "relname": "experiment_variants"
+    },
+    {
+      "relname": "experiments"
+    },
+    {
+      "relname": "graph_edges"
+    },
+    {
+      "relname": "import_mappings"
+    },
+    {
+      "relname": "jobs"
+    },
+    {
+      "relname": "journey_campaign_executions"
+    },
+    {
+      "relname": "journey_events"
+    },
+    {
+      "relname": "journey_inbound_events"
+    },
+    {
+      "relname": "journey_states"
+    },
+    {
+      "relname": "journey_triggers"
+    },
+    {
+      "relname": "journeys"
+    },
+    {
+      "relname": "knowledge_dump_jobs"
+    },
+    {
+      "relname": "knowledge_feedback"
+    },
+    {
+      "relname": "knowledge_inbox"
+    },
+    {
+      "relname": "knowledge_inbox_stats"
+    },
+    {
+      "relname": "knowledge_records"
+    },
+    {
+      "relname": "kpe_chunks"
+    },
+    {
+      "relname": "kpe_decisions"
+    },
+    {
+      "relname": "kpe_documents"
+    },
+    {
+      "relname": "kpe_duplicates"
+    },
+    {
+      "relname": "kpe_edges"
+    },
+    {
+      "relname": "kpe_human_reviews"
+    },
+    {
+      "relname": "kpe_metadata"
+    },
+    {
+      "relname": "kpe_processing_runs"
+    },
+    {
+      "relname": "llm_retry_queue"
+    },
+    {
+      "relname": "object_blob_current"
+    },
+    {
+      "relname": "object_blobs"
+    },
+    {
+      "relname": "object_manifest"
+    },
+    {
+      "relname": "prediction_models"
+    },
+    {
+      "relname": "predictions"
+    },
+    {
+      "relname": "predictive_controls"
+    },
+    {
+      "relname": "record_versions"
+    },
+    {
+      "relname": "recovery_attempts"
+    },
+    {
+      "relname": "recovery_runs"
+    },
+    {
+      "relname": "rollup_campaigns"
+    },
+    {
+      "relname": "rollup_country"
+    },
+    {
+      "relname": "rollup_daily"
+    },
+    {
+      "relname": "rollup_monthly"
+    },
+    {
+      "relname": "rollup_provider"
+    },
+    {
+      "relname": "rollup_segment"
+    },
+    {
+      "relname": "social_accounts"
+    },
+    {
+      "relname": "social_admin_access_log"
+    },
+    {
+      "relname": "social_audit_events"
+    },
+    {
+      "relname": "social_brand_profiles"
+    },
+    {
+      "relname": "social_category_automation"
+    },
+    {
+      "relname": "social_content_drafts"
+    },
+    {
+      "relname": "social_content_sources"
+    },
+    {
+      "relname": "social_content_templates"
+    },
+    {
+      "relname": "social_controls"
+    },
+    {
+      "relname": "social_dek_wraps"
+    },
+    {
+      "relname": "social_oauth_states"
+    },
+    {
+      "relname": "social_publish_intents"
+    },
+    {
+      "relname": "social_role_grants"
+    },
+    {
+      "relname": "social_scheduled_posts"
+    },
+    {
+      "relname": "social_tenants"
+    },
+    {
+      "relname": "social_validator_runs"
+    },
+    {
+      "relname": "sources"
+    },
+    {
+      "relname": "tracking_events"
+    },
+    {
+      "relname": "worker_audit_events"
+    },
+    {
+      "relname": "worker_heartbeat"
+    },
+    {
+      "relname": "worker_jobs"
+    },
+    {
+      "relname": "worker_results"
+    }
+  ],
+  "temp_roles": [
+    {
+      "rolname": "nex_migrate_mtkiv3bg",
+      "rolcanlogin": true
+    }
+  ],
+  "public_baseline": [
+    {
+      "public_tables": 17,
+      "public_policies": 13,
+      "knowledge_records": 3627,
+      "worker_jobs": 19167,
+      "worker_results": 19140,
+      "audit_log": 20224,
+      "sources": 3625,
+      "confidence_scores": 4228,
+      "graph_edges": 4308,
+      "knowledge_feedback": 402,
+      "directory_seeds": 1227
+    }
+  ],
+  "schemas": [
+    {
+      "nspname": "auth"
+    },
+    {
+      "nspname": "extensions"
+    },
+    {
+      "nspname": "graphql"
+    },
+    {
+      "nspname": "graphql_public"
+    },
+    {
+      "nspname": "nex"
+    },
+    {
+      "nspname": "public"
+    },
+    {
+      "nspname": "realtime"
+    },
+    {
+      "nspname": "storage"
+    },
+    {
+      "nspname": "vault"
+    }
+  ],
+  "recovery_state": {
+    "message": "Failed to run sql query: ERROR:  55000: recovery is not in progress\nHINT:  Recovery control functions can only be executed during recovery.\n"
+  },
+  "supabase_meta": {
+    "/v1/projects/ijvqdvsvwtwxzcqmoqit": {
+      "status": 200,
+      "body": "{\"id\":\"ijvqdvsvwtwxzcqmoqit\",\"ref\":\"ijvqdvsvwtwxzcqmoqit\",\"organization_id\":\"fgpsrsmtfzikkwwmxawh\",\"organization_slug\":\"fgpsrsmtfzikkwwmxawh\",\"name\":\"asknexapp@gmail.com's Project\",\"region\":\"eu-west-1\",\"created_at\":\"2026-08-02T12:21:32.332961Z\",\"status\":\"ACTIVE_HEALTHY\",\"database\":{\"host\":\"db.ijvqdvsvwtwxzcqmoqit.supabase.co\",\"version\":\"17.6.1.155\",\"postgres_engine\":\"17\",\"release_channel\":\"ga\"}}"
+    },
+    "/v1/projects/ijvqdvsvwtwxzcqmoqit/api-keys": {
+      "status": 200,
+      "body": "[{\"api_key\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqdnFkdnN2d3R3eHpjcW1vcWl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU2NzMyOTIsImV4cCI6MjEwMTI0OTI5Mn0.fIBzWTF7T_0Uv_tTUquVc2TIrLip6q2m992sKbyMw1Q\",\"id\":\"anon\",\"type\":\"legacy\",\"prefix\":\"fIBzW\",\"name\":\"anon\",\"description\":\"Legacy anon API key\",\"hash\":\"3WLIH4Yr14DCon-4rkPKnoDx9daaCqqAgwXMqGmDO_g\"},{\"api_key\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqdnFkdnN2d3R3eHpjcW1vcWl0Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NTY3MzI5MiwiZXhwIjoyMTAxMjQ5MjkyfQ.uc-qV72VN-IjsU1ugvaMIoG6Is3AqXxNNx26f_zKXGQ\",\"id\":\"service_role\",\"type\":\"legacy\",\"prefix\":\"uc-qV\",\"name\":\"service_role\",\"description\":\"Legacy service_role API key\",\"hash\":\"qmcvDAiaGGJL7HS34lionBZE--WPaY6k5hc2vEi6f74\"},{\"api_key\":\"sb_publish..."
+    }
+  }
+}

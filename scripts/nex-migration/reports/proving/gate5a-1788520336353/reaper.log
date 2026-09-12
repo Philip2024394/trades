@@ -1,0 +1,13 @@
+# reaper started at 2026-09-04T11:12:28.624Z · script=C:\Users\Victus\trades\scripts\nex-workforce-v2\reaper.mjs
+{"ts":"2026-09-04T11:12:29.886Z","msg":"reaper.created","interval_ms":4000,"max_consecutive_errors":3}
+{"ts":"2026-09-04T11:12:29.887Z","msg":"reaper.loop.start","interval_ms":4000}
+{"ts":"2026-09-04T11:12:29.888Z","msg":"reaper.tick.begin","tick_n":1}
+{"ts":"2026-09-04T11:12:31.179Z","msg":"reaper.reap","reclaimed":0,"dead_lettered":0,"duration_ms":1291}
+{"ts":"2026-09-04T11:12:32.523Z","msg":"reaper.requeue","requeued":1,"duration_ms":1344}
+{"ts":"2026-09-04T11:12:32.523Z","msg":"reaper.tick.end","tick_n":1,"ok":true}
+{"ts":"2026-09-04T11:12:36.589Z","msg":"reaper.tick.begin","tick_n":2}
+{"ts":"2026-09-04T11:12:38.032Z","msg":"reaper.reap","reclaimed":0,"dead_lettered":0,"duration_ms":1443}
+{"ts":"2026-09-04T11:12:39.454Z","msg":"reaper.requeue","requeued":0,"duration_ms":1422}
+{"ts":"2026-09-04T11:12:39.454Z","msg":"reaper.tick.end","tick_n":2,"ok":true}
+{"ts":"2026-09-04T11:12:43.470Z","msg":"reaper.tick.begin","tick_n":3}
+# reaper exited code=null signal=SIGTERM at 2026-09-04T11:12:43.794Z

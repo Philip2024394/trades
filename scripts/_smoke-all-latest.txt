@@ -1,0 +1,101 @@
+
+═══ NEX PROOF-OF-LIFE · running 47 smoke matrices ═══
+  parallel=4  per-test-timeout=180000ms  skip=4
+  skipped: smoke-ollama-integrations.mjs, smoke-research-fetch.mjs, smoke-affiliates-phase3.mjs
+
+  · completed 4/47
+  · completed 8/47
+  · completed 12/47
+  · completed 16/47
+  · completed 20/47
+  · completed 24/47
+  · completed 28/47
+  · completed 32/47
+  · completed 36/47
+  · completed 40/47
+  · completed 44/47
+  · completed 47/47
+
+═══ RESULTS ═══
+
+  PASS     smoke-action-brain.mjs               608ms  ══ SUMMARY  failures=0
+  PASS     smoke-alerts.mjs                    1920ms  ══ SUMMARY  failures=0
+  PASS     smoke-api-platform.mjs              5541ms  ══ SUMMARY  failures=0
+  PASS     smoke-chat-streaming.mjs            4834ms  ══ SUMMARY  failures=0
+  PASS     smoke-chat-ui.mjs                    458ms  ══ SUMMARY  failures=0
+  PASS     smoke-conversation-brain.mjs       19596ms     0 discovery_hit regressions.
+  PASS     smoke-conversations.mjs             1215ms  ══ SUMMARY  failures=0
+  PASS     smoke-cross-domain.mjs             17242ms  ══ SUMMARY  failures=0
+  PASS     smoke-enterprise.mjs                2880ms  ══ SUMMARY  failures=0
+  PASS     smoke-evidence-and-trust.mjs        2341ms  ══ SUMMARY  failures=0
+  PASS     smoke-file-extraction.mjs           1985ms  ══ SUMMARY  failures=0
+  PASS     smoke-files.mjs                     8496ms  ══ SUMMARY  failures=0
+  PASS     smoke-food-transport-adapters.mjs  10808ms  ══ SUMMARY  failures=0
+  PASS     smoke-gaps-page.mjs                  439ms  ══ SUMMARY  failures=0
+  PASS     smoke-gate-alignment.mjs            6956ms  ══ SUMMARY  failures=0
+  PASS     smoke-identity-and-memory.mjs       4088ms  ══ SUMMARY  failures=0
+  PASS     smoke-image-gen.mjs                 2626ms  ══ SUMMARY  failures=0
+  PASS     smoke-isp-and-pwa.mjs                405ms  ══ SUMMARY  failures=0
+  PASS     smoke-kb-supplement.mjs             4568ms  ══ SUMMARY  failures=0
+  PASS     smoke-knowledge-brain.mjs            749ms  ══ SUMMARY  failures=0
+  PASS     smoke-l2-memory-tiered.mjs          7009ms  ══ SUMMARY  failures=0
+  PASS     smoke-l2-memory.mjs                10393ms  ══ SUMMARY  failures=0
+  PASS     smoke-law5-injection.mjs            1359ms  ══ SUMMARY  failures=0
+  PASS     smoke-live-chat-completion.mjs     13084ms  # All discovery_hit forbidden turns cleared. Legacy fallback preserved elsewhere.
+  PASS     smoke-llm-rescue.mjs                2267ms     0 regressions.  Fabrication guard held.  Zero-fabrication invariant preserved.
+  PASS     smoke-local-only.mjs                 496ms  ══ SUMMARY  failures=0
+  PASS     smoke-mcp.mjs                        520ms  ══ SUMMARY  failures=0
+  PASS     smoke-nex-standard.mjs              1015ms  ══ SUMMARY  failures=0
+  PASS     smoke-observatory-gaps.mjs           866ms  ══ SUMMARY  failures=0
+  PASS     smoke-observatory-latency.mjs       7160ms  ══ SUMMARY  failures=0
+  PASS     smoke-observatory-page.mjs           854ms  ══ SUMMARY  failures=0
+  PASS     smoke-observatory.mjs               7523ms  ══ SUMMARY  failures=0
+  PASS     smoke-offline.mjs                   4813ms  ══ SUMMARY  failures=0
+  PASS     smoke-p36.mjs                      14596ms     0 regressions · strict-mode + router + truth-prefix + HQ page all green.
+  PASS     smoke-provenance.mjs                9680ms  ══ SUMMARY  failures=0
+  PASS     smoke-research-activation.mjs       9124ms  ══ SUMMARY  failures=0
+  PASS     smoke-research-brain.mjs            9437ms  ══ SUMMARY  failures=0
+  FAIL     smoke-safety.mjs                   25783ms  ══ C · Output PII scrubber
+  PASS     smoke-sai.mjs                       7405ms  ══ SUMMARY  failures=0
+  FAIL     smoke-semantic-retrieval.mjs         157ms  
+  PASS     smoke-streaming.mjs                 5508ms     0 regressions.  SSE contract: hello + stage + meta + token + done.  TTFT below 15s cap.
+  PASS     smoke-truth-engine.mjs              5332ms     0 regressions.
+  PASS     smoke-vision.mjs                    4724ms  ══ SUMMARY  failures=0
+  PASS     smoke-voice.mjs                      367ms  ══ SUMMARY  failures=0
+  PASS     smoke-vs-frontier.mjs               1103ms  ══ SUMMARY  failures=0
+  FAIL     smoke-web-and-si.mjs                5964ms       ❌ [web_fabrication] no_honest_limitation
+  PASS     smoke-wiring.mjs                    3581ms  ══ SUMMARY  failures=0
+
+═══ OVERALL ═══
+  Total     : 47 matrices
+  PASS      : 44 (4 with explicit "0 regressions")
+  FAIL      : 3
+  TIMEOUT   : 0
+  Wall time : 124s
+
+═══ FAILED MATRICES · stderr tails ═══
+
+  smoke-safety.mjs (code=1, failures=null):
+    summary: ══ C · Output PII scrubber
+    stderr:  oader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+                 at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {
+               code: 'ERR_MODULE_NOT_FOUND'
+             }
+             
+             Node.js v24.18.0
+             
+
+  smoke-semantic-retrieval.mjs (code=1, failures=null):
+    summary: 
+    stderr:  nternal/modules/esm/module_job:253:17) {
+               code: 'ERR_MODULE_NOT_FOUND',
+               url: 'file:///C:/Users/Victus/trades/src/lib/nex/live-chat-completion/semantic/embedding-provider'
+             }
+             
+             Node.js v24.18.0
+             
+
+  smoke-web-and-si.mjs (code=1, failures=null):
+    summary:      ❌ [web_fabrication] no_honest_limitation
+
+{"total":47,"pass":44,"fail":3,"timeout":0,"zero_regressions":4,"wall_ms":123998}

@@ -1,0 +1,34 @@
+[2026-09-02T21:36:56.227Z] === BATCH 5 EXECUTION · 3 tables · expected 247824 rows ===
+[2026-09-02T21:36:56.229Z] 
+─── PRE-CHECK ───
+[2026-09-02T21:37:01.296Z]   invariants: {"rls_enabled":92,"nex_fks":0,"kr":3627,"wj":19167,"wr":19140,"imel":0,"db_bytes":547073171,"db_pretty":"522 MB","wal_lsn":"C/6A000110"}
+[2026-09-02T21:37:01.297Z]   ✓ identity_merge_log still 0 rows (untouched)
+[2026-09-02T21:37:03.487Z]   ✓ Batch 5 target tables all empty
+[2026-09-02T21:37:06.716Z]   ✓ readonly enabled=false
+[2026-09-02T21:37:06.734Z]   DB size PRE:  522 MB (547.073.171 bytes)
+[2026-09-02T21:37:06.734Z]   WAL LSN PRE:  C/6A000110
+[2026-09-02T21:37:06.735Z] 
+─── EXECUTING pg_restore ───
+pg_restore: connecting to database for restore
+pg_restore: processing data for table "nex.discovery_rotation_state"
+pg_restore: processing data for table "nex.food_business_field_provenance"
+pg_restore: processing data for table "nex.provider_rate_lease"
+[2026-09-02T21:37:30.935Z] 
+pg_restore exit: 0 · elapsed: 24.20s
+[2026-09-02T21:37:30.935Z] 
+─── POST-CHECK ───
+[2026-09-02T21:37:32.978Z]   DB size PRE→POST:  522 MB → 592 MB  delta: +73613312 bytes (70.20 MB)
+[2026-09-02T21:37:32.979Z]   WAL LSN PRE→POST:  C/6A000110 → C/70A72720
+[2026-09-02T21:37:34.890Z]   ✓ ALL 3/3 Batch 5 tables match · total = 247824 (expected 247824)
+[2026-09-02T21:37:36.426Z]   identity_merge_log POST: 0 rows ✓ untouched
+[2026-09-02T21:37:38.305Z]   public POST: {"public_tables":17,"kr":3627,"wj":19167,"wr":19140} · unchanged=✓
+[2026-09-02T21:37:40.866Z]   RLS POST: 92 (expected 92) ✓
+[2026-09-02T21:37:42.509Z]   FK POST: 0 (expected 0) ✓
+[2026-09-02T21:37:46.321Z]   readonly POST: enabled=false
+[2026-09-02T21:37:46.322Z] 
+  Batch 5 efficiency: 297 B/row (B2=669, B3=800, B4=808)
+[2026-09-02T21:37:46.323Z]   Cumulative populated tables: 134 (through Batch 4) + 3 = 137 expected
+[2026-09-02T21:37:49.895Z] 
+  Local freeze: node processes=0 (excl this script), scheduled task=Disabled
+[2026-09-02T21:37:49.896Z] 
+─── HARD STOP · Batch 5 complete · awaiting approval for Batch 6 (identity_merge_log) ───

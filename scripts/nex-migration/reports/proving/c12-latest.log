@@ -1,0 +1,721 @@
+═══════════════════════════════════════════════════════════════════════
+ NEX Workforce · C12 · Five-Agent 4-Hour Continuous Trial · c12-1788573833774
+═══════════════════════════════════════════════════════════════════════
+
+  CITY=yogyakarta · CATEGORY=restaurants · SOURCE=overpass
+  BBOX=sw{-7.944714,110.240493} ne{-7.592822,110.624452}
+  AGENTS=5 · CEILING=240 min (4h)
+  OBSERVATION TICK=30s
+  EXPECTED QH=33da302832c4bce40fef6b2025f08581835398880bcb1d4be900fd3dc2682390
+
+─── PREFLIGHT · READ-ONLY ───
+  target · db=postgres · pg=17.6 · user=postgres
+🟢 target = Project B postgres · pg 17.x · ref=ijvqdvsvwtwxzcqmoqit
+  state: {
+    "food_rows": 23328,
+    "food_dup": 373,
+    "cc": 1,
+    "city_bbox_actual": {
+      "ne": {
+        "lat": -7.592822,
+        "lon": 110.624452
+      },
+      "sw": {
+        "lat": -7.944714,
+        "lon": 110.240493
+      }
+    },
+    "jr": 1,
+    "job_enabled": true,
+    "cadence_minutes": 60,
+    "lease_minutes": 15,
+    "max_concurrent_per_source": 3,
+    "rot": 0,
+    "wi_total": 4,
+    "wi_active": 0,
+    "ev": 6,
+    "stg": 3766,
+    "aud": 31,
+    "wf_pol": 12,
+    "food_pol": 5,
+    "roles": 3,
+    "r5_intact": true,
+    "wf_sessions": 0
+  }
+🟢 food_business = 23,328 · 23328
+🟢 duplicate groups = 373 · 373
+🟢 city_catalogue = 1
+🟢 job_registry = 1 · enabled=true
+🟢 cadence=60min · lease=15min · max_concurrent_per_source=3 (production config unchanged)
+🟢 R5 intact
+🟢 zero workforce DB sessions
+🟢 workforce policies = 12 · food policies = 5 · roles = 3
+🟢 seeded bbox exact C6 match
+  rotation_eligible (informational · not asserted) = 0
+  wi_active (informational) = 0
+🟢 Scheduled Task Disabled
+🟢 .env.local mtime unchanged (2026-09-03T07:41)
+🟢 zero workforce OS processes pre-trial
+🟢 NEX_WORKFORCE_URL absent from .env.local
+🟢 MaxAgentCount contract === 5 (C11.5)
+
+─── PRE-START ORPHAN LOCK AUDIT ───
+  data/nex-workforce-v2/locks/reaper.lock · ABSENT
+  data/nex-workforce-v2/locks/orchestrator.lock · ABSENT
+
+─── SUPERVISOR CONSTRUCTION · autoStart=true (runtime opts) ───
+  [sup] {"ts":"2026-09-05T02:04:02.163Z","level":"info","msg":"lifecycle.register","role":"REAPER","identifier":"reaper-1","script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\reaper.mjs"}
+  [sup] {"ts":"2026-09-05T02:04:02.163Z","level":"info","msg":"lifecycle.register","role":"ORCHESTRATOR","identifier":"orchestrator-1","script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\orchestrator.mjs"}
+  [sup] {"ts":"2026-09-05T02:04:02.163Z","level":"info","msg":"lifecycle.register","role":"AGENT","identifier":"agent-1","script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+🟢 supervisor.contract.MaxAgentCount === 5
+🟢 supervisor.lifecycle.isAutoStart() === true
+🟢 REAPER + ORCHESTRATOR + AGENT-1 registered by supervisor
+
+─── REGISTER 4 ADDITIONAL AGENTS (agent-2..5) ───
+  [sup] {"ts":"2026-09-05T02:04:02.163Z","level":"info","msg":"lifecycle.register","role":"AGENT","identifier":"agent-2","script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  [sup] {"ts":"2026-09-05T02:04:02.163Z","level":"info","msg":"lifecycle.register","role":"AGENT","identifier":"agent-3","script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  [sup] {"ts":"2026-09-05T02:04:02.163Z","level":"info","msg":"lifecycle.register","role":"AGENT","identifier":"agent-4","script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  [sup] {"ts":"2026-09-05T02:04:02.163Z","level":"info","msg":"lifecycle.register","role":"AGENT","identifier":"agent-5","script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+🟢 exactly 5 agents registered · count=5
+🟢 6th agent registration deterministically rejected (§ 4 invariant)
+
+─── STARTUP · C9 StartupOrder ───
+  [sup] {"ts":"2026-09-05T02:04:02.174Z","level":"info","msg":"lifecycle.start","role":"REAPER","identifier":"reaper-1","pid":30884,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\reaper.mjs"}
+🟢 start REAPER reaper-1 · pid=30884 · 11ms
+  [sup] {"ts":"2026-09-05T02:04:02.184Z","level":"info","msg":"lifecycle.start","role":"ORCHESTRATOR","identifier":"orchestrator-1","pid":25036,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\orchestrator.mjs"}
+🟢 start ORCHESTRATOR orchestrator-1 · pid=25036 · 11ms
+  [sup] {"ts":"2026-09-05T02:04:02.195Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-1","pid":36368,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+🟢 start AGENT agent-1 · pid=36368 · 10ms
+  [sup] {"ts":"2026-09-05T02:04:02.203Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-2","pid":15064,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+🟢 start AGENT agent-2 · pid=15064 · 8ms
+  [sup] {"ts":"2026-09-05T02:04:02.211Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-3","pid":38468,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+🟢 start AGENT agent-3 · pid=38468 · 8ms
+  [sup] {"ts":"2026-09-05T02:04:02.221Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-4","pid":39932,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+🟢 start AGENT agent-4 · pid=39932 · 10ms
+  [sup] {"ts":"2026-09-05T02:04:02.231Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-5","pid":39924,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+🟢 start AGENT agent-5 · pid=39924 · 10ms
+  data/nex-workforce-v2/locks/reaper.lock · pid=11564 alive=true
+  data/nex-workforce-v2/locks/orchestrator.lock · pid=11564 alive=true
+🟢 REAPER + ORCHESTRATOR locks acquired (alive)
+
+─── OBSERVATION LOOP · 240min hard ceiling · 30s tick ───
+  t+0h00m30s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=5t/0rec/0err
+  t+0h01m10s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=12t/0rec/0err
+  t+0h01m51s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=18t/0rec/0err
+  t+0h02m32s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=24t/0rec/0err
+  [sup] {"ts":"2026-09-05T02:06:59.993Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-4","pid":39932,"code":1,"signal":null,"class":"transient_crash","reason":"code 1 · first-window crash"}
+  [sup] {"ts":"2026-09-05T02:06:59.994Z","level":"info","msg":"lifecycle.restart.scheduled","role":"AGENT","identifier":"agent-4","delay_ms":2000,"restart_count":1}
+  [sup] {"ts":"2026-09-05T02:07:00.026Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-5","pid":39924,"code":1,"signal":null,"class":"transient_crash","reason":"code 1 · first-window crash"}
+  [sup] {"ts":"2026-09-05T02:07:00.027Z","level":"info","msg":"lifecycle.restart.scheduled","role":"AGENT","identifier":"agent-5","delay_ms":2000,"restart_count":1}
+  [sup] {"ts":"2026-09-05T02:07:00.307Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-3","pid":38468,"code":1,"signal":null,"class":"transient_crash","reason":"code 1 · first-window crash"}
+  [sup] {"ts":"2026-09-05T02:07:00.307Z","level":"info","msg":"lifecycle.restart.scheduled","role":"AGENT","identifier":"agent-3","delay_ms":2000,"restart_count":1}
+  [sup] {"ts":"2026-09-05T02:07:01.056Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-2","pid":15064,"code":1,"signal":null,"class":"transient_crash","reason":"code 1 · first-window crash"}
+  [sup] {"ts":"2026-09-05T02:07:01.057Z","level":"info","msg":"lifecycle.restart.scheduled","role":"AGENT","identifier":"agent-2","delay_ms":2000,"restart_count":1}
+  [sup] {"ts":"2026-09-05T02:07:02.032Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-4","pid":39348,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  [sup] {"ts":"2026-09-05T02:07:02.066Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-5","pid":40472,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  [sup] {"ts":"2026-09-05T02:07:02.332Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-3","pid":26912,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  [sup] {"ts":"2026-09-05T02:07:03.096Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-2","pid":30580,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  t+0h03m17s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=29t/0rec/0err
+  t+0h03m59s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=36t/0rec/0err
+  t+0h04m39s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=42t/0rec/0err
+  t+0h05m19s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=48t/0rec/0err
+  t+0h06m02s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=54t/0rec/0err
+  t+0h06m44s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=60t/0rec/0err
+  t+0h07m24s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=67t/0rec/0err
+  t+0h08m06s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=73t/0rec/0err
+  t+0h08m47s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=79t/0rec/0err
+  t+0h09m28s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=85t/0rec/0err
+  t+0h10m09s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=91t/0rec/0err
+  t+0h10m51s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=98t/0rec/0err
+  t+0h11m33s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=104t/0rec/0err
+  t+0h12m14s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=110t/0rec/0err
+  t+0h12m54s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=116t/0rec/0err
+  t+0h13m35s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=123t/0rec/0err
+  t+0h14m17s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=129t/0rec/0err
+  t+0h14m57s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=135t/0rec/0err
+  t+0h15m37s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=141t/0rec/0err
+  t+0h16m17s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=147t/0rec/0err
+  t+0h16m58s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=153t/0rec/0err
+  t+0h17m38s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=159t/0rec/0err
+  t+0h18m21s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=166t/0rec/0err
+  t+0h19m02s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=172t/0rec/0err
+  t+0h19m43s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=178t/0rec/0err
+  t+0h20m24s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=184t/0rec/0err
+  t+0h21m04s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=190t/0rec/0err
+  t+0h21m45s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=197t/0rec/0err
+  t+0h22m29s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=203t/0rec/0err
+  t+0h23m11s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=210t/0rec/0err
+  t+0h23m51s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=216t/0rec/0err
+  t+0h24m31s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=222t/0rec/0err
+  t+0h25m14s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=228t/0rec/0err
+  t+0h25m54s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=234t/0rec/0err
+  t+0h26m35s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=240t/0rec/0err
+  t+0h27m16s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=247t/0rec/0err
+  t+0h27m58s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=253t/0rec/0err
+  t+0h28m38s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=259t/0rec/0err
+  t+0h29m18s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=265t/0rec/0err
+  t+0h29m59s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=0 pending=0 · sess=0 · reaper=272t/0rec/0err
+  t+0h30m41s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:0} · ev=6 stg=3766 aud=31 food=23328 · leased=1 pending=0 · sess=0 · reaper=278t/0rec/0err
+  ✅ CYCLE COMPLETE · wi=df46de62 state=completed new=658 rej=583
+  t+0h31m23s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=284t/0rec/0err
+  t+0h32m04s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=290t/0rec/0err
+  t+0h32m44s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=296t/0rec/0err
+  [sup] {"ts":"2026-09-05T02:37:29.844Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-1","pid":36368,"code":1,"signal":null,"class":"transient_crash","reason":"code 1 · first-window crash"}
+  [sup] {"ts":"2026-09-05T02:37:29.845Z","level":"info","msg":"lifecycle.restart.scheduled","role":"AGENT","identifier":"agent-1","delay_ms":2000,"restart_count":1}
+  [sup] {"ts":"2026-09-05T02:37:31.525Z","level":"info","msg":"lifecycle.exit","role":"ORCHESTRATOR","identifier":"orchestrator-1","pid":25036,"code":1,"signal":null,"class":"transient_crash","reason":"code 1 · first-window crash"}
+  [sup] {"ts":"2026-09-05T02:37:31.527Z","level":"info","msg":"lifecycle.restart.scheduled","role":"ORCHESTRATOR","identifier":"orchestrator-1","delay_ms":2000,"restart_count":1}
+  [sup] {"ts":"2026-09-05T02:37:32.005Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-1","pid":39212,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  [sup] {"ts":"2026-09-05T02:37:32.734Z","level":"info","msg":"lifecycle.exit","role":"REAPER","identifier":"reaper-1","pid":30884,"code":1,"signal":null,"class":"transient_crash","reason":"code 1 · first-window crash"}
+  [sup] {"ts":"2026-09-05T02:37:32.736Z","level":"info","msg":"lifecycle.restart.scheduled","role":"REAPER","identifier":"reaper-1","delay_ms":2000,"restart_count":1}
+  [sup] {"ts":"2026-09-05T02:37:33.563Z","level":"info","msg":"lifecycle.start","role":"ORCHESTRATOR","identifier":"orchestrator-1","pid":31972,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\orchestrator.mjs"}
+  [sup] {"ts":"2026-09-05T02:37:34.770Z","level":"info","msg":"lifecycle.start","role":"REAPER","identifier":"reaper-1","pid":35372,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\reaper.mjs"}
+  t+0h33m27s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=299t/0rec/0err
+  t+0h34m07s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=305t/0rec/0err
+  t+0h34m47s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=312t/0rec/0err
+  t+0h35m29s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=318t/0rec/0err
+  t+0h36m11s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=324t/0rec/0err
+  t+0h36m53s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=331t/0rec/0err
+  t+0h37m34s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=337t/0rec/0err
+  t+0h38m14s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=343t/0rec/0err
+  t+0h38m55s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=349t/0rec/0err
+  t+0h39m36s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=356t/0rec/0err
+  t+0h40m18s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=362t/0rec/0err
+  t+0h40m58s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=368t/0rec/0err
+  t+0h41m40s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=374t/0rec/0err
+  t+0h42m22s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=380t/0rec/0err
+  t+0h43m03s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=386t/0rec/0err
+  t+0h43m45s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=393t/0rec/0err
+  t+0h44m25s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=399t/0rec/0err
+  t+0h45m05s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=405t/0rec/0err
+  t+0h45m46s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=411t/0rec/0err
+  t+0h46m28s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=417t/0rec/0err
+  t+0h47m09s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=424t/0rec/0err
+  t+0h47m50s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=430t/0rec/0err
+  t+0h48m32s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=436t/0rec/0err
+  t+0h49m13s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=442t/0rec/0err
+  t+0h49m53s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=448t/0rec/0err
+  t+0h50m36s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=455t/0rec/0err
+  t+0h51m17s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=461t/0rec/0err
+  t+0h51m58s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=468t/0rec/0err
+  t+0h52m42s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=474t/0rec/0err
+  t+0h53m23s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=480t/0rec/0err
+  t+0h54m03s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=486t/0rec/0err
+  t+0h54m44s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=493t/0rec/0err
+  t+0h55m25s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=499t/0rec/0err
+  t+0h56m06s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=505t/0rec/0err
+  t+0h56m48s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=512t/0rec/0err
+  t+0h57m30s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=518t/0rec/0err
+  t+0h58m13s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=524t/0rec/0err
+  t+0h58m54s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=531t/0rec/0err
+  t+0h59m36s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=537t/0rec/0err
+  t+1h00m16s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=543t/0rec/0err
+
+  ═══ HOURLY SUMMARY (hour 1) · {"at":"2026-09-05T03:04:34.916Z","elapsed":"1h00m16s","hour":1,"cycles_completed":1,"cycles_started":0,"food_rows":23328,"food_dup":373,"distinct_agents":0,"reaper_ticks":543,"reaper_errors":0,"observation_errors":0} ═══
+
+  t+1h01m00s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=550t/0rec/0err
+  t+1h01m39s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=556t/0rec/0err
+  t+1h02m22s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=562t/0rec/0err
+  t+1h03m03s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=569t/0rec/0err
+  t+1h03m47s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=575t/0rec/0err
+  t+1h04m28s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=581t/0rec/0err
+  t+1h05m09s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=587t/0rec/0err
+  t+1h05m51s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=594t/0rec/0err
+  t+1h06m31s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=600t/0rec/0err
+  t+1h07m11s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=606t/0rec/0err
+  t+1h07m53s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=612t/0rec/0err
+  t+1h08m34s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=619t/0rec/0err
+  t+1h09m15s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=625t/0rec/0err
+  t+1h09m55s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=631t/0rec/0err
+  t+1h10m36s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=637t/0rec/0err
+  t+1h11m18s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=643t/0rec/0err
+  t+1h11m59s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=649t/0rec/0err
+  t+1h12m39s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=656t/0rec/0err
+  t+1h13m19s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=662t/0rec/0err
+  t+1h14m01s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=668t/0rec/0err
+  t+1h14m41s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=674t/0rec/0err
+  t+1h15m23s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=680t/0rec/0err
+  t+1h16m04s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=687t/0rec/0err
+  t+1h16m45s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=693t/0rec/0err
+  t+1h17m27s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=699t/0rec/0err
+  t+1h18m08s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=706t/0rec/0err
+  t+1h18m50s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=712t/0rec/0err
+  t+1h19m32s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=718t/0rec/0err
+  t+1h20m14s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=725t/0rec/0err
+  t+1h20m56s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=731t/0rec/0err
+  t+1h21m38s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=737t/0rec/0err
+  t+1h22m18s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=744t/0rec/0err
+  t+1h23m03s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=750t/0rec/0err
+  t+1h23m44s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=756t/0rec/0err
+  t+1h24m25s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=763t/0rec/0err
+  t+1h25m09s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=769t/0rec/0err
+  t+1h25m50s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=775t/0rec/0err
+  t+1h26m35s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=782t/0rec/0err
+  t+1h27m15s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=788t/0rec/0err
+  t+1h27m56s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=795t/0rec/0err
+  t+1h28m38s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=801t/0rec/0err
+  t+1h29m20s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=807t/0rec/0err
+  t+1h30m01s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=813t/0rec/0err
+  t+1h30m41s · wi_c12={done:1 leased:0 pending:0} · agents={live:0 distinct:0} · ev=7 stg=5007 aud=44 food=23328 · leased=0 pending=0 · sess=0 · reaper=820t/0rec/0err
+  🎯 CYCLE START · wi=7a79a451 agent=01a06f51-be44-7855-b071-
+  t+1h31m22s · wi_c12={done:1 leased:1 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=44 food=23328 · leased=1 pending=0 · sess=0 · reaper=826t/0rec/0err
+  ✅ CYCLE COMPLETE · wi=7a79a451 state=completed new=658 rej=583
+  t+1h32m04s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=832t/0rec/0err
+  t+1h32m45s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=838t/0rec/0err
+  t+1h33m26s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=845t/0rec/0err
+  t+1h34m06s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=851t/0rec/0err
+  t+1h34m47s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=857t/0rec/0err
+  t+1h35m26s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=863t/0rec/0err
+  t+1h36m08s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=869t/0rec/0err
+  t+1h36m49s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=875t/0rec/0err
+  t+1h37m30s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=881t/0rec/0err
+  t+1h38m10s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=888t/0rec/0err
+  t+1h38m50s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=894t/0rec/0err
+  t+1h39m32s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=900t/0rec/0err
+  t+1h40m16s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=907t/0rec/0err
+  t+1h40m59s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=913t/0rec/0err
+  t+1h41m41s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=920t/0rec/0err
+  t+1h42m24s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=926t/0rec/0err
+  t+1h43m07s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=932t/0rec/0err
+  t+1h43m50s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=939t/0rec/0err
+  t+1h44m32s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=946t/0rec/0err
+  t+1h45m16s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=952t/0rec/0err
+  t+1h45m57s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=958t/0rec/0err
+  t+1h46m40s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=965t/0rec/0err
+  t+1h47m21s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=971t/0rec/0err
+  t+1h48m01s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=977t/0rec/0err
+  t+1h48m40s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=983t/0rec/0err
+  t+1h49m22s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=989t/0rec/0err
+  t+1h50m04s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=996t/0rec/0err
+  t+1h50m45s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1002t/0rec/0err
+  t+1h51m28s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1008t/0rec/0err
+  t+1h52m08s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1015t/0rec/0err
+  t+1h52m49s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1021t/0rec/0err
+  t+1h53m30s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1027t/0rec/0err
+  t+1h54m12s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1033t/0rec/0err
+  t+1h54m53s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1040t/0rec/0err
+  t+1h55m35s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1046t/0rec/0err
+  t+1h56m17s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1052t/0rec/0err
+  t+1h56m58s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1059t/0rec/0err
+  t+1h57m43s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1065t/0rec/0err
+  t+1h58m23s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1071t/0rec/0err
+  t+1h59m05s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1078t/0rec/0err
+  t+1h59m46s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1084t/0rec/0err
+  t+2h00m27s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1090t/0rec/0err
+
+  ═══ HOURLY SUMMARY (hour 2) · {"at":"2026-09-05T04:04:44.044Z","elapsed":"2h00m27s","hour":2,"cycles_completed":2,"cycles_started":1,"food_rows":23328,"food_dup":373,"distinct_agents":0,"reaper_ticks":1090,"reaper_errors":0,"observation_errors":0} ═══
+
+  t+2h01m09s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1096t/0rec/0err
+  t+2h01m50s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1102t/0rec/0err
+  t+2h02m32s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1109t/0rec/0err
+  t+2h03m12s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1115t/0rec/0err
+  t+2h03m54s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1121t/0rec/0err
+  t+2h04m36s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1128t/0rec/0err
+  t+2h05m17s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1134t/0rec/0err
+  t+2h06m01s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1141t/0rec/0err
+  t+2h06m43s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1147t/0rec/0err
+  t+2h07m24s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1153t/0rec/0err
+  t+2h08m06s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1160t/0rec/0err
+  t+2h08m49s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1166t/0rec/0err
+  t+2h09m30s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1172t/0rec/0err
+  t+2h10m12s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1179t/0rec/0err
+  t+2h10m55s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1185t/0rec/0err
+  t+2h11m36s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1192t/0rec/0err
+  t+2h12m20s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1198t/0rec/0err
+  t+2h13m03s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1205t/0rec/0err
+  t+2h13m45s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1211t/0rec/0err
+  t+2h14m29s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1218t/0rec/0err
+  t+2h15m11s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1224t/0rec/0err
+  t+2h15m53s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1231t/0rec/0err
+  t+2h16m34s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1237t/0rec/0err
+  t+2h17m15s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1243t/0rec/0err
+  t+2h17m57s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1250t/0rec/0err
+  t+2h18m41s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1256t/0rec/0err
+  t+2h19m25s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1263t/0rec/0err
+  t+2h20m05s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1269t/0rec/0err
+  t+2h20m49s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1275t/0rec/0err
+  t+2h21m31s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1282t/0rec/0err
+  t+2h22m14s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1288t/0rec/0err
+  t+2h22m55s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1295t/0rec/0err
+  t+2h23m35s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1301t/0rec/0err
+  t+2h24m16s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1307t/0rec/0err
+  t+2h24m57s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1313t/0rec/0err
+  t+2h25m39s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1320t/0rec/0err
+  t+2h26m19s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1326t/0rec/0err
+  t+2h27m00s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1332t/0rec/0err
+  t+2h27m42s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1338t/0rec/0err
+  t+2h28m22s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1344t/0rec/0err
+  t+2h29m04s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1351t/0rec/0err
+  t+2h29m48s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1357t/0rec/0err
+  t+2h30m29s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1364t/0rec/0err
+  t+2h31m09s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=0 pending=0 · sess=0 · reaper=1370t/0rec/0err
+  t+2h31m50s · wi_c12={done:2 leased:0 pending:0} · agents={live:0 distinct:0} · ev=8 stg=6248 aud=57 food=23328 · leased=1 pending=0 · sess=0 · reaper=1376t/0rec/0err
+  ✅ CYCLE COMPLETE · wi=98ebc0fc state=completed new=658 rej=583
+  t+2h32m32s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1382t/0rec/0err
+  t+2h33m12s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1388t/0rec/0err
+  t+2h33m54s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1395t/0rec/0err
+  t+2h34m39s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1401t/0rec/0err
+  t+2h35m20s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1408t/0rec/0err
+  t+2h36m03s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1414t/0rec/0err
+  t+2h36m45s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1420t/0rec/0err
+  t+2h37m29s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1427t/0rec/0err
+  t+2h38m09s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1433t/0rec/0err
+  t+2h38m51s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1439t/0rec/0err
+  t+2h39m32s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1446t/0rec/0err
+  t+2h40m13s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1452t/0rec/0err
+  t+2h40m55s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1458t/0rec/0err
+  t+2h41m37s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1465t/0rec/0err
+  t+2h42m19s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1471t/0rec/0err
+  t+2h43m00s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1477t/0rec/0err
+  t+2h43m40s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1483t/0rec/0err
+  t+2h44m21s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1490t/0rec/0err
+  t+2h45m02s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1496t/0rec/0err
+  t+2h45m44s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1502t/0rec/0err
+  t+2h46m24s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1508t/0rec/0err
+  t+2h47m05s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1515t/0rec/0err
+  t+2h47m46s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1521t/0rec/0err
+  ⚠️  OBSERVATION_ERROR [wi_c12]: fetch failed
+  [sup] {"ts":"2026-09-05T04:52:51.800Z","level":"info","msg":"lifecycle.exit","role":"ORCHESTRATOR","identifier":"orchestrator-1","pid":31972,"code":1,"signal":null,"class":"transient_crash","reason":"code 1 · first-window crash"}
+  [sup] {"ts":"2026-09-05T04:52:51.803Z","level":"info","msg":"lifecycle.restart.scheduled","role":"ORCHESTRATOR","identifier":"orchestrator-1","delay_ms":2000,"restart_count":2}
+  [sup] {"ts":"2026-09-05T04:52:51.894Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-5","pid":40472,"code":1,"signal":null,"class":"transient_crash","reason":"code 1 · first-window crash"}
+  [sup] {"ts":"2026-09-05T04:52:51.894Z","level":"info","msg":"lifecycle.restart.scheduled","role":"AGENT","identifier":"agent-5","delay_ms":2000,"restart_count":2}
+  [sup] {"ts":"2026-09-05T04:52:51.970Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-1","pid":39212,"code":1,"signal":null,"class":"transient_crash","reason":"code 1 · first-window crash"}
+  [sup] {"ts":"2026-09-05T04:52:51.970Z","level":"info","msg":"lifecycle.restart.scheduled","role":"AGENT","identifier":"agent-1","delay_ms":2000,"restart_count":2}
+  [sup] {"ts":"2026-09-05T04:52:52.012Z","level":"info","msg":"lifecycle.exit","role":"REAPER","identifier":"reaper-1","pid":35372,"code":1,"signal":null,"class":"transient_crash","reason":"code 1 · first-window crash"}
+  [sup] {"ts":"2026-09-05T04:52:52.013Z","level":"info","msg":"lifecycle.restart.scheduled","role":"REAPER","identifier":"reaper-1","delay_ms":2000,"restart_count":2}
+  [sup] {"ts":"2026-09-05T04:52:52.715Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-4","pid":39348,"code":1,"signal":null,"class":"transient_crash","reason":"code 1 · first-window crash"}
+  [sup] {"ts":"2026-09-05T04:52:52.715Z","level":"info","msg":"lifecycle.restart.scheduled","role":"AGENT","identifier":"agent-4","delay_ms":2000,"restart_count":2}
+  [sup] {"ts":"2026-09-05T04:52:53.395Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-3","pid":26912,"code":1,"signal":null,"class":"transient_crash","reason":"code 1 · first-window crash"}
+  [sup] {"ts":"2026-09-05T04:52:53.395Z","level":"info","msg":"lifecycle.restart.scheduled","role":"AGENT","identifier":"agent-3","delay_ms":2000,"restart_count":2}
+  [sup] {"ts":"2026-09-05T04:52:53.564Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-2","pid":30580,"code":1,"signal":null,"class":"transient_crash","reason":"code 1 · first-window crash"}
+  [sup] {"ts":"2026-09-05T04:52:53.564Z","level":"info","msg":"lifecycle.restart.scheduled","role":"AGENT","identifier":"agent-2","delay_ms":2000,"restart_count":2}
+  [sup] {"ts":"2026-09-05T04:52:53.833Z","level":"info","msg":"lifecycle.start","role":"ORCHESTRATOR","identifier":"orchestrator-1","pid":40828,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\orchestrator.mjs"}
+  [sup] {"ts":"2026-09-05T04:52:53.919Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-5","pid":17660,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  [sup] {"ts":"2026-09-05T04:52:53.990Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-1","pid":35816,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  [sup] {"ts":"2026-09-05T04:52:54.036Z","level":"info","msg":"lifecycle.start","role":"REAPER","identifier":"reaper-1","pid":36688,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\reaper.mjs"}
+  [sup] {"ts":"2026-09-05T04:52:54.742Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-4","pid":28444,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  ⚠️  OBSERVATION_ERROR [reaper]: fetch failed
+  [sup] {"ts":"2026-09-05T04:52:55.425Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-3","pid":32164,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  [sup] {"ts":"2026-09-05T04:52:55.581Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-2","pid":26572,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  [sup] {"ts":"2026-09-05T04:53:02.859Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-5","pid":17660,"code":1,"signal":null,"class":"repeated_crash","reason":"code 1 · 2 prior restarts in window"}
+  [sup] {"ts":"2026-09-05T04:53:02.860Z","level":"info","msg":"lifecycle.restart.scheduled","role":"AGENT","identifier":"agent-5","delay_ms":4000,"restart_count":3}
+  [sup] {"ts":"2026-09-05T04:53:02.860Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-4","pid":28444,"code":1,"signal":null,"class":"repeated_crash","reason":"code 1 · 2 prior restarts in window"}
+  [sup] {"ts":"2026-09-05T04:53:02.860Z","level":"info","msg":"lifecycle.restart.scheduled","role":"AGENT","identifier":"agent-4","delay_ms":4000,"restart_count":3}
+  [sup] {"ts":"2026-09-05T04:53:02.860Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-1","pid":35816,"code":1,"signal":null,"class":"repeated_crash","reason":"code 1 · 2 prior restarts in window"}
+  [sup] {"ts":"2026-09-05T04:53:02.860Z","level":"info","msg":"lifecycle.restart.scheduled","role":"AGENT","identifier":"agent-1","delay_ms":4000,"restart_count":3}
+  [sup] {"ts":"2026-09-05T04:53:02.860Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-2","pid":26572,"code":1,"signal":null,"class":"repeated_crash","reason":"code 1 · 2 prior restarts in window"}
+  [sup] {"ts":"2026-09-05T04:53:02.860Z","level":"info","msg":"lifecycle.restart.scheduled","role":"AGENT","identifier":"agent-2","delay_ms":4000,"restart_count":3}
+  [sup] {"ts":"2026-09-05T04:53:02.860Z","level":"info","msg":"lifecycle.exit","role":"ORCHESTRATOR","identifier":"orchestrator-1","pid":40828,"code":1,"signal":null,"class":"repeated_crash","reason":"code 1 · 2 prior restarts in window"}
+  [sup] {"ts":"2026-09-05T04:53:02.861Z","level":"info","msg":"lifecycle.restart.scheduled","role":"ORCHESTRATOR","identifier":"orchestrator-1","delay_ms":4000,"restart_count":3}
+  [sup] {"ts":"2026-09-05T04:53:02.861Z","level":"info","msg":"lifecycle.exit","role":"REAPER","identifier":"reaper-1","pid":36688,"code":1,"signal":null,"class":"repeated_crash","reason":"code 1 · 2 prior restarts in window"}
+  [sup] {"ts":"2026-09-05T04:53:02.863Z","level":"info","msg":"lifecycle.restart.scheduled","role":"REAPER","identifier":"reaper-1","delay_ms":4000,"restart_count":3}
+  [sup] {"ts":"2026-09-05T04:53:02.863Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-3","pid":32164,"code":1,"signal":null,"class":"repeated_crash","reason":"code 1 · 2 prior restarts in window"}
+  [sup] {"ts":"2026-09-05T04:53:02.863Z","level":"info","msg":"lifecycle.restart.scheduled","role":"AGENT","identifier":"agent-3","delay_ms":4000,"restart_count":3}
+  ⚠️  OBSERVATION_ERROR [counts]: fetch failed
+  [sup] {"ts":"2026-09-05T04:53:06.873Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-5","pid":35784,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  [sup] {"ts":"2026-09-05T04:53:06.886Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-4","pid":34628,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  [sup] {"ts":"2026-09-05T04:53:06.898Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-1","pid":22756,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  [sup] {"ts":"2026-09-05T04:53:06.910Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-2","pid":736,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  [sup] {"ts":"2026-09-05T04:53:06.924Z","level":"info","msg":"lifecycle.start","role":"ORCHESTRATOR","identifier":"orchestrator-1","pid":30988,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\orchestrator.mjs"}
+  [sup] {"ts":"2026-09-05T04:53:06.946Z","level":"info","msg":"lifecycle.start","role":"REAPER","identifier":"reaper-1","pid":21816,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\reaper.mjs"}
+  [sup] {"ts":"2026-09-05T04:53:06.959Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-3","pid":30408,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+  [sup] {"ts":"2026-09-05T04:53:07.146Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-5","pid":35784,"code":1,"signal":null,"class":"repeated_crash","reason":"code 1 · 3 prior restarts in window"}
+  [sup] {"ts":"2026-09-05T04:53:07.146Z","level":"warn","msg":"lifecycle.degraded","role":"AGENT","identifier":"agent-5","reason":"restart_ceiling_reached:3/3_in_900000ms"}
+  [sup] {"ts":"2026-09-05T04:53:07.157Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-4","pid":34628,"code":1,"signal":null,"class":"repeated_crash","reason":"code 1 · 3 prior restarts in window"}
+  [sup] {"ts":"2026-09-05T04:53:07.157Z","level":"warn","msg":"lifecycle.degraded","role":"AGENT","identifier":"agent-4","reason":"restart_ceiling_reached:3/3_in_900000ms"}
+  [sup] {"ts":"2026-09-05T04:53:07.175Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-1","pid":22756,"code":1,"signal":null,"class":"repeated_crash","reason":"code 1 · 3 prior restarts in window"}
+  [sup] {"ts":"2026-09-05T04:53:07.175Z","level":"warn","msg":"lifecycle.degraded","role":"AGENT","identifier":"agent-1","reason":"restart_ceiling_reached:3/3_in_900000ms"}
+  [sup] {"ts":"2026-09-05T04:53:07.175Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-2","pid":736,"code":1,"signal":null,"class":"repeated_crash","reason":"code 1 · 3 prior restarts in window"}
+  [sup] {"ts":"2026-09-05T04:53:07.176Z","level":"warn","msg":"lifecycle.degraded","role":"AGENT","identifier":"agent-2","reason":"restart_ceiling_reached:3/3_in_900000ms"}
+  [sup] {"ts":"2026-09-05T04:53:07.190Z","level":"info","msg":"lifecycle.exit","role":"ORCHESTRATOR","identifier":"orchestrator-1","pid":30988,"code":1,"signal":null,"class":"repeated_crash","reason":"code 1 · 3 prior restarts in window"}
+  [sup] {"ts":"2026-09-05T04:53:07.192Z","level":"warn","msg":"lifecycle.degraded","role":"ORCHESTRATOR","identifier":"orchestrator-1","reason":"restart_ceiling_reached:3/3_in_900000ms"}
+  [sup] {"ts":"2026-09-05T04:53:07.223Z","level":"info","msg":"lifecycle.exit","role":"REAPER","identifier":"reaper-1","pid":21816,"code":1,"signal":null,"class":"repeated_crash","reason":"code 1 · 3 prior restarts in window"}
+  [sup] {"ts":"2026-09-05T04:53:07.225Z","level":"warn","msg":"lifecycle.degraded","role":"REAPER","identifier":"reaper-1","reason":"restart_ceiling_reached:3/3_in_900000ms"}
+  [sup] {"ts":"2026-09-05T04:53:07.228Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-3","pid":30408,"code":1,"signal":null,"class":"repeated_crash","reason":"code 1 · 3 prior restarts in window"}
+  [sup] {"ts":"2026-09-05T04:53:07.228Z","level":"warn","msg":"lifecycle.degraded","role":"AGENT","identifier":"agent-3","reason":"restart_ceiling_reached:3/3_in_900000ms"}
+  ⚠️  OBSERVATION_ERROR [heartbeats]: fetch failed
+  ⚠️  OBSERVATION_ERROR [dup_lease]: fetch failed
+  ⚠️  OBSERVATION_ERROR [r5_contam]: fetch failed
+  t+2h48m28s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:null} · ev=undefined stg=undefined aud=undefined food=undefined · leased=undefined pending=undefined · sess=undefined · reaper=undefinedt/undefinedrec/undefinederr
+  ⚠️  OBSERVATION_ERROR [wi_c12]: fetch failed
+  ⚠️  OBSERVATION_ERROR [reaper]: fetch failed
+  ⚠️  OBSERVATION_ERROR [counts]: fetch failed
+  ⚠️  OBSERVATION_ERROR [heartbeats]: fetch failed
+  ⚠️  OBSERVATION_ERROR [dup_lease]: fetch failed
+  ⚠️  OBSERVATION_ERROR [r5_contam]: fetch failed
+  t+2h49m49s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:null} · ev=undefined stg=undefined aud=undefined food=undefined · leased=undefined pending=undefined · sess=undefined · reaper=undefinedt/undefinedrec/undefinederr
+  ⚠️  OBSERVATION_ERROR [wi_c12]: fetch failed
+  ⚠️  OBSERVATION_ERROR [reaper]: fetch failed
+  ⚠️  OBSERVATION_ERROR [counts]: fetch failed
+  ⚠️  OBSERVATION_ERROR [heartbeats]: fetch failed
+  ⚠️  OBSERVATION_ERROR [dup_lease]: fetch failed
+  ⚠️  OBSERVATION_ERROR [r5_contam]: fetch failed
+  t+2h50m19s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:null} · ev=undefined stg=undefined aud=undefined food=undefined · leased=undefined pending=undefined · sess=undefined · reaper=undefinedt/undefinedrec/undefinederr
+  ⚠️  OBSERVATION_ERROR [wi_c12]: fetch failed
+  ⚠️  OBSERVATION_ERROR [reaper]: fetch failed
+  ⚠️  OBSERVATION_ERROR [counts]: fetch failed
+  ⚠️  OBSERVATION_ERROR [heartbeats]: fetch failed
+  ⚠️  OBSERVATION_ERROR [dup_lease]: fetch failed
+  ⚠️  OBSERVATION_ERROR [r5_contam]: fetch failed
+  t+2h50m49s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:null} · ev=undefined stg=undefined aud=undefined food=undefined · leased=undefined pending=undefined · sess=undefined · reaper=undefinedt/undefinedrec/undefinederr
+  ⚠️  OBSERVATION_ERROR [counts]: fetch failed
+  ⚠️  OBSERVATION_ERROR [heartbeats]: fetch failed
+  ⚠️  OBSERVATION_ERROR [dup_lease]: fetch failed
+  ⚠️  OBSERVATION_ERROR [r5_contam]: fetch failed
+  t+2h51m19s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:null} · ev=undefined stg=undefined aud=undefined food=undefined · leased=undefined pending=undefined · sess=undefined · reaper=1526t/0rec/0err
+  ⚠️  OBSERVATION_ERROR [wi_c12]: fetch failed
+  ⚠️  OBSERVATION_ERROR [reaper]: fetch failed
+  ⚠️  OBSERVATION_ERROR [counts]: fetch failed
+  ⚠️  OBSERVATION_ERROR [heartbeats]: fetch failed
+  ⚠️  OBSERVATION_ERROR [dup_lease]: fetch failed
+  ⚠️  OBSERVATION_ERROR [r5_contam]: fetch failed
+  t+2h53m04s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:null} · ev=undefined stg=undefined aud=undefined food=undefined · leased=undefined pending=undefined · sess=undefined · reaper=undefinedt/undefinedrec/undefinederr
+  ⚠️  OBSERVATION_ERROR [wi_c12]: fetch failed
+  ⚠️  OBSERVATION_ERROR [reaper]: fetch failed
+  ⚠️  OBSERVATION_ERROR [counts]: fetch failed
+  ⚠️  OBSERVATION_ERROR [heartbeats]: fetch failed
+  ⚠️  OBSERVATION_ERROR [dup_lease]: fetch failed
+  ⚠️  OBSERVATION_ERROR [r5_contam]: fetch failed
+  t+2h53m34s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:null} · ev=undefined stg=undefined aud=undefined food=undefined · leased=undefined pending=undefined · sess=undefined · reaper=undefinedt/undefinedrec/undefinederr
+  ⚠️  OBSERVATION_ERROR [wi_c12]: fetch failed
+  ⚠️  OBSERVATION_ERROR [reaper]: fetch failed
+  ⚠️  OBSERVATION_ERROR [counts]: fetch failed
+  ⚠️  OBSERVATION_ERROR [heartbeats]: fetch failed
+  ⚠️  OBSERVATION_ERROR [dup_lease]: fetch failed
+  ⚠️  OBSERVATION_ERROR [r5_contam]: fetch failed
+  t+2h54m04s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:null} · ev=undefined stg=undefined aud=undefined food=undefined · leased=undefined pending=undefined · sess=undefined · reaper=undefinedt/undefinedrec/undefinederr
+  ⚠️  OBSERVATION_ERROR [wi_c12]: fetch failed
+  ⚠️  OBSERVATION_ERROR [reaper]: fetch failed
+  ⚠️  OBSERVATION_ERROR [counts]: fetch failed
+  ⚠️  OBSERVATION_ERROR [heartbeats]: fetch failed
+  ⚠️  OBSERVATION_ERROR [dup_lease]: fetch failed
+  ⚠️  OBSERVATION_ERROR [r5_contam]: fetch failed
+  t+2h54m34s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:null} · ev=undefined stg=undefined aud=undefined food=undefined · leased=undefined pending=undefined · sess=undefined · reaper=undefinedt/undefinedrec/undefinederr
+  ⚠️  OBSERVATION_ERROR [wi_c12]: fetch failed
+  ⚠️  OBSERVATION_ERROR [reaper]: fetch failed
+  ⚠️  OBSERVATION_ERROR [counts]: fetch failed
+  ⚠️  OBSERVATION_ERROR [heartbeats]: fetch failed
+  ⚠️  OBSERVATION_ERROR [dup_lease]: fetch failed
+  ⚠️  OBSERVATION_ERROR [r5_contam]: fetch failed
+  t+2h55m04s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:null} · ev=undefined stg=undefined aud=undefined food=undefined · leased=undefined pending=undefined · sess=undefined · reaper=undefinedt/undefinedrec/undefinederr
+  ⚠️  OBSERVATION_ERROR [wi_c12]: fetch failed
+  ⚠️  OBSERVATION_ERROR [reaper]: fetch failed
+  ⚠️  OBSERVATION_ERROR [counts]: fetch failed
+  ⚠️  OBSERVATION_ERROR [heartbeats]: fetch failed
+  ⚠️  OBSERVATION_ERROR [dup_lease]: fetch failed
+  ⚠️  OBSERVATION_ERROR [r5_contam]: fetch failed
+  t+2h55m35s · wi_c12={done:0 leased:0 pending:0} · agents={live:0 distinct:null} · ev=undefined stg=undefined aud=undefined food=undefined · leased=undefined pending=undefined · sess=undefined · reaper=undefinedt/undefinedrec/undefinederr
+  t+2h56m05s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+2h56m48s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+2h57m30s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+2h58m11s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+2h58m54s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+2h59m35s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h00m16s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+
+  ═══ HOURLY SUMMARY (hour 3) · {"at":"2026-09-05T05:04:33.116Z","elapsed":"3h00m16s","hour":3,"cycles_completed":3,"cycles_started":1,"food_rows":23328,"food_dup":373,"distinct_agents":0,"reaper_ticks":1526,"reaper_errors":0,"observation_errors":64} ═══
+
+  t+3h00m58s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h01m38s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h02m22s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h03m04s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h03m46s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h04m27s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h05m07s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h05m48s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h06m31s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h07m13s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h07m54s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h08m34s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h09m16s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h09m56s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h10m36s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h11m17s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h11m57s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h12m37s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h13m19s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h14m00s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h14m42s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h15m22s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h16m03s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h16m46s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h17m26s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h18m08s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h18m49s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h19m31s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h20m11s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h20m52s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h21m36s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h22m18s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h23m01s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h23m41s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h24m26s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h25m06s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h25m46s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h26m26s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h27m06s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h27m46s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h28m27s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h29m07s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h29m47s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h30m30s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h31m11s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h31m51s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h32m31s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h33m13s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h33m56s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h34m36s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h35m18s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h35m58s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h36m38s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h37m19s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h38m00s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h38m39s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h39m21s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h40m02s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h40m46s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h41m28s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h42m09s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h42m50s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h43m34s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h44m15s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h44m56s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h45m36s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h46m17s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h46m59s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h47m41s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h48m20s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h49m01s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h49m43s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h50m23s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h51m06s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h51m48s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h52m28s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h53m10s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h53m50s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h54m32s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h55m13s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h55m54s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h56m36s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h57m19s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h58m01s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h58m41s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+3h59m21s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+  t+4h00m06s · wi_c12={done:3 leased:0 pending:0} · agents={live:0 distinct:0} · ev=9 stg=7489 aud=70 food=23328 · leased=0 pending=0 · sess=0 · reaper=1526t/0rec/0err
+
+  ═══ HOURLY SUMMARY (hour 4) · {"at":"2026-09-05T06:04:23.560Z","elapsed":"4h00m06s","hour":4,"cycles_completed":3,"cycles_started":1,"food_rows":23328,"food_dup":373,"distinct_agents":0,"reaper_ticks":1526,"reaper_errors":0,"observation_errors":64} ═══
+
+
+─── TERMINAL · hard ceiling reached at 4h00m00s ───
+
+─── § 31 · GRACEFUL SHUTDOWN · C9 ShutdownOrder ───
+  [sup] {"ts":"2026-09-05T06:04:24.369Z","level":"info","msg":"supervisor.shutdown","reason":"c12_finally"}
+
+─── EXIT CLASSIFICATIONS ───
+🟢 REAPER/reaper-1 · state=DEGRADED · class=repeated_crash · code=1 sig=null restarts=3
+🟢 ORCHESTRATOR/orchestrator-1 · state=DEGRADED · class=repeated_crash · code=1 sig=null restarts=3
+🟢 AGENT/agent-1 · state=DEGRADED · class=repeated_crash · code=1 sig=null restarts=3
+🟢 AGENT/agent-2 · state=DEGRADED · class=repeated_crash · code=1 sig=null restarts=3
+🟢 AGENT/agent-3 · state=DEGRADED · class=repeated_crash · code=1 sig=null restarts=3
+🟢 AGENT/agent-4 · state=DEGRADED · class=repeated_crash · code=1 sig=null restarts=3
+🟢 AGENT/agent-5 · state=DEGRADED · class=repeated_crash · code=1 sig=null restarts=3
+
+─── POST-RUNTIME PROCESS AUDIT ───
+🟢 zero workforce OS processes post-shutdown · 0
+🟢 zero legacy processes
+  data/nex-workforce-v2/locks/reaper.lock · ABSENT (released)
+  data/nex-workforce-v2/locks/orchestrator.lock · ABSENT (released)
+🟢 zero live lifecycle locks post-shutdown
+
+─── POST-RUNTIME DATABASE AUDIT · safeMgmt ───
+  post-state: {
+    "food_rows": 23328,
+    "food_dup": 373,
+    "cc": 1,
+    "jr": 1,
+    "wi_total": 7,
+    "wi_active": 0,
+    "ev": 9,
+    "stg": 7489,
+    "aud": 70,
+    "wf_pol": 12,
+    "food_pol": 5,
+    "roles": 3,
+    "r5_intact": true,
+    "wf_sessions": 0,
+    "c12_reaper_ticks": 1526,
+    "c12_reclaimed": 0,
+    "c12_wi_count": 3,
+    "c12_wi_completed": 3,
+    "c12_distinct_agents": 0
+  }
+  deltas: {"food_rows":0,"food_dup":0,"wi_total":3,"wi_active":0,"ev":3,"stg":3723,"aud":39}
+🟢 city_catalogue unchanged
+🟢 job_registry unchanged
+🟢 workforce policies unchanged (=12)
+🟢 food policies unchanged (=5)
+🟢 workforce roles unchanged (=3)
+🟢 R5 intact
+🟢 duplicate groups did not grow unexpectedly (≤ +5 tolerance) · +0
+🟢 post-trial workforce DB sessions = 0
+🟢 agent count did not exceed 5 · distinct=0
+
+─── FOOD DELTA DETAIL ───
+  {
+    "audit_rows": 39,
+    "sum_new": 0,
+    "sum_updated": 1974,
+    "sum_rejected": 1749,
+    "evidence_count": 3,
+    "evidence_detail": [
+      {
+        "id": "6b9dbce13bf8c68bcfc4cddb2b2d75847db3b14471d69dea5dc3a4cbe89acf83",
+        "http": 200,
+        "bytes": 291327,
+        "candidates": 1241,
+        "query_hash": "33da302832c4bce40fef6b2025f08581835398880bcb1d4be900fd3dc2682390"
+      },
+      {
+        "id": "3214bbd9125afa9db5197b8d44bdd37220aa71ec62b9459c836f2e968752d0a6",
+        "http": 200,
+        "bytes": 291327,
+        "candidates": 1241,
+        "query_hash": "33da302832c4bce40fef6b2025f08581835398880bcb1d4be900fd3dc2682390"
+      },
+      {
+        "id": "b1932fcb007274b83e62b43c704ea12a213d503a93b49bafb08b6cd24d701b4e",
+        "http": 200,
+        "bytes": 291327,
+        "candidates": 1241,
+        "query_hash": "33da302832c4bce40fef6b2025f08581835398880bcb1d4be900fd3dc2682390"
+      }
+    ],
+    "food_touched": 658,
+    "food_cities": [
+      "Yogyakarta"
+    ],
+    "food_sources": [
+      "osm_overpass"
+    ]
+  }
+🟢 all C12 food rows city=Yogyakarta (R5) · cities=["Yogyakarta"]
+🟢 all C12 food rows source=osm_overpass · sources=["osm_overpass"]
+🟢 evidence 6b9dbce1 · query_hash matches C6 bbox
+🟢 evidence 6b9dbce1 · HTTP 200 · non-zero bytes
+🟢 evidence 3214bbd9 · query_hash matches C6 bbox
+🟢 evidence 3214bbd9 · HTTP 200 · non-zero bytes
+🟢 evidence b1932fcb · query_hash matches C6 bbox
+🟢 evidence b1932fcb · HTTP 200 · non-zero bytes
+
+─── ENVIRONMENT + SCHEDULER + LEGACY POST-TRIAL ───
+🟢 Scheduled Task remains Disabled
+🔴 .env.local mtime unchanged
+🔴 .env.local byte-identical (SHA)
+🟢 NEX_WORKFORCE_URL still absent from .env.local
+
+═══════════════════════════════════════════════════════════════════════
+ FINAL · pass=57 fail=2 · obs_errors=64 · red=0 · harness_exception=false
+  cycles_started=1 cycles_completed=3
+═══════════════════════════════════════════════════════════════════════
+  report: scripts/nex-migration/reports/proving/c12-1788573833774/report.json
+
+🟡 C12 PARTIAL · HARD STOP

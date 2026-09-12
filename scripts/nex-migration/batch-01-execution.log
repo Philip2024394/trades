@@ -1,0 +1,107 @@
+[2026-09-02T20:44:03.401Z] === BATCH 1 EXECUTION · warm-up · RLS UNCHANGED ===
+[2026-09-02T20:44:03.403Z] target: ijvqdvsvwtwxzcqmoqit · eu-west-1
+[2026-09-02T20:44:03.403Z] expected: 62 tables · 722 rows
+[2026-09-02T20:44:03.404Z] 
+─── PRE-CHECK ───
+[2026-09-02T20:44:04.787Z]   target: ijvqdvsvwtwxzcqmoqit · asknexapp@gmail.com's Project · eu-west-1 · ACTIVE_HEALTHY
+[2026-09-02T20:44:07.736Z]   readonly: enabled=false
+[2026-09-02T20:44:09.422Z]   db_size PRE:  308 MB (322.784.403 bytes)
+[2026-09-02T20:44:09.423Z]   wal_lsn PRE:  C/4B000000 · file 000000010000000C0000004B
+[2026-09-02T20:44:11.011Z]   nex table count: 191
+[2026-09-02T20:44:12.526Z]   sample nex counts (must all be 0): {"imel":0,"fb":0,"al":0,"cm":0}
+[2026-09-02T20:44:15.033Z]   public baseline: {"public_tables":17,"kr":3627,"wj":19167,"wr":19140}
+[2026-09-02T20:44:16.781Z]   RLS state PRE:  {"rls_enabled_tables":92,"total_tables":191}
+[2026-09-02T20:44:18.455Z]   FK count PRE:   0 (should be 0)
+[2026-09-02T20:44:18.455Z] 
+─── PRE-CHECK PASSED · proceeding to pg_restore ───
+[2026-09-02T20:44:18.455Z] 
+─── EXECUTING pg_restore --use-list=batch-01-tiny.list ───
+pg_restore: connecting to database for restore
+pg_restore: processing data for table "nex.alert_dispatches"
+pg_restore: while PROCESSING TOC:
+pg_restore: from TOC entry 8364; 0 17845 TABLE DATA alert_dispatches postgres
+pg_restore: error: could not execute query: ERROR:  query would be affected by row-level security policy for table "alert_dispatches"
+Command was: COPY nex.alert_dispatches (dispatch_id, alert_id, channel, destination, status, error, latency_ms, attempt_no, dispatched_at, metadata) FROM stdin;
+[2026-09-02T20:44:28.382Z] 
+pg_restore exit: 1 · elapsed: 9.93s
+[2026-09-02T20:44:28.383Z] 
+─── POST-CHECK ───
+[2026-09-02T20:44:30.189Z]   db_size POST: 308 MB (322.784.403 bytes)
+[2026-09-02T20:44:30.190Z]   wal_lsn POST: C/4B002918 · file 000000010000000C0000004B
+[2026-09-02T20:44:30.190Z]   db_size DELTA: +0 bytes (0.0 KB)
+[2026-09-02T20:44:30.190Z] 
+  Per-table row counts vs source:
+[2026-09-02T20:44:31.892Z]   ❌ 62 table(s) did not match expected counts:
+[2026-09-02T20:44:31.893Z]      alert_dispatches                              expected=12  actual=0
+[2026-09-02T20:44:31.893Z]      alert_rules                                   expected=14  actual=0
+[2026-09-02T20:44:31.893Z]      alerts                                        expected=4  actual=0
+[2026-09-02T20:44:31.894Z]      audit_log                                     expected=9  actual=0
+[2026-09-02T20:44:31.894Z]      benchmark_runs                                expected=1  actual=0
+[2026-09-02T20:44:31.894Z]      bike_rental_listing                           expected=9  actual=0
+[2026-09-02T20:44:31.895Z]      brain_user_saved_facts                        expected=1  actual=0
+[2026-09-02T20:44:31.895Z]      call_record                                   expected=1  actual=0
+[2026-09-02T20:44:31.895Z]      campaign_segments                             expected=4  actual=0
+[2026-09-02T20:44:31.895Z]      chat_message                                  expected=70  actual=0
+[2026-09-02T20:44:31.895Z]      chat_message_archive                          expected=20  actual=0
+[2026-09-02T20:44:31.896Z]      chat_message_deletion                         expected=20  actual=0
+[2026-09-02T20:44:31.896Z]      compliance_events                             expected=14  actual=0
+[2026-09-02T20:44:31.896Z]      contact_segments                              expected=12  actual=0
+[2026-09-02T20:44:31.896Z]      conv_intents                                  expected=22  actual=0
+[2026-09-02T20:44:31.897Z]      conversion_events                             expected=2  actual=0
+[2026-09-02T20:44:31.897Z]      cost_budget                                   expected=4  actual=0
+[2026-09-02T20:44:31.898Z]      delivery_workers_archive_2026_08_22           expected=1  actual=0
+[2026-09-02T20:44:31.898Z]      email_templates                               expected=8  actual=0
+[2026-09-02T20:44:31.898Z]      events                                        expected=2  actual=0
+[2026-09-02T20:44:31.898Z]      experiment_variants                           expected=2  actual=0
+[2026-09-02T20:44:31.899Z]      experiments                                   expected=1  actual=0
+[2026-09-02T20:44:31.899Z]      food_business_promotion_decision              expected=1  actual=0
+[2026-09-02T20:44:31.899Z]      food_claim_code                               expected=1  actual=0
+[2026-09-02T20:44:31.900Z]      food_commercial_event                         expected=6  actual=0
+[2026-09-02T20:44:31.900Z]      food_hq_rule                                  expected=10  actual=0
+[2026-09-02T20:44:31.901Z]      food_outreach_attempt                         expected=5  actual=0
+[2026-09-02T20:44:31.901Z]      food_outreach_suppression                     expected=1  actual=0
+[2026-09-02T20:44:31.901Z]      food_outreach_template                        expected=4  actual=0
+[2026-09-02T20:44:31.901Z]      geo_landmark                                  expected=34  actual=0
+[2026-09-02T20:44:31.902Z]      journey_inbound_events                        expected=3  actual=0
+[2026-09-02T20:44:31.902Z]      journey_triggers                              expected=1  actual=0
+[2026-09-02T20:44:31.903Z]      journeys                                      expected=3  actual=0
+[2026-09-02T20:44:31.903Z]      knowledge_inbox_stats                         expected=2  actual=0
+[2026-09-02T20:44:31.903Z]      meaningful_area                               expected=6  actual=0
+[2026-09-02T20:44:31.904Z]      mp_commerce_policy                            expected=1  actual=0
+[2026-09-02T20:44:31.904Z]      mp_product                                    expected=5  actual=0
+[2026-09-02T20:44:31.904Z]      mp_product_image                              expected=5  actual=0
+[2026-09-02T20:44:31.905Z]      mp_product_option                             expected=11  actual=0
+[2026-09-02T20:44:31.905Z]      mp_product_option_value                       expected=24  actual=0
+[2026-09-02T20:44:31.905Z]      mp_product_variant                            expected=15  actual=0
+[2026-09-02T20:44:31.905Z]      object_blob_current                           expected=22  actual=0
+[2026-09-02T20:44:31.905Z]      prediction_models                             expected=2  actual=0
+[2026-09-02T20:44:31.906Z]      predictive_controls                           expected=1  actual=0
+[2026-09-02T20:44:31.906Z]      provider_rate_config                          expected=7  actual=0
+[2026-09-02T20:44:31.907Z]      provider_registry                             expected=5  actual=0
+[2026-09-02T20:44:31.907Z]      provider_wallet                               expected=7  actual=0
+[2026-09-02T20:44:31.908Z]      recovery_runs                                 expected=4  actual=0
+[2026-09-02T20:44:31.908Z]      rollup_campaigns                              expected=5  actual=0
+[2026-09-02T20:44:31.908Z]      rollup_country                                expected=10  actual=0
+[2026-09-02T20:44:31.909Z]      rollup_daily                                  expected=2  actual=0
+[2026-09-02T20:44:31.909Z]      rollup_monthly                                expected=1  actual=0
+[2026-09-02T20:44:31.909Z]      rollup_provider                               expected=5  actual=0
+[2026-09-02T20:44:31.909Z]      rollup_segment                                expected=1  actual=0
+[2026-09-02T20:44:31.910Z]      safety_audit_config                           expected=1  actual=0
+[2026-09-02T20:44:31.910Z]      social_admin_access_log                       expected=87  actual=0
+[2026-09-02T20:44:31.910Z]      social_category_automation                    expected=66  actual=0
+[2026-09-02T20:44:31.911Z]      social_controls                               expected=1  actual=0
+[2026-09-02T20:44:31.911Z]      sparks_product                                expected=3  actual=0
+[2026-09-02T20:44:31.911Z]      sparks_product_price                          expected=6  actual=0
+[2026-09-02T20:44:31.912Z]      user_wallet                                   expected=65  actual=0
+[2026-09-02T20:44:31.912Z]      worker_heartbeats_archive_2026_08_22          expected=50  actual=0
+[2026-09-02T20:44:31.912Z]   ✓ 0 tables matched (total actual: 0, expected: 722)
+[2026-09-02T20:44:33.619Z] 
+  public baseline POST: {"public_tables":17,"kr":3627,"wj":19167,"wr":19140}
+[2026-09-02T20:44:33.619Z]   public.* unchanged: ✓
+[2026-09-02T20:44:35.174Z]   RLS state POST: {"rls_enabled_tables":92,"total_tables":191}
+[2026-09-02T20:44:35.175Z]   RLS unchanged: ✓
+[2026-09-02T20:44:36.630Z]   FK count POST: 0 (should be 0)
+[2026-09-02T20:44:39.713Z]   readonly POST: enabled=false
+[2026-09-02T20:44:39.714Z] 
+─── HARD STOP · batch 1 complete · report at scripts/nex-migration/batch-01-report.json ───
+[2026-09-02T20:44:39.715Z] ─── awaiting Philip approval before Batch 2 ───

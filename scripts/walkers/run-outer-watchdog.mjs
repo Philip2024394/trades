@@ -23,9 +23,39 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawn } from "node:child_process";
+import { readFileSync, existsSync } from "node:fs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, "..", "..");
+
+// System A isolation gate · load .env.local so NEX_TAXONOMY_POSTGRES_URL is
+// available BEFORE we substitute it into NEX_POSTGRES_URL for the child.
+// The child receives the substituted value; System A never sees the real
+// NEX_POSTGRES_URL (which, post-cutover, points at Supabase Project B).
+if (existsSync(path.join(repoRoot, ".env.local"))) {
+  for (const line of readFileSync(path.join(repoRoot, ".env.local"), "utf8").split(/\r?\n/)) {
+    const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
+    if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, "");
+  }
+}
+const TAX_URL = process.env.NEX_TAXONOMY_POSTGRES_URL;
+if (!TAX_URL || TAX_URL.trim().length === 0) {
+  console.error(
+    "[outer-watchdog] FAIL-CLOSED · NEX_TAXONOMY_POSTGRES_URL is not set · " +
+    "System A refuses to boot pointed at the production NEX database. " +
+    "Set it in .env.local (typically the local nex_dev URL).",
+  );
+  process.exit(2);
+}
+
+// Redact password for the log line so credentials never leak to console.
+const REDACTED_TAX_URL = TAX_URL.replace(/:[^:@/]+@/, ":****@");
+console.log(`[outer-watchdog] System A DB (NEX_TAXONOMY_POSTGRES_URL) = ${REDACTED_TAX_URL}`);
+
+// Substitute the taxonomy URL into NEX_POSTGRES_URL for every child process
+// spawned by this wrapper chain. Downstream Indonesia modules keep reading
+// NEX_POSTGRES_URL unchanged · the swap is invisible to them.
+const SYSTEM_A_ENV = { ...process.env, NEX_POSTGRES_URL: TAX_URL };
 
 if (!process.env.__OUTER_WATCHDOG_INNER__) {
   // Bootstrap · run the same script through tsx so we can import the
@@ -33,7 +63,7 @@ if (!process.env.__OUTER_WATCHDOG_INNER__) {
   const child = spawn(
     "npx",
     ["tsx", "--env-file=.env.local", fileURLToPath(import.meta.url)],
-    { stdio: "inherit", cwd: repoRoot, shell: true, env: { ...process.env, __OUTER_WATCHDOG_INNER__: "1" } },
+    { stdio: "inherit", cwd: repoRoot, shell: true, env: { ...SYSTEM_A_ENV, __OUTER_WATCHDOG_INNER__: "1" } },
   );
   child.on("exit", (code) => process.exit(code ?? 1));
 } else {

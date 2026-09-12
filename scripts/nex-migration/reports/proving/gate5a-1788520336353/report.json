@@ -1,0 +1,214 @@
+{
+  "run_id": "gate5a-1788520336353",
+  "started_at": "2026-09-04T11:12:16.354Z",
+  "phases": {
+    "preflight": {
+      "targetId": {
+        "db": "postgres",
+        "ver": "17.6",
+        "usr": "postgres"
+      },
+      "baseline": {
+        "wi_bbox_col": 1,
+        "view_bbox": 1,
+        "fn_bbox": 1,
+        "wf_policies": 11,
+        "food_policies": 5,
+        "food_rows": 22750,
+        "food_dup_groups": 373,
+        "wi_total": 2,
+        "wi_active": 0,
+        "ev": 0,
+        "stg": 0,
+        "aud": 0,
+        "rr": 4,
+        "cities": 0,
+        "jobs": 0,
+        "grant_ok": 1,
+        "active_wf": 0,
+        "persister_exists": 1,
+        "admin_bypass": false
+      },
+      "preTaskState": "Disabled",
+      "preEnvInfo": "mtime=2026-09-03T07:41:00.1988508+07:00|matches=0",
+      "preSysA": "NEX_TAXONOMY_POSTGRES_URL=postgresql://postgres:Admin1phil@localhost:5433/nex_dev"
+    },
+    "terminal": {
+      "reason": "work_item reached terminal state: soft_fail",
+      "ourWorkItemId": "5828fab5-83e2-4ff9-8624-c882e9c45b23",
+      "ourWorkItemState": "soft_fail",
+      "elapsed_s": 15
+    },
+    "staging": {
+      "n": 0,
+      "n_persisted": 0,
+      "n_rejected": 0
+    },
+    "persistence": [],
+    "food_business": {
+      "baseline_rows": 22750,
+      "after_rows": 22750,
+      "delta": 0,
+      "baseline_dup_groups": 373,
+      "after_dup_groups": 373
+    },
+    "lifecycle": {
+      "id": "5828fab5-83e2-4ff9-8624-c882e9c45b23",
+      "state": "soft_fail",
+      "generation": 2,
+      "agent_id": null,
+      "priority": 1998,
+      "attempts": 1,
+      "lease_deadline": null,
+      "enqueued_at": "2026-09-04 11:12:31.45376+00",
+      "started_at": "2026-09-04 11:12:39.921375+00",
+      "finished_at": null,
+      "records_new": null,
+      "records_rejected": null,
+      "bbox_json": "{\"ne\": {\"lat\": -7.77, \"lon\": 110.39}, \"sw\": {\"lat\": -7.82, \"lon\": 110.34}}",
+      "last_error": "catastrophic in fetch_and_stage: unclassified: OverpassError: overpass HTTP 406",
+      "last_error_class": "catastrophic",
+      "cursor_json": "{}"
+    },
+    "log_scan": {
+      "roleErrs": 0,
+      "bboxErrs": 0,
+      "permErrs": 0,
+      "orchTicks": 12,
+      "reaperTicks": 13,
+      "agentEvents": 20
+    },
+    "postflight": {
+      "post": {
+        "wf_policies": 11,
+        "food_policies": 5,
+        "grant_ok": 1,
+        "admin_bypass": false,
+        "active_wf": 0
+      },
+      "postTaskState": "Disabled",
+      "postEnvInfo": "mtime=2026-09-03T07:41:00.1988508+07:00|matches=0",
+      "sysAUnchanged": true,
+      "legacyCount": 0
+    }
+  },
+  "processes": {
+    "orchestrator": {
+      "pid": 38380,
+      "script": "scripts/nex-workforce-v2/orchestrator.mjs",
+      "logPath": "scripts/nex-migration/reports/proving/gate5a-1788520336353/orchestrator.log",
+      "extraEnv": {
+        "NEX_ORCH_INTERVAL_MS": "4000",
+        "NEX_ORCH_MAX_CONSECUTIVE_ERRORS": "3"
+      },
+      "started_at": "2026-09-04T11:12:28.623Z",
+      "shutdown": {
+        "name": "orchestrator",
+        "method": "graceful",
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    },
+    "reaper": {
+      "pid": 20868,
+      "script": "scripts/nex-workforce-v2/reaper.mjs",
+      "logPath": "scripts/nex-migration/reports/proving/gate5a-1788520336353/reaper.log",
+      "extraEnv": {
+        "NEX_REAPER_INTERVAL_MS": "4000",
+        "NEX_REAPER_MAX_CONSECUTIVE_ERRORS": "3"
+      },
+      "started_at": "2026-09-04T11:12:28.644Z",
+      "shutdown": {
+        "name": "reaper",
+        "method": "graceful",
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    },
+    "agent": {
+      "pid": 36404,
+      "script": "scripts/nex-workforce-v2/agent.mjs",
+      "logPath": "scripts/nex-migration/reports/proving/gate5a-1788520336353/agent.log",
+      "extraEnv": {
+        "NEX_AGENT_POLL_MS": "1000",
+        "NEX_AGENT_HEARTBEAT_MS": "2000",
+        "NEX_AGENT_ID": "gate5a-1788520336353"
+      },
+      "started_at": "2026-09-04T11:12:28.667Z",
+      "shutdown": {
+        "name": "agent",
+        "method": "graceful",
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    }
+  },
+  "observations": [
+    {
+      "t_s": 5,
+      "our_id": "5828fab5-83e2-4ff9-8624-c882e9c45b23",
+      "our_state": "pending",
+      "our_bbox": {
+        "ne": {
+          "lat": -7.77,
+          "lon": 110.39
+        },
+        "sw": {
+          "lat": -7.82,
+          "lon": 110.34
+        }
+      },
+      "ev": 0,
+      "stg": 0,
+      "aud": 0,
+      "food_rows": 22750
+    },
+    {
+      "t_s": 10,
+      "our_id": "5828fab5-83e2-4ff9-8624-c882e9c45b23",
+      "our_state": "pending",
+      "our_bbox": {
+        "ne": {
+          "lat": -7.77,
+          "lon": 110.39
+        },
+        "sw": {
+          "lat": -7.82,
+          "lon": 110.34
+        }
+      },
+      "ev": 0,
+      "stg": 0,
+      "aud": 0,
+      "food_rows": 22750
+    },
+    {
+      "t_s": 15,
+      "our_id": "5828fab5-83e2-4ff9-8624-c882e9c45b23",
+      "our_state": "soft_fail",
+      "our_bbox": {
+        "ne": {
+          "lat": -7.77,
+          "lon": 110.39
+        },
+        "sw": {
+          "lat": -7.82,
+          "lon": 110.34
+        }
+      },
+      "ev": 0,
+      "stg": 0,
+      "aud": 0,
+      "food_rows": 22750
+    }
+  ],
+  "finished_at": "2026-09-04T11:13:05.990Z",
+  "pass": 32,
+  "fail": 4,
+  "failLines": [
+    "❌ § 8 · evidence_record exists for our work_item · no evidence row · capability failed before staging",
+    "❌ § 13 · persist_audit rows recorded through the approved persister function · no persist_audit rows · persist_batch never ran",
+    "❌ § 17 · work_item bbox_json exactly matches seeded bbox (captured at enqueue · immutable)",
+    "❌ § 17 · finished_at populated"
+  ]
+}

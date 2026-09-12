@@ -1,0 +1,701 @@
+{
+  "01_pg_version_and_extensions": {
+    "name": "01_pg_version_and_extensions",
+    "status": 201,
+    "body": [
+      {
+        "pg_version": "PostgreSQL 17.6 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 15.2.0, 64-bit",
+        "db": "postgres",
+        "running_as": "postgres"
+      }
+    ]
+  },
+  "02_extensions_installed": {
+    "name": "02_extensions_installed",
+    "status": 201,
+    "body": [
+      {
+        "extname": "pg_stat_statements",
+        "extversion": "1.11",
+        "in_schema": "extensions"
+      },
+      {
+        "extname": "pgcrypto",
+        "extversion": "1.3",
+        "in_schema": "extensions"
+      },
+      {
+        "extname": "plpgsql",
+        "extversion": "1.0",
+        "in_schema": "pg_catalog"
+      },
+      {
+        "extname": "supabase_vault",
+        "extversion": "0.3.1",
+        "in_schema": "vault"
+      },
+      {
+        "extname": "uuid-ossp",
+        "extversion": "1.1",
+        "in_schema": "extensions"
+      },
+      {
+        "extname": "vector",
+        "extversion": "0.8.2",
+        "in_schema": "public"
+      }
+    ]
+  },
+  "03_extensions_available": {
+    "name": "03_extensions_available",
+    "status": 201,
+    "body": [
+      {
+        "name": "hstore",
+        "default_version": "1.8",
+        "installed_version": null,
+        "comment": "data type for storing sets of (key, value) pairs"
+      },
+      {
+        "name": "ltree",
+        "default_version": "1.3",
+        "installed_version": null,
+        "comment": "data type for hierarchical tree-like structures"
+      },
+      {
+        "name": "pg_cron",
+        "default_version": "1.6.4",
+        "installed_version": null,
+        "comment": "Job scheduler for PostgreSQL"
+      },
+      {
+        "name": "pg_graphql",
+        "default_version": "1.6.1",
+        "installed_version": null,
+        "comment": "pg_graphql: GraphQL support"
+      },
+      {
+        "name": "pg_net",
+        "default_version": "0.20.4",
+        "installed_version": null,
+        "comment": "Async HTTP"
+      },
+      {
+        "name": "pg_stat_statements",
+        "default_version": "1.11",
+        "installed_version": "1.11",
+        "comment": "track planning and execution statistics of all SQL statements executed"
+      },
+      {
+        "name": "pg_trgm",
+        "default_version": "1.6",
+        "installed_version": null,
+        "comment": "text similarity measurement and index searching based on trigrams"
+      },
+      {
+        "name": "pgcrypto",
+        "default_version": "1.3",
+        "installed_version": "1.3",
+        "comment": "cryptographic functions"
+      },
+      {
+        "name": "pgjwt",
+        "default_version": "0.2.0",
+        "installed_version": null,
+        "comment": "JSON Web Token API for Postgresql"
+      },
+      {
+        "name": "pgsodium",
+        "default_version": "3.1.8",
+        "installed_version": null,
+        "comment": "Postgres extension for libsodium functions"
+      },
+      {
+        "name": "plpgsql",
+        "default_version": "1.0",
+        "installed_version": "1.0",
+        "comment": "PL/pgSQL procedural language"
+      },
+      {
+        "name": "postgis",
+        "default_version": "3.3.7",
+        "installed_version": null,
+        "comment": "PostGIS geometry and geography spatial types and functions"
+      },
+      {
+        "name": "uuid-ossp",
+        "default_version": "1.1",
+        "installed_version": "1.1",
+        "comment": "generate universally unique identifiers (UUIDs)"
+      },
+      {
+        "name": "vector",
+        "default_version": "0.8.2",
+        "installed_version": "0.8.2",
+        "comment": "vector data type and ivfflat and hnsw access methods"
+      }
+    ]
+  },
+  "04_database_size": {
+    "name": "04_database_size",
+    "status": 201,
+    "body": [
+      {
+        "total_size": "295 MB",
+        "total_bytes": 309038227
+      }
+    ]
+  },
+  "05_schemas_and_object_counts": {
+    "name": "05_schemas_and_object_counts",
+    "status": 201,
+    "body": [
+      {
+        "schema": "auth",
+        "tables": 23,
+        "views": 0,
+        "matviews": 0,
+        "functions": 4,
+        "composite_types": 23
+      },
+      {
+        "schema": "extensions",
+        "tables": 0,
+        "views": 2,
+        "matviews": 0,
+        "functions": 55,
+        "composite_types": 2
+      },
+      {
+        "schema": "graphql",
+        "tables": 0,
+        "views": 0,
+        "matviews": 0,
+        "functions": 0,
+        "composite_types": 0
+      },
+      {
+        "schema": "graphql_public",
+        "tables": 0,
+        "views": 0,
+        "matviews": 0,
+        "functions": 1,
+        "composite_types": 0
+      },
+      {
+        "schema": "public",
+        "tables": 17,
+        "views": 0,
+        "matviews": 0,
+        "functions": 123,
+        "composite_types": 17
+      },
+      {
+        "schema": "realtime",
+        "tables": 2,
+        "views": 0,
+        "matviews": 0,
+        "functions": 15,
+        "composite_types": 6
+      },
+      {
+        "schema": "storage",
+        "tables": 8,
+        "views": 0,
+        "matviews": 0,
+        "functions": 17,
+        "composite_types": 8
+      },
+      {
+        "schema": "vault",
+        "tables": 1,
+        "views": 1,
+        "matviews": 0,
+        "functions": 5,
+        "composite_types": 2
+      }
+    ]
+  },
+  "06_public_tables_size_and_rows": {
+    "name": "06_public_tables_size_and_rows",
+    "status": 201,
+    "body": [
+      {
+        "table_name": "worker_jobs",
+        "total_size": "212 MB",
+        "total_bytes": 222224384,
+        "row_estimate": 19168
+      },
+      {
+        "table_name": "worker_results",
+        "total_size": "41 MB",
+        "total_bytes": 42500096,
+        "row_estimate": 19175
+      },
+      {
+        "table_name": "audit_log",
+        "total_size": "11 MB",
+        "total_bytes": 11034624,
+        "row_estimate": 20224
+      },
+      {
+        "table_name": "knowledge_records",
+        "total_size": "5784 kB",
+        "total_bytes": 5922816,
+        "row_estimate": 3627
+      },
+      {
+        "table_name": "directory_seeds",
+        "total_size": "4184 kB",
+        "total_bytes": 4284416,
+        "row_estimate": 1227
+      },
+      {
+        "table_name": "sources",
+        "total_size": "2592 kB",
+        "total_bytes": 2654208,
+        "row_estimate": 3625
+      },
+      {
+        "table_name": "confidence_scores",
+        "total_size": "2568 kB",
+        "total_bytes": 2629632,
+        "row_estimate": 4228
+      },
+      {
+        "table_name": "graph_edges",
+        "total_size": "2456 kB",
+        "total_bytes": 2514944,
+        "row_estimate": 4308
+      },
+      {
+        "table_name": "knowledge_feedback",
+        "total_size": "608 kB",
+        "total_bytes": 622592,
+        "row_estimate": 402
+      },
+      {
+        "table_name": "record_versions",
+        "total_size": "472 kB",
+        "total_bytes": 483328,
+        "row_estimate": 22
+      },
+      {
+        "table_name": "nex_collection_url_queue",
+        "total_size": "432 kB",
+        "total_bytes": 442368,
+        "row_estimate": 301
+      },
+      {
+        "table_name": "nex_collection_fetch_errors",
+        "total_size": "192 kB",
+        "total_bytes": 196608,
+        "row_estimate": 170
+      },
+      {
+        "table_name": "worker_heartbeats",
+        "total_size": "96 kB",
+        "total_bytes": 98304,
+        "row_estimate": 50
+      },
+      {
+        "table_name": "claim_requests",
+        "total_size": "96 kB",
+        "total_bytes": 98304,
+        "row_estimate": 0
+      },
+      {
+        "table_name": "contradictions",
+        "total_size": "48 kB",
+        "total_bytes": 49152,
+        "row_estimate": 8
+      },
+      {
+        "table_name": "llm_retry_queue",
+        "total_size": "40 kB",
+        "total_bytes": 40960,
+        "row_estimate": 0
+      },
+      {
+        "table_name": "deprecations",
+        "total_size": "24 kB",
+        "total_bytes": 24576,
+        "row_estimate": 0
+      }
+    ]
+  },
+  "07_nex_schema_exists": {
+    "name": "07_nex_schema_exists",
+    "status": 201,
+    "body": []
+  },
+  "08_roles_all": {
+    "name": "08_roles_all",
+    "status": 201,
+    "body": [
+      {
+        "rolname": "anon",
+        "is_super": false,
+        "can_login": false,
+        "create_role": false,
+        "create_db": false,
+        "replication": false
+      },
+      {
+        "rolname": "authenticated",
+        "is_super": false,
+        "can_login": false,
+        "create_role": false,
+        "create_db": false,
+        "replication": false
+      },
+      {
+        "rolname": "authenticator",
+        "is_super": false,
+        "can_login": true,
+        "create_role": false,
+        "create_db": false,
+        "replication": false
+      },
+      {
+        "rolname": "dashboard_user",
+        "is_super": false,
+        "can_login": false,
+        "create_role": true,
+        "create_db": true,
+        "replication": true
+      },
+      {
+        "rolname": "postgres",
+        "is_super": false,
+        "can_login": true,
+        "create_role": true,
+        "create_db": true,
+        "replication": true
+      },
+      {
+        "rolname": "service_role",
+        "is_super": false,
+        "can_login": false,
+        "create_role": false,
+        "create_db": false,
+        "replication": false
+      },
+      {
+        "rolname": "supabase_admin",
+        "is_super": true,
+        "can_login": true,
+        "create_role": true,
+        "create_db": true,
+        "replication": true
+      },
+      {
+        "rolname": "supabase_auth_admin",
+        "is_super": false,
+        "can_login": true,
+        "create_role": true,
+        "create_db": false,
+        "replication": false
+      },
+      {
+        "rolname": "supabase_etl_admin",
+        "is_super": false,
+        "can_login": true,
+        "create_role": false,
+        "create_db": false,
+        "replication": true
+      },
+      {
+        "rolname": "supabase_privileged_role",
+        "is_super": false,
+        "can_login": false,
+        "create_role": false,
+        "create_db": false,
+        "replication": false
+      },
+      {
+        "rolname": "supabase_read_only_user",
+        "is_super": false,
+        "can_login": true,
+        "create_role": false,
+        "create_db": false,
+        "replication": false
+      },
+      {
+        "rolname": "supabase_realtime_admin",
+        "is_super": false,
+        "can_login": false,
+        "create_role": false,
+        "create_db": false,
+        "replication": false
+      },
+      {
+        "rolname": "supabase_replication_admin",
+        "is_super": false,
+        "can_login": true,
+        "create_role": false,
+        "create_db": false,
+        "replication": true
+      },
+      {
+        "rolname": "supabase_storage_admin",
+        "is_super": false,
+        "can_login": true,
+        "create_role": true,
+        "create_db": false,
+        "replication": false
+      }
+    ]
+  },
+  "09_target_custom_roles_status": {
+    "name": "09_target_custom_roles_status",
+    "status": 201,
+    "body": [
+      {
+        "role_needed": "anon",
+        "status": "EXISTS"
+      },
+      {
+        "role_needed": "authenticated",
+        "status": "EXISTS"
+      },
+      {
+        "role_needed": "authenticator",
+        "status": "EXISTS"
+      },
+      {
+        "role_needed": "nex_brain_app",
+        "status": "MISSING"
+      },
+      {
+        "role_needed": "nex_social_app",
+        "status": "MISSING"
+      },
+      {
+        "role_needed": "service_role",
+        "status": "EXISTS"
+      },
+      {
+        "role_needed": "supabase_admin",
+        "status": "EXISTS"
+      }
+    ]
+  },
+  "10_rls_policies_all_user_schemas": {
+    "name": "10_rls_policies_all_user_schemas",
+    "status": 201,
+    "body": [
+      {
+        "schema": "public",
+        "table_name": "audit_log",
+        "rls_enabled": true,
+        "policy_count": 1
+      },
+      {
+        "schema": "public",
+        "table_name": "claim_requests",
+        "rls_enabled": true,
+        "policy_count": 0
+      },
+      {
+        "schema": "public",
+        "table_name": "confidence_scores",
+        "rls_enabled": true,
+        "policy_count": 1
+      },
+      {
+        "schema": "public",
+        "table_name": "contradictions",
+        "rls_enabled": true,
+        "policy_count": 1
+      },
+      {
+        "schema": "public",
+        "table_name": "deprecations",
+        "rls_enabled": true,
+        "policy_count": 1
+      },
+      {
+        "schema": "public",
+        "table_name": "directory_seeds",
+        "rls_enabled": true,
+        "policy_count": 0
+      },
+      {
+        "schema": "public",
+        "table_name": "graph_edges",
+        "rls_enabled": true,
+        "policy_count": 1
+      },
+      {
+        "schema": "public",
+        "table_name": "knowledge_feedback",
+        "rls_enabled": true,
+        "policy_count": 1
+      },
+      {
+        "schema": "public",
+        "table_name": "knowledge_records",
+        "rls_enabled": true,
+        "policy_count": 1
+      },
+      {
+        "schema": "public",
+        "table_name": "llm_retry_queue",
+        "rls_enabled": true,
+        "policy_count": 1
+      },
+      {
+        "schema": "public",
+        "table_name": "nex_collection_fetch_errors",
+        "rls_enabled": true,
+        "policy_count": 0
+      },
+      {
+        "schema": "public",
+        "table_name": "nex_collection_url_queue",
+        "rls_enabled": true,
+        "policy_count": 0
+      },
+      {
+        "schema": "public",
+        "table_name": "record_versions",
+        "rls_enabled": true,
+        "policy_count": 1
+      },
+      {
+        "schema": "public",
+        "table_name": "sources",
+        "rls_enabled": true,
+        "policy_count": 1
+      },
+      {
+        "schema": "public",
+        "table_name": "worker_heartbeats",
+        "rls_enabled": true,
+        "policy_count": 1
+      },
+      {
+        "schema": "public",
+        "table_name": "worker_jobs",
+        "rls_enabled": true,
+        "policy_count": 1
+      },
+      {
+        "schema": "public",
+        "table_name": "worker_results",
+        "rls_enabled": true,
+        "policy_count": 1
+      }
+    ]
+  },
+  "11_security_definer_functions_public": {
+    "name": "11_security_definer_functions_public",
+    "status": 201,
+    "body": [
+      {
+        "schema": "pgbouncer",
+        "function_name": "get_auth",
+        "args": "p_usename text",
+        "security_definer": true,
+        "owner": "supabase_admin"
+      }
+    ]
+  },
+  "12_disk_usage_by_schema": {
+    "name": "12_disk_usage_by_schema",
+    "status": 201,
+    "body": [
+      {
+        "schema": "public",
+        "total_size": "296 MB",
+        "total_bytes": "310140928",
+        "tables": 17
+      },
+      {
+        "schema": "storage",
+        "total_size": "2392 kB",
+        "total_bytes": "2449408",
+        "tables": 8
+      },
+      {
+        "schema": "auth",
+        "total_size": "1752 kB",
+        "total_bytes": "1794048",
+        "tables": 23
+      },
+      {
+        "schema": "realtime",
+        "total_size": "96 kB",
+        "total_bytes": "98304",
+        "tables": 2
+      },
+      {
+        "schema": "vault",
+        "total_size": "40 kB",
+        "total_bytes": "40960",
+        "tables": 1
+      }
+    ]
+  },
+  "13_settings_relevant": {
+    "name": "13_settings_relevant",
+    "status": 201,
+    "body": [
+      {
+        "name": "idle_in_transaction_session_timeout",
+        "setting": "0",
+        "unit": "ms",
+        "short_desc": "Sets the maximum allowed idle time between queries, when in a transaction."
+      },
+      {
+        "name": "maintenance_work_mem",
+        "setting": "32768",
+        "unit": "kB",
+        "short_desc": "Sets the maximum memory to be used for maintenance operations."
+      },
+      {
+        "name": "max_connections",
+        "setting": "60",
+        "unit": null,
+        "short_desc": "Sets the maximum number of concurrent connections."
+      },
+      {
+        "name": "max_prepared_transactions",
+        "setting": "0",
+        "unit": null,
+        "short_desc": "Sets the maximum number of simultaneously prepared transactions."
+      },
+      {
+        "name": "server_version",
+        "setting": "17.6",
+        "unit": null,
+        "short_desc": "Shows the server version."
+      },
+      {
+        "name": "server_version_num",
+        "setting": "170006",
+        "unit": null,
+        "short_desc": "Shows the server version as an integer."
+      },
+      {
+        "name": "shared_buffers",
+        "setting": "28672",
+        "unit": "8kB",
+        "short_desc": "Sets the number of shared memory buffers used by the server."
+      },
+      {
+        "name": "statement_timeout",
+        "setting": "120000",
+        "unit": "ms",
+        "short_desc": "Sets the maximum allowed duration of any statement."
+      },
+      {
+        "name": "work_mem",
+        "setting": "2184",
+        "unit": "kB",
+        "short_desc": "Sets the maximum memory to be used for query workspaces."
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+[2026-09-02T21:29:52.605Z] === BATCH 4 EXECUTION · 9 tables · expected 216991 rows ===
+[2026-09-02T21:29:52.607Z] 
+─── PRE-CHECK ───
+[2026-09-02T21:29:54.340Z]   invariants: {"rls_enabled":92,"nex_fks":0,"kr":3627,"wj":19167,"wr":19140,"db_bytes":373197971,"db_pretty":"356 MB","wal_lsn":"C/58000000","imel_check":0}
+[2026-09-02T21:29:54.341Z]   ✓ identity_merge_log still 0 rows (untouched)
+[2026-09-02T21:29:55.991Z]   ✓ Batch 4 target tables all empty (0/0)
+[2026-09-02T21:29:59.773Z]   ✓ readonly enabled=false
+[2026-09-02T21:29:59.824Z]   DB size PRE:  356 MB (373.197.971 bytes)
+[2026-09-02T21:29:59.825Z]   WAL LSN PRE:  C/58000000
+[2026-09-02T21:29:59.826Z] 
+─── EXECUTING pg_restore ───
+pg_restore: connecting to database for restore
+pg_restore: processing data for table "nex.accommodation_business_field_provenance"
+pg_restore: processing data for table "nex.category_candidate_score"
+pg_restore: processing data for table "nex.discovery_orchestrator_pick"
+pg_restore: processing data for table "nex.food_business"
+pg_restore: processing data for table "nex.food_business_source_snapshot"
+pg_restore: processing data for table "nex.mp_seller"
+pg_restore: processing data for table "nex.object_blobs"
+pg_restore: processing data for table "nex.worker_cycle_run"
+pg_restore: processing data for table "nex.worker_heartbeat"
+[2026-09-02T21:31:10.950Z] 
+pg_restore exit: 0 · elapsed: 71.12s
+[2026-09-02T21:31:10.951Z] 
+─── POST-CHECK ───
+[2026-09-02T21:31:12.862Z]   DB size PRE→POST:  356 MB → 522 MB  delta: +174235648 bytes (166.16 MB)
+[2026-09-02T21:31:12.863Z]   WAL LSN PRE→POST:  C/58000000 → C/65E06918
+[2026-09-02T21:31:20.710Z]   ⚠️ 2 mismatches (expected vs dump/local drift · dump is authoritative):
+[2026-09-02T21:31:20.711Z]      worker_cycle_run                              expected=43751  actual=43133  delta=618
+[2026-09-02T21:31:20.711Z]      worker_heartbeat                              expected=26054  actual=25436  delta=618
+[2026-09-02T21:31:20.712Z]   matched: 7, mismatched: 2, total: 215755/216991
+[2026-09-02T21:31:24.737Z]   identity_merge_log POST: 0 rows ✓ untouched
+[2026-09-02T21:31:27.564Z]   public POST: {"public_tables":17,"kr":3627,"wj":19167,"wr":19140} · unchanged=✓
+[2026-09-02T21:31:29.058Z]   RLS POST: 92 (expected 92) ✓
+[2026-09-02T21:31:30.797Z]   FK POST: 0 (expected 0) ✓
+[2026-09-02T21:31:32.416Z]   Populated nex tables: 125 (Batches 1-3) + 7 (Batch 4 matched) = 132 (expected 134 if all matched)
+[2026-09-02T21:31:35.822Z]   readonly POST: enabled=false
+[2026-09-02T21:31:35.823Z] 
+  Batch 4 efficiency: 808 B/row (Batch 2=669, Batch 3=800)
+[2026-09-02T21:31:35.824Z] 
+─── HARD STOP · Batch 4 complete · awaiting approval for Batch 5 ───

@@ -1,0 +1,44 @@
+{
+  "batch": 5,
+  "pg_restore_exit": 0,
+  "elapsed_seconds": 24.2,
+  "pre": {
+    "db_bytes": 547073171,
+    "db_pretty": "522 MB",
+    "wal_lsn": "C/6A000110"
+  },
+  "post": {
+    "db_bytes": 620686483,
+    "db_pretty": "592 MB",
+    "wal_lsn": "C/70A72720"
+  },
+  "db_delta_bytes": 73613312,
+  "db_delta_pretty": "70.20 MB",
+  "wal_delta": "C/6A000110 → C/70A72720",
+  "batch5_reconciliation": {
+    "matched": 3,
+    "mismatched": 0,
+    "expected_total": 247824,
+    "actual_total": 247824,
+    "failures": []
+  },
+  "identity_merge_log_untouched": true,
+  "public_baseline_post": {
+    "public_tables": 17,
+    "kr": 3627,
+    "wj": 19167,
+    "wr": 19140
+  },
+  "public_unchanged": true,
+  "rls_state_post": {
+    "rls_enabled": 92
+  },
+  "rls_unchanged": true,
+  "fks_post": 0,
+  "readonly_post": {
+    "enabled": false,
+    "override_enabled": false,
+    "override_active_until": "1970-01-01 00:00:00+00"
+  },
+  "bytes_per_row_batch5": 297
+}

@@ -1,0 +1,396 @@
+{
+  "run_id": "c11r-1788572034512",
+  "gate": "C11 RE-ATTEMPT",
+  "authorization": "AUTHORIZE C11 RE-ATTEMPT · HARNESS SAFETY FIX + SINGLE-AGENT CONTROLLED TRIAL · PROJECT B · YOGYAKARTA · RESTAURANTS · ONE BOUNDED TRIAL · NO PERMANENT ACTIVATION",
+  "started_at": "2026-09-05T01:33:54.526Z",
+  "workload": {
+    "city": "yogyakarta",
+    "category": "restaurants",
+    "source": "overpass",
+    "job": "restaurants-overpass",
+    "bbox": {
+      "sw": {
+        "lat": -7.944714,
+        "lon": 110.240493
+      },
+      "ne": {
+        "lat": -7.592822,
+        "lon": 110.624452
+      }
+    },
+    "agent_id": "c11r-yogyakarta-1788572034512",
+    "expected_query_hash": "33da302832c4bce40fef6b2025f08581835398880bcb1d4be900fd3dc2682390",
+    "stale_wi_id": "dfd71abe-f8d6-4d66-9d55-44c3cc343a11"
+  },
+  "phases": {
+    "baseline": {
+      "food_rows": 23328,
+      "food_dup": 373,
+      "cc": 1,
+      "city_slug_actual": "yogyakarta",
+      "city_bbox_actual": {
+        "ne": {
+          "lat": -7.592822,
+          "lon": 110.624452
+        },
+        "sw": {
+          "lat": -7.944714,
+          "lon": 110.240493
+        }
+      },
+      "jr": 1,
+      "rot": 0,
+      "wi_total": 4,
+      "wi_active": 1,
+      "stale_state": "pending",
+      "stale_deadline": null,
+      "ev": 5,
+      "stg": 2525,
+      "aud": 18,
+      "wf_pol": 12,
+      "food_pol": 5,
+      "roles": 3,
+      "r5_intact": true,
+      "wf_sessions": 0
+    },
+    "locks_before": [
+      {
+        "path": "data/nex-workforce-v2/locks/reaper.lock",
+        "present": false
+      },
+      {
+        "path": "data/nex-workforce-v2/locks/orchestrator.lock",
+        "present": false
+      }
+    ],
+    "startup": {
+      "order": [
+        "REAPER",
+        "ORCHESTRATOR",
+        "AGENT"
+      ],
+      "times": {
+        "REAPER": "2026-09-05T01:34:01.429Z",
+        "ORCHESTRATOR": "2026-09-05T01:34:01.452Z",
+        "AGENT": "2026-09-05T01:34:01.468Z"
+      }
+    },
+    "locks_after_start": [
+      {
+        "path": "data/nex-workforce-v2/locks/reaper.lock",
+        "present": true,
+        "content": {
+          "pid": 37260,
+          "started_at": "2026-09-05T01:34:01.410Z",
+          "host": "LAPTOP-64CU461J"
+        },
+        "pid_alive": true
+      },
+      {
+        "path": "data/nex-workforce-v2/locks/orchestrator.lock",
+        "present": true,
+        "content": {
+          "pid": 37260,
+          "started_at": "2026-09-05T01:34:01.430Z",
+          "host": "LAPTOP-64CU461J"
+        },
+        "pid_alive": true
+      }
+    ],
+    "lock_reclaim_evidence": [
+      {
+        "path": "data/nex-workforce-v2/locks/reaper.lock",
+        "before_pid": null,
+        "after_pid": 37260,
+        "reclaimed": false
+      },
+      {
+        "path": "data/nex-workforce-v2/locks/orchestrator.lock",
+        "before_pid": null,
+        "after_pid": 37260,
+        "reclaimed": false
+      }
+    ],
+    "shutdown": {
+      "started_at": "2026-09-05T01:35:02.745Z",
+      "ended_at": "2026-09-05T01:35:03.082Z"
+    },
+    "lock_audit": [
+      {
+        "path": "data/nex-workforce-v2/locks/reaper.lock",
+        "present": false
+      },
+      {
+        "path": "data/nex-workforce-v2/locks/orchestrator.lock",
+        "present": false
+      }
+    ],
+    "post": {
+      "food_rows": 23328,
+      "food_dup": 373,
+      "cc": 1,
+      "jr": 1,
+      "wi_total": 4,
+      "wi_active": 0,
+      "ev": 6,
+      "stg": 3766,
+      "aud": 31,
+      "wf_pol": 12,
+      "food_pol": 5,
+      "roles": 3,
+      "r5_intact": true,
+      "wf_sessions": 0,
+      "c11r_reaper_ticks": 9,
+      "c11r_reclaimed": 0,
+      "stale_final_state": "completed"
+    },
+    "deltas": {
+      "food_rows": 0,
+      "food_dup": 0,
+      "wi_total": 0,
+      "wi_active": -1,
+      "ev": 1,
+      "stg": 1241,
+      "aud": 13
+    },
+    "food_detail": {
+      "audit_rows": 13,
+      "sum_new": 0,
+      "sum_updated": 658,
+      "sum_rejected": 583,
+      "our_evidence_count": 1,
+      "evidence_detail": [
+        {
+          "query_hash": "33da302832c4bce40fef6b2025f08581835398880bcb1d4be900fd3dc2682390",
+          "byte_length": 291327,
+          "evidence_id": "f6968c976e5c68eaef2f1980a2c78b4a35f6411ea869f51f34ef3b537ab3e44a",
+          "http_status": 200,
+          "candidate_count": 1241,
+          "response_sha256": "51541ba2fbe1bba70d35e1acc7ff6e058f3878ef6e80c9c2a1b58c6d62c5b569"
+        }
+      ],
+      "our_food_rows": 658,
+      "food_cities": [
+        "Yogyakarta"
+      ],
+      "food_sources": [
+        "osm_overpass"
+      ]
+    }
+  },
+  "processes": {
+    "REAPER": {
+      "pid": 32048,
+      "started_at": "2026-09-05T01:34:01.429Z",
+      "script": "C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\reaper.mjs",
+      "startup_duration_ms": 20,
+      "final_state": "EXITED",
+      "last_exit": {
+        "code": null,
+        "signal": "SIGTERM",
+        "at": "2026-09-05T01:35:02.983Z",
+        "class": "clean_shutdown",
+        "reason": "signal SIGTERM"
+      },
+      "restart_count": 0
+    },
+    "ORCHESTRATOR": {
+      "pid": 15048,
+      "started_at": "2026-09-05T01:34:01.452Z",
+      "script": "C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\orchestrator.mjs",
+      "startup_duration_ms": 22,
+      "final_state": "EXITED",
+      "last_exit": {
+        "code": null,
+        "signal": "SIGTERM",
+        "at": "2026-09-05T01:35:02.756Z",
+        "class": "clean_shutdown",
+        "reason": "signal SIGTERM"
+      },
+      "restart_count": 0
+    },
+    "AGENT": {
+      "pid": 39892,
+      "started_at": "2026-09-05T01:34:01.468Z",
+      "script": "C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs",
+      "startup_duration_ms": 16,
+      "final_state": "EXITED",
+      "last_exit": {
+        "code": null,
+        "signal": "SIGTERM",
+        "at": "2026-09-05T01:35:02.872Z",
+        "class": "clean_shutdown",
+        "reason": "signal SIGTERM"
+      },
+      "restart_count": 0
+    }
+  },
+  "observations": [
+    {
+      "t_s": 11,
+      "tracked_wi_id": "dfd71abe-f8d6-4d66-9d55-44c3cc343a11",
+      "tracked": {
+        "id": "dfd71abe-f8d6-4d66-9d55-44c3cc343a11",
+        "state": "leased",
+        "agent_id": "c11r-yogyakarta-1788572034512",
+        "gen": 3,
+        "attempts": 2,
+        "records_new": null,
+        "records_rejected": null,
+        "last_error": "lease_expired"
+      },
+      "fresh_enqueue": null,
+      "counts": {
+        "ev": 5,
+        "stg": 2525,
+        "aud": 18,
+        "food_rows": 23328,
+        "wi_active": 1,
+        "wf_sessions": 0
+      },
+      "reap": {
+        "ticks": 1,
+        "reclaimed": 0,
+        "dead_lettered": 0,
+        "errors": 0
+      },
+      "hb": null
+    },
+    {
+      "t_s": 23,
+      "tracked_wi_id": "dfd71abe-f8d6-4d66-9d55-44c3cc343a11",
+      "tracked": {
+        "id": "dfd71abe-f8d6-4d66-9d55-44c3cc343a11",
+        "state": "leased",
+        "agent_id": "c11r-yogyakarta-1788572034512",
+        "gen": 3,
+        "attempts": 2,
+        "records_new": null,
+        "records_rejected": null,
+        "last_error": "lease_expired"
+      },
+      "fresh_enqueue": null,
+      "counts": {
+        "ev": 6,
+        "stg": 3766,
+        "aud": 20,
+        "food_rows": 23328,
+        "wi_active": 1,
+        "wf_sessions": 0
+      },
+      "reap": {
+        "ticks": 3,
+        "reclaimed": 0,
+        "dead_lettered": 0,
+        "errors": 0
+      },
+      "hb": null
+    },
+    {
+      "t_s": 36,
+      "tracked_wi_id": "dfd71abe-f8d6-4d66-9d55-44c3cc343a11",
+      "tracked": {
+        "id": "dfd71abe-f8d6-4d66-9d55-44c3cc343a11",
+        "state": "leased",
+        "agent_id": "c11r-yogyakarta-1788572034512",
+        "gen": 3,
+        "attempts": 2,
+        "records_new": null,
+        "records_rejected": null,
+        "last_error": "lease_expired"
+      },
+      "fresh_enqueue": null,
+      "counts": {
+        "ev": 6,
+        "stg": 3766,
+        "aud": 28,
+        "food_rows": 23328,
+        "wi_active": 1,
+        "wf_sessions": 0
+      },
+      "reap": {
+        "ticks": 5,
+        "reclaimed": 0,
+        "dead_lettered": 0,
+        "errors": 0
+      },
+      "hb": null
+    },
+    {
+      "t_s": 48,
+      "tracked_wi_id": "dfd71abe-f8d6-4d66-9d55-44c3cc343a11",
+      "tracked": {
+        "id": "dfd71abe-f8d6-4d66-9d55-44c3cc343a11",
+        "state": "leased",
+        "agent_id": "c11r-yogyakarta-1788572034512",
+        "gen": 3,
+        "attempts": 2,
+        "records_new": null,
+        "records_rejected": null,
+        "last_error": "lease_expired"
+      },
+      "fresh_enqueue": null,
+      "counts": {
+        "ev": 6,
+        "stg": 3766,
+        "aud": 31,
+        "food_rows": 23328,
+        "wi_active": 0,
+        "wf_sessions": 0
+      },
+      "reap": {
+        "ticks": 7,
+        "reclaimed": 0,
+        "dead_lettered": 0,
+        "errors": 0
+      },
+      "hb": null
+    },
+    {
+      "t_s": 59,
+      "tracked_wi_id": "dfd71abe-f8d6-4d66-9d55-44c3cc343a11",
+      "tracked": {
+        "id": "dfd71abe-f8d6-4d66-9d55-44c3cc343a11",
+        "state": "completed",
+        "agent_id": null,
+        "gen": 3,
+        "attempts": 2,
+        "records_new": 658,
+        "records_rejected": 583,
+        "last_error": "lease_expired"
+      },
+      "fresh_enqueue": null,
+      "counts": {
+        "ev": 6,
+        "stg": 3766,
+        "aud": 31,
+        "food_rows": 23328,
+        "wi_active": 0,
+        "wf_sessions": 0
+      },
+      "reap": {
+        "ticks": 8,
+        "reclaimed": 0,
+        "dead_lettered": 0,
+        "errors": 0
+      },
+      "hb": null
+    }
+  ],
+  "observation_errors": [],
+  "harness_exception": null,
+  "known_stale_lease_blocks_rotation": true,
+  "stale_locks_present_pre_start": false,
+  "terminal": {
+    "reason": "TRACKED work_item dfd71abe-f8d6-4d66-9d55-44c3cc343a11 reached terminal state: completed",
+    "at": "2026-09-05T01:35:02.745Z",
+    "tracked_work_item_id": "dfd71abe-f8d6-4d66-9d55-44c3cc343a11"
+  },
+  "summary": {
+    "pass": 56,
+    "fail": 0,
+    "failLines": [],
+    "observation_error_count": 0,
+    "harness_exception": false
+  }
+}

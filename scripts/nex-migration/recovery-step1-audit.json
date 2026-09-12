@@ -1,0 +1,316 @@
+{
+  "status": "PASSED",
+  "beforeState": {
+    "project": {
+      "ref": "ijvqdvsvwtwxzcqmoqit",
+      "name": "asknexapp@gmail.com's Project",
+      "region": "eu-west-1"
+    },
+    "public": {
+      "public_tables": 17,
+      "public_policies": 13,
+      "knowledge_records": 3627,
+      "worker_jobs": 19167,
+      "worker_results": 19140,
+      "audit_log": 20224,
+      "sources": 3625,
+      "confidence_scores": 4228,
+      "graph_edges": 4308,
+      "knowledge_feedback": 402,
+      "directory_seeds": 1227
+    },
+    "nex": {
+      "nex_tables": 191,
+      "nex_views": 13,
+      "nex_matviews": 1,
+      "nex_sequences": 2,
+      "nex_functions": 28,
+      "nex_enums": 22,
+      "nex_triggers": 13,
+      "nex_fks": 0,
+      "nex_rls_enabled_tables": 0,
+      "nex_rls_policies": 140,
+      "db_size_pretty": "934 MB",
+      "db_size_bytes": 978947219
+    },
+    "populated_tables": [
+      [
+        "food_business_field_provenance",
+        105320
+      ],
+      [
+        "discovery_rotation_state",
+        54550
+      ],
+      [
+        "accommodation_business_field_provenance",
+        46114
+      ],
+      [
+        "food_business",
+        22750
+      ],
+      [
+        "discovery_orchestrator_pick",
+        21496
+      ],
+      [
+        "category_candidate_score",
+        20237
+      ],
+      [
+        "food_business_source_snapshot",
+        12986
+      ],
+      [
+        "accommodation_business",
+        9203
+      ],
+      [
+        "accommodation_business_source_snapshot",
+        9203
+      ],
+      [
+        "conv_edges",
+        4970
+      ],
+      [
+        "conv_learning_candidate",
+        1607
+      ],
+      [
+        "food_enrichment_evidence",
+        1450
+      ],
+      [
+        "business_knowledge",
+        1258
+      ],
+      [
+        "conv_knowledge_items",
+        890
+      ],
+      [
+        "food_next_action_audit",
+        814
+      ],
+      [
+        "food_business_next_action",
+        806
+      ],
+      [
+        "food_business_promotion_audit",
+        729
+      ],
+      [
+        "delivery_jobs",
+        670
+      ],
+      [
+        "business_image",
+        660
+      ],
+      [
+        "food_business_promotion",
+        636
+      ],
+      [
+        "delivery_job_attempts",
+        587
+      ],
+      [
+        "conv_turns",
+        583
+      ],
+      [
+        "experiment_assignments",
+        558
+      ],
+      [
+        "analytics_events",
+        526
+      ],
+      [
+        "conv_states",
+        303
+      ],
+      [
+        "campaign_recipients",
+        216
+      ],
+      [
+        "chat_message",
+        70
+      ],
+      [
+        "conv_entities",
+        70
+      ],
+      [
+        "contacts",
+        67
+      ],
+      [
+        "bike_model",
+        50
+      ],
+      [
+        "brain_did_you_know_indonesia",
+        39
+      ],
+      [
+        "geo_landmark",
+        34
+      ],
+      [
+        "brain_english_vocabulary",
+        30
+      ],
+      [
+        "conv_intents",
+        22
+      ],
+      [
+        "chat_message_archive",
+        20
+      ],
+      [
+        "chat_message_deletion",
+        20
+      ],
+      [
+        "alert_rules",
+        14
+      ],
+      [
+        "compliance_events",
+        14
+      ],
+      [
+        "campaigns",
+        13
+      ],
+      [
+        "category_registry",
+        13
+      ],
+      [
+        "alert_dispatches",
+        12
+      ],
+      [
+        "contact_segments",
+        12
+      ],
+      [
+        "food_hq_rule",
+        10
+      ],
+      [
+        "attributions",
+        9
+      ],
+      [
+        "audit_log",
+        9
+      ],
+      [
+        "bike_rental_listing",
+        9
+      ],
+      [
+        "email_templates",
+        8
+      ],
+      [
+        "food_commercial_event",
+        6
+      ],
+      [
+        "food_outreach_attempt",
+        5
+      ],
+      [
+        "alerts",
+        4
+      ],
+      [
+        "campaign_segments",
+        4
+      ],
+      [
+        "category_candidate",
+        4
+      ],
+      [
+        "cost_budget",
+        4
+      ],
+      [
+        "food_outreach_template",
+        4
+      ],
+      [
+        "conversion_events",
+        2
+      ],
+      [
+        "events",
+        2
+      ],
+      [
+        "experiment_variants",
+        2
+      ],
+      [
+        "benchmark_runs",
+        1
+      ],
+      [
+        "brain_user_saved_facts",
+        1
+      ],
+      [
+        "call_record",
+        1
+      ],
+      [
+        "delivery_workers_archive_2026_08_22",
+        1
+      ],
+      [
+        "experiments",
+        1
+      ],
+      [
+        "food_business_promotion_decision",
+        1
+      ],
+      [
+        "food_claim_code",
+        1
+      ],
+      [
+        "food_outreach_suppression",
+        1
+      ]
+    ],
+    "identity_merge_log": 0,
+    "wal": {
+      "current_lsn": "C/49000000",
+      "current_wal_file": "000000010000000C00000049"
+    },
+    "readonly": {
+      "enabled": false,
+      "override_enabled": false,
+      "override_active_until": "1970-01-01 00:00:00+00"
+    },
+    "fk_snapshot_count": 125,
+    "temp_roles": [
+      {
+        "rolname": "nex_migrate_mtkiv3bg",
+        "rolcanlogin": true
+      }
+    ]
+  }
+}

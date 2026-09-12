@@ -1,0 +1,271 @@
+{
+  "run_id": "c11r-1788571398735",
+  "gate": "C11 RE-ATTEMPT",
+  "authorization": "AUTHORIZE C11 RE-ATTEMPT · HARNESS SAFETY FIX + SINGLE-AGENT CONTROLLED TRIAL · PROJECT B · YOGYAKARTA · RESTAURANTS · ONE BOUNDED TRIAL · NO PERMANENT ACTIVATION",
+  "started_at": "2026-09-05T01:23:18.750Z",
+  "workload": {
+    "city": "yogyakarta",
+    "category": "restaurants",
+    "source": "overpass",
+    "job": "restaurants-overpass",
+    "bbox": {
+      "sw": {
+        "lat": -7.944714,
+        "lon": 110.240493
+      },
+      "ne": {
+        "lat": -7.592822,
+        "lon": 110.624452
+      }
+    },
+    "agent_id": "c11r-yogyakarta-1788571398735",
+    "expected_query_hash": "33da302832c4bce40fef6b2025f08581835398880bcb1d4be900fd3dc2682390",
+    "stale_wi_id": "dfd71abe-f8d6-4d66-9d55-44c3cc343a11"
+  },
+  "phases": {
+    "baseline": {
+      "food_rows": 23328,
+      "food_dup": 373,
+      "cc": 1,
+      "city_slug_actual": "yogyakarta",
+      "city_bbox_actual": {
+        "ne": {
+          "lat": -7.592822,
+          "lon": 110.624452
+        },
+        "sw": {
+          "lat": -7.944714,
+          "lon": 110.240493
+        }
+      },
+      "jr": 1,
+      "rot": 0,
+      "wi_total": 4,
+      "wi_active": 1,
+      "stale_state": "leased",
+      "stale_deadline": "2026-09-04 16:28:24.004234+00",
+      "ev": 5,
+      "stg": 2525,
+      "aud": 18,
+      "wf_pol": 12,
+      "food_pol": 5,
+      "roles": 3,
+      "r5_intact": true,
+      "wf_sessions": 0
+    },
+    "locks_before": [
+      {
+        "path": "data/nex-workforce-v2/locks/reaper.lock",
+        "present": true,
+        "content": {
+          "pid": 38192,
+          "started_at": "2026-09-04T16:13:19.704Z",
+          "host": "LAPTOP-64CU461J"
+        },
+        "pid_alive": false
+      },
+      {
+        "path": "data/nex-workforce-v2/locks/orchestrator.lock",
+        "present": true,
+        "content": {
+          "pid": 38192,
+          "started_at": "2026-09-04T16:13:19.722Z",
+          "host": "LAPTOP-64CU461J"
+        },
+        "pid_alive": false
+      }
+    ],
+    "startup": {
+      "order": [
+        "REAPER",
+        "ORCHESTRATOR",
+        "AGENT"
+      ],
+      "times": {
+        "REAPER": "2026-09-05T01:23:30.888Z",
+        "ORCHESTRATOR": "2026-09-05T01:23:30.912Z",
+        "AGENT": "2026-09-05T01:23:30.929Z"
+      }
+    },
+    "locks_after_start": [
+      {
+        "path": "data/nex-workforce-v2/locks/reaper.lock",
+        "present": true,
+        "content": {
+          "pid": 13404,
+          "started_at": "2026-09-05T01:23:30.865Z",
+          "host": "LAPTOP-64CU461J"
+        },
+        "pid_alive": true
+      },
+      {
+        "path": "data/nex-workforce-v2/locks/orchestrator.lock",
+        "present": true,
+        "content": {
+          "pid": 13404,
+          "started_at": "2026-09-05T01:23:30.891Z",
+          "host": "LAPTOP-64CU461J"
+        },
+        "pid_alive": true
+      }
+    ],
+    "lock_reclaim_evidence": [
+      {
+        "path": "data/nex-workforce-v2/locks/reaper.lock",
+        "before_pid": 38192,
+        "after_pid": 13404,
+        "reclaimed": true
+      },
+      {
+        "path": "data/nex-workforce-v2/locks/orchestrator.lock",
+        "before_pid": 38192,
+        "after_pid": 13404,
+        "reclaimed": true
+      }
+    ],
+    "shutdown": {
+      "started_at": "2026-09-05T01:23:45.848Z",
+      "ended_at": "2026-09-05T01:23:46.155Z"
+    },
+    "lock_audit": [
+      {
+        "path": "data/nex-workforce-v2/locks/reaper.lock",
+        "present": false
+      },
+      {
+        "path": "data/nex-workforce-v2/locks/orchestrator.lock",
+        "present": false
+      }
+    ],
+    "post": {
+      "food_rows": 23328,
+      "food_dup": 373,
+      "cc": 1,
+      "jr": 1,
+      "wi_total": 4,
+      "wi_active": 1,
+      "ev": 5,
+      "stg": 2525,
+      "aud": 18,
+      "wf_pol": 12,
+      "food_pol": 5,
+      "roles": 3,
+      "r5_intact": true,
+      "wf_sessions": 0,
+      "c11r_reaper_ticks": 2,
+      "c11r_reclaimed": 1,
+      "stale_final_state": "pending"
+    },
+    "deltas": {
+      "food_rows": 0,
+      "food_dup": 0,
+      "wi_total": 0,
+      "wi_active": 0,
+      "ev": 0,
+      "stg": 0,
+      "aud": 0
+    }
+  },
+  "processes": {
+    "REAPER": {
+      "pid": 26928,
+      "started_at": "2026-09-05T01:23:30.888Z",
+      "script": "C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\reaper.mjs",
+      "startup_duration_ms": 27,
+      "final_state": "EXITED",
+      "last_exit": {
+        "code": null,
+        "signal": "SIGTERM",
+        "at": "2026-09-05T01:23:46.067Z",
+        "class": "clean_shutdown",
+        "reason": "signal SIGTERM"
+      },
+      "restart_count": 0
+    },
+    "ORCHESTRATOR": {
+      "pid": 17200,
+      "started_at": "2026-09-05T01:23:30.912Z",
+      "script": "C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\orchestrator.mjs",
+      "startup_duration_ms": 24,
+      "final_state": "EXITED",
+      "last_exit": {
+        "code": null,
+        "signal": "SIGTERM",
+        "at": "2026-09-05T01:23:45.862Z",
+        "class": "clean_shutdown",
+        "reason": "signal SIGTERM"
+      },
+      "restart_count": 0
+    },
+    "AGENT": {
+      "pid": 15192,
+      "started_at": "2026-09-05T01:23:30.929Z",
+      "script": "C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs",
+      "startup_duration_ms": 17,
+      "final_state": "EXITED",
+      "last_exit": {
+        "code": null,
+        "signal": "SIGTERM",
+        "at": "2026-09-05T01:23:45.965Z",
+        "class": "clean_shutdown",
+        "reason": "signal SIGTERM"
+      },
+      "restart_count": 0
+    }
+  },
+  "observations": [
+    {
+      "t_s": 13,
+      "stale_state": "pending",
+      "stale_agent": null,
+      "stale_attempts": 1,
+      "our_wi": {
+        "id": "dfd71abe-f8d6-4d66-9d55-44c3cc343a11",
+        "state": "pending",
+        "agent_id": null,
+        "gen": 2,
+        "attempts": 1,
+        "records_new": null,
+        "records_rejected": null,
+        "last_error": "lease_expired"
+      },
+      "counts": {
+        "ev": 5,
+        "stg": 2525,
+        "aud": 18,
+        "food_rows": 23328,
+        "wi_active": 1,
+        "wf_sessions": 0
+      },
+      "reap": {
+        "ticks": 1,
+        "reclaimed": 1,
+        "dead_lettered": 0,
+        "errors": 0
+      },
+      "hb": null
+    }
+  ],
+  "observation_errors": [],
+  "harness_exception": null,
+  "known_stale_lease_blocks_rotation": true,
+  "stale_locks_present_pre_start": true,
+  "stale_reaped": {
+    "at": "2026-09-05T01:23:45.848Z",
+    "new_state": "pending",
+    "elapsed_s": 13
+  },
+  "terminal": {
+    "reason": "work_item 49735216-d1a8-41a1-a157-85115fde6788 reached terminal state: completed",
+    "at": "2026-09-05T01:23:45.848Z",
+    "work_item_id": "49735216-d1a8-41a1-a157-85115fde6788",
+    "stale_reaped": true
+  },
+  "summary": {
+    "pass": 55,
+    "fail": 0,
+    "failLines": [],
+    "observation_error_count": 0,
+    "harness_exception": false
+  }
+}

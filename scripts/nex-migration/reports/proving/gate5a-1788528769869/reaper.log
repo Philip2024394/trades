@@ -1,0 +1,28 @@
+# reaper started at 2026-09-04T13:33:06.196Z · script=C:\Users\Victus\trades\scripts\nex-workforce-v2\reaper.mjs
+{"ts":"2026-09-04T13:33:08.941Z","msg":"reaper.created","interval_ms":4000,"max_consecutive_errors":3}
+{"ts":"2026-09-04T13:33:08.942Z","msg":"reaper.loop.start","interval_ms":4000}
+{"ts":"2026-09-04T13:33:08.942Z","msg":"reaper.tick.begin","tick_n":1}
+{"ts":"2026-09-04T13:33:10.437Z","msg":"reaper.reap","reclaimed":0,"dead_lettered":0,"duration_ms":1495}
+{"ts":"2026-09-04T13:33:11.794Z","msg":"reaper.requeue","requeued":3,"duration_ms":1357}
+{"ts":"2026-09-04T13:33:11.794Z","msg":"reaper.tick.end","tick_n":1,"ok":true}
+{"ts":"2026-09-04T13:33:15.798Z","msg":"reaper.tick.begin","tick_n":2}
+{"ts":"2026-09-04T13:33:17.095Z","msg":"reaper.reap","reclaimed":0,"dead_lettered":0,"duration_ms":1297}
+{"ts":"2026-09-04T13:33:18.384Z","msg":"reaper.requeue","requeued":0,"duration_ms":1288}
+{"ts":"2026-09-04T13:33:18.385Z","msg":"reaper.tick.end","tick_n":2,"ok":true}
+{"ts":"2026-09-04T13:33:22.386Z","msg":"reaper.tick.begin","tick_n":3}
+{"ts":"2026-09-04T13:33:23.657Z","msg":"reaper.reap","reclaimed":0,"dead_lettered":0,"duration_ms":1271}
+{"ts":"2026-09-04T13:33:24.947Z","msg":"reaper.requeue","requeued":0,"duration_ms":1290}
+{"ts":"2026-09-04T13:33:24.947Z","msg":"reaper.tick.end","tick_n":3,"ok":true}
+{"ts":"2026-09-04T13:33:28.987Z","msg":"reaper.tick.begin","tick_n":4}
+{"ts":"2026-09-04T13:33:30.313Z","msg":"reaper.reap","reclaimed":0,"dead_lettered":0,"duration_ms":1326}
+{"ts":"2026-09-04T13:33:31.554Z","msg":"reaper.requeue","requeued":0,"duration_ms":1241}
+{"ts":"2026-09-04T13:33:31.554Z","msg":"reaper.tick.end","tick_n":4,"ok":true}
+{"ts":"2026-09-04T13:33:35.581Z","msg":"reaper.tick.begin","tick_n":5}
+{"ts":"2026-09-04T13:33:36.838Z","msg":"reaper.reap","reclaimed":0,"dead_lettered":0,"duration_ms":1257}
+{"ts":"2026-09-04T13:33:38.173Z","msg":"reaper.requeue","requeued":0,"duration_ms":1335}
+{"ts":"2026-09-04T13:33:38.173Z","msg":"reaper.tick.end","tick_n":5,"ok":true}
+{"ts":"2026-09-04T13:33:42.191Z","msg":"reaper.tick.begin","tick_n":6}
+{"ts":"2026-09-04T13:33:43.541Z","msg":"reaper.reap","reclaimed":0,"dead_lettered":0,"duration_ms":1350}
+{"ts":"2026-09-04T13:33:44.876Z","msg":"reaper.requeue","requeued":0,"duration_ms":1335}
+{"ts":"2026-09-04T13:33:44.876Z","msg":"reaper.tick.end","tick_n":6,"ok":true}
+# reaper exited code=null signal=SIGTERM at 2026-09-04T13:33:45.003Z

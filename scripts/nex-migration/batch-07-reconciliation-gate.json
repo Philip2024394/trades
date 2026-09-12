@@ -1,0 +1,28 @@
+{
+  "scanned_at": "2026-09-02T22:34:26.577Z",
+  "tables_scanned": 191,
+  "tables_with_delta": [
+    {
+      "table": "work_item",
+      "local": 10059,
+      "target": 9014,
+      "delta": 1045
+    },
+    {
+      "table": "worker_cycle_run",
+      "local": 44178,
+      "target": 43133,
+      "delta": 1045
+    },
+    {
+      "table": "worker_heartbeat",
+      "local": 26481,
+      "target": 25436,
+      "delta": 1045
+    }
+  ],
+  "target_baseline": {
+    "rls": 92,
+    "fks": 0
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "started_at": "2026-09-04T03:24:18.712Z",
+  "phases": {
+    "preflight": {
+      "targetId": {
+        "db": "postgres",
+        "ver": "17.6",
+        "usr": "postgres"
+      },
+      "preSnap": {
+        "wf_schema": 1,
+        "slice1g_tables": 3,
+        "slice1g_functions": 2,
+        "r4_cols_pre": 0,
+        "r4_functions_pre": 0,
+        "persister_role_pre": 0,
+        "food_policies_pre": 0,
+        "rls_pre": false,
+        "food_rows": 22750,
+        "dup_groups": 373,
+        "food_cols": 50,
+        "slice3_roles_pre": 0
+      },
+      "preGrants": [
+        {
+          "grantee": "nex_brain_app",
+          "privs": "DELETE,INSERT,SELECT,UPDATE"
+        },
+        {
+          "grantee": "nex_social_app",
+          "privs": "DELETE,INSERT,SELECT,UPDATE"
+        }
+      ],
+      "preTaskState": "Disabled"
+    },
+    "integrity": {
+      "r4_sha": "db3c8c8ec9d414f4c3abe0ccf0b989b353a6ce6067fe15f541ddddeb12524b12",
+      "r4_lines": 765
+    },
+    "apply": {
+      "ok": true,
+      "duration_ms": 2233
+    },
+    "postflight": {
+      "post": {
+        "slice1g_tables": 3,
+        "slice1g_functions": 2,
+        "food_cols": 52,
+        "r4_cols": 2,
+        "r4_functions": 2,
+        "food_rows": 22750,
+        "dup_groups": 373,
+        "rls": true,
+        "force_rls": false,
+        "food_policies": 5,
+        "p_login": false,
+        "p_bypassrls": false,
+        "p_super": false,
+        "p_nex_usage": true,
+        "p_nex_create": false,
+        "p_wf_usage": true,
+        "p_wf_create": false,
+        "fn_secdef": true,
+        "fn_owner": "nex_workforce_persister_food_business",
+        "fn_config": [
+          "search_path=pg_catalog, pg_temp"
+        ],
+        "evidence_rows": 0,
+        "staging_rows": 0,
+        "audit_rows": 0,
+        "slice3_roles": 0
+      },
+      "outbound": [
+        {
+          "member": "postgres",
+          "admin_option": true,
+          "set_option": false,
+          "inherit_option": false
+        },
+        {
+          "member": "postgres",
+          "admin_option": false,
+          "set_option": true,
+          "inherit_option": false
+        }
+      ],
+      "inbound": [],
+      "persisterTableGrants": [
+        {
+          "table_schema": "nex",
+          "table_name": "food_business",
+          "privs": "INSERT,SELECT,UPDATE"
+        },
+        {
+          "table_schema": "nex_workforce",
+          "table_name": "evidence_record",
+          "privs": "SELECT"
+        },
+        {
+          "table_schema": "nex_workforce",
+          "table_name": "work_item",
+          "privs": "SELECT,UPDATE"
+        }
+      ],
+      "postGrants": [
+        {
+          "grantee": "nex_brain_app",
+          "privs": "DELETE,INSERT,SELECT,UPDATE"
+        },
+        {
+          "grantee": "nex_social_app",
+          "privs": "DELETE,INSERT,SELECT,UPDATE"
+        }
+      ],
+      "runtimeRoles": [
+        "nex_brain_app",
+        "nex_social_app"
+      ],
+      "publicExec": true
+    }
+  },
+  "summary": {
+    "pass": 48,
+    "fail": 1,
+    "failLines": [
+      "❌ 21 · no worker/agent/reaper/orchestrator processes running (1) · PIDs=33860"
+    ],
+    "finished_at": "2026-09-04T03:24:50.887Z"
+  }
+}

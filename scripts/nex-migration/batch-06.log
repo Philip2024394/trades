@@ -1,0 +1,223 @@
+[2026-09-02T21:56:26.067Z] 
+════════════════════════════════════════════════════════════════════════
+[2026-09-02T21:56:26.085Z] BATCH 6 · identity_merge_log · streaming 100.000-row chunks
+[2026-09-02T21:56:26.086Z] baseline: 1.376.510 rows · 14 chunks expected
+[2026-09-02T21:56:26.086Z] ════════════════════════════════════════════════════════════════════════
+[2026-09-02T21:56:30.477Z]   target initial: identity_merge_log=0, db_size=592.0 MB, wal_lsn=C/73000000
+[2026-09-02T21:56:30.484Z]   loaded state: chunks_completed=0, last_merge_id=(none), target_row_count=0
+[2026-09-02T21:56:30.485Z] 
+─── Chunk 1 of 14 ───
+[2026-09-02T21:56:35.273Z]   PRE:  db=592.0 MB, wal=C/73000000, target_count=0, readonly=false
+[2026-09-02T21:56:35.566Z]   predicted: rows=100000, first=000002bf-3b6e-4eda-bbf5-12daedfee993, last=12a0213c-d66e-41e1-b9c8-ada2fadfc8fa
+[2026-09-02T21:56:36.962Z]   extracted: 47.253.512 bytes in 1.40s
+[2026-09-02T21:56:37.222Z]   CSV: rows=100000, first=000002bf-3b6e-4eda-bbf5-12daedfee993, last=12a0213c-d66e-41e1-b9c8-ada2fadfc8fa
+[2026-09-02T21:56:37.223Z]   ✓ CSV verified · exact boundaries + count
+[2026-09-02T21:56:39.095Z] ❌ HARD STOP · load failed (transaction rolled back)
+[2026-09-02T21:56:39.095Z]    detail: {"stderr":"ERROR:  syntax error at or near \"\\\"\r\nLINE 1: SET ROLE service_role; BEGIN; \\copy nex.identity_merge_log (...\r\n                                      ^\r\n","stdout":""}
+[2026-09-02T21:57:08.895Z] 
+════════════════════════════════════════════════════════════════════════
+[2026-09-02T21:57:08.913Z] BATCH 6 · identity_merge_log · streaming 100.000-row chunks
+[2026-09-02T21:57:08.914Z] baseline: 1.376.510 rows · 14 chunks expected
+[2026-09-02T21:57:08.914Z] ════════════════════════════════════════════════════════════════════════
+[2026-09-02T21:57:10.586Z]   target initial: identity_merge_log=0, db_size=592.0 MB, wal_lsn=C/73000000
+[2026-09-02T21:57:10.586Z]   loaded state: chunks_completed=0, last_merge_id=(none), target_row_count=0
+[2026-09-02T21:57:10.586Z] 
+─── Chunk 1 of 14 ───
+[2026-09-02T21:57:16.975Z]   PRE:  db=592.0 MB, wal=C/73000000, target_count=0, readonly=false
+[2026-09-02T21:57:17.357Z]   predicted: rows=100000, first=000002bf-3b6e-4eda-bbf5-12daedfee993, last=12a0213c-d66e-41e1-b9c8-ada2fadfc8fa
+[2026-09-02T21:57:18.759Z]   extracted: 47.253.512 bytes in 1.39s
+[2026-09-02T21:57:19.005Z]   CSV: rows=100000, first=000002bf-3b6e-4eda-bbf5-12daedfee993, last=12a0213c-d66e-41e1-b9c8-ada2fadfc8fa
+[2026-09-02T21:57:19.006Z]   ✓ CSV verified · exact boundaries + count
+[2026-09-02T21:57:40.262Z]   loaded in 21.26s · psql exit 0
+[2026-09-02T21:57:50.030Z]   POST: db=655.7 MB, wal=C/783A2030, target_count=100000, readonly=false
+[2026-09-02T21:57:50.030Z]   DELTA: db=+66838528 B (63.74 MB), wal=+87695408 B (83.63 MB)
+[2026-09-02T21:57:50.045Z]   ✓ chunk 1 committed · cumulative 100.000 / 1.376.510
+[2026-09-02T21:57:50.045Z] 
+─── Chunk 2 of 14 ───
+[2026-09-02T21:57:54.619Z]   PRE:  db=655.7 MB, wal=C/783A2030, target_count=100000, readonly=false
+[2026-09-02T21:57:55.013Z]   predicted: rows=100000, first=12a02b65-6e9c-4076-a7d5-92d58fa721fb, last=2546d8d4-003b-47e5-a947-11483cb9390a
+[2026-09-02T21:57:56.518Z]   extracted: 47.315.514 bytes in 1.50s
+[2026-09-02T21:57:56.757Z]   CSV: rows=100000, first=12a02b65-6e9c-4076-a7d5-92d58fa721fb, last=2546d8d4-003b-47e5-a947-11483cb9390a
+[2026-09-02T21:57:56.758Z]   ✓ CSV verified · exact boundaries + count
+[2026-09-02T21:58:20.678Z]   loaded in 23.92s · psql exit 0
+[2026-09-02T21:58:28.184Z]   POST: db=718.6 MB, wal=C/7D774000, target_count=200000, readonly=false
+[2026-09-02T21:58:28.185Z]   DELTA: db=+65937408 B (62.88 MB), wal=+87891920 B (83.82 MB)
+[2026-09-02T21:58:28.194Z]   ✓ chunk 2 committed · cumulative 200.000 / 1.376.510
+[2026-09-02T21:58:28.194Z] 
+─── Chunk 3 of 14 ───
+[2026-09-02T21:58:34.888Z]   PRE:  db=718.6 MB, wal=C/7D78FEB0, target_count=200000, readonly=false
+[2026-09-02T21:58:35.256Z]   predicted: rows=100000, first=2546e95c-8051-42c2-9a17-a6c7fcfa2be0, last=37ebe337-d888-44fe-9a35-d323f3e402a1
+[2026-09-02T21:58:36.725Z]   extracted: 47.167.428 bytes in 1.47s
+[2026-09-02T21:58:36.970Z]   CSV: rows=100000, first=2546e95c-8051-42c2-9a17-a6c7fcfa2be0, last=37ebe337-d888-44fe-9a35-d323f3e402a1
+[2026-09-02T21:58:36.970Z]   ✓ CSV verified · exact boundaries + count
+[2026-09-02T21:58:53.562Z]   loaded in 16.59s · psql exit 0
+[2026-09-02T21:59:06.929Z]   POST: db=781.7 MB, wal=C/82AE0BB0, target_count=300000, readonly=false
+[2026-09-02T21:59:06.929Z]   DELTA: db=+66199552 B (63.13 MB), wal=+87362816 B (83.32 MB)
+[2026-09-02T21:59:06.938Z]   ✓ chunk 3 committed · cumulative 300.000 / 1.376.510
+[2026-09-02T21:59:06.938Z] 
+─── Chunk 4 of 14 ───
+[2026-09-02T21:59:13.290Z]   PRE:  db=781.7 MB, wal=C/82AE0BE8, target_count=300000, readonly=false
+[2026-09-02T21:59:13.734Z]   predicted: rows=100000, first=37ebedbf-239e-4e50-b30a-2f7afb98e473, last=4a9294a3-f807-4bee-aa37-277e1be70a89
+[2026-09-02T21:59:15.095Z]   extracted: 47.247.826 bytes in 1.36s
+[2026-09-02T21:59:15.343Z]   CSV: rows=100000, first=37ebedbf-239e-4e50-b30a-2f7afb98e473, last=4a9294a3-f807-4bee-aa37-277e1be70a89
+[2026-09-02T21:59:15.343Z]   ✓ CSV verified · exact boundaries + count
+[2026-09-02T21:59:38.001Z]   loaded in 22.66s · psql exit 0
+[2026-09-02T21:59:47.539Z]   POST: db=842.7 MB, wal=C/87E54360, target_count=400000, readonly=false
+[2026-09-02T21:59:47.539Z]   DELTA: db=+63963136 B (61.00 MB), wal=+87504760 B (83.45 MB)
+[2026-09-02T21:59:47.546Z]   ✓ chunk 4 committed · cumulative 400.000 / 1.376.510
+[2026-09-02T21:59:47.546Z] 
+─── Chunk 5 of 14 ───
+[2026-09-02T21:59:52.169Z]   PRE:  db=842.7 MB, wal=C/87E543B0, target_count=400000, readonly=false
+[2026-09-02T21:59:52.652Z]   predicted: rows=100000, first=4a9295a3-1529-4809-9bb8-74d657688ee2, last=5d3a3694-5712-4b72-9902-79338c2ea291
+[2026-09-02T21:59:54.234Z]   extracted: 47.299.195 bytes in 1.58s
+[2026-09-02T21:59:54.757Z]   CSV: rows=100000, first=4a9295a3-1529-4809-9bb8-74d657688ee2, last=5d3a3694-5712-4b72-9902-79338c2ea291
+[2026-09-02T21:59:54.758Z]   ✓ CSV verified · exact boundaries + count
+[2026-09-02T22:00:15.172Z]   loaded in 20.41s · psql exit 0
+[2026-09-02T22:00:27.075Z]   POST: db=906.3 MB, wal=C/8D215D78, target_count=500000, readonly=false
+[2026-09-02T22:00:27.077Z]   DELTA: db=+66691072 B (63.60 MB), wal=+87824840 B (83.76 MB)
+[2026-09-02T22:00:27.136Z]   ✓ chunk 5 committed · cumulative 500.000 / 1.376.510
+[2026-09-02T22:00:27.141Z] 
+─── Chunk 6 of 14 ───
+[2026-09-02T22:00:35.058Z]   PRE:  db=906.4 MB, wal=C/8D2DC610, target_count=500000, readonly=false
+[2026-09-02T22:00:35.495Z]   predicted: rows=100000, first=5d3a40a4-e681-4a16-9e4e-6a0930689fe3, last=6fbf25c5-6e8b-441b-9c18-abbd5f1ffa39
+[2026-09-02T22:00:36.925Z]   extracted: 47.189.025 bytes in 1.43s
+[2026-09-02T22:00:37.370Z]   CSV: rows=100000, first=5d3a40a4-e681-4a16-9e4e-6a0930689fe3, last=6fbf25c5-6e8b-441b-9c18-abbd5f1ffa39
+[2026-09-02T22:00:37.370Z]   ✓ CSV verified · exact boundaries + count
+[2026-09-02T22:01:05.862Z]   loaded in 28.49s · psql exit 0
+[2026-09-02T22:01:16.936Z]   POST: db=970.1 MB, wal=C/933C0098, target_count=600000, readonly=false
+[2026-09-02T22:01:16.937Z]   DELTA: db=+66846720 B (63.75 MB), wal=+101595784 B (96.89 MB)
+[2026-09-02T22:01:16.951Z]   ✓ chunk 6 committed · cumulative 600.000 / 1.376.510
+[2026-09-02T22:01:16.951Z] 
+─── Chunk 7 of 14 ───
+[2026-09-02T22:01:25.726Z]   PRE:  db=970.1 MB, wal=C/940D7C20, target_count=600000, readonly=false
+[2026-09-02T22:01:26.215Z]   predicted: rows=100000, first=6fbf27c6-1c94-41fc-878a-fd91a206f90f, last=82572aeb-0baf-48a9-9485-00f2a92ff8a4
+[2026-09-02T22:01:28.024Z]   extracted: 47.249.486 bytes in 1.81s
+[2026-09-02T22:01:28.551Z]   CSV: rows=100000, first=6fbf27c6-1c94-41fc-878a-fd91a206f90f, last=82572aeb-0baf-48a9-9485-00f2a92ff8a4
+[2026-09-02T22:01:28.553Z]   ✓ CSV verified · exact boundaries + count
+[2026-09-02T22:01:54.477Z]   loaded in 25.92s · psql exit 0
+[2026-09-02T22:02:08.344Z]   POST: db=1031.5 MB, wal=C/9979EFB0, target_count=700000, readonly=false
+[2026-09-02T22:02:08.345Z]   DELTA: db=+64389120 B (61.41 MB), wal=+90993552 B (86.78 MB)
+[2026-09-02T22:02:08.368Z]   ✓ chunk 7 committed · cumulative 700.000 / 1.376.510
+[2026-09-02T22:02:08.370Z] 
+─── Chunk 8 of 14 ───
+[2026-09-02T22:02:14.670Z]   PRE:  db=1031.5 MB, wal=C/9979F070, target_count=700000, readonly=false
+[2026-09-02T22:02:15.138Z]   predicted: rows=100000, first=82574685-9636-49db-898d-2f1cfe14b324, last=94fa4129-c62e-4470-98b2-7a4585a67975
+[2026-09-02T22:02:16.560Z]   extracted: 47.238.947 bytes in 1.42s
+[2026-09-02T22:02:17.060Z]   CSV: rows=100000, first=82574685-9636-49db-898d-2f1cfe14b324, last=94fa4129-c62e-4470-98b2-7a4585a67975
+[2026-09-02T22:02:17.060Z]   ✓ CSV verified · exact boundaries + count
+[2026-09-02T22:02:49.605Z]   loaded in 32.54s · psql exit 0
+[2026-09-02T22:02:59.598Z]   POST: db=1092.4 MB, wal=C/9F01B888, target_count=800000, readonly=false
+[2026-09-02T22:02:59.598Z]   DELTA: db=+63873024 B (60.91 MB), wal=+92784664 B (88.49 MB)
+[2026-09-02T22:02:59.613Z]   ✓ chunk 8 committed · cumulative 800.000 / 1.376.510
+[2026-09-02T22:02:59.614Z] 
+─── Chunk 9 of 14 ───
+[2026-09-02T22:03:07.847Z]   PRE:  db=1092.4 MB, wal=C/9F01B8C8, target_count=800000, readonly=false
+[2026-09-02T22:03:08.312Z]   predicted: rows=100000, first=94fa56c3-cba9-4727-9490-f427668bcf86, last=a78d4896-92de-4cb8-bf88-41ad192cdcb1
+[2026-09-02T22:03:09.795Z]   extracted: 47.172.488 bytes in 1.48s
+[2026-09-02T22:03:10.349Z]   CSV: rows=100000, first=94fa56c3-cba9-4727-9490-f427668bcf86, last=a78d4896-92de-4cb8-bf88-41ad192cdcb1
+[2026-09-02T22:03:10.350Z]   ✓ CSV verified · exact boundaries + count
+[2026-09-02T22:03:34.261Z]   loaded in 23.91s · psql exit 0
+[2026-09-02T22:03:47.663Z]   POST: db=1154.3 MB, wal=C/A4303A20, target_count=900000, readonly=false
+[2026-09-02T22:03:47.665Z]   DELTA: db=+64831488 B (61.83 MB), wal=+86933848 B (82.91 MB)
+[2026-09-02T22:03:47.682Z]   ✓ chunk 9 committed · cumulative 900.000 / 1.376.510
+[2026-09-02T22:03:47.683Z] 
+─── Chunk 10 of 14 ───
+[2026-09-02T22:03:53.991Z]   PRE:  db=1154.3 MB, wal=C/A4303AD8, target_count=900000, readonly=false
+[2026-09-02T22:03:54.444Z]   predicted: rows=100000, first=a78d54f0-135d-4f3f-98e7-8c4824301a76, last=ba279d9c-be86-4aa8-b88d-2cdf688b8daa
+[2026-09-02T22:03:55.932Z]   extracted: 47.255.997 bytes in 1.49s
+[2026-09-02T22:03:56.422Z]   CSV: rows=100000, first=a78d54f0-135d-4f3f-98e7-8c4824301a76, last=ba279d9c-be86-4aa8-b88d-2cdf688b8daa
+[2026-09-02T22:03:56.423Z]   ✓ CSV verified · exact boundaries + count
+[2026-09-02T22:04:25.615Z]   loaded in 29.19s · psql exit 0
+[2026-09-02T22:04:35.401Z]   POST: db=1217.5 MB, wal=C/A975E000, target_count=1000000, readonly=false
+[2026-09-02T22:04:35.402Z]   DELTA: db=+66297856 B (63.23 MB), wal=+88450344 B (84.35 MB)
+[2026-09-02T22:04:35.423Z]   ✓ chunk 10 committed · cumulative 1.000.000 / 1.376.510
+[2026-09-02T22:04:35.424Z] 
+─── Chunk 11 of 14 ───
+[2026-09-02T22:04:40.552Z]   PRE:  db=1217.5 MB, wal=C/A97C4280, target_count=1000000, readonly=false
+[2026-09-02T22:04:40.980Z]   predicted: rows=100000, first=ba27b049-2e2b-4029-a013-de9be5db070c, last=ccbfae15-b7aa-4f2a-bba8-2ed4a49cc92c
+[2026-09-02T22:04:42.498Z]   extracted: 47.150.438 bytes in 1.52s
+[2026-09-02T22:04:43.052Z]   CSV: rows=100000, first=ba27b049-2e2b-4029-a013-de9be5db070c, last=ccbfae15-b7aa-4f2a-bba8-2ed4a49cc92c
+[2026-09-02T22:04:43.053Z]   ✓ CSV verified · exact boundaries + count
+[2026-09-02T22:05:06.755Z]   loaded in 23.70s · psql exit 0
+[2026-09-02T22:05:20.768Z]   POST: db=1281.4 MB, wal=C/AEBBD848, target_count=1100000, readonly=false
+[2026-09-02T22:05:20.769Z]   DELTA: db=+66928640 B (63.83 MB), wal=+88053192 B (83.97 MB)
+[2026-09-02T22:05:20.787Z]   ✓ chunk 11 committed · cumulative 1.100.000 / 1.376.510
+[2026-09-02T22:05:20.788Z] 
+─── Chunk 12 of 14 ───
+[2026-09-02T22:05:28.935Z]   PRE:  db=1281.4 MB, wal=C/AEBBD880, target_count=1100000, readonly=false
+[2026-09-02T22:05:29.616Z]   predicted: rows=100000, first=ccbfc2d1-58cf-41c6-a241-18a413c72881, last=df43d31a-bdc2-4764-b014-bb5b11ef2a7f
+[2026-09-02T22:05:31.180Z]   extracted: 47.206.546 bytes in 1.56s
+[2026-09-02T22:05:31.580Z]   CSV: rows=100000, first=ccbfc2d1-58cf-41c6-a241-18a413c72881, last=df43d31a-bdc2-4764-b014-bb5b11ef2a7f
+[2026-09-02T22:05:31.581Z]   ✓ CSV verified · exact boundaries + count
+[2026-09-02T22:06:14.177Z]   loaded in 42.59s · psql exit 0
+[2026-09-02T22:06:28.556Z]   POST: db=1344.5 MB, wal=C/B5D5EA10, target_count=1200000, readonly=false
+[2026-09-02T22:06:28.557Z]   DELTA: db=+66224128 B (63.16 MB), wal=+119148944 B (113.63 MB)
+[2026-09-02T22:06:28.571Z]   ✓ chunk 12 committed · cumulative 1.200.000 / 1.376.510
+[2026-09-02T22:06:28.571Z] 
+─── Chunk 13 of 14 ───
+[2026-09-02T22:06:38.205Z]   PRE:  db=1344.5 MB, wal=C/B6BD63A0, target_count=1200000, readonly=false
+[2026-09-02T22:06:38.742Z]   predicted: rows=100000, first=df43e553-3a11-4936-9083-734a34f23f1d, last=f1c20230-f13a-435b-8481-1cc75e1aa258
+[2026-09-02T22:06:39.656Z]   extracted: 47.199.680 bytes in 0.91s
+[2026-09-02T22:06:40.127Z]   CSV: rows=100000, first=df43e553-3a11-4936-9083-734a34f23f1d, last=f1c20230-f13a-435b-8481-1cc75e1aa258
+[2026-09-02T22:06:40.127Z]   ✓ CSV verified · exact boundaries + count
+[2026-09-02T22:07:22.289Z]   loaded in 42.16s · psql exit 0
+[2026-09-02T22:07:37.340Z]   POST: db=1407.1 MB, wal=C/BC147900, target_count=1300000, readonly=false
+[2026-09-02T22:07:37.341Z]   DELTA: db=+65617920 B (62.58 MB), wal=+89593184 B (85.44 MB)
+[2026-09-02T22:07:37.355Z]   ✓ chunk 13 committed · cumulative 1.300.000 / 1.376.510
+[2026-09-02T22:07:37.356Z] 
+─── Chunk 14 of 14 ───
+[2026-09-02T22:07:46.851Z]   PRE:  db=1407.1 MB, wal=C/BC147938, target_count=1300000, readonly=false
+[2026-09-02T22:07:47.145Z]   predicted: rows=76510, first=f1c207ee-0e6d-492e-ad27-2ce2cc611a74, last=fffff5df-27e1-4d48-93cd-21909754fc98
+[2026-09-02T22:07:47.965Z]   extracted: 36.167.780 bytes in 0.82s
+[2026-09-02T22:07:48.273Z]   CSV: rows=76510, first=f1c207ee-0e6d-492e-ad27-2ce2cc611a74, last=fffff5df-27e1-4d48-93cd-21909754fc98
+[2026-09-02T22:07:48.273Z]   ✓ CSV verified · exact boundaries + count
+[2026-09-02T22:17:48.296Z] ❌ HARD STOP · load failed (transaction rolled back)
+[2026-09-02T22:17:48.296Z]    detail: {"stderr":"","stdout":"SET\r\nBEGIN\r\n"}
+[2026-09-02T22:20:40.778Z] 
+════════════════════════════════════════════════════════════════════════
+[2026-09-02T22:20:40.797Z] BATCH 6 · identity_merge_log · streaming 100.000-row chunks
+[2026-09-02T22:20:40.798Z] baseline: 1.376.510 rows · 14 chunks expected
+[2026-09-02T22:20:40.798Z] ════════════════════════════════════════════════════════════════════════
+[2026-09-02T22:20:42.888Z]   target initial: identity_merge_log=1300000, db_size=1415.1 MB, wal_lsn=C/C0000000
+[2026-09-02T22:20:42.888Z]   ⚠️ target already has 1300000 rows in identity_merge_log — will resume/append if state file exists
+[2026-09-02T22:20:42.889Z]   loaded state: chunks_completed=13, last_merge_id=f1c20230-f13a-435b-8481-1cc75e1aa258, target_row_count=1300000
+[2026-09-02T22:20:42.889Z] 
+─── Chunk 14 of 14 ───
+[2026-09-02T22:20:49.231Z]   PRE:  db=1415.1 MB, wal=C/C0000000, target_count=1300000, readonly=false
+[2026-09-02T22:20:49.491Z]   predicted: rows=76510, first=f1c207ee-0e6d-492e-ad27-2ce2cc611a74, last=fffff5df-27e1-4d48-93cd-21909754fc98
+[2026-09-02T22:20:50.253Z]   extracted: 36.167.780 bytes in 0.75s
+[2026-09-02T22:20:50.452Z]   CSV: rows=76510, first=f1c207ee-0e6d-492e-ad27-2ce2cc611a74, last=fffff5df-27e1-4d48-93cd-21909754fc98
+[2026-09-02T22:20:50.452Z]   ✓ CSV verified · exact boundaries + count
+[2026-09-02T22:21:39.824Z]   loaded in 49.37s · psql exit 0
+[2026-09-02T22:21:48.973Z]   POST: db=1460.7 MB, wal=C/C70B1B68, target_count=1376510, readonly=false
+[2026-09-02T22:21:48.975Z]   DELTA: db=+47808512 B (45.59 MB), wal=+118168424 B (112.69 MB)
+[2026-09-02T22:21:48.992Z]   ✓ chunk 14 committed · cumulative 1.376.510 / 1.376.510
+[2026-09-02T22:21:48.993Z] 
+════════════════════════════════════════════════════════════════════════
+[2026-09-02T22:21:48.994Z] POST-BATCH VERIFICATION
+[2026-09-02T22:21:48.995Z] ════════════════════════════════════════════════════════════════════════
+[2026-09-02T22:21:52.686Z]   A · target count: 1.376.510 (expected 1.376.510) ✓
+[2026-09-02T22:21:55.092Z]   B · min/max: min=000002bf-3b6e-4eda-bbf5-12daedfee993 ✓ · max=fffff5df-27e1-4d48-93cd-21909754fc98 ✓
+[2026-09-02T22:21:59.706Z]   C · match_layer: ✓ all 5 match · [{"k":"geo_confirmed","v":"168552"},{"k":"name_city","v":"10542"},{"k":"phone","v":"15594"},{"k":"source_ref","v":"1171215"},{"k":"website","v":"10607"}]
+[2026-09-02T22:22:14.507Z]   D · table_name: ✓ all match · [{"k":"nex.accommodation_business","v":"477378"},{"k":"nex.food_business","v":"660063"},{"k":"nex.mp_seller","v":"239069"}]
+[2026-09-02T22:22:22.503Z]   E · day(merged_at): ❌ · [{"k":"2026-08-27","v":"392251"},{"k":"2026-08-28","v":"511304"},{"k":"2026-08-29","v":"53218"},{"k":"2026-08-30","v":"68"},{"k":"2026-09-02","v":"419669"}]
+[2026-09-02T22:22:22.504Z]   F · 100 random full-row compares...
+[2026-09-02T22:25:48.503Z]   F · sample deep-compare: 0/100 match · 100 mismatches ❌
+[2026-09-02T22:25:55.912Z]   G · subset md5: 89806e6da5c9380630b2236d1219e591 ❌ MISMATCH · baseline=0ff9c0fc875eb93fb1bd0e65544225b9
+[2026-09-02T22:25:58.779Z] 
+  Invariants: RLS=92(exp 92) FKs=0(exp 0) kr=3627(exp 3627) wj=19167(exp 19167) wr=19140(exp 19140)
+[2026-09-02T22:25:58.780Z]   Final DB size: 1460.7 MB
+[2026-09-02T22:25:58.781Z] 
+════════════════════════════════════════════════════════════════════════
+[2026-09-02T22:25:58.782Z] SUMMARY
+[2026-09-02T22:25:58.783Z] ════════════════════════════════════════════════════════════════════════
+[2026-09-02T22:25:58.784Z]   All verifications passed: ❌
+[2026-09-02T22:25:58.785Z]   Total elapsed: 318.0s
+[2026-09-02T22:25:58.786Z]   Chunks completed: 14
+[2026-09-02T22:25:58.786Z]   Cumulative rows: 1.376.510
+[2026-09-02T22:25:58.787Z]   Cumulative DB growth: 45.59 MB
+[2026-09-02T22:25:58.788Z]   Largest chunk DB delta: chunk 11 · 63.83 MB
+[2026-09-02T22:25:58.789Z]   Largest chunk WAL delta: chunk 12 · 113.63 MB
+[2026-09-02T22:26:01.855Z]   Final readonly: false
+[2026-09-02T22:26:01.858Z] 
+─── HARD STOP · awaiting Philip approval for Batch 7 (FK recreation) ───

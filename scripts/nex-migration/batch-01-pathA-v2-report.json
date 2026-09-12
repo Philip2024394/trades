@@ -1,0 +1,47 @@
+{
+  "batch": 1,
+  "path": "A v2 · least-privilege",
+  "grants_applied": {
+    "schema_usage": "USAGE on nex",
+    "table_perms": "SELECT/INSERT/UPDATE/DELETE (no TRUNCATE/REFERENCES/TRIGGER)",
+    "sequence_perms": "USAGE, SELECT, UPDATE"
+  },
+  "pg_restore_exit": 0,
+  "elapsed_seconds": 36.02,
+  "pre": {
+    "db_bytes": 322784403,
+    "db_pretty": "308 MB",
+    "wal_lsn": "C/4E000130"
+  },
+  "post": {
+    "db_bytes": 324611219,
+    "db_pretty": "310 MB",
+    "wal_lsn": "C/4E0889D0"
+  },
+  "db_delta_bytes": 1826816,
+  "wal_delta": "C/4E000130 → C/4E0889D0",
+  "row_reconciliation": {
+    "matched": 62,
+    "mismatched": 0,
+    "expected_total": 722,
+    "actual_total": 722,
+    "failures": []
+  },
+  "public_baseline_post": {
+    "public_tables": 17,
+    "kr": 3627,
+    "wj": 19167,
+    "wr": 19140
+  },
+  "public_unchanged": true,
+  "rls_state_post": {
+    "rls_enabled": 92
+  },
+  "rls_unchanged": true,
+  "fks_post": 0,
+  "readonly_post": {
+    "enabled": false,
+    "override_enabled": false,
+    "override_active_until": "1970-01-01 00:00:00+00"
+  }
+}

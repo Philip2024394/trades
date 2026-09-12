@@ -1,0 +1,192 @@
+{
+  "started_at": "2026-09-04T08:37:48.595Z",
+  "phases": {
+    "integrity": {
+      "sha": "fee16b35110a1765cb118c52712236464527dc94832a337f870397581a1b3038",
+      "lines": 346
+    },
+    "preflight": {
+      "targetId": {
+        "db": "postgres",
+        "ver": "17.6",
+        "usr": "postgres"
+      },
+      "pre": {
+        "wf_policies": 0,
+        "food_policies": 5,
+        "hardened_fns": 11,
+        "admin_role": 1,
+        "app_role": 1,
+        "persister_role": 1,
+        "runtime_grant": 1,
+        "app_writes": 0,
+        "admin_bypass": false,
+        "app_bypass": false,
+        "persister_bypass": false,
+        "runtime_bypass": false,
+        "admin_super": false,
+        "persister_super": false,
+        "wi": 0,
+        "hb": 0,
+        "rr": 0,
+        "ev": 0,
+        "stg": 0,
+        "aud": 0,
+        "active_wf": 0,
+        "food_rows": 22750,
+        "dup_groups": 373
+      },
+      "preTaskState": "Disabled",
+      "preEnvInfo": "mtime=2026-09-03T07:41:00.1988508+07:00|matches=0",
+      "preSysA": "NEX_TAXONOMY_POSTGRES_URL=postgresql://postgres:Admin1phil@localhost:5433/nex_dev"
+    },
+    "apply": {
+      "ok": true,
+      "duration_ms": 2041
+    },
+    "postflight": {
+      "A": 11,
+      "rows": [
+        {
+          "name": "wa_city_catalogue_select",
+          "tbl": "city_catalogue",
+          "cmd": "r",
+          "roles": "nex_workforce_admin"
+        },
+        {
+          "name": "wa_job_registry_select",
+          "tbl": "job_registry",
+          "cmd": "r",
+          "roles": "nex_workforce_admin"
+        },
+        {
+          "name": "wa_reaper_run_insert",
+          "tbl": "reaper_run",
+          "cmd": "a",
+          "roles": "nex_workforce_admin"
+        },
+        {
+          "name": "wa_reaper_run_select",
+          "tbl": "reaper_run",
+          "cmd": "r",
+          "roles": "nex_workforce_admin"
+        },
+        {
+          "name": "wa_reaper_run_update",
+          "tbl": "reaper_run",
+          "cmd": "w",
+          "roles": "nex_workforce_admin"
+        },
+        {
+          "name": "wa_wi_dl_insert",
+          "tbl": "work_item_dead_letter",
+          "cmd": "a",
+          "roles": "nex_workforce_admin"
+        },
+        {
+          "name": "wa_work_item_insert",
+          "tbl": "work_item",
+          "cmd": "a",
+          "roles": "nex_workforce_admin"
+        },
+        {
+          "name": "wa_work_item_select",
+          "tbl": "work_item",
+          "cmd": "r",
+          "roles": "nex_workforce_admin"
+        },
+        {
+          "name": "wa_work_item_update",
+          "tbl": "work_item",
+          "cmd": "w",
+          "roles": "nex_workforce_admin"
+        },
+        {
+          "name": "wp_food_business_work_item_select",
+          "tbl": "work_item",
+          "cmd": "r",
+          "roles": "nex_workforce_persister_food_business"
+        },
+        {
+          "name": "wp_food_business_work_item_update",
+          "tbl": "work_item",
+          "cmd": "w",
+          "roles": "nex_workforce_persister_food_business"
+        }
+      ],
+      "G": 0,
+      "H": {
+        "agent_heartbeat": {
+          "rls": true,
+          "force": false
+        },
+        "city_catalogue": {
+          "rls": true,
+          "force": false
+        },
+        "job_registry": {
+          "rls": true,
+          "force": false
+        },
+        "reaper_run": {
+          "rls": true,
+          "force": false
+        },
+        "work_item": {
+          "rls": true,
+          "force": false
+        },
+        "work_item_dead_letter": {
+          "rls": true,
+          "force": false
+        }
+      },
+      "post": {
+        "roles": 4,
+        "hardened_fns": 11,
+        "runtime_grant": 1,
+        "app_writes": 0,
+        "admin_bypass": false,
+        "persister_bypass": false,
+        "admin_super": false,
+        "food_policies": 5,
+        "food_rows": 22750,
+        "dup_groups": 373
+      },
+      "brain": "DELETE,INSERT,SELECT,UPDATE",
+      "social": "DELETE,INSERT,SELECT,UPDATE",
+      "J": {
+        "wi": 0,
+        "dl": 0,
+        "rr": 0,
+        "ev": 0,
+        "stg": 0,
+        "aud": 0,
+        "hb": 0
+      },
+      "K1": 0,
+      "postTaskState": "Disabled",
+      "postEnvInfo": "mtime=2026-09-03T07:41:00.1988508+07:00|matches=0",
+      "postSysA": "NEX_TAXONOMY_POSTGRES_URL=postgresql://postgres:Admin1phil@localhost:5433/nex_dev"
+    },
+    "functionalProof_admin": {
+      "attempted": true,
+      "ok": true,
+      "current_user": "nex_workforce_app",
+      "session_user": "nex_app_runtime",
+      "enqueue_ok": true,
+      "reap_ok": true,
+      "error": null
+    },
+    "functionalProof_persister": {
+      "attempted": true,
+      "ok": true,
+      "note": "persister SELECT under RLS succeeded (no 42501 · wp_food_business_work_item_select operative)",
+      "error": null
+    }
+  },
+  "finished_at": "2026-09-04T08:38:40.694Z",
+  "final_ok": true,
+  "pass": 54,
+  "fail": 0
+}

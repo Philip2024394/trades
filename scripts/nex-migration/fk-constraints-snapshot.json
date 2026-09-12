@@ -1,0 +1,627 @@
+[
+  {
+    "table": "accommodation_business",
+    "name": "accommodation_business_cycle_run_id_fkey",
+    "def": "FOREIGN KEY (cycle_run_id) REFERENCES nex.worker_cycle_run(id) ON DELETE SET NULL"
+  },
+  {
+    "table": "accommodation_business_field_provenance",
+    "name": "accommodation_business_field_provenance_business_ref_fkey",
+    "def": "FOREIGN KEY (business_ref) REFERENCES nex.accommodation_business(public_listing_ref) ON DELETE CASCADE"
+  },
+  {
+    "table": "accommodation_business_field_provenance",
+    "name": "accommodation_business_field_provenance_cycle_run_id_fkey",
+    "def": "FOREIGN KEY (cycle_run_id) REFERENCES nex.worker_cycle_run(id) ON DELETE SET NULL"
+  },
+  {
+    "table": "accommodation_business_source_snapshot",
+    "name": "accommodation_business_source_snapshot_business_ref_fkey",
+    "def": "FOREIGN KEY (business_ref) REFERENCES nex.accommodation_business(public_listing_ref) ON DELETE CASCADE"
+  },
+  {
+    "table": "accommodation_business_source_snapshot",
+    "name": "accommodation_business_source_snapshot_cycle_run_id_fkey",
+    "def": "FOREIGN KEY (cycle_run_id) REFERENCES nex.worker_cycle_run(id) ON DELETE SET NULL"
+  },
+  {
+    "table": "accommodation_enrichment_evidence",
+    "name": "accommodation_enrichment_evidence_business_ref_fkey",
+    "def": "FOREIGN KEY (business_ref) REFERENCES nex.accommodation_business(public_listing_ref) ON DELETE CASCADE"
+  },
+  {
+    "table": "accommodation_enrichment_evidence",
+    "name": "accommodation_enrichment_evidence_cycle_run_id_fkey",
+    "def": "FOREIGN KEY (cycle_run_id) REFERENCES nex.worker_cycle_run(id) ON DELETE SET NULL"
+  },
+  {
+    "table": "alert_dispatches",
+    "name": "alert_dispatches_alert_id_fkey",
+    "def": "FOREIGN KEY (alert_id) REFERENCES nex.alerts(alert_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "alerts",
+    "name": "alerts_rule_id_fkey",
+    "def": "FOREIGN KEY (rule_id) REFERENCES nex.alert_rules(rule_id) ON DELETE RESTRICT"
+  },
+  {
+    "table": "analytics_events",
+    "name": "analytics_events_campaign_id_fkey",
+    "def": "FOREIGN KEY (campaign_id) REFERENCES nex.campaigns(campaign_id) ON DELETE SET NULL"
+  },
+  {
+    "table": "attributions",
+    "name": "attributions_conversion_id_fkey",
+    "def": "FOREIGN KEY (conversion_id) REFERENCES nex.conversion_events(conversion_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "bike_rental_listing",
+    "name": "bike_rental_listing_preferred_bike_slug_fkey",
+    "def": "FOREIGN KEY (preferred_bike_slug) REFERENCES nex.bike_model(slug)"
+  },
+  {
+    "table": "brain_english_practice",
+    "name": "brain_english_practice_lesson_slug_fkey",
+    "def": "FOREIGN KEY (lesson_slug) REFERENCES nex.brain_english_lesson(lesson_slug)"
+  },
+  {
+    "table": "brain_english_progress",
+    "name": "brain_english_progress_grammar_id_fkey",
+    "def": "FOREIGN KEY (grammar_id) REFERENCES nex.brain_english_grammar(grammar_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "brain_english_progress",
+    "name": "brain_english_progress_lesson_slug_fkey",
+    "def": "FOREIGN KEY (lesson_slug) REFERENCES nex.brain_english_lesson(lesson_slug) ON DELETE CASCADE"
+  },
+  {
+    "table": "brain_english_progress",
+    "name": "brain_english_progress_practice_id_fkey",
+    "def": "FOREIGN KEY (practice_id) REFERENCES nex.brain_english_practice(practice_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "brain_english_progress",
+    "name": "brain_english_progress_vocab_id_fkey",
+    "def": "FOREIGN KEY (vocab_id) REFERENCES nex.brain_english_vocabulary(vocab_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "brain_user_saved_facts",
+    "name": "brain_user_saved_facts_fact_id_fkey",
+    "def": "FOREIGN KEY (fact_id) REFERENCES nex.brain_did_you_know_indonesia(fact_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "business_image",
+    "name": "business_image_cycle_run_id_fkey",
+    "def": "FOREIGN KEY (cycle_run_id) REFERENCES nex.worker_cycle_run(id)"
+  },
+  {
+    "table": "campaign_recipients",
+    "name": "campaign_recipients_campaign_id_fkey",
+    "def": "FOREIGN KEY (campaign_id) REFERENCES nex.campaigns(campaign_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "campaign_segments",
+    "name": "campaign_segments_campaign_id_fkey",
+    "def": "FOREIGN KEY (campaign_id) REFERENCES nex.campaigns(campaign_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "campaign_segments",
+    "name": "campaign_segments_segment_id_fkey",
+    "def": "FOREIGN KEY (segment_id) REFERENCES nex.contact_segments(segment_id) ON DELETE RESTRICT"
+  },
+  {
+    "table": "campaigns",
+    "name": "campaigns_template_id_fkey",
+    "def": "FOREIGN KEY (template_id) REFERENCES nex.email_templates(template_id) ON DELETE SET NULL"
+  },
+  {
+    "table": "category_candidate",
+    "name": "category_candidate_duplicate_of_registry_id_fkey",
+    "def": "FOREIGN KEY (duplicate_of_registry_id) REFERENCES nex.category_registry(id) ON DELETE SET NULL"
+  },
+  {
+    "table": "category_candidate",
+    "name": "category_candidate_proposed_cycle_run_id_fkey",
+    "def": "FOREIGN KEY (proposed_cycle_run_id) REFERENCES nex.worker_cycle_run(id) ON DELETE SET NULL"
+  },
+  {
+    "table": "category_candidate",
+    "name": "category_candidate_superseded_by_candidate_id_fkey",
+    "def": "FOREIGN KEY (superseded_by_candidate_id) REFERENCES nex.category_candidate(id) ON DELETE SET NULL"
+  },
+  {
+    "table": "category_candidate_calibration_annotation",
+    "name": "category_candidate_calibration_annotation_against_score_id_fkey",
+    "def": "FOREIGN KEY (against_score_id) REFERENCES nex.category_candidate_score(id) ON DELETE SET NULL"
+  },
+  {
+    "table": "category_candidate_calibration_annotation",
+    "name": "category_candidate_calibration_annotation_candidate_id_fkey",
+    "def": "FOREIGN KEY (candidate_id) REFERENCES nex.category_candidate(id) ON DELETE SET NULL"
+  },
+  {
+    "table": "category_candidate_score",
+    "name": "category_candidate_score_candidate_id_fkey",
+    "def": "FOREIGN KEY (candidate_id) REFERENCES nex.category_candidate(id) ON DELETE CASCADE"
+  },
+  {
+    "table": "category_registry",
+    "name": "category_registry_origin_candidate_fkey",
+    "def": "FOREIGN KEY (origin_candidate_id) REFERENCES nex.category_candidate(id) ON DELETE SET NULL"
+  },
+  {
+    "table": "chat_message_archive",
+    "name": "chat_message_archive_event_id_fkey",
+    "def": "FOREIGN KEY (event_id) REFERENCES nex.safety_audit_event(event_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "chat_message_deletion",
+    "name": "chat_message_deletion_message_id_fkey",
+    "def": "FOREIGN KEY (message_id) REFERENCES nex.chat_message(message_id)"
+  },
+  {
+    "table": "confidence_scores",
+    "name": "confidence_scores_record_id_fkey",
+    "def": "FOREIGN KEY (record_id) REFERENCES nex.knowledge_records(record_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "contact_duplicate_suggestions",
+    "name": "contact_duplicate_suggestions_merge_id_fkey",
+    "def": "FOREIGN KEY (merge_id) REFERENCES nex.contact_merges(merge_id)"
+  },
+  {
+    "table": "contradictions",
+    "name": "contradictions_record_a_id_fkey",
+    "def": "FOREIGN KEY (record_a_id) REFERENCES nex.knowledge_records(record_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "contradictions",
+    "name": "contradictions_record_b_id_fkey",
+    "def": "FOREIGN KEY (record_b_id) REFERENCES nex.knowledge_records(record_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "conv_edges",
+    "name": "conv_edges_from_item_fkey",
+    "def": "FOREIGN KEY (from_item) REFERENCES nex.conv_knowledge_items(id) ON DELETE CASCADE"
+  },
+  {
+    "table": "conv_edges",
+    "name": "conv_edges_to_item_fkey",
+    "def": "FOREIGN KEY (to_item) REFERENCES nex.conv_knowledge_items(id) ON DELETE CASCADE"
+  },
+  {
+    "table": "conv_feedback",
+    "name": "conv_feedback_turn_id_fkey",
+    "def": "FOREIGN KEY (turn_id) REFERENCES nex.conv_turns(id) ON DELETE CASCADE"
+  },
+  {
+    "table": "conv_knowledge_items",
+    "name": "conv_knowledge_items_canonical_intent_fkey",
+    "def": "FOREIGN KEY (canonical_intent) REFERENCES nex.conv_intents(slug) ON UPDATE CASCADE"
+  },
+  {
+    "table": "conv_learning_candidate",
+    "name": "conv_learning_candidate_cycle_run_id_fkey",
+    "def": "FOREIGN KEY (cycle_run_id) REFERENCES nex.worker_cycle_run(id) ON DELETE CASCADE"
+  },
+  {
+    "table": "conv_learning_candidate",
+    "name": "conv_learning_candidate_promotion_target_record_id_fkey",
+    "def": "FOREIGN KEY (promotion_target_record_id) REFERENCES nex.knowledge_records(id) ON DELETE SET NULL"
+  },
+  {
+    "table": "conv_turns",
+    "name": "conv_turns_cle_cycle_run_id_fkey",
+    "def": "FOREIGN KEY (cle_cycle_run_id) REFERENCES nex.worker_cycle_run(id) ON DELETE SET NULL"
+  },
+  {
+    "table": "conv_turns",
+    "name": "conv_turns_detected_intent_fkey",
+    "def": "FOREIGN KEY (detected_intent) REFERENCES nex.conv_intents(slug) ON UPDATE CASCADE"
+  },
+  {
+    "table": "delivery_job_attempts",
+    "name": "delivery_job_attempts_job_id_fkey",
+    "def": "FOREIGN KEY (job_id) REFERENCES nex.delivery_jobs(job_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "delivery_jobs",
+    "name": "delivery_jobs_campaign_id_fkey",
+    "def": "FOREIGN KEY (campaign_id) REFERENCES nex.campaigns(campaign_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "deprecations",
+    "name": "deprecations_record_id_fkey",
+    "def": "FOREIGN KEY (record_id) REFERENCES nex.knowledge_records(record_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "deprecations",
+    "name": "deprecations_superseded_by_fkey",
+    "def": "FOREIGN KEY (superseded_by) REFERENCES nex.knowledge_records(record_id)"
+  },
+  {
+    "table": "experiment_assignments",
+    "name": "experiment_assignments_experiment_id_fkey",
+    "def": "FOREIGN KEY (experiment_id) REFERENCES nex.experiments(experiment_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "experiment_assignments",
+    "name": "experiment_assignments_experiment_id_variant_id_fkey",
+    "def": "FOREIGN KEY (experiment_id, variant_id) REFERENCES nex.experiment_variants(experiment_id, variant_id)"
+  },
+  {
+    "table": "experiment_variants",
+    "name": "experiment_variants_experiment_id_fkey",
+    "def": "FOREIGN KEY (experiment_id) REFERENCES nex.experiments(experiment_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "experiment_variants",
+    "name": "experiment_variants_target_campaign_id_fkey",
+    "def": "FOREIGN KEY (target_campaign_id) REFERENCES nex.campaigns(campaign_id) ON DELETE SET NULL"
+  },
+  {
+    "table": "food_business",
+    "name": "food_business_cycle_run_id_fkey",
+    "def": "FOREIGN KEY (cycle_run_id) REFERENCES nex.worker_cycle_run(id) ON DELETE SET NULL"
+  },
+  {
+    "table": "food_business_field_provenance",
+    "name": "food_business_field_provenance_cycle_run_id_fkey",
+    "def": "FOREIGN KEY (cycle_run_id) REFERENCES nex.worker_cycle_run(id) ON DELETE SET NULL"
+  },
+  {
+    "table": "food_business_promotion",
+    "name": "food_business_promotion_business_ref_fkey",
+    "def": "FOREIGN KEY (business_ref) REFERENCES nex.food_business(public_listing_ref) ON DELETE CASCADE"
+  },
+  {
+    "table": "food_business_promotion",
+    "name": "food_business_promotion_cycle_run_id_fkey",
+    "def": "FOREIGN KEY (cycle_run_id) REFERENCES nex.worker_cycle_run(id) ON DELETE SET NULL"
+  },
+  {
+    "table": "food_business_promotion_audit",
+    "name": "food_business_promotion_audit_business_ref_fkey",
+    "def": "FOREIGN KEY (business_ref) REFERENCES nex.food_business(public_listing_ref) ON DELETE CASCADE"
+  },
+  {
+    "table": "food_business_promotion_audit",
+    "name": "food_business_promotion_audit_cycle_run_id_fkey",
+    "def": "FOREIGN KEY (cycle_run_id) REFERENCES nex.worker_cycle_run(id) ON DELETE CASCADE"
+  },
+  {
+    "table": "food_business_promotion_decision",
+    "name": "food_business_promotion_decision_business_ref_fkey",
+    "def": "FOREIGN KEY (business_ref) REFERENCES nex.food_business(public_listing_ref) ON DELETE CASCADE"
+  },
+  {
+    "table": "food_business_promotion_decision",
+    "name": "food_business_promotion_decision_cycle_run_id_fkey",
+    "def": "FOREIGN KEY (cycle_run_id) REFERENCES nex.worker_cycle_run(id)"
+  },
+  {
+    "table": "food_business_promotion_decision",
+    "name": "food_business_promotion_decision_evidence_id_fkey",
+    "def": "FOREIGN KEY (evidence_id) REFERENCES nex.food_enrichment_evidence(evidence_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "graph_edges",
+    "name": "graph_edges_from_record_id_fkey",
+    "def": "FOREIGN KEY (from_record_id) REFERENCES nex.knowledge_records(record_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "journey_campaign_executions",
+    "name": "journey_campaign_executions_campaign_id_fkey",
+    "def": "FOREIGN KEY (campaign_id) REFERENCES nex.campaigns(campaign_id) ON DELETE RESTRICT"
+  },
+  {
+    "table": "journey_campaign_executions",
+    "name": "journey_campaign_executions_journey_state_id_fkey",
+    "def": "FOREIGN KEY (journey_state_id) REFERENCES nex.journey_states(state_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "journey_states",
+    "name": "journey_states_journey_id_fkey",
+    "def": "FOREIGN KEY (journey_id) REFERENCES nex.journeys(journey_id) ON DELETE RESTRICT"
+  },
+  {
+    "table": "journey_triggers",
+    "name": "journey_triggers_journey_id_fkey",
+    "def": "FOREIGN KEY (journey_id) REFERENCES nex.journeys(journey_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "knowledge_feedback",
+    "name": "knowledge_feedback_record_id_fkey",
+    "def": "FOREIGN KEY (record_id) REFERENCES nex.knowledge_records(record_id) ON DELETE SET NULL"
+  },
+  {
+    "table": "knowledge_feedback",
+    "name": "knowledge_feedback_resulted_in_record_fkey",
+    "def": "FOREIGN KEY (resulted_in_record) REFERENCES nex.knowledge_records(record_id) ON DELETE SET NULL"
+  },
+  {
+    "table": "knowledge_records",
+    "name": "knowledge_records_supersedes_fkey",
+    "def": "FOREIGN KEY (supersedes) REFERENCES nex.knowledge_records(record_id)"
+  },
+  {
+    "table": "llm_retry_queue",
+    "name": "llm_retry_queue_parent_job_id_fkey",
+    "def": "FOREIGN KEY (parent_job_id) REFERENCES nex.worker_jobs(id) ON DELETE CASCADE"
+  },
+  {
+    "table": "media_object",
+    "name": "media_object_poster_media_id_fkey",
+    "def": "FOREIGN KEY (poster_media_id) REFERENCES nex.media_object(media_id) ON DELETE SET NULL"
+  },
+  {
+    "table": "mp_category",
+    "name": "mp_category_parent_id_fkey",
+    "def": "FOREIGN KEY (parent_id) REFERENCES nex.mp_category(category_id)"
+  },
+  {
+    "table": "mp_commerce_policy",
+    "name": "mp_commerce_policy_category_id_fkey",
+    "def": "FOREIGN KEY (category_id) REFERENCES nex.mp_category(category_id)"
+  },
+  {
+    "table": "mp_product",
+    "name": "mp_product_category_id_fkey",
+    "def": "FOREIGN KEY (category_id) REFERENCES nex.mp_category(category_id)"
+  },
+  {
+    "table": "mp_product",
+    "name": "mp_product_seller_id_fkey",
+    "def": "FOREIGN KEY (seller_id) REFERENCES nex.mp_seller(seller_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "mp_product_image",
+    "name": "mp_product_image_product_id_fkey",
+    "def": "FOREIGN KEY (product_id) REFERENCES nex.mp_product(product_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "mp_product_option",
+    "name": "mp_product_option_product_id_fkey",
+    "def": "FOREIGN KEY (product_id) REFERENCES nex.mp_product(product_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "mp_product_option_value",
+    "name": "mp_product_option_value_option_id_fkey",
+    "def": "FOREIGN KEY (option_id) REFERENCES nex.mp_product_option(option_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "mp_product_variant",
+    "name": "mp_product_variant_product_id_fkey",
+    "def": "FOREIGN KEY (product_id) REFERENCES nex.mp_product(product_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "mp_seller",
+    "name": "mp_seller_cycle_run_id_fkey",
+    "def": "FOREIGN KEY (cycle_run_id) REFERENCES nex.worker_cycle_run(id) ON DELETE SET NULL"
+  },
+  {
+    "table": "predictions",
+    "name": "predictions_model_id_fkey",
+    "def": "FOREIGN KEY (model_id) REFERENCES nex.prediction_models(model_id)"
+  },
+  {
+    "table": "provider_profile",
+    "name": "driver_profile_bike_slug_fkey",
+    "def": "FOREIGN KEY (bike_slug) REFERENCES nex.bike_model(slug)"
+  },
+  {
+    "table": "provider_rate_lease",
+    "name": "provider_rate_lease_provider_fkey",
+    "def": "FOREIGN KEY (provider) REFERENCES nex.provider_rate_config(provider)"
+  },
+  {
+    "table": "provider_topup_intent",
+    "name": "provider_topup_intent_provider_id_fkey",
+    "def": "FOREIGN KEY (provider_id) REFERENCES nex.provider_profile(provider_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "provider_wallet",
+    "name": "provider_wallet_provider_id_fkey",
+    "def": "FOREIGN KEY (provider_id) REFERENCES nex.provider_profile(provider_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "provider_wallet_transaction",
+    "name": "provider_wallet_transaction_provider_id_fkey",
+    "def": "FOREIGN KEY (provider_id) REFERENCES nex.provider_profile(provider_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "provider_wallet_transaction",
+    "name": "provider_wallet_transaction_related_request_id_fkey",
+    "def": "FOREIGN KEY (related_request_id) REFERENCES nex.service_request(request_id) ON DELETE SET NULL"
+  },
+  {
+    "table": "provider_wallet_transaction",
+    "name": "provider_wallet_transaction_related_topup_intent_id_fkey",
+    "def": "FOREIGN KEY (related_topup_intent_id) REFERENCES nex.provider_topup_intent(intent_id) ON DELETE SET NULL"
+  },
+  {
+    "table": "record_versions",
+    "name": "record_versions_record_id_fkey",
+    "def": "FOREIGN KEY (record_id) REFERENCES nex.knowledge_records(record_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "rollup_campaigns",
+    "name": "rollup_campaigns_campaign_id_fkey",
+    "def": "FOREIGN KEY (campaign_id) REFERENCES nex.campaigns(campaign_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "rollup_segment",
+    "name": "rollup_segment_segment_id_fkey",
+    "def": "FOREIGN KEY (segment_id) REFERENCES nex.contact_segments(segment_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "service_request",
+    "name": "service_request_provider_id_fkey",
+    "def": "FOREIGN KEY (provider_id) REFERENCES nex.provider_profile(provider_id)"
+  },
+  {
+    "table": "service_request_offer",
+    "name": "service_request_offer_provider_id_fkey",
+    "def": "FOREIGN KEY (provider_id) REFERENCES nex.provider_profile(provider_id)"
+  },
+  {
+    "table": "service_request_offer",
+    "name": "service_request_offer_request_id_fkey",
+    "def": "FOREIGN KEY (request_id) REFERENCES nex.service_request(request_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "social_accounts",
+    "name": "social_accounts_access_dek_id_fkey",
+    "def": "FOREIGN KEY (access_dek_id) REFERENCES nex.social_dek_wraps(dek_id)"
+  },
+  {
+    "table": "social_accounts",
+    "name": "social_accounts_refresh_dek_id_fkey",
+    "def": "FOREIGN KEY (refresh_dek_id) REFERENCES nex.social_dek_wraps(dek_id)"
+  },
+  {
+    "table": "social_accounts",
+    "name": "social_accounts_tenant_id_fkey",
+    "def": "FOREIGN KEY (tenant_id) REFERENCES nex.social_tenants(tenant_id) ON DELETE RESTRICT"
+  },
+  {
+    "table": "social_brand_profiles",
+    "name": "social_brand_profiles_tenant_id_fkey",
+    "def": "FOREIGN KEY (tenant_id) REFERENCES nex.social_tenants(tenant_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "social_category_automation",
+    "name": "social_category_automation_tenant_id_fkey",
+    "def": "FOREIGN KEY (tenant_id) REFERENCES nex.social_tenants(tenant_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "social_content_drafts",
+    "name": "social_content_drafts_template_id_fkey",
+    "def": "FOREIGN KEY (template_id) REFERENCES nex.social_content_templates(template_id) ON DELETE SET NULL"
+  },
+  {
+    "table": "social_content_drafts",
+    "name": "social_content_drafts_tenant_id_fkey",
+    "def": "FOREIGN KEY (tenant_id) REFERENCES nex.social_tenants(tenant_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "social_content_drafts",
+    "name": "social_content_drafts_validator_run_id_fkey",
+    "def": "FOREIGN KEY (validator_run_id) REFERENCES nex.social_validator_runs(run_id)"
+  },
+  {
+    "table": "social_content_sources",
+    "name": "social_content_sources_tenant_id_fkey",
+    "def": "FOREIGN KEY (tenant_id) REFERENCES nex.social_tenants(tenant_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "social_content_templates",
+    "name": "social_content_templates_tenant_id_fkey",
+    "def": "FOREIGN KEY (tenant_id) REFERENCES nex.social_tenants(tenant_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "social_dek_wraps",
+    "name": "social_dek_wraps_tenant_id_fkey",
+    "def": "FOREIGN KEY (tenant_id) REFERENCES nex.social_tenants(tenant_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "social_oauth_states",
+    "name": "social_oauth_states_code_verifier_dek_id_fkey",
+    "def": "FOREIGN KEY (code_verifier_dek_id) REFERENCES nex.social_dek_wraps(dek_id)"
+  },
+  {
+    "table": "social_oauth_states",
+    "name": "social_oauth_states_tenant_id_fkey",
+    "def": "FOREIGN KEY (tenant_id) REFERENCES nex.social_tenants(tenant_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "social_publish_intents",
+    "name": "social_publish_intents_account_id_fkey",
+    "def": "FOREIGN KEY (account_id) REFERENCES nex.social_accounts(account_id) ON DELETE RESTRICT"
+  },
+  {
+    "table": "social_publish_intents",
+    "name": "social_publish_intents_scheduled_id_fkey",
+    "def": "FOREIGN KEY (scheduled_id) REFERENCES nex.social_scheduled_posts(scheduled_id)"
+  },
+  {
+    "table": "social_publish_intents",
+    "name": "social_publish_intents_tenant_id_fkey",
+    "def": "FOREIGN KEY (tenant_id) REFERENCES nex.social_tenants(tenant_id) ON DELETE RESTRICT"
+  },
+  {
+    "table": "social_role_grants",
+    "name": "social_role_grants_tenant_id_fkey",
+    "def": "FOREIGN KEY (tenant_id) REFERENCES nex.social_tenants(tenant_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "social_scheduled_posts",
+    "name": "social_scheduled_posts_account_id_fkey",
+    "def": "FOREIGN KEY (account_id) REFERENCES nex.social_accounts(account_id) ON DELETE RESTRICT"
+  },
+  {
+    "table": "social_scheduled_posts",
+    "name": "social_scheduled_posts_draft_id_fkey",
+    "def": "FOREIGN KEY (draft_id) REFERENCES nex.social_content_drafts(draft_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "social_scheduled_posts",
+    "name": "social_scheduled_posts_intent_id_fkey",
+    "def": "FOREIGN KEY (intent_id) REFERENCES nex.social_publish_intents(intent_id) ON DELETE SET NULL"
+  },
+  {
+    "table": "social_scheduled_posts",
+    "name": "social_scheduled_posts_tenant_id_fkey",
+    "def": "FOREIGN KEY (tenant_id) REFERENCES nex.social_tenants(tenant_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "social_validator_runs",
+    "name": "social_validator_runs_draft_id_fkey",
+    "def": "FOREIGN KEY (draft_id) REFERENCES nex.social_content_drafts(draft_id) ON DELETE SET NULL"
+  },
+  {
+    "table": "social_validator_runs",
+    "name": "social_validator_runs_tenant_id_fkey",
+    "def": "FOREIGN KEY (tenant_id) REFERENCES nex.social_tenants(tenant_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "sources",
+    "name": "sources_record_id_fkey",
+    "def": "FOREIGN KEY (record_id) REFERENCES nex.knowledge_records(record_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "sparks_product_price",
+    "name": "sparks_product_price_product_id_fkey",
+    "def": "FOREIGN KEY (product_id) REFERENCES nex.sparks_product(product_id)"
+  },
+  {
+    "table": "transport_acquisition_outreach",
+    "name": "transport_acquisition_outreach_provider_id_fkey",
+    "def": "FOREIGN KEY (provider_id) REFERENCES nex.transport_acquisition_record(provider_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "transport_acquisition_outreach",
+    "name": "transport_acquisition_outreach_source_evidence_snapshot_id_fkey",
+    "def": "FOREIGN KEY (source_evidence_snapshot_id) REFERENCES nex.transport_acquisition_source_snapshot(snapshot_id)"
+  },
+  {
+    "table": "transport_acquisition_source_snapshot",
+    "name": "transport_acquisition_source_snapshot_provider_id_fkey",
+    "def": "FOREIGN KEY (provider_id) REFERENCES nex.transport_acquisition_record(provider_id) ON DELETE CASCADE"
+  },
+  {
+    "table": "wallet_transaction",
+    "name": "wallet_transaction_related_transaction_id_fkey",
+    "def": "FOREIGN KEY (related_transaction_id) REFERENCES nex.wallet_transaction(transaction_id)"
+  },
+  {
+    "table": "wallet_transaction",
+    "name": "wallet_transaction_user_id_fkey",
+    "def": "FOREIGN KEY (user_id) REFERENCES nex.user_wallet(user_id)"
+  },
+  {
+    "table": "worker_results",
+    "name": "worker_results_job_id_fkey",
+    "def": "FOREIGN KEY (job_id) REFERENCES nex.worker_jobs(id) ON DELETE CASCADE"
+  }
+]

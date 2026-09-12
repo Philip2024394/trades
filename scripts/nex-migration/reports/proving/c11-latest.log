@@ -1,0 +1,100 @@
+═══════════════════════════════════════════════════════════════════════
+ NEX Workforce · C11 · Supervised Single-Agent Trial · c11-1788538390854
+═══════════════════════════════════════════════════════════════════════
+
+  CITY:        yogyakarta
+  CATEGORY:    restaurants
+  SOURCE:      overpass
+  JOB:         restaurants-overpass
+  BBOX:        sw={-7.944714,110.240493} ne={-7.592822,110.624452}
+  AGENT_ID:    c11-yogyakarta-1788538390854
+  EXPECTED QH: 33da302832c4bce40fef6b2025f08581835398880bcb1d4be900fd3dc2682390
+  CEILING:     15 min
+
+─── § 4 · PRE-FLIGHT · READ-ONLY ───
+  target · db=postgres · pg=17.6 · user=postgres
+🟢 target = Project B postgres · pg 17.x · ref=ijvqdvsvwtwxzcqmoqit
+  state: {
+    "food_rows": 23328,
+    "food_dup": 373,
+    "cc": 1,
+    "city_slug_actual": "yogyakarta",
+    "city_bbox_actual": {
+      "ne": {
+        "lat": -7.592822,
+        "lon": 110.624452
+      },
+      "sw": {
+        "lat": -7.944714,
+        "lon": 110.240493
+      }
+    },
+    "jr": 1,
+    "job_slug_actual": "restaurants-overpass",
+    "job_enabled": true,
+    "rot": 1,
+    "wi_total": 3,
+    "wi_active": 0,
+    "ev": 5,
+    "stg": 2525,
+    "aud": 18,
+    "wf_pol": 12,
+    "food_pol": 5,
+    "roles": 3,
+    "r5_intact": true,
+    "wf_sessions": 0
+  }
+🟢 food_business = 23,328 · 23328
+🟢 duplicate groups = 373 · 373
+🟢 city_catalogue = 1
+🟢 city slug = yogyakarta
+🟢 job_registry = 1
+🟢 job slug = restaurants-overpass · enabled=true
+🟢 rotation_eligible = 1
+🟢 work_item = 3
+🟢 active work_item = 0
+🟢 evidence_record = 5
+🟢 candidate_staging = 2,525
+🟢 persist_audit = 18
+🟢 workforce policies = 12
+🟢 food policies = 5
+🟢 workforce roles = 3
+🟢 R5 intact (persister body references v_wi_row.city_slug)
+🟢 zero workforce DB sessions
+🟢 seeded bbox EXACTLY matches C6 empirical · actual=sw{-7.944714,110.240493} ne{-7.592822,110.624452}
+🟢 Scheduled Task Disabled
+🟢 .env.local mtime unchanged (2026-09-03T07:41) · 2026-09-03T07:41:00.1988508+07:00
+🟢 zero workforce OS processes running pre-trial · 0
+🟢 NEX_WORKFORCE_URL absent from .env.local
+
+─── § 6-8 · SUPERVISOR CONSTRUCTION · autoStart=true (runtime opts · no source edit) ───
+  [supervisor] {"ts":"2026-09-04T16:13:19.703Z","level":"info","msg":"lifecycle.register","role":"REAPER","identifier":"reaper-1","script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\reaper.mjs"}
+  [supervisor] {"ts":"2026-09-04T16:13:19.703Z","level":"info","msg":"lifecycle.register","role":"ORCHESTRATOR","identifier":"orchestrator-1","script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\orchestrator.mjs"}
+  [supervisor] {"ts":"2026-09-04T16:13:19.703Z","level":"info","msg":"lifecycle.register","role":"AGENT","identifier":"agent-1","script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+🟢 supervisor.contract.MaxAgentCount === 1
+🟢 supervisor.lifecycle.isAutoStart() === true (this invocation only)
+🟢 supervisor registered REAPER spec
+🟢 supervisor registered ORCHESTRATOR spec
+🟢 supervisor registered AGENT spec
+🟢 second AGENT registration refused (MaxAgentCount=1)
+🟢 legacy path registration refused
+
+─── § 9 · STARTUP ORDER · REAPER → ORCHESTRATOR → AGENT ───
+  [supervisor] {"ts":"2026-09-04T16:13:19.721Z","level":"info","msg":"lifecycle.start","role":"REAPER","identifier":"reaper-1","pid":33668,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\reaper.mjs"}
+🟢 start REAPER · pid=33668
+  [supervisor] {"ts":"2026-09-04T16:13:19.741Z","level":"info","msg":"lifecycle.start","role":"ORCHESTRATOR","identifier":"orchestrator-1","pid":7684,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\orchestrator.mjs"}
+🟢 start ORCHESTRATOR · pid=7684
+  [supervisor] {"ts":"2026-09-04T16:13:19.762Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-1","pid":21980,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+🟢 start AGENT · pid=21980
+
+─── OBSERVATION LOOP · 15-min hard ceiling ───
+file:///C:/Users/Victus/trades/scripts/nex-migration/c11_supervised_trial.mjs:116
+  if (r.status >= 400) throw new Error(`mgmt ${r.status}: ${text}`);
+                             ^
+
+Error: mgmt 400: {"message":"Failed to run sql query: ERROR:  42703: column \"run_at\" does not exist\nLINE 24:     (SELECT count(*)::int FROM nex_workforce.reaper_run WHERE run_at >= '2026-09-04T16:13:10.865Z') AS reaper_ticks\n                                                                       ^\n"}
+    at mgmt (file:///C:/Users/Victus/trades/scripts/nex-migration/c11_supervised_trial.mjs:116:30)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///C:/Users/Victus/trades/scripts/nex-migration/c11_supervised_trial.mjs:287:15
+
+Node.js v24.18.0

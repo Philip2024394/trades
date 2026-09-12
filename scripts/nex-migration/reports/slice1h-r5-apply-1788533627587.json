@@ -1,0 +1,75 @@
+{
+  "started_at": "2026-09-04T14:53:37.467Z",
+  "phases": {
+    "sha": {
+      "expected": "b6d1a8d4f995bfa25377084c20a18d71c9f9950a13de3d22056fe55e73a17b2d",
+      "actual": "b6d1a8d4f995bfa25377084c20a18d71c9f9950a13de3d22056fe55e73a17b2d",
+      "bytes": 27686
+    },
+    "target": {
+      "db": "postgres",
+      "pg": "17.6",
+      "caller": "postgres",
+      "ref": "ijvqdvsvwtwxzcqmoqit"
+    },
+    "preflight": {
+      "cities": 0,
+      "jobs": 1,
+      "wi_total": 2,
+      "wi_active": 0,
+      "food_rows": 23046,
+      "food_dup_groups": 373,
+      "ev": 4,
+      "stg": 1284,
+      "aud": 5,
+      "wf_policies": 11,
+      "food_policies": 5,
+      "persister_secdef": true,
+      "persister_owner": "nex_workforce_persister_food_business",
+      "wf_sessions": 0,
+      "pre_has_hardcode": true,
+      "pre_persister_cc_select": false,
+      "persister_ext_usage": true
+    },
+    "rename": {
+      "from": "supabase/migrations/_slice1h_r5_multi_city_persister.sql",
+      "to": "supabase/migrations/20260904150000_nex_workforce_slice1h_r5_multi_city_persister.sql",
+      "sha": "b6d1a8d4f995bfa25377084c20a18d71c9f9950a13de3d22056fe55e73a17b2d"
+    },
+    "apply": {
+      "ok": true,
+      "ms": 1811,
+      "committed_at": "2026-09-04T14:53:45.128Z"
+    },
+    "postflight": {
+      "post_has_hardcode": false,
+      "post_has_city_slug": true,
+      "post_has_cc": true,
+      "post_has_ext": true,
+      "post_has_pub": false,
+      "post_secdef": true,
+      "post_owner": "nex_workforce_persister_food_business",
+      "post_config": "{\"search_path=pg_catalog, pg_temp\"}",
+      "post_pub_revoked": true,
+      "post_persister_cc_select": true,
+      "post_policy_exists": true,
+      "post_no_create": true,
+      "post_food": 23046,
+      "post_dup": 373,
+      "post_cities": 0,
+      "post_jobs": 1,
+      "post_wi_total": 2,
+      "post_wi_active": 0,
+      "post_ev": 4,
+      "post_stg": 1284,
+      "post_aud": 5,
+      "post_wf_pol": 12,
+      "post_food_pol": 5,
+      "post_sessions": 0
+    }
+  },
+  "finished_at": "2026-09-04T14:53:47.587Z",
+  "final_ok": true,
+  "pass": 48,
+  "fail": 0
+}

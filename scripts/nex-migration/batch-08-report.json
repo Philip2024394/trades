@@ -1,0 +1,41 @@
+{
+  "completed_at": "2026-09-02T23:07:44.185Z",
+  "elapsed_seconds": 3.5,
+  "pre": {
+    "db": "1533144211",
+    "db_pretty": "1462 MB",
+    "wal": "C/D5000000",
+    "fks": 0,
+    "rls": 92,
+    "kr": 3627,
+    "wj": 19167,
+    "wr": 19140
+  },
+  "post": {
+    "db": "1533316243",
+    "db_pretty": "1462 MB",
+    "wal": "C/D6001D08",
+    "rls": 92,
+    "kr": 3627,
+    "wj": 19167,
+    "wr": 19140
+  },
+  "roPre": {
+    "enabled": false,
+    "override_enabled": false,
+    "override_active_until": "1970-01-01 00:00:00+00"
+  },
+  "roPost": {
+    "enabled": false,
+    "override_enabled": false,
+    "override_active_until": "1970-01-01 00:00:00+00"
+  },
+  "db_delta_bytes": 172032,
+  "wal_delta_bytes": 16784648,
+  "fk_count_post": 125,
+  "constraint_names_missing": [],
+  "constraint_names_extra": [],
+  "definition_mismatches": 0,
+  "total_orphans_post": 0,
+  "orphan_checks_run": 125
+}

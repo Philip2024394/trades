@@ -1,0 +1,355 @@
+{
+  "batch": 1,
+  "path": "A · GRANT service_role + --role=service_role",
+  "pg_restore_exit": 1,
+  "elapsed_seconds": 6.63,
+  "pre": {
+    "db_bytes": 322784403,
+    "db_pretty": "308 MB",
+    "wal_lsn": "C/4D000000"
+  },
+  "post": {
+    "db_bytes": 322784403,
+    "db_pretty": "308 MB",
+    "wal_lsn": "C/4D001F90"
+  },
+  "db_delta_bytes": 0,
+  "wal_delta": "C/4D000000 → C/4D001F90",
+  "row_reconciliation": {
+    "matched": 0,
+    "mismatched": 62,
+    "expected_total": 722,
+    "actual_total": 0,
+    "failures": [
+      {
+        "table": "alert_dispatches",
+        "expected": 12,
+        "actual": 0
+      },
+      {
+        "table": "alert_rules",
+        "expected": 14,
+        "actual": 0
+      },
+      {
+        "table": "alerts",
+        "expected": 4,
+        "actual": 0
+      },
+      {
+        "table": "audit_log",
+        "expected": 9,
+        "actual": 0
+      },
+      {
+        "table": "benchmark_runs",
+        "expected": 1,
+        "actual": 0
+      },
+      {
+        "table": "bike_rental_listing",
+        "expected": 9,
+        "actual": 0
+      },
+      {
+        "table": "brain_user_saved_facts",
+        "expected": 1,
+        "actual": 0
+      },
+      {
+        "table": "call_record",
+        "expected": 1,
+        "actual": 0
+      },
+      {
+        "table": "campaign_segments",
+        "expected": 4,
+        "actual": 0
+      },
+      {
+        "table": "chat_message",
+        "expected": 70,
+        "actual": 0
+      },
+      {
+        "table": "chat_message_archive",
+        "expected": 20,
+        "actual": 0
+      },
+      {
+        "table": "chat_message_deletion",
+        "expected": 20,
+        "actual": 0
+      },
+      {
+        "table": "compliance_events",
+        "expected": 14,
+        "actual": 0
+      },
+      {
+        "table": "contact_segments",
+        "expected": 12,
+        "actual": 0
+      },
+      {
+        "table": "conv_intents",
+        "expected": 22,
+        "actual": 0
+      },
+      {
+        "table": "conversion_events",
+        "expected": 2,
+        "actual": 0
+      },
+      {
+        "table": "cost_budget",
+        "expected": 4,
+        "actual": 0
+      },
+      {
+        "table": "delivery_workers_archive_2026_08_22",
+        "expected": 1,
+        "actual": 0
+      },
+      {
+        "table": "email_templates",
+        "expected": 8,
+        "actual": 0
+      },
+      {
+        "table": "events",
+        "expected": 2,
+        "actual": 0
+      },
+      {
+        "table": "experiment_variants",
+        "expected": 2,
+        "actual": 0
+      },
+      {
+        "table": "experiments",
+        "expected": 1,
+        "actual": 0
+      },
+      {
+        "table": "food_business_promotion_decision",
+        "expected": 1,
+        "actual": 0
+      },
+      {
+        "table": "food_claim_code",
+        "expected": 1,
+        "actual": 0
+      },
+      {
+        "table": "food_commercial_event",
+        "expected": 6,
+        "actual": 0
+      },
+      {
+        "table": "food_hq_rule",
+        "expected": 10,
+        "actual": 0
+      },
+      {
+        "table": "food_outreach_attempt",
+        "expected": 5,
+        "actual": 0
+      },
+      {
+        "table": "food_outreach_suppression",
+        "expected": 1,
+        "actual": 0
+      },
+      {
+        "table": "food_outreach_template",
+        "expected": 4,
+        "actual": 0
+      },
+      {
+        "table": "geo_landmark",
+        "expected": 34,
+        "actual": 0
+      },
+      {
+        "table": "journey_inbound_events",
+        "expected": 3,
+        "actual": 0
+      },
+      {
+        "table": "journey_triggers",
+        "expected": 1,
+        "actual": 0
+      },
+      {
+        "table": "journeys",
+        "expected": 3,
+        "actual": 0
+      },
+      {
+        "table": "knowledge_inbox_stats",
+        "expected": 2,
+        "actual": 0
+      },
+      {
+        "table": "meaningful_area",
+        "expected": 6,
+        "actual": 0
+      },
+      {
+        "table": "mp_commerce_policy",
+        "expected": 1,
+        "actual": 0
+      },
+      {
+        "table": "mp_product",
+        "expected": 5,
+        "actual": 0
+      },
+      {
+        "table": "mp_product_image",
+        "expected": 5,
+        "actual": 0
+      },
+      {
+        "table": "mp_product_option",
+        "expected": 11,
+        "actual": 0
+      },
+      {
+        "table": "mp_product_option_value",
+        "expected": 24,
+        "actual": 0
+      },
+      {
+        "table": "mp_product_variant",
+        "expected": 15,
+        "actual": 0
+      },
+      {
+        "table": "object_blob_current",
+        "expected": 22,
+        "actual": 0
+      },
+      {
+        "table": "prediction_models",
+        "expected": 2,
+        "actual": 0
+      },
+      {
+        "table": "predictive_controls",
+        "expected": 1,
+        "actual": 0
+      },
+      {
+        "table": "provider_rate_config",
+        "expected": 7,
+        "actual": 0
+      },
+      {
+        "table": "provider_registry",
+        "expected": 5,
+        "actual": 0
+      },
+      {
+        "table": "provider_wallet",
+        "expected": 7,
+        "actual": 0
+      },
+      {
+        "table": "recovery_runs",
+        "expected": 4,
+        "actual": 0
+      },
+      {
+        "table": "rollup_campaigns",
+        "expected": 5,
+        "actual": 0
+      },
+      {
+        "table": "rollup_country",
+        "expected": 10,
+        "actual": 0
+      },
+      {
+        "table": "rollup_daily",
+        "expected": 2,
+        "actual": 0
+      },
+      {
+        "table": "rollup_monthly",
+        "expected": 1,
+        "actual": 0
+      },
+      {
+        "table": "rollup_provider",
+        "expected": 5,
+        "actual": 0
+      },
+      {
+        "table": "rollup_segment",
+        "expected": 1,
+        "actual": 0
+      },
+      {
+        "table": "safety_audit_config",
+        "expected": 1,
+        "actual": 0
+      },
+      {
+        "table": "social_admin_access_log",
+        "expected": 87,
+        "actual": 0
+      },
+      {
+        "table": "social_category_automation",
+        "expected": 66,
+        "actual": 0
+      },
+      {
+        "table": "social_controls",
+        "expected": 1,
+        "actual": 0
+      },
+      {
+        "table": "sparks_product",
+        "expected": 3,
+        "actual": 0
+      },
+      {
+        "table": "sparks_product_price",
+        "expected": 6,
+        "actual": 0
+      },
+      {
+        "table": "user_wallet",
+        "expected": 65,
+        "actual": 0
+      },
+      {
+        "table": "worker_heartbeats_archive_2026_08_22",
+        "expected": 50,
+        "actual": 0
+      }
+    ]
+  },
+  "public_baseline_post": {
+    "public_tables": 17,
+    "kr": 3627,
+    "wj": 19167,
+    "wr": 19140
+  },
+  "public_unchanged": true,
+  "rls_state_post": {
+    "rls_enabled": 92
+  },
+  "rls_unchanged": true,
+  "fks_post": 0,
+  "readonly_post": {
+    "enabled": false,
+    "override_enabled": false,
+    "override_active_until": "1970-01-01 00:00:00+00"
+  },
+  "service_role_granted_to_temp": true,
+  "note": "service_role membership must be REVOKED after full migration complete"
+}

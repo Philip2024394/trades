@@ -48,6 +48,41 @@ import {
   computeCycleOutcome,
 } from "../nex-worker/rejection-reasons.mjs";
 
+// ═══════════════════════════════════════════════════════════════════════
+// LEGACY WORKFORCE QUARANTINE · 2026-09-04 · fail-closed at boot
+// ═══════════════════════════════════════════════════════════════════════
+// This walker is the Phase 1B production execution unit spawned by the
+// legacy nex-acquisition-workforce supervisor. It writes directly to
+// nex.food_business / nex.accommodation_business / nex.worker_cycle_run /
+// nex.worker_heartbeat bypassing the workforce v2 persister boundary
+// (Slice 4.1 v2 extensions.digest) proven by Gate 5A #4 on 2026-09-04.
+//
+// Defense-in-depth: even if a caller bypasses the launcher + watchdog +
+// supervisor quarantines, execution is refused here BEFORE any pg.Pool()
+// call, before any Overpass request, before any nex.* write.
+//
+// Import-time note: this file's top-level `import` statements (osm-overpass,
+// business-website, persist helpers) resolve their modules but do NOT open
+// DB connections or make network requests. The guard below fires before
+// any of the walker's runtime logic executes.
+//
+// No env-var bypass. To re-enable: edit this guard block + Readiness Gate
+// + explicit Philip authorization. See run-production-launcher.mjs for
+// full quarantine context.
+// ═══════════════════════════════════════════════════════════════════════
+process.stderr.write("═══════════════════════════════════════════════════════════════════════\n");
+process.stderr.write(" NEX LEGACY WORKFORCE · QUARANTINED · _category-walker.mjs\n");
+process.stderr.write("═══════════════════════════════════════════════════════════════════════\n");
+process.stderr.write(" Legacy walker quarantined (2026-09-04). No DB connection, no Overpass\n");
+process.stderr.write(" request, no writes to nex.food_business / nex.accommodation_business /\n");
+process.stderr.write(" nex.worker_*. Exiting code 2. Superseded by scripts/nex-workforce-v2/.\n");
+process.stderr.write("═══════════════════════════════════════════════════════════════════════\n");
+process.exit(2);
+
+// ═══════════════════════════════════════════════════════════════════════
+// ORIGINAL WALKER LOGIC PRESERVED BELOW (UNREACHABLE)
+// ═══════════════════════════════════════════════════════════════════════
+
 // Phase 1.5 (Philip 2026-08-27) · category slug → (vertical category value, target table).
 // Hotels/guesthouses land in accommodation_business · restaurants/cafes in food_business.
 // Legacy category values MUST match the CHECK constraint on each vertical table.
@@ -375,7 +410,19 @@ async function main() {
   const workerType  = `category:${categorySlug}`;
   const workerConfig = `${categorySlug}:${city}:overpass`;
 
-  const pool = new pg.Pool({ connectionString: NEX_POSTGRES_URL, max: 3 });
+  const pool = new pg.Pool({
+    connectionString: NEX_POSTGRES_URL,
+    max: 3,
+    // DB timeout guardrail · Philip 2026-09-03 Fix #1 (approved after
+    // root-cause diagnosis of restaurants:Yogyakarta stall). Any single
+    // pg.query() that outlasts 30s fails at the driver (query_timeout)
+    // AND at Postgres (statement_timeout · belt-and-braces). Per-candidate
+    // try/catch (below) catches, increments errorCount, and advances to
+    // the next candidate — walker never hangs indefinitely on a single
+    // slow query. CYCLE_TIMEOUT_MS deliberately unchanged.
+    query_timeout: 30_000,
+    statement_timeout: 30_000,
+  });
 
   const strategies = strategyIndex != null ? [job.strategies[strategyIndex]] : job.strategies;
   const rejections = createRejectionCounter();
@@ -466,7 +513,11 @@ async function main() {
         continue;
       }
 
-      for (const candidate of inside) {
+      for (const [candidateIdx, candidate] of inside.entries()) {
+        // Progress log every 50 candidates · Philip 2026-09-03 Fix #1.
+        // Makes future stalls diagnosable to the exact candidate index
+        // within one bucket instead of "cycle hung somewhere".
+        if (candidateIdx % 50 === 0) console.log(`  [strategy ${idx}] persisting ${candidateIdx + 1}/${inside.length}`);
         try {
           let insertedRef = null;
           let existingRef = null;

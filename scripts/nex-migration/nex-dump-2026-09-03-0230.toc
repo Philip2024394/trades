@@ -1,0 +1,2047 @@
+;
+; Archive created at 2026-09-03 02:30:44
+;     dbname: nex_dev
+;     TOC Entries: 2036
+;     Compression: gzip
+;     Dump Version: 1.16-0
+;     Format: CUSTOM
+;     Integer: 4 bytes
+;     Offset: 8 bytes
+;     Dumped from database version: 17.10
+;     Dumped by pg_dump version: 17.10
+;
+;
+; Selected TOC Entries:
+;
+8; 2615 16972 SCHEMA - nex postgres
+8524; 0 0 COMMENT - SCHEMA nex postgres
+8525; 0 0 ACL - SCHEMA nex postgres
+3; 3079 16975 EXTENSION - pgcrypto 
+8526; 0 0 COMMENT - EXTENSION pgcrypto 
+2; 3079 19041 EXTENSION - uuid-ossp 
+8527; 0 0 COMMENT - EXTENSION "uuid-ossp" 
+1610; 1247 60204 TYPE nex bko_attribute_domain postgres
+1568; 1247 60193 TYPE nex bko_source_tier postgres
+1475; 1247 60679 TYPE nex discovery_rotation_state_kind postgres
+1523; 1247 60492 TYPE nex mp_product_condition postgres
+1520; 1247 60477 TYPE nex mp_seller_status postgres
+1790; 1247 51696 TYPE nex nex_food_claim_status postgres
+1793; 1247 52058 TYPE nex nex_food_enrichment_agent postgres
+1796; 1247 52078 TYPE nex nex_food_enrichment_status postgres
+1799; 1247 51914 TYPE nex nex_food_event_type postgres
+1802; 1247 51871 TYPE nex nex_food_field_trust postgres
+1805; 1247 51936 TYPE nex nex_food_next_action postgres
+1808; 1247 51808 TYPE nex nex_food_outreach_channel postgres
+1811; 1247 51818 TYPE nex nex_food_outreach_status postgres
+1814; 1247 51710 TYPE nex nex_food_owner_status postgres
+1817; 1247 52092 TYPE nex nex_food_source_type postgres
+1353; 1247 18354 TYPE nex social_admin_readable_resource postgres
+1463; 1247 60394 TYPE nex transport_contactability postgres
+1241; 1247 60296 TYPE nex transport_provider_kind postgres
+1244; 1247 60312 TYPE nex transport_recruitment_stage postgres
+1460; 1247 60372 TYPE nex transport_review_flag postgres
+1457; 1247 60346 TYPE nex transport_source_kind postgres
+1238; 1247 60262 TYPE nex transport_vehicle_ontology postgres
+474; 1255 18362 FUNCTION nex _admin_bypass_active() postgres
+473; 1255 18361 FUNCTION nex _current_social_tenant() postgres
+475; 1255 18703 FUNCTION nex _worker_active() postgres
+8528; 0 0 COMMENT nex FUNCTION _worker_active() postgres
+517; 1255 76398 FUNCTION nex chat_message_archive_reject_mutation() postgres
+520; 1255 76402 FUNCTION nex chat_message_grenade_delete(uuid, text, text, text, uuid) postgres
+515; 1255 76261 FUNCTION nex chat_message_upsert(uuid, text, text, text, text, timestamp with time zone) postgres
+323; 1259 32842 TABLE nex analytics_rollup_queue postgres
+8529; 0 0 COMMENT nex TABLE analytics_rollup_queue postgres
+8530; 0 0 ACL nex TABLE analytics_rollup_queue postgres
+507; 1255 32856 FUNCTION nex claim_analytics_rollup_batch(text, integer, integer) postgres
+308; 1259 19113 TABLE nex worker_jobs postgres
+8531; 0 0 ACL nex TABLE worker_jobs postgres
+504; 1255 19129 FUNCTION nex claim_next_job(text, text, integer) postgres
+8532; 0 0 ACL nex FUNCTION claim_next_job(p_worker_type text, p_worker_id text, p_lease_seconds integer) postgres
+317; 1259 19298 TABLE nex llm_retry_queue postgres
+8533; 0 0 COMMENT nex TABLE llm_retry_queue postgres
+8534; 0 0 ACL nex TABLE llm_retry_queue postgres
+506; 1255 19321 FUNCTION nex claim_next_llm_retry(text, integer) postgres
+8535; 0 0 ACL nex FUNCTION claim_next_llm_retry(p_worker_id text, p_lease_seconds integer) postgres
+488; 1255 33182 FUNCTION nex conv_ki_enforce_draft_tier() postgres
+487; 1255 33179 FUNCTION nex conv_touch_updated_at() postgres
+489; 1255 51747 FUNCTION nex food_business_touch_updated_at() postgres
+494; 1255 51868 FUNCTION nex food_outreach_template_touch_updated_at() postgres
+486; 1255 101161 FUNCTION nex media_object_touch_updated_at() postgres
+508; 1255 60671 FUNCTION nex qty_price_tiers_wellformed(jsonb) postgres
+514; 1255 76372 FUNCTION nex safety_audit_event_apply_default_retention() postgres
+516; 1255 76378 FUNCTION nex safety_audit_event_reject_mutation() postgres
+519; 1255 76401 FUNCTION nex safety_audit_purge_expired() postgres
+521; 1255 76404 FUNCTION nex safety_audit_record_failure(text, text, text, text, text, text, text, uuid, text, text) postgres
+518; 1255 76400 FUNCTION nex safety_audit_set_legal_hold(uuid, boolean, text, text) postgres
+505; 1255 18391 FUNCTION nex social_admin_read(text, uuid, nex.social_admin_readable_resource, text) postgres
+8536; 0 0 COMMENT nex FUNCTION social_admin_read(p_admin_user_id text, p_target_tenant_id uuid, p_resource nex.social_admin_readable_resource, p_reason text) postgres
+8537; 0 0 ACL nex FUNCTION social_admin_read(p_admin_user_id text, p_target_tenant_id uuid, p_resource nex.social_admin_readable_resource, p_reason text) postgres
+501; 1255 52596 FUNCTION nex trg_accommodation_business_touch_updated_at() postgres
+510; 1255 76197 FUNCTION nex wallet_commit_spend(text, uuid, text) postgres
+512; 1255 76199 FUNCTION nex wallet_grant_sparks(text, text, bigint, text, text, text) postgres
+513; 1255 76200 FUNCTION nex wallet_record_purchase(text, bigint, text, text) postgres
+511; 1255 76198 FUNCTION nex wallet_refund_spend(text, uuid, text) postgres
+509; 1255 76196 FUNCTION nex wallet_reserve_spend(text, text, bigint, text) postgres
+502; 1255 76193 FUNCTION nex wallet_transaction_reject_mutation() postgres
+366; 1259 52498 TABLE nex accommodation_business postgres
+8538; 0 0 COMMENT nex TABLE accommodation_business postgres
+8539; 0 0 COMMENT nex COLUMN accommodation_business.category postgres
+8540; 0 0 COMMENT nex COLUMN accommodation_business.categories postgres
+8541; 0 0 COMMENT nex COLUMN accommodation_business.amenities postgres
+8542; 0 0 COMMENT nex COLUMN accommodation_business.country postgres
+8543; 0 0 COMMENT nex COLUMN accommodation_business.location_confidence postgres
+8544; 0 0 COMMENT nex COLUMN accommodation_business.recovered_evidence postgres
+8545; 0 0 COMMENT nex COLUMN accommodation_business.worker_id postgres
+8546; 0 0 COMMENT nex COLUMN accommodation_business.cycle_run_id postgres
+8547; 0 0 ACL nex TABLE accommodation_business postgres
+368; 1259 52551 TABLE nex accommodation_business_field_provenance postgres
+8548; 0 0 COMMENT nex TABLE accommodation_business_field_provenance postgres
+8549; 0 0 ACL nex TABLE accommodation_business_field_provenance postgres
+367; 1259 52530 TABLE nex accommodation_business_source_snapshot postgres
+8550; 0 0 COMMENT nex TABLE accommodation_business_source_snapshot postgres
+8551; 0 0 ACL nex TABLE accommodation_business_source_snapshot postgres
+369; 1259 52572 TABLE nex accommodation_enrichment_evidence postgres
+8552; 0 0 COMMENT nex TABLE accommodation_enrichment_evidence postgres
+8553; 0 0 ACL nex TABLE accommodation_enrichment_evidence postgres
+270; 1259 17845 TABLE nex alert_dispatches postgres
+8554; 0 0 COMMENT nex TABLE alert_dispatches postgres
+8555; 0 0 ACL nex TABLE alert_dispatches postgres
+268; 1259 17807 TABLE nex alert_rules postgres
+8556; 0 0 COMMENT nex TABLE alert_rules postgres
+8557; 0 0 ACL nex TABLE alert_rules postgres
+269; 1259 17822 TABLE nex alerts postgres
+8558; 0 0 COMMENT nex TABLE alerts postgres
+8559; 0 0 ACL nex TABLE alerts postgres
+260; 1259 17654 TABLE nex analytics_events postgres
+8560; 0 0 COMMENT nex TABLE analytics_events postgres
+8561; 0 0 ACL nex TABLE analytics_events postgres
+237; 1259 17119 TABLE nex analytics_records postgres
+8562; 0 0 COMMENT nex TABLE analytics_records postgres
+8563; 0 0 ACL nex TABLE analytics_records postgres
+283; 1259 18149 TABLE nex attributions postgres
+8564; 0 0 COMMENT nex TABLE attributions postgres
+8565; 0 0 ACL nex TABLE attributions postgres
+315; 1259 19258 TABLE nex audit_log postgres
+8566; 0 0 ACL nex TABLE audit_log postgres
+238; 1259 17134 TABLE nex automation_rules postgres
+8567; 0 0 COMMENT nex TABLE automation_rules postgres
+8568; 0 0 ACL nex TABLE automation_rules postgres
+239; 1259 17153 TABLE nex automation_runs postgres
+8569; 0 0 COMMENT nex TABLE automation_runs postgres
+8570; 0 0 ACL nex TABLE automation_runs postgres
+271; 1259 17867 TABLE nex benchmark_runs postgres
+8571; 0 0 COMMENT nex TABLE benchmark_runs postgres
+8572; 0 0 ACL nex TABLE benchmark_runs postgres
+427; 1259 108907 TABLE nex bike_model postgres
+8573; 0 0 ACL nex TABLE bike_model postgres
+429; 1259 108947 TABLE nex bike_rental_listing postgres
+8574; 0 0 ACL nex TABLE bike_rental_listing postgres
+416; 1259 102461 TABLE nex brain_accommodation_prices postgres
+8575; 0 0 ACL nex TABLE brain_accommodation_prices postgres
+415; 1259 102447 TABLE nex brain_activities postgres
+8576; 0 0 ACL nex TABLE brain_activities postgres
+417; 1259 102476 TABLE nex brain_attractions postgres
+8577; 0 0 ACL nex TABLE brain_attractions postgres
+425; 1259 102855 TABLE nex brain_did_you_know_indonesia postgres
+8578; 0 0 ACL nex TABLE brain_did_you_know_indonesia postgres
+421; 1259 102650 TABLE nex brain_english_grammar postgres
+8579; 0 0 COMMENT nex TABLE brain_english_grammar postgres
+8580; 0 0 ACL nex TABLE brain_english_grammar postgres
+422; 1259 102669 TABLE nex brain_english_lesson postgres
+8581; 0 0 COMMENT nex TABLE brain_english_lesson postgres
+8582; 0 0 ACL nex TABLE brain_english_lesson postgres
+423; 1259 102688 TABLE nex brain_english_practice postgres
+8583; 0 0 COMMENT nex TABLE brain_english_practice postgres
+8584; 0 0 ACL nex TABLE brain_english_practice postgres
+424; 1259 102713 TABLE nex brain_english_progress postgres
+8585; 0 0 COMMENT nex TABLE brain_english_progress postgres
+8586; 0 0 ACL nex TABLE brain_english_progress postgres
+420; 1259 102628 TABLE nex brain_english_vocabulary postgres
+8587; 0 0 COMMENT nex TABLE brain_english_vocabulary postgres
+8588; 0 0 ACL nex TABLE brain_english_vocabulary postgres
+418; 1259 102490 TABLE nex brain_local_guide postgres
+8589; 0 0 ACL nex TABLE brain_local_guide postgres
+412; 1259 102396 TABLE nex brain_location postgres
+8590; 0 0 ACL nex TABLE brain_location postgres
+234; 1259 17073 TABLE nex brain_memories postgres
+8591; 0 0 COMMENT nex TABLE brain_memories postgres
+8592; 0 0 ACL nex TABLE brain_memories postgres
+414; 1259 102429 TABLE nex brain_seasons postgres
+8593; 0 0 ACL nex TABLE brain_seasons postgres
+413; 1259 102413 TABLE nex brain_transport postgres
+8594; 0 0 ACL nex TABLE brain_transport postgres
+419; 1259 102503 TABLE nex brain_traveler_rating postgres
+8595; 0 0 ACL nex TABLE brain_traveler_rating postgres
+426; 1259 102879 TABLE nex brain_user_saved_facts postgres
+8596; 0 0 ACL nex TABLE brain_user_saved_facts postgres
+409; 1259 100990 TABLE nex business_calling_config postgres
+8597; 0 0 COMMENT nex TABLE business_calling_config postgres
+8598; 0 0 ACL nex TABLE business_calling_config postgres
+370; 1259 59738 TABLE nex business_image postgres
+8599; 0 0 COMMENT nex TABLE business_image postgres
+8600; 0 0 COMMENT nex COLUMN business_image.business_type postgres
+8601; 0 0 COMMENT nex COLUMN business_image.business_country postgres
+8602; 0 0 COMMENT nex COLUMN business_image.business_ref postgres
+8603; 0 0 COMMENT nex COLUMN business_image.image_type postgres
+8604; 0 0 COMMENT nex COLUMN business_image.confidence postgres
+8605; 0 0 COMMENT nex COLUMN business_image.cycle_run_id postgres
+8606; 0 0 COMMENT nex COLUMN business_image.fallback_category postgres
+8607; 0 0 COMMENT nex COLUMN business_image.owner_approved postgres
+8608; 0 0 COMMENT nex COLUMN business_image.approved postgres
+8609; 0 0 ACL nex TABLE business_image postgres
+377; 1259 60229 TABLE nex business_knowledge postgres
+8610; 0 0 COMMENT nex TABLE business_knowledge postgres
+8611; 0 0 COMMENT nex COLUMN business_knowledge.source_tier postgres
+8612; 0 0 COMMENT nex COLUMN business_knowledge.interpretation postgres
+8613; 0 0 COMMENT nex COLUMN business_knowledge.unknown_note postgres
+8614; 0 0 ACL nex TABLE business_knowledge postgres
+407; 1259 93034 TABLE nex call_record postgres
+8615; 0 0 COMMENT nex TABLE call_record postgres
+8616; 0 0 COMMENT nex COLUMN call_record.caller_user_id postgres
+8617; 0 0 COMMENT nex COLUMN call_record.callee_user_id postgres
+8618; 0 0 ACL nex TABLE call_record postgres
+259; 1259 17503 TABLE nex campaign_recipients postgres
+8619; 0 0 COMMENT nex TABLE campaign_recipients postgres
+8620; 0 0 ACL nex TABLE campaign_recipients postgres
+255; 1259 17404 TABLE nex campaign_segments postgres
+8621; 0 0 COMMENT nex TABLE campaign_segments postgres
+8622; 0 0 ACL nex TABLE campaign_segments postgres
+254; 1259 17386 TABLE nex campaigns postgres
+8623; 0 0 COMMENT nex TABLE campaigns postgres
+8624; 0 0 COMMENT nex COLUMN campaigns.status postgres
+8625; 0 0 COMMENT nex COLUMN campaigns.body_blocks postgres
+8626; 0 0 COMMENT nex COLUMN campaigns.template_id postgres
+8627; 0 0 ACL nex TABLE campaigns postgres
+372; 1259 59904 TABLE nex category_candidate postgres
+8628; 0 0 ACL nex TABLE category_candidate postgres
+374; 1259 60015 TABLE nex category_candidate_calibration_annotation postgres
+8629; 0 0 ACL nex TABLE category_candidate_calibration_annotation postgres
+373; 1259 59993 TABLE nex category_candidate_score postgres
+8630; 0 0 ACL nex TABLE category_candidate_score postgres
+406; 1259 92959 TABLE nex category_image_library postgres
+8631; 0 0 COMMENT nex TABLE category_image_library postgres
+8632; 0 0 ACL nex TABLE category_image_library postgres
+371; 1259 59882 TABLE nex category_registry postgres
+8633; 0 0 ACL nex TABLE category_registry postgres
+397; 1259 76231 TABLE nex chat_message postgres
+8634; 0 0 ACL nex TABLE chat_message postgres
+401; 1259 76381 TABLE nex chat_message_archive postgres
+8635; 0 0 ACL nex TABLE chat_message_archive postgres
+398; 1259 76243 TABLE nex chat_message_deletion postgres
+8636; 0 0 ACL nex TABLE chat_message_deletion postgres
+267; 1259 17792 TABLE nex compliance_events postgres
+8637; 0 0 COMMENT nex TABLE compliance_events postgres
+8638; 0 0 ACL nex TABLE compliance_events postgres
+311; 1259 19164 TABLE nex confidence_scores postgres
+8639; 0 0 ACL nex TABLE confidence_scores postgres
+251; 1259 17332 TABLE nex contact_duplicate_suggestions postgres
+8640; 0 0 COMMENT nex TABLE contact_duplicate_suggestions postgres
+8641; 0 0 ACL nex TABLE contact_duplicate_suggestions postgres
+250; 1259 17320 TABLE nex contact_merges postgres
+8642; 0 0 COMMENT nex TABLE contact_merges postgres
+8643; 0 0 ACL nex TABLE contact_merges postgres
+253; 1259 17371 TABLE nex contact_segments postgres
+8644; 0 0 COMMENT nex TABLE contact_segments postgres
+8645; 0 0 ACL nex TABLE contact_segments postgres
+249; 1259 17307 TABLE nex contact_sources postgres
+8646; 0 0 COMMENT nex TABLE contact_sources postgres
+8647; 0 0 ACL nex TABLE contact_sources postgres
+235; 1259 17086 TABLE nex contacts postgres
+8648; 0 0 COMMENT nex TABLE contacts postgres
+8649; 0 0 COMMENT nex COLUMN contacts.compliance_state postgres
+8650; 0 0 COMMENT nex COLUMN contacts.compliance_reason postgres
+8651; 0 0 COMMENT nex COLUMN contacts.compliance_source postgres
+8652; 0 0 ACL nex TABLE contacts postgres
+312; 1259 19185 TABLE nex contradictions postgres
+8653; 0 0 ACL nex TABLE contradictions postgres
+327; 1259 33080 TABLE nex conv_edges postgres
+8654; 0 0 COMMENT nex TABLE conv_edges postgres
+8655; 0 0 COMMENT nex COLUMN conv_edges.weight postgres
+8656; 0 0 ACL nex TABLE conv_edges postgres
+325; 1259 33041 TABLE nex conv_entities postgres
+8657; 0 0 COMMENT nex TABLE conv_entities postgres
+8658; 0 0 ACL nex TABLE conv_entities postgres
+331; 1259 33160 TABLE nex conv_feedback postgres
+8659; 0 0 COMMENT nex TABLE conv_feedback postgres
+8660; 0 0 ACL nex TABLE conv_feedback postgres
+324; 1259 33031 TABLE nex conv_intents postgres
+8661; 0 0 COMMENT nex TABLE conv_intents postgres
+8662; 0 0 COMMENT nex COLUMN conv_intents.class postgres
+8663; 0 0 ACL nex TABLE conv_intents postgres
+326; 1259 33053 TABLE nex conv_knowledge_items postgres
+8664; 0 0 COMMENT nex TABLE conv_knowledge_items postgres
+8665; 0 0 COMMENT nex COLUMN conv_knowledge_items.brain postgres
+8666; 0 0 COMMENT nex COLUMN conv_knowledge_items.draft_only postgres
+8667; 0 0 ACL nex TABLE conv_knowledge_items postgres
+362; 1259 52370 TABLE nex conv_learning_candidate postgres
+8668; 0 0 COMMENT nex TABLE conv_learning_candidate postgres
+8669; 0 0 COMMENT nex COLUMN conv_learning_candidate.cycle_run_id postgres
+8670; 0 0 COMMENT nex COLUMN conv_learning_candidate.language postgres
+8671; 0 0 COMMENT nex COLUMN conv_learning_candidate.status postgres
+8672; 0 0 ACL nex TABLE conv_learning_candidate postgres
+330; 1259 33148 TABLE nex conv_outcomes postgres
+8673; 0 0 COMMENT nex TABLE conv_outcomes postgres
+8674; 0 0 ACL nex TABLE conv_outcomes postgres
+328; 1259 33111 TABLE nex conv_states postgres
+8675; 0 0 COMMENT nex TABLE conv_states postgres
+8676; 0 0 ACL nex TABLE conv_states postgres
+329; 1259 33123 TABLE nex conv_turns postgres
+8677; 0 0 COMMENT nex TABLE conv_turns postgres
+8678; 0 0 COMMENT nex COLUMN conv_turns.cle_processed_at postgres
+8679; 0 0 COMMENT nex COLUMN conv_turns.cle_cycle_run_id postgres
+8680; 0 0 ACL nex TABLE conv_turns postgres
+282; 1259 18128 TABLE nex conversion_events postgres
+8681; 0 0 COMMENT nex TABLE conversion_events postgres
+8682; 0 0 ACL nex TABLE conversion_events postgres
+403; 1259 92749 TABLE nex cost_budget postgres
+8683; 0 0 COMMENT nex TABLE cost_budget postgres
+8684; 0 0 COMMENT nex COLUMN cost_budget.daily_cap_usd postgres
+8685; 0 0 COMMENT nex COLUMN cost_budget.spent_today_usd postgres
+8686; 0 0 COMMENT nex COLUMN cost_budget.circuit_open_at postgres
+8687; 0 0 ACL nex TABLE cost_budget postgres
+258; 1259 17474 TABLE nex delivery_job_attempts postgres
+8688; 0 0 COMMENT nex TABLE delivery_job_attempts postgres
+8689; 0 0 ACL nex TABLE delivery_job_attempts postgres
+257; 1259 17448 TABLE nex delivery_jobs postgres
+8690; 0 0 COMMENT nex TABLE delivery_jobs postgres
+8691; 0 0 ACL nex TABLE delivery_jobs postgres
+361; 1259 52354 TABLE nex delivery_workers_archive_2026_08_22 postgres
+8692; 0 0 COMMENT nex TABLE delivery_workers_archive_2026_08_22 postgres
+8693; 0 0 ACL nex TABLE delivery_workers_archive_2026_08_22 postgres
+313; 1259 19208 TABLE nex deprecations postgres
+8694; 0 0 ACL nex TABLE deprecations postgres
+390; 1259 60713 TABLE nex discovery_orchestrator_pick postgres
+8695; 0 0 ACL nex TABLE discovery_orchestrator_pick postgres
+389; 1259 60687 TABLE nex discovery_rotation_state postgres
+8696; 0 0 COMMENT nex TABLE discovery_rotation_state postgres
+8697; 0 0 COMMENT nex COLUMN discovery_rotation_state.consecutive_zero_new_cycles postgres
+8698; 0 0 COMMENT nex COLUMN discovery_rotation_state.reactivation_reason postgres
+8699; 0 0 COMMENT nex COLUMN discovery_rotation_state.cooldown_until postgres
+8700; 0 0 COMMENT nex COLUMN discovery_rotation_state.reactivation_count postgres
+8701; 0 0 COMMENT nex COLUMN discovery_rotation_state.consecutive_unproductive_reactivations postgres
+8702; 0 0 ACL nex TABLE discovery_rotation_state postgres
+428; 1259 108922 TABLE nex provider_profile postgres
+8703; 0 0 COMMENT nex TABLE provider_profile postgres
+8704; 0 0 COMMENT nex COLUMN provider_profile.price_per_service_idr postgres
+8705; 0 0 COMMENT nex COLUMN provider_profile.is_available postgres
+8706; 0 0 ACL nex TABLE provider_profile postgres
+434; 1259 109082 VIEW nex driver_profile postgres
+8707; 0 0 COMMENT nex VIEW driver_profile postgres
+8708; 0 0 ACL nex TABLE driver_profile postgres
+256; 1259 17423 TABLE nex email_templates postgres
+8709; 0 0 COMMENT nex TABLE email_templates postgres
+8710; 0 0 ACL nex TABLE email_templates postgres
+230; 1259 17012 TABLE nex events postgres
+8711; 0 0 COMMENT nex TABLE events postgres
+8712; 0 0 ACL nex TABLE events postgres
+281; 1259 18090 TABLE nex experiment_assignments postgres
+8713; 0 0 COMMENT nex TABLE experiment_assignments postgres
+8714; 0 0 ACL nex TABLE experiment_assignments postgres
+280; 1259 18070 TABLE nex experiment_variants postgres
+8715; 0 0 COMMENT nex TABLE experiment_variants postgres
+8716; 0 0 ACL nex TABLE experiment_variants postgres
+279; 1259 18049 TABLE nex experiments postgres
+8717; 0 0 COMMENT nex TABLE experiments postgres
+8718; 0 0 ACL nex TABLE experiments postgres
+332; 1259 51719 TABLE nex food_business postgres
+8719; 0 0 COMMENT nex TABLE food_business postgres
+8720; 0 0 COMMENT nex COLUMN food_business.internal_id postgres
+8721; 0 0 COMMENT nex COLUMN food_business.public_listing_ref postgres
+8722; 0 0 COMMENT nex COLUMN food_business.whatsapp_number postgres
+8723; 0 0 COMMENT nex COLUMN food_business.dedupe_hash postgres
+8724; 0 0 COMMENT nex COLUMN food_business.claim_status postgres
+8725; 0 0 COMMENT nex COLUMN food_business.owner_status postgres
+8726; 0 0 COMMENT nex COLUMN food_business.hero_image_url postgres
+8727; 0 0 COMMENT nex COLUMN food_business.source_updated_at postgres
+8728; 0 0 COMMENT nex COLUMN food_business.last_verified_at postgres
+8729; 0 0 COMMENT nex COLUMN food_business.verification_source postgres
+8730; 0 0 COMMENT nex COLUMN food_business.categories postgres
+8731; 0 0 COMMENT nex COLUMN food_business.country postgres
+8732; 0 0 COMMENT nex COLUMN food_business.location_confidence postgres
+8733; 0 0 COMMENT nex COLUMN food_business.recovered_evidence postgres
+8734; 0 0 COMMENT nex COLUMN food_business.worker_id postgres
+8735; 0 0 COMMENT nex COLUMN food_business.cycle_run_id postgres
+8736; 0 0 ACL nex TABLE food_business postgres
+344; 1259 52107 TABLE nex food_enrichment_evidence postgres
+8737; 0 0 COMMENT nex TABLE food_enrichment_evidence postgres
+8738; 0 0 ACL nex TABLE food_enrichment_evidence postgres
+341; 1259 51979 TABLE nex food_hq_rule postgres
+8739; 0 0 COMMENT nex TABLE food_hq_rule postgres
+8740; 0 0 ACL nex TABLE food_hq_rule postgres
+346; 1259 52137 VIEW nex food_business_completeness postgres
+8741; 0 0 COMMENT nex VIEW food_business_completeness postgres
+8742; 0 0 ACL nex TABLE food_business_completeness postgres
+337; 1259 51890 TABLE nex food_business_field_provenance postgres
+8743; 0 0 COMMENT nex TABLE food_business_field_provenance postgres
+8744; 0 0 COMMENT nex COLUMN food_business_field_provenance.cycle_run_id postgres
+8745; 0 0 ACL nex TABLE food_business_field_provenance postgres
+353; 1259 52264 VIEW nex food_business_freshness postgres
+8746; 0 0 COMMENT nex VIEW food_business_freshness postgres
+8747; 0 0 ACL nex TABLE food_business_freshness postgres
+355; 1259 52274 VIEW nex food_business_freshness_summary postgres
+8748; 0 0 ACL nex TABLE food_business_freshness_summary postgres
+342; 1259 51987 TABLE nex food_business_next_action postgres
+8749; 0 0 ACL nex TABLE food_business_next_action postgres
+363; 1259 52411 TABLE nex food_business_promotion postgres
+8750; 0 0 COMMENT nex TABLE food_business_promotion postgres
+8751; 0 0 COMMENT nex COLUMN food_business_promotion.current_state postgres
+8752; 0 0 COMMENT nex COLUMN food_business_promotion.quality_score postgres
+8753; 0 0 COMMENT nex COLUMN food_business_promotion.score_breakdown postgres
+8754; 0 0 COMMENT nex COLUMN food_business_promotion.cycle_run_id postgres
+8755; 0 0 ACL nex TABLE food_business_promotion postgres
+364; 1259 52437 TABLE nex food_business_promotion_audit postgres
+8756; 0 0 COMMENT nex TABLE food_business_promotion_audit postgres
+8757; 0 0 ACL nex TABLE food_business_promotion_audit postgres
+365; 1259 52462 TABLE nex food_business_promotion_decision postgres
+8758; 0 0 COMMENT nex TABLE food_business_promotion_decision postgres
+8759; 0 0 COMMENT nex COLUMN food_business_promotion_decision.decision postgres
+8760; 0 0 COMMENT nex COLUMN food_business_promotion_decision.cycle_run_id postgres
+8761; 0 0 COMMENT nex COLUMN food_business_promotion_decision.previous_field_value postgres
+8762; 0 0 ACL nex TABLE food_business_promotion_decision postgres
+336; 1259 51879 TABLE nex food_business_source_snapshot postgres
+8763; 0 0 COMMENT nex TABLE food_business_source_snapshot postgres
+8764; 0 0 ACL nex TABLE food_business_source_snapshot postgres
+339; 1259 51955 TABLE nex food_commercial_event postgres
+8765; 0 0 COMMENT nex TABLE food_commercial_event postgres
+8766; 0 0 ACL nex TABLE food_commercial_event postgres
+340; 1259 51966 MATERIALIZED VIEW nex food_business_value postgres
+8767; 0 0 COMMENT nex MATERIALIZED VIEW food_business_value postgres
+8768; 0 0 ACL nex TABLE food_business_value postgres
+338; 1259 51899 TABLE nex food_claim_code postgres
+8769; 0 0 COMMENT nex TABLE food_claim_code postgres
+8770; 0 0 COMMENT nex COLUMN food_claim_code.pending_owner_data postgres
+8771; 0 0 COMMENT nex COLUMN food_claim_code.entry_path postgres
+8772; 0 0 ACL nex TABLE food_claim_code postgres
+345; 1259 52121 TABLE nex food_enrichment_job postgres
+8773; 0 0 COMMENT nex TABLE food_enrichment_job postgres
+8774; 0 0 ACL nex TABLE food_enrichment_job postgres
+335; 1259 51856 TABLE nex food_outreach_suppression postgres
+8775; 0 0 COMMENT nex TABLE food_outreach_suppression postgres
+8776; 0 0 ACL nex TABLE food_outreach_suppression postgres
+347; 1259 52172 VIEW nex food_commercial_universe postgres
+8777; 0 0 COMMENT nex VIEW food_commercial_universe postgres
+8778; 0 0 ACL nex TABLE food_commercial_universe postgres
+343; 1259 51997 TABLE nex food_next_action_audit postgres
+8779; 0 0 COMMENT nex TABLE food_next_action_audit postgres
+8780; 0 0 ACL nex TABLE food_next_action_audit postgres
+334; 1259 51845 TABLE nex food_outreach_attempt postgres
+8781; 0 0 COMMENT nex TABLE food_outreach_attempt postgres
+8782; 0 0 ACL nex TABLE food_outreach_attempt postgres
+333; 1259 51833 TABLE nex food_outreach_template postgres
+8783; 0 0 COMMENT nex TABLE food_outreach_template postgres
+8784; 0 0 ACL nex TABLE food_outreach_template postgres
+349; 1259 52183 VIEW nex food_pending_self_service_claims postgres
+8785; 0 0 COMMENT nex VIEW food_pending_self_service_claims postgres
+8786; 0 0 ACL nex TABLE food_pending_self_service_claims postgres
+354; 1259 52269 VIEW nex food_reverification_candidates postgres
+8787; 0 0 COMMENT nex VIEW food_reverification_candidates postgres
+8788; 0 0 ACL nex TABLE food_reverification_candidates postgres
+348; 1259 52177 VIEW nex food_universe_ratio postgres
+8789; 0 0 ACL nex TABLE food_universe_ratio postgres
+376; 1259 60121 TABLE nex geo_landmark postgres
+8790; 0 0 COMMENT nex TABLE geo_landmark postgres
+8791; 0 0 ACL nex TABLE geo_landmark postgres
+307; 1259 19092 TABLE nex graph_edges postgres
+8792; 0 0 ACL nex TABLE graph_edges postgres
+408; 1259 100799 TABLE nex identity_merge_log postgres
+8793; 0 0 COMMENT nex TABLE identity_merge_log postgres
+8794; 0 0 ACL nex TABLE identity_merge_log postgres
+252; 1259 17355 TABLE nex import_mappings postgres
+8795; 0 0 COMMENT nex TABLE import_mappings postgres
+8796; 0 0 ACL nex TABLE import_mappings postgres
+232; 1259 17043 TABLE nex jobs postgres
+8797; 0 0 COMMENT nex TABLE jobs postgres
+8798; 0 0 ACL nex TABLE jobs postgres
+278; 1259 18013 TABLE nex journey_campaign_executions postgres
+8799; 0 0 COMMENT nex TABLE journey_campaign_executions postgres
+8800; 0 0 COMMENT nex COLUMN journey_campaign_executions.status postgres
+8801; 0 0 ACL nex TABLE journey_campaign_executions postgres
+275; 1259 17945 TABLE nex journey_events postgres
+8802; 0 0 COMMENT nex TABLE journey_events postgres
+8803; 0 0 ACL nex TABLE journey_events postgres
+277; 1259 17992 TABLE nex journey_inbound_events postgres
+8804; 0 0 COMMENT nex TABLE journey_inbound_events postgres
+8805; 0 0 ACL nex TABLE journey_inbound_events postgres
+274; 1259 17922 TABLE nex journey_states postgres
+8806; 0 0 COMMENT nex TABLE journey_states postgres
+8807; 0 0 ACL nex TABLE journey_states postgres
+276; 1259 17965 TABLE nex journey_triggers postgres
+8808; 0 0 COMMENT nex TABLE journey_triggers postgres
+8809; 0 0 ACL nex TABLE journey_triggers postgres
+273; 1259 17901 TABLE nex journeys postgres
+8810; 0 0 COMMENT nex TABLE journeys postgres
+8811; 0 0 ACL nex TABLE journeys postgres
+320; 1259 19491 TABLE nex knowledge_dump_jobs postgres
+8812; 0 0 COMMENT nex TABLE knowledge_dump_jobs postgres
+8813; 0 0 ACL nex TABLE knowledge_dump_jobs postgres
+314; 1259 19228 TABLE nex knowledge_feedback postgres
+8814; 0 0 ACL nex TABLE knowledge_feedback postgres
+318; 1259 19466 TABLE nex knowledge_inbox postgres
+8815; 0 0 COMMENT nex TABLE knowledge_inbox postgres
+8816; 0 0 COMMENT nex COLUMN knowledge_inbox.object_bucket postgres
+8817; 0 0 COMMENT nex COLUMN knowledge_inbox.object_key postgres
+8818; 0 0 COMMENT nex COLUMN knowledge_inbox.description postgres
+8819; 0 0 COMMENT nex COLUMN knowledge_inbox.extraction_result postgres
+8820; 0 0 COMMENT nex COLUMN knowledge_inbox.truth_class postgres
+8821; 0 0 ACL nex TABLE knowledge_inbox postgres
+319; 1259 19481 TABLE nex knowledge_inbox_stats postgres
+8822; 0 0 COMMENT nex TABLE knowledge_inbox_stats postgres
+8823; 0 0 ACL nex TABLE knowledge_inbox_stats postgres
+305; 1259 19052 TABLE nex knowledge_records postgres
+8824; 0 0 ACL nex TABLE knowledge_records postgres
+241; 1259 17182 TABLE nex kpe_chunks postgres
+8825; 0 0 COMMENT nex TABLE kpe_chunks postgres
+8826; 0 0 ACL nex TABLE kpe_chunks postgres
+243; 1259 17211 TABLE nex kpe_decisions postgres
+8827; 0 0 COMMENT nex TABLE kpe_decisions postgres
+8828; 0 0 ACL nex TABLE kpe_decisions postgres
+240; 1259 17167 TABLE nex kpe_documents postgres
+8829; 0 0 COMMENT nex TABLE kpe_documents postgres
+8830; 0 0 ACL nex TABLE kpe_documents postgres
+244; 1259 17224 TABLE nex kpe_duplicates postgres
+8831; 0 0 COMMENT nex TABLE kpe_duplicates postgres
+8832; 0 0 ACL nex TABLE kpe_duplicates postgres
+245; 1259 17235 TABLE nex kpe_edges postgres
+8833; 0 0 COMMENT nex TABLE kpe_edges postgres
+8834; 0 0 ACL nex TABLE kpe_edges postgres
+247; 1259 17260 TABLE nex kpe_human_reviews postgres
+8835; 0 0 COMMENT nex TABLE kpe_human_reviews postgres
+8836; 0 0 ACL nex TABLE kpe_human_reviews postgres
+242; 1259 17194 TABLE nex kpe_metadata postgres
+8837; 0 0 COMMENT nex TABLE kpe_metadata postgres
+8838; 0 0 ACL nex TABLE kpe_metadata postgres
+246; 1259 17248 TABLE nex kpe_processing_runs postgres
+8839; 0 0 COMMENT nex TABLE kpe_processing_runs postgres
+8840; 0 0 ACL nex TABLE kpe_processing_runs postgres
+375; 1259 60105 TABLE nex meaningful_area postgres
+8841; 0 0 COMMENT nex TABLE meaningful_area postgres
+8842; 0 0 ACL nex TABLE meaningful_area postgres
+410; 1259 101128 TABLE nex media_object postgres
+8843; 0 0 COMMENT nex TABLE media_object postgres
+8844; 0 0 COMMENT nex COLUMN media_object.owner_id postgres
+8845; 0 0 COMMENT nex COLUMN media_object.state postgres
+8846; 0 0 COMMENT nex COLUMN media_object.hard_delete_after postgres
+8847; 0 0 ACL nex TABLE media_object postgres
+382; 1259 60514 TABLE nex mp_category postgres
+8848; 0 0 COMMENT nex COLUMN mp_category.level postgres
+8849; 0 0 COMMENT nex COLUMN mp_category.path postgres
+8850; 0 0 ACL nex TABLE mp_category postgres
+388; 1259 60629 TABLE nex mp_commerce_policy postgres
+8851; 0 0 ACL nex TABLE mp_commerce_policy postgres
+383; 1259 60530 TABLE nex mp_product postgres
+8852; 0 0 COMMENT nex COLUMN mp_product.qty_price_tiers postgres
+8853; 0 0 ACL nex TABLE mp_product postgres
+384; 1259 60559 TABLE nex mp_product_image postgres
+8854; 0 0 ACL nex TABLE mp_product_image postgres
+385; 1259 60574 TABLE nex mp_product_option postgres
+8855; 0 0 ACL nex TABLE mp_product_option postgres
+386; 1259 60590 TABLE nex mp_product_option_value postgres
+8856; 0 0 ACL nex TABLE mp_product_option_value postgres
+387; 1259 60607 TABLE nex mp_product_variant postgres
+8857; 0 0 ACL nex TABLE mp_product_variant postgres
+381; 1259 60499 TABLE nex mp_seller postgres
+8858; 0 0 COMMENT nex COLUMN mp_seller.worker_id postgres
+8859; 0 0 COMMENT nex COLUMN mp_seller.cycle_run_id postgres
+8860; 0 0 ACL nex TABLE mp_seller postgres
+309; 1259 19130 TABLE nex worker_results postgres
+8861; 0 0 ACL nex TABLE worker_results postgres
+316; 1259 19269 VIEW nex nex_brain_status postgres
+8862; 0 0 ACL nex TABLE nex_brain_status postgres
+322; 1259 19601 TABLE nex object_blob_current postgres
+8863; 0 0 COMMENT nex TABLE object_blob_current postgres
+8864; 0 0 ACL nex TABLE object_blob_current postgres
+321; 1259 19589 TABLE nex object_blobs postgres
+8865; 0 0 COMMENT nex TABLE object_blobs postgres
+8866; 0 0 ACL nex TABLE object_blobs postgres
+248; 1259 17280 TABLE nex object_manifest postgres
+8867; 0 0 COMMENT nex TABLE object_manifest postgres
+8868; 0 0 ACL nex TABLE object_manifest postgres
+284; 1259 18174 TABLE nex prediction_models postgres
+8869; 0 0 COMMENT nex TABLE prediction_models postgres
+8870; 0 0 ACL nex TABLE prediction_models postgres
+285; 1259 18194 TABLE nex predictions postgres
+8871; 0 0 COMMENT nex TABLE predictions postgres
+8872; 0 0 ACL nex TABLE predictions postgres
+286; 1259 18218 TABLE nex predictive_controls postgres
+8873; 0 0 COMMENT nex TABLE predictive_controls postgres
+8874; 0 0 ACL nex TABLE predictive_controls postgres
+391; 1259 60724 TABLE nex provider_rate_config postgres
+8875; 0 0 COMMENT nex TABLE provider_rate_config postgres
+8876; 0 0 ACL nex TABLE provider_rate_config postgres
+392; 1259 60734 TABLE nex provider_rate_lease postgres
+8877; 0 0 COMMENT nex TABLE provider_rate_lease postgres
+8878; 0 0 ACL nex TABLE provider_rate_lease postgres
+402; 1259 92725 TABLE nex provider_registry postgres
+8879; 0 0 COMMENT nex TABLE provider_registry postgres
+8880; 0 0 COMMENT nex COLUMN provider_registry.cost_per_request_usd postgres
+8881; 0 0 COMMENT nex COLUMN provider_registry.reliability_score postgres
+8882; 0 0 COMMENT nex COLUMN provider_registry.current_health_state postgres
+8883; 0 0 ACL nex TABLE provider_registry postgres
+435; 1259 109195 TABLE nex provider_topup_intent postgres
+8884; 0 0 COMMENT nex TABLE provider_topup_intent postgres
+8885; 0 0 COMMENT nex COLUMN provider_topup_intent.credited_at postgres
+8886; 0 0 ACL nex TABLE provider_topup_intent postgres
+432; 1259 109045 TABLE nex provider_wallet postgres
+8887; 0 0 COMMENT nex TABLE provider_wallet postgres
+8888; 0 0 ACL nex TABLE provider_wallet postgres
+433; 1259 109058 TABLE nex provider_wallet_transaction postgres
+8889; 0 0 COMMENT nex TABLE provider_wallet_transaction postgres
+8890; 0 0 ACL nex TABLE provider_wallet_transaction postgres
+306; 1259 19075 TABLE nex record_versions postgres
+8891; 0 0 ACL nex TABLE record_versions postgres
+233; 1259 17059 TABLE nex recovery_attempts postgres
+8892; 0 0 COMMENT nex TABLE recovery_attempts postgres
+8893; 0 0 ACL nex TABLE recovery_attempts postgres
+272; 1259 17881 TABLE nex recovery_runs postgres
+8894; 0 0 COMMENT nex TABLE recovery_runs postgres
+8895; 0 0 ACL nex TABLE recovery_runs postgres
+261; 1259 17675 TABLE nex rollup_campaigns postgres
+8896; 0 0 COMMENT nex TABLE rollup_campaigns postgres
+8897; 0 0 ACL nex TABLE rollup_campaigns postgres
+264; 1259 17731 TABLE nex rollup_country postgres
+8898; 0 0 ACL nex TABLE rollup_country postgres
+262; 1259 17697 TABLE nex rollup_daily postgres
+8899; 0 0 ACL nex TABLE rollup_daily postgres
+263; 1259 17714 TABLE nex rollup_monthly postgres
+8900; 0 0 ACL nex TABLE rollup_monthly postgres
+265; 1259 17745 TABLE nex rollup_provider postgres
+8901; 0 0 ACL nex TABLE rollup_provider postgres
+266; 1259 17761 TABLE nex rollup_segment postgres
+8902; 0 0 ACL nex TABLE rollup_segment postgres
+399; 1259 76342 TABLE nex safety_audit_config postgres
+8903; 0 0 ACL nex TABLE safety_audit_config postgres
+400; 1259 76354 TABLE nex safety_audit_event postgres
+8904; 0 0 ACL nex TABLE safety_audit_event postgres
+404; 1259 92808 TABLE nex service_business postgres
+8905; 0 0 COMMENT nex TABLE service_business postgres
+8906; 0 0 COMMENT nex COLUMN service_business.commercial_status postgres
+8907; 0 0 COMMENT nex COLUMN service_business.qualification_reason postgres
+8908; 0 0 COMMENT nex COLUMN service_business.next_eligible_action_at postgres
+8909; 0 0 ACL nex TABLE service_business postgres
+405; 1259 92833 TABLE nex service_business_source_snapshot postgres
+8910; 0 0 COMMENT nex TABLE service_business_source_snapshot postgres
+8911; 0 0 ACL nex TABLE service_business_source_snapshot postgres
+430; 1259 108982 TABLE nex service_request postgres
+8912; 0 0 COMMENT nex TABLE service_request postgres
+8913; 0 0 COMMENT nex COLUMN service_request.eligible_provider_ids postgres
+8914; 0 0 COMMENT nex COLUMN service_request.first_accept_window_seconds postgres
+8915; 0 0 COMMENT nex COLUMN service_request.broadcast_expires_at postgres
+8916; 0 0 COMMENT nex COLUMN service_request.price_agreed_idr postgres
+8917; 0 0 COMMENT nex COLUMN service_request.network_fee_idr postgres
+8918; 0 0 COMMENT nex COLUMN service_request.was_free_allowance postgres
+8919; 0 0 ACL nex TABLE service_request postgres
+431; 1259 109011 TABLE nex service_request_offer postgres
+8920; 0 0 COMMENT nex TABLE service_request_offer postgres
+8921; 0 0 ACL nex TABLE service_request_offer postgres
+289; 1259 18269 TABLE nex social_accounts postgres
+8922; 0 0 COMMENT nex TABLE social_accounts postgres
+8923; 0 0 ACL nex TABLE social_accounts postgres
+295; 1259 18343 TABLE nex social_admin_access_log postgres
+8924; 0 0 COMMENT nex TABLE social_admin_access_log postgres
+8925; 0 0 ACL nex TABLE social_admin_access_log postgres
+294; 1259 18342 SEQUENCE nex social_admin_access_log_access_id_seq postgres
+8926; 0 0 SEQUENCE OWNED BY nex social_admin_access_log_access_id_seq postgres
+8927; 0 0 ACL nex SEQUENCE social_admin_access_log_access_id_seq postgres
+292; 1259 18319 TABLE nex social_audit_events postgres
+8928; 0 0 COMMENT nex TABLE social_audit_events postgres
+8929; 0 0 ACL nex TABLE social_audit_events postgres
+291; 1259 18318 SEQUENCE nex social_audit_events_audit_id_seq postgres
+8930; 0 0 SEQUENCE OWNED BY nex social_audit_events_audit_id_seq postgres
+8931; 0 0 ACL nex SEQUENCE social_audit_events_audit_id_seq postgres
+301; 1259 18559 TABLE nex social_brand_profiles postgres
+8932; 0 0 COMMENT nex TABLE social_brand_profiles postgres
+8933; 0 0 ACL nex TABLE social_brand_profiles postgres
+303; 1259 18622 TABLE nex social_category_automation postgres
+8934; 0 0 COMMENT nex TABLE social_category_automation postgres
+8935; 0 0 ACL nex TABLE social_category_automation postgres
+300; 1259 18517 TABLE nex social_content_drafts postgres
+8936; 0 0 COMMENT nex TABLE social_content_drafts postgres
+8937; 0 0 ACL nex TABLE social_content_drafts postgres
+298; 1259 18468 TABLE nex social_content_sources postgres
+8938; 0 0 COMMENT nex TABLE social_content_sources postgres
+8939; 0 0 ACL nex TABLE social_content_sources postgres
+299; 1259 18493 TABLE nex social_content_templates postgres
+8940; 0 0 COMMENT nex TABLE social_content_templates postgres
+8941; 0 0 ACL nex TABLE social_content_templates postgres
+293; 1259 18331 TABLE nex social_controls postgres
+8942; 0 0 COMMENT nex TABLE social_controls postgres
+8943; 0 0 ACL nex TABLE social_controls postgres
+296; 1259 18411 TABLE nex social_dek_wraps postgres
+8944; 0 0 COMMENT nex TABLE social_dek_wraps postgres
+8945; 0 0 ACL nex TABLE social_dek_wraps postgres
+297; 1259 18430 TABLE nex social_oauth_states postgres
+8946; 0 0 COMMENT nex TABLE social_oauth_states postgres
+8947; 0 0 ACL nex TABLE social_oauth_states postgres
+290; 1259 18291 TABLE nex social_publish_intents postgres
+8948; 0 0 COMMENT nex TABLE social_publish_intents postgres
+8949; 0 0 ACL nex TABLE social_publish_intents postgres
+288; 1259 18250 TABLE nex social_role_grants postgres
+8950; 0 0 COMMENT nex TABLE social_role_grants postgres
+8951; 0 0 ACL nex TABLE social_role_grants postgres
+304; 1259 18638 TABLE nex social_scheduled_posts postgres
+8952; 0 0 COMMENT nex TABLE social_scheduled_posts postgres
+8953; 0 0 ACL nex TABLE social_scheduled_posts postgres
+287; 1259 18234 TABLE nex social_tenants postgres
+8954; 0 0 COMMENT nex TABLE social_tenants postgres
+8955; 0 0 COMMENT nex COLUMN social_tenants.owner_supabase_user_id postgres
+8956; 0 0 COMMENT nex COLUMN social_tenants.merchant_slug postgres
+8957; 0 0 ACL nex TABLE social_tenants postgres
+302; 1259 18579 TABLE nex social_validator_runs postgres
+8958; 0 0 COMMENT nex TABLE social_validator_runs postgres
+8959; 0 0 ACL nex TABLE social_validator_runs postgres
+310; 1259 19147 TABLE nex sources postgres
+8960; 0 0 ACL nex TABLE sources postgres
+395; 1259 76201 TABLE nex sparks_product postgres
+8961; 0 0 ACL nex TABLE sparks_product postgres
+396; 1259 76212 TABLE nex sparks_product_price postgres
+8962; 0 0 ACL nex TABLE sparks_product_price postgres
+236; 1259 17104 TABLE nex tracking_events postgres
+8963; 0 0 COMMENT nex TABLE tracking_events postgres
+8964; 0 0 ACL nex TABLE tracking_events postgres
+380; 1259 60449 TABLE nex transport_acquisition_outreach postgres
+8965; 0 0 COMMENT nex TABLE transport_acquisition_outreach postgres
+8966; 0 0 ACL nex TABLE transport_acquisition_outreach postgres
+378; 1259 60401 TABLE nex transport_acquisition_record postgres
+8967; 0 0 COMMENT nex TABLE transport_acquisition_record postgres
+8968; 0 0 COMMENT nex COLUMN transport_acquisition_record.canonical_phone_e164 postgres
+8969; 0 0 COMMENT nex COLUMN transport_acquisition_record.discovery_stage postgres
+8970; 0 0 COMMENT nex COLUMN transport_acquisition_record.worker_id postgres
+8971; 0 0 ACL nex TABLE transport_acquisition_record postgres
+379; 1259 60431 TABLE nex transport_acquisition_source_snapshot postgres
+8972; 0 0 COMMENT nex TABLE transport_acquisition_source_snapshot postgres
+8973; 0 0 ACL nex TABLE transport_acquisition_source_snapshot postgres
+393; 1259 76150 TABLE nex user_wallet postgres
+8974; 0 0 ACL nex TABLE user_wallet postgres
+411; 1259 101190 TABLE nex video_feed_impression postgres
+8975; 0 0 COMMENT nex TABLE video_feed_impression postgres
+8976; 0 0 ACL nex TABLE video_feed_impression postgres
+394; 1259 76167 TABLE nex wallet_transaction postgres
+8977; 0 0 ACL nex TABLE wallet_transaction postgres
+436; 1259 166354 TABLE nex work_item postgres
+8978; 0 0 COMMENT nex TABLE work_item postgres
+8979; 0 0 COMMENT nex COLUMN work_item.idempotency_key postgres
+8980; 0 0 COMMENT nex COLUMN work_item.status postgres
+8981; 0 0 COMMENT nex COLUMN work_item.lease_expires_at postgres
+8982; 0 0 COMMENT nex COLUMN work_item.last_error postgres
+8983; 0 0 COMMENT nex COLUMN work_item.error_history postgres
+8984; 0 0 COMMENT nex COLUMN work_item.records_processed postgres
+8985; 0 0 ACL nex TABLE work_item postgres
+351; 1259 52237 TABLE nex worker_cycle_run postgres
+8986; 0 0 COMMENT nex TABLE worker_cycle_run postgres
+8987; 0 0 ACL nex TABLE worker_cycle_run postgres
+352; 1259 52259 VIEW nex worker_24h_activity postgres
+8988; 0 0 COMMENT nex VIEW worker_24h_activity postgres
+8989; 0 0 ACL nex TABLE worker_24h_activity postgres
+231; 1259 17028 TABLE nex worker_audit_events postgres
+8990; 0 0 COMMENT nex TABLE worker_audit_events postgres
+8991; 0 0 ACL nex TABLE worker_audit_events postgres
+356; 1259 52306 TABLE nex worker_schedule postgres
+8992; 0 0 COMMENT nex TABLE worker_schedule postgres
+8993; 0 0 ACL nex TABLE worker_schedule postgres
+357; 1259 52320 VIEW nex worker_expected_runs postgres
+8994; 0 0 COMMENT nex VIEW worker_expected_runs postgres
+8995; 0 0 ACL nex TABLE worker_expected_runs postgres
+350; 1259 52223 TABLE nex worker_heartbeat postgres
+8996; 0 0 COMMENT nex TABLE worker_heartbeat postgres
+8997; 0 0 COMMENT nex COLUMN worker_heartbeat.last_status postgres
+8998; 0 0 ACL nex TABLE worker_heartbeat postgres
+358; 1259 52325 VIEW nex worker_missed_runs_24h postgres
+8999; 0 0 COMMENT nex VIEW worker_missed_runs_24h postgres
+9000; 0 0 ACL nex TABLE worker_missed_runs_24h postgres
+359; 1259 52329 VIEW nex worker_health_status postgres
+9001; 0 0 COMMENT nex VIEW worker_health_status postgres
+9002; 0 0 ACL nex TABLE worker_health_status postgres
+360; 1259 52334 TABLE nex worker_heartbeats_archive_2026_08_22 postgres
+9003; 0 0 COMMENT nex TABLE worker_heartbeats_archive_2026_08_22 postgres
+9004; 0 0 ACL nex TABLE worker_heartbeats_archive_2026_08_22 postgres
+6015; 2604 18346 DEFAULT nex social_admin_access_log access_id postgres
+6009; 2604 18322 DEFAULT nex social_audit_events audit_id postgres
+8448; 0 52498 TABLE DATA nex accommodation_business postgres
+8450; 0 52551 TABLE DATA nex accommodation_business_field_provenance postgres
+8449; 0 52530 TABLE DATA nex accommodation_business_source_snapshot postgres
+8451; 0 52572 TABLE DATA nex accommodation_enrichment_evidence postgres
+8364; 0 17845 TABLE DATA nex alert_dispatches postgres
+8362; 0 17807 TABLE DATA nex alert_rules postgres
+8363; 0 17822 TABLE DATA nex alerts postgres
+8354; 0 17654 TABLE DATA nex analytics_events postgres
+8331; 0 17119 TABLE DATA nex analytics_records postgres
+8416; 0 32842 TABLE DATA nex analytics_rollup_queue postgres
+8377; 0 18149 TABLE DATA nex attributions postgres
+8409; 0 19258 TABLE DATA nex audit_log postgres
+8332; 0 17134 TABLE DATA nex automation_rules postgres
+8333; 0 17153 TABLE DATA nex automation_runs postgres
+8365; 0 17867 TABLE DATA nex benchmark_runs postgres
+8509; 0 108907 TABLE DATA nex bike_model postgres
+8511; 0 108947 TABLE DATA nex bike_rental_listing postgres
+8498; 0 102461 TABLE DATA nex brain_accommodation_prices postgres
+8497; 0 102447 TABLE DATA nex brain_activities postgres
+8499; 0 102476 TABLE DATA nex brain_attractions postgres
+8507; 0 102855 TABLE DATA nex brain_did_you_know_indonesia postgres
+8503; 0 102650 TABLE DATA nex brain_english_grammar postgres
+8504; 0 102669 TABLE DATA nex brain_english_lesson postgres
+8505; 0 102688 TABLE DATA nex brain_english_practice postgres
+8506; 0 102713 TABLE DATA nex brain_english_progress postgres
+8502; 0 102628 TABLE DATA nex brain_english_vocabulary postgres
+8500; 0 102490 TABLE DATA nex brain_local_guide postgres
+8494; 0 102396 TABLE DATA nex brain_location postgres
+8328; 0 17073 TABLE DATA nex brain_memories postgres
+8496; 0 102429 TABLE DATA nex brain_seasons postgres
+8495; 0 102413 TABLE DATA nex brain_transport postgres
+8501; 0 102503 TABLE DATA nex brain_traveler_rating postgres
+8508; 0 102879 TABLE DATA nex brain_user_saved_facts postgres
+8491; 0 100990 TABLE DATA nex business_calling_config postgres
+8452; 0 59738 TABLE DATA nex business_image postgres
+8459; 0 60229 TABLE DATA nex business_knowledge postgres
+8489; 0 93034 TABLE DATA nex call_record postgres
+8353; 0 17503 TABLE DATA nex campaign_recipients postgres
+8349; 0 17404 TABLE DATA nex campaign_segments postgres
+8348; 0 17386 TABLE DATA nex campaigns postgres
+8454; 0 59904 TABLE DATA nex category_candidate postgres
+8456; 0 60015 TABLE DATA nex category_candidate_calibration_annotation postgres
+8455; 0 59993 TABLE DATA nex category_candidate_score postgres
+8488; 0 92959 TABLE DATA nex category_image_library postgres
+8453; 0 59882 TABLE DATA nex category_registry postgres
+8479; 0 76231 TABLE DATA nex chat_message postgres
+8483; 0 76381 TABLE DATA nex chat_message_archive postgres
+8480; 0 76243 TABLE DATA nex chat_message_deletion postgres
+8361; 0 17792 TABLE DATA nex compliance_events postgres
+8405; 0 19164 TABLE DATA nex confidence_scores postgres
+8345; 0 17332 TABLE DATA nex contact_duplicate_suggestions postgres
+8344; 0 17320 TABLE DATA nex contact_merges postgres
+8347; 0 17371 TABLE DATA nex contact_segments postgres
+8343; 0 17307 TABLE DATA nex contact_sources postgres
+8329; 0 17086 TABLE DATA nex contacts postgres
+8406; 0 19185 TABLE DATA nex contradictions postgres
+8420; 0 33080 TABLE DATA nex conv_edges postgres
+8418; 0 33041 TABLE DATA nex conv_entities postgres
+8424; 0 33160 TABLE DATA nex conv_feedback postgres
+8417; 0 33031 TABLE DATA nex conv_intents postgres
+8419; 0 33053 TABLE DATA nex conv_knowledge_items postgres
+8444; 0 52370 TABLE DATA nex conv_learning_candidate postgres
+8423; 0 33148 TABLE DATA nex conv_outcomes postgres
+8421; 0 33111 TABLE DATA nex conv_states postgres
+8422; 0 33123 TABLE DATA nex conv_turns postgres
+8376; 0 18128 TABLE DATA nex conversion_events postgres
+8485; 0 92749 TABLE DATA nex cost_budget postgres
+8352; 0 17474 TABLE DATA nex delivery_job_attempts postgres
+8351; 0 17448 TABLE DATA nex delivery_jobs postgres
+8443; 0 52354 TABLE DATA nex delivery_workers_archive_2026_08_22 postgres
+8407; 0 19208 TABLE DATA nex deprecations postgres
+8472; 0 60713 TABLE DATA nex discovery_orchestrator_pick postgres
+8471; 0 60687 TABLE DATA nex discovery_rotation_state postgres
+8350; 0 17423 TABLE DATA nex email_templates postgres
+8324; 0 17012 TABLE DATA nex events postgres
+8375; 0 18090 TABLE DATA nex experiment_assignments postgres
+8374; 0 18070 TABLE DATA nex experiment_variants postgres
+8373; 0 18049 TABLE DATA nex experiments postgres
+8425; 0 51719 TABLE DATA nex food_business postgres
+8430; 0 51890 TABLE DATA nex food_business_field_provenance postgres
+8435; 0 51987 TABLE DATA nex food_business_next_action postgres
+8445; 0 52411 TABLE DATA nex food_business_promotion postgres
+8446; 0 52437 TABLE DATA nex food_business_promotion_audit postgres
+8447; 0 52462 TABLE DATA nex food_business_promotion_decision postgres
+8429; 0 51879 TABLE DATA nex food_business_source_snapshot postgres
+8431; 0 51899 TABLE DATA nex food_claim_code postgres
+8432; 0 51955 TABLE DATA nex food_commercial_event postgres
+8437; 0 52107 TABLE DATA nex food_enrichment_evidence postgres
+8438; 0 52121 TABLE DATA nex food_enrichment_job postgres
+8434; 0 51979 TABLE DATA nex food_hq_rule postgres
+8436; 0 51997 TABLE DATA nex food_next_action_audit postgres
+8427; 0 51845 TABLE DATA nex food_outreach_attempt postgres
+8428; 0 51856 TABLE DATA nex food_outreach_suppression postgres
+8426; 0 51833 TABLE DATA nex food_outreach_template postgres
+8458; 0 60121 TABLE DATA nex geo_landmark postgres
+8401; 0 19092 TABLE DATA nex graph_edges postgres
+8490; 0 100799 TABLE DATA nex identity_merge_log postgres
+8346; 0 17355 TABLE DATA nex import_mappings postgres
+8326; 0 17043 TABLE DATA nex jobs postgres
+8372; 0 18013 TABLE DATA nex journey_campaign_executions postgres
+8369; 0 17945 TABLE DATA nex journey_events postgres
+8371; 0 17992 TABLE DATA nex journey_inbound_events postgres
+8368; 0 17922 TABLE DATA nex journey_states postgres
+8370; 0 17965 TABLE DATA nex journey_triggers postgres
+8367; 0 17901 TABLE DATA nex journeys postgres
+8413; 0 19491 TABLE DATA nex knowledge_dump_jobs postgres
+8408; 0 19228 TABLE DATA nex knowledge_feedback postgres
+8411; 0 19466 TABLE DATA nex knowledge_inbox postgres
+8412; 0 19481 TABLE DATA nex knowledge_inbox_stats postgres
+8399; 0 19052 TABLE DATA nex knowledge_records postgres
+8335; 0 17182 TABLE DATA nex kpe_chunks postgres
+8337; 0 17211 TABLE DATA nex kpe_decisions postgres
+8334; 0 17167 TABLE DATA nex kpe_documents postgres
+8338; 0 17224 TABLE DATA nex kpe_duplicates postgres
+8339; 0 17235 TABLE DATA nex kpe_edges postgres
+8341; 0 17260 TABLE DATA nex kpe_human_reviews postgres
+8336; 0 17194 TABLE DATA nex kpe_metadata postgres
+8340; 0 17248 TABLE DATA nex kpe_processing_runs postgres
+8410; 0 19298 TABLE DATA nex llm_retry_queue postgres
+8457; 0 60105 TABLE DATA nex meaningful_area postgres
+8492; 0 101128 TABLE DATA nex media_object postgres
+8464; 0 60514 TABLE DATA nex mp_category postgres
+8470; 0 60629 TABLE DATA nex mp_commerce_policy postgres
+8465; 0 60530 TABLE DATA nex mp_product postgres
+8466; 0 60559 TABLE DATA nex mp_product_image postgres
+8467; 0 60574 TABLE DATA nex mp_product_option postgres
+8468; 0 60590 TABLE DATA nex mp_product_option_value postgres
+8469; 0 60607 TABLE DATA nex mp_product_variant postgres
+8463; 0 60499 TABLE DATA nex mp_seller postgres
+8415; 0 19601 TABLE DATA nex object_blob_current postgres
+8414; 0 19589 TABLE DATA nex object_blobs postgres
+8342; 0 17280 TABLE DATA nex object_manifest postgres
+8378; 0 18174 TABLE DATA nex prediction_models postgres
+8379; 0 18194 TABLE DATA nex predictions postgres
+8380; 0 18218 TABLE DATA nex predictive_controls postgres
+8510; 0 108922 TABLE DATA nex provider_profile postgres
+8473; 0 60724 TABLE DATA nex provider_rate_config postgres
+8474; 0 60734 TABLE DATA nex provider_rate_lease postgres
+8484; 0 92725 TABLE DATA nex provider_registry postgres
+8516; 0 109195 TABLE DATA nex provider_topup_intent postgres
+8514; 0 109045 TABLE DATA nex provider_wallet postgres
+8515; 0 109058 TABLE DATA nex provider_wallet_transaction postgres
+8400; 0 19075 TABLE DATA nex record_versions postgres
+8327; 0 17059 TABLE DATA nex recovery_attempts postgres
+8366; 0 17881 TABLE DATA nex recovery_runs postgres
+8355; 0 17675 TABLE DATA nex rollup_campaigns postgres
+8358; 0 17731 TABLE DATA nex rollup_country postgres
+8356; 0 17697 TABLE DATA nex rollup_daily postgres
+8357; 0 17714 TABLE DATA nex rollup_monthly postgres
+8359; 0 17745 TABLE DATA nex rollup_provider postgres
+8360; 0 17761 TABLE DATA nex rollup_segment postgres
+8481; 0 76342 TABLE DATA nex safety_audit_config postgres
+8482; 0 76354 TABLE DATA nex safety_audit_event postgres
+8486; 0 92808 TABLE DATA nex service_business postgres
+8487; 0 92833 TABLE DATA nex service_business_source_snapshot postgres
+8512; 0 108982 TABLE DATA nex service_request postgres
+8513; 0 109011 TABLE DATA nex service_request_offer postgres
+8383; 0 18269 TABLE DATA nex social_accounts postgres
+8389; 0 18343 TABLE DATA nex social_admin_access_log postgres
+8386; 0 18319 TABLE DATA nex social_audit_events postgres
+8395; 0 18559 TABLE DATA nex social_brand_profiles postgres
+8397; 0 18622 TABLE DATA nex social_category_automation postgres
+8394; 0 18517 TABLE DATA nex social_content_drafts postgres
+8392; 0 18468 TABLE DATA nex social_content_sources postgres
+8393; 0 18493 TABLE DATA nex social_content_templates postgres
+8387; 0 18331 TABLE DATA nex social_controls postgres
+8390; 0 18411 TABLE DATA nex social_dek_wraps postgres
+8391; 0 18430 TABLE DATA nex social_oauth_states postgres
+8384; 0 18291 TABLE DATA nex social_publish_intents postgres
+8382; 0 18250 TABLE DATA nex social_role_grants postgres
+8398; 0 18638 TABLE DATA nex social_scheduled_posts postgres
+8381; 0 18234 TABLE DATA nex social_tenants postgres
+8396; 0 18579 TABLE DATA nex social_validator_runs postgres
+8404; 0 19147 TABLE DATA nex sources postgres
+8477; 0 76201 TABLE DATA nex sparks_product postgres
+8478; 0 76212 TABLE DATA nex sparks_product_price postgres
+8330; 0 17104 TABLE DATA nex tracking_events postgres
+8462; 0 60449 TABLE DATA nex transport_acquisition_outreach postgres
+8460; 0 60401 TABLE DATA nex transport_acquisition_record postgres
+8461; 0 60431 TABLE DATA nex transport_acquisition_source_snapshot postgres
+8475; 0 76150 TABLE DATA nex user_wallet postgres
+8493; 0 101190 TABLE DATA nex video_feed_impression postgres
+8476; 0 76167 TABLE DATA nex wallet_transaction postgres
+8517; 0 166354 TABLE DATA nex work_item postgres
+8325; 0 17028 TABLE DATA nex worker_audit_events postgres
+8440; 0 52237 TABLE DATA nex worker_cycle_run postgres
+8439; 0 52223 TABLE DATA nex worker_heartbeat postgres
+8442; 0 52334 TABLE DATA nex worker_heartbeats_archive_2026_08_22 postgres
+8402; 0 19113 TABLE DATA nex worker_jobs postgres
+8403; 0 19130 TABLE DATA nex worker_results postgres
+8441; 0 52306 TABLE DATA nex worker_schedule postgres
+9005; 0 0 SEQUENCE SET nex social_admin_access_log_access_id_seq postgres
+9006; 0 0 SEQUENCE SET nex social_audit_events_audit_id_seq postgres
+7446; 2606 52559 CONSTRAINT nex accommodation_business_field_provenance accommodation_business_field_provenance_pkey postgres
+7426; 2606 52521 CONSTRAINT nex accommodation_business accommodation_business_pkey postgres
+7428; 2606 52523 CONSTRAINT nex accommodation_business accommodation_business_public_listing_ref_key postgres
+7442; 2606 52538 CONSTRAINT nex accommodation_business_source_snapshot accommodation_business_source_snapshot_pkey postgres
+7450; 2606 52582 CONSTRAINT nex accommodation_enrichment_evidence accommodation_enrichment_evidence_pkey postgres
+7033; 2606 17856 CONSTRAINT nex alert_dispatches alert_dispatches_pkey postgres
+7024; 2606 17821 CONSTRAINT nex alert_rules alert_rules_pkey postgres
+7028; 2606 17835 CONSTRAINT nex alerts alerts_pkey postgres
+7003; 2606 17665 CONSTRAINT nex analytics_events analytics_events_pkey postgres
+6887; 2606 17128 CONSTRAINT nex analytics_records analytics_records_pkey postgres
+7277; 2606 32853 CONSTRAINT nex analytics_rollup_queue analytics_rollup_queue_pkey postgres
+7099; 2606 18160 CONSTRAINT nex attributions attributions_conversion_id_model_source_event_id_key postgres
+7105; 2606 18158 CONSTRAINT nex attributions attributions_pkey postgres
+7243; 2606 19266 CONSTRAINT nex audit_log audit_log_pkey postgres
+6892; 2606 17147 CONSTRAINT nex automation_rules automation_rules_pkey postgres
+6896; 2606 17161 CONSTRAINT nex automation_runs automation_runs_pkey postgres
+7036; 2606 17879 CONSTRAINT nex benchmark_runs benchmark_runs_pkey postgres
+7743; 2606 108918 CONSTRAINT nex bike_model bike_model_pkey postgres
+7755; 2606 108967 CONSTRAINT nex bike_rental_listing bike_rental_listing_pkey postgres
+7757; 2606 108969 CONSTRAINT nex bike_rental_listing bike_rental_listing_slug_key postgres
+7685; 2606 102474 CONSTRAINT nex brain_accommodation_prices brain_accommodation_prices_location_slug_tier_season_contex_key postgres
+7687; 2606 102472 CONSTRAINT nex brain_accommodation_prices brain_accommodation_prices_pkey postgres
+7681; 2606 102458 CONSTRAINT nex brain_activities brain_activities_pkey postgres
+7690; 2606 102487 CONSTRAINT nex brain_attractions brain_attractions_pkey postgres
+7730; 2606 102873 CONSTRAINT nex brain_did_you_know_indonesia brain_did_you_know_indonesia_pkey postgres
+7732; 2606 102875 CONSTRAINT nex brain_did_you_know_indonesia brain_did_you_know_indonesia_slug_key postgres
+7709; 2606 102664 CONSTRAINT nex brain_english_grammar brain_english_grammar_pkey postgres
+7711; 2606 102666 CONSTRAINT nex brain_english_grammar brain_english_grammar_rule_slug_key postgres
+7715; 2606 102685 CONSTRAINT nex brain_english_lesson brain_english_lesson_lesson_slug_key postgres
+7717; 2606 102683 CONSTRAINT nex brain_english_lesson brain_english_lesson_pkey postgres
+7721; 2606 102704 CONSTRAINT nex brain_english_practice brain_english_practice_pkey postgres
+7726; 2606 102728 CONSTRAINT nex brain_english_progress brain_english_progress_pkey postgres
+7702; 2606 102644 CONSTRAINT nex brain_english_vocabulary brain_english_vocabulary_pkey postgres
+7704; 2606 102646 CONSTRAINT nex brain_english_vocabulary brain_english_vocabulary_word_normalised_part_of_speech_key postgres
+7694; 2606 102501 CONSTRAINT nex brain_local_guide brain_local_guide_location_slug_key postgres
+7696; 2606 102499 CONSTRAINT nex brain_local_guide brain_local_guide_pkey postgres
+7664; 2606 102408 CONSTRAINT nex brain_location brain_location_pkey postgres
+7666; 2606 102410 CONSTRAINT nex brain_location brain_location_slug_key postgres
+6861; 2606 17080 CONSTRAINT nex brain_memories brain_memories_pkey postgres
+7676; 2606 102445 CONSTRAINT nex brain_seasons brain_seasons_location_slug_season_kind_month_start_source__key postgres
+7678; 2606 102443 CONSTRAINT nex brain_seasons brain_seasons_pkey postgres
+7670; 2606 102426 CONSTRAINT nex brain_transport brain_transport_origin_location_slug_dest_location_slug_mod_key postgres
+7672; 2606 102424 CONSTRAINT nex brain_transport brain_transport_pkey postgres
+7699; 2606 102513 CONSTRAINT nex brain_traveler_rating brain_traveler_rating_pkey postgres
+7738; 2606 102891 CONSTRAINT nex brain_user_saved_facts brain_user_saved_facts_learner_ref_fact_id_key postgres
+7740; 2606 102889 CONSTRAINT nex brain_user_saved_facts brain_user_saved_facts_pkey postgres
+7645; 2606 101006 CONSTRAINT nex business_calling_config business_calling_config_business_table_business_ref_key postgres
+7647; 2606 101004 CONSTRAINT nex business_calling_config business_calling_config_pkey postgres
+7455; 2606 59754 CONSTRAINT nex business_image business_image_business_type_business_country_business_ref__key postgres
+7457; 2606 59752 CONSTRAINT nex business_image business_image_pkey postgres
+7490; 2606 60240 CONSTRAINT nex business_knowledge business_knowledge_pkey postgres
+7492; 2606 60242 CONSTRAINT nex business_knowledge business_knowledge_vertical_business_ref_attribute_domain_a_key postgres
+7634; 2606 93050 CONSTRAINT nex call_record call_record_pkey postgres
+6998; 2606 17514 CONSTRAINT nex campaign_recipients campaign_recipients_pkey postgres
+6981; 2606 17409 CONSTRAINT nex campaign_segments campaign_segments_pkey postgres
+6976; 2606 17400 CONSTRAINT nex campaigns campaigns_pkey postgres
+7481; 2606 60024 CONSTRAINT nex category_candidate_calibration_annotation category_candidate_calibration_annotation_pkey postgres
+7470; 2606 59929 CONSTRAINT nex category_candidate category_candidate_pkey postgres
+7476; 2606 60007 CONSTRAINT nex category_candidate_score category_candidate_score_pkey postgres
+7631; 2606 92972 CONSTRAINT nex category_image_library category_image_library_pkey postgres
+7465; 2606 59898 CONSTRAINT nex category_registry category_registry_pkey postgres
+7467; 2606 59900 CONSTRAINT nex category_registry category_registry_route_key postgres
+7604; 2606 76391 CONSTRAINT nex chat_message_archive chat_message_archive_event_id_original_message_id_key postgres
+7607; 2606 76389 CONSTRAINT nex chat_message_archive chat_message_archive_pkey postgres
+7591; 2606 76252 CONSTRAINT nex chat_message_deletion chat_message_deletion_pkey postgres
+7587; 2606 76240 CONSTRAINT nex chat_message chat_message_pkey postgres
+7020; 2606 17802 CONSTRAINT nex compliance_events compliance_events_pkey postgres
+7224; 2606 19175 CONSTRAINT nex confidence_scores confidence_scores_pkey postgres
+7226; 2606 19177 CONSTRAINT nex confidence_scores confidence_scores_record_id_claim_key_key postgres
+6965; 2606 17341 CONSTRAINT nex contact_duplicate_suggestions contact_duplicate_suggestions_pkey postgres
+6960; 2606 17329 CONSTRAINT nex contact_merges contact_merges_pkey postgres
+6974; 2606 17382 CONSTRAINT nex contact_segments contact_segments_pkey postgres
+6953; 2606 17316 CONSTRAINT nex contact_sources contact_sources_pkey postgres
+6874; 2606 17096 CONSTRAINT nex contacts contacts_pkey postgres
+7230; 2606 19196 CONSTRAINT nex contradictions contradictions_pkey postgres
+7295; 2606 33097 CONSTRAINT nex conv_edges conv_edges_from_item_to_item_edge_type_key postgres
+7297; 2606 33095 CONSTRAINT nex conv_edges conv_edges_pkey postgres
+7285; 2606 33050 CONSTRAINT nex conv_entities conv_entities_pkey postgres
+7320; 2606 33170 CONSTRAINT nex conv_feedback conv_feedback_pkey postgres
+7281; 2606 33040 CONSTRAINT nex conv_intents conv_intents_pkey postgres
+7292; 2606 33069 CONSTRAINT nex conv_knowledge_items conv_knowledge_items_pkey postgres
+7406; 2606 52386 CONSTRAINT nex conv_learning_candidate conv_learning_candidate_pkey postgres
+7317; 2606 33157 CONSTRAINT nex conv_outcomes conv_outcomes_pkey postgres
+7303; 2606 33119 CONSTRAINT nex conv_states conv_states_pkey postgres
+7306; 2606 33139 CONSTRAINT nex conv_turns conv_turns_conversation_id_turn_index_key postgres
+7311; 2606 33137 CONSTRAINT nex conv_turns conv_turns_pkey postgres
+7092; 2606 18143 CONSTRAINT nex conversion_events conversion_events_pkey postgres
+7094; 2606 18145 CONSTRAINT nex conversion_events conversion_events_source_external_ref_key postgres
+7613; 2606 92759 CONSTRAINT nex cost_budget cost_budget_pkey postgres
+6995; 2606 17483 CONSTRAINT nex delivery_job_attempts delivery_job_attempts_pkey postgres
+6992; 2606 17465 CONSTRAINT nex delivery_jobs delivery_jobs_pkey postgres
+7404; 2606 52362 CONSTRAINT nex delivery_workers_archive_2026_08_22 delivery_workers_archive_2026_08_22_pkey postgres
+7233; 2606 19216 CONSTRAINT nex deprecations deprecations_pkey postgres
+7565; 2606 60721 CONSTRAINT nex discovery_orchestrator_pick discovery_orchestrator_pick_pkey postgres
+7557; 2606 60702 CONSTRAINT nex discovery_rotation_state discovery_rotation_state_pkey postgres
+7748; 2606 108938 CONSTRAINT nex provider_profile driver_profile_learner_ref_key postgres
+7750; 2606 108936 CONSTRAINT nex provider_profile driver_profile_pkey postgres
+6985; 2606 17438 CONSTRAINT nex email_templates email_templates_pkey postgres
+6832; 2606 17021 CONSTRAINT nex events events_pkey postgres
+7085; 2606 18100 CONSTRAINT nex experiment_assignments experiment_assignments_experiment_id_contact_id_key postgres
+7087; 2606 18098 CONSTRAINT nex experiment_assignments experiment_assignments_pkey postgres
+7082; 2606 18079 CONSTRAINT nex experiment_variants experiment_variants_pkey postgres
+7077; 2606 18065 CONSTRAINT nex experiments experiments_pkey postgres
+7079; 2606 18067 CONSTRAINT nex experiments experiments_slug_version_key postgres
+7358; 2606 51897 CONSTRAINT nex food_business_field_provenance food_business_field_provenance_pkey postgres
+7373; 2606 51994 CONSTRAINT nex food_business_next_action food_business_next_action_pkey postgres
+7324; 2606 51737 CONSTRAINT nex food_business food_business_pkey postgres
+7416; 2606 52445 CONSTRAINT nex food_business_promotion_audit food_business_promotion_audit_pkey postgres
+7420; 2606 52472 CONSTRAINT nex food_business_promotion_decision food_business_promotion_decision_pkey postgres
+7411; 2606 52423 CONSTRAINT nex food_business_promotion food_business_promotion_pkey postgres
+7326; 2606 51739 CONSTRAINT nex food_business food_business_public_listing_ref_key postgres
+7354; 2606 51887 CONSTRAINT nex food_business_source_snapshot food_business_source_snapshot_pkey postgres
+7362; 2606 51910 CONSTRAINT nex food_claim_code food_claim_code_pkey postgres
+7366; 2606 51963 CONSTRAINT nex food_commercial_event food_commercial_event_pkey postgres
+7380; 2606 52117 CONSTRAINT nex food_enrichment_evidence food_enrichment_evidence_pkey postgres
+7385; 2606 52133 CONSTRAINT nex food_enrichment_job food_enrichment_job_pkey postgres
+7371; 2606 51986 CONSTRAINT nex food_hq_rule food_hq_rule_pkey postgres
+7377; 2606 52005 CONSTRAINT nex food_next_action_audit food_next_action_audit_pkey postgres
+7345; 2606 51853 CONSTRAINT nex food_outreach_attempt food_outreach_attempt_pkey postgres
+7349; 2606 51864 CONSTRAINT nex food_outreach_suppression food_outreach_suppression_pkey postgres
+7342; 2606 51843 CONSTRAINT nex food_outreach_template food_outreach_template_pkey postgres
+7487; 2606 60132 CONSTRAINT nex geo_landmark geo_landmark_pkey postgres
+7202; 2606 19104 CONSTRAINT nex graph_edges graph_edges_from_record_id_to_record_id_edge_type_key postgres
+7204; 2606 19102 CONSTRAINT nex graph_edges graph_edges_pkey postgres
+7640; 2606 100810 CONSTRAINT nex identity_merge_log identity_merge_log_pkey postgres
+6970; 2606 17366 CONSTRAINT nex import_mappings import_mappings_pkey postgres
+6848; 2606 17052 CONSTRAINT nex jobs jobs_pkey postgres
+7073; 2606 18026 CONSTRAINT nex journey_campaign_executions journey_campaign_executions_pkey postgres
+7057; 2606 17955 CONSTRAINT nex journey_events journey_events_pkey postgres
+7068; 2606 18007 CONSTRAINT nex journey_inbound_events journey_inbound_events_pkey postgres
+7049; 2606 17936 CONSTRAINT nex journey_states journey_states_journey_id_contact_id_key postgres
+7051; 2606 17934 CONSTRAINT nex journey_states journey_states_pkey postgres
+7061; 2606 17984 CONSTRAINT nex journey_triggers journey_triggers_journey_id_trigger_key_version_key postgres
+7063; 2606 17982 CONSTRAINT nex journey_triggers journey_triggers_pkey postgres
+7043; 2606 17917 CONSTRAINT nex journeys journeys_pkey postgres
+7045; 2606 17919 CONSTRAINT nex journeys journeys_slug_version_key postgres
+7268; 2606 19504 CONSTRAINT nex knowledge_dump_jobs knowledge_dump_jobs_pkey postgres
+7241; 2606 19242 CONSTRAINT nex knowledge_feedback knowledge_feedback_pkey postgres
+7259; 2606 19477 CONSTRAINT nex knowledge_inbox knowledge_inbox_pkey postgres
+7263; 2606 19490 CONSTRAINT nex knowledge_inbox_stats knowledge_inbox_stats_pkey postgres
+7193; 2606 19063 CONSTRAINT nex knowledge_records knowledge_records_pkey postgres
+7195; 2606 19065 CONSTRAINT nex knowledge_records knowledge_records_record_id_key postgres
+6912; 2606 17190 CONSTRAINT nex kpe_chunks kpe_chunks_pkey postgres
+6919; 2606 17220 CONSTRAINT nex kpe_decisions kpe_decisions_pkey postgres
+6905; 2606 17177 CONSTRAINT nex kpe_documents kpe_documents_content_hash_key postgres
+6907; 2606 17175 CONSTRAINT nex kpe_documents kpe_documents_pkey postgres
+6926; 2606 17231 CONSTRAINT nex kpe_duplicates kpe_duplicates_pkey postgres
+6930; 2606 17243 CONSTRAINT nex kpe_edges kpe_edges_pkey postgres
+6938; 2606 17268 CONSTRAINT nex kpe_human_reviews kpe_human_reviews_pkey postgres
+6916; 2606 17208 CONSTRAINT nex kpe_metadata kpe_metadata_pkey postgres
+6934; 2606 17257 CONSTRAINT nex kpe_processing_runs kpe_processing_runs_pkey postgres
+7250; 2606 19312 CONSTRAINT nex llm_retry_queue llm_retry_queue_pkey postgres
+7485; 2606 60118 CONSTRAINT nex meaningful_area meaningful_area_pkey postgres
+7657; 2606 101149 CONSTRAINT nex media_object media_object_pkey postgres
+7525; 2606 60524 CONSTRAINT nex mp_category mp_category_key_key postgres
+7527; 2606 60522 CONSTRAINT nex mp_category mp_category_pkey postgres
+7554; 2606 60642 CONSTRAINT nex mp_commerce_policy mp_commerce_policy_pkey postgres
+7536; 2606 60567 CONSTRAINT nex mp_product_image mp_product_image_pkey postgres
+7538; 2606 60582 CONSTRAINT nex mp_product_option mp_product_option_pkey postgres
+7540; 2606 60584 CONSTRAINT nex mp_product_option mp_product_option_product_id_name_key postgres
+7543; 2606 60600 CONSTRAINT nex mp_product_option_value mp_product_option_value_option_id_value_key postgres
+7545; 2606 60598 CONSTRAINT nex mp_product_option_value mp_product_option_value_pkey postgres
+7531; 2606 60544 CONSTRAINT nex mp_product mp_product_pkey postgres
+7533; 2606 60546 CONSTRAINT nex mp_product mp_product_slug_key postgres
+7548; 2606 60618 CONSTRAINT nex mp_product_variant mp_product_variant_pkey postgres
+7550; 2606 60622 CONSTRAINT nex mp_product_variant mp_product_variant_product_id_option_value_ids_key postgres
+7552; 2606 60620 CONSTRAINT nex mp_product_variant mp_product_variant_product_id_sku_key postgres
+7517; 2606 60510 CONSTRAINT nex mp_seller mp_seller_pkey postgres
+7519; 2606 60512 CONSTRAINT nex mp_seller mp_seller_slug_key postgres
+7275; 2606 19609 CONSTRAINT nex object_blob_current object_blob_current_pkey postgres
+7273; 2606 19600 CONSTRAINT nex object_blobs object_blobs_pkey postgres
+6944; 2606 17291 CONSTRAINT nex object_manifest object_manifest_bucket_key_version_id_key postgres
+6949; 2606 17289 CONSTRAINT nex object_manifest object_manifest_pkey postgres
+7108; 2606 18189 CONSTRAINT nex prediction_models prediction_models_pkey postgres
+7110; 2606 18191 CONSTRAINT nex prediction_models prediction_models_target_model_version_key postgres
+7115; 2606 18208 CONSTRAINT nex predictions predictions_pkey postgres
+7119; 2606 18229 CONSTRAINT nex predictive_controls predictive_controls_pkey postgres
+7567; 2606 60733 CONSTRAINT nex provider_rate_config provider_rate_config_pkey postgres
+7571; 2606 60743 CONSTRAINT nex provider_rate_lease provider_rate_lease_pkey postgres
+7611; 2606 92746 CONSTRAINT nex provider_registry provider_registry_pkey postgres
+7785; 2606 109209 CONSTRAINT nex provider_topup_intent provider_topup_intent_midtrans_order_id_key postgres
+7787; 2606 109207 CONSTRAINT nex provider_topup_intent provider_topup_intent_pkey postgres
+7774; 2606 109052 CONSTRAINT nex provider_wallet provider_wallet_pkey postgres
+7779; 2606 109068 CONSTRAINT nex provider_wallet_transaction provider_wallet_transaction_pkey postgres
+7198; 2606 19083 CONSTRAINT nex record_versions record_versions_pkey postgres
+7200; 2606 19085 CONSTRAINT nex record_versions record_versions_record_id_version_key postgres
+6851; 2606 17067 CONSTRAINT nex recovery_attempts recovery_attempts_pkey postgres
+7039; 2606 17891 CONSTRAINT nex recovery_runs recovery_runs_pkey postgres
+7007; 2606 17691 CONSTRAINT nex rollup_campaigns rollup_campaigns_pkey postgres
+7013; 2606 17744 CONSTRAINT nex rollup_country rollup_country_pkey postgres
+7009; 2606 17713 CONSTRAINT nex rollup_daily rollup_daily_pkey postgres
+7011; 2606 17730 CONSTRAINT nex rollup_monthly rollup_monthly_pkey postgres
+7015; 2606 17760 CONSTRAINT nex rollup_provider rollup_provider_pkey postgres
+7017; 2606 17775 CONSTRAINT nex rollup_segment rollup_segment_pkey postgres
+7563; 2606 61051 CONSTRAINT nex discovery_rotation_state rotation_unique_per_round_surface postgres
+7594; 2606 76353 CONSTRAINT nex safety_audit_config safety_audit_config_pkey postgres
+7597; 2606 76371 CONSTRAINT nex safety_audit_event safety_audit_event_idempotency_key_event_type_key postgres
+7599; 2606 76369 CONSTRAINT nex safety_audit_event safety_audit_event_pkey postgres
+7621; 2606 92826 CONSTRAINT nex service_business service_business_pkey postgres
+7623; 2606 92828 CONSTRAINT nex service_business service_business_public_listing_ref_key postgres
+7628; 2606 92841 CONSTRAINT nex service_business_source_snapshot service_business_source_snapshot_pkey postgres
+7769; 2606 109021 CONSTRAINT nex service_request_offer service_request_offer_pkey postgres
+7771; 2606 109023 CONSTRAINT nex service_request_offer service_request_offer_request_id_provider_id_key postgres
+7765; 2606 108998 CONSTRAINT nex service_request service_request_pkey postgres
+7134; 2606 18282 CONSTRAINT nex social_accounts social_accounts_pkey postgres
+7136; 2606 18284 CONSTRAINT nex social_accounts social_accounts_tenant_id_platform_platform_account_id_key postgres
+7151; 2606 18351 CONSTRAINT nex social_admin_access_log social_admin_access_log_pkey postgres
+7145; 2606 18328 CONSTRAINT nex social_audit_events social_audit_events_pkey postgres
+7177; 2606 18573 CONSTRAINT nex social_brand_profiles social_brand_profiles_pkey postgres
+7183; 2606 18632 CONSTRAINT nex social_category_automation social_category_automation_pkey postgres
+7173; 2606 18535 CONSTRAINT nex social_content_drafts social_content_drafts_pkey postgres
+7163; 2606 18483 CONSTRAINT nex social_content_sources social_content_sources_pkey postgres
+7165; 2606 18485 CONSTRAINT nex social_content_sources social_content_sources_tenant_id_kind_slug_key postgres
+7168; 2606 18508 CONSTRAINT nex social_content_templates social_content_templates_pkey postgres
+7170; 2606 18510 CONSTRAINT nex social_content_templates social_content_templates_tenant_id_slug_key postgres
+7149; 2606 18341 CONSTRAINT nex social_controls social_controls_pkey postgres
+7155; 2606 18422 CONSTRAINT nex social_dek_wraps social_dek_wraps_pkey postgres
+7159; 2606 18437 CONSTRAINT nex social_oauth_states social_oauth_states_pkey postgres
+7140; 2606 18303 CONSTRAINT nex social_publish_intents social_publish_intents_pkey postgres
+7142; 2606 18305 CONSTRAINT nex social_publish_intents social_publish_intents_tenant_id_post_id_platform_account_i_key postgres
+7130; 2606 18259 CONSTRAINT nex social_role_grants social_role_grants_pkey postgres
+7132; 2606 18261 CONSTRAINT nex social_role_grants social_role_grants_tenant_id_user_id_role_key postgres
+7185; 2606 18650 CONSTRAINT nex social_scheduled_posts social_scheduled_posts_pkey postgres
+7125; 2606 18246 CONSTRAINT nex social_tenants social_tenants_pkey postgres
+7127; 2606 18248 CONSTRAINT nex social_tenants social_tenants_slug_key postgres
+7180; 2606 18592 CONSTRAINT nex social_validator_runs social_validator_runs_pkey postgres
+7222; 2606 19156 CONSTRAINT nex sources sources_pkey postgres
+7582; 2606 76211 CONSTRAINT nex sparks_product sparks_product_pkey postgres
+7584; 2606 76220 CONSTRAINT nex sparks_product_price sparks_product_price_pkey postgres
+6878; 2606 17112 CONSTRAINT nex tracking_events tracking_events_pkey postgres
+7512; 2606 60459 CONSTRAINT nex transport_acquisition_outreach transport_acquisition_outreach_pkey postgres
+7502; 2606 60426 CONSTRAINT nex transport_acquisition_record transport_acquisition_record_canonical_phone_e164_key postgres
+7504; 2606 60424 CONSTRAINT nex transport_acquisition_record transport_acquisition_record_pkey postgres
+7508; 2606 60441 CONSTRAINT nex transport_acquisition_source_snapshot transport_acquisition_source_snapshot_pkey postgres
+7573; 2606 76166 CONSTRAINT nex user_wallet user_wallet_pkey postgres
+7625; 2606 92869 CONSTRAINT nex service_business ux_service_business_source_ref postgres
+7662; 2606 101201 CONSTRAINT nex video_feed_impression video_feed_impression_pkey postgres
+7576; 2606 76177 CONSTRAINT nex wallet_transaction wallet_transaction_pkey postgres
+7580; 2606 76179 CONSTRAINT nex wallet_transaction wallet_transaction_user_id_idempotency_key_key postgres
+7793; 2606 166369 CONSTRAINT nex work_item work_item_pkey postgres
+6842; 2606 17037 CONSTRAINT nex worker_audit_events worker_audit_events_pkey postgres
+7397; 2606 52250 CONSTRAINT nex worker_cycle_run worker_cycle_run_pkey postgres
+7392; 2606 52234 CONSTRAINT nex worker_heartbeat worker_heartbeat_pkey postgres
+7402; 2606 52345 CONSTRAINT nex worker_heartbeats_archive_2026_08_22 worker_heartbeats_archive_2026_08_22_pkey postgres
+7214; 2606 19126 CONSTRAINT nex worker_jobs worker_jobs_pkey postgres
+7218; 2606 19139 CONSTRAINT nex worker_results worker_results_pkey postgres
+7400; 2606 52318 CONSTRAINT nex worker_schedule worker_schedule_pkey postgres
+7031; 1259 17862 INDEX nex alert_dispatches_alert_idx postgres
+7034; 1259 17863 INDEX nex alert_dispatches_time_idx postgres
+7025; 1259 17843 INDEX nex alerts_incident_idx postgres
+7026; 1259 17844 INDEX nex alerts_one_open_per_rule postgres
+7029; 1259 17842 INDEX nex alerts_rule_state_idx postgres
+7030; 1259 17841 INDEX nex alerts_state_idx postgres
+6882; 1259 17132 INDEX nex analytics_business_id_idx postgres
+6883; 1259 17131 INDEX nex analytics_country_idx postgres
+7000; 1259 17671 INDEX nex analytics_events_campaign_time_idx postgres
+7001; 1259 17674 INDEX nex analytics_events_ingest_idx postgres
+7004; 1259 17673 INDEX nex analytics_events_recipient_idx postgres
+7005; 1259 17672 INDEX nex analytics_events_type_time_idx postgres
+6884; 1259 17130 INDEX nex analytics_path_ts_idx postgres
+6885; 1259 17129 INDEX nex analytics_provider_ts_idx postgres
+7096; 1259 18168 INDEX nex attributions_campaign_idx postgres
+7097; 1259 18167 INDEX nex attributions_contact_idx postgres
+7100; 1259 18166 INDEX nex attributions_conversion_idx postgres
+7101; 1259 18170 INDEX nex attributions_experiment_idx postgres
+7102; 1259 18169 INDEX nex attributions_journey_idx postgres
+7103; 1259 18171 INDEX nex attributions_model_idx postgres
+6888; 1259 17150 INDEX nex automation_rules_authority_idx postgres
+6889; 1259 17151 INDEX nex automation_rules_business_idx postgres
+6890; 1259 17149 INDEX nex automation_rules_enabled_idx postgres
+6893; 1259 17148 INDEX nex automation_rules_rule_id_idx postgres
+6894; 1259 17165 INDEX nex automation_runs_business_idx postgres
+6897; 1259 17162 INDEX nex automation_runs_rule_ts_idx postgres
+6898; 1259 17163 INDEX nex automation_runs_status_ts_idx postgres
+6899; 1259 17164 INDEX nex automation_runs_trigger_evt_idx postgres
+7037; 1259 17880 INDEX nex benchmark_runs_time_idx postgres
+6856; 1259 17084 INDEX nex bm_business_id_idx postgres
+6857; 1259 17081 INDEX nex bm_slug_added_idx postgres
+6858; 1259 17082 INDEX nex bm_source_job_id_idx postgres
+6859; 1259 17083 INDEX nex bm_source_owner_added_idx postgres
+6996; 1259 17521 INDEX nex campaign_recipients_pending_idx postgres
+6999; 1259 17520 INDEX nex campaign_recipients_status_idx postgres
+6982; 1259 17420 INDEX nex campaign_segments_segment_idx postgres
+6977; 1259 17402 INDEX nex campaigns_scheduled_idx postgres
+6978; 1259 17401 INDEX nex campaigns_status_idx postgres
+6979; 1259 17403 INDEX nex campaigns_updated_idx postgres
+7468; 1259 59948 INDEX nex category_candidate_active_dedup_idx postgres
+7478; 1259 60036 INDEX nex category_candidate_calibration_annotation_annotator_idx postgres
+7479; 1259 60035 INDEX nex category_candidate_calibration_annotation_candidate_idx postgres
+7471; 1259 59946 INDEX nex category_candidate_proposed_id_idx postgres
+7474; 1259 60013 INDEX nex category_candidate_score_candidate_idx postgres
+7477; 1259 60014 INDEX nex category_candidate_score_tier_idx postgres
+7472; 1259 59945 INDEX nex category_candidate_status_idx postgres
+7473; 1259 59947 INDEX nex category_candidate_vertical_idx postgres
+7461; 1259 59902 INDEX nex category_registry_active_idx postgres
+7462; 1259 59903 INDEX nex category_registry_countries_gin_idx postgres
+7463; 1259 59901 INDEX nex category_registry_parent_vertical_idx postgres
+7605; 1259 76397 INDEX nex chat_message_archive_message_idx postgres
+7585; 1259 76241 INDEX nex chat_message_conversation_idx postgres
+7589; 1259 76258 INDEX nex chat_message_deletion_conv_idx postgres
+7592; 1259 76259 INDEX nex chat_message_deletion_wallet_idx postgres
+7588; 1259 76242 INDEX nex chat_message_sender_idx postgres
+7018; 1259 17803 INDEX nex compliance_events_contact_idx postgres
+7021; 1259 17805 INDEX nex compliance_events_source_idx postgres
+7022; 1259 17804 INDEX nex compliance_events_type_idx postgres
+6962; 1259 17348 INDEX nex contact_dup_pending_idx postgres
+6963; 1259 17347 INDEX nex contact_dup_unique_pair_idx postgres
+6958; 1259 17331 INDEX nex contact_merges_absorbed_idx postgres
+6961; 1259 17330 INDEX nex contact_merges_surviving_idx postgres
+6971; 1259 17383 INDEX nex contact_segments_last_used_idx postgres
+6972; 1259 17384 INDEX nex contact_segments_name_idx postgres
+6951; 1259 17317 INDEX nex contact_sources_contact_idx postgres
+6954; 1259 17319 INDEX nex contact_sources_source_ref_idx postgres
+6955; 1259 17354 INDEX nex contact_sources_synchronised_idx postgres
+6956; 1259 17318 INDEX nex contact_sources_type_idx postgres
+6957; 1259 17353 INDEX nex contact_sources_unique_ref_idx postgres
+6862; 1259 17101 INDEX nex contacts_business_id_idx postgres
+6863; 1259 17303 INDEX nex contacts_canonical_email_idx postgres
+6864; 1259 17304 INDEX nex contacts_canonical_phone_idx postgres
+6865; 1259 17791 INDEX nex contacts_compliance_state_idx postgres
+6866; 1259 17097 INDEX nex contacts_contact_id_idx postgres
+6867; 1259 17305 INDEX nex contacts_country_idx postgres
+6868; 1259 17098 INDEX nex contacts_email_idx postgres
+6869; 1259 17100 INDEX nex contacts_lifecycle_idx postgres
+6870; 1259 17102 INDEX nex contacts_linked_biz_idx postgres
+6871; 1259 17306 INDEX nex contacts_never_contact_idx postgres
+6872; 1259 17099 INDEX nex contacts_phone_idx postgres
+7293; 1259 33108 INDEX nex conv_edges_from_idx postgres
+7298; 1259 33109 INDEX nex conv_edges_to_idx postgres
+7299; 1259 33110 INDEX nex conv_edges_weight_idx postgres
+7282; 1259 33052 INDEX nex conv_entities_aliases_gin postgres
+7283; 1259 33051 INDEX nex conv_entities_brain_idx postgres
+7318; 1259 33178 INDEX nex conv_feedback_created_idx postgres
+7321; 1259 33177 INDEX nex conv_feedback_signal_idx postgres
+7322; 1259 33176 INDEX nex conv_feedback_turn_idx postgres
+7286; 1259 33075 INDEX nex conv_ki_brain_idx postgres
+7287; 1259 33079 INDEX nex conv_ki_draft_only_idx postgres
+7288; 1259 33077 INDEX nex conv_ki_entities_gin postgres
+7289; 1259 33076 INDEX nex conv_ki_intent_idx postgres
+7290; 1259 33078 INDEX nex conv_ki_topics_gin postgres
+7314; 1259 33159 INDEX nex conv_outcomes_labelled_at_idx postgres
+7315; 1259 33158 INDEX nex conv_outcomes_outcome_idx postgres
+7300; 1259 33121 INDEX nex conv_states_brain_idx postgres
+7301; 1259 33120 INDEX nex conv_states_business_idx postgres
+7304; 1259 33122 INDEX nex conv_states_state_gin postgres
+7307; 1259 33145 INDEX nex conv_turns_convo_idx postgres
+7308; 1259 33147 INDEX nex conv_turns_entities_gin postgres
+7309; 1259 33146 INDEX nex conv_turns_intent_idx postgres
+7089; 1259 18146 INDEX nex conversion_events_contact_idx postgres
+7090; 1259 18148 INDEX nex conversion_events_correlation_idx postgres
+7095; 1259 18147 INDEX nex conversion_events_type_idx postgres
+6993; 1259 17489 INDEX nex delivery_job_attempts_job_idx postgres
+6988; 1259 17472 INDEX nex delivery_jobs_campaign_idx postgres
+6989; 1259 17473 INDEX nex delivery_jobs_lease_idx postgres
+6990; 1259 17471 INDEX nex delivery_jobs_pending_idx postgres
+7555; 1259 61052 INDEX nex discovery_rotation_state_lookup_idx postgres
+6983; 1259 17439 INDEX nex email_templates_category_idx postgres
+6986; 1259 17441 INDEX nex email_templates_seed_name_uniq postgres
+6987; 1259 17440 INDEX nex email_templates_used_idx postgres
+6830; 1259 17026 INDEX nex events_business_id_idx postgres
+6833; 1259 17025 INDEX nex events_related_department_idx postgres
+6834; 1259 17024 INDEX nex events_related_job_idx postgres
+6835; 1259 17022 INDEX nex events_timestamp_desc_idx postgres
+6836; 1259 17023 INDEX nex events_type_ts_idx postgres
+7083; 1259 18112 INDEX nex experiment_assignments_contact_idx postgres
+7088; 1259 18111 INDEX nex experiment_assignments_variant_idx postgres
+7075; 1259 18068 INDEX nex experiments_active_per_slug postgres
+7080; 1259 18069 INDEX nex experiments_status_idx postgres
+7429; 1259 60155 INDEX nex idx_accom_business_evidence_source postgres
+7430; 1259 60104 INDEX nex idx_accom_business_location_confidence postgres
+7431; 1259 60103 INDEX nex idx_accom_business_neighbourhood postgres
+7432; 1259 52529 INDEX nex idx_accommodation_business_amenities_gin postgres
+7433; 1259 52528 INDEX nex idx_accommodation_business_categories_gin postgres
+7434; 1259 52525 INDEX nex idx_accommodation_business_city_category postgres
+7435; 1259 52526 INDEX nex idx_accommodation_business_claim_status postgres
+7436; 1259 92684 INDEX nex idx_accommodation_business_cycle_run postgres
+7437; 1259 52524 INDEX nex idx_accommodation_business_dedupe postgres
+7438; 1259 52527 INDEX nex idx_accommodation_business_owner_status postgres
+7439; 1259 92685 INDEX nex idx_accommodation_business_worker_id postgres
+7451; 1259 52594 INDEX nex idx_accommodation_evidence_agent postgres
+7452; 1259 52593 INDEX nex idx_accommodation_evidence_business_field postgres
+7453; 1259 52595 INDEX nex idx_accommodation_evidence_cycle postgres
+7447; 1259 52571 INDEX nex idx_accommodation_provenance_cycle postgres
+7448; 1259 52570 INDEX nex idx_accommodation_provenance_trust postgres
+7443; 1259 52549 INDEX nex idx_accommodation_snapshot_business postgres
+7444; 1259 52550 INDEX nex idx_accommodation_snapshot_cycle postgres
+7278; 1259 32855 INDEX nex idx_analytics_rollup_queue_event postgres
+7279; 1259 32854 INDEX nex idx_analytics_rollup_queue_pending postgres
+7244; 1259 19268 INDEX nex idx_audit_actor postgres
+7245; 1259 19267 INDEX nex idx_audit_entity postgres
+7744; 1259 108919 INDEX nex idx_bike_model_brand postgres
+7745; 1259 108920 INDEX nex idx_bike_model_category postgres
+7746; 1259 108921 INDEX nex idx_bike_model_cc postgres
+7758; 1259 108976 INDEX nex idx_bike_rental_buy_option postgres
+7759; 1259 108975 INDEX nex idx_bike_rental_city_status postgres
+7493; 1259 60243 INDEX nex idx_bko_business_lookup postgres
+7494; 1259 60244 INDEX nex idx_bko_domain_lookup postgres
+7495; 1259 60245 INDEX nex idx_bko_freshness postgres
+7688; 1259 102475 INDEX nex idx_brain_accom_prices_loc postgres
+7682; 1259 102460 INDEX nex idx_brain_activities_kind postgres
+7683; 1259 102459 INDEX nex idx_brain_activities_loc postgres
+7691; 1259 102489 INDEX nex idx_brain_attractions_kind postgres
+7692; 1259 102488 INDEX nex idx_brain_attractions_loc postgres
+7697; 1259 102502 INDEX nex idx_brain_guide_loc postgres
+7667; 1259 102411 INDEX nex idx_brain_location_kind postgres
+7668; 1259 102412 INDEX nex idx_brain_location_slug postgres
+7700; 1259 102514 INDEX nex idx_brain_rating_entity postgres
+7679; 1259 102446 INDEX nex idx_brain_seasons_loc postgres
+7673; 1259 102428 INDEX nex idx_brain_transport_dest postgres
+7674; 1259 102427 INDEX nex idx_brain_transport_origin postgres
+7458; 1259 59762 INDEX nex idx_business_image_cycle_run postgres
+7459; 1259 59760 INDEX nex idx_business_image_lookup postgres
+7460; 1259 59761 INDEX nex idx_business_image_type postgres
+7635; 1259 101047 INDEX nex idx_call_record_callee postgres
+7636; 1259 101036 INDEX nex idx_call_record_caller postgres
+7637; 1259 93054 INDEX nex idx_call_record_end postgres
+7638; 1259 93053 INDEX nex idx_call_record_path postgres
+7632; 1259 92973 INDEX nex idx_cat_img_library_category_active postgres
+7227; 1259 19184 INDEX nex idx_confidence_low postgres
+7228; 1259 19183 INDEX nex idx_confidence_record postgres
+7231; 1259 19207 INDEX nex idx_contradictions_open postgres
+7407; 1259 52398 INDEX nex idx_conv_learning_candidate_cycle postgres
+7408; 1259 52399 INDEX nex idx_conv_learning_candidate_language_status postgres
+7409; 1259 52397 INDEX nex idx_conv_learning_candidate_pending postgres
+7312; 1259 52369 INDEX nex idx_conv_turns_cle_cycle postgres
+7313; 1259 52368 INDEX nex idx_conv_turns_cle_pending postgres
+7234; 1259 19227 INDEX nex idx_deprecations_record postgres
+7733; 1259 102878 INDEX nex idx_dyk_active postgres
+7734; 1259 102876 INDEX nex idx_dyk_category postgres
+7735; 1259 102959 INDEX nex idx_dyk_needs_translation postgres
+7736; 1259 102877 INDEX nex idx_dyk_region postgres
+7205; 1259 19110 INDEX nex idx_edges_from postgres
+7206; 1259 19112 INDEX nex idx_edges_gap postgres
+7207; 1259 19111 INDEX nex idx_edges_to postgres
+7235; 1259 19256 INDEX nex idx_feedback_domain postgres
+7236; 1259 19254 INDEX nex idx_feedback_kind postgres
+7237; 1259 19253 INDEX nex idx_feedback_record postgres
+7238; 1259 19257 INDEX nex idx_feedback_tags postgres
+7239; 1259 19255 INDEX nex idx_feedback_unapplied postgres
+7327; 1259 52407 INDEX nex idx_food_business_categories_gin postgres
+7328; 1259 92677 INDEX nex idx_food_business_cycle_run postgres
+7329; 1259 60157 INDEX nex idx_food_business_evidence_source postgres
+7330; 1259 60099 INDEX nex idx_food_business_location_confidence postgres
+7331; 1259 60098 INDEX nex idx_food_business_neighbourhood postgres
+7417; 1259 52456 INDEX nex idx_food_business_promotion_audit_biz_written postgres
+7418; 1259 52457 INDEX nex idx_food_business_promotion_audit_cycle postgres
+7412; 1259 52436 INDEX nex idx_food_business_promotion_cycle_run postgres
+7413; 1259 52435 INDEX nex idx_food_business_promotion_score postgres
+7414; 1259 52434 INDEX nex idx_food_business_promotion_state postgres
+7369; 1259 51978 INDEX nex idx_food_business_value_ref postgres
+7332; 1259 92678 INDEX nex idx_food_business_worker_id postgres
+7381; 1259 52119 INDEX nex idx_food_evidence_agent postgres
+7382; 1259 52118 INDEX nex idx_food_evidence_business_field postgres
+7383; 1259 52120 INDEX nex idx_food_evidence_source_type postgres
+7386; 1259 52135 INDEX nex idx_food_job_business postgres
+7387; 1259 52134 INDEX nex idx_food_job_status_next postgres
+7374; 1259 51995 INDEX nex idx_food_next_action_action postgres
+7378; 1259 52006 INDEX nex idx_food_next_action_audit_business postgres
+7375; 1259 51996 INDEX nex idx_food_next_action_computed_at postgres
+7488; 1259 60133 INDEX nex idx_geo_landmark_country_city_category postgres
+7712; 1259 102668 INDEX nex idx_grammar_cat postgres
+7713; 1259 102667 INDEX nex idx_grammar_cefr postgres
+7208; 1259 19128 INDEX nex idx_jobs_lease postgres
+7209; 1259 19127 INDEX nex idx_jobs_queue postgres
+7264; 1259 19507 INDEX nex idx_knowledge_dump_jobs_created postgres
+7265; 1259 19506 INDEX nex idx_knowledge_dump_jobs_inbox postgres
+7266; 1259 19505 INDEX nex idx_knowledge_dump_jobs_status postgres
+7251; 1259 102624 INDEX nex idx_knowledge_inbox_brain_topic_source postgres
+7252; 1259 19480 INDEX nex idx_knowledge_inbox_created postgres
+7253; 1259 52282 INDEX nex idx_knowledge_inbox_extraction_band postgres
+7254; 1259 19615 INDEX nex idx_knowledge_inbox_object postgres
+7255; 1259 19479 INDEX nex idx_knowledge_inbox_status postgres
+7256; 1259 102786 INDEX nex idx_knowledge_inbox_truth_class postgres
+7718; 1259 102686 INDEX nex idx_lesson_cefr postgres
+7719; 1259 102687 INDEX nex idx_lesson_theme postgres
+7246; 1259 19319 INDEX nex idx_llm_retry_parent postgres
+7247; 1259 19318 INDEX nex idx_llm_retry_pending postgres
+7248; 1259 19320 INDEX nex idx_llm_retry_status postgres
+7482; 1259 60120 INDEX nex idx_meaningful_area_country_city postgres
+7483; 1259 60119 INDEX nex idx_meaningful_area_kind_precedence postgres
+7521; 1259 60657 INDEX nex idx_mp_category_level postgres
+7522; 1259 60658 INDEX nex idx_mp_category_parent postgres
+7523; 1259 60659 INDEX nex idx_mp_category_path postgres
+7541; 1259 60606 INDEX nex idx_mp_option_value_option postgres
+7528; 1259 60558 INDEX nex idx_mp_product_category postgres
+7534; 1259 60573 INDEX nex idx_mp_product_image_product postgres
+7529; 1259 60557 INDEX nex idx_mp_product_seller postgres
+7513; 1259 92691 INDEX nex idx_mp_seller_cycle_run postgres
+7514; 1259 60513 INDEX nex idx_mp_seller_status postgres
+7515; 1259 92692 INDEX nex idx_mp_seller_worker_id postgres
+7546; 1259 60628 INDEX nex idx_mp_variant_product postgres
+7333; 1259 51745 INDEX nex idx_nex_food_business_business_name_lower postgres
+7334; 1259 51741 INDEX nex idx_nex_food_business_city_category postgres
+7335; 1259 51742 INDEX nex idx_nex_food_business_claim_status postgres
+7336; 1259 51746 INDEX nex idx_nex_food_business_coords postgres
+7337; 1259 51740 INDEX nex idx_nex_food_business_dedupe_hash postgres
+7338; 1259 51743 INDEX nex idx_nex_food_business_owner_status postgres
+7339; 1259 51744 INDEX nex idx_nex_food_business_source postgres
+7363; 1259 51911 INDEX nex idx_nex_food_claim_code_active postgres
+7364; 1259 51912 INDEX nex idx_nex_food_claim_code_expires_at postgres
+7367; 1259 51964 INDEX nex idx_nex_food_event_business_created postgres
+7368; 1259 51965 INDEX nex idx_nex_food_event_type_created postgres
+7359; 1259 51898 INDEX nex idx_nex_food_field_provenance_trust postgres
+7346; 1259 51854 INDEX nex idx_nex_food_outreach_attempt_business_ref postgres
+7347; 1259 51855 INDEX nex idx_nex_food_outreach_attempt_status postgres
+7350; 1259 51867 INDEX nex idx_nex_food_outreach_suppression_business_ref postgres
+7343; 1259 51844 INDEX nex idx_nex_food_outreach_template_purpose_lang postgres
+7355; 1259 51888 INDEX nex idx_nex_food_snapshot_business_ref postgres
+7269; 1259 19610 INDEX nex idx_object_blobs_bucket_key postgres
+7270; 1259 19612 INDEX nex idx_object_blobs_hash postgres
+7271; 1259 19611 INDEX nex idx_object_blobs_uploaded_at postgres
+7722; 1259 102711 INDEX nex idx_practice_cefr postgres
+7723; 1259 102712 INDEX nex idx_practice_kind postgres
+7724; 1259 102710 INDEX nex idx_practice_lesson postgres
+7568; 1259 60749 INDEX nex idx_prl_active postgres
+7569; 1259 60750 INDEX nex idx_prl_walker postgres
+7727; 1259 102750 INDEX nex idx_progress_due postgres
+7728; 1259 102749 INDEX nex idx_progress_learner postgres
+7421; 1259 52488 INDEX nex idx_promotion_decision_business_field_decided postgres
+7422; 1259 52491 INDEX nex idx_promotion_decision_cycle postgres
+7423; 1259 52490 INDEX nex idx_promotion_decision_evidence postgres
+7424; 1259 52489 INDEX nex idx_promotion_decision_rejected_lookup postgres
+7360; 1259 52353 INDEX nex idx_provenance_cycle_run postgres
+7751; 1259 109044 INDEX nex idx_provider_profile_available_broadcast postgres
+7752; 1259 108945 INDEX nex idx_provider_profile_bike_slug postgres
+7753; 1259 108944 INDEX nex idx_provider_profile_city_status postgres
+7608; 1259 92748 INDEX nex idx_provider_registry_caps postgres
+7609; 1259 92747 INDEX nex idx_provider_registry_health postgres
+7188; 1259 19073 INDEX nex idx_records_audience postgres
+7189; 1259 19072 INDEX nex idx_records_category postgres
+7190; 1259 19074 INDEX nex idx_records_review_due postgres
+7191; 1259 19071 INDEX nex idx_records_status postgres
+7215; 1259 19146 INDEX nex idx_results_flags postgres
+7216; 1259 19145 INDEX nex idx_results_job postgres
+7558; 1259 60707 INDEX nex idx_rotation_state_city_category postgres
+7559; 1259 92694 INDEX nex idx_rotation_state_cooldown postgres
+7560; 1259 60706 INDEX nex idx_rotation_state_last_evaluated postgres
+7561; 1259 60705 INDEX nex idx_rotation_state_state postgres
+7741; 1259 102897 INDEX nex idx_saved_learner postgres
+7626; 1259 92842 INDEX nex idx_sb_snapshot_business_ref postgres
+7614; 1259 92829 INDEX nex idx_service_business_category_city postgres
+7615; 1259 92894 INDEX nex idx_service_business_commercial_by_category postgres
+7616; 1259 92893 INDEX nex idx_service_business_commercial_status postgres
+7617; 1259 92830 INDEX nex idx_service_business_cycle_run postgres
+7618; 1259 92831 INDEX nex idx_service_business_last_verified postgres
+7619; 1259 92895 INDEX nex idx_service_business_next_eligible_action postgres
+7766; 1259 109035 INDEX nex idx_service_offer_provider postgres
+7767; 1259 109034 INDEX nex idx_service_offer_request postgres
+7760; 1259 109006 INDEX nex idx_service_request_active_state postgres
+7761; 1259 109041 INDEX nex idx_service_request_broadcast_open postgres
+7762; 1259 109004 INDEX nex idx_service_request_learner_created postgres
+7763; 1259 109005 INDEX nex idx_service_request_provider_state postgres
+7219; 1259 19162 INDEX nex idx_sources_record postgres
+7220; 1259 19163 INDEX nex idx_sources_tier postgres
+7782; 1259 109216 INDEX nex idx_topup_intent_pending postgres
+7783; 1259 109215 INDEX nex idx_topup_intent_provider_created postgres
+7496; 1259 60428 INDEX nex idx_transport_acq_jurisdiction postgres
+7509; 1259 60471 INDEX nex idx_transport_acq_outreach_optout postgres
+7510; 1259 60470 INDEX nex idx_transport_acq_outreach_provider postgres
+7497; 1259 60429 INDEX nex idx_transport_acq_review postgres
+7505; 1259 60447 INDEX nex idx_transport_acq_snapshot_provider postgres
+7506; 1259 60448 INDEX nex idx_transport_acq_snapshot_url postgres
+7498; 1259 60427 INDEX nex idx_transport_acq_stage postgres
+7499; 1259 60430 INDEX nex idx_transport_acq_vehicle_types postgres
+7500; 1259 92706 INDEX nex idx_transport_worker_id postgres
+7196; 1259 19091 INDEX nex idx_versions_record postgres
+7705; 1259 102647 INDEX nex idx_vocab_cefr postgres
+7706; 1259 102649 INDEX nex idx_vocab_freq postgres
+7707; 1259 102648 INDEX nex idx_vocab_pos postgres
+7775; 1259 109079 INDEX nex idx_wallet_tx_provider_created postgres
+7776; 1259 109080 INDEX nex idx_wallet_tx_related_request postgres
+7777; 1259 109226 INDEX nex idx_wallet_tx_topup_intent postgres
+7393; 1259 52253 INDEX nex idx_wcr_status postgres
+7394; 1259 52252 INDEX nex idx_wcr_type_started postgres
+7395; 1259 52251 INDEX nex idx_wcr_worker_started postgres
+7389; 1259 52236 INDEX nex idx_worker_heartbeat_last_at postgres
+7390; 1259 52235 INDEX nex idx_worker_heartbeat_type postgres
+7398; 1259 52319 INDEX nex idx_worker_schedule_enabled postgres
+6966; 1259 17367 INDEX nex import_mappings_header_sig_idx postgres
+6967; 1259 17368 INDEX nex import_mappings_label_idx postgres
+6968; 1259 17369 INDEX nex import_mappings_last_used_idx postgres
+7648; 1259 101008 INDEX nex ix_bcc_enabled postgres
+7649; 1259 101007 INDEX nex ix_bcc_ref postgres
+7340; 1259 100798 INDEX nex ix_food_business_source_ref postgres
+9007; 0 0 COMMENT nex INDEX ix_food_business_source_ref postgres
+7641; 1259 100813 INDEX nex ix_identity_merge_log_layer_time postgres
+7642; 1259 100812 INDEX nex ix_identity_merge_log_source postgres
+7643; 1259 100811 INDEX nex ix_identity_merge_log_table_existing postgres
+7257; 1259 100928 INDEX nex ix_knowledge_inbox_brain_class postgres
+7650; 1259 101158 INDEX nex ix_media_object_content_hash postgres
+7651; 1259 101157 INDEX nex ix_media_object_context postgres
+7652; 1259 101159 INDEX nex ix_media_object_hard_delete postgres
+7653; 1259 101155 INDEX nex ix_media_object_owner_state postgres
+7654; 1259 101156 INDEX nex ix_media_object_type_state postgres
+7655; 1259 101160 INDEX nex ix_media_object_visibility_public postgres
+7658; 1259 101202 INDEX nex ix_video_feed_impression_media_time postgres
+7659; 1259 101204 INDEX nex ix_video_feed_impression_time postgres
+7660; 1259 101203 INDEX nex ix_video_feed_impression_viewer_time postgres
+6843; 1259 17057 INDEX nex jobs_business_id_idx postgres
+6844; 1259 17056 INDEX nex jobs_inbox_item_id_idx postgres
+6845; 1259 17053 INDEX nex jobs_job_id_updated_idx postgres
+6846; 1259 17055 INDEX nex jobs_owner_created_idx postgres
+6849; 1259 17054 INDEX nex jobs_status_updated_idx postgres
+7070; 1259 18039 INDEX nex journey_campaign_executions_in_flight_idx postgres
+7071; 1259 18038 INDEX nex journey_campaign_executions_journey_idx postgres
+7074; 1259 18037 INDEX nex journey_campaign_executions_state_uniq postgres
+7054; 1259 17958 INDEX nex journey_events_contact_idx postgres
+7055; 1259 17957 INDEX nex journey_events_journey_idx postgres
+7058; 1259 17956 INDEX nex journey_events_state_idx postgres
+7065; 1259 18008 INDEX nex journey_inbound_events_key_time_idx postgres
+7066; 1259 18010 INDEX nex journey_inbound_events_pending_idx postgres
+7069; 1259 18009 INDEX nex journey_inbound_events_time_idx postgres
+7047; 1259 17943 INDEX nex journey_states_contact_idx postgres
+7052; 1259 17942 INDEX nex journey_states_ready_idx postgres
+7053; 1259 17944 INDEX nex journey_states_slug_ver_idx postgres
+7059; 1259 17990 INDEX nex journey_triggers_active_per_key postgres
+7064; 1259 17991 INDEX nex journey_triggers_type_active_idx postgres
+7041; 1259 17920 INDEX nex journeys_active_per_slug postgres
+7046; 1259 17921 INDEX nex journeys_status_idx postgres
+6908; 1259 17193 INDEX nex kpe_chunks_business_id_idx postgres
+6909; 1259 17192 INDEX nex kpe_chunks_content_hash_idx postgres
+6910; 1259 17191 INDEX nex kpe_chunks_doc_order_idx postgres
+6917; 1259 17223 INDEX nex kpe_decisions_business_id_idx postgres
+6920; 1259 17222 INDEX nex kpe_decisions_tier_ts_idx postgres
+6921; 1259 17221 INDEX nex kpe_decisions_ts_idx postgres
+6900; 1259 17181 INDEX nex kpe_docs_business_id_idx postgres
+6901; 1259 17180 INDEX nex kpe_docs_classifier_idx postgres
+6902; 1259 17178 INDEX nex kpe_docs_content_hash_idx postgres
+6903; 1259 17179 INDEX nex kpe_docs_source_ingested_idx postgres
+6922; 1259 17232 INDEX nex kpe_dupes_chunk_idx postgres
+6923; 1259 17234 INDEX nex kpe_dupes_detected_idx postgres
+6924; 1259 17233 INDEX nex kpe_dupes_matched_idx postgres
+6927; 1259 17247 INDEX nex kpe_edges_business_id_idx postgres
+6928; 1259 17244 INDEX nex kpe_edges_from_type_idx postgres
+6931; 1259 17245 INDEX nex kpe_edges_to_type_idx postgres
+6932; 1259 17246 INDEX nex kpe_edges_type_idx postgres
+6913; 1259 17210 INDEX nex kpe_metadata_business_id_idx postgres
+6914; 1259 17209 INDEX nex kpe_metadata_language_idx postgres
+6939; 1259 17271 INDEX nex kpe_reviews_admin_ts_idx postgres
+6940; 1259 17269 INDEX nex kpe_reviews_chunk_idx postgres
+6941; 1259 17270 INDEX nex kpe_reviews_decision_ts_idx postgres
+6935; 1259 17258 INDEX nex kpe_runs_doc_idx postgres
+6936; 1259 17259 INDEX nex kpe_runs_started_idx postgres
+6942; 1259 17292 INDEX nex object_manifest_bucket_key_uploaded_idx postgres
+6945; 1259 17296 INDEX nex object_manifest_bucket_uploaded_idx postgres
+6946; 1259 17294 INDEX nex object_manifest_business_id_idx postgres
+6947; 1259 17293 INDEX nex object_manifest_content_hash_idx postgres
+6950; 1259 17295 INDEX nex object_manifest_source_ref_idx postgres
+7106; 1259 18192 INDEX nex prediction_models_one_active_per_target postgres
+7111; 1259 18193 INDEX nex prediction_models_target_status_idx postgres
+7112; 1259 18215 INDEX nex predictions_contact_idx postgres
+7113; 1259 18217 INDEX nex predictions_model_idx postgres
+7116; 1259 18216 INDEX nex predictions_subject_idx postgres
+7117; 1259 18214 INDEX nex predictions_target_created_idx postgres
+6852; 1259 17071 INDEX nex recovery_business_id_idx postgres
+6853; 1259 17068 INDEX nex recovery_job_at_idx postgres
+6854; 1259 17069 INDEX nex recovery_level_at_idx postgres
+6855; 1259 17070 INDEX nex recovery_outcome_at_idx postgres
+7040; 1259 17892 INDEX nex recovery_runs_time_idx postgres
+7595; 1259 76374 INDEX nex safety_audit_event_actor_time_idx postgres
+7600; 1259 76377 INDEX nex safety_audit_event_retention_idx postgres
+7601; 1259 76375 INDEX nex safety_audit_event_target_time_idx postgres
+7602; 1259 76376 INDEX nex safety_audit_event_type_time_idx postgres
+7137; 1259 18290 INDEX nex social_accounts_tenant_status_idx postgres
+7152; 1259 18352 INDEX nex social_admin_access_log_target_time_idx postgres
+7146; 1259 18329 INDEX nex social_audit_events_tenant_time_idx postgres
+7147; 1259 18330 INDEX nex social_audit_events_type_time_idx postgres
+7174; 1259 18546 INDEX nex social_content_drafts_tenant_state_idx postgres
+7175; 1259 18610 INDEX nex social_content_drafts_validator_run_idx postgres
+7161; 1259 18492 INDEX nex social_content_sources_active_rights_idx postgres
+7166; 1259 18491 INDEX nex social_content_sources_tenant_kind_idx postgres
+7171; 1259 18516 INDEX nex social_content_templates_tenant_kind_idx postgres
+7153; 1259 18429 INDEX nex social_dek_wraps_one_active_per_purpose postgres
+7156; 1259 18428 INDEX nex social_dek_wraps_tenant_purpose_idx postgres
+7157; 1259 18449 INDEX nex social_oauth_states_pending_idx postgres
+7160; 1259 18448 INDEX nex social_oauth_states_tenant_expires_idx postgres
+7138; 1259 18317 INDEX nex social_publish_intents_lease_idx postgres
+7143; 1259 18316 INDEX nex social_publish_intents_tenant_status_idx postgres
+7128; 1259 18267 INDEX nex social_role_grants_active_idx postgres
+7186; 1259 18671 INDEX nex social_scheduled_posts_ready_idx postgres
+7187; 1259 18672 INDEX nex social_scheduled_posts_tenant_status_idx postgres
+7120; 1259 18249 INDEX nex social_tenants_kind_idx postgres
+7121; 1259 18823 INDEX nex social_tenants_merchant_slug_idx postgres
+7122; 1259 18809 INDEX nex social_tenants_owner_lookup_idx postgres
+7123; 1259 18808 INDEX nex social_tenants_owner_uidx postgres
+7178; 1259 18604 INDEX nex social_validator_runs_draft_idx postgres
+7181; 1259 18603 INDEX nex social_validator_runs_tenant_time_idx postgres
+6875; 1259 17117 INDEX nex tracking_business_id_idx postgres
+6876; 1259 17114 INDEX nex tracking_contact_idx postgres
+6879; 1259 17116 INDEX nex tracking_occurred_idx postgres
+6880; 1259 17113 INDEX nex tracking_session_idx postgres
+6881; 1259 17115 INDEX nex tracking_utm_campaign_idx postgres
+7388; 1259 52136 INDEX nex uniq_food_job_active_per_business_agent postgres
+7260; 1259 19478 INDEX nex uniq_knowledge_inbox_hash postgres
+7351; 1259 51866 INDEX nex uniq_nex_food_outreach_suppression_ref_all postgres
+7352; 1259 51865 INDEX nex uniq_nex_food_outreach_suppression_ref_channel postgres
+7356; 1259 51889 INDEX nex uniq_nex_food_snapshot_source_ref_at postgres
+7780; 1259 109086 INDEX nex uq_provider_wallet_transaction_one_network_fee_per_request postgres
+9008; 0 0 COMMENT nex INDEX uq_provider_wallet_transaction_one_network_fee_per_request postgres
+7781; 1259 109225 INDEX nex uq_provider_wallet_transaction_one_topup_per_intent postgres
+9009; 0 0 COMMENT nex INDEX uq_provider_wallet_transaction_one_topup_per_intent postgres
+7772; 1259 109036 INDEX nex uq_service_offer_one_accepted postgres
+7440; 1259 100796 INDEX nex ux_accommodation_business_source_ref postgres
+7261; 1259 100927 INDEX nex ux_knowledge_inbox_topic_source postgres
+7520; 1259 100797 INDEX nex ux_mp_seller_source_ref postgres
+7629; 1259 92843 INDEX nex ux_sb_snapshot_source_ref postgres
+6837; 1259 17041 INDEX nex wae_business_id_idx postgres
+6838; 1259 17039 INDEX nex wae_job_id_idx postgres
+6839; 1259 17040 INDEX nex wae_provider_idx postgres
+6840; 1259 17038 INDEX nex wae_worker_type_idx postgres
+7574; 1259 76191 INDEX nex wallet_transaction_action_idx postgres
+7577; 1259 76192 INDEX nex wallet_transaction_related_idx postgres
+7578; 1259 76190 INDEX nex wallet_transaction_user_created_idx postgres
+7788; 1259 166373 INDEX nex work_item_completed_finished_at_idx postgres
+7789; 1259 166370 INDEX nex work_item_idempotency_key_uniq postgres
+7790; 1259 166374 INDEX nex work_item_job_city_status_idx postgres
+7791; 1259 166372 INDEX nex work_item_lease_expires_at_idx postgres
+7794; 1259 166371 INDEX nex work_item_status_next_retry_at_idx postgres
+7210; 1259 24579 INDEX nex worker_jobs_input_payload_kjid_idx postgres
+7211; 1259 32771 INDEX nex worker_jobs_input_ref_active_uniq postgres
+9010; 0 0 COMMENT nex INDEX worker_jobs_input_ref_active_uniq postgres
+7212; 1259 24580 INDEX nex worker_jobs_input_ref_lookup_idx postgres
+7931; 2620 76399 TRIGGER nex chat_message_archive chat_message_archive_no_mutate postgres
+7920; 2620 51684 TRIGGER nex conv_knowledge_items conv_ki_enforce_draft_tier postgres
+7921; 2620 51682 TRIGGER nex conv_knowledge_items conv_ki_touch_updated_at postgres
+7922; 2620 51683 TRIGGER nex conv_states conv_states_touch_updated_at postgres
+7928; 2620 76373 TRIGGER nex safety_audit_event safety_audit_event_default_retention postgres
+7929; 2620 76379 TRIGGER nex safety_audit_event safety_audit_event_no_delete postgres
+7930; 2620 76380 TRIGGER nex safety_audit_event safety_audit_event_restricted_update postgres
+7925; 2620 52597 TRIGGER nex accommodation_business trg_accommodation_business_touch_updated_at postgres
+7932; 2620 101162 TRIGGER nex media_object trg_media_object_touch postgres
+7923; 2620 51748 TRIGGER nex food_business trg_nex_food_business_touch_updated_at postgres
+7924; 2620 51869 TRIGGER nex food_outreach_template trg_nex_food_outreach_template_touch postgres
+7926; 2620 76195 TRIGGER nex wallet_transaction wallet_transaction_no_delete postgres
+7927; 2620 76194 TRIGGER nex wallet_transaction wallet_transaction_no_update postgres
+7870; 2606 92679 FK CONSTRAINT nex accommodation_business accommodation_business_cycle_run_id_fkey postgres
+7873; 2606 52560 FK CONSTRAINT nex accommodation_business_field_provenance accommodation_business_field_provenance_business_ref_fkey postgres
+7874; 2606 52565 FK CONSTRAINT nex accommodation_business_field_provenance accommodation_business_field_provenance_cycle_run_id_fkey postgres
+7871; 2606 52539 FK CONSTRAINT nex accommodation_business_source_snapshot accommodation_business_source_snapshot_business_ref_fkey postgres
+7872; 2606 52544 FK CONSTRAINT nex accommodation_business_source_snapshot accommodation_business_source_snapshot_cycle_run_id_fkey postgres
+7875; 2606 52583 FK CONSTRAINT nex accommodation_enrichment_evidence accommodation_enrichment_evidence_business_ref_fkey postgres
+7876; 2606 52588 FK CONSTRAINT nex accommodation_enrichment_evidence accommodation_enrichment_evidence_cycle_run_id_fkey postgres
+7806; 2606 17857 FK CONSTRAINT nex alert_dispatches alert_dispatches_alert_id_fkey postgres
+7805; 2606 17836 FK CONSTRAINT nex alerts alerts_rule_id_fkey postgres
+7802; 2606 17666 FK CONSTRAINT nex analytics_events analytics_events_campaign_id_fkey postgres
+7815; 2606 18161 FK CONSTRAINT nex attributions attributions_conversion_id_fkey postgres
+7911; 2606 108970 FK CONSTRAINT nex bike_rental_listing bike_rental_listing_preferred_bike_slug_fkey postgres
+7904; 2606 102705 FK CONSTRAINT nex brain_english_practice brain_english_practice_lesson_slug_fkey postgres
+7905; 2606 102734 FK CONSTRAINT nex brain_english_progress brain_english_progress_grammar_id_fkey postgres
+7906; 2606 102739 FK CONSTRAINT nex brain_english_progress brain_english_progress_lesson_slug_fkey postgres
+7907; 2606 102744 FK CONSTRAINT nex brain_english_progress brain_english_progress_practice_id_fkey postgres
+7908; 2606 102729 FK CONSTRAINT nex brain_english_progress brain_english_progress_vocab_id_fkey postgres
+7909; 2606 102892 FK CONSTRAINT nex brain_user_saved_facts brain_user_saved_facts_fact_id_fkey postgres
+7877; 2606 59755 FK CONSTRAINT nex business_image business_image_cycle_run_id_fkey postgres
+7801; 2606 17515 FK CONSTRAINT nex campaign_recipients campaign_recipients_campaign_id_fkey postgres
+7797; 2606 17410 FK CONSTRAINT nex campaign_segments campaign_segments_campaign_id_fkey postgres
+7798; 2606 17415 FK CONSTRAINT nex campaign_segments campaign_segments_segment_id_fkey postgres
+7796; 2606 17443 FK CONSTRAINT nex campaigns campaigns_template_id_fkey postgres
+7883; 2606 60030 FK CONSTRAINT nex category_candidate_calibration_annotation category_candidate_calibration_annotation_against_score_id_fkey postgres
+7884; 2606 60054 FK CONSTRAINT nex category_candidate_calibration_annotation category_candidate_calibration_annotation_candidate_id_fkey postgres
+7879; 2606 59935 FK CONSTRAINT nex category_candidate category_candidate_duplicate_of_registry_id_fkey postgres
+7880; 2606 59930 FK CONSTRAINT nex category_candidate category_candidate_proposed_cycle_run_id_fkey postgres
+7882; 2606 60008 FK CONSTRAINT nex category_candidate_score category_candidate_score_candidate_id_fkey postgres
+7881; 2606 59940 FK CONSTRAINT nex category_candidate category_candidate_superseded_by_candidate_id_fkey postgres
+7878; 2606 59949 FK CONSTRAINT nex category_registry category_registry_origin_candidate_fkey postgres
+7902; 2606 76392 FK CONSTRAINT nex chat_message_archive chat_message_archive_event_id_fkey postgres
+7901; 2606 76253 FK CONSTRAINT nex chat_message_deletion chat_message_deletion_message_id_fkey postgres
+7845; 2606 19178 FK CONSTRAINT nex confidence_scores confidence_scores_record_id_fkey postgres
+7795; 2606 17342 FK CONSTRAINT nex contact_duplicate_suggestions contact_duplicate_suggestions_merge_id_fkey postgres
+7846; 2606 19197 FK CONSTRAINT nex contradictions contradictions_record_a_id_fkey postgres
+7847; 2606 19202 FK CONSTRAINT nex contradictions contradictions_record_b_id_fkey postgres
+7854; 2606 33098 FK CONSTRAINT nex conv_edges conv_edges_from_item_fkey postgres
+7855; 2606 33103 FK CONSTRAINT nex conv_edges conv_edges_to_item_fkey postgres
+7858; 2606 33171 FK CONSTRAINT nex conv_feedback conv_feedback_turn_id_fkey postgres
+7853; 2606 33070 FK CONSTRAINT nex conv_knowledge_items conv_knowledge_items_canonical_intent_fkey postgres
+7861; 2606 52387 FK CONSTRAINT nex conv_learning_candidate conv_learning_candidate_cycle_run_id_fkey postgres
+7862; 2606 52392 FK CONSTRAINT nex conv_learning_candidate conv_learning_candidate_promotion_target_record_id_fkey postgres
+7856; 2606 52363 FK CONSTRAINT nex conv_turns conv_turns_cle_cycle_run_id_fkey postgres
+7857; 2606 33140 FK CONSTRAINT nex conv_turns conv_turns_detected_intent_fkey postgres
+7800; 2606 17484 FK CONSTRAINT nex delivery_job_attempts delivery_job_attempts_job_id_fkey postgres
+7799; 2606 17466 FK CONSTRAINT nex delivery_jobs delivery_jobs_campaign_id_fkey postgres
+7848; 2606 19217 FK CONSTRAINT nex deprecations deprecations_record_id_fkey postgres
+7849; 2606 19222 FK CONSTRAINT nex deprecations deprecations_superseded_by_fkey postgres
+7910; 2606 108939 FK CONSTRAINT nex provider_profile driver_profile_bike_slug_fkey postgres
+7813; 2606 18101 FK CONSTRAINT nex experiment_assignments experiment_assignments_experiment_id_fkey postgres
+7814; 2606 18106 FK CONSTRAINT nex experiment_assignments experiment_assignments_experiment_id_variant_id_fkey postgres
+7811; 2606 18080 FK CONSTRAINT nex experiment_variants experiment_variants_experiment_id_fkey postgres
+7812; 2606 18085 FK CONSTRAINT nex experiment_variants experiment_variants_target_campaign_id_fkey postgres
+7859; 2606 92672 FK CONSTRAINT nex food_business food_business_cycle_run_id_fkey postgres
+7860; 2606 52348 FK CONSTRAINT nex food_business_field_provenance food_business_field_provenance_cycle_run_id_fkey postgres
+7865; 2606 52446 FK CONSTRAINT nex food_business_promotion_audit food_business_promotion_audit_business_ref_fkey postgres
+7866; 2606 52451 FK CONSTRAINT nex food_business_promotion_audit food_business_promotion_audit_cycle_run_id_fkey postgres
+7863; 2606 52424 FK CONSTRAINT nex food_business_promotion food_business_promotion_business_ref_fkey postgres
+7864; 2606 52429 FK CONSTRAINT nex food_business_promotion food_business_promotion_cycle_run_id_fkey postgres
+7867; 2606 52478 FK CONSTRAINT nex food_business_promotion_decision food_business_promotion_decision_business_ref_fkey postgres
+7868; 2606 52483 FK CONSTRAINT nex food_business_promotion_decision food_business_promotion_decision_cycle_run_id_fkey postgres
+7869; 2606 52473 FK CONSTRAINT nex food_business_promotion_decision food_business_promotion_decision_evidence_id_fkey postgres
+7842; 2606 19105 FK CONSTRAINT nex graph_edges graph_edges_from_record_id_fkey postgres
+7809; 2606 18032 FK CONSTRAINT nex journey_campaign_executions journey_campaign_executions_campaign_id_fkey postgres
+7810; 2606 18027 FK CONSTRAINT nex journey_campaign_executions journey_campaign_executions_journey_state_id_fkey postgres
+7807; 2606 17937 FK CONSTRAINT nex journey_states journey_states_journey_id_fkey postgres
+7808; 2606 17985 FK CONSTRAINT nex journey_triggers journey_triggers_journey_id_fkey postgres
+7850; 2606 19243 FK CONSTRAINT nex knowledge_feedback knowledge_feedback_record_id_fkey postgres
+7851; 2606 19248 FK CONSTRAINT nex knowledge_feedback knowledge_feedback_resulted_in_record_fkey postgres
+7840; 2606 19066 FK CONSTRAINT nex knowledge_records knowledge_records_supersedes_fkey postgres
+7852; 2606 19313 FK CONSTRAINT nex llm_retry_queue llm_retry_queue_parent_job_id_fkey postgres
+7903; 2606 101150 FK CONSTRAINT nex media_object media_object_poster_media_id_fkey postgres
+7889; 2606 60525 FK CONSTRAINT nex mp_category mp_category_parent_id_fkey postgres
+7896; 2606 60643 FK CONSTRAINT nex mp_commerce_policy mp_commerce_policy_category_id_fkey postgres
+7890; 2606 60552 FK CONSTRAINT nex mp_product mp_product_category_id_fkey postgres
+7892; 2606 60568 FK CONSTRAINT nex mp_product_image mp_product_image_product_id_fkey postgres
+7893; 2606 60585 FK CONSTRAINT nex mp_product_option mp_product_option_product_id_fkey postgres
+7894; 2606 60601 FK CONSTRAINT nex mp_product_option_value mp_product_option_value_option_id_fkey postgres
+7891; 2606 60547 FK CONSTRAINT nex mp_product mp_product_seller_id_fkey postgres
+7895; 2606 60623 FK CONSTRAINT nex mp_product_variant mp_product_variant_product_id_fkey postgres
+7888; 2606 92686 FK CONSTRAINT nex mp_seller mp_seller_cycle_run_id_fkey postgres
+7816; 2606 18209 FK CONSTRAINT nex predictions predictions_model_id_fkey postgres
+7897; 2606 60744 FK CONSTRAINT nex provider_rate_lease provider_rate_lease_provider_fkey postgres
+7919; 2606 109210 FK CONSTRAINT nex provider_topup_intent provider_topup_intent_provider_id_fkey postgres
+7915; 2606 109053 FK CONSTRAINT nex provider_wallet provider_wallet_provider_id_fkey postgres
+7916; 2606 109069 FK CONSTRAINT nex provider_wallet_transaction provider_wallet_transaction_provider_id_fkey postgres
+7917; 2606 109074 FK CONSTRAINT nex provider_wallet_transaction provider_wallet_transaction_related_request_id_fkey postgres
+7918; 2606 109220 FK CONSTRAINT nex provider_wallet_transaction provider_wallet_transaction_related_topup_intent_id_fkey postgres
+7841; 2606 19086 FK CONSTRAINT nex record_versions record_versions_record_id_fkey postgres
+7803; 2606 17692 FK CONSTRAINT nex rollup_campaigns rollup_campaigns_campaign_id_fkey postgres
+7804; 2606 17776 FK CONSTRAINT nex rollup_segment rollup_segment_segment_id_fkey postgres
+7913; 2606 109029 FK CONSTRAINT nex service_request_offer service_request_offer_provider_id_fkey postgres
+7914; 2606 109024 FK CONSTRAINT nex service_request_offer service_request_offer_request_id_fkey postgres
+7912; 2606 108999 FK CONSTRAINT nex service_request service_request_provider_id_fkey postgres
+7818; 2606 18450 FK CONSTRAINT nex social_accounts social_accounts_access_dek_id_fkey postgres
+7819; 2606 18455 FK CONSTRAINT nex social_accounts social_accounts_refresh_dek_id_fkey postgres
+7820; 2606 18285 FK CONSTRAINT nex social_accounts social_accounts_tenant_id_fkey postgres
+7832; 2606 18574 FK CONSTRAINT nex social_brand_profiles social_brand_profiles_tenant_id_fkey postgres
+7835; 2606 18633 FK CONSTRAINT nex social_category_automation social_category_automation_tenant_id_fkey postgres
+7829; 2606 18541 FK CONSTRAINT nex social_content_drafts social_content_drafts_template_id_fkey postgres
+7830; 2606 18536 FK CONSTRAINT nex social_content_drafts social_content_drafts_tenant_id_fkey postgres
+7831; 2606 18605 FK CONSTRAINT nex social_content_drafts social_content_drafts_validator_run_id_fkey postgres
+7827; 2606 18486 FK CONSTRAINT nex social_content_sources social_content_sources_tenant_id_fkey postgres
+7828; 2606 18511 FK CONSTRAINT nex social_content_templates social_content_templates_tenant_id_fkey postgres
+7824; 2606 18423 FK CONSTRAINT nex social_dek_wraps social_dek_wraps_tenant_id_fkey postgres
+7825; 2606 18443 FK CONSTRAINT nex social_oauth_states social_oauth_states_code_verifier_dek_id_fkey postgres
+7826; 2606 18438 FK CONSTRAINT nex social_oauth_states social_oauth_states_tenant_id_fkey postgres
+7821; 2606 18311 FK CONSTRAINT nex social_publish_intents social_publish_intents_account_id_fkey postgres
+7822; 2606 18673 FK CONSTRAINT nex social_publish_intents social_publish_intents_scheduled_id_fkey postgres
+7823; 2606 18306 FK CONSTRAINT nex social_publish_intents social_publish_intents_tenant_id_fkey postgres
+7817; 2606 18262 FK CONSTRAINT nex social_role_grants social_role_grants_tenant_id_fkey postgres
+7836; 2606 18661 FK CONSTRAINT nex social_scheduled_posts social_scheduled_posts_account_id_fkey postgres
+7837; 2606 18656 FK CONSTRAINT nex social_scheduled_posts social_scheduled_posts_draft_id_fkey postgres
+7838; 2606 18666 FK CONSTRAINT nex social_scheduled_posts social_scheduled_posts_intent_id_fkey postgres
+7839; 2606 18651 FK CONSTRAINT nex social_scheduled_posts social_scheduled_posts_tenant_id_fkey postgres
+7833; 2606 18598 FK CONSTRAINT nex social_validator_runs social_validator_runs_draft_id_fkey postgres
+7834; 2606 18593 FK CONSTRAINT nex social_validator_runs social_validator_runs_tenant_id_fkey postgres
+7844; 2606 19157 FK CONSTRAINT nex sources sources_record_id_fkey postgres
+7900; 2606 76221 FK CONSTRAINT nex sparks_product_price sparks_product_price_product_id_fkey postgres
+7886; 2606 60460 FK CONSTRAINT nex transport_acquisition_outreach transport_acquisition_outreach_provider_id_fkey postgres
+7887; 2606 60465 FK CONSTRAINT nex transport_acquisition_outreach transport_acquisition_outreach_source_evidence_snapshot_id_fkey postgres
+7885; 2606 60442 FK CONSTRAINT nex transport_acquisition_source_snapshot transport_acquisition_source_snapshot_provider_id_fkey postgres
+7898; 2606 76185 FK CONSTRAINT nex wallet_transaction wallet_transaction_related_transaction_id_fkey postgres
+7899; 2606 76180 FK CONSTRAINT nex wallet_transaction wallet_transaction_user_id_fkey postgres
+7843; 2606 19140 FK CONSTRAINT nex worker_results worker_results_job_id_fkey postgres
+8132; 0 17845 ROW SECURITY nex alert_dispatches postgres
+8130; 0 17807 ROW SECURITY nex alert_rules postgres
+8131; 0 17822 ROW SECURITY nex alerts postgres
+8122; 0 17654 ROW SECURITY nex analytics_events postgres
+8099; 0 17119 ROW SECURITY nex analytics_records postgres
+8182; 0 32842 ROW SECURITY nex analytics_rollup_queue postgres
+8145; 0 18149 ROW SECURITY nex attributions postgres
+8175; 0 19258 ROW SECURITY nex audit_log postgres
+8317; 3256 51674 POLICY nex audit_log audit_log_brain_app_all postgres
+8100; 0 17134 ROW SECURITY nex automation_rules postgres
+8101; 0 17153 ROW SECURITY nex automation_runs postgres
+8133; 0 17867 ROW SECURITY nex benchmark_runs postgres
+8096; 0 17073 ROW SECURITY nex brain_memories postgres
+8121; 0 17503 ROW SECURITY nex campaign_recipients postgres
+8117; 0 17404 ROW SECURITY nex campaign_segments postgres
+8116; 0 17386 ROW SECURITY nex campaigns postgres
+8129; 0 17792 ROW SECURITY nex compliance_events postgres
+8171; 0 19164 ROW SECURITY nex confidence_scores postgres
+8313; 3256 51670 POLICY nex confidence_scores confidence_scores_brain_app_all postgres
+8113; 0 17332 ROW SECURITY nex contact_duplicate_suggestions postgres
+8112; 0 17320 ROW SECURITY nex contact_merges postgres
+8115; 0 17371 ROW SECURITY nex contact_segments postgres
+8111; 0 17307 ROW SECURITY nex contact_sources postgres
+8097; 0 17086 ROW SECURITY nex contacts postgres
+8172; 0 19185 ROW SECURITY nex contradictions postgres
+8314; 3256 51671 POLICY nex contradictions contradictions_brain_app_all postgres
+8144; 0 18128 ROW SECURITY nex conversion_events postgres
+8120; 0 17474 ROW SECURITY nex delivery_job_attempts postgres
+8119; 0 17448 ROW SECURITY nex delivery_jobs postgres
+8173; 0 19208 ROW SECURITY nex deprecations postgres
+8315; 3256 51672 POLICY nex deprecations deprecations_brain_app_all postgres
+8118; 0 17423 ROW SECURITY nex email_templates postgres
+8092; 0 17012 ROW SECURITY nex events postgres
+8143; 0 18090 ROW SECURITY nex experiment_assignments postgres
+8142; 0 18070 ROW SECURITY nex experiment_variants postgres
+8141; 0 18049 ROW SECURITY nex experiments postgres
+8167; 0 19092 ROW SECURITY nex graph_edges postgres
+8242; 3256 51666 POLICY nex graph_edges graph_edges_brain_app_all postgres
+8114; 0 17355 ROW SECURITY nex import_mappings postgres
+8094; 0 17043 ROW SECURITY nex jobs postgres
+8140; 0 18013 ROW SECURITY nex journey_campaign_executions postgres
+8137; 0 17945 ROW SECURITY nex journey_events postgres
+8139; 0 17992 ROW SECURITY nex journey_inbound_events postgres
+8136; 0 17922 ROW SECURITY nex journey_states postgres
+8138; 0 17965 ROW SECURITY nex journey_triggers postgres
+8135; 0 17901 ROW SECURITY nex journeys postgres
+8179; 0 19491 ROW SECURITY nex knowledge_dump_jobs postgres
+8321; 3256 51679 POLICY nex knowledge_dump_jobs knowledge_dump_jobs_brain_app_all postgres
+8174; 0 19228 ROW SECURITY nex knowledge_feedback postgres
+8316; 3256 51673 POLICY nex knowledge_feedback knowledge_feedback_brain_app_all postgres
+8177; 0 19466 ROW SECURITY nex knowledge_inbox postgres
+8319; 3256 51677 POLICY nex knowledge_inbox knowledge_inbox_brain_app_all postgres
+8178; 0 19481 ROW SECURITY nex knowledge_inbox_stats postgres
+8320; 3256 51678 POLICY nex knowledge_inbox_stats knowledge_inbox_stats_brain_app_all postgres
+8165; 0 19052 ROW SECURITY nex knowledge_records postgres
+8309; 3256 51664 POLICY nex knowledge_records knowledge_records_brain_app_all postgres
+8103; 0 17182 ROW SECURITY nex kpe_chunks postgres
+8105; 0 17211 ROW SECURITY nex kpe_decisions postgres
+8102; 0 17167 ROW SECURITY nex kpe_documents postgres
+8106; 0 17224 ROW SECURITY nex kpe_duplicates postgres
+8107; 0 17235 ROW SECURITY nex kpe_edges postgres
+8109; 0 17260 ROW SECURITY nex kpe_human_reviews postgres
+8104; 0 17194 ROW SECURITY nex kpe_metadata postgres
+8108; 0 17248 ROW SECURITY nex kpe_processing_runs postgres
+8176; 0 19298 ROW SECURITY nex llm_retry_queue postgres
+8318; 3256 51675 POLICY nex llm_retry_queue llm_retry_queue_brain_app_all postgres
+8181; 0 19601 ROW SECURITY nex object_blob_current postgres
+8323; 3256 51681 POLICY nex object_blob_current object_blob_current_brain_app_all postgres
+8180; 0 19589 ROW SECURITY nex object_blobs postgres
+8322; 3256 51680 POLICY nex object_blobs object_blobs_brain_app_all postgres
+8110; 0 17280 ROW SECURITY nex object_manifest postgres
+8146; 0 18174 ROW SECURITY nex prediction_models postgres
+8147; 0 18194 ROW SECURITY nex predictions postgres
+8148; 0 18218 ROW SECURITY nex predictive_controls postgres
+8166; 0 19075 ROW SECURITY nex record_versions postgres
+8310; 3256 51665 POLICY nex record_versions record_versions_brain_app_all postgres
+8095; 0 17059 ROW SECURITY nex recovery_attempts postgres
+8134; 0 17881 ROW SECURITY nex recovery_runs postgres
+8123; 0 17675 ROW SECURITY nex rollup_campaigns postgres
+8126; 0 17731 ROW SECURITY nex rollup_country postgres
+8124; 0 17697 ROW SECURITY nex rollup_daily postgres
+8125; 0 17714 ROW SECURITY nex rollup_monthly postgres
+8127; 0 17745 ROW SECURITY nex rollup_provider postgres
+8128; 0 17761 ROW SECURITY nex rollup_segment postgres
+8224; 3256 17866 POLICY nex alert_dispatches service_role_all_alert_dispatches postgres
+8222; 3256 17864 POLICY nex alert_rules service_role_all_alert_rules postgres
+8223; 3256 17865 POLICY nex alerts service_role_all_alerts postgres
+8191; 3256 17133 POLICY nex analytics_records service_role_all_analytics postgres
+8214; 3256 17781 POLICY nex analytics_events service_role_all_analytics_events postgres
+8282; 3256 32857 POLICY nex analytics_rollup_queue service_role_all_analytics_rollup_queue postgres
+8192; 3256 17152 POLICY nex automation_rules service_role_all_arules postgres
+8193; 3256 17166 POLICY nex automation_runs service_role_all_aruns postgres
+8237; 3256 18173 POLICY nex attributions service_role_all_attributions postgres
+8225; 3256 17893 POLICY nex benchmark_runs service_role_all_benchmark_runs postgres
+8188; 3256 17085 POLICY nex brain_memories service_role_all_bm postgres
+8213; 3256 17525 POLICY nex campaign_recipients service_role_all_campaign_recipients postgres
+8209; 3256 17422 POLICY nex campaign_segments service_role_all_campaign_segments postgres
+8208; 3256 17421 POLICY nex campaigns service_role_all_campaigns postgres
+8221; 3256 17806 POLICY nex compliance_events service_role_all_compliance_events postgres
+8205; 3256 17351 POLICY nex contact_duplicate_suggestions service_role_all_contact_dup postgres
+8204; 3256 17350 POLICY nex contact_merges service_role_all_contact_merges postgres
+8207; 3256 17385 POLICY nex contact_segments service_role_all_contact_segments postgres
+8203; 3256 17349 POLICY nex contact_sources service_role_all_contact_sources postgres
+8189; 3256 17103 POLICY nex contacts service_role_all_contacts postgres
+8236; 3256 18172 POLICY nex conversion_events service_role_all_conversion_events postgres
+8212; 3256 17523 POLICY nex delivery_job_attempts service_role_all_delivery_job_attempts postgres
+8211; 3256 17522 POLICY nex delivery_jobs service_role_all_delivery_jobs postgres
+8210; 3256 17442 POLICY nex email_templates service_role_all_email_templates postgres
+8184; 3256 17027 POLICY nex events service_role_all_events postgres
+8235; 3256 18115 POLICY nex experiment_assignments service_role_all_experiment_assignments postgres
+8234; 3256 18114 POLICY nex experiment_variants service_role_all_experiment_variants postgres
+8233; 3256 18113 POLICY nex experiments service_role_all_experiments postgres
+8206; 3256 17370 POLICY nex import_mappings service_role_all_import_mappings postgres
+8186; 3256 17058 POLICY nex jobs service_role_all_jobs postgres
+8232; 3256 18040 POLICY nex journey_campaign_executions service_role_all_journey_campaign_executions postgres
+8229; 3256 17961 POLICY nex journey_events service_role_all_journey_events postgres
+8231; 3256 18012 POLICY nex journey_inbound_events service_role_all_journey_inbound_events postgres
+8228; 3256 17960 POLICY nex journey_states service_role_all_journey_states postgres
+8230; 3256 18011 POLICY nex journey_triggers service_role_all_journey_triggers postgres
+8227; 3256 17959 POLICY nex journeys service_role_all_journeys postgres
+8195; 3256 17273 POLICY nex kpe_chunks service_role_all_kpe_chunks postgres
+8197; 3256 17275 POLICY nex kpe_decisions service_role_all_kpe_decisions postgres
+8194; 3256 17272 POLICY nex kpe_documents service_role_all_kpe_documents postgres
+8198; 3256 17276 POLICY nex kpe_duplicates service_role_all_kpe_duplicates postgres
+8199; 3256 17277 POLICY nex kpe_edges service_role_all_kpe_edges postgres
+8201; 3256 17279 POLICY nex kpe_human_reviews service_role_all_kpe_human_reviews postgres
+8196; 3256 17274 POLICY nex kpe_metadata service_role_all_kpe_metadata postgres
+8200; 3256 17278 POLICY nex kpe_processing_runs service_role_all_kpe_processing_runs postgres
+8202; 3256 17297 POLICY nex object_manifest service_role_all_object_manifest postgres
+8238; 3256 18230 POLICY nex prediction_models service_role_all_prediction_models postgres
+8239; 3256 18231 POLICY nex predictions service_role_all_predictions postgres
+8240; 3256 18232 POLICY nex predictive_controls service_role_all_predictive_controls postgres
+8187; 3256 17072 POLICY nex recovery_attempts service_role_all_recovery postgres
+8226; 3256 17894 POLICY nex recovery_runs service_role_all_recovery_runs postgres
+8215; 3256 17782 POLICY nex rollup_campaigns service_role_all_rollup_campaigns postgres
+8218; 3256 17785 POLICY nex rollup_country service_role_all_rollup_country postgres
+8216; 3256 17783 POLICY nex rollup_daily service_role_all_rollup_daily postgres
+8217; 3256 17784 POLICY nex rollup_monthly service_role_all_rollup_monthly postgres
+8219; 3256 17786 POLICY nex rollup_provider service_role_all_rollup_provider postgres
+8220; 3256 17787 POLICY nex rollup_segment service_role_all_rollup_segment postgres
+8190; 3256 17118 POLICY nex tracking_events service_role_all_tracking postgres
+8185; 3256 17042 POLICY nex worker_audit_events service_role_all_wae postgres
+8151; 0 18269 ROW SECURITY nex social_accounts postgres
+8257; 3256 18402 POLICY nex social_accounts social_accounts_tenant_delete postgres
+8255; 3256 18400 POLICY nex social_accounts social_accounts_tenant_insert postgres
+8254; 3256 18399 POLICY nex social_accounts social_accounts_tenant_select postgres
+8256; 3256 18401 POLICY nex social_accounts social_accounts_tenant_update postgres
+8155; 0 18343 ROW SECURITY nex social_admin_access_log postgres
+8247; 3256 18388 POLICY nex social_admin_access_log social_admin_access_log_target_insert postgres
+8246; 3256 18387 POLICY nex social_admin_access_log social_admin_access_log_target_select postgres
+8267; 3256 18768 POLICY nex analytics_events social_app_insert_social_events postgres
+8269; 3256 18770 POLICY nex attributions social_app_select_attributions postgres
+8270; 3256 18771 POLICY nex conversion_events social_app_select_conversions postgres
+8268; 3256 18769 POLICY nex analytics_events social_app_select_social_events postgres
+8153; 0 18319 ROW SECURITY nex social_audit_events postgres
+8262; 3256 18410 POLICY nex social_audit_events social_audit_events_tenant_delete postgres
+8260; 3256 18408 POLICY nex social_audit_events social_audit_events_tenant_insert postgres
+8259; 3256 18407 POLICY nex social_audit_events social_audit_events_tenant_select postgres
+8261; 3256 18409 POLICY nex social_audit_events social_audit_events_tenant_update postgres
+8161; 0 18559 ROW SECURITY nex social_brand_profiles postgres
+8293; 3256 51644 POLICY nex social_brand_profiles social_brand_profiles_tenant_delete postgres
+8290; 3256 51642 POLICY nex social_brand_profiles social_brand_profiles_tenant_insert postgres
+8289; 3256 51641 POLICY nex social_brand_profiles social_brand_profiles_tenant_select postgres
+8292; 3256 51643 POLICY nex social_brand_profiles social_brand_profiles_tenant_update postgres
+8163; 0 18622 ROW SECURITY nex social_category_automation postgres
+8301; 3256 51652 POLICY nex social_category_automation social_category_automation_tenant_delete postgres
+8299; 3256 51650 POLICY nex social_category_automation social_category_automation_tenant_insert postgres
+8298; 3256 51649 POLICY nex social_category_automation social_category_automation_tenant_select postgres
+8300; 3256 51651 POLICY nex social_category_automation social_category_automation_tenant_update postgres
+8160; 0 18517 ROW SECURITY nex social_content_drafts postgres
+8284; 3256 51636 POLICY nex social_content_drafts social_content_drafts_tenant_delete postgres
+8280; 3256 51634 POLICY nex social_content_drafts social_content_drafts_tenant_insert postgres
+8279; 3256 51633 POLICY nex social_content_drafts social_content_drafts_tenant_select postgres
+8283; 3256 51635 POLICY nex social_content_drafts social_content_drafts_tenant_update postgres
+8158; 0 18468 ROW SECURITY nex social_content_sources postgres
+8278; 3256 51632 POLICY nex social_content_sources social_content_sources_tenant_delete postgres
+8276; 3256 51630 POLICY nex social_content_sources social_content_sources_tenant_insert postgres
+8275; 3256 51629 POLICY nex social_content_sources social_content_sources_tenant_select postgres
+8277; 3256 51631 POLICY nex social_content_sources social_content_sources_tenant_update postgres
+8159; 0 18493 ROW SECURITY nex social_content_templates postgres
+8288; 3256 51640 POLICY nex social_content_templates social_content_templates_tenant_delete postgres
+8286; 3256 51638 POLICY nex social_content_templates social_content_templates_tenant_insert postgres
+8285; 3256 51637 POLICY nex social_content_templates social_content_templates_tenant_select postgres
+8287; 3256 51639 POLICY nex social_content_templates social_content_templates_tenant_update postgres
+8154; 0 18331 ROW SECURITY nex social_controls postgres
+8249; 3256 18390 POLICY nex social_controls social_controls_admin_update postgres
+8248; 3256 18389 POLICY nex social_controls social_controls_all_read postgres
+8156; 0 18411 ROW SECURITY nex social_dek_wraps postgres
+8266; 3256 51624 POLICY nex social_dek_wraps social_dek_wraps_tenant_delete postgres
+8264; 3256 51622 POLICY nex social_dek_wraps social_dek_wraps_tenant_insert postgres
+8263; 3256 51621 POLICY nex social_dek_wraps social_dek_wraps_tenant_select postgres
+8265; 3256 51623 POLICY nex social_dek_wraps social_dek_wraps_tenant_update postgres
+8157; 0 18430 ROW SECURITY nex social_oauth_states postgres
+8274; 3256 51628 POLICY nex social_oauth_states social_oauth_states_tenant_delete postgres
+8272; 3256 51626 POLICY nex social_oauth_states social_oauth_states_tenant_insert postgres
+8271; 3256 51625 POLICY nex social_oauth_states social_oauth_states_tenant_select postgres
+8273; 3256 51627 POLICY nex social_oauth_states social_oauth_states_tenant_update postgres
+8152; 0 18291 ROW SECURITY nex social_publish_intents postgres
+8258; 3256 18406 POLICY nex social_publish_intents social_publish_intents_tenant_delete postgres
+8307; 3256 51661 POLICY nex social_publish_intents social_publish_intents_tenant_insert postgres
+8306; 3256 51660 POLICY nex social_publish_intents social_publish_intents_tenant_select postgres
+8305; 3256 51659 POLICY nex social_publish_intents social_publish_intents_tenant_update postgres
+8150; 0 18250 ROW SECURITY nex social_role_grants postgres
+8253; 3256 18398 POLICY nex social_role_grants social_role_grants_tenant_delete postgres
+8251; 3256 18396 POLICY nex social_role_grants social_role_grants_tenant_insert postgres
+8250; 3256 18395 POLICY nex social_role_grants social_role_grants_tenant_select postgres
+8252; 3256 18397 POLICY nex social_role_grants social_role_grants_tenant_update postgres
+8164; 0 18638 ROW SECURITY nex social_scheduled_posts postgres
+8302; 3256 51656 POLICY nex social_scheduled_posts social_scheduled_posts_tenant_delete postgres
+8291; 3256 51654 POLICY nex social_scheduled_posts social_scheduled_posts_tenant_insert postgres
+8304; 3256 51658 POLICY nex social_scheduled_posts social_scheduled_posts_tenant_select postgres
+8303; 3256 51657 POLICY nex social_scheduled_posts social_scheduled_posts_tenant_update postgres
+8149; 0 18234 ROW SECURITY nex social_tenants postgres
+8245; 3256 18386 POLICY nex social_tenants social_tenants_admin_delete postgres
+8244; 3256 18385 POLICY nex social_tenants social_tenants_admin_insert postgres
+8243; 3256 18383 POLICY nex social_tenants social_tenants_self_select postgres
+8308; 3256 51662 POLICY nex social_tenants social_tenants_self_update postgres
+9011; 0 0 COMMENT nex POLICY social_tenants_self_update ON social_tenants postgres
+8162; 0 18579 ROW SECURITY nex social_validator_runs postgres
+8297; 3256 51648 POLICY nex social_validator_runs social_validator_runs_tenant_delete postgres
+8295; 3256 51646 POLICY nex social_validator_runs social_validator_runs_tenant_insert postgres
+8294; 3256 51645 POLICY nex social_validator_runs social_validator_runs_tenant_select postgres
+8296; 3256 51647 POLICY nex social_validator_runs social_validator_runs_tenant_update postgres
+8170; 0 19147 ROW SECURITY nex sources postgres
+8312; 3256 51669 POLICY nex sources sources_brain_app_all postgres
+8098; 0 17104 ROW SECURITY nex tracking_events postgres
+8093; 0 17028 ROW SECURITY nex worker_audit_events postgres
+8183; 0 52223 ROW SECURITY nex worker_heartbeat postgres
+8241; 3256 52347 POLICY nex worker_heartbeat worker_heartbeat_brain_app_all postgres
+8168; 0 19113 ROW SECURITY nex worker_jobs postgres
+8281; 3256 51667 POLICY nex worker_jobs worker_jobs_brain_app_all postgres
+8169; 0 19130 ROW SECURITY nex worker_results postgres
+8311; 3256 51668 POLICY nex worker_results worker_results_brain_app_all postgres
+3015; 826 16974 DEFAULT ACL nex DEFAULT PRIVILEGES FOR SEQUENCES postgres
+3014; 826 16973 DEFAULT ACL nex DEFAULT PRIVILEGES FOR TABLES postgres
+8433; 0 51966 MATERIALIZED VIEW DATA nex food_business_value postgres

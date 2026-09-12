@@ -1,0 +1,47 @@
+[2026-09-02T23:03:45.310Z] ═══════════════════════════════════════════════════════════════════════════
+[2026-09-02T23:03:45.313Z] BATCH 8 · FK RECREATION · Option A · 125 FKs in ONE transaction
+[2026-09-02T23:03:45.313Z] ═══════════════════════════════════════════════════════════════════════════
+[2026-09-02T23:03:45.314Z] 
+─── PRE ───
+[2026-09-02T23:03:52.983Z]   DB size PRE:  1462 MB (1.533.144.211 bytes)
+[2026-09-02T23:03:52.990Z]   WAL LSN PRE:  C/D5000000
+[2026-09-02T23:03:52.992Z]   FK count PRE: 0 (expected 0)
+[2026-09-02T23:03:52.993Z]   RLS enabled:  92 (expected 92)
+[2026-09-02T23:03:52.994Z]   public baseline: kr=3627, wj=19167, wr=19140
+[2026-09-02T23:03:52.995Z]   Supabase readonly: enabled=false
+[2026-09-02T23:03:52.995Z] 
+─── Loading FK snapshot ───
+[2026-09-02T23:03:52.997Z]   loaded 125 FK definitions
+[2026-09-02T23:03:52.998Z] 
+─── Building single BEGIN/COMMIT transaction with all 125 ALTER TABLE ADD CONSTRAINT ───
+[2026-09-02T23:03:52.999Z]   transaction size: 21.995 bytes
+[2026-09-02T23:03:53.000Z]   first statement:  ALTER TABLE nex.accommodation_business ADD CONSTRAINT accommodation_business_cycle_run_id_fkey FOREIGN KEY (cycle_run_id...
+[2026-09-02T23:03:53.001Z]   last statement:   ALTER TABLE nex.worker_results ADD CONSTRAINT worker_results_job_id_fkey FOREIGN KEY (job_id) REFERENCES nex.worker_jobs...
+[2026-09-02T23:03:53.004Z]   transaction SQL saved: C:\Users\Victus\trades\scripts\nex-migration\batch-08-transaction.sql
+[2026-09-02T23:03:53.006Z] 
+─── EXECUTING single transaction · POST /database/query ───
+[2026-09-02T23:03:56.511Z]   HTTP 201 in 3.50s
+[2026-09-02T23:03:56.514Z]   ✓ transaction committed
+[2026-09-02T23:03:56.515Z] 
+─── POST-VERIFICATION (A-F) ───
+[2026-09-02T23:03:57.976Z]   A · FK count: 125 (expected 125) ✓
+[2026-09-02T23:03:59.726Z]   B · All 125 constraint names present: missing=0, extra=0 ✓
+[2026-09-02T23:03:59.727Z]   C · Comparing FK definitions to snapshot...
+[2026-09-02T23:04:01.466Z]   C · Definition mismatches: 0 / 125 ✓
+[2026-09-02T23:04:01.467Z]   D · Full orphan check across all 125 FKs...
+[2026-09-02T23:07:36.105Z]   D · Orphan checks completed: 125/125 · TOTAL orphans: 0 ✓
+[2026-09-02T23:07:40.585Z]   E · RLS enabled:              92 (expected 92) ✓
+[2026-09-02T23:07:40.586Z]   E · public.knowledge_records: 3627 (expected 3627) ✓
+[2026-09-02T23:07:40.586Z]   E · public.worker_jobs:       19167 (expected 19167) ✓
+[2026-09-02T23:07:40.587Z]   E · public.worker_results:    19140 (expected 19140) ✓
+[2026-09-02T23:07:40.587Z]   E · Supabase readonly:        enabled=false
+[2026-09-02T23:07:42.106Z]   E · matview nex.food_business_value rows: 0 (matview untouched · not refreshed)
+[2026-09-02T23:07:44.183Z]   F · DB size PRE→POST: 1462 MB → 1462 MB · delta=+172032 bytes (0.16 MB)
+[2026-09-02T23:07:44.184Z]   F · WAL LSN PRE→POST: C/D5000000 → C/D6001D08 · delta=16.784.648 bytes (16.01 MB)
+[2026-09-02T23:07:44.184Z]   F · Elapsed:          3.50 seconds
+[2026-09-02T23:07:44.186Z] 
+═══════════════════════════════════════════════════════════════════════════
+[2026-09-02T23:07:44.187Z]   BATCH 8 RESULT: ✅ SUCCESS · 125 FKs recreated · all invariants held
+[2026-09-02T23:07:44.187Z] ═══════════════════════════════════════════════════════════════════════════
+[2026-09-02T23:07:44.188Z] 
+─── HARD STOP · awaiting Philip approval for Batch 9 ───

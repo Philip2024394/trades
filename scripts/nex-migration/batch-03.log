@@ -1,0 +1,80 @@
+[2026-09-02T21:03:11.003Z] === BATCH 3 EXECUTION · 42 tables · expected 53593 rows ===
+[2026-09-02T21:03:11.004Z] 
+─── PRE-CHECK ───
+[2026-09-02T21:03:16.657Z]   invariants: {"rls_enabled":92,"nex_fks":0,"public_tables":17,"kr":3627,"wj":19167,"wr":19140,"db_bytes":331443347,"db_pretty":"316 MB","wal_lsn":"C/52000000"}
+[2026-09-02T21:03:18.432Z]   ✓ Batch 1 still 722
+[2026-09-02T21:03:21.213Z]   ✓ Batch 2 still 9689
+[2026-09-02T21:03:22.955Z]   ✓ Batch 3 target tables all empty (0/0)
+[2026-09-02T21:03:26.177Z]   ✓ readonly enabled=false
+[2026-09-02T21:03:26.195Z]   DB size PRE:  316 MB  (331.443.347 bytes)
+[2026-09-02T21:03:26.196Z]   WAL LSN PRE:  C/52000000
+[2026-09-02T21:03:27.746Z]   conv_knowledge_items PRE: total=73728, heap=0, idx=65536, toast=8192
+[2026-09-02T21:03:27.753Z] 
+─── PRE-CHECK PASSED · executing pg_restore ───
+pg_restore: connecting to database for restore
+pg_restore: processing data for table "nex.accommodation_business"
+pg_restore: processing data for table "nex.accommodation_business_source_snapshot"
+pg_restore: processing data for table "nex.attributions"
+pg_restore: processing data for table "nex.bike_model"
+pg_restore: processing data for table "nex.brain_did_you_know_indonesia"
+pg_restore: processing data for table "nex.brain_english_vocabulary"
+pg_restore: processing data for table "nex.business_image"
+pg_restore: processing data for table "nex.business_knowledge"
+pg_restore: processing data for table "nex.campaigns"
+pg_restore: processing data for table "nex.category_candidate"
+pg_restore: processing data for table "nex.category_registry"
+pg_restore: processing data for table "nex.contacts"
+pg_restore: processing data for table "nex.conv_edges"
+pg_restore: processing data for table "nex.conv_entities"
+pg_restore: processing data for table "nex.conv_knowledge_items"
+pg_restore: processing data for table "nex.conv_learning_candidate"
+pg_restore: processing data for table "nex.conv_states"
+pg_restore: processing data for table "nex.conv_turns"
+pg_restore: processing data for table "nex.food_business_next_action"
+pg_restore: processing data for table "nex.food_enrichment_evidence"
+pg_restore: processing data for table "nex.journey_campaign_executions"
+pg_restore: processing data for table "nex.journey_events"
+pg_restore: processing data for table "nex.knowledge_dump_jobs"
+pg_restore: processing data for table "nex.knowledge_inbox"
+pg_restore: processing data for table "nex.knowledge_records"
+pg_restore: processing data for table "nex.llm_retry_queue"
+pg_restore: processing data for table "nex.media_object"
+pg_restore: processing data for table "nex.object_manifest"
+pg_restore: processing data for table "nex.predictions"
+pg_restore: processing data for table "nex.provider_profile"
+pg_restore: processing data for table "nex.provider_wallet_transaction"
+pg_restore: processing data for table "nex.safety_audit_event"
+pg_restore: processing data for table "nex.service_business"
+pg_restore: processing data for table "nex.service_business_source_snapshot"
+pg_restore: processing data for table "nex.service_request"
+pg_restore: processing data for table "nex.service_request_offer"
+pg_restore: processing data for table "nex.social_content_drafts"
+pg_restore: processing data for table "nex.social_content_sources"
+pg_restore: processing data for table "nex.social_publish_intents"
+pg_restore: processing data for table "nex.social_tenants"
+pg_restore: processing data for table "nex.transport_acquisition_source_snapshot"
+pg_restore: processing data for table "nex.work_item"
+[2026-09-02T21:04:08.585Z] 
+pg_restore exit: 0 · elapsed: 40.83s
+[2026-09-02T21:04:08.585Z] 
+─── POST-CHECK ───
+[2026-09-02T21:04:10.352Z]   DB size PRE→POST:  316 MB → 357 MB  delta: +42401792 bytes (40.44 MB)
+[2026-09-02T21:04:10.353Z]   WAL LSN PRE→POST:  C/52000000 → C/5525BCA0
+[2026-09-02T21:04:13.059Z]   ❌ 1 mismatches:
+[2026-09-02T21:04:13.060Z]      work_item                                     expected=9632  actual=9014
+[2026-09-02T21:04:13.060Z]   matched: 41, mismatched: 1, total: 52975/53593
+[2026-09-02T21:04:16.245Z]   Batch 1 still: 722/722 ✓
+[2026-09-02T21:04:16.245Z]   Batch 2 still: 9689/9689 ✓
+[2026-09-02T21:04:18.333Z]   public POST: {"public_tables":17,"kr":3627,"wj":19167,"wr":19140} · unchanged=✓
+[2026-09-02T21:04:19.926Z]   RLS POST: 92 (expected 92) ✓
+[2026-09-02T21:04:21.507Z]   FK POST: 0 (expected 0) ✓
+[2026-09-02T21:04:26.802Z]   readonly POST: enabled=false
+[2026-09-02T21:04:28.434Z] 
+  conv_knowledge_items POST: rows=890, total=5.60 MB, heap=512 KB, idx=336 KB, toast=4.75 MB
+[2026-09-02T21:04:28.434Z]   conv_knowledge_items local source was: total=10 MB, heap=568 KB, idx=328 KB, toast=9.4 MB
+[2026-09-02T21:04:28.435Z]   toast behavior: ⚠️ ANOMALY · expected ~9.4 MB, got 4.75 MB
+[2026-09-02T21:04:28.436Z] 
+  Batch 2 efficiency: 669 B/row
+[2026-09-02T21:04:28.436Z]   Batch 3 efficiency: 800 B/row
+[2026-09-02T21:04:28.437Z] 
+─── HARD STOP · Batch 3 complete · awaiting Philip approval for Batch 4 ───

@@ -1,0 +1,23 @@
+# agent started at 2026-09-04T15:11:13.789Z · script=C:\Users\Victus\trades\scripts\nex-workforce-v2\agent.mjs
+{"ts":"2026-09-04T15:11:16.199Z","msg":"agent.created","agent_id":"gate5b-yogyakarta-1788534662959"}
+{"ts":"2026-09-04T15:11:16.200Z","msg":"agent.loop.start","agent_id":"gate5b-yogyakarta-1788534662959","poll_ms":1000}
+{"ts":"2026-09-04T15:11:19.797Z","msg":"agent.claimed","work_item_id":"49735216-d1a8-41a1-a157-85115fde6788","generation":2,"city":"yogyakarta","category":"restaurants","source":"overpass"}
+{"ts":"2026-09-04T15:11:19.799Z","msg":"agent.work.start","work_item_id":"49735216-d1a8-41a1-a157-85115fde6788","lease_secs":899,"heartbeat_ms":2000}
+{"ts":"2026-09-04T15:11:19.799Z","msg":"heartbeat.start","intervalMs":2000,"workItemId":"49735216-d1a8-41a1-a157-85115fde6788"}
+{"ts":"2026-09-04T15:11:23.418Z","msg":"overpass.fetch","status":200,"byte_length":291290,"duration_ms":3616}
+{"ts":"2026-09-04T15:11:28.778Z","msg":"persist.batch.result","persisted":66,"rejected":34,"remaining":1141}
+{"ts":"2026-09-04T15:11:30.192Z","msg":"persist.batch.result","persisted":72,"rejected":28,"remaining":1041}
+{"ts":"2026-09-04T15:11:31.610Z","msg":"persist.batch.result","persisted":64,"rejected":36,"remaining":941}
+{"ts":"2026-09-04T15:11:32.963Z","msg":"persist.batch.result","persisted":88,"rejected":12,"remaining":841}
+{"ts":"2026-09-04T15:11:34.562Z","msg":"persist.batch.result","persisted":86,"rejected":14,"remaining":741}
+{"ts":"2026-09-04T15:11:35.888Z","msg":"persist.batch.result","persisted":53,"rejected":47,"remaining":641}
+{"ts":"2026-09-04T15:11:37.166Z","msg":"persist.batch.result","persisted":7,"rejected":93,"remaining":541}
+{"ts":"2026-09-04T15:11:38.485Z","msg":"persist.batch.result","persisted":27,"rejected":73,"remaining":441}
+{"ts":"2026-09-04T15:11:39.845Z","msg":"persist.batch.result","persisted":34,"rejected":66,"remaining":341}
+{"ts":"2026-09-04T15:11:41.177Z","msg":"persist.batch.result","persisted":47,"rejected":53,"remaining":241}
+{"ts":"2026-09-04T15:11:42.477Z","msg":"persist.batch.result","persisted":41,"rejected":59,"remaining":141}
+{"ts":"2026-09-04T15:11:43.817Z","msg":"persist.batch.result","persisted":48,"rejected":52,"remaining":41}
+{"ts":"2026-09-04T15:11:45.084Z","msg":"persist.batch.result","persisted":25,"rejected":16,"remaining":0}
+{"ts":"2026-09-04T15:11:47.675Z","msg":"heartbeat.stop","ticks":13,"lost":false}
+{"ts":"2026-09-04T15:11:48.913Z","msg":"agent.completed","work_item_id":"49735216-d1a8-41a1-a157-85115fde6788","records_new":658,"records_rejected":583}
+# agent exited code=null signal=SIGTERM at 2026-09-04T15:11:54.909Z

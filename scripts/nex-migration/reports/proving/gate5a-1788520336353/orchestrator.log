@@ -1,0 +1,12 @@
+# orchestrator started at 2026-09-04T11:12:28.598Z · script=C:\Users\Victus\trades\scripts\nex-workforce-v2\orchestrator.mjs
+{"ts":"2026-09-04T11:12:29.902Z","msg":"orch.created","interval_ms":4000,"max_consecutive_errors":3}
+{"ts":"2026-09-04T11:12:29.903Z","msg":"orch.loop.start","interval_ms":4000}
+{"ts":"2026-09-04T11:12:29.904Z","msg":"orch.tick.begin","tick_n":1}
+{"ts":"2026-09-04T11:12:31.302Z","msg":"orch.eligible","eligible_count":1,"duration_ms":1398}
+{"ts":"2026-09-04T11:12:32.800Z","msg":"orch.enqueue","enqueued_count":1,"duration_ms":1498}
+{"ts":"2026-09-04T11:12:32.801Z","msg":"orch.tick.end","tick_n":1,"ok":true}
+{"ts":"2026-09-04T11:12:36.841Z","msg":"orch.tick.begin","tick_n":2}
+{"ts":"2026-09-04T11:12:38.328Z","msg":"orch.eligible","eligible_count":0,"duration_ms":1487}
+{"ts":"2026-09-04T11:12:39.780Z","msg":"orch.enqueue","enqueued_count":0,"duration_ms":1452}
+{"ts":"2026-09-04T11:12:39.780Z","msg":"orch.tick.end","tick_n":2,"ok":true}
+# orchestrator exited code=null signal=SIGTERM at 2026-09-04T11:12:43.795Z

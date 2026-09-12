@@ -1,0 +1,67 @@
+{
+  "batch": 3,
+  "pg_restore_exit": 0,
+  "elapsed_seconds": 40.83,
+  "pre": {
+    "db_bytes": 331443347,
+    "db_pretty": "316 MB",
+    "wal_lsn": "C/52000000"
+  },
+  "post": {
+    "db_bytes": 373845139,
+    "db_pretty": "357 MB",
+    "wal_lsn": "C/5525BCA0"
+  },
+  "db_delta_bytes": 42401792,
+  "db_delta_pretty": "40.44 MB",
+  "wal_delta": "C/52000000 → C/5525BCA0",
+  "batch3_reconciliation": {
+    "matched": 41,
+    "mismatched": 1,
+    "expected_total": 53593,
+    "actual_total": 52975,
+    "failures": [
+      {
+        "table": "work_item",
+        "expected": 9632,
+        "actual": 9014
+      }
+    ]
+  },
+  "batch1_still_intact": true,
+  "batch2_still_intact": true,
+  "public_baseline_post": {
+    "public_tables": 17,
+    "kr": 3627,
+    "wj": 19167,
+    "wr": 19140
+  },
+  "public_unchanged": true,
+  "rls_state_post": {
+    "rls_enabled": 92
+  },
+  "rls_unchanged": true,
+  "fks_post": 0,
+  "readonly_post": {
+    "enabled": false,
+    "override_enabled": false,
+    "override_active_until": "1970-01-01 00:00:00+00"
+  },
+  "conv_knowledge_items": {
+    "pre": {
+      "total": 73728,
+      "heap": 0,
+      "idx": 65536,
+      "toast": 8192
+    },
+    "post": {
+      "total": 5873664,
+      "heap": 524288,
+      "idx": 344064,
+      "toast": 4980736,
+      "rows": 890
+    },
+    "toast_anomaly": true
+  },
+  "bytes_per_row_batch3": 800
+}

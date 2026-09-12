@@ -1,0 +1,422 @@
+{
+  "batch": 1,
+  "pg_restore_exit": 1,
+  "elapsed_seconds": 9.93,
+  "pre": {
+    "db_bytes": 322784403,
+    "db_pretty": "308 MB",
+    "wal_lsn": "C/4B000000",
+    "wal_file": "000000010000000C0000004B"
+  },
+  "post": {
+    "db_bytes": 322784403,
+    "db_pretty": "308 MB",
+    "wal_lsn": "C/4B002918",
+    "wal_file": "000000010000000C0000004B"
+  },
+  "db_delta_bytes": 0,
+  "row_reconciliation": {
+    "matched": 0,
+    "mismatched": 62,
+    "missing": 0,
+    "expected_total": 722,
+    "actual_total": 0,
+    "failures": [
+      {
+        "table": "alert_dispatches",
+        "expected": 12,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "alert_rules",
+        "expected": 14,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "alerts",
+        "expected": 4,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "audit_log",
+        "expected": 9,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "benchmark_runs",
+        "expected": 1,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "bike_rental_listing",
+        "expected": 9,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "brain_user_saved_facts",
+        "expected": 1,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "call_record",
+        "expected": 1,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "campaign_segments",
+        "expected": 4,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "chat_message",
+        "expected": 70,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "chat_message_archive",
+        "expected": 20,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "chat_message_deletion",
+        "expected": 20,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "compliance_events",
+        "expected": 14,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "contact_segments",
+        "expected": 12,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "conv_intents",
+        "expected": 22,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "conversion_events",
+        "expected": 2,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "cost_budget",
+        "expected": 4,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "delivery_workers_archive_2026_08_22",
+        "expected": 1,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "email_templates",
+        "expected": 8,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "events",
+        "expected": 2,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "experiment_variants",
+        "expected": 2,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "experiments",
+        "expected": 1,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "food_business_promotion_decision",
+        "expected": 1,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "food_claim_code",
+        "expected": 1,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "food_commercial_event",
+        "expected": 6,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "food_hq_rule",
+        "expected": 10,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "food_outreach_attempt",
+        "expected": 5,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "food_outreach_suppression",
+        "expected": 1,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "food_outreach_template",
+        "expected": 4,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "geo_landmark",
+        "expected": 34,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "journey_inbound_events",
+        "expected": 3,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "journey_triggers",
+        "expected": 1,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "journeys",
+        "expected": 3,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "knowledge_inbox_stats",
+        "expected": 2,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "meaningful_area",
+        "expected": 6,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "mp_commerce_policy",
+        "expected": 1,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "mp_product",
+        "expected": 5,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "mp_product_image",
+        "expected": 5,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "mp_product_option",
+        "expected": 11,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "mp_product_option_value",
+        "expected": 24,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "mp_product_variant",
+        "expected": 15,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "object_blob_current",
+        "expected": 22,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "prediction_models",
+        "expected": 2,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "predictive_controls",
+        "expected": 1,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "provider_rate_config",
+        "expected": 7,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "provider_registry",
+        "expected": 5,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "provider_wallet",
+        "expected": 7,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "recovery_runs",
+        "expected": 4,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "rollup_campaigns",
+        "expected": 5,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "rollup_country",
+        "expected": 10,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "rollup_daily",
+        "expected": 2,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "rollup_monthly",
+        "expected": 1,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "rollup_provider",
+        "expected": 5,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "rollup_segment",
+        "expected": 1,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "safety_audit_config",
+        "expected": 1,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "social_admin_access_log",
+        "expected": 87,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "social_category_automation",
+        "expected": 66,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "social_controls",
+        "expected": 1,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "sparks_product",
+        "expected": 3,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "sparks_product_price",
+        "expected": 6,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "user_wallet",
+        "expected": 65,
+        "actual": 0,
+        "status": "❌"
+      },
+      {
+        "table": "worker_heartbeats_archive_2026_08_22",
+        "expected": 50,
+        "actual": 0,
+        "status": "❌"
+      }
+    ]
+  },
+  "public_baseline_post": {
+    "public_tables": 17,
+    "kr": 3627,
+    "wj": 19167,
+    "wr": 19140
+  },
+  "public_unchanged": true,
+  "rls_state_pre": {
+    "rls_enabled_tables": 92,
+    "total_tables": 191
+  },
+  "rls_state_post": {
+    "rls_enabled_tables": 92,
+    "total_tables": 191
+  },
+  "rls_unchanged": true,
+  "fks_pre": 0,
+  "fks_post": 0,
+  "readonly_post": {
+    "enabled": false,
+    "override_enabled": false,
+    "override_active_until": "1970-01-01 00:00:00+00"
+  }
+}

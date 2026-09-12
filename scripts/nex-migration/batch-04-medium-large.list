@@ -1,0 +1,9 @@
+8450; 0 52551 TABLE DATA nex accommodation_business_field_provenance postgres
+8455; 0 59993 TABLE DATA nex category_candidate_score postgres
+8472; 0 60713 TABLE DATA nex discovery_orchestrator_pick postgres
+8425; 0 51719 TABLE DATA nex food_business postgres
+8429; 0 51879 TABLE DATA nex food_business_source_snapshot postgres
+8463; 0 60499 TABLE DATA nex mp_seller postgres
+8414; 0 19589 TABLE DATA nex object_blobs postgres
+8440; 0 52237 TABLE DATA nex worker_cycle_run postgres
+8439; 0 52223 TABLE DATA nex worker_heartbeat postgres

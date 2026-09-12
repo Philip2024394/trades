@@ -1,0 +1,47 @@
+[2026-09-02T20:57:15.973Z] === BATCH 2 EXECUTION · 21 tables · expected 9689 rows ===
+[2026-09-02T20:57:15.975Z] 
+─── PRE-CHECK ───
+[2026-09-02T20:57:17.851Z]   invariants: {"rls_enabled":92,"nex_fks":0,"public_tables":17,"kr":3627,"wj":19167,"wr":19140,"db_bytes":324627603,"db_pretty":"310 MB","wal_lsn":"C/50000110"}
+[2026-09-02T20:57:19.523Z]   ✓ Batch 1 unchanged at 722 rows exact
+[2026-09-02T20:57:21.436Z]   ✓ Batch 2 target tables all empty (0/0)
+[2026-09-02T20:57:24.345Z]   ✓ readonly enabled=false
+[2026-09-02T20:57:24.346Z]   DB size PRE:  310 MB
+[2026-09-02T20:57:24.347Z]   WAL LSN PRE:  C/50000110
+[2026-09-02T20:57:24.347Z] 
+─── PRE-CHECK PASSED · executing pg_restore ───
+pg_restore: connecting to database for restore
+pg_restore: processing data for table "nex.analytics_events"
+pg_restore: processing data for table "nex.campaign_recipients"
+pg_restore: processing data for table "nex.delivery_job_attempts"
+pg_restore: processing data for table "nex.delivery_jobs"
+pg_restore: processing data for table "nex.experiment_assignments"
+pg_restore: processing data for table "nex.food_business_promotion"
+pg_restore: processing data for table "nex.food_business_promotion_audit"
+pg_restore: processing data for table "nex.food_next_action_audit"
+pg_restore: processing data for table "nex.journey_states"
+pg_restore: processing data for table "nex.mp_category"
+pg_restore: processing data for table "nex.social_accounts"
+pg_restore: processing data for table "nex.social_audit_events"
+pg_restore: processing data for table "nex.social_brand_profiles"
+pg_restore: processing data for table "nex.social_content_templates"
+pg_restore: processing data for table "nex.social_dek_wraps"
+pg_restore: processing data for table "nex.social_oauth_states"
+pg_restore: processing data for table "nex.social_scheduled_posts"
+pg_restore: processing data for table "nex.social_validator_runs"
+pg_restore: processing data for table "nex.transport_acquisition_record"
+pg_restore: processing data for table "nex.video_feed_impression"
+pg_restore: processing data for table "nex.wallet_transaction"
+[2026-09-02T20:57:44.448Z] 
+pg_restore exit: 0 · elapsed: 20.10s
+[2026-09-02T20:57:44.448Z] 
+─── POST-CHECK ───
+[2026-09-02T20:57:46.552Z]   DB size PRE→POST:  310 MB → 316 MB  delta: +6479872 bytes (6.18 MB)
+[2026-09-02T20:57:46.553Z]   WAL LSN PRE→POST:  C/50000110 → C/504D5910
+[2026-09-02T20:57:48.421Z]   ✓ ALL 21/21 Batch 2 tables match · total = 9689 (expected 9689)
+[2026-09-02T20:57:49.931Z]   Batch 1 still: 722/722 rows ✓
+[2026-09-02T20:57:51.532Z]   public POST: {"public_tables":17,"kr":3627,"wj":19167,"wr":19140} · unchanged=✓
+[2026-09-02T20:57:53.028Z]   RLS enabled POST: 92 (expected 92) ✓
+[2026-09-02T20:57:54.558Z]   FK count POST: 0 (expected 0) ✓
+[2026-09-02T20:57:57.490Z]   readonly POST: enabled=false
+[2026-09-02T20:57:57.492Z] 
+─── HARD STOP · Batch 2 complete · awaiting Philip approval for Batch 3 ───

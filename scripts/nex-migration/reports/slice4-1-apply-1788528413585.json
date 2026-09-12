@@ -1,0 +1,52 @@
+{
+  "started_at": "2026-09-04T13:26:21.547Z",
+  "phases": {
+    "sha": {
+      "expected": "35f7990083d2b732ad4a54d5d17bc1bd598d6c3de950e2b4dc03a0f3cf05f4dc",
+      "actual": "35f7990083d2b732ad4a54d5d17bc1bd598d6c3de950e2b4dc03a0f3cf05f4dc",
+      "bytes": 29566
+    },
+    "target": {
+      "db": "postgres",
+      "pg": "17.6",
+      "caller": "postgres",
+      "ref": "ijvqdvsvwtwxzcqmoqit"
+    },
+    "preflight": {
+      "wi_active": 0,
+      "wf_sessions": 0,
+      "food_rows": 22750,
+      "food_dup_groups": 373,
+      "pgcrypto_schema": "extensions",
+      "persister_has_public": true,
+      "persister_has_ext": false,
+      "crockford_has_public": true,
+      "crockford_has_ext": false,
+      "check_def": "CHECK ((evidence_id = encode(digest((((((((work_item_id)::text || '::'::text) || (generation)::text) || '::'::text) || query_hash) || '::'::text) || response_sha256), 'sha256'::text), 'hex'::text)))",
+      "persister_secdef": true,
+      "persister_owner": "nex_workforce_persister_food_business",
+      "food_policies_count": 5,
+      "wf_policies_count": 11
+    },
+    "rename": {
+      "from": "supabase/migrations/_slice4_1_pgcrypto_schema_fix.sql",
+      "to": "supabase/migrations/20260904130400_nex_workforce_slice4_1_pgcrypto_schema_fix.sql",
+      "sha": "35f7990083d2b732ad4a54d5d17bc1bd598d6c3de950e2b4dc03a0f3cf05f4dc"
+    },
+    "apply": {
+      "ok": true,
+      "ms": 1793,
+      "committed_at": "2026-09-04T13:26:27.647Z"
+    },
+    "postflight": {
+      "food_rows": 22750,
+      "food_dup_groups": 373,
+      "wi_active": 0,
+      "wf_sessions": 0
+    }
+  },
+  "finished_at": "2026-09-04T13:26:53.585Z",
+  "final_ok": false,
+  "pass": 56,
+  "fail": 1
+}

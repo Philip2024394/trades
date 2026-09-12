@@ -1,0 +1,30 @@
+# agent started at 2026-09-04T12:03:18.126Z · script=C:\Users\Victus\trades\scripts\nex-workforce-v2\agent.mjs
+{"ts":"2026-09-04T12:03:20.544Z","msg":"agent.created","agent_id":"gate5a-1788523383420"}
+{"ts":"2026-09-04T12:03:20.545Z","msg":"agent.loop.start","agent_id":"gate5a-1788523383420","poll_ms":1000}
+{"ts":"2026-09-04T12:03:24.154Z","msg":"agent.claimed","work_item_id":"341ac49e-e01d-4941-ad59-78fa54eaca99","generation":4,"city":"gate5a-yogya","category":"restaurants","source":"overpass"}
+{"ts":"2026-09-04T12:03:24.156Z","msg":"agent.work.start","work_item_id":"341ac49e-e01d-4941-ad59-78fa54eaca99","lease_secs":898,"heartbeat_ms":2000}
+{"ts":"2026-09-04T12:03:24.157Z","msg":"heartbeat.start","intervalMs":2000,"workItemId":"341ac49e-e01d-4941-ad59-78fa54eaca99"}
+{"ts":"2026-09-04T12:03:25.849Z","msg":"overpass.fetch","status":200,"byte_length":86217,"duration_ms":1683}
+{"ts":"2026-09-04T12:03:30.519Z","msg":"agent.step.classified","step_id":"persist_all","class":"catastrophic","reason":"unclassified: error: function public.digest(text, unknown) does not exist"}
+{"ts":"2026-09-04T12:03:30.519Z","msg":"agent.catastrophic","step_id":"persist_all","reason":"unclassified: error: function public.digest(text, unknown) does not exist","work_item_id":"341ac49e-e01d-4941-ad59-78fa54eaca99"}
+{"ts":"2026-09-04T12:03:30.519Z","msg":"heartbeat.stop","ticks":3,"lost":false}
+{"ts":"2026-09-04T12:03:31.854Z","msg":"agent.fail_soft","work_item_id":"341ac49e-e01d-4941-ad59-78fa54eaca99","ok":true,"reason":"catastrophic in persist_all: unclassified: error: function public.digest(text, unknown) does not exist"}
+{"ts":"2026-09-04T12:03:33.206Z","msg":"agent.claimed","work_item_id":"5828fab5-83e2-4ff9-8624-c882e9c45b23","generation":3,"city":"gate5a-yogya-1788520336353","category":"restaurants","source":"overpass"}
+{"ts":"2026-09-04T12:03:33.206Z","msg":"agent.work.start","work_item_id":"5828fab5-83e2-4ff9-8624-c882e9c45b23","lease_secs":898,"heartbeat_ms":2000}
+{"ts":"2026-09-04T12:03:33.207Z","msg":"heartbeat.start","intervalMs":2000,"workItemId":"5828fab5-83e2-4ff9-8624-c882e9c45b23"}
+{"ts":"2026-09-04T12:03:34.258Z","msg":"overpass.fetch","status":200,"byte_length":86217,"duration_ms":1051}
+{"ts":"2026-09-04T12:03:38.110Z","msg":"agent.step.classified","step_id":"persist_all","class":"catastrophic","reason":"unclassified: error: function public.digest(text, unknown) does not exist"}
+{"ts":"2026-09-04T12:03:38.110Z","msg":"agent.catastrophic","step_id":"persist_all","reason":"unclassified: error: function public.digest(text, unknown) does not exist","work_item_id":"5828fab5-83e2-4ff9-8624-c882e9c45b23"}
+{"ts":"2026-09-04T12:03:38.110Z","msg":"heartbeat.stop","ticks":2,"lost":false}
+{"ts":"2026-09-04T12:03:39.493Z","msg":"agent.fail_soft","work_item_id":"5828fab5-83e2-4ff9-8624-c882e9c45b23","ok":true,"reason":"catastrophic in persist_all: unclassified: error: function public.digest(text, unknown) does not exist"}
+{"ts":"2026-09-04T12:03:40.736Z","msg":"agent.claimed","work_item_id":"28bc876a-65ed-41a0-91cf-1da583b403e3","generation":2,"city":"gate5a-yogya-1788523383420","category":"restaurants","source":"overpass"}
+{"ts":"2026-09-04T12:03:40.736Z","msg":"agent.work.start","work_item_id":"28bc876a-65ed-41a0-91cf-1da583b403e3","lease_secs":898,"heartbeat_ms":2000}
+{"ts":"2026-09-04T12:03:40.736Z","msg":"heartbeat.start","intervalMs":2000,"workItemId":"28bc876a-65ed-41a0-91cf-1da583b403e3"}
+{"ts":"2026-09-04T12:03:52.287Z","msg":"overpass.fetch","status":429,"byte_length":703,"duration_ms":11551}
+{"ts":"2026-09-04T12:03:52.287Z","msg":"agent.step.retry","step_id":"fetch_and_stage","attempt":0,"delay_ms":1004,"err":"overpass HTTP 429"}
+{"ts":"2026-09-04T12:04:08.730Z","msg":"overpass.fetch","status":200,"byte_length":86217,"duration_ms":15425}
+{"ts":"2026-09-04T12:04:12.806Z","msg":"agent.step.classified","step_id":"persist_all","class":"catastrophic","reason":"unclassified: error: function public.digest(text, unknown) does not exist"}
+{"ts":"2026-09-04T12:04:12.806Z","msg":"agent.catastrophic","step_id":"persist_all","reason":"unclassified: error: function public.digest(text, unknown) does not exist","work_item_id":"28bc876a-65ed-41a0-91cf-1da583b403e3"}
+{"ts":"2026-09-04T12:04:12.806Z","msg":"heartbeat.stop","ticks":15,"lost":false}
+{"ts":"2026-09-04T12:04:14.075Z","msg":"agent.fail_soft","work_item_id":"28bc876a-65ed-41a0-91cf-1da583b403e3","ok":true,"reason":"catastrophic in persist_all: unclassified: error: function public.digest(text, unknown) does not exist"}
+# agent exited code=null signal=SIGTERM at 2026-09-04T12:04:18.632Z

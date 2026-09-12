@@ -1,0 +1,36 @@
+{
+  "completed_at": "2026-09-02T22:46:35.556Z",
+  "loaded_tables": {
+    "worker_cycle_run": {
+      "pre": 43133,
+      "post": 44178,
+      "delta": 1045
+    },
+    "work_item": {
+      "pre": 9014,
+      "post": 10059,
+      "delta": 1045
+    },
+    "worker_heartbeat": {
+      "pre": 25436,
+      "post": 26481,
+      "delta": 1045
+    }
+  },
+  "final_full_scan": {
+    "tables_checked": 191,
+    "tables_with_delta": 0,
+    "deltas": []
+  },
+  "final_invariants": {
+    "rls": 92,
+    "fks": 0,
+    "kr": 3627,
+    "wj": 19167,
+    "wr": 19140,
+    "db": "1533144211",
+    "db_pretty": "1462 MB"
+  },
+  "cross_check_orphans": "0",
+  "all_synced": true
+}

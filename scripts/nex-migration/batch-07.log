@@ -1,0 +1,65 @@
+[2026-09-02T22:39:49.933Z] ═══════════════════════════════════════════════════════════════════════════
+[2026-09-02T22:39:49.935Z] BATCH 7 · RECONCILIATION · 3 tables · 3,135 rows expected
+[2026-09-02T22:39:49.936Z] ═══════════════════════════════════════════════════════════════════════════
+[2026-09-02T22:39:50.039Z]   worker_cycle_run columns: id, worker_id, worker_type, worker_config, job_id_external, started_at, finished_at, duration_ms, status, records_processed, records_new, records_rejected, errors_count, summary, audit_report_path, doctrine_checks
+[2026-09-02T22:39:50.133Z]   work_item columns: work_item_id, idempotency_key, job_slug, city, status, worker_id, cycle_run_id, lease_owner, lease_expires_at, attempt_count, max_attempts, next_retry_at, last_error, last_error_class, error_history, records_processed, records_new, cycle_outcome, created_at, updated_at, started_at, finished_at
+[2026-09-02T22:39:50.234Z]   worker_heartbeat columns: worker_id, worker_type, worker_config, last_heartbeat_at, last_status, last_cycle_run_id, metadata, created_at, updated_at
+[2026-09-02T22:39:50.235Z] 
+─── PRE-FLIGHT ───
+[2026-09-02T22:39:56.611Z]   ✓ invariants: RLS=92 · FKs=0 · public baseline · readonly=false
+[2026-09-02T22:39:56.611Z] 
+─── LOAD worker_cycle_run ───
+[2026-09-02T22:39:57.003Z]   local PKs: 44178
+[2026-09-02T22:40:00.268Z]   target PKs: 43133
+[2026-09-02T22:43:45.323Z]   delta (in-local-not-target): 1045
+[2026-09-02T22:43:45.324Z]   target-only: 0
+[2026-09-02T22:43:45.528Z]   extracted: 1045 rows · 659064 bytes · first=00d77867-756f-468c-bd6b-5925b120db98 · last=ffbda0a6-c867-41db-9ea2-20e07da9b428
+[2026-09-02T22:43:47.062Z]   target rows BEFORE load: 43133
+[2026-09-02T22:43:53.155Z]   load exit 0
+[2026-09-02T22:43:55.110Z]   target rows AFTER load: 44178 (delta +1045)
+[2026-09-02T22:43:55.131Z]   ✓ worker_cycle_run · 44.178 rows
+[2026-09-02T22:43:55.132Z] 
+─── LOAD work_item ───
+[2026-09-02T22:43:55.318Z]   local PKs: 10059
+[2026-09-02T22:43:58.011Z]   target PKs: 9014
+[2026-09-02T22:44:06.113Z]   delta (in-local-not-target): 1045
+[2026-09-02T22:44:06.113Z]   target-only: 0
+[2026-09-02T22:44:06.312Z]   extracted: 1045 rows · 388668 bytes · first=004666f4-5e3e-4bc7-88a3-954cdf45bb56 · last=ffaf6fb0-df47-41d0-98c2-308ef23795b1
+[2026-09-02T22:44:08.150Z]   target rows BEFORE load: 9014
+[2026-09-02T22:44:13.722Z]   load exit 0
+[2026-09-02T22:44:15.414Z]   target rows AFTER load: 10059 (delta +1045)
+[2026-09-02T22:44:15.415Z]   ✓ work_item · 10.059 rows
+[2026-09-02T22:44:15.416Z] 
+─── LOAD worker_heartbeat ───
+[2026-09-02T22:44:15.689Z]   local PKs: 26481
+[2026-09-02T22:44:18.736Z]   target PKs: 25436
+[2026-09-02T22:45:57.887Z]   delta (in-local-not-target): 1045
+[2026-09-02T22:45:57.887Z]   target-only: 0
+[2026-09-02T22:45:58.105Z]   extracted: 1045 rows · 247228 bytes · first=00015f5c-02f9-4b9e-a96b-7c61b7873e08 · last=ffc14271-db46-44ab-84fb-b7673695646f
+[2026-09-02T22:45:59.713Z]   target rows BEFORE load: 25436
+[2026-09-02T22:46:04.315Z]   load exit 0
+[2026-09-02T22:46:06.869Z]   target rows AFTER load: 26481 (delta +1045)
+[2026-09-02T22:46:06.871Z]   ✓ worker_heartbeat · 26.481 rows
+[2026-09-02T22:46:06.872Z] 
+─── FULL 191-TABLE VERIFICATION ───
+[2026-09-02T22:46:27.301Z] 
+  Tables with delta != 0: 0
+[2026-09-02T22:46:27.302Z]   ✅ ALL 191 nex.* tables · LOCAL == TARGET
+[2026-09-02T22:46:32.706Z] 
+  Final invariants:
+[2026-09-02T22:46:32.707Z]     RLS enabled tables: 92 (expected 92) ✓
+[2026-09-02T22:46:32.708Z]     FK count:           0 (expected 0) ✓
+[2026-09-02T22:46:32.708Z]     public.knowledge_records: 3627 ✓
+[2026-09-02T22:46:32.708Z]     public.worker_jobs:       19167 ✓
+[2026-09-02T22:46:32.709Z]     public.worker_results:    19140 ✓
+[2026-09-02T22:46:32.709Z]     Supabase readonly:  enabled=false
+[2026-09-02T22:46:32.710Z]     Final DB size:      1462 MB
+[2026-09-02T22:46:32.710Z] 
+  Cross-check work_item.cycle_run_id ↔ worker_cycle_run.id relationship:
+[2026-09-02T22:46:35.554Z]     Orphan work_items with cycle_run_id pointing at missing worker_cycle_run: 0 (must be 0)
+[2026-09-02T22:46:35.554Z] 
+═══════════════════════════════════════════════════════════════════════════
+[2026-09-02T22:46:35.555Z]   BATCH 7 RESULT: ✅ ALL 191 TABLES SYNCHRONIZED · ready for Batch 8 (FK recreation)
+[2026-09-02T22:46:35.555Z] ═══════════════════════════════════════════════════════════════════════════
+[2026-09-02T22:46:35.557Z] 
+─── HARD STOP · awaiting Philip approval for Batch 8 (FK recreation) ───

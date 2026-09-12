@@ -1,0 +1,14 @@
+# reaper started at 2026-09-04T07:04:51.124Z · script=C:\Users\Victus\trades\scripts\nex-workforce-v2\reaper.mjs
+{"ts":"2026-09-04T07:04:53.413Z","msg":"reaper.created","interval_ms":5000,"max_consecutive_errors":3}
+{"ts":"2026-09-04T07:04:53.414Z","msg":"reaper.loop.start","interval_ms":5000}
+{"ts":"2026-09-04T07:04:53.414Z","msg":"reaper.tick.begin","tick_n":1}
+{"ts":"2026-09-04T07:04:54.666Z","msg":"reaper.tick.error","err":"new row violates row-level security policy for table \"reaper_run\"","consecutive":1}
+{"ts":"2026-09-04T07:04:54.666Z","msg":"reaper.tick.end","tick_n":1,"ok":false}
+{"ts":"2026-09-04T07:04:59.681Z","msg":"reaper.tick.begin","tick_n":2}
+{"ts":"2026-09-04T07:05:00.914Z","msg":"reaper.tick.error","err":"new row violates row-level security policy for table \"reaper_run\"","consecutive":2}
+{"ts":"2026-09-04T07:05:00.914Z","msg":"reaper.tick.end","tick_n":2,"ok":false}
+{"ts":"2026-09-04T07:05:05.953Z","msg":"reaper.tick.begin","tick_n":3}
+{"ts":"2026-09-04T07:05:07.183Z","msg":"reaper.tick.error","err":"new row violates row-level security policy for table \"reaper_run\"","consecutive":3}
+{"ts":"2026-09-04T07:05:07.183Z","msg":"reaper.exit","reason":"too_many_errors","ticks_total":3,"exit_code":1}
+{"ts":"2026-09-04T07:05:07.183Z","msg":"reaper.loop.err","err":"reaper too_many_errors: 3 consecutive · last: new row violates row-level security policy for table \"reaper_run\""}
+# reaper exited code=1 signal=null at 2026-09-04T07:05:07.196Z

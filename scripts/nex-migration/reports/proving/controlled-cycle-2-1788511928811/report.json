@@ -1,0 +1,188 @@
+{
+  "run_id": "controlled-cycle-2-1788511928811",
+  "started_at": "2026-09-04T08:52:08.811Z",
+  "phases": {
+    "baseline": {
+      "targetId": {
+        "db": "postgres",
+        "ver": "17.6",
+        "usr": "postgres"
+      },
+      "baseline": {
+        "cities": 0,
+        "cities_enabled": 0,
+        "jobs": 0,
+        "jobs_enabled": 0,
+        "eligible": 0,
+        "wi": 0,
+        "wi_done": 0,
+        "wi_leased": 0,
+        "hb": 0,
+        "rr": 0,
+        "ev": 0,
+        "stg": 0,
+        "aud": 0,
+        "dl": 0,
+        "food_rows": 22750,
+        "food_dup_groups": 373,
+        "wf_policies": 11,
+        "food_policies": 5,
+        "grant_ok": 1,
+        "active_wf": 0
+      },
+      "preTaskState": "Disabled",
+      "preEnvInfo": "mtime=2026-09-03T07:41:00.1988508+07:00|matches=0",
+      "preSysA": "NEX_TAXONOMY_POSTGRES_URL=postgresql://postgres:Admin1phil@localhost:5433/nex_dev"
+    },
+    "terminal": {
+      "reason": "our work_item reached terminal state: completed",
+      "ourWorkItemId": "668fdab0-bad2-4c35-a2e9-456e7b62e2bb",
+      "ourWorkItemState": "completed",
+      "elapsed_s": 12
+    },
+    "lifecycle": {
+      "id": "668fdab0-bad2-4c35-a2e9-456e7b62e2bb",
+      "city_slug": "r2p-proof",
+      "category_slug": "helloworld",
+      "source_slug": "helloworld",
+      "state": "completed",
+      "generation": 2,
+      "agent_id": null,
+      "priority": 1998,
+      "attempts": 1,
+      "lease_deadline": null,
+      "enqueued_at": "2026-09-04 08:52:27.180055+00",
+      "started_at": "2026-09-04 08:52:28.429082+00",
+      "finished_at": "2026-09-04 08:52:34.273371+00",
+      "records_new": 3,
+      "records_rejected": 0,
+      "cursor_json": "{\"hits\": [{\"i\": 0, \"at\": \"2026-09-04T08:52:28.557Z\", \"workItemId\": \"668fdab0-bad2-4c35-a2e9-456e7b62e2bb\"}, {\"i\": 1, \"at\": \"2026-09-04T08:52:30.019Z\", \"workItemId\": \"668fdab0-bad2-4c35-a2e9-456e7b62e2bb\"}, {\"i\": 2, \"at\": \"2026-09-04T08:52:31.491Z\", \"workItemId\": \"668fdab0-bad2-4c35-a2e9-456e7b62e2bb\"}], \"stepIndex\": 3}",
+      "last_error": null,
+      "last_error_class": null
+    },
+    "log_scan": {
+      "orchTicks": 2,
+      "orchEnq": 1,
+      "reaperTicks": 2,
+      "agentClaims": 1,
+      "agentComps": 1,
+      "agentHBLog": 1,
+      "agentCheckpoints": 0,
+      "workRoleErrs": 0,
+      "publicPermErrs": 0
+    },
+    "rls_post": {
+      "wf_policies": 11,
+      "food_policies": 5,
+      "agent_hb_policies": 0,
+      "bad_role_policies": 0,
+      "app_writes": 0,
+      "admin_bypass": false,
+      "persister_bypass": false,
+      "runtime_bypass": false
+    },
+    "postflight": {
+      "post": {
+        "cities": 0,
+        "jobs": 0,
+        "wi": 1,
+        "wi_done": 1,
+        "wi_leased": 0,
+        "hb": 0,
+        "rr": 2,
+        "ev": 0,
+        "stg": 0,
+        "aud": 0,
+        "dl": 0,
+        "food_rows": 22750,
+        "food_dup_groups": 373,
+        "active_wf": 0
+      },
+      "postTaskState": "Disabled",
+      "postEnvInfo": "mtime=2026-09-03T07:41:00.1988508+07:00|matches=0",
+      "sysADb": "nex_dev",
+      "legacyCount": 0
+    }
+  },
+  "processes": {
+    "orchestrator": {
+      "pid": 39204,
+      "script": "scripts/nex-workforce-v2/orchestrator.mjs",
+      "logPath": "scripts/nex-migration/reports/proving/controlled-cycle-2-1788511928811/orchestrator.log",
+      "extraEnv": {
+        "NEX_ORCH_INTERVAL_MS": "4000",
+        "NEX_ORCH_MAX_CONSECUTIVE_ERRORS": "3"
+      },
+      "started_at": "2026-09-04T08:52:23.017Z",
+      "shutdown": {
+        "name": "orchestrator",
+        "method": "graceful",
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    },
+    "reaper": {
+      "pid": 19888,
+      "script": "scripts/nex-workforce-v2/reaper.mjs",
+      "logPath": "scripts/nex-migration/reports/proving/controlled-cycle-2-1788511928811/reaper.log",
+      "extraEnv": {
+        "NEX_REAPER_INTERVAL_MS": "4000",
+        "NEX_REAPER_MAX_CONSECUTIVE_ERRORS": "3"
+      },
+      "started_at": "2026-09-04T08:52:23.042Z",
+      "shutdown": {
+        "name": "reaper",
+        "method": "graceful",
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    },
+    "agent": {
+      "pid": 2752,
+      "script": "scripts/nex-workforce-v2/agent.mjs",
+      "logPath": "scripts/nex-migration/reports/proving/controlled-cycle-2-1788511928811/agent.log",
+      "extraEnv": {
+        "NEX_AGENT_POLL_MS": "1000",
+        "NEX_AGENT_HEARTBEAT_MS": "2000",
+        "NEX_AGENT_ID": "proving2-1788511928811"
+      },
+      "started_at": "2026-09-04T08:52:23.065Z",
+      "shutdown": {
+        "name": "agent",
+        "method": "graceful",
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    }
+  },
+  "observations": [
+    {
+      "t_s": 7,
+      "our_id": "668fdab0-bad2-4c35-a2e9-456e7b62e2bb",
+      "our_state": "leased",
+      "r2p_wi": 1,
+      "rr": 1,
+      "ev": 0,
+      "stg": 0,
+      "aud": 0,
+      "food_rows": 22750
+    },
+    {
+      "t_s": 12,
+      "our_id": "668fdab0-bad2-4c35-a2e9-456e7b62e2bb",
+      "our_state": "completed",
+      "r2p_wi": 1,
+      "rr": 2,
+      "ev": 0,
+      "stg": 0,
+      "aud": 0,
+      "food_rows": 22750
+    }
+  ],
+  "finished_at": "2026-09-04T08:52:49.658Z",
+  "pass": 42,
+  "fail": 1,
+  "failLines": [
+    "❌ Lifecycle B · claim recorded (pending→leased) · agent_id set to 'proving2-1788511928811' · generation set · agent=null gen=2 started=2026-09-04 08:52:28.429082+00"
+  ]
+}

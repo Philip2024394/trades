@@ -1,0 +1,232 @@
+{
+  "execution": {
+    "endpoint": "https://api.supabase.com/v1/projects/ijvqdvsvwtwxzcqmoqit/database/query",
+    "schema_sql_bytes": 540240,
+    "http_status": 201,
+    "elapsed_seconds": "6.21",
+    "posted_sql_file": "C:\\Users\\Victus\\trades\\scripts\\nex-migration\\nex-schema-only-POSTED.sql"
+  },
+  "target_before": {
+    "public_tables": 17,
+    "nex_schema_existed": false
+  },
+  "target_after": {
+    "nex_schema_exists": [
+      {
+        "n": 1
+      }
+    ],
+    "nex_tables": [
+      {
+        "n": 191
+      }
+    ],
+    "nex_indexes": [
+      {
+        "n": 718
+      }
+    ],
+    "nex_pk_uk_check_constraints": [
+      {
+        "n": 517
+      }
+    ],
+    "nex_fk_constraints": [
+      {
+        "n": 125
+      }
+    ],
+    "nex_rls_policies": [
+      {
+        "n": 140
+      }
+    ],
+    "nex_rls_policies_by_role": [
+      {
+        "target_role": "nex_brain_app",
+        "policies": 18
+      },
+      {
+        "target_role": "nex_social_app",
+        "policies": 4
+      },
+      {
+        "target_role": "service_role",
+        "policies": 58
+      },
+      {
+        "target_role": null,
+        "policies": 60
+      }
+    ],
+    "nex_rls_enabled_tables": [
+      {
+        "n": 92
+      }
+    ],
+    "nex_functions": [
+      {
+        "n": 28
+      }
+    ],
+    "nex_views": [
+      {
+        "n": 13
+      }
+    ],
+    "nex_matviews": [
+      {
+        "n": 1
+      }
+    ],
+    "nex_sequences": [
+      {
+        "n": 2
+      }
+    ],
+    "nex_enum_types": [
+      {
+        "n": 22
+      }
+    ],
+    "nex_composite_types": [
+      {
+        "n": 0
+      }
+    ],
+    "nex_triggers": [
+      {
+        "n": 13
+      }
+    ],
+    "public_tables_still_17": [
+      {
+        "n": 17
+      }
+    ],
+    "public_policies_count": [
+      {
+        "n": 13
+      }
+    ],
+    "public_no_nex_food": [
+      {
+        "n": 0
+      }
+    ],
+    "public_no_nex_food_types": [
+      {
+        "n": 0
+      }
+    ],
+    "fk_from_nex_to_public": [
+      {
+        "n": 0
+      }
+    ],
+    "known_public_row_check": [
+      {
+        "knowledge_records": 3627,
+        "worker_jobs": 19167
+      }
+    ],
+    "nex_app_roles_created": [
+      {
+        "rolname": "nex_brain_app",
+        "rolcanlogin": false,
+        "rolsuper": false,
+        "rolcreatedb": false,
+        "rolcreaterole": false
+      },
+      {
+        "rolname": "nex_social_app",
+        "rolcanlogin": false,
+        "rolsuper": false,
+        "rolcreatedb": false,
+        "rolcreaterole": false
+      }
+    ],
+    "all_schemas_present": [
+      {
+        "nspname": "auth"
+      },
+      {
+        "nspname": "extensions"
+      },
+      {
+        "nspname": "graphql"
+      },
+      {
+        "nspname": "graphql_public"
+      },
+      {
+        "nspname": "nex"
+      },
+      {
+        "nspname": "public"
+      },
+      {
+        "nspname": "realtime"
+      },
+      {
+        "nspname": "storage"
+      },
+      {
+        "nspname": "vault"
+      }
+    ],
+    "unexpected_new_public_tables": [
+      {
+        "relname": "audit_log"
+      },
+      {
+        "relname": "claim_requests"
+      },
+      {
+        "relname": "confidence_scores"
+      },
+      {
+        "relname": "contradictions"
+      },
+      {
+        "relname": "deprecations"
+      },
+      {
+        "relname": "directory_seeds"
+      },
+      {
+        "relname": "graph_edges"
+      },
+      {
+        "relname": "knowledge_feedback"
+      },
+      {
+        "relname": "knowledge_records"
+      },
+      {
+        "relname": "llm_retry_queue"
+      },
+      {
+        "relname": "nex_collection_fetch_errors"
+      },
+      {
+        "relname": "nex_collection_url_queue"
+      },
+      {
+        "relname": "record_versions"
+      },
+      {
+        "relname": "sources"
+      },
+      {
+        "relname": "worker_heartbeats"
+      },
+      {
+        "relname": "worker_jobs"
+      },
+      {
+        "relname": "worker_results"
+      }
+    ]
+  }
+}

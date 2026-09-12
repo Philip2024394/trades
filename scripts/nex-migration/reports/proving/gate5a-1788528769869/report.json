@@ -1,0 +1,341 @@
+{
+  "run_id": "gate5a-1788528769869",
+  "started_at": "2026-09-04T13:32:49.869Z",
+  "phases": {
+    "preflight": {
+      "targetId": {
+        "db": "postgres",
+        "ver": "17.6",
+        "usr": "postgres"
+      },
+      "baseline": {
+        "wi_bbox_col": 1,
+        "view_bbox": 1,
+        "fn_bbox": 1,
+        "wf_policies": 11,
+        "food_policies": 5,
+        "food_rows": 22750,
+        "food_dup_groups": 373,
+        "wi_total": 4,
+        "wi_active": 0,
+        "ev": 3,
+        "stg": 963,
+        "aud": 0,
+        "rr": 15,
+        "cities": 0,
+        "jobs": 0,
+        "grant_ok": 1,
+        "active_wf": 0,
+        "persister_exists": 1,
+        "admin_bypass": false
+      },
+      "preTaskState": "Disabled",
+      "preEnvInfo": "mtime=2026-09-03T07:41:00.1988508+07:00|matches=0",
+      "preSysA": "NEX_TAXONOMY_POSTGRES_URL=postgresql://postgres:Admin1phil@localhost:5433/nex_dev"
+    },
+    "terminal": {
+      "reason": "work_item reached terminal state: completed",
+      "ourWorkItemId": "cd3d42d4-0387-4087-b35a-46bf2ac22072",
+      "ourWorkItemState": "completed",
+      "elapsed_s": 39
+    },
+    "evidence": {
+      "evidence_id": "a3c94b5ab43fb3c90564b088151de2a147bbe985fb673e7a1471e7180cf693ac",
+      "query_hash": "6d59afa2de432e9a3b79304c31109e7591f4d5f16f16181d2d8843a4f80c0b8b",
+      "response_sha256": "3875fb5a7fc53b04f50e3b7946c771b2160249829bc828fd4bfb7e67fd1af70f",
+      "retrieved_at": "2026-09-04 13:33:27.19+00",
+      "request_id": null,
+      "http_status": 200,
+      "byte_length": 86235,
+      "candidate_count": 321,
+      "source_slug": "overpass",
+      "city_slug": "gate5a-yogya-1788528769868",
+      "category_slug": "restaurants"
+    },
+    "staging": {
+      "n": 321,
+      "n_persisted": 315,
+      "n_rejected": 6
+    },
+    "persistence": [
+      {
+        "persister_fn": "nex_workforce.persist_to_food_business",
+        "new_rows": 20,
+        "updated_rows": 1,
+        "rejected_rows": 0,
+        "ok": true,
+        "duration_ms": 33
+      },
+      {
+        "persister_fn": "nex_workforce.persist_to_food_business",
+        "new_rows": 95,
+        "updated_rows": 4,
+        "rejected_rows": 1,
+        "ok": true,
+        "duration_ms": 263
+      },
+      {
+        "persister_fn": "nex_workforce.persist_to_food_business",
+        "new_rows": 92,
+        "updated_rows": 7,
+        "rejected_rows": 1,
+        "ok": true,
+        "duration_ms": 226
+      },
+      {
+        "persister_fn": "nex_workforce.persist_to_food_business",
+        "new_rows": 89,
+        "updated_rows": 7,
+        "rejected_rows": 4,
+        "ok": true,
+        "duration_ms": 522
+      }
+    ],
+    "food_business": {
+      "baseline_rows": 22750,
+      "after_rows": 23046,
+      "delta": 296,
+      "baseline_dup_groups": 373,
+      "after_dup_groups": 373
+    },
+    "lifecycle": {
+      "id": "cd3d42d4-0387-4087-b35a-46bf2ac22072",
+      "state": "completed",
+      "generation": 2,
+      "agent_id": null,
+      "priority": 1998,
+      "attempts": 1,
+      "lease_deadline": null,
+      "enqueued_at": "2026-09-04 13:33:10.600957+00",
+      "started_at": "2026-09-04 13:33:11.61642+00",
+      "finished_at": "2026-09-04 13:33:41.422606+00",
+      "records_new": 315,
+      "records_rejected": 6,
+      "bbox_json": "{\"ne\": {\"lat\": -7.77, \"lon\": 110.39}, \"sw\": {\"lat\": -7.82, \"lon\": 110.34}}",
+      "last_error": null,
+      "last_error_class": null,
+      "cursor_json": "{\"phase\": \"completed\", \"capability\": \"overpass_observe_and_stage@1\", \"evidence_id\": \"a3c94b5ab43fb3c90564b088151de2a147bbe985fb673e7a1471e7180cf693ac\", \"rejected_total\": 6, \"candidate_count\": 321, \"persisted_total\": 315}"
+    },
+    "log_scan": {
+      "roleErrs": 0,
+      "bboxErrs": 0,
+      "permErrs": 0,
+      "orchTicks": 28,
+      "reaperTicks": 28,
+      "agentEvents": 19
+    },
+    "postflight": {
+      "post": {
+        "wf_policies": 11,
+        "food_policies": 5,
+        "grant_ok": 1,
+        "admin_bypass": false,
+        "active_wf": 0
+      },
+      "postTaskState": "Disabled",
+      "postEnvInfo": "mtime=2026-09-03T07:41:00.1988508+07:00|matches=0",
+      "sysAUnchanged": true,
+      "legacyCount": 0
+    }
+  },
+  "processes": {
+    "orchestrator": {
+      "pid": 20120,
+      "script": "scripts/nex-workforce-v2/orchestrator.mjs",
+      "logPath": "scripts/nex-migration/reports/proving/gate5a-1788528769869/orchestrator.log",
+      "extraEnv": {
+        "NEX_ORCH_INTERVAL_MS": "4000",
+        "NEX_ORCH_MAX_CONSECUTIVE_ERRORS": "3"
+      },
+      "started_at": "2026-09-04T13:33:06.195Z",
+      "shutdown": {
+        "name": "orchestrator",
+        "method": "graceful",
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    },
+    "reaper": {
+      "pid": 38952,
+      "script": "scripts/nex-workforce-v2/reaper.mjs",
+      "logPath": "scripts/nex-migration/reports/proving/gate5a-1788528769869/reaper.log",
+      "extraEnv": {
+        "NEX_REAPER_INTERVAL_MS": "4000",
+        "NEX_REAPER_MAX_CONSECUTIVE_ERRORS": "3"
+      },
+      "started_at": "2026-09-04T13:33:06.219Z",
+      "shutdown": {
+        "name": "reaper",
+        "method": "graceful",
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    },
+    "agent": {
+      "pid": 12808,
+      "script": "scripts/nex-workforce-v2/agent.mjs",
+      "logPath": "scripts/nex-migration/reports/proving/gate5a-1788528769869/agent.log",
+      "extraEnv": {
+        "NEX_AGENT_POLL_MS": "1000",
+        "NEX_AGENT_HEARTBEAT_MS": "2000",
+        "NEX_AGENT_ID": "gate5a-1788528769868"
+      },
+      "started_at": "2026-09-04T13:33:06.240Z",
+      "shutdown": {
+        "name": "agent",
+        "method": "graceful",
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    }
+  },
+  "observations": [
+    {
+      "t_s": 5,
+      "our_id": null,
+      "our_state": null,
+      "our_bbox": null,
+      "ev": 3,
+      "stg": 963,
+      "aud": 0,
+      "food_rows": 22750
+    },
+    {
+      "t_s": 9,
+      "our_id": "cd3d42d4-0387-4087-b35a-46bf2ac22072",
+      "our_state": "leased",
+      "our_bbox": {
+        "ne": {
+          "lat": -7.77,
+          "lon": 110.39
+        },
+        "sw": {
+          "lat": -7.82,
+          "lon": 110.34
+        }
+      },
+      "ev": 3,
+      "stg": 963,
+      "aud": 0,
+      "food_rows": 22750
+    },
+    {
+      "t_s": 14,
+      "our_id": "cd3d42d4-0387-4087-b35a-46bf2ac22072",
+      "our_state": "leased",
+      "our_bbox": {
+        "ne": {
+          "lat": -7.77,
+          "lon": 110.39
+        },
+        "sw": {
+          "lat": -7.82,
+          "lon": 110.34
+        }
+      },
+      "ev": 3,
+      "stg": 963,
+      "aud": 0,
+      "food_rows": 22750
+    },
+    {
+      "t_s": 19,
+      "our_id": "cd3d42d4-0387-4087-b35a-46bf2ac22072",
+      "our_state": "leased",
+      "our_bbox": {
+        "ne": {
+          "lat": -7.77,
+          "lon": 110.39
+        },
+        "sw": {
+          "lat": -7.82,
+          "lon": 110.34
+        }
+      },
+      "ev": 3,
+      "stg": 963,
+      "aud": 0,
+      "food_rows": 22750
+    },
+    {
+      "t_s": 24,
+      "our_id": "cd3d42d4-0387-4087-b35a-46bf2ac22072",
+      "our_state": "leased",
+      "our_bbox": {
+        "ne": {
+          "lat": -7.77,
+          "lon": 110.39
+        },
+        "sw": {
+          "lat": -7.82,
+          "lon": 110.34
+        }
+      },
+      "ev": 4,
+      "stg": 1284,
+      "aud": 0,
+      "food_rows": 22750
+    },
+    {
+      "t_s": 29,
+      "our_id": "cd3d42d4-0387-4087-b35a-46bf2ac22072",
+      "our_state": "leased",
+      "our_bbox": {
+        "ne": {
+          "lat": -7.77,
+          "lon": 110.39
+        },
+        "sw": {
+          "lat": -7.82,
+          "lon": 110.34
+        }
+      },
+      "ev": 4,
+      "stg": 1284,
+      "aud": 1,
+      "food_rows": 22839
+    },
+    {
+      "t_s": 34,
+      "our_id": "cd3d42d4-0387-4087-b35a-46bf2ac22072",
+      "our_state": "leased",
+      "our_bbox": {
+        "ne": {
+          "lat": -7.77,
+          "lon": 110.39
+        },
+        "sw": {
+          "lat": -7.82,
+          "lon": 110.34
+        }
+      },
+      "ev": 4,
+      "stg": 1284,
+      "aud": 4,
+      "food_rows": 23046
+    },
+    {
+      "t_s": 39,
+      "our_id": "cd3d42d4-0387-4087-b35a-46bf2ac22072",
+      "our_state": "completed",
+      "our_bbox": {
+        "ne": {
+          "lat": -7.77,
+          "lon": 110.39
+        },
+        "sw": {
+          "lat": -7.82,
+          "lon": 110.34
+        }
+      },
+      "ev": 4,
+      "stg": 1284,
+      "aud": 4,
+      "food_rows": 23046
+    }
+  ],
+  "finished_at": "2026-09-04T13:34:06.950Z",
+  "pass": 39,
+  "fail": 0,
+  "failLines": []
+}

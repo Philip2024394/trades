@@ -1,0 +1,202 @@
+═══════════════════════════════════════════════════════════════════════
+ NEX Workforce · C11 RE-ATTEMPT · Supervised Trial · c11r-1788572034512
+═══════════════════════════════════════════════════════════════════════
+
+  CITY=yogyakarta · CATEGORY=restaurants · SOURCE=overpass · JOB=restaurants-overpass
+  BBOX=sw{-7.944714,110.240493} ne{-7.592822,110.624452}
+  AGENT_ID=c11r-yogyakarta-1788572034512
+  EXPECTED_QUERY_HASH=33da302832c4bce40fef6b2025f08581835398880bcb1d4be900fd3dc2682390
+  CEILING=15 min
+  STALE_WI_ID=dfd71abe-f8d6-4d66-9d55-44c3cc343a11 (expected reap target)
+
+─── § 12 · PRE-FLIGHT · READ-ONLY ───
+  target · db=postgres · pg=17.6 · user=postgres
+🟢 target = Project B postgres · pg 17.x · ref=ijvqdvsvwtwxzcqmoqit
+  state: {
+    "food_rows": 23328,
+    "food_dup": 373,
+    "cc": 1,
+    "city_slug_actual": "yogyakarta",
+    "city_bbox_actual": {
+      "ne": {
+        "lat": -7.592822,
+        "lon": 110.624452
+      },
+      "sw": {
+        "lat": -7.944714,
+        "lon": 110.240493
+      }
+    },
+    "jr": 1,
+    "rot": 0,
+    "wi_total": 4,
+    "wi_active": 1,
+    "stale_state": "pending",
+    "stale_deadline": null,
+    "ev": 5,
+    "stg": 2525,
+    "aud": 18,
+    "wf_pol": 12,
+    "food_pol": 5,
+    "roles": 3,
+    "r5_intact": true,
+    "wf_sessions": 0
+  }
+🟢 food_business = 23,328 · 23328
+🟢 duplicate groups = 373 · 373
+🟢 city_catalogue = 1
+🟢 city slug = yogyakarta
+🟢 job_registry = 1
+  KNOWN_STALE_LEASE_BLOCKS_ROTATION = true
+🟢 rotation_eligible = 0 (blocked by pending stale row · expected recovery state) · actual=0 · staleActive=true
+🟢 work_item = 4 (baseline includes stale C11) · 4
+🟢 active work_item = 1 (stale C11 · now pending) · 1
+🟢 stale C11 work_item is `pending` (reclaimed by previous reap) · state=pending
+🟢 evidence_record = 5
+🟢 candidate_staging = 2,525
+🟢 persist_audit = 18
+🟢 workforce policies = 12
+🟢 food policies = 5
+🟢 workforce roles = 3
+🟢 R5 intact
+🟢 zero workforce DB sessions
+🟢 seeded bbox EXACTLY matches C6 empirical
+🟢 Scheduled Task Disabled
+🟢 .env.local mtime unchanged (2026-09-03T07:41) · 2026-09-03T07:41:00.1988508+07:00
+🟢 zero workforce OS processes pre-trial · 0
+🟢 NEX_WORKFORCE_URL absent from .env.local
+
+─── § 6 · PRE-START ORPHAN LOCK AUDIT ───
+  data/nex-workforce-v2/locks/reaper.lock · ABSENT
+  data/nex-workforce-v2/locks/orchestrator.lock · ABSENT
+  STALE_LOCKS_PRESENT_PRE_START = false (expected true · will self-heal via C9 stale-PID reclaim)
+
+─── § 11 · SUPERVISOR CONSTRUCTION · autoStart=true (runtime opts) ───
+  [sup] {"ts":"2026-09-05T01:34:01.408Z","level":"info","msg":"lifecycle.register","role":"REAPER","identifier":"reaper-1","script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\reaper.mjs"}
+  [sup] {"ts":"2026-09-05T01:34:01.408Z","level":"info","msg":"lifecycle.register","role":"ORCHESTRATOR","identifier":"orchestrator-1","script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\orchestrator.mjs"}
+  [sup] {"ts":"2026-09-05T01:34:01.409Z","level":"info","msg":"lifecycle.register","role":"AGENT","identifier":"agent-1","script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+🟢 supervisor.contract.MaxAgentCount === 1
+🟢 supervisor.lifecycle.isAutoStart() === true (this invocation only)
+🟢 REAPER spec registered
+🟢 ORCHESTRATOR spec registered
+🟢 AGENT spec registered
+
+─── § 12 · STARTUP · C9 StartupOrder + stale-lock reclaim ───
+  [sup] {"ts":"2026-09-05T01:34:01.429Z","level":"info","msg":"lifecycle.start","role":"REAPER","identifier":"reaper-1","pid":32048,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\reaper.mjs"}
+🟢 start REAPER · pid=32048 · 20ms
+  [sup] {"ts":"2026-09-05T01:34:01.452Z","level":"info","msg":"lifecycle.start","role":"ORCHESTRATOR","identifier":"orchestrator-1","pid":15048,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\orchestrator.mjs"}
+🟢 start ORCHESTRATOR · pid=15048 · 22ms
+  [sup] {"ts":"2026-09-05T01:34:01.468Z","level":"info","msg":"lifecycle.start","role":"AGENT","identifier":"agent-1","pid":39892,"script":"C:\\Users\\Victus\\trades\\scripts\\nex-workforce-v2\\agent.mjs"}
+🟢 start AGENT · pid=39892 · 16ms
+
+─── § 6 · POST-START LOCK AUDIT (C9 stale-PID reclaim proof) ───
+  data/nex-workforce-v2/locks/reaper.lock · pid=37260 · pid_alive=true
+  data/nex-workforce-v2/locks/orchestrator.lock · pid=37260 · pid_alive=true
+🟢 orphan locks reclaimed by C9 stale-PID recovery (new pid alive)
+  data/nex-workforce-v2/locks/reaper.lock · before_pid=null → after_pid=37260 · reclaimed=false
+  data/nex-workforce-v2/locks/orchestrator.lock · before_pid=null → after_pid=37260 · reclaimed=false
+
+─── OBSERVATION LOOP · 15-min hard ceiling · identity-scoped terminal ───
+  TRACKED_WORK_ITEM_ID (initial) = dfd71abe-f8d6-4d66-9d55-44c3cc343a11
+  HISTORICAL_FORBIDDEN_IDS = ["49735216-d1a8-41a1-a157-85115fde6788"]
+  t+  11s · tracked=dfd71abe state=leased agent=c11r-yogyakarta-178857 · err=lease_expired · ev=5 stg=2525 aud=18 food=23328 sess=0 · reaper=1t/0rec
+  t+  23s · tracked=dfd71abe state=leased agent=c11r-yogyakarta-178857 · err=lease_expired · ev=6 stg=3766 aud=20 food=23328 sess=0 · reaper=3t/0rec
+  t+  36s · tracked=dfd71abe state=leased agent=c11r-yogyakarta-178857 · err=lease_expired · ev=6 stg=3766 aud=28 food=23328 sess=0 · reaper=5t/0rec
+  t+  48s · tracked=dfd71abe state=leased agent=c11r-yogyakarta-178857 · err=lease_expired · ev=6 stg=3766 aud=31 food=23328 sess=0 · reaper=7t/0rec
+  t+  59s · tracked=dfd71abe state=completed · new=658 · rej=583 · err=lease_expired · ev=6 stg=3766 aud=31 food=23328 sess=0 · reaper=8t/0rec
+  ─── TERMINAL DETECTED ─── TRACKED_WORK_ITEM_ID=dfd71abe-f8d6-4d66-9d55-44c3cc343a11 · TRACKED_WORK_ITEM_STATE=completed
+
+─── TERMINAL · reason=TRACKED work_item dfd71abe-f8d6-4d66-9d55-44c3cc343a11 reached terminal state: completed ───
+
+─── § 29 · GRACEFUL SHUTDOWN · ALWAYS via top-level finally ───
+  [sup] {"ts":"2026-09-05T01:35:02.745Z","level":"info","msg":"supervisor.shutdown","reason":"c11r_finally"}
+  [sup] {"ts":"2026-09-05T01:35:02.757Z","level":"info","msg":"lifecycle.exit","role":"ORCHESTRATOR","identifier":"orchestrator-1","pid":15048,"code":null,"signal":"SIGTERM","class":"clean_shutdown","reason":"signal SIGTERM"}
+  [sup] {"ts":"2026-09-05T01:35:02.872Z","level":"info","msg":"lifecycle.exit","role":"AGENT","identifier":"agent-1","pid":39892,"code":null,"signal":"SIGTERM","class":"clean_shutdown","reason":"signal SIGTERM"}
+  [sup] {"ts":"2026-09-05T01:35:02.983Z","level":"info","msg":"lifecycle.exit","role":"REAPER","identifier":"reaper-1","pid":32048,"code":null,"signal":"SIGTERM","class":"clean_shutdown","reason":"signal SIGTERM"}
+
+─── § 22 · CHILD EXIT CLASSIFICATIONS ───
+🟢 REAPER · final_state=EXITED · exit_class=clean_shutdown · code=null signal=SIGTERM restart_count=0
+🟢 ORCHESTRATOR · final_state=EXITED · exit_class=clean_shutdown · code=null signal=SIGTERM restart_count=0
+🟢 AGENT · final_state=EXITED · exit_class=clean_shutdown · code=null signal=SIGTERM restart_count=0
+
+─── § 30 · POST-RUNTIME PROCESS AUDIT ───
+🟢 post-shutdown · zero workforce OS processes · 0
+🟢 zero legacy processes running · 0
+  lock data/nex-workforce-v2/locks/reaper.lock · ABSENT (released)
+  lock data/nex-workforce-v2/locks/orchestrator.lock · ABSENT (released)
+
+─── § 31 · POST-RUNTIME DATABASE AUDIT · safeMgmt ───
+  post-state: {
+    "food_rows": 23328,
+    "food_dup": 373,
+    "cc": 1,
+    "jr": 1,
+    "wi_total": 4,
+    "wi_active": 0,
+    "ev": 6,
+    "stg": 3766,
+    "aud": 31,
+    "wf_pol": 12,
+    "food_pol": 5,
+    "roles": 3,
+    "r5_intact": true,
+    "wf_sessions": 0,
+    "c11r_reaper_ticks": 9,
+    "c11r_reclaimed": 0,
+    "stale_final_state": "completed"
+  }
+  deltas: {"food_rows":0,"food_dup":0,"wi_total":0,"wi_active":-1,"ev":1,"stg":1241,"aud":13}
+🟢 city_catalogue unchanged
+🟢 job_registry unchanged
+🟢 workforce policies unchanged (=12)
+🟢 food policies unchanged (=5)
+🟢 workforce roles unchanged (=3)
+🟢 R5 intact
+🟢 stale C11 work_item no longer leased · stale_final=completed
+🟢 evidence_record grew or stayed
+🟢 candidate_staging grew or stayed
+🟢 persist_audit grew or stayed
+🟢 duplicate groups did not increase unexpectedly (≤ +5 tolerance) · +0
+🟢 post-trial workforce DB sessions = 0
+🟢 reaper ticked at least once during trial (${post.c11r_reaper_ticks})
+
+─── § 25 · FOOD DELTA DETAIL ───
+  {
+    "audit_rows": 13,
+    "sum_new": 0,
+    "sum_updated": 658,
+    "sum_rejected": 583,
+    "our_evidence_count": 1,
+    "evidence_detail": [
+      {
+        "query_hash": "33da302832c4bce40fef6b2025f08581835398880bcb1d4be900fd3dc2682390",
+        "byte_length": 291327,
+        "evidence_id": "f6968c976e5c68eaef2f1980a2c78b4a35f6411ea869f51f34ef3b537ab3e44a",
+        "http_status": 200,
+        "candidate_count": 1241,
+        "response_sha256": "51541ba2fbe1bba70d35e1acc7ff6e058f3878ef6e80c9c2a1b58c6d62c5b569"
+      }
+    ],
+    "our_food_rows": 658,
+    "food_cities": [
+      "Yogyakarta"
+    ],
+    "food_sources": [
+      "osm_overpass"
+    ]
+  }
+🟢 all C11 food rows city=Yogyakarta (R5 correctness) · cities=["Yogyakarta"]
+🟢 all C11 food rows source=osm_overpass · sources=["osm_overpass"]
+
+─── § 33-35 · ENVIRONMENT + SCHEDULER + LEGACY ───
+🟢 Scheduled Task remains Disabled
+🟢 .env.local mtime unchanged
+🟢 .env.local byte-identical (SHA) · 73fffff9856ef6cc…
+🟢 NEX_WORKFORCE_URL still absent from .env.local
+
+═══════════════════════════════════════════════════════════════════════
+ FINAL · pass=56 · fail=0 · observation_errors=0 · harness_exception=false
+═══════════════════════════════════════════════════════════════════════
+  report: scripts/nex-migration/reports/proving/c11r-1788572034512/report.json
+
+🟢 C11 RE-ATTEMPT PASSED · HARD STOP

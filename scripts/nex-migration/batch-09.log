@@ -1,0 +1,54 @@
+[2026-09-02T23:10:35.606Z] ═══════════════════════════════════════════════════════════════════════════
+[2026-09-02T23:10:35.608Z] BATCH 9 · TWO-STAGE · Stage 1 ANALYZE · Stage 2 REFRESH MATERIALIZED VIEW
+[2026-09-02T23:10:35.609Z] ═══════════════════════════════════════════════════════════════════════════
+[2026-09-02T23:10:35.609Z] 
+─── STAGE 1 · ANALYZE nex.* ───
+[2026-09-02T23:10:35.609Z] 
+  PRE (before ANALYZE):
+[2026-09-02T23:10:43.443Z]     DB size:              1462 MB (1.533.316.243 bytes)
+[2026-09-02T23:10:43.443Z]     WAL LSN:              C/D7000000
+[2026-09-02T23:10:43.444Z]     Supabase readonly:    enabled=false
+[2026-09-02T23:10:43.444Z]     FK count:             125 (expected 125)
+[2026-09-02T23:10:43.444Z]     RLS enabled:          92 (expected 92)
+[2026-09-02T23:10:43.444Z]     public baseline:      kr=3627, wj=19167, wr=19140
+[2026-09-02T23:10:43.444Z]     matview rows:         0 (expected 0 · not yet refreshed)
+[2026-09-02T23:10:43.445Z] 
+  Running ANALYZE on nex schema (all tables) · scope-restricted DO block · never touches public.*
+[2026-09-02T23:10:59.927Z]   ✓ ANALYZE completed · HTTP 201 · 16.48s
+[2026-09-02T23:10:59.928Z] 
+  POST (after ANALYZE):
+[2026-09-02T23:11:06.758Z]     DB size:              1463 MB · delta=+1236992 bytes
+[2026-09-02T23:11:06.759Z]     WAL LSN:              C/D7347BE0 · delta=3.439.584 bytes (3.28 MB)
+[2026-09-02T23:11:06.759Z]     FK count:             125 (must remain 125) ✓
+[2026-09-02T23:11:06.759Z]     RLS enabled:          92 (must remain 92) ✓
+[2026-09-02T23:11:06.760Z]     public baseline:      kr=3627, wj=19167, wr=19140
+[2026-09-02T23:11:06.760Z]     Supabase readonly:    enabled=false
+[2026-09-02T23:11:06.760Z]     matview rows:         0 (still 0 · Stage 2 next)
+[2026-09-02T23:11:06.760Z]   ✓ Stage 1 complete · all invariants held
+[2026-09-02T23:11:06.760Z] 
+─── STAGE 2 · REFRESH MATERIALIZED VIEW nex.food_business_value ───
+[2026-09-02T23:11:08.694Z]   Indexes on matview: 1
+[2026-09-02T23:11:08.695Z]     idx_food_business_value_ref: CREATE UNIQUE INDEX idx_food_business_value_ref ON nex.food_business_value USING btree (business_ref)
+[2026-09-02T23:11:08.695Z]   Has UNIQUE index: true
+[2026-09-02T23:11:08.695Z]   Matview currently has 0 rows · CONCURRENTLY not applicable to first-time populate
+[2026-09-02T23:11:08.695Z]   Using plain REFRESH MATERIALIZED VIEW (non-concurrent)
+[2026-09-02T23:11:08.695Z] 
+  Gathering LOCAL matview baseline...
+[2026-09-02T23:11:08.805Z]   LOCAL matview row count: 806
+[2026-09-02T23:11:08.906Z]   matview columns: business_ref,business_name,claim_status,owner_status,profile_views,search_appearances,enquiries,qualified_enquiries,booking_requests,price_requests,revenue_idr,last_customer_activity_at,nex_value_score
+[2026-09-02T23:11:09.004Z]   sample row keys: business_ref, business_name, claim_status, owner_status, profile_views, search_appearances, enquiries, qualified_enquiries, booking_requests, price_requests, revenue_idr, last_customer_activity_at, nex_value_score
+[2026-09-02T23:11:09.004Z] 
+  Computing LOCAL matview content hash (TZ-independent)...
+[2026-09-02T23:11:09.317Z]   primary identifier column for ordering: business_ref (text)
+[2026-09-02T23:11:09.442Z]   LOCAL matview hash: 840c9f9a5d224330a1eb68c1d811972b
+[2026-09-02T23:11:09.525Z]   LOCAL matview row count (verify): 806
+[2026-09-02T23:11:09.525Z] 
+  Executing REFRESH MATERIALIZED VIEW nex.food_business_value on target...
+[2026-09-02T23:11:14.765Z]     PRE: matview rows=0, DB=1463 MB, WAL=C/D7349540
+[2026-09-02T23:11:18.871Z]   ✓ REFRESH completed · HTTP 201 · 4.11s
+[2026-09-02T23:11:25.291Z]     POST: matview rows=22750, DB=1467 MB, WAL=C/D7697F08
+[2026-09-02T23:11:25.292Z]     delta: DB=+3366912 bytes (3.21 MB), WAL=3.467.720 bytes (3.31 MB)
+[2026-09-02T23:11:25.292Z] 
+  Comparing target matview to local baseline:
+[2026-09-02T23:11:25.292Z]     row count target: 22750 · local: 806 · match=❌
+[2026-09-02T23:11:25.293Z] ❌ HARD STOP · matview row count mismatch: target=22750, local=806

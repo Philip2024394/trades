@@ -1,0 +1,46 @@
+{
+  "started_at": "2026-09-04T13:06:25.835Z",
+  "phases": {
+    "sha": {
+      "expected": "a533b5e01ea1a52658ab9f28e72ff00ff53618664bb0d525db746b1dbf0fc910",
+      "actual": "a533b5e01ea1a52658ab9f28e72ff00ff53618664bb0d525db746b1dbf0fc910",
+      "bytes": 26488
+    },
+    "target": {
+      "db": "postgres",
+      "pg": "17.6",
+      "caller": "postgres",
+      "ref": "ijvqdvsvwtwxzcqmoqit"
+    },
+    "preflight": {
+      "wi_active": 0,
+      "wf_sessions": 0,
+      "food_rows": 22750,
+      "food_dup_groups": 373,
+      "pgcrypto_schema": "extensions",
+      "persister_has_public": true,
+      "persister_has_ext": false,
+      "crockford_has_public": true,
+      "crockford_has_ext": false,
+      "check_def": "CHECK ((evidence_id = encode(digest((((((((work_item_id)::text || '::'::text) || (generation)::text) || '::'::text) || query_hash) || '::'::text) || response_sha256), 'sha256'::text), 'hex'::text)))",
+      "persister_secdef": true,
+      "persister_owner": "nex_workforce_persister_food_business",
+      "food_policies_count": 5,
+      "wf_policies_count": 11
+    },
+    "rename": {
+      "from": "supabase/migrations/_slice4_1_pgcrypto_schema_fix.sql",
+      "to": "supabase/migrations/20260904130400_nex_workforce_slice4_1_pgcrypto_schema_fix.sql",
+      "sha": "a533b5e01ea1a52658ab9f28e72ff00ff53618664bb0d525db746b1dbf0fc910"
+    },
+    "apply": {
+      "ok": false,
+      "error": "mgmt 400: {\"message\":\"Failed to run sql query: ERROR:  P0001: Slice 4.1 postflight FAILED · evidence_id_consistency missing extensions.digest · got: CHECK ((evidence_id = encode(digest((((((((work_item_id)::text || '::'::text) || (generation)::text) || '::'::text) || query_hash) || '::'::text) || response_sha256), 'sha256'::text), 'hex'::text)))\\nCONTEXT:  PL/pgSQL function inline_code_block line 36 at RAISE\\n\"}",
+      "ms": 1977
+    }
+  },
+  "finished_at": "2026-09-04T13:06:34.478Z",
+  "final_ok": false,
+  "pass": 20,
+  "fail": 1
+}

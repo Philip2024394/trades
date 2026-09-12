@@ -1,0 +1,6 @@
+# reaper started at 2026-09-04T11:10:21.865Z · script=C:\Users\Victus\trades\scripts\nex-workforce-v2\reaper.mjs
+{"ts":"2026-09-04T11:10:24.807Z","msg":"reaper.created","interval_ms":4000,"max_consecutive_errors":3}
+{"ts":"2026-09-04T11:10:24.809Z","msg":"reaper.loop.start","interval_ms":4000}
+{"ts":"2026-09-04T11:10:24.810Z","msg":"reaper.tick.begin","tick_n":1}
+{"ts":"2026-09-04T11:10:26.231Z","msg":"reaper.reap","reclaimed":0,"dead_lettered":0,"duration_ms":1421}
+# reaper exited code=null signal=SIGTERM at 2026-09-04T11:10:26.575Z

@@ -1,0 +1,96 @@
+[2026-09-02T20:51:09.671Z] === BATCH 1 · PATH A v2 · least-privilege grants to service_role ===
+[2026-09-02T20:51:09.672Z] 
+─── PRE-FLIGHT (read-only) ───
+[2026-09-02T20:51:12.640Z]   target: ijvqdvsvwtwxzcqmoqit · asknexapp@gmail.com's Project · eu-west-1 · ACTIVE_HEALTHY
+[2026-09-02T20:51:14.327Z]   ✓ nex schema exists
+[2026-09-02T20:51:15.885Z]   service_role has_schema_privilege('nex','USAGE'): false
+[2026-09-02T20:51:15.886Z]   ✓ confirmed: service_role does NOT have USAGE on nex (the gap we're fixing)
+[2026-09-02T20:51:17.546Z]   ✓ service_role.rolbypassrls = true
+[2026-09-02T20:51:20.524Z]   invariants: {"nex_tables":191,"rls_enabled":92,"rls_policies":140,"nex_fks":0,"public_tables":17,"kr":3627,"wj":19167,"wr":19140,"db_bytes":322784403,"db_pretty":"308 MB","wal_lsn":"C/4E000130"}
+[2026-09-02T20:51:22.143Z]   sample nex counts (must all be 0): {"a":0,"b":0,"c":0,"d":0}
+[2026-09-02T20:51:24.990Z]   ✓ readonly enabled=false
+[2026-09-02T20:51:24.991Z] 
+─── PRE-FLIGHT PASSED · applying least-privilege grants to service_role ───
+[2026-09-02T20:51:26.952Z]   ✓ grants applied HTTP 201
+[2026-09-02T20:51:28.425Z]   grant verification: {"schema_usage":true,"tbl_select":true,"tbl_insert":true,"tbl_update":true,"tbl_delete":true,"tbl_truncate_should_be_false":false,"tbl_ref_should_be_false":false,"tbl_trg_should_be_false":false,"bypassrls_still_true":true}
+[2026-09-02T20:51:28.426Z]   ✓ USAGE + SELECT/INSERT/UPDATE/DELETE granted · TRUNCATE/REFERENCES/TRIGGER intentionally NOT granted · BYPASSRLS preserved
+[2026-09-02T20:51:30.065Z]   post-grant invariants: {"db_bytes":322784403,"kr":3627,"wj":19167,"rls":92,"fks":0}
+[2026-09-02T20:51:30.065Z]   ✓ no data written · public/RLS/FK invariants unchanged
+[2026-09-02T20:51:30.066Z] 
+─── EXECUTING pg_restore --role=service_role ---
+pg_restore: connecting to database for restore
+pg_restore: processing data for table "nex.alert_dispatches"
+pg_restore: processing data for table "nex.alert_rules"
+pg_restore: processing data for table "nex.alerts"
+pg_restore: processing data for table "nex.audit_log"
+pg_restore: processing data for table "nex.benchmark_runs"
+pg_restore: processing data for table "nex.bike_rental_listing"
+pg_restore: processing data for table "nex.brain_user_saved_facts"
+pg_restore: processing data for table "nex.call_record"
+pg_restore: processing data for table "nex.campaign_segments"
+pg_restore: processing data for table "nex.chat_message"
+pg_restore: processing data for table "nex.chat_message_archive"
+pg_restore: processing data for table "nex.chat_message_deletion"
+pg_restore: processing data for table "nex.compliance_events"
+pg_restore: processing data for table "nex.contact_segments"
+pg_restore: processing data for table "nex.conv_intents"
+pg_restore: processing data for table "nex.conversion_events"
+pg_restore: processing data for table "nex.cost_budget"
+pg_restore: processing data for table "nex.delivery_workers_archive_2026_08_22"
+pg_restore: processing data for table "nex.email_templates"
+pg_restore: processing data for table "nex.events"
+pg_restore: processing data for table "nex.experiment_variants"
+pg_restore: processing data for table "nex.experiments"
+pg_restore: processing data for table "nex.food_business_promotion_decision"
+pg_restore: processing data for table "nex.food_claim_code"
+pg_restore: processing data for table "nex.food_commercial_event"
+pg_restore: processing data for table "nex.food_hq_rule"
+pg_restore: processing data for table "nex.food_outreach_attempt"
+pg_restore: processing data for table "nex.food_outreach_suppression"
+pg_restore: processing data for table "nex.food_outreach_template"
+pg_restore: processing data for table "nex.geo_landmark"
+pg_restore: processing data for table "nex.journey_inbound_events"
+pg_restore: processing data for table "nex.journey_triggers"
+pg_restore: processing data for table "nex.journeys"
+pg_restore: processing data for table "nex.knowledge_inbox_stats"
+pg_restore: processing data for table "nex.meaningful_area"
+pg_restore: processing data for table "nex.mp_commerce_policy"
+pg_restore: processing data for table "nex.mp_product"
+pg_restore: processing data for table "nex.mp_product_image"
+pg_restore: processing data for table "nex.mp_product_option"
+pg_restore: processing data for table "nex.mp_product_option_value"
+pg_restore: processing data for table "nex.mp_product_variant"
+pg_restore: processing data for table "nex.object_blob_current"
+pg_restore: processing data for table "nex.prediction_models"
+pg_restore: processing data for table "nex.predictive_controls"
+pg_restore: processing data for table "nex.provider_rate_config"
+pg_restore: processing data for table "nex.provider_registry"
+pg_restore: processing data for table "nex.provider_wallet"
+pg_restore: processing data for table "nex.recovery_runs"
+pg_restore: processing data for table "nex.rollup_campaigns"
+pg_restore: processing data for table "nex.rollup_country"
+pg_restore: processing data for table "nex.rollup_daily"
+pg_restore: processing data for table "nex.rollup_monthly"
+pg_restore: processing data for table "nex.rollup_provider"
+pg_restore: processing data for table "nex.rollup_segment"
+pg_restore: processing data for table "nex.safety_audit_config"
+pg_restore: processing data for table "nex.social_admin_access_log"
+pg_restore: processing data for table "nex.social_category_automation"
+pg_restore: processing data for table "nex.social_controls"
+pg_restore: processing data for table "nex.sparks_product"
+pg_restore: processing data for table "nex.sparks_product_price"
+pg_restore: processing data for table "nex.user_wallet"
+pg_restore: processing data for table "nex.worker_heartbeats_archive_2026_08_22"
+[2026-09-02T20:52:06.090Z] 
+pg_restore exit: 0 · elapsed: 36.02s
+[2026-09-02T20:52:06.091Z] 
+─── POST-CHECK ───
+[2026-09-02T20:52:07.847Z]   db_size PRE→POST:  308 MB → 310 MB  (delta: +1826816 bytes = 1784.0 KB)
+[2026-09-02T20:52:07.848Z]   wal_lsn PRE→POST:  C/4E000130 → C/4E0889D0
+[2026-09-02T20:52:09.523Z]   ✓ ALL 62/62 tables match · total = 722 (expected 722)
+[2026-09-02T20:52:11.198Z]   public POST: {"public_tables":17,"kr":3627,"wj":19167,"wr":19140} · unchanged=✓
+[2026-09-02T20:52:12.699Z]   RLS POST: {"rls_enabled":92} (should be 92)
+[2026-09-02T20:52:14.219Z]   FK count POST: 0 (should be 0)
+[2026-09-02T20:52:21.229Z]   readonly POST: enabled=false
+[2026-09-02T20:52:21.230Z] 
+─── HARD STOP · Batch 1 (Path A v2) complete ───

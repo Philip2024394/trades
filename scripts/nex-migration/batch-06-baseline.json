@@ -1,0 +1,67 @@
+{
+  "captured_at": "2026-09-02T21:50:01.568Z",
+  "source": "frozen local nex_dev · NEX_POSTGRES_URL=localhost:5433/nex_dev",
+  "total_rows": 1376510,
+  "min_merge_id": "000002bf-3b6e-4eda-bbf5-12daedfee993",
+  "max_merge_id": "fffff5df-27e1-4d48-93cd-21909754fc98",
+  "by_match_layer": {
+    "source_ref": 1171215,
+    "geo_confirmed": 168552,
+    "phone": 15594,
+    "website": 10607,
+    "name_city": 10542
+  },
+  "by_table_name": {
+    "nex.food_business": 660063,
+    "nex.accommodation_business": 477378,
+    "nex.mp_seller": 239069
+  },
+  "by_day_merged_at": {
+    "2026-08-27": 117360,
+    "2026-08-28": 730182,
+    "2026-08-29": 96168,
+    "2026-08-30": 13131,
+    "2026-09-02": 329286,
+    "2026-09-03": 90383
+  },
+  "subset_row_count": 5495,
+  "subset_predicate": "WHERE merge_id::text LIKE '00%'",
+  "subset_hash_algo": "md5(string_agg(field1||chr(31)||field2||chr(31)||... , chr(30) ORDER BY merge_id))",
+  "subset_hash_fields": [
+    "merge_id::text",
+    "quote_nullable(table_name)",
+    "quote_nullable(match_layer)",
+    "quote_nullable(incoming_source)",
+    "merged_at::text"
+  ],
+  "subset_hash": "0ff9c0fc875eb93fb1bd0e65544225b9",
+  "numeric_aggregates": {
+    "non_null_incoming_lat": 1376510,
+    "sum_incoming_lat": "-10490434.104285",
+    "non_null_incoming_lng": 1376510,
+    "sum_incoming_lng": "152841743.913930"
+  },
+  "chunk_size": 100000,
+  "chunk_count": 14,
+  "columns": [
+    "merge_id",
+    "table_name",
+    "existing_ref",
+    "match_layer",
+    "incoming_source",
+    "incoming_source_reference",
+    "incoming_name",
+    "incoming_city",
+    "incoming_website",
+    "incoming_phone",
+    "incoming_whatsapp",
+    "incoming_lat",
+    "incoming_lng",
+    "incoming_extras",
+    "enriched_fields",
+    "skipped_reason",
+    "worker_id",
+    "cycle_run_id",
+    "merged_at"
+  ]
+}

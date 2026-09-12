@@ -1,0 +1,19 @@
+# agent started at 2026-09-04T13:33:06.220Z · script=C:\Users\Victus\trades\scripts\nex-workforce-v2\agent.mjs
+{"ts":"2026-09-04T13:33:08.964Z","msg":"agent.created","agent_id":"gate5a-1788528769868"}
+{"ts":"2026-09-04T13:33:08.966Z","msg":"agent.loop.start","agent_id":"gate5a-1788528769868","poll_ms":1000}
+{"ts":"2026-09-04T13:33:12.630Z","msg":"agent.claimed","work_item_id":"cd3d42d4-0387-4087-b35a-46bf2ac22072","generation":2,"city":"gate5a-yogya-1788528769868","category":"restaurants","source":"overpass"}
+{"ts":"2026-09-04T13:33:12.632Z","msg":"agent.work.start","work_item_id":"cd3d42d4-0387-4087-b35a-46bf2ac22072","lease_secs":898,"heartbeat_ms":2000}
+{"ts":"2026-09-04T13:33:12.632Z","msg":"heartbeat.start","intervalMs":2000,"workItemId":"cd3d42d4-0387-4087-b35a-46bf2ac22072"}
+{"ts":"2026-09-04T13:33:22.617Z","msg":"overpass.fetch","status":504,"byte_length":695,"duration_ms":9982}
+{"ts":"2026-09-04T13:33:22.618Z","msg":"agent.step.retry","step_id":"fetch_and_stage","attempt":0,"delay_ms":1377,"err":"overpass HTTP 504"}
+{"ts":"2026-09-04T13:33:27.186Z","msg":"overpass.fetch","status":200,"byte_length":86217,"duration_ms":3187}
+{"ts":"2026-09-04T13:33:33.605Z","msg":"persist.batch.result","persisted":96,"rejected":4,"remaining":221}
+{"ts":"2026-09-04T13:33:35.247Z","msg":"persist.batch.result","persisted":99,"rejected":1,"remaining":121}
+{"ts":"2026-09-04T13:33:36.887Z","msg":"persist.batch.result","persisted":99,"rejected":1,"remaining":21}
+{"ts":"2026-09-04T13:33:38.307Z","msg":"persist.batch.result","persisted":21,"rejected":0,"remaining":0}
+{"ts":"2026-09-04T13:33:41.168Z","msg":"heartbeat.stop","ticks":14,"lost":false}
+{"ts":"2026-09-04T13:33:42.555Z","msg":"agent.completed","work_item_id":"cd3d42d4-0387-4087-b35a-46bf2ac22072","records_new":315,"records_rejected":6}
+{"ts":"2026-09-04T13:33:44.027Z","msg":"agent.claimed","work_item_id":"341ac49e-e01d-4941-ad59-78fa54eaca99","generation":5,"city":"gate5a-yogya","category":"restaurants","source":"overpass"}
+{"ts":"2026-09-04T13:33:44.027Z","msg":"agent.work.start","work_item_id":"341ac49e-e01d-4941-ad59-78fa54eaca99","lease_secs":898,"heartbeat_ms":2000}
+{"ts":"2026-09-04T13:33:44.028Z","msg":"heartbeat.start","intervalMs":2000,"workItemId":"341ac49e-e01d-4941-ad59-78fa54eaca99"}
+# agent exited code=null signal=SIGTERM at 2026-09-04T13:33:45.004Z

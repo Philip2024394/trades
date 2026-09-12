@@ -1,0 +1,1498 @@
+{
+  "frozen_at": "2026-09-04T02:22:37.330Z",
+  "n_groups": 373,
+  "groups": [
+    {
+      "source_reference": "node/4579705778",
+      "n": 3
+    },
+    {
+      "source_reference": "node/4579705780",
+      "n": 3
+    },
+    {
+      "source_reference": "node/10033029128",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10048454846",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10068073293",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10079779241",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10129828765",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10153299526",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10180149779",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10180631803",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10195163856",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10198331855",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10201051456",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10201054682",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10201068906",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10201073430",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10224837335",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10230152112",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10259607409",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10266812927",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10269026459",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10269041293",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10296494762",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10310581409",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10310589581",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10310689025",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10680642541",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10727215865",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10744481850",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10760870473",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10803707137",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10873160057",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10931051190",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10936216479",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10945720921",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10972431022",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10991304907",
+      "n": 2
+    },
+    {
+      "source_reference": "node/10997150096",
+      "n": 2
+    },
+    {
+      "source_reference": "node/11074490762",
+      "n": 2
+    },
+    {
+      "source_reference": "node/11245003748",
+      "n": 2
+    },
+    {
+      "source_reference": "node/11302214993",
+      "n": 2
+    },
+    {
+      "source_reference": "node/11340804603",
+      "n": 2
+    },
+    {
+      "source_reference": "node/11340816050",
+      "n": 2
+    },
+    {
+      "source_reference": "node/11414284076",
+      "n": 2
+    },
+    {
+      "source_reference": "node/11496031048",
+      "n": 2
+    },
+    {
+      "source_reference": "node/11510251602",
+      "n": 2
+    },
+    {
+      "source_reference": "node/11527936002",
+      "n": 2
+    },
+    {
+      "source_reference": "node/11546563533",
+      "n": 2
+    },
+    {
+      "source_reference": "node/11549935423",
+      "n": 2
+    },
+    {
+      "source_reference": "node/11581714612",
+      "n": 2
+    },
+    {
+      "source_reference": "node/11736739494",
+      "n": 2
+    },
+    {
+      "source_reference": "node/11853095141",
+      "n": 2
+    },
+    {
+      "source_reference": "node/11926125171",
+      "n": 2
+    },
+    {
+      "source_reference": "node/11977983836",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12039280669",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12053010576",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12090395675",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12099972306",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12113931877",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12125905440",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12207897950",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12350268581",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12480021219",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12482896671",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12487683760",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12609603197",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12709719456",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12850023467",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12850076636",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12852483671",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12852497939",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12852498419",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12854802428",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12854814275",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12861793152",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12865973696",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12868899881",
+      "n": 2
+    },
+    {
+      "source_reference": "node/12976351472",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13172443101",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13172515601",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13234537292",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13234995111",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13236130591",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13240770179",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13242241694",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13242475645",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13249217431",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13260529301",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13523545635",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13523576222",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13546388001",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13573729794",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13664055888",
+      "n": 2
+    },
+    {
+      "source_reference": "node/1367963619",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13687934901",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13688123301",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13697331551",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13704675093",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13704675095",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13704701961",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13704701962",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13740191501",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13797623341",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13860810434",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13860810435",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13866912902",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13866912904",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13871325601",
+      "n": 2
+    },
+    {
+      "source_reference": "node/13908748147",
+      "n": 2
+    },
+    {
+      "source_reference": "node/14017971801",
+      "n": 2
+    },
+    {
+      "source_reference": "node/14060220904",
+      "n": 2
+    },
+    {
+      "source_reference": "node/14103130698",
+      "n": 2
+    },
+    {
+      "source_reference": "node/1431542228",
+      "n": 2
+    },
+    {
+      "source_reference": "node/1793985349",
+      "n": 2
+    },
+    {
+      "source_reference": "node/2433751816",
+      "n": 2
+    },
+    {
+      "source_reference": "node/3254790976",
+      "n": 2
+    },
+    {
+      "source_reference": "node/3254790979",
+      "n": 2
+    },
+    {
+      "source_reference": "node/3254790980",
+      "n": 2
+    },
+    {
+      "source_reference": "node/3254790981",
+      "n": 2
+    },
+    {
+      "source_reference": "node/3439142041",
+      "n": 2
+    },
+    {
+      "source_reference": "node/3451555894",
+      "n": 2
+    },
+    {
+      "source_reference": "node/3490484570",
+      "n": 2
+    },
+    {
+      "source_reference": "node/3562538993",
+      "n": 2
+    },
+    {
+      "source_reference": "node/3562538994",
+      "n": 2
+    },
+    {
+      "source_reference": "node/3562544493",
+      "n": 2
+    },
+    {
+      "source_reference": "node/3596067186",
+      "n": 2
+    },
+    {
+      "source_reference": "node/3604702204",
+      "n": 2
+    },
+    {
+      "source_reference": "node/3630767220",
+      "n": 2
+    },
+    {
+      "source_reference": "node/3630767229",
+      "n": 2
+    },
+    {
+      "source_reference": "node/3638560388",
+      "n": 2
+    },
+    {
+      "source_reference": "node/3638575091",
+      "n": 2
+    },
+    {
+      "source_reference": "node/3638796125",
+      "n": 2
+    },
+    {
+      "source_reference": "node/4146165985",
+      "n": 2
+    },
+    {
+      "source_reference": "node/4146198189",
+      "n": 2
+    },
+    {
+      "source_reference": "node/4146198191",
+      "n": 2
+    },
+    {
+      "source_reference": "node/4398313289",
+      "n": 2
+    },
+    {
+      "source_reference": "node/4469574891",
+      "n": 2
+    },
+    {
+      "source_reference": "node/4470033192",
+      "n": 2
+    },
+    {
+      "source_reference": "node/4831903517",
+      "n": 2
+    },
+    {
+      "source_reference": "node/4831903832",
+      "n": 2
+    },
+    {
+      "source_reference": "node/4844444821",
+      "n": 2
+    },
+    {
+      "source_reference": "node/4849336821",
+      "n": 2
+    },
+    {
+      "source_reference": "node/4863815021",
+      "n": 2
+    },
+    {
+      "source_reference": "node/492087555",
+      "n": 2
+    },
+    {
+      "source_reference": "node/5201432821",
+      "n": 2
+    },
+    {
+      "source_reference": "node/5289054923",
+      "n": 2
+    },
+    {
+      "source_reference": "node/5694338925",
+      "n": 2
+    },
+    {
+      "source_reference": "node/5759627788",
+      "n": 2
+    },
+    {
+      "source_reference": "node/5845619992",
+      "n": 2
+    },
+    {
+      "source_reference": "node/5850238356",
+      "n": 2
+    },
+    {
+      "source_reference": "node/5850238357",
+      "n": 2
+    },
+    {
+      "source_reference": "node/5864745260",
+      "n": 2
+    },
+    {
+      "source_reference": "node/5920021185",
+      "n": 2
+    },
+    {
+      "source_reference": "node/6278524783",
+      "n": 2
+    },
+    {
+      "source_reference": "node/6444539905",
+      "n": 2
+    },
+    {
+      "source_reference": "node/6616109857",
+      "n": 2
+    },
+    {
+      "source_reference": "node/6704977785",
+      "n": 2
+    },
+    {
+      "source_reference": "node/6875539285",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9670249162",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9676545305",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9678942457",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9678942471",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9678949966",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9678960614",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9678984828",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9682458699",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9705011411",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9705069232",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9705070817",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9709398297",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9710618985",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9720020690",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9722416776",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9722477537",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9722479026",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9722506450",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9722506452",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9722510481",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9722512775",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9722512776",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9722519999",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9725537291",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9725611254",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9725615651",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9725624818",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9725628653",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9725632643",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9728438844",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9728551160",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9728575655",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9740785055",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9740795130",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9743451374",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9743455927",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9748828109",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9748842259",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9751915128",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9751919050",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9751925215",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9778832542",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9778843288",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9778854425",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9780861353",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9794758690",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9794759471",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9794774253",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9794778114",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9797899747",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9797919153",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9797933276",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9811758903",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9811782172",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9811810354",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9811814583",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9811815021",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9811815022",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9811849021",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9811853714",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9811858602",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9811868478",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9811872362",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9811887521",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9811898450",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9811900241",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9811903691",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9824789495",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9824789496",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9824815059",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9824833259",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9824837254",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9824838280",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9824944211",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9824988253",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9832343685",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9894620690",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9899372074",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9899384570",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9899385865",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9899621783",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9901459780",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9916936467",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9952254174",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9992131707",
+      "n": 2
+    },
+    {
+      "source_reference": "node/9997212956",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1055869339",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1058125494",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1066882359",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1086125906",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1086572133",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1094675437",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1095304135",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1098471106",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1098471107",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1174219833",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1174925092",
+      "n": 2
+    },
+    {
+      "source_reference": "way/121410796",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1227928771",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1315457706",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1365294278",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1422664292",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1422664293",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1422664295",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1422664296",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1422664297",
+      "n": 2
+    },
+    {
+      "source_reference": "way/1443474618",
+      "n": 2
+    },
+    {
+      "source_reference": "way/186108680",
+      "n": 2
+    },
+    {
+      "source_reference": "way/270024386",
+      "n": 2
+    },
+    {
+      "source_reference": "way/314216269",
+      "n": 2
+    },
+    {
+      "source_reference": "way/319060451",
+      "n": 2
+    },
+    {
+      "source_reference": "way/347405076",
+      "n": 2
+    },
+    {
+      "source_reference": "way/359032300",
+      "n": 2
+    },
+    {
+      "source_reference": "way/359072472",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362165072",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362165095",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362165173",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362165181",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362165258",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362165280",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362165296",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362167659",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362180673",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362374031",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362388248",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362388406",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362388538",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362388644",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362388665",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362388704",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362392249",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362392497",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362498805",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362500101",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362683927",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362686288",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362686383",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362686392",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362688873",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362688987",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362689010",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362689148",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362691190",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362837140",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362838012",
+      "n": 2
+    },
+    {
+      "source_reference": "way/362882054",
+      "n": 2
+    },
+    {
+      "source_reference": "way/363088364",
+      "n": 2
+    },
+    {
+      "source_reference": "way/363088950",
+      "n": 2
+    },
+    {
+      "source_reference": "way/363459646",
+      "n": 2
+    },
+    {
+      "source_reference": "way/363609460",
+      "n": 2
+    },
+    {
+      "source_reference": "way/363793806",
+      "n": 2
+    },
+    {
+      "source_reference": "way/363793965",
+      "n": 2
+    },
+    {
+      "source_reference": "way/365030080",
+      "n": 2
+    },
+    {
+      "source_reference": "way/366415919",
+      "n": 2
+    },
+    {
+      "source_reference": "way/367217863",
+      "n": 2
+    },
+    {
+      "source_reference": "way/367218200",
+      "n": 2
+    },
+    {
+      "source_reference": "way/368853437",
+      "n": 2
+    },
+    {
+      "source_reference": "way/369095561",
+      "n": 2
+    },
+    {
+      "source_reference": "way/369095840",
+      "n": 2
+    },
+    {
+      "source_reference": "way/369095894",
+      "n": 2
+    },
+    {
+      "source_reference": "way/442522365",
+      "n": 2
+    },
+    {
+      "source_reference": "way/506594889",
+      "n": 2
+    },
+    {
+      "source_reference": "way/508548369",
+      "n": 2
+    },
+    {
+      "source_reference": "way/508548373",
+      "n": 2
+    },
+    {
+      "source_reference": "way/509705724",
+      "n": 2
+    },
+    {
+      "source_reference": "way/509705732",
+      "n": 2
+    },
+    {
+      "source_reference": "way/522418103",
+      "n": 2
+    },
+    {
+      "source_reference": "way/530164010",
+      "n": 2
+    },
+    {
+      "source_reference": "way/530239188",
+      "n": 2
+    },
+    {
+      "source_reference": "way/530613991",
+      "n": 2
+    },
+    {
+      "source_reference": "way/530793395",
+      "n": 2
+    },
+    {
+      "source_reference": "way/530793559",
+      "n": 2
+    },
+    {
+      "source_reference": "way/530793703",
+      "n": 2
+    },
+    {
+      "source_reference": "way/530793786",
+      "n": 2
+    },
+    {
+      "source_reference": "way/530848055",
+      "n": 2
+    },
+    {
+      "source_reference": "way/530848057",
+      "n": 2
+    },
+    {
+      "source_reference": "way/530961956",
+      "n": 2
+    },
+    {
+      "source_reference": "way/530961961",
+      "n": 2
+    },
+    {
+      "source_reference": "way/530982794",
+      "n": 2
+    },
+    {
+      "source_reference": "way/531040379",
+      "n": 2
+    },
+    {
+      "source_reference": "way/531072560",
+      "n": 2
+    },
+    {
+      "source_reference": "way/533314751",
+      "n": 2
+    },
+    {
+      "source_reference": "way/533314777",
+      "n": 2
+    },
+    {
+      "source_reference": "way/533538000",
+      "n": 2
+    },
+    {
+      "source_reference": "way/533720143",
+      "n": 2
+    },
+    {
+      "source_reference": "way/533772722",
+      "n": 2
+    },
+    {
+      "source_reference": "way/536012599",
+      "n": 2
+    },
+    {
+      "source_reference": "way/536121353",
+      "n": 2
+    },
+    {
+      "source_reference": "way/536385526",
+      "n": 2
+    },
+    {
+      "source_reference": "way/563158069",
+      "n": 2
+    },
+    {
+      "source_reference": "way/613202748",
+      "n": 2
+    },
+    {
+      "source_reference": "way/613203929",
+      "n": 2
+    },
+    {
+      "source_reference": "way/613242678",
+      "n": 2
+    },
+    {
+      "source_reference": "way/613242686",
+      "n": 2
+    },
+    {
+      "source_reference": "way/613596852",
+      "n": 2
+    },
+    {
+      "source_reference": "way/613619150",
+      "n": 2
+    },
+    {
+      "source_reference": "way/613673142",
+      "n": 2
+    },
+    {
+      "source_reference": "way/613716748",
+      "n": 2
+    },
+    {
+      "source_reference": "way/613716759",
+      "n": 2
+    },
+    {
+      "source_reference": "way/615152037",
+      "n": 2
+    },
+    {
+      "source_reference": "way/615161698",
+      "n": 2
+    },
+    {
+      "source_reference": "way/616233104",
+      "n": 2
+    },
+    {
+      "source_reference": "way/616482521",
+      "n": 2
+    },
+    {
+      "source_reference": "way/616893068",
+      "n": 2
+    },
+    {
+      "source_reference": "way/617326406",
+      "n": 2
+    },
+    {
+      "source_reference": "way/619127064",
+      "n": 2
+    },
+    {
+      "source_reference": "way/620313199",
+      "n": 2
+    },
+    {
+      "source_reference": "way/620518974",
+      "n": 2
+    },
+    {
+      "source_reference": "way/620766400",
+      "n": 2
+    },
+    {
+      "source_reference": "way/620766401",
+      "n": 2
+    },
+    {
+      "source_reference": "way/637404727",
+      "n": 2
+    },
+    {
+      "source_reference": "way/721434232",
+      "n": 2
+    },
+    {
+      "source_reference": "way/951717293",
+      "n": 2
+    },
+    {
+      "source_reference": "way/952726464",
+      "n": 2
+    },
+    {
+      "source_reference": "way/952726468",
+      "n": 2
+    }
+  ]
+}

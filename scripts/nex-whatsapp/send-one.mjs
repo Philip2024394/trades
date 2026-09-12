@@ -63,7 +63,10 @@ const { makeMetaCloudProvider }               = await import("../../src/lib/nex/
 const { makeWhatsAppProviderAdapter }         = await import("../../src/lib/nex/brain/adapters/whatsapp-provider-adapter.ts");
 const { runActionChain }                      = await import("../../src/lib/nex/brain/action-chain.ts");
 const { getOutboxEntry, _setOutboxDriverForTests, makePostgresOutboxDriver } = await import("../../src/lib/nex/brain/adapters/whatsapp-outbox.ts");
-const { withClient }                          = await import("../../src/lib/nex/db.ts");
+// Dedicated pool for the Trades/Hammerex Supabase (where the outbox
+// table lives) · NEVER uses NEX_POSTGRES_URL. Post-cutover, NEX_POSTGRES_URL
+// points at Project B, which does not have public.hammerex_nex_whatsapp_outbox.
+const { withWhatsAppOutboxClient }            = await import("../../src/lib/nex/brain/adapters/whatsapp-outbox-db.ts");
 
 const cfg = loadWhatsAppConfig();
 if (!canSendWhatsApp(cfg)) {
@@ -81,7 +84,14 @@ if (cfg.outboxDriver !== "postgres") {
 }
 if (cfg.outboxDriver === "postgres") {
   // Wire the Postgres driver explicitly for this script's process.
-  _setOutboxDriverForTests(makePostgresOutboxDriver(withClient));
+  // withWhatsAppOutboxClient reads NEX_WHATSAPP_OUTBOX_POSTGRES_URL only.
+  if (!process.env.NEX_WHATSAPP_OUTBOX_POSTGRES_URL) {
+    console.error("FATAL: NEX_WHATSAPP_OUTBOX_POSTGRES_URL is not set");
+    console.error("This script requires the outbox URL for the Trades/Hammerex Supabase");
+    console.error("(where public.hammerex_nex_whatsapp_outbox lives). Set it in .env.local.");
+    process.exit(5);
+  }
+  _setOutboxDriverForTests(makePostgresOutboxDriver(withWhatsAppOutboxClient));
 }
 
 const provider = makeMetaCloudProvider({

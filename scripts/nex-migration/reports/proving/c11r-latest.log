@@ -1,0 +1,68 @@
+═══════════════════════════════════════════════════════════════════════
+ NEX Workforce · C11 RE-ATTEMPT · Supervised Trial · c11r-1788570875739
+═══════════════════════════════════════════════════════════════════════
+
+  CITY=yogyakarta · CATEGORY=restaurants · SOURCE=overpass · JOB=restaurants-overpass
+  BBOX=sw{-7.944714,110.240493} ne{-7.592822,110.624452}
+  AGENT_ID=c11r-yogyakarta-1788570875739
+  EXPECTED_QUERY_HASH=33da302832c4bce40fef6b2025f08581835398880bcb1d4be900fd3dc2682390
+  CEILING=15 min
+  STALE_WI_ID=dfd71abe-f8d6-4d66-9d55-44c3cc343a11 (expected reap target)
+
+─── § 12 · PRE-FLIGHT · READ-ONLY ───
+  target · db=postgres · pg=17.6 · user=postgres
+🟢 target = Project B postgres · pg 17.x · ref=ijvqdvsvwtwxzcqmoqit
+  state: {
+    "food_rows": 23328,
+    "food_dup": 373,
+    "cc": 1,
+    "city_slug_actual": "yogyakarta",
+    "city_bbox_actual": {
+      "ne": {
+        "lat": -7.592822,
+        "lon": 110.624452
+      },
+      "sw": {
+        "lat": -7.944714,
+        "lon": 110.240493
+      }
+    },
+    "jr": 1,
+    "rot": 0,
+    "wi_total": 4,
+    "wi_active": 1,
+    "stale_state": "leased",
+    "stale_deadline": "2026-09-04 16:28:24.004234+00",
+    "ev": 5,
+    "stg": 2525,
+    "aud": 18,
+    "wf_pol": 12,
+    "food_pol": 5,
+    "roles": 3,
+    "r5_intact": true,
+    "wf_sessions": 0
+  }
+🟢 food_business = 23,328 · 23328
+🟢 duplicate groups = 373 · 373
+🟢 city_catalogue = 1
+🟢 city slug = yogyakarta
+🟢 job_registry = 1
+🔴 rotation_eligible = 1
+🟢 work_item = 4 (baseline includes stale C11) · 4
+🟢 active work_item = 1 (stale C11 lease) · 1
+🟢 stale C11 work_item exists and is `leased` · state=leased
+🟢 evidence_record = 5
+🟢 candidate_staging = 2,525
+🟢 persist_audit = 18
+🟢 workforce policies = 12
+🟢 food policies = 5
+🟢 workforce roles = 3
+🟢 R5 intact
+🟢 zero workforce DB sessions
+🟢 seeded bbox EXACTLY matches C6 empirical
+🟢 Scheduled Task Disabled
+🟢 .env.local mtime unchanged (2026-09-03T07:41) · 2026-09-03T07:41:00.1988508+07:00
+🟢 zero workforce OS processes pre-trial · 0
+🟢 NEX_WORKFORCE_URL absent from .env.local
+
+🔴 HARD STOP · pre-flight invariant failure

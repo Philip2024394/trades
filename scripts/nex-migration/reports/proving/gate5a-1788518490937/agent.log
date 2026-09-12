@@ -1,0 +1,10 @@
+# agent started at 2026-09-04T10:41:44.763Z · script=C:\Users\Victus\trades\scripts\nex-workforce-v2\agent.mjs
+{"ts":"2026-09-04T10:41:47.252Z","msg":"agent.created","agent_id":"gate5a-1788518490936"}
+{"ts":"2026-09-04T10:41:47.253Z","msg":"agent.loop.start","agent_id":"gate5a-1788518490936","poll_ms":1000}
+{"ts":"2026-09-04T10:41:50.937Z","msg":"agent.claimed","work_item_id":"341ac49e-e01d-4941-ad59-78fa54eaca99","generation":2,"city":"gate5a-yogya","category":"restaurants","source":"overpass"}
+{"ts":"2026-09-04T10:41:50.939Z","msg":"agent.work.start","work_item_id":"341ac49e-e01d-4941-ad59-78fa54eaca99","lease_secs":898,"heartbeat_ms":2000}
+{"ts":"2026-09-04T10:41:50.939Z","msg":"heartbeat.start","intervalMs":2000,"workItemId":"341ac49e-e01d-4941-ad59-78fa54eaca99"}
+{"ts":"2026-09-04T10:41:50.940Z","msg":"heartbeat.stop","ticks":0,"lost":false}
+{"ts":"2026-09-04T10:41:50.940Z","msg":"agent.catastrophic","reason":"no step-library","work_item_id":"341ac49e-e01d-4941-ad59-78fa54eaca99","err":"no step-library registered for restaurants/overpass"}
+{"ts":"2026-09-04T10:41:52.266Z","msg":"agent.fail_soft","work_item_id":"341ac49e-e01d-4941-ad59-78fa54eaca99","ok":true,"reason":"no step-library registered"}
+# agent exited code=null signal=SIGTERM at 2026-09-04T10:41:54.118Z

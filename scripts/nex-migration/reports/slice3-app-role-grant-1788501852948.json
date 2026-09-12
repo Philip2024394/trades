@@ -1,0 +1,141 @@
+{
+  "started_at": "2026-09-04T06:03:25.308Z",
+  "phases": {
+    "preflight": {
+      "targetId": {
+        "db": "postgres",
+        "ver": "17.6",
+        "usr": "postgres"
+      },
+      "pre": {
+        "app_exists": 1,
+        "app_login": false,
+        "app_super": false,
+        "app_bypass": false,
+        "app_createrole": false,
+        "app_createdb": false,
+        "runtime_exists": 1,
+        "runtime_login": true,
+        "runtime_super": false,
+        "runtime_bypass": false,
+        "existing_membership": 0,
+        "wi": 0,
+        "hb": 0,
+        "rr": 0
+      },
+      "preOutbound": [
+        {
+          "member": "postgres"
+        }
+      ],
+      "preTaskState": "Disabled",
+      "envInfoPre": "mtime=2026-09-03T07:41:00.1988508+07:00 matches=0"
+    },
+    "apply": {
+      "ok": true,
+      "duration_ms": 1731,
+      "stmt": "GRANT nex_workforce_app TO nex_app_runtime WITH INHERIT TRUE, SET TRUE;"
+    },
+    "postflight": {
+      "A": [
+        {
+          "role": "nex_workforce_app",
+          "member": "nex_app_runtime",
+          "admin_option": false,
+          "inherit_option": true,
+          "set_option": true
+        }
+      ],
+      "B": {
+        "role": "nex_workforce_app",
+        "member": "nex_app_runtime",
+        "admin_option": false,
+        "inherit_option": true,
+        "set_option": true
+      },
+      "C": {
+        "rolcanlogin": false,
+        "rolsuper": false,
+        "rolbypassrls": false,
+        "rolcreaterole": false,
+        "rolcreatedb": false
+      },
+      "D": {
+        "rolcanlogin": true,
+        "rolsuper": false,
+        "rolbypassrls": false,
+        "rolcreaterole": false,
+        "rolcreatedb": false,
+        "rolinherit": true
+      },
+      "E": 0,
+      "Fapproved": 12,
+      "Fextras": [],
+      "G": 0,
+      "H": {
+        "rolcanlogin": false,
+        "rolsuper": false,
+        "rolbypassrls": false,
+        "rolcreaterole": false,
+        "rolcreatedb": false,
+        "u": true,
+        "c": false
+      },
+      "I": {
+        "rolcanlogin": false,
+        "rolsuper": false,
+        "rolbypassrls": false,
+        "rolcreaterole": false,
+        "rolcreatedb": false
+      },
+      "Jperm": [
+        {
+          "grantee": "nex_brain_app",
+          "privs": "DELETE,INSERT,SELECT,UPDATE"
+        },
+        {
+          "grantee": "nex_social_app",
+          "privs": "DELETE,INSERT,SELECT,UPDATE"
+        }
+      ],
+      "Jpol": 5,
+      "K": {
+        "tables": 3,
+        "ev": 0,
+        "stg": 0,
+        "aud": 0
+      },
+      "L": {
+        "food_rows": 22750,
+        "r4_cols": 2,
+        "rls": true,
+        "force_rls": false,
+        "persist_owner": "nex_workforce_persister_food_business",
+        "dup_groups": 373
+      },
+      "M": {
+        "wi": 0,
+        "ev": 0,
+        "stg": 0,
+        "aud": 0,
+        "hb": 0,
+        "rr": 0
+      },
+      "N": 0,
+      "postTaskState": "Disabled",
+      "envInfoPost": "mtime=2026-09-03T07:41:00.1988508+07:00 matches=0",
+      "srcMatchCount": 0
+    },
+    "functionalProof": {
+      "attempted": true,
+      "ok": true,
+      "current_user": "nex_workforce_app",
+      "session_user": "nex_app_runtime",
+      "error": null
+    }
+  },
+  "finished_at": "2026-09-04T06:04:12.948Z",
+  "final_ok": true,
+  "pass": 36,
+  "fail": 0
+}
