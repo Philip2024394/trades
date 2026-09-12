@@ -1,0 +1,401 @@
+{
+  "run_id": "improve_ab3d0e4c-e0df-46a0-8f86-f07b1535bee4",
+  "candidate_id": "cand_4cf8cf66-df6f-4ebe-8831-ee7f40c1da01",
+  "candidate_kind": "knowledge",
+  "started_at": "2026-09-05T21:27:40.500Z",
+  "completed_at": "2026-09-05T21:27:40.576Z",
+  "triggered_by": "runner",
+  "status_trace": [
+    {
+      "from": "OBSERVED",
+      "to": "CANDIDATE",
+      "at": "2026-09-05T21:27:40.504Z"
+    },
+    {
+      "from": "CANDIDATE",
+      "to": "EVALUATING",
+      "at": "2026-09-05T21:27:40.504Z"
+    },
+    {
+      "from": "EVALUATING",
+      "to": "REVIEWED",
+      "at": "2026-09-05T21:27:40.507Z"
+    },
+    {
+      "from": "REVIEWED",
+      "to": "BENCHMARKED",
+      "at": "2026-09-05T21:27:40.507Z"
+    },
+    {
+      "from": "BENCHMARKED",
+      "to": "STABLE",
+      "at": "2026-09-05T21:27:40.507Z"
+    },
+    {
+      "from": "STABLE",
+      "to": "REJECTED",
+      "at": "2026-09-05T21:27:40.576Z",
+      "note": "terminal:promoter:REJECTED:MATERIAL:unsupported_claim:Claim uses 3 distinctive term(s) not backed by test summary or runtime evidence: written, authoritative, source,MATERIAL:test_gap:1 required edge case(s) not covered by tests: permission denied"
+    }
+  ],
+  "terminal_status": "REJECTED",
+  "manifest_at_start": {
+    "benchmark_version": "programmer-benchmark-v1",
+    "benchmark_hash": "a8b24746e96fc6ddb2c910d6",
+    "reviewer_hash": "bd6777c82117f20fe799ffea",
+    "evaluator_hash": "4bbd9865b4eeace2d9b86772",
+    "knowledge_snapshot_hash": "UNKNOWN",
+    "environment_identifier": "node:v24.18.0",
+    "captured_at": "2026-09-05T21:27:40.507Z"
+  },
+  "manifest_at_end": {
+    "benchmark_version": "programmer-benchmark-v1",
+    "benchmark_hash": "a8b24746e96fc6ddb2c910d6",
+    "reviewer_hash": "bd6777c82117f20fe799ffea",
+    "evaluator_hash": "4bbd9865b4eeace2d9b86772",
+    "knowledge_snapshot_hash": "UNKNOWN",
+    "environment_identifier": "node:v24.18.0",
+    "captured_at": "2026-09-05T21:27:40.507Z"
+  },
+  "review_response": {
+    "review_id": "rev_c9ac52ac-78f0-48ec-b750-edd0635b96b4",
+    "verdict": "NEEDS_CHANGES",
+    "confidence": "high",
+    "findings": [
+      {
+        "finding_id": "f_mtow9597_111",
+        "severity": "MATERIAL",
+        "category": "unsupported_claim",
+        "message": "Claim uses 3 distinctive term(s) not backed by test summary or runtime evidence: written, authoritative, source",
+        "rationale": "The implementer's claim contains substantive terms with no corresponding evidence in tests or runtime observations.",
+        "evidence_pointer": "review:rev_c9ac52ac-78f0-48ec-b750-edd0635b96b4:implementation.claim vs (tests.summary + runtime_evidence)",
+        "affected_behavior": "Any behavior asserted by the unsupported claim",
+        "recommended_correction": "Add tests or runtime evidence covering: written, authoritative, source. Or narrow the claim to match evidence."
+      },
+      {
+        "severity": "MATERIAL",
+        "category": "test_gap",
+        "message": "1 required edge case(s) not covered by tests: permission denied",
+        "rationale": "Test suite passes for the covered cases but does not exercise the required edge behaviors. Green tests do not prove correctness for uncovered branches.",
+        "evidence_pointer": "review:rev_c9ac52ac-78f0-48ec-b750-edd0635b96b4:requirement_details.edge_cases_required vs edge_cases_covered",
+        "affected_behavior": "Behaviors relying on: permission denied",
+        "recommended_correction": "Add explicit tests exercising each uncovered edge case, then re-verify.",
+        "finding_id": "f_mtow9597_279"
+      }
+    ],
+    "evidence_inspected": [
+      "impl:src/lib/nex/programmer-learning/store.ts",
+      "test:src/lib/nex/programmer-learning/programmer-learning.test.ts",
+      "runtime:node:fs docs · https://nodejs.org/api/fs.html"
+    ],
+    "knowledge_used": [],
+    "reasoning_trace": [
+      "review_id=rev_c9ac52ac-78f0-48ec-b750-edd0635b96b4",
+      "claimed_by=claude · treated as CLAIM not authority (§13)",
+      "R1 requirement_mismatch → 0 finding(s) so far",
+      "R2 security → 0 finding(s) so far",
+      "R3 unsupported_claim → 1 finding(s) so far",
+      "R4 runtime_evidence → 1 finding(s) so far",
+      "R5 test_quality → +1 finding(s) · total 2",
+      "knowledge consulted: 0 item(s)",
+      "findings tally: INFO=0 WARNING=0 MATERIAL=2 CRITICAL=0",
+      "MATERIAL finding(s) present → NEEDS_CHANGES",
+      "FINAL verdict=NEEDS_CHANGES · confidence=high"
+    ],
+    "reviewer_timestamp": "2026-09-05T21:27:40.507Z"
+  },
+  "drift_report": {
+    "baseline_run_id": "baseline_run",
+    "current_run_id": "stab_4d7792f4-a7a7-460d-8911-e5691c40d297",
+    "attribution": {
+      "reviewer_changed": false,
+      "evaluator_changed": false,
+      "benchmark_changed": false,
+      "knowledge_changed": false,
+      "environment_changed": false,
+      "summary": "no manifest change"
+    },
+    "fingerprints_identical": true,
+    "overall_direction": "STABLE",
+    "overall_delta": {
+      "defective_catch_rate": 0,
+      "false_positive_rate": 0,
+      "tests_pass_but_code_wrong_catch_rate": 1,
+      "uncertain_accuracy": 1
+    },
+    "per_class_drift": [
+      {
+        "defect_class": "api.incorrect_contract",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "api.missing_validation",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "concurrency.lost_update",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "concurrency.race_condition",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "concurrency.unsafe_shared_state",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "control.adversarial_unfamiliar_but_correct",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "control.correct",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "control.incomplete",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "control.uncertain",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "correctness.boundary_condition",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "correctness.error_propagation",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "correctness.null_handling",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "correctness.off_by_one",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "correctness.unit_conversion",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "data.constraint_assumption",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "data.schema_migration_hazard",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "data.transaction_boundary",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "reliability.missing_timeout",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "reliability.resource_leak",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "reliability.silent_error_swallow",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "reliability.unbounded_recursion",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "security.authorization_bypass",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "security.csrf",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "security.data_leakage",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "security.path_traversal",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "security.privilege_escalation",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "security.secret_exposure",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "security.sql_injection",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "security.unsafe_deserialization",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "temporal.clock_assumption",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "temporal.stale_cache",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      },
+      {
+        "defect_class": "temporal.timing_boundary",
+        "baseline_catch_rate": 1,
+        "current_catch_rate": 1,
+        "delta": 0,
+        "direction": "STABLE",
+        "reason": "no change"
+      }
+    ],
+    "verdict_flips": [],
+    "reasons": [
+      "no material change · all classes STABLE"
+    ]
+  },
+  "fresh_process_reproduced": false,
+  "promotion_decision": {
+    "status": "REJECTED",
+    "failure_reason": "review_needs_changes",
+    "review_verdict": "NEEDS_CHANGES",
+    "reasons": [
+      "MATERIAL:unsupported_claim:Claim uses 3 distinctive term(s) not backed by test summary or runtime evidence: written, authoritative, source",
+      "MATERIAL:test_gap:1 required edge case(s) not covered by tests: permission denied"
+    ]
+  },
+  "notes": "promoter:REJECTED:MATERIAL:unsupported_claim:Claim uses 3 distinctive term(s) not backed by test summary or runtime evidence: written, authoritative, source,MATERIAL:test_gap:1 required edge case(s) not covered by tests: permission denied",
+  "final_status": null
+}

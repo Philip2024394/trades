@@ -1,0 +1,59 @@
+{
+  "version": "v0.1.0",
+  "notes": "Evidence Validation Layer contract · founder-authorised 2026-09-12 as pre-Phase-5 correction C-2. Sits between every Evidence Specialist and NEX2 consumption. Rejects raw specialist claims. Produces AuthoritativeEvidenceRecord only when all seven checks pass. Deterministic. Advisory. Read-only.",
+  "record_type": "AUTHORITATIVE_EVIDENCE_RECORD",
+  "constitutional_purpose_locked_2026_09_12": "Ensure that no specialist observation reaches NEX2 or NEX3 unless every provenance, reproducibility, hash, scope, staleness, and authorisation check has been enforced. Raw specialist claim ≠ authoritative evidence.",
+  "seven_checks": [
+    { "id": "schema",              "purpose": "Input record conforms to a declared schema_version · required fields are present · types match" },
+    { "id": "provenance",          "purpose": "tool + tool_version + methodology fields are non-empty" },
+    { "id": "reproducibility",     "purpose": "deterministic=true AND external_llm_used=false AND reproducibility_information carries command + cwd + env_fingerprint + node_version + platform + seed" },
+    { "id": "hash_integrity",      "purpose": "source_hash / input_hash / methodology_hash present · byte_identity_witness present · determinism_witness present" },
+    { "id": "scope",               "purpose": "record explicitly declares what its evidence covers (paths · versions · rulesets) and what it does NOT" },
+    { "id": "stale",               "purpose": "recorded_at is present · source_hash matches current computed hash of the referenced sources OR record explicitly declares state=STALE" },
+    { "id": "authorisation_state", "purpose": "authorisation === false AND execution === false constants · authority_boundary present · no self-promotion field" }
+  ],
+  "input_shape_contract": {
+    "note": "Any specialist record (DebuggerEvidence · SecurityEvidence · ArchitectureEvidence · TestEvidence · PerformanceObservation · RefactorCandidate · DependencyObservation · UIQAObservation · DocDrift · ReleasePreflight · RequirementsContract) is a valid input provided it declares record_type, schema_version, produced_by, attribution, authorisation, execution, and the field families above.",
+    "required_input_fields": [
+      "record_type", "schema_version", "produced_by",
+      "attribution", "authorisation", "execution", "authority_boundary",
+      "reproducibility_information", "determinism_witness"
+    ]
+  },
+  "output_record_fields": [
+    { "name": "authoritative_evidence_id", "shape": "string · monotonic e.g. AER-<timestamp>-<rand>" },
+    { "name": "schema_version",            "shape": "semver · v0.1.0" },
+    { "name": "record_type",               "shape": "constant · 'AUTHORITATIVE_EVIDENCE_RECORD'" },
+    { "name": "source_record_type",        "shape": "the specialist's record_type e.g. 'DEBUGGER_EVIDENCE'" },
+    { "name": "source_record_id",          "shape": "the specialist's session/evidence id" },
+    { "name": "source_produced_by",        "shape": "the specialist's produced_by field" },
+    { "name": "validation_verdict",        "shape": "one of ['VALIDATED', 'REJECTED_SCHEMA', 'REJECTED_PROVENANCE', 'REJECTED_REPRODUCIBILITY', 'REJECTED_HASH', 'REJECTED_SCOPE', 'REJECTED_STALE', 'REJECTED_AUTHORISATION', 'REJECTED_MULTIPLE']" },
+    { "name": "check_results",             "shape": "array of { check_id · result: pass|fail · detail }" },
+    { "name": "cited_input_hashes",        "shape": "array of sha256 prefixes reused from the source record" },
+    { "name": "provenance_chain",          "shape": "{ source_specialist · source_record_id · validator_run_id · fully_resolvable }" },
+    { "name": "chain_integrity_hash",      "shape": "sha256 prefix over ordered check_results" },
+    { "name": "recorded_at",               "shape": "ISO-8601 · excluded from deterministic signature" },
+    { "name": "authorisation",             "shape": "constant · false" },
+    { "name": "execution",                 "shape": "constant · false" },
+    { "name": "authority_boundary",        "shape": "constant · 'authoritative_evidence_readonly'" },
+    { "name": "attribution",               "shape": "role='evidence_validator' · authority='validation_only' · produced_by='nex_evidence_validation_layer' · external_llm_used=false · deterministic=true" }
+  ],
+  "invariants": [
+    "REJECTED verdicts are FIRST-CLASS SUCCESSFUL OUTCOMES · the validator's job is to reject broken evidence · a REJECTED record is more valuable than a fabricated VALIDATED one",
+    "Validator MUST NOT modify the input record · it produces a NEW AuthoritativeEvidenceRecord",
+    "Validator MUST NOT accept a record whose attribution.external_llm_used !== false",
+    "Validator MUST NOT accept a record whose attribution.deterministic !== true",
+    "Validator MUST NOT accept a record whose authorisation !== false or execution !== false",
+    "Validator MUST NOT accept a record whose authority field claims 'authoritative' or 'promotion' or 'execution' or 'authority'",
+    "Validator MUST NOT infer missing fields · missing = REJECTED",
+    "Validator MUST NOT synthesize a numerical validation score · check_results carry pass/fail ordinal only",
+    "external_llm_used MUST be false for the validator itself",
+    "chain_integrity_hash MUST be deterministic re-run of the check sequence",
+    "authorisation_state check enforces the constitutional constant · a record where 'authorisation' or 'execution' can be modified at runtime MUST be REJECTED"
+  ],
+  "downstream_consumers": [
+    "Evidence Engine · consumes AuthoritativeEvidenceRecord · never raw specialist output",
+    "NEX2 · cites AuthoritativeEvidenceRecord IDs",
+    "NEX3 · gates on AuthoritativeEvidenceRecord IDs"
+  ]
+}

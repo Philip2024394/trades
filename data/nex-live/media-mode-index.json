@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "index": {
+    "23ddb66f-66a6-44c7-9cdc-560f5a853946": {
+      "mode": "VIDEO",
+      "owner_user_id": "mock_business_gaotama_hotel",
+      "registered_at_iso": "2026-09-06T13:37:18.700Z",
+      "is_mock_fixture": true,
+      "fixture_id": "mock_video_hotel_dinner"
+    },
+    "400776d7-b63a-4939-a9e0-b9e2eb346bff": {
+      "mode": "MUSIC",
+      "owner_user_id": "mock_artist_maya",
+      "registered_at_iso": "2026-09-06T13:37:18.224Z",
+      "is_mock_fixture": true,
+      "fixture_id": "mock_music_maya_midnight"
+    },
+    "1e05a678-2efd-432d-9a9a-1358ceaf7f1b": {
+      "mode": "MUSIC",
+      "owner_user_id": "mock_artist_river",
+      "registered_at_iso": "2026-09-06T13:37:18.451Z",
+      "is_mock_fixture": true,
+      "fixture_id": "mock_music_river_acoustic"
+    },
+    "b1827151-bf26-4b4f-b0e4-7fde6b69b5df": {
+      "mode": "MUSIC",
+      "owner_user_id": "mock_group_kota",
+      "registered_at_iso": "2026-09-06T13:37:18.672Z",
+      "is_mock_fixture": true,
+      "fixture_id": "mock_music_kota_ensemble"
+    }
+  }
+}

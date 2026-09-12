@@ -1,0 +1,46 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX UI / UX Design Intelligence · founder-authorised 2026-09-12. Design Brain layer under NEX1 Master Brain. Deterministic. Advisory. Non-copying by construction.",
+  "record_type": "UI_UX_DESIGN_INTELLIGENCE_EVIDENCE",
+  "constitutional_purpose_locked": "Source of truth = DesignBrief + DesignSemanticModel + Tokens + Layout + ComponentRegistry + Evidence. The rendered screen is the OUTPUT · never the source of truth. Curated component substrate only · never free-form pixel generation. Legal envelope = Option A (MIT / Apache / CC0 / founder-supplied) only.",
+  "record_types_supported": ["DESIGN_BRIEF","DESIGN_SEMANTIC_MODEL","DESIGN_TOKENS_RESOLVED","LAYOUT_PLAN","COMPONENT_COMPOSITION","VISUAL_QA_OBSERVATION"],
+  "outcomes_permitted": {
+    "BRIEF_RESOLVED":               "semantic model produced from brief · deterministic",
+    "TOKENS_RESOLVED":              "tokens compiled from DTCG source · same input → same output",
+    "COMPOSITION_PRODUCED":         "component composition emitted (candidate_only · never applied)",
+    "VISUAL_QA_MEASURED_PASS":      "screenshot diff + a11y evidence produced with no BLOCKING_FINDING",
+    "VISUAL_QA_MEASURED_FAIL":      "screenshot diff or a11y evidence produced with BLOCKING_FINDING · NEX3 decides",
+    "BRIEF_UNDERDETERMINED":        "brief lacks sufficient signal to produce a semantic model · REJECTED-first-class-success",
+    "REFERENCE_LICENCE_UNCERTAIN":  "reference source licence not verified · fails closed · first-class success",
+    "NOT_MEASURED":                 "no brief or no target supplied",
+    "INSUFFICIENT_EVIDENCE":        "attempted but insufficient signal"
+  },
+  "reference_ingestion_licences_permitted_v0": ["MIT","Apache-2.0","CC0","CC-BY-4.0","SIL-OFL","BSD-2-Clause","BSD-3-Clause","founder-supplied"],
+  "reference_ingestion_licences_forbidden_v0": ["all-rights-reserved-default","behance","dribbble","proprietary","competitor-screenshot","trademarked-logo"],
+  "canonical_reference_libraries_v0": ["shadcn/ui","Radix","Tailwind CSS","Chakra","Ant Design","Bootstrap","Bulma","Mantine","Lucide","Heroicons","Phosphor","Iconoir","Tabler","Feather","IBM Carbon","Google Fonts","Salesforce Lightning (CC-BY)"],
+  "forbidden_vocabulary_in_output": [
+    "design_score","aesthetic_score","modernity_score","quality_score","overall_quality","best_practice","optimal","superior",
+    "beautiful","stunning","world-class","confidence_percent","aggregate_quality","weighted_total"
+  ],
+  "invariants": [
+    "MUST NEVER copy proprietary designs · MUST NEVER ingest Behance/Dribbble/competitor screenshots",
+    "Modernity is measurable signals (first_seen_date · resolution · aspect_ratio · layout_signals · typography_signals · spacing_signals · colour_signals · visual_patterns_detected · provenance) · NEVER a fused score",
+    "DesignSemanticModel is the middle layer · pixels are NEVER the source of truth",
+    "913 UNKNOWN/PROTECTED Supabase images stay untouched (VG-PLAN v1.2 D3)",
+    "Reference library grows ONLY via founder-authored ADR amendment (ADR-0316d)",
+    "QA is an evidence producer with BLOCKING_FINDING vocabulary · NEVER a veto authority",
+    "authorisation=false · execution=false · authority_boundary='evidence_producer_only'",
+    "external_llm_used=false · deterministic=true",
+    "routes through Evidence Validation"
+  ],
+  "v0_1_0_status": {
+    "design_semantic_model": "IMPLEMENTED (schema + deterministic composer)",
+    "design_tokens": "IMPLEMENTED (schema + DTCG-shaped resolver)",
+    "layout_plan": "IMPLEMENTED (schema + deterministic layout composer)",
+    "component_composition": "IMPLEMENTED (schema + registry-lookup composer)",
+    "visual_qa_screenshot_diff": "NOT_IMPLEMENTED · deferred · requires headless-browser binding",
+    "canvas_bidirectional_source": "NOT_IMPLEMENTED · deferred until deterministic design model proven",
+    "image_generation": "NOT_IMPLEMENTED · would require external image-gen service (forbidden by Independence Constitution) · founder-authorised local approach required",
+    "image_reference_pipeline": "PARTIAL · licence-aware reference registry present · pixel-copy explicitly forbidden"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "skills": {
+    "nextjs-app-router": {
+      "skill": "nextjs-app-router",
+      "level": "bronze",
+      "xp": 5,
+      "successes": 1,
+      "failures": 0,
+      "lastExercisedAt": "2026-09-11T15:14:37.637Z"
+    },
+    "sql-migration": {
+      "skill": "sql-migration",
+      "level": "bronze",
+      "xp": 5,
+      "successes": 1,
+      "failures": 0,
+      "lastExercisedAt": "2026-09-11T15:14:37.638Z"
+    },
+    "hooks_lint:tsx": {
+      "skill": "hooks_lint:tsx",
+      "level": "bronze",
+      "xp": 2,
+      "successes": 1,
+      "failures": 0,
+      "lastExercisedAt": "2026-09-11T17:16:37.214Z"
+    }
+  },
+  "patterns": [],
+  "antiPatterns": [],
+  "lastUpdated": "2026-09-11T17:16:37.214Z"
+}

@@ -1,0 +1,36 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX Release Engineer Evidence Specialist · founder-authorised 2026-09-12. 8-gate pre-flight. Fail-closed. Never publishes to LIVE.",
+  "record_type": "RELEASE_ENGINEER_EVIDENCE",
+  "constitutional_purpose_locked": "Produce release-readiness evidence across 8 gates. NEVER cross BUILD→LIVE. LIVE is separate founder authorisation. Green gates are NOT authorisation — only the founder authorises.",
+  "eight_gates_locked": [
+    { "id": "build",         "description": "npm ci from lockfile · TS strict compile · deterministic artefact hash" },
+    { "id": "test",          "description": "full test baseline · zero regressions required" },
+    { "id": "migration",     "description": "SQL migration dry-run · forward+backward parse · row-count invariants · refuses destructive ops without founder token" },
+    { "id": "dependencies",  "description": "lockfile-lint · npm audit --audit-level=high · license-checker allowlist" },
+    { "id": "security",      "description": "gitleaks / trufflehog · osv-scanner · CSP/headers snapshot" },
+    { "id": "configuration", "description": "env-var schema via envalid/zod · missing/unknown = fail-closed · secrets never in artefact" },
+    { "id": "deployment",    "description": "artefact hash pinned · health-check reachable in staging · feature-flag defaults verified" },
+    { "id": "rollback",      "description": "previous immutable Build Snapshot exists · migration reverse-path present · one-command revert rehearsed" }
+  ],
+  "outcomes_permitted": {
+    "ALL_GATES_PASSED":         "all 8 gates green · evidence bundle produced · founder authorisation REQUIRED to publish",
+    "GATE_FAILED":              "one or more gates FAILED · publication refused",
+    "GATE_INCONCLUSIVE":        "one or more gates INCONCLUSIVE · publication refused",
+    "GATE_BYPASS_ATTEMPTED":    "caller attempted to skip a gate · fail-closed · sec.rel.gate_bypass_attempt · publication refused",
+    "NOT_MEASURED":             "no candidate build supplied",
+    "INSUFFICIENT_EVIDENCE":    "attempted but insufficient signal"
+  },
+  "forbidden_vocabulary_in_output": [
+    "release_score","readiness_score","overall_quality","best_practice","production_ready","confidence_percent","aggregate_quality"
+  ],
+  "invariants": [
+    "MUST NEVER cross BUILD→LIVE boundary · LIVE is separate founder authorisation",
+    "MUST NEVER auto-bump lockfiles/deps",
+    "MUST NEVER skip a gate · gate_bypass_attempt is fail-closed",
+    "Green gates are NOT authorisation · founder authorises",
+    "authorisation=false · execution=false · authority_boundary='evidence_producer_only'",
+    "external_llm_used=false · deterministic=true",
+    "routes through Evidence Validation"
+  ]
+}

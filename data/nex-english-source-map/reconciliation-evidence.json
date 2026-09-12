@@ -1,0 +1,1584 @@
+{
+  "generated_at": "2026-09-10T18:03:07.783Z",
+  "generated_by": "master_ai_engineer_english_reconciliation",
+  "hard_rule": "READ-ONLY · NO WRITES · NO MIGRATIONS · NO IMPORTS",
+  "linguistic_layer": {
+    "table": "nex.brain_english_vocabulary",
+    "row_count": 30,
+    "schema_fields": [
+      "word",
+      "word_normalised",
+      "part_of_speech",
+      "cefr_level",
+      "definition_en",
+      "definition_id",
+      "pronunciation_ipa",
+      "pronunciation_id_hint",
+      "example_sentence_en",
+      "example_sentence_id",
+      "common_mistake_note_id",
+      "register",
+      "variety",
+      "tags",
+      "frequency_rank",
+      "source",
+      "source_reference",
+      "source_licence_terms",
+      "created_by",
+      "confidence",
+      "flagged_for_review"
+    ],
+    "rows": [
+      {
+        "word": "afternoon",
+        "word_normalised": "afternoon",
+        "part_of_speech": "noun",
+        "cefr_level": "A1",
+        "definition_en": "afternoon",
+        "definition_id": "siang",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT",
+          "alt:sore"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.400Z"
+      },
+      {
+        "word": "day",
+        "word_normalised": "day",
+        "part_of_speech": "noun",
+        "cefr_level": "A1",
+        "definition_en": "day",
+        "definition_id": "hari",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.407Z"
+      },
+      {
+        "word": "evening",
+        "word_normalised": "evening",
+        "part_of_speech": "noun",
+        "cefr_level": "A1",
+        "definition_en": "evening",
+        "definition_id": "malam",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT",
+          "alt:petang"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.402Z"
+      },
+      {
+        "word": "excuse me",
+        "word_normalised": "excuse me",
+        "part_of_speech": "interjection",
+        "cefr_level": "A1",
+        "definition_en": "excuse me",
+        "definition_id": "permisi",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT",
+          "alt:maaf"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.396Z"
+      },
+      {
+        "word": "goodbye",
+        "word_normalised": "goodbye",
+        "part_of_speech": "interjection",
+        "cefr_level": "A1",
+        "definition_en": "goodbye",
+        "definition_id": "selamat tinggal",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": "'selamat tinggal' when you're leaving them; 'selamat jalan' when they're leaving you.",
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT",
+          "alt:sampai jumpa|dadah"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.390Z"
+      },
+      {
+        "word": "hello",
+        "word_normalised": "hello",
+        "part_of_speech": "interjection",
+        "cefr_level": "A1",
+        "definition_en": "hello",
+        "definition_id": "halo",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": "Universal greeting.",
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT",
+          "alt:hai"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.385Z"
+      },
+      {
+        "word": "here",
+        "word_normalised": "here",
+        "part_of_speech": "adverb",
+        "cefr_level": "A1",
+        "definition_en": "here",
+        "definition_id": "di sini",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.418Z"
+      },
+      {
+        "word": "how",
+        "word_normalised": "how",
+        "part_of_speech": "adverb",
+        "cefr_level": "A1",
+        "definition_en": "how",
+        "definition_id": "bagaimana",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT",
+          "alt:gimana"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.425Z"
+      },
+      {
+        "word": "later",
+        "word_normalised": "later",
+        "part_of_speech": "adverb",
+        "cefr_level": "A1",
+        "definition_en": "later",
+        "definition_id": "nanti",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.417Z"
+      },
+      {
+        "word": "month",
+        "word_normalised": "month",
+        "part_of_speech": "noun",
+        "cefr_level": "A1",
+        "definition_en": "month",
+        "definition_id": "bulan",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.409Z"
+      },
+      {
+        "word": "morning",
+        "word_normalised": "morning",
+        "part_of_speech": "noun",
+        "cefr_level": "A1",
+        "definition_en": "morning",
+        "definition_id": "pagi",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.398Z"
+      },
+      {
+        "word": "night",
+        "word_normalised": "night",
+        "part_of_speech": "noun",
+        "cefr_level": "A1",
+        "definition_en": "night",
+        "definition_id": "malam",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.404Z"
+      },
+      {
+        "word": "no",
+        "word_normalised": "no",
+        "part_of_speech": "adverb",
+        "cefr_level": "A1",
+        "definition_en": "no",
+        "definition_id": "tidak",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": "'bukan' for nouns/pronouns, 'tidak' for verbs/adjectives",
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT",
+          "alt:nggak|enggak|bukan"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.394Z"
+      },
+      {
+        "word": "now",
+        "word_normalised": "now",
+        "part_of_speech": "adverb",
+        "cefr_level": "A1",
+        "definition_en": "now",
+        "definition_id": "sekarang",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.416Z"
+      },
+      {
+        "word": "please",
+        "word_normalised": "please",
+        "part_of_speech": "adverb",
+        "cefr_level": "A1",
+        "definition_en": "please",
+        "definition_id": "tolong",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": "'tolong' = request, 'silakan' = please/go ahead (invitation)",
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT",
+          "alt:silakan"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.391Z"
+      },
+      {
+        "word": "sorry",
+        "word_normalised": "sorry",
+        "part_of_speech": "adjective",
+        "cefr_level": "A1",
+        "definition_en": "sorry",
+        "definition_id": "maaf",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT",
+          "alt:mohon maaf"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.395Z"
+      },
+      {
+        "word": "thank you",
+        "word_normalised": "thank you",
+        "part_of_speech": "interjection",
+        "cefr_level": "A1",
+        "definition_en": "thank you",
+        "definition_id": "terima kasih",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT",
+          "alt:makasih"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.392Z"
+      },
+      {
+        "word": "there",
+        "word_normalised": "there",
+        "part_of_speech": "adverb",
+        "cefr_level": "A1",
+        "definition_en": "there",
+        "definition_id": "di sana",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT",
+          "alt:di situ"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.419Z"
+      },
+      {
+        "word": "today",
+        "word_normalised": "today",
+        "part_of_speech": "adverb",
+        "cefr_level": "A1",
+        "definition_en": "today",
+        "definition_id": "hari ini",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.412Z"
+      },
+      {
+        "word": "tomorrow",
+        "word_normalised": "tomorrow",
+        "part_of_speech": "adverb",
+        "cefr_level": "A1",
+        "definition_en": "tomorrow",
+        "definition_id": "besok",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.413Z"
+      },
+      {
+        "word": "week",
+        "word_normalised": "week",
+        "part_of_speech": "noun",
+        "cefr_level": "A1",
+        "definition_en": "week",
+        "definition_id": "minggu",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.408Z"
+      },
+      {
+        "word": "what",
+        "word_normalised": "what",
+        "part_of_speech": "pronoun",
+        "cefr_level": "A1",
+        "definition_en": "what",
+        "definition_id": "apa",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.422Z"
+      },
+      {
+        "word": "when",
+        "word_normalised": "when",
+        "part_of_speech": "adverb",
+        "cefr_level": "A1",
+        "definition_en": "when",
+        "definition_id": "kapan",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.421Z"
+      },
+      {
+        "word": "where",
+        "word_normalised": "where",
+        "part_of_speech": "adverb",
+        "cefr_level": "A1",
+        "definition_en": "where",
+        "definition_id": "di mana",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.420Z"
+      },
+      {
+        "word": "which",
+        "word_normalised": "which",
+        "part_of_speech": "pronoun",
+        "cefr_level": "A1",
+        "definition_en": "which",
+        "definition_id": "yang mana",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.426Z"
+      },
+      {
+        "word": "who",
+        "word_normalised": "who",
+        "part_of_speech": "pronoun",
+        "cefr_level": "A1",
+        "definition_en": "who",
+        "definition_id": "siapa",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.423Z"
+      },
+      {
+        "word": "why",
+        "word_normalised": "why",
+        "part_of_speech": "adverb",
+        "cefr_level": "A1",
+        "definition_en": "why",
+        "definition_id": "kenapa",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT",
+          "alt:mengapa"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.424Z"
+      },
+      {
+        "word": "year",
+        "word_normalised": "year",
+        "part_of_speech": "noun",
+        "cefr_level": "A1",
+        "definition_en": "year",
+        "definition_id": "tahun",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.410Z"
+      },
+      {
+        "word": "yes",
+        "word_normalised": "yes",
+        "part_of_speech": "adverb",
+        "cefr_level": "A1",
+        "definition_en": "yes",
+        "definition_id": "ya",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT",
+          "alt:iya"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.393Z"
+      },
+      {
+        "word": "yesterday",
+        "word_normalised": "yesterday",
+        "part_of_speech": "adverb",
+        "cefr_level": "A1",
+        "definition_en": "yesterday",
+        "definition_id": "kemarin",
+        "pronunciation_ipa": null,
+        "example_sentence_en": null,
+        "example_sentence_id": null,
+        "common_mistake_note_id": null,
+        "register": null,
+        "variety": null,
+        "tags": [
+          "seed_v1",
+          "cefr:A1",
+          "layer_1_corpus",
+          "NEX_FACT"
+        ],
+        "frequency_rank": null,
+        "source": "hand_curated_ground_truth_v1",
+        "confidence": 95,
+        "created_at": "2026-08-28T15:05:56.415Z"
+      }
+    ]
+  },
+  "semantic_layer": {
+    "tables": [
+      "nex.concepts",
+      "nex.concept_senses",
+      "nex.contexts",
+      "nex.questions",
+      "nex.answers",
+      "nex.evidence"
+    ],
+    "concept_count": 44,
+    "sense_count": 51,
+    "schema_fields_concepts": [
+      "canonical_key",
+      "display_name",
+      "layer(1-5)",
+      "status"
+    ],
+    "schema_fields_senses": [
+      "concept_id",
+      "sense_key",
+      "description",
+      "domain_hint",
+      "examples",
+      "confidence",
+      "status"
+    ],
+    "concepts": [
+      {
+        "canonical_key": "api",
+        "display_name": "API",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "auth",
+        "display_name": "Auth",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "branch",
+        "display_name": "Branch",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "brief",
+        "display_name": "Engineering brief",
+        "layer": 4,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "bug",
+        "display_name": "Bug",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "cache",
+        "display_name": "Cache",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "column",
+        "display_name": "Column",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "commit",
+        "display_name": "Commit",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "component",
+        "display_name": "Component",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "config",
+        "display_name": "Config",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "cookie",
+        "display_name": "Cookie",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "cron",
+        "display_name": "Cron",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "dependency",
+        "display_name": "Dependency",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "doctrine",
+        "display_name": "Doctrine",
+        "layer": 4,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "endpoint",
+        "display_name": "Endpoint",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "environment",
+        "display_name": "Environment",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "founder",
+        "display_name": "Founder",
+        "layer": 4,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "git",
+        "display_name": "Git",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "hook",
+        "display_name": "Hook",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "index",
+        "display_name": "Index",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "log",
+        "display_name": "Log",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "middleware",
+        "display_name": "Middleware",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "migration",
+        "display_name": "Migration",
+        "layer": 4,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "model",
+        "display_name": "Model",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "nex",
+        "display_name": "NEX",
+        "layer": 4,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "nex1",
+        "display_name": "NEX1",
+        "layer": 4,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "nextjs",
+        "display_name": "Next.js",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "package",
+        "display_name": "Package",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "plan",
+        "display_name": "Plan",
+        "layer": 4,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "postgres",
+        "display_name": "PostgreSQL",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "prop",
+        "display_name": "Prop",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "pull_request",
+        "display_name": "Pull request",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "refactor",
+        "display_name": "Refactor",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "route",
+        "display_name": "Route",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "schema",
+        "display_name": "Schema",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "secret",
+        "display_name": "Secret",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "session",
+        "display_name": "Session",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "state",
+        "display_name": "State",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "table",
+        "display_name": "Table",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "test",
+        "display_name": "Test",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "typescript",
+        "display_name": "TypeScript",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "vitest",
+        "display_name": "Vitest",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "worker",
+        "display_name": "Worker",
+        "layer": 5,
+        "status": "authoritative"
+      },
+      {
+        "canonical_key": "worktree",
+        "display_name": "Git worktree",
+        "layer": 5,
+        "status": "authoritative"
+      }
+    ],
+    "senses": [
+      {
+        "canonical_key": "api",
+        "sense_key": "application_programming_interface",
+        "description": "An Application Programming Interface · a set of endpoints or functions a program exposes to be called by other programs.",
+        "domain_hint": [
+          "programming"
+        ],
+        "confidence": 0.99
+      },
+      {
+        "canonical_key": "auth",
+        "sense_key": "authentication_and_authorization",
+        "description": "The pair of concerns: authentication (proving who you are) + authorization (deciding what you're allowed to do). In NEX, auth lives at `src/lib/auth/*` and `middleware.ts`.",
+        "domain_hint": [
+          "programming",
+          "security"
+        ],
+        "confidence": 0.97
+      },
+      {
+        "canonical_key": "branch",
+        "sense_key": "git_branch_of_history",
+        "description": "A named pointer to a specific line of commit history in a Git repository. Branches let multiple parallel changes live without conflict.",
+        "domain_hint": [
+          "programming",
+          "git"
+        ],
+        "confidence": 0.97
+      },
+      {
+        "canonical_key": "brief",
+        "sense_key": "nex_agent_engineering_brief",
+        "description": "A ready-to-send markdown summary NEX1 produces when consensus is reached · includes intent, rounds of discussion, acceptance test, and the diff-ready plan.",
+        "domain_hint": [
+          "nex",
+          "programming"
+        ],
+        "confidence": 1
+      },
+      {
+        "canonical_key": "bug",
+        "sense_key": "insect",
+        "description": "A small insect. Not a programming concept.",
+        "domain_hint": [
+          "biology"
+        ],
+        "confidence": 0.9
+      },
+      {
+        "canonical_key": "bug",
+        "sense_key": "software_defect",
+        "description": "A software defect · code behaves differently from what was intended. Fixing a bug means restoring intended behaviour without regressions.",
+        "domain_hint": [
+          "programming"
+        ],
+        "confidence": 0.98
+      },
+      {
+        "canonical_key": "cache",
+        "sense_key": "fast_temporary_store",
+        "description": "A fast, temporary store that speeds up expensive operations by keeping recently-used results in memory. Never treated as truth · always disposable, always rebuildable from canonical.",
+        "domain_hint": [
+          "programming",
+          "performance"
+        ],
+        "confidence": 0.97
+      },
+      {
+        "canonical_key": "column",
+        "sense_key": "database_column",
+        "description": "A named field in a database table · every row has a value for every column (possibly NULL).",
+        "domain_hint": [
+          "programming",
+          "database"
+        ],
+        "confidence": 0.98
+      },
+      {
+        "canonical_key": "commit",
+        "sense_key": "git_commit_snapshot",
+        "description": "A snapshot of changes recorded in Git history · every commit has a unique SHA and a message.",
+        "domain_hint": [
+          "programming",
+          "git"
+        ],
+        "confidence": 0.97
+      },
+      {
+        "canonical_key": "component",
+        "sense_key": "react_component",
+        "description": "A reusable UI block written as a TypeScript / TSX function · returns JSX and can accept props from its parent.",
+        "domain_hint": [
+          "programming",
+          "react",
+          "frontend"
+        ],
+        "confidence": 0.97
+      },
+      {
+        "canonical_key": "config",
+        "sense_key": "runtime_configuration",
+        "description": "Settings that change how a program behaves without changing its code · usually from environment variables, JSON files, or a database.",
+        "domain_hint": [
+          "programming",
+          "operations"
+        ],
+        "confidence": 0.95
+      },
+      {
+        "canonical_key": "cookie",
+        "sense_key": "http_cookie",
+        "description": "A small piece of data the server sends to a browser, which the browser sends back on every subsequent request · used for session identity, preferences, and tracking.",
+        "domain_hint": [
+          "programming",
+          "http",
+          "auth"
+        ],
+        "confidence": 0.96
+      },
+      {
+        "canonical_key": "cron",
+        "sense_key": "scheduled_recurring_job",
+        "description": "A scheduled recurring job · runs on a time-based schedule (every minute, hourly, daily). Windows uses Scheduled Tasks; Unix uses cron.",
+        "domain_hint": [
+          "programming",
+          "operations"
+        ],
+        "confidence": 0.97
+      },
+      {
+        "canonical_key": "dependency",
+        "sense_key": "external_package_the_code_depends_on",
+        "description": "An external package the code depends on to run · listed in `package.json`.",
+        "domain_hint": [
+          "programming",
+          "tooling"
+        ],
+        "confidence": 0.95
+      },
+      {
+        "canonical_key": "doctrine",
+        "sense_key": "nex_coding_doctrine",
+        "description": "The set of immutable rules NEX must obey · read from `rules/NEX-CODING-DOCTRINE.md`. NEX3 checks every plan against doctrine before founder approval.",
+        "domain_hint": [
+          "nex",
+          "governance"
+        ],
+        "confidence": 1
+      },
+      {
+        "canonical_key": "endpoint",
+        "sense_key": "http_api_endpoint",
+        "description": "A URL that a client sends a request to. In this codebase, endpoints live at `src/app/api/**/route.ts`.",
+        "domain_hint": [
+          "programming",
+          "http",
+          "api"
+        ],
+        "confidence": 0.97
+      },
+      {
+        "canonical_key": "environment",
+        "sense_key": "deployment_environment",
+        "description": "A named context where the code runs · dev (localhost), staging (pre-production), production (real users). Each has its own database, config, and secrets.",
+        "domain_hint": [
+          "programming",
+          "operations"
+        ],
+        "confidence": 0.95
+      },
+      {
+        "canonical_key": "founder",
+        "sense_key": "nex_founder_authority",
+        "description": "The person who owns and directs NEX. Every irreversible change (DB migration · main-branch merge · destructive delete) requires the founder's explicit approval.",
+        "domain_hint": [
+          "nex",
+          "governance",
+          "meta"
+        ],
+        "confidence": 1
+      },
+      {
+        "canonical_key": "git",
+        "sense_key": "version_control_system",
+        "description": "Git · a distributed version control system that tracks changes to files. NEX1 creates branches, commits, and hands them to the founder to merge.",
+        "domain_hint": [
+          "programming",
+          "tooling"
+        ],
+        "confidence": 0.99
+      },
+      {
+        "canonical_key": "hook",
+        "sense_key": "git_hook",
+        "description": "A script that Git runs at specific events · pre-commit, pre-push. NEX has a pre-commit hook that runs the security scanner + touched-files typecheck.",
+        "domain_hint": [
+          "programming",
+          "git"
+        ],
+        "confidence": 0.9
+      },
+      {
+        "canonical_key": "hook",
+        "sense_key": "react_hook",
+        "description": "A React function starting with `use*` that lets a component tap into React features · state (`useState`), effects (`useEffect`), context (`useContext`).",
+        "domain_hint": [
+          "programming",
+          "react"
+        ],
+        "confidence": 0.96
+      },
+      {
+        "canonical_key": "index",
+        "sense_key": "database_index",
+        "description": "A database index · a data structure that speeds up lookups on a column at the cost of write speed.",
+        "domain_hint": [
+          "programming",
+          "database",
+          "postgres"
+        ],
+        "confidence": 0.95
+      },
+      {
+        "canonical_key": "log",
+        "sense_key": "runtime_log_output",
+        "description": "A record of what a program did at runtime · timestamped text lines written to stdout, a file, or a structured store like Postgres.",
+        "domain_hint": [
+          "programming",
+          "observability"
+        ],
+        "confidence": 0.95
+      },
+      {
+        "canonical_key": "middleware",
+        "sense_key": "request_pipeline_layer",
+        "description": "Code that runs before (or after) a route handler · used for auth checks, logging, redirects. In Next.js the file is `middleware.ts` at the app root.",
+        "domain_hint": [
+          "programming",
+          "nextjs"
+        ],
+        "confidence": 0.96
+      },
+      {
+        "canonical_key": "migration",
+        "sense_key": "business_system_transition",
+        "description": "A planned move of business systems or data from one platform to another (for example: moving from one CRM to another).",
+        "domain_hint": [
+          "business",
+          "operations",
+          "it"
+        ],
+        "confidence": 0.9
+      },
+      {
+        "canonical_key": "migration",
+        "sense_key": "database_schema_change",
+        "description": "A structured change to a database schema (a new table, column, index, or constraint). Applied as an ordered file so every environment reaches the same shape.",
+        "domain_hint": [
+          "programming",
+          "postgres",
+          "sql",
+          "backend"
+        ],
+        "confidence": 0.98
+      },
+      {
+        "canonical_key": "migration",
+        "sense_key": "human_population_movement",
+        "description": "The movement of people from one place to another, often across regions or countries, over time.",
+        "domain_hint": [
+          "geography",
+          "demographics",
+          "society"
+        ],
+        "confidence": 0.95
+      },
+      {
+        "canonical_key": "model",
+        "sense_key": "data_model",
+        "description": "A structured representation of an entity in code · often a TypeScript interface matching a database row shape.",
+        "domain_hint": [
+          "programming",
+          "database"
+        ],
+        "confidence": 0.9
+      },
+      {
+        "canonical_key": "model",
+        "sense_key": "llm_model",
+        "description": "A specific trained large language model (LLM) · e.g. Qwen2.5:3B, Llama 3, Claude Opus. Different models have different capabilities and cost/latency profiles.",
+        "domain_hint": [
+          "ai",
+          "ml"
+        ],
+        "confidence": 0.9
+      },
+      {
+        "canonical_key": "nex",
+        "sense_key": "nex_platform",
+        "description": "The NEX platform · a UK trades marketplace with Indonesian expansion, built as a Next.js application on PostgreSQL. NEX Chat is the conversation role and NEX1 is the software-engineering role of the same NEX.",
+        "domain_hint": [
+          "nex",
+          "meta",
+          "product"
+        ],
+        "confidence": 1
+      },
+      {
+        "canonical_key": "nex1",
+        "sense_key": "nex_software_engineer_role",
+        "description": "The software-engineering role of NEX. Reads and plans code · debates plans with NEX2 and NEX3 · lands changes on isolated Git worktrees for the founder to merge.",
+        "domain_hint": [
+          "nex",
+          "programming",
+          "meta"
+        ],
+        "confidence": 1
+      },
+      {
+        "canonical_key": "nextjs",
+        "sense_key": "nextjs_react_framework",
+        "description": "Next.js · a full-stack React framework. NEX runs on Next.js 16.x with Turbopack. Pages live at `src/app/**/page.tsx` and API routes at `src/app/api/**/route.ts`.",
+        "domain_hint": [
+          "programming",
+          "react",
+          "web"
+        ],
+        "confidence": 0.98
+      },
+      {
+        "canonical_key": "package",
+        "sense_key": "npm_package",
+        "description": "A published unit of JavaScript / TypeScript code · imported via `import 'x' from 'x-package'` after being installed with `npm install`.",
+        "domain_hint": [
+          "programming",
+          "tooling"
+        ],
+        "confidence": 0.96
+      },
+      {
+        "canonical_key": "plan",
+        "sense_key": "nex_agent_plan",
+        "description": "A structured proposal from NEX1 · lists files to touch, steps, acceptance test, risks, and proposed file contents. Reviewed by NEX2 (architecture) and NEX3 (doctrine) before founder approval.",
+        "domain_hint": [
+          "nex",
+          "programming"
+        ],
+        "confidence": 1
+      },
+      {
+        "canonical_key": "postgres",
+        "sense_key": "database_engine",
+        "description": "PostgreSQL · an open-source relational database engine. In this codebase it's the authoritative store for nex.* and nex_agent.* schemas.",
+        "domain_hint": [
+          "programming",
+          "database"
+        ],
+        "confidence": 0.99
+      },
+      {
+        "canonical_key": "prop",
+        "sense_key": "react_component_prop",
+        "description": "A value passed from a parent React component to a child · read-only inside the child. Analogous to function arguments.",
+        "domain_hint": [
+          "programming",
+          "react"
+        ],
+        "confidence": 0.95
+      },
+      {
+        "canonical_key": "pull_request",
+        "sense_key": "github_pull_request",
+        "description": "A proposal to merge one branch into another · reviewed and discussed before merge. NEX1's auto-apply creates a branch you review manually before merging to main.",
+        "domain_hint": [
+          "programming",
+          "git",
+          "github"
+        ],
+        "confidence": 0.97
+      },
+      {
+        "canonical_key": "refactor",
+        "sense_key": "code_restructure_no_behaviour_change",
+        "description": "Rewriting code without changing what it does · reducing complexity · renaming for clarity · extracting shared logic.",
+        "domain_hint": [
+          "programming"
+        ],
+        "confidence": 0.97
+      },
+      {
+        "canonical_key": "route",
+        "sense_key": "http_url_path",
+        "description": "A URL path handled by a web application, mapping a request to a handler function.",
+        "domain_hint": [
+          "programming",
+          "http",
+          "web",
+          "nextjs"
+        ],
+        "confidence": 0.95
+      },
+      {
+        "canonical_key": "route",
+        "sense_key": "path_between_points",
+        "description": "A path or set of directions from one location to another, for example a driving route or a hiking route.",
+        "domain_hint": [
+          "travel",
+          "geography"
+        ],
+        "confidence": 0.9
+      },
+      {
+        "canonical_key": "schema",
+        "sense_key": "database_schema_definition",
+        "description": "The shape of a database · tables, columns, constraints, indexes, relationships.",
+        "domain_hint": [
+          "programming",
+          "database"
+        ],
+        "confidence": 0.97
+      },
+      {
+        "canonical_key": "secret",
+        "sense_key": "sensitive_credential",
+        "description": "Sensitive data that must never be committed to Git · API keys, passwords, database URLs. Kept in `.env.local` or a secret store, never in source.",
+        "domain_hint": [
+          "programming",
+          "security"
+        ],
+        "confidence": 0.98
+      },
+      {
+        "canonical_key": "session",
+        "sense_key": "web_session_state",
+        "description": "The server-side state associated with a single user visiting the app · lasts across multiple requests until logout or timeout.",
+        "domain_hint": [
+          "programming",
+          "auth",
+          "web"
+        ],
+        "confidence": 0.95
+      },
+      {
+        "canonical_key": "state",
+        "sense_key": "app_state_data",
+        "description": "Data a program keeps in memory during a session · like a user's current selections in a UI, or the current focus of a conversation.",
+        "domain_hint": [
+          "programming",
+          "frontend",
+          "react"
+        ],
+        "confidence": 0.95
+      },
+      {
+        "canonical_key": "table",
+        "sense_key": "database_table",
+        "description": "A named collection of rows in a database, each row obeying the same column schema.",
+        "domain_hint": [
+          "programming",
+          "database"
+        ],
+        "confidence": 0.98
+      },
+      {
+        "canonical_key": "test",
+        "sense_key": "automated_software_test",
+        "description": "A piece of code that runs another piece of code and asserts the result matches expectation. In this codebase, tests live next to source as `*.test.ts` and are run by Vitest.",
+        "domain_hint": [
+          "programming",
+          "vitest"
+        ],
+        "confidence": 0.97
+      },
+      {
+        "canonical_key": "test",
+        "sense_key": "trial_or_evaluation",
+        "description": "A general trial or evaluation of something — for example testing whether a product works, or a taste test.",
+        "domain_hint": [
+          "general"
+        ],
+        "confidence": 0.85
+      },
+      {
+        "canonical_key": "typescript",
+        "sense_key": "typed_javascript_language",
+        "description": "TypeScript · a strongly-typed superset of JavaScript that compiles to JavaScript. The whole NEX codebase is written in TypeScript.",
+        "domain_hint": [
+          "programming",
+          "language"
+        ],
+        "confidence": 0.99
+      },
+      {
+        "canonical_key": "vitest",
+        "sense_key": "vitest_test_runner",
+        "description": "Vitest · the test runner used throughout the NEX codebase for unit tests. Fast, ESM-first, TypeScript-friendly.",
+        "domain_hint": [
+          "programming",
+          "testing"
+        ],
+        "confidence": 0.98
+      },
+      {
+        "canonical_key": "worker",
+        "sense_key": "background_worker_process",
+        "description": "A background process that does work outside a normal request/response cycle · in this codebase, workers live under `scripts/` or `src/lib/*/workers/` and are scheduled via cron or invoked manually.",
+        "domain_hint": [
+          "programming",
+          "backend"
+        ],
+        "confidence": 0.95
+      },
+      {
+        "canonical_key": "worktree",
+        "sense_key": "git_worktree_isolated_checkout",
+        "description": "A second working directory tied to a Git repository, used to work on a different branch without switching the main checkout.",
+        "domain_hint": [
+          "programming",
+          "git"
+        ],
+        "confidence": 0.98
+      }
+    ]
+  }
+}

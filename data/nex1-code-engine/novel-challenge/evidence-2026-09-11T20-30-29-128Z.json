@@ -1,0 +1,42 @@
+{
+  "at": "2026-09-11T20:28:54.190Z",
+  "challenge": "Capability A · novel · widget interface",
+  "attribution": "nex1 · post-teaching · independence measurement",
+  "stimulus": [
+    {
+      "id": "add-required-field-to-widget",
+      "ok": true,
+      "delta_bytes": 45
+    }
+  ],
+  "repair_iterations": [
+    {
+      "iteration": 1,
+      "scoped_errors": 1,
+      "findings": [
+        {
+          "file": "data/nex1-code-engine/novel-challenge/widget-source.ts",
+          "line": 13,
+          "property": "priority",
+          "ok": true
+        }
+      ],
+      "repairs_applied": 1
+    },
+    {
+      "iteration": 2,
+      "scoped_errors": 1,
+      "repairs_applied": 0,
+      "unrepaired_sample": [
+        {
+          "file": "data/nex1-code-engine/novel-challenge/widget-source.ts",
+          "line": 13,
+          "code": "TS2322",
+          "message": "Type '{ id: string; label: string; priority: null; }[]' is not assignable to type 'Widget[]'."
+        }
+      ]
+    }
+  ],
+  "final_scoped_errors": 1,
+  "fixture_byte_identical": true
+}

@@ -1,0 +1,120 @@
+{
+  "version": "v0.1.0",
+  "authored_by": "master_ai_engineer",
+  "authored_at": "2026-09-12",
+  "notes": "NEX1 SELF-MODEL SNAPSHOT · versioned · founder-authored amendments only. Represents what NEX1 knows about ITSELF at this version. Runtime numbers (scorecard %, event counts) are NOT stored here · those come from live endpoints. This file records capability CLAIMS with evidence pointers. Every claim MUST be provable from an existing NEX substrate.",
+  "brains": [
+    {
+      "id": "engineering_brain",
+      "display_name": "Engineering Brain",
+      "path": "src/lib/nex-agent/code-engine/",
+      "status": "frozen_baseline",
+      "capabilities_proven": [
+        { "id": "A",     "label": "novel-challenge generalisation",         "evidence": "data/nex1-code-engine/ladder-integration/*.json · 12/18 suites baseline · A currently FAILING (novel challenge did not generalise)" },
+        { "id": "C",     "label": "type-aware repair-value reasoning",       "evidence": "adversarial validation suite · Round 2 PASS" },
+        { "id": "H.1",   "label": "structured-goal planning",                "evidence": "capability-h-planning.ts · 6 sub-tests pass" },
+        { "id": "H.3",   "label": "multi-goal planning · Kahn topsort",      "evidence": "capability-h3-multigoal-planning.ts" },
+        { "id": "I.1",   "label": "test synthesis · positive proof",          "evidence": "capability-i-test-synthesis.ts · 7 sub-tests" },
+        { "id": "I.2",   "label": "negative type-system proof",               "evidence": "capability-i2-negative-proof.ts · @ts-expect-error tests" },
+        { "id": "J.1",   "label": "runtime failure extraction",               "evidence": "capability-j-runtime-diagnosis.ts · 10 sub-tests" },
+        { "id": "J.2",   "label": "cause analysis + proposal · no mutation",  "evidence": "capability-j2-cause-analysis.ts · 8 sub-tests" },
+        { "id": "J.2.2", "label": "broader assertion shapes · safety preserved", "evidence": "capability-j2-cause-analysis.ts variants" },
+        { "id": "J.2.3", "label": "multi-hop cause analysis",                  "evidence": "capability-j23-multi-hop-recovery.ts" },
+        { "id": "J.3",   "label": "apply · rerun · prove · loop closed",       "evidence": "capability-j3-verify-repair.ts · 5 sub-tests" },
+        { "id": "J.4.1", "label": "long-run pilot · discipline holds",         "evidence": "capability-j4-long-run.ts" },
+        { "id": "J.4.2", "label": "long-run with in-loop recovery",            "evidence": "capability-j42-long-run-with-recovery.ts" }
+      ],
+      "capabilities_ceiling": [
+        { "id": "A_novel",   "label": "novel-challenge generalisation of Capability A",    "reason": "Round 2 exit=1 · drift=0 · honest capability ceiling" },
+        { "id": "D_novel",   "label": "novel-challenge generalisation of Capability D",    "reason": "Round 2 exit=1 · drift=0" },
+        { "id": "E_multi",   "label": "multi-file ripple",                                 "reason": "Round 2 exit=1 · drift=0" },
+        { "id": "E_novel",   "label": "novel generalisation of Capability E",              "reason": "Round 2 exit=1 · drift=0" },
+        { "id": "F_disc",    "label": "autonomous discovery suite · novel",                "reason": "Round 2 exit=1 · drift=0" },
+        { "id": "G_multi",   "label": "multi-hop heritage suite · novel",                  "reason": "Round 2 exit=1 · drift=0" },
+        { "id": "semantic_modification", "label": "semantic modification (Ch3.B)",         "reason": "Sprint 1 frozen baseline · 0 of 3 sub-tasks · every attempt fails-closed cleanly" }
+      ],
+      "self_repair_available": true,
+      "byte_identical_rollback": true,
+      "adapter_scope": "code_proposal_only"
+    },
+    {
+      "id": "language_brain",
+      "display_name": "Language Brain",
+      "path": "src/lib/nex-language-brain/",
+      "status": "active",
+      "tracks": [
+        { "id": "english",           "level_current": "advanced_fluency", "maturity_current": "pilot", "cases": "see live status endpoint" },
+        { "id": "bahasa_indonesia",  "level_current": "advanced_fluency", "maturity_current": "pilot", "cases": "see live status endpoint" },
+        { "id": "code_switch",       "level_current": "advanced_fluency", "maturity_current": "pilot", "cases": "see live status endpoint" },
+        { "id": "programming",       "level_current": "advanced_fluency", "maturity_current": "pilot", "cases": "see live status endpoint" }
+      ],
+      "capabilities_proven": [
+        { "id": "intent_bridge",       "evidence": "intent-bridge-v0.ts · 21 patterns · 12 refusal classes" },
+        { "id": "spelling_normaliser", "evidence": "spelling-normaliser.ts · deterministic dictionary · unambiguous-only" },
+        { "id": "ambiguity_resolver",  "evidence": "Nex1ClarificationRequest · 3 candidates · margin 0.05" },
+        { "id": "code_switch_detect",  "evidence": "tech-verb-forces-mixed rule" },
+        { "id": "reference_pronoun_guard", "evidence": "EN + ID pronouns refused when no prior_context" },
+        { "id": "regression_pool",     "evidence": "regression-pool.ts · 47 cases · hard gate" },
+        { "id": "translation_engine",  "evidence": "translation-engine-v0.ts · IPT · round-trip verified · EN ↔ ID · fails-closed on free-text" },
+        { "id": "language_registry",   "evidence": "language-registry.json · 32 languages · 2 active · 30 scaffolded" },
+        { "id": "progression_gate",    "evidence": "language-registry.ts · enforces founder gate rule" },
+        { "id": "provenance_trace",    "evidence": "pipeline-trace.ts · 10 stages recorded" }
+      ],
+      "capabilities_ceiling": [
+        { "id": "free_text_translation", "label": "free-text translation (non-intent)",  "reason": "fails-closed by design · no LLM · founder-authorised" },
+        { "id": "long_context",          "label": "multi-turn long-context reasoning",   "reason": "dimension exists · 0 cases measured yet" },
+        { "id": "idioms",                "label": "idiomatic English / Indonesian",       "reason": "dimension exists · 0 cases measured yet" }
+      ]
+    },
+    {
+      "id": "truth_engine",
+      "display_name": "Truth Engine",
+      "path": "src/lib/nex/truth-engine/ (per memory · exact path in ADRs)",
+      "status": "partial",
+      "role": "verify claims · produce verifier_verdict · gate promotion of pipeline substrate into canonical Knowledge",
+      "capabilities_proven_pointer": "See ADR-0314a.2.s and related · specialist tables · claim/evidence/verifier_verdict/verification_state",
+      "capabilities_ceiling": [
+        { "id": "unbounded_truth_check", "label": "verifying arbitrary free-text claims", "reason": "bounded to substrate + registered rules" }
+      ]
+    },
+    {
+      "id": "conversation_brain",
+      "display_name": "Conversation Brain",
+      "path": "src/lib/nex/ (per session · turn-state)",
+      "status": "partial",
+      "role": "dialogue turn-state · context · session memory",
+      "capabilities_ceiling": [
+        { "id": "prior_context_infer", "label": "inferring prior context from unstated user history", "reason": "banned · explicit slots only" }
+      ]
+    },
+    {
+      "id": "knowledge_engine",
+      "display_name": "Knowledge Engine",
+      "path": "canonical Knowledge substrate · knowledge_records + specialist tables + image manifest",
+      "status": "partial",
+      "capabilities_proven_pointer": "ADR-0028 · ADR-0029 · ADR-0030 · ADR-0033 · ADR-0034",
+      "role": "preserve knowledge · never generate · every record carries provenance"
+    }
+  ],
+  "cross_cutting": [
+    { "id": "attribution_ledger",   "purpose": "provenance for every event · taught_by + authored_by + attempted_by",                       "status": "active" },
+    { "id": "regression_pools",     "purpose": "hard capability-drift gates · Language 47 cases · Engineering per-capability suites",         "status": "active" },
+    { "id": "safety_registry",      "purpose": "bypass · secret-exfil · destructive patterns · EN + ID",                                       "status": "active" },
+    { "id": "guardian_duality",     "purpose": "Lab-Guardian (candidate acceptance) · TE-Guardian (constitutional truth) · R-10 (authorisation)","status": "active per memory" }
+  ],
+  "boundaries": {
+    "no_external_llm": true,
+    "no_autonomous_self_modification": true,
+    "no_autonomous_goal_formation": true,
+    "no_autonomous_constitutional_amendment": true,
+    "no_phenomenal_introspection": true,
+    "no_free_text_translation_without_intent_grounding": true,
+    "no_cross_brain_self_improvement_without_authorise": true
+  },
+  "current_open_items": [
+    { "id": "round_2_novel_failures", "detail": "6/18 novel-challenge suites failed exit=1 · drift=0 · honest ceiling",            "founder_action_required": true },
+    { "id": "en_id_fluency_path",     "detail": "advance EN + ID from pilot maturity to proven · 100x current corpus authored",     "founder_action_required": true },
+    { "id": "regression_cs_prog",     "detail": "code_switch + programming tracks have 0 regression cases · benchmark_complete=false", "founder_action_required": true },
+    { "id": "sprint_a_b_c_d",          "detail": "Self-Model + Identity + Introspective Reporter build in progress",                 "founder_action_required": false }
+  ]
+}

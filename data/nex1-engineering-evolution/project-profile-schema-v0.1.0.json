@@ -1,0 +1,56 @@
+{
+  "version": "v0.1.0",
+  "notes": "ProjectProfile contract · founder-authorised design 2026-09-12. DESCRIPTIVE · not prescriptive. Answers 'what does this project appear to be doing?' · never 'what should this project do?'. Every material inference has confidence + provenance. Read-only.",
+  "record_type": "PROJECT_PROFILE",
+  "confidence_states": [
+    { "id": "OBSERVED",           "definition": "the signal is directly present in a specific file · e.g. tsconfig.json declares strict:true" },
+    { "id": "STRONGLY_INFERRED",  "definition": "a large sample corroborates the signal · e.g. 84 of 90 sampled TS files use 2-space indentation" },
+    { "id": "WEAKLY_INFERRED",    "definition": "a small sample suggests the signal · e.g. 4 of 6 sampled files · flagged for caution" },
+    { "id": "UNKNOWN",             "definition": "no evidence available · never guessed" },
+    { "id": "CONFLICTING",         "definition": "signals disagree · e.g. 50% tabs · 50% spaces · both counts recorded" }
+  ],
+  "required_top_level_fields": [
+    { "name": "record_type",       "shape": "constant · 'PROJECT_PROFILE'" },
+    { "name": "profile_id",        "shape": "string · monotonic e.g. PP-0000042" },
+    { "name": "schema_version",    "shape": "semver" },
+    { "name": "project_root",       "shape": "absolute path" },
+    { "name": "scanned_at",         "shape": "ISO-8601" },
+    { "name": "scan_stats",         "shape": "object · { files_scanned, files_excluded, sample_caps, sampling_methodology }" },
+    { "name": "identity",           "shape": "object · project type · repository structure · primary/secondary languages · frameworks" },
+    { "name": "organisation",       "shape": "object · source/test/config/generated/vendor directory detection" },
+    { "name": "tooling",            "shape": "object · package manager · build · test · lint · formatter · type-checker" },
+    { "name": "style_signals",      "shape": "object · indentation · quotes · semicolons · naming (all with confidence + provenance)" },
+    { "name": "structure_signals", "shape": "object · file location patterns · test naming patterns" },
+    { "name": "conflicts",          "shape": "array · every conflicting signal enumerated" },
+    { "name": "limitations",        "shape": "string · what the profile does NOT cover" },
+    { "name": "attribution",        "shape": "object · role='project_profile_scanner' · deterministic=true · external_llm_used=false" }
+  ],
+  "per_signal_fields": [
+    { "name": "value",             "shape": "typed value or null when UNKNOWN" },
+    { "name": "state",             "shape": "one of confidence_states" },
+    { "name": "evidence_files",    "shape": "array of relative paths" },
+    { "name": "evidence_hashes",   "shape": "array of { path, sha256_prefix }" },
+    { "name": "sample_size",       "shape": "integer · how many files supported this signal" },
+    { "name": "supporting_count",  "shape": "integer · of sample_size · how many agreed" },
+    { "name": "counter_count",     "shape": "integer · of sample_size · how many disagreed" },
+    { "name": "detection_method", "shape": "string · deterministic method name" },
+    { "name": "notes",              "shape": "string · optional · never load-bearing" }
+  ],
+  "invariants": [
+    "no signal is silently converted from UNKNOWN to a specific value",
+    "sample-based signals declare sample_size · supporting_count · counter_count",
+    "conflicting signals are enumerated · never silently resolved",
+    "profile is READ-ONLY · scanner writes nothing to the measured project",
+    "every material inference has evidence_files with sha256_prefix hashes",
+    "no universal style judgement · profile is DESCRIPTIVE only",
+    "attribution.external_llm_used MUST be false",
+    "attribution.role MUST be 'project_profile_scanner'",
+    "generated/vendor classification reuses Code Intelligence rules where available · never creates a second contradictory definition"
+  ],
+  "reused_from_code_intelligence": [
+    "vendor_path_markers (node_modules · vendor · .venv · target · build · dist · .next · .nuxt · __pycache__ · .cargo · third_party · third-party)",
+    "generated_markers (comment/regex-based generation detection)",
+    "special_basenames (Makefile · Dockerfile · package.json · tsconfig.json · pyproject.toml · Cargo.toml · go.mod · etc.)",
+    "language registry v0.1.0 (44 languages · extensions · shebangs · special filenames)"
+  ]
+}

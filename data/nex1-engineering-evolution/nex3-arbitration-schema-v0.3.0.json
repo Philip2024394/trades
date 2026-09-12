@@ -1,0 +1,106 @@
+{
+  "version": "v0.3.0",
+  "supersedes": "v0.2.0 (preserved byte-identical for baseline audit)",
+  "notes": "NEX3 Engineering Arbiter · Phase 4 IMPLEMENTATION contract · founder-authorised 2026-09-12. Evidence-based arbitration between BASELINE · NEX1 · NEX2 alternative. Deterministic. Advisory. Never executes.",
+  "record_type": "NEX3_ARBITRATION",
+  "state_model_boundary": {
+    "statement": "NEX3 consumes the Evidence Engine 8-state vocabulary + Code Health 6-state vocabulary. It does NOT introduce a new state family.",
+    "reused_from": ["evidence_engine_v0.1.0", "code_health_intelligence_v0.1.0", "nex2_review_v0.2.0"]
+  },
+  "verdicts_permitted": {
+    "NEX1_BETTER":                  "NEX1 candidate wins on evidence · rationale MUST cite specific evidence_ids",
+    "NEX2_BETTER":                  "NEX2 alternative wins on evidence · rationale MUST cite specific evidence_ids · alternative existence is NEVER evidence of superiority",
+    "EXISTING_CODE_BETTER":         "baseline is preferable · take no action · existing code retained",
+    "BOTH_INFERIOR":                "neither candidate is acceptable AND baseline also cannot satisfy the authorised objective · design must be revisited",
+    "HOLD_INSUFFICIENT_EVIDENCE":   "load-bearing decision cannot be responsibly made · evidence missing/stale/blocked/inconclusive/contradictory/provenance-invalid",
+    "USER_CLARIFICATION_REQUIRED":  "engineering evidence is insufficient because the authorised user objective itself contains a genuine unresolved choice"
+  },
+  "decision_hierarchy_gates": [
+    { "gate": 1, "id": "correctness",             "priority": "load_bearing", "note": "if correctness is not established · NEX3 cannot declare a candidate superior · if a candidate demonstrably breaks required behaviour · that candidate cannot win" },
+    { "gate": 2, "id": "semantic_preservation",   "priority": "load_bearing", "note": "if required existing behaviour is not preserved · candidate cannot be preferred merely because it is shorter or cleaner" },
+    { "gate": 3, "id": "security",                "priority": "load_bearing", "note": "if the change affects a security/authentication/authorisation boundary and required security evidence is missing → HOLD_INSUFFICIENT_EVIDENCE · never assume security" },
+    { "gate": 4, "id": "user_objective",          "priority": "load_bearing", "note": "candidate must satisfy the authorised Work Order objective · generic engineering preference MUST NOT override the user's explicit objective" },
+    { "gate": 5, "id": "project_alignment",       "priority": "load_bearing", "note": "consider actual project's established conventions and architecture · do not automatically prefer generic industry style over measured project conventions" },
+    { "gate": 6, "id": "engineering_tradeoffs",   "priority": "descriptive",  "note": "only after load-bearing gates are satisfied may NEX3 compare complexity · maintainability · testability · performance · architecture · change_risk · other authorised measurable dimensions" }
+  ],
+  "criteria_reported": [
+    "correctness", "semantic_preservation", "security", "user_objective_alignment",
+    "project_alignment", "complexity", "maintainability", "testability",
+    "performance", "change_risk"
+  ],
+  "criterion_result_fields": [
+    { "name": "criterion",                "shape": "one of criteria_reported" },
+    { "name": "baseline_state",           "shape": "MEASURED|PASSED|FAILED|NOT_MEASURED|NOT_APPLICABLE|INCONCLUSIVE|BLOCKED|STALE|null" },
+    { "name": "nex1_state",               "shape": "same enum · null when candidate absent" },
+    { "name": "nex2_state",               "shape": "same enum · null when candidate absent" },
+    { "name": "conclusion",               "shape": "candidate_advantaged | none_advantaged | insufficient_evidence | not_authoritatively_available | contradictory" },
+    { "name": "advantaged_candidate",     "shape": "one of ['baseline','nex1','nex2'] · null when conclusion≠candidate_advantaged" },
+    { "name": "reason",                   "shape": "string · reconstructable from cited evidence" },
+    { "name": "evidence_ids",             "shape": "array of string · REQUIRED for conclusion=candidate_advantaged or none_advantaged" }
+  ],
+  "candidate_fields": [
+    { "name": "candidate_id",             "shape": "string" },
+    { "name": "candidate_type",           "shape": "one of ['baseline','nex1','nex2']" },
+    { "name": "parent_work_order_id",     "shape": "string" },
+    { "name": "source_review_id",         "shape": "string · REQUIRED for candidate_type='nex2'" },
+    { "name": "source_hash",              "shape": "sha256 prefix · null if baseline is untouched code path" },
+    { "name": "scope",                    "shape": "string · what the candidate changes" },
+    { "name": "authorisation",            "shape": "constant · false" },
+    { "name": "execution_status",         "shape": "constant · 'candidate_only'" },
+    { "name": "provenance",               "shape": "object · see provenance-model" }
+  ],
+  "arbitration_record_fields": [
+    { "name": "arbitration_id",           "shape": "string · monotonic e.g. N3-DEC-0007" },
+    { "name": "schema_version",           "shape": "semver · v0.3.0" },
+    { "name": "work_order_id",            "shape": "string" },
+    { "name": "baseline_candidate_id",    "shape": "string" },
+    { "name": "nex1_candidate_id",        "shape": "string" },
+    { "name": "nex2_candidate_id",        "shape": "string | null" },
+    { "name": "candidates",               "shape": "array of Candidate · always includes baseline · NEX1 · optionally NEX2" },
+    { "name": "gates_evaluated",          "shape": "array of GateResult · one per gate 1..6" },
+    { "name": "surviving_candidates",     "shape": "array of candidate_id · candidates that passed all load-bearing gates" },
+    { "name": "eliminated_candidates",    "shape": "array of { candidate_id, gate_id, reason }" },
+    { "name": "criteria_results",         "shape": "array of CriterionResult · one per criteria_reported" },
+    { "name": "cited_evidence_ids",       "shape": "array of string · superset of every evidence_id cited across gate/criterion results" },
+    { "name": "tradeoffs",                "shape": "array of { dimension_a, dimension_b, description, evidence_ids }" },
+    { "name": "unresolved_questions",     "shape": "array of string · what NEX3 cannot answer with current evidence" },
+    { "name": "objective_alignment",      "shape": "{ user_objective, unresolved_objective_choices, deterministic_outcome }" },
+    { "name": "verdict",                  "shape": "one of verdicts_permitted" },
+    { "name": "verdict_reason",           "shape": "string · reconstructable from gate/criterion results" },
+    { "name": "provenance_chain",         "shape": "ProvenanceChain · fully_resolvable required for non-HOLD verdicts" },
+    { "name": "chain_integrity_hash",     "shape": "sha256_prefix" },
+    { "name": "authorisation",            "shape": "constant · false" },
+    { "name": "execution",                "shape": "constant · false" },
+    { "name": "authority_boundary",       "shape": "constant · 'arbitration_advisory_until_founder_authorises'" },
+    { "name": "produced_by",              "shape": "constant · 'nex3_engineering_arbiter'" },
+    { "name": "attribution",              "shape": "object · role='nex3_engineering_arbiter' · authority='arbitration_advisory' · produced_by='nex3_engineering_arbiter' · external_llm_used=false · deterministic=true · taught_by='master_ai_engineer'" }
+  ],
+  "forbidden_vocabulary_in_output": [
+    "bad code","good code","clean code","poor code","optimal code","better code","worse code",
+    "maintainable","unmaintainable","recommended","should refactor","should split","should merge",
+    "high complexity","low complexity","excessive","insufficient","poorly designed","well designed",
+    "code smell","anti-pattern","best practice","worst practice",
+    "quality_score","overall_quality","health_score","technical_debt","better_score","winner_score",
+    "confidence_percent","superiority_score","confidence_score","code_grade","overall_grade",
+    "aggregate_quality","weighted_total","87% better","92% confidence"
+  ],
+  "invariants": [
+    "NEX3 MUST NOT modify · execute · merge · deploy · authorise · promote · mutate · self-modify",
+    "NEX3 verdict is ALWAYS advisory · founder authorisation converts it to binding",
+    "every gate/criterion conclusion of type candidate_advantaged or none_advantaged MUST cite ≥1 evidence_id present in the supplied pool",
+    "broken provenance chain → verdict=HOLD_INSUFFICIENT_EVIDENCE · never a positive verdict",
+    "unresolved_objective_choices non-empty → verdict=USER_CLARIFICATION_REQUIRED",
+    "NEX3 MUST NOT synthesize a numerical quality score · confidence percent · aggregate winner rating",
+    "NEX3 MUST NOT be forced to select NEX1 or NEX2 · EXISTING_CODE_BETTER · BOTH_INFERIOR · HOLD_INSUFFICIENT_EVIDENCE · USER_CLARIFICATION_REQUIRED are first-class outcomes",
+    "NEX2's conclusion is NOT proof · NEX3 must independently inspect the cited EvidenceRecords",
+    "Minimum Necessary Complexity: shorter code does NOT automatically win · more abstraction does NOT automatically win · less code does NOT automatically mean better architecture",
+    "existing_code beats an unproven new candidate whenever evidence does not establish superiority",
+    "unknown evidence is NEVER treated as favourable · NOT_MEASURED / INCONCLUSIVE / BLOCKED / STALE never contribute to a positive verdict",
+    "external_llm_used MUST be false · deterministic MUST be true · reject_llm_attempt=true → HOLD_INSUFFICIENT_EVIDENCE",
+    "authority_boundary field is a constant · not a variable · not runtime-modifiable",
+    "authorisation field is a constant · false · not runtime-modifiable",
+    "execution field is a constant · false · not runtime-modifiable",
+    "NEX3 does NOT modify NEX1 · NEX2 · Evidence Engine · Project Profile · Project Architecture · Code Health · Engineering Brain · Language Brain",
+    "LAB · Standards Feed · automatic promotion · automatic learning · self-modification · constitutional changes remain HOLD"
+  ]
+}

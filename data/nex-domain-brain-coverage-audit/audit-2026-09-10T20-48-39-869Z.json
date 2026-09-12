@@ -1,0 +1,2967 @@
+{
+  "timestamp": "2026-09-10T20:48:39.869Z",
+  "nexDev": [
+    {
+      "schema": "nex",
+      "table": "accommodation_business",
+      "rows": 9230,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "accommodation_business_field_provenance",
+      "rows": 46306,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "accommodation_business_source_snapshot",
+      "rows": 9203,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "accommodation_enrichment_evidence",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "action_audit",
+      "rows": 160,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "alert_dispatches",
+      "rows": 12,
+      "status_breakdown": [
+        {
+          "value": "skipped",
+          "n": 12
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "alert_rules",
+      "rows": 14,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "alerts",
+      "rows": 4,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "analytics_events",
+      "rows": 526,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "analytics_records",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "analytics_rollup_queue",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "answers",
+      "rows": 62,
+      "status_breakdown": [
+        {
+          "value": "authoritative",
+          "n": 62
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "api_key",
+      "rows": 25,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "attributions",
+      "rows": 9,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "audit_event",
+      "rows": 30,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "audit_log",
+      "rows": 9,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "authorization_policy",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "authorized_action",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "automation_rules",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "automation_runs",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "benchmark_runs",
+      "rows": 1,
+      "status_breakdown": [
+        {
+          "value": "complete",
+          "n": 1
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "bike_model",
+      "rows": 50,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "bike_rental_listing",
+      "rows": 9,
+      "status_breakdown": [
+        {
+          "value": "active",
+          "n": 9
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "brain_accommodation_prices",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "brain_activities",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "brain_attractions",
+      "rows": 32,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "brain_did_you_know_indonesia",
+      "rows": 39,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "brain_english_grammar",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "brain_english_lesson",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "brain_english_practice",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "brain_english_progress",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "brain_english_vocabulary",
+      "rows": 30,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "brain_local_guide",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "brain_location",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "brain_memories",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "brain_seasons",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "brain_transport",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "brain_traveler_rating",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "brain_user_saved_facts",
+      "rows": 1,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "business_calling_config",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "business_image",
+      "rows": 660,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "business_knowledge",
+      "rows": 1258,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "business_lead_directory",
+      "rows": 2,
+      "status_breakdown": [
+        {
+          "value": "listed",
+          "n": 2
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": [
+        {
+          "value": false,
+          "n": 2
+        }
+      ],
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "business_lead_directory_field_provenance",
+      "rows": 21,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "business_lead_opt_out",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "call_record",
+      "rows": 1,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "campaign_recipients",
+      "rows": 216,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "campaign_segments",
+      "rows": 4,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "campaigns",
+      "rows": 13,
+      "status_breakdown": [
+        {
+          "value": "archived",
+          "n": 4
+        },
+        {
+          "value": "draft",
+          "n": 3
+        },
+        {
+          "value": "completed",
+          "n": 3
+        },
+        {
+          "value": "sending",
+          "n": 2
+        },
+        {
+          "value": "scheduled",
+          "n": 1
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "category_candidate",
+      "rows": 4,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "category_candidate_calibration_annotation",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "category_candidate_score",
+      "rows": 20237,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "category_image_library",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "category_registry",
+      "rows": 13,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "category_scorecard",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "chat_message",
+      "rows": 70,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "chat_message_archive",
+      "rows": 20,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "chat_message_deletion",
+      "rows": 20,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "code_execution",
+      "rows": 12,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "compliance_events",
+      "rows": 14,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "concept_senses",
+      "rows": 51,
+      "status_breakdown": [
+        {
+          "value": "authoritative",
+          "n": 51
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "concepts",
+      "rows": 44,
+      "status_breakdown": [
+        {
+          "value": "authoritative",
+          "n": 44
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "confidence_scores",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "contact_duplicate_suggestions",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "contact_merges",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "contact_segments",
+      "rows": 12,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "contact_sources",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "contacts",
+      "rows": 67,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "contexts",
+      "rows": 224,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "contradictions",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "conv_edges",
+      "rows": 4970,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "conv_entities",
+      "rows": 70,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "conv_feedback",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "conv_intents",
+      "rows": 22,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "conv_knowledge_items",
+      "rows": 890,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "conv_learning_candidate",
+      "rows": 1607,
+      "status_breakdown": [
+        {
+          "value": "pending_review",
+          "n": 1606
+        },
+        {
+          "value": "promoted",
+          "n": 1
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "conv_outcomes",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "conv_states",
+      "rows": 303,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "conv_turns",
+      "rows": 583,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "conversation",
+      "rows": 20,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "conversation_message",
+      "rows": 66,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "conversation_share",
+      "rows": 5,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "conversation_state",
+      "rows": 1428,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "conversion_events",
+      "rows": 2,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "cost_budget",
+      "rows": 4,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "delivery_job_attempts",
+      "rows": 587,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "delivery_jobs",
+      "rows": 670,
+      "status_breakdown": [
+        {
+          "value": "completed",
+          "n": 587
+        },
+        {
+          "value": "pending",
+          "n": 54
+        },
+        {
+          "value": "cancelled",
+          "n": 29
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "delivery_workers_archive_2026_08_22",
+      "rows": 1,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "deprecations",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "discovery_orchestrator_pick",
+      "rows": 21496,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "discovery_rotation_state",
+      "rows": 54550,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "email_templates",
+      "rows": 8,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "entity_index",
+      "rows": 877,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "events",
+      "rows": 2,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "evidence",
+      "rows": 173,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "experiment_assignments",
+      "rows": 558,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "experiment_variants",
+      "rows": 2,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "experiments",
+      "rows": 1,
+      "status_breakdown": [
+        {
+          "value": "active",
+          "n": 1
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "fact_conflict",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "fact_lifecycle_event",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "file_extraction",
+      "rows": 31,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "food_business",
+      "rows": 22757,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "food_business_field_provenance",
+      "rows": 105320,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "food_business_next_action",
+      "rows": 806,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "food_business_promotion",
+      "rows": 636,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "food_business_promotion_audit",
+      "rows": 729,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "food_business_promotion_decision",
+      "rows": 1,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "food_business_source_snapshot",
+      "rows": 12986,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "food_claim_code",
+      "rows": 1,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "food_commercial_event",
+      "rows": 6,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "food_enrichment_evidence",
+      "rows": 1450,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "food_enrichment_job",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "food_hq_rule",
+      "rows": 10,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "food_next_action_audit",
+      "rows": 814,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "food_outreach_attempt",
+      "rows": 5,
+      "status_breakdown": [
+        {
+          "value": "dry_run",
+          "n": 2
+        },
+        {
+          "value": "rate_limited",
+          "n": 1
+        },
+        {
+          "value": "queued",
+          "n": 1
+        },
+        {
+          "value": "opted_out",
+          "n": 1
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "food_outreach_suppression",
+      "rows": 1,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "food_outreach_template",
+      "rows": 4,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "founder_window_event",
+      "rows": 43261,
+      "status_breakdown": [
+        {
+          "value": "info",
+          "n": 42323
+        },
+        {
+          "value": "warning",
+          "n": 538
+        },
+        {
+          "value": "ok",
+          "n": 400
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "founder_window_notification",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "founder_window_subsystem_status",
+      "rows": 5,
+      "status_breakdown": [
+        {
+          "value": "yellow",
+          "n": 3
+        },
+        {
+          "value": "green",
+          "n": 2
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "gate_kept_event",
+      "rows": 2300,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "gate_rejection_event",
+      "rows": 368,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "generated_image",
+      "rows": 40,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "geo_landmark",
+      "rows": 34,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "graph_edges",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "identity_merge_log",
+      "rows": 1376510,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "import_mappings",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "jobs",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "journey_campaign_executions",
+      "rows": 54,
+      "status_breakdown": [
+        {
+          "value": "completed",
+          "n": 52
+        },
+        {
+          "value": "timed_out",
+          "n": 2
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "journey_events",
+      "rows": 928,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "journey_inbound_events",
+      "rows": 3,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "journey_states",
+      "rows": 165,
+      "status_breakdown": [
+        {
+          "value": "completed",
+          "n": 162
+        },
+        {
+          "value": "stopped",
+          "n": 2
+        },
+        {
+          "value": "active",
+          "n": 1
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "journey_triggers",
+      "rows": 1,
+      "status_breakdown": [
+        {
+          "value": "active",
+          "n": 1
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "journeys",
+      "rows": 3,
+      "status_breakdown": [
+        {
+          "value": "active",
+          "n": 3
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "kf_worker_heartbeat",
+      "rows": 3,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "knowledge_dump_jobs",
+      "rows": 76,
+      "status_breakdown": [
+        {
+          "value": "completed",
+          "n": 56
+        },
+        {
+          "value": "claimed",
+          "n": 10
+        },
+        {
+          "value": "queued",
+          "n": 8
+        },
+        {
+          "value": "failed",
+          "n": 2
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "knowledge_feedback",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "knowledge_gap",
+      "rows": 6335,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "knowledge_inbox",
+      "rows": 279,
+      "status_breakdown": [
+        {
+          "value": "processing",
+          "n": 111
+        },
+        {
+          "value": "waiting",
+          "n": 96
+        },
+        {
+          "value": "processed",
+          "n": 43
+        },
+        {
+          "value": "review",
+          "n": 28
+        },
+        {
+          "value": "shadow",
+          "n": 1
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "knowledge_inbox_stats",
+      "rows": 2,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "knowledge_records",
+      "rows": 1,
+      "status_breakdown": [
+        {
+          "value": "UNDER_REVIEW",
+          "n": 1
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "kpe_chunks",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "kpe_decisions",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "kpe_documents",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "kpe_duplicates",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "kpe_edges",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "kpe_human_reviews",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "kpe_metadata",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "kpe_processing_runs",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "listing_message",
+      "rows": 3,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "listing_owner_invite",
+      "rows": 1,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "listing_thread",
+      "rows": 2,
+      "status_breakdown": [
+        {
+          "value": "open",
+          "n": 2
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "llm_cost_config",
+      "rows": 11,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "llm_retry_queue",
+      "rows": 41,
+      "status_breakdown": [
+        {
+          "value": "succeeded",
+          "n": 41
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "marketing_bounce_log",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "marketing_campaign",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "marketing_contact",
+      "rows": 197,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "marketing_opt_out",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "marketing_segment",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "marketing_send_log",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "marketing_send_queue",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "marketing_template",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "master_rulebook",
+      "rows": 8,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "meaningful_area",
+      "rows": 6,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "media_object",
+      "rows": 16,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "moderation_event",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "mp_category",
+      "rows": 310,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "mp_commerce_policy",
+      "rows": 1,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "mp_product",
+      "rows": 5,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "mp_product_image",
+      "rows": 5,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "mp_product_option",
+      "rows": 11,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "mp_product_option_value",
+      "rows": 24,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "mp_product_variant",
+      "rows": 15,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "mp_seller",
+      "rows": 23580,
+      "status_breakdown": [
+        {
+          "value": "discovered",
+          "n": 23579
+        },
+        {
+          "value": "active",
+          "n": 1
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "object_blob_current",
+      "rows": 22,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "object_blobs",
+      "rows": 23,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "object_manifest",
+      "rows": 5,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "outbound_email",
+      "rows": 1,
+      "status_breakdown": [
+        {
+          "value": "queued_pending_smtp",
+          "n": 1
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "pending_level3_action",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "prediction_models",
+      "rows": 2,
+      "status_breakdown": [
+        {
+          "value": "active",
+          "n": 1
+        },
+        {
+          "value": "retired",
+          "n": 1
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "predictions",
+      "rows": 6,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "predictive_controls",
+      "rows": 1,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "provider_profile",
+      "rows": 7,
+      "status_breakdown": [
+        {
+          "value": "active",
+          "n": 6
+        },
+        {
+          "value": "pending_review",
+          "n": 1
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "provider_rate_config",
+      "rows": 7,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "provider_rate_lease",
+      "rows": 87954,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "provider_registry",
+      "rows": 5,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "provider_topup_intent",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "provider_wallet",
+      "rows": 7,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "provider_wallet_transaction",
+      "rows": 7,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "question_variant",
+      "rows": 25456,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "questions",
+      "rows": 60,
+      "status_breakdown": [
+        {
+          "value": "authoritative",
+          "n": 60
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "record_versions",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "recovery_attempts",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "recovery_runs",
+      "rows": 4,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "relationships",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "result_set",
+      "rows": 510,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "retrieval_event",
+      "rows": 3062,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "retrieval_hit",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "rollup_campaigns",
+      "rows": 5,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "rollup_country",
+      "rows": 10,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "rollup_daily",
+      "rows": 2,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "rollup_monthly",
+      "rows": 1,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "rollup_provider",
+      "rows": 5,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "rollup_segment",
+      "rows": 1,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "safety_audit_config",
+      "rows": 1,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "safety_audit_event",
+      "rows": 27,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "scheduled_job",
+      "rows": 3,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "scheduled_job_run",
+      "rows": 5,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "semantic_entity_index",
+      "rows": 1754,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "semantic_question_index",
+      "rows": 4000,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "service_business",
+      "rows": 3922,
+      "status_breakdown": [
+        {
+          "value": "listed",
+          "n": 3922
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": [
+        {
+          "value": false,
+          "n": 3922
+        }
+      ],
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "service_business_source_snapshot",
+      "rows": 3930,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "service_request",
+      "rows": 4,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "service_request_offer",
+      "rows": 20,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "social_accounts",
+      "rows": 322,
+      "status_breakdown": [
+        {
+          "value": "connected",
+          "n": 269
+        },
+        {
+          "value": "pending",
+          "n": 34
+        },
+        {
+          "value": "revoked",
+          "n": 19
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "social_admin_access_log",
+      "rows": 87,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "social_audit_events",
+      "rows": 616,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "social_brand_profiles",
+      "rows": 715,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "social_category_automation",
+      "rows": 66,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "social_content_drafts",
+      "rows": 617,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "social_content_sources",
+      "rows": 1022,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "social_content_templates",
+      "rows": 556,
+      "status_breakdown": [
+        {
+          "value": "active",
+          "n": 556
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "social_controls",
+      "rows": 1,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "social_dek_wraps",
+      "rows": 846,
+      "status_breakdown": [
+        {
+          "value": "active",
+          "n": 846
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "social_oauth_states",
+      "rows": 356,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "social_publish_intents",
+      "rows": 8,
+      "status_breakdown": [
+        {
+          "value": "verified_published",
+          "n": 7
+        },
+        {
+          "value": "failed",
+          "n": 1
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "social_role_grants",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "social_scheduled_posts",
+      "rows": 110,
+      "status_breakdown": [
+        {
+          "value": "published",
+          "n": 79
+        },
+        {
+          "value": "leased",
+          "n": 13
+        },
+        {
+          "value": "refused_at_recheck",
+          "n": 13
+        },
+        {
+          "value": "abandoned",
+          "n": 5
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "social_tenants",
+      "rows": 1160,
+      "status_breakdown": [
+        {
+          "value": "active",
+          "n": 1160
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "social_validator_runs",
+      "rows": 546,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "sources",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "sparks_product",
+      "rows": 3,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "sparks_product_price",
+      "rows": 6,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "team",
+      "rows": 5,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "team_member",
+      "rows": 5,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "tracking_events",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "transport_acquisition_outreach",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "transport_acquisition_record",
+      "rows": 107,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "transport_acquisition_source_snapshot",
+      "rows": 603,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "turn_latency_event",
+      "rows": 4390,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "user_account",
+      "rows": 47,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "user_memory",
+      "rows": 171,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "user_profile",
+      "rows": 142,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "user_session",
+      "rows": 47,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "user_wallet",
+      "rows": 65,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "video_feed_impression",
+      "rows": 145,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "voice_synthesis",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "voice_transcript",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "wallet_transaction",
+      "rows": 159,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "work_item",
+      "rows": 10059,
+      "status_breakdown": [
+        {
+          "value": "completed",
+          "n": 10008
+        },
+        {
+          "value": "queued",
+          "n": 49
+        },
+        {
+          "value": "dead_letter",
+          "n": 2
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "worker_audit_events",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "worker_cycle_run",
+      "rows": 44178,
+      "status_breakdown": [
+        {
+          "value": "completed",
+          "n": 40003
+        },
+        {
+          "value": "failed",
+          "n": 3999
+        },
+        {
+          "value": "aborted",
+          "n": 148
+        },
+        {
+          "value": "running",
+          "n": 28
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "worker_heartbeat",
+      "rows": 26481,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "worker_heartbeats_archive_2026_08_22",
+      "rows": 50,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "worker_jobs",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "worker_results",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex",
+      "table": "worker_schedule",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab",
+      "table": "growth_history",
+      "rows": 500,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab",
+      "table": "innovation_ideas",
+      "rows": 25,
+      "status_breakdown": [
+        {
+          "value": "proposed",
+          "n": 24
+        },
+        {
+          "value": "approved",
+          "n": 1
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab",
+      "table": "promotion_events",
+      "rows": 27,
+      "status_breakdown": [
+        {
+          "value": "succeeded",
+          "n": 15
+        },
+        {
+          "value": "failed",
+          "n": 8
+        },
+        {
+          "value": "pending",
+          "n": 2
+        },
+        {
+          "value": "rolled_back",
+          "n": 2
+        }
+      ],
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab",
+      "table": "promotion_rows",
+      "rows": 618,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab",
+      "table": "rooms",
+      "rows": 10,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_accommodation",
+      "table": "harvest_raw",
+      "rows": 14894,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_accommodation",
+      "table": "verified",
+      "rows": 4796,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_activities",
+      "table": "harvest_raw",
+      "rows": 2342,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_activities",
+      "table": "verified",
+      "rows": 780,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_business",
+      "table": "gov_source_raw",
+      "rows": 29,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_business",
+      "table": "harvest_raw",
+      "rows": 4016,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_business",
+      "table": "verified",
+      "rows": 1192,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_chat",
+      "table": "harvest_raw",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_chat",
+      "table": "verified",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_food",
+      "table": "harvest_raw",
+      "rows": 3397,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_food",
+      "table": "verified",
+      "rows": 896,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_image",
+      "table": "harvest_raw",
+      "rows": 234,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_image",
+      "table": "verified",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_monetization",
+      "table": "harvest_raw",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_monetization",
+      "table": "verified",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_news",
+      "table": "harvest_raw",
+      "rows": 25,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_news",
+      "table": "verified",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_transport",
+      "table": "harvest_raw",
+      "rows": 1734,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_transport",
+      "table": "verified",
+      "rows": 129,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_voice",
+      "table": "harvest_raw",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    },
+    {
+      "schema": "nex_lab_voice",
+      "table": "verified",
+      "rows": 0,
+      "status_breakdown": null,
+      "claim_state_breakdown": null,
+      "verified_breakdown": null,
+      "promoted_breakdown": null
+    }
+  ],
+  "supabase": [
+    {
+      "table": "knowledge_records",
+      "rows": 3627
+    },
+    {
+      "table": "knowledge_feedback",
+      "rows": 402
+    },
+    {
+      "table": "knowledge_feedback_topics",
+      "rows": null
+    },
+    {
+      "table": "hammerex_nex_brains",
+      "rows": null
+    },
+    {
+      "table": "hammerex_nex_brain_versions",
+      "rows": null
+    },
+    {
+      "table": "hammerex_nex_brain_drafts",
+      "rows": null
+    },
+    {
+      "table": "hammerex_nex_brain_certifications",
+      "rows": null
+    },
+    {
+      "table": "hammerex_nex_brain_dependencies",
+      "rows": null
+    },
+    {
+      "table": "hammerex_nex_brain_answers",
+      "rows": null
+    },
+    {
+      "table": "hammerex_nex_brain_field_outcomes",
+      "rows": null
+    },
+    {
+      "table": "hammerex_nex_brain_review_actions",
+      "rows": null
+    }
+  ]
+}

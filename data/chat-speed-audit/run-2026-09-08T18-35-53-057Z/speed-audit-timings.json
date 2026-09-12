@@ -1,0 +1,244 @@
+{
+  "started_at": "2026-09-08T18-35-53-057Z",
+  "n_iterations": 3,
+  "queries": [
+    {
+      "label": "ordinary_hello",
+      "text": "hello"
+    },
+    {
+      "label": "accommodation_hotels",
+      "text": "Find me hotels near Malioboro"
+    },
+    {
+      "label": "food_breakfast",
+      "text": "Any with breakfast?"
+    },
+    {
+      "label": "accommodation_villa",
+      "text": "villa near beach"
+    }
+  ],
+  "samples": [
+    {
+      "label": "iter1",
+      "query": "hello",
+      "t0_click_send_ms": 592.4084999999995,
+      "t2_response_received_ms": 3507.9130999999998,
+      "t3_assistant_visible_ms": 3543.9075000000003,
+      "t4_cards_visible_ms": null,
+      "t5_dom_stable_ms": 3544.1355999999996,
+      "customer_perceived_total_ms": 3543.9075000000003,
+      "server_debug_timings": null,
+      "server_intent": null,
+      "server_reply_snippet": "",
+      "server_voice_reply_en": null
+    },
+    {
+      "label": "iter1",
+      "query": "Find me hotels near Malioboro",
+      "t0_click_send_ms": 570.7430999999997,
+      "t2_response_received_ms": 60584.628500000006,
+      "t3_assistant_visible_ms": 60588.9304,
+      "t4_cards_visible_ms": null,
+      "t5_dom_stable_ms": 70667.3113,
+      "customer_perceived_total_ms": 60588.9304,
+      "server_debug_timings": null,
+      "server_intent": null,
+      "server_reply_snippet": "",
+      "server_voice_reply_en": null
+    },
+    {
+      "label": "iter1",
+      "query": "Any with breakfast?",
+      "t0_click_send_ms": 576.3012999999919,
+      "t2_response_received_ms": 4219.6630000000005,
+      "t3_assistant_visible_ms": null,
+      "t4_cards_visible_ms": null,
+      "t5_dom_stable_ms": 14264.560599999997,
+      "customer_perceived_total_ms": 14264.560599999997
+    },
+    {
+      "label": "iter1",
+      "query": "villa near beach",
+      "t0_click_send_ms": 595.7915000000066,
+      "t2_response_received_ms": 9319.299900000013,
+      "t3_assistant_visible_ms": 9349.030400000003,
+      "t4_cards_visible_ms": null,
+      "t5_dom_stable_ms": 19322.793900000004,
+      "customer_perceived_total_ms": 9349.030400000003,
+      "server_debug_timings": {
+        "stage_ms": {
+          "body_parse": 0.84,
+          "orchestrator": 4779.89,
+          "total_before_response_send": 4782.58
+        },
+        "composition_latency_ms": null,
+        "composition_accepted": false,
+        "composition_model": null,
+        "composition_fell_back": null,
+        "llm_invoked": false,
+        "intent_resolved": "accommodation",
+        "brain_ms_legacy": 4780,
+        "instrument_version": "chat-speed-audit-v1-2026-09-09"
+      },
+      "server_intent": "accommodation",
+      "server_reply_snippet": "Got it — villas near Malioboro. I don't have matching real listings yet. Do you want budget, mid-range, or something more upmarket?",
+      "server_voice_reply_en": "Hmm — nothing's coming back for that. Want me to loosen the search a bit?"
+    },
+    {
+      "label": "iter2",
+      "query": "hello",
+      "t0_click_send_ms": 576.8633000000118,
+      "t2_response_received_ms": 4683.221400000009,
+      "t3_assistant_visible_ms": 4712.300400000007,
+      "t4_cards_visible_ms": null,
+      "t5_dom_stable_ms": 4712.310600000012,
+      "customer_perceived_total_ms": 4712.300400000007,
+      "server_debug_timings": {
+        "stage_ms": {
+          "body_parse": 0.49,
+          "orchestrator": 0.43,
+          "total_before_response_send": 1.87
+        },
+        "composition_latency_ms": null,
+        "composition_accepted": true,
+        "composition_model": null,
+        "composition_fell_back": null,
+        "llm_invoked": false,
+        "intent_resolved": "conversation",
+        "brain_ms_legacy": 0,
+        "instrument_version": "chat-speed-audit-v1-2026-09-09"
+      },
+      "server_intent": "conversation",
+      "server_reply_snippet": "Hi! What can I help you with?",
+      "server_voice_reply_en": "Hi! What can I help you with?"
+    },
+    {
+      "label": "iter2",
+      "query": "Find me hotels near Malioboro",
+      "t0_click_send_ms": 567.6603000000032,
+      "t2_response_received_ms": 4050.9195000000036,
+      "t3_assistant_visible_ms": 4053.35560000001,
+      "t4_cards_visible_ms": 4141.577499999999,
+      "t5_dom_stable_ms": 4141.578600000008,
+      "customer_perceived_total_ms": 4053.35560000001,
+      "server_debug_timings": {
+        "stage_ms": {
+          "body_parse": 0.51,
+          "orchestrator": 927.86,
+          "total_before_response_send": 930.58
+        },
+        "composition_latency_ms": null,
+        "composition_accepted": false,
+        "composition_model": null,
+        "composition_fell_back": null,
+        "llm_invoked": false,
+        "intent_resolved": "accommodation",
+        "brain_ms_legacy": 927,
+        "instrument_version": "chat-speed-audit-v1-2026-09-09"
+      },
+      "server_intent": "accommodation",
+      "server_reply_snippet": "I've got 521 real listings for hotels near Malioboro — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not ",
+      "server_voice_reply_en": "Yep — found 3."
+    },
+    {
+      "label": "iter2",
+      "query": "Any with breakfast?",
+      "t0_click_send_ms": 582.8582000000024,
+      "t2_response_received_ms": 25092.81230000002,
+      "t3_assistant_visible_ms": 25131.913,
+      "t4_cards_visible_ms": 25131.919400000013,
+      "t5_dom_stable_ms": 25131.92120000001,
+      "customer_perceived_total_ms": 25131.913,
+      "server_debug_timings": null,
+      "server_intent": null,
+      "server_reply_snippet": "",
+      "server_voice_reply_en": null
+    },
+    {
+      "label": "iter2",
+      "query": "villa near beach",
+      "t0_click_send_ms": 579.0169000000169,
+      "t2_response_received_ms": 1020.9942000000156,
+      "t3_assistant_visible_ms": 1054.3569000000134,
+      "t4_cards_visible_ms": 1054.3640000000014,
+      "t5_dom_stable_ms": 1054.3672000000079,
+      "customer_perceived_total_ms": 1054.3569000000134,
+      "server_debug_timings": null,
+      "server_intent": null,
+      "server_reply_snippet": "",
+      "server_voice_reply_en": null
+    },
+    {
+      "label": "iter3",
+      "query": "hello",
+      "t0_click_send_ms": 587.8930999999866,
+      "t2_response_received_ms": 639.3795999999857,
+      "t3_assistant_visible_ms": 668.3856999999844,
+      "t4_cards_visible_ms": null,
+      "t5_dom_stable_ms": 668.3930999999866,
+      "customer_perceived_total_ms": 668.3856999999844,
+      "server_debug_timings": {
+        "stage_ms": {
+          "body_parse": 0.51,
+          "orchestrator": 0.32,
+          "total_before_response_send": 1.65
+        },
+        "composition_latency_ms": null,
+        "composition_accepted": true,
+        "composition_model": null,
+        "composition_fell_back": null,
+        "llm_invoked": false,
+        "intent_resolved": "conversation",
+        "brain_ms_legacy": 0,
+        "instrument_version": "chat-speed-audit-v1-2026-09-09"
+      },
+      "server_intent": "conversation",
+      "server_reply_snippet": "Hi! What can I help you with?",
+      "server_voice_reply_en": "Hi! What can I help you with?"
+    },
+    {
+      "label": "iter3",
+      "query": "Find me hotels near Malioboro",
+      "t0_click_send_ms": 579.8710000000137,
+      "t2_response_received_ms": 8560.444199999998,
+      "t3_assistant_visible_ms": 8595.276700000017,
+      "t4_cards_visible_ms": 8595.281699999992,
+      "t5_dom_stable_ms": 8595.282299999992,
+      "customer_perceived_total_ms": 8595.276700000017,
+      "server_debug_timings": null,
+      "server_intent": null,
+      "server_reply_snippet": "",
+      "server_voice_reply_en": null
+    },
+    {
+      "label": "iter3",
+      "query": "Any with breakfast?",
+      "t0_click_send_ms": 579.0692999999737,
+      "t2_response_received_ms": 13072.049699999974,
+      "t3_assistant_visible_ms": 13103.669399999984,
+      "t4_cards_visible_ms": 13103.674899999984,
+      "t5_dom_stable_ms": 13103.676199999987,
+      "customer_perceived_total_ms": 13103.669399999984,
+      "server_debug_timings": null,
+      "server_intent": null,
+      "server_reply_snippet": "",
+      "server_voice_reply_en": null
+    },
+    {
+      "label": "iter3",
+      "query": "villa near beach",
+      "t0_click_send_ms": 586.3001999999979,
+      "t2_response_received_ms": 861.2375999999931,
+      "t3_assistant_visible_ms": 889.8712999999989,
+      "t4_cards_visible_ms": 889.8815999999933,
+      "t5_dom_stable_ms": 889.8842999999761,
+      "customer_perceived_total_ms": 889.8712999999989,
+      "server_debug_timings": null,
+      "server_intent": null,
+      "server_reply_snippet": "",
+      "server_voice_reply_en": null
+    }
+  ]
+}

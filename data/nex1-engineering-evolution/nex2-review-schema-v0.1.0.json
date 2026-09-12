@@ -1,0 +1,47 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX2Review contract · founder-authorised design 2026-09-12. DESIGN ONLY. NEX2 is Architect / Critic · never merges · never authorises · never becomes final judge. NEX2 may conclude NEX1 is already superior · must not manufacture alternatives.",
+  "record_type": "NEX2_REVIEW",
+  "required_fields": [
+    { "name": "review_id",                  "shape": "string · monotonic e.g. N2-REV-0007" },
+    { "name": "schema_version",             "shape": "semver" },
+    { "name": "work_order_id",              "shape": "string" },
+    { "name": "reviewed_candidate_id",      "shape": "string · e.g. cand_nex1" },
+    { "name": "at",                          "shape": "ISO-8601 · immutable" },
+    { "name": "strengths",                   "shape": "array of { claim, evidence_id }",       "notes": "every claim MUST cite an EvidenceRecord · uncited claims are refused" },
+    { "name": "weaknesses",                  "shape": "array of { claim, evidence_id, severity }" },
+    { "name": "risks",                       "shape": "array of { claim, evidence_id, likelihood, impact }" },
+    { "name": "alternative_proposed",       "shape": "object · { candidate_id, diff_ref, tests_ref } · null if no alternative",
+                                             "notes": "OPTIONAL · NEX2 must not fabricate an alternative when no meaningful one exists" },
+    { "name": "alternative_reason",         "shape": "string · null if no alternative",
+                                             "notes": "must reference evidence · not opinion" },
+    { "name": "evidence_required",          "shape": "array of evidence_type · dimensions the reviewer says are NOT_MEASURED but SHOULD be" },
+    { "name": "evidence_references",        "shape": "array of evidence_id · everything cited in this review" },
+    { "name": "project_alignment_notes",    "shape": "string · references Project Coding Profile" },
+    { "name": "user_objective_alignment_notes", "shape": "string · references the work order's stated objective" },
+    { "name": "review_verdict",             "shape": "enum · ACCEPT_NEX1 · PROPOSE_ALTERNATIVE · BOTH_NEED_REVISION · REQUEST_EVIDENCE · HOLD",
+                                             "notes": "founder-authored · no other values permitted" },
+    { "name": "verdict_reason",             "shape": "string · reconstructable from cited evidence" },
+    { "name": "authority_boundary",         "shape": "constant · 'advisory_only'",
+                                             "notes": "NEX2 verdict is ALWAYS advisory · never authoritative · this field is a self-declaration" },
+    { "name": "provenance",                  "shape": "object · see provenance-model" },
+    { "name": "attribution",                 "shape": "object · external_llm_used=false · role='nex2_reviewer' · authoritative=false" }
+  ],
+  "verdict_semantics": {
+    "ACCEPT_NEX1":         "NEX1 candidate is superior to any alternative NEX2 can construct · no alternative proposed",
+    "PROPOSE_ALTERNATIVE": "NEX2 proposes an alternative with cited evidence · founder/NEX3 decides",
+    "BOTH_NEED_REVISION":  "NEX1 candidate is inferior AND no valid alternative can be constructed from current evidence · return to design",
+    "REQUEST_EVIDENCE":     "additional evidence needed before a verdict is possible · list in evidence_required",
+    "HOLD":                 "review cannot proceed at this time · not a failure · not a pass · not silently skipped"
+  },
+  "invariants": [
+    "NEX2 does not require an alternative to exist · ACCEPT_NEX1 is a first-class verdict",
+    "every claim (strength · weakness · risk) MUST cite an evidence_id",
+    "NEX2 CANNOT modify NEX1 output",
+    "NEX2 CANNOT authorise a merge",
+    "NEX2 CANNOT set final disposition",
+    "NEX2 may recommend rejection · only NEX3 + founder can enact it",
+    "authority_boundary field is a constant · not a variable · not runtime-modifiable"
+  ],
+  "adversarial_rule": "NEX2 must not manufacture disagreement · falsification is the target · not opposition"
+}

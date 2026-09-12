@@ -1,0 +1,38 @@
+{
+  "version": "v0.2.0",
+  "supersedes": "v0.1.0 (preserved byte-identical for baseline audit)",
+  "notes": "NEX Standards Feed · founder-authorised 2026-09-12. Append-only, versioned, provenance-backed registry of engineering standards. Only the founder authorises admission. Specialists cannot publish directly.",
+  "record_type": "APPROVED_STANDARD",
+  "constitutional_purpose_locked": "The Standards Feed is not learning. It is an authorised engineering standards registry. Only chain: SPECIALIST → EVIDENCE VALIDATION → NEX2 → NEX3 → FOUNDER → STANDARD → FEED → NEX1.",
+  "standard_states": {
+    "PROPOSED":       "candidate submitted · not yet founder-authorised",
+    "APPROVED":       "founder authorised · active in feed",
+    "SUPERSEDED":     "replaced by a newer standard · preserved in history",
+    "DEPRECATED":     "no longer approved · founder-authorised deprecation with reason",
+    "REJECTED":       "candidate not admitted · reason recorded"
+  },
+  "required_fields": [
+    { "name": "standard_id",              "shape": "monotonic e.g. STD-0007" },
+    { "name": "title",                    "shape": "string" },
+    { "name": "state",                    "shape": "one of standard_states" },
+    { "name": "version",                  "shape": "semver" },
+    { "name": "authored_by",              "shape": "founder identity" },
+    { "name": "authored_at",              "shape": "ISO-8601" },
+    { "name": "scope",                    "shape": "string · what code / subsystem / behaviour this standard binds" },
+    { "name": "applicability",            "shape": "explicit list of paths / subsystems where the standard applies" },
+    { "name": "exclusion_list",           "shape": "explicit list of paths / subsystems where the standard does NOT apply" },
+    { "name": "cited_evidence_ids",       "shape": "array of AuthoritativeEvidenceRecord ids supporting admission" },
+    { "name": "arbitration_id",           "shape": "NEX3 arbitration record id" },
+    { "name": "rollback_reference",       "shape": "how to reverse this standard's effect" },
+    { "name": "provenance_chain",         "shape": "specialist → validation → NEX2 → NEX3 → founder" }
+  ],
+  "invariants": [
+    "APPEND-ONLY · MUST NEVER mutate an APPROVED entry · SUPERSEDED preserves history",
+    "MUST NEVER accept a standard without a NEX3 arbitration_id and founder authorisation token",
+    "MUST NEVER accept a standard proposed directly by a specialist (bypassing NEX2/NEX3)",
+    "MUST NEVER accept a standard whose cited_evidence_ids include a record with validation_verdict != VALIDATED",
+    "the Feed is NOT 'learning' · it is an authorised registry",
+    "rollback_reference is MANDATORY · every standard is reversible",
+    "external_llm_used=false · deterministic=true"
+  ]
+}

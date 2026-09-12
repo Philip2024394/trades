@@ -1,0 +1,26 @@
+{
+  "id": "custom-notion",
+  "brand": "Notion",
+  "name": "Notion API",
+  "category": "content-media",
+  "icon": "◱",
+  "tagline": "Sync data to Notion databases",
+  "description": "Notion API lets your app read from and write to Notion databases · perfect for founder-editable CMS or knowledge-base backed by Notion pages.",
+  "benefits": [
+    "Founder edits content in Notion · app reflects immediately",
+    "No CMS admin panel to build",
+    "Rich text · toggles · lists · tables all supported",
+    "Zero authentication for public pages"
+  ],
+  "setupComplexity": "low",
+  "recommendedFor": [
+    "blog",
+    "docs",
+    "landing-page"
+  ],
+  "featured": false,
+  "promptTemplate": "Install @notionhq/client. Create src/lib/notion/client.ts with typed page fetchers. Wire NOTION_API_KEY as server-only env var. Create /api/notion/pages route that returns cached page content. Document setup in docs/integrations/notion.md. Never commit NOTION_API_KEY.",
+  "custom": true,
+  "submittedAt": "2026-09-11T15:57:04.158Z",
+  "hash": "a42d1df9c9fc1f3f01d3ae16"
+}

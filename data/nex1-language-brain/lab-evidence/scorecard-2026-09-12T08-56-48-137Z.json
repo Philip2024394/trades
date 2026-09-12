@@ -1,0 +1,262 @@
+{
+  "at": "2026-09-12T08:56:48.138Z",
+  "benchmark_version": "v0.2.0",
+  "attribution": {
+    "teaching_infrastructure": "src/lib/nex-language-brain/* · taught_by=master_ai_engineer",
+    "challenge_authorship": "data/nex1-language-brain/challenge-set-v0/* · authored_by=examiner",
+    "novel_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "external_llm_used": false,
+    "independent_authorship_percent": 0
+  },
+  "regression_pool": {
+    "entries": 47,
+    "clean": true,
+    "failed_ids": []
+  },
+  "public_cases": 74,
+  "hidden_cases": 18,
+  "sections": [
+    {
+      "language": "english",
+      "overall_points": 360,
+      "overall_max": 365,
+      "overall_percent": 98.63013698630137,
+      "level": "advanced_fluency",
+      "benchmark_complete": true,
+      "benchmark_maturity": "pilot",
+      "coverage": {
+        "public": 25,
+        "hidden": 7,
+        "adversarial": 17,
+        "regression": 32,
+        "total": 73
+      },
+      "dimensions": [
+        {
+          "dimension": "intent",
+          "points": 284,
+          "max_points": 285,
+          "percent": 99.64912280701755,
+          "case_count": 57
+        },
+        {
+          "dimension": "safety_refusal",
+          "points": 80,
+          "max_points": 85,
+          "percent": 94.11764705882352,
+          "case_count": 17
+        },
+        {
+          "dimension": "context",
+          "points": 16,
+          "max_points": 20,
+          "percent": 80,
+          "case_count": 4
+        },
+        {
+          "dimension": "ambiguity",
+          "points": 85,
+          "max_points": 100,
+          "percent": 85,
+          "case_count": 27
+        },
+        {
+          "dimension": "spelling_tolerance",
+          "points": 5,
+          "max_points": 5,
+          "percent": 100,
+          "case_count": 1
+        }
+      ],
+      "case_count": 73,
+      "weak_dimensions": []
+    },
+    {
+      "language": "bahasa_indonesia",
+      "overall_points": 150,
+      "overall_max": 150,
+      "overall_percent": 100,
+      "level": "advanced_fluency",
+      "benchmark_complete": true,
+      "benchmark_maturity": "pilot",
+      "coverage": {
+        "public": 12,
+        "hidden": 4,
+        "adversarial": 3,
+        "regression": 13,
+        "total": 30
+      },
+      "dimensions": [
+        {
+          "dimension": "intent",
+          "points": 135,
+          "max_points": 135,
+          "percent": 100,
+          "case_count": 27
+        },
+        {
+          "dimension": "tone",
+          "points": 15,
+          "max_points": 15,
+          "percent": 100,
+          "case_count": 3
+        },
+        {
+          "dimension": "slang",
+          "points": 10,
+          "max_points": 10,
+          "percent": 100,
+          "case_count": 2
+        },
+        {
+          "dimension": "vocabulary",
+          "points": 10,
+          "max_points": 10,
+          "percent": 100,
+          "case_count": 2
+        },
+        {
+          "dimension": "safety_refusal",
+          "points": 15,
+          "max_points": 15,
+          "percent": 100,
+          "case_count": 3
+        },
+        {
+          "dimension": "spelling_tolerance",
+          "points": 5,
+          "max_points": 5,
+          "percent": 100,
+          "case_count": 1
+        },
+        {
+          "dimension": "ambiguity",
+          "points": 100,
+          "max_points": 100,
+          "percent": 100,
+          "case_count": 3
+        }
+      ],
+      "case_count": 30,
+      "weak_dimensions": []
+    },
+    {
+      "language": "code_switch",
+      "overall_points": 60,
+      "overall_max": 60,
+      "overall_percent": 100,
+      "level": "advanced_fluency",
+      "benchmark_complete": false,
+      "benchmark_maturity": "pilot",
+      "coverage": {
+        "public": 8,
+        "hidden": 2,
+        "adversarial": 2,
+        "regression": 0,
+        "total": 12
+      },
+      "dimensions": [
+        {
+          "dimension": "intent",
+          "points": 50,
+          "max_points": 50,
+          "percent": 100,
+          "case_count": 10
+        },
+        {
+          "dimension": "technical",
+          "points": 40,
+          "max_points": 40,
+          "percent": 100,
+          "case_count": 8
+        },
+        {
+          "dimension": "context",
+          "points": 5,
+          "max_points": 5,
+          "percent": 100,
+          "case_count": 1
+        },
+        {
+          "dimension": "ambiguity",
+          "points": 100,
+          "max_points": 100,
+          "percent": 100,
+          "case_count": 2
+        },
+        {
+          "dimension": "safety_refusal",
+          "points": 10,
+          "max_points": 10,
+          "percent": 100,
+          "case_count": 2
+        }
+      ],
+      "case_count": 12,
+      "weak_dimensions": []
+    },
+    {
+      "language": "programming",
+      "overall_points": 100,
+      "overall_max": 100,
+      "overall_percent": 100,
+      "level": "advanced_fluency",
+      "benchmark_complete": false,
+      "benchmark_maturity": "pilot",
+      "coverage": {
+        "public": 11,
+        "hidden": 5,
+        "adversarial": 5,
+        "regression": 0,
+        "total": 20
+      },
+      "dimensions": [
+        {
+          "dimension": "intent",
+          "points": 85,
+          "max_points": 85,
+          "percent": 100,
+          "case_count": 17
+        },
+        {
+          "dimension": "technical",
+          "points": 75,
+          "max_points": 75,
+          "percent": 100,
+          "case_count": 15
+        },
+        {
+          "dimension": "context",
+          "points": 10,
+          "max_points": 10,
+          "percent": 100,
+          "case_count": 2
+        },
+        {
+          "dimension": "ambiguity",
+          "points": 100,
+          "max_points": 100,
+          "percent": 100,
+          "case_count": 5
+        },
+        {
+          "dimension": "safety_refusal",
+          "points": 25,
+          "max_points": 25,
+          "percent": 100,
+          "case_count": 5
+        },
+        {
+          "dimension": "spelling_tolerance",
+          "points": 5,
+          "max_points": 5,
+          "percent": 100,
+          "case_count": 1
+        }
+      ],
+      "case_count": 20,
+      "weak_dimensions": []
+    }
+  ],
+  "taught_by": "master_ai_engineer"
+}

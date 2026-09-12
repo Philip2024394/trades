@@ -1,0 +1,96 @@
+{
+  "at": "2026-09-12T07:04:32.281Z",
+  "attribution": {
+    "teaching_infrastructure": "capability-j23-multi-hop-recovery.ts · taught_by=master_ai_engineer",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner"
+  },
+  "sub_tests": {
+    "J23.1": {
+      "verdict": "pass",
+      "verdict_seen": "all_verified_multi_hop",
+      "rollback": "restored",
+      "hop_count": 2,
+      "initial_failing": [
+        "j23-two-hop > hop1 h1 should be 10",
+        "j23-two-hop > hop2 h2 should be 20"
+      ],
+      "final_failing": [],
+      "newly_failing": null,
+      "byte_identical": true,
+      "verdict_ok": true,
+      "extra_ok": true
+    },
+    "J23.2": {
+      "verdict": "pass",
+      "verdict_seen": "all_verified_multi_hop",
+      "rollback": "restored",
+      "hop_count": 3,
+      "initial_failing": [
+        "j23-three-hop > hop1 h1 should be 10",
+        "j23-three-hop > hop2 h2 should be 20",
+        "j23-three-hop > hop3 h3 should be 30"
+      ],
+      "final_failing": [],
+      "newly_failing": null,
+      "byte_identical": true,
+      "verdict_ok": true,
+      "extra_ok": true
+    },
+    "J23.3": {
+      "verdict": "pass",
+      "verdict_seen": "refused_mid_chain_j2",
+      "rollback": "restored",
+      "hop_count": 2,
+      "initial_failing": [
+        "j23-complex-mid-chain > hop1 h1 should be 10",
+        "j23-complex-mid-chain > hop2 mode should be invalid"
+      ],
+      "final_failing": [
+        "j23-complex-mid-chain > hop2 mode should be invalid"
+      ],
+      "newly_failing": null,
+      "byte_identical": true,
+      "verdict_ok": true,
+      "extra_ok": true
+    },
+    "J23.4": {
+      "verdict": "pass",
+      "verdict_seen": "refused_hop_cap_exceeded",
+      "rollback": "restored",
+      "hop_count": 3,
+      "initial_failing": [
+        "j23-cap-exceeded > hop1 h1 should be 10",
+        "j23-cap-exceeded > hop2 h2 should be 20",
+        "j23-cap-exceeded > hop3 h3 should be 30",
+        "j23-cap-exceeded > hop4 h4 should be 40"
+      ],
+      "final_failing": [
+        "j23-cap-exceeded > hop4 h4 should be 40"
+      ],
+      "newly_failing": null,
+      "byte_identical": true,
+      "verdict_ok": true,
+      "extra_ok": true
+    },
+    "J23.5": {
+      "verdict": "pass",
+      "verdict_seen": "refused_mid_chain_regression",
+      "rollback": "restored",
+      "hop_count": 2,
+      "initial_failing": [
+        "j23-regression-mid-chain > hop1 h1 should be 10",
+        "j23-regression-mid-chain > hop2 h2 should be 20"
+      ],
+      "final_failing": [
+        "j23-regression-mid-chain > t3 currently-passing h2 should be 2"
+      ],
+      "newly_failing": [
+        "j23-regression-mid-chain > t3 currently-passing h2 should be 2"
+      ],
+      "byte_identical": true,
+      "verdict_ok": true,
+      "extra_ok": true
+    }
+  }
+}

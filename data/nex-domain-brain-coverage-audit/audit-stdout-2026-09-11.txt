@@ -1,0 +1,338 @@
+═══════════════════════════════════════════════════════════
+NEX DOMAIN BRAIN COVERAGE AUDIT · READ-ONLY SUBSTRATE PROBE
+ADR-0314a.2.s · Founder-authorised 2026-09-11
+Timestamp: 2026-09-10T20:48:39.869Z
+═══════════════════════════════════════════════════════════
+
+═══════════════════════════════════════════════════════════
+nex_dev POSTGRES · schemas nex · nex_lab*
+═══════════════════════════════════════════════════════════
+Total tables in scope: 283
+
+── schema: nex · 257 tables ──
+  nex.accommodation_business: 9230
+  nex.accommodation_business_field_provenance: 46306
+  nex.accommodation_business_source_snapshot: 9203
+  nex.accommodation_enrichment_evidence: 0
+  nex.action_audit: 160
+  nex.alert_dispatches: 12 · status={"skipped":12}
+  nex.alert_rules: 14
+  nex.alerts: 4
+  nex.analytics_events: 526
+  nex.analytics_records: 0
+  nex.analytics_rollup_queue: 0
+  nex.answers: 62 · status={"authoritative":62}
+  nex.api_key: 25
+  nex.attributions: 9
+  nex.audit_event: 30
+  nex.audit_log: 9
+  nex.authorization_policy: 0
+  nex.authorized_action: 0
+  nex.automation_rules: 0
+  nex.automation_runs: 0
+  nex.benchmark_runs: 1 · status={"complete":1}
+  nex.bike_model: 50
+  nex.bike_rental_listing: 9 · status={"active":9}
+  nex.brain_accommodation_prices: 0
+  nex.brain_activities: 0
+  nex.brain_attractions: 32
+  nex.brain_did_you_know_indonesia: 39
+  nex.brain_english_grammar: 0
+  nex.brain_english_lesson: 0
+  nex.brain_english_practice: 0
+  nex.brain_english_progress: 0
+  nex.brain_english_vocabulary: 30
+  nex.brain_local_guide: 0
+  nex.brain_location: 0
+  nex.brain_memories: 0
+  nex.brain_seasons: 0
+  nex.brain_transport: 0
+  nex.brain_traveler_rating: 0
+  nex.brain_user_saved_facts: 1
+  nex.business_calling_config: 0
+  nex.business_image: 660
+  nex.business_knowledge: 1258
+  nex.business_lead_directory: 2 · status={"listed":2} · verified={"false":2}
+  nex.business_lead_directory_field_provenance: 21
+  nex.business_lead_opt_out: 0
+  nex.call_record: 1
+  nex.campaign_recipients: 216
+  nex.campaign_segments: 4
+  nex.campaigns: 13 · status={"archived":4,"draft":3,"completed":3,"sending":2,"scheduled":1}
+  nex.category_candidate: 4
+  nex.category_candidate_calibration_annotation: 0
+  nex.category_candidate_score: 20237
+  nex.category_image_library: 0
+  nex.category_registry: 13
+  nex.category_scorecard: 0
+  nex.chat_message: 70
+  nex.chat_message_archive: 20
+  nex.chat_message_deletion: 20
+  nex.code_execution: 12
+  nex.compliance_events: 14
+  nex.concept_senses: 51 · status={"authoritative":51}
+  nex.concepts: 44 · status={"authoritative":44}
+  nex.confidence_scores: 0
+  nex.contact_duplicate_suggestions: 0
+  nex.contact_merges: 0
+  nex.contact_segments: 12
+  nex.contact_sources: 0
+  nex.contacts: 67
+  nex.contexts: 224
+  nex.contradictions: 0
+  nex.conv_edges: 4970
+  nex.conv_entities: 70
+  nex.conv_feedback: 0
+  nex.conv_intents: 22
+  nex.conv_knowledge_items: 890
+  nex.conv_learning_candidate: 1607 · status={"pending_review":1606,"promoted":1}
+  nex.conv_outcomes: 0
+  nex.conv_states: 303
+  nex.conv_turns: 583
+  nex.conversation: 20
+  nex.conversation_message: 66
+  nex.conversation_share: 5
+  nex.conversation_state: 1428
+  nex.conversion_events: 2
+  nex.cost_budget: 4
+  nex.delivery_job_attempts: 587
+  nex.delivery_jobs: 670 · status={"completed":587,"pending":54,"cancelled":29}
+  nex.delivery_workers_archive_2026_08_22: 1
+  nex.deprecations: 0
+  nex.discovery_orchestrator_pick: 21496
+  nex.discovery_rotation_state: 54550
+  nex.email_templates: 8
+  nex.entity_index: 877
+  nex.events: 2
+  nex.evidence: 173
+  nex.experiment_assignments: 558
+  nex.experiment_variants: 2
+  nex.experiments: 1 · status={"active":1}
+  nex.fact_conflict: 0
+  nex.fact_lifecycle_event: 0
+  nex.file_extraction: 31
+  nex.food_business: 22757
+  nex.food_business_field_provenance: 105320
+  nex.food_business_next_action: 806
+  nex.food_business_promotion: 636
+  nex.food_business_promotion_audit: 729
+  nex.food_business_promotion_decision: 1
+  nex.food_business_source_snapshot: 12986
+  nex.food_claim_code: 1
+  nex.food_commercial_event: 6
+  nex.food_enrichment_evidence: 1450
+  nex.food_enrichment_job: 0
+  nex.food_hq_rule: 10
+  nex.food_next_action_audit: 814
+  nex.food_outreach_attempt: 5 · status={"dry_run":2,"rate_limited":1,"queued":1,"opted_out":1}
+  nex.food_outreach_suppression: 1
+  nex.food_outreach_template: 4
+  nex.founder_window_event: 43261 · status={"info":42323,"warning":538,"ok":400}
+  nex.founder_window_notification: 0
+  nex.founder_window_subsystem_status: 5 · status={"yellow":3,"green":2}
+  nex.gate_kept_event: 2300
+  nex.gate_rejection_event: 368
+  nex.generated_image: 40
+  nex.geo_landmark: 34
+  nex.graph_edges: 0
+  nex.identity_merge_log: 1376510
+  nex.import_mappings: 0
+  nex.jobs: 0
+  nex.journey_campaign_executions: 54 · status={"completed":52,"timed_out":2}
+  nex.journey_events: 928
+  nex.journey_inbound_events: 3
+  nex.journey_states: 165 · status={"completed":162,"stopped":2,"active":1}
+  nex.journey_triggers: 1 · status={"active":1}
+  nex.journeys: 3 · status={"active":3}
+  nex.kf_worker_heartbeat: 3
+  nex.knowledge_dump_jobs: 76 · status={"completed":56,"claimed":10,"queued":8,"failed":2}
+  nex.knowledge_feedback: 0
+  nex.knowledge_gap: 6335
+  nex.knowledge_inbox: 279 · status={"processing":111,"waiting":96,"processed":43,"review":28,"shadow":1}
+  nex.knowledge_inbox_stats: 2
+  nex.knowledge_records: 1 · status={"UNDER_REVIEW":1}
+  nex.kpe_chunks: 0
+  nex.kpe_decisions: 0
+  nex.kpe_documents: 0
+  nex.kpe_duplicates: 0
+  nex.kpe_edges: 0
+  nex.kpe_human_reviews: 0
+  nex.kpe_metadata: 0
+  nex.kpe_processing_runs: 0
+  nex.listing_message: 3
+  nex.listing_owner_invite: 1
+  nex.listing_thread: 2 · status={"open":2}
+  nex.llm_cost_config: 11
+  nex.llm_retry_queue: 41 · status={"succeeded":41}
+  nex.marketing_bounce_log: 0
+  nex.marketing_campaign: 0
+  nex.marketing_contact: 197
+  nex.marketing_opt_out: 0
+  nex.marketing_segment: 0
+  nex.marketing_send_log: 0
+  nex.marketing_send_queue: 0
+  nex.marketing_template: 0
+  nex.master_rulebook: 8
+  nex.meaningful_area: 6
+  nex.media_object: 16
+  nex.moderation_event: 0
+  nex.mp_category: 310
+  nex.mp_commerce_policy: 1
+  nex.mp_product: 5
+  nex.mp_product_image: 5
+  nex.mp_product_option: 11
+  nex.mp_product_option_value: 24
+  nex.mp_product_variant: 15
+  nex.mp_seller: 23580 · status={"discovered":23579,"active":1}
+  nex.object_blob_current: 22
+  nex.object_blobs: 23
+  nex.object_manifest: 5
+  nex.outbound_email: 1 · status={"queued_pending_smtp":1}
+  nex.pending_level3_action: 0
+  nex.prediction_models: 2 · status={"active":1,"retired":1}
+  nex.predictions: 6
+  nex.predictive_controls: 1
+  nex.provider_profile: 7 · status={"active":6,"pending_review":1}
+  nex.provider_rate_config: 7
+  nex.provider_rate_lease: 87954
+  nex.provider_registry: 5
+  nex.provider_topup_intent: 0
+  nex.provider_wallet: 7
+  nex.provider_wallet_transaction: 7
+  nex.question_variant: 25456
+  nex.questions: 60 · status={"authoritative":60}
+  nex.record_versions: 0
+  nex.recovery_attempts: 0
+  nex.recovery_runs: 4
+  nex.relationships: 0
+  nex.result_set: 510
+  nex.retrieval_event: 3062
+  nex.retrieval_hit: 0
+  nex.rollup_campaigns: 5
+  nex.rollup_country: 10
+  nex.rollup_daily: 2
+  nex.rollup_monthly: 1
+  nex.rollup_provider: 5
+  nex.rollup_segment: 1
+  nex.safety_audit_config: 1
+  nex.safety_audit_event: 27
+  nex.scheduled_job: 3
+  nex.scheduled_job_run: 5
+  nex.semantic_entity_index: 1754
+  nex.semantic_question_index: 4000
+  nex.service_business: 3922 · status={"listed":3922} · verified={"false":3922}
+  nex.service_business_source_snapshot: 3930
+  nex.service_request: 4
+  nex.service_request_offer: 20
+  nex.social_accounts: 322 · status={"connected":269,"pending":34,"revoked":19}
+  nex.social_admin_access_log: 87
+  nex.social_audit_events: 616
+  nex.social_brand_profiles: 715
+  nex.social_category_automation: 66
+  nex.social_content_drafts: 617
+  nex.social_content_sources: 1022
+  nex.social_content_templates: 556 · status={"active":556}
+  nex.social_controls: 1
+  nex.social_dek_wraps: 846 · status={"active":846}
+  nex.social_oauth_states: 356
+  nex.social_publish_intents: 8 · status={"verified_published":7,"failed":1}
+  nex.social_role_grants: 0
+  nex.social_scheduled_posts: 110 · status={"published":79,"leased":13,"refused_at_recheck":13,"abandoned":5}
+  nex.social_tenants: 1160 · status={"active":1160}
+  nex.social_validator_runs: 546
+  nex.sources: 0
+  nex.sparks_product: 3
+  nex.sparks_product_price: 6
+  nex.team: 5
+  nex.team_member: 5
+  nex.tracking_events: 0
+  nex.transport_acquisition_outreach: 0
+  nex.transport_acquisition_record: 107
+  nex.transport_acquisition_source_snapshot: 603
+  nex.turn_latency_event: 4390
+  nex.user_account: 47
+  nex.user_memory: 171
+  nex.user_profile: 142
+  nex.user_session: 47
+  nex.user_wallet: 65
+  nex.video_feed_impression: 145
+  nex.voice_synthesis: 0
+  nex.voice_transcript: 0
+  nex.wallet_transaction: 159
+  nex.work_item: 10059 · status={"completed":10008,"queued":49,"dead_letter":2}
+  nex.worker_audit_events: 0
+  nex.worker_cycle_run: 44178 · status={"completed":40003,"failed":3999,"aborted":148,"running":28}
+  nex.worker_heartbeat: 26481
+  nex.worker_heartbeats_archive_2026_08_22: 50
+  nex.worker_jobs: 0
+  nex.worker_results: 0
+  nex.worker_schedule: 0
+
+── schema: nex_lab · 5 tables ──
+  nex_lab.growth_history: 500
+  nex_lab.innovation_ideas: 25 · status={"proposed":24,"approved":1}
+  nex_lab.promotion_events: 27 · status={"succeeded":15,"failed":8,"pending":2,"rolled_back":2}
+  nex_lab.promotion_rows: 618
+  nex_lab.rooms: 10
+
+── schema: nex_lab_accommodation · 2 tables ──
+  nex_lab_accommodation.harvest_raw: 14894
+  nex_lab_accommodation.verified: 4796
+
+── schema: nex_lab_activities · 2 tables ──
+  nex_lab_activities.harvest_raw: 2342
+  nex_lab_activities.verified: 780
+
+── schema: nex_lab_business · 3 tables ──
+  nex_lab_business.gov_source_raw: 29
+  nex_lab_business.harvest_raw: 4016
+  nex_lab_business.verified: 1192
+
+── schema: nex_lab_chat · 2 tables ──
+  nex_lab_chat.harvest_raw: 0
+  nex_lab_chat.verified: 0
+
+── schema: nex_lab_food · 2 tables ──
+  nex_lab_food.harvest_raw: 3397
+  nex_lab_food.verified: 896
+
+── schema: nex_lab_image · 2 tables ──
+  nex_lab_image.harvest_raw: 234
+  nex_lab_image.verified: 0
+
+── schema: nex_lab_monetization · 2 tables ──
+  nex_lab_monetization.harvest_raw: 0
+  nex_lab_monetization.verified: 0
+
+── schema: nex_lab_news · 2 tables ──
+  nex_lab_news.harvest_raw: 25
+  nex_lab_news.verified: 0
+
+── schema: nex_lab_transport · 2 tables ──
+  nex_lab_transport.harvest_raw: 1734
+  nex_lab_transport.verified: 129
+
+── schema: nex_lab_voice · 2 tables ──
+  nex_lab_voice.harvest_raw: 0
+  nex_lab_voice.verified: 0
+
+═══════════════════════════════════════════════════════════
+SUPABASE public schema · brain-adjacent tables
+═══════════════════════════════════════════════════════════
+  knowledge_records: 3627 rows
+  knowledge_feedback: 402 rows
+  knowledge_feedback_topics: null rows
+  hammerex_nex_brains: null rows
+  hammerex_nex_brain_versions: null rows
+  hammerex_nex_brain_drafts: null rows
+  hammerex_nex_brain_certifications: null rows
+  hammerex_nex_brain_dependencies: null rows
+  hammerex_nex_brain_answers: null rows
+  hammerex_nex_brain_field_outcomes: null rows
+  hammerex_nex_brain_review_actions: null rows
+
+═══════════════════════════════════════════════════════════
+END OF AUDIT · NO STATE MODIFIED · READ-ONLY COMPLETE
+═══════════════════════════════════════════════════════════
+
+Structured JSON persisted: data/nex-domain-brain-coverage-audit/audit-2026-09-10T20-48-39-869Z.json

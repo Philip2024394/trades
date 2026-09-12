@@ -1,0 +1,71 @@
+{
+  "at": "2026-09-12T06:41:22.281Z",
+  "attribution": {
+    "teaching_infrastructure": "A + C (heritage-aware) + D (heritage-aware) + E + F · taught_by=master_ai_engineer",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner"
+  },
+  "sub_tests": {
+    "G-A": {
+      "causal_chain": {
+        "iterations": [
+          {
+            "iteration": 1,
+            "scoped_errors": 0,
+            "findings": [],
+            "repairs_applied": 0,
+            "escalations": 0
+          }
+        ],
+        "terminated": "clean"
+      },
+      "final_scoped_errors": 0,
+      "byte_identical": true,
+      "verdict": "pass"
+    },
+    "G-B": {
+      "causal_chain": {
+        "iterations": [
+          {
+            "iteration": 1,
+            "scoped_errors": 0,
+            "findings": [],
+            "repairs_applied": 0,
+            "escalations": 0
+          }
+        ],
+        "terminated": "clean"
+      },
+      "final_scoped_errors": 0,
+      "byte_identical": true,
+      "count_repairs_succeeded": true,
+      "verdict": "fail"
+    },
+    "G-4L": {
+      "causal_chain": {
+        "iterations": [
+          {
+            "iteration": 1,
+            "scoped_errors": 0,
+            "findings": [],
+            "repairs_applied": 0,
+            "escalations": 0
+          }
+        ],
+        "terminated": "clean"
+      },
+      "final_scoped_errors": 0,
+      "byte_identical": true,
+      "verdict": "pass"
+    },
+    "G-Cy": {
+      "elapsed_ms": 4,
+      "resolver_kind": "type_not_found",
+      "resolver_reason": "no declaration of 'someMissingProp' on type 'CycleX' in any supplied source (2 searched)",
+      "bounded": true,
+      "safe": true,
+      "byte_identical": true,
+      "verdict": "pass"
+    }
+  }
+}

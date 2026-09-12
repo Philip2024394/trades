@@ -1,0 +1,104 @@
+{
+  "version": "v0.2.0",
+  "supersedes": "v0.1.0 (still preserved · byte-identical for baseline audit)",
+  "notes": "NEX2 · Phase 3 IMPLEMENTATION contract · founder-authorised 2026-09-12. Advisory-only. NEX2 reviews · never merges · never executes · never becomes final judge. NEX2 may conclude the baseline is already preferable · MUST NOT manufacture an alternative to justify its own existence.",
+  "record_type": "NEX2_REVIEW",
+  "state_model_boundary": {
+    "statement": "NEX2 reuses the Evidence Engine 8-state vocabulary when reasoning about evidence · uses the Code Health 6-state vocabulary when consuming Code Health measurements · never invents a new state family.",
+    "reused_from": ["evidence_engine_v0.1.0", "code_health_intelligence_v0.1.0"]
+  },
+  "outcomes_permitted": {
+    "ACCEPT_NEX1":         "NEX1 candidate is preferable given the cited evidence · no alternative proposed",
+    "PROPOSE_ALTERNATIVE": "NEX2 proposes a candidate alternative for founder / NEX3 disposition · alternative is CANDIDATE ONLY · never applied · never merged",
+    "BOTH_NEED_REVISION":  "Neither NEX1 nor the constructible alternative is defensible on the current evidence · return to design",
+    "REQUEST_EVIDENCE":    "Additional evidence needed before an outcome can be established · list gaps in evidence_required[]",
+    "HOLD":                "Review cannot proceed responsibly at this time · never silently converted into a pass"
+  },
+  "review_dimensions": [
+    { "id": "correctness",                "authoritative_sources": ["evidence_engine.tests", "evidence_engine.compilation", "evidence_engine.regression"] },
+    { "id": "semantic_preservation",      "authoritative_sources": ["evidence_engine.regression", "evidence_engine.tests"] },
+    { "id": "complexity",                 "authoritative_sources": ["evidence_engine.complexity", "code_health.cyclomatic_complexity"] },
+    { "id": "maintainability",            "authoritative_sources": ["code_health.duplication", "code_health.function_size", "code_health.nesting_depth", "code_health.api_surface"] },
+    { "id": "testability",                "authoritative_sources": ["code_health.test_relationship"], "note_v0.2.0": "test_relationship is currently NOT_MEASURED · NEX2 v0.2.0 will emit insufficient_evidence for this dimension · never fabricate" },
+    { "id": "security",                   "authoritative_sources": [], "note_v0.2.0": "no authorised NEX security-evidence subsystem exists yet · NEX2 emits insufficient_evidence · MUST NOT invent" },
+    { "id": "performance",                "authoritative_sources": [], "note_v0.2.0": "no authorised NEX performance-evidence subsystem exists yet · NEX2 emits insufficient_evidence · MUST NOT invent" },
+    { "id": "project_alignment",          "authoritative_sources": ["project_profile"] },
+    { "id": "user_objective_alignment",   "authoritative_sources": ["work_order.user_objective"], "note_v0.2.0": "if user_objective is not supplied to the review request · NEX2 emits insufficient_evidence for this dimension" },
+    { "id": "change_risk",                "authoritative_sources": ["project_architecture.fan_out", "project_architecture.cycles"] }
+  ],
+  "dimension_conclusion_vocabulary": [
+    "regression",
+    "improvement",
+    "equal",
+    "insufficient_evidence",
+    "not_authoritatively_available"
+  ],
+  "required_fields": [
+    { "name": "review_id",                     "shape": "string · monotonic e.g. N2-REV-0007" },
+    { "name": "schema_version",                "shape": "semver · v0.2.0" },
+    { "name": "work_order_id",                 "shape": "string" },
+    { "name": "baseline_candidate_id",         "shape": "string · e.g. cand_baseline" },
+    { "name": "nex1_candidate_id",             "shape": "string · e.g. cand_nex1" },
+    { "name": "alternative_candidate",         "shape": "AlternativeCandidate | null" },
+    { "name": "user_objective",                "shape": "string | null" },
+    { "name": "dimension_observations",        "shape": "array of DimensionObservation · one per review_dimensions.id" },
+    { "name": "cited_evidence_ids",            "shape": "array of string · superset of every evidence_id cited across dimension_observations" },
+    { "name": "provenance_chain",              "shape": "ProvenanceChain · resolvable back to sources" },
+    { "name": "outcome",                       "shape": "one of outcomes_permitted" },
+    { "name": "outcome_reason",                "shape": "string · reconstructable from cited evidence" },
+    { "name": "authority_boundary",            "shape": "constant · 'advisory_review_only'" },
+    { "name": "attribution",                   "shape": "object · role='nex2_advisory_review' · authority='advisory_review_only' · produced_by='nex2_advisory_review' · external_llm_used=false · deterministic=true · taught_by='master_ai_engineer'" }
+  ],
+  "dimension_observation_fields": [
+    { "name": "dimension",         "shape": "one of review_dimensions.id" },
+    { "name": "baseline_state",    "shape": "evidence-engine or code-health state · MEASURED|NOT_MEASURED|NOT_APPLICABLE|INCONCLUSIVE|BLOCKED|STALE|PASSED|FAILED" },
+    { "name": "nex1_state",        "shape": "same as baseline_state" },
+    { "name": "alternative_state", "shape": "same as baseline_state · optional" },
+    { "name": "baseline_value",    "shape": "number|object|null" },
+    { "name": "nex1_value",        "shape": "number|object|null" },
+    { "name": "alternative_value", "shape": "number|object|null · optional" },
+    { "name": "delta",             "shape": "{ direction: 'regression'|'improvement'|'equal'|'unknown', magnitude?: number } | null" },
+    { "name": "conclusion",        "shape": "one of dimension_conclusion_vocabulary" },
+    { "name": "reason",            "shape": "string · human-readable · MUST cite evidence_ids when concluding regression/improvement/equal" },
+    { "name": "evidence_ids",      "shape": "array of string · REQUIRED · empty allowed ONLY when conclusion ∈ {insufficient_evidence · not_authoritatively_available}" }
+  ],
+  "alternative_candidate_fields": [
+    { "name": "candidate_id",              "shape": "string · e.g. cand_nex2_alt_0001" },
+    { "name": "parent_work_order_id",      "shape": "string" },
+    { "name": "parent_candidate_id",       "shape": "string · the NEX1 candidate this alternative critiques" },
+    { "name": "description",               "shape": "string" },
+    { "name": "scope",                     "shape": "string · what the alternative would change" },
+    { "name": "intended_change",           "shape": "string" },
+    { "name": "expected_effect",           "shape": "string · references dimensions and evidence types" },
+    { "name": "known_tradeoffs",           "shape": "string" },
+    { "name": "required_evidence",         "shape": "array of evidence_type" },
+    { "name": "status",                    "shape": "constant · 'candidate_only'" },
+    { "name": "authorisation",             "shape": "constant · false" },
+    { "name": "execution",                 "shape": "constant · false" }
+  ],
+  "forbidden_vocabulary_in_output": [
+    "bad code","good code","clean code","poor code","optimal code","better code","worse code",
+    "maintainable","unmaintainable","recommended","should refactor","should split","should merge",
+    "high complexity","low complexity","excessive","insufficient","poorly designed","well designed",
+    "code smell","anti-pattern","best practice","worst practice",
+    "quality_score","overall_quality","health_score","technical_debt","better_score","winner_score",
+    "confidence_percent","superiority_score","confidence_score","code_grade","overall_grade"
+  ],
+  "invariants": [
+    "NEX2 MUST NOT execute · modify · merge · authorise · promote · mutate the repository",
+    "every claim of regression/improvement/equal MUST cite ≥1 evidence_id · uncited claims are refused",
+    "insufficient_evidence and not_authoritatively_available carry empty evidence_ids · reason field REQUIRED",
+    "NEX2 MUST NOT synthesize a single quality score · numerical composite · weighted total",
+    "NEX2 MUST NOT force PROPOSE_ALTERNATIVE · ACCEPT_NEX1 and BOTH_NEED_REVISION are first-class outcomes",
+    "NEX2 MUST NOT invent evidence · fabricate provenance · silently recompute an authoritative measurement",
+    "broken evidence chain (unresolved evidence_id) → outcome=HOLD or outcome=REQUEST_EVIDENCE · never outcome=ACCEPT_NEX1",
+    "alternative_candidate.authorisation MUST be constant false · alternative_candidate.execution MUST be constant false",
+    "attribution.external_llm_used MUST be false",
+    "attribution.role MUST be 'nex2_advisory_review'",
+    "attribution.authority MUST be 'advisory_review_only'",
+    "attribution.produced_by MUST be 'nex2_advisory_review'",
+    "authority_boundary field is a constant · not a variable · not runtime-modifiable",
+    "NEX2 v0.2.0 does NOT modify · expand · redefine Evidence Engine · Code Health · Project Architecture · Project Profile · Engineering Brain · Language Brain",
+    "NEX3 · LAB · Standards Feed remain HOLD · NEX2 v0.2.0 must not implement any of them"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "pb-ba903678-6cf1-48cb-af32-fcf4855dd514",
+  "name": "Mobile Test",
+  "description": "Reset to Pixel 8 + zoom 150%",
+  "createdAt": "2026-09-11T15:21:00.998Z",
+  "createdBy": "founder",
+  "actions": [
+    {
+      "kind": "set-viewport",
+      "value": "mobile"
+    },
+    {
+      "kind": "set-phone-model",
+      "value": "pixel-8"
+    },
+    {
+      "kind": "set-zoom",
+      "value": 1.5
+    }
+  ]
+}

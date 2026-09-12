@@ -1,0 +1,148 @@
+{
+  "version": "v0.1.0",
+  "notes": "Authority matrix · founder-authorised design 2026-09-12. DESIGN ONLY. Every component has EXACTLY ONE authority scope · no silent inheritance. Any attempt to widen a component's authority requires founder ADR.",
+  "components": [
+    {
+      "component": "nex1_builder",
+      "authority": "execution",
+      "conditional_on": "authorised Engineering Work Order · founder-scope authorisation for production mutation",
+      "may": [
+        "produce implementations against a Work Order",
+        "modify code within Work Order scope",
+        "report its own implementation evidence",
+        "declare limitations and unknowns"
+      ],
+      "may_not": [
+        "determine whether its implementation is superior",
+        "approve its own engineering standards",
+        "authorise merges",
+        "modify code outside the Work Order scope",
+        "inherit review · arbitration · promotion authority"
+      ]
+    },
+    {
+      "component": "nex2_architect_reviewer",
+      "authority": "review",
+      "conditional_on": "receipt of NEX1 candidate + evidence bundle · NEVER converts to execution",
+      "may": [
+        "independently inspect NEX1 output",
+        "identify weaknesses with cited evidence",
+        "propose alternatives with cited reasons · OPTIONAL",
+        "declare NEX1 already superior (ACCEPT_NEX1)",
+        "declare both proposals inferior (BOTH_NEED_REVISION)",
+        "request additional evidence (REQUEST_EVIDENCE)",
+        "HOLD"
+      ],
+      "may_not": [
+        "merge · modify · execute",
+        "become the final judge",
+        "manufacture disagreement without evidence",
+        "claim evidence the Evidence Engine did not produce",
+        "override Origin Protection · Safety · Authorisation",
+        "inherit execution · arbitration · promotion authority"
+      ]
+    },
+    {
+      "component": "nex3_engineering_arbiter",
+      "authority": "arbitration",
+      "conditional_on": "evidence bundle references · advisory until founder authorisation",
+      "may": [
+        "produce structured verdict from 6 verdict types",
+        "cite specific evidence_ids per criterion",
+        "return HOLD_INSUFFICIENT_EVIDENCE",
+        "return USER_CLARIFICATION_REQUIRED",
+        "return EXISTING_CODE_BETTER",
+        "return BOTH_INFERIOR",
+        "expose trade-offs (conflicts)"
+      ],
+      "may_not": [
+        "fabricate evidence",
+        "invent verdicts beyond the 6 authorised types",
+        "generate synthetic composite scores (anti-false-precision)",
+        "override Origin Protection · Safety · Authorisation",
+        "self-promote to binding without founder authorisation",
+        "inherit execution · promotion authority"
+      ]
+    },
+    {
+      "component": "engineering_evolution_lab",
+      "authority": "research",
+      "conditional_on": "founder-whitelisted sources only · candidate queue only",
+      "may": [
+        "register candidate practices with sourced references",
+        "design benchmark suites",
+        "run adversarial tests",
+        "produce evidence bundles for candidates",
+        "escalate to NEX2 challenge + NEX3 arbitration"
+      ],
+      "may_not": [
+        "modify NEX1 behaviour",
+        "promote candidates to standards without founder ADR",
+        "ingest raw internet content without deterministic filtering",
+        "learn autonomously in any form",
+        "inherit execution · arbitration · promotion authority"
+      ]
+    },
+    {
+      "component": "evidence_engine",
+      "authority": "measurement",
+      "conditional_on": "deterministic tool invocation with reproducibility_information",
+      "may": [
+        "invoke authorised measurement tools (compiler · type-checker · tests · analyser · etc.)",
+        "produce EvidenceRecord objects",
+        "record NOT_MEASURED · BLOCKED · INCONCLUSIVE honestly",
+        "flag STALE evidence when source_hashes change"
+      ],
+      "may_not": [
+        "interpret measurements as decisions",
+        "advocate for candidates",
+        "hide contradictory evidence",
+        "generate measurements without tool + tool_version + reproducibility_information",
+        "inherit execution · review · arbitration · promotion authority"
+      ]
+    },
+    {
+      "component": "engineering_standard_feed",
+      "authority": "registry",
+      "conditional_on": "append-only · founder-authored ADR per emission",
+      "may": [
+        "hold approved EngineeringStandard records",
+        "expose read APIs for NEX1 consumption",
+        "surface DEPRECATED · SUPERSEDED · ROLLED_BACK states"
+      ],
+      "may_not": [
+        "mutate NEX1 automatically",
+        "auto-promote a candidate",
+        "auto-deprecate",
+        "self-modify",
+        "override authorisation"
+      ]
+    },
+    {
+      "component": "founder",
+      "authority": "constitutional + promotion + final",
+      "conditional_on": "founder-authored ADR",
+      "may": [
+        "authorise standards for the Feed",
+        "reject NEX3 arbitration verdicts",
+        "amend criteria or weights via ADR",
+        "widen or narrow authority scopes via ADR",
+        "roll back accepted standards",
+        "close or open reveal cadence"
+      ],
+      "may_not": [
+        "be silently overridden by any subsystem",
+        "delegate constitutional authority to any NEX component"
+      ]
+    }
+  ],
+  "invariants": [
+    "no component silently inherits another component's authority",
+    "widening any authority scope requires founder-authored ADR",
+    "advisory ≠ authoritative · advisory verdicts do not act",
+    "measurement ≠ decision · Evidence Engine measures · never decides",
+    "review ≠ execution · NEX2 reviews · never merges",
+    "arbitration ≠ authorisation · NEX3 arbitrates · founder authorises",
+    "research ≠ promotion · LAB researches · founder promotes"
+  ]
+}

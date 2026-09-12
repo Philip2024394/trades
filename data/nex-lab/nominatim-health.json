@@ -1,0 +1,14 @@
+{
+  "endpoints": {
+    "https://nominatim.openstreetmap.org/search": {
+      "consecutive_failures": 0,
+      "breaker_open_until": null,
+      "last_success_at": "2026-09-12T16:31:08.736Z",
+      "last_failure_at": "2026-09-12T14:01:27.574Z",
+      "last_error": null,
+      "requests_attempted": 945,
+      "requests_succeeded": 943,
+      "bytes_in_total": 18741102
+    }
+  }
+}

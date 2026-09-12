@@ -1,0 +1,54 @@
+{
+  "version": "v0.1.0",
+  "notes": "Authority Broker · Trust Domain B · Phase 8 v0.1.6. Mediates every capability request from NEX1. Ed25519-signed event log. Snapshot-owned. Capability-manifest-bound.",
+  "record_type": "AUTHORITY_BROKER_EVENT",
+  "narrow_capabilities": [
+    { "capability": "fs.open_for_read",  "requires": ["path"], "returns": "opaque_capability_handle · never raw fd" },
+    { "capability": "fs.open_for_write", "requires": ["path"], "returns": "opaque_capability_handle · pre-state captured before write" },
+    { "capability": "fs.read",           "requires": ["capability_handle","offset","length"], "returns": "bounded bytes" },
+    { "capability": "fs.write",          "requires": ["capability_handle","offset","bytes"], "returns": "bytes_written" },
+    { "capability": "fs.close",          "requires": ["capability_handle"], "returns": "void" },
+    { "capability": "fs.stat",           "requires": ["path"], "returns": "size · mtime · file_id (never raw path)" },
+    { "capability": "fs.enumerate",      "requires": ["path"], "returns": "sorted lexicographically · filters denylist entries" },
+    { "capability": "process.spawn_allowed", "requires": ["entry_id","arguments"], "returns": "opaque process_handle" },
+    { "capability": "process.wait",      "requires": ["process_handle"], "returns": "exit_code + stdout_hash + stderr_hash" },
+    { "capability": "test.run",          "requires": ["test_spec"], "returns": "wrapper over process.spawn_allowed" },
+    { "capability": "handover.request",  "requires": [], "returns": "session terminates · workspace enters WORKSPACE_FROZEN" }
+  ],
+  "explicitly_not_capabilities": [
+    "execute_shell_command",
+    "fs.access_raw_fd",
+    "process.execute_arbitrary",
+    "network.*",
+    "capability.request_new_capability_at_runtime"
+  ],
+  "capability_token_binding": {
+    "work_order_id": "string · bound",
+    "capability_manifest_hash": "sha256 · bound · Manifest is immutable for Work Order duration",
+    "nex1_execution_instance_id": "rotated per NEX1 process spawn · rotated on Broker restart",
+    "session_start_ts": "ISO-8601",
+    "session_ttl_seconds": "configurable per Manifest",
+    "sequence_number": "monotonic per session · duplicate refused",
+    "nonce": "Broker-generated per accepted request · rotates"
+  },
+  "denial_evidence_classes": [
+    "SANDBOX_DENIAL · attack stopped at OS/sandbox mechanism · never reached Broker (T3 NOT_IMPLEMENTED at v0.1.0)",
+    "BROKER_CAPABILITY_DENIAL · request reached Broker · Broker refused on capability policy"
+  ],
+  "event_log_shape": {
+    "prev_chain_hash": "sha256 of previous entry · genesis = 0000000000000000",
+    "entry_sequence": "monotonic",
+    "kind": "one of: CAPABILITY_REQUEST · CAPABILITY_GRANTED · CAPABILITY_DENIED · PROCESS_SPAWNED · FS_MUTATION · SNAPSHOT_CAPTURED · HANDOVER_REQUESTED · WORKSPACE_FROZEN · SCOPE_ESCAPE_ATTEMPT · MASTER_AUTHORITY_ELEVATION_ATTEMPT · PROTECTED_DATA_ACCESS_ATTEMPT · IPC_REPLAY_ATTEMPT · TOKEN_MANIFEST_MISMATCH · TOKEN_INSTANCE_MISMATCH · INTERPRETATION_AUTHORITY_EXCEEDED · NEX1_MISREPORT_DETECTED",
+    "detail": "structured · per kind",
+    "at": "ISO-8601 · deterministic clock during test",
+    "signature": "Ed25519 signature over (prev_chain_hash + entry_sequence + kind + detail + at) using Broker private key · key_id + key_version recorded"
+  },
+  "invariants": [
+    "Broker holds Ed25519 private key · never exposed",
+    "Public key distributed to Observer + Compliance Verifier + Evidence Validation for verification",
+    "Broker event log is append-only · never truncated · never rewritten",
+    "Every capability request is either granted (with signed event) or denied (with signed event)",
+    "NEX1 cannot access Broker internals · v0.1.0 T2 = in-process module boundary + interface-only exports · T3 = separate OS process",
+    "external_llm_used=false · deterministic=true"
+  ]
+}

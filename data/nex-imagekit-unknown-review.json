@@ -1,0 +1,2674 @@
+{
+  "generated_at": "2026-09-01T21:56:52.782Z",
+  "purpose": "Human review before rehosting · NOT authorised for automated migration",
+  "total_unknown_urls": 379,
+  "total_broken_malformed_urls": 1,
+  "unknowns": [
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/4cbfbc8a67a7512e6742574e38537fca.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "4cbfbc8a67a7512e6742574e38537fca.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/1be0fdf473712c28ec30059c9c1530ef.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "1be0fdf473712c28ec30059c9c1530ef.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/b5938354c2fde868067bd2be981dc2f6.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "b5938354c2fde868067bd2be981dc2f6.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/2f456eb541f26dfedcd3ff0bf9c0abad.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "2f456eb541f26dfedcd3ff0bf9c0abad.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/084f21873251f02e29e609e1e77b26f9.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "084f21873251f02e29e609e1e77b26f9.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/b5757afffcd7671db9c5657356dec79e.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "b5757afffcd7671db9c5657356dec79e.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/369b0923175db2ea84dd4caf884d14f9.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "369b0923175db2ea84dd4caf884d14f9.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/ee4093d9ce6198bb9e1f36806790e08c.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "ee4093d9ce6198bb9e1f36806790e08c.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/aaa55d3fe3b00c44b79593d8d54ed11c.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "aaa55d3fe3b00c44b79593d8d54ed11c.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/c804a7f8aaa537b6f922d52cf615939b.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "c804a7f8aaa537b6f922d52cf615939b.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/983529fb46cacb257b43dafbe877f4d9.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "983529fb46cacb257b43dafbe877f4d9.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/5aaec8a06fa19110674118f2aa2924ea.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "5aaec8a06fa19110674118f2aa2924ea.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/7b4128799dc4d74c74f4a1e69d3435ba.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "7b4128799dc4d74c74f4a1e69d3435ba.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/fdfb32014411b6719f4d60a09b4f5292.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "fdfb32014411b6719f4d60a09b4f5292.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/dbf7cbb6e6d5bf7687010dac50e95e09.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "dbf7cbb6e6d5bf7687010dac50e95e09.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/2e1ba8395051fdc3b2d5f8b2dbd2cb3ad.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "2e1ba8395051fdc3b2d5f8b2dbd2cb3ad.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6b868b252c0a43aa5d826da447c349a7.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6b868b252c0a43aa5d826da447c349a7.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/a533c1bd9280ab9696f6c4dced041a6f.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "a533c1bd9280ab9696f6c4dced041a6f.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/93bf4c7289b643b54c98fec085a28aa2.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "93bf4c7289b643b54c98fec085a28aa2.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3137f2abf8096eed67335bda1d2b047b.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3137f2abf8096eed67335bda1d2b047b.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6aec7c93dabe2b38806b2370ed223148.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6aec7c93dabe2b38806b2370ed223148.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/f6906127ca6b272c347366e0ec1049f9.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "f6906127ca6b272c347366e0ec1049f9.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/9b08d4bb58890f657a357d12d48e5f6a.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "9b08d4bb58890f657a357d12d48e5f6a.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/42f47d2611b1e31f45cd0780022a7010.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "42f47d2611b1e31f45cd0780022a7010.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/523b1f1ecc7751b29ab0274d332b4884.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "523b1f1ecc7751b29ab0274d332b4884.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/4cac1b021929821a65d2a34a41c88b3d.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "4cac1b021929821a65d2a34a41c88b3d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/15cdce4e24050c4f2f426dd8fceb1d86.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "15cdce4e24050c4f2f426dd8fceb1d86.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/e9e801591f7930c0eb79c126e026311d.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "e9e801591f7930c0eb79c126e026311d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/id-11134207-7ra0j-mcw7hzy0ks6wbe@resize_w900_nl.webp",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "id-11134207-7ra0j-mcw7hzy0ks6wbe@resize_w900_nl.webp",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/e4f5f64409accc428e37b825ee1bbd21.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "e4f5f64409accc428e37b825ee1bbd21.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6415b0ad6f5081ff2d0fde336e9ec6b5.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6415b0ad6f5081ff2d0fde336e9ec6b5.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/56ad64cd28de8be8b223d9a93dfe44eb.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "56ad64cd28de8be8b223d9a93dfe44eb.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/9b5d4672f02bcea7b51a74450587f25c.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "9b5d4672f02bcea7b51a74450587f25c.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3a8ae2822f2ecb335143e6040ea00942.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3a8ae2822f2ecb335143e6040ea00942.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/52b67046677b74b10af91069b341617b.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "52b67046677b74b10af91069b341617b.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3a7df85defc86bd33d27c2dea1c6f421.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3a7df85defc86bd33d27c2dea1c6f421.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/d6401a8646cdba6db3d1fe46f665c8fd.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "d6401a8646cdba6db3d1fe46f665c8fd.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/786994edb913f9467e5ecace2bfdfd8d.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "786994edb913f9467e5ecace2bfdfd8d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6c0b1052a97ccff35b257d8994481b4a.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6c0b1052a97ccff35b257d8994481b4a.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/565fee3a8296e6aa74d8d72f1bbf8c9c.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "565fee3a8296e6aa74d8d72f1bbf8c9c.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/574a2becedc31909bf7de9eeacf87300.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "574a2becedc31909bf7de9eeacf87300.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/51d074776503d28d85e32e12885b3054.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "51d074776503d28d85e32e12885b3054.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/c5ea7a87b58c7f572ab4c01b9e8d4a49.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "c5ea7a87b58c7f572ab4c01b9e8d4a49.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/hero-carpenter-mid-project.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "hero-carpenter-mid-project.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/hero-plasterer-finish.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "hero-plasterer-finish.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/sasdasdwqw.png",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "sasdasdwqw.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/2a103a44bcbcea865e53a0eb865667c7.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "2a103a44bcbcea865e53a0eb865667c7.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/85cbf19d75ffa14ffde727e9821f4616.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "85cbf19d75ffa14ffde727e9821f4616.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/15b7014afd1bcaeff30d0013a0fe95d8.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "15b7014afd1bcaeff30d0013a0fe95d8.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/d98c46e29d17a06b4a4a8c081984fc21.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "d98c46e29d17a06b4a4a8c081984fc21.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/f92e621a49adef4d30a5665af86a447a.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "f92e621a49adef4d30a5665af86a447a.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/9ba3ebd3eb6ff899596cd7155ca83752.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "9ba3ebd3eb6ff899596cd7155ca83752.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/91c371b6931b26892a94bae82fc510a1.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "91c371b6931b26892a94bae82fc510a1.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/b431de47ac88f4568bd150ddf7b2211f.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "b431de47ac88f4568bd150ddf7b2211f.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/brands-strip-1.png",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "studio/thumbnails/brands-strip-1.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/categories-grid-1.png",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "studio/thumbnails/categories-grid-1.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/cta-centred-1.png",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "studio/thumbnails/cta-centred-1.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/hero-minimal-centred-1.png",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "studio/thumbnails/hero-minimal-centred-1.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/map-embed-1.png",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "studio/thumbnails/map-embed-1.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/newsletter-inline-1.png",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "studio/thumbnails/newsletter-inline-1.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/pricing-three-tier-1.png",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "studio/thumbnails/pricing-three-tier-1.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/product-grid-classic-3col-1.png",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "studio/thumbnails/product-grid-classic-3col-1.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/statistics-band-1.png",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "studio/thumbnails/statistics-band-1.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/team-cards-1.png",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "studio/thumbnails/team-cards-1.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/video-embed-1.png",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "studio/thumbnails/video-embed-1.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "ChatGPT",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/Jun%2027,%202026,%2011_22_28%20AM.png",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "Jun%2027,%202026,%2011_22_28%20AM.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/Jul%206,%202026,%2001_47_47%20AM.png",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "Jul%206,%202026,%2001_47_47%20AM.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/d3dc4fdf62da6e575ccea46862b68527d.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "d3dc4fdf62da6e575ccea46862b68527d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/9171141622dfafc52f0217ecc79a5157d.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "9171141622dfafc52f0217ecc79a5157d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/0ae6e49699c2601f34bc0d58a699e767.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "0ae6e49699c2601f34bc0d58a699e767.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/feac4e23c6247b09fbda160e3f6230e2.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "feac4e23c6247b09fbda160e3f6230e2.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/7edc29b91ecb6c8ddd2b855e73a77b60.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "7edc29b91ecb6c8ddd2b855e73a77b60.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/8b3797f4409966845e872b6dee2c879a.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "8b3797f4409966845e872b6dee2c879a.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/9be8dabe58dd9281570518c7b8f0be41.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "9be8dabe58dd9281570518c7b8f0be41.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6ebb220443f27e32ff75fe3df3c433a7.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6ebb220443f27e32ff75fe3df3c433a7.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6fb049739790114013063a771dba93ec.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6fb049739790114013063a771dba93ec.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/18120c92edb407f84cb5e692047262c7.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "18120c92edb407f84cb5e692047262c7.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/eb306649fd596cc19a84e4f4388a5846.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "eb306649fd596cc19a84e4f4388a5846.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/9eb504441f3e7f534069b76c02aecac7.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "9eb504441f3e7f534069b76c02aecac7.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/69992c1fb23b510468da304a7d2f57bb.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "69992c1fb23b510468da304a7d2f57bb.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/67215490bce823a494fdfc39e4fad184.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "67215490bce823a494fdfc39e4fad184.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/ce33f1501fb3e3f104488d1d7eeaf654.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "ce33f1501fb3e3f104488d1d7eeaf654.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/151172ff48c20e8673b61efb8cafec23.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "151172ff48c20e8673b61efb8cafec23.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/f5c8318daa709e93a4d4be0c7c55cf7e.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "f5c8318daa709e93a4d4be0c7c55cf7e.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/f2fc9f3e09848c98873a9fcdd3a76666.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "f2fc9f3e09848c98873a9fcdd3a76666.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/10be92b0e6bac49b50df75a7b3818dc8.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "10be92b0e6bac49b50df75a7b3818dc8.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/04bdfe32a2bfadd15f100fff87dc66f6.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "04bdfe32a2bfadd15f100fff87dc66f6.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/ec00382fb6730231ce6a18c4fad6d35a.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "ec00382fb6730231ce6a18c4fad6d35a.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/a3e10bce2ba2032d139e7cfe3614a5ab.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "a3e10bce2ba2032d139e7cfe3614a5ab.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/04c46c8b2dbc42835cf7fd1d990f9e45.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "04c46c8b2dbc42835cf7fd1d990f9e45.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/60eca123217a3d58c92415f93c26e1d8.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "60eca123217a3d58c92415f93c26e1d8.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/1010759fdc8b75c92b9b38c1aa6b1082.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "1010759fdc8b75c92b9b38c1aa6b1082.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/2b98fbf0659c27335599db4fe61a0bbe.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "2b98fbf0659c27335599db4fe61a0bbe.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3f7bb07a8cf5fc603bed8f6c50eb079c.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3f7bb07a8cf5fc603bed8f6c50eb079c.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/58999c472887b3e1edf560be3d104169.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "58999c472887b3e1edf560be3d104169.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/38efc050a7448718212ac67874cc9901.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "38efc050a7448718212ac67874cc9901.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/a11d3b545a6796719ff68a39421cccb8.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "a11d3b545a6796719ff68a39421cccb8.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/7adeca2f199b7def15795d3c8ef7b679.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "7adeca2f199b7def15795d3c8ef7b679.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/19bc3508d956987312495cc916a8c4b2.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "19bc3508d956987312495cc916a8c4b2.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/ffefe84df6efc84f15d2120bdcda7a37.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "ffefe84df6efc84f15d2120bdcda7a37.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/e6b3e307e89bb33b1a05c017d82aff8c.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "e6b3e307e89bb33b1a05c017d82aff8c.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/152b9b64be49e3008597bcc735a871da.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "152b9b64be49e3008597bcc735a871da.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/977aa6d4f30d9f1929df31667b6b5e82.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "977aa6d4f30d9f1929df31667b6b5e82.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/273c63731599d75841a848c27a6a4c92.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "273c63731599d75841a848c27a6a4c92.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3cc401bc1525610bbc7bae82fccea70f.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3cc401bc1525610bbc7bae82fccea70f.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/936641d1204cb4ba428cc59eb301183e.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "936641d1204cb4ba428cc59eb301183e.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/8f8dc8275c47e3a06d45017d2b72947f.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "8f8dc8275c47e3a06d45017d2b72947f.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3945b309324ce36d1587c2ee4abe8d72.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3945b309324ce36d1587c2ee4abe8d72.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/19789e688ed5a111c194e66761ab658b.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "19789e688ed5a111c194e66761ab658b.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/ec257e596b5a10ee652bb2eec2f20ba3.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "ec257e596b5a10ee652bb2eec2f20ba3.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/9f9cb93f787ef8e2ffd33d75e7783eb2.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "9f9cb93f787ef8e2ffd33d75e7783eb2.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3e8e369f38563829d3dbd62c2eaf9d73.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3e8e369f38563829d3dbd62c2eaf9d73.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/4cb15d8b1b61ffb804b5f7254fe23937.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "4cb15d8b1b61ffb804b5f7254fe23937.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6621661177ece08aa8d7c5c7a6326f36.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6621661177ece08aa8d7c5c7a6326f36.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/a93b560a86512110ea8f68bc3bfabff8.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "a93b560a86512110ea8f68bc3bfabff8.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6c1df1349a978c1dc4a8a05f56eb5ff9.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6c1df1349a978c1dc4a8a05f56eb5ff9.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/d61bb5cd3df620db33f5cbaea94767b0%20(1",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "d61bb5cd3df620db33f5cbaea94767b0%20(1",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3e89a5eaceadec3a32686ac262cac714.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3e89a5eaceadec3a32686ac262cac714.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/a858df4050fb9eeb4562aaed1edb0534.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "a858df4050fb9eeb4562aaed1edb0534.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/58277372308cae7e34a119f577e5eda2.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "58277372308cae7e34a119f577e5eda2.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/98353bf6c4c52ffca759ea15a75ecc96.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "98353bf6c4c52ffca759ea15a75ecc96.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/b562727020e9cc5ac337f6c9507d5839.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "b562727020e9cc5ac337f6c9507d5839.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3c8d2bce30102c7e0dd2ccb11d45135b.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3c8d2bce30102c7e0dd2ccb11d45135b.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/d1c00eddcda0dbc1960be21c05ba7cf4%20(1",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "d1c00eddcda0dbc1960be21c05ba7cf4%20(1",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/c4c74da0133ddc81afddb55d628f5648.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "c4c74da0133ddc81afddb55d628f5648.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/e2702a2314e738c2bb7ae3cb849a7ad1.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "e2702a2314e738c2bb7ae3cb849a7ad1.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/41049cd4255e2c67433ce05b59cdcbc5.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "41049cd4255e2c67433ce05b59cdcbc5.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/04a3d6bdc2d3efe4b96f3b7c43561dbc.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "04a3d6bdc2d3efe4b96f3b7c43561dbc.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6c8d95c69198b5aae16bbba247e906b5.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6c8d95c69198b5aae16bbba247e906b5.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/32b694810037524a091de9528c1cad05.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "32b694810037524a091de9528c1cad05.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/22150e6e6fd423baaf3951ba010fbe3e.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "22150e6e6fd423baaf3951ba010fbe3e.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/1b8fa511174e6a62667c7888e27524e6.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "1b8fa511174e6a62667c7888e27524e6.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6b2a7a9026ffc82b5ad0a0d42eac9545.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6b2a7a9026ffc82b5ad0a0d42eac9545.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/75ee701a2d9578b7a1d7c8c89e6d3903.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "75ee701a2d9578b7a1d7c8c89e6d3903.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/2099659832cf4cf263340f6ef4f4c6ed.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "2099659832cf4cf263340f6ef4f4c6ed.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/1a915d5a1fdea90ffa6386e8c42f612d.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "1a915d5a1fdea90ffa6386e8c42f612d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/5370774da62cd4adad2ebe7c929505c0.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "5370774da62cd4adad2ebe7c929505c0.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/7a64d24dd42dd50bfb42115cb39b83cb.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "7a64d24dd42dd50bfb42115cb39b83cb.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/68126e797b431412f587d60041005133.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "68126e797b431412f587d60041005133.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/a8c903215ec769b1b7356f1c3cbcdda6.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "a8c903215ec769b1b7356f1c3cbcdda6.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/680b1e3a3d684f1eb8c21a8c17181759.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "680b1e3a3d684f1eb8c21a8c17181759.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/48e4befc9cdccb492c883db34b691e37.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "48e4befc9cdccb492c883db34b691e37.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/369cf9af853bfd9ff47017d9a38c84ec.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "369cf9af853bfd9ff47017d9a38c84ec.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6d425b17281ae768d03ad8869b0fbf98.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6d425b17281ae768d03ad8869b0fbf98.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/0480a356e7e8443a89be526458f0c979.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "0480a356e7e8443a89be526458f0c979.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/ba98772e7f6a9cf79d3c6292ea6e3ddd.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "ba98772e7f6a9cf79d3c6292ea6e3ddd.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/61cdf429a093e415a1e72925cfd5f142.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "61cdf429a093e415a1e72925cfd5f142.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/fda9463760d13c52d6351015cbfeafe4.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "fda9463760d13c52d6351015cbfeafe4.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/f2846637e4f89a3057374cc758a0a0a2.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "f2846637e4f89a3057374cc758a0a0a2.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/98dd72b483f71ef9f9007ed8412e9572.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "98dd72b483f71ef9f9007ed8412e9572.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/ebce049dff086f8fa105dcbf45831a25.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "ebce049dff086f8fa105dcbf45831a25.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/b3d599ff40bfa00696e930e0131e7925.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "b3d599ff40bfa00696e930e0131e7925.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/59149c03bb7ac2a49d5013c39657e600.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "59149c03bb7ac2a49d5013c39657e600.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/f2835419b97de1bf24d3cbb2d18604f2.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "f2835419b97de1bf24d3cbb2d18604f2.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6a381c66d31188ae70f13abbe5e05622.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6a381c66d31188ae70f13abbe5e05622.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/c30fa69bb4278b93d9029e6bda583c51.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "c30fa69bb4278b93d9029e6bda583c51.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/71316059d0bca8047fa4dc077e44df9a.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "71316059d0bca8047fa4dc077e44df9a.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6dfaec08d5c779822408aea75d83bfdc.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6dfaec08d5c779822408aea75d83bfdc.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/413fb75faeb685cebcafcc5ac3059b81.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "413fb75faeb685cebcafcc5ac3059b81.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/aa07ed81dda711b572b58d4e3a5c4f71.jpg",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "aa07ed81dda711b572b58d4e3a5c4f71.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/Jul%2017,%202026,%2006_29_08%20AM.png",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "Jul%2017,%202026,%2006_29_08%20AM.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/Jul%2027,%202026,%2008_14_05%20PM.png",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "Jul%2027,%202026,%2008_14_05%20PM.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/dsdddsddssdasdasdsdddsd.png",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "dsdddsddssdasdasdsdddsd.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/dsdddsddssdasdasdsdddsdasd.png",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "dsdddsddssdasdasdsdddsdasd.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/dsdddsddssdasdasdsdddsdasdd.png",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "dsdddsddssdasdasdsdddsdasdd.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/dsdddsddssdasdasdsdddsdasddd.png",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "dsdddsddssdasdasdsdddsdasddd.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/dsdddsddssdasdasdsdddsdasdddsd.png",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "dsdddsddssdasdasdsdddsdasdddsd.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/dsdddsddssdasdasdsdddsdasdddsddsd.png",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "dsdddsddssdasdasdsdddsdasdddsddsd.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/dsdddsddssdasdasdsdddsdasdddsddsdsd.png",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "dsdddsddssdasdasdsdddsdasdddsddsdsd.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/dsdddsddssdasdasdsdddsdasdddsddsdsdsd.png",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "dsdddsddssdasdasdsdddsdasdddsddsdsdsd.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/dgfg.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "dgfg.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/yityi.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "yityi.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/vbncvn.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "vbncvn.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/bvcncvbn.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "bvcncvbn.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/fghdfgh.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "fghdfgh.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/cgdjgjg.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "cgdjgjg.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/bvncb.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "bvncb.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/x8sdaff.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "x8sdaff.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/fgdh.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "fgdh.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/er.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "er.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/asddcc.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "asddcc.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/terterte.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "terterte.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/34234.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "34234.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/vxcv.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "vxcv.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/cvbcb.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "cvbcb.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/terrtert.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "terrtert.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/ewrew.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "ewrew.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/rtert.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "rtert.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/nbvn.jpg",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "nbvn.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/3323f.png?updatedAt=1786308295744",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "3323f.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/Jul%2027,%202026,%2008_14_05%20PM.png?updatedAt=1785158071077",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "Jul%2027,%202026,%2008_14_05%20PM.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/0ae6e49699c2601f34bc0d58a699e767.jpg?updatedAt=1784113473328",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "0ae6e49699c2601f34bc0d58a699e767.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/feac4e23c6247b09fbda160e3f6230e2.jpg?updatedAt=1784113507251",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "feac4e23c6247b09fbda160e3f6230e2.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/9171141622dfafc52f0217ecc79a5157d.jpg?updatedAt=1784113435475",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "9171141622dfafc52f0217ecc79a5157d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/d3dc4fdf62da6e575ccea46862b68527d.jpg?updatedAt=1784113398148",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "d3dc4fdf62da6e575ccea46862b68527d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/id-11134207-7ra0j-mcw7hzy0ks6wbe@resize_w900_nl.webp?updatedAt=1784113886539",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "id-11134207-7ra0j-mcw7hzy0ks6wbe@resize_w900_nl.webp",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/e9e801591f7930c0eb79c126e026311d.jpg?updatedAt=1784113855841",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "e9e801591f7930c0eb79c126e026311d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/9be8dabe58dd9281570518c7b8f0be41.jpg?updatedAt=1784113642704",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "9be8dabe58dd9281570518c7b8f0be41.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/8b3797f4409966845e872b6dee2c879a.jpg?updatedAt=1784113570236",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "8b3797f4409966845e872b6dee2c879a.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/7edc29b91ecb6c8ddd2b855e73a77b60.jpg?updatedAt=1784113537383",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "7edc29b91ecb6c8ddd2b855e73a77b60.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/e4f5f64409accc428e37b825ee1bbd21.jpg?updatedAt=1784113989443",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "e4f5f64409accc428e37b825ee1bbd21.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/4cac1b021929821a65d2a34a41c88b3d.jpg?updatedAt=1784113949953",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "4cac1b021929821a65d2a34a41c88b3d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/15cdce4e24050c4f2f426dd8fceb1d86.jpg?updatedAt=1784113914879",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "15cdce4e24050c4f2f426dd8fceb1d86.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3a7df85defc86bd33d27c2dea1c6f421.jpg?updatedAt=1784114034000",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3a7df85defc86bd33d27c2dea1c6f421.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6415b0ad6f5081ff2d0fde336e9ec6b5.jpg?updatedAt=1784115696703",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6415b0ad6f5081ff2d0fde336e9ec6b5.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/ddcfde4d70bc62eaa229cbd488a3e354.jpg?updatedAt=1784114489739",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "ddcfde4d70bc62eaa229cbd488a3e354.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6171a12477ef5d38159e10dd2de359ea.jpg?updatedAt=1784114406325",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6171a12477ef5d38159e10dd2de359ea.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/425f6604335dd058885cc0f834ab8ea8.jpg?updatedAt=1784114430712",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "425f6604335dd058885cc0f834ab8ea8.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/56ad64cd28de8be8b223d9a93dfe44eb.jpg?updatedAt=1784115747198",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "56ad64cd28de8be8b223d9a93dfe44eb.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/2bd7dc769bc1073b0bc1053bf9b9ee79.jpg?updatedAt=1784115721589",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "2bd7dc769bc1073b0bc1053bf9b9ee79.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3d5894f958525412493cf5772d33b8d8.jpg?updatedAt=1784122534748",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3d5894f958525412493cf5772d33b8d8.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/be75c919241aba975328a9e229bb79ac.jpg?updatedAt=1784122506945",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "be75c919241aba975328a9e229bb79ac.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/7a729024cda7e463a9b0d60959cee7b3.jpg?updatedAt=1784122475329",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "7a729024cda7e463a9b0d60959cee7b3.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/399e42c146251a8c8e07ab1b7bc8a5f8.jpg?updatedAt=1784122449011",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "399e42c146251a8c8e07ab1b7bc8a5f8.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/5e05ce3d23a904dc607271c1367bbe31.jpg?updatedAt=1784122423102",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "5e05ce3d23a904dc607271c1367bbe31.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/2e8ba78a002d04751c35a16033b26dde.jpg?updatedAt=1784122683082",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "2e8ba78a002d04751c35a16033b26dde.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/c9f2cfc4a2c0970420feb00da664db6d.jpg?updatedAt=1784122657555",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "c9f2cfc4a2c0970420feb00da664db6d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/5897eac44996e163a4aafecd28979159.jpg?updatedAt=1784122631388",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "5897eac44996e163a4aafecd28979159.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/7b225bda299775e059550843f2ba1521.jpg?updatedAt=1784122604133",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "7b225bda299775e059550843f2ba1521.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/af96180d354d77fb33cf4b4abb944464.jpg?updatedAt=1784122581815",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "af96180d354d77fb33cf4b4abb944464.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/bd593c8134be54e0a518478461e65cc3.jpg?updatedAt=1784122726519",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "bd593c8134be54e0a518478461e65cc3.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/f91fc819fc196a6b912f9b6b84808943d.jpg?updatedAt=1783728048479",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "f91fc819fc196a6b912f9b6b84808943d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/bf8eb7814733d64f049ada483ffbd4b6.jpg?updatedAt=1784124310900",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "bf8eb7814733d64f049ada483ffbd4b6.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/54b484804168f69430b10852534594aa.jpg?updatedAt=1784124441899",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "54b484804168f69430b10852534594aa.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/5d2fcb2f4df4ad8903193d3e130a4bdd.jpg?updatedAt=1784124389457",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "5d2fcb2f4df4ad8903193d3e130a4bdd.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/81b79c889ce66919303f627a7aaea3bb.jpg?updatedAt=1784124356871",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "81b79c889ce66919303f627a7aaea3bb.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/163acb9ed5d91d165921bf20e0cf3216.jpg?updatedAt=1784124500519",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "163acb9ed5d91d165921bf20e0cf3216.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/13c08d8ee096f4de7740bfbca0188ef8.jpg?updatedAt=1784124527517",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "13c08d8ee096f4de7740bfbca0188ef8.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/b6ff3b094b161b7cce2db22b69bb232a.jpg?updatedAt=1784124581819",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "b6ff3b094b161b7cce2db22b69bb232a.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/b6b7a1bc81d757d02bbf991683a5792d.jpg?updatedAt=1784124862311",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "b6b7a1bc81d757d02bbf991683a5792d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/c8c3e87e832d9d4bcec47b7fed212873.jpg?updatedAt=1784124952530",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "c8c3e87e832d9d4bcec47b7fed212873.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/f2b4fc0b1bddad2da3dd9cda8d13d700.jpg?updatedAt=1784124823815",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "f2b4fc0b1bddad2da3dd9cda8d13d700.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/aabfebaa847430bc6c7f24e103fc3e6f.jpg?updatedAt=1784125002837",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "aabfebaa847430bc6c7f24e103fc3e6f.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/9711c22eb619f2d31dfd55c5f4b7a48b.jpg?updatedAt=1784125099078",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "9711c22eb619f2d31dfd55c5f4b7a48b.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/d293d79ac4cb0cc9a23434979344b557.jpg?updatedAt=1784125120392",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "d293d79ac4cb0cc9a23434979344b557.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/b3785840d16b30030c7caea90d062172.jpg?updatedAt=1784125141900",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "b3785840d16b30030c7caea90d062172.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/70d2eaa0f786429b723d6852652eaff2.jpg?updatedAt=1784125492942",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "70d2eaa0f786429b723d6852652eaff2.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/1d0108027f0750efe71f93bc0ae52d74.jpg?updatedAt=1784125249943",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "1d0108027f0750efe71f93bc0ae52d74.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/8329e2dd1220cf9acd99dc7825614e73.jpg?updatedAt=1784125227896",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "8329e2dd1220cf9acd99dc7825614e73.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/612dd521c884f1a84b80038b375f1325.jpg?updatedAt=1784125198376",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "612dd521c884f1a84b80038b375f1325.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/b407959abbcf3566a3ded9ee7a8ca0d6.jpg?updatedAt=1784125167367",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "b407959abbcf3566a3ded9ee7a8ca0d6.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3e29d475f53d95a6e270c6bae2f552c9.jpg?updatedAt=1784126235446",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3e29d475f53d95a6e270c6bae2f552c9.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/5b92a9f72f8615f02d305fdc98d20dd0.jpg?updatedAt=1784126891139",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "5b92a9f72f8615f02d305fdc98d20dd0.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/c23cc2b93dff12df29a472c79b5589ee.jpg?updatedAt=1784126929739",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "c23cc2b93dff12df29a472c79b5589ee.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/a7f573c98f97e84a66cb81354bddf4f1.jpg?updatedAt=1784127035309",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "a7f573c98f97e84a66cb81354bddf4f1.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/bd422e5b93e73203340d90cc928307fb.jpg?updatedAt=1784127014019",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "bd422e5b93e73203340d90cc928307fb.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/c446cddae7c6808abdfe7b25ecaf085b.jpg?updatedAt=1784126981186",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "c446cddae7c6808abdfe7b25ecaf085b.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/84443327b3e2428488c55b9a9c92d230.jpg?updatedAt=1784126954299",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "84443327b3e2428488c55b9a9c92d230.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/b5938354c2fde868067bd2be981dc2f6.jpg?updatedAt=1784127213932",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "b5938354c2fde868067bd2be981dc2f6.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/901462bd0aa9a21aa55ada4a6d46d198.jpg?updatedAt=1784127179592",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "901462bd0aa9a21aa55ada4a6d46d198.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/5147f1574217b1d7a476db5aa9efa8f8.jpg?updatedAt=1784127131026",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "5147f1574217b1d7a476db5aa9efa8f8.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/aed24e6ffaf1232a2dba76d655cd6ad3.jpg?updatedAt=1784128163552",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "aed24e6ffaf1232a2dba76d655cd6ad3.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/7ef74a472c67a3f16bd9fac17449d281.jpg?updatedAt=1784128129835",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "7ef74a472c67a3f16bd9fac17449d281.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/0e7bb910e5af026f0dd199eb902b507e.jpg?updatedAt=1784127352698",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "0e7bb910e5af026f0dd199eb902b507e.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/28d0bd6c24e8dd3e9eb074038930bfcb.jpg?updatedAt=1784127321666",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "28d0bd6c24e8dd3e9eb074038930bfcb.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/e911685f6fc77742d93489b633ccf72f.jpg?updatedAt=1784127288394",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "e911685f6fc77742d93489b633ccf72f.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/106a1d315869aacc2add07606cb89750.jpg?updatedAt=1784128442611",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "106a1d315869aacc2add07606cb89750.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/22794f87e9cefcecd010a05bb8d5424c.jpg?updatedAt=1784128407149",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "22794f87e9cefcecd010a05bb8d5424c.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/99c392e85d7836490ae4c57c2ff66b31.jpg?updatedAt=1784128211813",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "99c392e85d7836490ae4c57c2ff66b31.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/acebef325927ec340441f41e14f33033.jpg?updatedAt=1784128488766",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "acebef325927ec340441f41e14f33033.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/60cdf695d0715dadf17e80d4311c7a94.jpg?updatedAt=1784129064855",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "60cdf695d0715dadf17e80d4311c7a94.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/510a504d742c475442e501c001238597.jpg?updatedAt=1784129095831",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "510a504d742c475442e501c001238597.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3c8d2bce30102c7e0dd2ccb11d45135b.jpg?updatedAt=1784134404783",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3c8d2bce30102c7e0dd2ccb11d45135b.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/b562727020e9cc5ac337f6c9507d5839.jpg?updatedAt=1784134457494",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "b562727020e9cc5ac337f6c9507d5839.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3e89a5eaceadec3a32686ac262cac714.jpg?updatedAt=1784134624518",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3e89a5eaceadec3a32686ac262cac714.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/a858df4050fb9eeb4562aaed1edb0534.jpg?updatedAt=1784134586592",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "a858df4050fb9eeb4562aaed1edb0534.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/58277372308cae7e34a119f577e5eda2.jpg?updatedAt=1784134550004",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "58277372308cae7e34a119f577e5eda2.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/98353bf6c4c52ffca759ea15a75ecc96.jpg?updatedAt=1784134510583",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "98353bf6c4c52ffca759ea15a75ecc96.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/b431de47ac88f4568bd150ddf7b2211f.jpg?updatedAt=1784134971763",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "b431de47ac88f4568bd150ddf7b2211f.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/4cb15d8b1b61ffb804b5f7254fe23937.jpg?updatedAt=1784134939284",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "4cb15d8b1b61ffb804b5f7254fe23937.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6621661177ece08aa8d7c5c7a6326f36.jpg?updatedAt=1784134905786",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6621661177ece08aa8d7c5c7a6326f36.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/a93b560a86512110ea8f68bc3bfabff8.jpg?updatedAt=1784134864539",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "a93b560a86512110ea8f68bc3bfabff8.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6c1df1349a978c1dc4a8a05f56eb5ff9.jpg?updatedAt=1784134838381",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6c1df1349a978c1dc4a8a05f56eb5ff9.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3945b309324ce36d1587c2ee4abe8d72.jpg?updatedAt=1784135445876",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3945b309324ce36d1587c2ee4abe8d72.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/19789e688ed5a111c194e66761ab658b.jpg?updatedAt=1784135420982",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "19789e688ed5a111c194e66761ab658b.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/ec257e596b5a10ee652bb2eec2f20ba3.jpg?updatedAt=1784135086329",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "ec257e596b5a10ee652bb2eec2f20ba3.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/9f9cb93f787ef8e2ffd33d75e7783eb2.jpg?updatedAt=1784135050415",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "9f9cb93f787ef8e2ffd33d75e7783eb2.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3e8e369f38563829d3dbd62c2eaf9d73.jpg?updatedAt=1784135004006",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3e8e369f38563829d3dbd62c2eaf9d73.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/977aa6d4f30d9f1929df31667b6b5e82.jpg?updatedAt=1784135580495",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "977aa6d4f30d9f1929df31667b6b5e82.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/273c63731599d75841a848c27a6a4c92.jpg?updatedAt=1784135550585",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "273c63731599d75841a848c27a6a4c92.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/936641d1204cb4ba428cc59eb301183e.jpg?updatedAt=1784135507743",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "936641d1204cb4ba428cc59eb301183e.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/8f8dc8275c47e3a06d45017d2b72947f.jpg?updatedAt=1784135480972",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "8f8dc8275c47e3a06d45017d2b72947f.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/7adeca2f199b7def15795d3c8ef7b679.jpg?updatedAt=1784136929684",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "7adeca2f199b7def15795d3c8ef7b679.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/19bc3508d956987312495cc916a8c4b2.jpg?updatedAt=1784135715929",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "19bc3508d956987312495cc916a8c4b2.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/ffefe84df6efc84f15d2120bdcda7a37.jpg?updatedAt=1784135681180",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "ffefe84df6efc84f15d2120bdcda7a37.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/e6b3e307e89bb33b1a05c017d82aff8c.jpg?updatedAt=1784135646444",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "e6b3e307e89bb33b1a05c017d82aff8c.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/152b9b64be49e3008597bcc735a871da.jpg?updatedAt=1784135608478",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "152b9b64be49e3008597bcc735a871da.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/2b98fbf0659c27335599db4fe61a0bbe.jpg?updatedAt=1784144126159",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "2b98fbf0659c27335599db4fe61a0bbe.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3f7bb07a8cf5fc603bed8f6c50eb079c.jpg?updatedAt=1784144090462",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3f7bb07a8cf5fc603bed8f6c50eb079c.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/58999c472887b3e1edf560be3d104169.jpg?updatedAt=1784144050647",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "58999c472887b3e1edf560be3d104169.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/38efc050a7448718212ac67874cc9901.jpg?updatedAt=1784144005752",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "38efc050a7448718212ac67874cc9901.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/a11d3b545a6796719ff68a39421cccb8.jpg?updatedAt=1784143977744",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "a11d3b545a6796719ff68a39421cccb8.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/ec00382fb6730231ce6a18c4fad6d35a.jpg?updatedAt=1784144287849",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "ec00382fb6730231ce6a18c4fad6d35a.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/a3e10bce2ba2032d139e7cfe3614a5ab.jpg?updatedAt=1784144263093",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "a3e10bce2ba2032d139e7cfe3614a5ab.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/04c46c8b2dbc42835cf7fd1d990f9e45.jpg?updatedAt=1784144233050",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "04c46c8b2dbc42835cf7fd1d990f9e45.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/60eca123217a3d58c92415f93c26e1d8.jpg?updatedAt=1784144190166",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "60eca123217a3d58c92415f93c26e1d8.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/1010759fdc8b75c92b9b38c1aa6b1082.jpg?updatedAt=1784144159314",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "1010759fdc8b75c92b9b38c1aa6b1082.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/f5711e8d3aa161ff7371d1a104ff2ab0.jpg?updatedAt=1784144360455",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "f5711e8d3aa161ff7371d1a104ff2ab0.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/b380056e5363bfbd255d44063f423da1.jpg?updatedAt=1784144318511",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "b380056e5363bfbd255d44063f423da1.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/8e18d82453b9f9b4a1ea9e092375a79d.jpg?updatedAt=1784148284472",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "8e18d82453b9f9b4a1ea9e092375a79d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/e24794c5db9f1e0776a388d9ed69e54a.jpg?updatedAt=1784148250268",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "e24794c5db9f1e0776a388d9ed69e54a.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/502642afc2936f5aabc9b38076601bd4.jpg?updatedAt=1784148190175",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "502642afc2936f5aabc9b38076601bd4.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/cbb8a90e29a36cb676d4c033ec40c698.jpg?updatedAt=1784148153198",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "cbb8a90e29a36cb676d4c033ec40c698.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/a4569de56007536a36a4685d6bef8f68.jpg?updatedAt=1784148126312",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "a4569de56007536a36a4685d6bef8f68.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/b899a07d1db66c997d8ed08cfd086c43.jpg?updatedAt=1784148333837",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "b899a07d1db66c997d8ed08cfd086c43.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/373308185243cc1e1bb598547fefc7d5.jpg?updatedAt=1784148653901",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "373308185243cc1e1bb598547fefc7d5.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/46cb968f86da00b52ed9b9ea9cc696fc.jpg?updatedAt=1784148630866",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "46cb968f86da00b52ed9b9ea9cc696fc.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/2f8636a565b8b93352eb4a38ac0398b0.jpg?updatedAt=1784148606058",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "2f8636a565b8b93352eb4a38ac0398b0.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/525bd3f7cb2f065667ab035f6089f25a.jpg?updatedAt=1784148563868",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "525bd3f7cb2f065667ab035f6089f25a.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/913d04c8667002dab1c7b6114d9e2e0c.jpg?updatedAt=1784148481757",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "913d04c8667002dab1c7b6114d9e2e0c.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/0fd29f160e6471aadbdc3a25583b01b4.jpg?updatedAt=1784148685328",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "0fd29f160e6471aadbdc3a25583b01b4.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/Jul%2017,%202026,%2006_29_08%20AM.png?updatedAt=1784244566923",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "Jul%2017,%202026,%2006_29_08%20AM.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/61ecc4ad93cfe9b5b2d354de49aa9c0b.jpg?updatedAt=1784152029156",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "61ecc4ad93cfe9b5b2d354de49aa9c0b.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6dfaec08d5c779822408aea75d83bfdc.jpg?updatedAt=1784152097824",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6dfaec08d5c779822408aea75d83bfdc.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/aa07ed81dda711b572b58d4e3a5c4f71.jpg?updatedAt=1784151998400",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "aa07ed81dda711b572b58d4e3a5c4f71.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/413fb75faeb685cebcafcc5ac3059b81.jpg?updatedAt=1784151951736",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "413fb75faeb685cebcafcc5ac3059b81.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/c30fa69bb4278b93d9029e6bda583c51.jpg?updatedAt=1784151778671",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "c30fa69bb4278b93d9029e6bda583c51.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/f2835419b97de1bf24d3cbb2d18604f2.jpg?updatedAt=1784151701030",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "f2835419b97de1bf24d3cbb2d18604f2.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/59149c03bb7ac2a49d5013c39657e600.jpg?updatedAt=1784151673033",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "59149c03bb7ac2a49d5013c39657e600.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/b3d599ff40bfa00696e930e0131e7925.jpg?updatedAt=1784151623063",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "b3d599ff40bfa00696e930e0131e7925.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/ebce049dff086f8fa105dcbf45831a25.jpg?updatedAt=1784151564475",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "ebce049dff086f8fa105dcbf45831a25.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/91c371b6931b26892a94bae82fc510a1.jpg?updatedAt=1784151530814",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "91c371b6931b26892a94bae82fc510a1.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/98dd72b483f71ef9f9007ed8412e9572.jpg?updatedAt=1784151469621",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "98dd72b483f71ef9f9007ed8412e9572.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/f2846637e4f89a3057374cc758a0a0a2.jpg?updatedAt=1784151437718",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "f2846637e4f89a3057374cc758a0a0a2.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/786994edb913f9467e5ecace2bfdfd8d.jpg?updatedAt=1784126782678",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "786994edb913f9467e5ecace2bfdfd8d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/fe7304013b1f0c2c6b5b500d72a00ca7.jpg?updatedAt=1784126748596",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "fe7304013b1f0c2c6b5b500d72a00ca7.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/523b1f1ecc7751b29ab0274d332b4884.jpg?updatedAt=1784126712074",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "523b1f1ecc7751b29ab0274d332b4884.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/9b5d4672f02bcea7b51a74450587f25c.jpg?updatedAt=1784126671652",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "9b5d4672f02bcea7b51a74450587f25c.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6c0b1052a97ccff35b257d8994481b4a.jpg?updatedAt=1784126629911",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6c0b1052a97ccff35b257d8994481b4a.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3a8ae2822f2ecb335143e6040ea00942.jpg?updatedAt=1784126594692",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3a8ae2822f2ecb335143e6040ea00942.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/190c46be74c83b90178678d40331bb58.jpg?updatedAt=1784126556485",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "190c46be74c83b90178678d40331bb58.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/565fee3a8296e6aa74d8d72f1bbf8c9c.jpg?updatedAt=1784126525661",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "565fee3a8296e6aa74d8d72f1bbf8c9c.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/574a2becedc31909bf7de9eeacf87300.jpg?updatedAt=1784126498746",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "574a2becedc31909bf7de9eeacf87300.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/51d074776503d28d85e32e12885b3054.jpg?updatedAt=1784126461376",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "51d074776503d28d85e32e12885b3054.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/c5ea7a87b58c7f572ab4c01b9e8d4a49.jpg?updatedAt=1784126428970",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "c5ea7a87b58c7f572ab4c01b9e8d4a49.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/a8d1933df402ed6051537e36732f7a2f.jpg?updatedAt=1784126382343",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "a8d1933df402ed6051537e36732f7a2f.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/ac94bab0766e62244f555506a9262b9b.jpg?updatedAt=1784126269518",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "ac94bab0766e62244f555506a9262b9b.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/fc88b662b0545355ddc115566a91f89d.jpg?updatedAt=1783725500713",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "fc88b662b0545355ddc115566a91f89d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/downloadd.png?updatedAt=1783725544007",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "downloadd.png",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/9f24c190e01770c7333d77b09e8d7175f.jpg?updatedAt=1783727580334",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "9f24c190e01770c7333d77b09e8d7175f.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/65b8c1d4bfae3732ab46208fb8ecbba0f.jpg?updatedAt=1783727540181",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "65b8c1d4bfae3732ab46208fb8ecbba0f.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/8dfcde25a780aa027f8b1a8698781c27f.jpg?updatedAt=1783727491996",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "8dfcde25a780aa027f8b1a8698781c27f.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/b04024a426dccc0e9a35892158a3bd1cf.jpg?updatedAt=1783727445170",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "b04024a426dccc0e9a35892158a3bd1cf.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/1086e8a1d1e41fbec56c77f5066fa5cfff.jpg?updatedAt=1783727416854",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "1086e8a1d1e41fbec56c77f5066fa5cfff.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6ac6a05ac912810fac6fe4e094b3bdbff.jpg?updatedAt=1783727625432",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6ac6a05ac912810fac6fe4e094b3bdbff.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/b6dd9a9b06652ff57a00c47bec022e38d.jpg?updatedAt=1783727939892",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "b6dd9a9b06652ff57a00c47bec022e38d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/a4ac792e5e04b27042a41e7eb5d404badd.jpg?updatedAt=1783727826823",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "a4ac792e5e04b27042a41e7eb5d404badd.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/fda.jpg?updatedAt=1783727689859",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "fda.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "did not match any OWNED heuristic"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/5aaec8a06fa19110674118f2aa2924ea.jpg?updatedAt=1784121246552",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "5aaec8a06fa19110674118f2aa2924ea.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/7b4128799dc4d74c74f4a1e69d3435ba.jpg?updatedAt=1784120754568",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "7b4128799dc4d74c74f4a1e69d3435ba.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/063416991d65af23eb61f9453117abab.jpg?updatedAt=1784121596097",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "063416991d65af23eb61f9453117abab.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/a533c1bd9280ab9696f6c4dced041a6f.jpg?updatedAt=1784121567074",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "a533c1bd9280ab9696f6c4dced041a6f.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/92d86711d71fec35b076a96b49a64fa2.jpg?updatedAt=1784120714189",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "92d86711d71fec35b076a96b49a64fa2.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/976db7a62ca4e239841f0cc99ae3d37f.jpg?updatedAt=1784120830211",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "976db7a62ca4e239841f0cc99ae3d37f.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/dbf7cbb6e6d5bf7687010dac50e95e09.jpg?updatedAt=1784121013187",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "dbf7cbb6e6d5bf7687010dac50e95e09.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/3137f2abf8096eed67335bda1d2b047b.jpg?updatedAt=1784120962751",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "3137f2abf8096eed67335bda1d2b047b.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/6aec7c93dabe2b38806b2370ed223148.jpg?updatedAt=1784120901191",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "6aec7c93dabe2b38806b2370ed223148.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/4af2bc65c783c8bda69a744a59e35959.jpg?updatedAt=1784120877808",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "4af2bc65c783c8bda69a744a59e35959.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/2e1ba8395051fdc3b2d5f8b2dbd2cb3ad.jpg?updatedAt=1784121281226",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "2e1ba8395051fdc3b2d5f8b2dbd2cb3ad.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/58fb493a6ac74b568fc652f56dd5b431.jpg?updatedAt=1784121625925",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "58fb493a6ac74b568fc652f56dd5b431.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/ee4093d9ce6198bb9e1f36806790e08c.jpg?updatedAt=1784121763666",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "ee4093d9ce6198bb9e1f36806790e08c.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/369b0923175db2ea84dd4caf884d14f9.jpg?updatedAt=1784121796170",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "369b0923175db2ea84dd4caf884d14f9.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/9mrgsv2rp/4f7c770a75ad3a0d1b94b81c518175fe.jpg?updatedAt=1784132396755",
+      "imagekit_account": "9mrgsv2rp",
+      "filename": "4f7c770a75ad3a0d1b94b81c518175fe.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/d01ed42f32a69914c0a54344abd00abe.jpg?updatedAt=1784596650823",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "d01ed42f32a69914c0a54344abd00abe.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/ea39d19978b8c8eb9de9654a12ea945e.jpg?updatedAt=1784596686133",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "ea39d19978b8c8eb9de9654a12ea945e.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/bd2c8dd2ddeeb2e5f96c42f77a3a8d82.jpg?updatedAt=1784596768529",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "bd2c8dd2ddeeb2e5f96c42f77a3a8d82.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/fc0b9110d1cefb2a07a190cfffe7d49d.jpg?updatedAt=1784596822578",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "fc0b9110d1cefb2a07a190cfffe7d49d.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/b2e07a89cae63290302c3aabd1cea303.jpg?updatedAt=1784596327692",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "b2e07a89cae63290302c3aabd1cea303.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/c2da2d4268a19e894ecba05b56defd21.jpg?updatedAt=1784596244047",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "c2da2d4268a19e894ecba05b56defd21.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/8a03c196b996a1bc537667e7f76f68ba.jpg?updatedAt=1784595812693",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "8a03c196b996a1bc537667e7f76f68ba.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/ac06760ceb9267eae9b43d4d1c0bd94f.jpg?updatedAt=1784596168953",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "ac06760ceb9267eae9b43d4d1c0bd94f.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/5f3ed1b0a928c0186626c254d9ffd405.jpg?updatedAt=1784595777338",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "5f3ed1b0a928c0186626c254d9ffd405.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/e2251bcbafb7d2a1fabb1873e9135cef.jpg?updatedAt=1784595749160",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "e2251bcbafb7d2a1fabb1873e9135cef.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/e386f3f2ef2464088e5f91bf0dc33791.jpg?updatedAt=1784595708274",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "e386f3f2ef2464088e5f91bf0dc33791.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/cdb9a8ce5fe91fcb5f3d9e90eeb1eadb.jpg?updatedAt=1784594752369",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "cdb9a8ce5fe91fcb5f3d9e90eeb1eadb.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/4351186eaa4db1292c755672a75fd851.jpg?updatedAt=1784594719681",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "4351186eaa4db1292c755672a75fd851.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/cf7d73225cb277a09e1dd4cc3c603f2e.jpg?updatedAt=1784594614714",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "cf7d73225cb277a09e1dd4cc3c603f2e.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    },
+    {
+      "imagekit_url": "https://ik.imagekit.io/5vv5pw26q/69017859dd8ce97fce5bc685a844a7f0.jpg?updatedAt=1784594588092",
+      "imagekit_account": "5vv5pw26q",
+      "filename": "69017859dd8ce97fce5bc685a844a7f0.jpg",
+      "source_manifest": "data/nex-image-manifest.json",
+      "heuristic_reason": "hex-hash filename · likely imported / third-party"
+    }
+  ],
+  "broken_malformed_from_curated": [
+    {
+      "imagekit_url": "https://ik.imagekit.io/nepgaxllc/",
+      "imagekit_account": "nepgaxllc",
+      "filename": null,
+      "source_manifest": "data/nex-curated-images-manifest.json",
+      "heuristic_reason": "malformed URL · no filename after account"
+    }
+  ],
+  "per_account_breakdown": {
+    "9mrgsv2rp": 333,
+    "5vv5pw26q": 46
+  }
+}

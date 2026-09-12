@@ -1,0 +1,31 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX Performance Engineer Evidence Specialist · founder-authorised 2026-09-12. Constitutional purpose: 'Measure first, opinion never.' Advisory. Deterministic.",
+  "record_type": "PERFORMANCE_ENGINEER_EVIDENCE",
+  "constitutional_purpose_locked": "Report raw performance measurements with reproducibility. Never claim a performance improvement without a measurable baseline AND a measurable candidate result. Never invent percentages.",
+  "outcomes_permitted": {
+    "IMPROVEMENT_MEASURED":     "candidate outperforms baseline on at least one measured metric under identical harness · both values reported · no synthetic percent",
+    "REGRESSION_MEASURED":      "candidate underperforms baseline on at least one measured metric under identical harness",
+    "EQUAL_WITHIN_NOISE":       "measured delta lies within seeded noise floor · not decidable as improvement or regression",
+    "NOT_MEASURED":             "no measurable metric · no harness · no baseline",
+    "INSUFFICIENT_EVIDENCE":    "attempted but insufficient signal (fewer than N samples · non-deterministic harness · missing environment fingerprint)",
+    "INCONCLUSIVE":             "measurement attempted but signal is insufficient to conclude"
+  },
+  "measurable_metrics": ["cpu_ms_p50","cpu_ms_p95","cpu_ms_p99","heap_kb","rss_kb","bundle_kb","startup_ms","eloop_lag_ms","db_query_count","network_bytes","render_ms"],
+  "environment_fields_required": ["node_version","os","cpu_model","cold_or_warm","harness_seed","sample_count","stddev","median","p95","p99"],
+  "forbidden_vocabulary_in_output": [
+    "performance_score","speed_score","overall_speed","confidence_percent","aggregate_quality","weighted_total",
+    "87% faster","92% faster","much faster","significantly faster","dramatically faster","optimal","superior"
+  ],
+  "invariants": [
+    "MUST measure both baseline and candidate under identical harness or emit NOT_MEASURED",
+    "MUST report raw metric values · MUST NOT synthesise a percent-better field",
+    "sample count MUST meet a founder-authored minimum · below that → INSUFFICIENT_EVIDENCE",
+    "cross-machine comparison is FORBIDDEN · environment fingerprint MUST match",
+    "specialist MUST NOT expand Evidence Engine · authorisation_for_evidence_engine_dimension=false until founder flips it",
+    "authorisation=false · execution=false · authority_boundary='evidence_producer_only'",
+    "external_llm_used=false · deterministic=true",
+    "routes through Evidence Validation"
+  ],
+  "v0_1_0_tool_binding_status": "LIMITED_V0 · deterministic-harness engine · real tinybench/mitata/clinic.js binding requires founder-authorised follow-up"
+}

@@ -1,0 +1,47 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX1 Language Registry v0 · founder-authorised 2026-09-12. Every entry declares an HONEST status. Only `english` and `bahasa_indonesia` are ACTIVE. All others are SCAFFOLDED and refuse recognition with refused_language_lab_not_authorised until BOTH english AND bahasa_indonesia reach `fluent` (percent=100 + benchmark_complete + maturity=proven). country/region is separate from language — Malaysia can host both Malay and English; Indonesia can host Bahasa + regional variants — countries are NOT synonyms for languages.",
+  "progression_gate": {
+    "rule": "A SCAFFOLDED language may only be moved to ACTIVE by explicit founder AUTHORISE, AND only after english AND bahasa_indonesia both meet: level=fluent · benchmark_complete=true · maturity=proven",
+    "next_priority": "malay",
+    "next_priority_rationale": "Malay/Indonesian linguistic overlap creates a deterministic test of whether NEX1 understands language STRUCTURE rather than memorising phrases · founder decision 2026-09-12",
+    "cannot_advance_before": {
+      "english": { "level": "fluent", "benchmark_complete": true, "maturity": "proven" },
+      "bahasa_indonesia": { "level": "fluent", "benchmark_complete": true, "maturity": "proven" }
+    }
+  },
+  "languages": [
+    { "id": "english",           "display_name": "English",             "iso_639_1": "en",  "script": "Latin",       "direction": "ltr", "morphology": "analytic",     "status": "active",     "primary_countries": ["GB","US","AU","CA","IE","NZ","IN","PH","ZA","SG"], "notes": "primary NEX language · developer + regular users" },
+    { "id": "bahasa_indonesia",  "display_name": "Bahasa Indonesia",    "iso_639_1": "id",  "script": "Latin",       "direction": "ltr", "morphology": "agglutinative","status": "active",     "primary_countries": ["ID"], "notes": "primary NEX language · developer + regular users · frequent English tech-verb borrows" },
+    { "id": "malay",             "display_name": "Malay (Bahasa Melayu)","iso_639_1": "ms", "script": "Latin",       "direction": "ltr", "morphology": "agglutinative","status": "scaffolded", "primary_countries": ["MY","BN","SG"], "notes": "founder-nominated NEXT priority · 40% vocabulary overlap with Bahasa Indonesia · used to test structural understanding vs phrase memorisation" },
+    { "id": "vietnamese",        "display_name": "Vietnamese",          "iso_639_1": "vi",  "script": "Latin",       "direction": "ltr", "morphology": "analytic",     "status": "scaffolded", "primary_countries": ["VN"], "notes": "tonal · diacritic-heavy · high mobile penetration" },
+    { "id": "thai",              "display_name": "Thai",                "iso_639_1": "th",  "script": "Thai",        "direction": "ltr", "morphology": "analytic",     "status": "scaffolded", "primary_countries": ["TH"], "notes": "own script · no word boundaries · segmentation required" },
+    { "id": "filipino",          "display_name": "Filipino (Tagalog)",  "iso_639_1": "tl",  "script": "Latin",       "direction": "ltr", "morphology": "agglutinative","status": "scaffolded", "primary_countries": ["PH"], "notes": "native code-switching with English · Taglish is a first-class register" },
+    { "id": "mandarin",          "display_name": "Mandarin Chinese",    "iso_639_1": "zh",  "script": "Han",         "direction": "ltr", "morphology": "isolating",    "status": "scaffolded", "primary_countries": ["CN","TW","SG"], "notes": "tonal · logographic · both simplified + traditional" },
+    { "id": "hindi",             "display_name": "Hindi",               "iso_639_1": "hi",  "script": "Devanagari",  "direction": "ltr", "morphology": "fusional",     "status": "scaffolded", "primary_countries": ["IN"], "notes": "Hinglish code-switching prevalent" },
+    { "id": "bengali",           "display_name": "Bengali",             "iso_639_1": "bn",  "script": "Bengali",     "direction": "ltr", "morphology": "fusional",     "status": "scaffolded", "primary_countries": ["BD","IN"] },
+    { "id": "urdu",              "display_name": "Urdu",                "iso_639_1": "ur",  "script": "Perso-Arabic","direction": "rtl", "morphology": "fusional",     "status": "scaffolded", "primary_countries": ["PK","IN"] },
+    { "id": "tamil",             "display_name": "Tamil",               "iso_639_1": "ta",  "script": "Tamil",       "direction": "ltr", "morphology": "agglutinative","status": "scaffolded", "primary_countries": ["IN","LK","SG"] },
+    { "id": "turkish",           "display_name": "Turkish",             "iso_639_1": "tr",  "script": "Latin",       "direction": "ltr", "morphology": "agglutinative","status": "scaffolded", "primary_countries": ["TR"], "notes": "vowel harmony · deeply agglutinative · high tech adoption" },
+    { "id": "arabic",            "display_name": "Arabic (MSA)",        "iso_639_1": "ar",  "script": "Arabic",      "direction": "rtl", "morphology": "root-and-pattern","status": "scaffolded", "primary_countries": ["EG","SA","AE","JO","MA"] },
+    { "id": "farsi",             "display_name": "Farsi (Persian)",     "iso_639_1": "fa",  "script": "Perso-Arabic","direction": "rtl", "morphology": "fusional",     "status": "scaffolded", "primary_countries": ["IR","AF","TJ"] },
+    { "id": "swahili",           "display_name": "Swahili",             "iso_639_1": "sw",  "script": "Latin",       "direction": "ltr", "morphology": "agglutinative","status": "scaffolded", "primary_countries": ["KE","TZ","UG","RW"] },
+    { "id": "yoruba",            "display_name": "Yoruba",              "iso_639_1": "yo",  "script": "Latin",       "direction": "ltr", "morphology": "isolating",    "status": "scaffolded", "primary_countries": ["NG","BJ"] },
+    { "id": "hausa",             "display_name": "Hausa",               "iso_639_1": "ha",  "script": "Latin",       "direction": "ltr", "morphology": "fusional",     "status": "scaffolded", "primary_countries": ["NG","NE","GH"] },
+    { "id": "portuguese_br",     "display_name": "Portuguese (Brazil)", "iso_639_1": "pt",  "script": "Latin",       "direction": "ltr", "morphology": "fusional",     "status": "scaffolded", "primary_countries": ["BR"] },
+    { "id": "spanish_latam",     "display_name": "Spanish (LATAM)",     "iso_639_1": "es",  "script": "Latin",       "direction": "ltr", "morphology": "fusional",     "status": "scaffolded", "primary_countries": ["MX","AR","CO","CL","PE"] },
+    { "id": "french",            "display_name": "French",              "iso_639_1": "fr",  "script": "Latin",       "direction": "ltr", "morphology": "fusional",     "status": "scaffolded", "primary_countries": ["FR","CA","BE","CH","CI","SN"] },
+    { "id": "german",            "display_name": "German",              "iso_639_1": "de",  "script": "Latin",       "direction": "ltr", "morphology": "fusional",     "status": "scaffolded", "primary_countries": ["DE","AT","CH"] },
+    { "id": "italian",           "display_name": "Italian",             "iso_639_1": "it",  "script": "Latin",       "direction": "ltr", "morphology": "fusional",     "status": "scaffolded", "primary_countries": ["IT","CH"] },
+    { "id": "dutch",             "display_name": "Dutch",               "iso_639_1": "nl",  "script": "Latin",       "direction": "ltr", "morphology": "fusional",     "status": "scaffolded", "primary_countries": ["NL","BE"] },
+    { "id": "polish",            "display_name": "Polish",              "iso_639_1": "pl",  "script": "Latin",       "direction": "ltr", "morphology": "fusional",     "status": "scaffolded", "primary_countries": ["PL"] },
+    { "id": "russian",           "display_name": "Russian",             "iso_639_1": "ru",  "script": "Cyrillic",    "direction": "ltr", "morphology": "fusional",     "status": "scaffolded", "primary_countries": ["RU","BY","KZ"] },
+    { "id": "ukrainian",         "display_name": "Ukrainian",           "iso_639_1": "uk",  "script": "Cyrillic",    "direction": "ltr", "morphology": "fusional",     "status": "scaffolded", "primary_countries": ["UA"] },
+    { "id": "japanese",          "display_name": "Japanese",            "iso_639_1": "ja",  "script": "Kanji + Kana","direction": "ltr", "morphology": "agglutinative","status": "scaffolded", "primary_countries": ["JP"] },
+    { "id": "korean",            "display_name": "Korean",              "iso_639_1": "ko",  "script": "Hangul",      "direction": "ltr", "morphology": "agglutinative","status": "scaffolded", "primary_countries": ["KR"] },
+    { "id": "nepali",            "display_name": "Nepali",              "iso_639_1": "ne",  "script": "Devanagari",  "direction": "ltr", "morphology": "fusional",     "status": "scaffolded", "primary_countries": ["NP","IN"] },
+    { "id": "sinhala",           "display_name": "Sinhala",             "iso_639_1": "si",  "script": "Sinhala",     "direction": "ltr", "morphology": "fusional",     "status": "scaffolded", "primary_countries": ["LK"] },
+    { "id": "amharic",           "display_name": "Amharic",             "iso_639_1": "am",  "script": "Ge'ez",       "direction": "ltr", "morphology": "root-and-pattern","status": "scaffolded", "primary_countries": ["ET"] },
+    { "id": "chichewa",          "display_name": "Chichewa",            "iso_639_1": "ny",  "script": "Latin",       "direction": "ltr", "morphology": "agglutinative","status": "scaffolded", "primary_countries": ["MW","ZM"] }
+  ]
+}

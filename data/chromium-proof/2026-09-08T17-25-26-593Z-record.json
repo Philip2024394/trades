@@ -1,0 +1,57 @@
+{
+  "run_id": "chromium-proof-2026-09-08T17-25-26-593Z",
+  "started_at": "2026-09-08T17:25:26.594Z",
+  "base_url": "http://localhost:3008",
+  "chat_url": "http://localhost:3008/nex-app/chat",
+  "query_1": "Find me hotels near Malioboro",
+  "query_2": "Which one has a pool?",
+  "events": [
+    {
+      "kind": "opened",
+      "screenshot": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\2026-09-08T17-25-26-593Z-01-open.png",
+      "at": "2026-09-08T17:25:58.840Z"
+    },
+    {
+      "kind": "composer_found",
+      "selector": "textarea"
+    },
+    {
+      "kind": "typed",
+      "label": "02-q1",
+      "text": "Find me hotels near Malioboro",
+      "screenshot": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\2026-09-08T17-25-26-593Z-02-q1-typed.png"
+    },
+    {
+      "kind": "sent",
+      "label": "02-q1",
+      "via": "button"
+    },
+    {
+      "kind": "typed",
+      "label": "04-q2",
+      "text": "Which one has a pool?",
+      "screenshot": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\2026-09-08T17-25-26-593Z-04-q2-typed.png"
+    },
+    {
+      "kind": "sent",
+      "label": "04-q2",
+      "via": "enter"
+    }
+  ],
+  "turns": [
+    {
+      "query": "Find me hotels near Malioboro",
+      "dom_text": "Skip to content Contacts NEX ID Connect ACTIVE 3 Riverside Staircases Staircase Maker Manchester “The oak sample arrived this morning — should I bring it Friday?” 2m 1 Sarah Chen Friend London “Sending you the fabric swatches now” 18m Ashworth Kitchens Kitchen Fitter Cheshire · Last seen 1h ago “Quote attached — let me know what you think” 1h 2 PEOPLE 3 Emma Whitmore Family Bristol · Last seen 4h ago James Okafor Colleague London · Last seen yesterday Alex Byrne Friend Edinburgh · Last seen 2 days ago TRADES 2 North Timber & Oak Timber Merchant Leeds · Last seen 5 days ago MacDonald Plumbing Plumber Glasgow · Last seen 2 weeks ago BLOCKED 1 Redfern Electrics Electrician · Birmingham Unblock Type to search everything you and Nex have said so far. Tasks + Create task 🔔 Get reminders even when Nex is closed Turn on background notifications so Nex can wake your device when a reminder is due. Notifications are blocked in your browser. Enable them in site settings for this page, then try again. Enable notifications OPEN · 0 No open tasks. Create one to keep Nex on track. WEDNESDAY 9 September · 00:25 Stickers IN DEVELOPMENT Drag action-verb stickers onto chat messages — Save · Budget · Show partner. Staircase Plans LIVE ON Send a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral. Stairs LIVE Upload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap. N Nex Online N Nex Hi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something. Contacts Tasks Play We use cookies To keep you signed in, remember your preferences, and understand how the site is used. Manage. Accept",
+      "screenshot": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\2026-09-08T17-25-26-593Z-03-q1-after.png"
+    },
+    {
+      "query": "Which one has a pool?",
+      "dom_text": "Skip to content 404 This page couldn't be found The link may be stale or you may have typed the address by hand. BACK TO HOME Browse Xrated We use cookies To keep you signed in, remember your preferences, and understand how the site is used. Manage. Accept",
+      "screenshot": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\2026-09-08T17-25-26-593Z-05-q2-after.png"
+    }
+  ],
+  "api_intercepts": [],
+  "verdict": "B_NO_DATA_REACHES_CHAT",
+  "verdict_explanation": "Chromium sent messages but no /api/nex-conv/chat response was intercepted · chat may be misrouted or offline.",
+  "finished_at": "2026-09-08T17:27:52.263Z"
+}

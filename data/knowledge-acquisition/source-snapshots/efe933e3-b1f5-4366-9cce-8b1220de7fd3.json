@@ -1,0 +1,14 @@
+{
+  "snapshot_id": "efe933e3-b1f5-4366-9cce-8b1220de7fd3",
+  "source_id": "wco.hs2022",
+  "retrieved_at": "2026-09-05T11:43:07.257Z",
+  "content_hash": "2522f99b3deb6617a7ac6168b4d3d3a4a57c97b3943c4b51a8d09ba7259a5061",
+  "bytes": 96,
+  "content": null,
+  "structured": [
+    {
+      "subject": "HS 0304",
+      "predicate": "fish fillets and other fish meat, fresh, chilled or frozen"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "rejectedAt": "2026-09-11T15:57:03.864Z",
+  "code": "schema_invalid",
+  "detail": "id must match /^[a-z][a-z0-9-]{2,50}$/ · got \"bad!\" · brand invalid · use letters · numbers · common punctuation · 2-61 chars · name invalid · 2-61 chars · category must be one of seo-search · analytics-perf · auth · payments · content-media · email · search · communication · ai · deployment · monitoring · icon must be 1-4 chars (emoji or glyph) · tagline must be 5-90 chars · description must be 40-800 chars · benefits must have 2-8 items · promptTemplate must be 80-8000 chars · give NEX1 real instructions",
+  "raw": {
+    "id": "bad!",
+    "name": "x"
+  }
+}

@@ -1,0 +1,221 @@
+{
+  "at": "2026-09-11T21:13:22.718Z",
+  "challenge_set": "capability-c · 7-fixture adversarial",
+  "attribution": {
+    "teaching_infrastructure": "taught_by=master_ai_engineer (capability-c-type-aware-repair.ts)",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner"
+  },
+  "challenges": [
+    {
+      "label": "Alpha  · priority : number",
+      "fixture": "data/nex1-code-engine/challenge-c/alpha-source.ts",
+      "original_hash": "ababf48e5d5d8bce7b3ca332fbb8bd8e290c58eec56b475e570e4ef61ddc0b15",
+      "stimulus": {
+        "field_name": "priority",
+        "field_type": "number",
+        "expected_value": "0",
+        "expected_kind": "primitive"
+      },
+      "stimulus_applied": true,
+      "type_aware_result": {
+        "ok": true,
+        "source": "type_aware",
+        "rationale": "primitive type 'number' · repair value '0' satisfies it",
+        "directive": {
+          "kind": "add_property_to_object_at_position",
+          "target_path": "data/nex1-code-engine/challenge-c/alpha-source.ts",
+          "line": 9,
+          "column": 5,
+          "property_name": "priority",
+          "property_value": "0"
+        }
+      },
+      "repair_applied": true,
+      "repair_value": "0",
+      "tsc_errors_pre_repair": 1,
+      "tsc_errors_post_repair": 0,
+      "fixture_byte_identical": true,
+      "verdict": "closed_type_correct"
+    },
+    {
+      "label": "Beta   · label    : string",
+      "fixture": "data/nex1-code-engine/challenge-c/beta-source.ts",
+      "original_hash": "715f325a740bee4bb2d8d800cc5eb7bcb8e10c871e4f4cfbacc99af8c7faff8a",
+      "stimulus": {
+        "field_name": "label",
+        "field_type": "string",
+        "expected_value": "\"\"",
+        "expected_kind": "primitive"
+      },
+      "stimulus_applied": true,
+      "type_aware_result": {
+        "ok": true,
+        "source": "type_aware",
+        "rationale": "primitive type 'string' · repair value '\"\"' satisfies it",
+        "directive": {
+          "kind": "add_property_to_object_at_position",
+          "target_path": "data/nex1-code-engine/challenge-c/beta-source.ts",
+          "line": 9,
+          "column": 5,
+          "property_name": "label",
+          "property_value": "\"\""
+        }
+      },
+      "repair_applied": true,
+      "repair_value": "\"\"",
+      "tsc_errors_pre_repair": 1,
+      "tsc_errors_post_repair": 0,
+      "fixture_byte_identical": true,
+      "verdict": "closed_type_correct"
+    },
+    {
+      "label": "Gamma  · active   : string",
+      "fixture": "data/nex1-code-engine/challenge-c/gamma-source.ts",
+      "original_hash": "0e618f0353a5290155d364e26d7c1d76fe2cddf5d2916dafacb4ebba0c85f6a4",
+      "stimulus": {
+        "field_name": "active",
+        "field_type": "string",
+        "expected_value": "\"\"",
+        "expected_kind": "primitive"
+      },
+      "stimulus_applied": true,
+      "type_aware_result": {
+        "ok": true,
+        "source": "type_aware",
+        "rationale": "primitive type 'string' · repair value '\"\"' satisfies it",
+        "directive": {
+          "kind": "add_property_to_object_at_position",
+          "target_path": "data/nex1-code-engine/challenge-c/gamma-source.ts",
+          "line": 9,
+          "column": 5,
+          "property_name": "active",
+          "property_value": "\"\""
+        }
+      },
+      "repair_applied": true,
+      "repair_value": "\"\"",
+      "tsc_errors_pre_repair": 1,
+      "tsc_errors_post_repair": 0,
+      "fixture_byte_identical": true,
+      "verdict": "closed_type_correct"
+    },
+    {
+      "label": "Delta  · name     : boolean  (ADV)",
+      "fixture": "data/nex1-code-engine/challenge-c/delta-source.ts",
+      "original_hash": "6f8c81fef5d173ce83b2ea7cb41543ba5f916e04897642d6a62f57dcbd673ea6",
+      "stimulus": {
+        "field_name": "name",
+        "field_type": "boolean",
+        "expected_value": "false",
+        "expected_kind": "primitive"
+      },
+      "stimulus_applied": true,
+      "type_aware_result": {
+        "ok": true,
+        "source": "type_aware",
+        "rationale": "primitive type 'boolean' · repair value 'false' satisfies it",
+        "directive": {
+          "kind": "add_property_to_object_at_position",
+          "target_path": "data/nex1-code-engine/challenge-c/delta-source.ts",
+          "line": 9,
+          "column": 5,
+          "property_name": "name",
+          "property_value": "false"
+        }
+      },
+      "repair_applied": true,
+      "repair_value": "false",
+      "tsc_errors_pre_repair": 1,
+      "tsc_errors_post_repair": 0,
+      "fixture_byte_identical": true,
+      "verdict": "closed_type_correct"
+    },
+    {
+      "label": "Epsilon· count    : string   (ADV)",
+      "fixture": "data/nex1-code-engine/challenge-c/epsilon-source.ts",
+      "original_hash": "53bc1e2218c397c77d4fab652a4766eb32d686b82d0bd4be98e5b1a37d0b5f5a",
+      "stimulus": {
+        "field_name": "count",
+        "field_type": "string",
+        "expected_value": "\"\"",
+        "expected_kind": "primitive"
+      },
+      "stimulus_applied": true,
+      "type_aware_result": {
+        "ok": true,
+        "source": "type_aware",
+        "rationale": "primitive type 'string' · repair value '\"\"' satisfies it",
+        "directive": {
+          "kind": "add_property_to_object_at_position",
+          "target_path": "data/nex1-code-engine/challenge-c/epsilon-source.ts",
+          "line": 9,
+          "column": 5,
+          "property_name": "count",
+          "property_value": "\"\""
+        }
+      },
+      "repair_applied": true,
+      "repair_value": "\"\"",
+      "tsc_errors_pre_repair": 1,
+      "tsc_errors_post_repair": 0,
+      "fixture_byte_identical": true,
+      "verdict": "closed_type_correct"
+    },
+    {
+      "label": "Zeta   · items    : number[]",
+      "fixture": "data/nex1-code-engine/challenge-c/zeta-source.ts",
+      "original_hash": "0b00def4757067704d7218b1dd8ce50f008b17803fa35873c64dfc811c9eaea7",
+      "stimulus": {
+        "field_name": "items",
+        "field_type": "number[]",
+        "expected_value": "[]",
+        "expected_kind": "array"
+      },
+      "stimulus_applied": true,
+      "type_aware_result": {
+        "ok": true,
+        "source": "type_aware",
+        "rationale": "array type 'number[]' · empty array satisfies the required shape",
+        "directive": {
+          "kind": "add_property_to_object_at_position",
+          "target_path": "data/nex1-code-engine/challenge-c/zeta-source.ts",
+          "line": 9,
+          "column": 5,
+          "property_name": "items",
+          "property_value": "[]"
+        }
+      },
+      "repair_applied": true,
+      "repair_value": "[]",
+      "tsc_errors_pre_repair": 1,
+      "tsc_errors_post_repair": 0,
+      "fixture_byte_identical": true,
+      "verdict": "closed_type_correct"
+    },
+    {
+      "label": "Eta    · config   : EtaConfig (REFUSE)",
+      "fixture": "data/nex1-code-engine/challenge-c/eta-source.ts",
+      "original_hash": "f67aa559e09f918be7e42094e3f8c358e4b1cc02f5ed69e2394ada5d8a11f001",
+      "stimulus": {
+        "field_name": "config",
+        "field_type": "EtaConfig",
+        "expected_value": null,
+        "expected_kind": "complex_refused"
+      },
+      "stimulus_applied": true,
+      "type_aware_result": {
+        "ok": false,
+        "escalate": true,
+        "declared_type": "EtaConfig",
+        "reason": "custom or generic type 'EtaConfig' · NEX1 escalates rather than fabricating a value"
+      },
+      "repair_applied": false,
+      "repair_value": null,
+      "tsc_errors_pre_repair": 1,
+      "tsc_errors_post_repair": -1,
+      "fixture_byte_identical": true,
+      "verdict": "refused_correctly"
+    }
+  ]
+}

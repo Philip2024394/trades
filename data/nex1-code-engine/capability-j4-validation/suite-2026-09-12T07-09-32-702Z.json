@@ -1,0 +1,239 @@
+{
+  "at": "2026-09-12T07:05:24.636Z",
+  "attribution": {
+    "teaching_infrastructure": "capability-j4-long-run.ts · taught_by=master_ai_engineer",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner"
+  },
+  "sub_tests": {
+    "J4.1": {
+      "verdict": "pass",
+      "run_verdict": "all_verified",
+      "rollback": "restored",
+      "stopped_after": null,
+      "per_goal": [
+        {
+          "id": "add-fa",
+          "state": "verified",
+          "reason": "H.1 planned · apply ok · tsc scoped clean",
+          "directive": {
+            "kind": "add_interface_field",
+            "target_path": "C:/Users/Victus/trades/data/nex1-code-engine/challenge-j4/target-a.ts",
+            "target_interface": "TargetA",
+            "field_name": "fa",
+            "field_type": "number"
+          },
+          "target_file": "C:/Users/Victus/trades/data/nex1-code-engine/challenge-j4/target-a.ts",
+          "before_hash": "66294d34f4ab91f79ded426ee25ac0c2c628c58bad5e176064127976a50ca3c1",
+          "after_hash": "3ef0ef553b8de38ef969bf8fa5d35d7b6ce67f870041b66d48603752657ce270",
+          "tsc_errors": 0
+        },
+        {
+          "id": "add-fb",
+          "state": "verified",
+          "reason": "H.1 planned · apply ok · tsc scoped clean",
+          "directive": {
+            "kind": "add_interface_field",
+            "target_path": "C:/Users/Victus/trades/data/nex1-code-engine/challenge-j4/target-b.ts",
+            "target_interface": "TargetB",
+            "field_name": "fb",
+            "field_type": "string"
+          },
+          "target_file": "C:/Users/Victus/trades/data/nex1-code-engine/challenge-j4/target-b.ts",
+          "before_hash": "8130cc821a08d19ba4362217e7b8c3356428c368f666de60f7fe6d115d84c5b1",
+          "after_hash": "27c35c88352e86cc0bdf3632aa3dac7be98b687d8b1f518b60b77259e71611bc",
+          "tsc_errors": 0
+        },
+        {
+          "id": "add-fc",
+          "state": "verified",
+          "reason": "H.1 planned · apply ok · tsc scoped clean",
+          "directive": {
+            "kind": "add_interface_field",
+            "target_path": "C:/Users/Victus/trades/data/nex1-code-engine/challenge-j4/target-c.ts",
+            "target_interface": "TargetC",
+            "field_name": "fc",
+            "field_type": "boolean"
+          },
+          "target_file": "C:/Users/Victus/trades/data/nex1-code-engine/challenge-j4/target-c.ts",
+          "before_hash": "d519a956ba5ec7d1296ccd9456b428ba339700826a0dd8a32af607494ccb8dd0",
+          "after_hash": "63df85512d1218f507033f957ee9421cfbd45ae5a0c1f06e9bc5e51af9821bc1",
+          "tsc_errors": 0
+        },
+        {
+          "id": "add-fd",
+          "state": "verified",
+          "reason": "H.1 planned · apply ok · tsc scoped clean",
+          "directive": {
+            "kind": "add_interface_field",
+            "target_path": "C:/Users/Victus/trades/data/nex1-code-engine/challenge-j4/target-d.ts",
+            "target_interface": "TargetD",
+            "field_name": "fd",
+            "field_type": "number"
+          },
+          "target_file": "C:/Users/Victus/trades/data/nex1-code-engine/challenge-j4/target-d.ts",
+          "before_hash": "b83720628c4337147c9e07f20311d6d83c209983dc65d9ee8d318c0b273403f9",
+          "after_hash": "0355cc39677e0f28bd83ae391f1e554c9f0d75e51240e1ca110937d060b68f22",
+          "tsc_errors": 0
+        }
+      ],
+      "byte_identical": true,
+      "verdict_ok": true,
+      "states_ok": true,
+      "pass": true
+    },
+    "J4.2": {
+      "verdict": "pass",
+      "run_verdict": "failed_hard_mid_run",
+      "rollback": "restored",
+      "stopped_after": "hard-fail",
+      "per_goal": [
+        {
+          "id": "ok-1",
+          "state": "verified",
+          "reason": "H.1 planned · apply ok · tsc scoped clean",
+          "directive": {
+            "kind": "add_interface_field",
+            "target_path": "C:/Users/Victus/trades/data/nex1-code-engine/challenge-j4/target-a.ts",
+            "target_interface": "TargetA",
+            "field_name": "fa",
+            "field_type": "number"
+          },
+          "target_file": "C:/Users/Victus/trades/data/nex1-code-engine/challenge-j4/target-a.ts",
+          "before_hash": "66294d34f4ab91f79ded426ee25ac0c2c628c58bad5e176064127976a50ca3c1",
+          "after_hash": "3ef0ef553b8de38ef969bf8fa5d35d7b6ce67f870041b66d48603752657ce270",
+          "tsc_errors": 0
+        },
+        {
+          "id": "ok-2",
+          "state": "verified",
+          "reason": "H.1 planned · apply ok · tsc scoped clean",
+          "directive": {
+            "kind": "add_interface_field",
+            "target_path": "C:/Users/Victus/trades/data/nex1-code-engine/challenge-j4/target-b.ts",
+            "target_interface": "TargetB",
+            "field_name": "fb",
+            "field_type": "string"
+          },
+          "target_file": "C:/Users/Victus/trades/data/nex1-code-engine/challenge-j4/target-b.ts",
+          "before_hash": "8130cc821a08d19ba4362217e7b8c3356428c368f666de60f7fe6d115d84c5b1",
+          "after_hash": "27c35c88352e86cc0bdf3632aa3dac7be98b687d8b1f518b60b77259e71611bc",
+          "tsc_errors": 0
+        },
+        {
+          "id": "hard-fail",
+          "state": "failed_hard",
+          "reason": "post-apply tsc reports 1 error(s) across 3 modified files · unrecoverable in J.4.1 pilot (no J.3 recovery inside long-run yet)",
+          "directive": {
+            "kind": "add_interface_field",
+            "target_path": "C:/Users/Victus/trades/data/nex1-code-engine/challenge-j4/target-c.ts",
+            "target_interface": "TargetC",
+            "field_name": "bad",
+            "field_type": "NonExistentTypeFoo"
+          },
+          "target_file": "C:/Users/Victus/trades/data/nex1-code-engine/challenge-j4/target-c.ts",
+          "before_hash": "d519a956ba5ec7d1296ccd9456b428ba339700826a0dd8a32af607494ccb8dd0",
+          "after_hash": "a0dfa84efffb5cbf36da02e10fa586ea2b4f1b2537313aa061f2163d956a7251",
+          "tsc_errors": 1
+        },
+        {
+          "id": "not-reached",
+          "state": "queued",
+          "reason": "not started · earlier goal failed hard",
+          "directive": null,
+          "target_file": null,
+          "before_hash": null,
+          "after_hash": null,
+          "tsc_errors": null
+        }
+      ],
+      "byte_identical": true,
+      "verdict_ok": true,
+      "states_ok": true,
+      "pass": true
+    },
+    "J4.3": {
+      "verdict": "pass",
+      "run_verdict": "refused_iteration_cap_exceeded",
+      "rollback": "not_needed",
+      "stopped_after": null,
+      "per_goal": [
+        {
+          "id": "g1",
+          "state": "queued",
+          "reason": "not started · run refused before execution",
+          "directive": null,
+          "target_file": null,
+          "before_hash": null,
+          "after_hash": null,
+          "tsc_errors": null
+        },
+        {
+          "id": "g2",
+          "state": "queued",
+          "reason": "not started · run refused before execution",
+          "directive": null,
+          "target_file": null,
+          "before_hash": null,
+          "after_hash": null,
+          "tsc_errors": null
+        },
+        {
+          "id": "g3",
+          "state": "queued",
+          "reason": "not started · run refused before execution",
+          "directive": null,
+          "target_file": null,
+          "before_hash": null,
+          "after_hash": null,
+          "tsc_errors": null
+        },
+        {
+          "id": "g4",
+          "state": "queued",
+          "reason": "not started · run refused before execution",
+          "directive": null,
+          "target_file": null,
+          "before_hash": null,
+          "after_hash": null,
+          "tsc_errors": null
+        },
+        {
+          "id": "g5",
+          "state": "queued",
+          "reason": "not started · run refused before execution",
+          "directive": null,
+          "target_file": null,
+          "before_hash": null,
+          "after_hash": null,
+          "tsc_errors": null
+        },
+        {
+          "id": "g6",
+          "state": "refused",
+          "reason": "iteration cap exceeded",
+          "directive": null,
+          "target_file": null,
+          "before_hash": null,
+          "after_hash": null,
+          "tsc_errors": null
+        }
+      ],
+      "byte_identical": true,
+      "verdict_ok": true,
+      "states_ok": true,
+      "pass": true
+    },
+    "J4.4": {
+      "verdict": "pass",
+      "run_verdict": "refused_unsafe_instruction",
+      "rollback": "not_needed",
+      "stopped_after": null,
+      "per_goal": [],
+      "byte_identical": true,
+      "verdict_ok": true,
+      "states_ok": true,
+      "pass": true
+    }
+  }
+}

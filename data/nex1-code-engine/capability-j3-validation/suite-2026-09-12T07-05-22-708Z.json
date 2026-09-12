@@ -1,0 +1,162 @@
+{
+  "at": "2026-09-12T07:05:05.235Z",
+  "attribution": {
+    "teaching_infrastructure": "capability-j3-verify-repair.ts · taught_by=master_ai_engineer",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner"
+  },
+  "sub_tests": {
+    "J3.1": {
+      "verdict": "pass",
+      "result": {
+        "verdict": "verified_repair",
+        "diagnosis_kind": "proposal",
+        "proposal_summary": "replace_return_literal(data/nex1-code-engine/challenge-j2/source-literal.ts#getAnswer · 1 → 2)",
+        "original_hash": "82b97ab2e77d3c043492bcc30d1fc56217e2daa08ebe809d3567b444ab513ee5",
+        "modified_hash": "bec68c51ddf0523061b08e82c6c0f1c54fb7e2db829731c3567d886ea43a9c58",
+        "restored_hash": "82b97ab2e77d3c043492bcc30d1fc56217e2daa08ebe809d3567b444ab513ee5",
+        "first_run": {
+          "exit_code": 1,
+          "passed": 0,
+          "failed": 1
+        },
+        "second_run": {
+          "exit_code": 0,
+          "passed": 1,
+          "failed": 0
+        },
+        "elapsed_ms": 3763,
+        "rollback_status": "restored",
+        "reasoning_trace": [
+          "snapshotted target · data/nex1-code-engine/challenge-j2/source-literal.ts · 82b97ab2e77d",
+          "first_run · exit=1 · passed=0 · failed=1",
+          "applied · new hash bec68c51ddf0",
+          "second_run · exit=0 · passed=1 · failed=0",
+          "rollback · restored · 82b97ab2e77d",
+          "first: passed=0 failed=1",
+          "second: passed=1 failed=0",
+          "guard: zero failures · repair verified"
+        ],
+        "taught_by": "master_ai_engineer"
+      }
+    },
+    "J3.2": {
+      "verdict": "pass",
+      "result": {
+        "verdict": "rejected_still_failing",
+        "diagnosis_kind": "proposal",
+        "proposal_summary": "replace_return_literal(data/nex1-code-engine/challenge-j2/source-literal.ts#getAnswer · 1 → 3)",
+        "original_hash": "82b97ab2e77d3c043492bcc30d1fc56217e2daa08ebe809d3567b444ab513ee5",
+        "modified_hash": "08b0be87d80dc3cc8ae3474d06ce6a99f14aa71255f6ca0f278a565871ee7ede",
+        "restored_hash": "82b97ab2e77d3c043492bcc30d1fc56217e2daa08ebe809d3567b444ab513ee5",
+        "first_run": {
+          "exit_code": 1,
+          "passed": 0,
+          "failed": 1
+        },
+        "second_run": {
+          "exit_code": 1,
+          "passed": 0,
+          "failed": 1
+        },
+        "elapsed_ms": 3973,
+        "rollback_status": "restored",
+        "reasoning_trace": [
+          "snapshotted target · data/nex1-code-engine/challenge-j2/source-literal.ts · 82b97ab2e77d",
+          "first_run · exit=1 · passed=0 · failed=1",
+          "applied · new hash 08b0be87d80d",
+          "second_run · exit=1 · passed=0 · failed=1",
+          "rollback · restored · 82b97ab2e77d",
+          "second_run still failing · repair did not close original assertion"
+        ],
+        "taught_by": "master_ai_engineer"
+      }
+    },
+    "J3.3": {
+      "verdict": "pass",
+      "result": {
+        "verdict": "rejected_regression",
+        "diagnosis_kind": "proposal",
+        "proposal_summary": "replace_return_literal(data/nex1-code-engine/challenge-j3/shared-value.ts#getVal · 1 → 2)",
+        "original_hash": "9d86ea45b1a7d7e1e4ee9e7fa71154fe2bac7a347473cdd332c479260efa3756",
+        "modified_hash": "cb81ca0a10bfac022ab34a3cc22a577aebfa0ff8fa82609609b064a593c4e548",
+        "restored_hash": "9d86ea45b1a7d7e1e4ee9e7fa71154fe2bac7a347473cdd332c479260efa3756",
+        "first_run": {
+          "exit_code": 1,
+          "passed": 1,
+          "failed": 1
+        },
+        "second_run": {
+          "exit_code": 1,
+          "passed": 1,
+          "failed": 1
+        },
+        "elapsed_ms": 4081,
+        "rollback_status": "restored",
+        "reasoning_trace": [
+          "snapshotted target · data/nex1-code-engine/challenge-j3/shared-value.ts · 9d86ea45b1a7",
+          "first_run · exit=1 · passed=1 · failed=1",
+          "applied · new hash cb81ca0a10bf",
+          "second_run · exit=1 · passed=1 · failed=1",
+          "rollback · restored · 9d86ea45b1a7",
+          "first failing set = {j3-regression > test 1 · currently failing · asserts 2}",
+          "second failing set = {j3-regression > test 2 · currently passing · asserts 1}",
+          "newly failing (regression): {j3-regression > test 2 · currently passing · asserts 1}"
+        ],
+        "taught_by": "master_ai_engineer"
+      }
+    },
+    "J3.4": {
+      "verdict": "pass",
+      "result": {
+        "verdict": "rejected_no_proposal",
+        "diagnosis_kind": "refused_test_may_be_wrong",
+        "proposal_summary": null,
+        "original_hash": "",
+        "modified_hash": null,
+        "restored_hash": null,
+        "first_run": null,
+        "second_run": null,
+        "elapsed_ms": 0,
+        "rollback_status": "not_needed",
+        "reasoning_trace": [
+          "diagnosis.kind='refused_test_may_be_wrong' · no proposal to execute"
+        ],
+        "taught_by": "master_ai_engineer"
+      }
+    },
+    "J3.5": {
+      "verdict": "pass",
+      "result": {
+        "verdict": "rejected_still_failing",
+        "diagnosis_kind": "proposal",
+        "proposal_summary": "replace_return_literal(data/nex1-code-engine/challenge-j2/source-literal.ts#getAnswer · 1 → @@garbage@@)",
+        "original_hash": "82b97ab2e77d3c043492bcc30d1fc56217e2daa08ebe809d3567b444ab513ee5",
+        "modified_hash": "322454e2b2271f5dd6f4d17c98cfb672cdb9de7e1ba6b6c293b62494e3a46e75",
+        "restored_hash": "82b97ab2e77d3c043492bcc30d1fc56217e2daa08ebe809d3567b444ab513ee5",
+        "first_run": {
+          "exit_code": 1,
+          "passed": 0,
+          "failed": 1
+        },
+        "second_run": {
+          "exit_code": 1,
+          "passed": 0,
+          "failed": 1
+        },
+        "elapsed_ms": 3710,
+        "rollback_status": "restored",
+        "reasoning_trace": [
+          "snapshotted target · data/nex1-code-engine/challenge-j2/source-literal.ts · 82b97ab2e77d",
+          "first_run · exit=1 · passed=0 · failed=1",
+          "applied · new hash 322454e2b227",
+          "second_run · exit=1 · passed=0 · failed=1",
+          "rollback · restored · 82b97ab2e77d",
+          "second_run still failing · repair did not close original assertion"
+        ],
+        "taught_by": "master_ai_engineer"
+      }
+    }
+  },
+  "all_fixtures_byte_identical": true
+}

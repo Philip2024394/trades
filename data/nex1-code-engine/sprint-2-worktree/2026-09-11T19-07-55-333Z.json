@@ -1,0 +1,27 @@
+{
+  "at": "2026-09-11T19:07:55.333Z",
+  "worktree_rel": "data/nex-agent-workspaces/sprint-2-worktree",
+  "outcomes": [
+    {
+      "id": "add-interface-field",
+      "ok": false,
+      "reason": "worktree missing file"
+    },
+    {
+      "id": "populate-in-function-body",
+      "ok": false,
+      "reason": "worktree missing file"
+    },
+    {
+      "id": "add-test-case",
+      "ok": false,
+      "reason": "worktree missing file"
+    }
+  ],
+  "typecheck_scoped_errors": 0,
+  "typecheck_total_errors": 753,
+  "vitest_passed": 0,
+  "vitest_failed": 0,
+  "worktree_removed": true,
+  "main_tree_byte_identical": true
+}

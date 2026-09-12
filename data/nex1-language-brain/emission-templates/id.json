@@ -1,0 +1,18 @@
+{
+  "version": "v0.1.0",
+  "language": "id",
+  "notes": "Bahasa Indonesia emission templates · one entry per Nex1RecognisedIntentKind. Slot substitution uses {slot} tokens. Type names + code identifiers are preserved AS-IS (they are proper nouns · not translatable). If a required slot is missing the engine REFUSES · never invents.",
+  "templates": {
+    "add_field_to_type":         { "template": "tambahkan field {field} bertipe {desired_kind} pada {type}",                 "required_slots": ["field", "type", "desired_kind"] },
+    "fix_failing_test":          { "template": "perbaiki test yang gagal di {test_file}",                                    "required_slots": ["test_file"] },
+    "clarification_query":       { "template": "apa itu {term}?",                                                            "required_slots": ["term"] },
+    "cancel_previous":           { "template": "batalkan",                                                                   "required_slots": [] },
+    "acknowledge":               { "template": "iya",                                                                        "required_slots": [] },
+    "modify_return_type":        { "template": "buat function {target_function} agar mengembalikan {desired_return_type}",   "required_slots": ["target_function", "desired_return_type"] },
+    "rename_preserve_behaviour": { "template": "rename {old_name} jadi {new_name} tanpa mengubah perilaku",                  "required_slots": ["old_name", "new_name"] },
+    "make_field_optional":       { "template": "buat field {field} pada {type} menjadi optional",                            "required_slots": ["field", "type"] },
+    "restrict_type_to_union":    { "template": "field {field} pada {type} hanya boleh menerima {allowed_values}",            "required_slots": ["field", "type", "allowed_values"] },
+    "preserve_api_contract":     { "template": "jaga API {target} tetap kompatibel ke belakang",                             "required_slots": ["target"] },
+    "add_purity_constraint":     { "template": "jangan ubah input di {target}",                                              "required_slots": ["target"] }
+  }
+}

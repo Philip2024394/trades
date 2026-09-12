@@ -1,0 +1,7 @@
+{
+  "taxonomyId": "walker.food.dishes",
+  "sourceDir": "food_dishes",
+  "defaultStability": "stable",
+  "refreshCadenceDays": 180,
+  "description": "National Indonesian dishes (nasi goreng, rendang, sate, gado-gado, bakso, soto, martabak, mie goreng, gudeg, pempek, babi guling, nasi campur, etc.). Sourced from curated Indonesian food records; academic food-history sources planned for expansion."
+}

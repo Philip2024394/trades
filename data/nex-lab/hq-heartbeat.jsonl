@@ -1,0 +1,660 @@
+{"ts_iso":"2026-09-10T09:23:34.154Z","hq":{"ok":true,"status":200,"latency_ms":167,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T09:38:10.210Z","hq":{"ok":true,"status":200,"latency_ms":206,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T09:43:10.529Z","hq":{"ok":true,"status":200,"latency_ms":226,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T09:48:10.584Z","hq":{"ok":true,"status":200,"latency_ms":180,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T09:53:10.537Z","hq":{"ok":true,"status":200,"latency_ms":152,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T09:58:10.531Z","hq":{"ok":true,"status":200,"latency_ms":233,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T10:03:10.574Z","hq":{"ok":true,"status":200,"latency_ms":191,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T10:08:10.557Z","hq":{"ok":true,"status":200,"latency_ms":164,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T10:13:10.621Z","hq":{"ok":true,"status":200,"latency_ms":309,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T10:18:10.562Z","hq":{"ok":true,"status":200,"latency_ms":180,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T10:23:10.608Z","hq":{"ok":true,"status":200,"latency_ms":219,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T10:28:10.594Z","hq":{"ok":true,"status":200,"latency_ms":192,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T10:33:10.617Z","hq":{"ok":true,"status":200,"latency_ms":169,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T10:38:11.495Z","hq":{"ok":true,"status":200,"latency_ms":1119,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T10:43:10.548Z","hq":{"ok":true,"status":200,"latency_ms":224,"agents_running":0,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T10:48:10.609Z","hq":{"ok":true,"status":200,"latency_ms":171,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T10:53:10.583Z","hq":{"ok":true,"status":200,"latency_ms":268,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T10:58:10.587Z","hq":{"ok":true,"status":200,"latency_ms":189,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T11:03:10.610Z","hq":{"ok":true,"status":200,"latency_ms":201,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T11:08:10.593Z","hq":{"ok":true,"status":200,"latency_ms":162,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T11:13:10.592Z","hq":{"ok":true,"status":200,"latency_ms":155,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T11:18:10.647Z","hq":{"ok":true,"status":200,"latency_ms":185,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T11:23:10.645Z","hq":{"ok":true,"status":200,"latency_ms":222,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T11:28:10.656Z","hq":{"ok":true,"status":200,"latency_ms":618,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T11:33:10.641Z","hq":{"ok":true,"status":200,"latency_ms":169,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T11:38:10.881Z","hq":{"ok":true,"status":200,"latency_ms":196,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T11:43:10.659Z","hq":{"ok":true,"status":200,"latency_ms":169,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T11:48:10.640Z","hq":{"ok":false,"status":500,"latency_ms":345,"reason":"http_500"},"pg_fallback":{"ok":true,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T11:53:10.685Z","hq":{"ok":false,"status":500,"latency_ms":135,"reason":"http_500"},"pg_fallback":{"ok":true,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T11:58:10.685Z","hq":{"ok":false,"status":500,"latency_ms":139,"reason":"http_500"},"pg_fallback":{"ok":true,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T12:03:10.667Z","hq":{"ok":true,"status":200,"latency_ms":167,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T12:08:13.715Z","hq":{"ok":true,"status":200,"latency_ms":191,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T12:13:10.672Z","hq":{"ok":true,"status":200,"latency_ms":153,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T12:18:10.703Z","hq":{"ok":true,"status":200,"latency_ms":190,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T12:23:10.714Z","hq":{"ok":true,"status":200,"latency_ms":201,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T12:28:10.738Z","hq":{"ok":true,"status":200,"latency_ms":185,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T12:33:10.741Z","hq":{"ok":true,"status":200,"latency_ms":208,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T12:38:11.077Z","hq":{"ok":true,"status":200,"latency_ms":211,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T12:43:10.757Z","hq":{"ok":true,"status":200,"latency_ms":155,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T12:48:10.768Z","hq":{"ok":true,"status":200,"latency_ms":191,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T12:53:10.742Z","hq":{"ok":true,"status":200,"latency_ms":152,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T12:58:10.754Z","hq":{"ok":true,"status":200,"latency_ms":158,"agents_running":7,"agents_total":7,"accommodation_rows":9206}}
+{"ts_iso":"2026-09-10T13:03:10.772Z","hq":{"ok":true,"status":200,"latency_ms":186,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T13:08:10.804Z","hq":{"ok":true,"status":200,"latency_ms":147,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T13:13:10.766Z","hq":{"ok":true,"status":200,"latency_ms":159,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T13:18:10.894Z","hq":{"ok":true,"status":200,"latency_ms":174,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T13:23:10.970Z","hq":{"ok":true,"status":200,"latency_ms":197,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T13:28:10.899Z","hq":{"ok":true,"status":200,"latency_ms":179,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T13:33:10.887Z","hq":{"ok":true,"status":200,"latency_ms":214,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T13:38:11.417Z","hq":{"ok":true,"status":200,"latency_ms":202,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T13:43:10.845Z","hq":{"ok":true,"status":200,"latency_ms":273,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T13:48:10.871Z","hq":{"ok":true,"status":200,"latency_ms":330,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T13:53:10.912Z","hq":{"ok":true,"status":200,"latency_ms":339,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T13:58:10.885Z","hq":{"ok":true,"status":200,"latency_ms":317,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T14:03:10.920Z","hq":{"ok":true,"status":200,"latency_ms":2432,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T14:08:10.869Z","hq":{"ok":true,"status":200,"latency_ms":287,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T14:13:10.884Z","hq":{"ok":false,"status":500,"latency_ms":88,"reason":"http_500"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T14:18:10.459Z","hq":{"ok":true,"status":200,"latency_ms":418,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T14:23:10.413Z","hq":{"ok":true,"status":200,"latency_ms":417,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T14:28:10.421Z","hq":{"ok":true,"status":200,"latency_ms":390,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T14:33:10.436Z","hq":{"ok":true,"status":200,"latency_ms":2075,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T14:38:10.474Z","hq":{"ok":true,"status":200,"latency_ms":384,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T14:43:10.481Z","hq":{"ok":true,"status":200,"latency_ms":2306,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T14:48:10.473Z","hq":{"ok":true,"status":200,"latency_ms":2058,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T14:53:10.559Z","hq":{"ok":true,"status":200,"latency_ms":558,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T14:58:10.510Z","hq":{"ok":true,"status":200,"latency_ms":399,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T15:03:10.510Z","hq":{"ok":true,"status":200,"latency_ms":2203,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T15:08:10.507Z","hq":{"ok":true,"status":200,"latency_ms":512,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T15:13:10.555Z","hq":{"ok":true,"status":200,"latency_ms":415,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T15:18:10.561Z","hq":{"ok":true,"status":200,"latency_ms":429,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T15:23:10.469Z","hq":{"ok":true,"status":200,"latency_ms":340,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T15:28:10.498Z","hq":{"ok":true,"status":200,"latency_ms":364,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T15:33:10.510Z","hq":{"ok":true,"status":200,"latency_ms":2095,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T15:38:10.609Z","hq":{"ok":true,"status":200,"latency_ms":483,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T15:43:10.518Z","hq":{"ok":true,"status":200,"latency_ms":465,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T15:48:10.501Z","hq":{"ok":true,"status":200,"latency_ms":466,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T15:53:10.485Z","hq":{"ok":true,"status":200,"latency_ms":378,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T15:58:10.612Z","hq":{"ok":true,"status":200,"latency_ms":431,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T16:03:10.518Z","hq":{"ok":true,"status":200,"latency_ms":472,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T16:08:10.504Z","hq":{"ok":true,"status":200,"latency_ms":458,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T16:13:10.614Z","hq":{"ok":true,"status":200,"latency_ms":429,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T16:18:13.051Z","hq":{"ok":true,"status":200,"latency_ms":1646,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T16:23:10.538Z","hq":{"ok":true,"status":200,"latency_ms":409,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T16:28:10.597Z","hq":{"ok":true,"status":200,"latency_ms":372,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T16:33:10.566Z","hq":{"ok":true,"status":200,"latency_ms":486,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T16:38:10.590Z","hq":{"ok":true,"status":200,"latency_ms":596,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T16:43:10.588Z","hq":{"ok":true,"status":200,"latency_ms":401,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T16:48:10.616Z","hq":{"ok":true,"status":200,"latency_ms":408,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T16:53:10.637Z","hq":{"ok":true,"status":200,"latency_ms":476,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T16:58:10.619Z","hq":{"ok":true,"status":200,"latency_ms":1749,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T17:03:10.704Z","hq":{"ok":true,"status":200,"latency_ms":609,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T17:08:10.664Z","hq":{"ok":true,"status":200,"latency_ms":463,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T17:13:10.601Z","hq":{"ok":true,"status":200,"latency_ms":435,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T17:18:10.838Z","hq":{"ok":true,"status":200,"latency_ms":577,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T17:23:10.660Z","hq":{"ok":true,"status":200,"latency_ms":358,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T17:28:10.669Z","hq":{"ok":true,"status":200,"latency_ms":7325,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T17:33:10.659Z","hq":{"ok":true,"status":200,"latency_ms":430,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T17:38:10.678Z","hq":{"ok":true,"status":200,"latency_ms":560,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T17:43:11.100Z","hq":{"ok":true,"status":200,"latency_ms":1316,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T17:48:10.694Z","hq":{"ok":true,"status":200,"latency_ms":370,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T17:53:10.673Z","hq":{"ok":true,"status":200,"latency_ms":640,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T17:58:10.699Z","hq":{"ok":true,"status":200,"latency_ms":371,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T18:03:10.758Z","hq":{"ok":true,"status":200,"latency_ms":579,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T18:08:10.703Z","hq":{"ok":true,"status":200,"latency_ms":445,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T18:13:10.796Z","hq":{"ok":true,"status":200,"latency_ms":2131,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T18:18:10.695Z","hq":{"ok":true,"status":200,"latency_ms":404,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T18:23:10.690Z","hq":{"ok":true,"status":200,"latency_ms":494,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T18:28:10.721Z","hq":{"ok":true,"status":200,"latency_ms":366,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T18:33:10.785Z","hq":{"ok":true,"status":200,"latency_ms":400,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T18:38:10.760Z","hq":{"ok":true,"status":200,"latency_ms":468,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T18:43:10.749Z","hq":{"ok":true,"status":200,"latency_ms":394,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T18:48:10.763Z","hq":{"ok":true,"status":200,"latency_ms":384,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T18:53:10.773Z","hq":{"ok":true,"status":200,"latency_ms":520,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T18:58:10.780Z","hq":{"ok":true,"status":200,"latency_ms":398,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T19:03:10.855Z","hq":{"ok":true,"status":200,"latency_ms":660,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T19:08:10.824Z","hq":{"ok":true,"status":200,"latency_ms":537,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T19:13:10.801Z","hq":{"ok":true,"status":200,"latency_ms":441,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T19:18:10.804Z","hq":{"ok":true,"status":200,"latency_ms":434,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T19:23:10.838Z","hq":{"ok":true,"status":200,"latency_ms":392,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T19:28:10.877Z","hq":{"ok":true,"status":200,"latency_ms":482,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T19:33:10.832Z","hq":{"ok":true,"status":200,"latency_ms":507,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T19:38:10.847Z","hq":{"ok":true,"status":200,"latency_ms":661,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T19:43:10.842Z","hq":{"ok":true,"status":200,"latency_ms":430,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T19:48:10.837Z","hq":{"ok":true,"status":200,"latency_ms":684,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T19:53:10.841Z","hq":{"ok":true,"status":200,"latency_ms":475,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T19:58:10.844Z","hq":{"ok":true,"status":200,"latency_ms":526,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T20:03:10.872Z","hq":{"ok":true,"status":200,"latency_ms":530,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T20:08:10.859Z","hq":{"ok":true,"status":200,"latency_ms":418,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T20:13:10.853Z","hq":{"ok":true,"status":200,"latency_ms":499,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T20:18:11.192Z","hq":{"ok":true,"status":200,"latency_ms":639,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T20:23:10.941Z","hq":{"ok":true,"status":200,"latency_ms":480,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T20:28:12.865Z","hq":{"ok":true,"status":200,"latency_ms":1468,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T20:33:10.897Z","hq":{"ok":true,"status":200,"latency_ms":387,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T20:38:10.926Z","hq":{"ok":true,"status":200,"latency_ms":414,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T20:43:10.909Z","hq":{"ok":true,"status":200,"latency_ms":636,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T20:48:10.913Z","hq":{"ok":true,"status":200,"latency_ms":411,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T20:53:10.922Z","hq":{"ok":true,"status":200,"latency_ms":415,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T20:58:10.903Z","hq":{"ok":true,"status":200,"latency_ms":483,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T21:03:10.933Z","hq":{"ok":true,"status":200,"latency_ms":463,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T21:08:10.940Z","hq":{"ok":true,"status":200,"latency_ms":443,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T21:13:10.923Z","hq":{"ok":true,"status":200,"latency_ms":409,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T21:18:11.006Z","hq":{"ok":true,"status":200,"latency_ms":392,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T21:23:10.961Z","hq":{"ok":true,"status":200,"latency_ms":451,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T21:28:10.950Z","hq":{"ok":true,"status":200,"latency_ms":440,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T21:33:11.035Z","hq":{"ok":true,"status":200,"latency_ms":470,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T21:38:10.958Z","hq":{"ok":true,"status":200,"latency_ms":424,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T21:43:10.946Z","hq":{"ok":true,"status":200,"latency_ms":334,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T21:48:10.960Z","hq":{"ok":true,"status":200,"latency_ms":495,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T21:53:11.019Z","hq":{"ok":true,"status":200,"latency_ms":478,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T21:58:11.082Z","hq":{"ok":true,"status":200,"latency_ms":381,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T22:03:11.021Z","hq":{"ok":true,"status":200,"latency_ms":346,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T22:08:11.030Z","hq":{"ok":true,"status":200,"latency_ms":588,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T22:13:11.015Z","hq":{"ok":true,"status":200,"latency_ms":455,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T22:18:11.044Z","hq":{"ok":true,"status":200,"latency_ms":485,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T22:23:11.045Z","hq":{"ok":true,"status":200,"latency_ms":474,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T22:28:11.045Z","hq":{"ok":true,"status":200,"latency_ms":397,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T22:33:11.046Z","hq":{"ok":true,"status":200,"latency_ms":474,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T22:38:11.094Z","hq":{"ok":true,"status":200,"latency_ms":504,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T22:43:11.078Z","hq":{"ok":true,"status":200,"latency_ms":419,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T22:48:11.050Z","hq":{"ok":true,"status":200,"latency_ms":450,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T22:53:11.062Z","hq":{"ok":true,"status":200,"latency_ms":456,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T22:58:11.093Z","hq":{"ok":true,"status":200,"latency_ms":399,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T23:03:11.076Z","hq":{"ok":true,"status":200,"latency_ms":476,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T23:08:11.067Z","hq":{"ok":true,"status":200,"latency_ms":596,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T23:13:11.079Z","hq":{"ok":true,"status":200,"latency_ms":394,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T23:18:11.099Z","hq":{"ok":true,"status":200,"latency_ms":519,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T23:23:11.079Z","hq":{"ok":true,"status":200,"latency_ms":583,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T23:28:11.116Z","hq":{"ok":true,"status":200,"latency_ms":398,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T23:33:11.113Z","hq":{"ok":true,"status":200,"latency_ms":453,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T23:38:11.092Z","hq":{"ok":true,"status":200,"latency_ms":597,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T23:43:11.125Z","hq":{"ok":true,"status":200,"latency_ms":478,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T23:48:11.088Z","hq":{"ok":true,"status":200,"latency_ms":381,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T23:53:11.100Z","hq":{"ok":true,"status":200,"latency_ms":478,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-10T23:58:11.123Z","hq":{"ok":true,"status":200,"latency_ms":377,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T00:03:11.079Z","hq":{"ok":true,"status":200,"latency_ms":479,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T00:08:11.125Z","hq":{"ok":true,"status":200,"latency_ms":488,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T00:13:11.154Z","hq":{"ok":true,"status":200,"latency_ms":393,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T00:18:11.118Z","hq":{"ok":true,"status":200,"latency_ms":489,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T00:23:11.272Z","hq":{"ok":true,"status":200,"latency_ms":770,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T00:28:11.082Z","hq":{"ok":true,"status":200,"latency_ms":592,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T00:33:11.117Z","hq":{"ok":true,"status":200,"latency_ms":492,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T00:38:11.060Z","hq":{"ok":true,"status":200,"latency_ms":544,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T00:43:11.109Z","hq":{"ok":true,"status":200,"latency_ms":433,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T00:48:11.101Z","hq":{"ok":true,"status":200,"latency_ms":632,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T00:53:11.100Z","hq":{"ok":true,"status":200,"latency_ms":565,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T00:58:11.149Z","hq":{"ok":true,"status":200,"latency_ms":513,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T01:03:11.147Z","hq":{"ok":true,"status":200,"latency_ms":401,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T01:08:11.136Z","hq":{"ok":true,"status":200,"latency_ms":424,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T01:13:11.156Z","hq":{"ok":true,"status":200,"latency_ms":407,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T01:18:11.129Z","hq":{"ok":true,"status":200,"latency_ms":579,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T01:23:11.145Z","hq":{"ok":true,"status":200,"latency_ms":535,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T01:28:11.147Z","hq":{"ok":true,"status":200,"latency_ms":547,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T01:33:11.236Z","hq":{"ok":true,"status":200,"latency_ms":400,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T01:38:11.173Z","hq":{"ok":true,"status":200,"latency_ms":620,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T01:43:11.927Z","hq":{"ok":true,"status":200,"latency_ms":858,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T01:48:11.180Z","hq":{"ok":true,"status":200,"latency_ms":599,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T01:53:11.207Z","hq":{"ok":true,"status":200,"latency_ms":454,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T01:58:11.176Z","hq":{"ok":true,"status":200,"latency_ms":497,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T02:03:11.215Z","hq":{"ok":true,"status":200,"latency_ms":491,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T02:08:11.179Z","hq":{"ok":true,"status":200,"latency_ms":629,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T02:13:11.187Z","hq":{"ok":true,"status":200,"latency_ms":551,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T02:18:11.232Z","hq":{"ok":true,"status":200,"latency_ms":627,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T02:23:11.205Z","hq":{"ok":true,"status":200,"latency_ms":579,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T02:28:11.174Z","hq":{"ok":true,"status":200,"latency_ms":420,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T02:33:11.225Z","hq":{"ok":true,"status":200,"latency_ms":464,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T02:38:11.163Z","hq":{"ok":true,"status":200,"latency_ms":525,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T02:43:11.212Z","hq":{"ok":true,"status":200,"latency_ms":602,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T02:48:11.231Z","hq":{"ok":true,"status":200,"latency_ms":757,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T02:53:11.225Z","hq":{"ok":true,"status":200,"latency_ms":504,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T02:58:11.198Z","hq":{"ok":true,"status":200,"latency_ms":423,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T03:03:11.219Z","hq":{"ok":true,"status":200,"latency_ms":505,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T03:08:11.244Z","hq":{"ok":true,"status":200,"latency_ms":391,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T03:13:11.201Z","hq":{"ok":true,"status":200,"latency_ms":540,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T03:18:11.179Z","hq":{"ok":true,"status":200,"latency_ms":532,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T03:23:11.238Z","hq":{"ok":true,"status":200,"latency_ms":615,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T03:28:11.215Z","hq":{"ok":true,"status":200,"latency_ms":580,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T03:33:11.225Z","hq":{"ok":true,"status":200,"latency_ms":485,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T03:38:13.003Z","hq":{"ok":true,"status":200,"latency_ms":1230,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T03:43:11.254Z","hq":{"ok":true,"status":200,"latency_ms":595,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T03:48:11.219Z","hq":{"ok":true,"status":200,"latency_ms":639,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T03:53:11.200Z","hq":{"ok":true,"status":200,"latency_ms":449,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T03:58:11.248Z","hq":{"ok":true,"status":200,"latency_ms":564,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T04:03:11.204Z","hq":{"ok":true,"status":200,"latency_ms":626,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T04:08:11.216Z","hq":{"ok":true,"status":200,"latency_ms":584,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T04:13:11.252Z","hq":{"ok":true,"status":200,"latency_ms":659,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T04:18:11.229Z","hq":{"ok":true,"status":200,"latency_ms":556,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T04:23:11.244Z","hq":{"ok":true,"status":200,"latency_ms":594,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T04:28:11.251Z","hq":{"ok":true,"status":200,"latency_ms":432,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T04:33:11.272Z","hq":{"ok":true,"status":200,"latency_ms":560,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T04:38:11.269Z","hq":{"ok":true,"status":200,"latency_ms":450,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T04:43:10.334Z","hq":{"ok":true,"status":200,"latency_ms":430,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T04:48:10.314Z","hq":{"ok":true,"status":200,"latency_ms":593,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T04:53:10.277Z","hq":{"ok":true,"status":200,"latency_ms":484,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T04:58:10.349Z","hq":{"ok":true,"status":200,"latency_ms":662,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T05:03:10.366Z","hq":{"ok":true,"status":200,"latency_ms":427,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T05:08:10.276Z","hq":{"ok":true,"status":200,"latency_ms":471,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T05:13:10.364Z","hq":{"ok":true,"status":200,"latency_ms":447,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T05:18:10.338Z","hq":{"ok":true,"status":200,"latency_ms":484,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T05:23:10.330Z","hq":{"ok":true,"status":200,"latency_ms":422,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T05:28:10.381Z","hq":{"ok":true,"status":200,"latency_ms":516,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T05:33:10.300Z","hq":{"ok":true,"status":200,"latency_ms":620,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T05:38:10.332Z","hq":{"ok":true,"status":200,"latency_ms":670,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T05:43:10.347Z","hq":{"ok":true,"status":200,"latency_ms":437,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T05:48:10.456Z","hq":{"ok":true,"status":200,"latency_ms":576,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T05:53:10.383Z","hq":{"ok":true,"status":200,"latency_ms":653,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T05:58:10.377Z","hq":{"ok":true,"status":200,"latency_ms":403,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T06:03:10.424Z","hq":{"ok":true,"status":200,"latency_ms":645,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T06:08:10.364Z","hq":{"ok":true,"status":200,"latency_ms":550,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T06:13:10.434Z","hq":{"ok":true,"status":200,"latency_ms":663,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T06:18:10.392Z","hq":{"ok":true,"status":200,"latency_ms":483,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T06:23:10.394Z","hq":{"ok":true,"status":200,"latency_ms":508,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T06:28:10.393Z","hq":{"ok":true,"status":200,"latency_ms":475,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T06:33:10.405Z","hq":{"ok":true,"status":200,"latency_ms":464,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T06:38:10.426Z","hq":{"ok":true,"status":200,"latency_ms":602,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T06:43:10.446Z","hq":{"ok":true,"status":200,"latency_ms":502,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T06:48:10.458Z","hq":{"ok":true,"status":200,"latency_ms":511,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T06:53:10.445Z","hq":{"ok":true,"status":200,"latency_ms":525,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T06:58:10.409Z","hq":{"ok":true,"status":200,"latency_ms":491,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T07:03:10.438Z","hq":{"ok":true,"status":200,"latency_ms":635,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T07:08:10.457Z","hq":{"ok":true,"status":200,"latency_ms":492,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T07:13:10.652Z","hq":{"ok":true,"status":200,"latency_ms":613,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T07:18:10.437Z","hq":{"ok":true,"status":200,"latency_ms":434,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T07:23:10.418Z","hq":{"ok":true,"status":200,"latency_ms":466,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T07:28:10.469Z","hq":{"ok":true,"status":200,"latency_ms":586,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T07:33:10.454Z","hq":{"ok":true,"status":200,"latency_ms":514,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T07:38:10.464Z","hq":{"ok":true,"status":200,"latency_ms":737,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T07:43:10.511Z","hq":{"ok":true,"status":200,"latency_ms":422,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T07:48:10.448Z","hq":{"ok":true,"status":200,"latency_ms":544,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T07:53:10.523Z","hq":{"ok":true,"status":200,"latency_ms":664,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T07:58:10.478Z","hq":{"ok":true,"status":200,"latency_ms":419,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T08:03:10.506Z","hq":{"ok":true,"status":200,"latency_ms":467,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T08:08:10.482Z","hq":{"ok":true,"status":200,"latency_ms":464,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T08:13:10.488Z","hq":{"ok":true,"status":200,"latency_ms":590,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T08:18:10.510Z","hq":{"ok":true,"status":200,"latency_ms":545,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T08:23:10.541Z","hq":{"ok":true,"status":200,"latency_ms":436,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T08:28:10.549Z","hq":{"ok":true,"status":200,"latency_ms":509,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T08:33:10.632Z","hq":{"ok":true,"status":200,"latency_ms":482,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T08:38:10.558Z","hq":{"ok":true,"status":200,"latency_ms":612,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T08:43:10.599Z","hq":{"ok":true,"status":200,"latency_ms":648,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T08:48:10.583Z","hq":{"ok":true,"status":200,"latency_ms":556,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T08:53:10.579Z","hq":{"ok":true,"status":200,"latency_ms":583,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T08:58:10.572Z","hq":{"ok":true,"status":200,"latency_ms":564,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T09:03:10.578Z","hq":{"ok":true,"status":200,"latency_ms":651,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T09:08:10.584Z","hq":{"ok":true,"status":200,"latency_ms":530,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T09:13:10.600Z","hq":{"ok":true,"status":200,"latency_ms":570,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T09:18:10.658Z","hq":{"ok":true,"status":200,"latency_ms":568,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T09:23:10.650Z","hq":{"ok":true,"status":200,"latency_ms":457,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T09:28:10.632Z","hq":{"ok":true,"status":200,"latency_ms":698,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T09:33:10.634Z","hq":{"ok":true,"status":200,"latency_ms":813,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T09:38:10.717Z","hq":{"ok":true,"status":200,"latency_ms":601,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T09:43:10.637Z","hq":{"ok":true,"status":200,"latency_ms":605,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T09:48:10.647Z","hq":{"ok":true,"status":200,"latency_ms":697,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T09:53:10.718Z","hq":{"ok":true,"status":200,"latency_ms":559,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T09:58:10.650Z","hq":{"ok":true,"status":200,"latency_ms":612,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T10:03:10.665Z","hq":{"ok":true,"status":200,"latency_ms":709,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T10:08:10.689Z","hq":{"ok":true,"status":200,"latency_ms":583,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T10:13:10.703Z","hq":{"ok":true,"status":200,"latency_ms":608,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T10:18:10.752Z","hq":{"ok":true,"status":200,"latency_ms":609,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T10:23:10.683Z","hq":{"ok":true,"status":200,"latency_ms":701,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T10:28:10.707Z","hq":{"ok":true,"status":200,"latency_ms":491,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T10:33:10.711Z","hq":{"ok":true,"status":200,"latency_ms":600,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T10:38:10.720Z","hq":{"ok":true,"status":200,"latency_ms":535,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T10:43:10.693Z","hq":{"ok":true,"status":200,"latency_ms":461,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T10:48:10.773Z","hq":{"ok":true,"status":200,"latency_ms":505,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T10:53:10.746Z","hq":{"ok":true,"status":200,"latency_ms":566,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T10:58:10.764Z","hq":{"ok":true,"status":200,"latency_ms":506,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T11:03:10.825Z","hq":{"ok":true,"status":200,"latency_ms":511,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T11:08:10.759Z","hq":{"ok":true,"status":200,"latency_ms":506,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T11:13:10.773Z","hq":{"ok":true,"status":200,"latency_ms":624,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T11:18:10.759Z","hq":{"ok":true,"status":200,"latency_ms":694,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T11:23:10.800Z","hq":{"ok":true,"status":200,"latency_ms":548,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T11:28:10.782Z","hq":{"ok":true,"status":200,"latency_ms":581,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T11:33:10.899Z","hq":{"ok":true,"status":200,"latency_ms":491,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T11:38:10.833Z","hq":{"ok":true,"status":200,"latency_ms":506,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T11:43:10.836Z","hq":{"ok":true,"status":200,"latency_ms":526,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T11:48:10.796Z","hq":{"ok":true,"status":200,"latency_ms":608,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T11:53:10.795Z","hq":{"ok":true,"status":200,"latency_ms":486,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T11:58:10.855Z","hq":{"ok":true,"status":200,"latency_ms":576,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T12:03:10.887Z","hq":{"ok":true,"status":200,"latency_ms":642,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T12:08:10.810Z","hq":{"ok":true,"status":200,"latency_ms":476,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T12:13:10.881Z","hq":{"ok":true,"status":200,"latency_ms":499,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T12:18:10.863Z","hq":{"ok":true,"status":200,"latency_ms":467,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T12:23:10.846Z","hq":{"ok":true,"status":200,"latency_ms":469,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T12:28:10.821Z","hq":{"ok":true,"status":200,"latency_ms":467,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T12:33:10.981Z","hq":{"ok":true,"status":200,"latency_ms":2284,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T12:38:10.836Z","hq":{"ok":true,"status":200,"latency_ms":418,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T12:43:10.902Z","hq":{"ok":true,"status":200,"latency_ms":505,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T12:48:10.843Z","hq":{"ok":true,"status":200,"latency_ms":476,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T12:53:11.022Z","hq":{"ok":true,"status":200,"latency_ms":517,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T12:58:10.904Z","hq":{"ok":true,"status":200,"latency_ms":498,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T13:03:10.901Z","hq":{"ok":true,"status":200,"latency_ms":560,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T13:08:10.901Z","hq":{"ok":true,"status":200,"latency_ms":496,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T13:13:11.058Z","hq":{"ok":true,"status":200,"latency_ms":9757,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T13:18:10.999Z","hq":{"ok":true,"status":200,"latency_ms":2724,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T13:23:10.967Z","hq":{"ok":true,"status":200,"latency_ms":5482,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T13:28:11.220Z","hq":{"ok":true,"status":200,"latency_ms":3030,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T13:33:11.021Z","hq":{"ok":true,"status":200,"latency_ms":754,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T13:38:10.984Z","hq":{"ok":true,"status":200,"latency_ms":583,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T13:43:11.002Z","hq":{"ok":true,"status":200,"latency_ms":2664,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T13:48:10.996Z","hq":{"ok":true,"status":200,"latency_ms":2741,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T13:53:11.028Z","hq":{"ok":true,"status":200,"latency_ms":1449,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T13:58:11.005Z","hq":{"ok":true,"status":200,"latency_ms":701,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T14:03:10.991Z","hq":{"ok":false,"status":500,"latency_ms":290,"reason":"http_500"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T14:08:11.032Z","hq":{"ok":true,"status":200,"latency_ms":1309,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T14:13:11.007Z","hq":{"ok":true,"status":200,"latency_ms":927,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T14:18:11.181Z","hq":{"ok":true,"status":200,"latency_ms":1332,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T14:23:10.999Z","hq":{"ok":true,"status":200,"latency_ms":922,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T14:28:11.051Z","hq":{"ok":true,"status":200,"latency_ms":1426,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T14:33:11.075Z","hq":{"ok":true,"status":200,"latency_ms":906,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T14:38:11.048Z","hq":{"ok":true,"status":200,"latency_ms":3810,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T14:43:11.102Z","hq":{"ok":true,"status":200,"latency_ms":974,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T14:48:11.059Z","hq":{"ok":true,"status":200,"latency_ms":884,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T14:53:11.087Z","hq":{"ok":true,"status":200,"latency_ms":970,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T14:58:11.147Z","hq":{"ok":true,"status":200,"latency_ms":1530,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T15:03:11.108Z","hq":{"ok":true,"status":200,"latency_ms":916,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T15:08:11.082Z","hq":{"ok":true,"status":200,"latency_ms":4226,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T15:13:11.265Z","hq":{"ok":true,"status":200,"latency_ms":1521,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T15:18:11.145Z","hq":{"ok":true,"status":200,"latency_ms":1203,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T15:23:11.077Z","hq":{"ok":true,"status":200,"latency_ms":1136,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T15:28:11.044Z","hq":{"ok":true,"status":200,"latency_ms":844,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T15:33:11.162Z","hq":{"ok":true,"status":200,"latency_ms":1170,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T15:38:11.186Z","hq":{"ok":true,"status":200,"latency_ms":1053,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T15:43:11.174Z","hq":{"ok":true,"status":200,"latency_ms":898,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T15:48:11.115Z","hq":{"ok":true,"status":200,"latency_ms":802,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T15:53:11.231Z","hq":{"ok":true,"status":200,"latency_ms":974,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T15:58:11.143Z","hq":{"ok":true,"status":200,"latency_ms":1410,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T16:03:11.253Z","hq":{"ok":true,"status":200,"latency_ms":1788,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T16:08:11.236Z","hq":{"ok":true,"status":200,"latency_ms":1089,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T16:13:11.213Z","hq":{"ok":true,"status":200,"latency_ms":909,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T16:18:11.199Z","hq":{"ok":true,"status":200,"latency_ms":861,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T16:23:11.193Z","hq":{"ok":true,"status":200,"latency_ms":836,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T16:28:11.200Z","hq":{"ok":true,"status":200,"latency_ms":835,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T16:33:11.255Z","hq":{"ok":true,"status":200,"latency_ms":731,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T16:38:11.288Z","hq":{"ok":true,"status":200,"latency_ms":829,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T16:43:11.299Z","hq":{"ok":true,"status":200,"latency_ms":4327,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T16:48:11.365Z","hq":{"ok":true,"status":200,"latency_ms":8615,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T16:53:11.272Z","hq":{"ok":true,"status":200,"latency_ms":2360,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T16:58:11.422Z","hq":{"ok":true,"status":200,"latency_ms":3398,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T17:03:11.423Z","hq":{"ok":false,"status":0,"latency_ms":63,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T17:08:11.335Z","hq":{"ok":false,"status":0,"latency_ms":61,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T17:13:11.317Z","hq":{"ok":true,"status":200,"latency_ms":563,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T17:18:11.292Z","hq":{"ok":true,"status":200,"latency_ms":318,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T17:23:11.284Z","hq":{"ok":true,"status":200,"latency_ms":377,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T17:28:11.479Z","hq":{"ok":true,"status":200,"latency_ms":492,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T17:33:10.296Z","hq":{"ok":true,"status":200,"latency_ms":421,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T17:38:10.295Z","hq":{"ok":true,"status":200,"latency_ms":342,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T17:43:10.343Z","hq":{"ok":true,"status":200,"latency_ms":424,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T17:48:10.298Z","hq":{"ok":true,"status":200,"latency_ms":356,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T17:53:10.300Z","hq":{"ok":true,"status":200,"latency_ms":392,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T17:58:10.360Z","hq":{"ok":true,"status":200,"latency_ms":316,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T18:03:10.390Z","hq":{"ok":true,"status":200,"latency_ms":404,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T18:08:10.350Z","hq":{"ok":true,"status":200,"latency_ms":592,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T18:13:10.351Z","hq":{"ok":true,"status":200,"latency_ms":318,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T18:18:10.352Z","hq":{"ok":true,"status":200,"latency_ms":350,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T18:23:10.359Z","hq":{"ok":true,"status":200,"latency_ms":333,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T18:28:10.372Z","hq":{"ok":true,"status":200,"latency_ms":348,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T18:33:10.508Z","hq":{"ok":true,"status":200,"latency_ms":356,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T18:38:10.396Z","hq":{"ok":true,"status":200,"latency_ms":302,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T18:43:10.359Z","hq":{"ok":true,"status":200,"latency_ms":351,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T18:48:10.377Z","hq":{"ok":true,"status":200,"latency_ms":352,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T18:53:10.454Z","hq":{"ok":true,"status":200,"latency_ms":397,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T18:58:10.521Z","hq":{"ok":true,"status":200,"latency_ms":338,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T19:03:10.455Z","hq":{"ok":true,"status":200,"latency_ms":530,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T19:08:10.455Z","hq":{"ok":true,"status":200,"latency_ms":309,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T19:13:10.518Z","hq":{"ok":true,"status":200,"latency_ms":368,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T19:18:10.477Z","hq":{"ok":true,"status":200,"latency_ms":389,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T19:23:10.478Z","hq":{"ok":true,"status":200,"latency_ms":382,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T19:28:10.531Z","hq":{"ok":true,"status":200,"latency_ms":373,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T19:33:10.579Z","hq":{"ok":true,"status":200,"latency_ms":375,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T19:38:10.498Z","hq":{"ok":true,"status":200,"latency_ms":350,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T19:43:12.306Z","hq":{"ok":true,"status":200,"latency_ms":539,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T19:48:10.593Z","hq":{"ok":false,"status":0,"latency_ms":55,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T19:53:10.488Z","hq":{"ok":false,"status":0,"latency_ms":60,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T19:58:10.491Z","hq":{"ok":false,"status":0,"latency_ms":69,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T20:03:10.496Z","hq":{"ok":false,"status":0,"latency_ms":59,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T20:08:10.499Z","hq":{"ok":false,"status":0,"latency_ms":60,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T20:13:10.545Z","hq":{"ok":false,"status":0,"latency_ms":47,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T20:18:10.603Z","hq":{"ok":false,"status":0,"latency_ms":98,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T20:23:10.566Z","hq":{"ok":false,"status":0,"latency_ms":51,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T20:28:10.498Z","hq":{"ok":false,"status":0,"latency_ms":51,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T20:33:10.625Z","hq":{"ok":false,"status":0,"latency_ms":56,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T20:38:10.567Z","hq":{"ok":false,"status":0,"latency_ms":61,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T20:43:10.586Z","hq":{"ok":false,"status":0,"latency_ms":76,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T20:48:10.558Z","hq":{"ok":false,"status":0,"latency_ms":56,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T20:53:10.596Z","hq":{"ok":false,"status":0,"latency_ms":66,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T20:58:10.587Z","hq":{"ok":false,"status":0,"latency_ms":62,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T21:03:10.959Z","hq":{"ok":false,"status":0,"latency_ms":60,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T21:08:10.646Z","hq":{"ok":false,"status":0,"latency_ms":53,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T21:13:10.584Z","hq":{"ok":false,"status":0,"latency_ms":49,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T21:18:10.699Z","hq":{"ok":false,"status":0,"latency_ms":52,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T21:23:10.625Z","hq":{"ok":false,"status":0,"latency_ms":59,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T21:28:10.634Z","hq":{"ok":false,"status":0,"latency_ms":51,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T21:33:10.631Z","hq":{"ok":false,"status":0,"latency_ms":49,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T21:38:10.663Z","hq":{"ok":false,"status":0,"latency_ms":54,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T21:43:10.653Z","hq":{"ok":false,"status":0,"latency_ms":51,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T21:48:10.628Z","hq":{"ok":false,"status":0,"latency_ms":54,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T21:53:10.665Z","hq":{"ok":false,"status":0,"latency_ms":54,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T21:58:10.667Z","hq":{"ok":false,"status":0,"latency_ms":54,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T22:03:10.761Z","hq":{"ok":false,"status":0,"latency_ms":75,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T22:08:10.688Z","hq":{"ok":false,"status":0,"latency_ms":62,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T22:13:10.680Z","hq":{"ok":false,"status":0,"latency_ms":49,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T22:18:10.726Z","hq":{"ok":false,"status":0,"latency_ms":50,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T22:23:10.717Z","hq":{"ok":false,"status":0,"latency_ms":49,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T22:28:10.812Z","hq":{"ok":false,"status":0,"latency_ms":55,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T22:33:10.735Z","hq":{"ok":false,"status":0,"latency_ms":60,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T22:38:10.866Z","hq":{"ok":false,"status":0,"latency_ms":89,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T22:43:11.157Z","hq":{"ok":false,"status":0,"latency_ms":53,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T22:48:10.792Z","hq":{"ok":false,"status":0,"latency_ms":61,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T22:53:10.833Z","hq":{"ok":false,"status":0,"latency_ms":53,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T22:58:10.793Z","hq":{"ok":false,"status":0,"latency_ms":52,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T23:03:10.784Z","hq":{"ok":false,"status":0,"latency_ms":52,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T23:08:10.796Z","hq":{"ok":false,"status":0,"latency_ms":55,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T23:13:10.796Z","hq":{"ok":false,"status":0,"latency_ms":57,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T23:18:10.806Z","hq":{"ok":false,"status":0,"latency_ms":47,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T23:23:10.821Z","hq":{"ok":false,"status":0,"latency_ms":52,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T23:28:10.848Z","hq":{"ok":false,"status":0,"latency_ms":46,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T23:33:10.875Z","hq":{"ok":false,"status":0,"latency_ms":50,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T23:38:10.871Z","hq":{"ok":false,"status":0,"latency_ms":54,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T23:43:10.870Z","hq":{"ok":false,"status":0,"latency_ms":47,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T23:48:10.866Z","hq":{"ok":false,"status":0,"latency_ms":47,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T23:53:10.896Z","hq":{"ok":false,"status":0,"latency_ms":48,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-11T23:58:10.826Z","hq":{"ok":false,"status":0,"latency_ms":51,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T00:03:10.889Z","hq":{"ok":false,"status":0,"latency_ms":52,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T00:08:10.941Z","hq":{"ok":false,"status":0,"latency_ms":55,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T00:13:10.961Z","hq":{"ok":false,"status":0,"latency_ms":63,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T00:18:10.977Z","hq":{"ok":false,"status":0,"latency_ms":48,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T00:23:10.905Z","hq":{"ok":false,"status":0,"latency_ms":49,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T00:28:10.972Z","hq":{"ok":false,"status":0,"latency_ms":47,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T00:33:10.935Z","hq":{"ok":false,"status":0,"latency_ms":49,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T00:38:10.948Z","hq":{"ok":false,"status":0,"latency_ms":50,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T00:43:10.914Z","hq":{"ok":false,"status":0,"latency_ms":51,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T00:48:10.994Z","hq":{"ok":false,"status":0,"latency_ms":47,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T00:53:10.943Z","hq":{"ok":false,"status":0,"latency_ms":53,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T00:58:11.018Z","hq":{"ok":false,"status":0,"latency_ms":50,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T01:03:10.963Z","hq":{"ok":false,"status":0,"latency_ms":48,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T01:08:11.026Z","hq":{"ok":false,"status":0,"latency_ms":55,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T01:13:11.043Z","hq":{"ok":false,"status":0,"latency_ms":50,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T01:18:10.966Z","hq":{"ok":false,"status":0,"latency_ms":52,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T01:23:10.984Z","hq":{"ok":false,"status":0,"latency_ms":52,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T01:28:11.204Z","hq":{"ok":false,"status":0,"latency_ms":95,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T01:33:11.050Z","hq":{"ok":false,"status":0,"latency_ms":55,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T01:38:11.017Z","hq":{"ok":false,"status":0,"latency_ms":52,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T01:43:11.045Z","hq":{"ok":false,"status":0,"latency_ms":59,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T01:48:11.123Z","hq":{"ok":false,"status":0,"latency_ms":45,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T01:53:11.047Z","hq":{"ok":false,"status":0,"latency_ms":49,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T01:58:11.078Z","hq":{"ok":false,"status":0,"latency_ms":49,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T02:03:11.075Z","hq":{"ok":false,"status":0,"latency_ms":55,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T02:08:11.091Z","hq":{"ok":false,"status":0,"latency_ms":53,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T02:13:11.128Z","hq":{"ok":false,"status":0,"latency_ms":50,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T02:18:11.079Z","hq":{"ok":false,"status":0,"latency_ms":52,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T02:23:11.159Z","hq":{"ok":false,"status":0,"latency_ms":57,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T02:28:11.140Z","hq":{"ok":false,"status":0,"latency_ms":47,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T02:33:11.112Z","hq":{"ok":false,"status":0,"latency_ms":49,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T02:38:11.134Z","hq":{"ok":false,"status":0,"latency_ms":50,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T02:43:11.178Z","hq":{"ok":false,"status":0,"latency_ms":53,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T02:48:11.328Z","hq":{"ok":false,"status":0,"latency_ms":70,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T02:53:11.142Z","hq":{"ok":false,"status":0,"latency_ms":52,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T02:58:11.198Z","hq":{"ok":false,"status":0,"latency_ms":45,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T03:03:11.232Z","hq":{"ok":false,"status":0,"latency_ms":45,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T03:08:11.156Z","hq":{"ok":false,"status":0,"latency_ms":52,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T03:13:11.193Z","hq":{"ok":false,"status":0,"latency_ms":61,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T03:18:11.227Z","hq":{"ok":false,"status":0,"latency_ms":51,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T03:23:11.253Z","hq":{"ok":false,"status":0,"latency_ms":56,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T03:28:11.207Z","hq":{"ok":false,"status":0,"latency_ms":57,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T03:33:11.250Z","hq":{"ok":false,"status":0,"latency_ms":54,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T03:38:11.237Z","hq":{"ok":false,"status":0,"latency_ms":66,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T03:43:11.239Z","hq":{"ok":false,"status":0,"latency_ms":59,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T03:48:11.233Z","hq":{"ok":false,"status":0,"latency_ms":52,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T03:53:11.261Z","hq":{"ok":false,"status":0,"latency_ms":58,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T03:58:11.260Z","hq":{"ok":false,"status":0,"latency_ms":44,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T04:03:10.337Z","hq":{"ok":false,"status":0,"latency_ms":56,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T04:08:10.275Z","hq":{"ok":false,"status":0,"latency_ms":62,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T04:13:10.345Z","hq":{"ok":false,"status":0,"latency_ms":70,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T04:18:10.371Z","hq":{"ok":false,"status":0,"latency_ms":57,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T04:23:10.340Z","hq":{"ok":false,"status":0,"latency_ms":62,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T04:28:10.303Z","hq":{"ok":false,"status":0,"latency_ms":57,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T04:33:10.344Z","hq":{"ok":false,"status":0,"latency_ms":65,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T04:38:10.344Z","hq":{"ok":false,"status":0,"latency_ms":52,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T04:43:10.311Z","hq":{"ok":false,"status":0,"latency_ms":56,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T04:48:10.366Z","hq":{"ok":false,"status":0,"latency_ms":62,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T04:53:10.386Z","hq":{"ok":false,"status":0,"latency_ms":53,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T04:58:10.333Z","hq":{"ok":false,"status":0,"latency_ms":57,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T05:03:10.322Z","hq":{"ok":false,"status":0,"latency_ms":52,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T05:08:10.379Z","hq":{"ok":false,"status":0,"latency_ms":60,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T05:13:10.330Z","hq":{"ok":false,"status":0,"latency_ms":62,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T05:18:10.403Z","hq":{"ok":false,"status":0,"latency_ms":56,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T05:23:10.413Z","hq":{"ok":false,"status":0,"latency_ms":72,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T05:28:10.332Z","hq":{"ok":false,"status":0,"latency_ms":50,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T05:33:10.352Z","hq":{"ok":false,"status":0,"latency_ms":58,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T05:38:10.398Z","hq":{"ok":false,"status":0,"latency_ms":65,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T05:43:10.389Z","hq":{"ok":false,"status":0,"latency_ms":51,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T05:48:10.375Z","hq":{"ok":false,"status":0,"latency_ms":55,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T05:53:10.437Z","hq":{"ok":false,"status":0,"latency_ms":56,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T05:58:10.454Z","hq":{"ok":false,"status":0,"latency_ms":54,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T06:03:10.489Z","hq":{"ok":false,"status":0,"latency_ms":68,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T06:08:10.411Z","hq":{"ok":false,"status":0,"latency_ms":65,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T06:13:10.473Z","hq":{"ok":false,"status":0,"latency_ms":72,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T06:18:10.426Z","hq":{"ok":false,"status":0,"latency_ms":53,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T06:23:14.596Z","hq":{"ok":true,"status":200,"latency_ms":1290,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T06:28:10.541Z","hq":{"ok":true,"status":200,"latency_ms":972,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T06:33:10.524Z","hq":{"ok":true,"status":200,"latency_ms":663,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T06:38:10.559Z","hq":{"ok":true,"status":200,"latency_ms":365,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T06:43:10.528Z","hq":{"ok":true,"status":200,"latency_ms":360,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T06:48:10.528Z","hq":{"ok":true,"status":200,"latency_ms":367,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T06:53:10.592Z","hq":{"ok":true,"status":200,"latency_ms":604,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T06:58:10.472Z","hq":{"ok":true,"status":200,"latency_ms":397,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T07:03:10.484Z","hq":{"ok":true,"status":200,"latency_ms":303,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T07:08:10.491Z","hq":{"ok":true,"status":200,"latency_ms":320,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T07:13:10.643Z","hq":{"ok":true,"status":200,"latency_ms":399,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T07:18:10.561Z","hq":{"ok":true,"status":200,"latency_ms":396,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T07:23:10.525Z","hq":{"ok":true,"status":200,"latency_ms":353,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T07:28:10.549Z","hq":{"ok":true,"status":200,"latency_ms":1778,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T07:33:10.591Z","hq":{"ok":true,"status":200,"latency_ms":1629,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T07:38:10.567Z","hq":{"ok":true,"status":200,"latency_ms":432,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T07:43:10.585Z","hq":{"ok":true,"status":200,"latency_ms":348,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T07:48:10.828Z","hq":{"ok":true,"status":200,"latency_ms":5695,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T07:53:10.590Z","hq":{"ok":true,"status":200,"latency_ms":2184,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T07:58:10.614Z","hq":{"ok":true,"status":200,"latency_ms":441,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T08:03:10.668Z","hq":{"ok":true,"status":200,"latency_ms":812,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T08:08:10.591Z","hq":{"ok":true,"status":200,"latency_ms":3387,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T08:13:10.685Z","hq":{"ok":true,"status":200,"latency_ms":657,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T08:18:10.620Z","hq":{"ok":true,"status":200,"latency_ms":583,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T08:23:10.625Z","hq":{"ok":true,"status":200,"latency_ms":1518,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T08:28:10.763Z","hq":{"ok":true,"status":200,"latency_ms":927,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T08:33:10.704Z","hq":{"ok":true,"status":200,"latency_ms":731,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T08:38:10.730Z","hq":{"ok":true,"status":200,"latency_ms":834,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T08:43:10.685Z","hq":{"ok":true,"status":200,"latency_ms":589,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T08:48:10.722Z","hq":{"ok":true,"status":200,"latency_ms":607,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T08:53:10.693Z","hq":{"ok":true,"status":200,"latency_ms":8826,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T08:58:10.733Z","hq":{"ok":true,"status":200,"latency_ms":2043,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T09:03:10.727Z","hq":{"ok":true,"status":200,"latency_ms":1830,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T09:08:16.727Z","hq":{"ok":true,"status":200,"latency_ms":8185,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T09:13:10.719Z","hq":{"ok":true,"status":200,"latency_ms":998,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T09:18:10.715Z","hq":{"ok":true,"status":200,"latency_ms":4739,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T09:23:10.730Z","hq":{"ok":true,"status":200,"latency_ms":978,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T09:28:10.767Z","hq":{"ok":true,"status":200,"latency_ms":630,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T09:33:10.735Z","hq":{"ok":true,"status":200,"latency_ms":486,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T09:38:10.722Z","hq":{"ok":true,"status":200,"latency_ms":594,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T09:43:10.821Z","hq":{"ok":true,"status":200,"latency_ms":1887,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T09:48:10.745Z","hq":{"ok":true,"status":200,"latency_ms":510,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T09:53:10.787Z","hq":{"ok":true,"status":200,"latency_ms":1620,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T09:58:10.761Z","hq":{"ok":true,"status":200,"latency_ms":379,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T10:03:10.845Z","hq":{"ok":true,"status":200,"latency_ms":264,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T10:08:10.757Z","hq":{"ok":true,"status":200,"latency_ms":276,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T10:13:10.779Z","hq":{"ok":true,"status":200,"latency_ms":281,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T10:18:10.871Z","hq":{"ok":true,"status":200,"latency_ms":342,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T10:23:10.833Z","hq":{"ok":true,"status":200,"latency_ms":405,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T10:28:10.809Z","hq":{"ok":true,"status":200,"latency_ms":259,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T10:33:10.882Z","hq":{"ok":true,"status":200,"latency_ms":257,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T10:38:10.861Z","hq":{"ok":true,"status":200,"latency_ms":269,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T10:43:10.869Z","hq":{"ok":true,"status":200,"latency_ms":298,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T10:48:10.824Z","hq":{"ok":true,"status":200,"latency_ms":261,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T10:53:10.837Z","hq":{"ok":true,"status":200,"latency_ms":319,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T10:58:10.864Z","hq":{"ok":true,"status":200,"latency_ms":410,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T11:03:10.942Z","hq":{"ok":true,"status":200,"latency_ms":243,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T11:08:10.934Z","hq":{"ok":true,"status":200,"latency_ms":287,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T11:13:10.895Z","hq":{"ok":true,"status":200,"latency_ms":282,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T11:18:10.896Z","hq":{"ok":true,"status":200,"latency_ms":5216,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T11:23:10.932Z","hq":{"ok":true,"status":200,"latency_ms":301,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T11:28:10.915Z","hq":{"ok":true,"status":200,"latency_ms":507,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T11:33:11.001Z","hq":{"ok":true,"status":200,"latency_ms":411,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T11:38:10.959Z","hq":{"ok":true,"status":200,"latency_ms":1277,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T11:43:10.950Z","hq":{"ok":true,"status":200,"latency_ms":341,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T11:48:10.989Z","hq":{"ok":true,"status":200,"latency_ms":455,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T11:53:10.972Z","hq":{"ok":true,"status":200,"latency_ms":346,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T11:58:10.995Z","hq":{"ok":true,"status":200,"latency_ms":491,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T12:03:11.016Z","hq":{"ok":true,"status":200,"latency_ms":461,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T12:08:11.033Z","hq":{"ok":true,"status":200,"latency_ms":306,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T12:13:10.981Z","hq":{"ok":true,"status":200,"latency_ms":1316,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T12:18:11.058Z","hq":{"ok":true,"status":200,"latency_ms":357,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T12:23:11.028Z","hq":{"ok":true,"status":200,"latency_ms":322,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T12:28:10.994Z","hq":{"ok":true,"status":200,"latency_ms":279,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T12:33:11.040Z","hq":{"ok":true,"status":200,"latency_ms":284,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T12:38:11.023Z","hq":{"ok":true,"status":200,"latency_ms":1279,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T12:43:11.020Z","hq":{"ok":true,"status":200,"latency_ms":335,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T12:48:11.102Z","hq":{"ok":true,"status":200,"latency_ms":352,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T12:53:11.101Z","hq":{"ok":true,"status":200,"latency_ms":339,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T12:58:11.075Z","hq":{"ok":true,"status":200,"latency_ms":1681,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T13:03:11.094Z","hq":{"ok":true,"status":200,"latency_ms":475,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T13:08:11.051Z","hq":{"ok":true,"status":200,"latency_ms":339,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T13:13:11.032Z","hq":{"ok":true,"status":200,"latency_ms":283,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T13:18:11.080Z","hq":{"ok":true,"status":200,"latency_ms":383,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T13:23:11.078Z","hq":{"ok":true,"status":200,"latency_ms":2290,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T13:28:11.156Z","hq":{"ok":true,"status":200,"latency_ms":455,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T13:33:11.111Z","hq":{"ok":true,"status":200,"latency_ms":325,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T13:38:11.117Z","hq":{"ok":true,"status":200,"latency_ms":702,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T13:43:11.172Z","hq":{"ok":true,"status":200,"latency_ms":377,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T13:48:11.199Z","hq":{"ok":true,"status":200,"latency_ms":315,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T13:53:11.184Z","hq":{"ok":true,"status":200,"latency_ms":337,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T13:58:11.169Z","hq":{"ok":true,"status":200,"latency_ms":439,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T14:03:11.226Z","hq":{"ok":true,"status":200,"latency_ms":475,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T14:08:11.164Z","hq":{"ok":true,"status":200,"latency_ms":354,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T14:13:11.164Z","hq":{"ok":true,"status":200,"latency_ms":368,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T14:18:11.187Z","hq":{"ok":true,"status":200,"latency_ms":352,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T14:23:11.232Z","hq":{"ok":true,"status":200,"latency_ms":335,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T14:28:11.231Z","hq":{"ok":true,"status":200,"latency_ms":644,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T14:33:11.269Z","hq":{"ok":true,"status":200,"latency_ms":1598,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T14:38:11.341Z","hq":{"ok":true,"status":200,"latency_ms":700,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T14:43:11.230Z","hq":{"ok":true,"status":200,"latency_ms":348,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T14:48:11.211Z","hq":{"ok":true,"status":200,"latency_ms":395,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T14:53:11.249Z","hq":{"ok":true,"status":200,"latency_ms":431,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T14:58:11.224Z","hq":{"ok":true,"status":200,"latency_ms":422,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T15:03:11.281Z","hq":{"ok":true,"status":200,"latency_ms":427,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T15:08:11.249Z","hq":{"ok":true,"status":200,"latency_ms":842,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T15:13:11.230Z","hq":{"ok":true,"status":200,"latency_ms":609,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T15:18:11.284Z","hq":{"ok":true,"status":200,"latency_ms":318,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T15:23:11.257Z","hq":{"ok":true,"status":200,"latency_ms":410,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T15:28:11.334Z","hq":{"ok":true,"status":200,"latency_ms":2488,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T15:33:11.307Z","hq":{"ok":true,"status":200,"latency_ms":2697,"agents_running":7,"agents_total":7,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T15:43:10.919Z","hq":{"ok":false,"status":0,"latency_ms":72,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T15:48:10.710Z","hq":{"ok":false,"status":0,"latency_ms":52,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T15:53:10.753Z","hq":{"ok":false,"status":0,"latency_ms":56,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T15:58:10.749Z","hq":{"ok":false,"status":0,"latency_ms":45,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T16:03:10.816Z","hq":{"ok":false,"status":0,"latency_ms":52,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T16:08:10.827Z","hq":{"ok":false,"status":0,"latency_ms":61,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T16:13:10.824Z","hq":{"ok":false,"status":0,"latency_ms":48,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T16:18:10.785Z","hq":{"ok":false,"status":0,"latency_ms":55,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T16:23:10.929Z","hq":{"ok":false,"status":0,"latency_ms":56,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T16:28:10.873Z","hq":{"ok":false,"status":0,"latency_ms":52,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}
+{"ts_iso":"2026-09-12T16:33:10.800Z","hq":{"ok":false,"status":0,"latency_ms":61,"reason":"TypeError: fetch failed"},"pg_fallback":{"ok":true,"accommodation_rows":9230}}

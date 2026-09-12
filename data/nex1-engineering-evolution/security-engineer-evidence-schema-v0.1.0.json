@@ -1,0 +1,30 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX Security Engineer Evidence Specialist · founder-authorised 2026-09-12. Constitutional purpose: 'Produce security evidence · never declare a system secure.' Advisory. Deterministic. Findings are observations, not verdicts.",
+  "record_type": "SECURITY_ENGINEER_EVIDENCE",
+  "constitutional_purpose_locked": "Finding a potential vulnerability is not the same as declaring the system insecure. The specialist reports observations. NEX3 adjudicates. NEX3 gate 3 (security) currently HOLDs on missing security evidence — this specialist fills that gap without ever claiming safety.",
+  "outcomes_permitted": {
+    "NO_FINDING_IN_SCOPE":      "in-scope rulesets found no matching pattern · NOT 'secure' · scope-limited absence-of-witnessed-finding",
+    "FINDINGS_PRESENT":         "one or more findings emitted with location + rule_id + severity + tool + version",
+    "SCOPE_INCOMPLETE":         "one or more rulesets could not be executed · partial coverage · results are advisory",
+    "NOT_MEASURED":             "no tool bindings available · no scope defined · specialist did not proceed",
+    "INSUFFICIENT_EVIDENCE":    "attempted but insufficient signal"
+  },
+  "finding_families": ["injection","secret","authz","tenant_isolation","dep_vuln","unsafe_fs","unsafe_exec","xss","csrf","ssrf","unsafe_deserialisation","path_traversal","sensitive_data_exposure","config_weakness","audit_gap"],
+  "severity_levels": ["info","low","medium","high","critical"],
+  "severity_source_locked": "severity is tool-reported (Semgrep · gitleaks · osv-scanner · CVSS via OSV) · specialist does NOT interpret · specialist does NOT elevate · specialist does NOT reclassify",
+  "forbidden_vocabulary_in_output": [
+    "secure","safe","hardened","attacker-proof","unhackable","no vulnerabilities","zero-vulnerability",
+    "security_score","threat_score","risk_score","confidence_percent","overall_security","aggregate_quality","weighted_total"
+  ],
+  "invariants": [
+    "MUST NOT emit 'secure' / 'safe' / 'no vulnerabilities' · only NO_FINDING_IN_SCOPE or FINDINGS_PRESENT with explicit ruleset + scope",
+    "MUST NOT interpret exploitability · reports raw + CWE/CVE only",
+    "MUST NOT depend on network at scan time · vuln DB pre-refreshed and hash-pinned",
+    "severity is tool-reported · specialist forbidden from synthesising a security score",
+    "authorisation=false · execution=false · authority_boundary='evidence_producer_only'",
+    "external_llm_used=false · deterministic=true",
+    "routes through Evidence Validation"
+  ],
+  "v0_1_0_tool_binding_status": "LIMITED_V0 · deterministic-fixture engine emits records with the same shape a Semgrep/gitleaks/osv-scanner run would produce · real vendor-tool binding requires founder-authorised follow-up phase"
+}

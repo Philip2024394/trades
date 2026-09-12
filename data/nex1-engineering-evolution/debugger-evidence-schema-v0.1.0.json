@@ -1,0 +1,98 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX Debugger Evidence Specialist · Phase 5 IMPLEMENTATION contract · founder-authorised 2026-09-12. Constitutional purpose (locked): 'Find reproducible causal explanations for observed software failures without claiming certainty beyond the evidence.' Advisory. Deterministic. Never executes. Never mutates code. Never self-promotes into NEX1.",
+  "record_type": "DEBUGGER_EVIDENCE",
+  "constitutional_purpose_locked_2026_09_12": "Find reproducible causal explanations for observed software failures without claiming certainty beyond the evidence. Symptom ≠ Cause. Cause-unknown is a first-class successful outcome.",
+  "state_model_boundary": {
+    "statement": "Debugger uses its own outcome vocabulary. It does NOT reuse Evidence Engine PASSED/FAILED and does NOT introduce a new numeric confidence family. Only the six ordinal outcomes are permitted.",
+    "reused_from_evidence_engine_states": ["MEASURED","NOT_MEASURED","NOT_APPLICABLE","INCONCLUSIVE","BLOCKED","STALE"],
+    "debugger_specific_outcomes_v0_1_0": ["REPRODUCED","ROOT_CAUSE_SUPPORTED","ROOT_CAUSE_PLAUSIBLE","ROOT_CAUSE_UNRESOLVED","NOT_REPRODUCIBLE","INSUFFICIENT_EVIDENCE"]
+  },
+  "outcomes_permitted": {
+    "REPRODUCED":              "Failure reproduced deterministically · root-cause analysis not yet reached a determination · not a positive verdict on cause",
+    "ROOT_CAUSE_SUPPORTED":    "Failure reproduced AND SBFL top-ranked location intersects with AST-diff churn set AND minimised repro confirms the location · strongest evidence tier available in v0.1.0",
+    "ROOT_CAUSE_PLAUSIBLE":    "Failure reproduced AND SBFL has a top candidate BUT AST-diff does not intersect OR minimised repro does not confirm · weaker evidence tier · NEX3 may still request more evidence",
+    "ROOT_CAUSE_UNRESOLVED":   "Failure reproduced AND no single candidate cause emerges from SBFL/AST-diff intersection · FIRST-CLASS SUCCESSFUL OUTCOME · not a failure of the specialist · honest verdict when evidence does not support a determination",
+    "NOT_REPRODUCIBLE":        "Reproduction attempts do not yield the failure across seeded runs · FIRST-CLASS SUCCESSFUL OUTCOME · honest verdict",
+    "INSUFFICIENT_EVIDENCE":   "Reproduction fixture broken · no coverage data · missing inputs · malformed observation record · specialist cannot proceed responsibly"
+  },
+  "failure_timeline_shape": {
+    "session_id":              "string · monotonic e.g. DBG-<timestamp>-<rand>",
+    "input_hash":              "sha256 prefix of the failing input",
+    "seed":                    "deterministic PRNG seed used across the session",
+    "steps":                   "array of { step_index · operation · state_before_hash · state_after_hash · diff_from_expected? · notes? }",
+    "failure":                 "{ step_index · kind · observed_output · stack_trace_hash? }",
+    "first_divergence":        "{ step_index · expected_state_hash · actual_state_hash · diff_description } OR null when no expected-state baseline supplied",
+    "determinism_witness":     "{ first_run_hash · second_run_hash · identical }"
+  },
+  "sbfl_formulas_permitted": {
+    "ochiai":    "|e_f| / sqrt((|e_f| + |n_f|) * (|e_f| + |e_p|))  · literature-named · NOT a fabricated quality score",
+    "tarantula": "( |e_f| / (|e_f| + |n_f|) ) / ( |e_f| / (|e_f| + |n_f|) + |e_p| / (|e_p| + |n_p|) )  · literature-named",
+    "dstar":     "|e_f|^2 / ( |e_p| + |n_f| ) · literature-named"
+  },
+  "sbfl_result_fields": [
+    { "name": "formula",           "shape": "one of sbfl_formulas_permitted" },
+    { "name": "ranking",           "shape": "array of { location · path · line · suspicion } · sorted descending by suspicion" },
+    { "name": "top_candidate",     "shape": "{ path · line · symbol? } | null" },
+    { "name": "coverage_matrix_hash", "shape": "sha256 prefix" }
+  ],
+  "ast_diff_fields": [
+    { "name": "diff_id",           "shape": "string" },
+    { "name": "baseline_source_hash", "shape": "sha256 prefix" },
+    { "name": "candidate_source_hash","shape": "sha256 prefix" },
+    { "name": "churned_nodes",     "shape": "array of { path · syntax_kind · line_start · line_end · churn_class: added|removed|modified }" }
+  ],
+  "root_cause_candidate_fields": [
+    { "name": "candidate_id",      "shape": "string" },
+    { "name": "location",          "shape": "{ path · line · symbol? }" },
+    { "name": "evidence_ids",      "shape": "array of string · MUST include at least one SBFL evidence_id AND at least one AST-diff evidence_id for ROOT_CAUSE_SUPPORTED · ROOT_CAUSE_PLAUSIBLE relaxes this to any one authoritative source" },
+    { "name": "symptom_frame",     "shape": "{ file · line · stack_hash } · the surface site where the failure was observed · distinguished from cause location" },
+    { "name": "confidence_class",  "shape": "one of ['strong','plausible','weak','insufficient'] · ORDINAL · never a percent · never a numeric score" }
+  ],
+  "record_fields": [
+    { "name": "session_id" },
+    { "name": "schema_version",     "shape": "semver · v0.1.0" },
+    { "name": "record_type",        "shape": "constant · 'DEBUGGER_EVIDENCE'" },
+    { "name": "outcome",            "shape": "one of outcomes_permitted" },
+    { "name": "outcome_reason",     "shape": "string · reconstructable from evidence · MUST NOT use forbidden vocabulary" },
+    { "name": "reproduction",       "shape": "{ attempted · reproduced · attempts · seed · deterministic } · booleans + integer + seed" },
+    { "name": "minimised_repro",    "shape": "{ present · size_bytes · reduction_ratio · ddmin_iterations } | null" },
+    { "name": "failure_timeline",   "shape": "FailureTimeline | null" },
+    { "name": "sbfl_result",        "shape": "SBFLResult | null" },
+    { "name": "ast_diff",           "shape": "ASTDiff | null" },
+    { "name": "root_cause_candidates", "shape": "array of RootCauseCandidate · may be empty when outcome ∈ {NOT_REPRODUCIBLE · INSUFFICIENT_EVIDENCE · REPRODUCED}" },
+    { "name": "authoritative_top_candidate", "shape": "RootCauseCandidate | null · non-null only when outcome ∈ {ROOT_CAUSE_SUPPORTED · ROOT_CAUSE_PLAUSIBLE}" },
+    { "name": "evidence_pool_ids",  "shape": "array of string · every evidence_id emitted so downstream Evidence Validation can walk the chain" },
+    { "name": "reproducibility_information", "shape": "{ command · cwd · env_fingerprint · node_version · platform · seed }" },
+    { "name": "byte_identity_witness", "shape": "{ before_hash · after_hash · drift_count · drifted[] }" },
+    { "name": "determinism_witness", "shape": "{ first_run_hash · second_run_hash · identical }" },
+    { "name": "limitations",        "shape": "string · what this session does NOT establish" },
+    { "name": "authorisation",      "shape": "constant · false" },
+    { "name": "execution",          "shape": "constant · false" },
+    { "name": "authority_boundary", "shape": "constant · 'evidence_producer_only'" },
+    { "name": "attribution",        "shape": "object · role='nex_debugger_evidence_specialist' · authority='descriptive_read_only' · produced_by='nex_debugger_evidence_specialist' · external_llm_used=false · deterministic=true · taught_by='master_ai_engineer'" }
+  ],
+  "forbidden_vocabulary_in_output": [
+    "confidence_percent", "confidence_score", "probably", "likely_87", "likely_92", "0.87 confidence", "73% probability",
+    "quality_score", "overall_quality", "health_score", "technical_debt", "better_score", "winner_score",
+    "superiority_score", "code_grade", "overall_grade", "aggregate_quality", "weighted_total",
+    "87% better", "92% confidence", "root_cause_score",
+    "bad code","good code","clean code","poor code","optimal code","better code","worse code",
+    "maintainable","unmaintainable","recommended","should refactor","should split","should merge",
+    "high complexity","low complexity","excessive","insufficient","poorly designed","well designed",
+    "code smell","anti-pattern","best practice","worst practice"
+  ],
+  "invariants": [
+    "Debugger MUST NOT modify · execute · merge · deploy · authorise · promote · mutate · self-modify",
+    "Debugger MUST NOT feed NEX1 directly · evidence routes through Evidence Validation → Evidence Engine → NEX2 → NEX3 → Founder → Approved Standards",
+    "Every outcome ∈ {ROOT_CAUSE_SUPPORTED · ROOT_CAUSE_PLAUSIBLE} MUST cite ≥1 SBFL evidence_id AND ≥1 AST-diff evidence_id (SUPPORTED) or at least one authoritative source (PLAUSIBLE)",
+    "ROOT_CAUSE_UNRESOLVED and NOT_REPRODUCIBLE are FIRST-CLASS SUCCESSFUL OUTCOMES · they are correct verdicts when evidence does not support a determination",
+    "confidence_class is ORDINAL · never a percent · never numeric score",
+    "Determinism · same input + same seed → identical outcome + identical reasoning body",
+    "Byte-identity witness · Debugger MUST NOT mutate the measured project files",
+    "external_llm_used MUST be false · deterministic MUST be true",
+    "authority_boundary is constant · 'evidence_producer_only'",
+    "authorisation and execution fields are constants · false · not runtime-modifiable",
+    "Independence Constitution compliance · Debugger identity + operation + evidence retention MUST survive removal of any local inference adapter (adapter-removal conformance test)"
+  ]
+}

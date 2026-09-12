@@ -1,0 +1,44 @@
+{
+  "run_id": "improve_780becbb-f5b1-408c-8409-7724ed306e38",
+  "candidate_id": "cand_1a4a64ce-df4a-4bf1-b94a-a836632ddd93",
+  "candidate_kind": "knowledge",
+  "started_at": "2026-09-05T21:28:21.891Z",
+  "completed_at": "2026-09-05T21:28:21.892Z",
+  "triggered_by": "runner",
+  "status_trace": [
+    {
+      "from": "OBSERVED",
+      "to": "REJECTED",
+      "at": "2026-09-05T21:28:21.892Z",
+      "note": "terminal:duplicate_candidate:fcabac40fb0deb1ce4af74a4"
+    }
+  ],
+  "terminal_status": "REJECTED",
+  "manifest_at_start": {
+    "benchmark_version": "UNKNOWN",
+    "benchmark_hash": "UNKNOWN",
+    "reviewer_hash": "UNKNOWN",
+    "evaluator_hash": "UNKNOWN",
+    "knowledge_snapshot_hash": "UNKNOWN",
+    "environment_identifier": "UNKNOWN",
+    "captured_at": "2026-09-05T21:28:21.892Z"
+  },
+  "manifest_at_end": {
+    "benchmark_version": "UNKNOWN",
+    "benchmark_hash": "UNKNOWN",
+    "reviewer_hash": "UNKNOWN",
+    "evaluator_hash": "UNKNOWN",
+    "knowledge_snapshot_hash": "UNKNOWN",
+    "environment_identifier": "UNKNOWN",
+    "captured_at": "2026-09-05T21:28:21.892Z"
+  },
+  "promotion_decision": {
+    "status": "REJECTED",
+    "failure_reason": "duplicate_candidate",
+    "reasons": [
+      "duplicate_candidate:fcabac40fb0deb1ce4af74a4"
+    ]
+  },
+  "notes": "duplicate_candidate:fcabac40fb0deb1ce4af74a4",
+  "final_status": null
+}

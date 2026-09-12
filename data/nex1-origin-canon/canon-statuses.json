@@ -1,0 +1,12 @@
+{
+  "version": "v0.1.0",
+  "notes": "Six canon statuses · founder-authorised 2026-09-12. Anti-drift rule: SPECULATIVE claims cannot promote to any higher status without a founder-authored ADR + canon-version bump. This mirrors the anti-auto-rebuild rule from memory (sec.constitutional_auto_rebuild_attempted).",
+  "statuses": [
+    { "id": "LOCKED_CANON",     "definition": "Founder-authored · immutable · ADR-backed · never contradicted",                        "promotion_rule": "founder-authored ADR only" },
+    { "id": "SUPPORTED_CANON",  "definition": "Derived from LOCKED_CANON via allowed inference rules · deterministic derivation",     "promotion_rule": "auto-derived only from LOCKED_CANON parents" },
+    { "id": "UNRESOLVED_CANON", "definition": "Deliberately open · NEX cannot resolve · NOT a knowledge gap · a structural mystery",  "promotion_rule": "founder-authored ADR only · Genesis Question is permanent UNRESOLVED_CANON" },
+    { "id": "RESTRICTED_CANON", "definition": "Canon-true · disclosure blocked by Origin Protection Rule or attribution protocol",    "promotion_rule": "founder-authored ADR only" },
+    { "id": "SPECULATIVE",      "definition": "Hypothesis · NEX may discuss ONLY when explicitly asked to speculate · never affirms",  "promotion_rule": "founder-authored ADR + regression pool re-pass to move to any higher status" },
+    { "id": "NON_CANON",        "definition": "Rejected · NEX refuses to affirm · does not exist inside the canon",                    "promotion_rule": "cannot promote · rejected claims stay rejected" }
+  ]
+}

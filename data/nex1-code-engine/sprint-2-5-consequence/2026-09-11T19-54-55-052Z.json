@@ -1,0 +1,44 @@
+{
+  "at": "2026-09-11T19:52:22.630Z",
+  "protocol": "consequence-reasoning · deterministic",
+  "initial": [
+    {
+      "id": "add-interface-field",
+      "ok": true,
+      "delta_bytes": 148
+    },
+    {
+      "id": "populate-in-function-body",
+      "ok": true,
+      "delta_bytes": 46
+    },
+    {
+      "id": "add-test-case",
+      "ok": true,
+      "delta_bytes": 116
+    }
+  ],
+  "repair_iterations": [
+    {
+      "iteration": 1,
+      "scoped_errors": 2,
+      "findings": [
+        {
+          "file": "src/lib/nex-agent/code-engine/code-engine.test.ts",
+          "line": 325,
+          "property": "resolved_at",
+          "ok": false,
+          "reason": "no ObjectLiteralExpression at src/lib/nex-agent/code-engine/code-engine.test.ts:325:5"
+        }
+      ],
+      "repairs_applied": 0
+    }
+  ],
+  "vitest": {
+    "exit": 0,
+    "passed": 72,
+    "failed": 0
+  },
+  "final_scoped_errors": 2,
+  "main_tree_byte_identical": true
+}

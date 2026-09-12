@@ -1,0 +1,45 @@
+{
+  "version": "v0.1.0",
+  "notes": "Independent Observer · Trust Domain C · Phase 8 v0.1.6. Performs independent filesystem walk AFTER workspace is frozen. Reconciles walk against Broker event log. Emits Ed25519-signed AUTHORITATIVE_DIFF_BUNDLE.",
+  "record_type": "AUTHORITATIVE_DIFF_BUNDLE",
+  "operation_sequence": [
+    "wait for WORKSPACE_FROZEN signal from Broker (workspace mutation revoked)",
+    "verify Broker's sealed event log signature · Ed25519 with Broker pubkey",
+    "walk workspace root recursively · sorted lexicographically · sha256 per file",
+    "load pre-state manifest from Broker's snapshot service (Ed25519-verified)",
+    "compute derived diff: files_created + files_modified + files_deleted",
+    "reconcile: every FS_MUTATION event in log must have a walk entry · every walk change must have an event",
+    "compare against NEX1_DIFF_PROPOSAL · report reconciliation_verdict",
+    "sign the AUTHORITATIVE_DIFF_BUNDLE with Observer private key · route to Evidence Validation"
+  ],
+  "reconciliation_verdicts": [
+    "MATCH · every mutation independently observed AND reconciled with Broker log · NEX1 proposal aligns",
+    "NEX1_MISREPORT_DETECTED · walk shows mutations not in NEX1 proposal OR vice versa",
+    "ORPHAN_EVENT · Broker log contains FS_MUTATION with no corresponding walk change",
+    "ORPHAN_WALK_CHANGE · walk contains change with no corresponding FS_MUTATION event",
+    "SIGNATURE_INVALID · Broker event log signature failed verification"
+  ],
+  "authoritative_diff_bundle_fields": [
+    "record_type=AUTHORITATIVE_DIFF_BUNDLE",
+    "work_order_id · work_order_authorisation_ref",
+    "workspace_path (relative · not absolute)",
+    "pre_state_manifest_hash · signed by Broker",
+    "broker_event_log_seal_hash · signed by Broker",
+    "authoritative_files_created[] · authoritative_files_modified[] · authoritative_files_deleted[] · each with pre_hash + post_hash",
+    "reconciliation_verdict · from list above",
+    "nex1_proposal_ref (advisory · not authoritative)",
+    "observer_walk_started_at · observer_walk_completed_at (deterministic clock)",
+    "signature · Ed25519 by Observer private key · Observer key_id + key_version",
+    "attribution · role='nex_independent_observer' · authority='authoritative_observation' · produced_by='nex_independent_observer' · external_llm_used=false · deterministic=true",
+    "authorisation=false · execution=false · authority_boundary='observer_authoritative_only'"
+  ],
+  "invariants": [
+    "Observer has ZERO write authority over workspace or Broker artifacts",
+    "Observer has ZERO in-process reference to NEX1 Master Engineer code · v0.1.0 T2 = module boundary · T3 = separate process",
+    "Observer's Ed25519 private key is separate from Broker's · never exchanged",
+    "Observer refuses to walk until WORKSPACE_FROZEN signal received",
+    "Observer walk MUST be deterministic · same workspace + same event log → identical bundle",
+    "Reconciliation verdict is authoritative · NEX1 proposal is advisory",
+    "external_llm_used=false · deterministic=true"
+  ]
+}

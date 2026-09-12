@@ -1,0 +1,18 @@
+{
+  "run_id": "chromium-proof-2026-09-08T17-30-54-034Z",
+  "started_at": "2026-09-08T17:30:54.034Z",
+  "base_url": "http://localhost:3008",
+  "chat_url": "http://localhost:3008/nex-app/chat",
+  "query_1": "Find me hotels near Malioboro",
+  "query_2": "Which one has a pool?",
+  "events": [
+    {
+      "kind": "opened",
+      "screenshot": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\2026-09-08T17-30-54-034Z-01-open.png",
+      "at": "2026-09-08T17:30:56.927Z"
+    }
+  ],
+  "turns": [],
+  "api_intercepts": [],
+  "verdict": "NO_COMPOSER_FOUND"
+}

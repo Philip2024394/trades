@@ -1,0 +1,234 @@
+{
+  "at": "2026-09-11T21:54:44.481Z",
+  "attribution": {
+    "teaching_infrastructure": "capability-f-discovery.ts + prior C+D+E mechanisms · taught_by=master_ai_engineer",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner"
+  },
+  "tests": {
+    "T1": {
+      "test": "T1 · Reuse novel-E · autonomous schema.ts discovery",
+      "root": "data/nex1-code-engine/novel-e",
+      "discovery_calls": [
+        {
+          "type_name": "Reservation",
+          "declaring_paths": [
+            "C:/Users/Victus/trades/data/nex1-code-engine/novel-e/schema.ts"
+          ],
+          "consuming_paths": [
+            {
+              "path": "C:/Users/Victus/trades/data/nex1-code-engine/novel-e/reservation-builder.ts",
+              "matched": "C:/Users/Victus/trades/data/nex1-code-engine/novel-e/schema.ts"
+            }
+          ],
+          "excluded_count": 4,
+          "ambiguity": "none",
+          "audit_size": 3
+        }
+      ],
+      "repair_attempts": [
+        {
+          "file": "data/nex1-code-engine/novel-e/reservation-builder.ts",
+          "property": "guests",
+          "result": "repaired",
+          "value": "0",
+          "declaration_used": "C:/Users/Victus/trades/data/nex1-code-engine/novel-e/schema.ts",
+          "applied": true
+        }
+      ],
+      "initial_scoped_errors": 1,
+      "final_scoped_errors": 0,
+      "byte_identical": true,
+      "ambiguity_seen": "none",
+      "verdict": "pass",
+      "declaring_ok": true,
+      "consumers_ok": true,
+      "excluded_ok": true,
+      "ambiguity_ok": true
+    },
+    "T2": {
+      "test": "T2 · Unseen mini-repo · nested + irrelevant files must be excluded",
+      "root": "data/nex1-code-engine/mini-repo-f",
+      "discovery_calls": [
+        {
+          "type_name": "User",
+          "declaring_paths": [
+            "C:/Users/Victus/trades/data/nex1-code-engine/mini-repo-f/src/types/deep/user.ts"
+          ],
+          "consuming_paths": [
+            {
+              "path": "C:/Users/Victus/trades/data/nex1-code-engine/mini-repo-f/src/callers/bar/index.ts",
+              "matched": "C:/Users/Victus/trades/data/nex1-code-engine/mini-repo-f/src/types/deep/user.ts"
+            },
+            {
+              "path": "C:/Users/Victus/trades/data/nex1-code-engine/mini-repo-f/src/callers/foo/build.ts",
+              "matched": "C:/Users/Victus/trades/data/nex1-code-engine/mini-repo-f/src/types/deep/user.ts"
+            }
+          ],
+          "excluded_count": 1,
+          "ambiguity": "none",
+          "audit_size": 4
+        },
+        {
+          "type_name": "User",
+          "declaring_paths": [
+            "C:/Users/Victus/trades/data/nex1-code-engine/mini-repo-f/src/types/deep/user.ts"
+          ],
+          "consuming_paths": [
+            {
+              "path": "C:/Users/Victus/trades/data/nex1-code-engine/mini-repo-f/src/callers/bar/index.ts",
+              "matched": "C:/Users/Victus/trades/data/nex1-code-engine/mini-repo-f/src/types/deep/user.ts"
+            },
+            {
+              "path": "C:/Users/Victus/trades/data/nex1-code-engine/mini-repo-f/src/callers/foo/build.ts",
+              "matched": "C:/Users/Victus/trades/data/nex1-code-engine/mini-repo-f/src/types/deep/user.ts"
+            }
+          ],
+          "excluded_count": 1,
+          "ambiguity": "none",
+          "audit_size": 4
+        }
+      ],
+      "repair_attempts": [
+        {
+          "file": "data/nex1-code-engine/mini-repo-f/src/callers/bar/index.ts",
+          "property": "age",
+          "result": "repaired",
+          "value": "0",
+          "declaration_used": "C:/Users/Victus/trades/data/nex1-code-engine/mini-repo-f/src/types/deep/user.ts",
+          "applied": true
+        },
+        {
+          "file": "data/nex1-code-engine/mini-repo-f/src/callers/foo/build.ts",
+          "property": "age",
+          "result": "repaired",
+          "value": "0",
+          "declaration_used": "C:/Users/Victus/trades/data/nex1-code-engine/mini-repo-f/src/types/deep/user.ts",
+          "applied": true
+        }
+      ],
+      "initial_scoped_errors": 2,
+      "final_scoped_errors": 0,
+      "byte_identical": true,
+      "ambiguity_seen": "none",
+      "verdict": "pass",
+      "declaring_ok": true,
+      "consumers_ok": true,
+      "excluded_ok": true,
+      "ambiguity_ok": true
+    },
+    "T3": {
+      "test": "T3 · Adversarial duplicate symbol · import-resolved",
+      "root": "data/nex1-code-engine/duplicate-f",
+      "discovery_calls": [
+        {
+          "type_name": "Vehicle",
+          "declaring_paths": [
+            "C:/Users/Victus/trades/data/nex1-code-engine/duplicate-f/module-a/vehicle.ts",
+            "C:/Users/Victus/trades/data/nex1-code-engine/duplicate-f/module-b/vehicle.ts"
+          ],
+          "consuming_paths": [
+            {
+              "path": "C:/Users/Victus/trades/data/nex1-code-engine/duplicate-f/consumer.ts",
+              "matched": "C:/Users/Victus/trades/data/nex1-code-engine/duplicate-f/module-a/vehicle.ts"
+            }
+          ],
+          "excluded_count": 0,
+          "ambiguity": "duplicate_symbol_with_resolution",
+          "audit_size": 5
+        }
+      ],
+      "repair_attempts": [
+        {
+          "file": "data/nex1-code-engine/duplicate-f/consumer.ts",
+          "property": "colour",
+          "result": "repaired",
+          "value": "\"\"",
+          "declaration_used": "C:/Users/Victus/trades/data/nex1-code-engine/duplicate-f/module-a/vehicle.ts",
+          "applied": true
+        }
+      ],
+      "initial_scoped_errors": 1,
+      "final_scoped_errors": 0,
+      "byte_identical": true,
+      "ambiguity_seen": "duplicate_symbol_with_resolution",
+      "verdict": "pass",
+      "declaring_ok": true,
+      "consumers_ok": true,
+      "excluded_ok": true,
+      "ambiguity_ok": true,
+      "declaration_resolved_to_module_a": true
+    },
+    "T4": {
+      "test": "T4 · Novel generalisation · fresh symbols/paths/nesting",
+      "root": "data/nex1-code-engine/novel-f",
+      "discovery_calls": [
+        {
+          "type_name": "AuditEntry",
+          "declaring_paths": [
+            "C:/Users/Victus/trades/data/nex1-code-engine/novel-f/lib/models/audit-entry.ts"
+          ],
+          "consuming_paths": [
+            {
+              "path": "C:/Users/Victus/trades/data/nex1-code-engine/novel-f/services/audit-writer/batch.ts",
+              "matched": "C:/Users/Victus/trades/data/nex1-code-engine/novel-f/lib/models/audit-entry.ts"
+            },
+            {
+              "path": "C:/Users/Victus/trades/data/nex1-code-engine/novel-f/services/audit-writer/writer.ts",
+              "matched": "C:/Users/Victus/trades/data/nex1-code-engine/novel-f/lib/models/audit-entry.ts"
+            }
+          ],
+          "excluded_count": 1,
+          "ambiguity": "none",
+          "audit_size": 4
+        },
+        {
+          "type_name": "AuditEntry",
+          "declaring_paths": [
+            "C:/Users/Victus/trades/data/nex1-code-engine/novel-f/lib/models/audit-entry.ts"
+          ],
+          "consuming_paths": [
+            {
+              "path": "C:/Users/Victus/trades/data/nex1-code-engine/novel-f/services/audit-writer/batch.ts",
+              "matched": "C:/Users/Victus/trades/data/nex1-code-engine/novel-f/lib/models/audit-entry.ts"
+            },
+            {
+              "path": "C:/Users/Victus/trades/data/nex1-code-engine/novel-f/services/audit-writer/writer.ts",
+              "matched": "C:/Users/Victus/trades/data/nex1-code-engine/novel-f/lib/models/audit-entry.ts"
+            }
+          ],
+          "excluded_count": 1,
+          "ambiguity": "none",
+          "audit_size": 4
+        }
+      ],
+      "repair_attempts": [
+        {
+          "file": "data/nex1-code-engine/novel-f/services/audit-writer/batch.ts",
+          "property": "attempts",
+          "result": "repaired",
+          "value": "0",
+          "declaration_used": "C:/Users/Victus/trades/data/nex1-code-engine/novel-f/lib/models/audit-entry.ts",
+          "applied": true
+        },
+        {
+          "file": "data/nex1-code-engine/novel-f/services/audit-writer/writer.ts",
+          "property": "attempts",
+          "result": "repaired",
+          "value": "0",
+          "declaration_used": "C:/Users/Victus/trades/data/nex1-code-engine/novel-f/lib/models/audit-entry.ts",
+          "applied": true
+        }
+      ],
+      "initial_scoped_errors": 2,
+      "final_scoped_errors": 0,
+      "byte_identical": true,
+      "ambiguity_seen": "none",
+      "verdict": "pass",
+      "declaring_ok": true,
+      "consumers_ok": true,
+      "excluded_ok": true,
+      "ambiguity_ok": true
+    }
+  }
+}

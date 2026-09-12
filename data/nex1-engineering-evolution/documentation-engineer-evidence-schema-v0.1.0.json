@@ -1,0 +1,29 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX Documentation Engineer Evidence Specialist · founder-authorised 2026-09-12. Detects drift between code and documentation. Advisory. Never auto-rewrites.",
+  "record_type": "DOCUMENTATION_ENGINEER_EVIDENCE",
+  "constitutional_purpose_locked": "Detect drift between code, API surface, schema, migration, and documentation. Never rewrite docs autonomously. Flag drift and produce a diff proposal for founder disposition.",
+  "outcomes_permitted": {
+    "DOCS_IN_SYNC":                 "no drift detected in scope",
+    "API_SURFACE_DRIFT":            "TypeScript public API surface changed but committed .api.md unchanged",
+    "OPENAPI_DRIFT":                "committed OpenAPI diverges from code-generated OpenAPI (oasdiff evidence)",
+    "SCHEMA_DRIFT":                 "SQL migration or generated types diverge from committed docs",
+    "PROSE_SYMBOL_DRIFT":           "prose references a symbol that no longer exists",
+    "TESTS_COVERAGE_GAP":           "documented function has no test presence in the test tree",
+    "MULTIPLE_DRIFTS":              "multiple drift categories present · every one cited",
+    "NOT_MEASURED":                 "no docs directory or no source supplied",
+    "INSUFFICIENT_EVIDENCE":        "attempted but insufficient signal"
+  },
+  "must_consume": ["api-extractor-report","typedoc-hash","oasdiff-report","migration-files","committed-docs"],
+  "forbidden_vocabulary_in_output": [
+    "docs_score","documentation_quality","overall_quality","best_practice","complete_documentation","confidence_percent","aggregate_quality"
+  ],
+  "invariants": [
+    "MUST NEVER rewrite documentation autonomously",
+    "MUST NEVER delete orphan doc sections (may be constitutional)",
+    "flags drift · produces diff proposal · founder authorises",
+    "authorisation=false · execution=false · authority_boundary='evidence_producer_only'",
+    "external_llm_used=false · deterministic=true",
+    "routes through Evidence Validation"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "at": "2026-09-11T19:19:37.491Z",
+  "protocol": "consequence-reasoning · deterministic",
+  "initial": [
+    {
+      "id": "add-interface-field",
+      "ok": true,
+      "delta_bytes": 148
+    },
+    {
+      "id": "populate-in-function-body",
+      "ok": true,
+      "delta_bytes": 46
+    },
+    {
+      "id": "add-test-case",
+      "ok": true,
+      "delta_bytes": 1280
+    }
+  ],
+  "repair_iterations": [
+    {
+      "iteration": 1,
+      "scoped_errors": 1,
+      "repairs_applied": 0,
+      "unrepaired_sample": [
+        {
+          "file": "src/lib/nex-agent/code-engine/code-engine.test.ts",
+          "line": 324,
+          "code": "TS2322",
+          "message": "Type '{ task_id: string; attempt_id: string; at: string; adapter_id: string; adapter_scope: \"code_proposal_only\"; model_id: null; model_vers"
+        }
+      ]
+    }
+  ],
+  "vitest": {
+    "exit": 0,
+    "passed": 70,
+    "failed": 0
+  },
+  "final_scoped_errors": 1,
+  "main_tree_byte_identical": true
+}

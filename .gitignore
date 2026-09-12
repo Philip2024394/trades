@@ -121,3 +121,21 @@ data/nex-backups/*.sql.gz
 # Oversized data-load SQL files (622 MB backfill etc.) — split DDL from
 # bulk data or store the bulk load separately.
 data/migration-*/backfill-*.sql
+
+# 2026-09-12 · NEX agent workspaces are per-Work-Order ephemeral clones
+# of the repo. They accumulate .cache/, next-dev.log, mediapipe wasm
+# duplicates, and workspace state. Not source of truth.
+data/nex-agent-workspaces/
+
+# Development / dev-server / harvest logs written under data/ by workers
+# and dev processes. Never source of truth.
+data/**/*.log
+
+# Files explicitly marked for deletion (`.todelete` suffix)
+**/*.todelete
+
+# 2026-09-12 · NEX agent runtime state — heartbeats, PIDs, event logs,
+# command queues, override flags. All actively written by background
+# agents (accommodation, business, master_ai, programmer, speaking,
+# travel, vision) and cannot be reliably git-staged while agents run.
+data/nex-agent-runtime/

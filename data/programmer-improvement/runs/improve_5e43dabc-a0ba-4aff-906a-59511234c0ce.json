@@ -1,0 +1,44 @@
+{
+  "run_id": "improve_5e43dabc-a0ba-4aff-906a-59511234c0ce",
+  "candidate_id": "cand_660ff96a-607b-4cc4-bc2a-67800a0683a6",
+  "candidate_kind": "experience",
+  "started_at": "2026-09-05T21:28:39.967Z",
+  "completed_at": "2026-09-05T21:28:39.968Z",
+  "triggered_by": "runner",
+  "status_trace": [
+    {
+      "from": "OBSERVED",
+      "to": "REJECTED",
+      "at": "2026-09-05T21:28:39.968Z",
+      "note": "terminal:duplicate_candidate:b3ea79faf16ae6f1b5db7de0"
+    }
+  ],
+  "terminal_status": "REJECTED",
+  "manifest_at_start": {
+    "benchmark_version": "UNKNOWN",
+    "benchmark_hash": "UNKNOWN",
+    "reviewer_hash": "UNKNOWN",
+    "evaluator_hash": "UNKNOWN",
+    "knowledge_snapshot_hash": "UNKNOWN",
+    "environment_identifier": "UNKNOWN",
+    "captured_at": "2026-09-05T21:28:39.968Z"
+  },
+  "manifest_at_end": {
+    "benchmark_version": "UNKNOWN",
+    "benchmark_hash": "UNKNOWN",
+    "reviewer_hash": "UNKNOWN",
+    "evaluator_hash": "UNKNOWN",
+    "knowledge_snapshot_hash": "UNKNOWN",
+    "environment_identifier": "UNKNOWN",
+    "captured_at": "2026-09-05T21:28:39.968Z"
+  },
+  "promotion_decision": {
+    "status": "REJECTED",
+    "failure_reason": "duplicate_candidate",
+    "reasons": [
+      "duplicate_candidate:b3ea79faf16ae6f1b5db7de0"
+    ]
+  },
+  "notes": "duplicate_candidate:b3ea79faf16ae6f1b5db7de0",
+  "final_status": null
+}

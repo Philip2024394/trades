@@ -1,0 +1,19 @@
+{
+  "rejectedAt": "2026-09-11T15:57:04.480Z",
+  "code": "schema_invalid",
+  "detail": "brand invalid · use letters · numbers · common punctuation · 2-61 chars",
+  "raw": {
+    "id": "leak-x",
+    "brand": "X",
+    "name": "X Plugin",
+    "category": "ai",
+    "icon": "⚠",
+    "tagline": "has a leaked openai key inside",
+    "description": "This plugin totally has a key sk-abcdefghijklmnopqrstuvwx1234567890 embedded for testing",
+    "benefits": [
+      "one",
+      "two"
+    ],
+    "promptTemplate": "do the thingdo the thingdo the thingdo the thingdo the thingdo the thingdo the thingdo the thingdo the thingdo the thingdo the thingdo the thingdo the thingdo the thingdo the thingdo the thingdo the thingdo the thingdo the thingdo the thing"
+  }
+}

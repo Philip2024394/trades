@@ -1,0 +1,269 @@
+{
+  "started_at": "2026-09-08T18-09-37-714Z",
+  "n": 5,
+  "completed": 5,
+  "q1_pass": 2,
+  "q2_pass": 5,
+  "context_pass": 0,
+  "context_partial": 2,
+  "per_session": [
+    {
+      "iteration": 1,
+      "label": "s01",
+      "started_at": "2026-09-08T18:09:37.869Z",
+      "q1_intercept": null,
+      "q2_intercept": {
+        "intent": "conversation",
+        "has_real_names": false,
+        "count_reported": null,
+        "empty_reported": false,
+        "card_hits": 0,
+        "world_cards": 0,
+        "voice_reply_en": "Which one do you mean? I don't have a previous list in this conversation. Want me to find some?",
+        "reply_snippet": "Which one do you mean? I don't have a previous list in this conversation. Want me to find some?",
+        "hotel_names_extracted": [],
+        "conversation_id": "26390f4d-d913-421f-8249-91c07e63f8c6"
+      },
+      "q1_request_body": null,
+      "q2_request_body": {
+        "message": "Which one has a pool?",
+        "conversation_id": null,
+        "market": "ID"
+      },
+      "dom_after_q1": "Skip to content\nContacts\nNEX ID\nConnect\nACTIVE\n3\nRiverside Staircases\nStaircase Maker\nManchester\n“The oak sample arrived this morning — should I bring it Friday?”\n2m\n1\nSarah Chen\nFriend\nLondon\n“Sending you the fabric swatches now”\n18m\nAshworth Kitchens\nKitchen Fitter\nCheshire\n·\nLast seen 1h ago\n“Quote attached — let me know what you think”\n1h\n2\nPEOPLE\n3\nEmma Whitmore\nFamily\nBristol\n·\nLast seen 4h ago\nJames Okafor\nColleague\nLondon\n·\nLast seen yesterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nWEDNESDAY\n9 September · 01:10\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\nContacts\nTasks\nPlay",
+      "dom_after_q2": "Skip to content\nContacts\nNEX ID\nConnect\nACTIVE\n3\nRiverside Staircases\nStaircase Maker\nManchester\n“The oak sample arrived this morning — should I bring it Friday?”\n2m\n1\nSarah Chen\nFriend\nLondon\n“Sending you the fabric swatches now”\n18m\nAshworth Kitchens\nKitchen Fitter\nCheshire\n·\nLast seen 1h ago\n“Quote attached — let me know what you think”\n1h\n2\nPEOPLE\n3\nEmma Whitmore\nFamily\nBristol\n·\nLast seen 4h ago\nJames Okafor\nColleague\nLondon\n·\nLast seen yesterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nWEDNESDAY\n9 September · 01:10\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\nWhich one has a pool?\nN\nNex\nWhich one do you mean? I don't have a previous list in this conversation. Want me to find some?\nContacts\nTasks\nPlay",
+      "q1_verdict": "FAIL_NO_RESPONSE",
+      "q2_verdict": "PASS_RESPONDED",
+      "conversation_context_verdict": "FAIL_CONTEXT_NOT_THREADED",
+      "screenshots": {
+        "q1": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\sweep\\run-2026-09-08T18-09-37-714Z\\s01\\q1.png",
+        "q2": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\sweep\\run-2026-09-08T18-09-37-714Z\\s01\\q2.png"
+      },
+      "error": null,
+      "all_pairs_summary": [
+        {
+          "sent": "Which one has a pool?",
+          "got_response": true,
+          "at": "2026-09-08T18:10:48.443Z"
+        }
+      ],
+      "finished_at": "2026-09-08T18:10:58.655Z"
+    },
+    {
+      "iteration": 2,
+      "label": "s02",
+      "started_at": "2026-09-08T18:10:58.657Z",
+      "q1_intercept": {
+        "intent": "accommodation",
+        "has_real_names": true,
+        "count_reported": 521,
+        "empty_reported": false,
+        "card_hits": 5,
+        "world_cards": 0,
+        "voice_reply_en": "Yep — found 3.",
+        "reply_snippet": "I've got 521 real listings for hotels near Malioboro — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not ...",
+        "hotel_names_extracted": [
+          "Gaotama Hotel",
+          "Selaras Inn Hotel",
+          "Indonesia Hotel"
+        ],
+        "conversation_id": "47918404-b912-4e99-8027-9ebaaa33ea96"
+      },
+      "q2_intercept": {
+        "intent": "accommodation",
+        "has_real_names": false,
+        "count_reported": null,
+        "empty_reported": false,
+        "card_hits": 0,
+        "world_cards": 0,
+        "voice_reply_en": "I don't have verified Pool information for the current list. Want me to search for ones that specifically offer Pool?",
+        "reply_snippet": "I don't have verified Pool information for the current list. Want me to search for ones that specifically offer Pool?",
+        "hotel_names_extracted": [],
+        "conversation_id": "47918404-b912-4e99-8027-9ebaaa33ea96"
+      },
+      "q1_request_body": {
+        "message": "Find me hotels near Malioboro",
+        "conversation_id": null,
+        "market": "ID"
+      },
+      "q2_request_body": {
+        "message": "Which one has a pool?",
+        "conversation_id": "47918404-b912-4e99-8027-9ebaaa33ea96",
+        "market": "ID"
+      },
+      "dom_after_q1": "Skip to content\nContacts\nNEX ID\nConnect\nACTIVE\n3\nRiverside Staircases\nStaircase Maker\nManchester\n“The oak sample arrived this morning — should I bring it Friday?”\n2m\n1\nSarah Chen\nFriend\nLondon\n“Sending you the fabric swatches now”\n18m\nAshworth Kitchens\nKitchen Fitter\nCheshire\n·\nLast seen 1h ago\n“Quote attached — let me know what you think”\n1h\n2\nPEOPLE\n3\nEmma Whitmore\nFamily\nBristol\n·\nLast seen 4h ago\nJames Okafor\nColleague\nLondon\n·\nLast seen yesterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nWEDNESDAY\n9 September · 01:11\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\nFind me hotels near Malioboro\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nContacts\nTasks\nPlay",
+      "dom_after_q2": "Skip to content\nContacts\nNEX ID\nConnect\nACTIVE\n3\nRiverside Staircases\nStaircase Maker\nManchester\n“The oak sample arrived this morning — should I bring it Friday?”\n2m\n1\nSarah Chen\nFriend\nLondon\n“Sending you the fabric swatches now”\n18m\nAshworth Kitchens\nKitchen Fitter\nCheshire\n·\nLast seen 1h ago\n“Quote attached — let me know what you think”\n1h\n2\nPEOPLE\n3\nEmma Whitmore\nFamily\nBristol\n·\nLast seen 4h ago\nJames Okafor\nColleague\nLondon\n·\nLast seen yesterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nWEDNESDAY\n9 September · 01:11\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\nFind me hotels near Malioboro\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nWhich one has a pool?\nN\nNex\nI don't have verified Pool information for the current list. Want me to search for ones that specifically offer Pool?\nOpen directory\nContacts\nTasks\nPlay",
+      "q1_verdict": "PASS_REAL_HOTELS",
+      "q2_verdict": "PASS_RESPONDED",
+      "conversation_context_verdict": "PARTIAL_CONTEXT_ID_ONLY",
+      "screenshots": {
+        "q1": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\sweep\\run-2026-09-08T18-09-37-714Z\\s02\\q1.png",
+        "q2": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\sweep\\run-2026-09-08T18-09-37-714Z\\s02\\q2.png"
+      },
+      "error": null,
+      "all_pairs_summary": [
+        {
+          "sent": "Find me hotels near Malioboro",
+          "got_response": true,
+          "at": "2026-09-08T18:11:30.719Z"
+        },
+        {
+          "sent": "Which one has a pool?",
+          "got_response": true,
+          "at": "2026-09-08T18:11:38.888Z"
+        }
+      ],
+      "finished_at": "2026-09-08T18:11:48.179Z"
+    },
+    {
+      "iteration": 3,
+      "label": "s03",
+      "started_at": "2026-09-08T18:11:48.181Z",
+      "q1_intercept": null,
+      "q2_intercept": {
+        "intent": "conversation",
+        "has_real_names": false,
+        "count_reported": null,
+        "empty_reported": false,
+        "card_hits": 0,
+        "world_cards": 0,
+        "voice_reply_en": "Which one do you mean? I don't have a previous list in this conversation. Want me to find some?",
+        "reply_snippet": "Which one do you mean? I don't have a previous list in this conversation. Want me to find some?",
+        "hotel_names_extracted": [],
+        "conversation_id": "8b51b507-f476-4b10-8382-8de6c11cc8e4"
+      },
+      "q1_request_body": null,
+      "q2_request_body": {
+        "message": "Which one has a pool?",
+        "conversation_id": null,
+        "market": "ID"
+      },
+      "dom_after_q1": "Skip to content\nContacts\nNEX ID\nConnect\nACTIVE\n3\nRiverside Staircases\nStaircase Maker\nManchester\n“The oak sample arrived this morning — should I bring it Friday?”\n2m\n1\nSarah Chen\nFriend\nLondon\n“Sending you the fabric swatches now”\n18m\nAshworth Kitchens\nKitchen Fitter\nCheshire\n·\nLast seen 1h ago\n“Quote attached — let me know what you think”\n1h\n2\nPEOPLE\n3\nEmma Whitmore\nFamily\nBristol\n·\nLast seen 4h ago\nJames Okafor\nColleague\nLondon\n·\nLast seen yesterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nWEDNESDAY\n9 September · 01:13\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\nContacts\nTasks\nPlay",
+      "dom_after_q2": "Skip to content\nContacts\nNEX ID\nConnect\nACTIVE\n3\nRiverside Staircases\nStaircase Maker\nManchester\n“The oak sample arrived this morning — should I bring it Friday?”\n2m\n1\nSarah Chen\nFriend\nLondon\n“Sending you the fabric swatches now”\n18m\nAshworth Kitchens\nKitchen Fitter\nCheshire\n·\nLast seen 1h ago\n“Quote attached — let me know what you think”\n1h\n2\nPEOPLE\n3\nEmma Whitmore\nFamily\nBristol\n·\nLast seen 4h ago\nJames Okafor\nColleague\nLondon\n·\nLast seen yesterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nWEDNESDAY\n9 September · 01:13\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\nWhich one has a pool?\nN\nNex\nWhich one do you mean? I don't have a previous list in this conversation. Want me to find some?\nContacts\nTasks\nPlay",
+      "q1_verdict": "FAIL_NO_RESPONSE",
+      "q2_verdict": "PASS_RESPONDED",
+      "conversation_context_verdict": "FAIL_CONTEXT_NOT_THREADED",
+      "screenshots": {
+        "q1": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\sweep\\run-2026-09-08T18-09-37-714Z\\s03\\q1.png",
+        "q2": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\sweep\\run-2026-09-08T18-09-37-714Z\\s03\\q2.png"
+      },
+      "error": null,
+      "all_pairs_summary": [
+        {
+          "sent": "Which one has a pool?",
+          "got_response": true,
+          "at": "2026-09-08T18:14:15.980Z"
+        }
+      ],
+      "finished_at": "2026-09-08T18:14:24.295Z"
+    },
+    {
+      "iteration": 4,
+      "label": "s04",
+      "started_at": "2026-09-08T18:14:24.297Z",
+      "q1_intercept": {
+        "intent": "accommodation",
+        "has_real_names": true,
+        "count_reported": 521,
+        "empty_reported": false,
+        "card_hits": 5,
+        "world_cards": 0,
+        "voice_reply_en": "Yep — found 3.",
+        "reply_snippet": "I've got 521 real listings for hotels near Malioboro — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not ...",
+        "hotel_names_extracted": [
+          "Gaotama Hotel",
+          "Selaras Inn Hotel",
+          "Indonesia Hotel"
+        ],
+        "conversation_id": "d96dd16e-4882-4cec-a5df-e4c17cb946e3"
+      },
+      "q2_intercept": {
+        "intent": "accommodation",
+        "has_real_names": false,
+        "count_reported": null,
+        "empty_reported": false,
+        "card_hits": 0,
+        "world_cards": 0,
+        "voice_reply_en": "I don't have verified Pool information for the current list. Want me to search for ones that specifically offer Pool?",
+        "reply_snippet": "I don't have verified Pool information for the current list. Want me to search for ones that specifically offer Pool?",
+        "hotel_names_extracted": [],
+        "conversation_id": "d96dd16e-4882-4cec-a5df-e4c17cb946e3"
+      },
+      "q1_request_body": {
+        "message": "Find me hotels near Malioboro",
+        "conversation_id": null,
+        "market": "ID"
+      },
+      "q2_request_body": {
+        "message": "Which one has a pool?",
+        "conversation_id": "d96dd16e-4882-4cec-a5df-e4c17cb946e3",
+        "market": "ID"
+      },
+      "dom_after_q1": "Skip to content\nContacts\nNEX ID\nConnect\nACTIVE\n3\nRiverside Staircases\nStaircase Maker\nManchester\n“The oak sample arrived this morning — should I bring it Friday?”\n2m\n1\nSarah Chen\nFriend\nLondon\n“Sending you the fabric swatches now”\n18m\nAshworth Kitchens\nKitchen Fitter\nCheshire\n·\nLast seen 1h ago\n“Quote attached — let me know what you think”\n1h\n2\nPEOPLE\n3\nEmma Whitmore\nFamily\nBristol\n·\nLast seen 4h ago\nJames Okafor\nColleague\nLondon\n·\nLast seen yesterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nWEDNESDAY\n9 September · 01:14\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\nFind me hotels near Malioboro\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nContacts\nTasks\nPlay",
+      "dom_after_q2": "Skip to content\nContacts\nNEX ID\nConnect\nACTIVE\n3\nRiverside Staircases\nStaircase Maker\nManchester\n“The oak sample arrived this morning — should I bring it Friday?”\n2m\n1\nSarah Chen\nFriend\nLondon\n“Sending you the fabric swatches now”\n18m\nAshworth Kitchens\nKitchen Fitter\nCheshire\n·\nLast seen 1h ago\n“Quote attached — let me know what you think”\n1h\n2\nPEOPLE\n3\nEmma Whitmore\nFamily\nBristol\n·\nLast seen 4h ago\nJames Okafor\nColleague\nLondon\n·\nLast seen yesterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nWEDNESDAY\n9 September · 01:14\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\nFind me hotels near Malioboro\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nWhich one has a pool?\nN\nNex\nI don't have verified Pool information for the current list. Want me to search for ones that specifically offer Pool?\nOpen directory\nContacts\nTasks\nPlay",
+      "q1_verdict": "PASS_REAL_HOTELS",
+      "q2_verdict": "PASS_RESPONDED",
+      "conversation_context_verdict": "PARTIAL_CONTEXT_ID_ONLY",
+      "screenshots": {
+        "q1": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\sweep\\run-2026-09-08T18-09-37-714Z\\s04\\q1.png",
+        "q2": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\sweep\\run-2026-09-08T18-09-37-714Z\\s04\\q2.png"
+      },
+      "error": null,
+      "all_pairs_summary": [
+        {
+          "sent": "Find me hotels near Malioboro",
+          "got_response": true,
+          "at": "2026-09-08T18:14:29.078Z"
+        },
+        {
+          "sent": "Which one has a pool?",
+          "got_response": true,
+          "at": "2026-09-08T18:14:37.369Z"
+        }
+      ],
+      "finished_at": "2026-09-08T18:14:49.669Z"
+    },
+    {
+      "iteration": 5,
+      "label": "s05",
+      "started_at": "2026-09-08T18:14:49.672Z",
+      "q1_intercept": null,
+      "q2_intercept": {
+        "intent": "conversation",
+        "has_real_names": false,
+        "count_reported": null,
+        "empty_reported": false,
+        "card_hits": 0,
+        "world_cards": 0,
+        "voice_reply_en": "Which one do you mean? I don't have a previous list in this conversation. Want me to find some?",
+        "reply_snippet": "Which one do you mean? I don't have a previous list in this conversation. Want me to find some?",
+        "hotel_names_extracted": [],
+        "conversation_id": "e3bbd8a1-c55d-4cce-afdf-17af8bdd1993"
+      },
+      "q1_request_body": null,
+      "q2_request_body": {
+        "message": "Which one has a pool?",
+        "conversation_id": null,
+        "market": "ID"
+      },
+      "dom_after_q1": "Skip to content\nContacts\nNEX ID\nConnect\nACTIVE\n3\nRiverside Staircases\nStaircase Maker\nManchester\n“The oak sample arrived this morning — should I bring it Friday?”\n2m\n1\nSarah Chen\nFriend\nLondon\n“Sending you the fabric swatches now”\n18m\nAshworth Kitchens\nKitchen Fitter\nCheshire\n·\nLast seen 1h ago\n“Quote attached — let me know what you think”\n1h\n2\nPEOPLE\n3\nEmma Whitmore\nFamily\nBristol\n·\nLast seen 4h ago\nJames Okafor\nColleague\nLondon\n·\nLast seen yesterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nWEDNESDAY\n9 September · 01:15\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\nContacts\nTasks\nPlay",
+      "dom_after_q2": "Skip to content\nContacts\nNEX ID\nConnect\nACTIVE\n3\nRiverside Staircases\nStaircase Maker\nManchester\n“The oak sample arrived this morning — should I bring it Friday?”\n2m\n1\nSarah Chen\nFriend\nLondon\n“Sending you the fabric swatches now”\n18m\nAshworth Kitchens\nKitchen Fitter\nCheshire\n·\nLast seen 1h ago\n“Quote attached — let me know what you think”\n1h\n2\nPEOPLE\n3\nEmma Whitmore\nFamily\nBristol\n·\nLast seen 4h ago\nJames Okafor\nColleague\nLondon\n·\nLast seen yesterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nWEDNESDAY\n9 September · 01:15\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\nWhich one has a pool?\nN\nNex\nWhich one do you mean? I don't have a previous list in this conversation. Want me to find some?\nContacts\nTasks\nPlay",
+      "q1_verdict": "FAIL_NO_RESPONSE",
+      "q2_verdict": "PASS_RESPONDED",
+      "conversation_context_verdict": "FAIL_CONTEXT_NOT_THREADED",
+      "screenshots": {
+        "q1": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\sweep\\run-2026-09-08T18-09-37-714Z\\s05\\q1.png",
+        "q2": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\sweep\\run-2026-09-08T18-09-37-714Z\\s05\\q2.png"
+      },
+      "error": null,
+      "all_pairs_summary": [
+        {
+          "sent": "Which one has a pool?",
+          "got_response": true,
+          "at": "2026-09-08T18:16:06.569Z"
+        }
+      ],
+      "finished_at": "2026-09-08T18:16:14.734Z"
+    }
+  ]
+}

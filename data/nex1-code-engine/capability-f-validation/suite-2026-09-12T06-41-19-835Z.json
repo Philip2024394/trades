@@ -1,0 +1,71 @@
+{
+  "at": "2026-09-12T06:34:59.572Z",
+  "attribution": {
+    "teaching_infrastructure": "capability-f-discovery.ts + prior C+D+E mechanisms · taught_by=master_ai_engineer",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner"
+  },
+  "tests": {
+    "T1": {
+      "test": "T1 · Reuse novel-E · autonomous schema.ts discovery",
+      "root": "data/nex1-code-engine/novel-e",
+      "discovery_calls": [],
+      "repair_attempts": [],
+      "initial_scoped_errors": 0,
+      "final_scoped_errors": 0,
+      "byte_identical": true,
+      "ambiguity_seen": null,
+      "verdict": "fail",
+      "declaring_ok": false,
+      "consumers_ok": false,
+      "excluded_ok": true,
+      "ambiguity_ok": false
+    },
+    "T2": {
+      "test": "T2 · Unseen mini-repo · nested + irrelevant files must be excluded",
+      "root": "data/nex1-code-engine/mini-repo-f",
+      "discovery_calls": [],
+      "repair_attempts": [],
+      "initial_scoped_errors": 0,
+      "final_scoped_errors": 0,
+      "byte_identical": true,
+      "ambiguity_seen": null,
+      "verdict": "fail",
+      "declaring_ok": false,
+      "consumers_ok": false,
+      "excluded_ok": true,
+      "ambiguity_ok": false
+    },
+    "T3": {
+      "test": "T3 · Adversarial duplicate symbol · import-resolved",
+      "root": "data/nex1-code-engine/duplicate-f",
+      "discovery_calls": [],
+      "repair_attempts": [],
+      "initial_scoped_errors": 0,
+      "final_scoped_errors": 0,
+      "byte_identical": true,
+      "ambiguity_seen": null,
+      "verdict": "fail",
+      "declaring_ok": false,
+      "consumers_ok": false,
+      "excluded_ok": true,
+      "ambiguity_ok": false,
+      "declaration_resolved_to_module_a": false
+    },
+    "T4": {
+      "test": "T4 · Novel generalisation · fresh symbols/paths/nesting",
+      "root": "data/nex1-code-engine/novel-f",
+      "discovery_calls": [],
+      "repair_attempts": [],
+      "initial_scoped_errors": 0,
+      "final_scoped_errors": 0,
+      "byte_identical": true,
+      "ambiguity_seen": null,
+      "verdict": "fail",
+      "declaring_ok": false,
+      "consumers_ok": false,
+      "excluded_ok": true,
+      "ambiguity_ok": false
+    }
+  }
+}

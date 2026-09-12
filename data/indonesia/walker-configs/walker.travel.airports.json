@@ -1,0 +1,7 @@
+{
+  "taxonomyId": "walker.travel.airports",
+  "sourceDir": "airports",
+  "defaultStability": "high",
+  "refreshCadenceDays": 90,
+  "description": "Indonesian airports: hubs (CGK Soekarno-Hatta, DPS Ngurah Rai, SUB Juanda, KNO Kualanamu, UPG Sultan Hasanuddin, PDG Minangkabau, BPN Sepinggan, MDC Sam Ratulangi, YIA Yogyakarta), IATA/ICAO, region, primary operator (Angkasa Pura I/II)."
+}

@@ -1,0 +1,250 @@
+{
+  "generated_at": "2026-09-01T21:56:44.032Z",
+  "contract": "READ-ONLY",
+  "task_1_db_audit": [
+    {
+      "table": "audit_log",
+      "image_columns": [],
+      "note": "no url-like columns"
+    },
+    {
+      "table": "claim_requests",
+      "image_columns": [],
+      "note": "no url-like columns"
+    },
+    {
+      "table": "confidence_scores",
+      "image_columns": [],
+      "note": "no url-like columns"
+    },
+    {
+      "table": "contradictions",
+      "image_columns": [],
+      "note": "no url-like columns"
+    },
+    {
+      "table": "deprecations",
+      "image_columns": [],
+      "note": "no url-like columns"
+    },
+    {
+      "table": "directory_seeds",
+      "total_rows": 1227,
+      "columns": [
+        {
+          "column": "google_maps_url",
+          "type": "string",
+          "strategy": "string_ilike",
+          "rows_with_imagekit_url": 0,
+          "rows_with_supabase_url": 0,
+          "rows_with_any_url": 0,
+          "errors": []
+        },
+        {
+          "column": "photos",
+          "type": "array",
+          "totalScanned": 1227,
+          "rowsWith": {
+            "imagekit": 0,
+            "supabase": 0,
+            "other_url": 0
+          },
+          "urlCounts": {
+            "imagekit": 0,
+            "supabase": 0,
+            "other_url": 0
+          },
+          "truncated": false,
+          "strategy": "value_scan"
+        },
+        {
+          "column": "cover_image",
+          "type": "string",
+          "strategy": "string_ilike",
+          "rows_with_imagekit_url": 0,
+          "rows_with_supabase_url": 0,
+          "rows_with_any_url": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "table": "graph_edges",
+      "image_columns": [],
+      "note": "no url-like columns"
+    },
+    {
+      "table": "knowledge_feedback",
+      "image_columns": [],
+      "note": "no url-like columns"
+    },
+    {
+      "table": "knowledge_records",
+      "image_columns": [],
+      "note": "no url-like columns"
+    },
+    {
+      "table": "llm_retry_queue",
+      "image_columns": [],
+      "note": "no url-like columns"
+    },
+    {
+      "table": "nex_collection_fetch_errors",
+      "total_rows": 170,
+      "columns": [
+        {
+          "column": "target_url",
+          "type": "string",
+          "strategy": "string_ilike",
+          "rows_with_imagekit_url": 0,
+          "rows_with_supabase_url": 0,
+          "rows_with_any_url": 170,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "table": "nex_collection_url_queue",
+      "total_rows": 301,
+      "columns": [
+        {
+          "column": "candidate_url",
+          "type": "string",
+          "strategy": "string_ilike",
+          "rows_with_imagekit_url": 0,
+          "rows_with_supabase_url": 0,
+          "rows_with_any_url": 301,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "table": "record_versions",
+      "image_columns": [],
+      "note": "no url-like columns"
+    },
+    {
+      "table": "sources",
+      "total_rows": 3625,
+      "columns": [
+        {
+          "column": "source_url",
+          "type": "string",
+          "strategy": "string_ilike",
+          "rows_with_imagekit_url": 0,
+          "rows_with_supabase_url": 0,
+          "rows_with_any_url": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "table": "worker_heartbeats",
+      "image_columns": [],
+      "note": "no url-like columns"
+    },
+    {
+      "table": "worker_jobs",
+      "image_columns": [],
+      "note": "no url-like columns"
+    },
+    {
+      "table": "worker_results",
+      "image_columns": [],
+      "note": "no url-like columns"
+    }
+  ],
+  "task_2_unknown_review": {
+    "unknowns_count": 379,
+    "malformed_count": 1
+  },
+  "task_3_imagekit_availability": {
+    "total": 2020,
+    "perAccount": {
+      "5vv5pw26q": {
+        "total": 975,
+        "reachable": 943,
+        "ok200": 943,
+        "http_403": 0,
+        "http_404": 31,
+        "other_4xx": 1,
+        "http_5xx": 0,
+        "timeout_or_error": 0,
+        "mime_counts": {
+          "image/jpeg": 835,
+          "image/png": 108,
+          "text/plain; charset=utf-8": 31,
+          "text/html; charset=utf-8": 1
+        },
+        "sample_bad": [
+          {
+            "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT",
+            "status": 404
+          },
+          {
+            "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2027,%202026,%2003_14_04%20PM.png\\n",
+            "status": 404
+          },
+          {
+            "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2008_15_53%20PM.png\\n",
+            "status": 404
+          }
+        ]
+      },
+      "9mrgsv2rp": {
+        "total": 1001,
+        "reachable": 984,
+        "ok200": 984,
+        "http_403": 0,
+        "http_404": 17,
+        "other_4xx": 0,
+        "http_5xx": 0,
+        "timeout_or_error": 0,
+        "mime_counts": {
+          "image/png": 149,
+          "image/jpeg": 835,
+          "text/plain; charset=utf-8": 17
+        },
+        "sample_bad": [
+          {
+            "url": "https://ik.imagekit.io/9mrgsv2rp/hero-carpenter-mid-project.jpg",
+            "status": 404
+          },
+          {
+            "url": "https://ik.imagekit.io/9mrgsv2rp/hero-plasterer-finish.jpg",
+            "status": 404
+          },
+          {
+            "url": "https://ik.imagekit.io/9mrgsv2rp/Untitledasdasd-removebg-preview%20(1",
+            "status": 404
+          }
+        ]
+      },
+      "nepgaxllc": {
+        "total": 44,
+        "reachable": 42,
+        "ok200": 42,
+        "http_403": 0,
+        "http_404": 1,
+        "other_4xx": 1,
+        "http_5xx": 0,
+        "timeout_or_error": 0,
+        "mime_counts": {
+          "text/plain; charset=utf-8": 2,
+          "image/jpeg": 42
+        },
+        "sample_bad": [
+          {
+            "url": "https://ik.imagekit.io/nepgaxllc/",
+            "status": 400
+          },
+          {
+            "url": "https://ik.imagekit.io/nepgaxllc/qwqwdsddsASDASDASDASDsdaSDASDasdasdassdasdasdasdasd.png?updatedAt=1775541081246",
+            "status": 404
+          }
+        ]
+      }
+    }
+  },
+  "main_supabase_note": "MAIN Supabase (msdonkkechxzgagyguoe) is unreachable from this machine · noted as external infrastructure limitation · no further probing attempted per Philip 2026-09-02 direction."
+}

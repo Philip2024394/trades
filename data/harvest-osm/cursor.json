@@ -1,0 +1,14 @@
+{
+  "index": 3,
+  "cities": [
+    "yogyakarta",
+    "bali",
+    "jakarta",
+    "bandung",
+    "surabaya"
+  ],
+  "runs": 58,
+  "last_run_iso": "2026-09-12T14:39:32.675Z",
+  "last_city": "jakarta",
+  "last_persist_mode": false
+}

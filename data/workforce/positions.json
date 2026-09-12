@@ -1,0 +1,128 @@
+[
+  {
+    "position_id": "hotel_accommodation",
+    "mission": "Deep knowledge of every accommodation entity · property type · rooms · facilities · services · policies · nearby context.",
+    "domain": [
+      "accommodation",
+      "hotels",
+      "guesthouses",
+      "villas",
+      "kos",
+      "homestays",
+      "resorts",
+      "hostels",
+      "apartments",
+      "room_types",
+      "amenities",
+      "policies"
+    ],
+    "machinery": "p1_acquisition_pipeline",
+    "source_availability": "sources_available",
+    "source_details": "canonical directory: nex.accommodation_business (local PG17 :5433 · NEX_POSTGRES_URL) · 4 companion tables: source_snapshot · field_provenance · enrichment_evidence · schema per deploy/postgres/init/078_nex_accommodation_business.sql · read adapter tests/fixtures/workforce-activation-proof/_hotel_adapter_probe.mjs",
+    "activation_notes": "hotel adapter probe PROVEN · 9,203 rows across 7 categories (hotel 6840 · guesthouse 1706 · hostel 267 · kos 215 · apartment 96 · villa 78 · homestay 1) · 877 claim_status=listed customer-visible · 8326 discovered pending admin promotion",
+    "registered_at": "2026-09-07T05:46:27.282Z"
+  },
+  {
+    "position_id": "programmer",
+    "mission": "Build NEX's engineering intelligence · continuously improve NEX's ability to reason about, review, test, and explain software engineering.",
+    "domain": [
+      "programming",
+      "software architecture",
+      "code review",
+      "security",
+      "performance",
+      "engineering experience"
+    ],
+    "machinery": "programmer_agent",
+    "source_availability": "sources_missing",
+    "source_details": "Programmer Agent formal spec ratified · Phase A implementation requires its own AUTHORIZE literal · not activated in this Indonesian-workforce slice",
+    "activation_notes": "PHASE_A_PENDING · not activated by this authorization",
+    "registered_at": "2026-09-07T05:46:27.282Z"
+  },
+  {
+    "position_id": "indonesia_knowledge",
+    "mission": "Build broad NEX-owned Indonesian knowledge across geography, culture, food, industries, tourism, transport, commerce.",
+    "domain": [
+      "geography",
+      "culture",
+      "food",
+      "industries",
+      "tourism",
+      "transport",
+      "commerce",
+      "practices"
+    ],
+    "machinery": "indonesia_walker",
+    "source_availability": "sources_available",
+    "source_details": "3 existing walker configs (adat.communities · culture.festivals_ceremonies · spiritual.sacred_sites) + curated dir (destinations-extra · hospitals) · food_dishes and airports now split into their own walker configs owned by restaurant_food / travel_transport positions",
+    "walker_taxonomy_ids": [
+      "walker.adat.communities",
+      "walker.culture.festivals_ceremonies",
+      "walker.spiritual.sacred_sites"
+    ],
+    "activation_notes": "walker pipeline attribution proven · 23 records verified+promoted via adat/festivals/sacred_sites walkers · fresh acquisition run 2026-09-05",
+    "registered_at": "2026-09-07T05:46:27.282Z"
+  },
+  {
+    "position_id": "restaurant_food",
+    "mission": "Restaurants + cuisine + ingredients + seafood + food knowledge · Indonesian regional dishes and preparation.",
+    "domain": [
+      "restaurants",
+      "cuisine",
+      "dishes",
+      "ingredients",
+      "seafood",
+      "culinary_terminology"
+    ],
+    "machinery": "indonesia_walker",
+    "source_availability": "sources_partial",
+    "source_details": "local source: data/indonesia/sources/food_dishes/dishes.json (dish-level food knowledge) · walker config data/indonesia/walker-configs/walker.food.dishes.json AUTHORED · restaurant business directory lives in Supabase (nex.food_business et al · sees 054-060 migrations) · restaurant-business walker config would need Supabase adapter",
+    "walker_taxonomy_ids": [
+      "walker.food.dishes"
+    ],
+    "activation_notes": "food dishes walker activated · dishes flow through pipeline · restaurant business acquisition (Supabase adapter) is a separate future authorisation",
+    "registered_at": "2026-09-07T05:46:27.282Z"
+  },
+  {
+    "position_id": "gym_fitness",
+    "mission": "Knowledge of Indonesian gyms and fitness businesses · facilities · equipment · memberships · trainers · policies.",
+    "domain": [
+      "gyms",
+      "fitness",
+      "equipment",
+      "classes",
+      "memberships",
+      "trainers"
+    ],
+    "machinery": "p1_acquisition_pipeline",
+    "source_availability": "sources_available",
+    "source_details": "canonical directory: nex.service_business WHERE category_slug='gyms' (local PG17 :5433 · NEX_POSTGRES_URL) · 3 companion tables: source_snapshot · field_provenance · schema per deploy/postgres/init/110_nex_service_business.sql · read adapter tests/fixtures/workforce-activation-proof/_gym_adapter_probe.mjs",
+    "activation_notes": "prior audit 'sources_missing' was incorrect · gym adapter probe PROVEN 292 gym rows across Indonesian cities · all owner_status=null (unclaimed) · knowledge composition to NEX brain retrieval is next expansion",
+    "registered_at": "2026-09-07T05:46:27.282Z"
+  },
+  {
+    "position_id": "travel_transport",
+    "mission": "Indonesian travel + transport knowledge · flights · trains · cars · bikes · buses · ferries · routes.",
+    "domain": [
+      "flights",
+      "airports",
+      "airlines",
+      "trains",
+      "buses",
+      "ferries",
+      "cars",
+      "car_rental",
+      "motorcycles",
+      "motorbike_rental",
+      "routes"
+    ],
+    "machinery": "indonesia_walker",
+    "source_availability": "sources_partial",
+    "source_details": "local source: data/indonesia/sources/airports/airports.json (airport hubs · IATA/ICAO · region · operator) · walker config data/indonesia/walker-configs/walker.travel.airports.json AUTHORED · travel-guides SQL schema exists (deploy/postgres/init/120_nex_brain_travel_guides.sql) · bike rental SQL exists (deploy/postgres/init/132_nex_bike_rental_listing.sql)",
+    "walker_taxonomy_ids": [
+      "walker.travel.airports"
+    ],
+    "activation_notes": "airports walker activated · flights/trains/buses/ferries still need authorised source registration",
+    "registered_at": "2026-09-07T05:46:27.282Z"
+  }
+]

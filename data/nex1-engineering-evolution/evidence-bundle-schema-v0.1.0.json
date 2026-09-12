@@ -1,0 +1,55 @@
+{
+  "version": "v0.1.0",
+  "notes": "EvidenceBundle contract · founder-authorised design 2026-09-12. DESIGN ONLY. An EvidenceBundle is the complete set of EvidenceRecords relevant to one engineering decision. Every dimension retains its own state · no dimension is silently promoted.",
+  "record_type": "EVIDENCE_BUNDLE",
+  "required_fields": [
+    { "name": "bundle_id",               "shape": "string · monotonic e.g. EB-0000042" },
+    { "name": "schema_version",          "shape": "semver" },
+    { "name": "work_order_id",           "shape": "string · from Engineering Work Order" },
+    { "name": "candidate_id",            "shape": "string · which candidate this bundle evaluates" },
+    { "name": "at",                       "shape": "ISO-8601 · immutable" },
+    { "name": "dimensions",              "shape": "object · one entry per dimension · each holds an evidence_id list + rolled-up state",
+                                          "required_dimensions": [
+                                            "correctness",
+                                            "tests",
+                                            "regression",
+                                            "static_analysis",
+                                            "ast_structure",
+                                            "dependency_graph",
+                                            "dependency_cycles",
+                                            "complexity",
+                                            "duplication",
+                                            "architecture",
+                                            "project_conventions",
+                                            "security",
+                                            "performance",
+                                            "build_behaviour",
+                                            "package_changes",
+                                            "generated_vendor_boundaries",
+                                            "api_compatibility",
+                                            "semantic_preservation",
+                                            "diff",
+                                            "rollback_capability"
+                                          ] },
+    { "name": "dimension_states",        "shape": "object · one entry per dimension · rolled-up state per evidence-state-model" },
+    { "name": "baseline_bundle_id",      "shape": "string · pointer to baseline bundle · nullable" },
+    { "name": "delta_summary",            "shape": "object · per-dimension delta between baseline and candidate" },
+    { "name": "overall_confidence",       "shape": "enum · high · medium · low · insufficient" },
+    { "name": "unresolved_dimensions",    "shape": "array of dimension names still in NOT_MEASURED · BLOCKED · INCONCLUSIVE" },
+    { "name": "provenance",              "shape": "object · see provenance-model" },
+    { "name": "attribution",             "shape": "object · external_llm_used=false · deterministic=true" }
+  ],
+  "invariants": [
+    "every required_dimension has an entry · at minimum with state=NOT_MEASURED or NOT_APPLICABLE",
+    "no dimension in NOT_MEASURED is presented as PASSED to downstream consumers",
+    "overall_confidence = insufficient when any load-bearing dimension is NOT_MEASURED / BLOCKED / INCONCLUSIVE",
+    "unresolved_dimensions must be explicitly enumerated · never quietly omitted",
+    "delta_summary requires baseline_bundle_id · otherwise absent",
+    "bundle_id is monotonic and never reused"
+  ],
+  "consumption_rules": [
+    "NEX2 may reference specific evidence_ids in its review · never fabricate new evidence",
+    "NEX3 may reference specific evidence_ids in its arbitration · never fabricate new evidence",
+    "NEX3 verdict must cite at least one evidence_id per active criterion · uncited criteria default to insufficient"
+  ]
+}

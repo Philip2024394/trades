@@ -1,0 +1,46 @@
+{
+  "version": "v0.1.0",
+  "notes": "Engineering Evolution Lab lifecycle · founder-authorised design 2026-09-12. DESIGN ONLY. Lifecycle is a state machine · every transition requires evidence · no auto-advancement. Four terminal outcomes: APPROVED_STANDARD · REJECTED · HOLD · SUPERSEDED.",
+  "states": [
+    { "id": "DISCOVERED",         "meaning": "a candidate practice has been named · founder-whitelisted source · no research yet" },
+    { "id": "CANDIDATE",          "meaning": "candidate has scope · applicability · initial rationale" },
+    { "id": "RESEARCHED",         "meaning": "citations gathered · prior art documented · counterexamples enumerated" },
+    { "id": "EXPERIMENTAL",       "meaning": "candidate has a Lab implementation · deterministic · sandboxed · never touches NEX1" },
+    { "id": "BENCHMARKED",         "meaning": "at least 3 independent benchmark suites executed · results recorded as EvidenceRecords" },
+    { "id": "ADVERSARIAL_TESTED", "meaning": "founder-authored adversarial fixtures applied · counterexamples included" },
+    { "id": "REVIEWED",            "meaning": "NEX2 review complete · verdict ∈ {ACCEPT_NEX1(N/A here) · PROPOSE_ALTERNATIVE · BOTH_NEED_REVISION · REQUEST_EVIDENCE · HOLD}" },
+    { "id": "ARBITRATED",           "meaning": "NEX3 arbitration complete · verdict ∈ {NEX1_BETTER · NEX2_BETTER · EXISTING_CODE_BETTER · BOTH_INFERIOR · HOLD_INSUFFICIENT_EVIDENCE · USER_CLARIFICATION_REQUIRED}" },
+    { "id": "FOUNDER_REVIEW",      "meaning": "arbitration is advisory · founder review queued · never auto-authorised" }
+  ],
+  "terminal_outcomes": [
+    { "id": "APPROVED_STANDARD",  "meaning": "founder ADR authorises · candidate becomes EngineeringStandard · emitted to Feed",
+                                  "prerequisites": ["arbitration_verdict ∈ APPROVE-eligible", "regression_drift=0", "adversarial pass rate ≥ founder threshold", "rollback tested", "founder ADR issued"] },
+    { "id": "REJECTED",            "meaning": "founder-authorised rejection · reason recorded · candidate cannot re-enter without new evidence" },
+    { "id": "HOLD",                "meaning": "candidate stays in queue · needs additional evidence · not auto-advanced" },
+    { "id": "SUPERSEDED",          "meaning": "newer candidate covers the same practice space · this one closed" }
+  ],
+  "transitions": [
+    { "from": "DISCOVERED",         "to": "CANDIDATE",           "requires": "founder-approved scope + applicability" },
+    { "from": "CANDIDATE",          "to": "RESEARCHED",          "requires": "citations + prior art + counterexamples enumerated" },
+    { "from": "RESEARCHED",         "to": "EXPERIMENTAL",        "requires": "Lab implementation ready · sandboxed · deterministic" },
+    { "from": "EXPERIMENTAL",       "to": "BENCHMARKED",         "requires": "≥3 independent benchmark suites executed" },
+    { "from": "BENCHMARKED",         "to": "ADVERSARIAL_TESTED", "requires": "adversarial fixtures + counterexamples applied" },
+    { "from": "ADVERSARIAL_TESTED", "to": "REVIEWED",            "requires": "NEX2 review verdict recorded" },
+    { "from": "REVIEWED",            "to": "ARBITRATED",         "requires": "NEX3 arbitration verdict recorded" },
+    { "from": "ARBITRATED",          "to": "FOUNDER_REVIEW",     "requires": "arbitration verdict eligible for promotion" },
+    { "from": "FOUNDER_REVIEW",      "to": "APPROVED_STANDARD",  "requires": "founder-authored ADR · rollback tested" },
+    { "from": "FOUNDER_REVIEW",      "to": "REJECTED",           "requires": "founder rejection" },
+    { "from": "any",                  "to": "HOLD",               "requires": "any state may pause · never auto-resumes · founder or evidence updates required to resume" },
+    { "from": "any",                  "to": "SUPERSEDED",         "requires": "founder-authored supersession · references new candidate id" }
+  ],
+  "invariants": [
+    "no auto-advancement · every transition requires cited evidence or founder action",
+    "APPROVED_STANDARD is only reachable via FOUNDER_REVIEW · never earlier",
+    "no state may be skipped · e.g. CANDIDATE cannot jump to APPROVED_STANDARD",
+    "REJECTED candidates cannot silently re-enter · new evidence + founder authorisation required",
+    "HOLD is honest · not silent failure · candidates in HOLD are visible in the queue",
+    "SUPERSEDED preserves history · original candidate remains queryable",
+    "no LLM in any transition path",
+    "no auto-learning in any state · Lab observes · researches · benchmarks · never mutates NEX1"
+  ]
+}

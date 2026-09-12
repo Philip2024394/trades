@@ -1,0 +1,55 @@
+{
+  "at": "2026-09-11T18:54:35.677Z",
+  "with_teacher": {
+    "score": 3,
+    "outcomes": [
+      {
+        "id": "add-interface-field",
+        "ok": true,
+        "adapter_id": "ast-semantic"
+      },
+      {
+        "id": "populate-in-function-body",
+        "ok": true,
+        "adapter_id": "ast-semantic"
+      },
+      {
+        "id": "add-test-case",
+        "ok": true,
+        "adapter_id": "ast-semantic"
+      }
+    ]
+  },
+  "without_teacher": {
+    "score": 0,
+    "outcomes": [
+      {
+        "id": "add-interface-field",
+        "ok": false,
+        "reason": "No adapter handled directive kind · tried: [template-only] · last reason: template-only does not handle directive kind 'add_interface_field' · try a semantic adapter",
+        "code": "sec.nex1_reasoning_not_bound"
+      },
+      {
+        "id": "populate-in-function-body",
+        "ok": false,
+        "reason": "No adapter handled directive kind · tried: [template-only] · last reason: template-only does not handle directive kind 'add_return_object_property' · try a semantic adapter",
+        "code": "sec.nex1_reasoning_not_bound"
+      },
+      {
+        "id": "add-test-case",
+        "ok": false,
+        "reason": "No adapter handled directive kind · tried: [template-only] · last reason: template-only does not handle directive kind 'add_test_case' · try a semantic adapter",
+        "code": "sec.nex1_reasoning_not_bound"
+      }
+    ]
+  },
+  "retention_score": 0,
+  "x": 3,
+  "y": 0,
+  "n_sub_tasks": 3,
+  "discipline_notes": [
+    "Retention Score is a signal of retention, not proof of internalised intelligence.",
+    "Adapter never became NEX1. Adapter scope stayed 'code_proposal_only'.",
+    "Every attempt attempted_by=nex1 · adapter_id recorded separately."
+  ]
+}

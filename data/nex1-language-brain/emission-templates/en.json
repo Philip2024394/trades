@@ -1,0 +1,18 @@
+{
+  "version": "v0.1.0",
+  "language": "en",
+  "notes": "English emission templates · one entry per Nex1RecognisedIntentKind. Slot substitution uses {slot} tokens. If a required slot is missing at emission time the engine REFUSES · never invents.",
+  "templates": {
+    "add_field_to_type":         { "template": "add a field {field} of type {desired_kind} to {type}",                       "required_slots": ["field", "type", "desired_kind"] },
+    "fix_failing_test":          { "template": "fix the failing test at {test_file}",                                        "required_slots": ["test_file"] },
+    "clarification_query":       { "template": "what is {term}?",                                                            "required_slots": ["term"] },
+    "cancel_previous":           { "template": "cancel previous",                                                            "required_slots": [] },
+    "acknowledge":               { "template": "ok",                                                                         "required_slots": [] },
+    "modify_return_type":        { "template": "make the {target_function} function return {desired_return_type}",           "required_slots": ["target_function", "desired_return_type"] },
+    "rename_preserve_behaviour": { "template": "rename {old_name} to {new_name} without changing behaviour",                 "required_slots": ["old_name", "new_name"] },
+    "make_field_optional":       { "template": "make the {field} field on {type} optional",                                  "required_slots": ["field", "type"] },
+    "restrict_type_to_union":    { "template": "the {field} field on {type} should only accept {allowed_values}",            "required_slots": ["field", "type", "allowed_values"] },
+    "preserve_api_contract":     { "template": "keep the {target} API backwards compatible",                                 "required_slots": ["target"] },
+    "add_purity_constraint":     { "template": "do not mutate the input in {target}",                                        "required_slots": ["target"] }
+  }
+}

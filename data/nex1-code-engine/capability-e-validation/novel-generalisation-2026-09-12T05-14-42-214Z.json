@@ -1,0 +1,109 @@
+{
+  "at": "2026-09-12T05:13:33.200Z",
+  "challenge": "capability-e · novel generalisation · zero teacher edits during execution",
+  "attribution": {
+    "teaching_infrastructure_used": "capability-c-type-aware-repair.ts + capability-d-introspection.ts (multi-source · taught_by=master_ai_engineer · authored earlier)",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner",
+    "teacher_edits_during_this_run": "none"
+  },
+  "stimuli_applied": [
+    {
+      "interface": "Reservation",
+      "field_name": "guests",
+      "field_type": "number",
+      "expect_kind": "primitive_or_array",
+      "ok": true,
+      "delta_bytes": 47
+    },
+    {
+      "interface": "Vehicle",
+      "field_name": "model",
+      "field_type": "string",
+      "expect_kind": "primitive_or_array",
+      "ok": true,
+      "delta_bytes": 28
+    },
+    {
+      "interface": "Payment",
+      "field_name": "refunded",
+      "field_type": "boolean",
+      "expect_kind": "primitive_or_array",
+      "ok": true,
+      "delta_bytes": 32
+    },
+    {
+      "interface": "LocationRecord",
+      "field_name": "tags",
+      "field_type": "readonly string[]",
+      "expect_kind": "primitive_or_array",
+      "ok": true,
+      "delta_bytes": 38
+    },
+    {
+      "interface": "WildcardRow",
+      "field_name": "meta",
+      "field_type": "ReservationMeta",
+      "expect_kind": "escalate",
+      "ok": true,
+      "delta_bytes": 36
+    }
+  ],
+  "repair_attempts": [
+    {
+      "file": "data/nex1-code-engine/novel-e/location-index.ts",
+      "line": 4,
+      "property": "tags",
+      "result": "repaired",
+      "value": "[]",
+      "rationale": "array type 'readonly string[]' · empty array satisfies the required shape · declared in data/nex1-code-engine/novel-e/schema.ts",
+      "applied": true,
+      "delta_bytes": 12
+    },
+    {
+      "file": "data/nex1-code-engine/novel-e/payment-log.ts",
+      "line": 4,
+      "property": "refunded",
+      "result": "repaired",
+      "value": "false",
+      "rationale": "primitive type 'boolean' · repair value 'false' satisfies it · declared in data/nex1-code-engine/novel-e/schema.ts",
+      "applied": true,
+      "delta_bytes": 19
+    },
+    {
+      "file": "data/nex1-code-engine/novel-e/reservation-builder.ts",
+      "line": 4,
+      "property": "guests",
+      "result": "repaired",
+      "value": "0",
+      "rationale": "primitive type 'number' · repair value '0' satisfies it · declared in data/nex1-code-engine/novel-e/schema.ts",
+      "applied": true,
+      "delta_bytes": 13
+    },
+    {
+      "file": "data/nex1-code-engine/novel-e/vehicle-fleet.ts",
+      "line": 4,
+      "property": "model",
+      "result": "repaired",
+      "value": "\"\"",
+      "rationale": "primitive type 'string' · repair value '\"\"' satisfies it · declared in data/nex1-code-engine/novel-e/schema.ts",
+      "applied": true,
+      "delta_bytes": 13
+    },
+    {
+      "file": "data/nex1-code-engine/novel-e/wildcard-registry.ts",
+      "line": 4,
+      "property": "meta",
+      "result": "escalated",
+      "declared_type": "ReservationMeta",
+      "reason": "custom or generic type 'ReservationMeta' · NEX1 escalates rather than fabricating a value"
+    }
+  ],
+  "final_tsc_scoped_errors": {
+    "count": 1,
+    "per_file": {
+      "wildcard-registry.ts": 1
+    }
+  },
+  "fixtures_byte_identical": true
+}

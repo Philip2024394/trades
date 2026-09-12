@@ -1,0 +1,11 @@
+{
+  "room_idx": 0,
+  "runs": 0,
+  "offsets": {
+    "accommodation": 10000,
+    "food": 1000,
+    "transport": 1000,
+    "business": 1000,
+    "activities": 500
+  }
+}

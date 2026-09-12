@@ -1,0 +1,45 @@
+{
+  "version": "v0.1.0",
+  "notes": "EvidenceRecord contract · founder-authorised design 2026-09-12. DESIGN ONLY · no runtime · no mutation. One EvidenceRecord = one deterministic measurement of one dimension of one candidate for one Work Order.",
+  "record_type": "EVIDENCE_RECORD",
+  "required_fields": [
+    { "name": "evidence_id",             "shape": "string · monotonic e.g. EV-0000042",                    "notes": "monotonic · never reused · founder-audit surface" },
+    { "name": "schema_version",          "shape": "semver of this schema",                                  "notes": "must match a shipped schema · else NOT_MEASURED" },
+    { "name": "project_id",              "shape": "string · unique repo identifier",                        "notes": "scope of measurement" },
+    { "name": "work_order_id",           "shape": "string · from Engineering Work Order",                    "notes": "links every measurement to its triggering order" },
+    { "name": "candidate_id",            "shape": "string · e.g. cand_nex1 / cand_nex2 / cand_baseline",     "notes": "identifies WHICH candidate the measurement is against" },
+    { "name": "evidence_type",           "shape": "enum · see evidence-bundle-schema · e.g. COMPILATION · TYPE_CHECK · TESTS · REGRESSION · STATIC_ANALYSIS · AST · DEPENDENCY_GRAPH · CYCLES · COMPLEXITY · DUPLICATION · ARCHITECTURE · PROJECT_CONVENTIONS · SECURITY · PERFORMANCE · BUILD · PACKAGE_CHANGE · GENERATED_VENDOR · API_COMPATIBILITY · SEMANTIC_PRESERVATION · DIFF · ROLLBACK",  "notes": "one type per record · CI-5-style precision" },
+    { "name": "state",                    "shape": "enum · MEASURED · PASSED · FAILED · NOT_MEASURED · NOT_APPLICABLE · INCONCLUSIVE · BLOCKED · STALE", "notes": "constitutional 8-state model · see evidence-state-model" },
+    { "name": "measurement",             "shape": "object · { unit, value, precision, method_id }",         "notes": "the deterministic measurement · unit + value must both be present when state=MEASURED/PASSED/FAILED" },
+    { "name": "value",                    "shape": "typed value · number or string or boolean or structured","notes": "the observed value · absent when state ∈ {NOT_MEASURED, NOT_APPLICABLE, BLOCKED}" },
+    { "name": "baseline_value",          "shape": "same type as value or null",                             "notes": "the pre-candidate baseline for delta computation" },
+    { "name": "candidate_value",         "shape": "same type as value or null",                             "notes": "the post-candidate value" },
+    { "name": "delta",                    "shape": "structured · { absolute, sign, direction }",             "notes": "delta computed deterministically · never inferred qualitatively" },
+    { "name": "methodology",             "shape": "string · describes how the measurement was produced",     "notes": "reproducibility discipline · e.g. 'ran vitest with --reporter=json'" },
+    { "name": "tool",                     "shape": "string · e.g. 'vitest' 'tsc' 'eslint' 'custom-analyser'","notes": "which tool measured it" },
+    { "name": "tool_version",             "shape": "string · semver or commit hash",                          "notes": "measurement is not reproducible without tool version" },
+    { "name": "timestamp",                "shape": "ISO-8601 · immutable",                                    "notes": "recorded at measurement · never edited" },
+    { "name": "source_files",             "shape": "array of relative paths",                                "notes": "which files the measurement inspected" },
+    { "name": "source_hashes",           "shape": "array of { path, sha256_prefix }",                        "notes": "hashes recorded so re-measurement can detect drift" },
+    { "name": "reproducibility_information","shape": "object · { command, cwd, env_fingerprint, seed? }",    "notes": "exact command to reproduce · with env fingerprint" },
+    { "name": "limitations",             "shape": "string · what this measurement does NOT establish",       "notes": "mandatory · every measurement has scope limits" },
+    { "name": "provenance",              "shape": "object · { requested_by, produced_by, verified_by }",     "notes": "attribution ledger link · never anonymous · see provenance-model" },
+    { "name": "confidence",              "shape": "enum · high · medium · low · insufficient",              "notes": "measurement confidence · not decision confidence" },
+    { "name": "attribution",             "shape": "object",                                                   "notes": "external_llm_used=false · deterministic=true · taught_by=master_ai_engineer" }
+  ],
+  "optional_fields": [
+    { "name": "related_evidence_ids",     "shape": "array of evidence_id · corroborating measurements" },
+    { "name": "conflicting_evidence_ids", "shape": "array of evidence_id · contradictory measurements" },
+    { "name": "notes",                     "shape": "string · human-readable · never load-bearing" }
+  ],
+  "hard_invariants": [
+    "state=NOT_MEASURED · MUST NOT be promoted to PASSED downstream",
+    "state=UNKNOWN or missing · treated as NOT_MEASURED · never as PASSED",
+    "state=STALE when source_hashes have changed since timestamp",
+    "measurement.value MUST be present when state ∈ {MEASURED, PASSED, FAILED}",
+    "baseline_value MUST be present when evaluating a candidate against existing code",
+    "every measurement records tool + tool_version + reproducibility_information",
+    "evidence_id is monotonic and never re-used",
+    "attribution.external_llm_used MUST be false · attribution.deterministic MUST be true"
+  ]
+}

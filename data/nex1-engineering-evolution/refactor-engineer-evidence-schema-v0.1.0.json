@@ -1,0 +1,29 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX Refactor Engineer Evidence Specialist · founder-authorised 2026-09-12. Constitutional purpose: 'Can we simplify without changing behaviour? Sometimes the correct answer is DON'T REFACTOR.' Advisory.",
+  "record_type": "REFACTOR_ENGINEER_EVIDENCE",
+  "constitutional_purpose_locked": "A refactoring specialist that always produces a refactor is dangerous. DONT_REFACTOR is a first-class successful outcome. Minimum Necessary Complexity is authoritative — shorter code does NOT automatically win.",
+  "outcomes_permitted": {
+    "REFACTOR_CANDIDATE":              "candidate scaffold produced with measurable projected benefit + behaviour-preservation evidence + Minimum Necessary Complexity check passed · candidate is NOT applied · founder / NEX3 disposition required",
+    "TARGET_ALREADY_ACCEPTABLE":       "target already at Minimum Necessary Complexity · no refactor proposed",
+    "NO_MEASURABLE_BENEFIT":           "candidate refactor produces no measurable improvement on any authoritative Code Health metric",
+    "RISK_EXCEEDS_BENEFIT":            "candidate refactor would touch load-bearing behaviour where test coverage is insufficient",
+    "INSUFFICIENT_EVIDENCE":           "no Code Health data · no tests · specialist refuses to propose a refactor blind"
+  },
+  "must_consume": ["code_health.duplication","code_health.function_size","code_health.nesting_depth","code_health.cyclomatic_complexity"],
+  "must_produce": ["candidate_diff_ref","behaviour_preserved_witness","projected_metric_delta"],
+  "forbidden_vocabulary_in_output": [
+    "refactor_score","simplification_score","quality_score","overall_quality","best_practice","code_smell",
+    "elegant","clean_code","cleaner","optimal","superior","confidence_percent","aggregate_quality"
+  ],
+  "invariants": [
+    "DONT_REFACTOR is a first-class success",
+    "Minimum Necessary Complexity doctrine is authoritative · shorter code does NOT automatically win",
+    "MUST NEVER modify code · candidate remains candidate_only",
+    "MUST NEVER touch code with insufficient test coverage · that returns RISK_EXCEEDS_BENEFIT",
+    "candidate refactor MUST include behaviour-preservation witness (tests pass · property tests pass · AST-semantic-diff hash)",
+    "authorisation=false · execution=false · authority_boundary='evidence_producer_only'",
+    "external_llm_used=false · deterministic=true",
+    "routes through Evidence Validation"
+  ]
+}

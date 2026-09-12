@@ -1,0 +1,41 @@
+{
+  "at": "2026-09-11T20:32:49.516Z",
+  "probe": "capability-d · introspection · read-only",
+  "question": "Your previous repair changed the code from a missing-property error to a type-mismatch error. Explain what changed, why the new repair is invalid, and what information would be required to choose a valid replacement value.",
+  "attempts": [
+    {
+      "attempt": 1,
+      "ok": false,
+      "code": "sec.nex1_diff_malformed",
+      "reason": "template-only adapter requires a template_directive · NEX1 must compose one"
+    },
+    {
+      "attempt": 2,
+      "ok": false,
+      "code": "sec.nex1_diff_malformed",
+      "reason": "ast-semantic adapter requires a template_directive"
+    },
+    {
+      "attempt": 3,
+      "kind": "surface_inventory",
+      "all_directive_kinds": [
+        "scaffold_ts_module",
+        "add_jsdoc",
+        "add_import",
+        "add_interface_field",
+        "add_return_object_property",
+        "add_test_case",
+        "add_property_to_object_at_position"
+      ],
+      "diagnostic_or_proposal_kinds": [],
+      "conclusion": "NEX1's directive schema contains no proposal/diagnostic/introspection kinds."
+    },
+    {
+      "attempt": 4,
+      "kind": "adapter_prompt_consultation",
+      "ast_semantic_reads_task_prompt": false,
+      "template_only_reads_task_prompt": false,
+      "conclusion": "No adapter consults context.task_prompt · NEX1's natural-language question channel is inert."
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "endpoints": {
+    "https://commons.wikimedia.org/w/api.php": {
+      "consecutive_failures": 0,
+      "breaker_open_until": null,
+      "last_success_at": "2026-09-10T13:43:29.962Z",
+      "last_failure_at": null,
+      "last_error": null,
+      "requests_attempted": 11,
+      "requests_succeeded": 11,
+      "bytes_in_total": 854405
+    }
+  }
+}

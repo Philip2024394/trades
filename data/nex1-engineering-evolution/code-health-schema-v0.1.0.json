@@ -1,0 +1,74 @@
+{
+  "version": "v0.1.0",
+  "notes": "Code Health Intelligence contract · founder-authorised design 2026-09-12 · corrected 2026-09-12 following Phase 2C evidence-integrity gate. DESCRIPTIVE ONLY · Code Health MEASURES · never judges. `complexity = 18` is a measurement. `complexity = bad` is forbidden. All quality judgement belongs to future NEX2/NEX3 stages.",
+  "record_type": "CODE_HEALTH_REPORT",
+  "state_model_boundary": {
+    "statement": "Code Health v0 uses a measurement-specific six-state model. It does NOT redefine, modify, or replace the Evidence Engine v0 state vocabulary.",
+    "code_health_states_v0": ["MEASURED", "NOT_MEASURED", "NOT_APPLICABLE", "INCONCLUSIVE", "BLOCKED", "STALE"],
+    "evidence_engine_states_v0_untouched": ["MEASURED", "PASSED", "FAILED", "NOT_MEASURED", "NOT_APPLICABLE", "INCONCLUSIVE", "BLOCKED", "STALE"],
+    "rationale": "Code Health measurements are descriptive · they never PASS or FAIL · therefore PASSED / FAILED are intentionally omitted. Evidence Engine keeps its 8-state model because it renders verdicts on engineering claims. Phase 2C did not modify Evidence Engine state vocabulary."
+  },
+  "forbidden_vocabulary_in_output": [
+    "bad code","good code","clean code","poor code","optimal code","better code","worse code",
+    "maintainable","unmaintainable","recommended","should refactor","should split","should merge",
+    "high complexity","low complexity","excessive","insufficient","poorly designed","well designed",
+    "code smell","anti-pattern","best practice","worst practice"
+  ],
+  "measurement_kinds": [
+    { "id": "cyclomatic_complexity", "unit": "count",   "per": "function|file|project", "provenance": "native",                                              "notes": "McCabe · +1 base + decision points · broken syntax → INCONCLUSIVE with value=null" },
+    { "id": "file_size",              "unit": "bytes",   "per": "file",                 "provenance": "native",                                              "notes": "byte count · nothing more" },
+    { "id": "line_counts",            "unit": "count",   "per": "file",                 "provenance": "native",                                              "notes": "total · code · comment · blank · heuristic (line-based, not AST)" },
+    { "id": "function_size",          "unit": "count",   "per": "function",             "provenance": "native",                                              "notes": "span in source lines · parameter count" },
+    { "id": "nesting_depth",          "unit": "count",   "per": "function|file",        "provenance": "native",                                              "notes": "max block-nesting depth · broken syntax → INCONCLUSIVE" },
+    { "id": "duplication",            "unit": "count",   "per": "file|project",         "provenance": "native",                                              "notes": "AST-shape hash equivalence groups · v0 · function-level · min shape 40" },
+    { "id": "api_surface",            "unit": "count",   "per": "file|package",         "provenance": "native",                                              "notes": "exported symbols · deterministic from AST · broken syntax → INCONCLUSIVE" },
+    { "id": "dependency_fan_in",      "unit": "count",   "per": "file",                 "provenance": "delegated_and_verified:project_architecture_v0.1.0",  "notes": "value read from ProjectArchitectureReport.fan_in[node_id] · never recomputed" },
+    { "id": "dependency_fan_out",     "unit": "count",   "per": "file",                 "provenance": "delegated_and_verified:project_architecture_v0.1.0",  "notes": "value read from ProjectArchitectureReport.fan_out[node_id] · never recomputed" },
+    { "id": "dependency_depth",       "unit": "count",   "per": "file",                 "provenance": "not_yet_available",                                    "notes": "Project Architecture v0.1.0 does NOT provide dependency-depth · Phase 2C emits NOT_MEASURED with explicit reason · Code Health does not implement a hidden second detector" },
+    { "id": "unused_exports",         "unit": "count",   "per": "file",                 "provenance": "not_yet_available",                                    "notes": "Project Architecture v0.1.0 does NOT expose per-export usage · orphan(fan_in=0∧fan_out=0) is a distinct concept and MUST NOT be silently reinterpreted as 'unused export' · Phase 2C emits NOT_MEASURED" },
+    { "id": "test_relationship",      "unit": "count",   "per": "file",                 "provenance": "not_yet_available",                                    "notes": "no authorised NEX subsystem currently exposes test-relationship data · Phase 2C emits NOT_MEASURED · Code Health MUST NOT infer test coverage or adequacy" }
+  ],
+  "states": [
+    { "id": "MEASURED",       "definition": "measurement produced a value" },
+    { "id": "NOT_MEASURED",   "definition": "measurement was not established at this call site · reason field required · never accompanied by a fabricated numeric value" },
+    { "id": "NOT_APPLICABLE", "definition": "the metric does not apply (e.g. cyclomatic on TOML)" },
+    { "id": "INCONCLUSIVE",   "definition": "the measurement attempted but signal is insufficient (e.g. broken parse) · value MUST be null · reason field required" },
+    { "id": "BLOCKED",        "definition": "cannot proceed (tool unavailable · sandbox missing)" },
+    { "id": "STALE",          "definition": "source_hash changed since measurement · remeasure required · runtime enforcement of STALE remains deferred to future authorised phase" }
+  ],
+  "measurement_fields": [
+    { "name": "metric_id",                  "shape": "string · monotonic e.g. CH-0000042" },
+    { "name": "schema_version",             "shape": "string · currently 'v0.1.0'" },
+    { "name": "kind",                       "shape": "one of measurement_kinds.id" },
+    { "name": "scope",                      "shape": "enum · file · function · project · package" },
+    { "name": "scope_target",               "shape": "string · path or symbol name" },
+    { "name": "source_path",                "shape": "relative path" },
+    { "name": "source_hash",                "shape": "sha256_prefix" },
+    { "name": "state",                      "shape": "one of states" },
+    { "name": "value",                      "shape": "typed value (number or structured) · MUST be null when state !== MEASURED" },
+    { "name": "tool",                       "shape": "string · e.g. 'typescript'" },
+    { "name": "tool_version",               "shape": "string · e.g. '5.9.3'" },
+    { "name": "methodology",                "shape": "string · deterministic method description" },
+    { "name": "reproducibility_information","shape": "object · command · cwd · env_fingerprint · node_version · platform" },
+    { "name": "limitations",                "shape": "string · what this measurement does NOT establish" },
+    { "name": "reason",                     "shape": "string · REQUIRED when state ∈ {NOT_MEASURED · INCONCLUSIVE · BLOCKED · NOT_APPLICABLE · STALE}" },
+    { "name": "delegated_from",             "shape": "object · REQUIRED when the value is authoritatively supplied by another NEX subsystem · fields: subsystem · subsystem_version · field_reference · upstream_report_id? · upstream_node_id?" },
+    { "name": "attribution",                "shape": "object · role='code_health_measurement' · authority='descriptive_read_only' · produced_by='code_health_intelligence' · deterministic=true · external_llm_used=false" }
+  ],
+  "invariants": [
+    "no forbidden vocabulary appears anywhere in output",
+    "no threshold labels (high · low · excessive) · only raw numbers",
+    "no recommendation fields",
+    "no quality score",
+    "every measurement carries tool + tool_version + methodology + reproducibility",
+    "measurements provenance-tagged 'delegated_and_verified:*' MUST include a delegated_from block naming the upstream subsystem and field reference · never recompute silently",
+    "measurements provenance-tagged 'not_yet_available' MUST emit state=NOT_MEASURED with an explicit reason · MUST NOT emit a fabricated numeric value · MUST NOT fall back to a hidden second detector",
+    "empty/broken sources produce NOT_APPLICABLE or INCONCLUSIVE · never MEASURED with an invented value",
+    "broken syntax MUST produce state=INCONCLUSIVE with value=null · complexity=0 as a 'lower bound' is prohibited under ordinary cyclomatic_complexity",
+    "attribution.external_llm_used MUST be false",
+    "attribution.role MUST be 'code_health_measurement'",
+    "attribution.authority MUST be 'descriptive_read_only'",
+    "attribution.produced_by MUST be 'code_health_intelligence'",
+    "Code Health v0 state model is measurement-specific and MUST NOT be represented as if it replaced the Evidence Engine v0 state vocabulary (see state_model_boundary)"
+  ]
+}

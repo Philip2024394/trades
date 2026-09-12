@@ -1,0 +1,901 @@
+{
+  "generated_at": "2026-09-01T21:46:30.170Z",
+  "contract": "READ-ONLY · no INSERT / UPDATE / DELETE / DDL / bucket-create / file-upload",
+  "projects": {
+    "NEX": {
+      "url": "https://ijvqdvsvwtwxzcqmoqit.supabase.co",
+      "database": {
+        "schema_discovery": {
+          "ok": true,
+          "table_count": 17
+        },
+        "tables_with_image_columns": {
+          "nex_collection_fetch_errors": {
+            "image_columns": [
+              {
+                "name": "target_url",
+                "type": "string",
+                "format": "text"
+              }
+            ],
+            "imagekit_counts": {
+              "target_url": {
+                "count": 0
+              }
+            }
+          },
+          "nex_collection_url_queue": {
+            "image_columns": [
+              {
+                "name": "candidate_url",
+                "type": "string",
+                "format": "text"
+              }
+            ],
+            "imagekit_counts": {
+              "candidate_url": {
+                "count": 0
+              }
+            }
+          },
+          "directory_seeds": {
+            "image_columns": [
+              {
+                "name": "google_maps_url",
+                "type": "string",
+                "format": "text"
+              },
+              {
+                "name": "photos",
+                "type": "array",
+                "format": "text[]"
+              },
+              {
+                "name": "cover_image",
+                "type": "string",
+                "format": "text"
+              }
+            ],
+            "imagekit_row_count": "not_counted (non-nex table)"
+          },
+          "sources": {
+            "image_columns": [
+              {
+                "name": "source_url",
+                "type": "string",
+                "format": "text"
+              }
+            ],
+            "imagekit_row_count": "not_counted (non-nex table)"
+          }
+        }
+      },
+      "storage": {
+        "buckets": []
+      }
+    },
+    "MAIN": {
+      "url": "https://msdonkkechxzgagyguoe.supabase.co",
+      "database": {
+        "schema_discovery": {
+          "ok": false,
+          "error": "fetch failed"
+        },
+        "tables": {}
+      },
+      "storage": {
+        "error": "fetch failed"
+      },
+      "existing_imagekit_import_inventory": {
+        "total_urls": 127,
+        "retrievable": 0,
+        "broken": 127,
+        "buckets_referenced": {
+          "product-images": 121,
+          "networkers-tv-thumbnails": 4,
+          "social-media": 1,
+          "network-uploads": 1
+        },
+        "mime_types": {},
+        "per_url": [
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/contact-hero.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/69ce6eca41c4-ChatGPT_Image_Jun_25__2026__11_02_32_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/news-hero.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/networkers-tv-thumbnails/measure-your-house-guide.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/914b13791fb3-ChatGPT_Image_Jun_27__2026__09_33_21_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/9a45a595d0a8-ChatGPT_Image_Jun_26__2026__07_59_10_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/fb02f5fcaf85-ChatGPT_Image_Jun_27__2026__01_04_20_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/8df983ce60c5-ChatGPT_Image_Jun_27__2026__01_02_49_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/d1500eb3a9bf-ChatGPT_Image_Jun_27__2026__01_01_26_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/7d0d524b5f73-ChatGPT_Image_Jun_27__2026__01_11_24_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/dd1301817512-ChatGPT_Image_Jun_27__2026__09_47_30_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/4f5bd53f15f8-ChatGPT_Image_Jun_28__2026__11_38_11_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/a31c641dcfb0-ChatGPT_Image_Jun_27__2026__05_57_40_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/3b72a2f8e677-ChatGPT_Image_Jun_27__2026__07_04_17_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/guide-social-media-customers.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/guide-pricing-trade-work.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/guide-photograph-your-work.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/guide-whatsapp-business-tips.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/guide-van-qr-codes.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/guide-win-bigger-jobs.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/tips-hero.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/8725cd29fef6-ChatGPT_Image_Jun_27__2026__02_13_13_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/56457da839ea-Untitledsdfsdfsdfdfsdfsdfsdfsdfsdf-removebg-preview.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/branding/trade-app-banner-drywaller.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/stuart-kingsley-avatar.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/a12da161bdda-ChatGPT_Image_Jun_29__2026__02_11_40_PM.jpg",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/stuart-kingsley-hero.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/stuart-pir-insulation-1.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/stuart-pir-insulation-2.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/stuart-pir-insulation-3.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/migrated/85e5e067cf0cb299.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/social-media/editor-ui/empty-frame.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/network-uploads/yard-feed/tiler-floor-tile-samples-grid.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/3643cc34433c-ChatGPT_Image_Jun_25__2026__12_21_55_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/e727a6f64778-Untitledasdasdasdsdsdsdasss.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/b976fea78218-ChatGPT_Image_Jun_25__2026__12_27_12_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/337192aa1295-ChatGPT_Image_Jun_25__2026__12_31_55_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/ed1102196969-ChatGPT_Image_Jun_25__2026__12_32_51_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/968696e6815f-ChatGPT_Image_Jun_25__2026__12_38_50_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/ee7d5c9fa9bb-ChatGPT_Image_Jun_25__2026__12_48_03_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/cf01981a20a3-ChatGPT_Image_Jun_25__2026__12_50_00_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/82f31612a3b4-ChatGPT_Image_Jun_25__2026__02_06_44_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/dcebd6ac4310-ChatGPT_Image_Jun_27__2026__10_41_47_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/8a982c28982a-ChatGPT_Image_Jun_27__2026__10_42_41_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/ba4a53a1cd81-ChatGPT_Image_Jun_27__2026__10_45_04_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/6e66c24ee2e1-ChatGPT_Image_Jun_27__2026__10_46_08_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/6c94a12f7bc9-ChatGPT_Image_Jun_27__2026__10_48_59_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/a53af0684cfb-ChatGPT_Image_Jun_27__2026__10_51_31_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/e01f86a92082-ChatGPT_Image_Jun_27__2026__10_52_36_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/e3897fc2b891-ChatGPT_Image_Jun_27__2026__10_55_22_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/438f1611c708-ChatGPT_Image_Jun_27__2026__10_57_48_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/c3f53c88ca19-ChatGPT_Image_Jun_27__2026__10_59_11_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/aa7b5586adcd-ChatGPT_Image_Jun_27__2026__11_00_12_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/00064b78c32e-ChatGPT_Image_Jun_27__2026__11_05_18_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/55584d588caf-ChatGPT_Image_Jun_27__2026__11_03_54_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/2f468ab28af6-ChatGPT_Image_Jun_28__2026__01_57_34_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/6a31fc2160c8-ChatGPT_Image_Jun_28__2026__02_06_14_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/630da56e3e20-ChatGPT_Image_Jun_27__2026__11_03_23_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/95008e68b0b5-ChatGPT_Image_Jun_27__2026__11_26_20_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/8e6c3befe79f-Jun_27__2026__11_22_28_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/bbb0cfea4416-ChatGPT_Image_Jun_28__2026__03_09_10_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/8cd7696e101d-ChatGPT_Image_Jun_27__2026__11_36_16_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/2e545d6ae39f-ChatGPT_Image_Jun_27__2026__11_51_42_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/b0d3ffa8c38e-ChatGPT_Image_Jun_27__2026__11_50_42_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/b7391dae46be-ChatGPT_Image_Jun_27__2026__11_53_16_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/adec792f45a9-ChatGPT_Image_Jun_27__2026__11_57_06_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/b865e2ce0ebf-ChatGPT_Image_Jun_27__2026__12_00_33_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/b1f87c4d4490-ChatGPT_Image_Jun_27__2026__12_01_54_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/b633af8d8305-ChatGPT_Image_Jun_27__2026__12_11_04_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/a83a3c24798d-ChatGPT_Image_Jun_27__2026__12_14_53_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/dc49827bfb79-ChatGPT_Image_Jun_27__2026__12_16_10_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/3525c5e1e659-ChatGPT_Image_Jun_27__2026__12_17_15_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/e73ebd91fb29-ChatGPT_Image_Jun_27__2026__12_19_36_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/c171d419c931-ChatGPT_Image_Jun_28__2026__02_45_55_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/476190f63f89-ChatGPT_Image_Jun_28__2026__02_48_30_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/f3ae400d19ce-ChatGPT_Image_Jun_28__2026__02_52_42_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/7a59176aaa15-ChatGPT_Image_Jun_28__2026__02_57_02_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/82162e05d757-ChatGPT_Image_Jun_28__2026__03_02_19_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/b3c67a9eac45-ChatGPT_Image_Jun_28__2026__03_02_58_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/54a569fe9307-ChatGPT_Image_Jun_28__2026__03_05_56_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/a13206876447-ChatGPT_Image_Jun_28__2026__03_07_41_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/f96b81e327c5-ChatGPT_Image_Jun_28__2026__03_13_54_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/b06c47caa560-ChatGPT_Image_Jun_28__2026__03_15_51_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/f338668d4864-ChatGPT_Image_Jun_28__2026__03_17_42_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/583e2b5ffd43-ChatGPT_Image_Jun_28__2026__03_19_14_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/9cb5edc6e836-ChatGPT_Image_Jun_28__2026__03_29_26_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/3df2575f92d0-ChatGPT_Image_Jun_28__2026__03_26_07_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/c61011596ed6-ChatGPT_Image_Jun_28__2026__03_31_31_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/a3f1da513ca6-ChatGPT_Image_Jun_28__2026__08_32_45_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/branding/xrated_logo_v3.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/branding/xrated-landing-hero-v4.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/migrated/fa5b92ce94f3cb83.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/2b9d8cb08c0c-Untitledeqweqeqweqdsadasdasd.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/077e4d693f62-ChatGPT_Image_Jun_26__2026__12_45_54_PM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/698e24d68bbe-ChatGPT_Image_Jun_26__2026__11_31_25_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/2b93a15d174d-Untitledzxczxczxzzzz.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/4e5494b7bb75-Untitledasdasd.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/1ae87f5ace55-ChatGPT_Image_Jun_27__2026__05_53_00_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/d08ffd8a57dd-ChatGPT_Image_Jun_27__2026__11_30_02_AM.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/a2b3e9b94e7b-ChatGPT_Image_Jun_29__2026__01_31_04_PM.jpg",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/15cc43fe6bf2-ChatGPT_Image_Jun_29__2026__01_34_13_PM.jpg",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/171a428b79a4-ChatGPT_Image_Jun_29__2026__02_08_15_PM.jpg",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/0c721826cb2a-ChatGPT_Image_Jun_29__2026__02_02_20_PM.jpg",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/0df6251bb332-ChatGPT_Image_Jun_29__2026__01_58_55_PM.jpg",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/concrete-finisher-industrial-power-float.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/concrete-finisher-driveway-trowel-closeup.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/concrete-finisher-team-modern-patio.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/concrete-finisher-team-pathway-sunset.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/networkers-tv-thumbnails/faux-plaster-stone-cream-cottage.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/networkers-tv-thumbnails/faux-plaster-stone-white-modern.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/networkers-tv-thumbnails/faux-plaster-stone-brown-multi-tone.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-spiral-curved-walnut-modern.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-oak-modern-hallway.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-glass-balustrade-modern.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-walnut-under-stair-storage.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-oak-white-riser-cottage.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-walnut-floating-modern.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-oak-led-underlit-hallway.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-cantilever-glass-walnut.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-solid-oak-traditional.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-walnut-glass-panelled.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-oak-open-riser-atrium.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-walnut-cantilever-lit.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-walnut-glass-tread-lit.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-oak-white-spindle-classic.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-plan-drawing-to-photo-split.png",
+            "error": "fetch failed",
+            "retrievable": false
+          },
+          {
+            "url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-oak-warm-modern-hallway.png",
+            "error": "fetch failed",
+            "retrievable": false
+          }
+        ]
+      }
+    }
+  },
+  "manifests": {
+    "data/nex-image-manifest.json": {
+      "path": "data/nex-image-manifest.json",
+      "exists": true,
+      "file_size_bytes": 8440603,
+      "total_urls": 2345,
+      "unique_urls": 2069,
+      "duplicate_urls": 276,
+      "imagekit_urls": 2218,
+      "imagekit_urls_unique": 1942,
+      "supabase_urls": 127,
+      "supabase_urls_unique": 127,
+      "other_urls": 0,
+      "imagekit_accounts": {
+        "5vv5pw26q": 1216,
+        "9mrgsv2rp": 1002
+      }
+    },
+    "data/nex-curated-images-manifest.json": {
+      "path": "data/nex-curated-images-manifest.json",
+      "exists": true,
+      "file_size_bytes": 23575,
+      "total_urls": 44,
+      "unique_urls": 44,
+      "duplicate_urls": 0,
+      "imagekit_urls": 44,
+      "imagekit_urls_unique": 44,
+      "supabase_urls": 0,
+      "supabase_urls_unique": 0,
+      "other_urls": 0,
+      "imagekit_accounts": {
+        "nepgaxllc": 44
+      }
+    },
+    "data/nex-confirmed-images.json": {
+      "path": "data/nex-confirmed-images.json",
+      "exists": true,
+      "file_size_bytes": 184776,
+      "total_urls": 40,
+      "unique_urls": 40,
+      "duplicate_urls": 0,
+      "imagekit_urls": 40,
+      "imagekit_urls_unique": 40,
+      "supabase_urls": 0,
+      "supabase_urls_unique": 0,
+      "other_urls": 0,
+      "imagekit_accounts": {
+        "5vv5pw26q": 40
+      }
+    }
+  },
+  "source_code": {
+    "per_nex_path": {
+      "src/app/nexapp": 2,
+      "src/app/nex-app": 4,
+      "src/components/nexapp": 1,
+      "src/components/nex-app": 7,
+      "src/lib/nexapp": 1,
+      "src/lib/nexapp-shell": 0,
+      "src/lib/nex-food": 0,
+      "src/lib/nex-mascots": 0,
+      "src/lib/nex-actions": 0,
+      "src/lib/nex-brain": 0,
+      "src/lib/nex-directory": 0,
+      "src/lib/nex-voice": 0,
+      "src/lib/refacing": 0
+    },
+    "data_files_count": 188
+  },
+  "provenance": {
+    "data/nex-image-manifest.json": {
+      "total": 2069,
+      "buckets": {
+        "ALREADY_MIGRATED": 127,
+        "OWNED_LIKELY_AI_GENERATED": 1160,
+        "OWNED_LIKELY_UPLOAD": 403,
+        "OWNED_LIKELY_PROCESSED": 0,
+        "UNKNOWN_PROVENANCE": 379
+      },
+      "samples": {
+        "UNKNOWN_PROVENANCE": [
+          "https://ik.imagekit.io/9mrgsv2rp/4cbfbc8a67a7512e6742574e38537fca.jpg",
+          "https://ik.imagekit.io/9mrgsv2rp/1be0fdf473712c28ec30059c9c1530ef.jpg",
+          "https://ik.imagekit.io/9mrgsv2rp/b5938354c2fde868067bd2be981dc2f6.jpg",
+          "https://ik.imagekit.io/9mrgsv2rp/2f456eb541f26dfedcd3ff0bf9c0abad.jpg",
+          "https://ik.imagekit.io/9mrgsv2rp/084f21873251f02e29e609e1e77b26f9.jpg",
+          "https://ik.imagekit.io/9mrgsv2rp/b5757afffcd7671db9c5657356dec79e.jpg",
+          "https://ik.imagekit.io/9mrgsv2rp/369b0923175db2ea84dd4caf884d14f9.jpg",
+          "https://ik.imagekit.io/9mrgsv2rp/ee4093d9ce6198bb9e1f36806790e08c.jpg",
+          "https://ik.imagekit.io/9mrgsv2rp/aaa55d3fe3b00c44b79593d8d54ed11c.jpg",
+          "https://ik.imagekit.io/9mrgsv2rp/c804a7f8aaa537b6f922d52cf615939b.jpg"
+        ]
+      }
+    },
+    "data/nex-curated-images-manifest.json": {
+      "total": 44,
+      "buckets": {
+        "ALREADY_MIGRATED": 0,
+        "OWNED_LIKELY_AI_GENERATED": 0,
+        "OWNED_LIKELY_UPLOAD": 13,
+        "OWNED_LIKELY_PROCESSED": 0,
+        "UNKNOWN_PROVENANCE": 31
+      },
+      "samples": {
+        "UNKNOWN_PROVENANCE": [
+          "https://ik.imagekit.io/nepgaxllc/",
+          "https://ik.imagekit.io/nepgaxllc/Golden%20Borobudur%20under%20starlit%20skies.png?updatedAt=1775591346155",
+          "https://ik.imagekit.io/nepgaxllc/vfddsfddfgsdfgasdasdasdasdasdasdasdasddsfasdasdasdasdasdsadasadfasd.png?updatedAt=1775543616817",
+          "https://ik.imagekit.io/nepgaxllc/vfddsfddfgsdfgasdasdasdasdasdasdasdasddsfasdasdasdasdasdsada.png?updatedAt=1775543521658",
+          "https://ik.imagekit.io/nepgaxllc/vfddsfddfgsdfgasdasdasdasdasdasdasdasddsfasdasdasdasdasd.png?updatedAt=1775543407394",
+          "https://ik.imagekit.io/nepgaxllc/vfddsfddfgsdfgasdasdasdasdasdasdasdasddsfasdasdasd.png?updatedAt=1775543315475",
+          "https://ik.imagekit.io/nepgaxllc/vfddsfddfgsdfgasdasdasdasdasdasdasdasddsfasd.png?updatedAt=1775543117942",
+          "https://ik.imagekit.io/nepgaxllc/vfddsfddfgsdfgasdasdasdasdasdasd.png?updatedAt=1775542630294",
+          "https://ik.imagekit.io/nepgaxllc/vfddsfddfgsdfgasdasdasdasd.png?updatedAt=1775542514855",
+          "https://ik.imagekit.io/nepgaxllc/vfddsfddfgsdfgasdasd.png?updatedAt=1775542411237"
+        ]
+      }
+    },
+    "data/nex-confirmed-images.json": {
+      "total": 40,
+      "buckets": {
+        "ALREADY_MIGRATED": 0,
+        "OWNED_LIKELY_AI_GENERATED": 35,
+        "OWNED_LIKELY_UPLOAD": 5,
+        "OWNED_LIKELY_PROCESSED": 0,
+        "UNKNOWN_PROVENANCE": 0
+      },
+      "samples": {
+        "UNKNOWN_PROVENANCE": []
+      }
+    }
+  },
+  "recommended_architecture": {
+    "target_project": "NEX-specific (ijvqdvsvwtwxzcqmoqit)",
+    "bucket_name_proposal": "nex-media",
+    "folder_structure": {
+      "ui/": "NexIcons · nexEmojis · nexVisualAssets",
+      "frames/": "chat frame · master · prev versions (currently in /public/nex/)",
+      "avatars/": "user avatars",
+      "profiles/": "profile-page media",
+      "directory/food/": "food directory images",
+      "directory/accommodation/": "hotels · guesthouse · villa · kos · hostel",
+      "directory/businesses/": "general business directory",
+      "directory/places/": "map + place content",
+      "marketplace/": "marketplace listings",
+      "social/": "social-post media (image_urls JSONB)",
+      "live/": "NexCentreLiveFeed · NexPinterestFeed",
+      "projects/": "project photos + merchant avatars",
+      "uploads/": "raw user uploads (nex_uploads target)"
+    },
+    "consolidation_plan_for_existing_127": {
+      "current_location": "MAIN Supabase / product-images / imagekit-import/*",
+      "final_location": "NEX Supabase / nex-media / <content-appropriate-subfolder>/*",
+      "approach": "COPY not MOVE · keep MAIN copies during transition · switch references then remove after verification"
+    },
+    "imagekit_landing_zone_note": "Do NOT permanently keep files in nex-media/imagekit-import/ · that's a migration staging pattern only · final placement is content-classified subfolders per Philip 2026-09-02 spec."
+  },
+  "limitations": [
+    "MAIN: OpenAPI schema discovery failed · fetch failed",
+    "MAIN: listBuckets failed · fetch failed"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "version": "v0.2.0",
+  "supersedes": "v0.1.0 (preserved byte-identical for baseline audit)",
+  "notes": "NEX Engineering Evolution LAB · founder-authorised 2026-09-12. Discovery pipeline. LAB may discover but never teach NEX1 directly.",
+  "record_type": "LAB_CANDIDATE_PRACTICE",
+  "constitutional_purpose_locked": "LAB discovers candidate engineering practices. LAB MUST NEVER mutate NEX1. LAB MUST NEVER self-promote. LAB MUST NEVER bypass Evidence Validation. LAB discovery ≠ NEX1 knowledge. Only founder-authorised Standards Feed teaches NEX1.",
+  "pipeline_stages_locked": [
+    "RESEARCH",
+    "CANDIDATE_PRACTICE",
+    "EVIDENCE",
+    "EXPERIMENT",
+    "BENCHMARK",
+    "ADVERSARIAL_TEST",
+    "NEX2_ADVISORY",
+    "NEX3_ARBITRATION",
+    "FOUNDER_AUTHORISATION",
+    "STANDARD_ADMISSION_TO_FEED"
+  ],
+  "candidate_practice_states": {
+    "DISCOVERED":                     "LAB observed a candidate practice from research",
+    "EVIDENCE_GATHERED":              "measurable evidence produced across authoritative subsystems",
+    "EXPERIMENT_COMPLETE":            "controlled experiment shipped · results recorded",
+    "AWAITING_NEX2":                  "advisory review pending",
+    "AWAITING_NEX3":                  "arbitration pending",
+    "AWAITING_FOUNDER":               "arbitration complete · founder decision pending",
+    "ADMITTED_TO_STANDARDS_FEED":     "founder authorised · standard registered · LAB done for this candidate",
+    "REJECTED":                       "founder or NEX3 rejected the candidate · reason recorded · first-class success"
+  },
+  "invariants": [
+    "LAB MUST NEVER modify NEX1 code · schemas · standards feed · engineering brain · specialist behaviour",
+    "LAB MUST NEVER expose evidence directly to NEX1 · every evidence hop goes through Evidence Validation",
+    "LAB MUST NEVER register a standard in the feed · only the founder does that",
+    "LAB may run 24/7 discovery loops · but discovery is NOT approval",
+    "REJECTED is a first-class successful LAB outcome",
+    "LAB experiments MUST be reproducible · seeded · deterministic",
+    "external_llm_used=false · deterministic=true"
+  ],
+  "v0_2_0_status": {
+    "pipeline_shape": "IMPLEMENTED (schema)",
+    "24_7_discovery_loop": "NOT_IMPLEMENTED · deferred · would require founder-authorised runtime scheduling",
+    "candidate_registry_controller": "PARTIAL · basic append controller present · full experiment runner deferred"
+  }
+}

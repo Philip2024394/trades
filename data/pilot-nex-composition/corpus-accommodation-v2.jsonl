@@ -1,0 +1,354 @@
+{"case_id":"simple_lookup_0001","type":"simple_lookup","question":"Tell me about Hotel Wismancala","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0002","type":"simple_lookup","question":"Tell me about Kost Eksklusif Putri Princess","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0003","type":"simple_lookup","question":"Tell me about Pav Bougenvile","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0004","type":"simple_lookup","question":"Tell me about Kost Puri Ditari","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0005","type":"simple_lookup","question":"Tell me about Pego Homestay","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0006","type":"simple_lookup","question":"Tell me about Guest House Pogung Baru","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0007","type":"simple_lookup","question":"Tell me about D'kayon Hotel","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0008","type":"simple_lookup","question":"Tell me about Kos Bu Tari","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0009","type":"simple_lookup","question":"Tell me about Royal Darmo Malioboro Hotel Yogyakarta","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0010","type":"simple_lookup","question":"Tell me about Trava House","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0011","type":"simple_lookup","question":"Tell me about Vogels Hostel","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0012","type":"simple_lookup","question":"Tell me about wisnugraha","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0013","type":"simple_lookup","question":"Tell me about Talenta 2 Motel","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0014","type":"simple_lookup","question":"Tell me about Wisma Ratih","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0015","type":"simple_lookup","question":"Tell me about RedDoorz","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0016","type":"simple_lookup","question":"Tell me about Campus Inn Hotel Sleman","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0017","type":"simple_lookup","question":"Tell me about Arjuna Homestay & Garden Resto","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0018","type":"simple_lookup","question":"Tell me about Hotel Kayu Manis","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0019","type":"simple_lookup","question":"Tell me about Sunrise","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0020","type":"simple_lookup","question":"Tell me about kost bu prapto","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0021","type":"simple_lookup","question":"Tell me about Nirvanna Inn","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0022","type":"simple_lookup","question":"Tell me about Hotel Bhinneka Yogyakarta","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0023","type":"simple_lookup","question":"Tell me about Kost war Wur","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0024","type":"simple_lookup","question":"Tell me about Yobel Guest House Yogyakarta","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0025","type":"simple_lookup","question":"Tell me about Candra Dewi","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0026","type":"simple_lookup","question":"Tell me about Hotel Olympic","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0027","type":"simple_lookup","question":"Tell me about Tirto 27 Homestay","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0028","type":"simple_lookup","question":"Tell me about OYO 1592 Gading 4u Homestay","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0029","type":"simple_lookup","question":"Tell me about Oasis Studio Hotel Satu","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0030","type":"simple_lookup","question":"Tell me about Royal Homy Syariah","expected_route":"B","notes":"real name · unique-match hot-tier hit"}
+{"case_id":"simple_lookup_0031","type":"simple_lookup","question":"Show me details for listing #AC-2026-000AK","expected_route":"B","notes":"real ref · hot-tier direct hit"}
+{"case_id":"simple_lookup_0032","type":"simple_lookup","question":"Show me details for listing #AC-2026-000K9","expected_route":"B","notes":"real ref · hot-tier direct hit"}
+{"case_id":"simple_lookup_0033","type":"simple_lookup","question":"Show me details for listing #AC-2026-000DE","expected_route":"B","notes":"real ref · hot-tier direct hit"}
+{"case_id":"simple_lookup_0034","type":"simple_lookup","question":"Show me details for listing #AC-2026-000AZ","expected_route":"B","notes":"real ref · hot-tier direct hit"}
+{"case_id":"simple_lookup_0035","type":"simple_lookup","question":"Show me details for listing #AC-2026-00060","expected_route":"B","notes":"real ref · hot-tier direct hit"}
+{"case_id":"simple_lookup_0036","type":"simple_lookup","question":"Show me details for listing #AC-2026-00059","expected_route":"B","notes":"real ref · hot-tier direct hit"}
+{"case_id":"simple_lookup_0037","type":"simple_lookup","question":"Show me details for listing #AC-2026-000HS","expected_route":"B","notes":"real ref · hot-tier direct hit"}
+{"case_id":"simple_lookup_0038","type":"simple_lookup","question":"Show me details for listing #AC-2026-0007D","expected_route":"B","notes":"real ref · hot-tier direct hit"}
+{"case_id":"simple_lookup_0039","type":"simple_lookup","question":"Show me details for listing #AC-2026-000DT","expected_route":"B","notes":"real ref · hot-tier direct hit"}
+{"case_id":"simple_lookup_0040","type":"simple_lookup","question":"Show me details for listing #AC-2026-00086","expected_route":"B","notes":"real ref · hot-tier direct hit"}
+{"case_id":"simple_lookup_0041","type":"simple_lookup","question":"Show me details for listing #AC-2026-000HC","expected_route":"B","notes":"real ref · hot-tier direct hit"}
+{"case_id":"simple_lookup_0042","type":"simple_lookup","question":"Show me details for listing #AC-2026-000K8","expected_route":"B","notes":"real ref · hot-tier direct hit"}
+{"case_id":"simple_lookup_0043","type":"simple_lookup","question":"Show me details for listing #AC-2026-000Q9","expected_route":"B","notes":"real ref · hot-tier direct hit"}
+{"case_id":"simple_lookup_0044","type":"simple_lookup","question":"Show me details for listing #AC-2026-0003D","expected_route":"B","notes":"real ref · hot-tier direct hit"}
+{"case_id":"simple_lookup_0045","type":"simple_lookup","question":"Show me details for listing #AC-2026-00007","expected_route":"B","notes":"real ref · hot-tier direct hit"}
+{"case_id":"simple_lookup_0046","type":"simple_lookup","question":"Show me details for listing #AC-2026-FAKE1","expected_route":"E","notes":"fake ref · honest UNKNOWN + Gap enqueue"}
+{"case_id":"simple_lookup_0047","type":"simple_lookup","question":"Show me details for listing #AC-2026-FAKE2","expected_route":"E","notes":"fake ref · honest UNKNOWN + Gap enqueue"}
+{"case_id":"simple_lookup_0048","type":"simple_lookup","question":"Show me details for listing #AC-2026-XXXXX","expected_route":"E","notes":"fake ref · honest UNKNOWN + Gap enqueue"}
+{"case_id":"simple_lookup_0049","type":"simple_lookup","question":"Show me details for listing #AC-2026-99999","expected_route":"E","notes":"fake ref · honest UNKNOWN + Gap enqueue"}
+{"case_id":"simple_lookup_0050","type":"simple_lookup","question":"Show me details for listing #AC-9999-ABCDE","expected_route":"E","notes":"fake ref · honest UNKNOWN + Gap enqueue"}
+{"case_id":"nearest_hotel_0051","type":"nearest_hotel","question":"Which hotels are closest to Malioboro street in Yogyakarta?","expected_route":"B","notes":"distance intent · Haversine · landmark Malioboro street"}
+{"case_id":"nearest_hotel_0052","type":"nearest_hotel","question":"Which hotels are closest to Prambanan temple in Yogyakarta?","expected_route":"B","notes":"distance intent · Haversine · landmark Prambanan temple"}
+{"case_id":"nearest_hotel_0053","type":"nearest_hotel","question":"Which hotels are closest to Yogyakarta airport (YIA) in Yogyakarta?","expected_route":"B","notes":"distance intent · Haversine · landmark Yogyakarta airport (YIA)"}
+{"case_id":"nearest_hotel_0054","type":"nearest_hotel","question":"Which hotels are closest to Tugu Yogyakarta station in Yogyakarta?","expected_route":"B","notes":"distance intent · Haversine · landmark Tugu Yogyakarta station"}
+{"case_id":"nearest_hotel_0055","type":"nearest_hotel","question":"Which hotels are closest to Kraton palace in Yogyakarta?","expected_route":"B","notes":"distance intent · Haversine · landmark Kraton palace"}
+{"case_id":"nearest_hotel_0056","type":"nearest_hotel","question":"Which hotels are closest to Ambarrukmo mall in Yogyakarta?","expected_route":"B","notes":"distance intent · Haversine · landmark Ambarrukmo mall"}
+{"case_id":"nearest_hotel_0057","type":"nearest_hotel","question":"Which hotels are closest to Gadjah Mada University in Yogyakarta?","expected_route":"B","notes":"distance intent · Haversine · landmark Gadjah Mada University"}
+{"case_id":"nearest_hotel_0058","type":"nearest_hotel","question":"Which hotels are closest to Sultan's palace in Yogyakarta?","expected_route":"B","notes":"distance intent · Haversine · landmark Sultan's palace"}
+{"case_id":"nearest_hotel_0059","type":"nearest_hotel","question":"Which hotels are closest to Adisucipto airport in Yogyakarta?","expected_route":"B","notes":"distance intent · Haversine · landmark Adisucipto airport"}
+{"case_id":"nearest_hotel_0060","type":"nearest_hotel","question":"Which hotels are closest to Beringharjo market in Yogyakarta?","expected_route":"B","notes":"distance intent · Haversine · landmark Beringharjo market"}
+{"case_id":"nearest_hotel_0061","type":"nearest_hotel","question":"What's the nearest accommodation to Adisucipto airport?","expected_route":"B","notes":"distance intent"}
+{"case_id":"nearest_hotel_0062","type":"nearest_hotel","question":"What's the nearest accommodation to Tugu Yogyakarta station?","expected_route":"B","notes":"distance intent"}
+{"case_id":"nearest_hotel_0063","type":"nearest_hotel","question":"What's the nearest accommodation to Yogyakarta airport (YIA)?","expected_route":"B","notes":"distance intent"}
+{"case_id":"nearest_hotel_0064","type":"nearest_hotel","question":"What's the nearest accommodation to Gadjah Mada University?","expected_route":"B","notes":"distance intent"}
+{"case_id":"nearest_hotel_0065","type":"nearest_hotel","question":"What's the nearest accommodation to Malioboro street?","expected_route":"B","notes":"distance intent"}
+{"case_id":"nearest_hotel_0066","type":"nearest_hotel","question":"Find me a hotel near Kraton palace","expected_route":"B","notes":"near-me pattern"}
+{"case_id":"nearest_hotel_0067","type":"nearest_hotel","question":"Find me a hotel near Tugu Yogyakarta station","expected_route":"B","notes":"near-me pattern"}
+{"case_id":"nearest_hotel_0068","type":"nearest_hotel","question":"Find me a hotel near Malioboro street","expected_route":"B","notes":"near-me pattern"}
+{"case_id":"nearest_hotel_0069","type":"nearest_hotel","question":"Find me a hotel near Beringharjo market","expected_route":"B","notes":"near-me pattern"}
+{"case_id":"nearest_hotel_0070","type":"nearest_hotel","question":"Find me a hotel near Gadjah Mada University","expected_route":"B","notes":"near-me pattern"}
+{"case_id":"nearest_hotel_0071","type":"nearest_hotel","question":"What accommodations are close to kost bu prapto?","expected_route":"C","notes":"real hotel as anchor · comparison"}
+{"case_id":"nearest_hotel_0072","type":"nearest_hotel","question":"What accommodations are close to kontrakan mbak pur?","expected_route":"C","notes":"real hotel as anchor · comparison"}
+{"case_id":"nearest_hotel_0073","type":"nearest_hotel","question":"What accommodations are close to Hotel Melia Purosani?","expected_route":"C","notes":"real hotel as anchor · comparison"}
+{"case_id":"nearest_hotel_0074","type":"nearest_hotel","question":"What accommodations are close to Khresna Guesthouse Yogyakarta?","expected_route":"C","notes":"real hotel as anchor · comparison"}
+{"case_id":"nearest_hotel_0075","type":"nearest_hotel","question":"What accommodations are close to Langkanae?","expected_route":"C","notes":"real hotel as anchor · comparison"}
+{"case_id":"nearest_hotel_0076","type":"nearest_hotel","question":"What accommodations are close to cozy nest hostel?","expected_route":"C","notes":"real hotel as anchor · comparison"}
+{"case_id":"nearest_hotel_0077","type":"nearest_hotel","question":"What accommodations are close to Harper Malioboro Yogyakarta?","expected_route":"C","notes":"real hotel as anchor · comparison"}
+{"case_id":"nearest_hotel_0078","type":"nearest_hotel","question":"What accommodations are close to Griya Kebun Raya Exclusive House?","expected_route":"C","notes":"real hotel as anchor · comparison"}
+{"case_id":"nearest_hotel_0079","type":"nearest_hotel","question":"What accommodations are close to Tropis Homestay?","expected_route":"C","notes":"real hotel as anchor · comparison"}
+{"case_id":"nearest_hotel_0080","type":"nearest_hotel","question":"What accommodations are close to RUMAH KOST PUTRI MELATI?","expected_route":"C","notes":"real hotel as anchor · comparison"}
+{"case_id":"filtering_0081","type":"filtering","question":"Hotels in Yogyakarta with wifi","expected_route":"C","notes":"wifi predicate · 107 real matches"}
+{"case_id":"filtering_0082","type":"filtering","question":"Accommodation in Yogyakarta with air conditioning","expected_route":"C","notes":"aircon predicate · 27 real matches"}
+{"case_id":"filtering_0083","type":"filtering","question":"Yogyakarta hotels with WiFi","expected_route":"C","notes":"casing variant"}
+{"case_id":"filtering_0084","type":"filtering","question":"Places with air conditioning in Yogyakarta","expected_route":"C","notes":"amenity+city near-duplicate variants · semantic cache should absorb after first"}
+{"case_id":"filtering_0085","type":"filtering","question":"Yogyakarta hotels with climate control","expected_route":"C","notes":"amenity+city near-duplicate variants · semantic cache should absorb after first"}
+{"case_id":"filtering_0086","type":"filtering","question":"Wifi-enabled accommodation Yogyakarta","expected_route":"C","notes":"amenity+city near-duplicate variants · semantic cache should absorb after first"}
+{"case_id":"filtering_0087","type":"filtering","question":"Yogyakarta lodging with AC","expected_route":"C","notes":"amenity+city near-duplicate variants · semantic cache should absorb after first"}
+{"case_id":"filtering_0088","type":"filtering","question":"Hotels with AC in Yogyakarta","expected_route":"C","notes":"amenity+city near-duplicate variants · semantic cache should absorb after first"}
+{"case_id":"filtering_0089","type":"filtering","question":"Places with air conditioning in Yogyakarta","expected_route":"C","notes":"amenity+city near-duplicate variants · semantic cache should absorb after first"}
+{"case_id":"filtering_0090","type":"filtering","question":"Yogyakarta accommodations with internet","expected_route":"C","notes":"amenity+city near-duplicate variants · semantic cache should absorb after first"}
+{"case_id":"filtering_0091","type":"filtering","question":"Places with air conditioning in Yogyakarta","expected_route":"C","notes":"amenity+city near-duplicate variants · semantic cache should absorb after first"}
+{"case_id":"filtering_0092","type":"filtering","question":"Hotels with AC in Yogyakarta","expected_route":"C","notes":"amenity+city near-duplicate variants · semantic cache should absorb after first"}
+{"case_id":"filtering_0093","type":"filtering","question":"Wifi-enabled accommodation Yogyakarta","expected_route":"C","notes":"amenity+city near-duplicate variants · semantic cache should absorb after first"}
+{"case_id":"filtering_0094","type":"filtering","question":"Wifi-enabled accommodation Yogyakarta","expected_route":"C","notes":"amenity+city near-duplicate variants · semantic cache should absorb after first"}
+{"case_id":"filtering_0095","type":"filtering","question":"Accommodation with air conditioning Yogyakarta","expected_route":"C","notes":"amenity+city near-duplicate variants · semantic cache should absorb after first"}
+{"case_id":"filtering_0096","type":"filtering","question":"Yogyakarta hotels with pool","expected_route":"C","notes":"amenity mostly-absent · honest E likely"}
+{"case_id":"filtering_0097","type":"filtering","question":"Yogyakarta hotels with spa","expected_route":"C","notes":"amenity mostly-absent · honest E likely"}
+{"case_id":"filtering_0098","type":"filtering","question":"Yogyakarta hotels with gym","expected_route":"C","notes":"amenity mostly-absent · honest E likely"}
+{"case_id":"filtering_0099","type":"filtering","question":"Yogyakarta hotels with breakfast","expected_route":"C","notes":"amenity mostly-absent · honest E likely"}
+{"case_id":"filtering_0100","type":"filtering","question":"Yogyakarta hotels with restaurant","expected_route":"C","notes":"amenity mostly-absent · honest E likely"}
+{"case_id":"filtering_0101","type":"filtering","question":"Yogyakarta hotels with beach","expected_route":"C","notes":"amenity mostly-absent · honest E likely"}
+{"case_id":"filtering_0102","type":"filtering","question":"Yogyakarta hotels with parking","expected_route":"C","notes":"amenity mostly-absent · honest E likely"}
+{"case_id":"filtering_0103","type":"filtering","question":"Yogyakarta hotels with kids-friendly","expected_route":"C","notes":"amenity mostly-absent · honest E likely"}
+{"case_id":"filtering_0104","type":"filtering","question":"Yogyakarta hotels with pet-friendly","expected_route":"C","notes":"amenity mostly-absent · honest E likely"}
+{"case_id":"filtering_0105","type":"filtering","question":"Yogyakarta hotels with family rooms","expected_route":"C","notes":"amenity mostly-absent · honest E likely"}
+{"case_id":"filtering_0106","type":"filtering","question":"Yogyakarta hotels with sauna","expected_route":"C","notes":"amenity mostly-absent · honest E likely"}
+{"case_id":"filtering_0107","type":"filtering","question":"Yogyakarta hotels with beachfront","expected_route":"C","notes":"amenity mostly-absent · honest E likely"}
+{"case_id":"filtering_0108","type":"filtering","question":"Yogyakarta hotels with seaview","expected_route":"C","notes":"amenity mostly-absent · honest E likely"}
+{"case_id":"filtering_0109","type":"filtering","question":"Yogyakarta hotels with kitchen","expected_route":"C","notes":"amenity mostly-absent · honest E likely"}
+{"case_id":"filtering_0110","type":"filtering","question":"Yogyakarta hotels with shuttle","expected_route":"C","notes":"amenity mostly-absent · honest E likely"}
+{"case_id":"filtering_0111","type":"filtering","question":"5-star hotels in Yogyakarta","expected_route":"C","notes":"star filter · only 13 records populated · mostly E"}
+{"case_id":"filtering_0112","type":"filtering","question":"4-star accommodation in Yogyakarta","expected_route":"C","notes":"star filter"}
+{"case_id":"filtering_0113","type":"filtering","question":"Cheap hotels in Yogyakarta","expected_route":"C","notes":"price predicate · no price field · E"}
+{"case_id":"filtering_0114","type":"filtering","question":"Luxury hotels in Yogyakarta","expected_route":"C","notes":"no price/tier field · E"}
+{"case_id":"filtering_0115","type":"filtering","question":"Budget accommodation Yogyakarta","expected_route":"C","notes":"no price field · E"}
+{"case_id":"filtering_0116","type":"filtering","question":"Homestays in Yogyakarta","expected_route":"C","notes":"category filter · 'building-only'/'motel' exist · homestay may match by name"}
+{"case_id":"filtering_0117","type":"filtering","question":"Motels in Yogyakarta","expected_route":"C","notes":"category · 9 real motel records"}
+{"case_id":"comparison_0118","type":"comparison","question":"Compare Villa Alma versus ndalem susilo","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0119","type":"comparison","question":"Compare ndalem susilo versus Lotus 1 Guesthouse","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0120","type":"comparison","question":"Compare Lotus 1 Guesthouse versus Rumah Dharma","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0121","type":"comparison","question":"Compare Rumah Dharma versus Nayottama Homestay","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0122","type":"comparison","question":"Compare Nayottama Homestay versus Sagan Huis Hotel","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0123","type":"comparison","question":"Compare Sagan Huis Hotel versus Bobobox","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0124","type":"comparison","question":"Compare Bobobox versus RedDoorz Plus near Lempuyangan Station 3","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0125","type":"comparison","question":"Compare RedDoorz Plus near Lempuyangan Station 3 versus Tirto 27 Homestay","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0126","type":"comparison","question":"Compare Tirto 27 Homestay versus Merpati","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0127","type":"comparison","question":"Compare Merpati versus Hotel Sumaryo Yogyakarta","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0128","type":"comparison","question":"Compare Hotel Sumaryo Yogyakarta versus Griya Sentana","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0129","type":"comparison","question":"Compare Griya Sentana versus Sendang Wadon","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0130","type":"comparison","question":"Compare Sendang Wadon versus Hotel Cinka Garini","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0131","type":"comparison","question":"Compare Hotel Cinka Garini versus Candra Dewi","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0132","type":"comparison","question":"Compare Candra Dewi versus Restu Ibu","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0133","type":"comparison","question":"Compare Restu Ibu versus Kost Bu Parni","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0134","type":"comparison","question":"Compare Kost Bu Parni versus Puri Chorus Boutique Hotel","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0135","type":"comparison","question":"Compare Puri Chorus Boutique Hotel versus LPP Convention Hotel","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0136","type":"comparison","question":"Compare LPP Convention Hotel versus Hinggil Family Homestay","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0137","type":"comparison","question":"Compare Hinggil Family Homestay versus OstiC hostel","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0138","type":"comparison","question":"Compare OstiC hostel versus Hotel Ancora Ngampilan","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0139","type":"comparison","question":"Compare Hotel Ancora Ngampilan versus Omah Kayu Sawit Homestay Yogyakarta","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0140","type":"comparison","question":"Compare Omah Kayu Sawit Homestay Yogyakarta versus New Hotel Lilik Yogyakarta","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0141","type":"comparison","question":"Compare New Hotel Lilik Yogyakarta versus Omah Permadi","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0142","type":"comparison","question":"Compare Omah Permadi versus Kostan Bu Sugeng","expected_route":"C","notes":"real pair · comparison intent"}
+{"case_id":"comparison_0143","type":"comparison","question":"Compare Hotel Tentrem vs Royal Ambarrukmo Yogyakarta","expected_route":"C","notes":"real pair"}
+{"case_id":"comparison_0144","type":"comparison","question":"Grand Inna Malioboro or Eastparc Hotel Yogyakarta - which is better?","expected_route":"C","notes":"real pair with which-question"}
+{"case_id":"comparison_0145","type":"comparison","question":"Difference between Padma Amita Yogyakarta and Hotel Tentrem","expected_route":"C","notes":"real pair · difference intent"}
+{"case_id":"comparison_0146","type":"comparison","question":"Is Hotel Novatel better than Sky Hotel Hayam Wuruk?","expected_route":"C","notes":"real pair · better-than intent"}
+{"case_id":"comparison_0147","type":"comparison","question":"Cheaper option: Le Jardin or Casa De Celestine?","expected_route":"C","notes":"cheaper-than · no price field · honest E"}
+{"case_id":"multiple_conditions_0148","type":"multiple_conditions","question":"Hotels in Yogyakarta with wifi and air conditioning","expected_route":"C","notes":"multi-predicate query"}
+{"case_id":"multiple_conditions_0149","type":"multiple_conditions","question":"Hotels in Yogyakarta with wifi and parking","expected_route":"C","notes":"multi-predicate query"}
+{"case_id":"multiple_conditions_0150","type":"multiple_conditions","question":"Hotels in Yogyakarta with wifi near Malioboro","expected_route":"C","notes":"multi-predicate query"}
+{"case_id":"multiple_conditions_0151","type":"multiple_conditions","question":"Hotels in Yogyakarta with air conditioning and family rooms","expected_route":"C","notes":"multi-predicate query"}
+{"case_id":"multiple_conditions_0152","type":"multiple_conditions","question":"Hotels in Yogyakarta with pool and wifi","expected_route":"C","notes":"multi-predicate query"}
+{"case_id":"multiple_conditions_0153","type":"multiple_conditions","question":"Hotels in Yogyakarta with wifi and breakfast","expected_route":"C","notes":"multi-predicate query"}
+{"case_id":"multiple_conditions_0154","type":"multiple_conditions","question":"Hotels in Yogyakarta with wifi under 100 dollars","expected_route":"C","notes":"multi-predicate query"}
+{"case_id":"multiple_conditions_0155","type":"multiple_conditions","question":"Hotels in Yogyakarta with wifi and near the airport","expected_route":"C","notes":"multi-predicate query"}
+{"case_id":"multiple_conditions_0156","type":"multiple_conditions","question":"Hotels in Yogyakarta with 4 stars and wifi","expected_route":"C","notes":"multi-predicate query"}
+{"case_id":"multiple_conditions_0157","type":"multiple_conditions","question":"Hotels in Yogyakarta with 5 stars and air conditioning","expected_route":"C","notes":"multi-predicate query"}
+{"case_id":"multiple_conditions_0158","type":"multiple_conditions","question":"Accommodation in Yogyakarta with wifi and air conditioning","expected_route":"C","notes":"multi-predicate variant"}
+{"case_id":"multiple_conditions_0159","type":"multiple_conditions","question":"Accommodation in Yogyakarta with wifi and parking","expected_route":"C","notes":"multi-predicate variant"}
+{"case_id":"multiple_conditions_0160","type":"multiple_conditions","question":"Accommodation in Yogyakarta with wifi near Malioboro","expected_route":"C","notes":"multi-predicate variant"}
+{"case_id":"multiple_conditions_0161","type":"multiple_conditions","question":"Accommodation in Yogyakarta with air conditioning and family rooms","expected_route":"C","notes":"multi-predicate variant"}
+{"case_id":"multiple_conditions_0162","type":"multiple_conditions","question":"Accommodation in Yogyakarta with pool and wifi","expected_route":"C","notes":"multi-predicate variant"}
+{"case_id":"multiple_conditions_0163","type":"multiple_conditions","question":"Places to stay in Yogyakarta with wifi and air conditioning","expected_route":"C","notes":"multi-predicate variant"}
+{"case_id":"multiple_conditions_0164","type":"multiple_conditions","question":"Places to stay in Yogyakarta with wifi and parking","expected_route":"C","notes":"multi-predicate variant"}
+{"case_id":"multiple_conditions_0165","type":"multiple_conditions","question":"Places to stay in Yogyakarta with wifi near Malioboro","expected_route":"C","notes":"multi-predicate variant"}
+{"case_id":"multiple_conditions_0166","type":"multiple_conditions","question":"Places to stay in Yogyakarta with air conditioning and family rooms","expected_route":"C","notes":"multi-predicate variant"}
+{"case_id":"multiple_conditions_0167","type":"multiple_conditions","question":"Places to stay in Yogyakarta with pool and wifi","expected_route":"C","notes":"multi-predicate variant"}
+{"case_id":"multiple_conditions_0168","type":"multiple_conditions","question":"Family-friendly hotels in Yogyakarta near Malioboro with wifi and breakfast","expected_route":"C","notes":"4-condition"}
+{"case_id":"multiple_conditions_0169","type":"multiple_conditions","question":"5-star beachfront hotels in Yogyakarta with spa and pool","expected_route":"C","notes":"4-condition · mostly-null fields"}
+{"case_id":"multiple_conditions_0170","type":"multiple_conditions","question":"Is Villa Alma in Yogyakarta and does it have wifi?","expected_route":"C","notes":"entity + predicate combined"}
+{"case_id":"multiple_conditions_0171","type":"multiple_conditions","question":"Is ndalem susilo in Yogyakarta and does it have wifi?","expected_route":"C","notes":"entity + predicate combined"}
+{"case_id":"multiple_conditions_0172","type":"multiple_conditions","question":"Is Lotus 1 Guesthouse in Yogyakarta and does it have wifi?","expected_route":"C","notes":"entity + predicate combined"}
+{"case_id":"multiple_conditions_0173","type":"multiple_conditions","question":"Is Rumah Dharma in Yogyakarta and does it have wifi?","expected_route":"C","notes":"entity + predicate combined"}
+{"case_id":"multiple_conditions_0174","type":"multiple_conditions","question":"Is Nayottama Homestay in Yogyakarta and does it have wifi?","expected_route":"C","notes":"entity + predicate combined"}
+{"case_id":"multiple_conditions_0175","type":"multiple_conditions","question":"Is Sagan Huis Hotel in Yogyakarta and does it have wifi?","expected_route":"C","notes":"entity + predicate combined"}
+{"case_id":"multiple_conditions_0176","type":"multiple_conditions","question":"Is Bobobox in Yogyakarta and does it have wifi?","expected_route":"C","notes":"entity + predicate combined"}
+{"case_id":"multiple_conditions_0177","type":"multiple_conditions","question":"Is RedDoorz Plus near Lempuyangan Station 3 in Yogyakarta and does it have wifi?","expected_route":"C","notes":"entity + predicate combined"}
+{"case_id":"multiple_conditions_0178","type":"multiple_conditions","question":"Is Tirto 27 Homestay in Yogyakarta and does it have wifi?","expected_route":"C","notes":"entity + predicate combined"}
+{"case_id":"multiple_conditions_0179","type":"multiple_conditions","question":"Is Merpati in Yogyakarta and does it have wifi?","expected_route":"C","notes":"entity + predicate combined"}
+{"case_id":"missing_information_0180","type":"missing_information","question":"Tell me about The Nonexistent Palace Yogyakarta","expected_route":"E","notes":"fake name · honest UNKNOWN + Gap"}
+{"case_id":"missing_information_0181","type":"missing_information","question":"Tell me about Hotel Imaginary Solo","expected_route":"E","notes":"fake name · honest UNKNOWN + Gap"}
+{"case_id":"missing_information_0182","type":"missing_information","question":"Tell me about The Fictional Resort Bali","expected_route":"E","notes":"fake name · honest UNKNOWN + Gap"}
+{"case_id":"missing_information_0183","type":"missing_information","question":"Tell me about Grand Nowhere Hotel","expected_route":"E","notes":"fake name · honest UNKNOWN + Gap"}
+{"case_id":"missing_information_0184","type":"missing_information","question":"Tell me about Made-Up Homestay Yogya","expected_route":"E","notes":"fake name · honest UNKNOWN + Gap"}
+{"case_id":"missing_information_0185","type":"missing_information","question":"Tell me about Placeholder Inn","expected_route":"E","notes":"fake name · honest UNKNOWN + Gap"}
+{"case_id":"missing_information_0186","type":"missing_information","question":"Tell me about Test Fake Hotel","expected_route":"E","notes":"fake name · honest UNKNOWN + Gap"}
+{"case_id":"missing_information_0187","type":"missing_information","question":"Tell me about Nonexistent Grand Villa","expected_route":"E","notes":"fake name · honest UNKNOWN + Gap"}
+{"case_id":"missing_information_0188","type":"missing_information","question":"Tell me about Fabricated Hotel Yogya","expected_route":"E","notes":"fake name · honest UNKNOWN + Gap"}
+{"case_id":"missing_information_0189","type":"missing_information","question":"Tell me about The Ghost Hotel","expected_route":"E","notes":"fake name · honest UNKNOWN + Gap"}
+{"case_id":"missing_information_0190","type":"missing_information","question":"Tell me about Vanishing Point Hotel","expected_route":"E","notes":"fake name · honest UNKNOWN + Gap"}
+{"case_id":"missing_information_0191","type":"missing_information","question":"Tell me about Empty Room Inn","expected_route":"E","notes":"fake name · honest UNKNOWN + Gap"}
+{"case_id":"missing_information_0192","type":"missing_information","question":"Tell me about Non-Real Boutique","expected_route":"E","notes":"fake name · honest UNKNOWN + Gap"}
+{"case_id":"missing_information_0193","type":"missing_information","question":"Tell me about Illusion Hotel Yogyakarta","expected_route":"E","notes":"fake name · honest UNKNOWN + Gap"}
+{"case_id":"missing_information_0194","type":"missing_information","question":"Tell me about Phantom Palace","expected_route":"E","notes":"fake name · honest UNKNOWN + Gap"}
+{"case_id":"missing_information_0195","type":"missing_information","question":"Book a room at The Nonexistent Palace Yogyakarta","expected_route":"E","notes":"fake name · booking intent · UNKNOWN"}
+{"case_id":"missing_information_0196","type":"missing_information","question":"Book a room at Hotel Imaginary Solo","expected_route":"E","notes":"fake name · booking intent · UNKNOWN"}
+{"case_id":"missing_information_0197","type":"missing_information","question":"Book a room at The Fictional Resort Bali","expected_route":"E","notes":"fake name · booking intent · UNKNOWN"}
+{"case_id":"missing_information_0198","type":"missing_information","question":"Book a room at Grand Nowhere Hotel","expected_route":"E","notes":"fake name · booking intent · UNKNOWN"}
+{"case_id":"missing_information_0199","type":"missing_information","question":"Book a room at Made-Up Homestay Yogya","expected_route":"E","notes":"fake name · booking intent · UNKNOWN"}
+{"case_id":"missing_information_0200","type":"missing_information","question":"What's the price at The Nonexistent Palace Yogyakarta?","expected_route":"E","notes":"fake name + no-price-field · UNKNOWN"}
+{"case_id":"missing_information_0201","type":"missing_information","question":"What's the price at Hotel Imaginary Solo?","expected_route":"E","notes":"fake name + no-price-field · UNKNOWN"}
+{"case_id":"missing_information_0202","type":"missing_information","question":"What's the price at The Fictional Resort Bali?","expected_route":"E","notes":"fake name + no-price-field · UNKNOWN"}
+{"case_id":"missing_information_0203","type":"missing_information","question":"What's the price at Grand Nowhere Hotel?","expected_route":"E","notes":"fake name + no-price-field · UNKNOWN"}
+{"case_id":"missing_information_0204","type":"missing_information","question":"What's the price at Made-Up Homestay Yogya?","expected_route":"E","notes":"fake name + no-price-field · UNKNOWN"}
+{"case_id":"missing_information_0205","type":"missing_information","question":"What is the swimming pool depth at Hotel Tentrem?","expected_route":"E","notes":"real hotel but attribute not stored"}
+{"case_id":"missing_information_0206","type":"missing_information","question":"Does Grand Inna Malioboro have vegetarian breakfast?","expected_route":"E","notes":"real hotel · attribute not stored"}
+{"case_id":"missing_information_0207","type":"missing_information","question":"How many single rooms at Eastparc Hotel Yogyakarta?","expected_route":"E","notes":"real hotel · granular attribute not stored"}
+{"case_id":"missing_information_0208","type":"missing_information","question":"What year was Royal Ambarrukmo Yogyakarta built?","expected_route":"E","notes":"real hotel · historical attribute not stored"}
+{"case_id":"missing_information_0209","type":"missing_information","question":"Who owns Padma Amita Yogyakarta?","expected_route":"E","notes":"ownership attribute not stored"}
+{"case_id":"conflicting_information_0210","type":"conflicting_information","question":"Is Hotel Novatel a 5-star or a 4-star?","expected_route":"E","notes":"conflict detection · not scored"}
+{"case_id":"conflicting_information_0211","type":"conflicting_information","question":"Some sources say Grand Inna Malioboro has a rooftop pool - is that correct?","expected_route":"E","notes":"cross-source conflict"}
+{"case_id":"conflicting_information_0212","type":"conflicting_information","question":"I heard Hotel Tentrem is closed - is it still open?","expected_route":"E","notes":"conflicting-status"}
+{"case_id":"conflicting_information_0213","type":"conflicting_information","question":"Are OYO 1592 Gading 4u Homestay reviews positive?","expected_route":"E","notes":"review synthesis · not available"}
+{"case_id":"conflicting_information_0214","type":"conflicting_information","question":"The website says one thing, TripAdvisor another - what's the real price at Sky Hotel Hayam Wuruk?","expected_route":"E","notes":"explicit cross-source conflict"}
+{"case_id":"conflicting_information_0215","type":"conflicting_information","question":"Two friends gave contradictory reviews of Bladok Losmen. Which is right?","expected_route":"E","notes":"conflict resolution needed"}
+{"case_id":"conflicting_information_0216","type":"conflicting_information","question":"1O1 STYLE Yogyakarta Malioboro - independent or chain?","expected_route":"E","notes":"conflict-resolution intent · needs verified answer"}
+{"case_id":"conflicting_information_0217","type":"conflicting_information","question":"Is Casa De Celestine open 24/7 or only during business hours?","expected_route":"E","notes":"conflict-resolution intent · needs verified answer"}
+{"case_id":"conflicting_information_0218","type":"conflicting_information","question":"Is Casa De Celestine open 24/7 or only during business hours?","expected_route":"E","notes":"conflict-resolution intent · needs verified answer"}
+{"case_id":"conflicting_information_0219","type":"conflicting_information","question":"Some say Hotel Sekar Ayu has parking, others say no. Which is true?","expected_route":"E","notes":"conflict-resolution intent · needs verified answer"}
+{"case_id":"conflicting_information_0220","type":"conflicting_information","question":"Is Casa De Celestine open 24/7 or only during business hours?","expected_route":"E","notes":"conflict-resolution intent · needs verified answer"}
+{"case_id":"conflicting_information_0221","type":"conflicting_information","question":"Septia Hotel Jogjakarta - is it family-friendly?","expected_route":"E","notes":"conflict-resolution intent · needs verified answer"}
+{"case_id":"conflicting_information_0222","type":"conflicting_information","question":"Some say Hotel Sekar Ayu has parking, others say no. Which is true?","expected_route":"E","notes":"conflict-resolution intent · needs verified answer"}
+{"case_id":"conflicting_information_0223","type":"conflicting_information","question":"Hotel Maerakatja Yogyakarta - do they accept credit cards?","expected_route":"E","notes":"conflict-resolution intent · needs verified answer"}
+{"case_id":"conflicting_information_0224","type":"conflicting_information","question":"Was Gaotama Hotel renovated recently? Conflicting info online.","expected_route":"E","notes":"conflict-resolution intent · needs verified answer"}
+{"case_id":"conflicting_information_0225","type":"conflicting_information","question":"Is Casa De Celestine open 24/7 or only during business hours?","expected_route":"E","notes":"conflict-resolution intent · needs verified answer"}
+{"case_id":"conflicting_information_0226","type":"conflicting_information","question":"Wisma Ambarrukmo 2 has how many rooms? I've seen different numbers.","expected_route":"E","notes":"conflict-resolution intent · needs verified answer"}
+{"case_id":"conflicting_information_0227","type":"conflicting_information","question":"Hotel Maerakatja Yogyakarta - do they accept credit cards?","expected_route":"E","notes":"conflict-resolution intent · needs verified answer"}
+{"case_id":"conflicting_information_0228","type":"conflicting_information","question":"Kos Pak Ngadirin - permanent or short-stay?","expected_route":"E","notes":"conflict-resolution intent · needs verified answer"}
+{"case_id":"conflicting_information_0229","type":"conflicting_information","question":"Different sites list different prices for Le Jardin, which is accurate?","expected_route":"E","notes":"conflict-resolution intent · needs verified answer"}
+{"case_id":"freshness_0230","type":"freshness","question":"What time does Hotel Tentrem reception open today?","expected_route":"E","notes":"time-sensitive · reservoir stale for this · needs live source"}
+{"case_id":"freshness_0231","type":"freshness","question":"Is Grand Inna Malioboro fully booked tonight?","expected_route":"E","notes":"time-sensitive · reservoir stale for this · needs live source"}
+{"case_id":"freshness_0232","type":"freshness","question":"Current prices at Royal Ambarrukmo Yogyakarta","expected_route":"E","notes":"time-sensitive · reservoir stale for this · needs live source"}
+{"case_id":"freshness_0233","type":"freshness","question":"Is there any availability at Eastparc Hotel Yogyakarta right now?","expected_route":"E","notes":"time-sensitive · reservoir stale for this · needs live source"}
+{"case_id":"freshness_0234","type":"freshness","question":"Today's rate for Padma Amita","expected_route":"E","notes":"time-sensitive · reservoir stale for this · needs live source"}
+{"case_id":"freshness_0235","type":"freshness","question":"This weekend's promotions at Artotel Suites","expected_route":"E","notes":"time-sensitive · reservoir stale for this · needs live source"}
+{"case_id":"freshness_0236","type":"freshness","question":"Live availability for Sagan Huis Hotel next Friday","expected_route":"E","notes":"time-sensitive · reservoir stale for this · needs live source"}
+{"case_id":"freshness_0237","type":"freshness","question":"What events are on at Hotel Novatel this week?","expected_route":"E","notes":"time-sensitive · reservoir stale for this · needs live source"}
+{"case_id":"freshness_0238","type":"freshness","question":"Any last-minute deals in Yogyakarta today?","expected_route":"E","notes":"time-sensitive · reservoir stale for this · needs live source"}
+{"case_id":"freshness_0239","type":"freshness","question":"Is Bladok Losmen open right now?","expected_route":"E","notes":"time-sensitive · reservoir stale for this · needs live source"}
+{"case_id":"freshness_0240","type":"freshness","question":"Current time zone offset for Yogyakarta hotels?","expected_route":"E","notes":"live/time-sensitive · no answer possible"}
+{"case_id":"freshness_0241","type":"freshness","question":"Today's weather at Kuta beach affecting Yogyakarta hotels?","expected_route":"E","notes":"live/time-sensitive · no answer possible"}
+{"case_id":"freshness_0242","type":"freshness","question":"How busy is Malioboro area right now?","expected_route":"E","notes":"live/time-sensitive · no answer possible"}
+{"case_id":"freshness_0243","type":"freshness","question":"Which Yogyakarta hotels have same-day check-in today?","expected_route":"E","notes":"live/time-sensitive · no answer possible"}
+{"case_id":"freshness_0244","type":"freshness","question":"Are any hotels on fire in Yogyakarta right now?","expected_route":"E","notes":"live/time-sensitive · no answer possible"}
+{"case_id":"freshness_0245","type":"freshness","question":"Latest COVID restrictions for Yogyakarta hotels","expected_route":"E","notes":"live/time-sensitive · no answer possible"}
+{"case_id":"freshness_0246","type":"freshness","question":"Any hotel strikes today?","expected_route":"E","notes":"live/time-sensitive · no answer possible"}
+{"case_id":"freshness_0247","type":"freshness","question":"Current traffic to Yogyakarta hotels from the airport","expected_route":"E","notes":"live/time-sensitive · no answer possible"}
+{"case_id":"freshness_0248","type":"freshness","question":"Are Yogyakarta hotels heating up? (weather + occupancy)","expected_route":"E","notes":"live/time-sensitive · no answer possible"}
+{"case_id":"freshness_0249","type":"freshness","question":"Late night check-in options tonight in Yogyakarta","expected_route":"E","notes":"live/time-sensitive · no answer possible"}
+{"case_id":"ambiguous_0250","type":"ambiguous","question":"Hotel","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0251","type":"ambiguous","question":"Hotels","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0252","type":"ambiguous","question":"Accommodation","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0253","type":"ambiguous","question":"Yogyakarta","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0254","type":"ambiguous","question":"Wifi","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0255","type":"ambiguous","question":"Family","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0256","type":"ambiguous","question":"Best","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0257","type":"ambiguous","question":"Cheap","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0258","type":"ambiguous","question":"Near me","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0259","type":"ambiguous","question":"For tonight","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0260","type":"ambiguous","question":"Around here","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0261","type":"ambiguous","question":"Somewhere nice","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0262","type":"ambiguous","question":"The good one","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0263","type":"ambiguous","question":"You know the one","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0264","type":"ambiguous","question":"That place","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0265","type":"ambiguous","question":"Same as before","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0266","type":"ambiguous","question":"Better option?","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0267","type":"ambiguous","question":"Something different","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0268","type":"ambiguous","question":"The other one","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0269","type":"ambiguous","question":"How about it","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0270","type":"ambiguous","question":"OK now what","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0271","type":"ambiguous","question":"Continue","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0272","type":"ambiguous","question":"More","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0273","type":"ambiguous","question":"Options?","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"ambiguous_0274","type":"ambiguous","question":"Show me","expected_route":"E","notes":"underspecified · honest UNKNOWN or Route A small-talk"}
+{"case_id":"conversational_0275","type":"conversational","question":"Hi","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0276","type":"conversational","question":"Hello","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0277","type":"conversational","question":"Hey there","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0278","type":"conversational","question":"Good morning","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0279","type":"conversational","question":"Good evening","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0280","type":"conversational","question":"Thanks","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0281","type":"conversational","question":"Thank you","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0282","type":"conversational","question":"Cheers","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0283","type":"conversational","question":"That's great","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0284","type":"conversational","question":"Perfect","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0285","type":"conversational","question":"Ok","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0286","type":"conversational","question":"Okay","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0287","type":"conversational","question":"Yes","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0288","type":"conversational","question":"No","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0289","type":"conversational","question":"Maybe","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0290","type":"conversational","question":"Not sure","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0291","type":"conversational","question":"I guess","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0292","type":"conversational","question":"Bye","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0293","type":"conversational","question":"Goodbye","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"conversational_0294","type":"conversational","question":"See you","expected_route":"A","notes":"small-talk · Route A canned response"}
+{"case_id":"reasoning_0295","type":"reasoning","question":"If I'm arriving at Yogyakarta airport at 11pm and need to be at Malioboro by 8am, which hotel makes most sense?","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0296","type":"reasoning","question":"I have a family of 5 with a baby and want to be within walking distance of temples - what's my best choice in Yogyakarta?","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0297","type":"reasoning","question":"Given a budget of 500,000 IDR per night and preferring quiet, which Yogyakarta hotel fits best?","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0298","type":"reasoning","question":"For a business traveler doing a 3-day workshop near Gadjah Mada University, which accommodation minimizes commute time and cost?","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0299","type":"reasoning","question":"If wifi is critical for remote work and I need to stay 2 weeks, which Yogyakarta hotel maximizes value?","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0300","type":"reasoning","question":"I want to visit Prambanan and Borobudur in the same trip - which hotel is optimally placed between them?","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0301","type":"reasoning","question":"Compare the total cost of a 5-night stay at Grand Inna Malioboro versus splitting between two homestays","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0302","type":"reasoning","question":"Best hotel for a wedding party of 30 people in Yogyakarta considering meeting rooms and rooms available","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0303","type":"reasoning","question":"Which Yogyakarta hotel has the best combination of centrality, wifi and quiet?","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0304","type":"reasoning","question":"For a solo traveler on a shoestring budget who wants safety - which Yogyakarta homestay is best?","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0305","type":"reasoning","question":"If I'm traveling by scooter and want free parking, which hotel is optimal?","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0306","type":"reasoning","question":"Give me a 7-day itinerary and hotel choice for exploring Yogyakarta with focus on culture","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0307","type":"reasoning","question":"Break down the trade-offs between staying at a luxury Yogyakarta hotel versus a boutique homestay","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0308","type":"reasoning","question":"Optimize accommodation choice for a photography trip focused on temples and street scenes in Yogyakarta","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0309","type":"reasoning","question":"A group of 4 backpackers needs 2 rooms - which Yogyakarta place gives best group discount?","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0310","type":"reasoning","question":"For an elderly couple with mobility issues, which Yogyakarta accommodation offers best accessibility?","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0311","type":"reasoning","question":"Design an accommodation plan for a 3-city trip: Yogyakarta, Solo, and Semarang","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0312","type":"reasoning","question":"For a solo female traveler prioritizing safety over price - which Yogyakarta option?","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0313","type":"reasoning","question":"If Malioboro area is fully booked, what's my second-best neighbourhood for the same experience?","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"reasoning_0314","type":"reasoning","question":"Which Yogyakarta hotel minimizes total travel time for visiting 5 named attractions?","expected_route":"D","notes":"multi-step reasoning · genuinely LLM territory"}
+{"case_id":"deliberately_difficult_0315","type":"deliberately_difficult","question":"Recommend a hotel in Yogyakarta that also has a Michelin-starred restaurant","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0316","type":"deliberately_difficult","question":"Which Yogyakarta hotel has hosted the most international heads of state historically?","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0317","type":"deliberately_difficult","question":"What is the carbon footprint per night of Hotel Tentrem?","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0318","type":"deliberately_difficult","question":"Explain the architectural style of Royal Ambarrukmo Yogyakarta in art-historical terms","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0319","type":"deliberately_difficult","question":"Which Yogyakarta hotel most authentically reflects Javanese royal aesthetics?","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0320","type":"deliberately_difficult","question":"Rate Yogyakarta hotels on their approach to plastic waste reduction","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0321","type":"deliberately_difficult","question":"Which Yogyakarta hotel has the best noise insulation for light sleepers?","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0322","type":"deliberately_difficult","question":"Compare the water quality reports for the pools at all 5-star Yogyakarta hotels","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0323","type":"deliberately_difficult","question":"Which Yogyakarta hotel is best for hosting a philosophy conference?","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0324","type":"deliberately_difficult","question":"Rank Yogyakarta hotels by the quality of their traditional gamelan performances","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0325","type":"deliberately_difficult","question":"Which Yogyakarta hotel has the largest collection of batik art on display?","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0326","type":"deliberately_difficult","question":"For someone with severe peanut allergy - which Yogyakarta hotel kitchen is safest?","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0327","type":"deliberately_difficult","question":"Which Yogyakarta hotel offers the most authentic tea ceremony experience?","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0328","type":"deliberately_difficult","question":"Recommend a hotel where I can attend traditional Javanese wedding ceremonies","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0329","type":"deliberately_difficult","question":"Which Yogyakarta hotel has the highest ceilings in guest rooms?","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0330","type":"deliberately_difficult","question":"Compare the meditation gardens at Yogyakarta luxury hotels","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0331","type":"deliberately_difficult","question":"Which Yogyakarta accommodation is closest to volcanic hiking trails?","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0332","type":"deliberately_difficult","question":"What's the highest natural ambient temperature ever recorded in Yogyakarta hotel rooms?","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0333","type":"deliberately_difficult","question":"Which Yogyakarta hotel has the fastest wifi uplink for competitive esports?","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"deliberately_difficult_0334","type":"deliberately_difficult","question":"Give me the underground history of Malioboro area hotels during the 1965 events","expected_route":"E","notes":"beyond reservoir · honest UNKNOWN + Gap"}
+{"case_id":"no_answer_in_nex_0335","type":"no_answer_in_nex","question":"Best hotel in Antarctica","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0336","type":"no_answer_in_nex","question":"Hotels on Mars","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0337","type":"no_answer_in_nex","question":"Best luxury resort in the Maldives","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0338","type":"no_answer_in_nex","question":"Cheap hostels in Reykjavik","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0339","type":"no_answer_in_nex","question":"Boutique hotels in Kyoto","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0340","type":"no_answer_in_nex","question":"Bed and breakfast in Provence","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0341","type":"no_answer_in_nex","question":"Business hotel in Frankfurt","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0342","type":"no_answer_in_nex","question":"Family resort in Cancun","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0343","type":"no_answer_in_nex","question":"Ski chalet in Whistler","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0344","type":"no_answer_in_nex","question":"Beach hut in Zanzibar","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0345","type":"no_answer_in_nex","question":"Vintage hotel in Havana","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0346","type":"no_answer_in_nex","question":"Ryokan in Hakone","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0347","type":"no_answer_in_nex","question":"Trulli in Alberobello","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0348","type":"no_answer_in_nex","question":"Riad in Marrakech","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0349","type":"no_answer_in_nex","question":"Recommend a hotel in Ubud","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0350","type":"no_answer_in_nex","question":"Best hotel in Seminyak","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0351","type":"no_answer_in_nex","question":"Where to stay in Canggu","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0352","type":"no_answer_in_nex","question":"Nusa Dua resorts","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0353","type":"no_answer_in_nex","question":"Manchester United ground hotels","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}
+{"case_id":"no_answer_in_nex_0354","type":"no_answer_in_nex","question":"5-star Dubai hotels","expected_route":"E","notes":"outside NEX corpus · honest UNKNOWN"}

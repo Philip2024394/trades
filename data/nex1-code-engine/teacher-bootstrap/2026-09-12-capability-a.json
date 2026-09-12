@@ -1,0 +1,18 @@
+{
+  "at": "2026-09-12T00:00:00.000Z",
+  "kind": "teacher_authored_bootstrap",
+  "taught_by": "claude_reviewer",
+  "not_counted_as": "nex1_independent_authorship",
+  "capability_taught": "A",
+  "capability_summary": "AST parent-traversal and nearest-descendant fallback for tsc diagnostic positions that land 1-2 chars before the enclosing ObjectLiteralExpression opening brace, or on an outer expression that contains the object literal as a descendant.",
+  "files_modified": [
+    "src/lib/nex-agent/code-engine/adapters/ast-semantic.ts"
+  ],
+  "insertion_shape": "one new pure helper function findEnclosingObjectLiteralAdjacent + a 3-line fallback call in applyAddPropertyAtPosition",
+  "no_new_directive_kinds_added": true,
+  "no_new_types_added": true,
+  "no_new_interfaces_added": true,
+  "reversible_by": "delete function findEnclosingObjectLiteralAdjacent and the fallback call block",
+  "training_infrastructure_only": true,
+  "baseline_correction_note": "code-engine.test.ts had pre-existing residue 'resolved_at: null' at line 299 in a Nex1ReasoningAdapter object literal (before hash 4a7c707ce67c... after hash d4de33e4b852...). Removed as separate cleanup, not Sprint 2.5 evidence."
+}

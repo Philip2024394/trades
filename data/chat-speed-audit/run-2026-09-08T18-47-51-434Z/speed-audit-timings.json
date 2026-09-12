@@ -1,0 +1,222 @@
+{
+  "started_at": "2026-09-08T18-47-51-434Z",
+  "n_iterations": 2,
+  "queries": [
+    {
+      "label": "ordinary_hello",
+      "text": "hello"
+    },
+    {
+      "label": "accommodation_hotels",
+      "text": "Find me hotels near Malioboro"
+    },
+    {
+      "label": "food_breakfast",
+      "text": "Any with breakfast?"
+    },
+    {
+      "label": "accommodation_villa",
+      "text": "villa near beach"
+    }
+  ],
+  "samples": [
+    {
+      "label": "iter1",
+      "query": "hello",
+      "click_to_response_ms": 9667.064699999999,
+      "click_to_assistant_visible_ms": 9700.0729,
+      "click_to_cards_visible_ms": null,
+      "click_to_dom_stable_ms": 9700.3118,
+      "customer_perceived_total_ms": 9700.0729,
+      "server_debug_timings": null,
+      "server_intent": null,
+      "server_reply_snippet": "",
+      "server_voice_reply_en": null,
+      "pairs_count": 1,
+      "pairs_pending_response": 1,
+      "pairs_captured_urls": [
+        "hello"
+      ]
+    },
+    {
+      "label": "iter1",
+      "query": "Find me hotels near Malioboro",
+      "click_to_response_ms": 7997.377699999999,
+      "click_to_assistant_visible_ms": 8055.197399999999,
+      "click_to_cards_visible_ms": 8055.207200000003,
+      "click_to_dom_stable_ms": 8055.209000000001,
+      "customer_perceived_total_ms": 8055.197399999999,
+      "server_debug_timings": null,
+      "server_intent": null,
+      "server_reply_snippet": "",
+      "server_voice_reply_en": null,
+      "pairs_count": 2,
+      "pairs_pending_response": 1,
+      "pairs_captured_urls": [
+        "hello",
+        "Find me hotels near Malioboro"
+      ]
+    },
+    {
+      "label": "iter1",
+      "query": "Any with breakfast?",
+      "click_to_response_ms": 13241.317499999997,
+      "click_to_assistant_visible_ms": 13290.811399999999,
+      "click_to_cards_visible_ms": 13290.8197,
+      "click_to_dom_stable_ms": 13290.8217,
+      "customer_perceived_total_ms": 13290.811399999999,
+      "server_debug_timings": null,
+      "server_intent": null,
+      "server_reply_snippet": "",
+      "server_voice_reply_en": null,
+      "pairs_count": 3,
+      "pairs_pending_response": 1,
+      "pairs_captured_urls": [
+        "hello",
+        "Find me hotels near Malioboro",
+        "Any with breakfast?"
+      ]
+    },
+    {
+      "label": "iter1",
+      "query": "villa near beach",
+      "click_to_response_ms": 395.45120000000315,
+      "click_to_assistant_visible_ms": 427.7884000000049,
+      "click_to_cards_visible_ms": 427.79409999999916,
+      "click_to_dom_stable_ms": 427.7954000000027,
+      "customer_perceived_total_ms": 427.7884000000049,
+      "server_debug_timings": null,
+      "server_intent": null,
+      "server_reply_snippet": "",
+      "server_voice_reply_en": null,
+      "pairs_count": 4,
+      "pairs_pending_response": 1,
+      "pairs_captured_urls": [
+        "hello",
+        "Find me hotels near Malioboro",
+        "Any with breakfast?",
+        "villa near beach"
+      ]
+    },
+    {
+      "label": "iter2",
+      "query": "hello",
+      "click_to_response_ms": 4355.5913,
+      "click_to_assistant_visible_ms": 4386.749599999996,
+      "click_to_cards_visible_ms": null,
+      "click_to_dom_stable_ms": 4386.757399999995,
+      "customer_perceived_total_ms": 4386.749599999996,
+      "server_debug_timings": {
+        "stage_ms": {
+          "body_parse": 0.75,
+          "orchestrator": 0.52,
+          "total_before_response_send": 2.48
+        },
+        "composition_latency_ms": null,
+        "composition_accepted": true,
+        "composition_model": null,
+        "composition_fell_back": null,
+        "llm_invoked": false,
+        "intent_resolved": "conversation",
+        "brain_ms_legacy": 1,
+        "instrument_version": "chat-speed-audit-v1-2026-09-09"
+      },
+      "server_intent": "conversation",
+      "server_reply_snippet": "Hi! What can I help you with?",
+      "server_voice_reply_en": "Hi! What can I help you with?",
+      "pairs_count": 1,
+      "pairs_pending_response": 0,
+      "pairs_captured_urls": [
+        "hello"
+      ]
+    },
+    {
+      "label": "iter2",
+      "query": "Find me hotels near Malioboro",
+      "click_to_response_ms": 3526.561300000001,
+      "click_to_assistant_visible_ms": 3603.2556999999942,
+      "click_to_cards_visible_ms": 3603.2626999999993,
+      "click_to_dom_stable_ms": 3603.2641000000003,
+      "customer_perceived_total_ms": 3603.2556999999942,
+      "server_debug_timings": null,
+      "server_intent": null,
+      "server_reply_snippet": "",
+      "server_voice_reply_en": null,
+      "pairs_count": 2,
+      "pairs_pending_response": 1,
+      "pairs_captured_urls": [
+        "hello",
+        "Find me hotels near Malioboro"
+      ]
+    },
+    {
+      "label": "iter2",
+      "query": "Any with breakfast?",
+      "click_to_response_ms": 15287.941099999996,
+      "click_to_assistant_visible_ms": 15345.517699999997,
+      "click_to_cards_visible_ms": 15345.525399999999,
+      "click_to_dom_stable_ms": 15345.527300000002,
+      "customer_perceived_total_ms": 15345.517699999997,
+      "server_debug_timings": {
+        "stage_ms": {
+          "body_parse": 0.94,
+          "orchestrator": 311.95,
+          "total_before_response_send": 11651.73
+        },
+        "composition_latency_ms": 5817,
+        "composition_accepted": true,
+        "composition_model": "qwen2.5:7b-instruct-q3_K_M",
+        "composition_fell_back": false,
+        "llm_invoked": true,
+        "intent_resolved": "food",
+        "brain_ms_legacy": 312,
+        "instrument_version": "chat-speed-audit-v1-2026-09-09"
+      },
+      "server_intent": "food",
+      "server_reply_snippet": "there are hotels near Malioboro that offer breakfast. Some popular options include Hotel Indonesia Plaza and Hotel Novotel Malioboro. Both provide breakfast and are conveniently located near the famou",
+      "server_voice_reply_en": "there are hotels near Malioboro that offer breakfast. Some popular options include Hotel Indonesia Plaza and Hotel Novotel Malioboro. Both provide breakfast and are conveniently located near the famous Malioboro Street.",
+      "pairs_count": 3,
+      "pairs_pending_response": 0,
+      "pairs_captured_urls": [
+        "hello",
+        "Find me hotels near Malioboro",
+        "Any with breakfast?"
+      ]
+    },
+    {
+      "label": "iter2",
+      "query": "villa near beach",
+      "click_to_response_ms": 3472.755099999995,
+      "click_to_assistant_visible_ms": 3528.946200000006,
+      "click_to_cards_visible_ms": 3528.9532000000036,
+      "click_to_dom_stable_ms": 3528.9551999999967,
+      "customer_perceived_total_ms": 3528.946200000006,
+      "server_debug_timings": {
+        "stage_ms": {
+          "body_parse": 0.93,
+          "orchestrator": 391.68,
+          "total_before_response_send": 397.53
+        },
+        "composition_latency_ms": null,
+        "composition_accepted": false,
+        "composition_model": null,
+        "composition_fell_back": null,
+        "llm_invoked": false,
+        "intent_resolved": "accommodation",
+        "brain_ms_legacy": 392,
+        "instrument_version": "chat-speed-audit-v1-2026-09-09"
+      },
+      "server_intent": "accommodation",
+      "server_reply_snippet": "Coming back to villas near Malioboro. Got it — villas near Malioboro. I don't have matching real listings yet. Do you want budget, mid-range, or something more upmarket?",
+      "server_voice_reply_en": "Hmm — nothing's coming back for that. Want me to loosen the search a bit?",
+      "pairs_count": 4,
+      "pairs_pending_response": 0,
+      "pairs_captured_urls": [
+        "hello",
+        "Find me hotels near Malioboro",
+        "Any with breakfast?",
+        "villa near beach"
+      ]
+    }
+  ]
+}

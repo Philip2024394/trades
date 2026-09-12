@@ -1,0 +1,299 @@
+{
+  "spec": "T0 architectural correctness fixture. 20 business classifications end-to-end. Every reference id MUST exist in the corresponding dimension file.",
+  "count_target": 20,
+  "examples": [
+    {
+      "example_id": "ex-01-seafood-exporter",
+      "business_name": "PT Fresh on Time Seafood",
+      "business_industry": { "primary": "food", "secondary": ["agriculture"] },
+      "business_roles": ["production_roles.processor", "production_roles.manufacturer", "trade_roles.exporter"],
+      "products": [
+        { "id": "product.food.seafood.fish.tuna.frozen", "attribute_hints_relevant": ["species", "grade", "weight_per_piece", "packaging", "processing_method", "origin"] },
+        { "id": "product.food.seafood.shellfish.shrimp_prawn" },
+        { "id": "product.food.seafood.shellfish.crab" },
+        { "id": "product.food.seafood.cephalopod.squid" }
+      ],
+      "services": [
+        { "id": "service.food.seafood_processing.freezing" }
+      ],
+      "target_markets": ["JP", "US", "DE"],
+      "brain_domain_expected": ["knowledge", "market_research", "sea_freight", "cold_chain", "marketing", "regulatory_compliance"]
+    },
+    {
+      "example_id": "ex-02-yogyakarta-restaurant",
+      "business_name": "Yogyakarta Seafood Restaurant",
+      "business_industry": { "primary": "hospitality", "secondary": ["food"] },
+      "business_roles": ["service_roles.service_provider"],
+      "products": [
+        { "id": "product.food.restaurant_menu.buffet" }
+      ],
+      "services": [
+        { "id": "service.food.dining.restaurant" }
+      ],
+      "target_markets": ["ID"],
+      "brain_domain_expected": ["knowledge", "food", "local_market", "marketing"]
+    },
+    {
+      "example_id": "ex-03-hotel",
+      "business_name": "Yogyakarta Hotel (demo)",
+      "business_industry": { "primary": "hospitality", "secondary": [] },
+      "business_roles": ["service_roles.service_provider"],
+      "products": [],
+      "services": [
+        { "id": "service.hospitality.accommodation.hotel" }
+      ],
+      "target_markets": ["ID", "SG", "AU"],
+      "brain_domain_expected": ["knowledge", "hospitality", "local_market", "location_intelligence"]
+    },
+    {
+      "example_id": "ex-04-villa",
+      "business_name": "Bali Villa (demo)",
+      "business_industry": { "primary": "hospitality", "secondary": [] },
+      "business_roles": ["service_roles.service_provider"],
+      "products": [],
+      "services": [
+        { "id": "service.hospitality.accommodation.villa" }
+      ],
+      "target_markets": ["ID", "AU", "SG"],
+      "brain_domain_expected": ["knowledge", "hospitality", "local_market"]
+    },
+    {
+      "example_id": "ex-05-furniture-manufacturer",
+      "business_name": "Jepara Rattan Works",
+      "business_industry": { "primary": "furniture", "secondary": ["manufacturing"] },
+      "business_roles": ["production_roles.manufacturer", "trade_roles.exporter"],
+      "products": [
+        { "id": "product.furniture.seating.chair.rattan" },
+        { "id": "product.furniture.tables.dining" }
+      ],
+      "services": [],
+      "target_markets": ["ID", "DE", "US", "AU"],
+      "brain_domain_expected": ["knowledge", "market_research", "sea_freight"]
+    },
+    {
+      "example_id": "ex-06-garment-manufacturer",
+      "business_name": "PT Bandung Garment (demo)",
+      "business_industry": { "primary": "apparel", "secondary": ["manufacturing"] },
+      "business_roles": ["production_roles.manufacturer", "trade_roles.exporter"],
+      "products": [
+        { "id": "product.apparel.garments.mens" },
+        { "id": "product.apparel.garments.womens" },
+        { "id": "product.apparel.garments.uniforms_workwear" }
+      ],
+      "services": [],
+      "target_markets": ["JP", "US", "DE", "GB"],
+      "brain_domain_expected": ["knowledge", "market_research", "sea_freight", "air_freight"]
+    },
+    {
+      "example_id": "ex-07-shoe-retailer",
+      "business_name": "Yogyakarta Shoe Shop (demo)",
+      "business_industry": { "primary": "retail", "secondary": ["apparel"] },
+      "business_roles": ["trade_roles.retailer"],
+      "products": [
+        { "id": "product.apparel.footwear.sports.running_shoes" },
+        { "id": "product.apparel.footwear.casual" }
+      ],
+      "services": [],
+      "target_markets": ["ID"],
+      "brain_domain_expected": ["knowledge", "local_market", "marketing"]
+    },
+    {
+      "example_id": "ex-08-motorcycle-repair",
+      "business_name": "Bengkel Motor Yogya (demo)",
+      "business_industry": { "primary": "repair_maintenance", "secondary": ["automotive"] },
+      "business_roles": ["service_roles.repair_provider"],
+      "products": [
+        { "id": "product.automotive.parts" }
+      ],
+      "services": [
+        { "id": "service.repair_maintenance.automotive.motorcycle" }
+      ],
+      "target_markets": ["ID"],
+      "brain_domain_expected": ["knowledge", "local_market", "technical"]
+    },
+    {
+      "example_id": "ex-09-car-dealer",
+      "business_name": "Jakarta Auto Dealer (demo)",
+      "business_industry": { "primary": "automotive", "secondary": ["retail"] },
+      "business_roles": ["trade_roles.retailer", "trade_roles.distributor"],
+      "products": [
+        { "id": "product.automotive.vehicles.passenger_cars" },
+        { "id": "product.automotive.parts" }
+      ],
+      "services": [
+        { "id": "service.repair_maintenance.automotive.car" }
+      ],
+      "target_markets": ["ID"],
+      "brain_domain_expected": ["knowledge", "market_research"]
+    },
+    {
+      "example_id": "ex-10-construction-company",
+      "business_name": "Yogya Construction (demo)",
+      "business_industry": { "primary": "construction", "secondary": ["manufacturing"] },
+      "business_roles": ["production_roles.manufacturer", "service_roles.contractor", "service_roles.installer"],
+      "products": [
+        { "id": "product.construction.building_components.doors.steel_doors" },
+        { "id": "product.construction.building_components.staircases.residential" }
+      ],
+      "services": [
+        { "id": "service.construction.installation.door" },
+        { "id": "service.construction.installation.staircase" },
+        { "id": "service.construction.design_build" }
+      ],
+      "target_markets": ["ID"],
+      "brain_domain_expected": ["knowledge", "local_market", "technical"]
+    },
+    {
+      "example_id": "ex-11-medical-clinic",
+      "business_name": "Bali International Clinic (demo)",
+      "business_industry": { "primary": "healthcare", "secondary": [] },
+      "business_roles": ["service_roles.service_provider"],
+      "products": [],
+      "services": [
+        { "id": "service.healthcare.general_practice" },
+        { "id": "service.healthcare.diagnostic" }
+      ],
+      "target_markets": ["ID"],
+      "brain_domain_expected": ["knowledge", "regulatory_compliance", "local_market"]
+    },
+    {
+      "example_id": "ex-12-accounting-firm",
+      "business_name": "Jakarta Accounting Firm (demo)",
+      "business_industry": { "primary": "professional", "secondary": [] },
+      "business_roles": ["service_roles.service_provider", "service_roles.consultant"],
+      "products": [],
+      "services": [
+        { "id": "service.professional.accounting.monthly_bookkeeping" },
+        { "id": "service.professional.accounting.audit" },
+        { "id": "service.professional.accounting.tax_filing" }
+      ],
+      "target_markets": ["ID"],
+      "brain_domain_expected": ["knowledge", "regulatory_compliance"]
+    },
+    {
+      "example_id": "ex-13-software-company",
+      "business_name": "Jakarta SaaS Co (demo)",
+      "business_industry": { "primary": "technology", "secondary": [] },
+      "business_roles": ["production_roles.producer", "service_roles.service_provider", "service_roles.consultant"],
+      "products": [
+        { "id": "product.technology.software.saas" },
+        { "id": "product.technology.software.mobile_app" },
+        { "id": "product.technology.platforms_apis" }
+      ],
+      "services": [
+        { "id": "service.technology.implementation" },
+        { "id": "service.technology.support" },
+        { "id": "service.professional.consulting.it" }
+      ],
+      "target_markets": ["ID", "SG", "US"],
+      "brain_domain_expected": ["knowledge", "market_research", "marketing", "technical"]
+    },
+    {
+      "example_id": "ex-14-agricultural-producer",
+      "business_name": "Lampung Coffee Cooperative (demo)",
+      "business_industry": { "primary": "agriculture", "secondary": [] },
+      "business_roles": ["production_roles.farmer", "production_roles.producer", "trade_roles.exporter"],
+      "products": [
+        { "id": "product.agriculture.crops.coffee.robusta" },
+        { "id": "product.agriculture.crops.coffee.arabica" }
+      ],
+      "services": [
+        { "id": "service.agriculture.supply_contract" }
+      ],
+      "target_markets": ["JP", "US", "DE", "GB", "AU"],
+      "brain_domain_expected": ["knowledge", "market_research", "commodity_pricing", "sea_freight"]
+    },
+    {
+      "example_id": "ex-15-industrial-machinery",
+      "business_name": "Surabaya Bearings Manufacturer (demo)",
+      "business_industry": { "primary": "industrial", "secondary": ["manufacturing"] },
+      "business_roles": ["production_roles.manufacturer", "trade_roles.exporter"],
+      "products": [
+        { "id": "product.industrial.bearings.ball.deep_groove" },
+        { "id": "product.industrial.bearings.roller" }
+      ],
+      "services": [
+        { "id": "service.industrial.installation.bearing" },
+        { "id": "service.industrial.maintenance.predictive" }
+      ],
+      "target_markets": ["JP", "DE", "US"],
+      "brain_domain_expected": ["knowledge", "market_research", "sea_freight", "air_freight", "technical"]
+    },
+    {
+      "example_id": "ex-16-freight-forwarder",
+      "business_name": "Jakarta Freight (demo)",
+      "business_industry": { "primary": "transport", "secondary": [] },
+      "business_roles": ["service_roles.freight_forwarder", "service_roles.customs_broker", "service_roles.logistics_provider"],
+      "products": [],
+      "services": [
+        { "id": "service.logistics.freight_forwarding.sea" },
+        { "id": "service.logistics.freight_forwarding.air" },
+        { "id": "service.logistics.customs" },
+        { "id": "service.logistics.warehousing.cold_storage" }
+      ],
+      "target_markets": ["ID", "JP", "SG", "US"],
+      "brain_domain_expected": ["knowledge", "sea_freight", "air_freight", "location_intelligence"]
+    },
+    {
+      "example_id": "ex-17-beauty-salon",
+      "business_name": "Yogya Beauty Salon (demo)",
+      "business_industry": { "primary": "beauty", "secondary": [] },
+      "business_roles": ["service_roles.service_provider"],
+      "products": [],
+      "services": [
+        { "id": "service.beauty.salon" },
+        { "id": "service.beauty.nail" }
+      ],
+      "target_markets": ["ID"],
+      "brain_domain_expected": ["knowledge", "local_market", "marketing"]
+    },
+    {
+      "example_id": "ex-18-gym",
+      "business_name": "Jakarta Fitness Center (demo)",
+      "business_industry": { "primary": "sports", "secondary": [] },
+      "business_roles": ["service_roles.service_provider"],
+      "products": [],
+      "services": [
+        { "id": "service.sports.gym" }
+      ],
+      "target_markets": ["ID"],
+      "brain_domain_expected": ["knowledge", "local_market", "marketing"]
+    },
+    {
+      "example_id": "ex-19-cleaning-service",
+      "business_name": "Yogya Cleaning Co (demo)",
+      "business_industry": { "primary": "cleaning_facilities", "secondary": [] },
+      "business_roles": ["service_roles.service_provider"],
+      "products": [],
+      "services": [
+        { "id": "service.cleaning_facilities.commercial" },
+        { "id": "service.cleaning_facilities.residential" }
+      ],
+      "target_markets": ["ID"],
+      "brain_domain_expected": ["knowledge", "local_market"]
+    },
+    {
+      "example_id": "ex-20-photographer",
+      "business_name": "Bali Photography Studio (demo)",
+      "business_industry": { "primary": "photography_video", "secondary": [] },
+      "business_roles": ["service_roles.service_provider"],
+      "products": [],
+      "services": [
+        { "id": "service.photography_video.event" },
+        { "id": "service.photography_video.commercial" }
+      ],
+      "target_markets": ["ID", "AU"],
+      "brain_domain_expected": ["knowledge", "local_market", "marketing"]
+    }
+  ],
+  "critical_edge_cases": [
+    { "case": "restaurant + packaged food", "referenced_by": "ex-02", "validated_via": "restaurant is a service, packaged food is a product · both classifications coexist on business" },
+    { "case": "hotel + restaurant", "referenced_by": "ex-03", "validated_via": "hospitality.accommodation.hotel + service.food.dining.restaurant on same business" },
+    { "case": "manufacturer + exporter", "referenced_by": "ex-01, ex-05, ex-06, ex-15", "validated_via": "two business_roles on same business" },
+    { "case": "product + service same business", "referenced_by": "ex-10", "validated_via": "construction company has product (doors) + service (installation)" },
+    { "case": "software product + service", "referenced_by": "ex-13", "validated_via": "SaaS product + implementation service" },
+    { "case": "multi-industry business", "referenced_by": "ex-02 (hospitality+food), ex-09 (automotive+retail)", "validated_via": "primary + secondary industry" },
+    { "case": "multi-role business", "referenced_by": "ex-01, ex-10", "validated_via": "business_roles array" },
+    { "case": "multi-country target", "referenced_by": "ex-01, ex-06, ex-14, ex-15, ex-16", "validated_via": "target_markets array with multiple ISO codes" }
+  ]
+}

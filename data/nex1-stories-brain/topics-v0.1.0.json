@@ -1,0 +1,168 @@
+{
+  "version": "v0.1.0",
+  "notes": "Stories Brain topic seed · founder-authored 2026-09-12. Minimal seed to serve as the initial Truth/Evidence layer substrate for the integration gate. Full 100-topic benchmark deferred to a future authorised sprint. Every topic ships with: (a) an alias set for the deterministic classifier · (b) a canonical sub-question decomposition · (c) an evidence-taxonomy tag per sub-claim · (d) never-says list · (e) layer summary for the response composer. No LLM. No fabrication.",
+  "topics": [
+    {
+      "topic_id": "pyramids_construction",
+      "display_name": "Construction of the Egyptian Pyramids",
+      "domain": "ancient_engineering",
+      "aliases": [
+        "how were the pyramids built",
+        "who built the pyramids",
+        "how did they build the pyramids",
+        "how were the egyptian pyramids constructed",
+        "were the pyramids built by slaves",
+        "were slaves used to build the pyramids",
+        "did aliens build the pyramids",
+        "pyramid construction"
+      ],
+      "sub_claims": [
+        { "id": "quarrying",       "claim": "Ancient Egyptians quarried and transported the stones",                                "evidence": "ARCHAEOLOGICALLY_SUPPORTED" },
+        { "id": "labour",          "claim": "Skilled paid workers · not enslaved populations · did the construction",             "evidence": "HISTORICALLY_SUPPORTED" },
+        { "id": "ramp_method",     "claim": "Some form of ramp system was used to raise blocks",                                    "evidence": "DISPUTED" },
+        { "id": "surveying_math",  "claim": "Sophisticated surveying and mathematics were applied",                                "evidence": "ARCHAEOLOGICALLY_SUPPORTED" },
+        { "id": "alien_builders",  "claim": "Extraterrestrial beings built the pyramids",                                          "evidence": "SPECULATIVE" },
+        { "id": "lost_civ",        "claim": "A prior lost advanced civilisation built the pyramids",                               "evidence": "SPECULATIVE" }
+      ],
+      "layer_summary": "Established: Egyptians quarried and organised the labour. Disputed: exact ramp/lifting method. Speculative: alien or lost-civilisation authorship.",
+      "discussion_opener": "There are three questions inside this one: who was the workforce, what methods did they use, and what remains uncertain. The evidence sits differently on each.",
+      "offer_to_expand": "I can walk through the archaeological evidence on labour and surveying, then the disputed engineering questions, then the modern alternative hypotheses and how they compare.",
+      "never_says": [
+        "aliens definitely built the pyramids",
+        "aliens definitely did not build the pyramids",
+        "the pyramids were built by slaves"
+      ]
+    },
+    {
+      "topic_id": "giants",
+      "display_name": "Giants (mythological and traditional)",
+      "domain": "human_traditions",
+      "aliases": [
+        "did giants exist",
+        "were there giants",
+        "were the nephilim giants",
+        "were giants real",
+        "biblical giants",
+        "giants in the bible"
+      ],
+      "sub_claims": [
+        { "id": "cultural_stories", "claim": "Cultures across the world told stories about giants",                                 "evidence": "MYTHOLOGICAL_TRADITION" },
+        { "id": "ancient_belief",   "claim": "Ancient peoples believed some giants were real",                                       "evidence": "TRADITIONALLY_RECORDED" },
+        { "id": "nephilim_texts",   "claim": "The Nephilim appear in Hebrew biblical texts",                                         "evidence": "TRADITIONALLY_RECORDED" },
+        { "id": "arch_evidence",    "claim": "There is accepted archaeological evidence for a race of enormous humans",             "evidence": "CONTRADICTED_BY_EVIDENCE" }
+      ],
+      "layer_summary": "Stories: yes, widely. Ancient belief: yes, in many traditions. Archaeological evidence for a race of enormous humans matching those stories: no accepted evidence.",
+      "discussion_opener": "There are three separate questions inside 'did giants exist' · the story tradition · what ancient people believed · and whether archaeology supports a population of enormous humans.",
+      "offer_to_expand": "I can walk through the major traditions (Greek, biblical, Norse, Native American) and the archaeological record separately.",
+      "never_says": [
+        "giants definitely existed",
+        "belief in giants was foolish",
+        "no culture ever mentioned giants"
+      ]
+    },
+    {
+      "topic_id": "atlantis",
+      "display_name": "Atlantis",
+      "domain": "lost_civilisations",
+      "aliases": [
+        "did atlantis exist",
+        "was atlantis real",
+        "atlantis",
+        "where was atlantis",
+        "is atlantis a real place",
+        "lost city of atlantis"
+      ],
+      "sub_claims": [
+        { "id": "plato_source",    "claim": "Plato wrote about Atlantis in Timaeus and Critias",                                   "evidence": "HISTORICALLY_ESTABLISHED" },
+        { "id": "plato_intent",    "claim": "Plato's intent (literal history vs allegory) is a scholarly debate",                    "evidence": "DISPUTED" },
+        { "id": "real_place",      "claim": "Atlantis was a real advanced civilisation that sank in the ocean",                     "evidence": "SPECULATIVE" },
+        { "id": "candidates",      "claim": "Various real locations (Thera/Santorini · Doggerland · others) have been proposed",    "evidence": "DISPUTED" }
+      ],
+      "layer_summary": "Ancient text: established. Real advanced civilisation: not established. Candidate real-world inspirations: actively discussed but not settled.",
+      "discussion_opener": "Atlantis is a good case study in separating story, ancient source, and modern claim.",
+      "offer_to_expand": "I can walk you through what Plato actually wrote, how the story travelled through later interpreters, and how the modern candidate-location theories compare.",
+      "never_says": [
+        "Atlantis definitely existed",
+        "Atlantis is just fiction and nothing more"
+      ]
+    },
+    {
+      "topic_id": "anunnaki",
+      "display_name": "Anunnaki (Mesopotamian and modern interpretations)",
+      "domain": "religious_and_mythological_traditions",
+      "aliases": [
+        "who were the anunnaki",
+        "what are the anunnaki",
+        "were the anunnaki aliens",
+        "did the anunnaki come to earth",
+        "anunnaki aliens"
+      ],
+      "sub_claims": [
+        { "id": "mesopotamian_source", "claim": "The Anunnaki are figures in ancient Mesopotamian religious tradition",              "evidence": "RELIGIOUS_TRADITION" },
+        { "id": "texts_documented",    "claim": "The relevant Sumerian and Akkadian texts are well documented",                     "evidence": "HISTORICALLY_ESTABLISHED" },
+        { "id": "extraterrestrial",    "claim": "The Anunnaki were extraterrestrial beings who visited Earth",                       "evidence": "MODERN_INTERPRETATION" },
+        { "id": "modern_thesis_origin","claim": "The extraterrestrial interpretation was popularised in the 20th century",           "evidence": "HISTORICALLY_SUPPORTED" }
+      ],
+      "layer_summary": "Ancient religious figures: established. Ancient extraterrestrial visitation: not established by the surviving sources · that is a modern interpretation.",
+      "discussion_opener": "Two distinct things are worth separating: what the ancient Mesopotamian texts actually say about the Anunnaki, and how the modern ancient-astronaut interpretation of those texts developed.",
+      "offer_to_expand": "I can outline the primary Sumerian/Akkadian sources first, then how Sitchin and others in the 20th century reinterpreted them.",
+      "never_says": [
+        "the Anunnaki were definitely aliens",
+        "the Anunnaki story is worthless",
+        "ancient Mesopotamians believed the Anunnaki were aliens"
+      ]
+    },
+    {
+      "topic_id": "jesus_historicity",
+      "display_name": "The historicity of Jesus of Nazareth",
+      "domain": "religious_history",
+      "aliases": [
+        "did jesus exist",
+        "was jesus real",
+        "did jesus of nazareth exist",
+        "is there evidence jesus existed",
+        "is jesus historical"
+      ],
+      "sub_claims": [
+        { "id": "person_existed",     "claim": "A historical person named Jesus of Nazareth existed in first-century Judea",         "evidence": "HISTORICALLY_SUPPORTED" },
+        { "id": "gospel_details",     "claim": "Every detail in the Gospel accounts is historically established as fact",            "evidence": "DISPUTED" },
+        { "id": "miracles",           "claim": "Jesus performed miracles",                                                            "evidence": "RELIGIOUS_TRADITION" },
+        { "id": "resurrection",       "claim": "Jesus rose from the dead",                                                            "evidence": "RELIGIOUS_TRADITION" },
+        { "id": "divinity",           "claim": "Jesus is God · or the Son of God",                                                    "evidence": "RELIGIOUS_TRADITION" }
+      ],
+      "layer_summary": "Most historians of antiquity regard Jesus as a historical person. Theological claims about miracles, resurrection and divinity belong to religious tradition · a different kind of evidence.",
+      "discussion_opener": "The historicity question and the theological questions require different kinds of evidence. It helps to separate them.",
+      "offer_to_expand": "I can outline the historical evidence for the person separately from the religious tradition around what he did and who he was.",
+      "never_says": [
+        "Jesus definitely did not exist",
+        "the Gospels are complete historical records",
+        "the resurrection is a matter of ordinary historical evidence"
+      ]
+    },
+    {
+      "topic_id": "gobekli_tepe",
+      "display_name": "Göbekli Tepe",
+      "domain": "ancient_sites",
+      "aliases": [
+        "gobekli tepe",
+        "göbekli tepe",
+        "what is gobekli tepe",
+        "who built gobekli tepe",
+        "gobekli tepe purpose"
+      ],
+      "sub_claims": [
+        { "id": "existence",   "claim": "Göbekli Tepe exists as an archaeological site in southeastern Turkey",                     "evidence": "ARCHAEOLOGICALLY_SUPPORTED" },
+        { "id": "age",         "claim": "The site dates to the pre-pottery Neolithic (~9,600–8,000 BCE)",                             "evidence": "HISTORICALLY_ESTABLISHED" },
+        { "id": "purpose",     "claim": "The exact original purpose of the site is fully settled",                                    "evidence": "UNRESOLVED" },
+        { "id": "monumental",  "claim": "It is unusually monumental for hunter-gatherer societies of that period",                   "evidence": "HISTORICALLY_SUPPORTED" }
+      ],
+      "layer_summary": "Site existence and age: established. Original purpose: genuinely unresolved · this is one of the interesting open questions in Neolithic archaeology.",
+      "discussion_opener": "Göbekli Tepe is one of the strongest current examples of a genuinely unresolved archaeological question · not speculation, not consensus.",
+      "offer_to_expand": "I can walk through what is established about the site and where the main scholarly interpretations diverge.",
+      "never_says": [
+        "the purpose of Göbekli Tepe is definitely known",
+        "Göbekli Tepe is entirely mysterious"
+      ]
+    }
+  ]
+}

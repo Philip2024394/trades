@@ -1,0 +1,14 @@
+{
+  "snapshot_id": "07f8eed0-c6b5-4a0a-901d-82e8ed2a57b8",
+  "source_id": "test-src",
+  "retrieved_at": "2026-09-05T19:24:46.594Z",
+  "content_hash": "e365065c429f07c58ff58ba093da5300124c0d1a84e097914e26c7021c091397",
+  "bytes": 58,
+  "content": null,
+  "structured": [
+    {
+      "subject": "TEST-1",
+      "predicate": "hand-authored fixture"
+    }
+  ]
+}

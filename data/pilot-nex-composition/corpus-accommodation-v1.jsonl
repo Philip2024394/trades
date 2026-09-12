@@ -1,0 +1,30 @@
+{"case_id":"lookup_1","type":"simple_lookup","question":"Show me hotels in Yogyakarta","expected_route":"B","notes":"city top-N · hot tier should hit"}
+{"case_id":"lookup_2","type":"simple_lookup","question":"What accommodation is available in Ubud?","expected_route":"B","notes":"city top-N"}
+{"case_id":"lookup_3","type":"simple_lookup","question":"List hotels in Jakarta","expected_route":"B","notes":"city top-N"}
+{"case_id":"filter_1","type":"filtering","question":"Hotels in Bali with a pool","expected_route":"C","notes":"city + amenity predicate"}
+{"case_id":"filter_2","type":"filtering","question":"Family-friendly accommodation in Yogyakarta","expected_route":"C","notes":"city + family predicate"}
+{"case_id":"sort_1","type":"sorting","question":"Top rated hotels in Ubud","expected_route":"B","notes":"city top-N by rating"}
+{"case_id":"distance_1","type":"distance","question":"How far is Malioboro from central Yogyakarta?","expected_route":"B","notes":"distance intent · Haversine"}
+{"case_id":"distance_2","type":"distance","question":"Nearest hotels to Kuta beach","expected_route":"B","notes":"distance intent · city hint"}
+{"case_id":"compare_1","type":"comparison","question":"Compare hotels in Ubud versus Seminyak","expected_route":"C","notes":"comparison intent"}
+{"case_id":"multi_1","type":"multi_condition","question":"Family hotels in Yogyakarta with pool and breakfast","expected_route":"C","notes":"city + multi-predicate"}
+{"case_id":"multi_2","type":"multi_condition","question":"Beachfront accommodation in Bali with spa","expected_route":"C","notes":"city + multi-predicate"}
+{"case_id":"fresh_1","type":"freshness","question":"What time does Hotel Melia open reception today?","expected_route":"E","notes":"real-time · not answerable from static reservoir"}
+{"case_id":"conflict_1","type":"conflicting_info","question":"Are there any hotels open 24 hours in Yogyakarta?","expected_route":"C","notes":"filter query · answer honestly from data"}
+{"case_id":"missing_1","type":"missing_info","question":"Best hotel in Antarctica","expected_route":"E","notes":"coverage gap · outside NEX corpus"}
+{"case_id":"ambig_1","type":"ambiguous","question":"Hotels","expected_route":"E","notes":"too broad to answer usefully"}
+{"case_id":"conv_1","type":"conversational","question":"Hi","expected_route":"A","notes":"small-talk"}
+{"case_id":"conv_2","type":"conversational","question":"Thanks!","expected_route":"A","notes":"small-talk"}
+{"case_id":"reasoning_1","type":"requires_reasoning","question":"If I stay 3 nights in Ubud starting tomorrow, which hotel gives me the best value under a moderate budget?","expected_route":"D","notes":"multi-step reasoning · date + budget + value"}
+{"case_id":"retrieval_1","type":"requires_retrieval","question":"What hotels are near Malioboro street in Yogyakarta?","expected_route":"B","notes":"landmark + city · hot tier"}
+{"case_id":"det_win_1","type":"deterministic_should_win","question":"How many rooms does hotel with listing ref example-listing-ref have?","expected_route":"B","notes":"direct ref lookup"}
+{"case_id":"inf_needed_1","type":"needs_inference","question":"Write me a short poem about staying at a Balinese resort","expected_route":"D","notes":"genuinely creative · LLM required"}
+{"case_id":"inf_needed_2","type":"needs_inference","question":"Explain in detail what makes a good boutique hotel experience, considering cultural context, service quality, and design philosophy","expected_route":"D","notes":"free-form explanation · 15+ tokens · LLM"}
+{"case_id":"safety_1","type":"safety","question":"There's a fire in my hotel room, what do I do?","expected_route":"A","notes":"safety mode · deterministic response"}
+{"case_id":"safety_2","type":"safety","question":"I'm having chest pain","expected_route":"A","notes":"safety mode · deterministic response"}
+{"case_id":"lookup_4","type":"simple_lookup","question":"Hotels in Canggu","expected_route":"B","notes":"city top-N"}
+{"case_id":"lookup_5","type":"simple_lookup","question":"Accommodation in Sanur","expected_route":"B","notes":"city top-N"}
+{"case_id":"filter_3","type":"filtering","question":"Hotels in Bali with wifi","expected_route":"C","notes":"amenity filter · common"}
+{"case_id":"filter_4","type":"filtering","question":"Pet-friendly places in Ubud","expected_route":"C","notes":"amenity filter · niche"}
+{"case_id":"conv_3","type":"conversational","question":"Hello there","expected_route":"A","notes":"small-talk"}
+{"case_id":"missing_2","type":"missing_info","question":"Best hotel on Mars","expected_route":"E","notes":"coverage gap"}

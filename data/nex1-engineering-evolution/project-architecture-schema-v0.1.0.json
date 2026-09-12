@@ -1,0 +1,89 @@
+{
+  "version": "v0.1.0",
+  "notes": "Project Architecture Intelligence contract · founder-authorised design 2026-09-12. DESCRIPTIVE · not prescriptive. Answers 'how is this project actually structured?' · never 'is it good?'. Read-only. Deterministic.",
+  "record_type": "PROJECT_ARCHITECTURE",
+  "forbidden_vocabulary_in_output": [
+    "good architecture","bad architecture","clean architecture","poor architecture",
+    "optimal architecture","better architecture","worse architecture",
+    "maintainable","unmaintainable","recommended architecture",
+    "should refactor","should move","should delete","should merge","should split"
+  ],
+  "confidence_states": [
+    { "id": "OBSERVED",          "definition": "directly supported by repository evidence · e.g. import line in a specific file" },
+    { "id": "STRONGLY_INFERRED", "definition": "large sample corroborates · e.g. 90% of imports match the pattern" },
+    { "id": "WEAKLY_INFERRED",   "definition": "small sample suggests · flagged for caution" },
+    { "id": "UNKNOWN",            "definition": "no evidence available · never guessed" },
+    { "id": "CONFLICTING",        "definition": "signals disagree · both observations preserved" }
+  ],
+  "required_top_level_fields": [
+    { "name": "record_type",             "shape": "constant · 'PROJECT_ARCHITECTURE'" },
+    { "name": "architecture_id",         "shape": "string · monotonic e.g. PA-0000042" },
+    { "name": "schema_version",          "shape": "semver" },
+    { "name": "project_root",             "shape": "absolute path" },
+    { "name": "scanned_at",               "shape": "ISO-8601" },
+    { "name": "scan_stats",               "shape": "object · { files_scanned, files_excluded, imports_extracted, elapsed_ms, sampling_methodology }" },
+    { "name": "graph",                     "shape": "object · { nodes[], edges[] }" },
+    { "name": "cycles",                    "shape": "array of { cycle_id, members[], size, confidence } · enumerated · never judged" },
+    { "name": "fan_in",                    "shape": "array of { node_id, count } · deterministic sort" },
+    { "name": "fan_out",                   "shape": "array of { node_id, count } · deterministic sort" },
+    { "name": "boundaries",               "shape": "object · { test, api, configuration, build, deployment, generated, vendor } · each has files[] + confidence" },
+    { "name": "packages",                 "shape": "array of detected packages (monorepo workspaces or single_package)" },
+    { "name": "cross_package_edges",      "shape": "array · edges that cross detected package boundaries" },
+    { "name": "orphans",                   "shape": "array of node_ids with zero fan-in AND zero fan-out (excluding entry points)" },
+    { "name": "determinism_witness",     "shape": "object · { first_run_hash, second_run_hash, identical }" },
+    { "name": "byte_identity_witness",    "shape": "object · { before_hash, after_hash, files_examined, drift_count, drifted[] }" },
+    { "name": "limitations",              "shape": "string · what was NOT established" },
+    { "name": "attribution",              "shape": "object · role='project_architecture_intelligence' · authority='descriptive_read_only' · deterministic=true · external_llm_used=false" }
+  ],
+  "node_fields": [
+    { "name": "node_id",         "shape": "string · deterministic · sha256_prefix of relative path" },
+    { "name": "node_type",       "shape": "enum · file · package · module · symbol · external_dependency" },
+    { "name": "source_path",     "shape": "relative path" },
+    { "name": "source_hash",     "shape": "sha256_prefix" },
+    { "name": "language",        "shape": "string · detected language id" },
+    { "name": "package",          "shape": "string · package name if part of a package" },
+    { "name": "confidence",      "shape": "one of confidence_states" },
+    { "name": "detection_method","shape": "string" }
+  ],
+  "edge_fields": [
+    { "name": "edge_id",         "shape": "string · deterministic · sha256_prefix of source_id + '|' + target_id + '|' + edge_type" },
+    { "name": "source_node_id",  "shape": "string" },
+    { "name": "target_node_id",  "shape": "string" },
+    { "name": "edge_type",       "shape": "enum · import · require · dynamic_import · reexport · symbol_reference" },
+    { "name": "direction",       "shape": "enum · out · in (always 'out' from source to target · included for query symmetry)" },
+    { "name": "internal_external","shape": "enum · internal · external · unresolved" },
+    { "name": "confidence",      "shape": "one of confidence_states" },
+    { "name": "detection_method","shape": "string" },
+    { "name": "raw_specifier",   "shape": "string · the actual specifier from source · never normalised silently" }
+  ],
+  "boundary_fields": [
+    { "name": "boundary_kind",   "shape": "test | api | configuration | build | deployment | generated | vendor" },
+    { "name": "files",            "shape": "array of relative paths" },
+    { "name": "detection_method","shape": "string" },
+    { "name": "confidence",       "shape": "one of confidence_states" }
+  ],
+  "cycle_fields": [
+    { "name": "cycle_id",         "shape": "string · deterministic hash of sorted member ids" },
+    { "name": "members",          "shape": "array of node_id · sorted deterministically" },
+    { "name": "size",              "shape": "integer >= 1 (1 = self-loop)" },
+    { "name": "confidence",       "shape": "one of confidence_states" },
+    { "name": "raw_paths",        "shape": "array of the actual source paths in cycle order (for founder audit)" }
+  ],
+  "invariants": [
+    "no forbidden vocabulary appears in any output field",
+    "cycles are enumerated with member node_ids · never labelled as 'bad'",
+    "orphans are enumerated · never labelled · orphan doesn't imply defective",
+    "fan_in / fan_out are counts · never scored · never percentiled",
+    "internal_external classification uses ProjectProfile + heuristic path resolution · unresolved is honest",
+    "determinism_witness runs analysis twice and compares · identical=false is a bug",
+    "byte_identity_witness verifies no source file changed during scan",
+    "attribution.external_llm_used MUST be false",
+    "attribution.role MUST be 'project_architecture_intelligence'",
+    "attribution.authority MUST be 'descriptive_read_only'"
+  ],
+  "reuse": [
+    "generated/vendor path markers reuse Code Intelligence registry via ProjectProfile scanner's markers",
+    "language detection reuses Code Intelligence extension map",
+    "test file identification reuses ProjectProfile.test_naming_pattern where available"
+  ]
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "provenance_id": "c435f99d-7394-4c17-9ca8-3121dc221e39",
+    "claim_id": "bd344fa6-b06a-458b-897e-656e446873ee",
+    "source_id": "fixture.bad",
+    "snapshot_id": "4a05863a-23f2-45f8-a28a-987acb20d175",
+    "extractor_id": "structured.json",
+    "attributed_at": "2026-09-10T05:25:19.871Z"
+  }
+]

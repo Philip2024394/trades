@@ -1,0 +1,109 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX1 Country Candidate Panel v0 · founder-authorised 2026-09-12. Countries are SEPARATE from languages — a country can host multiple languages, a language can span multiple countries. Dimension scores are 0..10 per dimension, ranking is founder-decided (this table is analysis + evidence, NOT autonomous ranking). Founder pinned Malaysia as NEXT after english + bahasa_indonesia reach fluent + proven maturity.",
+  "dimensions": [
+    { "id": "population_online",         "label": "Population + internet penetration",           "weight_hint": 1.0 },
+    { "id": "marketplace_fragmentation", "label": "Marketplace fragmentation (opportunity)",     "weight_hint": 1.0 },
+    { "id": "mobile_first",              "label": "Mobile-first adoption",                       "weight_hint": 0.8 },
+    { "id": "local_lang_gap",            "label": "Local-language software gap",                 "weight_hint": 1.0 },
+    { "id": "informal_economy",          "label": "Trades / services informal-economy size",     "weight_hint": 0.9 },
+    { "id": "regulatory_openness",       "label": "Regulatory openness for platform-of-platforms","weight_hint": 0.7 },
+    { "id": "payments_maturity",         "label": "Payment rails maturity",                      "weight_hint": 0.7 },
+    { "id": "nex_brand",                 "label": "Existing NEX brand / user base",              "weight_hint": 0.8 },
+    { "id": "linguistic_reuse",          "label": "Cross-language reuse from EN + ID assets",    "weight_hint": 0.9 },
+    { "id": "governance_risk",           "label": "Governance risk (LOWER is better)",           "weight_hint": -1.0 },
+    { "id": "operational_ease",          "label": "Founder personal ease-of-operation",          "weight_hint": 0.6 }
+  ],
+  "candidates": [
+    {
+      "id": "MY", "display_name": "Malaysia", "primary_languages": ["malay","english"], "flag": "🇲🇾",
+      "next_priority": true,
+      "founder_note": "Selected as next priority AFTER EN + ID reach fluent + proven. Malay/Indonesian linguistic overlap is a deterministic test of whether NEX1 understands language structure vs memorising phrases · founder decision 2026-09-12",
+      "dimensions": {
+        "population_online": 8, "marketplace_fragmentation": 8, "mobile_first": 9, "local_lang_gap": 8,
+        "informal_economy": 8, "regulatory_openness": 7, "payments_maturity": 8, "nex_brand": 4,
+        "linguistic_reuse": 9, "governance_risk": 3, "operational_ease": 7
+      }
+    },
+    {
+      "id": "VN", "display_name": "Vietnam", "primary_languages": ["vietnamese","english"], "flag": "🇻🇳",
+      "next_priority": false,
+      "founder_note": "Booming trades economy · high mobile penetration · language distinct from EN+ID (no linguistic-overlap advantage)",
+      "dimensions": {
+        "population_online": 9, "marketplace_fragmentation": 9, "mobile_first": 10, "local_lang_gap": 9,
+        "informal_economy": 10, "regulatory_openness": 6, "payments_maturity": 8, "nex_brand": 2,
+        "linguistic_reuse": 3, "governance_risk": 5, "operational_ease": 5
+      }
+    },
+    {
+      "id": "PH", "display_name": "Philippines", "primary_languages": ["filipino","english"], "flag": "🇵🇭",
+      "next_priority": false,
+      "founder_note": "Code-switching English natively · Taglish first-class register · Tagalog templates would reuse EN work",
+      "dimensions": {
+        "population_online": 9, "marketplace_fragmentation": 8, "mobile_first": 10, "local_lang_gap": 7,
+        "informal_economy": 9, "regulatory_openness": 7, "payments_maturity": 7, "nex_brand": 3,
+        "linguistic_reuse": 6, "governance_risk": 5, "operational_ease": 6
+      }
+    },
+    {
+      "id": "TH", "display_name": "Thailand", "primary_languages": ["thai","english"], "flag": "🇹🇭",
+      "next_priority": false,
+      "founder_note": "Similar SE-Asia marketplace fit · Thai script new complexity",
+      "dimensions": {
+        "population_online": 8, "marketplace_fragmentation": 8, "mobile_first": 9, "local_lang_gap": 8,
+        "informal_economy": 8, "regulatory_openness": 6, "payments_maturity": 8, "nex_brand": 2,
+        "linguistic_reuse": 2, "governance_risk": 5, "operational_ease": 6
+      }
+    },
+    {
+      "id": "IN", "display_name": "India", "primary_languages": ["hindi","english","bengali","tamil","urdu"], "flag": "🇮🇳",
+      "next_priority": false,
+      "founder_note": "Massive scale · multiple official languages · Hinglish code-switch · high complexity · single country hosts 5+ NEX-relevant languages",
+      "dimensions": {
+        "population_online": 10, "marketplace_fragmentation": 10, "mobile_first": 10, "local_lang_gap": 8,
+        "informal_economy": 10, "regulatory_openness": 6, "payments_maturity": 9, "nex_brand": 3,
+        "linguistic_reuse": 5, "governance_risk": 6, "operational_ease": 4
+      }
+    },
+    {
+      "id": "BR", "display_name": "Brazil", "primary_languages": ["portuguese_br"], "flag": "🇧🇷",
+      "next_priority": false,
+      "founder_note": "Portuguese · LATAM anchor · marketplace fragmentation deep · linguistic reuse from EN+ID is low",
+      "dimensions": {
+        "population_online": 9, "marketplace_fragmentation": 9, "mobile_first": 9, "local_lang_gap": 7,
+        "informal_economy": 9, "regulatory_openness": 6, "payments_maturity": 8, "nex_brand": 2,
+        "linguistic_reuse": 2, "governance_risk": 6, "operational_ease": 4
+      }
+    },
+    {
+      "id": "TR", "display_name": "Turkey", "primary_languages": ["turkish"], "flag": "🇹🇷",
+      "next_priority": false,
+      "founder_note": "Agglutinative morphology · high tech adoption · underserved · vowel harmony tests structural understanding",
+      "dimensions": {
+        "population_online": 8, "marketplace_fragmentation": 7, "mobile_first": 9, "local_lang_gap": 8,
+        "informal_economy": 8, "regulatory_openness": 5, "payments_maturity": 7, "nex_brand": 2,
+        "linguistic_reuse": 3, "governance_risk": 5, "operational_ease": 5
+      }
+    },
+    {
+      "id": "NG", "display_name": "Nigeria", "primary_languages": ["english","yoruba","hausa"], "flag": "🇳🇬",
+      "next_priority": false,
+      "founder_note": "English-primary + Yoruba/Hausa/Igbo · West-Africa anchor",
+      "dimensions": {
+        "population_online": 9, "marketplace_fragmentation": 9, "mobile_first": 9, "local_lang_gap": 8,
+        "informal_economy": 10, "regulatory_openness": 5, "payments_maturity": 7, "nex_brand": 2,
+        "linguistic_reuse": 5, "governance_risk": 7, "operational_ease": 4
+      }
+    },
+    {
+      "id": "KE", "display_name": "Kenya", "primary_languages": ["swahili","english"], "flag": "🇰🇪",
+      "next_priority": false,
+      "founder_note": "Swahili · East-Africa anchor · English co-official",
+      "dimensions": {
+        "population_online": 7, "marketplace_fragmentation": 8, "mobile_first": 9, "local_lang_gap": 8,
+        "informal_economy": 9, "regulatory_openness": 6, "payments_maturity": 8, "nex_brand": 2,
+        "linguistic_reuse": 5, "governance_risk": 5, "operational_ease": 4
+      }
+    }
+  ]
+}

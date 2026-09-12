@@ -1,0 +1,50 @@
+{
+  "run_id": "improve_7ea3c6a9-216f-4e45-a0cd-04681c291eda",
+  "candidate_id": "cand_c0c55f13-f2c6-464d-82d7-9fc9e8edce46",
+  "candidate_kind": "knowledge",
+  "started_at": "2026-09-07T19:40:07.330Z",
+  "completed_at": "2026-09-07T19:40:07.331Z",
+  "triggered_by": "manual",
+  "status_trace": [
+    {
+      "from": "CANDIDATE",
+      "to": "PROMOTED",
+      "at": "2026-09-07T19:40:07.331Z",
+      "note": "founder_authorized_manual_promotion"
+    }
+  ],
+  "terminal_status": "PROMOTED",
+  "manifest_at_start": {
+    "benchmark_version": "n/a_founder_directed_manual_promotion",
+    "benchmark_hash": "UNKNOWN",
+    "reviewer_hash": "UNKNOWN",
+    "evaluator_hash": "UNKNOWN",
+    "knowledge_snapshot_hash": "UNKNOWN",
+    "environment_identifier": "node_v24.18.0",
+    "captured_at": "2026-09-07T19:40:07.330Z"
+  },
+  "manifest_at_end": {
+    "benchmark_version": "n/a_founder_directed_manual_promotion",
+    "benchmark_hash": "UNKNOWN",
+    "reviewer_hash": "UNKNOWN",
+    "evaluator_hash": "UNKNOWN",
+    "knowledge_snapshot_hash": "UNKNOWN",
+    "environment_identifier": "node_v24.18.0",
+    "captured_at": "2026-09-07T19:40:07.330Z"
+  },
+  "promotion_decision": {
+    "status": "PROMOTED",
+    "reasons": [
+      "founder_authorized_manual_promotion",
+      "candidate_kind:knowledge",
+      "verification_status:VERIFIED",
+      "authority_tier:TIER_1",
+      "confidence:0.95",
+      "content_hash:fcabac40fb0deb1ce4af74a4"
+    ],
+    "review_verdict": "ACCEPT",
+    "drift_direction": "STABLE"
+  },
+  "notes": "Founder-authorized manual promotion 2026-09-08 · explicit BEGIN 'APPROVE cand_c0c55f13' · knowledge-kind candidate · VERIFIED at TIER_1 (nodejs.org/api/fs.html) · confidence 0.95 · path distinct from automatic runImprovementCycle because a factual knowledge item does not require benchmark corpus (§12 UNKNOWN discipline honored)",
+  "final_status": null
+}

@@ -1,0 +1,75 @@
+{
+  "taxonomy_version": 1,
+  "specification": "NEX Universal Business & Product Taxonomy",
+  "released_at": "2026-09-05",
+  "released_by": "philip",
+  "released_via": "T0 Canonical Taxonomy Specification (content authorship only)",
+  "status": "active",
+  "dimensions": [
+    "industry",
+    "product",
+    "service",
+    "role",
+    "market"
+  ],
+  "brain_domain_vocabulary": [
+    "knowledge",
+    "market_research",
+    "logistics",
+    "sea_freight",
+    "air_freight",
+    "cold_chain",
+    "location_intelligence",
+    "marketing",
+    "regulatory_compliance",
+    "commodity_pricing",
+    "technical",
+    "hospitality",
+    "local_market",
+    "food",
+    "visit_planning"
+  ],
+  "confidence_vocabulary": [
+    "OWNER_CONFIRMED",
+    "SYSTEM_CONFIRMED",
+    "HIGH",
+    "MEDIUM",
+    "LOW",
+    "UNCLASSIFIED"
+  ],
+  "node_status_vocabulary": [
+    "draft",
+    "active",
+    "deprecated",
+    "replaced",
+    "withdrawn"
+  ],
+  "governance": {
+    "curator": "nex_curator_team",
+    "current_curator_actor": "philip",
+    "add_workflow": "propose → review → status:draft → activated",
+    "deprecate_workflow": "status:deprecated + replacement_id set (never delete)",
+    "rename_workflow": "deprecate + create new (never mutate slug of active node)"
+  },
+  "supersedes": null,
+  "changelog": [
+    {
+      "version": 1,
+      "date": "2026-09-05",
+      "actor": "philip",
+      "notes": "Initial T0 canonical specification. 45 industries (38 preserved from parent doctrine + 3 doctrine additions + 4 proposed T0 additions flagged for review). Full product/service depth for 10 required demo verticals. 30+ business roles. 10 markets with JP first_class. Aliases populated for high-priority nodes in en/id/ja."
+    }
+  ],
+  "downstream_slices": [
+    { "slice": "T1", "purpose": "Taxonomy storage (DB schema + import)", "status": "NOT_AUTHORIZED" },
+    { "slice": "T2", "purpose": "Business classification", "status": "NOT_AUTHORIZED" },
+    { "slice": "T3", "purpose": "Product classification", "status": "NOT_AUTHORIZED" },
+    { "slice": "T4", "purpose": "Service classification", "status": "NOT_AUTHORIZED" },
+    { "slice": "T5", "purpose": "Search resolution", "status": "NOT_AUTHORIZED" },
+    { "slice": "T6", "purpose": "Brain routing", "status": "NOT_AUTHORIZED" },
+    { "slice": "T7", "purpose": "Marketing integration", "status": "NOT_AUTHORIZED" },
+    { "slice": "T8", "purpose": "Logistics integration", "status": "NOT_AUTHORIZED" },
+    { "slice": "T9", "purpose": "Multilingual expansion (JP full labels)", "status": "NOT_AUTHORIZED" },
+    { "slice": "T10", "purpose": "Governance tooling", "status": "NOT_AUTHORIZED" }
+  ]
+}

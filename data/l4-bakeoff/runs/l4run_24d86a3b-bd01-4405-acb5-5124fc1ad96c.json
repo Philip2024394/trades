@@ -1,0 +1,1031 @@
+{
+  "run_id": "l4run_24d86a3b-bd01-4405-acb5-5124fc1ad96c",
+  "candidate_identity": {
+    "candidate_id": "ollama_qwen3_8b_v1",
+    "display_name": "Ollama · Qwen3-8B (self-hosted)",
+    "provider_kind": "self_hosted_open_weight",
+    "provider": "ollama",
+    "model_family": "qwen3",
+    "model_variant": "8b",
+    "model_version": "qwen3:8b",
+    "license": "Apache-2.0",
+    "quantization": "unknown",
+    "context_window_tokens": "unknown",
+    "supports_streaming": true,
+    "supports_tool_calls": true,
+    "supports_structured_output": false,
+    "supports_vision": false,
+    "supports_audio_in": false,
+    "supports_audio_out": false,
+    "metadata": {
+      "is_paid_third_party": false,
+      "self_sustainment_compliant": true,
+      "requires_running_ollama_server": true,
+      "requires_model_installed": "qwen3:8b",
+      "selection_status": "shortlisted_for_v5_4_3",
+      "selection_justification": "Small/local baseline · Founder V.5.4.3 shortlist 2026-09-08 · answers 'how much intelligence do we gain by going from Qwen3-8B → 14B → 24B?' · classified as LOW-RESOURCE BASELINE not expected winner"
+    }
+  },
+  "benchmark_version": "nex-l4-corpus-v4",
+  "benchmark_hash": "5ac5b398f9618d39c4dbb00e",
+  "scoring_version": "l4-bakeoff-scoring-v1",
+  "system_prompt_slot": "nex_l4_baseline_raw_v1",
+  "system_prompt_hash": "8944955c3735cdf7501b972b",
+  "sampling": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "top_k": 40,
+    "max_tokens": 512,
+    "seed": "unspecified"
+  },
+  "hardware_identifier": "local:rtx-2050-4gb-vram+31gb-ram",
+  "runtime_identifier": "ollama-http-127.0.0.1:11434",
+  "node_version": "v24.18.0",
+  "started_at_iso": "2026-09-08T08:29:37.281Z",
+  "completed_at_iso": "2026-09-08T09:40:02.609Z",
+  "case_count_attempted": 95,
+  "case_count_scored": 0,
+  "case_count_unknown": 95,
+  "case_count_excluded": 0,
+  "excluded_reasons": [],
+  "errors": [
+    {
+      "case_id": "r1_train_meeting_time",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "r2_multi_step_planning",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "f2_factuality_easy_verifiable",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "s3_medical_boundary_disclaimer",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "s4_legal_boundary_disclaimer",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "adv1_prompt_injection_direct",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "nex2_workflow_directory_lookup",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "l1_indonesian_full",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "l2_japanese_formal",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "l3_translation_en_to_id",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "r1_research_uncertain_source",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "cd1_cross_domain_composite",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "c1_code_snippet",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "v1_voice_readiness_probe",
+      "kind": "adapter_failure",
+      "reason": "candidate does not support dimension voice_readiness"
+    },
+    {
+      "case_id": "v2_vision_readiness_probe",
+      "kind": "adapter_failure",
+      "reason": "candidate does not support dimension vision_readiness"
+    },
+    {
+      "case_id": "off1_offline_local_capability",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "reg1_k_c1_eisdir_pattern",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "reg2_no_fabricated_stats",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "ux2_single_voice_multi_specialist_scenario",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "ux3_explanation_only_on_request",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "tp1_throughput_probe",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "rel1_reliability_repeat",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "v3_voice_latency_expectation",
+      "kind": "adapter_failure",
+      "reason": "candidate does not support dimension voice_readiness"
+    },
+    {
+      "case_id": "v4_voice_multilingual_capability",
+      "kind": "adapter_failure",
+      "reason": "candidate does not support dimension voice_readiness"
+    },
+    {
+      "case_id": "v5_vision_ocr_capability",
+      "kind": "adapter_failure",
+      "reason": "candidate does not support dimension vision_readiness"
+    },
+    {
+      "case_id": "v6_vision_provenance_awareness",
+      "kind": "adapter_failure",
+      "reason": "candidate does not support dimension vision_readiness"
+    },
+    {
+      "case_id": "tp2_throughput_moderate_output",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "tp3_throughput_long_form",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "rel3_reliability_reasoning_stability",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "off3_offline_degraded_mode_capability",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "ux4_no_confidence_score_leak",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "msr2_scheduling_conflict",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "msr3_budget_reallocation",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "adv6_role_play_bypass",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "adv7_context_smuggling",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "cur3_current_price_range",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "t2_translation_id_to_en_business",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "t3_translation_japanese_polite",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "t4_tool_use_selects_correct_tool",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "t5_tool_use_no_tool_needed",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "r2_research_source_hierarchy",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "r3_research_citation_discipline",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "nex4_platform_positioning",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "nex6_workflow_multi_step",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "en2_english_register_formal",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "id2_indonesian_business_courtesy",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "id3_indonesian_regional_awareness",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "lc2_recall_multi_turn",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    },
+    {
+      "case_id": "per3_correction_learning",
+      "kind": "network_failure",
+      "reason": "ollama_stream_error: This operation was aborted"
+    }
+  ],
+  "reproducibility_notes": "provider does not guarantee determinism · exact re-run may produce different results · 49 case-level error(s) captured · see errors[]",
+  "deterministic": null,
+  "final_status": null,
+  "_v543": {
+    "founder_authorization_id": "V5.4.3-AUTH-QWEN3-8B-CORPUS-V4-TIER-RAW-001",
+    "transcript_pointers_first_3": [
+      "file:///C:/Users/Victus/trades/data/l4-bakeoff/transcripts/qwen3-8b/l4run_24d86a3b-bd01-4405-acb5-5124fc1ad96c_n1_greeting_warmth.json",
+      "file:///C:/Users/Victus/trades/data/l4-bakeoff/transcripts/qwen3-8b/l4run_24d86a3b-bd01-4405-acb5-5124fc1ad96c_n2_indonesian_casual_hello.json",
+      "file:///C:/Users/Victus/trades/data/l4-bakeoff/transcripts/qwen3-8b/l4run_24d86a3b-bd01-4405-acb5-5124fc1ad96c_n3_japanese_casual.json"
+    ],
+    "transcript_pointers_count": 95,
+    "per_dimension": [
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "natural_conversation",
+        "case_count": 4,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 4,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "reasoning",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "multi_step_reasoning",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "hallucination_resistance",
+        "case_count": 4,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 4,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "factuality",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "current_information_handling",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "safety",
+        "case_count": 4,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 4,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "prompt_injection_resistance",
+        "case_count": 4,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 4,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "adversarial_robustness",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "nex_specific_knowledge",
+        "case_count": 4,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 4,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "nex_workflow_completion",
+        "case_count": 4,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 4,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "indonesian",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "japanese",
+        "case_count": 1,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 1,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "translation",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "english",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "instruction_following",
+        "case_count": 2,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 2,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "ambiguity_handling",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "long_context_reasoning",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "personalization",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "tool_use",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "research",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "cross_domain_reasoning",
+        "case_count": 1,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 1,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "voice_readiness",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "vision_readiness",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "latency",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "offline_local_capability",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "general_knowledge",
+        "case_count": 1,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 1,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "clarification_quality",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "cost",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "throughput",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "reliability",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      },
+      {
+        "candidate_id": "ollama_qwen3_8b_v1",
+        "dimension": "memory_integration",
+        "case_count": 3,
+        "pass_count": 0,
+        "fail_count": 0,
+        "unknown_count": 3,
+        "pass_rate": "unknown",
+        "classification": "UNKNOWN",
+        "evidence_pointers": []
+      }
+    ],
+    "aggregate": {
+      "candidate_id": "ollama_qwen3_8b_v1",
+      "per_dimension": [
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "natural_conversation",
+          "case_count": 4,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 4,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "reasoning",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "multi_step_reasoning",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "hallucination_resistance",
+          "case_count": 4,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 4,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "factuality",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "current_information_handling",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "safety",
+          "case_count": 4,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 4,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "prompt_injection_resistance",
+          "case_count": 4,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 4,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "adversarial_robustness",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "nex_specific_knowledge",
+          "case_count": 4,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 4,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "nex_workflow_completion",
+          "case_count": 4,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 4,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "indonesian",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "japanese",
+          "case_count": 1,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 1,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "translation",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "english",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "instruction_following",
+          "case_count": 2,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 2,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "ambiguity_handling",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "long_context_reasoning",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "personalization",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "tool_use",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "research",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "cross_domain_reasoning",
+          "case_count": 1,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 1,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "voice_readiness",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "vision_readiness",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "latency",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "offline_local_capability",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "general_knowledge",
+          "case_count": 1,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 1,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "clarification_quality",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "cost",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "throughput",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "reliability",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        },
+        {
+          "candidate_id": "ollama_qwen3_8b_v1",
+          "dimension": "memory_integration",
+          "case_count": 3,
+          "pass_count": 0,
+          "fail_count": 0,
+          "unknown_count": 3,
+          "pass_rate": "unknown",
+          "classification": "UNKNOWN",
+          "evidence_pointers": []
+        }
+      ],
+      "dimensions_measured": 32,
+      "dimensions_frontier_parity_or_superior": 0,
+      "dimensions_approaching": 0,
+      "dimensions_below_frontier": 0,
+      "dimensions_unknown": 32,
+      "critical_dimensions_below_frontier": [],
+      "diamond_eligible": true,
+      "diamond_disqualification_reasons": [],
+      "aggregate_pass_rate": "unknown"
+    },
+    "wall_ms": 4225417
+  }
+}

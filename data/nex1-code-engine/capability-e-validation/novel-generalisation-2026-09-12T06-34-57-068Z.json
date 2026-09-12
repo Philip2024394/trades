@@ -1,0 +1,58 @@
+{
+  "at": "2026-09-12T06:32:09.064Z",
+  "challenge": "capability-e · novel generalisation · zero teacher edits during execution",
+  "attribution": {
+    "teaching_infrastructure_used": "capability-c-type-aware-repair.ts + capability-d-introspection.ts (multi-source · taught_by=master_ai_engineer · authored earlier)",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner",
+    "teacher_edits_during_this_run": "none"
+  },
+  "stimuli_applied": [
+    {
+      "interface": "Reservation",
+      "field_name": "guests",
+      "field_type": "number",
+      "expect_kind": "primitive_or_array",
+      "ok": true,
+      "delta_bytes": 47
+    },
+    {
+      "interface": "Vehicle",
+      "field_name": "model",
+      "field_type": "string",
+      "expect_kind": "primitive_or_array",
+      "ok": true,
+      "delta_bytes": 28
+    },
+    {
+      "interface": "Payment",
+      "field_name": "refunded",
+      "field_type": "boolean",
+      "expect_kind": "primitive_or_array",
+      "ok": true,
+      "delta_bytes": 32
+    },
+    {
+      "interface": "LocationRecord",
+      "field_name": "tags",
+      "field_type": "readonly string[]",
+      "expect_kind": "primitive_or_array",
+      "ok": true,
+      "delta_bytes": 38
+    },
+    {
+      "interface": "WildcardRow",
+      "field_name": "meta",
+      "field_type": "ReservationMeta",
+      "expect_kind": "escalate",
+      "ok": true,
+      "delta_bytes": 36
+    }
+  ],
+  "repair_attempts": [],
+  "final_tsc_scoped_errors": {
+    "count": 0,
+    "per_file": {}
+  },
+  "fixtures_byte_identical": true
+}

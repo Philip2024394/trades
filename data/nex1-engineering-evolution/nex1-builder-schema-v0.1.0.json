@@ -1,0 +1,62 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX1 Builder / Runtime · founder-authorised 2026-09-12 as part of Full Remaining System Build Mandate. Consumes authorised Work Orders. Produces candidate diffs. NEVER executes without founder authorisation.",
+  "record_type": "NEX1_BUILDER_PLAN",
+  "constitutional_purpose_locked": "NEX1 Builder is a CONTROLLED EXECUTION SYSTEM, not an unrestricted coding agent. It consumes Work Orders, understands project context, plans implementation, produces candidate diffs, and refuses to execute anything outside authorised scope.",
+  "work_order_required_fields": [
+    { "name": "work_order_id",            "shape": "monotonic e.g. WO-0007" },
+    { "name": "founder_authorisation",    "shape": "explicit founder-authored token · non-empty · not runtime-generated" },
+    { "name": "user_objective",           "shape": "string · not reinterpreted by Builder" },
+    { "name": "acceptance_criteria",      "shape": "array of structured criteria · each testable" },
+    { "name": "build_boundaries",         "shape": "explicit list of paths / subsystems Builder is authorised to modify" },
+    { "name": "build_exclusions",         "shape": "explicit list of paths / subsystems Builder MUST NOT modify" },
+    { "name": "scope_notes",              "shape": "string · what Builder is authorised to do" },
+    { "name": "rollback_reference",       "shape": "how to reverse if Founder rejects candidate" },
+    { "name": "authorised_specialists",   "shape": "list of specialist_ids that may be consulted for this Work Order" },
+    { "name": "expiry",                   "shape": "ISO-8601 · Work Order is refused after expiry" }
+  ],
+  "mandatory_work_order_controls": [
+    "founder_authorisation MUST be present · non-empty · reference an ADR or explicit founder message",
+    "build_boundaries MUST NOT include: /docs/DECISIONS · /docs/product-constitution · Engineering Brain paths · Evidence Validation paths · Standards Feed paths",
+    "build_exclusions MUST include (at minimum): production database migrations · Supabase canonical schemas · CI/CD secrets · founder-authored ADRs",
+    "rollback_reference MUST be present · candidate application MUST be reversible",
+    "expiry MUST be present · stale Work Orders are refused"
+  ],
+  "outcomes_permitted": {
+    "PLAN_PRODUCED":            "Work Order valid · candidate implementation plan produced · candidate diff attached · NEVER applied automatically",
+    "PLAN_REJECTED":            "Work Order valid but Builder cannot produce a defensible plan · reason cited",
+    "OUT_OF_SCOPE":             "Work Order asks Builder to modify a path in build_exclusions or outside build_boundaries · fail-closed",
+    "MISSING_AUTHORISATION":    "Work Order lacks founder_authorisation · Work Order refused",
+    "MISSING_ROLLBACK":         "Work Order lacks rollback_reference · Work Order refused",
+    "EXPIRED":                  "Work Order past expiry · refused",
+    "INSUFFICIENT_CONTEXT":     "project context unavailable · Builder did not proceed"
+  },
+  "prohibited_actions_locked": [
+    "MUST NEVER apply a candidate diff without a fresh founder authorisation token",
+    "MUST NEVER modify files outside build_boundaries",
+    "MUST NEVER modify files in build_exclusions",
+    "MUST NEVER execute arbitrary user text as code",
+    "MUST NEVER invoke external LLM · network · cloud inference",
+    "MUST NEVER bypass NEX2 review · NEX3 arbitration · Evidence Validation",
+    "MUST NEVER promote itself · modify the Specialist Registry",
+    "MUST NEVER claim a Work Order succeeded without Evidence Validation VALIDATED records",
+    "MUST NEVER touch the 913 UNKNOWN/PROTECTED Supabase images",
+    "MUST NEVER touch the pre-existing 29-file Engineering-Brain baseline (4546a6406300c0df)"
+  ],
+  "invariants": [
+    "Builder is plan-and-propose only in v0.1.0 · actual diff application is a separate founder-authorised action",
+    "every plan carries provenance to the Work Order · every candidate diff carries a rollback reference",
+    "authorisation=false and execution=false on every record emitted (records themselves are plan artefacts · not execution tokens)",
+    "external_llm_used=false · deterministic=true",
+    "routes through Evidence Validation"
+  ],
+  "v0_1_0_status": {
+    "work_order_ingestion_and_validation": "IMPLEMENTED",
+    "build_boundaries_enforcement": "IMPLEMENTED",
+    "candidate_plan_producer": "IMPLEMENTED (skeleton · deterministic)",
+    "actual_diff_application": "NOT_IMPLEMENTED · deferred · requires founder-authorised follow-up phase and real file-system write permission",
+    "workstation_ui": "NOT_IMPLEMENTED · deferred",
+    "live_preview": "NOT_IMPLEMENTED · deferred",
+    "application_generation_frontend": "NOT_IMPLEMENTED · deferred"
+  }
+}

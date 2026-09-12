@@ -1,0 +1,32 @@
+{
+  "version": "v0.1.0",
+  "notes": "Provenance unification model · founder-authorised design 2026-09-12. Every measurable claim any future NEX component makes MUST be walkable backwards to source. No orphan measurements. No anonymous numbers.",
+  "record_type": "PROVENANCE_CHAIN",
+  "founder_rule": "NEX2 claim → Evidence ID → measurement → source_hash → tool + version → methodology → reproducibility → actual source. Any missing link = chain broken = claim unsupported.",
+  "chain_step_kinds": [
+    { "id": "claim",             "definition": "the top-level assertion (e.g. NEX2 claim · NEX3 verdict criterion · Standards Feed rule reference)" },
+    { "id": "evidence_pointer",  "definition": "the EvidenceRecord id or CodeHealth metric_id that the claim cites" },
+    { "id": "measurement",       "definition": "the actual measurement · dimension · value · state" },
+    { "id": "source",            "definition": "the file/symbol the measurement observed" },
+    { "id": "source_hash",       "definition": "the sha256_prefix of the observed source" },
+    { "id": "tool",              "definition": "the tool that produced the measurement · with version" },
+    { "id": "methodology",       "definition": "how the tool was invoked · deterministic method description" },
+    { "id": "reproducibility",   "definition": "exact command · cwd · env_fingerprint · seed" }
+  ],
+  "chain_integrity_rules": [
+    "every step MUST reference the next by ID · never a free-form pointer",
+    "a step with no successor is a chain break · reported explicitly",
+    "chain_integrity_hash = sha256_prefix over the ordered step ids",
+    "any modification to any step breaks the integrity hash",
+    "claim without evidence_pointer = orphan claim · REJECTED",
+    "measurement without tool + tool_version = orphan measurement · REJECTED",
+    "measurement without reproducibility_information = orphan measurement · REJECTED"
+  ],
+  "resolver_contract": {
+    "input": "one of · evidence_id · metric_id · measurement_id · bundle_id · architecture_id · profile_id",
+    "output": "ProvenanceChain object with resolved steps + fully_resolvable flag + broken_links[]",
+    "read_only": true,
+    "external_llm_used": false,
+    "network_dependency": false
+  }
+}

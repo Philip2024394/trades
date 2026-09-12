@@ -1,0 +1,54 @@
+{
+  "endpoints": {
+    "https://overpass.kumi.systems/api/interpreter": {
+      "consecutive_failures": 2,
+      "breaker_open_until": null,
+      "last_success_at": "2026-09-12T08:55:37.730Z",
+      "last_failure_at": "2026-09-12T15:28:51.293Z",
+      "last_error": "timeout",
+      "requests_attempted": 59,
+      "requests_succeeded": 3,
+      "bytes_in_total": 64315
+    },
+    "https://overpass-api.de/api/interpreter": {
+      "consecutive_failures": 2,
+      "breaker_open_until": null,
+      "last_success_at": "2026-09-12T10:45:13.305Z",
+      "last_failure_at": "2026-09-12T15:28:36.287Z",
+      "last_error": "http_504",
+      "requests_attempted": 112,
+      "requests_succeeded": 36,
+      "bytes_in_total": 9486742
+    },
+    "https://overpass.private.coffee/api/interpreter": {
+      "consecutive_failures": 2,
+      "breaker_open_until": null,
+      "last_success_at": "2026-09-12T12:47:56.638Z",
+      "last_failure_at": "2026-09-12T15:29:06.300Z",
+      "last_error": "timeout",
+      "requests_attempted": 84,
+      "requests_succeeded": 16,
+      "bytes_in_total": 9849131
+    },
+    "https://overpass.osm.ch/api/interpreter": {
+      "consecutive_failures": 0,
+      "breaker_open_until": null,
+      "last_success_at": "2026-09-12T16:36:51.096Z",
+      "last_failure_at": "2026-09-12T15:38:42.881Z",
+      "last_error": null,
+      "requests_attempted": 27929,
+      "requests_succeeded": 27552,
+      "bytes_in_total": 7448676
+    },
+    "https://maps.mail.ru/osm/tools/overpass/api/interpreter": {
+      "consecutive_failures": 1,
+      "breaker_open_until": null,
+      "last_success_at": "2026-09-12T15:40:25.929Z",
+      "last_failure_at": "2026-09-12T15:40:45.370Z",
+      "last_error": "timeout",
+      "requests_attempted": 3001,
+      "requests_succeeded": 2646,
+      "bytes_in_total": 1142030361
+    }
+  }
+}

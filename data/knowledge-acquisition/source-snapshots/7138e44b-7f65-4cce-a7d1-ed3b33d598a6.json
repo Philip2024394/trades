@@ -1,0 +1,22 @@
+{
+  "snapshot_id": "7138e44b-7f65-4cce-a7d1-ed3b33d598a6",
+  "source_id": "fixture.wco.hs",
+  "retrieved_at": "2026-09-05T13:05:06.233Z",
+  "content_hash": "8dca23c4e241a0948b5095df4044dbc76bb67cc291b32fa92e883cefe35c3e1e",
+  "bytes": 233,
+  "content": null,
+  "structured": [
+    {
+      "subject": "HS 0304",
+      "predicate": "fish fillets and other fish meat, fresh, chilled or frozen",
+      "contradictions": [
+        "canned",
+        "prepared or preserved"
+      ]
+    },
+    {
+      "subject": "HS 1604",
+      "predicate": "prepared or preserved fish including canned tuna"
+    }
+  ]
+}

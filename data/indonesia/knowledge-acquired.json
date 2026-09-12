@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-30T10:17:45.560Z",
+  "generatedAt": "2026-09-05T12:21:54.267Z",
   "walkers": [
     {
       "id": "curated:seed",
-      "published": 34
+      "published": 17
     },
     {
       "id": "walker.adat.communities",
@@ -14,130 +14,19 @@
       "published": 12
     },
     {
+      "id": "walker.food.dishes",
+      "published": 9
+    },
+    {
       "id": "walker.spiritual.sacred_sites",
       "published": 6
+    },
+    {
+      "id": "walker.travel.airports",
+      "published": 8
     }
   ],
   "records": [
-    {
-      "id": "walker-curated-seed-0330e4bd01",
-      "topic": "airport.manado_mdc",
-      "region": "North Sulawesi",
-      "language": "en",
-      "stability": "stable",
-      "confidence": 0.85,
-      "source": "seed.curated:airports",
-      "last_verified": "2026-08-30",
-      "content": "Sam Ratulangi International Airport (MDC · Manado) serves the North Sulawesi tip. Main gateway for Bunaken and Lembeh dive trips. ~13 km from Manado city, ~150k IDR by taxi. Direct flights from Jakarta, Denpasar, and Singapore.",
-      "keywords": [
-        "mdc",
-        "sam ratulangi",
-        "manado airport",
-        "bunaken",
-        "lembeh",
-        "airport",
-        "airports"
-      ],
-      "category": "practical",
-      "audience": [
-        "tourist",
-        "backpacker"
-      ],
-      "questions": [
-        "How do I handle Manado Mdc in Indonesia?",
-        "What should I know about Manado Mdc?",
-        "Tell me about Manado Mdc",
-        "Is Manado Mdc needed in Indonesia?"
-      ],
-      "aliases": [
-        "Manado Mdc",
-        "Manado Mdc in North Sulawesi",
-        "Manado Mdc Indonesia"
-      ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
-      "walker_id": "curated:seed"
-    },
-    {
-      "id": "walker-curated-seed-037ae6f77c",
-      "topic": "food.babi_guling",
-      "region": "Bali",
-      "language": "en",
-      "stability": "stable",
-      "confidence": 0.95,
-      "source": "seed.curated:dishes-extra",
-      "last_verified": "2026-08-30",
-      "content": "Babi guling is Balinese spit-roasted suckling pig, seasoned with a paste of turmeric, coriander, chilli, lemongrass, galangal, and shrimp paste. Served with rice, lawar (spiced vegetable-and-coconut mix), and crackling. Most famous at Ibu Oka in Ubud, Warung Babi Guling Pak Malen in Seminyak, and countless village stalls. Not halal — served openly in Bali because of the Hindu population.",
-      "keywords": [
-        "babi guling",
-        "suckling pig",
-        "balinese",
-        "ibu oka",
-        "pak malen",
-        "lawar"
-      ],
-      "category": "food",
-      "audience": [
-        "tourist",
-        "family",
-        "backpacker",
-        "luxury"
-      ],
-      "questions": [
-        "What is Babi Guling?",
-        "Tell me about Babi Guling",
-        "Where can I try Babi Guling?",
-        "Is Babi Guling spicy?",
-        "What's in Babi Guling?"
-      ],
-      "aliases": [
-        "Babi Guling",
-        "Babi Guling in Bali",
-        "Babi Guling Indonesia"
-      ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
-      "walker_id": "curated:seed"
-    },
-    {
-      "id": "walker-curated-seed-11f23e7f7f",
-      "topic": "food.bakmi",
-      "region": "Indonesia",
-      "language": "en",
-      "stability": "stable",
-      "confidence": 0.9,
-      "source": "seed.curated:dishes-extra",
-      "last_verified": "2026-08-30",
-      "content": "Bakmi is Indonesian-Chinese egg noodles served either dry (bakmi ayam — with braised chicken, greens, and fried shallots) or in soup (bakmi kuah). Popular chains: Bakmi GM, Bakmi Naga, Bakmi Aloi. Almost always served with a side bowl of clear broth and sambal. A good option when you want something less spicy than most Indonesian food.",
-      "keywords": [
-        "bakmi",
-        "chinese indonesian",
-        "egg noodles",
-        "bakmi ayam",
-        "bakmi gm",
-        "bakmi naga"
-      ],
-      "category": "food",
-      "audience": [
-        "tourist",
-        "backpacker",
-        "family"
-      ],
-      "questions": [
-        "What is Bakmi?",
-        "Tell me about Bakmi",
-        "Where can I try Bakmi?",
-        "Is Bakmi spicy?",
-        "What's in Bakmi?"
-      ],
-      "aliases": [
-        "Bakmi",
-        "Bakmi in Indonesia"
-      ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
-      "walker_id": "curated:seed"
-    },
     {
       "id": "walker-curated-seed-20c60c0dfb",
       "topic": "culture.tana_toraja",
@@ -173,47 +62,8 @@
         "Tana Toraja in South Sulawesi",
         "Tana Toraja Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
-      "walker_id": "curated:seed"
-    },
-    {
-      "id": "walker-curated-seed-28edec8eb4",
-      "topic": "food.martabak",
-      "region": "Indonesia",
-      "language": "en",
-      "stability": "stable",
-      "confidence": 0.95,
-      "source": "seed.curated:dishes-extra",
-      "last_verified": "2026-08-30",
-      "content": "Martabak comes in two very different forms. Martabak manis (sweet martabak, also called terang bulan) is a thick pancake stuffed with chocolate, cheese, condensed milk, peanuts, or Nutella — the classic Indonesian night snack. Martabak telur (savoury) is a thin dough wrap filled with minced meat, egg, and spring onion, pan-fried and served with pickles and curry sauce. Sold at street carts in every city, especially busy after 7 PM.",
-      "keywords": [
-        "martabak",
-        "martabak manis",
-        "martabak telur",
-        "terang bulan",
-        "street food",
-        "pancake"
-      ],
-      "category": "food",
-      "audience": [
-        "tourist",
-        "backpacker",
-        "family"
-      ],
-      "questions": [
-        "What is Martabak?",
-        "Tell me about Martabak",
-        "Where can I try Martabak?",
-        "Is Martabak spicy?",
-        "What's in Martabak?"
-      ],
-      "aliases": [
-        "Martabak",
-        "Martabak in Indonesia"
-      ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "curated:seed"
     },
     {
@@ -252,8 +102,8 @@
         "Ubud Monkey Forest in Bali",
         "Ubud Monkey Forest Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "curated:seed"
     },
     {
@@ -293,8 +143,8 @@
         "Yogyakarta Panti Rapih in Yogyakarta",
         "Yogyakarta Panti Rapih Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "curated:seed"
     },
     {
@@ -335,87 +185,8 @@
         "Uluwatu Temple in Bali",
         "Uluwatu Temple Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
-      "walker_id": "curated:seed"
-    },
-    {
-      "id": "walker-curated-seed-437a603ae6",
-      "topic": "food.es_teler",
-      "region": "Indonesia",
-      "language": "en",
-      "stability": "stable",
-      "confidence": 0.95,
-      "source": "seed.curated:dishes-extra",
-      "last_verified": "2026-08-30",
-      "content": "Es teler is a classic Indonesian dessert drink — shredded ice, jackfruit, young coconut, avocado, condensed milk, and pandan syrup. Cooling, filling, and cheap (15–25k IDR at a warung). Sister dessert es campur (mixed ice) adds cendol (green rice-flour jelly) and grass jelly. Great after a spicy meal on a hot afternoon.",
-      "keywords": [
-        "es teler",
-        "es campur",
-        "cendol",
-        "shaved ice",
-        "dessert",
-        "avocado",
-        "jackfruit"
-      ],
-      "category": "food",
-      "audience": [
-        "tourist",
-        "backpacker",
-        "family"
-      ],
-      "questions": [
-        "What is es Teler?",
-        "Tell me about es Teler",
-        "Where can I try es Teler?",
-        "Is es Teler spicy?",
-        "What's in es Teler?"
-      ],
-      "aliases": [
-        "es Teler",
-        "es Teler in Indonesia"
-      ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
-      "walker_id": "curated:seed"
-    },
-    {
-      "id": "walker-curated-seed-44a687843e",
-      "topic": "airport.lombok_lop",
-      "region": "Lombok",
-      "language": "en",
-      "stability": "stable",
-      "confidence": 0.85,
-      "source": "seed.curated:airports",
-      "last_verified": "2026-08-30",
-      "content": "Lombok International Airport (LOP · Zainuddin Abdul Madjid Airport), in Praya in south Lombok. Roughly 40 minutes drive to Kuta Lombok, 60–90 minutes to Senggigi, 90 minutes to Bangsal ferry for the Gili Islands. Damri bus + Gojek/Grab both available. Fewer international flights than DPS — many travellers fly LOP via Jakarta or Denpasar.",
-      "keywords": [
-        "lop",
-        "lombok airport",
-        "praya",
-        "zainuddin abdul madjid",
-        "kuta lombok",
-        "airport",
-        "airports"
-      ],
-      "category": "practical",
-      "audience": [
-        "tourist",
-        "backpacker"
-      ],
-      "questions": [
-        "How do I handle Lombok Lop in Indonesia?",
-        "What should I know about Lombok Lop?",
-        "Tell me about Lombok Lop",
-        "Is Lombok Lop needed in Indonesia?"
-      ],
-      "aliases": [
-        "Lombok Lop",
-        "Lombok Lop in Lombok",
-        "Lombok Lop Indonesia"
-      ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "curated:seed"
     },
     {
@@ -455,8 +226,8 @@
         "Nusa Lembongan in Bali",
         "Nusa Lembongan Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "curated:seed"
     },
     {
@@ -498,47 +269,8 @@
         "Lake Toba in North Sumatra",
         "Lake Toba Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
-      "walker_id": "curated:seed"
-    },
-    {
-      "id": "walker-curated-seed-497bc639fa",
-      "topic": "food.ayam_bakar",
-      "region": "Indonesia",
-      "language": "en",
-      "stability": "stable",
-      "confidence": 0.95,
-      "source": "seed.curated:dishes-extra",
-      "last_verified": "2026-08-30",
-      "content": "Ayam bakar is Indonesian grilled chicken — marinated in kecap manis, garlic, tamarind, and turmeric, then finished over charcoal. Sold with rice, sambal, lalapan (raw leaves), and a small dish of soup broth. Regional variants: ayam bakar Taliwang (Lombok, super-spicy chilli glaze), ayam bakar Wong Solo (Central Java, sweeter). 30–50k IDR at a warung.",
-      "keywords": [
-        "ayam bakar",
-        "grilled chicken",
-        "kecap manis",
-        "taliwang",
-        "wong solo",
-        "warung"
-      ],
-      "category": "food",
-      "audience": [
-        "tourist",
-        "backpacker",
-        "family"
-      ],
-      "questions": [
-        "What is Ayam Bakar?",
-        "Tell me about Ayam Bakar",
-        "Where can I try Ayam Bakar?",
-        "Is Ayam Bakar spicy?",
-        "What's in Ayam Bakar?"
-      ],
-      "aliases": [
-        "Ayam Bakar",
-        "Ayam Bakar in Indonesia"
-      ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "curated:seed"
     },
     {
@@ -580,46 +312,8 @@
         "Derawan Islands in East Kalimantan",
         "Derawan Islands Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
-      "walker_id": "curated:seed"
-    },
-    {
-      "id": "walker-curated-seed-5a34a3f135",
-      "topic": "airport.makassar_upg",
-      "region": "South Sulawesi",
-      "language": "en",
-      "stability": "stable",
-      "confidence": 0.85,
-      "source": "seed.curated:airports",
-      "last_verified": "2026-08-30",
-      "content": "Sultan Hasanuddin International Airport (UPG · Makassar) is Sulawesi's main hub. ~20 km from central Makassar; airport-city taxis are around 150k IDR by meter. UPG is the typical connection for onward flights to Toraja (via Palopo/PLW), Bau-Bau, and eastern Indonesia.",
-      "keywords": [
-        "upg",
-        "sultan hasanuddin",
-        "makassar airport",
-        "sulawesi",
-        "airport",
-        "airports"
-      ],
-      "category": "practical",
-      "audience": [
-        "tourist",
-        "backpacker"
-      ],
-      "questions": [
-        "How do I handle Makassar Upg in Indonesia?",
-        "What should I know about Makassar Upg?",
-        "Tell me about Makassar Upg",
-        "Is Makassar Upg needed in Indonesia?"
-      ],
-      "aliases": [
-        "Makassar Upg",
-        "Makassar Upg in South Sulawesi",
-        "Makassar Upg Indonesia"
-      ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "curated:seed"
     },
     {
@@ -659,8 +353,8 @@
         "Bunaken in North Sulawesi",
         "Bunaken Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "curated:seed"
     },
     {
@@ -705,48 +399,8 @@
         "Embassy",
         "Embassy in Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
-      "walker_id": "curated:seed"
-    },
-    {
-      "id": "walker-curated-seed-6c44a753e6",
-      "topic": "food.nasi_padang",
-      "region": "West Sumatra",
-      "language": "en",
-      "stability": "stable",
-      "confidence": 0.95,
-      "source": "seed.curated:dishes-extra",
-      "last_verified": "2026-08-30",
-      "content": "Nasi Padang is the classic Padang-style presentation from West Sumatra: rice served with 10–15 small dishes brought to your table — rendang, gulai ayam (chicken curry), sambal ijo (green chilli), telur balado (spicy egg), sayur nangka (jackfruit curry) — and you pay only for what you eat. Rumah Makan Padang (Padang restaurants) are everywhere in Indonesia. Very spicy by default; ask for 'tidak pedas' if you want mild.",
-      "keywords": [
-        "nasi padang",
-        "padang",
-        "rumah makan padang",
-        "rendang",
-        "gulai",
-        "west sumatra"
-      ],
-      "category": "food",
-      "audience": [
-        "tourist",
-        "backpacker",
-        "family"
-      ],
-      "questions": [
-        "What is Nasi Padang?",
-        "Tell me about Nasi Padang",
-        "Where can I try Nasi Padang?",
-        "Is Nasi Padang spicy?",
-        "What's in Nasi Padang?"
-      ],
-      "aliases": [
-        "Nasi Padang",
-        "Nasi Padang in West Sumatra",
-        "Nasi Padang Indonesia"
-      ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "curated:seed"
     },
     {
@@ -786,86 +440,8 @@
         "Bali Bimc Nusa Dua in Bali",
         "Bali Bimc Nusa Dua Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
-      "walker_id": "curated:seed"
-    },
-    {
-      "id": "walker-curated-seed-729d99bb53",
-      "topic": "food.mie_goreng",
-      "region": "Indonesia",
-      "language": "en",
-      "stability": "stable",
-      "confidence": 1,
-      "source": "seed.curated:dishes-extra",
-      "last_verified": "2026-08-30",
-      "content": "Mie goreng is Indonesian fried noodles — yellow egg noodles stir-fried with kecap manis (sweet soy), garlic, shallots, chilli, cabbage, and often chicken, prawn or egg. The instant version (Indomie Mi Goreng) is a cultural phenomenon in its own right and available worldwide. The warung version at 15–25k IDR is a filling, cheap comfort meal.",
-      "keywords": [
-        "mie goreng",
-        "fried noodles",
-        "indomie",
-        "kecap manis",
-        "warung",
-        "instant noodles"
-      ],
-      "category": "food",
-      "audience": [
-        "tourist",
-        "backpacker",
-        "family"
-      ],
-      "questions": [
-        "What is Mie Goreng?",
-        "Tell me about Mie Goreng",
-        "Where can I try Mie Goreng?",
-        "Is Mie Goreng spicy?",
-        "What's in Mie Goreng?"
-      ],
-      "aliases": [
-        "Mie Goreng",
-        "Mie Goreng in Indonesia"
-      ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
-      "walker_id": "curated:seed"
-    },
-    {
-      "id": "walker-curated-seed-90eede9e6a",
-      "topic": "food.nasi_campur",
-      "region": "Indonesia",
-      "language": "en",
-      "stability": "stable",
-      "confidence": 0.95,
-      "source": "seed.curated:dishes-extra",
-      "last_verified": "2026-08-30",
-      "content": "Nasi campur (literally 'mixed rice') is a plate of rice with a small selection of side dishes chosen by the customer — typical items include tempeh, tofu, egg, sambal, sayur (vegetables), chicken, and fish. Each region has its own style: Balinese nasi campur is often served with satay lilit and lawar, while Chinese-Indonesian nasi campur includes char siu and braised pork. A cheap, honest lunch (25–50k IDR).",
-      "keywords": [
-        "nasi campur",
-        "mixed rice",
-        "balinese",
-        "chinese indonesian",
-        "tempeh",
-        "warung"
-      ],
-      "category": "food",
-      "audience": [
-        "tourist",
-        "backpacker",
-        "family"
-      ],
-      "questions": [
-        "What is Nasi Campur?",
-        "Tell me about Nasi Campur",
-        "Where can I try Nasi Campur?",
-        "Is Nasi Campur spicy?",
-        "What's in Nasi Campur?"
-      ],
-      "aliases": [
-        "Nasi Campur",
-        "Nasi Campur in Indonesia"
-      ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "curated:seed"
     },
     {
@@ -904,8 +480,8 @@
         "Tanah Lot in Bali",
         "Tanah Lot Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "curated:seed"
     },
     {
@@ -945,47 +521,8 @@
         "Jakarta International Sos in Jakarta",
         "Jakarta International Sos Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
-      "walker_id": "curated:seed"
-    },
-    {
-      "id": "walker-curated-seed-9abf51af29",
-      "topic": "food.gado_gado",
-      "region": "Indonesia",
-      "language": "en",
-      "stability": "stable",
-      "confidence": 1,
-      "source": "seed.curated:dishes-extra",
-      "last_verified": "2026-08-30",
-      "content": "Gado-gado is Indonesia's warm salad — steamed vegetables (long beans, cabbage, bean sprouts, potato, boiled egg, tofu, tempeh) topped with a spiced peanut sauce and prawn crackers. Naturally vegetarian if you skip the shrimp paste (terasi) in the sauce — ask 'tanpa terasi' for a fully vegan version. Excellent light lunch, especially in Jakarta and West Java.",
-      "keywords": [
-        "gado-gado",
-        "peanut salad",
-        "vegetarian",
-        "vegan",
-        "tanpa terasi",
-        "peanut sauce"
-      ],
-      "category": "food",
-      "audience": [
-        "tourist",
-        "backpacker",
-        "family"
-      ],
-      "questions": [
-        "What is Gado Gado?",
-        "Tell me about Gado Gado",
-        "Where can I try Gado Gado?",
-        "Is Gado Gado spicy?",
-        "What's in Gado Gado?"
-      ],
-      "aliases": [
-        "Gado Gado",
-        "Gado Gado in Indonesia"
-      ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "curated:seed"
     },
     {
@@ -1026,49 +563,8 @@
         "Bali Bimc Kuta in Bali",
         "Bali Bimc Kuta Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
-      "walker_id": "curated:seed"
-    },
-    {
-      "id": "walker-curated-seed-9fa7da1403",
-      "topic": "airport.jakarta_cgk",
-      "region": "Jakarta",
-      "language": "en",
-      "stability": "stable",
-      "confidence": 0.9,
-      "source": "seed.curated:airports",
-      "last_verified": "2026-08-30",
-      "content": "Soekarno-Hatta International Airport (CGK) is Indonesia's main hub, west of Jakarta. Terminals 1, 2, 3, and 3-Ultimate handle domestic and international. The Airport Rail Link (Bandara Rail Link) runs to BNI City and Manggarai (~55 min · ~70k IDR one-way, faster than road at rush hour). Ride-hailing is only allowed from designated Grab/Gojek pickup zones on the P1/P2 arrival levels — avoid unofficial 'taxi' touts in the arrivals hall.",
-      "keywords": [
-        "cgk",
-        "soekarno-hatta",
-        "jakarta airport",
-        "bandara rail link",
-        "airport rail",
-        "terminal 3",
-        "airport",
-        "airports"
-      ],
-      "category": "practical",
-      "audience": [
-        "tourist",
-        "backpacker",
-        "family"
-      ],
-      "questions": [
-        "How do I handle Jakarta Cgk in Indonesia?",
-        "What should I know about Jakarta Cgk?",
-        "Tell me about Jakarta Cgk",
-        "Is Jakarta Cgk needed in Indonesia?"
-      ],
-      "aliases": [
-        "Jakarta Cgk",
-        "Jakarta Cgk in Jakarta",
-        "Jakarta Cgk Indonesia"
-      ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "curated:seed"
     },
     {
@@ -1109,87 +605,8 @@
         "Nusa Penida in Bali",
         "Nusa Penida Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
-      "walker_id": "curated:seed"
-    },
-    {
-      "id": "walker-curated-seed-b4c66eba2a",
-      "topic": "airport.bali_dps",
-      "region": "Bali",
-      "language": "en",
-      "stability": "stable",
-      "confidence": 0.9,
-      "source": "seed.curated:airports",
-      "last_verified": "2026-08-30",
-      "content": "Ngurah Rai International Airport (DPS · Denpasar), near Kuta on the south coast. One terminal handles both domestic and international sides. Grab/Gojek pickups are ~5 minutes outside the arrivals hall — walk out and cross the road to the designated zone. Airport taxis have fixed zone-based prices posted on the wall. From DPS: Kuta 10 min, Seminyak 20 min, Canggu 40 min, Ubud 90 min, Uluwatu 30 min (varies with Bali traffic).",
-      "keywords": [
-        "dps",
-        "ngurah rai",
-        "bali airport",
-        "denpasar airport",
-        "kuta",
-        "airport",
-        "airports"
-      ],
-      "category": "practical",
-      "audience": [
-        "tourist",
-        "backpacker",
-        "family",
-        "couple"
-      ],
-      "questions": [
-        "How do I handle Bali Dps in Indonesia?",
-        "What should I know about Bali Dps?",
-        "Tell me about Bali Dps",
-        "Is Bali Dps needed in Indonesia?"
-      ],
-      "aliases": [
-        "Bali Dps",
-        "Bali Dps in Bali",
-        "Bali Dps Indonesia"
-      ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
-      "walker_id": "curated:seed"
-    },
-    {
-      "id": "walker-curated-seed-e0d1950894",
-      "topic": "airport.labuan_bajo_lbj",
-      "region": "East Nusa Tenggara",
-      "language": "en",
-      "stability": "stable",
-      "confidence": 0.85,
-      "source": "seed.curated:airports",
-      "last_verified": "2026-08-30",
-      "content": "Komodo Airport (LBJ · Labuan Bajo) is the gateway to Komodo National Park. Small airport, no Grab/Gojek — arrange hotel transfer or take an ojek/local taxi (~30k IDR to town, 5 minutes). Direct flights from Denpasar, Jakarta, and Surabaya. Buy park tickets in Labuan Bajo town, not on arrival — some agents at the airport overcharge.",
-      "keywords": [
-        "lbj",
-        "komodo airport",
-        "labuan bajo",
-        "flores airport",
-        "airport",
-        "airports"
-      ],
-      "category": "practical",
-      "audience": [
-        "tourist",
-        "backpacker"
-      ],
-      "questions": [
-        "How do I handle Labuan Bajo Lbj in Indonesia?",
-        "What should I know about Labuan Bajo Lbj?",
-        "Tell me about Labuan Bajo Lbj",
-        "Is Labuan Bajo Lbj needed in Indonesia?"
-      ],
-      "aliases": [
-        "Labuan Bajo Lbj",
-        "Labuan Bajo Lbj in East Nusa Tenggara",
-        "Labuan Bajo Lbj Indonesia"
-      ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "curated:seed"
     },
     {
@@ -1228,87 +645,8 @@
         "Tegalalang Rice Terraces in Bali",
         "Tegalalang Rice Terraces Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
-      "walker_id": "curated:seed"
-    },
-    {
-      "id": "walker-curated-seed-e53dbf00f1",
-      "topic": "airport.yogyakarta_yia",
-      "region": "Yogyakarta",
-      "language": "en",
-      "stability": "stable",
-      "confidence": 0.85,
-      "source": "seed.curated:airports",
-      "last_verified": "2026-08-30",
-      "content": "Yogyakarta International Airport (YIA · Kulon Progo) opened in 2020 and replaced the old JOG (Adisutjipto) for most flights. Located ~45 km west of central Yogyakarta. The KA Bandara airport train (~40 minutes, ~20k IDR) runs from YIA to Tugu Station in the city — cheap and reliable. Damri buses also serve the airport.",
-      "keywords": [
-        "yia",
-        "kulon progo",
-        "yogyakarta airport",
-        "ka bandara",
-        "tugu station",
-        "airport",
-        "airports"
-      ],
-      "category": "practical",
-      "audience": [
-        "tourist",
-        "backpacker",
-        "family"
-      ],
-      "questions": [
-        "How do I handle Yogyakarta Yia in Indonesia?",
-        "What should I know about Yogyakarta Yia?",
-        "Tell me about Yogyakarta Yia",
-        "Is Yogyakarta Yia needed in Indonesia?"
-      ],
-      "aliases": [
-        "Yogyakarta Yia",
-        "Yogyakarta Yia in Yogyakarta",
-        "Yogyakarta Yia Indonesia"
-      ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
-      "walker_id": "curated:seed"
-    },
-    {
-      "id": "walker-curated-seed-e7337afdf3",
-      "topic": "airport.surabaya_sub",
-      "region": "East Java",
-      "language": "en",
-      "stability": "stable",
-      "confidence": 0.85,
-      "source": "seed.curated:airports",
-      "last_verified": "2026-08-30",
-      "content": "Juanda International Airport (SUB) serves Surabaya from the town of Sedati. Two terminals: T1 for domestic + some regional international, T2 for most international. Damri airport buses go to central Surabaya (~30k IDR). SUB is a common connection point for Bromo + Ijen tours — many operators pick up direct from the airport.",
-      "keywords": [
-        "sub",
-        "juanda",
-        "surabaya airport",
-        "sedati",
-        "damri",
-        "airport",
-        "airports"
-      ],
-      "category": "practical",
-      "audience": [
-        "tourist",
-        "backpacker"
-      ],
-      "questions": [
-        "How do I handle Surabaya Sub in Indonesia?",
-        "What should I know about Surabaya Sub?",
-        "Tell me about Surabaya Sub",
-        "Is Surabaya Sub needed in Indonesia?"
-      ],
-      "aliases": [
-        "Surabaya Sub",
-        "Surabaya Sub in East Java",
-        "Surabaya Sub Indonesia"
-      ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "curated:seed"
     },
     {
@@ -1346,8 +684,8 @@
         "Bali Tourist Hotline in Bali",
         "Bali Tourist Hotline Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "curated:seed"
     },
     {
@@ -1387,8 +725,8 @@
         "Bali Siloam Ubud in Bali",
         "Bali Siloam Ubud Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "curated:seed"
     },
     {
@@ -1427,8 +765,8 @@
         "Dayak Iban in West Kalimantan",
         "Dayak Iban Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "walker.adat.communities"
     },
     {
@@ -1467,8 +805,8 @@
         "Baduy in Banten",
         "Baduy Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "walker.adat.communities"
     },
     {
@@ -1505,8 +843,8 @@
         "Mentawai in West Sumatra",
         "Mentawai Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "walker.adat.communities"
     },
     {
@@ -1545,8 +883,8 @@
         "Sasak Sade in Lombok",
         "Sasak Sade Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "walker.adat.communities"
     },
     {
@@ -1584,8 +922,8 @@
         "Toraja in South Sulawesi",
         "Toraja Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "walker.adat.communities"
     },
     {
@@ -1622,8 +960,8 @@
         "Galungan in Bali",
         "Galungan Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2026-09-29",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-10-05",
       "walker_id": "walker.culture.festivals_ceremonies"
     },
     {
@@ -1659,8 +997,8 @@
         "Cap go Meh",
         "Cap go Meh in Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2026-09-29",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-10-05",
       "walker_id": "walker.culture.festivals_ceremonies"
     },
     {
@@ -1696,8 +1034,8 @@
         "Kuningan in Bali",
         "Kuningan Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2026-09-29",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-10-05",
       "walker_id": "walker.culture.festivals_ceremonies"
     },
     {
@@ -1733,8 +1071,8 @@
         "Idul Fitri",
         "Idul Fitri in Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2026-09-29",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-10-05",
       "walker_id": "walker.culture.festivals_ceremonies"
     },
     {
@@ -1772,8 +1110,8 @@
         "Ramadan",
         "Ramadan in Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2026-09-29",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-10-05",
       "walker_id": "walker.culture.festivals_ceremonies"
     },
     {
@@ -1810,8 +1148,8 @@
         "Melasti in Bali",
         "Melasti Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2026-09-29",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-10-05",
       "walker_id": "walker.culture.festivals_ceremonies"
     },
     {
@@ -1849,8 +1187,8 @@
         "Erau in East Kalimantan",
         "Erau Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2026-09-29",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-10-05",
       "walker_id": "walker.culture.festivals_ceremonies"
     },
     {
@@ -1889,8 +1227,8 @@
         "Nyepi in Bali",
         "Nyepi Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2026-09-29",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-10-05",
       "walker_id": "walker.culture.festivals_ceremonies"
     },
     {
@@ -1927,8 +1265,8 @@
         "Odalan in Bali",
         "Odalan Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2026-09-29",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-10-05",
       "walker_id": "walker.culture.festivals_ceremonies"
     },
     {
@@ -1965,8 +1303,8 @@
         "Bau Nyale in Lombok",
         "Bau Nyale Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2026-09-29",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-10-05",
       "walker_id": "walker.culture.festivals_ceremonies"
     },
     {
@@ -2004,8 +1342,8 @@
         "Waisak in Central Java",
         "Waisak Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2026-09-29",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-10-05",
       "walker_id": "walker.culture.festivals_ceremonies"
     },
     {
@@ -2040,9 +1378,364 @@
         "Idul Adha",
         "Idul Adha in Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2026-09-29",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-10-05",
       "walker_id": "walker.culture.festivals_ceremonies"
+    },
+    {
+      "id": "walker-walker-food-dishes-0f7cc32f94",
+      "topic": "food.mie_goreng",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 1,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Mie goreng is Indonesian fried noodles — yellow egg noodles stir-fried with kecap manis (sweet soy), garlic, shallots, chilli, cabbage, and often chicken, prawn or egg. The instant version (Indomie Mi Goreng) is a cultural phenomenon in its own right and available worldwide. The warung version at 15–25k IDR is a filling, cheap comfort meal.",
+      "keywords": [
+        "mie goreng",
+        "fried noodles",
+        "indomie",
+        "kecap manis",
+        "warung",
+        "instant noodles"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "What is Mie Goreng?",
+        "Tell me about Mie Goreng",
+        "Where can I try Mie Goreng?",
+        "Is Mie Goreng spicy?",
+        "What's in Mie Goreng?"
+      ],
+      "aliases": [
+        "Mie Goreng",
+        "Mie Goreng in Indonesia"
+      ],
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
+      "walker_id": "walker.food.dishes"
+    },
+    {
+      "id": "walker-walker-food-dishes-2153fa669c",
+      "topic": "food.nasi_campur",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.95,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Nasi campur (literally 'mixed rice') is a plate of rice with a small selection of side dishes chosen by the customer — typical items include tempeh, tofu, egg, sambal, sayur (vegetables), chicken, and fish. Each region has its own style: Balinese nasi campur is often served with satay lilit and lawar, while Chinese-Indonesian nasi campur includes char siu and braised pork. A cheap, honest lunch (25–50k IDR).",
+      "keywords": [
+        "nasi campur",
+        "mixed rice",
+        "balinese",
+        "chinese indonesian",
+        "tempeh",
+        "warung"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "What is Nasi Campur?",
+        "Tell me about Nasi Campur",
+        "Where can I try Nasi Campur?",
+        "Is Nasi Campur spicy?",
+        "What's in Nasi Campur?"
+      ],
+      "aliases": [
+        "Nasi Campur",
+        "Nasi Campur in Indonesia"
+      ],
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
+      "walker_id": "walker.food.dishes"
+    },
+    {
+      "id": "walker-walker-food-dishes-22603423c5",
+      "topic": "food.es_teler",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.95,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Es teler is a classic Indonesian dessert drink — shredded ice, jackfruit, young coconut, avocado, condensed milk, and pandan syrup. Cooling, filling, and cheap (15–25k IDR at a warung). Sister dessert es campur (mixed ice) adds cendol (green rice-flour jelly) and grass jelly. Great after a spicy meal on a hot afternoon.",
+      "keywords": [
+        "es teler",
+        "es campur",
+        "cendol",
+        "shaved ice",
+        "dessert",
+        "avocado",
+        "jackfruit"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "What is es Teler?",
+        "Tell me about es Teler",
+        "Where can I try es Teler?",
+        "Is es Teler spicy?",
+        "What's in es Teler?"
+      ],
+      "aliases": [
+        "es Teler",
+        "es Teler in Indonesia"
+      ],
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
+      "walker_id": "walker.food.dishes"
+    },
+    {
+      "id": "walker-walker-food-dishes-241f7dd7fb",
+      "topic": "food.nasi_padang",
+      "region": "West Sumatra",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.95,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Nasi Padang is the classic Padang-style presentation from West Sumatra: rice served with 10–15 small dishes brought to your table — rendang, gulai ayam (chicken curry), sambal ijo (green chilli), telur balado (spicy egg), sayur nangka (jackfruit curry) — and you pay only for what you eat. Rumah Makan Padang (Padang restaurants) are everywhere in Indonesia. Very spicy by default; ask for 'tidak pedas' if you want mild.",
+      "keywords": [
+        "nasi padang",
+        "padang",
+        "rumah makan padang",
+        "rendang",
+        "gulai",
+        "west sumatra"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "What is Nasi Padang?",
+        "Tell me about Nasi Padang",
+        "Where can I try Nasi Padang?",
+        "Is Nasi Padang spicy?",
+        "What's in Nasi Padang?"
+      ],
+      "aliases": [
+        "Nasi Padang",
+        "Nasi Padang in West Sumatra",
+        "Nasi Padang Indonesia"
+      ],
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
+      "walker_id": "walker.food.dishes"
+    },
+    {
+      "id": "walker-walker-food-dishes-4a8ecda5b0",
+      "topic": "food.gado_gado",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 1,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Gado-gado is Indonesia's warm salad — steamed vegetables (long beans, cabbage, bean sprouts, potato, boiled egg, tofu, tempeh) topped with a spiced peanut sauce and prawn crackers. Naturally vegetarian if you skip the shrimp paste (terasi) in the sauce — ask 'tanpa terasi' for a fully vegan version. Excellent light lunch, especially in Jakarta and West Java.",
+      "keywords": [
+        "gado-gado",
+        "peanut salad",
+        "vegetarian",
+        "vegan",
+        "tanpa terasi",
+        "peanut sauce"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "What is Gado Gado?",
+        "Tell me about Gado Gado",
+        "Where can I try Gado Gado?",
+        "Is Gado Gado spicy?",
+        "What's in Gado Gado?"
+      ],
+      "aliases": [
+        "Gado Gado",
+        "Gado Gado in Indonesia"
+      ],
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
+      "walker_id": "walker.food.dishes"
+    },
+    {
+      "id": "walker-walker-food-dishes-5baf18d4ea",
+      "topic": "food.bakmi",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.9,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Bakmi is Indonesian-Chinese egg noodles served either dry (bakmi ayam — with braised chicken, greens, and fried shallots) or in soup (bakmi kuah). Popular chains: Bakmi GM, Bakmi Naga, Bakmi Aloi. Almost always served with a side bowl of clear broth and sambal. A good option when you want something less spicy than most Indonesian food.",
+      "keywords": [
+        "bakmi",
+        "chinese indonesian",
+        "egg noodles",
+        "bakmi ayam",
+        "bakmi gm",
+        "bakmi naga"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "What is Bakmi?",
+        "Tell me about Bakmi",
+        "Where can I try Bakmi?",
+        "Is Bakmi spicy?",
+        "What's in Bakmi?"
+      ],
+      "aliases": [
+        "Bakmi",
+        "Bakmi in Indonesia"
+      ],
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
+      "walker_id": "walker.food.dishes"
+    },
+    {
+      "id": "walker-walker-food-dishes-d11356a66e",
+      "topic": "food.ayam_bakar",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.95,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Ayam bakar is Indonesian grilled chicken — marinated in kecap manis, garlic, tamarind, and turmeric, then finished over charcoal. Sold with rice, sambal, lalapan (raw leaves), and a small dish of soup broth. Regional variants: ayam bakar Taliwang (Lombok, super-spicy chilli glaze), ayam bakar Wong Solo (Central Java, sweeter). 30–50k IDR at a warung.",
+      "keywords": [
+        "ayam bakar",
+        "grilled chicken",
+        "kecap manis",
+        "taliwang",
+        "wong solo",
+        "warung"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "What is Ayam Bakar?",
+        "Tell me about Ayam Bakar",
+        "Where can I try Ayam Bakar?",
+        "Is Ayam Bakar spicy?",
+        "What's in Ayam Bakar?"
+      ],
+      "aliases": [
+        "Ayam Bakar",
+        "Ayam Bakar in Indonesia"
+      ],
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
+      "walker_id": "walker.food.dishes"
+    },
+    {
+      "id": "walker-walker-food-dishes-dafbf0d4b8",
+      "topic": "food.martabak",
+      "region": "Indonesia",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.95,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Martabak comes in two very different forms. Martabak manis (sweet martabak, also called terang bulan) is a thick pancake stuffed with chocolate, cheese, condensed milk, peanuts, or Nutella — the classic Indonesian night snack. Martabak telur (savoury) is a thin dough wrap filled with minced meat, egg, and spring onion, pan-fried and served with pickles and curry sauce. Sold at street carts in every city, especially busy after 7 PM.",
+      "keywords": [
+        "martabak",
+        "martabak manis",
+        "martabak telur",
+        "terang bulan",
+        "street food",
+        "pancake"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "What is Martabak?",
+        "Tell me about Martabak",
+        "Where can I try Martabak?",
+        "Is Martabak spicy?",
+        "What's in Martabak?"
+      ],
+      "aliases": [
+        "Martabak",
+        "Martabak in Indonesia"
+      ],
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
+      "walker_id": "walker.food.dishes"
+    },
+    {
+      "id": "walker-walker-food-dishes-f2b6582ace",
+      "topic": "food.babi_guling",
+      "region": "Bali",
+      "language": "en",
+      "stability": "stable",
+      "confidence": 0.95,
+      "source": "seed.curated:dishes-extra",
+      "last_verified": "2026-08-30",
+      "content": "Babi guling is Balinese spit-roasted suckling pig, seasoned with a paste of turmeric, coriander, chilli, lemongrass, galangal, and shrimp paste. Served with rice, lawar (spiced vegetable-and-coconut mix), and crackling. Most famous at Ibu Oka in Ubud, Warung Babi Guling Pak Malen in Seminyak, and countless village stalls. Not halal — served openly in Bali because of the Hindu population.",
+      "keywords": [
+        "babi guling",
+        "suckling pig",
+        "balinese",
+        "ibu oka",
+        "pak malen",
+        "lawar"
+      ],
+      "category": "food",
+      "audience": [
+        "tourist",
+        "family",
+        "backpacker",
+        "luxury"
+      ],
+      "questions": [
+        "What is Babi Guling?",
+        "Tell me about Babi Guling",
+        "Where can I try Babi Guling?",
+        "Is Babi Guling spicy?",
+        "What's in Babi Guling?"
+      ],
+      "aliases": [
+        "Babi Guling",
+        "Babi Guling in Bali",
+        "Babi Guling Indonesia"
+      ],
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
+      "walker_id": "walker.food.dishes"
     },
     {
       "id": "walker-walker-spiritual-sacred-sites-40cbbaa0a0",
@@ -2079,8 +1772,8 @@
         "Besakih in Bali",
         "Besakih Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "walker.spiritual.sacred_sites"
     },
     {
@@ -2117,8 +1810,8 @@
         "Istiqlal in Jakarta",
         "Istiqlal Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "walker.spiritual.sacred_sites"
     },
     {
@@ -2157,8 +1850,8 @@
         "Borobudur in Yogyakarta",
         "Borobudur Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "walker.spiritual.sacred_sites"
     },
     {
@@ -2197,8 +1890,8 @@
         "Prambanan in Yogyakarta",
         "Prambanan Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "walker.spiritual.sacred_sites"
     },
     {
@@ -2236,8 +1929,8 @@
         "Tirta Empul in Bali",
         "Tirta Empul Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "walker.spiritual.sacred_sites"
     },
     {
@@ -2277,9 +1970,324 @@
         "Uluwatu Temple in Bali",
         "Uluwatu Temple Indonesia"
       ],
-      "acquired_at": "2026-08-30",
-      "refresh_after": "2027-02-26",
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2027-03-04",
       "walker_id": "walker.spiritual.sacred_sites"
+    },
+    {
+      "id": "walker-walker-travel-airports-38496e7899",
+      "topic": "airport.manado_mdc",
+      "region": "North Sulawesi",
+      "language": "en",
+      "stability": "high",
+      "confidence": 0.85,
+      "source": "seed.curated:airports",
+      "last_verified": "2026-08-30",
+      "content": "Sam Ratulangi International Airport (MDC · Manado) serves the North Sulawesi tip. Main gateway for Bunaken and Lembeh dive trips. ~13 km from Manado city, ~150k IDR by taxi. Direct flights from Jakarta, Denpasar, and Singapore.",
+      "keywords": [
+        "mdc",
+        "sam ratulangi",
+        "manado airport",
+        "bunaken",
+        "lembeh",
+        "airport",
+        "airports"
+      ],
+      "category": "practical",
+      "audience": [
+        "tourist",
+        "backpacker"
+      ],
+      "questions": [
+        "How do I handle Manado Mdc in Indonesia?",
+        "What should I know about Manado Mdc?",
+        "Tell me about Manado Mdc",
+        "Is Manado Mdc needed in Indonesia?"
+      ],
+      "aliases": [
+        "Manado Mdc",
+        "Manado Mdc in North Sulawesi",
+        "Manado Mdc Indonesia"
+      ],
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-12-04",
+      "walker_id": "walker.travel.airports"
+    },
+    {
+      "id": "walker-walker-travel-airports-393decb1c2",
+      "topic": "airport.jakarta_cgk",
+      "region": "Jakarta",
+      "language": "en",
+      "stability": "high",
+      "confidence": 0.9,
+      "source": "seed.curated:airports",
+      "last_verified": "2026-08-30",
+      "content": "Soekarno-Hatta International Airport (CGK) is Indonesia's main hub, west of Jakarta. Terminals 1, 2, 3, and 3-Ultimate handle domestic and international. The Airport Rail Link (Bandara Rail Link) runs to BNI City and Manggarai (~55 min · ~70k IDR one-way, faster than road at rush hour). Ride-hailing is only allowed from designated Grab/Gojek pickup zones on the P1/P2 arrival levels — avoid unofficial 'taxi' touts in the arrivals hall.",
+      "keywords": [
+        "cgk",
+        "soekarno-hatta",
+        "jakarta airport",
+        "bandara rail link",
+        "airport rail",
+        "terminal 3",
+        "airport",
+        "airports"
+      ],
+      "category": "practical",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "How do I handle Jakarta Cgk in Indonesia?",
+        "What should I know about Jakarta Cgk?",
+        "Tell me about Jakarta Cgk",
+        "Is Jakarta Cgk needed in Indonesia?"
+      ],
+      "aliases": [
+        "Jakarta Cgk",
+        "Jakarta Cgk in Jakarta",
+        "Jakarta Cgk Indonesia"
+      ],
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-12-04",
+      "walker_id": "walker.travel.airports"
+    },
+    {
+      "id": "walker-walker-travel-airports-8ab96dbff5",
+      "topic": "airport.surabaya_sub",
+      "region": "East Java",
+      "language": "en",
+      "stability": "high",
+      "confidence": 0.85,
+      "source": "seed.curated:airports",
+      "last_verified": "2026-08-30",
+      "content": "Juanda International Airport (SUB) serves Surabaya from the town of Sedati. Two terminals: T1 for domestic + some regional international, T2 for most international. Damri airport buses go to central Surabaya (~30k IDR). SUB is a common connection point for Bromo + Ijen tours — many operators pick up direct from the airport.",
+      "keywords": [
+        "sub",
+        "juanda",
+        "surabaya airport",
+        "sedati",
+        "damri",
+        "airport",
+        "airports"
+      ],
+      "category": "practical",
+      "audience": [
+        "tourist",
+        "backpacker"
+      ],
+      "questions": [
+        "How do I handle Surabaya Sub in Indonesia?",
+        "What should I know about Surabaya Sub?",
+        "Tell me about Surabaya Sub",
+        "Is Surabaya Sub needed in Indonesia?"
+      ],
+      "aliases": [
+        "Surabaya Sub",
+        "Surabaya Sub in East Java",
+        "Surabaya Sub Indonesia"
+      ],
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-12-04",
+      "walker_id": "walker.travel.airports"
+    },
+    {
+      "id": "walker-walker-travel-airports-be808b7155",
+      "topic": "airport.bali_dps",
+      "region": "Bali",
+      "language": "en",
+      "stability": "high",
+      "confidence": 0.9,
+      "source": "seed.curated:airports",
+      "last_verified": "2026-08-30",
+      "content": "Ngurah Rai International Airport (DPS · Denpasar), near Kuta on the south coast. One terminal handles both domestic and international sides. Grab/Gojek pickups are ~5 minutes outside the arrivals hall — walk out and cross the road to the designated zone. Airport taxis have fixed zone-based prices posted on the wall. From DPS: Kuta 10 min, Seminyak 20 min, Canggu 40 min, Ubud 90 min, Uluwatu 30 min (varies with Bali traffic).",
+      "keywords": [
+        "dps",
+        "ngurah rai",
+        "bali airport",
+        "denpasar airport",
+        "kuta",
+        "airport",
+        "airports"
+      ],
+      "category": "practical",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family",
+        "couple"
+      ],
+      "questions": [
+        "How do I handle Bali Dps in Indonesia?",
+        "What should I know about Bali Dps?",
+        "Tell me about Bali Dps",
+        "Is Bali Dps needed in Indonesia?"
+      ],
+      "aliases": [
+        "Bali Dps",
+        "Bali Dps in Bali",
+        "Bali Dps Indonesia"
+      ],
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-12-04",
+      "walker_id": "walker.travel.airports"
+    },
+    {
+      "id": "walker-walker-travel-airports-c79c9a9c88",
+      "topic": "airport.lombok_lop",
+      "region": "Lombok",
+      "language": "en",
+      "stability": "high",
+      "confidence": 0.85,
+      "source": "seed.curated:airports",
+      "last_verified": "2026-08-30",
+      "content": "Lombok International Airport (LOP · Zainuddin Abdul Madjid Airport), in Praya in south Lombok. Roughly 40 minutes drive to Kuta Lombok, 60–90 minutes to Senggigi, 90 minutes to Bangsal ferry for the Gili Islands. Damri bus + Gojek/Grab both available. Fewer international flights than DPS — many travellers fly LOP via Jakarta or Denpasar.",
+      "keywords": [
+        "lop",
+        "lombok airport",
+        "praya",
+        "zainuddin abdul madjid",
+        "kuta lombok",
+        "airport",
+        "airports"
+      ],
+      "category": "practical",
+      "audience": [
+        "tourist",
+        "backpacker"
+      ],
+      "questions": [
+        "How do I handle Lombok Lop in Indonesia?",
+        "What should I know about Lombok Lop?",
+        "Tell me about Lombok Lop",
+        "Is Lombok Lop needed in Indonesia?"
+      ],
+      "aliases": [
+        "Lombok Lop",
+        "Lombok Lop in Lombok",
+        "Lombok Lop Indonesia"
+      ],
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-12-04",
+      "walker_id": "walker.travel.airports"
+    },
+    {
+      "id": "walker-walker-travel-airports-cb547936ce",
+      "topic": "airport.makassar_upg",
+      "region": "South Sulawesi",
+      "language": "en",
+      "stability": "high",
+      "confidence": 0.85,
+      "source": "seed.curated:airports",
+      "last_verified": "2026-08-30",
+      "content": "Sultan Hasanuddin International Airport (UPG · Makassar) is Sulawesi's main hub. ~20 km from central Makassar; airport-city taxis are around 150k IDR by meter. UPG is the typical connection for onward flights to Toraja (via Palopo/PLW), Bau-Bau, and eastern Indonesia.",
+      "keywords": [
+        "upg",
+        "sultan hasanuddin",
+        "makassar airport",
+        "sulawesi",
+        "airport",
+        "airports"
+      ],
+      "category": "practical",
+      "audience": [
+        "tourist",
+        "backpacker"
+      ],
+      "questions": [
+        "How do I handle Makassar Upg in Indonesia?",
+        "What should I know about Makassar Upg?",
+        "Tell me about Makassar Upg",
+        "Is Makassar Upg needed in Indonesia?"
+      ],
+      "aliases": [
+        "Makassar Upg",
+        "Makassar Upg in South Sulawesi",
+        "Makassar Upg Indonesia"
+      ],
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-12-04",
+      "walker_id": "walker.travel.airports"
+    },
+    {
+      "id": "walker-walker-travel-airports-f10cdcd19d",
+      "topic": "airport.yogyakarta_yia",
+      "region": "Yogyakarta",
+      "language": "en",
+      "stability": "high",
+      "confidence": 0.85,
+      "source": "seed.curated:airports",
+      "last_verified": "2026-08-30",
+      "content": "Yogyakarta International Airport (YIA · Kulon Progo) opened in 2020 and replaced the old JOG (Adisutjipto) for most flights. Located ~45 km west of central Yogyakarta. The KA Bandara airport train (~40 minutes, ~20k IDR) runs from YIA to Tugu Station in the city — cheap and reliable. Damri buses also serve the airport.",
+      "keywords": [
+        "yia",
+        "kulon progo",
+        "yogyakarta airport",
+        "ka bandara",
+        "tugu station",
+        "airport",
+        "airports"
+      ],
+      "category": "practical",
+      "audience": [
+        "tourist",
+        "backpacker",
+        "family"
+      ],
+      "questions": [
+        "How do I handle Yogyakarta Yia in Indonesia?",
+        "What should I know about Yogyakarta Yia?",
+        "Tell me about Yogyakarta Yia",
+        "Is Yogyakarta Yia needed in Indonesia?"
+      ],
+      "aliases": [
+        "Yogyakarta Yia",
+        "Yogyakarta Yia in Yogyakarta",
+        "Yogyakarta Yia Indonesia"
+      ],
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-12-04",
+      "walker_id": "walker.travel.airports"
+    },
+    {
+      "id": "walker-walker-travel-airports-fac33ae265",
+      "topic": "airport.labuan_bajo_lbj",
+      "region": "East Nusa Tenggara",
+      "language": "en",
+      "stability": "high",
+      "confidence": 0.85,
+      "source": "seed.curated:airports",
+      "last_verified": "2026-08-30",
+      "content": "Komodo Airport (LBJ · Labuan Bajo) is the gateway to Komodo National Park. Small airport, no Grab/Gojek — arrange hotel transfer or take an ojek/local taxi (~30k IDR to town, 5 minutes). Direct flights from Denpasar, Jakarta, and Surabaya. Buy park tickets in Labuan Bajo town, not on arrival — some agents at the airport overcharge.",
+      "keywords": [
+        "lbj",
+        "komodo airport",
+        "labuan bajo",
+        "flores airport",
+        "airport",
+        "airports"
+      ],
+      "category": "practical",
+      "audience": [
+        "tourist",
+        "backpacker"
+      ],
+      "questions": [
+        "How do I handle Labuan Bajo Lbj in Indonesia?",
+        "What should I know about Labuan Bajo Lbj?",
+        "Tell me about Labuan Bajo Lbj",
+        "Is Labuan Bajo Lbj needed in Indonesia?"
+      ],
+      "aliases": [
+        "Labuan Bajo Lbj",
+        "Labuan Bajo Lbj in East Nusa Tenggara",
+        "Labuan Bajo Lbj Indonesia"
+      ],
+      "acquired_at": "2026-09-05",
+      "refresh_after": "2026-12-04",
+      "walker_id": "walker.travel.airports"
     }
   ]
 }

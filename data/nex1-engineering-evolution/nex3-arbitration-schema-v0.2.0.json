@@ -1,0 +1,63 @@
+{
+  "version": "v0.2.0",
+  "supersedes": "v0.1.0",
+  "notes": "NEX3 Arbitration Decision · founder-authorised design 2026-09-12. DESIGN ONLY · no runtime. v0.2.0 aligns with founder's Step 2 verdict list: NEX1_BETTER · NEX2_BETTER · EXISTING_CODE_BETTER · BOTH_INFERIOR · HOLD_INSUFFICIENT_EVIDENCE · USER_CLARIFICATION_REQUIRED. Adds explicit evidence_bundle_ids · conflicts · missing_evidence · rollback_reference · anti-false-precision rule.",
+  "record_type": "NEX3_ARBITRATION",
+  "required_fields": [
+    { "name": "arbitration_id",            "shape": "string · monotonic e.g. N3-DEC-0007" },
+    { "name": "schema_version",            "shape": "semver" },
+    { "name": "work_order_id",             "shape": "string" },
+    { "name": "candidates",                 "shape": "array of { candidate_id, source, diff_ref } · at least NEX1 · optionally NEX2 · optionally BASELINE" },
+    { "name": "user_objective",            "shape": "string · founder or user-authored intent statement" },
+    { "name": "project_constraints",       "shape": "object · project style · frameworks · locked ADRs" },
+    { "name": "evidence_bundle_ids",       "shape": "array of bundle_id · one per candidate" },
+    { "name": "criteria",                   "shape": "array · 10 founder-authored criteria · see arbitration-criteria" },
+    { "name": "criterion_results",         "shape": "object · one entry per criterion · each holds { state, cited_evidence_ids, delta, notes }" },
+    { "name": "conflicts",                  "shape": "array of { criterion_a, criterion_b, trade_off_description }",
+                                             "notes": "NEX3 exposes trade-offs · never hides them" },
+    { "name": "missing_evidence",           "shape": "array of dimension names for which NO evidence was available",
+                                             "notes": "load-bearing · every unmeasured dimension appears here" },
+    { "name": "verdict",                    "shape": "enum · NEX1_BETTER · NEX2_BETTER · EXISTING_CODE_BETTER · BOTH_INFERIOR · HOLD_INSUFFICIENT_EVIDENCE · USER_CLARIFICATION_REQUIRED",
+                                             "notes": "only these six · no invented verdicts" },
+    { "name": "rationale",                  "shape": "string · reconstructable from criterion_results",
+                                             "notes": "if rationale references a fact · that fact MUST have a cited_evidence_id" },
+    { "name": "limitations",                "shape": "string · what this decision does NOT cover" },
+    { "name": "confidence",                 "shape": "enum · high · medium · low · insufficient" },
+    { "name": "rollback_reference",         "shape": "string · describes how to reverse the accepted candidate" },
+    { "name": "provenance",                 "shape": "object · see provenance-model" },
+    { "name": "authority_boundary",         "shape": "constant · 'arbitration_advisory_until_founder_authorises'",
+                                             "notes": "NEX3 verdict is advisory · founder authorisation converts it to binding" },
+    { "name": "attribution",                "shape": "object · external_llm_used=false · deterministic=true · role='nex3_arbiter'" }
+  ],
+  "verdict_semantics": {
+    "NEX1_BETTER":                  "NEX1 candidate wins on evidence across the 10 criteria · rationale MUST cite specific evidence_ids",
+    "NEX2_BETTER":                  "NEX2 alternative wins on evidence · same citation discipline",
+    "EXISTING_CODE_BETTER":         "neither candidate improves the baseline · take no action · existing code retained",
+    "BOTH_INFERIOR":                "both candidates worse than baseline · design must be revisited · nothing accepted",
+    "HOLD_INSUFFICIENT_EVIDENCE":   "evidence bundle contains too many NOT_MEASURED / BLOCKED / INCONCLUSIVE for a verdict · request additional measurement",
+    "USER_CLARIFICATION_REQUIRED":  "user_objective is ambiguous or contradictory · verdict withheld pending clarification"
+  },
+  "invariants": [
+    "no verdict is fabricated · every verdict is reconstructable from criterion_results and evidence_bundle_ids",
+    "every criterion appearing in the verdict rationale MUST cite an evidence_id",
+    "any criterion state ∈ {NOT_MEASURED, BLOCKED, INCONCLUSIVE} REDUCES overall_confidence · NEVER contributes to a positive verdict",
+    "no false-precision scoring (see anti_false_precision below)",
+    "NEX3 does not decide on style · tone · popularity · charisma",
+    "NEX3 may return HOLD_INSUFFICIENT_EVIDENCE or USER_CLARIFICATION_REQUIRED · NEVER forced to CHOOSE",
+    "authority_boundary is constant · not runtime-modifiable · verdict is advisory until founder authorises",
+    "conflicts field MUST enumerate every trade-off encountered · trade-offs are exposed · never hidden"
+  ],
+  "anti_false_precision": [
+    "verdicts do NOT include composite numeric scores like '87.3% better'",
+    "criterion_results record deterministic evidence (measured, delta, state) · NOT synthetic aggregate percentages",
+    "if a criterion cannot be measured deterministically · state=INCONCLUSIVE · never a manufactured number"
+  ],
+  "hold_conditions": [
+    "any load-bearing criterion in NOT_MEASURED · BLOCKED · INCONCLUSIVE",
+    "missing_evidence array non-empty for the operation kind",
+    "conflicts include a trade-off with no user-preference signal",
+    "adversarial fixtures for the operation kind are absent",
+    "candidates disagree on which existing behaviour they preserve",
+    "reproducibility_information missing on any load-bearing evidence"
+  ]
+}

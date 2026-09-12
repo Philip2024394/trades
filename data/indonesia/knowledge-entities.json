@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30T22:37:29.190Z",
+  "generatedAt": "2026-08-31T18:17:10.074Z",
   "schemaVersion": 1,
   "count": 989,
   "entities": [
@@ -4444,7 +4444,7 @@
         "adat"
       ],
       "lifecycle": "PUBLISHED",
-      "lifecycleChangedAt": "2026-08-30T22:37:29.190Z",
+      "lifecycleChangedAt": "2026-08-31T18:17:10.074Z",
       "provenance": [
         {
           "walkerId": "walker.adat.communities",
@@ -4452,7 +4452,7 @@
           "sourceName": "seed.curated:adat_communities · AMAN + academic",
           "sourceTier": "A",
           "market": "ID",
-          "firstDiscoveredAt": "2026-08-30",
+          "firstDiscoveredAt": "2026-08-31",
           "lastCheckedAt": "2026-08-30",
           "lastChangedAt": "2026-08-30",
           "observedAt": "2026-08-30"
@@ -4488,7 +4488,7 @@
         "location": 0.5,
         "contact": 1,
         "sourceQuality": 1,
-        "freshness": 0.9947627835648148,
+        "freshness": 0.990211543595679,
         "completeness": 0.75,
         "verification": 0.5,
         "conflict": 1,
@@ -4512,7 +4512,7 @@
         "ciboleger"
       ],
       "lifecycle": "PUBLISHED",
-      "lifecycleChangedAt": "2026-08-30T22:37:29.190Z",
+      "lifecycleChangedAt": "2026-08-31T18:17:10.074Z",
       "provenance": [
         {
           "walkerId": "walker.adat.communities",
@@ -4520,7 +4520,7 @@
           "sourceName": "seed.curated:adat_communities · AMAN + academic",
           "sourceTier": "A",
           "market": "ID",
-          "firstDiscoveredAt": "2026-08-30",
+          "firstDiscoveredAt": "2026-08-31",
           "lastCheckedAt": "2026-08-30",
           "lastChangedAt": "2026-08-30",
           "observedAt": "2026-08-30"
@@ -4556,7 +4556,7 @@
         "location": 0.5,
         "contact": 1,
         "sourceQuality": 1,
-        "freshness": 0.9947627835648148,
+        "freshness": 0.990211543595679,
         "completeness": 0.75,
         "verification": 0.5,
         "conflict": 1,
@@ -4579,7 +4579,7 @@
         "adat"
       ],
       "lifecycle": "PUBLISHED",
-      "lifecycleChangedAt": "2026-08-30T22:37:29.190Z",
+      "lifecycleChangedAt": "2026-08-31T18:17:10.074Z",
       "provenance": [
         {
           "walkerId": "walker.adat.communities",
@@ -4587,7 +4587,7 @@
           "sourceName": "seed.curated:adat_communities · AMAN + academic",
           "sourceTier": "A",
           "market": "ID",
-          "firstDiscoveredAt": "2026-08-30",
+          "firstDiscoveredAt": "2026-08-31",
           "lastCheckedAt": "2026-08-30",
           "lastChangedAt": "2026-08-30",
           "observedAt": "2026-08-30"
@@ -4623,7 +4623,7 @@
         "location": 0.5,
         "contact": 1,
         "sourceQuality": 1,
-        "freshness": 0.9947627835648148,
+        "freshness": 0.990211543595679,
         "completeness": 0.75,
         "verification": 0.5,
         "conflict": 1,
@@ -4647,7 +4647,7 @@
         "ende village"
       ],
       "lifecycle": "PUBLISHED",
-      "lifecycleChangedAt": "2026-08-30T22:37:29.190Z",
+      "lifecycleChangedAt": "2026-08-31T18:17:10.074Z",
       "provenance": [
         {
           "walkerId": "walker.adat.communities",
@@ -4655,7 +4655,7 @@
           "sourceName": "seed.curated:adat_communities · AMAN + academic",
           "sourceTier": "A",
           "market": "ID",
-          "firstDiscoveredAt": "2026-08-30",
+          "firstDiscoveredAt": "2026-08-31",
           "lastCheckedAt": "2026-08-30",
           "lastChangedAt": "2026-08-30",
           "observedAt": "2026-08-30"
@@ -4687,7 +4687,7 @@
         "location": 1,
         "contact": 1,
         "sourceQuality": 1,
-        "freshness": 0.9947627835648148,
+        "freshness": 0.990211543595679,
         "completeness": 0.75,
         "verification": 0.5,
         "conflict": 1,
@@ -4711,7 +4711,7 @@
         "funeral"
       ],
       "lifecycle": "PUBLISHED",
-      "lifecycleChangedAt": "2026-08-30T22:37:29.190Z",
+      "lifecycleChangedAt": "2026-08-31T18:17:10.074Z",
       "provenance": [
         {
           "walkerId": "walker.adat.communities",
@@ -4719,7 +4719,7 @@
           "sourceName": "seed.curated:adat_communities · AMAN + academic",
           "sourceTier": "A",
           "market": "ID",
-          "firstDiscoveredAt": "2026-08-30",
+          "firstDiscoveredAt": "2026-08-31",
           "lastCheckedAt": "2026-08-30",
           "lastChangedAt": "2026-08-30",
           "observedAt": "2026-08-30"
@@ -4755,7 +4755,7 @@
         "location": 0.5,
         "contact": 1,
         "sourceQuality": 1,
-        "freshness": 0.9947627835648148,
+        "freshness": 0.990211543595679,
         "completeness": 0.75,
         "verification": 0.5,
         "conflict": 1,

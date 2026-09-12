@@ -1,0 +1,28 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX Architect Evidence Specialist · founder-authorised 2026-09-12. Constitutional purpose: 'Does this proposed change fit the intended architecture?' CONSUMES Project Architecture Intelligence · never re-implements it.",
+  "record_type": "ARCHITECT_EVIDENCE",
+  "constitutional_purpose_locked": "Architect consumes fan_in / fan_out / cycles / orphans / packages from Project Architecture v0.1.0 · never re-computes dependency analysis · answers narrowly: does this proposed change fit the intended architecture per founder-authored architecture rules?",
+  "outcomes_permitted": {
+    "FITS_INTENDED_ARCHITECTURE":  "no boundary violations · no new cycles · no drift signals · consumes PAI",
+    "BOUNDARY_VIOLATION":          "one or more edges cross founder-authored architecture rules",
+    "CYCLE_INTRODUCED":            "the change introduces a dependency cycle not present in baseline PAI",
+    "DRIFT_DETECTED":              "fan_in / fan_out shifted beyond founder-authored bounds (bounds are policy · never AI-inferred)",
+    "NOT_MEASURED":                "no PAI report supplied · no founder-authored architecture rules registered",
+    "INSUFFICIENT_EVIDENCE":       "attempted but insufficient signal"
+  },
+  "consumed_from_project_architecture": ["fan_in","fan_out","cycles","orphans","packages","internal_edges","external_edges"],
+  "must_not_recompute": ["fan_in","fan_out","cycles","orphans","packages"],
+  "forbidden_vocabulary_in_output": [
+    "architecture_score","cohesion_score","coupling_score","quality_score","overall_quality","best_practice",
+    "clean_architecture","optimal","superior","confidence_percent","aggregate_quality"
+  ],
+  "invariants": [
+    "MUST NOT recompute any measurement that PAI already emits authoritatively",
+    "MUST cite PAI report_id + node_ids for every evidence claim",
+    "founder-authored architecture rules are policy · NEVER AI-inferred",
+    "authorisation=false · execution=false · authority_boundary='evidence_producer_only'",
+    "external_llm_used=false · deterministic=true",
+    "routes through Evidence Validation"
+  ]
+}

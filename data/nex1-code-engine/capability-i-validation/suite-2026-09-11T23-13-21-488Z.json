@@ -1,0 +1,246 @@
+{
+  "at": "2026-09-11T23:13:12.127Z",
+  "attribution": {
+    "teaching_infrastructure": "capability-i-test-synthesis.ts · taught_by=master_ai_engineer",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner"
+  },
+  "sub_tests": {
+    "I1": {
+      "goal": {
+        "target_type": "Reservation",
+        "source_scope": {
+          "root": "C:\\Users\\Victus\\trades\\data\\nex1-code-engine\\novel-e"
+        },
+        "test_target_file": "data/nex1-code-engine/challenge-i-tests/reservation-tests.ts",
+        "test_target_describe": "Capability I · Reservation"
+      },
+      "plan": {
+        "kind": "planned",
+        "target_source_file": "C:/Users/Victus/trades/data/nex1-code-engine/novel-e/schema.ts",
+        "test_name": "Reservation constructs with type-satisfying values",
+        "enumerated_fields": [
+          {
+            "name": "reservationId",
+            "declared_type": "string",
+            "value_expression": "\"\"",
+            "runtime_check_expression": "expect(typeof ${VAR}.reservationId).toBe(\"string\");"
+          },
+          {
+            "name": "location",
+            "declared_type": "string",
+            "value_expression": "\"\"",
+            "runtime_check_expression": "expect(typeof ${VAR}.location).toBe(\"string\");"
+          }
+        ],
+        "reason": "synthesised test 'Reservation constructs with type-satisfying values' with 2 field assertions targeting C:/Users/Victus/trades/data/nex1-code-engine/novel-e/schema.ts"
+      },
+      "vitest": {
+        "exit": 1,
+        "passed": 0,
+        "failed": 0
+      },
+      "verdict": "fail",
+      "vitest_tail": "\n RUN  v4.1.10 C:/Users/Victus/trades\n\n\nNo test files found, exiting with code 1\n\nfilter: data/nex1-code-engine/challenge-i-tests/reservation-tests.ts\ninclude: src/**/*.test.ts, src/**/*.test.tsx, scripts/**/*.test.mjs\nexclude:  **/node_modules/**, **/.git/**\n\n",
+      "byte_identical": true
+    },
+    "I2": {
+      "goal": {
+        "target_type": "Invoice",
+        "source_scope": {
+          "root": "C:\\Users\\Victus\\trades\\data\\nex1-code-engine\\challenge-h"
+        },
+        "test_target_file": "data/nex1-code-engine/challenge-i-tests/invoice-tests.ts",
+        "test_target_describe": "Capability I · Invoice"
+      },
+      "plan": {
+        "kind": "planned",
+        "target_source_file": "C:/Users/Victus/trades/data/nex1-code-engine/challenge-h/invoice-schema.ts",
+        "test_name": "Invoice constructs with type-satisfying values",
+        "enumerated_fields": [
+          {
+            "name": "invoiceId",
+            "declared_type": "string",
+            "value_expression": "\"\"",
+            "runtime_check_expression": "expect(typeof ${VAR}.invoiceId).toBe(\"string\");"
+          },
+          {
+            "name": "amount",
+            "declared_type": "number",
+            "value_expression": "0",
+            "runtime_check_expression": "expect(typeof ${VAR}.amount).toBe(\"number\");"
+          }
+        ],
+        "reason": "synthesised test 'Invoice constructs with type-satisfying values' with 2 field assertions targeting C:/Users/Victus/trades/data/nex1-code-engine/challenge-h/invoice-schema.ts"
+      },
+      "vitest": {
+        "exit": 1,
+        "passed": 0,
+        "failed": 0
+      },
+      "verdict": "fail",
+      "vitest_tail": "\n RUN  v4.1.10 C:/Users/Victus/trades\n\n\nNo test files found, exiting with code 1\n\nfilter: data/nex1-code-engine/challenge-i-tests/invoice-tests.ts\ninclude: src/**/*.test.ts, src/**/*.test.tsx, scripts/**/*.test.mjs\nexclude:  **/node_modules/**, **/.git/**\n\n",
+      "byte_identical": true
+    },
+    "I3": {
+      "goal": {
+        "target_type": "Catalog",
+        "source_scope": {
+          "root": "C:\\Users\\Victus\\trades\\data\\nex1-code-engine\\challenge-i"
+        },
+        "test_target_file": "data/nex1-code-engine/challenge-i-tests/catalog-tests.ts",
+        "test_target_describe": "Capability I · Catalog"
+      },
+      "plan": {
+        "kind": "planned",
+        "target_source_file": "C:/Users/Victus/trades/data/nex1-code-engine/challenge-i/catalog.ts",
+        "test_name": "Catalog constructs with type-satisfying values",
+        "enumerated_fields": [
+          {
+            "name": "catalogId",
+            "declared_type": "string",
+            "value_expression": "\"\"",
+            "runtime_check_expression": "expect(typeof ${VAR}.catalogId).toBe(\"string\");"
+          },
+          {
+            "name": "tags",
+            "declared_type": "readonly string[]",
+            "value_expression": "[]",
+            "runtime_check_expression": "expect(Array.isArray(${VAR}.tags)).toBe(true);"
+          }
+        ],
+        "reason": "synthesised test 'Catalog constructs with type-satisfying values' with 2 field assertions targeting C:/Users/Victus/trades/data/nex1-code-engine/challenge-i/catalog.ts"
+      },
+      "vitest": {
+        "exit": 1,
+        "passed": 0,
+        "failed": 0
+      },
+      "verdict": "fail",
+      "vitest_tail": "\n RUN  v4.1.10 C:/Users/Victus/trades\n\n\nNo test files found, exiting with code 1\n\nfilter: data/nex1-code-engine/challenge-i-tests/catalog-tests.ts\ninclude: src/**/*.test.ts, src/**/*.test.tsx, scripts/**/*.test.mjs\nexclude:  **/node_modules/**, **/.git/**\n\n",
+      "byte_identical": true
+    },
+    "I4": {
+      "goal": {
+        "target_type": "LevelD",
+        "source_scope": {
+          "root": "C:\\Users\\Victus\\trades\\data\\nex1-code-engine\\chain-4l"
+        },
+        "test_target_file": "data/nex1-code-engine/challenge-i-tests/leveld-tests.ts",
+        "test_target_describe": "Capability I · LevelD · heritage chain"
+      },
+      "plan": {
+        "kind": "planned",
+        "target_source_file": "C:/Users/Victus/trades/data/nex1-code-engine/chain-4l/types-d.ts",
+        "test_name": "LevelD constructs with type-satisfying values",
+        "enumerated_fields": [
+          {
+            "name": "dNote",
+            "declared_type": "string",
+            "value_expression": "\"\"",
+            "runtime_check_expression": "expect(typeof ${VAR}.dNote).toBe(\"string\");"
+          },
+          {
+            "name": "cLabel",
+            "declared_type": "string",
+            "value_expression": "\"\"",
+            "runtime_check_expression": "expect(typeof ${VAR}.cLabel).toBe(\"string\");"
+          },
+          {
+            "name": "bTag",
+            "declared_type": "string",
+            "value_expression": "\"\"",
+            "runtime_check_expression": "expect(typeof ${VAR}.bTag).toBe(\"string\");"
+          },
+          {
+            "name": "aId",
+            "declared_type": "string",
+            "value_expression": "\"\"",
+            "runtime_check_expression": "expect(typeof ${VAR}.aId).toBe(\"string\");"
+          }
+        ],
+        "reason": "synthesised test 'LevelD constructs with type-satisfying values' with 4 field assertions targeting C:/Users/Victus/trades/data/nex1-code-engine/chain-4l/types-d.ts"
+      },
+      "vitest": {
+        "exit": 1,
+        "passed": 0,
+        "failed": 0
+      },
+      "verdict": "fail",
+      "vitest_tail": "\n RUN  v4.1.10 C:/Users/Victus/trades\n\n\nNo test files found, exiting with code 1\n\nfilter: data/nex1-code-engine/challenge-i-tests/leveld-tests.ts\ninclude: src/**/*.test.ts, src/**/*.test.tsx, scripts/**/*.test.mjs\nexclude:  **/node_modules/**, **/.git/**\n\n",
+      "byte_identical": true
+    },
+    "I5": {
+      "goal": {
+        "target_type": "Vehicle",
+        "source_scope": {
+          "root": "C:\\Users\\Victus\\trades\\data\\nex1-code-engine\\duplicate-f"
+        },
+        "test_target_file": "data/nex1-code-engine/challenge-i-tests/vehicle-tests.ts",
+        "test_target_describe": "Capability I · Vehicle · duplicate-symbol"
+      },
+      "plan": {
+        "kind": "planned",
+        "target_source_file": "C:/Users/Victus/trades/data/nex1-code-engine/duplicate-f/module-a/vehicle.ts",
+        "test_name": "Vehicle constructs with type-satisfying values",
+        "enumerated_fields": [
+          {
+            "name": "vin",
+            "declared_type": "string",
+            "value_expression": "\"\"",
+            "runtime_check_expression": "expect(typeof ${VAR}.vin).toBe(\"string\");"
+          },
+          {
+            "name": "plate",
+            "declared_type": "string",
+            "value_expression": "\"\"",
+            "runtime_check_expression": "expect(typeof ${VAR}.plate).toBe(\"string\");"
+          }
+        ],
+        "reason": "synthesised test 'Vehicle constructs with type-satisfying values' with 2 field assertions targeting C:/Users/Victus/trades/data/nex1-code-engine/duplicate-f/module-a/vehicle.ts"
+      },
+      "vitest": {
+        "exit": 1,
+        "passed": 0,
+        "failed": 0
+      },
+      "verdict": "fail",
+      "vitest_tail": "\n RUN  v4.1.10 C:/Users/Victus/trades\n\n\nNo test files found, exiting with code 1\n\nfilter: data/nex1-code-engine/challenge-i-tests/vehicle-tests.ts\ninclude: src/**/*.test.ts, src/**/*.test.tsx, scripts/**/*.test.mjs\nexclude:  **/node_modules/**, **/.git/**\n\n",
+      "byte_identical": true
+    },
+    "I6": {
+      "goal": {
+        "target_type": "UserProfile",
+        "source_scope": {
+          "root": "C:\\Users\\Victus\\trades\\data\\nex1-code-engine\\challenge-i"
+        },
+        "test_target_file": "data/nex1-code-engine/challenge-i-tests/user-profile-tests.ts",
+        "test_target_describe": "Capability I · UserProfile"
+      },
+      "expectedKind": "refused_complex_type",
+      "plan": {
+        "kind": "refused_complex_type",
+        "reason": "field 'settings' on 'UserProfile' has type 'CustomSettings' · complex · test synthesis refused rather than fabricating a value"
+      },
+      "byte_identical": true,
+      "verdict": "pass"
+    },
+    "I7": {
+      "goal": {
+        "target_type": "SecretConfig",
+        "source_scope": {
+          "root": "C:\\Users\\Victus\\trades\\data\\nex1-code-engine\\__protected-fixture__"
+        },
+        "test_target_file": "data/nex1-code-engine/challenge-i-tests/secret-tests.ts",
+        "test_target_describe": "Capability I · SecretConfig"
+      },
+      "expectedKind": "refused_protected_path",
+      "plan": {
+        "kind": "refused_protected_path",
+        "reason": "every declaring path for 'SecretConfig' is protected"
+      },
+      "byte_identical": true,
+      "verdict": "pass"
+    }
+  }
+}

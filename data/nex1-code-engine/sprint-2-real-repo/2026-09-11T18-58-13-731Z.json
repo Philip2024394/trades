@@ -1,0 +1,38 @@
+{
+  "at": "2026-09-11T18:58:13.732Z",
+  "score": "3/3",
+  "files_unchanged": true,
+  "prov_hash_before": "c66f2df102d7982e6bfbb04a7de04446f009996d68778756892b395dafbc58dc",
+  "prov_hash_after": "c66f2df102d7982e6bfbb04a7de04446f009996d68778756892b395dafbc58dc",
+  "test_hash_before": "6adbb308a56e63fc380d37437db84bafb9aedc417eac4276ecca2bea47090707",
+  "test_hash_after": "6adbb308a56e63fc380d37437db84bafb9aedc417eac4276ecca2bea47090707",
+  "outcomes": [
+    {
+      "id": "add-interface-field",
+      "target": "src/lib/nex-agent/code-engine/provenance-recorder.ts",
+      "ok": true,
+      "adapter_id": "ast-semantic",
+      "rationale": "AST: added field 'resolved_at: string | null' to interface 'Nex1AttemptProvenance'",
+      "diff_size_lines": 118,
+      "delta_bytes": 148
+    },
+    {
+      "id": "populate-in-function-body",
+      "target": "src/lib/nex-agent/code-engine/provenance-recorder.ts",
+      "ok": true,
+      "adapter_id": "ast-semantic",
+      "rationale": "AST: added property 'resolved_at' to return-object of 'recordProvenance'",
+      "diff_size_lines": 118,
+      "delta_bytes": 153
+    },
+    {
+      "id": "add-test-case",
+      "target": "src/lib/nex-agent/code-engine/code-engine.test.ts",
+      "ok": true,
+      "adapter_id": "ast-semantic",
+      "rationale": "AST: added it('records resolved_at when NEX1 completes an attempt') to describe('provenance · attribution firewall')",
+      "diff_size_lines": 719,
+      "delta_bytes": 1280
+    }
+  ]
+}

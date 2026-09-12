@@ -1,0 +1,19 @@
+{
+  "version": "v0.1.0",
+  "notes": "Thirteen evidence categories · founder-authored 2026-09-12. Every stored sub-claim carries EXACTLY ONE tag. Never fabricate new tags without founder ADR. Order below is presentation-only; there is no hierarchy · a claim is not 'better' for being higher in the list.",
+  "categories": [
+    { "id": "HISTORICALLY_ESTABLISHED",    "definition": "Strong independent historical/archaeological/documentary evidence · claim is established", "example": "Julius Caesar existed" },
+    { "id": "HISTORICALLY_SUPPORTED",      "definition": "Strong evidence with some remaining uncertainty",                                              "example": "Homer's authorship of the Iliad" },
+    { "id": "ARCHAEOLOGICALLY_SUPPORTED",  "definition": "Physical archaeological evidence directly supports the claim",                                  "example": "Pyramid worker settlements at Giza" },
+    { "id": "TRADITIONALLY_RECORDED",      "definition": "A tradition is documented · documentation of a tradition does not establish the underlying event as fact", "example": "Ancient written accounts of a great flood" },
+    { "id": "RELIGIOUS_TRADITION",         "definition": "The claim belongs to religious belief · not a matter historical methods can independently settle", "example": "The resurrection of Jesus" },
+    { "id": "MYTHOLOGICAL_TRADITION",      "definition": "The claim is a cultural mythological narrative",                                               "example": "Norse Ragnarok" },
+    { "id": "ORAL_TRADITION",              "definition": "Knowledge passed through generations · variable documentation",                                "example": "Aboriginal Dreamtime stories" },
+    { "id": "DISPUTED",                    "definition": "Serious disagreement among qualified researchers",                                             "example": "Exact ramp method for the Great Pyramid" },
+    { "id": "UNRESOLVED",                  "definition": "Evidence exists but is insufficient to settle the question",                                  "example": "Purpose of Göbekli Tepe" },
+    { "id": "SPECULATIVE",                 "definition": "Hypothesis without adequate evidence",                                                          "example": "Atlantis as a real advanced civilisation" },
+    { "id": "MODERN_INTERPRETATION",       "definition": "A later reinterpretation of older material · not established by the ancient source itself",     "example": "Ancient-astronaut reading of Anunnaki texts" },
+    { "id": "CONTRADICTED_BY_EVIDENCE",    "definition": "Available evidence substantially conflicts with the claim",                                    "example": "Humans and non-avian dinosaurs living together" },
+    { "id": "UNKNOWN",                     "definition": "NEX genuinely lacks information · honest gap · not to be conflated with UNRESOLVED (which has some evidence)", "example": "New topic outside NEX's current registry" }
+  ]
+}

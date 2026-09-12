@@ -1,0 +1,47 @@
+{
+  "version": "v0.1.0",
+  "notes": "Work Order Capability Manifest · Phase 8 v0.1.6. Machine-verifiable Ed25519-signed structure attached to every Work Order. Broker evaluates every capability request against Founder Authorisation × Work Order × Capability Manifest.",
+  "record_type": "WORK_ORDER_CAPABILITY_MANIFEST",
+  "manifest_fields": {
+    "manifest_id":                     "WOM-<sha> · monotonic",
+    "work_order_id":                   "reference · bound",
+    "founder_authorisation_ref":       "reference to founder-signed authorisation record",
+    "write_root":                      "single workspace-relative root · '.nex/workspaces/<wo_id>/'",
+    "read_roots":                      "array of workspace-relative + explicitly-founder-authorised project roots (narrow allowlist)",
+    "protected_paths":                 "array · hard denies · always inherited from mandatory exclusions regardless of Work Order authoring",
+    "read_denylist":                   "array · hard denies · always inherited (.env* · **/*.pem · **/id_rsa* · .git/** · .npmrc · credentials* · founder-authorised-*.sig · .nex/authority/** · node_modules/** for direct read)",
+    "allowed_processes":               "array of PROCESS_CAPABILITY_ENTRY_ids",
+    "allowed_environment":             "object · whitelisted env var names + fixed values",
+    "network_policy":                  "DENY (default) OR object with explicit outbound allowlist (rare · founder-authored)",
+    "resource_limits":                 "object · cpu_ms_max · memory_bytes_max · wall_ms_max · fd_max · total_write_bytes_max · process_count_max",
+    "iteration_limit":                 "int · max BUILD→TEST→INSPECT→CRITIQUE→FIX→RETEST loops",
+    "timeout":                         "int seconds · wall-clock deadline for the whole Work Order",
+    "snapshot_policy":                 "object · capture_before_every_write=true (mandatory) · retention_after_rollback=always · retention_after_reject=always · retention_after_accept=founder_authored",
+    "ipc_policy":                      "object · request_rate_limit · session_timeout · max_request_size · capability_token_ttl",
+    "interpretation_authority":        "object · what NEX1 may reinterpret at will (usually 'nothing' · founder-authored)",
+    "founder_authorisation_signature": "Ed25519 signature over the manifest by founder-held key"
+  },
+  "process_capability_entry_fields": {
+    "entry_id":                    "string",
+    "executable_identity":         "string · e.g. 'node'",
+    "executable_absolute_path":    "resolved once at broker start · pinned",
+    "executable_hash":             "sha256 of the resolved binary · pinned",
+    "executable_version":          "e.g. 'v20.11.0' · must match at spawn time",
+    "arguments_policy":            "exact match | whitelist | regex",
+    "working_directory_policy":    "must resolve inside workspace root",
+    "environment_policy":          "whitelist + fixed values",
+    "resource_limits":             "per-invocation · cpu_ms_max · memory_bytes_max · wall_ms_max · fd_max",
+    "network_policy":              "DENY (default) OR explicit outbound allowlist",
+    "stdio_policy":                "stdin=/dev/null · stdout+stderr captured to Broker event log",
+    "child_process_policy":        "DENY (default) OR explicit depth limit"
+  },
+  "invariants": [
+    "Manifest is Ed25519-signed by a founder-held key at Work Order authoring",
+    "Broker verifies signature at Work Order intake · refuses if invalid",
+    "Manifest is IMMUTABLE for the duration of the Work Order · manifest_hash pinned",
+    "Every capability request is evaluated against Founder Authorisation ∧ Work Order ∧ Capability Manifest",
+    "Manifest additions require founder authoring · never runtime-generated",
+    "Requests touching fields not enumerated in the Manifest are DENIED by default",
+    "external_llm_used=false · deterministic=true"
+  ]
+}

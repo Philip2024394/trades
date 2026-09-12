@@ -1,0 +1,211 @@
+{
+  "at": "2026-09-11T22:12:39.723Z",
+  "challenge": "capability-g · multi-hop consequence chains",
+  "attribution": {
+    "teaching_infrastructure_used": "A + C + D + E + F · taught_by (earlier events)",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner",
+    "teacher_edits_during_this_run": "none"
+  },
+  "sub_tests": {
+    "G-A": {
+      "causal_chain": [
+        {
+          "label": "G-A",
+          "iterations": [
+            {
+              "iteration": 1,
+              "scoped_errors": 4,
+              "findings": [
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-a.ts",
+                  "property": "count",
+                  "result": "repaired",
+                  "value": "0",
+                  "applied": true
+                },
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-1.ts",
+                  "property": "count",
+                  "result": "escalated",
+                  "declared_type": null,
+                  "reason": "no declaration of 'count' on type 'B' in any supplied source (3 searched)"
+                },
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-2.ts",
+                  "property": "count",
+                  "result": "escalated",
+                  "declared_type": null,
+                  "reason": "no declaration of 'count' on type 'B' in any supplied source (3 searched)"
+                },
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-3.ts",
+                  "property": "count",
+                  "result": "escalated",
+                  "declared_type": null,
+                  "reason": "no declaration of 'count' on type 'B' in any supplied source (3 searched)"
+                }
+              ],
+              "repairs_applied": 1,
+              "escalations": 3
+            },
+            {
+              "iteration": 2,
+              "scoped_errors": 3,
+              "findings": [
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-1.ts",
+                  "property": "count",
+                  "result": "escalated",
+                  "declared_type": null,
+                  "reason": "no declaration of 'count' on type 'B' in any supplied source (3 searched)"
+                },
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-2.ts",
+                  "property": "count",
+                  "result": "escalated",
+                  "declared_type": null,
+                  "reason": "no declaration of 'count' on type 'B' in any supplied source (3 searched)"
+                },
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-3.ts",
+                  "property": "count",
+                  "result": "escalated",
+                  "declared_type": null,
+                  "reason": "no declaration of 'count' on type 'B' in any supplied source (3 searched)"
+                }
+              ],
+              "repairs_applied": 0,
+              "escalations": 3
+            }
+          ],
+          "terminated": "no_repairs_possible"
+        }
+      ],
+      "final_scoped_errors": 3,
+      "byte_identical": true,
+      "verdict": "fail"
+    },
+    "G-B": {
+      "causal_chain": [
+        {
+          "label": "G-B",
+          "iterations": [
+            {
+              "iteration": 1,
+              "scoped_errors": 4,
+              "findings": [
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-a.ts",
+                  "property": "count",
+                  "result": "repaired",
+                  "value": "0",
+                  "applied": true
+                },
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-1.ts",
+                  "property": "metadata",
+                  "result": "escalated",
+                  "declared_type": "BMetadata",
+                  "reason": "custom or generic type 'BMetadata' · NEX1 escalates rather than fabricating a value"
+                },
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-1.ts",
+                  "property": "count",
+                  "result": "escalated",
+                  "declared_type": null,
+                  "reason": "no declaration of 'count' on type 'B' in any supplied source (3 searched)"
+                },
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-2.ts",
+                  "property": "metadata",
+                  "result": "escalated",
+                  "declared_type": "BMetadata",
+                  "reason": "custom or generic type 'BMetadata' · NEX1 escalates rather than fabricating a value"
+                },
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-2.ts",
+                  "property": "count",
+                  "result": "escalated",
+                  "declared_type": null,
+                  "reason": "no declaration of 'count' on type 'B' in any supplied source (3 searched)"
+                },
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-3.ts",
+                  "property": "metadata",
+                  "result": "escalated",
+                  "declared_type": "BMetadata",
+                  "reason": "custom or generic type 'BMetadata' · NEX1 escalates rather than fabricating a value"
+                },
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-3.ts",
+                  "property": "count",
+                  "result": "escalated",
+                  "declared_type": null,
+                  "reason": "no declaration of 'count' on type 'B' in any supplied source (3 searched)"
+                }
+              ],
+              "repairs_applied": 1,
+              "escalations": 6
+            },
+            {
+              "iteration": 2,
+              "scoped_errors": 3,
+              "findings": [
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-1.ts",
+                  "property": "metadata",
+                  "result": "escalated",
+                  "declared_type": "BMetadata",
+                  "reason": "custom or generic type 'BMetadata' · NEX1 escalates rather than fabricating a value"
+                },
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-1.ts",
+                  "property": "count",
+                  "result": "escalated",
+                  "declared_type": null,
+                  "reason": "no declaration of 'count' on type 'B' in any supplied source (3 searched)"
+                },
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-2.ts",
+                  "property": "metadata",
+                  "result": "escalated",
+                  "declared_type": "BMetadata",
+                  "reason": "custom or generic type 'BMetadata' · NEX1 escalates rather than fabricating a value"
+                },
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-2.ts",
+                  "property": "count",
+                  "result": "escalated",
+                  "declared_type": null,
+                  "reason": "no declaration of 'count' on type 'B' in any supplied source (3 searched)"
+                },
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-3.ts",
+                  "property": "metadata",
+                  "result": "escalated",
+                  "declared_type": "BMetadata",
+                  "reason": "custom or generic type 'BMetadata' · NEX1 escalates rather than fabricating a value"
+                },
+                {
+                  "file": "data/nex1-code-engine/chain-g/callers/build-b-3.ts",
+                  "property": "count",
+                  "result": "escalated",
+                  "declared_type": null,
+                  "reason": "no declaration of 'count' on type 'B' in any supplied source (3 searched)"
+                }
+              ],
+              "repairs_applied": 0,
+              "escalations": 6
+            }
+          ],
+          "terminated": "no_repairs_possible"
+        }
+      ],
+      "final_scoped_errors": 3,
+      "expected_residual_metadata_escalations": 3,
+      "byte_identical": true,
+      "verdict": "pass"
+    }
+  }
+}

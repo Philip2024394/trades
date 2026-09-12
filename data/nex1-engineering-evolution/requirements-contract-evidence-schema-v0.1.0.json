@@ -1,0 +1,27 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX Requirements / Contract Engineer Evidence Specialist · founder-authorised 2026-09-12. Fills NEX3's user_objective_alignment hole. Deterministic. Advisory.",
+  "record_type": "REQUIREMENTS_CONTRACT_EVIDENCE",
+  "constitutional_purpose_locked": "Compare USER OBJECTIVE → WORK ORDER → IMPLEMENTATION → OBSERVED BEHAVIOUR. Detect requirement drift. Never invent requirements. User objective must remain traceable to the Work Order.",
+  "outcomes_permitted": {
+    "CONTRACT_HELD":                    "acceptance criteria observed to hold · every requirement id has a matching implementation trace",
+    "REQUIREMENT_UNMET":                "one or more acceptance criteria not satisfied · specific IDs listed",
+    "REQUIREMENT_MISSING":              "a stated requirement has no matching implementation trace",
+    "REQUIREMENT_CHANGED":              "implementation diverges from the stated requirement · not necessarily a defect · flagged for founder disposition",
+    "ACCEPTANCE_CRITERION_MISSING":     "Work Order lacks a testable acceptance criterion for a stated requirement",
+    "CONTRACT_UNDECIDABLE":             "requirement phrasing is ambiguous · deterministic adjudication not possible",
+    "INSUFFICIENT_EVIDENCE":            "attempted but insufficient signal"
+  },
+  "forbidden_vocabulary_in_output": [
+    "requirement_score","satisfaction_score","alignment_score","quality_score","overall_quality","confidence_percent","aggregate_quality","weighted_total"
+  ],
+  "invariants": [
+    "MUST NOT invent requirements",
+    "MUST NOT reinterpret the founder-authored objective",
+    "every CONTRACT_HELD / REQUIREMENT_UNMET conclusion cites a requirement_id + implementation trace",
+    "CONTRACT_UNDECIDABLE is a first-class successful outcome · specialist refuses to guess",
+    "authorisation=false · execution=false · authority_boundary='evidence_producer_only'",
+    "external_llm_used=false · deterministic=true",
+    "routes through Evidence Validation"
+  ]
+}

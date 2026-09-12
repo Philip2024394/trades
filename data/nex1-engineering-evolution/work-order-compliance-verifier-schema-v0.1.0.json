@@ -1,0 +1,42 @@
+{
+  "version": "v0.1.0",
+  "notes": "Work Order Compliance Verifier · Trust Domain D · Phase 8 v0.1.6 · introduced in v0.1.6 hardening. Bounded: checks CONSTRAINT COMPLIANCE against Work Order + Capability Manifest. Does NOT judge code quality.",
+  "record_type": "WORK_ORDER_COMPLIANCE_VERDICT",
+  "verifier_checks": [
+    { "check": "permitted_files",                "asks": "every file in AUTHORITATIVE_DIFF_BUNDLE is within write_root and matches permitted_mutation_types" },
+    { "check": "permitted_processes",            "asks": "every process invocation in event log matches an allowed_processes entry" },
+    { "check": "required_tests_executed",        "asks": "every required acceptance test declared in Work Order was actually executed AND its outcome recorded" },
+    { "check": "explicit_constraints_satisfied", "asks": "mechanically-verifiable Work Order constraints hold (e.g. api-surface hash preserved · lockfile hash unchanged · specific file patterns retained)" },
+    { "check": "interpretation_authority",       "asks": "every NEX1 action taken under PROPOSED_INTERPRETATION has a matching AUTHORITY_LAYER_DECISION_ID · per P-O" },
+    { "check": "manifest_limits_respected",      "asks": "iteration_count · cpu_ms · memory_bytes · wall_ms · total_write_bytes · process_count stayed within Capability Manifest resource_limits" }
+  ],
+  "verdicts_permitted": {
+    "COMPLIANT":                       "all six checks pass",
+    "CONSTRAINT_VIOLATED":              "one or more explicit_constraints_satisfied checks failed",
+    "INTERPRETATION_AUTHORITY_EXCEEDED":"NEX1 action taken under PROPOSED_INTERPRETATION without matching authority decision",
+    "REQUIRED_TEST_NOT_EXECUTED":       "declared acceptance test did not execute · P-M applies · no marketing claim",
+    "REQUIRED_DECISION_NOT_OBTAINED":   "DECISION_REQUEST unresolved before proceeding · P-O applies",
+    "MANIFEST_LIMIT_EXCEEDED":          "resource limit exceeded",
+    "FILE_OUT_OF_SCOPE":                "mutation outside write_root · MASTER_AUTHORITY_ELEVATION_ATTEMPT elsewhere in log",
+    "PROCESS_NOT_ON_ALLOWLIST":         "process invocation without corresponding PROCESS_CAPABILITY_ENTRY"
+  },
+  "verdict_fields": [
+    "record_type=WORK_ORDER_COMPLIANCE_VERDICT",
+    "verdict · one of verdicts_permitted",
+    "work_order_id · manifest_hash",
+    "check_results[] · one per verifier_check · pass|fail · detail",
+    "cited_evidence_ids[] · Broker events · Observer bundle · NEX1 proposal (advisory)",
+    "signature · Ed25519 by Compliance Verifier private key · key_id + key_version",
+    "attribution · role='nex_work_order_compliance_verifier' · authority='compliance_check_only' · produced_by='nex_work_order_compliance_verifier' · external_llm_used=false · deterministic=true",
+    "authorisation=false · execution=false · authority_boundary='compliance_check_readonly'"
+  ],
+  "invariants": [
+    "Verifier does NOT judge code quality · aesthetics · algorithm optimality · style",
+    "Verifier only performs mechanical constraint checks against Work Order + Capability Manifest",
+    "Verifier has ZERO write authority · reads only",
+    "Verifier's Ed25519 private key is separate from Broker's and Observer's · never exchanged",
+    "Verifier verdict routes through Evidence Validation as AuthoritativeEvidenceRecord",
+    "NEX2/NEX3 arbitrate over Verifier verdict alongside AUTHORITATIVE_DIFF_BUNDLE",
+    "external_llm_used=false · deterministic=true"
+  ]
+}

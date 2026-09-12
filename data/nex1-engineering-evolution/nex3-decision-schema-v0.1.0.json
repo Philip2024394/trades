@@ -1,0 +1,66 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX3 Arbitration Decision Object schema · founder-authorised research artefact 2026-09-12. Controlled prototype · no runtime · no doctrine mutation. NEX3 is the evidence-based arbiter, NOT a winner-picker. Every arbitration produces a decision object reproducible from evidence.",
+  "record_type": "NEX3_ARBITRATION_DECISION",
+  "required_fields": [
+    { "name": "decision_id",              "shape": "string · monotonic · e.g. N3-DEC-0007" },
+    { "name": "request_id",               "shape": "string · links to the originating Work Order" },
+    { "name": "at",                        "shape": "ISO-8601 · immutable" },
+    { "name": "candidate_a",              "shape": "object · { source: 'nex1', diff_ref, tests_ref, metrics_ref }" },
+    { "name": "candidate_b",              "shape": "object · { source: 'nex2', diff_ref, tests_ref, metrics_ref }" },
+    { "name": "user_objective",           "shape": "string · founder or user-authored statement of intent" },
+    { "name": "project_constraints",      "shape": "object · project style · frameworks · existing conventions" },
+    { "name": "criteria_scores",          "shape": "object · every criterion has {score, evidence, rationale}",
+                                          "required_criteria": [
+                                            "correctness",
+                                            "test_evidence",
+                                            "regression_result",
+                                            "complexity",
+                                            "maintainability",
+                                            "scalability",
+                                            "performance",
+                                            "security",
+                                            "dependency_impact",
+                                            "architecture_impact",
+                                            "future_change_cost",
+                                            "project_style_alignment",
+                                            "rollback_safety",
+                                            "minimum_necessary_complexity"
+                                          ] },
+    { "name": "evidence_quality",         "shape": "enum · high · medium · low · insufficient" },
+    { "name": "decision",                 "shape": "enum · CANDIDATE_A · CANDIDATE_B · EXISTING_CODE_BETTER · BOTH_INFERIOR · HOLD_INSUFFICIENT_EVIDENCE · CLARIFY_USER_INTENT",
+                                          "note": "'always choose one' is REJECTED · correctness > forced resolution" },
+    { "name": "reason",                    "shape": "string · reproducible from criteria_scores" },
+    { "name": "confidence",                "shape": "enum · high · medium · low" },
+    { "name": "limitations",               "shape": "string · what this decision does NOT cover" },
+    { "name": "rollback_plan",             "shape": "string · how to undo the accepted candidate if regression appears" },
+    { "name": "deterministic",             "shape": "boolean · must be true" },
+    { "name": "attribution",               "shape": "object · external_llm_used=false · taught_by=master_ai_engineer" }
+  ],
+  "verdict_types": [
+    { "id": "CANDIDATE_A",                    "meaning": "NEX1's proposal wins on evidence" },
+    { "id": "CANDIDATE_B",                    "meaning": "NEX2's alternative wins on evidence" },
+    { "id": "EXISTING_CODE_BETTER",           "meaning": "neither candidate improves on the current code · take no action" },
+    { "id": "BOTH_INFERIOR",                  "meaning": "both are worse than existing · request rethink" },
+    { "id": "HOLD_INSUFFICIENT_EVIDENCE",     "meaning": "evidence cannot support any verdict · SH-3-style honest hold" },
+    { "id": "CLARIFY_USER_INTENT",            "meaning": "user_objective is ambiguous · verdict withheld pending clarification" }
+  ],
+  "invariants": [
+    "NEX3 never decides on style/tone/plausibility",
+    "NEX3 verdict is reproducible from evidence · not from persuasion",
+    "NEX3 may return HOLD or CLARIFY · never forced to CHOOSE",
+    "criteria_scores must include ALL 14 required criteria · absence is treated as evidence-quality=insufficient",
+    "minimum_necessary_complexity criterion may not be optimised for smaller code · trade-offs must be recorded",
+    "every criterion score must cite the evidence source (benchmark id · metric id · adversarial fixture id)",
+    "no verdict can override Origin Protection · Safety · Authorisation",
+    "arbitration is advisory to the founder for the first N sprints · never binding until explicit AUTHORISE"
+  ],
+  "hold_conditions": [
+    "evidence_quality === 'insufficient'",
+    "regression_result contains any drift",
+    "adversarial fixtures absent for the operation kind",
+    "project_style_alignment score has no evidence",
+    "user_objective ambiguous or contradictory",
+    "any criterion missing a citation"
+  ]
+}

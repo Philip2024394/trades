@@ -1,0 +1,139 @@
+[
+  {
+    "run_id": "62590211-a4d9-4889-a9de-3ee4adf7e318",
+    "position_id": "indonesia_knowledge",
+    "started_at": "2026-09-07T05:46:27.295Z",
+    "last_progress_at": "2026-09-07T05:46:27.295Z",
+    "completed_at": "2026-09-07T05:46:27.295Z",
+    "machinery_used": "indonesia_walker",
+    "sources_accessed": [
+      "walker.adat.communities",
+      "walker.culture.festivals_ceremonies",
+      "walker.spiritual.sacred_sites"
+    ],
+    "snapshots_created": 3,
+    "claims_extracted": 23,
+    "claims_verified": 23,
+    "claims_rejected": 0,
+    "claims_promoted": 23,
+    "failure_stage": null,
+    "failure_reason": null,
+    "evidence_pointers": [
+      "data/indonesia/knowledge-acquired.json@generatedAt=2026-09-05T12:21:54.267Z",
+      "walker=walker.adat.communities·records=5",
+      "walker=walker.culture.festivals_ceremonies·records=12",
+      "walker=walker.spiritual.sacred_sites·records=6"
+    ],
+    "final_status": null
+  },
+  {
+    "run_id": "5197f059-fce6-4b47-aeb6-43ca6186b30e",
+    "position_id": "restaurant_food",
+    "started_at": "2026-09-07T05:46:27.296Z",
+    "last_progress_at": "2026-09-07T05:46:27.296Z",
+    "completed_at": "2026-09-07T05:46:27.296Z",
+    "machinery_used": "indonesia_walker",
+    "sources_accessed": [
+      "C:\\Users\\Victus\\trades\\data\\indonesia\\sources\\food_dishes\\dishes.json",
+      "walker.food.dishes"
+    ],
+    "snapshots_created": 1,
+    "claims_extracted": 9,
+    "claims_verified": 9,
+    "claims_rejected": 0,
+    "claims_promoted": 9,
+    "failure_stage": null,
+    "failure_reason": null,
+    "evidence_pointers": [
+      "config=C:\\Users\\Victus\\trades\\data\\indonesia\\walker-configs\\walker.food.dishes.json",
+      "source=C:\\Users\\Victus\\trades\\data\\indonesia\\sources\\food_dishes\\dishes.json",
+      "data/indonesia/knowledge-acquired.json@generatedAt=2026-09-05T12:21:54.267Z",
+      "walker_id=walker.food.dishes·records=9",
+      "sample=food.mie_goreng",
+      "sample=food.nasi_campur",
+      "sample=food.es_teler"
+    ],
+    "final_status": null
+  },
+  {
+    "run_id": "aaf78af5-0053-4774-8d98-96dae2334498",
+    "position_id": "travel_transport",
+    "started_at": "2026-09-07T05:46:27.298Z",
+    "last_progress_at": "2026-09-07T05:46:27.298Z",
+    "completed_at": "2026-09-07T05:46:27.298Z",
+    "machinery_used": "indonesia_walker",
+    "sources_accessed": [
+      "C:\\Users\\Victus\\trades\\data\\indonesia\\sources\\airports\\airports.json",
+      "walker.travel.airports"
+    ],
+    "snapshots_created": 1,
+    "claims_extracted": 8,
+    "claims_verified": 8,
+    "claims_rejected": 0,
+    "claims_promoted": 8,
+    "failure_stage": null,
+    "failure_reason": null,
+    "evidence_pointers": [
+      "config=C:\\Users\\Victus\\trades\\data\\indonesia\\walker-configs\\walker.travel.airports.json",
+      "source=C:\\Users\\Victus\\trades\\data\\indonesia\\sources\\airports\\airports.json",
+      "data/indonesia/knowledge-acquired.json@generatedAt=2026-09-05T12:21:54.267Z",
+      "walker_id=walker.travel.airports·records=8",
+      "sample=airport.manado_mdc",
+      "sample=airport.jakarta_cgk",
+      "sample=airport.surabaya_sub"
+    ],
+    "final_status": null
+  },
+  {
+    "run_id": "5f2ff023-661f-43ad-9d15-a9e2817af59e",
+    "position_id": "hotel_accommodation",
+    "started_at": "2026-09-05T12:27:25.612Z",
+    "last_progress_at": "2026-09-05T12:27:28.373Z",
+    "completed_at": "2026-09-05T12:27:28.373Z",
+    "machinery_used": "p1_acquisition_pipeline",
+    "sources_accessed": [
+      "nex.accommodation_business"
+    ],
+    "snapshots_created": 9203,
+    "claims_extracted": 9203,
+    "claims_verified": 9203,
+    "claims_rejected": 0,
+    "claims_promoted": 877,
+    "failure_stage": null,
+    "failure_reason": null,
+    "evidence_pointers": [
+      "probe=C:\\Users\\Victus\\trades\\tests\\fixtures\\workforce-activation-proof\\_hotel_probe.json",
+      "row_count=9203",
+      "categories=hotel=6840 · guesthouse=1706 · hostel=267 · kos=215 · apartment=96 · villa=78 · homestay=1",
+      "cities=Denpasar=2145 · Jakarta=906 · Yogyakarta=882 · Badung=697 · Kuta=613",
+      "claim_status_listed=877",
+      "claim_status_discovered=8326"
+    ],
+    "final_status": null
+  },
+  {
+    "run_id": "e6fbf74e-ad28-4a56-b9db-477cd64064ea",
+    "position_id": "gym_fitness",
+    "started_at": "2026-09-05T12:34:05.342Z",
+    "last_progress_at": "2026-09-05T12:34:08.278Z",
+    "completed_at": "2026-09-05T12:34:08.278Z",
+    "machinery_used": "p1_acquisition_pipeline",
+    "sources_accessed": [
+      "nex.service_business:gyms"
+    ],
+    "snapshots_created": 292,
+    "claims_extracted": 292,
+    "claims_verified": 292,
+    "claims_rejected": 0,
+    "claims_promoted": 0,
+    "failure_stage": null,
+    "failure_reason": null,
+    "evidence_pointers": [
+      "probe=C:\\Users\\Victus\\trades\\tests\\fixtures\\workforce-activation-proof\\_gym_probe.json",
+      "row_count=292",
+      "cities=Jakarta=57 · Denpasar=42 · Badung=32 · Bandung=22 · Kuta=21",
+      "owner_status=null=292"
+    ],
+    "final_status": null
+  }
+]

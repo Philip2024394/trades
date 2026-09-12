@@ -1,0 +1,24 @@
+{
+  "endpoints": {
+    "https://qlever.cs.uni-freiburg.de/api/wikidata": {
+      "consecutive_failures": 3,
+      "breaker_open_until": "2026-09-12T16:50:35.482Z",
+      "last_success_at": null,
+      "last_failure_at": "2026-09-12T16:35:35.482Z",
+      "last_error": "http_400",
+      "requests_attempted": 26,
+      "requests_succeeded": 0,
+      "bytes_in_total": 0
+    },
+    "https://query.wikidata.org/sparql": {
+      "consecutive_failures": 0,
+      "breaker_open_until": null,
+      "last_success_at": "2026-09-12T16:36:56.291Z",
+      "last_failure_at": "2026-09-12T16:35:31.805Z",
+      "last_error": null,
+      "requests_attempted": 2739,
+      "requests_succeeded": 2702,
+      "bytes_in_total": 697052323
+    }
+  }
+}

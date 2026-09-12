@@ -1,0 +1,11 @@
+[
+  {
+    "claim_id": "bd344fa6-b06a-458b-897e-656e446873ee",
+    "subject": "HS 0304",
+    "predicate": "canned processed fish products",
+    "extracted_from": "4a05863a-23f2-45f8-a28a-987acb20d175",
+    "extractor_id": "structured.json",
+    "extracted_at": "2026-09-10T05:25:19.868Z",
+    "status": "candidate"
+  }
+]

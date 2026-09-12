@@ -1,0 +1,1724 @@
+{
+  "label": "V5.4.6-AUTH-ISG-PHASE-0-AUDIT-001",
+  "schema_version": "v1.0",
+  "started_at_iso": "2026-09-08T14:43:36.197Z",
+  "completed_at_iso": "2026-09-08T14:43:44.674Z",
+  "duration_ms": 8477,
+  "labels_used": [
+    "IMPLEMENTED",
+    "PARTIAL",
+    "INACTIVE",
+    "MISSING",
+    "DUPLICATED",
+    "UNSAFE"
+  ],
+  "env": {
+    "NEX_OBJECT_BACKEND": "postgres",
+    "NEX_INBOX_SHADOW_POSTGRES": "1",
+    "NEX_INBOX_READ_BACKEND": "postgres",
+    "NEX_BRAIN_BACKEND": "postgres",
+    "NEX_POSTGRES_URL_present": true
+  },
+  "components": {
+    "object_storage": {
+      "active_backend": "postgres",
+      "registry": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 10074,
+        "sha256_24": "e33bd9328ace076c02ff20e4",
+        "note": "manifest layer · getObjectStorage()"
+      },
+      "adapter_r2": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 16660,
+        "sha256_24": "2252dd1d7f252bf91ebc451e",
+        "note": "Cloudflare R2 · activated by NEX_OBJECT_BACKEND=r2"
+      },
+      "adapter_postgres": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 13540,
+        "sha256_24": "6f7b42076588ab548d8c46aa",
+        "note": "Postgres nex.object_blobs"
+      },
+      "adapter_filesystem": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 14297,
+        "sha256_24": "d33328f705d9a33ae7559a8d",
+        "note": "reference adapter · data/nex-objects/"
+      },
+      "types": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 6450,
+        "sha256_24": "6fb5afe249f01f975b46a19e",
+        "note": "StorageBackend + capability flags"
+      },
+      "verdict": "IMPLEMENTED"
+    },
+    "postgres_shadow_write": {
+      "activation_env": "NEX_INBOX_SHADOW_POSTGRES=1",
+      "shadow_module": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 6844,
+        "sha256_24": "fd366a3cd30ed80527d4dccc",
+        "note": "shadowUpsertInboxItem etc"
+      },
+      "active": "IMPLEMENTED",
+      "note": "Wave 11 shadow-write applies to nex.knowledge_inbox · NOT nex.accommodation_business"
+    },
+    "storage_placements": {
+      "present": true,
+      "label": "IMPLEMENTED",
+      "bytes": 11854,
+      "sha256_24": "34b2ede0f141d6a2857398fd",
+      "note": "Master AI placement decisions"
+    },
+    "storage_providers": {
+      "present": true,
+      "label": "IMPLEMENTED",
+      "bytes": 5591,
+      "sha256_24": "f3bba2ec078297b7bee6e200",
+      "note": "Master AI provider registry"
+    },
+    "storage_utilization": {
+      "present": true,
+      "label": "IMPLEMENTED",
+      "bytes": 706,
+      "sha256_24": "e91c0d65fa1f289ce81fe0f1",
+      "note": "Master AI utilization telemetry"
+    },
+    "storage_forecasts": {
+      "present": true,
+      "label": "IMPLEMENTED",
+      "bytes": 447,
+      "sha256_24": "73b920c6c831518138a54d74",
+      "note": "Master AI forecasts"
+    },
+    "storage_rotations": {
+      "present": false,
+      "label": "MISSING",
+      "note": "Master AI rotation events"
+    },
+    "offline_reservoir": {
+      "module": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 3109,
+        "sha256_24": "fa92a1938744a321c130f2ce",
+        "note": "readMode/setMode · freshnessOf"
+      },
+      "state": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 147,
+        "sha256_24": "5e15595ae9066168129029f5",
+        "note": "current online/offline flag"
+      }
+    },
+    "knowledge_ledger": {
+      "module": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 2444,
+        "sha256_24": "02f255bd4e66681e5c0046ea",
+        "note": "cross-agent · authority tiers · supersedes chain"
+      },
+      "ledger_file": {
+        "present": false,
+        "label": "INACTIVE"
+      }
+    },
+    "accommodation_canonical": {
+      "postgres_adapter": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 9039,
+        "sha256_24": "9fbd439b5f6a37a52973d053",
+        "note": "canonical read adapter"
+      },
+      "worker": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 7288,
+        "sha256_24": "2ec50eac256be0cffdbb55b0",
+        "note": "Phase-A observation-only worker"
+      },
+      "brain_slots": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 11549,
+        "sha256_24": "ee2ff96fc6557cff4838e35f",
+        "note": "slot extraction from conversation"
+      },
+      "orchestrate_test": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 4747,
+        "sha256_24": "e6382f65c8ce6d93aeac694a",
+        "note": "Brain routing tests"
+      },
+      "id_test": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 10680,
+        "sha256_24": "58e5cac55f80044e52a8b17d",
+        "note": "ID resolution tests"
+      },
+      "note": "Accommodation lives in brain + agent-runtime · no dedicated src/lib/nex/accommodation-intel/ directory · that GAP is intentional per Founder mandate to reuse existing patterns"
+    },
+    "master_ai_ledgers": {
+      "label": "IMPLEMENTED",
+      "file_count": 49,
+      "total_bytes": 7112246,
+      "total_jsonl_lines": 12893,
+      "top_10_by_size": [
+        {
+          "file": "agent_health_reports.jsonl",
+          "bytes": 4017040,
+          "jsonl_lines": 10345
+        },
+        {
+          "file": "research_findings.jsonl",
+          "bytes": 2007179,
+          "jsonl_lines": 128
+        },
+        {
+          "file": "research_queue.jsonl",
+          "bytes": 277572,
+          "jsonl_lines": 888
+        },
+        {
+          "file": "failure_patterns.jsonl",
+          "bytes": 206296,
+          "jsonl_lines": 498
+        },
+        {
+          "file": "connectivity_findings.jsonl",
+          "bytes": 152006,
+          "jsonl_lines": 157
+        },
+        {
+          "file": "source_health.jsonl",
+          "bytes": 102827,
+          "jsonl_lines": 296
+        },
+        {
+          "file": "usage_events.jsonl",
+          "bytes": 59295,
+          "jsonl_lines": 249
+        },
+        {
+          "file": "w4_6_attack_survival.jsonl",
+          "bytes": 25598,
+          "jsonl_lines": 4
+        },
+        {
+          "file": "economics_simulations.jsonl",
+          "bytes": 24207,
+          "jsonl_lines": 12
+        },
+        {
+          "file": "self_criticism.jsonl",
+          "bytes": 17822,
+          "jsonl_lines": 9
+        }
+      ]
+    },
+    "hot_tier": {
+      "module": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 14982,
+        "sha256_24": "1679744aa188aed03c9feac7",
+        "note": "acceleration layer · rebuildable · disposable · onCanonicalChange"
+      },
+      "loader": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 3952,
+        "sha256_24": "186d47e10b3d9d39523ce140",
+        "note": "canonical Postgres → in-memory projection"
+      },
+      "note": "shipped earlier this session · discipline enforced (never writes to Postgres)"
+    },
+    "agent_registry": {
+      "module": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 14107,
+        "sha256_24": "573cd6734a2a7cce76aad588",
+        "note": "agent state + 3-state reports"
+      },
+      "catalogue": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 4310,
+        "sha256_24": "afc35f57f1439ed10c5fb76f",
+        "note": "agent registry ledger"
+      },
+      "three_state_report": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 14391,
+        "sha256_24": "43cf2ac45e8fd0213b6b10c1",
+        "note": "RUNNING / HEALTHY / USEFUL"
+      }
+    },
+    "workers": {
+      "worker_accommodation": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 7288,
+        "sha256_24": "2ec50eac256be0cffdbb55b0",
+        "note": null
+      },
+      "worker_programmer": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 9951,
+        "sha256_24": "8a31ac2bcb4fc28bac46b1a5",
+        "note": null
+      },
+      "worker_master_ai": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 8164,
+        "sha256_24": "2a7e1ccb40592dc342aac47a",
+        "note": null
+      },
+      "worker_speaking": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 5546,
+        "sha256_24": "bbdd84c1bb28542366bc04af",
+        "note": null
+      },
+      "worker_vision": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 5209,
+        "sha256_24": "de51d8b23b7f8a61f2496c86",
+        "note": null
+      },
+      "worker_travel": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 4560,
+        "sha256_24": "2983b8dfc5e0f0fce24635c2",
+        "note": null
+      },
+      "worker_business": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 4598,
+        "sha256_24": "6fd0a9c39533ac66655f40e8",
+        "note": null
+      },
+      "worker_food": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 4492,
+        "sha256_24": "64ad891314b914ab01f600fc",
+        "note": null
+      },
+      "worker_construction": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 4709,
+        "sha256_24": "8720512b786f2faf2b167dd7",
+        "note": null
+      },
+      "worker_healthcare": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 4676,
+        "sha256_24": "40030622e9543eb74a69a454",
+        "note": null
+      },
+      "worker_transport": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 4587,
+        "sha256_24": "f5ce03f19f7dab75a0f411f8",
+        "note": null
+      },
+      "worker_legal": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 4511,
+        "sha256_24": "c5fa6af7b917a17078fcf766",
+        "note": null
+      }
+    },
+    "research_gateway": {
+      "module": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 7367,
+        "sha256_24": "0e53e364bf54159e5cbd0d86",
+        "note": "source federation + rate limits"
+      },
+      "engine": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 8959,
+        "sha256_24": "791828f448d284d7739959d1",
+        "note": "orchestrator"
+      },
+      "findings_ledger": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 2007179,
+        "sha256_24": "6d4c1b183323cbdd2d59f02a",
+        "note": "research output"
+      },
+      "queue_ledger": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 277572,
+        "sha256_24": "66930aa96472c61b85ad1a1b",
+        "note": "pending research"
+      }
+    },
+    "knowledge_gap": {
+      "v2_memo_designed": true,
+      "module_built": false,
+      "verdict": "MISSING",
+      "note": "Gap Engine designed in reservoir v2 memo · not yet built as code module · this ISG mission includes it"
+    },
+    "response_composer": {
+      "types": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 7501,
+        "sha256_24": "2be330d8bbf1bfb1221ee5d1",
+        "note": null
+      },
+      "normalizer": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 2702,
+        "sha256_24": "97d9c9d7ede60e78f54269d7",
+        "note": null
+      },
+      "semantic_cache": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 11299,
+        "sha256_24": "a427ed44053069ad78d02fa5",
+        "note": null
+      },
+      "route_classifier": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 12649,
+        "sha256_24": "71213e4732768aed7a0c4adf",
+        "note": null
+      },
+      "composer": {
+        "present": true,
+        "label": "IMPLEMENTED",
+        "bytes": 25529,
+        "sha256_24": "166cdd979249b935bdc843ef",
+        "note": null
+      },
+      "verdict": "IMPLEMENTED",
+      "note": "n=354 measured 99.4% no-LLM · 99.2-99.4% Postgres avoided · P50 sub-ms"
+    }
+  },
+  "accommodation_data_audit": {
+    "label": "MEASURED",
+    "probes": {
+      "row_count_all": {
+        "label": "MEASURED",
+        "latency_ms": 1207.02,
+        "rows": [
+          {
+            "n": "9203"
+          }
+        ]
+      },
+      "row_count_visible": {
+        "label": "MEASURED",
+        "latency_ms": 235.05,
+        "rows": [
+          {
+            "n": "877"
+          }
+        ]
+      },
+      "claim_status_breakdown": {
+        "label": "MEASURED",
+        "latency_ms": 232.87,
+        "rows": [
+          {
+            "claim_status": "listed",
+            "n": "877"
+          },
+          {
+            "claim_status": "discovered",
+            "n": "8326"
+          }
+        ]
+      },
+      "visible_cities": {
+        "label": "MEASURED",
+        "latency_ms": 307.23,
+        "rows": [
+          {
+            "city": "Yogyakarta",
+            "n": "877"
+          }
+        ]
+      },
+      "all_cities_top20": {
+        "label": "MEASURED",
+        "latency_ms": 236.95,
+        "rows": [
+          {
+            "city": "Jakarta",
+            "n": "906"
+          },
+          {
+            "city": "Klaten",
+            "n": "9"
+          },
+          {
+            "city": "Bekasi",
+            "n": "9"
+          },
+          {
+            "city": "Dumai",
+            "n": "9"
+          },
+          {
+            "city": "Yogyakarta",
+            "n": "882"
+          },
+          {
+            "city": "Sanur",
+            "n": "8"
+          },
+          {
+            "city": "Jakarta Barat",
+            "n": "8"
+          },
+          {
+            "city": "Cianjur",
+            "n": "8"
+          },
+          {
+            "city": "Jayapura",
+            "n": "7"
+          },
+          {
+            "city": "Amlapura",
+            "n": "7"
+          },
+          {
+            "city": "Badung",
+            "n": "697"
+          },
+          {
+            "city": "Kabupaten Bogor",
+            "n": "65"
+          },
+          {
+            "city": "Kuta",
+            "n": "613"
+          },
+          {
+            "city": "Kulon Progo",
+            "n": "6"
+          },
+          {
+            "city": "Gianyar",
+            "n": "6"
+          },
+          {
+            "city": "Kabupaten Tangerang",
+            "n": "6"
+          },
+          {
+            "city": "Kupang",
+            "n": "59"
+          },
+          {
+            "city": "Padang",
+            "n": "59"
+          },
+          {
+            "city": "Sleman",
+            "n": "56"
+          },
+          {
+            "city": "Kuantan Singingi",
+            "n": "5"
+          }
+        ]
+      },
+      "field_density_visible": {
+        "label": "MEASURED",
+        "latency_ms": 238.06,
+        "rows": [
+          {
+            "total": "877",
+            "with_district": "0",
+            "with_rating": "0",
+            "with_room_count": "29",
+            "with_star": "13",
+            "with_lat": "877",
+            "with_lng": "877",
+            "with_phone": "90",
+            "with_website": "57",
+            "with_hero": "25",
+            "with_amenities": "115",
+            "with_categories": "24"
+          }
+        ]
+      },
+      "amenity_distribution": {
+        "label": "MEASURED",
+        "latency_ms": 253.55,
+        "rows": [
+          {
+            "amenity": "wheelchair_accessible",
+            "n": "4"
+          },
+          {
+            "amenity": "smoking_allowed",
+            "n": "4"
+          },
+          {
+            "amenity": "air_conditioning",
+            "n": "27"
+          },
+          {
+            "amenity": "on_site_bar",
+            "n": "2"
+          },
+          {
+            "amenity": "wifi",
+            "n": "107"
+          }
+        ]
+      },
+      "category_distribution": {
+        "label": "UNKNOWN",
+        "latency_ms": 237.47,
+        "error": "column \"accommodation_business.categories\" must appear in the GROUP BY clause or be used in an aggregate function"
+      },
+      "accommodation_related_tables": {
+        "label": "MEASURED",
+        "latency_ms": 1201.66,
+        "rows": [
+          {
+            "table_name": "accommodation_business"
+          },
+          {
+            "table_name": "accommodation_business_field_provenance"
+          },
+          {
+            "table_name": "accommodation_business_source_snapshot"
+          },
+          {
+            "table_name": "accommodation_enrichment_evidence"
+          },
+          {
+            "table_name": "brain_accommodation_prices"
+          },
+          {
+            "table_name": "knowledge_inbox"
+          },
+          {
+            "table_name": "object_blobs"
+          }
+        ]
+      },
+      "nex_schema_all_tables": {
+        "label": "MEASURED",
+        "latency_ms": 421.57,
+        "rows": [
+          {
+            "table_name": "accommodation_business"
+          },
+          {
+            "table_name": "accommodation_business_field_provenance"
+          },
+          {
+            "table_name": "accommodation_business_source_snapshot"
+          },
+          {
+            "table_name": "accommodation_enrichment_evidence"
+          },
+          {
+            "table_name": "alert_dispatches"
+          },
+          {
+            "table_name": "alert_rules"
+          },
+          {
+            "table_name": "alerts"
+          },
+          {
+            "table_name": "analytics_events"
+          },
+          {
+            "table_name": "analytics_records"
+          },
+          {
+            "table_name": "analytics_rollup_queue"
+          },
+          {
+            "table_name": "attributions"
+          },
+          {
+            "table_name": "audit_log"
+          },
+          {
+            "table_name": "automation_rules"
+          },
+          {
+            "table_name": "automation_runs"
+          },
+          {
+            "table_name": "benchmark_runs"
+          },
+          {
+            "table_name": "bike_model"
+          },
+          {
+            "table_name": "bike_rental_listing"
+          },
+          {
+            "table_name": "brain_accommodation_prices"
+          },
+          {
+            "table_name": "brain_activities"
+          },
+          {
+            "table_name": "brain_attractions"
+          },
+          {
+            "table_name": "brain_did_you_know_indonesia"
+          },
+          {
+            "table_name": "brain_english_grammar"
+          },
+          {
+            "table_name": "brain_english_lesson"
+          },
+          {
+            "table_name": "brain_english_practice"
+          },
+          {
+            "table_name": "brain_english_progress"
+          },
+          {
+            "table_name": "brain_english_vocabulary"
+          },
+          {
+            "table_name": "brain_local_guide"
+          },
+          {
+            "table_name": "brain_location"
+          },
+          {
+            "table_name": "brain_memories"
+          },
+          {
+            "table_name": "brain_seasons"
+          },
+          {
+            "table_name": "brain_transport"
+          },
+          {
+            "table_name": "brain_traveler_rating"
+          },
+          {
+            "table_name": "brain_user_saved_facts"
+          },
+          {
+            "table_name": "business_calling_config"
+          },
+          {
+            "table_name": "business_image"
+          },
+          {
+            "table_name": "business_knowledge"
+          },
+          {
+            "table_name": "call_record"
+          },
+          {
+            "table_name": "campaign_recipients"
+          },
+          {
+            "table_name": "campaign_segments"
+          },
+          {
+            "table_name": "campaigns"
+          },
+          {
+            "table_name": "category_candidate"
+          },
+          {
+            "table_name": "category_candidate_calibration_annotation"
+          },
+          {
+            "table_name": "category_candidate_score"
+          },
+          {
+            "table_name": "category_image_library"
+          },
+          {
+            "table_name": "category_registry"
+          },
+          {
+            "table_name": "chat_message"
+          },
+          {
+            "table_name": "chat_message_archive"
+          },
+          {
+            "table_name": "chat_message_deletion"
+          },
+          {
+            "table_name": "compliance_events"
+          },
+          {
+            "table_name": "confidence_scores"
+          },
+          {
+            "table_name": "contact_duplicate_suggestions"
+          },
+          {
+            "table_name": "contact_merges"
+          },
+          {
+            "table_name": "contact_segments"
+          },
+          {
+            "table_name": "contact_sources"
+          },
+          {
+            "table_name": "contacts"
+          },
+          {
+            "table_name": "contradictions"
+          },
+          {
+            "table_name": "conv_edges"
+          },
+          {
+            "table_name": "conv_entities"
+          },
+          {
+            "table_name": "conv_feedback"
+          },
+          {
+            "table_name": "conv_intents"
+          },
+          {
+            "table_name": "conv_knowledge_items"
+          },
+          {
+            "table_name": "conv_learning_candidate"
+          },
+          {
+            "table_name": "conv_outcomes"
+          },
+          {
+            "table_name": "conv_states"
+          },
+          {
+            "table_name": "conv_turns"
+          },
+          {
+            "table_name": "conversion_events"
+          },
+          {
+            "table_name": "cost_budget"
+          },
+          {
+            "table_name": "delivery_job_attempts"
+          },
+          {
+            "table_name": "delivery_jobs"
+          },
+          {
+            "table_name": "delivery_workers_archive_2026_08_22"
+          },
+          {
+            "table_name": "deprecations"
+          },
+          {
+            "table_name": "discovery_orchestrator_pick"
+          },
+          {
+            "table_name": "discovery_rotation_state"
+          },
+          {
+            "table_name": "driver_profile"
+          },
+          {
+            "table_name": "email_templates"
+          },
+          {
+            "table_name": "events"
+          },
+          {
+            "table_name": "experiment_assignments"
+          },
+          {
+            "table_name": "experiment_variants"
+          },
+          {
+            "table_name": "experiments"
+          },
+          {
+            "table_name": "food_business"
+          },
+          {
+            "table_name": "food_business_completeness"
+          },
+          {
+            "table_name": "food_business_field_provenance"
+          },
+          {
+            "table_name": "food_business_freshness"
+          },
+          {
+            "table_name": "food_business_freshness_summary"
+          },
+          {
+            "table_name": "food_business_next_action"
+          },
+          {
+            "table_name": "food_business_promotion"
+          },
+          {
+            "table_name": "food_business_promotion_audit"
+          },
+          {
+            "table_name": "food_business_promotion_decision"
+          },
+          {
+            "table_name": "food_business_source_snapshot"
+          },
+          {
+            "table_name": "food_claim_code"
+          },
+          {
+            "table_name": "food_commercial_event"
+          },
+          {
+            "table_name": "food_commercial_universe"
+          },
+          {
+            "table_name": "food_enrichment_evidence"
+          },
+          {
+            "table_name": "food_enrichment_job"
+          },
+          {
+            "table_name": "food_hq_rule"
+          },
+          {
+            "table_name": "food_next_action_audit"
+          },
+          {
+            "table_name": "food_outreach_attempt"
+          },
+          {
+            "table_name": "food_outreach_suppression"
+          },
+          {
+            "table_name": "food_outreach_template"
+          },
+          {
+            "table_name": "food_pending_self_service_claims"
+          },
+          {
+            "table_name": "food_reverification_candidates"
+          },
+          {
+            "table_name": "food_universe_ratio"
+          },
+          {
+            "table_name": "geo_landmark"
+          },
+          {
+            "table_name": "graph_edges"
+          },
+          {
+            "table_name": "identity_merge_log"
+          },
+          {
+            "table_name": "import_mappings"
+          },
+          {
+            "table_name": "jobs"
+          },
+          {
+            "table_name": "journey_campaign_executions"
+          },
+          {
+            "table_name": "journey_events"
+          },
+          {
+            "table_name": "journey_inbound_events"
+          },
+          {
+            "table_name": "journey_states"
+          },
+          {
+            "table_name": "journey_triggers"
+          },
+          {
+            "table_name": "journeys"
+          },
+          {
+            "table_name": "knowledge_dump_jobs"
+          },
+          {
+            "table_name": "knowledge_feedback"
+          },
+          {
+            "table_name": "knowledge_inbox"
+          },
+          {
+            "table_name": "knowledge_inbox_stats"
+          },
+          {
+            "table_name": "knowledge_records"
+          },
+          {
+            "table_name": "kpe_chunks"
+          },
+          {
+            "table_name": "kpe_decisions"
+          },
+          {
+            "table_name": "kpe_documents"
+          },
+          {
+            "table_name": "kpe_duplicates"
+          },
+          {
+            "table_name": "kpe_edges"
+          },
+          {
+            "table_name": "kpe_human_reviews"
+          },
+          {
+            "table_name": "kpe_metadata"
+          },
+          {
+            "table_name": "kpe_processing_runs"
+          },
+          {
+            "table_name": "llm_retry_queue"
+          },
+          {
+            "table_name": "meaningful_area"
+          },
+          {
+            "table_name": "media_object"
+          },
+          {
+            "table_name": "mp_category"
+          },
+          {
+            "table_name": "mp_commerce_policy"
+          },
+          {
+            "table_name": "mp_product"
+          },
+          {
+            "table_name": "mp_product_image"
+          },
+          {
+            "table_name": "mp_product_option"
+          },
+          {
+            "table_name": "mp_product_option_value"
+          },
+          {
+            "table_name": "mp_product_variant"
+          },
+          {
+            "table_name": "mp_seller"
+          },
+          {
+            "table_name": "nex_brain_status"
+          },
+          {
+            "table_name": "object_blob_current"
+          },
+          {
+            "table_name": "object_blobs"
+          },
+          {
+            "table_name": "object_manifest"
+          },
+          {
+            "table_name": "prediction_models"
+          },
+          {
+            "table_name": "predictions"
+          },
+          {
+            "table_name": "predictive_controls"
+          },
+          {
+            "table_name": "provider_profile"
+          },
+          {
+            "table_name": "provider_rate_config"
+          },
+          {
+            "table_name": "provider_rate_lease"
+          },
+          {
+            "table_name": "provider_registry"
+          },
+          {
+            "table_name": "provider_topup_intent"
+          },
+          {
+            "table_name": "provider_wallet"
+          },
+          {
+            "table_name": "provider_wallet_transaction"
+          },
+          {
+            "table_name": "record_versions"
+          },
+          {
+            "table_name": "recovery_attempts"
+          },
+          {
+            "table_name": "recovery_runs"
+          },
+          {
+            "table_name": "rollup_campaigns"
+          },
+          {
+            "table_name": "rollup_country"
+          },
+          {
+            "table_name": "rollup_daily"
+          },
+          {
+            "table_name": "rollup_monthly"
+          },
+          {
+            "table_name": "rollup_provider"
+          },
+          {
+            "table_name": "rollup_segment"
+          },
+          {
+            "table_name": "safety_audit_config"
+          },
+          {
+            "table_name": "safety_audit_event"
+          },
+          {
+            "table_name": "service_business"
+          },
+          {
+            "table_name": "service_business_source_snapshot"
+          },
+          {
+            "table_name": "service_request"
+          },
+          {
+            "table_name": "service_request_offer"
+          },
+          {
+            "table_name": "social_accounts"
+          },
+          {
+            "table_name": "social_admin_access_log"
+          },
+          {
+            "table_name": "social_audit_events"
+          },
+          {
+            "table_name": "social_brand_profiles"
+          },
+          {
+            "table_name": "social_category_automation"
+          },
+          {
+            "table_name": "social_content_drafts"
+          },
+          {
+            "table_name": "social_content_sources"
+          },
+          {
+            "table_name": "social_content_templates"
+          },
+          {
+            "table_name": "social_controls"
+          },
+          {
+            "table_name": "social_dek_wraps"
+          },
+          {
+            "table_name": "social_oauth_states"
+          },
+          {
+            "table_name": "social_publish_intents"
+          },
+          {
+            "table_name": "social_role_grants"
+          },
+          {
+            "table_name": "social_scheduled_posts"
+          },
+          {
+            "table_name": "social_tenants"
+          },
+          {
+            "table_name": "social_validator_runs"
+          },
+          {
+            "table_name": "sources"
+          },
+          {
+            "table_name": "sparks_product"
+          },
+          {
+            "table_name": "sparks_product_price"
+          },
+          {
+            "table_name": "tracking_events"
+          },
+          {
+            "table_name": "transport_acquisition_outreach"
+          },
+          {
+            "table_name": "transport_acquisition_record"
+          },
+          {
+            "table_name": "transport_acquisition_source_snapshot"
+          },
+          {
+            "table_name": "user_wallet"
+          },
+          {
+            "table_name": "video_feed_impression"
+          },
+          {
+            "table_name": "wallet_transaction"
+          },
+          {
+            "table_name": "work_item"
+          },
+          {
+            "table_name": "worker_24h_activity"
+          },
+          {
+            "table_name": "worker_audit_events"
+          },
+          {
+            "table_name": "worker_cycle_run"
+          },
+          {
+            "table_name": "worker_expected_runs"
+          },
+          {
+            "table_name": "worker_health_status"
+          },
+          {
+            "table_name": "worker_heartbeat"
+          },
+          {
+            "table_name": "worker_heartbeats_archive_2026_08_22"
+          },
+          {
+            "table_name": "worker_jobs"
+          },
+          {
+            "table_name": "worker_missed_runs_24h"
+          },
+          {
+            "table_name": "worker_results"
+          },
+          {
+            "table_name": "worker_schedule"
+          }
+        ]
+      },
+      "codebase_accommodation_references": {
+        "label": "MEASURED",
+        "file_count": 50,
+        "files": [
+          {
+            "file": "src\\lib\\nex\\agent-runtime\\worker-accommodation.ts",
+            "hits": [
+              {
+                "line": 1,
+                "text": "// src/lib/nex/agent-runtime/worker-accommodation.ts"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\accommodation-slots.test.ts",
+            "hits": [
+              {
+                "line": 10,
+                "text": "} from \"./accommodation-slots\";"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\accommodation-slots.ts",
+            "hits": [
+              {
+                "line": 1,
+                "text": "// src/lib/nex/brain/accommodation-slots.ts"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\attention.ts",
+            "hits": [
+              {
+                "line": 21,
+                "text": "import type { AccommodationSlots } from \"./accommodation-slots\";"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\capabilities.ts",
+            "hits": [
+              {
+                "line": 93,
+                "text": "files: [\"src/lib/nex/brain/accommodation-slots.ts\", \"src/lib/nex/brain/session.ts\"],"
+              },
+              {
+                "line": 203,
+                "text": "files: [\"src/lib/nex/brain/accommodation-slots.ts\"],"
+              },
+              {
+                "line": 207,
+                "text": "files: [\"src/lib/nex/brain/orchestrate.ts\", \"src/lib/nex/brain/accommodation-slots.ts\"],"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\capability-display-intelligence.test.ts",
+            "hits": [
+              {
+                "line": 218,
+                "text": "expect(r.reply.toLowerCase()).not.toContain(\"nex.accommodation_business\");"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\discovery-continuity-slice.test.ts",
+            "hits": [
+              {
+                "line": 52,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-08-31T00:00:00Z\" },"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\entity-attribute-contract.ts",
+            "hits": [
+              {
+                "line": 140,
+                "text": "*  stored in nex.accommodation_business (and equivalent). Populated"
+              },
+              {
+                "line": 217,
+                "text": "*  set at nex.accommodation_business (audit report). */"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\entity-pipeline.ts",
+            "hits": [
+              {
+                "line": 15,
+                "text": "//   via nex.accommodation_business ingestion; STORE via Postgres;"
+              },
+              {
+                "line": 61,
+                "text": "COLLECT:   { status: \"implemented\",   where: \"nex.accommodation_business_source_snapshot (raw OSM tag capture per Task #"
+              },
+              {
+                "line": 62,
+                "text": "NORMALIZE: { status: \"partial\",       where: \"accommodation-postgres.ts adapter (rowToRecord fold-to-canonical), directo"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\goal-tracking.ts",
+            "hits": [
+              {
+                "line": 22,
+                "text": "import type { AccommodationSlots } from \"./accommodation-slots\";"
+              },
+              {
+                "line": 23,
+                "text": "import { describeSlots } from \"./accommodation-slots\";"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\golden-conversation-3-41-d.test.ts",
+            "hits": [
+              {
+                "line": 62,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-08-31T00:00:00Z\" },"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\im-hungry-journey.test.ts",
+            "hits": [
+              {
+                "line": 85,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-08-31T00:00:00Z\" },"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\insight.test.ts",
+            "hits": [
+              {
+                "line": 6,
+                "text": "import type { AccommodationSlots, ExtractResult } from \"./accommodation-slots\";"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\insight.ts",
+            "hits": [
+              {
+                "line": 29,
+                "text": "import type { AccommodationSlots, ExtractResult } from \"./accommodation-slots\";"
+              },
+              {
+                "line": 30,
+                "text": "import { describeSlots } from \"./accommodation-slots\";"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\interest\\contactability.test.ts",
+            "hits": [
+              {
+                "line": 19,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-09-01T00:00:00Z\" } as"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\interest\\interest-gate.test.ts",
+            "hits": [
+              {
+                "line": 31,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-09-01T00:00:00Z\" } as"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\orchestrate-action-authorization.test.ts",
+            "hits": [
+              {
+                "line": 69,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-08-31T00:00:00Z\" },"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\orchestrate-live-world.test.ts",
+            "hits": [
+              {
+                "line": 47,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-08-31T00:00:00.000Z\" "
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\orchestrate.ts",
+            "hits": [
+              {
+                "line": 37,
+                "text": "} from \"./accommodation-slots\";"
+              },
+              {
+                "line": 227,
+                "text": "*  rendered from real directory records (nex.accommodation_business /"
+              },
+              {
+                "line": 377,
+                "text": "* the accommodation composer queries `nex.accommodation_business` via"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\personalization.ts",
+            "hits": [
+              {
+                "line": 24,
+                "text": "import type { AccommodationSlots } from \"./accommodation-slots\";"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\planning.ts",
+            "hits": [
+              {
+                "line": 21,
+                "text": "import type { AccommodationSlots } from \"./accommodation-slots\";"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\prediction.ts",
+            "hits": [
+              {
+                "line": 18,
+                "text": "import type { AccommodationSlots } from \"./accommodation-slots\";"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\recommendation.ts",
+            "hits": [
+              {
+                "line": 21,
+                "text": "import type { AccommodationSlots } from \"./accommodation-slots\";"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\reference-hydration.test.ts",
+            "hits": [
+              {
+                "line": 46,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-09-05T10:00:00Z\" },"
+              },
+              {
+                "line": 91,
+                "text": "expect(parseRefId(\"place:'; DROP TABLE nex.accommodation_business; --\")).toBeNull();"
+              },
+              {
+                "line": 314,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-09-05T10:00:00Z\" },"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\result-followup.test.ts",
+            "hits": [
+              {
+                "line": 163,
+                "text": "expect(d.reply).not.toContain(\"nex.accommodation_business\");"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\session.ts",
+            "hits": [
+              {
+                "line": 18,
+                "text": "import type { AccommodationSlots } from \"./accommodation-slots\";"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\six-turn-context-switch-journey.test.ts",
+            "hits": [
+              {
+                "line": 76,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-08-31T00:00:00Z\" },"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\sticky-vertical-3-41-f.test.ts",
+            "hits": [
+              {
+                "line": 49,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-08-31T00:00:00Z\" },"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\tool-selection.ts",
+            "hits": [
+              {
+                "line": 22,
+                "text": "import type { AccommodationSlots } from \"./accommodation-slots\";"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\universal-discovery\\universal-discovery.test.ts",
+            "hits": [
+              {
+                "line": 79,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-09-01T00:00:00Z\" } as"
+              },
+              {
+                "line": 199,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-09-01T00:00:00Z\" } as"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\universal-entity-capture-3-41-g.test.ts",
+            "hits": [
+              {
+                "line": 65,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-08-31T00:00:00Z\" },"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\vertical-switch-3-41-h.test.ts",
+            "hits": [
+              {
+                "line": 62,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-08-31T00:00:00Z\" },"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\world-acceptance.test.ts",
+            "hits": [
+              {
+                "line": 38,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-08-31T00:00:00.000Z\" "
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\world-adapters\\accommodation-postgres.test.ts",
+            "hits": [
+              {
+                "line": 1,
+                "text": "// src/lib/nex/brain/world-adapters/accommodation-postgres.test.ts"
+              },
+              {
+                "line": 31,
+                "text": "import { AccommodationPostgresAdapter } from \"./accommodation-postgres\";"
+              },
+              {
+                "line": 37,
+                "text": "// Row shape matching what pg returns for nex.accommodation_business."
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\world-adapters\\accommodation-postgres.ts",
+            "hits": [
+              {
+                "line": 1,
+                "text": "// src/lib/nex/brain/world-adapters/accommodation-postgres.ts"
+              },
+              {
+                "line": 5,
+                "text": "// Reads nex.accommodation_business through the same pool the"
+              },
+              {
+                "line": 60,
+                "text": "* Map a raw nex.accommodation_business row to the canonical WorldRecord."
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\world-adapters\\index.ts",
+            "hits": [
+              {
+                "line": 20,
+                "text": "import { AccommodationPostgresAdapter } from \"./accommodation-postgres\";"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\world-adapters\\live-update-doctrine.test.ts",
+            "hits": [
+              {
+                "line": 7,
+                "text": "// accommodation-postgres.test.ts already proves for accommodation."
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\world-adapters\\types.ts",
+            "hits": [
+              {
+                "line": 107,
+                "text": "sourceKey: string;      // e.g. \"nex.accommodation_business\""
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\world-comparison-wrapper.test.ts",
+            "hits": [
+              {
+                "line": 36,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-08-31T00:00:00Z\" },"
+              }
+            ]
+          },
+          {
+            "file": "src\\lib\\nex\\brain\\world-final-gate.test.ts",
+            "hits": [
+              {
+                "line": 52,
+                "text": "provenance: { sourceKey: \"nex.accommodation_business\", sourceTier: \"directory_live\", readAt: \"2026-08-31T00:00:00.000Z\" "
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "duplication_check": {
+    "label": "MEASURED",
+    "findings": [
+      {
+        "path": "src/lib/nex/accommodation-intel",
+        "exists": false,
+        "file_count": 0
+      },
+      {
+        "path": "src/lib/nex/reservoir-accommodation",
+        "exists": false,
+        "file_count": 0
+      },
+      {
+        "path": "src/lib/nex/intelligence-storage-grid",
+        "exists": false,
+        "file_count": 0
+      }
+    ],
+    "note": "src/lib/nex/intelligence-storage-grid will be created by THIS mission's Phase 1 · additive namespace · does not duplicate Wave 11 · composes with it"
+  },
+  "unsafe_check": {
+    "label": "MEASURED",
+    "checks": {
+      "no_scraper_present": true,
+      "no_direct_website_fetch": true,
+      "credential_files_absent": true,
+      "env_file_gitignored": true
+    }
+  },
+  "final_status": null
+}

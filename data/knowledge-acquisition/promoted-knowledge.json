@@ -1,0 +1,20 @@
+[
+  {
+    "knowledge_id": "k-0304",
+    "claim_id": "c-0304",
+    "subject": "HS 0304",
+    "predicate": "fish fillets and other fish meat, fresh, chilled or frozen",
+    "confidence": 0.9,
+    "stability": "stable",
+    "promoted_at": "2026-09-05T00:00:00Z",
+    "from_run_id": "r-seed",
+    "from_provenance_ids": [],
+    "provenance_kind": "fixture",
+    "contradictions": [
+      "canned",
+      "canning",
+      "prepared or preserved"
+    ],
+    "superseded_at": null
+  }
+]

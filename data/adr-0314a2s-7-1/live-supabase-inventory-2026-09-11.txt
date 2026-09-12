@@ -1,0 +1,891 @@
+═══════════════════════════════════════════════════════════
+ADR-0314a.2.s · §7.1 · Live Supabase inventory
+═══════════════════════════════════════════════════════════
+Timestamp: 2026-09-10T20:15:38.467Z
+Substrate: Supabase (public schema)
+Table:     knowledge_records
+Client:    @supabase/supabase-js · service role key
+URL:       https://ijvqdvsvwtwxzcqmoqit***
+
+Schema probe: OK · fields available in live schema:
+  id, category, subcategory, status, primary_audience, canonical_owner, authored_by, authorised_by
+
+SQL (verbatim intent):
+  SELECT id, category, subcategory, status, primary_audience, canonical_owner, authored_by, authorised_by FROM public.knowledge_records
+  (paginated via supabase-js .range() · PAGE_SIZE=1000)
+
+═══════════════════════════════════════════════════════════
+HEADER
+═══════════════════════════════════════════════════════════
+Total rows scanned:      3627
+Total distinct category: 86
+NULL category rows:      0
+Empty-string category:   0
+
+═══════════════════════════════════════════════════════════
+PER-VALUE INVENTORY (sorted by row_count desc)
+═══════════════════════════════════════════════════════════
+---
+raw_value:                  "NEX door"
+row_count:                  2088
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"DRAFT":1936,"DEPRECATED":138,"UNDER_REVIEW":14}
+primary_audience_dist:      {"homeowner":2088}
+subcategory_samples:        ["auto-extracted (mock adapter)"]
+authorised_by_null_count:   2088
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX flooring"
+row_count:                  620
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"DRAFT":583,"DEPRECATED":34,"UNDER_REVIEW":3}
+primary_audience_dist:      {"homeowner":620}
+subcategory_samples:        ["auto-extracted (mock adapter)"]
+authorised_by_null_count:   620
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX kitchen"
+row_count:                  458
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"DRAFT":300,"UNDER_REVIEW":98,"DEPRECATED":60}
+primary_audience_dist:      {"homeowner":458}
+subcategory_samples:        ["auto-extracted (mock adapter)"]
+authorised_by_null_count:   458
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Technical Guidance"
+row_count:                  99
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"UNDER_REVIEW":79,"AUTHORITATIVE":13,"DRAFT":7}
+primary_audience_dist:      {"manufacturer":92,"engineer":7}
+subcategory_samples:        ["System Integration","Timber","Event-Driven Architecture","Handrail System Installation","Manufacturing","Staircase Construction","Rope Handrail Installation","Regulatory Compliance","Staircase Design","Regulatory","Event Bus Verification","Outdoor Lighting","(+54 more)"]
+authorised_by_null_count:   99
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Customer Guidance"
+row_count:                  51
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"UNDER_REVIEW":32,"AUTHORITATIVE":12,"DRAFT":7}
+primary_audience_dist:      {"manufacturer":27,"homeowner":24}
+subcategory_samples:        ["Staircase Specification","Balustrade Maintenance and Selection","Staircase Components","Staircase Design","Luxury Staircases","Outdoor Lighting","Staircase Lighting","Outdoor Staircase Lighting","Smart Home","Product Selection","Staircase Installation","Planning Checklists & Trade Scoping","(+18 more)"]
+authorised_by_null_count:   51
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX staircase"
+row_count:                  49
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"DRAFT":46,"DEPRECATED":3}
+primary_audience_dist:      {"homeowner":49}
+subcategory_samples:        ["auto-extracted (mock adapter)"]
+authorised_by_null_count:   49
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Components"
+row_count:                  45
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":25,"UNDER_REVIEW":20}
+primary_audience_dist:      {"manufacturer":45}
+subcategory_samples:        ["Balustrade Hardware","Staircase · Structural balustrade component","Staircase Balustrade infill","Handrail Specifications","Staircase · Balustrade bottom rail","Staircase · Balustrade infill · Timber profiles","Staircase · Balustrade infill · Premium timber profiles","Staircase · Balustrade infill · Metal profiles","Staircase refurbishment components","Staircase structural components","Staircase Manufacturing","Staircase Tread Components","(+20 more)"]
+authorised_by_null_count:   45
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Components · Staircase Components"
+row_count:                  31
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":28,"DRAFT":1,"UNDER_REVIEW":1,"DEPRECATED":1}
+primary_audience_dist:      {"manufacturer":31}
+subcategory_samples:        ["Safety + design feature · continuous or post-to-post","Structural + wear surface · walking surface of a staircase flight","Decorative and Functional Handrail Systems","Design and Specification","Mounting and Tensioning Systems","Installation Guidance","Procurement and Specification","Decorative Components","Rope handrail systems","Installation Methods","Customisation and Finishes","Applications and Use Cases","(+12 more)"]
+authorised_by_null_count:   29
+authorised_by_nonnull_count: 2
+---
+raw_value:                  "NEX Trade Knowledge"
+row_count:                  19
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":15,"UNDER_REVIEW":3,"DEPRECATED":1}
+primary_audience_dist:      {"manufacturer":19}
+subcategory_samples:        ["Layout & Dimensional Metrics","Design & Engineering","Cost Estimation","Components · Staircase Components","Staircase Components","Staircase Structural Framing","Historical Context"]
+authorised_by_null_count:   19
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Design & Engineering"
+row_count:                  18
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":12,"DEPRECATED":6}
+primary_audience_dist:      {"manufacturer":14,"engineer":4}
+subcategory_samples:        ["Structural Engineering","Staircase Safety","Architectural Standards","Staircase Geometries","Staircase Components","Step Proportion Standards","Staircase Design","Structural Mechanics","Step Geometry Standards","Staircase Types","Staircase Layout Optimization","Staircase Design Choices","(+2 more)"]
+authorised_by_null_count:   18
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Cost Benchmarking"
+row_count:                  10
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"UNDER_REVIEW":10}
+primary_audience_dist:      {"manufacturer":10}
+subcategory_samples:        ["Material cost differentials"]
+authorised_by_null_count:   10
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Historical Context"
+row_count:                  9
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":5,"DEPRECATED":3,"UNDER_REVIEW":1}
+primary_audience_dist:      {"manufacturer":9}
+subcategory_samples:        ["Georgian Architecture","Medieval Architecture","Edo-Period Japan","Space Optimization in Traditional Architecture","Multi-functional Joinery","Defensive Architecture","Architectural Status Symbols"]
+authorised_by_null_count:   9
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Customer Guidance · Decision Support"
+row_count:                  8
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":7,"DEPRECATED":1}
+primary_audience_dist:      {"homeowner":8}
+subcategory_samples:        ["Material selection · comparison-driven customer advice","Balustrade infill choice — glass, timber balusters, metal balusters, or a hybrid","Staircase finish choice — painted · natural oil/lacquer · fumed · stained · mixed","Existing-staircase decision — refurbish, partially replace, or fully replace","Material Selection","Staircase Quality","Commercial Staircase Design","Project Classification"]
+authorised_by_null_count:   4
+authorised_by_nonnull_count: 4
+---
+raw_value:                  "NEX Materials"
+row_count:                  7
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"UNDER_REVIEW":6,"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":6,"homeowner":1}
+subcategory_samples:        ["Hardwood Properties","Rope & Soft Hardware","Hardwood Comparison","Sheet Metal","Timber Species & Worktops","Hardwoods","Hardwood Specifications"]
+authorised_by_null_count:   7
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Platform Architecture · Knowledge Management"
+row_count:                  6
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":6}
+primary_audience_dist:      {"manufacturer":5,"engineer":1}
+subcategory_samples:        ["Knowledge Structuring & Scaling Strategy","Scaling Strategy","Content Strategy","Q&A Examples"]
+authorised_by_null_count:   6
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Components · Staircase · Structural Joinery"
+row_count:                  6
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":3,"DEPRECATED":2,"UNDER_REVIEW":1}
+primary_audience_dist:      {"manufacturer":6}
+subcategory_samples:        ["Solid Wood Timber Inserts","Hidden Hardwood Blocks","Thick Cylindrical Timber Pins","Square Structural Wood Columns","Small Wood Strips","Specialized Structural Joinery Components"]
+authorised_by_null_count:   6
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Technical Documentation"
+row_count:                  6
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"UNDER_REVIEW":6}
+primary_audience_dist:      {"engineer":6}
+subcategory_samples:        ["API Testing","Event Bus Verification","System Architecture","Knowledge Ingestion","System Verification"]
+authorised_by_null_count:   6
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Design & Engineering · Geometries"
+row_count:                  5
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":5}
+primary_audience_dist:      {"manufacturer":5}
+subcategory_samples:        ["Staircase Types","Flight Configurations"]
+authorised_by_null_count:   5
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Components · Handrail Specifications"
+row_count:                  5
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":2,"DEPRECATED":2,"UNDER_REVIEW":1}
+primary_audience_dist:      {"manufacturer":5}
+subcategory_samples:        ["Handrail Profile Dimensions","Dimensional Standards","Source Verification","Physical Handrail Dimensions"]
+authorised_by_null_count:   5
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Design · Ergonomics & Spatial Design"
+row_count:                  4
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":3,"DEPRECATED":1}
+primary_audience_dist:      {"manufacturer":4}
+subcategory_samples:        ["Ergonomics and Entrance Detailing","User Experience","Staircase Ergonomics","Staircase User Experience"]
+authorised_by_null_count:   4
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Components · Staircase · Balustrade infill"
+row_count:                  3
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":2,"UNDER_REVIEW":1}
+primary_audience_dist:      {"manufacturer":3}
+subcategory_samples:        ["Vertical infill members between newel posts, supporting the handrail and closing the balustrade against fall-through","Timber profiles","Baluster allocation"]
+authorised_by_null_count:   2
+authorised_by_nonnull_count: 1
+---
+raw_value:                  "NEX Trade Knowledge · Design & Engineering · Structural Mechanics"
+row_count:                  3
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":2,"DEPRECATED":1}
+primary_audience_dist:      {"manufacturer":3}
+subcategory_samples:        ["Advanced Structural Mechanics"]
+authorised_by_null_count:   3
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Regulations"
+row_count:                  3
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"DEPRECATED":2,"UNDER_REVIEW":1}
+primary_audience_dist:      {"manufacturer":3}
+subcategory_samples:        ["Staircase Safety and Construction Quality","Building Safety","Building Codes"]
+authorised_by_null_count:   3
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Business Operating System · Platform Knowledge"
+row_count:                  2
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":2}
+primary_audience_dist:      {"homeowner":2}
+subcategory_samples:        ["AI · Learning · Memory · Business Intelligence","Onboarding · Identity · Public Presence"]
+authorised_by_null_count:   0
+authorised_by_nonnull_count: 2
+---
+raw_value:                  "NEX Trade Knowledge · Materials · Hardwood · North American"
+row_count:                  2
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":2}
+primary_audience_dist:      {"manufacturer":2}
+subcategory_samples:        ["Timber species · reference material"]
+authorised_by_null_count:   0
+authorised_by_nonnull_count: 2
+---
+raw_value:                  "NEX Materials · Hardwood"
+row_count:                  2
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":2}
+primary_audience_dist:      {"manufacturer":2}
+subcategory_samples:        ["African tropical hardwood · mahogany-family · interlocked-grain feature timber","Diffuse-porous temperate hardwood · pale-timber cluster · bentwood specialist"]
+authorised_by_null_count:   0
+authorised_by_nonnull_count: 2
+---
+raw_value:                  "NEX Trade Knowledge · Cost Estimation"
+row_count:                  2
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"DRAFT":1,"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":2}
+subcategory_samples:        ["Design Factors","Materials Comparison"]
+authorised_by_null_count:   2
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Processes · Manufacturing"
+row_count:                  2
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":2}
+primary_audience_dist:      {"manufacturer":2}
+subcategory_samples:        ["Workflow & Quality Assurance","Production Workflows"]
+authorised_by_null_count:   2
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Processes · Installation"
+row_count:                  2
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":2}
+primary_audience_dist:      {"manufacturer":2}
+subcategory_samples:        ["Site Assembly & Verification","Carpet Runner Installation"]
+authorised_by_null_count:   2
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Structural Framing · Stairwell Openings"
+row_count:                  2
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":2}
+primary_audience_dist:      {"manufacturer":2}
+subcategory_samples:        ["Installation Process","Floor Opening Structural Timber"]
+authorised_by_null_count:   2
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Components · Staircase · Balustrade bottom rail"
+row_count:                  2
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":2}
+primary_audience_dist:      {"manufacturer":2}
+subcategory_samples:        ["Balustrade components","Baserail Profile Dimensions"]
+authorised_by_null_count:   2
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Regulations & Standards"
+row_count:                  2
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1,"DRAFT":1}
+primary_audience_dist:      {"engineer":2}
+subcategory_samples:        ["Safety Regulations"]
+authorised_by_null_count:   2
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Historical Guidance"
+row_count:                  2
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"DRAFT":2}
+primary_audience_dist:      {"manufacturer":2}
+subcategory_samples:        ["Staircase Design","Castle Defense"]
+authorised_by_null_count:   2
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Architecture"
+row_count:                  2
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"DEPRECATED":1,"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":2}
+subcategory_samples:        ["Knowledge Ingestion & Graph Building","Knowledge Ingestion"]
+authorised_by_null_count:   2
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Components · Staircase · Structural balustrade component"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Load-bearing vertical post terminating the handrail run at start · top · landings · turns"]
+authorised_by_null_count:   0
+authorised_by_nonnull_count: 1
+---
+raw_value:                  "NEX Components · Staircase · Primary structural member"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Inclined structural beam that carries the treads, risers, and balustrade of a flight"]
+authorised_by_null_count:   0
+authorised_by_nonnull_count: 1
+---
+raw_value:                  "NEX Trade Knowledge · Materials · Hardwood · European"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Timber species · reference material · global timber library"]
+authorised_by_null_count:   0
+authorised_by_nonnull_count: 1
+---
+raw_value:                  "NEX Trade Knowledge · Processes · Timber Handling"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Timber preparation · Moisture reduction · Pre-machining"]
+authorised_by_null_count:   0
+authorised_by_nonnull_count: 1
+---
+raw_value:                  "NEX Trade Knowledge · Materials · Hardwood · European and North American"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Timber species · reference material · global timber library · sustainability alert"]
+authorised_by_null_count:   0
+authorised_by_nonnull_count: 1
+---
+raw_value:                  "NEX Trade Knowledge · Materials · Hardwood · North American and European"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Timber species · reference material · global timber library"]
+authorised_by_null_count:   0
+authorised_by_nonnull_count: 1
+---
+raw_value:                  "NEX Processes · Timber Finishing"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Chemical colour transformation · tannin-reactive process · Craftsman / dark-oak signature"]
+authorised_by_null_count:   0
+authorised_by_nonnull_count: 1
+---
+raw_value:                  "NEX Trade Knowledge · Processes · Timber Handling · Quality Verification"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Post-drying quality control · Delivery inspection · Pre-machining verification"]
+authorised_by_null_count:   0
+authorised_by_nonnull_count: 1
+---
+raw_value:                  "NEX Trade Knowledge · Regulations · UK Building Regulations"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["England (with parallel provisions in Wales, Scotland, Northern Ireland) · Stairs · Guarding · Impact protection"]
+authorised_by_null_count:   0
+authorised_by_nonnull_count: 1
+---
+raw_value:                  "NEX Customer Guidance · Interior Design"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"DEPRECATED":1}
+primary_audience_dist:      {"homeowner":1}
+subcategory_samples:        ["Luxury Interior"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Installation"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Skilled Labor"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Customer Guidance · Knowledge Base Development"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"DEPRECATED":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Efficient Knowledge Acquisition"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Materials · Hardwood"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"DEPRECATED":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Timber Species Overview"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Manufacturing"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"DEPRECATED":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Staircase Manufacturing"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Materials · Softwood"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Timber Selection & Characteristics"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Components · Staircase · Trim and Moulding"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"DEPRECATED":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Specialized Trim Components"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Staircase Types · Staircase · Geometric configuration"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"homeowner":1}
+subcategory_samples:        ["Staircase types"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Materials · Timber"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Staircase Timber"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Guidance · Stairwell Openings"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Safety Considerations"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Processes · Manufacturing & Installation"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Production Workflow"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Regulatory"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"DRAFT":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Staircase Domain Modeling"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Components · Staircase Components"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Tread Profiles & Edging"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Component Guidance · Feature Systems"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Lighting Integration"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Components · Staircase · Newel terminations and bases"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Newel accessories"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Customer Guidance · Maintenance & Repair"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"homeowner":1}
+subcategory_samples:        ["Staircase Maintenance"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Manufacturing · Equipment & Processes"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["CNC Machining"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Geometry & Layouts"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"engineer":1}
+subcategory_samples:        ["Staircase geometry"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Processes · Design"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Staircase Design"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Components · Staircase · Geometry & Layout"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Turn Layouts & Winders"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Components · Staircase · Balustrade Accessories"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Terminations & Fittings"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Materials · Timber Selection"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Material Performance"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Processes · Maintenance & Inspection"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Aftercare"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Inspection & Maintenance"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Staircase Structural Integrity"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Installation · Carpet Fixing"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Carpet Runner Installation"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Heritage · Installation Methods"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Historical Staircase Practices"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Materials · Hardwood · Comparative Analysis"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Timber selection for exterior and interior joinery"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX AI Rules"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Installation Rules"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Staircase Components"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Tread Geometry & Ergonomics"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Customer Guidance · Technical Specification"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"UNDER_REVIEW":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Entrance Layout & System Engineering"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Concepts"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"DRAFT":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Observation"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Materials · Hardwood · African"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["African Hardwoods"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Customer Guidance · Staircase Design"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Luxury Interior"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Components · Staircase · Balustrade component"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Balustrade"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Manufacturing"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["CNC Processing & Tooling"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Technical Guidance · Regulatory Compliance"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Headroom & Geometry"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Platform"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"UNDER_REVIEW":1}
+primary_audience_dist:      {"homeowner":1}
+subcategory_samples:        ["UI Graphics & Promotional Badges"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Staircase"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"UNDER_REVIEW":1}
+primary_audience_dist:      {"homeowner":1}
+subcategory_samples:        ["Marketing & UI Assets"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Construction Equipment"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"UNDER_REVIEW":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Plant Machinery & Promotional Media"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Non-Interior / Heavy Equipment Graphic"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"UNDER_REVIEW":1}
+primary_audience_dist:      {"homeowner":1}
+subcategory_samples:        ["Promotional Banners & Badges"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Components · Staircase · Structural Framing"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Heavy Timber Beams"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Business Operating System"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"AUTHORITATIVE":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Manager Dashboard"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+---
+raw_value:                  "NEX Trade Knowledge · Regulations · Accessibility"
+row_count:                  1
+physical_substrate:         Supabase public.knowledge_records
+source_table.field:         knowledge_records.category
+status_distribution:        {"DEPRECATED":1}
+primary_audience_dist:      {"manufacturer":1}
+subcategory_samples:        ["Commercial Staircase Accessibility"]
+authorised_by_null_count:   1
+authorised_by_nonnull_count: 0
+
+═══════════════════════════════════════════════════════════
+END OF INVENTORY · NO STATE MODIFIED · READ-ONLY COMPLETE
+═══════════════════════════════════════════════════════════

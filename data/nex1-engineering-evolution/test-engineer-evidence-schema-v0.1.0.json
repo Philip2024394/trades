@@ -1,0 +1,29 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX Test Engineer Evidence Specialist · Phase 6 IMPLEMENTATION contract · founder-authorised 2026-09-12. Constitutional purpose: 'Attempt to falsify the implementation. Convert software behaviour into reproducible testing evidence.' Deterministic. Advisory. Never executes user code without an isolated fixture.",
+  "record_type": "TEST_ENGINEER_EVIDENCE",
+  "constitutional_purpose_locked": "Attempt to falsify the implementation · never merely produce more tests · a specialist that always finds a probe held is dangerous · REJECTED and INSUFFICIENT_EVIDENCE are first-class successes.",
+  "outcomes_permitted": {
+    "PROBES_HELD":              "every executed probe held under seeded adversarial inputs · no counterexample found in scope",
+    "PROBES_FAILED":            "at least one probe produced a shrunk counterexample · falsification succeeded",
+    "MUTANTS_SURVIVED":         "mutation-testing evidence shows mutants that no test kills · test surface has gaps",
+    "MUTANTS_KILLED":           "every mutant considered in scope was killed by at least one test",
+    "MIXED":                    "probes held but mutants survived, or vice versa · complex evidence to be interpreted by NEX2/NEX3",
+    "NOT_MEASURED":             "no probes were runnable · no coverage · no fixtures · specialist did not proceed",
+    "INSUFFICIENT_EVIDENCE":    "attempted but insufficient signal to conclude"
+  },
+  "measurable_fields": ["probes_executed","probes_failed","probes_held","mutants_total","mutants_killed","mutants_survived","properties_checked","counterexamples_found","seed","reproduction_command"],
+  "forbidden_vocabulary_in_output": [
+    "test_quality_score","test_score","quality_score","coverage_score","confidence_percent","probably","overall_quality","health_score",
+    "aggregate_quality","weighted_total","code_grade","overall_grade","superiority_score","code_smell","anti-pattern","best practice"
+  ],
+  "invariants": [
+    "Test Engineer emits raw counts and ordinal outcomes only · never a fused score",
+    "every counterexample MUST include seed + reproduction_command",
+    "probes_held is NOT proof of correctness · only absence-of-witnessed-violation in scope",
+    "specialist MUST NOT execute arbitrary user code without an isolated seeded fixture",
+    "authorisation=false · execution=false · authority_boundary='evidence_producer_only'",
+    "external_llm_used=false · deterministic=true",
+    "routes through Evidence Validation before NEX2 consumes"
+  ]
+}

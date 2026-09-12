@@ -1,0 +1,75 @@
+{
+  "at": "2026-09-12T07:09:34.856Z",
+  "attribution": {
+    "teaching_infrastructure": "capability-j42-long-run-with-recovery.ts · taught_by=master_ai_engineer",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner"
+  },
+  "sub_tests": {
+    "J4.2.1": {
+      "verdict": "pass",
+      "run_verdict": "all_verified",
+      "rollback": "restored",
+      "stopped_after": null,
+      "per_goal": [
+        {
+          "id": "A-target-a",
+          "kind": "add_field",
+          "state": "verified",
+          "reason": "H.1 planned · apply ok · tsc scoped clean",
+          "recovery_used": false
+        },
+        {
+          "id": "B-recover",
+          "kind": "fix_failing_test",
+          "state": "verified_with_recovery",
+          "reason": "recovery succeeded · J.1 finding → J.2 proposal → J.3 verified_repair · fixture restored by J.3",
+          "recovery_used": true,
+          "j3_verdict": "verified_repair"
+        },
+        {
+          "id": "C-target-d",
+          "kind": "add_field",
+          "state": "verified",
+          "reason": "H.1 planned · apply ok · tsc scoped clean",
+          "recovery_used": false
+        }
+      ],
+      "byte_identical": true,
+      "verdict_ok": true,
+      "states_ok": true
+    },
+    "J4.2.2": {
+      "verdict": "pass",
+      "run_verdict": "failed_hard_mid_run",
+      "rollback": "restored",
+      "stopped_after": "B-refuse",
+      "per_goal": [
+        {
+          "id": "A-target-a",
+          "kind": "add_field",
+          "state": "verified",
+          "reason": "H.1 planned · apply ok · tsc scoped clean",
+          "recovery_used": false
+        },
+        {
+          "id": "B-refuse",
+          "kind": "fix_failing_test",
+          "state": "failed_hard",
+          "reason": "J.2 refused to propose (refused_test_may_be_wrong) · source function 'getKind' declares literal return type '\"widget\"' · test expects",
+          "recovery_used": true
+        },
+        {
+          "id": "C-target-d",
+          "kind": "add_field",
+          "state": "queued",
+          "reason": "not started · earlier goal failed hard",
+          "recovery_used": false
+        }
+      ],
+      "byte_identical": true,
+      "verdict_ok": true,
+      "states_ok": true
+    }
+  }
+}

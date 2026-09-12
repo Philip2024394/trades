@@ -1,0 +1,308 @@
+{
+  "version": "v0.2.0",
+  "notes": "NEX1 Language Brain · seed pattern registry · deterministic · English + Indonesian + code-switch + programming-communication · every entry is auditable. New patterns added only via teacher_added or corrected paths. Never overwrite existing ids. v0.2 adds 6 programming-communication intents (recognition only · engineering brain is NOT invoked from here) and 4 code-switch patterns (Indonesian imperatives mixing English tech terms).",
+  "safety_patterns": [
+    { "id": "safety.bypass.ignore-protect", "regex": "ignore\\s+protected|ignore\\s+the\\s+protect", "refusal_class": "refused_unsafe_bypass_attempt", "reason": "utterance attempts to bypass protected-path guards", "source": "seed" },
+    { "id": "safety.bypass.override-safety", "regex": "override\\s+safety|disable\\s+safety|disable\\s+the\\s+guard", "refusal_class": "refused_unsafe_bypass_attempt", "reason": "utterance attempts to override safety mechanism", "source": "seed" },
+    { "id": "safety.secret.env-exfil", "regex": "(?:show|print|email|send|reveal|leak)\\s+(?:me\\s+)?(?:the\\s+)?\\.env|dump\\s+secrets|print\\s+api\\s+keys", "refusal_class": "refused_unsafe_secret_exfil_attempt", "reason": "utterance requests exfiltration of secrets or protected env content", "source": "seed" },
+    { "id": "safety.destructive.delete-all", "regex": "delete\\s+everything|rm\\s+-rf|wipe\\s+(?:the\\s+)?(?:repo|repository|codebase|project|everything|all)|destroy\\s+(?:the\\s+)?(?:repo|repository|codebase|project|everything|all)|(?:nuke|obliterate)\\s+(?:the\\s+)?(?:repo|repository|codebase|project|everything)", "refusal_class": "refused_potentially_destructive", "reason": "utterance requests a broad destructive action · needs founder authority", "source": "seed" },
+    { "id": "safety.id.abaikan-perlindungan", "regex": "abaikan\\s+perlindungan|matikan\\s+pengaman", "refusal_class": "refused_unsafe_bypass_attempt", "reason": "Indonesian utterance attempts to bypass safety", "source": "seed" },
+    { "id": "safety.secret.expose-adjacent", "regex": "secret(?:s)?[\\s\\S]{0,60}(?:expose|publish|leak|reveal|make\\s+public|via\\s+a\\s+public)|(?:expose|publish|leak|reveal)[\\s\\S]{0,40}secret(?:s)?", "refusal_class": "refused_unsafe_secret_exfil_attempt", "reason": "utterance requests exposing secrets or exfiltrating via public surface", "source": "seed" },
+    { "id": "safety.secret.dump-env", "regex": "dump\\s+(?:\\w+\\s+){0,3}secret(?:s)?|dump\\s+(?:\\w+\\s+){0,3}\\.env|(?:dump|kirim|ekspos)\\s+semua\\s+secret", "refusal_class": "refused_unsafe_secret_exfil_attempt", "reason": "utterance requests dumping secrets or env content · English or Indonesian", "source": "seed" }
+  ],
+  "intent_patterns": [
+    {
+      "id": "en.add_field.number",
+      "language": "en",
+      "intent_kind": "add_field_to_type",
+      "regex": "(?:please\\s+)?add\\s+(?:a\\s+)?(?:new\\s+)?(?:field|property|column)\\s+(?:called\\s+|named\\s+)?['\"`]?(?<field>[a-zA-Z_][a-zA-Z0-9_]*)['\"`]?\\s+(?:of\\s+type\\s+|as\\s+(?:a\\s+)?)?(?:number|numeric|int|integer)\\s+to\\s+(?:the\\s+)?['\"`]?(?<type>[A-Z][a-zA-Z0-9_]*)['\"`]?",
+      "required_slots": ["field", "type"],
+      "slot_defaults": { "desired_kind": "number" },
+      "confidence": 0.88,
+      "example": "add a field called priority of type number to the Reservation",
+      "source": "seed"
+    },
+    {
+      "id": "en.add_field.string",
+      "language": "en",
+      "intent_kind": "add_field_to_type",
+      "regex": "(?:please\\s+)?add\\s+(?:a\\s+)?(?:new\\s+)?(?:field|property|column)\\s+(?:called\\s+|named\\s+)?['\"`]?(?<field>[a-zA-Z_][a-zA-Z0-9_]*)['\"`]?\\s+(?:of\\s+type\\s+|as\\s+(?:a\\s+)?)?(?:string|text)\\s+to\\s+(?:the\\s+)?['\"`]?(?<type>[A-Z][a-zA-Z0-9_]*)['\"`]?",
+      "required_slots": ["field", "type"],
+      "slot_defaults": { "desired_kind": "string" },
+      "confidence": 0.88,
+      "example": "add a field called displayName of type string to the User",
+      "source": "seed"
+    },
+    {
+      "id": "en.add_field.boolean",
+      "language": "en",
+      "intent_kind": "add_field_to_type",
+      "regex": "(?:please\\s+)?add\\s+(?:a\\s+)?(?:new\\s+)?(?:field|property|column)\\s+(?:called\\s+|named\\s+)?['\"`]?(?<field>[a-zA-Z_][a-zA-Z0-9_]*)['\"`]?\\s+(?:of\\s+type\\s+|as\\s+(?:a\\s+)?)?(?:boolean|bool|flag)\\s+to\\s+(?:the\\s+)?['\"`]?(?<type>[A-Z][a-zA-Z0-9_]*)['\"`]?",
+      "required_slots": ["field", "type"],
+      "slot_defaults": { "desired_kind": "boolean" },
+      "confidence": 0.88,
+      "example": "add a field called enabled of type boolean to the Toggle",
+      "source": "seed"
+    },
+    {
+      "id": "en.add_field.compact",
+      "language": "en",
+      "intent_kind": "add_field_to_type",
+      "regex": "add\\s+(?<field>[a-zA-Z_][a-zA-Z0-9_]*)\\s*:\\s*(?<type_text>number|string|boolean)\\s+(?:to|on)\\s+['\"`]?(?<type>[A-Z][a-zA-Z0-9_]*)['\"`]?",
+      "required_slots": ["field", "type", "type_text"],
+      "confidence": 0.9,
+      "example": "add priority: number to Reservation",
+      "source": "seed"
+    },
+    {
+      "id": "en.add_field.type_before_field.boolean",
+      "language": "en",
+      "intent_kind": "add_field_to_type",
+      "regex": "(?:please\\s+)?add\\s+(?:a\\s+)?(?:new\\s+)?(?:boolean|bool|flag)\\s+(?:field|property|column)\\s+(?:called\\s+|named\\s+)?['\"`]?(?<field>[a-zA-Z_][a-zA-Z0-9_]*)['\"`]?\\s+to\\s+(?:the\\s+)?['\"`]?(?<type>[A-Z][a-zA-Z0-9_]*)['\"`]?",
+      "required_slots": ["field", "type"],
+      "slot_defaults": { "desired_kind": "boolean" },
+      "confidence": 0.88,
+      "example": "add a boolean field called enabled to the Toggle",
+      "source": "seed"
+    },
+    {
+      "id": "en.add_field.type_before_field.number",
+      "language": "en",
+      "intent_kind": "add_field_to_type",
+      "regex": "(?:please\\s+)?add\\s+(?:a\\s+)?(?:new\\s+)?(?:number|numeric|int|integer)\\s+(?:field|property|column)\\s+(?:called\\s+|named\\s+)?['\"`]?(?<field>[a-zA-Z_][a-zA-Z0-9_]*)['\"`]?\\s+to\\s+(?:the\\s+)?['\"`]?(?<type>[A-Z][a-zA-Z0-9_]*)['\"`]?",
+      "required_slots": ["field", "type"],
+      "slot_defaults": { "desired_kind": "number" },
+      "confidence": 0.88,
+      "example": "add a numeric field called priority to the Task",
+      "source": "seed"
+    },
+    {
+      "id": "en.add_field.type_before_field.string",
+      "language": "en",
+      "intent_kind": "add_field_to_type",
+      "regex": "(?:please\\s+)?add\\s+(?:a\\s+)?(?:new\\s+)?(?:string|text)\\s+(?:field|property|column)\\s+(?:called\\s+|named\\s+)?['\"`]?(?<field>[a-zA-Z_][a-zA-Z0-9_]*)['\"`]?\\s+to\\s+(?:the\\s+)?['\"`]?(?<type>[A-Z][a-zA-Z0-9_]*)['\"`]?",
+      "required_slots": ["field", "type"],
+      "slot_defaults": { "desired_kind": "string" },
+      "confidence": 0.88,
+      "example": "add a text field called note to the Comment",
+      "source": "seed"
+    },
+    {
+      "id": "id.add_field.number",
+      "language": "id",
+      "intent_kind": "add_field_to_type",
+      "regex": "(?:tolong\\s+)?tambahkan\\s+(?:field|kolom|properti)\\s+(?<field>[a-zA-Z_][a-zA-Z0-9_]*)\\s+(?:bertipe|dengan\\s+tipe)\\s+(?:angka|nomor|number)\\s+(?:pada|ke|di)\\s+(?<type>[A-Z][a-zA-Z0-9_]*)",
+      "required_slots": ["field", "type"],
+      "slot_defaults": { "desired_kind": "number" },
+      "confidence": 0.85,
+      "example": "tambahkan field jumlah bertipe angka pada Reservation",
+      "source": "seed"
+    },
+    {
+      "id": "id.add_field.string",
+      "language": "id",
+      "intent_kind": "add_field_to_type",
+      "regex": "(?:tolong\\s+)?tambahkan\\s+(?:field|kolom|properti)\\s+(?<field>[a-zA-Z_][a-zA-Z0-9_]*)\\s+(?:bertipe|dengan\\s+tipe)\\s+(?:teks|string)\\s+(?:pada|ke|di)\\s+(?<type>[A-Z][a-zA-Z0-9_]*)",
+      "required_slots": ["field", "type"],
+      "slot_defaults": { "desired_kind": "string" },
+      "confidence": 0.85,
+      "example": "tambahkan field nama bertipe teks pada User",
+      "source": "seed"
+    },
+    {
+      "id": "en.fix_test",
+      "language": "en",
+      "intent_kind": "fix_failing_test",
+      "regex": "(?:please\\s+)?(?:fix|repair)\\s+(?:the\\s+)?(?:failing\\s+)?test(?:s)?\\s+(?:in\\s+|at\\s+)?['\"`]?(?<test_file>[a-zA-Z0-9_./\\-]+\\.test\\.tsx?)['\"`]?",
+      "required_slots": ["test_file"],
+      "confidence": 0.85,
+      "example": "fix the failing test at src/foo.test.ts",
+      "source": "seed"
+    },
+    {
+      "id": "id.fix_test",
+      "language": "id",
+      "intent_kind": "fix_failing_test",
+      "regex": "(?:tolong\\s+)?perbaiki\\s+(?:test|pengujian)\\s+(?:yang\\s+gagal\\s+)?(?:di\\s+|pada\\s+)?['\"`]?(?<test_file>[a-zA-Z0-9_./\\-]+\\.test\\.tsx?)['\"`]?",
+      "required_slots": ["test_file"],
+      "confidence": 0.82,
+      "example": "tolong perbaiki test yang gagal di src/foo.test.ts",
+      "source": "seed"
+    },
+    {
+      "id": "en.acknowledge",
+      "language": "en",
+      "intent_kind": "acknowledge",
+      "regex": "^\\s*(?:ok|okay|yes|yep|yeah|sure|sounds good|got it|thanks|thank you)\\s*\\.?\\s*$",
+      "required_slots": [],
+      "confidence": 0.6,
+      "example": "ok",
+      "source": "seed"
+    },
+    {
+      "id": "id.acknowledge",
+      "language": "id",
+      "intent_kind": "acknowledge",
+      "regex": "^\\s*(?:ok|oke|ya|iya|sip|siap|terima\\s+kasih|makasih)\\s*\\.?\\s*$",
+      "required_slots": [],
+      "confidence": 0.6,
+      "example": "iya",
+      "source": "seed"
+    },
+    {
+      "id": "en.cancel",
+      "language": "en",
+      "intent_kind": "cancel_previous",
+      "regex": "^\\s*(?:no\\s+wait|actually|scratch\\s+that|cancel|undo|change\\s+it\\s+back|nevermind|never\\s+mind)\\s*\\.?\\s*$",
+      "required_slots": [],
+      "confidence": 0.7,
+      "example": "no wait",
+      "source": "seed"
+    },
+    {
+      "id": "id.cancel",
+      "language": "id",
+      "intent_kind": "cancel_previous",
+      "regex": "^\\s*(?:jangan|batalkan|batal|kembalikan|lupakan)\\s*\\.?\\s*$",
+      "required_slots": [],
+      "confidence": 0.7,
+      "example": "batalkan",
+      "source": "seed"
+    },
+    {
+      "id": "en.clarify.what_is",
+      "language": "en",
+      "intent_kind": "clarification_query",
+      "regex": "^\\s*(?:what\\s+is|what\\s+does|explain)\\s+(?<term>[A-Z][a-zA-Z0-9_]*|[a-z][a-zA-Z0-9_]*)\\s*\\??$",
+      "required_slots": ["term"],
+      "confidence": 0.75,
+      "example": "what is Reservation?",
+      "source": "seed"
+    },
+    {
+      "id": "en.prog.modify_return.nullable_string",
+      "language": "en",
+      "intent_kind": "modify_return_type",
+      "regex": "(?:make|change|update)\\s+(?:the\\s+)?(?<target_function>[a-zA-Z_][a-zA-Z0-9_]*)\\s+(?:function\\s+)?(?:(?:so\\s+it\\s+)?returns?|to\\s+return|returning)\\s+(?:a\\s+)?nullable\\s+string",
+      "required_slots": ["target_function"],
+      "slot_defaults": { "desired_return_type": "string | null" },
+      "confidence": 0.82,
+      "example": "make the getAnswer function return a nullable string",
+      "source": "seed"
+    },
+    {
+      "id": "en.prog.modify_return.nullable_number",
+      "language": "en",
+      "intent_kind": "modify_return_type",
+      "regex": "(?:make|change|update)\\s+(?:the\\s+)?(?<target_function>[a-zA-Z_][a-zA-Z0-9_]*)\\s+(?:function\\s+)?(?:(?:so\\s+it\\s+)?returns?|to\\s+return|returning)\\s+(?:a\\s+)?nullable\\s+number",
+      "required_slots": ["target_function"],
+      "slot_defaults": { "desired_return_type": "number | null" },
+      "confidence": 0.82,
+      "example": "change loadUser so it returns a nullable number",
+      "source": "seed"
+    },
+    {
+      "id": "en.prog.rename.preserve_behaviour",
+      "language": "en",
+      "intent_kind": "rename_preserve_behaviour",
+      "regex": "rename\\s+(?<old_name>[a-zA-Z_][a-zA-Z0-9_]*)\\s+to\\s+(?<new_name>[a-zA-Z_][a-zA-Z0-9_]*)\\s+(?:without\\s+changing\\s+behaviour|but\\s+keep\\s+behaviour\\s+identical|preserving\\s+behaviour)",
+      "required_slots": ["old_name", "new_name"],
+      "confidence": 0.87,
+      "example": "rename computeTotal to calculateTotal without changing behaviour",
+      "source": "seed"
+    },
+    {
+      "id": "en.prog.make_field_optional",
+      "language": "en",
+      "intent_kind": "make_field_optional",
+      "regex": "make\\s+(?:the\\s+)?(?<field>[a-zA-Z_][a-zA-Z0-9_]*)\\s+field\\s+on\\s+(?<type>[A-Z][a-zA-Z0-9_]*)\\s+optional",
+      "required_slots": ["field", "type"],
+      "confidence": 0.86,
+      "example": "make the priority field on Reservation optional",
+      "source": "seed"
+    },
+    {
+      "id": "en.prog.restrict_type_to_union",
+      "language": "en",
+      "intent_kind": "restrict_type_to_union",
+      "regex": "the\\s+(?<field>[a-zA-Z_][a-zA-Z0-9_]*)\\s+field\\s+on\\s+(?<type>[A-Z][a-zA-Z0-9_]*)\\s+should\\s+only\\s+accept\\s+(?<allowed_values>[a-zA-Z_][a-zA-Z0-9_,\\s]*)",
+      "required_slots": ["field", "type", "allowed_values"],
+      "confidence": 0.84,
+      "example": "the status field on Order should only accept active, pending, and archived",
+      "source": "seed"
+    },
+    {
+      "id": "en.prog.preserve_api",
+      "language": "en",
+      "intent_kind": "preserve_api_contract",
+      "regex": "(?:keep|make\\s+sure)\\s+(?:the\\s+)?(?<target>[a-zA-Z_][a-zA-Z0-9_]*)\\s+API\\s+(?:backwards?\\s+compatible|stays?\\s+backwards?\\s+compatible)",
+      "required_slots": ["target"],
+      "confidence": 0.83,
+      "example": "keep the loadUser API backwards compatible",
+      "source": "seed"
+    },
+    {
+      "id": "en.prog.add_purity.no_mutation",
+      "language": "en",
+      "intent_kind": "add_purity_constraint",
+      "regex": "don't\\s+mutate\\s+(?:the\\s+)?input\\s+(?:array\\s+)?in\\s+(?<target>[a-zA-Z_][a-zA-Z0-9_]*)",
+      "required_slots": ["target"],
+      "slot_defaults": { "constraint": "no_mutation" },
+      "confidence": 0.83,
+      "example": "don't mutate the input array in sortItems",
+      "source": "seed"
+    },
+    {
+      "id": "en.prog.add_purity.pure",
+      "language": "en",
+      "intent_kind": "add_purity_constraint",
+      "regex": "make\\s+(?<target>[a-zA-Z_][a-zA-Z0-9_]*)\\s+pure\\s+and\\s+side[- ]effect\\s+free",
+      "required_slots": ["target"],
+      "slot_defaults": { "constraint": "pure" },
+      "confidence": 0.85,
+      "example": "make normalizeInput pure and side-effect free",
+      "source": "seed"
+    },
+
+    {
+      "id": "cs.id_en.fix_function_preserve_api",
+      "language": "mixed_en_id",
+      "intent_kind": "preserve_api_contract",
+      "regex": "tolong\\s+fix\\s+(?:function\\s+|fungsi\\s+)?(?<target>[a-zA-Z_][a-zA-Z0-9_]*)(?:\\s+ini)?,?\\s*(?:tapi\\s+)?jangan\\s+ubah\\s+API(?:-nya)?",
+      "required_slots": ["target"],
+      "confidence": 0.82,
+      "example": "Tolong fix function loadUser ini, tapi jangan ubah API-nya",
+      "source": "seed"
+    },
+    {
+      "id": "cs.id_en.rename_only",
+      "language": "mixed_en_id",
+      "intent_kind": "rename_preserve_behaviour",
+      "regex": "jangan\\s+(?:dihapus|hapus),?\\s*(?:cuma|hanya)\\s+rename\\s+(?<old_name>[a-zA-Z_][a-zA-Z0-9_]*)\\s+(?:jadi|ke|to)\\s+(?<new_name>[a-zA-Z_][a-zA-Z0-9_]*)",
+      "required_slots": ["old_name", "new_name"],
+      "confidence": 0.82,
+      "example": "jangan dihapus, cuma rename fetchData jadi loadData",
+      "source": "seed"
+    },
+    {
+      "id": "cs.id_en.make_field_optional",
+      "language": "mixed_en_id",
+      "intent_kind": "make_field_optional",
+      "regex": "(?:bisa\\s+)?bikin\\s+field\\s+(?<field>[a-zA-Z_][a-zA-Z0-9_]*)\\s+(?:pada|di|on)\\s+(?<type>[A-Z][a-zA-Z0-9_]*)\\s+optional",
+      "required_slots": ["field", "type"],
+      "confidence": 0.82,
+      "example": "bisa bikin field priority pada Reservation optional?",
+      "source": "seed"
+    },
+    {
+      "id": "cs.id_en.cancel_reuse",
+      "language": "mixed_en_id",
+      "intent_kind": "cancel_previous",
+      "regex": "(?:tunggu|wait),?\\s*scratch\\s+that\\s*[—-]?\\s*pakai\\s+yang\\s+tadi",
+      "required_slots": [],
+      "confidence": 0.75,
+      "example": "Tunggu, scratch that — pakai yang tadi",
+      "source": "seed"
+    }
+  ]
+}

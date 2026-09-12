@@ -1,0 +1,150 @@
+{
+  "at": "2026-09-12T03:14:41.547Z",
+  "attribution": {
+    "teaching_infrastructure": "capability-j-runtime-diagnosis.ts · taught_by=master_ai_engineer",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner"
+  },
+  "sub_tests": {
+    "J1": {
+      "vitest_exit": 1,
+      "output_bytes": 808,
+      "extractor_kind": "ok",
+      "findings": [
+        {
+          "kind": "assertion_mismatch",
+          "test_file": "data/nex1-code-engine/challenge-j-tests/assertion-fail.ts",
+          "test_name": "j-assertion > expects 1 to be 2",
+          "expected": "2",
+          "actual": "1",
+          "assertion": "toBe",
+          "error_class": null,
+          "error_message": null,
+          "stack_hint": null,
+          "timeout_ms": null,
+          "raw_slice": "\n\n FAIL  data/nex1-code-engine/challenge-j-tests/assertion-fail.ts > j-assertion > expects 1 to be 2\nAssertionError: expected 1 to be 2 // Object.is equality\n\n- Expected\n+ Received\n\n- 2\n+ 1\n\n ❯ data/nex1-code-engine/challenge-j-tests/assertion-fail.ts:5:15\n      3| describe(\"j-assertion\", () => {\n      4|   it(\"expects 1 to be 2\", () => {\n      5|     expect(1).toBe(2);\n       |               ^\n  ",
+          "taught_by": "master_ai_engineer"
+        }
+      ],
+      "verdict": "pass"
+    },
+    "J2": {
+      "vitest_exit": 1,
+      "output_bytes": 748,
+      "extractor_kind": "ok",
+      "findings": [
+        {
+          "kind": "thrown_error",
+          "test_file": "data/nex1-code-engine/challenge-j-tests/throw-fail.ts",
+          "test_name": "j-throw > throws a custom error",
+          "expected": null,
+          "actual": null,
+          "assertion": null,
+          "error_class": "Error",
+          "error_message": "intentional-boom",
+          "stack_hint": "❯ data/nex1-code-engine/challenge-j-tests/throw-fail.ts:5:11",
+          "timeout_ms": null,
+          "raw_slice": "\n\n FAIL  data/nex1-code-engine/challenge-j-tests/throw-fail.ts > j-throw > throws a custom error\nError: intentional-boom\n ❯ data/nex1-code-engine/challenge-j-tests/throw-fail.ts:5:11\n      3| describe(\"j-throw\", () => {\n      4|   it(\"throws a custom error\", () => {\n      5|     throw new Error(\"intentional-boom\");\n       |           ^\n      6|   });\n      7| });\n\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n",
+          "taught_by": "master_ai_engineer"
+        }
+      ],
+      "verdict": "pass"
+    },
+    "J3": {
+      "vitest_exit": 1,
+      "output_bytes": 916,
+      "extractor_kind": "ok",
+      "findings": [
+        {
+          "kind": "timeout",
+          "test_file": "data/nex1-code-engine/challenge-j-tests/timeout-fail.ts",
+          "test_name": "j-timeout > hangs forever",
+          "expected": null,
+          "actual": null,
+          "assertion": null,
+          "error_class": null,
+          "error_message": null,
+          "stack_hint": null,
+          "timeout_ms": 2000,
+          "raw_slice": "\n\n FAIL  data/nex1-code-engine/challenge-j-tests/timeout-fail.ts > j-timeout > hangs forever\nError: Test timed out in 2000ms.\nIf this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\".\n ❯ data/nex1-code-engine/challenge-j-tests/timeout-fail.ts:4:3\n      2| import { describe, it } from \"vitest\";\n      3| describe(\"j-timeout\", () => {\n     ",
+          "taught_by": "master_ai_engineer"
+        }
+      ],
+      "verdict": "pass"
+    },
+    "J4": {
+      "vitest_exit": 1,
+      "output_bytes": 863,
+      "extractor_kind": "ok",
+      "findings": [
+        {
+          "kind": "thrown_error",
+          "test_file": "data/nex1-code-engine/challenge-j-tests/rejection-fail.ts",
+          "test_name": "j-rejection > has an unawaited rejection",
+          "expected": null,
+          "actual": null,
+          "assertion": null,
+          "error_class": "TypeError",
+          "error_message": "intentional-reject",
+          "stack_hint": "❯ data/nex1-code-engine/challenge-j-tests/rejection-fail.ts:6:27",
+          "timeout_ms": null,
+          "raw_slice": "\n\n FAIL  data/nex1-code-engine/challenge-j-tests/rejection-fail.ts > j-rejection > has an unawaited rejection\nTypeError: intentional-reject\n ❯ data/nex1-code-engine/challenge-j-tests/rejection-fail.ts:6:27\n      4|   it(\"has an unawaited rejection\", async () => {\n      5|     // Return a rejected promise · vitest reports as failure\n      6|     return Promise.reject(new TypeError(\"intentional-reje",
+          "taught_by": "master_ai_engineer"
+        }
+      ],
+      "verdict": "pass"
+    },
+    "J5": {
+      "vitest_exit": 1,
+      "output_bytes": 999,
+      "extractor_kind": "ok",
+      "findings": [
+        {
+          "kind": "snapshot_mismatch",
+          "test_file": "data/nex1-code-engine/challenge-j-tests/snapshot-fail.ts",
+          "test_name": "j-snapshot > does not match its inline snapshot",
+          "expected": null,
+          "actual": null,
+          "assertion": null,
+          "error_class": null,
+          "error_message": "FAIL  data/nex1-code-engine/challenge-j-tests/snapshot-fail.ts > j-snapshot > does not match its inline snapshot",
+          "stack_hint": null,
+          "timeout_ms": null,
+          "raw_slice": "\n\n FAIL  data/nex1-code-engine/challenge-j-tests/snapshot-fail.ts > j-snapshot > does not match its inline snapshot\nError: Snapshot `j-snapshot > does not match its inline snapshot 1` mismatched\n\n- Expected\n+ Received\n\n- \"different-shape\"\n+ {\n+   \"answer\": 42,\n+ }\n\n ❯ data/nex1-code-engine/challenge-j-tests/snapshot-fail.ts:5:28\n      3| describe(\"j-snapshot\", () => {\n      4|   it(\"does not match",
+          "taught_by": "master_ai_engineer"
+        }
+      ],
+      "verdict": "pass"
+    },
+    "J6": {
+      "extractor_kind": "refused",
+      "refusal_class": "empty_output",
+      "reason": "vitest output was empty · nothing to diagnose",
+      "verdict": "pass"
+    },
+    "J7": {
+      "extractor_kind": "refused",
+      "refusal_class": "malformed_output",
+      "reason": "output contained only escape codes / whitespace after stripping · no diagnosable content",
+      "verdict": "pass"
+    },
+    "J8": {
+      "extractor_kind": "refused",
+      "refusal_class": "malformed_output",
+      "reason": "output does not contain any recognised vitest markers",
+      "verdict": "pass"
+    },
+    "J9": {
+      "extractor_kind": "refused",
+      "refusal_class": "vitest_infrastructure_error",
+      "reason": "output matches a vitest infrastructure failure signature",
+      "verdict": "pass"
+    },
+    "J10": {
+      "extractor_kind": "refused",
+      "refusal_class": "permission_error",
+      "reason": "output contains permission-error signature (EACCES/EPERM/permission denied)",
+      "verdict": "pass"
+    }
+  }
+}

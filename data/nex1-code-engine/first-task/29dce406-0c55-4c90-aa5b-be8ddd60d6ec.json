@@ -1,0 +1,34 @@
+{
+  "task_id": "faa47d84-f7c0-4fb1-a00e-2bb202890c63",
+  "attempt_id": "29dce406-0c55-4c90-aa5b-be8ddd60d6ec",
+  "at": "2026-09-11T18:35:06.487Z",
+  "adapter_id": "template-only",
+  "adapter_scope": "code_proposal_only",
+  "model_id": null,
+  "model_version": null,
+  "prompt_hash": "e9f194ebcbe5457f6b9618ec271fd6deb8fb5dece9c45c4e184f01500a53ef39",
+  "context_hash": "d94588b8c6f038ebfbd7edc285de8f4cf8a454f5994694550b3763b37170774f",
+  "diff_hash": "297813504c445fc782106a4b2a5e344bd36baba08aea0f12b7f54ee0b95c8b6c",
+  "diff_size_lines": 25,
+  "latency_ms": 0,
+  "deterministic": true,
+  "nex1_decisions": {
+    "files_selected": [
+      "src/lib/nex-agent/code-engine/version-info.ts"
+    ],
+    "tests_run": [],
+    "candidate_rejected_count": 0,
+    "diff_evaluated": "passed",
+    "repair_attempts": 0,
+    "diagnosis_notes": "",
+    "evidence_recorded_at": "2026-09-11T18:35:06.486Z",
+    "completion_decided_at": "2026-09-11T18:35:06.487Z",
+    "task_interpretation": {
+      "at": "2026-09-11T18:35:06.485Z",
+      "hash": "e9f194ebcbe5457f6b9618ec271fd6deb8fb5dece9c45c4e184f01500a53ef39"
+    },
+    "context_composed_hash": "d94588b8c6f038ebfbd7edc285de8f4cf8a454f5994694550b3763b37170774f",
+    "candidate_accepted": true
+  },
+  "attempted_by": "nex1"
+}

@@ -1,0 +1,21 @@
+{
+  "snapshot_id": "0efb198b-53ef-4845-b1ab-fb4a31a82d35",
+  "source_id": "test-src",
+  "retrieved_at": "2026-09-05T11:34:39.886Z",
+  "content_hash": "7e40b846df385594d203dc93026275735db43c137679e9cdd9b03e2945cb0759",
+  "bytes": 161,
+  "content": null,
+  "structured": [
+    {
+      "subject": "HS 0304",
+      "predicate": "fish fillets and other fish meat",
+      "contradictions": [
+        "canned"
+      ]
+    },
+    {
+      "subject": "HS 1604",
+      "predicate": "prepared or preserved fish"
+    }
+  ]
+}

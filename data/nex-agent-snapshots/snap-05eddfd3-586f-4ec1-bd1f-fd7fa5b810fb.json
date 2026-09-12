@@ -1,0 +1,13 @@
+{
+  "id": "snap-05eddfd3-586f-4ec1-bd1f-fd7fa5b810fb",
+  "name": "Session 1",
+  "description": "Mobile · dark bezel · SEO panel open",
+  "createdAt": "2026-09-11T15:21:02.056Z",
+  "createdBy": "founder",
+  "state": {
+    "viewport": "mobile",
+    "zoom": 1.2,
+    "phoneModelId": "iphone-15-pro",
+    "bezelColorId": "space-black"
+  }
+}

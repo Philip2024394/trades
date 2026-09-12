@@ -1,0 +1,38 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX1_DECLARATION contract · founder-authorised 2026-09-12 constitutional distinction. NEX1 MAY claim things about its own work. Only the Evidence Engine MAY produce independently measured EvidenceRecords. A NEX1Declaration is a CLAIM · not evidence · never accepted as an EvidenceRecord.",
+  "record_type": "NEX1_DECLARATION",
+  "purpose": "surface NEX1's beliefs about its own output so downstream tooling can compare against independent measurement · never so downstream tooling can skip measurement",
+  "required_fields": [
+    { "name": "declaration_id",           "shape": "string · monotonic e.g. ND-0000007" },
+    { "name": "schema_version",           "shape": "semver" },
+    { "name": "work_order_id",            "shape": "string · from Engineering Work Order" },
+    { "name": "candidate_id",             "shape": "string · always 'cand_nex1' for NEX1's own output" },
+    { "name": "claim_type",                "shape": "enum · IMPLEMENTATION_COMPLETE · TESTS_EXPECTED_TO_PASS · SEMANTIC_PRESERVATION_CLAIMED · COMPLEXITY_EXPECTED_TO_IMPROVE · COMPILATION_EXPECTED · TYPE_CHECK_EXPECTED · CUSTOM",
+                                            "notes": "explicit list · CUSTOM requires a claim_text field · never inflates the list at runtime" },
+    { "name": "claim_text",               "shape": "string · human-readable · never load-bearing" },
+    { "name": "self_reported_state",     "shape": "enum · CLAIMED · UNCERTAIN · WITHDRAWN",
+                                            "notes": "even NEX1's self-report can be CLAIMED (I believe) · UNCERTAIN (I don't know) · WITHDRAWN (I retract my earlier claim)" },
+    { "name": "at",                        "shape": "ISO-8601 · immutable" },
+    { "name": "attribution",              "shape": "object · role='nex1_builder' · deterministic=true · external_llm_used=false" }
+  ],
+  "hard_invariants": [
+    "a NEX1Declaration MUST NEVER be accepted as an EvidenceRecord by any consumer · Evidence Engine · NEX2 · NEX3 · Standard Feed",
+    "record_type=NEX1_DECLARATION MUST NEVER be silently rewritten to record_type=EVIDENCE_RECORD",
+    "no NEX1Declaration field is a substitute for tool + tool_version + reproducibility_information from the Evidence Engine",
+    "NEX1Declaration NEVER carries a measurement.value that satisfies EvidenceRecord requirements",
+    "state=PASSED cannot come from a NEX1Declaration · only from an Evidence Engine measurement",
+    "consumers checking for evidence MUST validate record_type === 'EVIDENCE_RECORD' · declarations MUST be rejected"
+  ],
+  "consumption_rules": [
+    "NEX2 may READ NEX1 declarations for context · never CITE them as evidence in its review",
+    "NEX3 may READ NEX1 declarations for context · never CITE them as evidence in its arbitration",
+    "the Evidence Engine may READ NEX1 declarations to prioritise which dimensions to measure first · never as substitute measurement",
+    "founder ADR MAY quote NEX1 declarations · that is a founder authority · not an evidence claim"
+  ],
+  "attribution_constraints": {
+    "role": "nex1_builder",
+    "authority": "declaration_only",
+    "cannot_produce": ["EVIDENCE_RECORD", "EVIDENCE_BUNDLE", "NEX3_ARBITRATION", "ENGINEERING_STANDARD"]
+  }
+}

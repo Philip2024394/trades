@@ -1,0 +1,32 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX Dependency Engineer Evidence Specialist · founder-authorised 2026-09-12. Watches packages/versions/graph/CVEs/breaking/deprecations/licences/upgrade blast-radius. Advisory. Never upgrades.",
+  "record_type": "DEPENDENCY_ENGINEER_EVIDENCE",
+  "constitutional_purpose_locked": "Never blindly upgrade. Never auto-add. Never auto-remove. Never silently pin. Evidence only. Upgrade risk weights are founder policy per Observation ≠ Constitutional Authority.",
+  "outcomes_permitted": {
+    "NO_DRIFT_IN_SCOPE":         "dependency graph matches locked policy · no CVE in scope · no licence violation",
+    "VULNERABLE_DEPENDENCIES":   "one or more packages have CVE with severity from tool (never specialist-elevated)",
+    "LICENCE_VIOLATION":         "one or more packages have licence outside founder-authored allowlist",
+    "STALE_DEPENDENCIES":        "one or more packages are behind founder-authored freshness policy",
+    "UNUSED_DEPENDENCIES":       "packages present in manifest but unreferenced by internal imports (knip / dep-cruiser evidence)",
+    "MIXED_FINDINGS":            "multiple finding families present · every family cited with evidence_ids",
+    "NOT_MEASURED":              "no package-lock supplied · no vuln DB available · specialist did not proceed",
+    "INSUFFICIENT_EVIDENCE":     "attempted but insufficient signal"
+  },
+  "must_consume": ["package-lock.json","package.json","knip-report","dep-cruiser-report","osv-scanner-report","npm-audit-report","license-checker-report"],
+  "must_not": ["auto-upgrade","auto-remove","auto-replace","install any package","modify node_modules","modify lockfile"],
+  "forbidden_vocabulary_in_output": [
+    "dependency_score","risk_score","overall_risk","quality_score","aggregate_quality","weighted_total","confidence_percent",
+    "modern","outdated","obsolete","best_practice","antiquated","optimal"
+  ],
+  "invariants": [
+    "MUST NEVER modify node_modules · package.json · package-lock.json",
+    "MUST NEVER upgrade or downgrade without a founder-authored explicit upgrade Work Order",
+    "risk weights are FOUNDER POLICY · Observation ≠ Constitutional Authority",
+    "MUST cite blast-radius (internal modules importing X) for every UPGRADE recommendation",
+    "authorisation=false · execution=false · authority_boundary='evidence_producer_only'",
+    "external_llm_used=false · deterministic=true",
+    "routes through Evidence Validation"
+  ],
+  "v0_1_0_tool_binding_status": "LIMITED_V0 · deterministic-fixture engine · real osv-scanner/npm-audit/knip binding requires founder-authorised follow-up"
+}

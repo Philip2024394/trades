@@ -1,0 +1,66 @@
+{
+  "iteration": 5,
+  "label": "s05",
+  "started_at": "2026-09-08T18:21:21.720Z",
+  "q1_intercept": {
+    "intent": "accommodation",
+    "has_real_names": true,
+    "count_reported": 521,
+    "empty_reported": false,
+    "card_hits": 5,
+    "world_cards": 0,
+    "voice_reply_en": "Yep — found 3.",
+    "reply_snippet": "I've got 521 real listings for hotels near Malioboro — Gaotama Hotel, Selaras Inn Hotel Yogyakarta, Indonesia Hotel, and more. These are OpenStreetMap community listings so they're for discovery, not ...",
+    "hotel_names_extracted": [
+      "Gaotama Hotel",
+      "Selaras Inn Hotel",
+      "Indonesia Hotel"
+    ],
+    "conversation_id": "c9925608-30c3-4700-a9a8-9abfb899fe96"
+  },
+  "q2_intercept": {
+    "intent": "accommodation",
+    "has_real_names": false,
+    "count_reported": null,
+    "empty_reported": false,
+    "card_hits": 0,
+    "world_cards": 0,
+    "voice_reply_en": "I don't have verified Pool information for the current list. Want me to search for ones that specifically offer Pool?",
+    "reply_snippet": "I don't have verified Pool information for the current list. Want me to search for ones that specifically offer Pool?",
+    "hotel_names_extracted": [],
+    "conversation_id": "c9925608-30c3-4700-a9a8-9abfb899fe96"
+  },
+  "q1_request_body": {
+    "message": "Find me hotels near Malioboro",
+    "conversation_id": null,
+    "market": "ID"
+  },
+  "q2_request_body": {
+    "message": "Which one has a pool?",
+    "conversation_id": "c9925608-30c3-4700-a9a8-9abfb899fe96",
+    "market": "ID"
+  },
+  "dom_after_q1": "Skip to content\nContacts\nNEX ID\nConnect\nACTIVE\n3\nRiverside Staircases\nStaircase Maker\nManchester\n“The oak sample arrived this morning — should I bring it Friday?”\n2m\n1\nSarah Chen\nFriend\nLondon\n“Sending you the fabric swatches now”\n18m\nAshworth Kitchens\nKitchen Fitter\nCheshire\n·\nLast seen 1h ago\n“Quote attached — let me know what you think”\n1h\n2\nPEOPLE\n3\nEmma Whitmore\nFamily\nBristol\n·\nLast seen 4h ago\nJames Okafor\nColleague\nLondon\n·\nLast seen yesterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nWEDNESDAY\n9 September · 01:21\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\nFind me hotels near Malioboro\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nContacts\nTasks\nPlay",
+  "dom_after_q2": "Skip to content\nContacts\nNEX ID\nConnect\nACTIVE\n3\nRiverside Staircases\nStaircase Maker\nManchester\n“The oak sample arrived this morning — should I bring it Friday?”\n2m\n1\nSarah Chen\nFriend\nLondon\n“Sending you the fabric swatches now”\n18m\nAshworth Kitchens\nKitchen Fitter\nCheshire\n·\nLast seen 1h ago\n“Quote attached — let me know what you think”\n1h\n2\nPEOPLE\n3\nEmma Whitmore\nFamily\nBristol\n·\nLast seen 4h ago\nJames Okafor\nColleague\nLondon\n·\nLast seen yesterday\nAlex Byrne\nFriend\nEdinburgh\n·\nLast seen 2 days ago\nTRADES\n2\nNorth Timber & Oak\nTimber Merchant\nLeeds\n·\nLast seen 5 days ago\nMacDonald Plumbing\nPlumber\nGlasgow\n·\nLast seen 2 weeks ago\nBLOCKED\n1\nRedfern Electrics\nElectrician · Birmingham\nUnblock\nType to search everything you and Nex have said so far.\nTasks\n+ Create task\n🔔\nGet reminders even when Nex is closed\nTurn on background notifications so Nex can wake your device when a reminder is due.\nNotifications are blocked in your browser. Enable them in site settings for this page, then try again.\nEnable notifications\nOPEN · 0\nNo open tasks. Create one to keep Nex on track.\nWEDNESDAY\n9 September · 01:21\nStickers\nIN DEVELOPMENT\n\nDrag action-verb stickers onto chat messages — Save · Budget · Show partner.\n\nStaircase Plans\nLIVE\nON\n\nSend a staircase layout to the chat — straight flight · dog leg · winder · landings · spiral.\n\nStairs\nLIVE\n\nUpload your staircase designs and share them with customers mid-conversation — image, price, delivery, one tap.\n\nN\nNex\nOnline\nN\nNex\nHi, I'm Nex. Tell me what you're trying to accomplish — find someone, start a project, or just ask me something.\nFind me hotels near Malioboro\nN\nNex\nYep — found 3.\n1\nGaotama Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\n2\nSelaras Inn Hotel Yogyakarta\nHOTEL\nYogyakarta\nno price published\nno rating published\n3\nIndonesia Hotel\nHOTEL\nYogyakarta\nno price published\nno rating published\nOpen directory\nWhich one has a pool?\nN\nNex\nI don't have verified Pool information for the current list. Want me to search for ones that specifically offer Pool?\nOpen directory\nContacts\nTasks\nPlay",
+  "q1_verdict": "PASS_REAL_HOTELS",
+  "q2_verdict": "PASS_RESPONDED",
+  "conversation_context_verdict": "PARTIAL_CONTEXT_ID_ONLY",
+  "screenshots": {
+    "q1": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\sweep\\run-2026-09-08T18-19-37-227Z\\s05\\q1.png",
+    "q2": "C:\\Users\\Victus\\trades\\data\\chromium-proof\\sweep\\run-2026-09-08T18-19-37-227Z\\s05\\q2.png"
+  },
+  "error": null,
+  "all_pairs_summary": [
+    {
+      "sent": "Find me hotels near Malioboro",
+      "got_response": true,
+      "at": "2026-09-08T18:21:25.784Z"
+    },
+    {
+      "sent": "Which one has a pool?",
+      "got_response": true,
+      "at": "2026-09-08T18:21:38.916Z"
+    }
+  ],
+  "finished_at": "2026-09-08T18:21:45.633Z"
+}

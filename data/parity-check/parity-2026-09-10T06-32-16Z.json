@@ -1,0 +1,86 @@
+{
+  "ts_iso": "2026-09-10T06:32:16.676Z",
+  "local_url": "postgresql://postgres:*****@localhost:5433/nex_dev",
+  "remote_url": "postgresql://nex_app_runtime.ijvqdvsvwtwxzcqmoqit:*****@aws-0-eu-west-1.pooler.supabase.com:6543/postgres",
+  "tables_checked": 10,
+  "ok": 8,
+  "drift": 0,
+  "err": 2,
+  "passed": false,
+  "rows": [
+    {
+      "table": "accommodation_business",
+      "local": 9203,
+      "remote": 9203,
+      "delta": 0,
+      "status": "OK"
+    },
+    {
+      "table": "accommodation_business_field_provenance",
+      "local": 46114,
+      "remote": 46114,
+      "delta": 0,
+      "status": "OK"
+    },
+    {
+      "table": "accommodation_business_source_snapshot",
+      "local": 9203,
+      "remote": 9203,
+      "delta": 0,
+      "status": "OK"
+    },
+    {
+      "table": "knowledge_records",
+      "local": 1,
+      "remote": 1,
+      "delta": 0,
+      "status": "OK"
+    },
+    {
+      "table": "knowledge_feedback",
+      "local": 0,
+      "remote": 0,
+      "delta": 0,
+      "status": "OK"
+    },
+    {
+      "table": "record_versions",
+      "local": 0,
+      "remote": 0,
+      "delta": 0,
+      "status": "OK"
+    },
+    {
+      "table": "audit_log",
+      "local": 9,
+      "remote": 9,
+      "delta": 0,
+      "status": "OK"
+    },
+    {
+      "table": "user_account",
+      "local": 47,
+      "remote": {
+        "error": "error: relation \"nex.user_account\" does not exist"
+      },
+      "delta": null,
+      "status": "ERR"
+    },
+    {
+      "table": "user_session",
+      "local": 47,
+      "remote": {
+        "error": "error: relation \"nex.user_session\" does not exist"
+      },
+      "delta": null,
+      "status": "ERR"
+    },
+    {
+      "table": "knowledge_inbox",
+      "local": 279,
+      "remote": 279,
+      "delta": 0,
+      "status": "OK"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+[
+  {
+    "run_id": "8cbc7878-13a1-4092-821a-1a4f3b449ec7",
+    "started_at": "2026-09-10T05:25:19.860Z",
+    "last_progress_at": "2026-09-10T05:25:19.882Z",
+    "completed_at": "2026-09-10T05:25:19.882Z",
+    "source_id": "fixture.bad",
+    "snapshot_id": "4a05863a-23f2-45f8-a28a-987acb20d175",
+    "snapshot_status": "SUCCESS",
+    "claims_extracted": 1,
+    "claims_verified": 0,
+    "claims_rejected": 1,
+    "claims_promoted": 0,
+    "failure_stage": null,
+    "failure_reason": null,
+    "retry_count": 0,
+    "recovery_result": "NOT_ATTEMPTED",
+    "final_status": null,
+    "evidence_pointers": [
+      "RUN_CREATED@2026-09-10T05:25:19.860Z",
+      "SOURCE_ACCESS@2026-09-10T05:25:19.863Z",
+      "SNAPSHOT_SUCCESS@2026-09-10T05:25:19.866Z",
+      "EXTRACTION_SUCCESS@2026-09-10T05:25:19.869Z",
+      "CLAIMS_FOUND@2026-09-10T05:25:19.872Z",
+      "VERIFICATION_COMPLETED@2026-09-10T05:25:19.875Z",
+      "PROMOTION_DECISION@2026-09-10T05:25:19.880Z",
+      "RUN_COMPLETED@2026-09-10T05:25:19.882Z"
+    ]
+  }
+]

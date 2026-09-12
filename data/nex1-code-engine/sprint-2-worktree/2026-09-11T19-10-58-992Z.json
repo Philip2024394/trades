@@ -1,0 +1,44 @@
+{
+  "at": "2026-09-11T19:09:40.909Z",
+  "protocol": "snapshot-restore",
+  "outcomes": [
+    {
+      "id": "add-interface-field",
+      "ok": true,
+      "adapter_id": "ast-semantic",
+      "rationale": "AST: added field 'resolved_at: string | null' to interface 'Nex1AttemptProvenance'",
+      "delta_bytes": 148,
+      "new_hash": "71b0e1d250efbc4cd7a149a7594b43c9c5c079a1c503204d060e825a4218929f"
+    },
+    {
+      "id": "populate-in-function-body",
+      "ok": true,
+      "adapter_id": "ast-semantic",
+      "rationale": "AST: added property 'resolved_at' to return-object of 'recordProvenance'",
+      "delta_bytes": 46,
+      "new_hash": "377e7b3e51912764777aa26d48bbd5d0c7b4d836a1af0c85c605f951f8a419bb"
+    },
+    {
+      "id": "add-test-case",
+      "ok": true,
+      "adapter_id": "ast-semantic",
+      "rationale": "AST: added it('records resolved_at when NEX1 completes an attempt') to describe('provenance · attribution firewall')",
+      "delta_bytes": 1280,
+      "new_hash": "0b2f6c23fab7e67f0b9d9e599259cf33953b6abdf2df01ae7e1c0b688fa7143b"
+    }
+  ],
+  "typecheck": {
+    "exit": 2,
+    "total_errors": 1567,
+    "scoped_errors": 1,
+    "scoped_sample": [
+      "src/lib/nex-agent/code-engine/code-engine.test.ts(324,5): error TS2322: Type '{ task_id: string; attempt_id: string; at: string; adapter_id: string; adapter_scope: \"code_proposal_only\"; model_id: null; model_version: null; prompt_hash: string; context_hash: string; diff_hash: string; ... 4 more ...; attempted_by: \"nex1\"; }[]' is not assignable to type 'Nex1AttemptProvenance[]'."
+    ]
+  },
+  "vitest": {
+    "exit": 0,
+    "passed": 60,
+    "failed": 0
+  },
+  "main_tree_byte_identical": true
+}

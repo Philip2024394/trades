@@ -1,0 +1,120 @@
+{
+  "at": "2026-09-12T03:51:42.175Z",
+  "attribution": {
+    "teaching_infrastructure": "capability-i2-negative-proof.ts · taught_by=master_ai_engineer",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner"
+  },
+  "sub_tests": {
+    "I2.1": {
+      "expectedWrongType": "number",
+      "plan": {
+        "kind": "planned",
+        "declared_field_type": "number",
+        "wrong_typed_value": "\"not-a-number\"",
+        "test_name": "Shapes.ageNum: TypeScript rejects wrong-typed values"
+      },
+      "tsc_errors": 0,
+      "vitest": {
+        "exit": 0,
+        "passed": 1,
+        "failed": 0
+      },
+      "verdict": "pass",
+      "byte_identical": true
+    },
+    "I2.2": {
+      "expectedWrongType": "string",
+      "plan": {
+        "kind": "planned",
+        "declared_field_type": "string",
+        "wrong_typed_value": "12345",
+        "test_name": "Shapes.nameStr: TypeScript rejects wrong-typed values"
+      },
+      "tsc_errors": 0,
+      "vitest": {
+        "exit": 0,
+        "passed": 1,
+        "failed": 0
+      },
+      "verdict": "pass",
+      "byte_identical": true
+    },
+    "I2.3": {
+      "expectedWrongType": "boolean",
+      "plan": {
+        "kind": "planned",
+        "declared_field_type": "boolean",
+        "wrong_typed_value": "\"not-a-boolean\"",
+        "test_name": "Shapes.activeBool: TypeScript rejects wrong-typed values"
+      },
+      "tsc_errors": 0,
+      "vitest": {
+        "exit": 0,
+        "passed": 1,
+        "failed": 0
+      },
+      "verdict": "pass",
+      "byte_identical": true
+    },
+    "I2.4": {
+      "expectedWrongType": "readonly string[]",
+      "plan": {
+        "kind": "planned",
+        "declared_field_type": "readonly string[]",
+        "wrong_typed_value": "42",
+        "test_name": "Shapes.tagsArr: TypeScript rejects wrong-typed values"
+      },
+      "tsc_errors": 0,
+      "vitest": {
+        "exit": 0,
+        "passed": 1,
+        "failed": 0
+      },
+      "verdict": "pass",
+      "byte_identical": true
+    },
+    "I2.5": {
+      "expectedWrongType": "\"widget\" | \"gadget\"",
+      "plan": {
+        "kind": "planned",
+        "declared_field_type": "\"widget\" | \"gadget\"",
+        "wrong_typed_value": "\"__intentionally-invalid-union-member__\"",
+        "test_name": "Shapes.kindUnion: TypeScript rejects wrong-typed values"
+      },
+      "tsc_errors": 0,
+      "vitest": {
+        "exit": 0,
+        "passed": 1,
+        "failed": 0
+      },
+      "verdict": "pass",
+      "byte_identical": true
+    },
+    "I2.6": {
+      "plan": {
+        "kind": "refused_complex_type",
+        "reason": "field 'settingsComplex' has declared type 'ShapesSettings' · complex/unknown · negative proof refused"
+      },
+      "expectedKind": "refused_complex_type",
+      "verdict": "pass"
+    },
+    "I2.7": {
+      "plan": {
+        "kind": "refused_no_field",
+        "reason": "field 'doesNotExist' not found on 'Shapes' in C:/Users/Victus/trades/data/nex1-code-engine/challenge-i2/shapes.ts"
+      },
+      "expectedKind": "refused_no_field",
+      "verdict": "pass"
+    },
+    "I2.8": {
+      "plan": {
+        "kind": "refused_protected_path",
+        "reason": "every declaring path for 'SecretConfig' is protected"
+      },
+      "expectedKind": "refused_protected_path",
+      "verdict": "pass"
+    }
+  },
+  "all_fixtures_byte_identical": true
+}

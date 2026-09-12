@@ -1,0 +1,195 @@
+{
+  "at": "2026-09-12T05:21:24.518Z",
+  "attribution": {
+    "teaching_infrastructure": "A + C (heritage-aware) + D (heritage-aware) + E + F · taught_by=master_ai_engineer",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner"
+  },
+  "sub_tests": {
+    "G-A": {
+      "causal_chain": {
+        "iterations": [
+          {
+            "iteration": 1,
+            "scoped_errors": 4,
+            "findings": [
+              {
+                "file": "data/nex1-code-engine/chain-g/callers/build-a.ts",
+                "property": "count",
+                "result": "repaired",
+                "value": "0",
+                "applied": true
+              },
+              {
+                "file": "data/nex1-code-engine/chain-g/callers/build-b-1.ts",
+                "property": "count",
+                "result": "repaired",
+                "value": "0",
+                "applied": true
+              },
+              {
+                "file": "data/nex1-code-engine/chain-g/callers/build-b-2.ts",
+                "property": "count",
+                "result": "repaired",
+                "value": "0",
+                "applied": true
+              },
+              {
+                "file": "data/nex1-code-engine/chain-g/callers/build-b-3.ts",
+                "property": "count",
+                "result": "repaired",
+                "value": "0",
+                "applied": true
+              }
+            ],
+            "repairs_applied": 4,
+            "escalations": 0
+          },
+          {
+            "iteration": 2,
+            "scoped_errors": 0,
+            "findings": [],
+            "repairs_applied": 0,
+            "escalations": 0
+          }
+        ],
+        "terminated": "clean"
+      },
+      "final_scoped_errors": 0,
+      "byte_identical": true,
+      "verdict": "pass"
+    },
+    "G-B": {
+      "causal_chain": {
+        "iterations": [
+          {
+            "iteration": 1,
+            "scoped_errors": 4,
+            "findings": [
+              {
+                "file": "data/nex1-code-engine/chain-g/callers/build-a.ts",
+                "property": "count",
+                "result": "repaired",
+                "value": "0",
+                "applied": true
+              },
+              {
+                "file": "data/nex1-code-engine/chain-g/callers/build-b-1.ts",
+                "property": "metadata",
+                "result": "escalated",
+                "declared_type": "BMetadata"
+              },
+              {
+                "file": "data/nex1-code-engine/chain-g/callers/build-b-1.ts",
+                "property": "count",
+                "result": "repaired",
+                "value": "0",
+                "applied": true
+              },
+              {
+                "file": "data/nex1-code-engine/chain-g/callers/build-b-2.ts",
+                "property": "metadata",
+                "result": "escalated",
+                "declared_type": "BMetadata"
+              },
+              {
+                "file": "data/nex1-code-engine/chain-g/callers/build-b-2.ts",
+                "property": "count",
+                "result": "repaired",
+                "value": "0",
+                "applied": true
+              },
+              {
+                "file": "data/nex1-code-engine/chain-g/callers/build-b-3.ts",
+                "property": "metadata",
+                "result": "escalated",
+                "declared_type": "BMetadata"
+              },
+              {
+                "file": "data/nex1-code-engine/chain-g/callers/build-b-3.ts",
+                "property": "count",
+                "result": "repaired",
+                "value": "0",
+                "applied": true
+              }
+            ],
+            "repairs_applied": 4,
+            "escalations": 3
+          },
+          {
+            "iteration": 2,
+            "scoped_errors": 3,
+            "findings": [
+              {
+                "file": "data/nex1-code-engine/chain-g/callers/build-b-1.ts",
+                "property": "metadata",
+                "result": "escalated",
+                "declared_type": "BMetadata"
+              },
+              {
+                "file": "data/nex1-code-engine/chain-g/callers/build-b-2.ts",
+                "property": "metadata",
+                "result": "escalated",
+                "declared_type": "BMetadata"
+              },
+              {
+                "file": "data/nex1-code-engine/chain-g/callers/build-b-3.ts",
+                "property": "metadata",
+                "result": "escalated",
+                "declared_type": "BMetadata"
+              }
+            ],
+            "repairs_applied": 0,
+            "escalations": 3
+          }
+        ],
+        "terminated": "no_repairs_possible"
+      },
+      "final_scoped_errors": 3,
+      "byte_identical": true,
+      "count_repairs_succeeded": true,
+      "verdict": "pass"
+    },
+    "G-4L": {
+      "causal_chain": {
+        "iterations": [
+          {
+            "iteration": 1,
+            "scoped_errors": 1,
+            "findings": [
+              {
+                "file": "data/nex1-code-engine/chain-4l/build-d.ts",
+                "property": "count",
+                "result": "repaired",
+                "value": "0",
+                "applied": true
+              }
+            ],
+            "repairs_applied": 1,
+            "escalations": 0
+          },
+          {
+            "iteration": 2,
+            "scoped_errors": 0,
+            "findings": [],
+            "repairs_applied": 0,
+            "escalations": 0
+          }
+        ],
+        "terminated": "clean"
+      },
+      "final_scoped_errors": 0,
+      "byte_identical": true,
+      "verdict": "pass"
+    },
+    "G-Cy": {
+      "elapsed_ms": 0,
+      "resolver_kind": "type_not_found",
+      "resolver_reason": "no declaration of 'someMissingProp' on type 'CycleX' in any supplied source (2 searched)",
+      "bounded": true,
+      "safe": true,
+      "byte_identical": true,
+      "verdict": "pass"
+    }
+  }
+}

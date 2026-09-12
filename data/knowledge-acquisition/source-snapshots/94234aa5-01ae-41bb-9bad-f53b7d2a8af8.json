@@ -1,0 +1,11 @@
+{
+  "snapshot_id": "94234aa5-01ae-41bb-9bad-f53b7d2a8af8",
+  "source_id": "test-src",
+  "retrieved_at": "2026-09-10T05:25:19.571Z",
+  "content_hash": "18be726f40bc9f65bd58201f4619819f3bbaa46c9b61d74205961074c78f2fca",
+  "bytes": 18,
+  "content": null,
+  "structured": {
+    "not": "an array"
+  }
+}

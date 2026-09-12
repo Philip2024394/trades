@@ -1,0 +1,109 @@
+{
+  "at": "2026-09-12T07:04:13.369Z",
+  "attribution": {
+    "teaching_infrastructure": "capability-j2-cause-analysis.ts EXTENDED · taught_by=master_ai_engineer",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner"
+  },
+  "sub_tests": {
+    "J22.1": {
+      "extractor_kind": "ok",
+      "diagnosis": {
+        "kind": "proposal",
+        "diagnosis": "test contract expects getAnswer() === 2 · source hard-codes 1 · likely source-value error",
+        "confidence": 0.85,
+        "proposal": {
+          "change_kind": "replace_return_literal",
+          "target_file": "data/nex1-code-engine/challenge-j2/source-literal.ts",
+          "target_function": "getAnswer",
+          "current_literal": "1",
+          "proposed_literal": "2",
+          "rationale": "test at data/nex1-code-engine/challenge-j22-tests/cast-safe.test.ts:7 asserts getAnswer() === 2 · source at data/nex1-code-engine/challenge-j2/source-literal.ts returns 1 · disagreement is at a plain primitive literal · test's expectation is treated as the specification"
+        }
+      },
+      "verdict": "pass"
+    },
+    "J22.2": {
+      "extractor_kind": "ok",
+      "diagnosis": {
+        "kind": "refused_test_may_be_wrong",
+        "diagnosis": "source function 'getKind' declares literal return type '\"widget\"' · test expects '\"gadget\"' · test may be wrong; J.2 will not silently rewrite source contract",
+        "confidence": 0.9,
+        "proposal": null
+      },
+      "verdict": "pass"
+    },
+    "J22.3": {
+      "extractor_kind": "ok",
+      "diagnosis": {
+        "kind": "proposal",
+        "diagnosis": "test contract expects constant ANSWER === 42 · source hard-codes 40 · likely source-value error",
+        "confidence": 0.85,
+        "proposal": {
+          "change_kind": "replace_return_literal",
+          "target_file": "data/nex1-code-engine/challenge-j22/source-constant.ts",
+          "target_function": "ANSWER",
+          "current_literal": "40",
+          "proposed_literal": "42",
+          "rationale": "test at data/nex1-code-engine/challenge-j22-tests/imported-constant.test.ts:7 asserts ANSWER === 42 · source constant at data/nex1-code-engine/challenge-j22/source-constant.ts is 40 · disagreement is at a plain primitive literal"
+        }
+      },
+      "verdict": "pass"
+    },
+    "J22.4": {
+      "extractor_kind": "ok",
+      "diagnosis": {
+        "kind": "refused_low_confidence",
+        "diagnosis": "assertion argument is a chained call · cause could originate at any of several source functions · J.2.2 refuses without stronger evidence",
+        "confidence": 0.55,
+        "proposal": null
+      },
+      "verdict": "pass"
+    },
+    "J22.5": {
+      "extractor_kind": "ok",
+      "diagnosis": {
+        "kind": "refused_unknown_test_shape",
+        "diagnosis": "assertion asserts a locally-computed value with no imported producer · deferred",
+        "confidence": 0.5,
+        "proposal": null
+      },
+      "verdict": "pass"
+    },
+    "J22.6": {
+      "verdict": "pass",
+      "result": {
+        "verdict": "verified_repair",
+        "diagnosis_kind": "proposal",
+        "proposal_summary": "replace_return_literal(data/nex1-code-engine/challenge-j2/source-literal.ts#getAnswer · 1 → 2)",
+        "original_hash": "82b97ab2e77d3c043492bcc30d1fc56217e2daa08ebe809d3567b444ab513ee5",
+        "modified_hash": "bec68c51ddf0523061b08e82c6c0f1c54fb7e2db829731c3567d886ea43a9c58",
+        "restored_hash": "82b97ab2e77d3c043492bcc30d1fc56217e2daa08ebe809d3567b444ab513ee5",
+        "first_run": {
+          "exit_code": 1,
+          "passed": 0,
+          "failed": 1
+        },
+        "second_run": {
+          "exit_code": 0,
+          "passed": 1,
+          "failed": 0
+        },
+        "elapsed_ms": 4173,
+        "rollback_status": "restored",
+        "reasoning_trace": [
+          "snapshotted target · data/nex1-code-engine/challenge-j2/source-literal.ts · 82b97ab2e77d",
+          "first_run · exit=1 · passed=0 · failed=1",
+          "applied · new hash bec68c51ddf0",
+          "second_run · exit=0 · passed=1 · failed=0",
+          "rollback · restored · 82b97ab2e77d",
+          "first: passed=0 failed=1",
+          "second: passed=1 failed=0",
+          "guard: zero failures · repair verified"
+        ],
+        "taught_by": "master_ai_engineer"
+      }
+    }
+  },
+  "all_fixtures_byte_identical": true
+}

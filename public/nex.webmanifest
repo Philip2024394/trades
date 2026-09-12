@@ -1,0 +1,19 @@
+{
+  "$comment": "NEX-specific PWA manifest · Philip 2026-09-02. Referenced from src/app/nexapp/page.tsx via metadata.manifest. Installing NEX from Add-to-Home-Screen while on /nexapp uses THIS manifest (start_url /nexapp) instead of the root Thenetworkers manifest (start_url /trade-off).",
+  "name": "NEX",
+  "short_name": "NEX",
+  "description": "NEX · Ask. Discover. Connect.",
+  "start_url": "/nexapp",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "lang": "en-GB",
+  "dir": "ltr",
+  "categories": ["social", "lifestyle", "productivity"],
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "/apple-touch-icon.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

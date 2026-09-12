@@ -1,0 +1,9 @@
+[
+  {
+    "source_id": "fixture.bad",
+    "authority": "bad-source",
+    "authority_tier": "community",
+    "retrieval_policy": "manual_snapshot",
+    "covers_domain": []
+  }
+]

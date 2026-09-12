@@ -1,0 +1,51 @@
+{
+  "version": "v0.1.0",
+  "notes": "Engineering Standard Feed record schema · founder-authorised research artefact 2026-09-12. Controlled prototype · no runtime · no doctrine mutation. The Feed is append-only, versioned, evidence-backed, rollbackable. NEX1 consumes ONLY from this feed · never from raw research. Every emitted standard must satisfy the required fields · fields marked optional are additive metadata.",
+  "record_type": "ENGINEERING_STANDARD",
+  "required_fields": [
+    { "name": "standard_id",             "shape": "string · monotonic · e.g. CI-STD-0042",           "note": "founder-authored · never reused" },
+    { "name": "version",                  "shape": "semver",                                            "note": "of this standard record" },
+    { "name": "feed_version",             "shape": "semver",                                            "note": "of the feed at emission" },
+    { "name": "practice_summary",         "shape": "string · one-line",                                "note": "SEMANTIC only · not phrasing" },
+    { "name": "practice_detail",          "shape": "string · founder-authored explanation",             "note": "may reference ADRs and standard IDs" },
+    { "name": "applicability",            "shape": "object · { languages · project_types · scale }",   "note": "explicit scope · never universal" },
+    { "name": "limitations",              "shape": "string · situations where standard does NOT apply", "note": "mandatory · not optional" },
+    { "name": "expected_benefit",         "shape": "string",                                            "note": "measurable claim" },
+    { "name": "expected_cost",            "shape": "string",                                            "note": "trade-off statement" },
+    { "name": "evidence",                 "shape": "array of evidence records",                          "note": "benchmark ids · citations · reproducibility" },
+    { "name": "benchmark_result",         "shape": "object · { runs · pass · regression · variance }",  "note": "reproducible" },
+    { "name": "adversarial_result",       "shape": "object · { runs · pass · counterexamples }",         "note": "at least one adversarial test required" },
+    { "name": "regression_result",        "shape": "object · { pool · pass · drift }",                   "note": "must be 0 drift" },
+    { "name": "nex3_arbitration",         "shape": "object · { decision · rationale · confidence }",     "note": "APPROVED · REJECTED · HOLD" },
+    { "name": "confidence",               "shape": "enum · high · medium · low",                         "note": "must match nex3_arbitration.confidence" },
+    { "name": "rollback_mechanism",       "shape": "string · describes how to withdraw",                  "note": "mandatory · rollback tested at emission" },
+    { "name": "authorisation",            "shape": "object · { founder_adr_ref · authorised_at }",      "note": "no standard enters feed without founder ADR" },
+    { "name": "date_introduced",          "shape": "ISO-8601",                                          "note": "immutable once emitted" },
+    { "name": "status",                    "shape": "enum · ACTIVE · DEPRECATED · ROLLED_BACK",           "note": "state machine · deprecation requires ADR" },
+    { "name": "affected_languages",       "shape": "array of language_id",                             "note": "scoped" },
+    { "name": "affected_project_types",   "shape": "array of project_type",                             "note": "scoped" },
+    { "name": "attribution",              "shape": "object",                                             "note": "external_llm_used=false · deterministic=true · taught_by=master_ai_engineer" }
+  ],
+  "optional_fields": [
+    { "name": "predecessor_id",           "shape": "string · previous standard this supersedes" },
+    { "name": "related_ids",              "shape": "array of standard_id" },
+    { "name": "external_references",      "shape": "array of citations" },
+    { "name": "notes",                     "shape": "string" }
+  ],
+  "invariants": [
+    "append-only · a record is never edited in place",
+    "deprecation is a new record with status=DEPRECATED referring to predecessor_id",
+    "rollback is a new record with status=ROLLED_BACK · never a delete",
+    "no standard applies universally · applicability + limitations are mandatory",
+    "no standard enters the feed without founder-authored ADR reference",
+    "no standard is auto-authored by NEX · every standard's authorisation.founder_adr_ref must resolve to a real ADR"
+  ],
+  "hard_gate_before_emission": [
+    "benchmark runs >= 3 independent suites",
+    "regression pool 0 drift",
+    "adversarial suite present with at least 1 counterexample considered",
+    "rollback tested and reversible",
+    "nex3_arbitration.decision === 'APPROVED' with confidence >= medium",
+    "founder-authored ADR exists and is referenced"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "snapshot_id": "e0b0127d-14c6-42cb-a788-ba5fb3489366",
+  "source_id": "wco.hs2022",
+  "retrieved_at": "2026-09-05T19:24:46.749Z",
+  "content_hash": "65ee372431470b39fe132f30b9b3f5dcc20e680f4d9316fc445825504f63fbe3",
+  "bytes": 33,
+  "content": null,
+  "structured": [
+    {
+      "subject": "X",
+      "predicate": "y"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "NEX",
+  "short_name": "NEX",
+  "description": "NEX AI · self-hosted intelligence · Indonesian services agent.",
+  "start_url": "/nex/observatory",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
+  "icons": [
+    { "src": "/next.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

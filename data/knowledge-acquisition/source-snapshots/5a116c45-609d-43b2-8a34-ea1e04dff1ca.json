@@ -1,0 +1,14 @@
+{
+  "snapshot_id": "5a116c45-609d-43b2-8a34-ea1e04dff1ca",
+  "source_id": "fixture.bad",
+  "retrieved_at": "2026-09-05T13:07:54.285Z",
+  "content_hash": "3422fb19db10ab570d6b1bbf0b67ac9ad2e44941817b137093a79da239307584",
+  "bytes": 68,
+  "content": null,
+  "structured": [
+    {
+      "subject": "HS 0304",
+      "predicate": "canned processed fish products"
+    }
+  ]
+}

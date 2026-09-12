@@ -1,0 +1,62 @@
+{
+  "version": "v0.2.0",
+  "supersedes": "v0.1.0 (standard-feed-schema)",
+  "notes": "EngineeringStandard contract · founder-authorised design 2026-09-12. DESIGN ONLY. v0.2.0 aligns with founder's Step 2 required fields: standard_id · version · title · rule · rationale · applicability · exclusions · evidence · benchmark · counterexamples · limitations · affected_languages · affected_project_types · introduced_at · supersedes · status · approval_reference · rollback_reference.",
+  "record_type": "ENGINEERING_STANDARD",
+  "required_fields": [
+    { "name": "standard_id",             "shape": "string · monotonic · e.g. CI-STD-0042",     "notes": "never reused" },
+    { "name": "version",                  "shape": "semver of THIS standard record" },
+    { "name": "schema_version",           "shape": "semver of the standard schema itself" },
+    { "name": "title",                     "shape": "one-line human-readable · founder-authored" },
+    { "name": "rule",                      "shape": "SEMANTIC rule · not phrase-locked",
+                                            "notes": "Language Brain composes emission at runtime · rule is the meaning" },
+    { "name": "rationale",                 "shape": "string · why this rule exists · references evidence + counterexamples" },
+    { "name": "applicability",             "shape": "object · { languages, project_types, scale, contexts }",
+                                            "notes": "MANDATORY · no universal standards" },
+    { "name": "exclusions",                "shape": "array of scoped exclusion clauses",
+                                            "notes": "situations where the standard explicitly does NOT apply" },
+    { "name": "evidence",                  "shape": "array of evidence_id from EvidenceBundle · benchmark + counterexamples",
+                                            "notes": "MANDATORY · at least 3 independent evidence records" },
+    { "name": "benchmark",                 "shape": "object · { suite_ids, pass_rate, regression_drift, adversarial_pass }",
+                                            "notes": "regression_drift MUST be 0 for approval" },
+    { "name": "counterexamples",           "shape": "array of { situation, evidence_id, verdict }",
+                                            "notes": "MANDATORY · at least 1 counterexample considered · demonstrates limits" },
+    { "name": "limitations",               "shape": "string · what the standard does NOT establish" },
+    { "name": "affected_languages",       "shape": "array of language_id · scoped" },
+    { "name": "affected_project_types",   "shape": "array of project_type · scoped" },
+    { "name": "introduced_at",             "shape": "ISO-8601 · immutable" },
+    { "name": "supersedes",                "shape": "string standard_id or null" },
+    { "name": "status",                     "shape": "enum · ACTIVE · DEPRECATED · SUPERSEDED · ROLLED_BACK",
+                                            "notes": "state transitions require NEW record · never edited in place" },
+    { "name": "approval_reference",        "shape": "object · { founder_adr_ref, authorised_at, arbitration_id }",
+                                            "notes": "MANDATORY · no standard enters feed without founder ADR reference" },
+    { "name": "rollback_reference",        "shape": "string · describes how to withdraw",
+                                            "notes": "MANDATORY · rollback tested at emission time" },
+    { "name": "attribution",               "shape": "object · external_llm_used=false · deterministic=true · taught_by=master_ai_engineer" }
+  ],
+  "optional_fields": [
+    { "name": "predecessor_id",           "shape": "string · previous standard this refines" },
+    { "name": "related_ids",              "shape": "array of standard_id" },
+    { "name": "external_references",      "shape": "array of citations · sourced material used during research" },
+    { "name": "notes",                     "shape": "string · human-readable · never load-bearing" }
+  ],
+  "hard_gate_before_emission": [
+    "arbitration_id references an existing NEX3 record with verdict=NEX1_BETTER or NEX2_BETTER · or explicit LAB approval verdict",
+    "benchmark.regression_drift === 0",
+    "benchmark.pass_rate satisfies founder-authored threshold in approval_reference",
+    "counterexamples array non-empty",
+    "approval_reference.founder_adr_ref resolves to a real ADR file",
+    "rollback_reference has been tested at least once",
+    "applicability + exclusions both present · applicability is NOT universal"
+  ],
+  "invariants": [
+    "append-only · a record is never edited in place",
+    "deprecation is a NEW record with status=DEPRECATED referencing predecessor",
+    "rollback is a NEW record with status=ROLLED_BACK referencing predecessor",
+    "SUPERSEDED means a newer standard replaced this one · not a delete",
+    "no standard applies universally · applicability field is mandatory",
+    "no standard enters the feed without founder-authored ADR reference",
+    "no standard is auto-authored by NEX · approval_reference.founder_adr_ref must resolve to a real ADR",
+    "no LLM in the emission path · attribution.external_llm_used=false"
+  ]
+}

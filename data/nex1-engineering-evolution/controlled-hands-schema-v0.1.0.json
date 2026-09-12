@@ -1,0 +1,64 @@
+{
+  "version": "v0.1.0",
+  "notes": "NEX Controlled Hands · Phase 8 v0.1.6 IMPLEMENTATION contract · founder-authorised 2026-09-12 for BUILD/ATTACK phase (not acceptance). Gives NEX1 Master Engineer real coding capability inside a scoped constitutional boundary. Master of engineering execution · never master of NEX.",
+  "record_type": "CONTROLLED_HANDS_WORKFLOW",
+  "constitutional_purpose_locked": "NEX1 Master Engineer gains real coding capability. Controlled Hands controls WHERE / WHY / HOW · never withholds capability. Capability is continuous · mutation authority is Work-Order-scoped. The four-part acceptance benchmark stands: bounded independent engineering completion · provable trace via independent observer + compliance verifier · zero scope escape across adversarial matrix · deterministic reversal from broker-owned snapshots.",
+  "state_machine_states": [
+    "WORK_ORDER_AUTHORISED",
+    "HANDS_ACTIVE",
+    "HANDOVER_REQUESTED",
+    "WORKSPACE_FROZEN",
+    "AUTHORITATIVE_DIFF_COMPUTED",
+    "COMPLIANCE_VERIFIED",
+    "DIFF_VALIDATED",
+    "DIFF_ACCEPTANCE",
+    "DIFF_ACCEPTED",
+    "DIFF_REJECTED",
+    "DIFF_ROLLED_BACK",
+    "BLOCKED"
+  ],
+  "forward_transitions_locked": {
+    "WORK_ORDER_AUTHORISED":      ["HANDS_ACTIVE","BLOCKED"],
+    "HANDS_ACTIVE":               ["HANDOVER_REQUESTED","BLOCKED"],
+    "HANDOVER_REQUESTED":         ["WORKSPACE_FROZEN","BLOCKED"],
+    "WORKSPACE_FROZEN":           ["AUTHORITATIVE_DIFF_COMPUTED","BLOCKED"],
+    "AUTHORITATIVE_DIFF_COMPUTED":["COMPLIANCE_VERIFIED","BLOCKED"],
+    "COMPLIANCE_VERIFIED":        ["DIFF_VALIDATED","BLOCKED"],
+    "DIFF_VALIDATED":             ["DIFF_ACCEPTANCE","BLOCKED"],
+    "DIFF_ACCEPTANCE":            ["DIFF_ACCEPTED","DIFF_REJECTED","DIFF_ROLLED_BACK","BLOCKED"],
+    "DIFF_ACCEPTED":              [],
+    "DIFF_REJECTED":              [],
+    "DIFF_ROLLED_BACK":           [],
+    "BLOCKED":                    []
+  },
+  "trust_domains": {
+    "A": "NEX1 Master Engineer execution environment · v0.1.0 IMPLEMENTATION_TIER=T2 (in-process module boundary · not separate OS process)",
+    "B": "Authority Broker · v0.1.0 IMPLEMENTATION_TIER=T2 (in-process trust boundary · Ed25519 keys in-memory)",
+    "C": "Independent Observer · v0.1.0 IMPLEMENTATION_TIER=T2 (in-process trust boundary · separate signing key)",
+    "D": "Work Order Compliance Verifier · v0.1.0 IMPLEMENTATION_TIER=T2 (in-process trust boundary · separate signing key)"
+  },
+  "invariants": [
+    "NEX1 Master Engineer authority ≠ execution",
+    "NEX1 records are ADVISORY · authoritative chain = Broker+OS+Observer+Compliance-Verifier",
+    "Every mutation traced through Broker capability request · never direct OS call",
+    "Pre-state snapshots owned by Broker · outside NEX1 workspace",
+    "Observer walk independent from NEX1's proposal",
+    "Compliance Verifier verdict independent from Observer walk",
+    "Authorisation is per-action · never once-at-top of a multi-step plan (P-P)",
+    "Correction never creates authority (P-Q)",
+    "Every proposal record carries `interpretation` field (LITERAL vs PROPOSED_INTERPRETATION) per P-O",
+    "external_llm_used=false · deterministic=true across the whole workflow",
+    "authorisation=false and execution=false are literal-false type fields on every record",
+    "authority_boundary='controlled_hands_boundary' constant",
+    "baseline 4546a6406300c0df MUST remain byte-identical over 29 protected files"
+  ],
+  "forbidden_vocabulary_in_output": [
+    "autonomous","most advanced","world-class","frontier","state-of-the-art","production ready","completed successfully","fully secure","cannot be broken",
+    "quality_score","confidence_percent","overall_quality","aggregate_quality"
+  ],
+  "v0_1_0_implementation_tier_declaration": {
+    "T1_real": ["schemas","types","path-security","ed25519-signing","event-log","snapshot-service","observer-walk","reconciliation","compliance-verifier","capability-manifest","in-process-broker","narrow-IPC","adversarial-harness-in-process-cases"],
+    "T2_limited": ["trust-domain-separation-is-in-process-not-cross-process","keys-in-memory-not-dpapi","node-level-capability-guards-not-real-OS-sandbox","dependency-isolation-via-lockfile-hash-not-read-only-mount"],
+    "T3_not_implemented": ["real-windows-appcontainer","real-job-object","real-restricted-user-token","real-dpapi-keychain-storage","real-separate-process-trust-domains","real-OS-level-adversarial-cases-pre-existing-handle-after-freeze-inherited-handle-descendant-cmd-exe"]
+  }
+}

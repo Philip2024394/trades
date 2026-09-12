@@ -1,0 +1,143 @@
+{
+  "at": "2026-09-12T05:07:41.006Z",
+  "probe": "capability-d · multi-challenge · generalisation",
+  "attribution": {
+    "teaching_infrastructure": "taught_by=master_ai_engineer",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner"
+  },
+  "challenges": [
+    {
+      "label": "widget · priority : number",
+      "fixture": "data/nex1-code-engine/novel-challenge/widget-source.ts",
+      "original_hash": "de3ce8c0e28539e3a9deda89976936efe473b977bbc78b01b98f6b039d8e1e0d",
+      "stimulus_applied": true,
+      "initial_repair_applied": true,
+      "attempted_repairs": [
+        {
+          "property_name": "priority",
+          "property_value": "null",
+          "ok": true
+        }
+      ],
+      "final_scoped_errors": 1,
+      "gap_descriptor": {
+        "gap_kind": "type_mismatch_after_repair",
+        "before_state": "interface required 'priority' · missing from object literal",
+        "after_state": "object literal now contains 'priority: null' · tsc rejects the resulting shape as not assignable to 'Widget[]'",
+        "attempted_repair": {
+          "property_name": "priority",
+          "property_value": "null"
+        },
+        "expected_type": "Widget[]",
+        "actual_type": "{ id: string; label: string; priority: null; }[]",
+        "declared_field_type": "number",
+        "missing_information": [
+          "declared_field_type_from_interface_ast",
+          "type_compatibility_check_before_value_selection"
+        ],
+        "proposed_mechanism": "Consult the target interface AST for the declared type of the property being repaired, then select a repair value whose type satisfies the declared type. Replace name-based default-value heuristics with type-aware value selection derived from the field type.",
+        "confidence": 0.92,
+        "raw_diagnostic_code": "TS2322",
+        "raw_diagnostic_message": "Type '{ id: string; label: string; priority: null; }[]' is not assignable to type 'Widget[]'.",
+        "taught_by": "master_ai_engineer"
+      },
+      "fixture_byte_identical": true,
+      "d_correct": true
+    },
+    {
+      "label": "product · category : string",
+      "fixture": "data/nex1-code-engine/novel-challenges-d/product-source.ts",
+      "original_hash": "718957213210e674b042f56f82423f8c779a616360c4614df571440be4f1c396",
+      "stimulus_applied": true,
+      "initial_repair_applied": true,
+      "attempted_repairs": [
+        {
+          "property_name": "category",
+          "property_value": "null",
+          "ok": true
+        }
+      ],
+      "final_scoped_errors": 1,
+      "gap_descriptor": {
+        "gap_kind": "type_mismatch_after_repair",
+        "before_state": "interface required 'category' · missing from object literal",
+        "after_state": "object literal now contains 'category: null' · tsc rejects the resulting shape as not assignable to 'Product[]'",
+        "attempted_repair": {
+          "property_name": "category",
+          "property_value": "null"
+        },
+        "expected_type": "Product[]",
+        "actual_type": "{ id: string; sku: string; category: null; }[]",
+        "declared_field_type": "string",
+        "missing_information": [
+          "declared_field_type_from_interface_ast",
+          "type_compatibility_check_before_value_selection"
+        ],
+        "proposed_mechanism": "Consult the target interface AST for the declared type of the property being repaired, then select a repair value whose type satisfies the declared type. Replace name-based default-value heuristics with type-aware value selection derived from the field type.",
+        "confidence": 0.92,
+        "raw_diagnostic_code": "TS2322",
+        "raw_diagnostic_message": "Type '{ id: string; sku: string; category: null; }[]' is not assignable to type 'Product[]'.",
+        "taught_by": "master_ai_engineer"
+      },
+      "fixture_byte_identical": true,
+      "d_correct": true
+    },
+    {
+      "label": "toggle · enabled : boolean",
+      "fixture": "data/nex1-code-engine/novel-challenges-d/toggle-source.ts",
+      "original_hash": "9d25a425097011ae701963a10f2029af39609d2fdd013b003a3cf20610361bdf",
+      "stimulus_applied": true,
+      "initial_repair_applied": true,
+      "attempted_repairs": [
+        {
+          "property_name": "enabled",
+          "property_value": "false",
+          "ok": true
+        }
+      ],
+      "final_scoped_errors": 0,
+      "gap_descriptor": null,
+      "fixture_byte_identical": true,
+      "d_correct": null
+    },
+    {
+      "label": "user · age : number",
+      "fixture": "data/nex1-code-engine/novel-challenges-d/user-source.ts",
+      "original_hash": "4d80fa9266bd44c5baba638a1d2b5934db9c0fb18b977fa703327db9b88916c0",
+      "stimulus_applied": true,
+      "initial_repair_applied": true,
+      "attempted_repairs": [
+        {
+          "property_name": "age",
+          "property_value": "null",
+          "ok": true
+        }
+      ],
+      "final_scoped_errors": 1,
+      "gap_descriptor": {
+        "gap_kind": "type_mismatch_after_repair",
+        "before_state": "interface required 'age' · missing from object literal",
+        "after_state": "object literal now contains 'age: null' · tsc rejects the resulting shape as not assignable to 'User[]'",
+        "attempted_repair": {
+          "property_name": "age",
+          "property_value": "null"
+        },
+        "expected_type": "User[]",
+        "actual_type": "{ userId: string; displayName: string; age: null; }[]",
+        "declared_field_type": "number",
+        "missing_information": [
+          "declared_field_type_from_interface_ast",
+          "type_compatibility_check_before_value_selection"
+        ],
+        "proposed_mechanism": "Consult the target interface AST for the declared type of the property being repaired, then select a repair value whose type satisfies the declared type. Replace name-based default-value heuristics with type-aware value selection derived from the field type.",
+        "confidence": 0.92,
+        "raw_diagnostic_code": "TS2322",
+        "raw_diagnostic_message": "Type '{ userId: string; displayName: string; age: null; }[]' is not assignable to type 'User[]'.",
+        "taught_by": "master_ai_engineer"
+      },
+      "fixture_byte_identical": true,
+      "d_correct": true
+    }
+  ]
+}

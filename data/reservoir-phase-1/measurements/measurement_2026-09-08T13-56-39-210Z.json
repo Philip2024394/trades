@@ -1,0 +1,755 @@
+{
+  "label": "V5.4.6-AUTH-RESERVOIR-PHASE-1-MEASURE-001",
+  "schema_version": "v1.0",
+  "started_at_iso": "2026-09-08T13:56:39.210Z",
+  "completed_at_iso": "2026-09-08T13:56:44.705Z",
+  "duration_ms": 5495,
+  "hostname": "LAPTOP-64CU461J",
+  "node_version": "v24.18.0",
+  "env_summary": {
+    "NEX_OBJECT_BACKEND": "postgres",
+    "NEX_BRAIN_BACKEND": "postgres",
+    "NEX_INBOX_SHADOW_POSTGRES": "1",
+    "NEX_INBOX_READ_BACKEND": "postgres",
+    "NEX_POSTGRES_URL_present": true
+  },
+  "measurements": {
+    "master_ai_ledgers": {
+      "present": true,
+      "label": "MEASURED",
+      "file_count": 49,
+      "total_bytes": 6849225,
+      "total_jsonl_lines": 12224,
+      "top_20_by_size": [
+        {
+          "file": "agent_health_reports.jsonl",
+          "bytes": 3761669,
+          "jsonl_lines": 9694,
+          "mtime_iso": "2026-09-08T13:56:30.614Z"
+        },
+        {
+          "file": "research_findings.jsonl",
+          "bytes": 2007179,
+          "jsonl_lines": 128,
+          "mtime_iso": "2026-09-07T13:21:00.257Z"
+        },
+        {
+          "file": "research_queue.jsonl",
+          "bytes": 277572,
+          "jsonl_lines": 888,
+          "mtime_iso": "2026-09-07T13:21:00.271Z"
+        },
+        {
+          "file": "failure_patterns.jsonl",
+          "bytes": 198646,
+          "jsonl_lines": 480,
+          "mtime_iso": "2026-09-08T13:56:30.645Z"
+        },
+        {
+          "file": "connectivity_findings.jsonl",
+          "bytes": 152006,
+          "jsonl_lines": 157,
+          "mtime_iso": "2026-09-07T11:42:54.924Z"
+        },
+        {
+          "file": "source_health.jsonl",
+          "bytes": 102827,
+          "jsonl_lines": 296,
+          "mtime_iso": "2026-09-07T13:21:00.254Z"
+        },
+        {
+          "file": "usage_events.jsonl",
+          "bytes": 59295,
+          "jsonl_lines": 249,
+          "mtime_iso": "2026-09-07T13:21:00.219Z"
+        },
+        {
+          "file": "w4_6_attack_survival.jsonl",
+          "bytes": 25598,
+          "jsonl_lines": 4,
+          "mtime_iso": "2026-09-07T11:29:04.759Z"
+        },
+        {
+          "file": "economics_simulations.jsonl",
+          "bytes": 24207,
+          "jsonl_lines": 12,
+          "mtime_iso": "2026-09-07T10:15:49.664Z"
+        },
+        {
+          "file": "self_criticism.jsonl",
+          "bytes": 17822,
+          "jsonl_lines": 9,
+          "mtime_iso": "2026-09-08T12:15:17.427Z"
+        },
+        {
+          "file": "yes_hunt_verdicts.jsonl",
+          "bytes": 17089,
+          "jsonl_lines": 8,
+          "mtime_iso": "2026-09-07T10:31:42.762Z"
+        },
+        {
+          "file": "agent_capability_profiles.jsonl",
+          "bytes": 16168,
+          "jsonl_lines": 12,
+          "mtime_iso": "2026-09-07T12:22:34.066Z"
+        },
+        {
+          "file": "w4_6_activity_matrix.jsonl",
+          "bytes": 12359,
+          "jsonl_lines": 17,
+          "mtime_iso": "2026-09-07T11:29:04.754Z"
+        },
+        {
+          "file": "storage_placements.jsonl",
+          "bytes": 11854,
+          "jsonl_lines": 16,
+          "mtime_iso": "2026-09-07T12:35:31.811Z"
+        },
+        {
+          "file": "carrier_scores.jsonl",
+          "bytes": 11548,
+          "jsonl_lines": 10,
+          "mtime_iso": "2026-09-07T12:04:55.018Z"
+        },
+        {
+          "file": "daily_reports.jsonl",
+          "bytes": 10771,
+          "jsonl_lines": 7,
+          "mtime_iso": "2026-09-08T09:02:27.534Z"
+        },
+        {
+          "file": "yes_hunt_sweetspots.jsonl",
+          "bytes": 10156,
+          "jsonl_lines": 5,
+          "mtime_iso": "2026-09-07T10:31:42.736Z"
+        },
+        {
+          "file": "decisions.jsonl",
+          "bytes": 9648,
+          "jsonl_lines": 13,
+          "mtime_iso": "2026-09-07T13:21:00.274Z"
+        },
+        {
+          "file": "bandwidth_prices.jsonl",
+          "bytes": 8950,
+          "jsonl_lines": 20,
+          "mtime_iso": "2026-09-07T11:43:06.871Z"
+        },
+        {
+          "file": "source_registry.jsonl",
+          "bytes": 8510,
+          "jsonl_lines": 17,
+          "mtime_iso": "2026-09-07T11:42:34.646Z"
+        }
+      ],
+      "all_files": [
+        {
+          "file": "agent_health_reports.jsonl",
+          "bytes": 3761669,
+          "jsonl_lines": 9694,
+          "mtime_iso": "2026-09-08T13:56:30.614Z"
+        },
+        {
+          "file": "research_findings.jsonl",
+          "bytes": 2007179,
+          "jsonl_lines": 128,
+          "mtime_iso": "2026-09-07T13:21:00.257Z"
+        },
+        {
+          "file": "research_queue.jsonl",
+          "bytes": 277572,
+          "jsonl_lines": 888,
+          "mtime_iso": "2026-09-07T13:21:00.271Z"
+        },
+        {
+          "file": "failure_patterns.jsonl",
+          "bytes": 198646,
+          "jsonl_lines": 480,
+          "mtime_iso": "2026-09-08T13:56:30.645Z"
+        },
+        {
+          "file": "connectivity_findings.jsonl",
+          "bytes": 152006,
+          "jsonl_lines": 157,
+          "mtime_iso": "2026-09-07T11:42:54.924Z"
+        },
+        {
+          "file": "source_health.jsonl",
+          "bytes": 102827,
+          "jsonl_lines": 296,
+          "mtime_iso": "2026-09-07T13:21:00.254Z"
+        },
+        {
+          "file": "usage_events.jsonl",
+          "bytes": 59295,
+          "jsonl_lines": 249,
+          "mtime_iso": "2026-09-07T13:21:00.219Z"
+        },
+        {
+          "file": "w4_6_attack_survival.jsonl",
+          "bytes": 25598,
+          "jsonl_lines": 4,
+          "mtime_iso": "2026-09-07T11:29:04.759Z"
+        },
+        {
+          "file": "economics_simulations.jsonl",
+          "bytes": 24207,
+          "jsonl_lines": 12,
+          "mtime_iso": "2026-09-07T10:15:49.664Z"
+        },
+        {
+          "file": "self_criticism.jsonl",
+          "bytes": 17822,
+          "jsonl_lines": 9,
+          "mtime_iso": "2026-09-08T12:15:17.427Z"
+        },
+        {
+          "file": "yes_hunt_verdicts.jsonl",
+          "bytes": 17089,
+          "jsonl_lines": 8,
+          "mtime_iso": "2026-09-07T10:31:42.762Z"
+        },
+        {
+          "file": "agent_capability_profiles.jsonl",
+          "bytes": 16168,
+          "jsonl_lines": 12,
+          "mtime_iso": "2026-09-07T12:22:34.066Z"
+        },
+        {
+          "file": "w4_6_activity_matrix.jsonl",
+          "bytes": 12359,
+          "jsonl_lines": 17,
+          "mtime_iso": "2026-09-07T11:29:04.754Z"
+        },
+        {
+          "file": "storage_placements.jsonl",
+          "bytes": 11854,
+          "jsonl_lines": 16,
+          "mtime_iso": "2026-09-07T12:35:31.811Z"
+        },
+        {
+          "file": "carrier_scores.jsonl",
+          "bytes": 11548,
+          "jsonl_lines": 10,
+          "mtime_iso": "2026-09-07T12:04:55.018Z"
+        },
+        {
+          "file": "daily_reports.jsonl",
+          "bytes": 10771,
+          "jsonl_lines": 7,
+          "mtime_iso": "2026-09-08T09:02:27.534Z"
+        },
+        {
+          "file": "yes_hunt_sweetspots.jsonl",
+          "bytes": 10156,
+          "jsonl_lines": 5,
+          "mtime_iso": "2026-09-07T10:31:42.736Z"
+        },
+        {
+          "file": "decisions.jsonl",
+          "bytes": 9648,
+          "jsonl_lines": 13,
+          "mtime_iso": "2026-09-07T13:21:00.274Z"
+        },
+        {
+          "file": "bandwidth_prices.jsonl",
+          "bytes": 8950,
+          "jsonl_lines": 20,
+          "mtime_iso": "2026-09-07T11:43:06.871Z"
+        },
+        {
+          "file": "source_registry.jsonl",
+          "bytes": 8510,
+          "jsonl_lines": 17,
+          "mtime_iso": "2026-09-07T11:42:34.646Z"
+        },
+        {
+          "file": "bandwidth_computations.jsonl",
+          "bytes": 8367,
+          "jsonl_lines": 16,
+          "mtime_iso": "2026-09-07T11:43:06.915Z"
+        },
+        {
+          "file": "provider_comparisons.jsonl",
+          "bytes": 7425,
+          "jsonl_lines": 16,
+          "mtime_iso": "2026-09-07T11:12:11.683Z"
+        },
+        {
+          "file": "w4_6_primary_fetch_log.jsonl",
+          "bytes": 6595,
+          "jsonl_lines": 30,
+          "mtime_iso": "2026-09-07T10:58:03.707Z"
+        },
+        {
+          "file": "failure_trajectories.jsonl",
+          "bytes": 6550,
+          "jsonl_lines": 12,
+          "mtime_iso": "2026-09-07T12:22:34.159Z"
+        },
+        {
+          "file": "delegation_ledger.jsonl",
+          "bytes": 6543,
+          "jsonl_lines": 11,
+          "mtime_iso": "2026-09-07T12:46:58.453Z"
+        },
+        {
+          "file": "architecture_assessments.jsonl",
+          "bytes": 6100,
+          "jsonl_lines": 6,
+          "mtime_iso": "2026-09-07T10:15:49.541Z"
+        },
+        {
+          "file": "carrier_rankings.jsonl",
+          "bytes": 6056,
+          "jsonl_lines": 4,
+          "mtime_iso": "2026-09-07T12:04:55.023Z"
+        },
+        {
+          "file": "local_knowledge_profiles.jsonl",
+          "bytes": 5857,
+          "jsonl_lines": 2,
+          "mtime_iso": "2026-09-07T12:35:31.790Z"
+        },
+        {
+          "file": "w4_6_usage_stress.jsonl",
+          "bytes": 5784,
+          "jsonl_lines": 1,
+          "mtime_iso": "2026-09-07T10:47:41.953Z"
+        },
+        {
+          "file": "storage_providers.jsonl",
+          "bytes": 5591,
+          "jsonl_lines": 6,
+          "mtime_iso": "2026-09-07T12:35:31.754Z"
+        },
+        {
+          "file": "agent_catalogue.jsonl",
+          "bytes": 4310,
+          "jsonl_lines": 7,
+          "mtime_iso": "2026-09-08T10:04:00.913Z"
+        },
+        {
+          "file": "quota_policies.jsonl",
+          "bytes": 4249,
+          "jsonl_lines": 17,
+          "mtime_iso": "2026-09-07T11:42:34.646Z"
+        },
+        {
+          "file": "multilingual_translations.jsonl",
+          "bytes": 4086,
+          "jsonl_lines": 9,
+          "mtime_iso": "2026-09-07T12:22:35.183Z"
+        },
+        {
+          "file": "integrated_loop_ticks.jsonl",
+          "bytes": 3547,
+          "jsonl_lines": 4,
+          "mtime_iso": "2026-09-07T12:22:34.272Z"
+        },
+        {
+          "file": "task_complexity_classifications.jsonl",
+          "bytes": 3110,
+          "jsonl_lines": 2,
+          "mtime_iso": "2026-09-07T13:21:00.273Z"
+        },
+        {
+          "file": "connectivity_investigations.jsonl",
+          "bytes": 2934,
+          "jsonl_lines": 7,
+          "mtime_iso": "2026-09-07T12:22:35.178Z"
+        },
+        {
+          "file": "yes_hunt_selfcriticism.jsonl",
+          "bytes": 2293,
+          "jsonl_lines": 1,
+          "mtime_iso": "2026-09-07T10:31:42.739Z"
+        },
+        {
+          "file": "capability_proposals.jsonl",
+          "bytes": 2097,
+          "jsonl_lines": 3,
+          "mtime_iso": "2026-09-07T12:22:34.279Z"
+        },
+        {
+          "file": "research_priorities.jsonl",
+          "bytes": 2065,
+          "jsonl_lines": 4,
+          "mtime_iso": "2026-09-07T12:22:34.301Z"
+        },
+        {
+          "file": "learning_cycle_reports.jsonl",
+          "bytes": 1928,
+          "jsonl_lines": 3,
+          "mtime_iso": "2026-09-07T12:22:35.178Z"
+        },
+        {
+          "file": "offline_resilience_states.jsonl",
+          "bytes": 1718,
+          "jsonl_lines": 2,
+          "mtime_iso": "2026-09-07T13:07:05.814Z"
+        },
+        {
+          "file": "provider_cost_assumptions.jsonl",
+          "bytes": 1681,
+          "jsonl_lines": 4,
+          "mtime_iso": "2026-09-07T11:12:11.570Z"
+        },
+        {
+          "file": "promotion_approval_queue.jsonl",
+          "bytes": 1572,
+          "jsonl_lines": 4,
+          "mtime_iso": "2026-09-07T12:22:34.164Z"
+        },
+        {
+          "file": "autonomous_invocations.jsonl",
+          "bytes": 1528,
+          "jsonl_lines": 4,
+          "mtime_iso": "2026-09-07T12:22:34.164Z"
+        },
+        {
+          "file": "capability_ledger.jsonl",
+          "bytes": 1194,
+          "jsonl_lines": 3,
+          "mtime_iso": "2026-09-07T12:22:34.279Z"
+        },
+        {
+          "file": "cross_agent_flows.jsonl",
+          "bytes": 871,
+          "jsonl_lines": 1,
+          "mtime_iso": "2026-09-07T12:35:31.790Z"
+        },
+        {
+          "file": "storage_utilization.jsonl",
+          "bytes": 706,
+          "jsonl_lines": 2,
+          "mtime_iso": "2026-09-07T12:35:31.756Z"
+        },
+        {
+          "file": "storage_forecasts.jsonl",
+          "bytes": 447,
+          "jsonl_lines": 1,
+          "mtime_iso": "2026-09-07T12:35:31.759Z"
+        },
+        {
+          "file": "offline_mode.json",
+          "bytes": 147,
+          "jsonl_lines": null,
+          "mtime_iso": "2026-09-07T13:07:05.814Z"
+        }
+      ]
+    },
+    "nex_objects_filesystem": {
+      "present": true,
+      "label": "MEASURED",
+      "buckets": [
+        {
+          "bucket": "uploads",
+          "versioned_objects": 0,
+          "current_pointers": 0,
+          "bytes": 0
+        }
+      ],
+      "total_versioned_objects": 0,
+      "total_current_pointers": 0,
+      "total_bytes": 0,
+      "average_versioned_object_size_bytes": 0,
+      "note": "Bytes include versioned objects + .meta + .current sidecars. Filesystem is the reference adapter but NEX_OBJECT_BACKEND=postgres in production."
+    },
+    "l4_bakeoff_runs": {
+      "present": true,
+      "label": "MEASURED",
+      "file_count": 2,
+      "total_bytes": 56150,
+      "top_5_recent": [
+        {
+          "path": "l4run_c341d462-fb78-45e3-8881-3a5325fe462d.json",
+          "bytes": 24643,
+          "mtime_iso": "2026-09-08T11:15:26.269Z"
+        },
+        {
+          "path": "l4run_24d86a3b-bd01-4405-acb5-5124fc1ad96c.json",
+          "bytes": 31507,
+          "mtime_iso": "2026-09-08T09:40:02.702Z"
+        }
+      ],
+      "anchor_c341d462_sha24": "be9815bac934ff48f1f4229e"
+    },
+    "l4_bakeoff_transcripts": {
+      "present": true,
+      "label": "MEASURED",
+      "file_count": 96,
+      "total_bytes": 97935,
+      "top_5_recent": [
+        {
+          "path": "qwen3-8b\\l4run_c341d462-fb78-45e3-8881-3a5325fe462d_cq3_clarification_bounded_choice.json",
+          "bytes": 900,
+          "mtime_iso": "2026-09-08T11:15:26.256Z"
+        },
+        {
+          "path": "qwen3-8b\\l4run_c341d462-fb78-45e3-8881-3a5325fe462d_cq2_clarification_multiple_unknowns.json",
+          "bytes": 852,
+          "mtime_iso": "2026-09-08T11:15:00.132Z"
+        },
+        {
+          "path": "qwen3-8b\\l4run_c341d462-fb78-45e3-8881-3a5325fe462d_mem4_memory_conflict_resolution.json",
+          "bytes": 948,
+          "mtime_iso": "2026-09-08T11:14:10.625Z"
+        },
+        {
+          "path": "qwen3-8b\\l4run_c341d462-fb78-45e3-8881-3a5325fe462d_per3_correction_learning.json",
+          "bytes": 1545,
+          "mtime_iso": "2026-09-08T11:13:41.205Z"
+        },
+        {
+          "path": "qwen3-8b\\l4run_c341d462-fb78-45e3-8881-3a5325fe462d_per2_style_preference_recall.json",
+          "bytes": 983,
+          "mtime_iso": "2026-09-08T11:12:24.728Z"
+        }
+      ]
+    },
+    "l4_bakeoff_rescores": {
+      "present": true,
+      "label": "MEASURED",
+      "file_count": 2,
+      "total_bytes": 169060,
+      "top_5_recent": [
+        {
+          "path": "V5.4.5-AUTH-RESCORE-QWEN3-8B-CORPUS-V4-KNOWN-ANSWER-001.json",
+          "bytes": 84538,
+          "mtime_iso": "2026-09-08T11:56:58.244Z"
+        },
+        {
+          "path": "V5.4.4-AUTH-RESCORE-QWEN3-8B-CORPUS-V4-001.json",
+          "bytes": 84522,
+          "mtime_iso": "2026-09-08T11:41:42.551Z"
+        }
+      ]
+    },
+    "postgres_accommodation": {
+      "label": "MEASURED",
+      "rows": [
+        {
+          "total": "9203",
+          "visible": "877",
+          "listed": "877",
+          "claimed": "0",
+          "paying": "0",
+          "distinct_cities": "85",
+          "with_coords": "9203"
+        }
+      ],
+      "row_count": 1,
+      "latency_ms": 1816.6,
+      "sql": "SELECT\n          COUNT(*)::text AS total,\n          COUNT(*) FILTER (WHERE claim_status IN ('listed','invited','claimed','paying'))::text AS visible,\n          COUNT(*) FILTER (WHERE claim_status = 'listed')::text AS listed,\n          COUNT(*) FILTER (WHERE claim_status = 'claimed')::text AS claimed,\n          COUNT(*) FILTER (WHERE claim_status = 'paying')::text AS paying,\n          COUNT(DISTINCT city)::text AS distinct_cities,\n          COUNT(*) FILTER (WHERE coordinates_lat IS NOT NULL)::text AS with_coords\n        FROM nex.accommodation_business"
+    },
+    "postgres_object_blobs": {
+      "label": "MEASURED",
+      "rows": [
+        {
+          "versions": "26",
+          "total_body_bytes": "19412785",
+          "distinct_buckets": "2",
+          "distinct_keys": "26",
+          "avg_body_bytes": "746646",
+          "max_body_bytes": "11916526"
+        }
+      ],
+      "row_count": 1,
+      "latency_ms": 275.16,
+      "sql": "SELECT\n          COUNT(*)::text AS versions,\n          COALESCE(SUM(octet_length(body))::text, '0') AS total_body_bytes,\n          COUNT(DISTINCT bucket)::text AS distinct_buckets,\n          COUNT(DISTINCT (bucket, key))::text AS distinct_keys,\n          COALESCE(AVG(octet_length(body))::int::text, '0') AS avg_body_bytes,\n          COALESCE(MAX(octet_length(body))::text, '0') AS max_body_bytes\n        FROM nex.object_blobs",
+      "object_blob_current": {
+        "label": "MEASURED",
+        "rows": [
+          {
+            "current_rows": "25"
+          }
+        ],
+        "row_count": 1,
+        "latency_ms": 271.54,
+        "sql": "SELECT COUNT(*)::text AS current_rows FROM nex.object_blob_current"
+      }
+    },
+    "postgres_knowledge_inbox": {
+      "label": "MEASURED",
+      "rows": [
+        {
+          "total": "279",
+          "sources": "9"
+        }
+      ],
+      "row_count": 1,
+      "latency_ms": 279.67,
+      "sql": "SELECT COUNT(*)::text AS total, COUNT(DISTINCT source)::text AS sources FROM nex.knowledge_inbox"
+    },
+    "ollama_health": {
+      "label": "MEASURED",
+      "reachable": true,
+      "url": "http://127.0.0.1:11434",
+      "latency_ms": 155.71,
+      "model_count": 5,
+      "models": [
+        {
+          "name": "qwen3:8b",
+          "size": 5225388164,
+          "digest": "500a1f067a9f782620b40bee",
+          "modified_at": "2026-09-08T15:23:07.9690893+07:00"
+        },
+        {
+          "name": "qwen2.5vl:3b",
+          "size": 3200627168,
+          "digest": "fb90415cde1ef08aa669ae74",
+          "modified_at": "2026-08-22T06:24:58.563225+07:00"
+        },
+        {
+          "name": "moondream:latest",
+          "size": 1738451197,
+          "digest": "55fc3abd386771e5b5d1bbcc",
+          "modified_at": "2026-08-22T06:10:54.3928286+07:00"
+        },
+        {
+          "name": "qwen2.5:7b-instruct-q3_K_M",
+          "size": 3808404964,
+          "digest": "29492a92834144e177cd02ec",
+          "modified_at": "2026-08-15T12:19:47.4038678+07:00"
+        },
+        {
+          "name": "qwen2.5:3b",
+          "size": 1929912432,
+          "digest": "357c53fb659c5076de1d65cc",
+          "modified_at": "2026-08-15T12:01:37.6885585+07:00"
+        }
+      ]
+    },
+    "key_file_hashes": {
+      "label": "MEASURED",
+      "hashes": [
+        {
+          "file": "src/lib/nex/storage/object-registry.ts",
+          "sha256_24": "e33bd9328ace076c02ff20e4",
+          "bytes": 10074
+        },
+        {
+          "file": "src/lib/nex/storage/adapters/object-postgres.ts",
+          "sha256_24": "6f7b42076588ab548d8c46aa",
+          "bytes": 13540
+        },
+        {
+          "file": "src/lib/nex/storage/adapters/object-r2.ts",
+          "sha256_24": "2252dd1d7f252bf91ebc451e",
+          "bytes": 16660
+        },
+        {
+          "file": "src/lib/nex/storage/adapters/object-filesystem.ts",
+          "sha256_24": "d33328f705d9a33ae7559a8d",
+          "bytes": 14297
+        },
+        {
+          "file": "src/lib/nex/master-ai/paths.ts",
+          "sha256_24": "d0090a5ff5953acffcc8d357",
+          "bytes": 10380
+        },
+        {
+          "file": "src/lib/nex/master-ai/knowledge-ledger.ts",
+          "sha256_24": "02f255bd4e66681e5c0046ea",
+          "bytes": 2444
+        },
+        {
+          "file": "src/lib/nex/master-ai/offline-reservoir.ts",
+          "sha256_24": "fa92a1938744a321c130f2ce",
+          "bytes": 3109
+        },
+        {
+          "file": "src/lib/nex/master-ai/learning-cycle.ts",
+          "sha256_24": "032e692838692076d7d857a1",
+          "bytes": 7938
+        },
+        {
+          "file": "src/lib/nex/agent-runtime/worker-accommodation.ts",
+          "sha256_24": "2ec50eac256be0cffdbb55b0",
+          "bytes": 7288
+        },
+        {
+          "file": "src/lib/nex/brain/world-adapters/accommodation-postgres.ts",
+          "sha256_24": "9fbd439b5f6a37a52973d053",
+          "bytes": 9039
+        },
+        {
+          "file": "src/lib/nex/brain/orchestrate.ts",
+          "sha256_24": "1f4e9e9f7fda867311a05bfb",
+          "bytes": 166056
+        },
+        {
+          "file": "src/lib/nex/brain/provider.ts",
+          "sha256_24": "21b493f56172e397ba07b36d",
+          "bytes": 7682
+        },
+        {
+          "file": "src/lib/nex/brain/providers/ollama.ts",
+          "sha256_24": "e22e38c91a19095f3b7351eb",
+          "bytes": 19273
+        },
+        {
+          "file": "src/lib/nex/brain/model-registry.ts",
+          "sha256_24": "7a393bdc9d9a4d9d260b65e6",
+          "bytes": 5526
+        },
+        {
+          "file": "src/lib/nex/context.ts",
+          "sha256_24": "15b01a6ea8075e09c91b7fa9",
+          "bytes": 9108
+        },
+        {
+          "file": "src/lib/nex/context-management/cache-breakpoints.ts",
+          "sha256_24": "ace45de0b6996c6782e989a8",
+          "bytes": 3360
+        },
+        {
+          "file": "src/lib/nex/semantic-memory/rag-pipeline.ts",
+          "sha256_24": "40a41ed27273c4d7971428a2",
+          "bytes": 6230
+        },
+        {
+          "file": "src/lib/nex/l4-bakeoff/hybrid-scoring-v1.ts",
+          "sha256_24": "20eec875a3e1b12b3c0b72f8",
+          "bytes": 13296
+        },
+        {
+          "file": "src/lib/nex/l4-bakeoff/known-answer-registry-v1.ts",
+          "sha256_24": "fad7af75f32aada22201e967",
+          "bytes": 13202
+        }
+      ]
+    },
+    "filesystem_read_latency_samples": [
+      {
+        "ok": true,
+        "ms": 217.94
+      },
+      {
+        "ok": true,
+        "ms": 218.73
+      },
+      {
+        "ok": true,
+        "ms": 226.14
+      },
+      {
+        "ok": true,
+        "ms": 218.33
+      },
+      {
+        "ok": true,
+        "ms": 219.9
+      }
+    ]
+  },
+  "labels_used": [
+    "MEASURED",
+    "DOCUMENTED",
+    "MODELED",
+    "ESTIMATED",
+    "UNKNOWN"
+  ],
+  "final_status": null
+}

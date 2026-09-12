@@ -1,0 +1,161 @@
+{
+  "at": "2026-09-11T21:28:45.913Z",
+  "challenge": "capability-e · multi-file ripple propagation",
+  "attribution": {
+    "teaching_infrastructure": "A=claude_reviewer · C,D=master_ai_engineer",
+    "novel_challenge_execution": "attempted_by=nex1 · teaching_assistance=true",
+    "fixtures_and_scripts": "authored_by=examiner"
+  },
+  "stimuli_applied": [
+    {
+      "interface": "AlphaShape",
+      "field_name": "priority",
+      "field_type": "number",
+      "ok": true,
+      "delta_bytes": 49
+    },
+    {
+      "interface": "BetaShape",
+      "field_name": "category",
+      "field_type": "string",
+      "ok": true,
+      "delta_bytes": 31
+    },
+    {
+      "interface": "GammaShape",
+      "field_name": "enabled",
+      "field_type": "boolean",
+      "ok": true,
+      "delta_bytes": 31
+    },
+    {
+      "interface": "DeltaShape",
+      "field_name": "tags",
+      "field_type": "string[]",
+      "ok": true,
+      "delta_bytes": 29
+    },
+    {
+      "interface": "EpsilonShape",
+      "field_name": "config",
+      "field_type": "EpsilonConfig",
+      "ok": true,
+      "delta_bytes": 36
+    }
+  ],
+  "ripple_detection": {
+    "scoped_errors": 5,
+    "per_file": {
+      "callers/alpha-caller.ts": 1,
+      "callers/beta-caller.ts": 1,
+      "callers/delta-caller.ts": 1,
+      "callers/epsilon-caller.ts": 1,
+      "callers/gamma-caller.ts": 1
+    }
+  },
+  "repair_attempts": [
+    {
+      "file": "data/nex1-code-engine/challenge-e/callers/alpha-caller.ts",
+      "line": 4,
+      "property": "priority",
+      "composer_result": "escalated",
+      "declared_type": null,
+      "reason": "no declaration of 'priority' on type 'AlphaShape'"
+    },
+    {
+      "file": "data/nex1-code-engine/challenge-e/callers/beta-caller.ts",
+      "line": 4,
+      "property": "category",
+      "composer_result": "escalated",
+      "declared_type": null,
+      "reason": "no declaration of 'category' on type 'BetaShape'"
+    },
+    {
+      "file": "data/nex1-code-engine/challenge-e/callers/delta-caller.ts",
+      "line": 4,
+      "property": "tags",
+      "composer_result": "escalated",
+      "declared_type": null,
+      "reason": "no declaration of 'tags' on type 'DeltaShape'"
+    },
+    {
+      "file": "data/nex1-code-engine/challenge-e/callers/epsilon-caller.ts",
+      "line": 4,
+      "property": "config",
+      "composer_result": "escalated",
+      "declared_type": null,
+      "reason": "no declaration of 'config' on type 'EpsilonShape'"
+    },
+    {
+      "file": "data/nex1-code-engine/challenge-e/callers/gamma-caller.ts",
+      "line": 4,
+      "property": "enabled",
+      "composer_result": "escalated",
+      "declared_type": null,
+      "reason": "no declaration of 'enabled' on type 'GammaShape'"
+    }
+  ],
+  "final_tsc_scoped_errors": {
+    "count": 5,
+    "per_file": {
+      "callers/alpha-caller.ts": 1,
+      "callers/beta-caller.ts": 1,
+      "callers/delta-caller.ts": 1,
+      "callers/epsilon-caller.ts": 1,
+      "callers/gamma-caller.ts": 1
+    }
+  },
+  "fixtures_byte_identical": true,
+  "gap_findings": [
+    {
+      "file": "data/nex1-code-engine/challenge-e/callers/alpha-caller.ts",
+      "line": 4,
+      "code": "TS2322",
+      "gap_kind": "unrecognized_error_class",
+      "declared_field_type": null,
+      "missing_information": [
+        "extractor_for_TS2322"
+      ]
+    },
+    {
+      "file": "data/nex1-code-engine/challenge-e/callers/beta-caller.ts",
+      "line": 4,
+      "code": "TS2322",
+      "gap_kind": "unrecognized_error_class",
+      "declared_field_type": null,
+      "missing_information": [
+        "extractor_for_TS2322"
+      ]
+    },
+    {
+      "file": "data/nex1-code-engine/challenge-e/callers/delta-caller.ts",
+      "line": 4,
+      "code": "TS2322",
+      "gap_kind": "unrecognized_error_class",
+      "declared_field_type": null,
+      "missing_information": [
+        "extractor_for_TS2322"
+      ]
+    },
+    {
+      "file": "data/nex1-code-engine/challenge-e/callers/epsilon-caller.ts",
+      "line": 4,
+      "code": "TS2322",
+      "gap_kind": "unrecognized_error_class",
+      "declared_field_type": null,
+      "missing_information": [
+        "extractor_for_TS2322"
+      ]
+    },
+    {
+      "file": "data/nex1-code-engine/challenge-e/callers/gamma-caller.ts",
+      "line": 4,
+      "code": "TS2322",
+      "gap_kind": "unrecognized_error_class",
+      "declared_field_type": null,
+      "missing_information": [
+        "extractor_for_TS2322"
+      ]
+    }
+  ]
+}

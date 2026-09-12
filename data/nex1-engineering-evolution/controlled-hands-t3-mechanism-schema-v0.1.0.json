@@ -1,0 +1,88 @@
+{
+  "version": "v0.1.0",
+  "notes": "Phase 8 T3 mechanism schema · Windows-first · defines the OS-level enforcement mechanism per Trust Domain. Additive · does NOT replace v0.1.0 schemas.",
+  "record_type": "CONTROLLED_HANDS_T3_MECHANISM",
+  "platform_verification_scope": {
+    "windows": "primary target · in-session build",
+    "linux": "declared NOT_TESTED_v0_1_0 · founder-authorised follow-up",
+    "macos": "declared NOT_TESTED_v0_1_0 · founder-authorised follow-up"
+  },
+  "trust_domain_mechanisms": {
+    "A_nex1_master_engineer": {
+      "process_model": "SEPARATE OS PROCESS · spawned via child_process.spawn with restricted spawn options",
+      "handle_inheritance": "bInheritHandle=FALSE equivalent via {stdio: ['pipe','pipe','pipe']}",
+      "environment": "explicit whitelist · NEX1 process receives ONLY declared env vars · not full parent env",
+      "network_capability": "no network authorisation exposed to Domain A · IPC only",
+      "os_authority_from_broker": "NEX1 receives NO OS-level handles from parent · every operation via stdio IPC",
+      "t3_verified_v0_1_0": ["real separate process", "restricted env inheritance", "no inherited handles at spawn"],
+      "t3_deferred": ["Windows AppContainer profile (requires native addon)", "restricted user token (requires C++ addon)", "Job Object with breakaway disabled (requires native addon or ffi)"]
+    },
+    "B_authority_broker": {
+      "process_model": "SEPARATE OS PROCESS · Node child_process invoked from parent harness · communicates with Domain A via structured stdio JSON lines",
+      "signing_key_storage": "DPAPI-backed via PowerShell Protect-CmsMessage or ConvertFrom-SecureString · key material never in Domain A process memory",
+      "event_log_storage": "in-process (Broker's own memory) · append-only · Ed25519 signed · Domain A cannot access",
+      "snapshot_storage": "in-process (Broker's own memory) · Domain A cannot access · rollback via Broker's IPC method only",
+      "t3_verified_v0_1_0": ["real separate process", "stdio IPC contract", "Ed25519 keys held in child memory not parent", "session token replay across Broker restart is refused because tokens are per-instance"],
+      "t3_deferred": ["real DPAPI persistent storage (implemented via PowerShell shell-out · slow · not per-request)", "isolated Broker crash recovery"]
+    },
+    "C_independent_observer": {
+      "process_model": "SEPARATE OS PROCESS · read-only workspace access · reads Broker event log via IPC",
+      "signing_key_storage": "separate Ed25519 keypair in Observer process memory · never in Domain A or B",
+      "t3_verified_v0_1_0": ["real separate process", "separate signing key", "reads workspace via own fs operations"],
+      "t3_deferred": ["real filesystem-level read-only enforcement of workspace (Observer relies on cooperation)"]
+    },
+    "D_compliance_verifier": {
+      "process_model": "SEPARATE OS PROCESS · read-only inputs from Domain B and C via IPC",
+      "signing_key_storage": "separate Ed25519 keypair in Verifier process memory",
+      "t3_verified_v0_1_0": ["real separate process", "separate signing key"]
+    }
+  },
+  "adversarial_cases_t3": {
+    "47_pre_existing_writable_handle": {
+      "verified_v0_1_0": true,
+      "mechanism": "when HANDOVER_REQUESTED · Broker kills NEX1 child process · all handles closed by OS"
+    },
+    "48_hard_link_outside_actor": {
+      "verified_v0_1_0": "PARTIAL",
+      "mechanism": "pre-installed hard link inside workspace → Broker inode identity check catches it (already T1 · retested at T3)",
+      "deferred": "hard link created by OS process outside NEX1's authority DURING the Work Order · requires simulation of external actor"
+    },
+    "49_inherited_privileged_handle": {
+      "verified_v0_1_0": true,
+      "mechanism": "child_process.spawn({stdio: ['pipe','pipe','pipe']}) prevents handle inheritance · fd 3+ not passed"
+    },
+    "50_descendant_cmd_exe": {
+      "verified_v0_1_0": "PARTIAL",
+      "mechanism": "PROCESS_CAPABILITY_ENTRY allowlist rejects cmd.exe/powershell.exe at Broker layer · when NEX1 attempts spawn via IPC · Broker refuses",
+      "deferred": "OS-level Job Object breakaway control · what if NEX1's allowed 'node' process internally uses child_process.exec which uses cmd.exe · requires native Job Object binding to block"
+    },
+    "51_dep_lifecycle_npm_install": {
+      "verified_v0_1_0": "PARTIAL",
+      "mechanism": "npm/pnpm/yarn/npx/corepack absent from PROCESS_CAPABILITY_ENTRY allowlist · Broker refuses spawn · lockfile hash verified at Work Order intake",
+      "deferred": "real read-only mount of node_modules · v0.1.0 uses cooperation model"
+    },
+    "52_descendant_process_tree_inheritance": {
+      "verified_v0_1_0": "PARTIAL",
+      "mechanism": "spawn options include detached:false · every capability request re-authorised at Broker",
+      "deferred": "OS-level Job Object descendant tracking"
+    },
+    "53_sandbox_denial_vs_broker_denial": {
+      "verified_v0_1_0": "PARTIAL",
+      "mechanism": "in T3 · when NEX1 attempts direct fs.writeFile bypassing Broker · the write happens in NEX1's OWN process filesystem view · but the Observer walk of the Broker-owned workspace catches it via reconciliation as an unauthorised change. Real OS sandbox (AppContainer) would prevent the write entirely.",
+      "deferred": "real OS sandbox denying the fs.writeFile at syscall level"
+    },
+    "54_authority_alias_preinstalled_symlink": {
+      "verified_v0_1_0": true,
+      "mechanism": "symlink pre-created in workspace pointing at protected root · Broker refuses via TOCTOU-safe identify + lstat symlink refusal (already T1 · retested at T3)"
+    },
+    "55_cross_wo_token_replay_across_broker_restart": {
+      "verified_v0_1_0": true,
+      "mechanism": "Broker restart forces new capability_manifest_hash + nex1_execution_instance_id · old token refused with TOKEN_INSTANCE_MISMATCH"
+    }
+  },
+  "honest_declaration": {
+    "verified_at_t3_v0_1_0": ["47", "49", "54", "55"],
+    "partial_at_t3_v0_1_0": ["48", "50", "51", "52", "53"],
+    "reason_for_partial": "Full OS-level enforcement (Windows AppContainer + Job Object + restricted user tokens + filesystem read-only mounts) requires native Node addons or C++ bindings NOT introduced at v0.1.0 · T3 v0.1.0 achieves separate-process trust domains + real IPC + DPAPI key protection + inheritance blocking · deeper OS enforcement is a follow-up phase requiring founder authorisation for native dependencies"
+  }
+}
