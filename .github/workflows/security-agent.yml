@@ -1,0 +1,59 @@
+name: NEX HQ Security Agent
+
+# Stage 2 of BUILD PLAN v1.1 · CI gate for every proposed change.
+# Every PR + push to main runs the Security Agent against the diff.
+# Non-zero exit blocks the PR merge.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  security-inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Detect changed files (PR)
+        if: github.event_name == 'pull_request'
+        id: pr-diff
+        run: |
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          git diff --name-only --diff-filter=ACMR origin/${{ github.base_ref }}...HEAD >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Detect changed files (push)
+        if: github.event_name == 'push'
+        id: push-diff
+        run: |
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          git diff --name-only --diff-filter=ACMR HEAD~1 HEAD >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Run Security Agent inspection
+        run: |
+          # Build a synthetic inspection request from the diff and pipe to
+          # a tsx-invoked runner. The runner is the same code the pre-commit
+          # hook uses locally · deterministic across environments.
+          npx tsx scripts/nex-security-ci-runner.ts
+
+      - name: Report verdict
+        if: always()
+        run: |
+          echo "Security Agent verdict recorded in job logs."
+          echo "If this step failed, check the logs for sec.* rejection codes."

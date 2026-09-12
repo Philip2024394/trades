@@ -27,8 +27,8 @@
 --   DROP TABLE IF EXISTS nex.food_outreach_attempt CASCADE;
 --   DROP TABLE IF EXISTS nex.food_outreach_suppression CASCADE;
 --   DROP TABLE IF EXISTS nex.food_outreach_template CASCADE;
---   DROP TYPE IF EXISTS nex_food_outreach_status;
---   DROP TYPE IF EXISTS nex_food_outreach_channel;
+--   DROP TYPE IF EXISTS nex.nex_food_outreach_status;
+--   DROP TYPE IF EXISTS nex.nex_food_outreach_channel;
 --   COMMIT;
 
 CREATE SCHEMA IF NOT EXISTS nex;
@@ -38,8 +38,12 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 DO $body$
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'nex_food_outreach_channel') THEN
-    CREATE TYPE nex_food_outreach_channel AS ENUM (
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_type t
+    JOIN pg_namespace n ON n.oid = t.typnamespace
+    WHERE t.typname = 'nex_food_outreach_channel' AND n.nspname = 'nex'
+  ) THEN
+    CREATE TYPE nex.nex_food_outreach_channel AS ENUM (
       'whatsapp',   -- first-class Indonesia
       'email',      -- first-class UK trades · works for food too when owner has email
       'phone',      -- manual · admin logs a call
@@ -47,8 +51,12 @@ BEGIN
     );
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'nex_food_outreach_status') THEN
-    CREATE TYPE nex_food_outreach_status AS ENUM (
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_type t
+    JOIN pg_namespace n ON n.oid = t.typnamespace
+    WHERE t.typname = 'nex_food_outreach_status' AND n.nspname = 'nex'
+  ) THEN
+    CREATE TYPE nex.nex_food_outreach_status AS ENUM (
       'dry_run',     -- --dry-run mode · nothing actually sent
       'queued',      -- passed eligibility · awaiting provider send
       'sent',        -- provider accepted the message

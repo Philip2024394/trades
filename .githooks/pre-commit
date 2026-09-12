@@ -1,0 +1,35 @@
+#!/usr/bin/env sh
+# .githooks/pre-commit
+# Stage 2 of BUILD PLAN v1.1 · HQ Security Agent pre-commit gate.
+#
+# To install:  git config core.hooksPath .githooks
+# Then this hook runs before every commit.
+
+# Skip on merge commits (no staged files to inspect)
+if [ -f "$(git rev-parse --git-dir)/MERGE_HEAD" ]; then
+  exit 0
+fi
+
+# Skip if no --commit-msg was provided (git may invoke pre-commit before message)
+COMMIT_MSG_FILE="$(git rev-parse --git-dir)/COMMIT_EDITMSG"
+
+# Invoke the security precommit script (tsx required · falls back to node if compiled)
+if command -v npx >/dev/null 2>&1; then
+  npx tsx scripts/nex-security-precommit.mjs --commit-msg-file "$COMMIT_MSG_FILE"
+  STATUS=$?
+elif command -v node >/dev/null 2>&1; then
+  node scripts/nex-security-precommit.mjs --commit-msg-file "$COMMIT_MSG_FILE"
+  STATUS=$?
+else
+  echo "[security-agent] ERROR: Neither npx nor node found · cannot run precommit gate"
+  exit 2
+fi
+
+if [ $STATUS -ne 0 ]; then
+  echo ""
+  echo "[security-agent] Commit BLOCKED by HQ Security Agent (Stage 2 gate)."
+  echo "Fix the rejections above · re-stage the fixes · try commit again."
+  exit $STATUS
+fi
+
+exit 0

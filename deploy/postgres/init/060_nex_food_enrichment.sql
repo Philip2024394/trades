@@ -28,9 +28,9 @@
 --   DROP VIEW  IF EXISTS nex.food_business_completeness;
 --   DROP TABLE IF EXISTS nex.food_enrichment_job CASCADE;
 --   DROP TABLE IF EXISTS nex.food_enrichment_evidence CASCADE;
---   DROP TYPE  IF EXISTS nex_food_enrichment_status;
---   DROP TYPE  IF EXISTS nex_food_enrichment_agent;
---   DROP TYPE  IF EXISTS nex_food_source_type;
+--   DROP TYPE  IF EXISTS nex.nex_food_enrichment_status;
+--   DROP TYPE  IF EXISTS nex.nex_food_enrichment_agent;
+--   DROP TYPE  IF EXISTS nex.nex_food_source_type;
 --   DELETE FROM nex.food_hq_rule WHERE rule_key LIKE 'completeness_weight_%';
 --   COMMIT;
 
@@ -41,8 +41,12 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 DO $body$
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'nex_food_enrichment_agent') THEN
-    CREATE TYPE nex_food_enrichment_agent AS ENUM (
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_type t
+    JOIN pg_namespace n ON n.oid = t.typnamespace
+    WHERE t.typname = 'nex_food_enrichment_agent' AND n.nspname = 'nex'
+  ) THEN
+    CREATE TYPE nex.nex_food_enrichment_agent AS ENUM (
       'discovery',     -- finds candidate official sources (website · social profiles)
       'identity',      -- confirms discovered source matches the business
       'contact',       -- WhatsApp · phone · website · social
@@ -56,8 +60,12 @@ BEGIN
     );
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'nex_food_enrichment_status') THEN
-    CREATE TYPE nex_food_enrichment_status AS ENUM (
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_type t
+    JOIN pg_namespace n ON n.oid = t.typnamespace
+    WHERE t.typname = 'nex_food_enrichment_status' AND n.nspname = 'nex'
+  ) THEN
+    CREATE TYPE nex.nex_food_enrichment_status AS ENUM (
       'pending',
       'running',
       'done',
@@ -67,8 +75,12 @@ BEGIN
     );
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'nex_food_source_type') THEN
-    CREATE TYPE nex_food_source_type AS ENUM (
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_type t
+    JOIN pg_namespace n ON n.oid = t.typnamespace
+    WHERE t.typname = 'nex_food_source_type' AND n.nspname = 'nex'
+  ) THEN
+    CREATE TYPE nex.nex_food_source_type AS ENUM (
       'owner_verified',       -- highest trust · owner confirmed
       'admin_verified',       -- NEX admin confirmed
       'official_website',     -- business's own domain

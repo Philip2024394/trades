@@ -1,0 +1,139 @@
+{
+  "version": "1.1.0",
+  "signed_at": "2026-09-10T14:15:00Z",
+  "signed_by": "founder",
+  "immutable": true,
+  "hard_rule": "The agent does not own NEX. It is an engineer operating under NEX's rules.",
+  "forbidden_dependencies": [
+    "@supabase/auth-helpers",
+    "@supabase/auth-helpers-nextjs",
+    "@supabase/auth-helpers-react",
+    "@supabase/gotrue-js",
+    "@supabase/realtime-js",
+    "@supabase/storage-js",
+    "@supabase/functions-js"
+  ],
+  "forbidden_dependencies_note": "@supabase/supabase-js is CURRENTLY present in package.json (v2.45.4). ADR-0300 mandates phase-out. Agent must NOT introduce NEW @supabase/* packages beyond the one already in place, and must NOT route new features through supabase; route to `pg` (PostgreSQL direct) + MinIO/S3 + local pgvector instead.",
+  "forbidden_string_patterns": [
+    { "pattern": "@supabase/", "reason": "ADR-0300 · phase out supabase · no new imports in new modules" },
+    { "pattern": "createClient.*supabase", "reason": "supabase-js constructor · route new features to pg directly" },
+    { "pattern": "SUPABASE_URL", "reason": "supabase env leakage into new code · use NEX_POSTGRES_URL instead" },
+    { "pattern": "\\.supabase\\.co", "reason": "supabase realtime/rest URL" },
+    { "pattern": "googleusercontent\\.com/.*/photo", "reason": "ADR-0022 · Google Business Profile image scraping" },
+    { "pattern": "fbcdn\\.net/", "reason": "ADR-0022 · Facebook image copy" },
+    { "pattern": "cdninstagram\\.com/", "reason": "ADR-0022 · Instagram image copy" },
+    { "pattern": "commission|per-lead-fee|shortlist-charge", "reason": "ADR-0003 · never sell leads · fixed subscription only" }
+  ],
+  "protected_files": [
+    { "path": "rules/NEX-ARCHITECTURE.md", "reason": "constitution · immutable" },
+    { "path": "rules/architecture.json", "reason": "machine-readable constitution · immutable" },
+    { "path": "src/lib/tierCatalog.ts", "reason": "canonical pricing · never edit outside this file" },
+    { "path": "src/lib/nex/agent-runtime/watchdog.ts", "reason": "watchdog · independent observer · founder-only" },
+    { "path": "src/lib/nex/agent-runtime/control-plane.ts", "reason": "spawn/kill decision engine · founder-only" },
+    { "path": "CLAUDE.md", "reason": "session bootstrap · loaded first every session" }
+  ],
+  "protected_directories": [
+    { "path": "db/migrations/", "reason": "PostgreSQL migrations · immutable once applied · append-only" },
+    { "path": "supabase/migrations/", "reason": "Supabase migrations · immutable once applied · append-only" },
+    { "path": "docs/DECISIONS/", "reason": "ADRs · append-only · never modify existing files" },
+    { "path": "rules/", "reason": "architecture constitution · immutable" },
+    { "path": "src/lib/nex/truth-engine/", "reason": "truth engine · doctrine protected" },
+    { "path": "src/lib/nex/agent-runtime/", "reason": "agent orchestration · reuse via imports, don't duplicate" },
+    { "path": "scripts/nex-lab-", "reason": "NEX Lab supervisor scripts (glob prefix) · scheduled · founder-only edits" }
+  ],
+  "canonical_paths": {
+    "feature_module": "src/apps/{slug}/ (with manifest.ts + one-line README.md · ADR-0001)",
+    "api_route": "src/app/api/{route}/route.ts (with leading // comment)",
+    "library": "src/lib/nex/{name}/index.ts (with leading // comment)",
+    "migration_new_pg": "db/migrations/{next_number}_{title}.sql",
+    "migration_new_supabase": "supabase/migrations/{utc_timestamp}_{title}.sql",
+    "adr_new": "docs/DECISIONS/{next_number}-{title}.md",
+    "page": "src/app/{route}/page.tsx",
+    "agent_runtime_component": "src/lib/nex/agent-runtime/{name}.ts (reuse existing infra: watchdog · control-plane · event-bus · registry · heartbeat · runtime-state)",
+    "nex_lab_script": "scripts/nex-lab-{name}.mjs"
+  },
+  "verification_gate": [
+    "typecheck",
+    "lint",
+    "unit_tests",
+    "build",
+    "architecture_scan",
+    "security_scan",
+    "doctrine_scan",
+    "founder_approval"
+  ],
+  "agent_capabilities": {
+    "nex1": ["propose_plan", "compose_diff_dry_run", "ask_clarifying_question", "call_read_only_tool", "call_crawler_feed"],
+    "nex2": ["review_architecture", "check_forbidden_dependencies", "check_forbidden_strings", "check_protected_files", "check_canonical_paths", "call_read_only_tool"],
+    "nex3": ["review_security", "review_verification_readiness", "check_doctrine_adr_compat", "check_protected_files_touched", "call_read_only_tool"]
+  },
+  "forbidden_actions_for_all_nex_agents": [
+    "write_source_file_without_approval",
+    "apply_migration_without_approval",
+    "delete_any_file",
+    "delete_any_row",
+    "push_to_git_remote",
+    "modify_rules_directory",
+    "install_forbidden_dependency",
+    "claim_feature_complete_before_verification_passes",
+    "modify_existing_adr",
+    "modify_existing_migration",
+    "modify_src_lib_nex_truth_engine_without_approval",
+    "modify_src_lib_nex_agent_runtime_without_approval",
+    "bypass_founder_stop_override"
+  ],
+  "immutable_adrs": [
+    "0027-nex-golden-rules-constitution",
+    "0028-nex-intelligence-constitution",
+    "0030-intelligence-layers-before-admin",
+    "0032-nex-chief-intelligence-officer",
+    "0035-two-laws-classify-never-reject",
+    "0036-evidence-is-not-the-end-of-reasoning"
+  ],
+  "key_adrs_to_honor": [
+    "0001-manifest-first-apps",
+    "0002-single-domain-thenetworkers",
+    "0003-never-sell-leads",
+    "0007-no-editorial-image-rules",
+    "0010-stripe-margin-safe-pricing",
+    "0022-merchant-images-no-third-party-copy",
+    "0023-directory-import-rules",
+    "0024-image-manifest-rule",
+    "0025-image-matcher-tiered-thresholds",
+    "0026-image-knowledge-system",
+    "0033-quality-over-quantity",
+    "0034-knowledge-engine-gold-standard",
+    "0300-nex-own-storage-migration",
+    "0301-nex-image-storage-migration",
+    "0302-nex-pgvector-install",
+    "0303-nex-file-safety-doctrine",
+    "0304-nex-lab-autonomous-research-lab"
+  ],
+  "existing_agent_infra_to_reuse": [
+    "src/lib/nex/agent-runtime/watchdog.ts",
+    "src/lib/nex/agent-runtime/control-plane.ts",
+    "src/lib/nex/agent-runtime/event-bus.ts",
+    "src/lib/nex/agent-runtime/registry.ts",
+    "src/lib/nex/agent-runtime/heartbeat.ts",
+    "src/lib/nex/agent-runtime/runtime-state.ts",
+    "src/lib/nex/agent-runtime/types.ts",
+    "src/lib/nex/agent-runtime/command-audit.ts",
+    "src/lib/nex/agent-runtime/internet-check.ts"
+  ],
+  "existing_specialist_workers": [
+    "worker-master-ai",
+    "worker-programmer",
+    "worker-accommodation",
+    "worker-vision",
+    "worker-travel",
+    "worker-business",
+    "worker-food",
+    "worker-construction",
+    "worker-healthcare",
+    "worker-transport",
+    "worker-legal",
+    "worker-speaking"
+  ],
+  "founder_stop_override_source": "src/lib/nex/agent-runtime/registry.ts::readFounderStopOverride()",
+  "founder_stop_override_rule": "Every Nex Agent must honour readFounderStopOverride() at task-start and again before any tool call. If true, agent halts immediately without side effects."
+}

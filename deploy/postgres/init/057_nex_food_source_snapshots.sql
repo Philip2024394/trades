@@ -34,7 +34,7 @@
 --   BEGIN;
 --   DROP TABLE IF EXISTS nex.food_business_field_provenance CASCADE;
 --   DROP TABLE IF EXISTS nex.food_business_source_snapshot CASCADE;
---   DROP TYPE IF EXISTS nex_food_field_trust;
+--   DROP TYPE IF EXISTS nex.nex_food_field_trust;
 --   COMMIT;
 
 CREATE SCHEMA IF NOT EXISTS nex;
@@ -44,8 +44,12 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 DO $body$
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'nex_food_field_trust') THEN
-    CREATE TYPE nex_food_field_trust AS ENUM (
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_type t
+    JOIN pg_namespace n ON n.oid = t.typnamespace
+    WHERE t.typname = 'nex_food_field_trust' AND n.nspname = 'nex'
+  ) THEN
+    CREATE TYPE nex.nex_food_field_trust AS ENUM (
       'source_import',    -- raw from OSM/Google/directory · lowest trust
       'nex_curated',      -- NEX-supplied (image · description · marketing)
       'admin_verified',   -- NEX admin confirmed

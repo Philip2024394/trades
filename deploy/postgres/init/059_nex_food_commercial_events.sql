@@ -34,8 +34,8 @@
 --   DROP TABLE IF EXISTS nex.food_hq_rule CASCADE;
 --   DROP MATERIALIZED VIEW IF EXISTS nex.food_business_value CASCADE;
 --   DROP TABLE IF EXISTS nex.food_commercial_event CASCADE;
---   DROP TYPE IF EXISTS nex_food_next_action;
---   DROP TYPE IF EXISTS nex_food_event_type;
+--   DROP TYPE IF EXISTS nex.nex_food_next_action;
+--   DROP TYPE IF EXISTS nex.nex_food_event_type;
 --   COMMIT;
 
 CREATE SCHEMA IF NOT EXISTS nex;
@@ -45,8 +45,12 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 DO $body$
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'nex_food_event_type') THEN
-    CREATE TYPE nex_food_event_type AS ENUM (
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_type t
+    JOIN pg_namespace n ON n.oid = t.typnamespace
+    WHERE t.typname = 'nex_food_event_type' AND n.nspname = 'nex'
+  ) THEN
+    CREATE TYPE nex.nex_food_event_type AS ENUM (
       'profile_view',           -- customer opened the business profile
       'search_appearance',      -- business appeared in a customer search result
       'enquiry',                -- customer sent a message / clicked contact
@@ -60,8 +64,12 @@ BEGIN
     );
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'nex_food_next_action') THEN
-    CREATE TYPE nex_food_next_action AS ENUM (
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_type t
+    JOIN pg_namespace n ON n.oid = t.typnamespace
+    WHERE t.typname = 'nex_food_next_action' AND n.nspname = 'nex'
+  ) THEN
+    CREATE TYPE nex.nex_food_next_action AS ENUM (
       'INVITE_BUSINESS',        -- discovered/listed · never contacted
       'FOLLOW_UP',              -- contacted but no response · outside cooldown
       'WAIT',                   -- inside cooldown or otherwise not yet actionable

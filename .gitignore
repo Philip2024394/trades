@@ -106,3 +106,18 @@ data/nex-storage/object_manifest.jsonl
 # Overpass/Google/etc. caches churn every workforce or acquisition run.
 scripts/nex-acquisition/.cache/
 scripts/*/.cache/
+
+# 2026-09-12 · Large binaries and DB dumps — GitHub blocks files >100 MB
+# and warns at >50 MB. These must be fetched by setup scripts or stored
+# externally (S3 / GCS), never in git history.
+deploy/minio/minio.exe
+deploy/minio/minio
+deploy/**/*.exe
+deploy/**/*.tar.gz
+# PostgreSQL / DB dumps — backups belong in object storage, not git
+data/nex-backups/*.dump
+data/nex-backups/*.sql.gz
+*.dump
+# Oversized data-load SQL files (622 MB backfill etc.) — split DDL from
+# bulk data or store the bulk load separately.
+data/migration-*/backfill-*.sql

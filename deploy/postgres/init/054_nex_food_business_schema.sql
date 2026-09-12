@@ -54,8 +54,8 @@
 -- Reversible
 --   BEGIN;
 --   DROP TABLE IF EXISTS nex.food_business CASCADE;
---   DROP TYPE IF EXISTS nex_food_owner_status;
---   DROP TYPE IF EXISTS nex_food_claim_status;
+--   DROP TYPE IF EXISTS nex.nex_food_owner_status;
+--   DROP TYPE IF EXISTS nex.nex_food_claim_status;
 --   COMMIT;
 
 -- ---------------------------------------------------------------------------
@@ -80,8 +80,12 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;   -- gen_random_uuid()
 
 DO $body$
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'nex_food_claim_status') THEN
-    CREATE TYPE nex_food_claim_status AS ENUM (
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_type t
+    JOIN pg_namespace n ON n.oid = t.typnamespace
+    WHERE t.typname = 'nex_food_claim_status' AND n.nspname = 'nex'
+  ) THEN
+    CREATE TYPE nex.nex_food_claim_status AS ENUM (
       'discovered',
       'verifying',
       'listed',
@@ -91,8 +95,12 @@ BEGIN
     );
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'nex_food_owner_status') THEN
-    CREATE TYPE nex_food_owner_status AS ENUM (
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_type t
+    JOIN pg_namespace n ON n.oid = t.typnamespace
+    WHERE t.typname = 'nex_food_owner_status' AND n.nspname = 'nex'
+  ) THEN
+    CREATE TYPE nex.nex_food_owner_status AS ENUM (
       'unknown',
       'contacted',
       'responded',
