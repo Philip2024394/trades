@@ -5,6 +5,7 @@
 // contract. Pure function of inputs — no I/O.
 
 import type {
+  AcademyStateSummary,
   AgentDescriptor,
   AgentLifecycleState,
   AgentSnapshot,
@@ -17,6 +18,9 @@ export interface DeriveInput {
   readonly agent: AgentDescriptor;
   readonly records: readonly Record<string, unknown>[];
   readonly now: Date;
+  /** WO-ACADEMY-01 · optional Academy state overlay. null when the agent
+   *  has not yet been onboarded to the Academy. */
+  readonly academy?: AcademyStateSummary | null;
 }
 
 /**
@@ -133,6 +137,7 @@ export function deriveSnapshot(input: DeriveInput): AgentSnapshot {
     health,
     non_normal_state,
     last_state_transition_at,
+    academy: input.academy ?? null,
   };
 }
 

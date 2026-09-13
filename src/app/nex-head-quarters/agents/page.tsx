@@ -163,6 +163,33 @@ function AgentCard({ agent }: { agent: AgentSnapshot }): React.ReactElement {
           )}
         </div>
       )}
+
+      {agent.academy && (
+        <div style={{ marginTop: 10, padding: 8, borderRadius: 8, background: "rgba(59, 130, 246, 0.06)", border: "1px solid rgba(59, 130, 246, 0.35)", fontSize: 12 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+            <strong style={{ color: TOKEN.info }}>Academy</strong>
+            <span style={{ fontSize: 11, padding: "2px 6px", borderRadius: 10, background: TOKEN.info, color: "#fff" }}>{agent.academy.career_state}</span>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4 }}>
+            <div>Task: {(agent.academy.task_completion_score * 100).toFixed(0)}%</div>
+            <div>Knowledge: {(agent.academy.knowledge_contribution_score * 100).toFixed(0)}%</div>
+            <div>Regression: {(agent.academy.regression_score * 100).toFixed(0)}%</div>
+            <div>Profile v{agent.academy.capability_profile_version}</div>
+          </div>
+          {(agent.academy.notice_count.notice_1 + agent.academy.notice_count.notice_2 + agent.academy.notice_count.notice_3 > 0) && (
+            <div style={{ marginTop: 4, fontSize: 11, color: TOKEN.warning }}>
+              Notices — N1: {agent.academy.notice_count.notice_1} · N2: {agent.academy.notice_count.notice_2} · N3: {agent.academy.notice_count.notice_3}
+            </div>
+          )}
+          {agent.academy.open_notices.length > 0 && (
+            <div style={{ marginTop: 4, fontSize: 11, color: TOKEN.warning }}>
+              {agent.academy.open_notices.map((n, i) => (
+                <div key={i}>· {n.kind}: {n.reason.slice(0, 50)}{n.reason.length > 50 ? "…" : ""}</div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

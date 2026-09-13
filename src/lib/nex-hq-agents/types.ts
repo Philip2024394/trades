@@ -43,6 +43,20 @@ export interface AgentDescriptor {
   readonly wire_downstream: readonly string[];   // agent ids this feeds into
 }
 
+export interface AcademyStateSummary {
+  readonly career_state: string;   // CareerState string; no cross-module import to keep this layer thin
+  readonly task_completion_score: number;
+  readonly knowledge_contribution_score: number;
+  readonly regression_score: number;
+  readonly notice_count: { readonly notice_1: number; readonly notice_2: number; readonly notice_3: number };
+  readonly capability_profile_version: number;
+  readonly open_notices: readonly {
+    readonly kind: string;
+    readonly reason: string;
+    readonly issued_at: string;
+  }[];
+}
+
 export interface AgentSnapshot {
   readonly id: string;
   readonly name: string;
@@ -66,6 +80,9 @@ export interface AgentSnapshot {
     readonly recovery_path: string | null;
   } | null;
   readonly last_state_transition_at: string;
+
+  /** WO-ACADEMY-01 extension: Academy state overlay. Read-only. */
+  readonly academy: AcademyStateSummary | null;
 }
 
 export interface HqAgentsSnapshotResponse {

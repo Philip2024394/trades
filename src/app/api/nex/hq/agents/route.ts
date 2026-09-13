@@ -8,7 +8,9 @@ import { NextResponse } from "next/server";
 import { getStorage } from "@/lib/nex/storage/registry";
 import { AGENT_REGISTRY, READABLE_COLLECTIONS } from "@/lib/nex-hq-agents/registry";
 import { deriveSnapshot } from "@/lib/nex-hq-agents/derive-snapshot";
-import type { AgentSnapshot, HqAgentsSnapshotResponse } from "@/lib/nex-hq-agents/types";
+import type { AcademyStateSummary, AgentSnapshot, HqAgentsSnapshotResponse } from "@/lib/nex-hq-agents/types";
+import { COLLECTIONS } from "@/lib/nex/storage/types";
+import type { AcademyRecord, NoticeRecord } from "@/lib/nex-academy/types";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -18,6 +20,19 @@ export async function GET(): Promise<Response> {
   const store = getStorage();
   const now = new Date();
   const agents: AgentSnapshot[] = [];
+
+  // Batch-load Academy state (read-only)
+  let allAcademyRecords: AcademyRecord[] = [];
+  try {
+    allAcademyRecords = await store.query<AcademyRecord>(COLLECTIONS.nex_academy_agents, { limit: 1000 });
+  } catch { allAcademyRecords = []; }
+  const academyByAgent = new Map<string, AcademyRecord>(
+    allAcademyRecords.map((r) => [r.agent_id, r]),
+  );
+  let allNotices: NoticeRecord[] = [];
+  try {
+    allNotices = await store.query<NoticeRecord>(COLLECTIONS.nex_academy_notices, { limit: 5000 });
+  } catch { allNotices = []; }
 
   for (const agent of AGENT_REGISTRY) {
     // Defensive: assert the collection we're about to read is in the
@@ -40,7 +55,24 @@ export async function GET(): Promise<Response> {
     }
     // Strip potentially-secret fields before returning to the client.
     const safeRecords = records.map((r) => scrubSecrets(r));
-    agents.push(deriveSnapshot({ agent, records: safeRecords, now }));
+
+    // Academy overlay (WO-ACADEMY-01 · read-only summary)
+    const academyRecord = academyByAgent.get(agent.id) ?? null;
+    const academy: AcademyStateSummary | null = academyRecord
+      ? {
+          career_state: academyRecord.career_state,
+          task_completion_score: academyRecord.task_completion_score,
+          knowledge_contribution_score: academyRecord.knowledge_contribution_score,
+          regression_score: academyRecord.regression_score,
+          notice_count: academyRecord.notice_count,
+          capability_profile_version: academyRecord.capability_profile_version,
+          open_notices: allNotices
+            .filter((n) => n.agent_id === agent.id)
+            .slice(0, 3)
+            .map((n) => ({ kind: n.kind, reason: n.reason, issued_at: n.issued_at })),
+        }
+      : null;
+    agents.push(deriveSnapshot({ agent, records: safeRecords, now, academy }));
   }
 
   const wire: HqAgentsSnapshotResponse["wire"] = AGENT_REGISTRY.flatMap((a) =>

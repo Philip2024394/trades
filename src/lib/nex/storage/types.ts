@@ -203,6 +203,18 @@ export const COLLECTIONS = {
   nex_intelligence_revisits:           "nex_intelligence_revisits",
   nex_intelligence_supersede_edges:    "nex_intelligence_supersede_edges",
   nex_intelligence_generalisation_sets:"nex_intelligence_generalisation_sets",
+
+  // WO-ACADEMY-01 additions (2026-09-13). The Agent Academy layer.
+  // Capability + career state + notice discipline + knowledge harvest
+  // + task-market matches. Every record content-hashed + provenance-
+  // chained. Career progression NEVER grants execution authority (P-U);
+  // authority stays with founder-signed WOs.
+  nex_academy_agents:                  "nex_academy_agents",
+  nex_academy_capability_profiles:     "nex_academy_capability_profiles",
+  nex_academy_notices:                 "nex_academy_notices",
+  nex_academy_harvests:                "nex_academy_harvests",
+  nex_academy_task_requirements:       "nex_academy_task_requirements",
+  nex_academy_matches:                 "nex_academy_matches",
 } as const;
 
 export type CollectionName = keyof typeof COLLECTIONS;
