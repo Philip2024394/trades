@@ -204,9 +204,69 @@ Per Master Founder Prompt §22, every one of these is **tracked** (not hidden or
    WO-ACADEMY-13 (new-agent proposal)
 ```
 
+## 4.1 · Founder directive 2026-09-13 · 5 new WOs inserted into the sequence
+
+Founder issued a subsequent directive after WO-ACADEMY-02 landed: the Intelligence Lane needs a continuous governed research loop (not passive WAITING), the system needs a "never stop working" heartbeat, HQ needs deep agent inspection, incoming data needs sanitisation, and NEX1 needs a coding-brain. Five new WOs slot in:
+
+```
+ACADEMY-01 ✓
+      ↓
+ACADEMY-02 ✓ (Training Engine · causal-chain enforced)
+      ↓
+WO-INTEL-ORCHESTRATOR-01  ← next (founder's primary emphasis · unlocks meaningful heartbeat)
+      ↓
+WO-HQ-HEARTBEAT-01        ← urgent-after (agents can silently die without it)
+      ↓
+WO-HQ-DEEP-INSPECT-01     ← follows heartbeat (deep inspection assumes health monitoring)
+      ↓
+WO-DATA-SANITIZER-01      ← protects the crawler inputs orchestrator uses
+      ↓
+WO-NEX1-CODING-BRAIN-01   ← parallel with data sanitiser; independent lane
+      ↓
+ACADEMY-03  Adversarial Examination
+      ↓
+COMPUTE-01  Resource Governor (moved before benchmark competitions)
+      ↓
+ACADEMY-04..05  Benchmarks + Research Missions
+      ↓
+Specialist Schools (WO-ACADEMY-06..12)
+      ↓
+Multi-Agent Teams · Remote Workers · Controlled New-Agent Creation
+```
+
+### Why WO-INTEL-ORCHESTRATOR-01 is the next WO
+
+- Directly implements the founder's primary emphasis ("Intelligence Lane should have its own continuous governed research loop")
+- Provides the founder-signed operating mandate pattern the founder specifically described
+- All 6 intelligence-lane agents transition from passive WAITING to purposeful RESEARCHING / WORKING
+- Delivers measurable work products (missions × sources × discoveries × hypotheses × experiments × proposals) as PROOF of intelligence activity
+- Every downstream WO benefits: heartbeat has meaningful work to monitor; deep-inspect has real progress to display; academy-03 exams can measure agents against real mission history
+
+### Why WO-HQ-HEARTBEAT-01 must come immediately after
+
+- The founder's "GOLDEN RULE · agents never stop working" cannot be enforced without a heartbeat
+- Without heartbeat, an orchestrator can dispatch a mission to an agent that has silently died and nothing notices
+- Simpler than the orchestrator (polls existing GB records + adds recovery machinery)
+
+### Why WO-DATA-SANITIZER-01 sits between HQ-DEEP-INSPECT and NEX1-CODING-BRAIN
+
+- The orchestrator will drive more crawling; sanitiser protects the wider surface
+- Slightly bigger risk than HQ observability so we want it before benchmark competitions run heavy load
+
+### Why WO-NEX1-CODING-BRAIN-01 sits after data sanitiser
+
+- Independent lane; could run parallel to sanitiser
+- Reduces NEX1 error rate before ACADEMY-03 uses NEX1 as an examinable specialist
+
+### Existing sequence preserved after the five inserts
+
+Everything else (ACADEMY-03 onwards) is unchanged from the founder-approved sequence.
+
 ## 5 · Recommendation
 
-**Next WO: WO-ACADEMY-02 · Training Engine** (spec at `docs/WORK-ORDERS/WO-ACADEMY-02-SPEC.md`).
+**Original next WO recommendation was WO-ACADEMY-02 · Training Engine (spec at `docs/WORK-ORDERS/WO-ACADEMY-02-SPEC.md`). That WO is now complete at HEAD `d629f2f7`.**
+
+**Updated next WO: WO-INTEL-ORCHESTRATOR-01 · Intelligence Orchestrator + Missions** (per §4.1 · founder's 2026-09-13 directive).
 
 Vertical slice: real training program for the WO-07 Node-Syntax Specialist. Rule-library expansion via deterministic evidence + baseline/post-training measurement + regression check + emitted proposal (NOT auto-promotion). Founder decides whether the proposed rule addition warrants a signed WO.
 
