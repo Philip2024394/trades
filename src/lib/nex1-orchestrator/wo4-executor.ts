@@ -19,6 +19,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { AuthorityBroker } from "@/lib/nex-authority-broker/broker";
 import { verifyAuthorizationForAction } from "./wo2-authorization";
+import { assertSubstrateHardened } from "./wo13-substrate-guard";
 import { buildWorkOrderForBundle } from "./wo4-manifest-builder";
 import { observerCheck } from "./wo4-observer-check";
 import type {
@@ -40,6 +41,16 @@ import { WO3_APPLY_DIFF_ACTION } from "./wo3-pipeline";
  */
 export async function executeAuthorisedDiffBundle(input: ExecuteBundleInput): Promise<ExecuteResult> {
   const started_at = new Date().toISOString();
+
+  // WO-13 · substrate hardening. Before touching disk, re-verify substrate
+  // integrity. wo3-pipeline already checks this, but wo4-executor may be
+  // invoked directly by future callers, so it checks independently — the
+  // property we want is "no filesystem mutation can happen without a
+  // valid substrate."
+  const guard = await assertSubstrateHardened();
+  if (!guard.ok) {
+    return { ok: false, reason_code: guard.reason_code, reason: guard.detail };
+  }
 
   // 1. Defence in depth — re-verify the WO-02 authorization + action scope.
   const authResult = verifyAuthorizationForAction({

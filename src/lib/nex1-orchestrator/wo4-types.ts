@@ -38,7 +38,10 @@ export type ExecuteFailureCode =
   | "BROKER_DENIED"
   | "WRITE_FAILED"
   | "OBSERVER_MISMATCH"
-  | "ROLLBACK_TRIGGERED";
+  | "ROLLBACK_TRIGGERED"
+  | "SUBSTRATE_SIGNATURE_INVALID"
+  | "SUBSTRATE_FILE_DRIFTED"
+  | "SUBSTRATE_FILE_MISSING";
 
 export interface WrittenFileRecord {
   readonly path: string;                    // workspace-relative

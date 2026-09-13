@@ -160,7 +160,10 @@ export type PipelineFailureCode =
   | "CHALLENGE_FAILED"
   | "AUTHORIZATION_INVALID"
   | "AUTHORIZATION_MISSING_ACTION"
-  | "WORKSPACE_ROOT_UNSAFE";
+  | "WORKSPACE_ROOT_UNSAFE"
+  | "SUBSTRATE_SIGNATURE_INVALID"
+  | "SUBSTRATE_FILE_DRIFTED"
+  | "SUBSTRATE_FILE_MISSING";
 
 export type PipelineResult =
   | { ok: true; bundle: AuthorisedDiffBundle }

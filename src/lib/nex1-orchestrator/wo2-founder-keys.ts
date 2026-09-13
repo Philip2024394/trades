@@ -23,8 +23,9 @@
 // trust root and the crypto -- rotation is manual (edit the manifest file).
 
 import { promises as fs } from "node:fs";
-import { createPublicKey, type KeyObject } from "node:crypto";
+import { createPublicKey, sign as ed25519Sign, createPrivateKey, type KeyObject } from "node:crypto";
 import { loadPublicKeyFromDerHex } from "@/lib/nex-controlled-hands/ed25519";
+import { verifyAttestationSignature } from "./wo13-attestation";
 
 export interface FounderKeyRecord {
   readonly key_id: string;
@@ -42,6 +43,15 @@ export interface FounderKeyRecord {
 export interface FounderKeyManifest {
   readonly version: "wo2.v0.1";
   readonly keys: readonly FounderKeyRecord[];
+  /**
+   * WO-13 attestation signature over the canonical form of `keys`
+   * (see canonicalizeFounderKeys). MUST verify against a key trusted in
+   * wo13-attestation.ts. Absent on the EMPTY_FOUNDER_KEY_MANIFEST (which
+   * is the fail-closed sentinel — no keys means no trust needed). Every
+   * non-empty manifest MUST carry a valid signature; unsigned or
+   * badly-signed manifests are rejected at load time.
+   */
+  readonly attestation_signature_hex?: string;
 }
 
 /** The secure default: no keys configured, every verification fails closed. */
@@ -58,13 +68,31 @@ export const EMPTY_FOUNDER_KEY_MANIFEST: FounderKeyManifest = Object.freeze({
  * `resolvePublicKey`, where a bad key surfaces as a specific rejection at
  * verification time.
  */
-export function loadFounderKeyManifestFromJson(jsonText: string): FounderKeyManifest {
+export function loadFounderKeyManifestFromJson(
+  jsonText: string,
+  /**
+   * Optional trusted-attestation-key override. Production callers omit
+   * this; tests supply their own attestation public key(s) after signing
+   * the manifest with a matching test private key. Not a bypass — the
+   * signature check ALWAYS runs; this parameter only decides which
+   * key(s) count as valid attesters.
+   */
+  trustedAttestationKeys?: readonly string[],
+): FounderKeyManifest {
   let parsed: unknown;
   try { parsed = JSON.parse(jsonText); }
   catch (err) {
     throw new Error(`[wo2-founder-keys] manifest JSON parse failed: ${(err as Error).message}`);
   }
-  return validateManifest(parsed);
+  const manifest = validateManifest(parsed);
+  // WO-13: a non-empty manifest MUST carry a valid attestation signature.
+  // The empty manifest is exempt (fail-closed anyway — nothing to trust).
+  if (manifest.keys.length > 0) {
+    if (!verifyFounderKeyManifestAttestation(manifest, trustedAttestationKeys)) {
+      throw new Error(`[wo2-founder-keys] manifest attestation signature invalid or missing (WO-13)`);
+    }
+  }
+  return manifest;
 }
 
 /**
@@ -146,7 +174,9 @@ function validateManifest(parsed: unknown): FounderKeyManifest {
       notes: raw.notes as string | undefined,
     });
   }
-  return { version: "wo2.v0.1", keys };
+  const attestation_signature_hex = typeof obj.attestation_signature_hex === "string"
+    ? obj.attestation_signature_hex : undefined;
+  return { version: "wo2.v0.1", keys, attestation_signature_hex };
 }
 
 // ── Lookup + validity ───────────────────────────────────────────────────
@@ -205,6 +235,15 @@ export function findFounderKeyById(
 export async function loadFounderKeyManifestFromEnv(): Promise<FounderKeyManifest> {
   const inline = process.env.NEX_FOUNDER_KEY_MANIFEST_JSON;
   if (typeof inline === "string" && inline.trim().length > 0) {
+    // WO-13: production mode refuses inline JSON. In production we require
+    // the manifest to be a file on disk (path only), so the manifest file
+    // itself can be independently reviewed / permissioned / signed. Inline
+    // JSON is fine for tests, dev, and CI — everywhere except real prod.
+    if (isProductionEnv()) {
+      throw new Error(
+        `[wo2-founder-keys] NEX_FOUNDER_KEY_MANIFEST_JSON is rejected in production (WO-13) — use NEX_FOUNDER_KEY_MANIFEST_PATH`,
+      );
+    }
     return loadFounderKeyManifestFromJson(inline);
   }
   const filePath = process.env.NEX_FOUNDER_KEY_MANIFEST_PATH;
@@ -212,6 +251,82 @@ export async function loadFounderKeyManifestFromEnv(): Promise<FounderKeyManifes
     return loadFounderKeyManifestFromFile(filePath);
   }
   return EMPTY_FOUNDER_KEY_MANIFEST;
+}
+
+/**
+ * Production-mode gate. NEX_ENV is preferred; falls back to NODE_ENV.
+ * "production" (case-insensitive) is the only production trigger.
+ */
+function isProductionEnv(): boolean {
+  const nex = (process.env.NEX_ENV ?? "").toLowerCase();
+  if (nex === "production") return true;
+  if (nex.length > 0) return false;
+  return (process.env.NODE_ENV ?? "").toLowerCase() === "production";
+}
+
+// ── WO-13 · attestation signature over the founder-key list ─────────────
+
+/**
+ * Canonical bytes over which the founder-key manifest attestation
+ * signature is computed. Sorted by key_id, one line per record,
+ * tab-separated `key_id<TAB>public_key_der_hex<TAB>valid_from`, joined
+ * with `\n`, no trailing newline. Deterministic across platforms.
+ *
+ * This function MUST match exactly what `signFounderKeyManifest` signs.
+ * Any drift causes every load to reject the manifest.
+ */
+export function canonicalizeFounderKeys(keys: readonly FounderKeyRecord[]): Buffer {
+  const sorted = [...keys].sort((a, b) => a.key_id.localeCompare(b.key_id));
+  const lines = sorted.map(k =>
+    [
+      k.key_id,
+      k.public_key_der_hex,
+      k.valid_from,
+      k.valid_until ?? "",
+      k.revoked_at ?? "",
+    ].join("\t"),
+  );
+  return Buffer.from(lines.join("\n"), "utf8");
+}
+
+/**
+ * Verify the manifest's attestation signature against wo13-attestation.ts's
+ * trust anchors (or a caller-supplied set — tests only). Returns `true`
+ * iff the signature verifies against AT LEAST ONE trusted attestation key.
+ * `false` for missing/malformed signatures — never throws.
+ */
+export function verifyFounderKeyManifestAttestation(
+  manifest: FounderKeyManifest,
+  trustedKeys?: readonly string[],
+): boolean {
+  if (typeof manifest.attestation_signature_hex !== "string" || manifest.attestation_signature_hex.length === 0) {
+    return false;
+  }
+  const canonical = canonicalizeFounderKeys(manifest.keys);
+  return verifyAttestationSignature(canonical, manifest.attestation_signature_hex, trustedKeys);
+}
+
+/**
+ * Sign a founder-key manifest with an Ed25519 private key. Used by the
+ * founder (offline, with the attestation private key) and by tests (with
+ * a fresh keypair).
+ *
+ * The `attestationPrivateKeyPkcs8Hex` parameter is the PKCS8 DER hex of
+ * the private key. In production, this key never enters the repo — the
+ * founder runs this from a signing station.
+ */
+export function signFounderKeyManifest(
+  attestationPrivateKeyPkcs8Hex: string,
+  keys: readonly FounderKeyRecord[],
+): FounderKeyManifest {
+  const privateKey = createPrivateKey({
+    key: Buffer.from(attestationPrivateKeyPkcs8Hex, "hex"),
+    format: "der",
+    type: "pkcs8",
+  });
+  const canonical = canonicalizeFounderKeys(keys);
+  const signature = ed25519Sign(null, canonical, privateKey);
+  return { version: "wo2.v0.1", keys, attestation_signature_hex: signature.toString("hex") };
 }
 
 // ── Utility: build a manifest record from a KeyPair ─────────────────────

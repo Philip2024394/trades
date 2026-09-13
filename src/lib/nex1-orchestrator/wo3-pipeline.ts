@@ -21,6 +21,7 @@ import { challenge } from "./wo3-challenger";
 import { verifyAuthorizationForAction } from "./wo2-authorization";
 import type { FounderAuthorization } from "./wo2-authorization";
 import type { FounderKeyManifest } from "./wo2-founder-keys";
+import { assertSubstrateHardened } from "./wo13-substrate-guard";
 import type {
   FilePlan,
   AuthorisedDiffBundle,
@@ -47,6 +48,16 @@ export interface RunPipelineInput {
  * writes to disk. Never throws for expected-domain errors.
  */
 export async function runCodeGenerationPipeline(input: RunPipelineInput): Promise<PipelineResult> {
+  // WO-13 · substrate hardening. Before we do ANYTHING (including reading
+  // the workspace-root or verifying the founder authorisation), confirm
+  // that the security-critical substrate files still match their attested
+  // hashes. If any file has drifted, refuse to proceed. This is the check
+  // that makes "someone secretly changed one substrate file" detectable.
+  const guard = await assertSubstrateHardened();
+  if (!guard.ok) {
+    return { ok: false, reason_code: guard.reason_code, reason: guard.detail };
+  }
+
   // 0. Workspace-root safety — must be absolute + inside the sanctioned
   //    workspace directory (data/nex-agent-workspaces/{trace_id}/...)
   //    OR a caller-declared test root. Enforced to prevent a mis-configured

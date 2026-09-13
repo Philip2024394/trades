@@ -15,9 +15,20 @@ import {
   loadFounderKeyManifestFromEnv,
   findFounderKeyById,
   buildFounderKeyRecordForTest,
+  signFounderKeyManifest,
   EMPTY_FOUNDER_KEY_MANIFEST,
   type FounderKeyManifest,
 } from "../wo2-founder-keys";
+import { generateKeyPairSync } from "node:crypto";
+// WO-13 helper: build an ephemeral attestation keypair for tests that
+// exercise the load path. In production these keys live offline.
+function newTestAttestationKeyPair(): { public_der_hex: string; private_pkcs8_hex: string } {
+  const { publicKey, privateKey } = generateKeyPairSync("ed25519");
+  return {
+    public_der_hex:  (publicKey.export({ type: "spki",  format: "der" }) as Buffer).toString("hex"),
+    private_pkcs8_hex: (privateKey.export({ type: "pkcs8", format: "der" }) as Buffer).toString("hex"),
+  };
+}
 import {
   signAuthorization,
   verifyAuthorization,
@@ -78,9 +89,21 @@ describe("WO-WORKSTATION-02 · founder cryptographic authorization", () => {
     expect(r.ok).toBe(false);
   });
 
-  it("loadFounderKeyManifestFromJson accepts a valid manifest", () => {
+  it("loadFounderKeyManifestFromJson accepts a valid, WO-13-signed manifest", () => {
     const kp = generateKeyPair("founder-test-a");
-    const m = loadFounderKeyManifestFromJson(JSON.stringify({
+    const akp = newTestAttestationKeyPair();
+    const signed = signFounderKeyManifest(akp.private_pkcs8_hex, [
+      buildFounderKeyRecordForTest(kp, { validFrom: "2020-01-01T00:00:00.000Z" }),
+    ]);
+    const m = loadFounderKeyManifestFromJson(JSON.stringify(signed), [akp.public_der_hex]);
+    expect(m.keys).toHaveLength(1);
+    expect(m.keys[0].key_id).toBe(kp.key_id);
+    expect(typeof m.attestation_signature_hex).toBe("string");
+  });
+
+  it("loadFounderKeyManifestFromJson rejects an UNSIGNED non-empty manifest (WO-13)", () => {
+    const kp = generateKeyPair("founder-test-a");
+    expect(() => loadFounderKeyManifestFromJson(JSON.stringify({
       version: "wo2.v0.1",
       keys: [{
         key_id: kp.key_id,
@@ -89,9 +112,7 @@ describe("WO-WORKSTATION-02 · founder cryptographic authorization", () => {
         purpose: "workstation_authorization",
         valid_from: "2020-01-01T00:00:00.000Z",
       }],
-    }));
-    expect(m.keys).toHaveLength(1);
-    expect(m.keys[0].key_id).toBe(kp.key_id);
+    }))).toThrow(/attestation signature invalid or missing/);
   });
 
   it("loadFounderKeyManifestFromJson rejects malformed manifests", () => {
