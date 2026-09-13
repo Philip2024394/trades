@@ -74,7 +74,7 @@ function readEnv(name) {
   return null;
 }
 function readPgUrl() {
-  return readEnv("NEX_TAXONOMY_POSTGRES_URL") ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+  return readEnv("NEX_TAXONOMY_POSTGRES_URL") ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 }
 
 // ─── Meta Graph client ─────────────────────────────────────────────

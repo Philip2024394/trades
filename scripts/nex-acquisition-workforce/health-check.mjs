@@ -28,7 +28,7 @@ if (existsSync(join(repoRoot, ".env.local"))) {
 }
 
 const NEX_POSTGRES_URL = process.env.NEX_POSTGRES_URL
-  ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+  ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 
 const argv = process.argv.slice(2);
 const jsonMode = argv.includes("--json");

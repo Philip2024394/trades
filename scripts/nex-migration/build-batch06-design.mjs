@@ -12,10 +12,10 @@ const TOKEN = envText.match(/NEX_SUPABASE_ACCESS_TOKEN=(\S+)/)[1];
 const REF = envText.match(/NEX_SUPABASE_PROJECT_REF=(\S+)/)[1];
 const MGMT = `https://api.supabase.com/v1/projects/${REF}/database/query`;
 const PSQL = "C:\\Program Files\\PostgreSQL\\17\\bin\\psql.exe";
-const LOCAL_URI = "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const LOCAL_URI = "postgresql://postgres:changeme@localhost:5433/nex_dev";
 
 function local(sql) {
-  const r = spawnSync(PSQL, ["-Atc", sql, LOCAL_URI], { env: { ...process.env, PGPASSWORD: "Admin1phil" }, encoding: "utf8", timeout: 300000 });
+  const r = spawnSync(PSQL, ["-Atc", sql, LOCAL_URI], { env: { ...process.env, PGPASSWORD: "changeme" }, encoding: "utf8", timeout: 300000 });
   if (r.status !== 0) { console.error(`local psql failed: ${r.stderr}`); process.exit(1); }
   return r.stdout.trim();
 }

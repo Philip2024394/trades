@@ -24,7 +24,7 @@ const REPO = resolve(__dirname, "..", "..");
 
 const envTools = readFileSync(resolve(REPO, ".env.tools.local"), "utf8");
 const RUNTIME_URL = envTools.match(/^NEX_APP_RUNTIME_POSTGRES_URL=(.+)$/m)[1];
-const LOCAL_URL   = "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const LOCAL_URL   = "postgresql://postgres:changeme@localhost:5433/nex_dev";
 const OBS_MAX_MS  = 4 * 60_000;              // 4 min hard cap
 const POLL_MS     = 3_000;                   // 3s polling cadence
 const START_MARK  = new Date();              // observation start time in JS wall clock

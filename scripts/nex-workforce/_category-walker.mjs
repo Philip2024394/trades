@@ -101,7 +101,7 @@ const HOSPITALITY_MAP = Object.freeze({
 const IMAGE_FETCH_QUOTA_PER_CYCLE = 5;
 
 const NEX_POSTGRES_URL = process.env.NEX_POSTGRES_URL
-  ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+  ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 
 // ── Argument parser (minimal · no dependencies) ─────────────────────────
 function parseArgs(argv) {

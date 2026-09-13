@@ -1,7 +1,7 @@
 // scripts/nex-forensics-market-solo-detail.mjs
 import pg from "pg";
 const { Pool } = pg;
-const url = process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const url = process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 const pool = new Pool({ connectionString: url });
 
 const combos = [

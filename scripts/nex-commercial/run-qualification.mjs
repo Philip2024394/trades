@@ -30,7 +30,7 @@ import {
 } from "./_commercial-states.mjs";
 
 const NEX_POSTGRES_URL = process.env.NEX_POSTGRES_URL
-  ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+  ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 
 function parseArgs(argv) {
   const out = { dry: false, limit: null };

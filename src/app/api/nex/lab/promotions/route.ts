@@ -23,7 +23,7 @@ async function loadPool() {
     return new Pool({
       connectionString: process.env.NEX_TAXONOMY_POSTGRES_URL
         ?? process.env.NEX_POSTGRES_URL
-        ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev",
+        ?? "postgresql://postgres:changeme@localhost:5433/nex_dev",
       max: 3,
       connectionTimeoutMillis: 5000,
     });

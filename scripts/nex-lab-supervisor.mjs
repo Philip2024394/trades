@@ -42,7 +42,7 @@ function readLocalPgUrl() {
     const m = env.match(/^NEX_TAXONOMY_POSTGRES_URL\s*=\s*(.+)$/m);
     if (m) return m[1].trim().replace(/^["']|["']$/g, "");
   } catch { /* ignore */ }
-  return "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+  return "postgresql://postgres:changeme@localhost:5433/nex_dev";
 }
 
 async function snapshotRoomGrowth(Client, url) {

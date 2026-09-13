@@ -27,7 +27,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 function pgUrl(): string {
-  return process.env.NEX_TAXONOMY_POSTGRES_URL ?? process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+  return process.env.NEX_TAXONOMY_POSTGRES_URL ?? process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 }
 async function withClient<T>(fn: (c: Client) => Promise<T>): Promise<T> {
   const c = new Client({ connectionString: pgUrl(), connectionTimeoutMillis: 5000 });

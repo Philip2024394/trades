@@ -34,7 +34,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const REGISTRY_PATH = join(__dirname, "..", "..", "data", "nex-job-registry.json");
 
 const NEX_POSTGRES_URL = process.env.NEX_POSTGRES_URL
-  ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+  ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 
 /** Sweep ratio threshold · when ≥90% of a category's city rotation rows are
  *  saturated, that category is considered "swept across Indonesia". */

@@ -332,7 +332,7 @@ try {
 // ── Step 8 · Local nex_dev untouched ────────────────────────────────
 console.log("\nStep 8 · Local nex_dev accessible and unchanged");
 try {
-  const localPool = new pg.Pool({ connectionString: "postgresql://postgres:Admin1phil@localhost:5433/nex_dev", max: 1, connectionTimeoutMillis: 5000 });
+  const localPool = new pg.Pool({ connectionString: "postgresql://postgres:changeme@localhost:5433/nex_dev", max: 1, connectionTimeoutMillis: 5000 });
   const c = await localPool.connect();
   try {
     const r = await c.query(`

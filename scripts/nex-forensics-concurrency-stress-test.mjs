@@ -20,7 +20,7 @@ import pg from "pg";
 import { randomUUID } from "node:crypto";
 
 const NEX_POSTGRES_URL = process.env.NEX_POSTGRES_URL
-  ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+  ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 const pool = new pg.Pool({ connectionString: NEX_POSTGRES_URL, max: 25 });
 
 function argInt(name, dflt) {

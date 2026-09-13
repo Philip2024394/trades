@@ -173,7 +173,7 @@ function readLastSupervisorRun(): string | null {
 async function readAccommodationCount(): Promise<number | null> {
   try {
     const pgUrl = process.env.NEX_TAXONOMY_POSTGRES_URL
-      ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+      ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
     const { Client } = await import("pg").catch(() => ({}));
     if (!Client) return null;
     const c = new Client({ connectionString: pgUrl, connectionTimeoutMillis: 3000 });
@@ -200,7 +200,7 @@ interface LabPipelineCounts {
 async function readLabPipelineCounts(): Promise<LabPipelineCounts | null> {
   try {
     const pgUrl = process.env.NEX_TAXONOMY_POSTGRES_URL
-      ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+      ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
     const { Client } = await import("pg").catch(() => ({}));
     if (!Client) return null;
     const c = new Client({ connectionString: pgUrl, connectionTimeoutMillis: 4000 });

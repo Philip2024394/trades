@@ -20,7 +20,7 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 600; // Next.js may enforce this on some hosts
 
 function pgUrl(): string {
-  return process.env.NEX_TAXONOMY_POSTGRES_URL ?? process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+  return process.env.NEX_TAXONOMY_POSTGRES_URL ?? process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 }
 
 async function emitStep(taskId: string, actor: "nex1" | "nex2" | "nex3" | "founder" | "system", step_kind: string, title: string, body?: unknown): Promise<void> {

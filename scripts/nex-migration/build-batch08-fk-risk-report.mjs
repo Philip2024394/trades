@@ -13,7 +13,7 @@ const TOKEN = envText.match(/NEX_SUPABASE_ACCESS_TOKEN=(\S+)/)[1];
 const REF = envText.match(/NEX_SUPABASE_PROJECT_REF=(\S+)/)[1];
 const MGMT = `https://api.supabase.com/v1/projects/${REF}/database/query`;
 const PSQL = "C:\\Program Files\\PostgreSQL\\17\\bin\\psql.exe";
-const LOCAL_URI = "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const LOCAL_URI = "postgresql://postgres:changeme@localhost:5433/nex_dev";
 const TMP_DIR = resolve(__dirname, "tmp");
 if (!existsSync(TMP_DIR)) mkdirSync(TMP_DIR, { recursive: true });
 
@@ -22,7 +22,7 @@ function local(sql) {
   const p = resolve(TMP_DIR, `q-${process.pid}-${++seq}.sql`);
   writeFileSync(p, sql);
   try {
-    const r = spawnSync(PSQL, ["-At", "-f", p, LOCAL_URI], { env: { ...process.env, PGPASSWORD: "Admin1phil" }, encoding: "utf8", timeout: 300000, maxBuffer: 500*1024*1024 });
+    const r = spawnSync(PSQL, ["-At", "-f", p, LOCAL_URI], { env: { ...process.env, PGPASSWORD: "changeme" }, encoding: "utf8", timeout: 300000, maxBuffer: 500*1024*1024 });
     if (r.status !== 0) { console.error(`  local psql failed: ${r.stderr}`); return null; }
     return r.stdout.trim();
   } finally { try { unlinkSync(p); } catch {} }

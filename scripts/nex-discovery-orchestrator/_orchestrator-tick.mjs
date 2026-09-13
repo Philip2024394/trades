@@ -19,7 +19,7 @@
 import pg from "pg";
 import { spawn } from "node:child_process";
 
-const NEX_POSTGRES_URL = process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const NEX_POSTGRES_URL = process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 const ORCH_ENABLED = process.env.NEX_ORCHESTRATOR_ENABLED === "true";
 const MAX_SLOTS = 10;                       // Stage 10 (2026-08-24) · MUST match src/lib/nex-hq/auto-orchestrator.ts
 const FAIRNESS_CONSECUTIVE_CAP = 2;         // MUST match same file

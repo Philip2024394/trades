@@ -1,7 +1,7 @@
 // One-shot applier for migration 099_nex_discovery_rotation_state.sql
 import { readFileSync } from "fs";
 import pg from "pg";
-const pool = new pg.Pool({ connectionString: process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev" });
+const pool = new pg.Pool({ connectionString: process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev" });
 const sql = readFileSync("deploy/postgres/init/099_nex_discovery_rotation_state.sql", "utf8");
 console.log("Applying 099_nex_discovery_rotation_state.sql ...");
 await pool.query(sql);

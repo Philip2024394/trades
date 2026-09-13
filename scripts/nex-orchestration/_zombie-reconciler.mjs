@@ -22,7 +22,7 @@
 
 import pg from "pg";
 
-const NEX_POSTGRES_URL = process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const NEX_POSTGRES_URL = process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 const pool = new pg.Pool({ connectionString: NEX_POSTGRES_URL, max: 2 });
 
 // Per-worker-type timeouts. Anything not in this map uses DEFAULT_TIMEOUT_MIN.

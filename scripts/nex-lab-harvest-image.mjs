@@ -192,7 +192,7 @@ function normalise(page, imageinfo, category) {
 
 // ─── Persist ────────────────────────────────────────────────────
 async function persistToLab(records) {
-  const pgUrl = process.env.NEX_TAXONOMY_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+  const pgUrl = process.env.NEX_TAXONOMY_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
   let ClientMod; try { ClientMod = (await import("pg")).Client; } catch { return { inserted: 0, updated: 0, errors: 1 }; }
   const c = new ClientMod({ connectionString: pgUrl, connectionTimeoutMillis: 8000 });
   await c.connect();

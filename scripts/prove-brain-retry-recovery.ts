@@ -52,7 +52,7 @@ async function backendHelpers(backend: string): Promise<{
     const { Pool } = await import("pg");
     const url =
       process.env.NEX_POSTGRES_URL ??
-      "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+      "postgresql://postgres:changeme@localhost:5433/nex_dev";
     const pool = new Pool({ connectionString: url, max: 2 });
     return {
       reset: async (id: string) => {

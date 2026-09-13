@@ -271,7 +271,7 @@ async function main() {
   const { Client } = await import("pg").catch(() => ({}));
   if (!Client) { log("pg missing"); process.exit(2); }
   const url = process.env.NEX_TAXONOMY_POSTGRES_URL
-    ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+    ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 
   if (!existsSync(CACHE_DIR)) mkdirSync(CACHE_DIR, { recursive: true });
 

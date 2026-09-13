@@ -13,7 +13,7 @@ const TOKEN = envText.match(/NEX_SUPABASE_ACCESS_TOKEN=(\S+)/)[1];
 const REF = envText.match(/NEX_SUPABASE_PROJECT_REF=(\S+)/)[1];
 const MGMT = `https://api.supabase.com/v1/projects/${REF}/database/query`;
 const PSQL = "C:\\Program Files\\PostgreSQL\\17\\bin\\psql.exe";
-const LOCAL_URI = "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const LOCAL_URI = "postgresql://postgres:changeme@localhost:5433/nex_dev";
 
 async function q(sql) {
   const r = await fetch(MGMT, { method: "POST", headers: { Authorization: `Bearer ${TOKEN}`, "Content-Type": "application/json" }, body: JSON.stringify({ query: sql }) });
@@ -22,7 +22,7 @@ async function q(sql) {
   return { status: r.status, body };
 }
 function local(sql) {
-  const r = spawnSync(PSQL, ["-Atc", sql, LOCAL_URI], { env: { ...process.env, PGPASSWORD: "Admin1phil" }, encoding: "utf8", timeout: 60000 });
+  const r = spawnSync(PSQL, ["-Atc", sql, LOCAL_URI], { env: { ...process.env, PGPASSWORD: "changeme" }, encoding: "utf8", timeout: 60000 });
   return r.stdout.trim();
 }
 

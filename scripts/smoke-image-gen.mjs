@@ -137,7 +137,7 @@ async function getGeneratedImageCount() {
   const q = spawnSync(process.env.PGPASSWORD_CMD ?? "/c/Program Files/PostgreSQL/17/bin/psql.exe", [
     "-h", "localhost", "-p", "5433", "-U", "postgres", "-d", "nex_dev",
     "-Atc", "SELECT COUNT(*) FROM nex.generated_image",
-  ], { env: { ...process.env, PGPASSWORD: process.env.PGPASSWORD ?? "Admin1phil" }, encoding: "utf8" });
+  ], { env: { ...process.env, PGPASSWORD: process.env.PGPASSWORD ?? "changeme" }, encoding: "utf8" });
   const n = Number(String(q.stdout ?? "").trim());
   return Number.isFinite(n) ? n : null;
 }

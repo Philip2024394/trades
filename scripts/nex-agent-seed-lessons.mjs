@@ -109,7 +109,7 @@ const LESSONS = [
 ];
 
 async function main() {
-  const c = new Client({ connectionString: process.env.NEX_TAXONOMY_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev" });
+  const c = new Client({ connectionString: process.env.NEX_TAXONOMY_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev" });
   await c.connect();
   let inserted = 0, updated = 0;
   for (const L of LESSONS) {

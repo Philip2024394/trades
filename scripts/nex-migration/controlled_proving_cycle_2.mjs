@@ -403,7 +403,7 @@ const postEnvInfo = (psEnvPost.stdout||"").trim();
 T(".env.local unchanged (same mtime + 0 workforce identifiers)", postEnvInfo === preEnvInfo, `pre='${preEnvInfo}' post='${postEnvInfo}'`);
 // System A untouched · READ-ONLY confirm still local
 const sysAPing = spawnSync("powershell", ["-NoProfile", "-Command",
-  "$env:PGPASSWORD='Admin1phil'; & 'C:\\Program Files\\PostgreSQL\\17\\bin\\psql.exe' -h localhost -p 5433 -U postgres -d nex_dev -w -A -t -c 'SELECT current_database()' 2>&1"], {encoding:"utf8"});
+  "$env:PGPASSWORD='changeme'; & 'C:\\Program Files\\PostgreSQL\\17\\bin\\psql.exe' -h localhost -p 5433 -U postgres -d nex_dev -w -A -t -c 'SELECT current_database()' 2>&1"], {encoding:"utf8"});
 const sysADb = (sysAPing.stdout||"").trim();
 T("System A (local nex_dev) unchanged (existence check only)",
   sysADb === "nex_dev" || sysAPing.status !== 0, `db='${sysADb}'`);

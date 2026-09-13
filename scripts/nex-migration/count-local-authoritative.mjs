@@ -2,7 +2,7 @@
 import { spawnSync } from "node:child_process";
 import { writeFileSync } from "node:fs";
 const PSQL = "C:\\Program Files\\PostgreSQL\\17\\bin\\psql.exe";
-const env = { ...process.env, PGPASSWORD: "Admin1phil" };
+const env = { ...process.env, PGPASSWORD: "changeme" };
 const list = spawnSync(PSQL, ["-h","localhost","-p","5433","-U","postgres","-d","nex_dev","-Atc","SELECT c.relname FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='nex' AND c.relkind='r' ORDER BY c.relname"], { env, encoding: "utf8", timeout: 30000 });
 const tables = list.stdout.trim().split(/\r?\n/).filter(Boolean);
 console.log(`tables: ${tables.length}`);

@@ -17,7 +17,7 @@ function getPool() {
   // DB. Production must set NEX_POSTGRES_URL explicitly; localhost:5433 dev
   // credential is not accepted anywhere outside developer workstations.
   const url = process.env.NEX_POSTGRES_URL
-    ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+    ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
   _pool = new pg.Pool({ connectionString: url, max: 1 });
   return _pool;
 }

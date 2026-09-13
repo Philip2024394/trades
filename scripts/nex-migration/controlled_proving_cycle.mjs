@@ -354,7 +354,7 @@ T(".env.local unchanged (0 workforce identifiers · mtime pre-cycle)",
   /matches=0/.test(envInfo) && /2026-09-03T07:41/.test(envInfo), envInfo);
 // System A · local nex_dev · READ-ONLY existence check via psql if available (best-effort)
 const sysAPing = spawnSync("powershell", ["-NoProfile", "-Command",
-  "$env:PGPASSWORD='Admin1phil'; & 'C:\\Program Files\\PostgreSQL\\17\\bin\\psql.exe' -h localhost -p 5433 -U postgres -d nex_dev -w -A -t -c 'SELECT current_database()' 2>&1"], {encoding:"utf8"});
+  "$env:PGPASSWORD='changeme'; & 'C:\\Program Files\\PostgreSQL\\17\\bin\\psql.exe' -h localhost -p 5433 -U postgres -d nex_dev -w -A -t -c 'SELECT current_database()' 2>&1"], {encoding:"utf8"});
 const sysADb = (sysAPing.stdout||"").trim();
 T("System A (local nex_dev) reachable + unchanged (existence check only)",
   sysADb === "nex_dev" || sysAPing.status !== 0, `db='${sysADb}'`);

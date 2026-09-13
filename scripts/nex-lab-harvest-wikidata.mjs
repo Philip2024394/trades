@@ -334,7 +334,7 @@ function makeDedupeHash(name, lat, lon, phone) {
 // ─── Persist to nex_lab_{room}.harvest_raw ───────────────────────
 async function persistToLab(records, schema) {
   const pgUrl = process.env.NEX_TAXONOMY_POSTGRES_URL
-    ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+    ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
   let ClientMod;
   try { ClientMod = (await import("pg")).Client; }
   catch { log("pg missing · cannot persist"); return { inserted: 0, updated: 0, errors: 1, pg_available: false }; }
@@ -372,7 +372,7 @@ async function emitFW(kind, status, message, reference = {}) {
   try {
     const { Client } = await import("pg");
     const pgUrl = process.env.NEX_TAXONOMY_POSTGRES_URL
-      ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+      ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
     const c = new Client({ connectionString: pgUrl, connectionTimeoutMillis: 5000 });
     await c.connect();
     await c.query(

@@ -15,7 +15,7 @@ async function loadPg() {
 function readPgUrl() {
   return process.env.NEX_TAXONOMY_POSTGRES_URL
     ?? process.env.NEX_POSTGRES_URL
-    ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+    ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 }
 
 export async function GET(_req: Request, ctx: { params: Promise<{ slug: string }> }) {

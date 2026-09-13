@@ -23,7 +23,7 @@ const REPO = resolve(__dirname, "..", "..");
 
 const envTools = readFileSync(resolve(REPO, ".env.tools.local"), "utf8");
 const RUNTIME_URL = envTools.match(/^NEX_APP_RUNTIME_POSTGRES_URL=(.+)$/m)[1];
-const LOCAL_URL   = "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const LOCAL_URL   = "postgresql://postgres:changeme@localhost:5433/nex_dev";
 const OBS_MAX_MS  = 15 * 60_000;
 const POLL_MS     = 6_000;
 const START_MARK  = new Date();

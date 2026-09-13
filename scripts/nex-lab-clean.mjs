@@ -36,7 +36,7 @@ function log(line) {
 async function loadPg() { try { return (await import("pg")).Client; } catch { return null; } }
 function readPgUrl() {
   return process.env.NEX_TAXONOMY_POSTGRES_URL
-    ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+    ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 }
 
 async function cleanRoom(client, roomSlug) {

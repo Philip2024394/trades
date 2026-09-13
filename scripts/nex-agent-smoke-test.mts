@@ -8,7 +8,7 @@
 import { Client } from "pg";
 import { classifyPrompt, processTask } from "../src/lib/nex-agent/core/orchestrator.js";
 
-const url = process.env.NEX_TAXONOMY_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const url = process.env.NEX_TAXONOMY_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 
 async function createTask(prompt: string): Promise<string> {
   const c = new Client({ connectionString: url });

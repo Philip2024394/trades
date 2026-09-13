@@ -49,7 +49,7 @@ const ENV = readFileSync(".env.local", "utf8");
 const NEX_URL = (ENV.match(/^NEXT_PUBLIC_NEX_SUPABASE_URL=(\S+)/m) || [])[1];
 const NEX_KEY = (ENV.match(/^NEX_SUPABASE_SERVICE_ROLE_KEY=(\S+)/m) || [])[1];
 const PG_URL  = (ENV.match(/^NEX_POSTGRES_URL=(\S+)/m) || [])[1]
-              || "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+              || "postgresql://postgres:changeme@localhost:5433/nex_dev";
 
 if (!NEX_URL || !NEX_KEY) {
   console.error("Missing NEXT_PUBLIC_NEX_SUPABASE_URL or NEX_SUPABASE_SERVICE_ROLE_KEY in .env.local");

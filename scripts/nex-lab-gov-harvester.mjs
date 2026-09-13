@@ -70,7 +70,7 @@ function readPgUrl() {
     const m = env.match(/^NEX_TAXONOMY_POSTGRES_URL\s*=\s*(.+)$/m);
     if (m) return m[1].trim().replace(/^["']|["']$/g, "");
   } catch { /* fall through */ }
-  return "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+  return "postgresql://postgres:changeme@localhost:5433/nex_dev";
 }
 
 const UA = "NEX-Lab-GovHarvester/1.0 (open-data-collection; +https://nex.id/lab)";

@@ -11,7 +11,7 @@
 
 import pg from "pg";
 const { Pool } = pg;
-const url = process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const url = process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 const pool = new Pool({ connectionString: url });
 const CUTOVER_8 = "2026-08-24 10:41:47+00";
 const NEW_CITIES = ["Jakarta", "Denpasar", "Surabaya", "Bandung", "Semarang"];

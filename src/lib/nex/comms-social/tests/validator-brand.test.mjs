@@ -10,7 +10,7 @@ import pg from "pg";
 import { randomUUID as randomUuid } from "node:crypto";
 const { Pool } = pg;
 
-const url  = process.env.NEX_POSTGRES_URL || "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const url  = process.env.NEX_POSTGRES_URL || "postgresql://postgres:changeme@localhost:5433/nex_dev";
 const base = "http://localhost:3008";
 const pool = new Pool({ connectionString: url, max: 3 });
 

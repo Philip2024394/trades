@@ -11,7 +11,7 @@
 
 import pg from "pg";
 const { Pool } = pg;
-const url = process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const url = process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 const pool = new Pool({ connectionString: url });
 const CUTOVER_4 = "2026-08-24 09:35:41+00";
 const banner = (t) => `\n${"═".repeat(72)}\n  ${t}\n${"═".repeat(72)}`;

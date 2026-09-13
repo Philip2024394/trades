@@ -64,7 +64,7 @@ async function checkPostgres() {
     const { Client } = await import("pg");
     const c = new Client({
       connectionString: process.env.NEX_TAXONOMY_POSTGRES_URL
-        ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev",
+        ?? "postgresql://postgres:changeme@localhost:5433/nex_dev",
       connectionTimeoutMillis: 5000,
     });
     await c.connect();

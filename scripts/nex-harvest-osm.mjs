@@ -197,7 +197,7 @@ async function fetchOverpass(query, attempt = 0) {
 async function persistToPostgres(records, cityCanonical) {
   const pgUrl = process.env.NEX_TAXONOMY_POSTGRES_URL
     ?? process.env.DATABASE_URL
-    ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+    ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
   const { Client } = await import("pg").catch(() => {
     console.error("  pg module not installed · dry-run only. Run: npm i pg");
     process.exit(2);

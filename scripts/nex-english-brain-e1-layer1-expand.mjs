@@ -11,7 +11,7 @@ const { Client } = pg;
 const PGURL = process.env.NEX_LANGUAGE_POSTGRES_URL
   ?? process.env.NEX_TAXONOMY_POSTGRES_URL
   ?? process.env.NEX_POSTGRES_URL
-  ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+  ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 
 const CAPTURED_BY = "e1_language_researcher_layer1_expand_2026_09_11";
 const SOURCE_REF = "e1_seed_layer1_expand_founder_authorized_continue";

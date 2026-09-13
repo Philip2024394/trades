@@ -24,7 +24,7 @@ const { Pool } = pg;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO = join(__dirname, "..", "..", "..", "..", "..");
 
-const url  = process.env.NEX_POSTGRES_URL || "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const url  = process.env.NEX_POSTGRES_URL || "postgresql://postgres:changeme@localhost:5433/nex_dev";
 const base = "http://localhost:3008";
 const pool = new Pool({ connectionString: url, max: 3 });
 

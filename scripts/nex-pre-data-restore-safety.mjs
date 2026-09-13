@@ -106,7 +106,7 @@ const schedState = await new Promise((resolveFn) => {
 console.log(`  Scheduled task 'NEX-Acquisition-Workforce' state: ${schedState || "(not found or query failed)"}`);
 // Check DB heartbeat: if walker recently touched local supervisor_heartbeat we should see recent timestamp
 try {
-  const local = spawn("C:\\Program Files\\PostgreSQL\\17\\bin\\psql.exe", ["-h","localhost","-p","5433","-U","postgres","-d","nex_dev","-Atc","SELECT extract(epoch from now() - max(updated_at)) AS seconds_since_heartbeat FROM nex.supervisor_heartbeat"], { env: { ...process.env, PGPASSWORD: "Admin1phil" } });
+  const local = spawn("C:\\Program Files\\PostgreSQL\\17\\bin\\psql.exe", ["-h","localhost","-p","5433","-U","postgres","-d","nex_dev","-Atc","SELECT extract(epoch from now() - max(updated_at)) AS seconds_since_heartbeat FROM nex.supervisor_heartbeat"], { env: { ...process.env, PGPASSWORD: "changeme" } });
   const hb = await new Promise(resolveFn => { let o=""; local.stdout.on("data",d=>o+=d.toString()); local.on("close",()=>resolveFn(o.trim())); local.on("error",()=>resolveFn("")); });
   console.log(`  local nex_dev supervisor_heartbeat age (seconds): ${hb || "(no heartbeat rows or table missing)"}`);
   const hbTrimmed = String(hb || "").trim();

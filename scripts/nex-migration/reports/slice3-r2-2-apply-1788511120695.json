@@ -38,7 +38,7 @@
       },
       "preTaskState": "Disabled",
       "preEnvInfo": "mtime=2026-09-03T07:41:00.1988508+07:00|matches=0",
-      "preSysA": "NEX_TAXONOMY_POSTGRES_URL=postgresql://postgres:Admin1phil@localhost:5433/nex_dev"
+      "preSysA": "NEX_TAXONOMY_POSTGRES_URL=postgresql://postgres:changeme@localhost:5433/nex_dev"
     },
     "apply": {
       "ok": true,
@@ -167,7 +167,7 @@
       "K1": 0,
       "postTaskState": "Disabled",
       "postEnvInfo": "mtime=2026-09-03T07:41:00.1988508+07:00|matches=0",
-      "postSysA": "NEX_TAXONOMY_POSTGRES_URL=postgresql://postgres:Admin1phil@localhost:5433/nex_dev"
+      "postSysA": "NEX_TAXONOMY_POSTGRES_URL=postgresql://postgres:changeme@localhost:5433/nex_dev"
     },
     "functionalProof_admin": {
       "attempted": true,

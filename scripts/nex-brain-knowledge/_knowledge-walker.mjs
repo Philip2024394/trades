@@ -57,7 +57,7 @@ if (!JOB || !SEGMENT || !PROVIDER) {
 // ── pool ─────────────────────────────────────────────────────────────
 const pool = new pg.Pool({
   connectionString: process.env.NEX_POSTGRES_URL
-    ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev",
+    ?? "postgresql://postgres:changeme@localhost:5433/nex_dev",
   max: 3,
 });
 

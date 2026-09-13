@@ -18,7 +18,7 @@ const { Client } = pg;
 const PGURL = process.env.NEX_LANGUAGE_POSTGRES_URL
   ?? process.env.NEX_TAXONOMY_POSTGRES_URL
   ?? process.env.NEX_POSTGRES_URL
-  ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+  ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 
 const CAPTURED_BY = "e3_answer_builder_layer3_2026_09_11";
 const SOURCE_REF = "e3_seed_layer3_founder_authorized_continue";
@@ -56,7 +56,7 @@ const HOWTO_ANSWERS = [
       "2. Create `db/migrations/NNN_your_change.sql` with `BEGIN;` at top and `COMMIT;` at bottom.",
       "3. Use `CREATE TABLE IF NOT EXISTS` and `CREATE INDEX IF NOT EXISTS` so re-runs are safe.",
       "4. Attach evidence: every canonical row should carry a matching `nex.evidence` insert.",
-      "5. Apply via `node -e` calling pg client against `postgresql://postgres:Admin1phil@localhost:5433/nex_dev` — founder types the confirmation before it lands.",
+      "5. Apply via `node -e` calling pg client against `postgresql://postgres:changeme@localhost:5433/nex_dev` — founder types the confirmation before it lands.",
       "6. Verify with a smoke SELECT and update the memory pointer.",
     ].join("\n"),
     confidence: 0.95,

@@ -1,7 +1,7 @@
 // One-shot migration applier · additive · reversible.
 import { readFileSync } from "fs";
 import pg from "pg";
-const pool = new pg.Pool({ connectionString: process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev" });
+const pool = new pg.Pool({ connectionString: process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev" });
 const sql = readFileSync("deploy/postgres/init/098_nex_marketplace_quantity_pricing.sql", "utf8");
 console.log("Applying 098_nex_marketplace_quantity_pricing.sql ...");
 await pool.query(sql);

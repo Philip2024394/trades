@@ -95,7 +95,7 @@ const LESSONS = [
 ];
 
 async function main() {
-  const c = new Client({ connectionString: process.env.NEX_TAXONOMY_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev" });
+  const c = new Client({ connectionString: process.env.NEX_TAXONOMY_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev" });
   await c.connect();
 
   // 1. Add reasoning_diagnosis competency

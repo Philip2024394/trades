@@ -1,7 +1,7 @@
 // One-shot applier for migration 100.
 import { readFileSync } from "fs";
 import pg from "pg";
-const pool = new pg.Pool({ connectionString: process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev" });
+const pool = new pg.Pool({ connectionString: process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev" });
 const sql = readFileSync("deploy/postgres/init/100_nex_provider_rate_governor.sql", "utf8");
 console.log("Applying 100_nex_provider_rate_governor.sql ...");
 await pool.query(sql);

@@ -8,7 +8,7 @@ import assert from "node:assert/strict";
 import { assertProductionPostgresUrl, requirePostgresUrl, redactUrl, looksLikeDevUrl } from "../production-guard.mjs";
 
 const PROD_URL = "postgresql://postgres.abcdef:secret@aws-0-eu-west-1.pooler.supabase.com:5432/postgres";
-const DEV_URL  = "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const DEV_URL  = "postgresql://postgres:changeme@localhost:5433/nex_dev";
 
 test("assertProductionPostgresUrl is a no-op in dev/test/undefined", () => {
   assertProductionPostgresUrl({ NODE_ENV: "development" });

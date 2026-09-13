@@ -53,7 +53,7 @@ function readEnv(name) {
   } catch { /* fall through */ }
   return null;
 }
-function readPgUrl() { return readEnv("NEX_TAXONOMY_POSTGRES_URL") ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev"; }
+function readPgUrl() { return readEnv("NEX_TAXONOMY_POSTGRES_URL") ?? "postgresql://postgres:changeme@localhost:5433/nex_dev"; }
 
 const SEND_ENABLED = readEnv("NEX_MARKETING_SEND_ENABLED") === "true";
 const ESP = readEnv("NEX_MARKETING_ESP") ?? "not_configured"; // 'ses' | 'resend' | 'smtp'

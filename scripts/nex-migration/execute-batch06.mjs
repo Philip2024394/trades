@@ -17,7 +17,7 @@ const REF = envText.match(/NEX_SUPABASE_PROJECT_REF=(\S+)/)[1];
 const DB_URL = envText.match(/^NEX_SUPABASE_DB_URL=(.+)$/m)[1];
 const MGMT = `https://api.supabase.com/v1/projects/${REF}/database/query`;
 const PSQL = "C:\\Program Files\\PostgreSQL\\17\\bin\\psql.exe";
-const LOCAL_URI = "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const LOCAL_URI = "postgresql://postgres:changeme@localhost:5433/nex_dev";
 
 const BASELINE = JSON.parse(readFileSync(resolve(__dirname, "batch-06-baseline.json"), "utf8"));
 const PROGRESS_FILE = resolve(__dirname, "batch-06-progress.json");
@@ -38,7 +38,7 @@ function scrub(s) { return String(s).split(PW).join("<PASSWORD>").split(encodeUR
 function log(m) { const s = `[${new Date().toISOString()}] ${m}\n`; appendFileSync(LOG_FILE, scrub(s)); process.stderr.write(scrub(m + "\n")); }
 
 function localSql(sql) {
-  const r = spawnSync(PSQL, ["-Atc", sql, LOCAL_URI], { env: { ...process.env, PGPASSWORD: "Admin1phil" }, encoding: "utf8", timeout: 300000 });
+  const r = spawnSync(PSQL, ["-Atc", sql, LOCAL_URI], { env: { ...process.env, PGPASSWORD: "changeme" }, encoding: "utf8", timeout: 300000 });
   if (r.status !== 0) { log(`  local psql error: ${r.stderr}`); return null; }
   return r.stdout.trim();
 }
@@ -159,7 +159,7 @@ for (let chunkNum = state.chunks_completed.length + 1; chunkNum <= BASELINE.chun
   if (existsSync(chunkPath)) unlinkSync(chunkPath);
   const extractSql = `\\copy (SELECT merge_id, table_name, existing_ref, match_layer, incoming_source, incoming_source_reference, incoming_name, incoming_city, incoming_website, incoming_phone, incoming_whatsapp, incoming_lat, incoming_lng, incoming_extras, enriched_fields, skipped_reason, worker_id, cycle_run_id, merged_at FROM nex.identity_merge_log WHERE merge_id > '${lastId}'::uuid ORDER BY merge_id LIMIT ${CHUNK_SIZE}) TO '${chunkPath.replace(/\\/g, "/")}'`;
   const t1 = Date.now();
-  const ex = spawnSync(PSQL, ["-v", "ON_ERROR_STOP=1", "-Atc", extractSql, LOCAL_URI], { env: { ...process.env, PGPASSWORD: "Admin1phil" }, encoding: "utf8", timeout: 300000 });
+  const ex = spawnSync(PSQL, ["-v", "ON_ERROR_STOP=1", "-Atc", extractSql, LOCAL_URI], { env: { ...process.env, PGPASSWORD: "changeme" }, encoding: "utf8", timeout: 300000 });
   if (ex.status !== 0) await bail(`extract failed`, { stderr: ex.stderr, stdout: ex.stdout });
   const csvSize = statSync(chunkPath).size;
   const extractSec = ((Date.now() - t1) / 1000).toFixed(2);

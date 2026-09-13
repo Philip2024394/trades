@@ -96,7 +96,7 @@ async function testAgent(prompt) {
 async function readResolvedSenseFromTask(task_id) {
   if (!task_id) return null;
   const pg = await import("pg");
-  const c = new pg.default.Client({ connectionString: "postgresql://postgres:Admin1phil@localhost:5433/nex_dev" });
+  const c = new pg.default.Client({ connectionString: "postgresql://postgres:changeme@localhost:5433/nex_dev" });
   await c.connect();
   try {
     const r = await c.query(`SELECT body FROM nex_agent.task_steps WHERE task_id=$1 AND title LIKE 'resolved%'`, [task_id]);

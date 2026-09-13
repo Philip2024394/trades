@@ -39,7 +39,7 @@ const STATS_JSON = path.join(REPO, "data/knowledge-inbox/stats.json");
 const JOBS_JSONL = path.join(REPO, "data/nex-jobs/jobs.jsonl");
 
 const DRY_RUN = process.argv.includes("--dry-run");
-const PG_URL  = process.env.NEX_POSTGRES_URL || "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const PG_URL  = process.env.NEX_POSTGRES_URL || "postgresql://postgres:changeme@localhost:5433/nex_dev";
 
 const pool = new Pool({ connectionString: PG_URL, max: 3 });
 

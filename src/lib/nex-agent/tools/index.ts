@@ -131,7 +131,7 @@ export async function postgresRead(sql: string): Promise<ToolResult<{ rowCount: 
   if (banned.test(" " + trimmed + " ")) return { ok: false, tool: "postgres_read", duration_ms: Date.now() - t0, reason: "sql_contains_write_keyword" };
   try {
     const { Client } = await import("pg");
-    const url = process.env.NEX_TAXONOMY_POSTGRES_URL ?? process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+    const url = process.env.NEX_TAXONOMY_POSTGRES_URL ?? process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
     const c = new Client({ connectionString: url, connectionTimeoutMillis: 5000, statement_timeout: 8000 });
     await c.connect();
     try {
@@ -151,7 +151,7 @@ export async function crawlerFeed(query: string, source?: string): Promise<ToolR
   const src = source ?? "all";
   try {
     const { Client } = await import("pg");
-    const url = process.env.NEX_TAXONOMY_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+    const url = process.env.NEX_TAXONOMY_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
     const c = new Client({ connectionString: url, connectionTimeoutMillis: 5000 });
     await c.connect();
     try {

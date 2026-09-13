@@ -123,7 +123,7 @@ for (const path of [
   "scripts/nex-acquisition-workforce/run-production-supervisor.mjs",
 ]) {
   const src = readFileSync(resolve(__dirname, "..", "..", path), "utf8");
-  T(`${path} does NOT contain silent localhost fallback`, !src.includes("Admin1phil@localhost:5433/nex_dev"));
+  T(`${path} does NOT contain silent localhost fallback`, !src.includes("changeme@localhost:5433/nex_dev"));
   T(`${path} imports production-guard`, /production-guard\.mjs/.test(src));
   T(`${path} fails closed on config error`, /FAIL-CLOSED/.test(src) && /process\.exit\(2\)/.test(src));
 }

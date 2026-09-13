@@ -51,7 +51,7 @@ function loadEnvLocal() {
 const envLocal = loadEnvLocal();
 
 const LOCAL_URL  = envLocal.NEX_TAXONOMY_POSTGRES_URL
-  ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+  ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 // After cutover, NEX_POSTGRES_URL points at local. Preserve rollback
 // url from the commented line so parity check can still compare.
 const rollbackMatch = /^#\s*NEX_POSTGRES_URL_SUPABASE_ROLLBACK\s*=\s*(.*)$/m;

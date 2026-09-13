@@ -44,7 +44,7 @@ const SKIP_CLAIM_STATUSES = ["claimed", "paying"];
 function log(line) { process.stdout.write(`[${new Date().toISOString()}] ${line}\n`); }
 
 async function main() {
-  const c = new Client({ connectionString: process.env.NEX_TAXONOMY_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev" });
+  const c = new Client({ connectionString: process.env.NEX_TAXONOMY_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev" });
   await c.connect();
   log(`freshness-decay start · stale_after=${STALE_AFTER_DAYS}d · dry=${DRY}`);
   const totals = { scanned: 0, stale: 0, marked_stale: 0, skipped_claimed: 0, errors: 0 };

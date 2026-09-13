@@ -12,7 +12,7 @@ function guard(env) {
 }
 
 const NEX_PROD_URL = "postgresql://postgres.abc:secret@aws-0-eu-west-1.pooler.supabase.com:5432/postgres";
-const TAX_LOCAL_URL = "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const TAX_LOCAL_URL = "postgresql://postgres:changeme@localhost:5433/nex_dev";
 
 // Case 1 · production NEX_POSTGRES_URL is present but NEX_TAXONOMY_POSTGRES_URL missing
 const r1 = guard({ NEX_POSTGRES_URL: NEX_PROD_URL });

@@ -18,7 +18,7 @@ const REF = envText.match(/NEX_SUPABASE_PROJECT_REF=(\S+)/)[1];
 const DB_URL = envText.match(/^NEX_SUPABASE_DB_URL=(.+)$/m)[1];
 const MGMT = `https://api.supabase.com/v1/projects/${REF}/database/query`;
 const PSQL = "C:\\Program Files\\PostgreSQL\\17\\bin\\psql.exe";
-const LOCAL_URI = "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const LOCAL_URI = "postgresql://postgres:changeme@localhost:5433/nex_dev";
 const TMP_DIR = resolve(__dirname, "tmp");
 const LOG_FILE = resolve(__dirname, "batch-07.log");
 if (!existsSync(TMP_DIR)) mkdirSync(TMP_DIR, { recursive: true });
@@ -34,7 +34,7 @@ function local(sql) {
   const tmpSql = resolve(TMP_DIR, `q-${process.pid}-${++localCallSeq}.sql`);
   writeFileSync(tmpSql, sql);
   try {
-    const r = spawnSync(PSQL, ["-At", "-f", tmpSql, LOCAL_URI], { env: { ...process.env, PGPASSWORD: "Admin1phil" }, encoding: "utf8", timeout: 300000, maxBuffer: 500*1024*1024 });
+    const r = spawnSync(PSQL, ["-At", "-f", tmpSql, LOCAL_URI], { env: { ...process.env, PGPASSWORD: "changeme" }, encoding: "utf8", timeout: 300000, maxBuffer: 500*1024*1024 });
     if (r.status !== 0) { log(`  local psql failed: ${r.stderr}`); return null; }
     return r.stdout.trim();
   } finally { try { unlinkSync(tmpSql); } catch {} }
@@ -149,7 +149,7 @@ for (const tbl of TABLES) {
   // Build IN clause · for uuid: cast; for text: quote_literal
   const inList = delta.map(v => tbl.pk_type === "uuid" ? `'${v}'::uuid` : `'${v.replace(/'/g, "''")}'`).join(",");
   const extractSql = `\\copy (SELECT ${tbl.cols} FROM nex.${tbl.name} WHERE ${tbl.pk} IN (${inList}) ORDER BY ${tbl.pk}) TO '${chunkPath.replace(/\\/g, "/")}'`;
-  const ex = psqlFile(LOCAL_URI, extractSql, { PGPASSWORD: "Admin1phil" });
+  const ex = psqlFile(LOCAL_URI, extractSql, { PGPASSWORD: "changeme" });
   if (ex.status !== 0) bail(`extract failed for ${tbl.name}`, { stderr: ex.stderr });
   const csv = await csvStats(chunkPath);
   const csvSize = statSync(chunkPath).size;

@@ -23,7 +23,7 @@ import {
 } from "./_reactivation-policy.mjs";
 import { isSaturationCountable } from "../nex-worker/persistence-contract.mjs";
 
-const NEX_POSTGRES_URL = process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+const NEX_POSTGRES_URL = process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 const pool = new pg.Pool({ connectionString: NEX_POSTGRES_URL, max: 3 });
 
 // 2026-08-24 · Phase 1 refactor · TRACKED_CITIES derived from the shared

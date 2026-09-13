@@ -12,7 +12,7 @@ import { Client } from "pg";
 const PGURL = process.env.NEX_LANGUAGE_POSTGRES_URL
   ?? process.env.NEX_TAXONOMY_POSTGRES_URL
   ?? process.env.NEX_POSTGRES_URL
-  ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev";
+  ?? "postgresql://postgres:changeme@localhost:5433/nex_dev";
 
 let SEED_PRESENT = false;
 beforeAll(async () => {

@@ -21,7 +21,7 @@ import { canRead, canMutate, normaliseVisibility } from "./permissions";
 
 const POOL = new pg.Pool({
   connectionString: process.env.NEX_POSTGRES_URL
-    ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev",
+    ?? "postgresql://postgres:changeme@localhost:5433/nex_dev",
   max: 3,
 });
 

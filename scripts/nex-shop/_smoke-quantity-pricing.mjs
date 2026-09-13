@@ -1,6 +1,6 @@
 // End-to-end smoke: insert a product with tiers · read it back · confirm tiers survive.
 import pg from "pg";
-const pool = new pg.Pool({ connectionString: process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:Admin1phil@localhost:5433/nex_dev" });
+const pool = new pg.Pool({ connectionString: process.env.NEX_POSTGRES_URL ?? "postgresql://postgres:changeme@localhost:5433/nex_dev" });
 
 const sellerQ = await pool.query(`SELECT seller_id FROM nex.mp_seller WHERE slug = 'toko-nex-demo' LIMIT 1`);
 if (sellerQ.rowCount === 0) { console.log("No demo seller · run seed first"); process.exit(1); }
