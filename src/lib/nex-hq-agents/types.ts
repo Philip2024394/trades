@@ -92,6 +92,20 @@ export interface AgentSnapshot {
 
   /** WO-ACADEMY-01 extension: Academy state overlay. Read-only. */
   readonly academy: AcademyStateSummary | null;
+
+  /** WO-HQ-HEARTBEAT-01 extension: dual-signal heartbeat overlay. Read-only. */
+  readonly heartbeat: {
+    readonly state: string;                      // HeartbeatState string
+    readonly reason: string;
+    readonly observed_at: string;
+    readonly liveness_alive: boolean;
+    readonly liveness_age_ms: number | null;
+    readonly progress_has_mission: boolean;
+    readonly progress_mission_id: string | null;
+    readonly progress_age_ms: number | null;
+    readonly last_action: string;                // RecoveryAction string
+    readonly last_action_reason: string;
+  } | null;
 }
 
 export interface HqAgentsSnapshotResponse {

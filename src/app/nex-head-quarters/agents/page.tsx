@@ -79,6 +79,15 @@ export default function HqAgentsPage() {
   const orchestratorAgents = snapshot?.agents.filter((a) => a.lane === "orchestrator") ?? [];
   const intelligenceAgents = snapshot?.agents.filter((a) => a.lane === "intelligence") ?? [];
 
+  // WO-HQ-HEARTBEAT-01 · attention indicator (STALLED / FAILED / DEGRADED)
+  const attentionAgents = (snapshot?.agents ?? []).filter((a) =>
+    a.heartbeat && (a.heartbeat.state === "STALLED" || a.heartbeat.state === "FAILED" || a.heartbeat.state === "DEGRADED"),
+  );
+  const heartbeatByState: Record<string, number> = { WORKING: 0, ALIVE: 0, WAITING: 0, RESEARCHING: 0, STALLED: 0, FAILED: 0, DEGRADED: 0 };
+  for (const a of snapshot?.agents ?? []) {
+    if (a.heartbeat) heartbeatByState[a.heartbeat.state] = (heartbeatByState[a.heartbeat.state] ?? 0) + 1;
+  }
+
   return (
     <div style={{ minHeight: "100vh", background: TOKEN.bg, padding: "24px", color: TOKEN.text, fontFamily: "system-ui, sans-serif" }}>
       <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
@@ -97,6 +106,32 @@ export default function HqAgentsPage() {
             </div>
           </div>
         </header>
+
+        {snapshot && (
+          <div style={{ marginBottom: 20, padding: 12, background: attentionAgents.length > 0 ? "rgba(220, 38, 38, 0.06)" : TOKEN.card, border: `1px solid ${attentionAgents.length > 0 ? TOKEN.danger : TOKEN.border}`, borderRadius: 10, fontSize: 13 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+              <div>
+                <strong style={{ color: attentionAgents.length > 0 ? TOKEN.danger : TOKEN.text }}>
+                  {attentionAgents.length > 0
+                    ? `${attentionAgents.length} agent(s) require investigation`
+                    : "All agents nominal"}
+                </strong>
+              </div>
+              <div style={{ fontSize: 12, color: TOKEN.textMid }}>
+                WORKING {heartbeatByState.WORKING} · WAITING {heartbeatByState.WAITING} · ALIVE {heartbeatByState.ALIVE} · STALLED {heartbeatByState.STALLED} · FAILED {heartbeatByState.FAILED} · DEGRADED {heartbeatByState.DEGRADED}
+              </div>
+            </div>
+            {attentionAgents.length > 0 && (
+              <div style={{ marginTop: 8, display: "grid", gap: 4 }}>
+                {attentionAgents.map((a) => (
+                  <div key={a.id} style={{ fontSize: 12 }}>
+                    · <strong>{a.name}</strong> — {a.heartbeat!.state} · {a.heartbeat!.reason}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         <Lane title="Orchestrator lane" agents={orchestratorAgents} />
         <div style={{ height: 24 }} />
@@ -160,6 +195,25 @@ function AgentCard({ agent }: { agent: AgentSnapshot }): React.ReactElement {
           )}
           {agent.non_normal_state.recovery_path && (
             <div><strong>Recovery:</strong> {agent.non_normal_state.recovery_path}</div>
+          )}
+        </div>
+      )}
+
+      {agent.heartbeat && (
+        <div style={{ marginTop: 10, padding: 8, borderRadius: 8, background: agent.heartbeat.state === "FAILED" ? "rgba(220, 38, 38, 0.08)" : agent.heartbeat.state === "STALLED" || agent.heartbeat.state === "DEGRADED" ? "rgba(245, 158, 11, 0.08)" : "rgba(16, 185, 129, 0.04)", border: `1px solid ${agent.heartbeat.state === "FAILED" ? TOKEN.danger : agent.heartbeat.state === "STALLED" || agent.heartbeat.state === "DEGRADED" ? TOKEN.warning : TOKEN.divider}`, fontSize: 12 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+            <strong style={{ color: TOKEN.text }}>Heartbeat</strong>
+            <span style={{ fontSize: 11, padding: "2px 8px", borderRadius: 10, background: agent.heartbeat.state === "FAILED" ? TOKEN.danger : agent.heartbeat.state === "STALLED" || agent.heartbeat.state === "DEGRADED" ? TOKEN.warning : agent.heartbeat.state === "WORKING" ? TOKEN.success : TOKEN.textSoft, color: "#fff" }}>{agent.heartbeat.state}</span>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4, fontSize: 11 }}>
+            <div>Liveness: {agent.heartbeat.liveness_alive ? "alive" : "no signal"}{agent.heartbeat.liveness_age_ms !== null ? ` · ${Math.round(agent.heartbeat.liveness_age_ms / 1000)}s ago` : ""}</div>
+            <div>Progress: {agent.heartbeat.progress_has_mission ? `mission ${agent.heartbeat.progress_mission_id?.slice(0, 12) ?? "?"}…` : "no mission"}{agent.heartbeat.progress_age_ms !== null ? ` · ${Math.round(agent.heartbeat.progress_age_ms / 1000)}s ago` : ""}</div>
+          </div>
+          <div style={{ marginTop: 4, fontSize: 11, color: TOKEN.textMid }}>{agent.heartbeat.reason}</div>
+          {agent.heartbeat.last_action !== "NONE" && (
+            <div style={{ marginTop: 4, fontSize: 11, color: TOKEN.warning }}>
+              Last recovery: {agent.heartbeat.last_action}
+            </div>
           )}
         </div>
       )}

@@ -12,6 +12,7 @@ import type { AcademyStateSummary, AgentSnapshot, HqAgentsSnapshotResponse } fro
 import { COLLECTIONS } from "@/lib/nex/storage/types";
 import type { AcademyRecord, NoticeRecord } from "@/lib/nex-academy/types";
 import type { TrainingProgram, TrainingRun, TrainingVerdict } from "@/lib/nex-academy/training/types";
+import type { AgentHeartbeat, AgentHealthCheck } from "@/lib/nex-hq-heartbeat/types";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -73,6 +74,16 @@ export async function GET(): Promise<Response> {
     }
   }
 
+  // WO-HQ-HEARTBEAT-01 · latest heartbeat + health-check per agent
+  let allHeartbeats: AgentHeartbeat[] = [];
+  let allHealthChecks: AgentHealthCheck[] = [];
+  try { allHeartbeats = await store.query<AgentHeartbeat>(COLLECTIONS.nex_hq_agent_heartbeats, { limit: 5000, order_by: "observed_at", order_dir: "desc" }); } catch { allHeartbeats = []; }
+  try { allHealthChecks = await store.query<AgentHealthCheck>(COLLECTIONS.nex_hq_agent_health_checks, { limit: 5000, order_by: "checked_at", order_dir: "desc" }); } catch { allHealthChecks = []; }
+  const latestHeartbeatByAgent = new Map<string, AgentHeartbeat>();
+  for (const h of allHeartbeats) if (!latestHeartbeatByAgent.has(h.agent_id)) latestHeartbeatByAgent.set(h.agent_id, h);
+  const latestHealthByAgent = new Map<string, AgentHealthCheck>();
+  for (const c of allHealthChecks) if (!latestHealthByAgent.has(c.agent_id)) latestHealthByAgent.set(c.agent_id, c);
+
   for (const agent of AGENT_REGISTRY) {
     // Defensive: assert the collection we're about to read is in the
     // allowlist. This is redundant with registry construction (registry
@@ -123,7 +134,23 @@ export async function GET(): Promise<Response> {
           },
         }
       : null;
-    agents.push(deriveSnapshot({ agent, records: safeRecords, now, academy }));
+    // WO-HQ-HEARTBEAT-01 overlay
+    const hb = latestHeartbeatByAgent.get(agent.id) ?? null;
+    const hc = latestHealthByAgent.get(agent.id) ?? null;
+    const heartbeat = hb ? {
+      state: hb.derived_state,
+      reason: hb.derivation_reason,
+      observed_at: hb.observed_at,
+      liveness_alive: hb.liveness_signal.is_alive,
+      liveness_age_ms: hb.liveness_signal.age_ms,
+      progress_has_mission: hb.progress_signal.has_active_mission,
+      progress_mission_id: hb.progress_signal.mission_id,
+      progress_age_ms: hb.progress_signal.age_since_progress_ms,
+      last_action: hc?.action_taken ?? "NONE",
+      last_action_reason: hc?.reason ?? "",
+    } : null;
+
+    agents.push({ ...deriveSnapshot({ agent, records: safeRecords, now, academy }), heartbeat });
   }
 
   const wire: HqAgentsSnapshotResponse["wire"] = AGENT_REGISTRY.flatMap((a) =>

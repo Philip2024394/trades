@@ -138,6 +138,7 @@ export function deriveSnapshot(input: DeriveInput): AgentSnapshot {
     non_normal_state,
     last_state_transition_at,
     academy: input.academy ?? null,
+    heartbeat: null,   // populated by the API-route caller (WO-HQ-HEARTBEAT-01)
   };
 }
 

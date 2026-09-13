@@ -226,6 +226,19 @@ export const COLLECTIONS = {
   nex_academy_training_runs:             "nex_academy_training_runs",
   nex_academy_training_verdicts:         "nex_academy_training_verdicts",
   nex_academy_rule_addition_proposals:   "nex_academy_rule_addition_proposals",
+
+  // WO-HQ-HEARTBEAT-01 (2026-09-13) · 3-minute heartbeat + dual-signal
+  // observation + bounded auto-recovery. Never creates work — only observes.
+  nex_hq_agent_heartbeats:               "nex_hq_agent_heartbeats",
+  nex_hq_agent_progress_snapshots:       "nex_hq_agent_progress_snapshots",
+  nex_hq_agent_health_checks:            "nex_hq_agent_health_checks",
+
+  // WO-INTEL-ORCHESTRATOR-01 (2026-09-13) · founder-signed mandate +
+  // deterministic mission scheduler. Missions bounded by envelope;
+  // proposals never carry authority.
+  nex_intel_operating_mandates:          "nex_intel_operating_mandates",
+  nex_intel_missions:                    "nex_intel_missions",
+  nex_intel_mission_outcomes:            "nex_intel_mission_outcomes",
 } as const;
 
 export type CollectionName = keyof typeof COLLECTIONS;
