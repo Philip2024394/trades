@@ -28,8 +28,8 @@ import {
   detectConnections,
   detectCombinations,
 } from "./discovery-engine";
-import { formHypothesis } from "./hypothesis-engine";
-import { runParseStderrExperiment, type ParseStderrTestCase } from "./experiment-engine";
+import { formHypothesis, persistHypothesis } from "./hypothesis-engine";
+import { runParseStderrExperiment, persistExperiment, type ParseStderrTestCase } from "./experiment-engine";
 import { buildKnowledgeObject, decidePromotion, scoreEvidence } from "./scoring";
 import { buildProposal, emitProposal } from "./proposal";
 
@@ -101,6 +101,7 @@ export async function runDiscoveryCore(input: RunDiscoveryCoreInput): Promise<Di
   if (hypotheses.length === 0) {
     return { source, fragments, discoveries, hypotheses, experiments: [], knowledge_objects: [], proposals: [] };
   }
+  await persistHypothesis(hypotheses[0]);
 
   // 5. Experiment Engine — run the parse-stderr test set against the
   //    one hypothesis. This is the ONLY experiment kind slice 1 supports.
@@ -109,6 +110,7 @@ export async function runDiscoveryCore(input: RunDiscoveryCoreInput): Promise<Di
     test_cases: input.stderr_test_cases,
     sandbox_root: input.sandbox_root,
   });
+  await persistExperiment(experiment);
   const experiments: ExperimentRecord[] = [experiment];
 
   // 6. Score
