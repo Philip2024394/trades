@@ -1,8 +1,12 @@
 # WO-HQ-AGENTS-01 · NEX HQ Agents live-observation page
 
-**Founder-authorised for SPECIFICATION 2026-09-13. Execution NOT yet authorised — the explicit gate is at the end of this document.**
+**Founder-AUTHORISED FOR EXECUTION 2026-09-13 WITH MODIFICATION.**
 
-**Doctrine anchor:** P-Q (correction never creates authority) + P-U (more intelligence ≠ more authority) — this page is **read-only observation**. No button on this page can create, modify, or activate any capability.
+**Modification (founder verbatim):** "the page should make agent operational state and inactivity visible, including the reason for any non-active state. It remains read-only and cannot control agents."
+
+**Doctrine anchors:**
+- P-Q (correction never creates authority) + P-U (more intelligence ≠ more authority) — this page is **read-only observation**. No button on this page can create, modify, or activate any capability.
+- NEX Continuous Operation & Maximum Capability Doctrine (2026-09-13) §1 (continuous availability) + §2 (no unmanaged disappearance; 11-state lifecycle with reason/timestamp/subsystem/evidence/recovery-path for every non-active state)
 
 **Programme track:** parallel with WO-WORKSTATION-14/15 and WO-INTELLIGENCE-02. Small, well-scoped UI + data-plumbing WO.
 
@@ -80,16 +84,44 @@ Each node is a rectangle labelled with the agent name + a small live-state indic
 
 Edges between nodes are static (they represent code-level wiring, not runtime state). Slice 2 may show a heartbeat pulse when a record flows edge-adjacent.
 
-## 6 · Live processing details
+## 6 · Live processing details + state visibility (founder-modified)
 
-For each agent, the page shows:
+For each agent, the page shows the full lifecycle-state contract from the Continuous Operation doctrine §2:
 
 - **Name** (from the table in §4)
 - **Kind** (from the table in §4)
+- **Current state** — one of:
+  `WORKING · READY · WAITING · TRAINING · TESTING · RESEARCHING · BLOCKED · DEGRADED · FAILED · QUARANTINED · DECOMMISSIONED`
 - **Last activity** — most recent `*_at` timestamp from the underlying collection
+- **Last successful task** — id + timestamp of the most recent record whose outcome was success (per-collection convention)
+- **Current assignment** — description of the work currently in-flight where derivable (else "IDLE — awaiting authorised task")
 - **Total records observed** — count in the collection
 - **Recent record IDs** (latest 3, id-only, no PII)
 - **Health signal** — derived colour (see §5)
+- **Failure / degradation signal** — for any non-normal state (`BLOCKED`, `DEGRADED`, `FAILED`, `QUARANTINED`, `DECOMMISSIONED`), show:
+  - reason
+  - timestamp of state entry
+  - responsible subsystem
+  - evidence pointer (record id)
+  - recovery / replacement path where applicable
+- **Timestamp of last state transition** — always present
+
+Rule (doctrine §5): **agents are not judged by activity volume.** An agent with `READY` state and zero activity in the last hour has NOT failed. An agent with fabricated records HAS failed. The page must show the state honestly.
+
+**Derivation rule (slice 1):** state is derived deterministically from the underlying GB collection contents + timestamp windowing. Slice 2+ may introduce an explicit Agent Registry (per the Continuous Operation Doctrine's architectural target); until then the derivation is:
+
+- `WORKING` — a record was written in the last 60 seconds
+- `READY` — the collection exists and has recent records (last 24h) but nothing in the last 60s
+- `WAITING` — the collection exists but no records in the last 24h
+- `RESEARCHING` — same as WORKING but the agent is an intelligence-lane agent (crawler, discovery, hypothesis)
+- `BLOCKED` — most recent record is a `REFUSED_*` audit outcome (crawler audit) OR a `FAILURE` result (specialist)
+- `DEGRADED` — mixed recent outcomes (≥1 failure + ≥1 success in last 24h) — surfaces the intermittent behaviour
+- `FAILED` — most recent record is failure AND no success in the last 24h
+- `QUARANTINED` — reserved for future Guardian integration
+- `DECOMMISSIONED` — reserved for future Agent Registry
+- `TRAINING`, `TESTING` — reserved for future Agent Academy
+
+Slice 1 exercises `WORKING`, `READY`, `WAITING`, `RESEARCHING`, `BLOCKED`, `DEGRADED`, `FAILED`. The other states are placeholders that the underlying schema supports for forward compatibility.
 
 ## 7 · Data source discipline
 
@@ -142,24 +174,10 @@ Plus positive tests:
 - **Does NOT depend on:** Phase 9 Vision, Phase 14 Guardian (their agents can be added in slice-2+ WOs)
 - **Does NOT block anything**
 
-## 12 · Founder authorisation gate
+## 12 · Founder authorisation (SIGNED · WITH MODIFICATION)
 
-**No implementation begins until this section is signed off.**
-
-Master AI will not:
-- Create any file under `src/app/nex-head-quarters/agents/`
-- Create any API route
-- Add any new storage collection
-- Add any new dependency to `package.json`
-
-Until the founder explicitly authorises WO-HQ-AGENTS-01 execution by one of:
-
-- "Authorise WO-HQ-AGENTS-01 execution" (full)
-- "Authorise WO-HQ-AGENTS-01 with modification: [specific]" (spec-adjusted)
-- "Refine [specific section] first" (spec revision)
-- "Not now" (deferred; specification remains on record)
-- Something else you direct
+**AUTHORISED FOR EXECUTION 2026-09-13 WITH MODIFICATION.** State visibility requirement locked in §6 above. Page remains read-only. Never becomes agent-control surface through UI code, hidden imports, signing helpers, or indirect mutation paths.
 
 ---
 
-**End of specification. Awaiting founder authorisation to proceed.**
+**End of specification.**

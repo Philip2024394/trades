@@ -1,8 +1,14 @@
 # WO-INTELLIGENCE-02 · turning the Discovery Core into a continuously useful knowledge-growth subsystem
 
-**Founder-authorised for SPECIFICATION 2026-09-13. Execution NOT yet authorised — the explicit gate is at the end of this document.**
+**Founder-AUTHORISED FOR EXECUTION 2026-09-13.**
 
-**Doctrine anchor:** P-S v2 (external LLM banned as authority/execution/truth; NEX-owned intelligence mechanisms permitted under existing WO gate + evidence + safety architecture).
+- **Source class:** `official_technical_documentation`
+- **Initial source target:** official Node.js technical documentation
+- **Priority 2 + Priority 3 executed together as an integrated progression** (revisit = temporal validity; held-out = generalisation validity — both required for the strongest Intelligence architecture)
+
+**Doctrine anchors:**
+- P-S v2 (external LLM banned as authority/execution/truth; NEX-owned intelligence mechanisms permitted under existing WO gate + evidence + safety architecture)
+- NEX Continuous Operation & Maximum Capability Doctrine (2026-09-13) — Intelligence continuously improves NEX; preserves historical evidence; never rewrites history silently
 
 **Programme track:** parallel with WO-WORKSTATION-14 (authority adversarial) and WO-WORKSTATION-15 (crash/restart durability). Does NOT block Phase 9 Vision, Phase 14 Guardian.
 
@@ -149,14 +155,11 @@ Values are constants; changing them is a future WO.
 
 ## 7 · Vertical slice scope (Priority 1 · one additional source)
 
-**Requested from founder in the authorization decision (§12):** name the ONE additional source class + specific source for slice 2. Options:
+**FOUNDER LOCKED:** source class `official_technical_documentation` · initial source target **official Node.js technical documentation** at `nodejs.org/api/` (or `api/*.json` where documented as public).
 
-- Option A · **Node.js official technical documentation** — `nodejs.org/api/` HTML rendered via a deterministic HTML → text extractor. Source class: `official_technical_documentation`.
-- Option B · **TC39 proposals** — `github.com/tc39/proposals` README + specific proposal READMEs (public HTTP). Source class: `standards_specification`.
-- Option C · **Node.js repository metadata** — `api.github.com/repos/nodejs/node/releases` (public, no auth required). Source class: `official_project_repository`.
-- Option D · Something else you name.
+**Rationale (founder verbatim):** "It is a strong complement to arXiv because it gives NEX authoritative, practical engineering knowledge rather than another academic corpus."
 
-Only ONE additional source in slice 2. The rest come in slice-3+.
+Additional source classes (TC39, project-repository metadata, high-quality engineering blogs) each require their own future WO. Slice 2 delivers exactly ONE new source class beyond arXiv.
 
 ## 8 · Real-execution requirements (unchanged from slice 1)
 
@@ -207,24 +210,10 @@ Target test count: **23 (slice 1) + 12 (new WO-INTELLIGENCE-02) + property tests
 - **Blocks:** WO-INTELLIGENCE-03 (Agent Academy integration)
 - **Does NOT depend on:** Phase 9 Vision, Phase 14 Guardian
 
-## 12 · Founder authorisation gate
+## 12 · Founder authorisation (SIGNED)
 
-**No implementation begins until this section is signed off.**
-
-Master AI will not:
-- Create any source file under `src/lib/nex-intelligence/` beyond what already exists
-- Fetch from any additional source class
-- Add any storage collection constants beyond the three listed in §5
-- Modify any substrate file
-
-Until the founder explicitly authorises WO-INTELLIGENCE-02 execution AND names the specific additional source class from §7. Authorisation forms:
-
-- "Authorise WO-INTELLIGENCE-02 execution · source class = Option A" (with your specific pick)
-- "Authorise WO-INTELLIGENCE-02 execution · source class = <named source>"
-- "Authorise WO-INTELLIGENCE-02 Priority X only" (staged)
-- "Refine [specific section] first" (spec revision)
-- Something else you direct
+**AUTHORISED FOR EXECUTION 2026-09-13.** Source class locked: `official_technical_documentation`. Initial source: official Node.js technical documentation. Priorities 1, 2, 3 executed together as an integrated progression.
 
 ---
 
-**End of specification. Awaiting founder authorisation to proceed.**
+**End of specification.**
