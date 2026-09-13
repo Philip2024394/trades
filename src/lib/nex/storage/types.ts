@@ -193,6 +193,16 @@ export const COLLECTIONS = {
   nex_intelligence_experiments:        "nex_intelligence_experiments",        // Experiment Engine output
   nex_intelligence_proposals:          "nex_intelligence_proposals",          // proposals to founder
   nex_intelligence_crawler_audit:      "nex_intelligence_crawler_audit",      // every fetch attempt (permitted or refused)
+
+  // WO-INTELLIGENCE-02 additions (2026-09-13). Revisit loop keeps history
+  // immutable — old KnowledgeObjects are never edited; a revisit produces
+  // a RevisitRecord and, if it changes anything, a SupersedeEdge linking
+  // old → new. Generalisation sets record training/held-out splits so
+  // future audits can prove the hypothesis was not informed by held-out
+  // cases.
+  nex_intelligence_revisits:           "nex_intelligence_revisits",
+  nex_intelligence_supersede_edges:    "nex_intelligence_supersede_edges",
+  nex_intelligence_generalisation_sets:"nex_intelligence_generalisation_sets",
 } as const;
 
 export type CollectionName = keyof typeof COLLECTIONS;

@@ -1,0 +1,63 @@
+{
+  "type": "module",
+  "name": "fs",
+  "desc": "The <code>node:fs</code> module enables interacting with the file system in a way modeled on standard POSIX functions.",
+  "modules": [
+    {
+      "type": "module",
+      "name": "fs",
+      "desc": "File system module with promise and callback APIs.",
+      "methods": [
+        {
+          "type": "method",
+          "name": "readFile",
+          "desc": "Asynchronously reads the entire contents of a file. If no encoding is specified the raw buffer is returned. Throws on missing file with ENOENT.",
+          "stability": 2
+        },
+        {
+          "type": "method",
+          "name": "writeFile",
+          "desc": "Asynchronously writes data to a file, replacing the file if it already exists. Throws ENOENT if the directory does not exist.",
+          "stability": 2
+        },
+        {
+          "type": "method",
+          "name": "appendFile",
+          "desc": "Asynchronously append data to a file, creating the file if it does not yet exist. Data can be a string or a Buffer.",
+          "stability": 2
+        },
+        {
+          "type": "method",
+          "name": "unlink",
+          "desc": "Asynchronously removes a file or symbolic link. Throws ENOENT when the target does not exist.",
+          "stability": 2
+        },
+        {
+          "type": "method",
+          "name": "mkdir",
+          "desc": "Asynchronously creates a directory. Recursive option creates intermediate directories.",
+          "stability": 2
+        }
+      ]
+    },
+    {
+      "type": "module",
+      "name": "child_process",
+      "desc": "The node:child_process module provides the ability to spawn subprocesses.",
+      "methods": [
+        {
+          "type": "method",
+          "name": "spawn",
+          "desc": "Launches a new process with the given command. Returns a ChildProcess. Emits ENOENT when the executable is not found.",
+          "stability": 2
+        },
+        {
+          "type": "method",
+          "name": "exec",
+          "desc": "Spawns a shell then executes the command within that shell. Stderr contains any error output from the child process.",
+          "stability": 2
+        }
+      ]
+    }
+  ]
+}

@@ -21,6 +21,13 @@ export interface CrawlerManifestEntry {
   readonly authorised_query_predicates: readonly string[];
   readonly authorising_wo_id: string;
   readonly expires_at: string;                        // ISO
+  /**
+   * WO-INTELLIGENCE-02: which source class this entry represents.
+   * Grandfathered default is "academic_publication" for entries that
+   * predate the field (slice-1 arXiv entries). Slice-2+ entries MUST
+   * declare their class explicitly.
+   */
+  readonly source_class?: import("./source-classes").SourceClass;
 }
 
 export interface CrawlerManifest {
@@ -187,6 +194,57 @@ export interface ProposalRecord {
   readonly evidence_summary: string;                  // human-readable
   readonly recommended_wo_action: string;             // human-readable WO recommendation
   readonly deterministic_score: number;               // recomputed at review time
+  readonly provenance_chain_hash: string;
+}
+
+// ── Revisit record (WO-INTELLIGENCE-02) ─────────────────────────────────
+
+export type RevisitVerdict =
+  | "CONFIRM"
+  | "UPDATE"
+  | "SUPERSEDE"
+  | "REJECT"
+  | "INSUFFICIENT_NEW_EVIDENCE";
+
+export interface RevisitRecord {
+  readonly record_type: "NEX_INTELLIGENCE_REVISIT";
+  readonly revisit_id: string;
+  readonly target_knowledge_id: string;
+  readonly target_version: number;
+  readonly triggered_at: string;
+  readonly new_evidence_source_ids: readonly string[];
+  readonly new_evidence_experiment_ids: readonly string[];
+  readonly previous_confidence: number;
+  readonly recomputed_confidence: number;
+  readonly confidence_delta: number;
+  readonly new_contradiction_count: number;
+  readonly verdict: RevisitVerdict;
+  readonly verdict_rationale: string;
+  readonly resulting_knowledge_id: string | null;   // set for UPDATE/SUPERSEDE
+  readonly provenance_chain_hash: string;
+}
+
+export interface SupersedeEdge {
+  readonly record_type: "NEX_INTELLIGENCE_SUPERSEDE_EDGE";
+  readonly edge_id: string;
+  readonly from_knowledge_id: string;             // older / superseded
+  readonly to_knowledge_id: string;               // newer / superseding
+  readonly created_at: string;
+  readonly revisit_id: string;
+  readonly kind: "UPDATE" | "SUPERSEDE";
+  readonly provenance_chain_hash: string;
+}
+
+// ── Generalisation set (WO-INTELLIGENCE-02) ─────────────────────────────
+
+export interface GeneralisationSet {
+  readonly record_type: "NEX_INTELLIGENCE_GENERALISATION_SET";
+  readonly set_id: string;
+  readonly hypothesis_id: string;
+  readonly seed: string;                          // deterministic split seed
+  readonly training_case_ids: readonly string[];
+  readonly held_out_case_ids: readonly string[];
+  readonly created_at: string;
   readonly provenance_chain_hash: string;
 }
 
