@@ -215,6 +215,17 @@ export const COLLECTIONS = {
   nex_academy_harvests:                "nex_academy_harvests",
   nex_academy_task_requirements:       "nex_academy_task_requirements",
   nex_academy_matches:                 "nex_academy_matches",
+
+  // WO-ACADEMY-02 additions (2026-09-13). Training Engine records with
+  // frozen-baseline discipline + causal-chain verdict enforcement.
+  // Baseline is content-hashed + immutable; training NEVER modifies the
+  // baseline record; a REGRESSION_INTRODUCED verdict leaves the
+  // pre-training baseline untouched as recoverable evidence.
+  nex_academy_training_programs:         "nex_academy_training_programs",
+  nex_academy_baselines:                 "nex_academy_baselines",
+  nex_academy_training_runs:             "nex_academy_training_runs",
+  nex_academy_training_verdicts:         "nex_academy_training_verdicts",
+  nex_academy_rule_addition_proposals:   "nex_academy_rule_addition_proposals",
 } as const;
 
 export type CollectionName = keyof typeof COLLECTIONS;

@@ -55,6 +55,15 @@ export interface AcademyStateSummary {
     readonly reason: string;
     readonly issued_at: string;
   }[];
+  /** WO-ACADEMY-02 extension: training program count + last verdict summary. */
+  readonly training: {
+    readonly active_programs: number;
+    readonly last_verdict: {
+      readonly kind: string;              // TrainingVerdictKind
+      readonly at: string;                // ISO
+      readonly targeted_weakness: string;
+    } | null;
+  } | null;
 }
 
 export interface AgentSnapshot {

@@ -11,6 +11,7 @@ import { deriveSnapshot } from "@/lib/nex-hq-agents/derive-snapshot";
 import type { AcademyStateSummary, AgentSnapshot, HqAgentsSnapshotResponse } from "@/lib/nex-hq-agents/types";
 import { COLLECTIONS } from "@/lib/nex/storage/types";
 import type { AcademyRecord, NoticeRecord } from "@/lib/nex-academy/types";
+import type { TrainingProgram, TrainingRun, TrainingVerdict } from "@/lib/nex-academy/training/types";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -33,6 +34,44 @@ export async function GET(): Promise<Response> {
   try {
     allNotices = await store.query<NoticeRecord>(COLLECTIONS.nex_academy_notices, { limit: 5000 });
   } catch { allNotices = []; }
+
+  // WO-ACADEMY-02 · training programs + runs + latest verdicts
+  let allPrograms: TrainingProgram[] = [];
+  let allRuns: TrainingRun[] = [];
+  let allVerdicts: TrainingVerdict[] = [];
+  try {
+    allPrograms = await store.query<TrainingProgram>(COLLECTIONS.nex_academy_training_programs, { limit: 5000 });
+  } catch { allPrograms = []; }
+  try {
+    allRuns = await store.query<TrainingRun>(COLLECTIONS.nex_academy_training_runs, { limit: 5000 });
+  } catch { allRuns = []; }
+  try {
+    allVerdicts = await store.query<TrainingVerdict>(COLLECTIONS.nex_academy_training_verdicts, { limit: 5000, order_by: "verdict_id", order_dir: "desc" });
+  } catch { allVerdicts = []; }
+
+  const runsByRunId = new Map<string, TrainingRun>();
+  for (const r of allRuns) runsByRunId.set(r.run_id, r);
+  const programsByProgramId = new Map<string, TrainingProgram>();
+  for (const p of allPrograms) programsByProgramId.set(p.program_id, p);
+
+  const programsByAgent = new Map<string, TrainingProgram[]>();
+  for (const p of allPrograms) {
+    const arr = programsByAgent.get(p.target_agent_id) ?? [];
+    arr.push(p);
+    programsByAgent.set(p.target_agent_id, arr);
+  }
+
+  const latestVerdictByAgent = new Map<string, { verdict: TrainingVerdict; program: TrainingProgram }>();
+  // Verdicts are sorted DESC — first hit per agent is the latest
+  for (const v of allVerdicts) {
+    const run = runsByRunId.get(v.run_id);
+    if (!run) continue;
+    const program = programsByProgramId.get(run.program_id);
+    if (!program) continue;
+    if (!latestVerdictByAgent.has(run.agent_id)) {
+      latestVerdictByAgent.set(run.agent_id, { verdict: v, program });
+    }
+  }
 
   for (const agent of AGENT_REGISTRY) {
     // Defensive: assert the collection we're about to read is in the
@@ -58,6 +97,8 @@ export async function GET(): Promise<Response> {
 
     // Academy overlay (WO-ACADEMY-01 · read-only summary)
     const academyRecord = academyByAgent.get(agent.id) ?? null;
+    const agentPrograms = programsByAgent.get(agent.id) ?? [];
+    const agentLatestVerdict = latestVerdictByAgent.get(agent.id) ?? null;
     const academy: AcademyStateSummary | null = academyRecord
       ? {
           career_state: academyRecord.career_state,
@@ -70,6 +111,16 @@ export async function GET(): Promise<Response> {
             .filter((n) => n.agent_id === agent.id)
             .slice(0, 3)
             .map((n) => ({ kind: n.kind, reason: n.reason, issued_at: n.issued_at })),
+          training: {
+            active_programs: agentPrograms.length,
+            last_verdict: agentLatestVerdict
+              ? {
+                  kind: agentLatestVerdict.verdict.kind,
+                  at: (agentLatestVerdict.verdict as unknown as { verdict_id?: string }).verdict_id?.slice(0, 24) ?? "",
+                  targeted_weakness: agentLatestVerdict.program.targeted_weakness,
+                }
+              : null,
+          },
         }
       : null;
     agents.push(deriveSnapshot({ agent, records: safeRecords, now, academy }));

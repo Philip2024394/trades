@@ -188,6 +188,22 @@ function AgentCard({ agent }: { agent: AgentSnapshot }): React.ReactElement {
               ))}
             </div>
           )}
+          {agent.academy.training && (agent.academy.training.active_programs > 0 || agent.academy.training.last_verdict) && (
+            <div style={{ marginTop: 6, paddingTop: 6, borderTop: `1px solid ${TOKEN.divider}`, fontSize: 11, color: TOKEN.textMid }}>
+              <strong style={{ color: TOKEN.text }}>Training:</strong>
+              {agent.academy.training.active_programs > 0 && ` ${agent.academy.training.active_programs} program(s)`}
+              {agent.academy.training.last_verdict && (
+                <div style={{ marginTop: 2, color: agent.academy.training.last_verdict.kind === "IMPROVED" ? TOKEN.success : agent.academy.training.last_verdict.kind === "REGRESSION_INTRODUCED" ? TOKEN.danger : TOKEN.textMid }}>
+                  Last verdict: <strong>{agent.academy.training.last_verdict.kind}</strong>
+                </div>
+              )}
+              {agent.academy.training.last_verdict?.targeted_weakness && (
+                <div style={{ marginTop: 2, fontSize: 10 }}>
+                  Targeted weakness: {agent.academy.training.last_verdict.targeted_weakness.slice(0, 60)}{agent.academy.training.last_verdict.targeted_weakness.length > 60 ? "…" : ""}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

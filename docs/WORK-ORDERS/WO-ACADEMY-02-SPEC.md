@@ -1,6 +1,6 @@
 # WO-ACADEMY-02 · Training Engine (vertical slice)
 
-**Founder-authorised for SPECIFICATION 2026-09-13. Execution NOT yet authorised — the explicit gate is at §12.**
+**Founder-AUTHORISED FOR EXECUTION 2026-09-13 with modification (b): "improvement must be demonstrated against a frozen baseline, with held-out/generalisation, adversarial and regression evidence, and reversible validated state."**
 
 **Prerequisite:** WO-ACADEMY-01 complete (satisfied at HEAD `10725a17`). All 14 agents onboarded with capability profiles.
 
@@ -14,7 +14,18 @@
 **Founder principle codified in this WO:**
 > "An agent earns advancement by making NEX demonstrably better."
 
+**Sixth constitutional separation (founder-locked 2026-09-13 · Doctrine §11.4):**
+> **TRAINING ACTIVITY ≠ ACTUAL IMPROVEMENT**
+
+Training completing successfully is NECESSARY but NOT SUFFICIENT for an IMPROVED verdict. Improvement is measured evidence against a frozen baseline. This WO exists to prove that separation exists in the substrate.
+
 **Five-concept separation (Master Founder Prompt §3):** Training touches CAPABILITY, KNOWLEDGE, and INTELLIGENCE of an agent. Training does **NOT** touch AUTHORITY. Training does **NOT** promote CAREER — it produces evidence the founder can use to sign a promotion WO.
+
+**Hard rule (founder verbatim):**
+> "If the agent cannot demonstrate measurable improvement against its frozen pre-training baseline, training has failed regardless of whether the training process itself completed successfully."
+
+**Reversibility requirement (founder verbatim):**
+> "If training causes REGRESSION_INTRODUCED, the previous validated capability/knowledge state must remain recoverable. In other words: training candidate → evaluation → promotion. Not: training → overwrite agent knowledge → discover later that it got worse. The validated pre-training state should remain immutable evidence."
 
 ---
 
@@ -250,35 +261,69 @@ interface RuleAdditionProposal {
 }
 ```
 
-## 6 · Verdict function (pure, deterministic — §22 no-false-intelligence)
+## 6 · Verdict function (pure, deterministic — §22 no-false-intelligence + §11.4 causal chain)
+
+**Causal chain requirement (founder-locked):** the verdict is derived from the COMPARISON of the SAME baseline benchmark run before AND after training, PLUS held-out + adversarial + regression evidence. Training activity is NOT input to the verdict. Only measured post-training outcomes against frozen baseline are.
 
 ```
-Input: baseline_metrics + post_metrics + generalisation_outcomes + regression_outcomes
+INPUTS (frozen · immutable · content-hashed):
+  · baseline_task_ids[]           ← the same task set used pre + post
+  · baseline_metrics (frozen)
+  · post_metrics (measured on baseline_task_ids AFTER training)
+  · targeted_weakness              ← what the training was supposed to fix
+  · targeted_weakness_baseline_score
+  · targeted_weakness_post_score
+  · held_out_outcomes[]
+  · adversarial_outcomes[]
+  · regression_outcomes[]
 
-Rules (checked IN ORDER — first match wins):
+VERDICT RULES (checked IN ORDER · first match wins):
 
-  1. If regression_outcomes contains any FAILURE:
+  1. REGRESSION check (dominant):
+     If regression_outcomes contains any FAILURE:
        → REGRESSION_INTRODUCED
-       (Notice 1 issued via existing WO-ACADEMY-01 mechanism M8)
+       (Notice 1 issued via WO-ACADEMY-01 M8)
+       Pre-training baseline REMAINS IMMUTABLE EVIDENCE (§reversibility)
 
-  2. If generalisation_outcomes success_ratio < GENERALISATION_MIN (0.65):
-       → GENERALISATION_FAILED
+  2. Causal-chain integrity check:
+     If baseline_task_ids ≠ post_task_ids:
+       → INSUFFICIENT_EVIDENCE (post-training was measured on a
+         DIFFERENT benchmark; the causal claim cannot be evaluated)
 
-  3. If baseline.evidence_pointers.length < MIN_BASELINE_EVIDENCE (5)
-     OR run.training_outcomes.length < MIN_TRAINING_EVIDENCE (5):
+  3. Baseline evidence sufficiency:
+     If baseline_task_ids.length < MIN_BASELINE_EVIDENCE (5)
+     OR training_outcomes.length < MIN_TRAINING_EVIDENCE (5):
        → INSUFFICIENT_EVIDENCE
 
-  4. If ALL deltas ≤ 0:
+  4. Held-out generalisation:
+     If held_out_outcomes success_ratio < GENERALISATION_MIN (0.65):
+       → GENERALISATION_FAILED
+
+  5. Weakness-targeted improvement:
+     If targeted_weakness_post_score - targeted_weakness_baseline_score
+        < WEAKNESS_IMPROVEMENT_MIN (0.10):
+       → NO_IMPROVEMENT
+       (training completed, but did NOT measurably improve the
+        specific weakness it was designed to target)
+
+  6. Same-benchmark improvement:
+     If (post_metrics.task_completion_ratio
+         - baseline_metrics.task_completion_ratio) < IMPROVEMENT_MIN (0.05):
        → NO_IMPROVEMENT
 
-  5. If (task_completion_ratio_delta ≥ IMPROVEMENT_MIN (0.05)
-         AND regression_scope_verified == true
-         AND generalisation success_ratio ≥ GENERALISATION_MIN):
-       → IMPROVED
-
-  6. Otherwise:
+  7. Adversarial resilience (defensive check):
+     If adversarial_outcomes success_ratio < ADVERSARIAL_MIN (0.60):
        → NO_IMPROVEMENT
+       (candidate rules improved training set but broke under
+        adversarial input — not a real improvement)
+
+  8. All above passed:
+     → IMPROVED
 ```
+
+**Rule 2 is the causal-chain enforcer.** Training that measures itself on a DIFFERENT benchmark than the frozen baseline can never return IMPROVED. This is the founder's core modification.
+
+**Rule 5 is the targeted-weakness enforcer.** Even if overall scores rise, if the SPECIFIC weakness the training targeted did not improve, verdict is NO_IMPROVEMENT. Prevents accidental "improvement" via lucky metric drift.
 
 **Property (§9):** same inputs → same verdict, 100 runs identical.
 
@@ -369,26 +414,19 @@ Plus property tests:
 - **Blocks:** WO-ACADEMY-03 (Adversarial Examination), WO-ACADEMY-04 (Benchmark), WO-ACADEMY-05..12
 - **Recommended pre-Academy-04 insertion (per Roadmap §2.2):** WO-COMPUTE-01 (Resource Governor) BEFORE WO-ACADEMY-04
 
-## 12 · Founder authorisation gate
+## 12 · Founder authorisation (SIGNED · WITH MODIFICATION)
 
-**No implementation begins until this section is signed off.**
+**AUTHORISED FOR EXECUTION 2026-09-13, option (b).**
 
-Master AI will not:
-- Create any file under `src/lib/nex-academy/training/`
-- Add any new storage collection
-- Run any training exercise
-- Emit any RuleAdditionProposal
-- Modify any substrate file
+Modifications locked into the spec above:
+- **Frozen baseline** — §5.2 baseline is content-hashed + immutable; §6 rule 2 refuses IMPROVED when post-training benchmark ≠ baseline benchmark
+- **Causal chain** — §6 verdict function requires the specific chain: baseline → weakness identification → targeted training → same-benchmark re-run → held-out → adversarial → regression → compare against frozen baseline
+- **Targeted-weakness improvement** — §6 rule 5 refuses IMPROVED unless the specific targeted weakness measurably improved
+- **Reversibility** — §3 doctrinal alignment table + §5.2 immutability; pre-training baseline bytes survive REGRESSION_INTRODUCED as immutable evidence
+- **Hard rule** — "training completed" is NOT sufficient for IMPROVED (§3 hard-rule quote)
 
-Until the founder authorises with one of:
-
-- **(a)** "Authorise WO-ACADEMY-02 execution" (full: baseline + training + verdict + proposal emitter + adversarial tests + HQ extension)
-- **(b)** "Authorise WO-ACADEMY-02 with modification: [specific]" (spec-adjusted)
-- **(c)** "Authorise the training-verdict machinery only" (staged; the proposal-emitter deferred)
-- **(d)** "Different target agent than wo7-node-syntax-specialist" (name the agent)
-- **(e)** "Refine [specific section] first"
-- **(f)** Something else you direct
+D2 (roadmap): Compute-01 moved before Academy-04 · accepted · locked in doctrine memory §11.6.
 
 ---
 
-**End of specification. Awaiting founder authorisation to proceed.**
+**End of specification. Execution begins.**
