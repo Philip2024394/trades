@@ -181,6 +181,18 @@ export const COLLECTIONS = {
   nex1_build_reports:          "nex1_build_reports",       // WO-05 build outcome
   nex1_runtime_reports:        "nex1_runtime_reports",     // WO-06 runtime + health
   nex1_specialist_results:     "nex1_specialist_results",  // WO-07 tool findings
+
+  // WO-INTELLIGENCE-01 · Founder-authorised 2026-09-13 under P-S v2.
+  // NEX Intelligence Discovery Core persistence. Every record content-hashed
+  // + provenance-chained. Intelligence never grants NEX new capability; the
+  // knowledge library is READ by NEX1 Engineer only for objects promoted to
+  // PRODUCTION via a founder-signed WO.
+  nex_intelligence_sources:            "nex_intelligence_sources",            // crawler fetch records
+  nex_intelligence_knowledge_objects:  "nex_intelligence_knowledge_objects",  // typed knowledge tier objects
+  nex_intelligence_hypotheses:         "nex_intelligence_hypotheses",         // Hypothesis Engine output
+  nex_intelligence_experiments:        "nex_intelligence_experiments",        // Experiment Engine output
+  nex_intelligence_proposals:          "nex_intelligence_proposals",          // proposals to founder
+  nex_intelligence_crawler_audit:      "nex_intelligence_crawler_audit",      // every fetch attempt (permitted or refused)
 } as const;
 
 export type CollectionName = keyof typeof COLLECTIONS;

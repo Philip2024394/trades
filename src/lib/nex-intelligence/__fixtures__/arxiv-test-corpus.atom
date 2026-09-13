@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:arxiv="http://arxiv.org/schemas/atom">
+  <title type="html">NEX WO-INTELLIGENCE-01 test corpus · arXiv cs.SE format</title>
+  <id>http://nex-test-fixture/arxiv-cs-se-test-corpus</id>
+  <updated>2026-09-13T00:00:00Z</updated>
+  <opensearch:totalResults xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">25</opensearch:totalResults>
+
+  <entry>
+    <id>http://arxiv.org/abs/test-2609.00001v1</id>
+    <updated>2026-09-01T10:00:00Z</updated>
+    <published>2026-09-01T09:00:00Z</published>
+    <title>Detecting Missing Module Errors in Node.js with Regex-Based Stderr Parsing</title>
+    <summary>We evaluate rule-based regex parsers for detecting Node.js missing-module errors from subprocess stderr streams. Our approach outperforms opaque LLM classifiers on the ENOENT class of errors, achieving higher accuracy across Node.js versions 20 through 24.</summary>
+    <author><name>Alice Chen</name></author>
+    <author><name>Bob Ramirez</name></author>
+    <arxiv:primary_category term="cs.SE" xmlns:arxiv="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE"/>
+    <category term="cs.PL"/>
+  </entry>
+
+  <entry>
+    <id>http://arxiv.org/abs/test-2609.00002v1</id>
+    <updated>2026-09-02T10:00:00Z</updated>
+    <published>2026-09-02T09:00:00Z</published>
+    <title>Deterministic Fault Localisation via Stderr Signal Extraction</title>
+    <summary>Stderr signal extraction improves fault localisation in Node subprocess pipelines. We propose a pattern library covering ENOENT, SyntaxError, and Cannot find module cases, showing better performance than baseline heuristics.</summary>
+    <author><name>Alice Chen</name></author>
+    <author><name>Carla Weiss</name></author>
+    <arxiv:primary_category term="cs.SE" xmlns:arxiv="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE"/>
+  </entry>
+
+  <entry>
+    <id>http://arxiv.org/abs/test-2609.00003v1</id>
+    <updated>2026-09-03T10:00:00Z</updated>
+    <published>2026-09-03T09:00:00Z</published>
+    <title>Automated Program Repair: A Regex-First Approach for Node.js Toolchains</title>
+    <summary>We propose an automated program repair approach for Node.js toolchains based on regex-first stderr analysis, which outperforms existing techniques by combining ENOENT detection with structural syntax checks.</summary>
+    <author><name>David Kim</name></author>
+    <author><name>Bob Ramirez</name></author>
+    <arxiv:primary_category term="cs.SE" xmlns:arxiv="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE"/>
+  </entry>
+
+  <entry>
+    <id>http://arxiv.org/abs/test-2609.00004v1</id>
+    <updated>2026-09-04T10:00:00Z</updated>
+    <published>2026-09-04T09:00:00Z</published>
+    <title>Agentic Software Engineering: Deterministic Correction Loops without LLMs</title>
+    <summary>We describe agentic software engineering agents that use deterministic correction loops instead of LLM-based reasoning. Our approach outperforms LLM baselines on program repair benchmarks and provides reproducible evidence.</summary>
+    <author><name>David Kim</name></author>
+    <author><name>Elena Ivanova</name></author>
+    <arxiv:primary_category term="cs.SE" xmlns:arxiv="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE"/>
+    <category term="cs.LG"/>
+  </entry>
+
+  <entry>
+    <id>http://arxiv.org/abs/test-2609.00005v1</id>
+    <updated>2026-09-05T10:00:00Z</updated>
+    <published>2026-09-05T09:00:00Z</published>
+    <title>Regex-Based Stderr Parsing Fails on Multi-Line Stack Traces</title>
+    <summary>Contrary to prior work, we show that regex-based stderr parsing fails on multi-line stack traces and underperforms structured parsers. The approach shows worse accuracy on modern Node.js runtime output.</summary>
+    <author><name>Frank Osei</name></author>
+    <arxiv:primary_category term="cs.SE" xmlns:arxiv="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE"/>
+  </entry>
+
+  <entry>
+    <id>http://arxiv.org/abs/test-2609.00006v1</id>
+    <updated>2026-09-06T10:00:00Z</updated>
+    <published>2026-09-06T09:00:00Z</published>
+    <title>Symbolic Analysis of Subprocess Error Streams for Continuous Integration</title>
+    <summary>Symbolic analysis of subprocess error streams reveals patterns that static analysis misses. We combine ENOENT and syntax-error detection into a unified symbolic pipeline, improving CI failure diagnosis.</summary>
+    <author><name>Gina Alvarez</name></author>
+    <author><name>Carla Weiss</name></author>
+    <arxiv:primary_category term="cs.SE" xmlns:arxiv="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE"/>
+  </entry>
+
+  <entry>
+    <id>http://arxiv.org/abs/test-2609.00007v1</id>
+    <updated>2026-09-07T10:00:00Z</updated>
+    <published>2026-09-07T09:00:00Z</published>
+    <title>Provenance-Chained Evidence for Deterministic Program Repair Pipelines</title>
+    <summary>We introduce provenance-chained evidence records for deterministic program repair pipelines. Each corrective step carries a cryptographic hash of its antecedents, enabling reproducibility across runs.</summary>
+    <author><name>Henry Lopez</name></author>
+    <author><name>Elena Ivanova</name></author>
+    <arxiv:primary_category term="cs.SE" xmlns:arxiv="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE"/>
+    <category term="cs.CR"/>
+  </entry>
+
+  <entry>
+    <id>http://arxiv.org/abs/test-2609.00008v1</id>
+    <updated>2026-09-08T10:00:00Z</updated>
+    <published>2026-09-08T09:00:00Z</published>
+    <title>Node.js Cannot find module: A Cross-Version Empirical Study</title>
+    <summary>An empirical study of the Node.js Cannot find module error across versions 18-24 shows consistent stderr patterns, enabling higher-accuracy detection than version-specific approaches. Our regex library achieves state-of-the-art accuracy.</summary>
+    <author><name>Ivy Patel</name></author>
+    <author><name>Alice Chen</name></author>
+    <arxiv:primary_category term="cs.SE" xmlns:arxiv="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE"/>
+  </entry>
+
+  <entry>
+    <id>http://arxiv.org/abs/test-2609.00009v1</id>
+    <updated>2026-09-09T10:00:00Z</updated>
+    <published>2026-09-09T09:00:00Z</published>
+    <title>Sandboxed Subprocess Execution for Software Engineering Agents</title>
+    <summary>Sandboxed subprocess execution improves the reliability of software engineering agents. We evaluate resource-bounded subprocess sandboxes for agent-driven repair, showing improved safety guarantees.</summary>
+    <author><name>Jamal Owens</name></author>
+    <arxiv:primary_category term="cs.SE" xmlns:arxiv="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE"/>
+  </entry>
+
+  <entry>
+    <id>http://arxiv.org/abs/test-2609.00010v1</id>
+    <updated>2026-09-10T10:00:00Z</updated>
+    <published>2026-09-10T09:00:00Z</published>
+    <title>Ed25519 Attestation for Software Supply Chains</title>
+    <summary>Ed25519 attestation improves software supply chain security. We describe an attestation pattern for signed manifests over subprocess allow-lists and configuration files.</summary>
+    <author><name>Kai Nakamura</name></author>
+    <arxiv:primary_category term="cs.CR" xmlns:arxiv="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CR"/>
+    <category term="cs.SE"/>
+  </entry>
+</feed>
