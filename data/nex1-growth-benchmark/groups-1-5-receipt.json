@@ -1,0 +1,112 @@
+{
+  "benchmark": "NEX1 Autonomous Growth · Groups 1-5",
+  "date": "2026-09-18T03:54:32.092Z",
+  "zero_llm": true,
+  "starting_git": "b0ff61b7 (Baseline 0)",
+  "engineer_source_modifications": 0,
+  "observations": {
+    "TG1_pattern": {
+      "entries": 5,
+      "distinct_patterns_emerged": 4,
+      "pattern_supports": [
+        {
+          "id": "pat-SELECTED-number-sig-src-app",
+          "s": 2,
+          "features": {
+            "has_signature_format": true,
+            "value_type": "number",
+            "path_dir_root": "src",
+            "path_dir_second": "app",
+            "selection_state": "SELECTED"
+          }
+        },
+        {
+          "id": "pat-SELECTED-boolean-sig-src-lib",
+          "s": 1,
+          "features": {
+            "has_signature_format": true,
+            "value_type": "boolean",
+            "path_dir_root": "src",
+            "path_dir_second": "lib",
+            "selection_state": "SELECTED"
+          }
+        },
+        {
+          "id": "pat-SELECTED-string-sig-src-app",
+          "s": 1,
+          "features": {
+            "has_signature_format": true,
+            "value_type": "string",
+            "path_dir_root": "src",
+            "path_dir_second": "app",
+            "selection_state": "SELECTED"
+          }
+        },
+        {
+          "id": "pat-TIE-empty-nosig-src-lib",
+          "s": 1,
+          "features": {
+            "has_signature_format": false,
+            "value_type": "empty",
+            "path_dir_root": "src",
+            "path_dir_second": "lib",
+            "selection_state": "TIE"
+          }
+        }
+      ],
+      "verdict": "EXISTING_MECHANISM_EXERCISED",
+      "note": "Fix 34 grouped varied inputs by shape features. Deterministic behaviour of existing mechanism. Not growth."
+    },
+    "TG2_reasoning": {
+      "matching_relationship": "PRIOR_MATCHES_CURRENT",
+      "conflict_relationship": "PRIOR_CONFLICTS_CURRENT",
+      "distinguishes_correctly": true,
+      "verdict": "EXISTING_MECHANISM_EXERCISED",
+      "note": "Fix 30B correctly distinguished matching vs conflicting prior. Cycle-2 verified behaviour reproduced. Not growth."
+    },
+    "TG3_generalisation": {
+      "relaxed_novel_second_dir": "relaxed_second_dir",
+      "docs_root_query": "no_match",
+      "generalises_within_family": true,
+      "refuses_across_root": true,
+      "verdict": "EXISTING_MECHANISM_EXERCISED",
+      "note": "Fix 34 relaxed retrieval works within family, refuses across path_dir_root. Cycle-2 verified. Not growth."
+    },
+    "TG4_memory": {
+      "rules_induced": 1,
+      "rules_on_disk": 1,
+      "first_rule_id": "rule-2eb1a09df3e814ee",
+      "persisted_ids_match": true,
+      "verdict": "EXISTING_MECHANISM_EXERCISED",
+      "note": "Induced rule persists to disk (Fix 35). Cross-session persistence verified in Cycle-2 Test C. Not growth."
+    },
+    "TG5_failure": {
+      "patterns_from_failure_records": 1,
+      "rules_from_failure_records": 1,
+      "failure_pattern_features": {
+        "has_signature_format": false,
+        "value_type": "empty",
+        "path_dir_root": "src",
+        "path_dir_second": "lib",
+        "selection_state": "REQUIRE_MORE_INVESTIGATION"
+      },
+      "rules_have_invariants": [
+        "all_entries_share_path_prefix"
+      ],
+      "distinguishes_failure_from_success": false,
+      "verdict": "LIMITATION_OBSERVED",
+      "note": "Fix 34 groups failure states by selection_state but treats them symmetrically. Fix 35 produces rules but the invariants captured do not encode 'this is a capability gap'. Baseline §B.6 absence confirmed at runtime."
+    }
+  },
+  "summary": {
+    "TG1_verdict": "EXISTING_MECHANISM_EXERCISED",
+    "TG2_verdict": "EXISTING_MECHANISM_EXERCISED",
+    "TG3_verdict": "EXISTING_MECHANISM_EXERCISED",
+    "TG4_verdict": "EXISTING_MECHANISM_EXERCISED",
+    "TG5_verdict": "LIMITATION_OBSERVED",
+    "candidate_growth_events": 0,
+    "limitations_observed": [
+      "TG5 · no first-class failure-as-learning mechanism (§B.6)"
+    ]
+  }
+}
