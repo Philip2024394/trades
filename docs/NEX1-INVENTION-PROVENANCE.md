@@ -244,6 +244,11 @@ That commit, together with the commit that adds this document, establishes the c
 ### 12.4 · Reference: Intelligence Discovery Log
 The full experiment write-up (Question / Setup / Prior Knowledge / Novel Element / Mechanism / Observation / Evidence / Verification / Anti-Cheating Audit / Result / What Proves / What Does NOT Prove / Next Target) lives at `docs/NEX1-INTELLIGENCE-DISCOVERY.md` and is maintained append-only under the same integrity rules as this record.
 
+### 12.5 · 2026-09-18 · Test C verified · Cross-session persistence
+- **Evidence:** `data/nex1-discovery-experiments/test-c-session-1-receipt.json` (fingerprint `1992e500406ca59ef59b1a03d425ab30` · 2 patterns) + `data/nex1-discovery-experiments/test-c-session-2-receipt.json` (`fingerprints_match: true` · same-family retrieval succeeds · different-family retrieval refuses · verdict field `"VERIFIED"`)
+- **Nature:** two independent Node processes share only the on-disk Fix 17 JSONL file. Fresh Session 2 deterministically rebuilds Session 1's patterns and successfully retrieves for a novel same-family query while refusing a different-family query.
+- **Class:** RUNTIME_VERIFIED BEHAVIOUR. Closes the STORE → RETRIEVE step of the founder's central question. The APPLY step remains partial (Fix 34 still not wired into `capability-chat-turn.ts`).
+
 ---
 
-*Record version 1.1 · integrity preserved · §§1-11 unchanged.*
+*Record version 1.2 · integrity preserved · §§1-11 unchanged.*

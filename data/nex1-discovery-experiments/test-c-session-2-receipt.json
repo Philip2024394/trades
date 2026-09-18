@@ -1,0 +1,43 @@
+{
+  "session": 2,
+  "date": "2026-09-18T03:11:33.387Z",
+  "same_process_as_session_1": false,
+  "input_channel": "Fix 17 JSONL store · disk only",
+  "store_entries_read": 4,
+  "session_2_pattern_count": 2,
+  "session_2_fingerprint": "1992e500406ca59ef59b1a03d425ab30",
+  "session_1_fingerprint": "1992e500406ca59ef59b1a03d425ab30",
+  "fingerprints_match": true,
+  "same_family_query": {
+    "target_features": {
+      "has_signature_format": true,
+      "value_type": "number",
+      "path_dir_root": "src",
+      "path_dir_second": "lib",
+      "selection_state": "SELECTED"
+    },
+    "min_support": 2
+  },
+  "same_family_retrieval": {
+    "matched": true,
+    "match_kind": "exact",
+    "support": 3
+  },
+  "different_family_query": {
+    "target_features": {
+      "has_signature_format": false,
+      "value_type": "other",
+      "path_dir_root": "src",
+      "path_dir_second": "lib",
+      "selection_state": "SELECTED"
+    },
+    "min_support": 2
+  },
+  "different_family_retrieval": {
+    "matched": false,
+    "match_kind": null
+  },
+  "abstraction_version": "fix34.v1",
+  "correct_all": true,
+  "verdict": "VERIFIED"
+}

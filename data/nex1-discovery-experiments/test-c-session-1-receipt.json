@@ -1,0 +1,38 @@
+{
+  "session": 1,
+  "date": "2026-09-18T03:11:31.424Z",
+  "seeded_ids": [
+    "seed-287590ef",
+    "seed-c36bebf6",
+    "seed-8214a3df",
+    "seed-4f52b9d7"
+  ],
+  "store_path": "C:\\Users\\Victus\\trades\\data\\nex1-investigation-conclusions\\entries.jsonl",
+  "session_1_pattern_count": 2,
+  "session_1_fingerprint": "1992e500406ca59ef59b1a03d425ab30",
+  "session_1_patterns_summary": [
+    {
+      "pattern_id": "pat-SELECTED-number-sig-src-lib",
+      "support": 3,
+      "features": {
+        "has_signature_format": true,
+        "value_type": "number",
+        "path_dir_root": "src",
+        "path_dir_second": "lib",
+        "selection_state": "SELECTED"
+      }
+    },
+    {
+      "pattern_id": "pat-TIE-empty-nosig-docs-other.md",
+      "support": 1,
+      "features": {
+        "has_signature_format": false,
+        "value_type": "empty",
+        "path_dir_root": "docs",
+        "path_dir_second": "other.md",
+        "selection_state": "TIE"
+      }
+    }
+  ],
+  "abstraction_version": "fix34.v1"
+}

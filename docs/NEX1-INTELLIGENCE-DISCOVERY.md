@@ -250,3 +250,72 @@ Path A is smaller and more falsifiable. Recommended next.
 ---
 
 *End of Experiment 2 · continuing loop*
+
+---
+
+## Experiment 3 · TEST C · Cross-session persistence
+
+### Question
+The founder's amendment stated: *"we should then destroy/restart the session and test whether NEX1 can retrieve that learned knowledge later."* Does an abstraction learned in Session 1 survive a full process boundary and become available in Session 2 with only the Fix 17 JSONL file as the shared channel?
+
+### Setup
+Two independent Node scripts run as two separate processes:
+- `test-c-cross-session-seed.mjs` (Session 1) · seeds 4 entries, computes pattern fingerprint, exits.
+- `test-c-cross-session-retrieve.mjs` (Session 2) · fresh process, reads store, extracts patterns, compares fingerprint, runs adversarial retrievals.
+
+The two processes share only:
+- The Fix 17 JSONL file at `data/nex1-investigation-conclusions/entries.jsonl`
+- The Session 1 receipt at `data/nex1-discovery-experiments/test-c-session-1-receipt.json` (used ONLY for fingerprint compare, not for pattern reconstruction)
+
+### Prior Knowledge in NEX1
+Fix 17 store · Fix 26 read · Fix 34 pattern extractor (from Test B) · same as before. No new modules.
+
+### Novel Element
+The falsification target: cross-session persistence. Previously untested.
+
+### Mechanism
+`extractPatterns(loadAllEntriesFromStore(REPO))` in both sessions. Deterministic. Zero LLM. Zero shared in-memory state between sessions.
+
+### Observation
+- Session 1 · patterns: 2 · fingerprint `1992e500406ca59ef59b1a03d425ab30`
+- Session 2 · patterns: 2 · fingerprint `1992e500406ca59ef59b1a03d425ab30`
+- `fingerprints_match: true`
+- Same-family retrieval (`src/lib/*` · numeric · SELECTED): `matched: true · kind: exact · support: 3`
+- Different-family retrieval (`src/lib/*` · other · SELECTED · no sig format): `matched: false`
+
+### Evidence
+- `data/nex1-discovery-experiments/test-c-session-1-receipt.json`
+- `data/nex1-discovery-experiments/test-c-session-2-receipt.json`
+- Verdict field of session-2 receipt: `"VERIFIED"`
+
+### Verification
+- Independent processes (two `npx tsx` invocations) — no shared JavaScript heap.
+- Fingerprint is a SHA-256 of the JSON-serialised pattern set; identity implies byte-equal patterns after extraction.
+- Adversarial cross-check: same-family match succeeds AND different-family refuses.
+
+### Anti-Cheating Audit
+- No in-memory cache is transferred between sessions.
+- Session 2 does not import from Session 1's script; it only reads receipts for comparison, and the receipt contains no pattern payload usable to short-circuit Session 2's extraction.
+- Fix 34 has no fixture-name conditionals (Test B audit still holds).
+
+### Result
+**VERIFIED.**
+
+### What This Proves
+Learned abstractions in NEX1 survive a session boundary. The founder's central question's *store → retrieve* step is empirically closed: a pattern discovered in Session 1 is recomputable and retrievable in a fresh Session 2 using only the on-disk store.
+
+### What This Does NOT Prove
+- That the retrieved abstraction affects a *runtime coding decision* — Fix 34 is still disconnected from `capability-chat-turn.ts`.
+- That NEX1 can accumulate abstractions monotonically over many sessions (this was one-shot; no long-horizon test yet).
+- That NEX1 can invent new operator classes.
+
+### Next Intelligence Target
+The remaining edge in the founder's central question is *APPLY to a different situation*. Two candidates:
+- **Path α · Runtime wire-in** — attach Fix 34 retrieval to Fix 25 salience gate as informational trace. Small, safe, testable via direct-module. Confirms abstraction can bias observable output.
+- **Path β · Monotonic learning** — run N iterations of (seed → extract → retrieve) and prove support counts grow monotonically as new same-family evidence arrives, and old patterns never silently vanish.
+
+Path α is the more decisive test of the central question. Recommended next.
+
+---
+
+*End of Experiment 3 · continuing loop*
