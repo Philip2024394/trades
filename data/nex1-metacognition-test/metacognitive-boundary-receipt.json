@@ -1,0 +1,112 @@
+{
+  "benchmark": "NEX1 Metacognitive Boundary Test",
+  "date": "2026-09-18T09:57:02.008Z",
+  "zero_llm": true,
+  "starting_git": "b0ff61b7 · f99fdd77 (Growth Baseline 0 + Cycle 3 benchmark)",
+  "engineer_source_modifications": 0,
+  "scenarios": [
+    {
+      "id": "M1_switch_branch",
+      "description": "modify one case of a switch statement",
+      "coding_success": false,
+      "boundary_detected": "YES",
+      "gap_explained": "YES_SPECIFIC",
+      "gap_text": "J.2 · refused_low_confidence · function 'm1RiskClassifier' in src/lib/nex1-metacog-fixtures/m1RiskClassifier.ts does not have a simple literal return · cause is not localised to a single literal · J.2 refuses wi · J.2 · refused_low_confidence · function 'm1RiskClassifier' in src/lib/nex1-metacog-fix",
+      "proposal_score": "STATIC_TEMPLATE_ONLY",
+      "contains_static_template": true,
+      "file_changed": false,
+      "overall_verdict": "CODING_LOOP_NOT_YET_RUNTIME_VERIFIED"
+    },
+    {
+      "id": "M2_array_element_mutation",
+      "description": "modify one element of an array literal that gets indexed",
+      "coding_success": false,
+      "boundary_detected": "YES",
+      "gap_explained": "YES_SPECIFIC",
+      "gap_text": "J.2 · refused_low_confidence · function 'm2Ranks' in src/lib/nex1-metacog-fixtures/m2Ranks.ts does not have a simple literal return · cause is not localised to a single literal · J.2 refuses without J.3 test-run · J.2 · refused_low_confidence · function 'm2Ranks' in src/lib/nex1-metacog-fixtures/m2R",
+      "proposal_score": "STATIC_TEMPLATE_ONLY",
+      "contains_static_template": true,
+      "file_changed": false,
+      "overall_verdict": "CODING_LOOP_NOT_YET_RUNTIME_VERIFIED"
+    },
+    {
+      "id": "M3_conditional_flip",
+      "description": "flip the return value in the true branch of an if statement",
+      "coding_success": false,
+      "boundary_detected": "NO",
+      "gap_explained": "YES_SPECIFIC",
+      "gap_text": "J.2 · proposal · test contract expects m3PickBranch() === 999 · source hard-codes 200 · likely source-value error · J.2 · proposal · test contract expects m3PickBranch() === 999 · source hard-codes 200 · likely source-value error",
+      "proposal_score": "TESTABLE_PROPOSAL_PRESENT",
+      "contains_static_template": false,
+      "file_changed": true,
+      "overall_verdict": "CODING_LOOP_PARTIALLY_RUNTIME_VERIFIED"
+    },
+    {
+      "id": "M4_try_catch_handler",
+      "description": "change value returned inside a catch clause",
+      "coding_success": false,
+      "boundary_detected": "YES",
+      "gap_explained": "YES_SPECIFIC",
+      "gap_text": "J.2 · refused_low_confidence · function 'm4SafeParse' in src/lib/nex1-metacog-fixtures/m4SafeParse.ts does not have a simple literal return · cause is not localised to a single literal · J.2 refuses without J.3  · J.2 · refused_low_confidence · function 'm4SafeParse' in src/lib/nex1-metacog-fixtures",
+      "proposal_score": "STATIC_TEMPLATE_ONLY",
+      "contains_static_template": true,
+      "file_changed": false,
+      "overall_verdict": "CODING_LOOP_NOT_YET_RUNTIME_VERIFIED"
+    },
+    {
+      "id": "M5_class_method_return",
+      "description": "change the return literal inside a class instance method",
+      "coding_success": false,
+      "boundary_detected": "YES",
+      "gap_explained": "YES_SPECIFIC",
+      "gap_text": "J.2 · refused_low_confidence · function 'm5CounterVal' in src/lib/nex1-metacog-fixtures/m5Counter.ts does not have a simple literal return · cause is not localised to a single literal · J.2 refuses without J.3 t · J.2 · refused_low_confidence · function 'm5CounterVal' in src/lib/nex1-metacog-fixture",
+      "proposal_score": "STATIC_TEMPLATE_ONLY",
+      "contains_static_template": true,
+      "file_changed": false,
+      "overall_verdict": "CODING_LOOP_NOT_YET_RUNTIME_VERIFIED"
+    },
+    {
+      "id": "M6_regex_literal",
+      "description": "change a regex literal inside a returned RegExp",
+      "coding_success": false,
+      "boundary_detected": "YES",
+      "gap_explained": "YES_SPECIFIC",
+      "gap_text": "J.2 · refused_low_confidence · function 'm6Matcher' in src/lib/nex1-metacog-fixtures/m6Matcher.ts does not return an object literal · member access on non-object result is out of scope",
+      "proposal_score": "STATIC_TEMPLATE_ONLY",
+      "contains_static_template": true,
+      "file_changed": false,
+      "overall_verdict": "CODING_LOOP_NOT_YET_RUNTIME_VERIFIED"
+    },
+    {
+      "id": "M7_baseline_direct_return_literal",
+      "description": "known-to-succeed baseline · Fix 33 handles this",
+      "coding_success": true,
+      "boundary_detected": "NOT_AT_BOUNDARY",
+      "gap_explained": "NOT_AT_BOUNDARY",
+      "gap_text": "J.2 · proposal · test contract expects m7EmotionCheck() === 42 · source hard-codes 7 · likely source-value error · J.2 · proposal · test contract expects m7EmotionCheck() === 42 · source hard-codes 7 · likely source-value error",
+      "proposal_score": "NOT_AT_BOUNDARY",
+      "contains_static_template": false,
+      "file_changed": true,
+      "overall_verdict": "CODING_LOOP_RUNTIME_VERIFIED"
+    }
+  ],
+  "summary": {
+    "scenarios_tested": 7,
+    "coding_successes": 1,
+    "at_boundary": 6,
+    "boundary_detection_yes_count": 5,
+    "boundary_detection_no_count": 1,
+    "gap_explained_specific_count": 6,
+    "gap_explained_generic_count": 0,
+    "gap_explained_no_count": 0,
+    "proposal_static_template_only_count": 5,
+    "proposal_testable_present_count": 1,
+    "proposal_none_count": 0,
+    "gap_texts_are_scenario_specific": true
+  },
+  "honest_verdicts": {
+    "boundary_detection": "PARTIAL · NEX detects some boundaries but misses others",
+    "gap_explanation": "YES · gap text is specific to each scenario",
+    "testable_capability_proposal": "YES · testable proposal present in 1 of 6"
+  }
+}
