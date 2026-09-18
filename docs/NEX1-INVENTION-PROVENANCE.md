@@ -221,4 +221,29 @@ That commit, together with the commit that adds this document, establishes the c
 
 ---
 
-*End of record. Version 1.0. Do not edit without appending a §12 amendment log preserving prior text.*
+## 12 · Amendment log · appended · not rewriting §§1-11
+
+### 12.1 · 2026-09-18 · Milestone source commit landed
+- **Commit:** `a265645d feat(nex1): milestone · native cognitive lattice · zero-LLM`
+- **Effect:** all NEX1 source files listed in §5 with `GIT = UNTRACKED` now have permanent git blob hashes. The mtime + SHA-16 evidence in §5 is now backed by a git object database entry.
+- **Author:** `Philip2024394 <Philip2024394@users.noreply.github.com>`
+- **91 files · 29,374 line insertions.** Regression `27 test files · 2135/2135` unchanged.
+
+### 12.2 · 2026-09-18 · Test A verified · REFUSED_HONESTLY
+- **Commit:** `7370b830 test(nex1): Test A · switch-branch falsification · REFUSED_HONESTLY`
+- **Evidence:** `data/nex1-discovery-experiments/test-a-direct-module-receipt.json`
+- **Nature:** direct-module invocation of `runSpecificationDrivenCodingLoop` against a fresh switch-branch fixture. Plan stage returned `CAPABILITY_NOT_YET_IMPLEMENTED_WITHOUT_LLM`; fixture byte-identity preserved. No operator was added before or during the test.
+- **Class:** RUNTIME_VERIFIED BEHAVIOUR. Establishes NEX1's truthful capability boundary at milestone `a265645d`.
+
+### 12.3 · 2026-09-18 · Test B verified · Cross-experience abstraction
+- **Evidence:** `data/nex1-discovery-experiments/test-b-abstraction-receipt.json` · verdict field `"VERIFIED"` · 7 of 7 adversarial cases correct.
+- **Nature:** direct-module invocation of `capability-experience-abstraction.ts` (Fix 34). Deterministically extracts structural patterns from ≥ 2 seeded prior conclusions across DIFFERENT source files. Correctly refuses for below-threshold and different-family queries. Correctly returns exact and relaxed matches for same-family novel queries.
+- **Class:** RUNTIME_VERIFIED BEHAVIOUR. First demonstration of cross-source-file abstraction in NEX1. Zero LLM.
+- **Honest limits:** the abstraction is recognition-only; it does not invent new operator classes. Case 6 corroborates Test A: the abstraction correctly refuses the switch-shape query even with accumulated same-file-family experience.
+
+### 12.4 · Reference: Intelligence Discovery Log
+The full experiment write-up (Question / Setup / Prior Knowledge / Novel Element / Mechanism / Observation / Evidence / Verification / Anti-Cheating Audit / Result / What Proves / What Does NOT Prove / Next Target) lives at `docs/NEX1-INTELLIGENCE-DISCOVERY.md` and is maintained append-only under the same integrity rules as this record.
+
+---
+
+*Record version 1.1 · integrity preserved · §§1-11 unchanged.*

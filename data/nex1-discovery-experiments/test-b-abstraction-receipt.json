@@ -1,0 +1,83 @@
+{
+  "test": "B · cross-experience abstraction · milestone a265645d + Fix 34 loaded direct",
+  "date": "2026-09-18T03:07:08.407Z",
+  "zero_llm": true,
+  "version": "fix34.v1",
+  "cases": {
+    "case_1_zero_prior": {
+      "patterns_count": 0,
+      "match": false,
+      "match_kind": null,
+      "expected_match": false,
+      "correct": true
+    },
+    "case_2_single_prior_below_threshold": {
+      "patterns_count": 1,
+      "match": false,
+      "match_kind": null,
+      "expected_match": false,
+      "correct": true
+    },
+    "case_3_same_family_generalisation": {
+      "patterns_count": 1,
+      "match": true,
+      "match_kind": "exact",
+      "match_support_count": 3,
+      "total_numeric_selected_support": 3,
+      "match_features": {
+        "has_signature_format": true,
+        "value_type": "number",
+        "path_dir_root": "src",
+        "path_dir_second": "lib",
+        "selection_state": "SELECTED"
+      },
+      "expected_match": true,
+      "expected_kind": "exact",
+      "expected_support": 3,
+      "correct": true
+    },
+    "case_3b_relaxed_second_dir": {
+      "patterns_count": 1,
+      "match": true,
+      "match_kind": "relaxed_second_dir",
+      "expected_match": true,
+      "expected_kind": "relaxed_second_dir",
+      "correct": true
+    },
+    "case_4_different_family_refusal": {
+      "patterns_count": 1,
+      "match": false,
+      "match_kind": null,
+      "expected_match": false,
+      "correct": true
+    },
+    "case_5_adversarial_mix": {
+      "patterns_count": 3,
+      "numeric_selected_group_count": 1,
+      "tie_group_count": 1,
+      "string_group_count": 0,
+      "groups_distinct": false,
+      "match": true,
+      "match_kind": "exact",
+      "match_support_count": 2,
+      "expected_match": true,
+      "correct": true
+    },
+    "case_6_switch_shape_refused": {
+      "match": false,
+      "match_kind": null,
+      "expected_match": false,
+      "correct": true
+    }
+  },
+  "case_correctness": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "verdict": "VERIFIED"
+}
