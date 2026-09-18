@@ -22,6 +22,8 @@ import type {
   Nex1IntentClassified,
   Nex1IntentRefused,
   Nex1IntentResult,
+  Nex1ProjectDirEvidenceKind,
+  Nex1ProjectDirReference,
   Nex1RequirementPhrase,
   Nex1TextSpan,
   Nex1VerbFamily,
@@ -41,13 +43,39 @@ import {
   VERB_LEXEME_INDEX,
   VOCABULARY_VERSION,
   WELL_KNOWN_CONFIG_FILES,
+  WELL_KNOWN_PROJECT_DIRS,
 } from "./vocabulary";
+import { requirementMarkerGate } from "./context-evidence-gate";
+// Founder 2026-09-17 · C2 Phase 3 · paraphrase fallback before we refuse on
+// no-verb-recognised. Same shape as the orchestrator's Layer 1.5 fallback.
+import { lookupParaphrase } from "@/lib/nex-agent/language/capability-paraphrase-library";
+
+/**
+ * Map from paraphrase-library canonical intent slugs to verb families.
+ * Chat-only slugs (small_talk / gratitude / etc.) are deliberately absent —
+ * they don't belong in a coding-classifier fallback.
+ */
+const PARAPHRASE_SLUG_TO_VERB_FAMILY: Readonly<Record<string, Nex1VerbFamily>> = Object.freeze({
+  fix_bug: "FIX",
+  add_feature: "BUILD",
+  add_migration: "BUILD",
+  add_api_route: "BUILD",
+  add_test: "TEST",
+  refactor: "REFACTOR",
+  explain: "INVESTIGATE",
+});
 
 const TAUGHT_BY = "master_ai_engineer" as const;
 
 // Whitespace + punctuation splitter. Preserves original char offsets via slice.
 // Keeps letters, digits, underscore, hyphen, dot, slash — enough for file paths.
-const TOKEN_RE = /[A-Za-z][A-Za-z0-9._/\-]*/g;
+//
+// v5.0.0-alpha.9 · leading-char class expanded from `[A-Za-z]` to `[A-Za-z_]`
+// so double-underscore project dirs (__tests__, __mocks__, __snapshots__,
+// __pycache__) that live in WELL_KNOWN_PROJECT_DIRS can actually tokenise.
+// Impact analysis confirmed no downstream vocabulary has leading-underscore
+// entries that would create false matches (see design doc).
+const TOKEN_RE = /[A-Za-z_][A-Za-z0-9._/\-]*/g;
 
 // File-reference extractor · matches paths with any of these extensions.
 // CRITICAL: alternation is first-match-wins, so longer extensions MUST come
@@ -143,6 +171,293 @@ function isFilenameBoundary(ch: string): boolean {
   return !/[A-Za-z0-9._\-/]/.test(ch);
 }
 
+// ── PROJECT-DIR EVIDENCE GATE VOCABULARY (Phase 1.10-alpha.2) ────────────────
+//
+// These sets are LOCAL to the classifier because they are not vocabulary
+// registrations — they are anchors used to decide whether a well-known
+// directory name in the goal was used as a directory reference vs an English
+// word.
+//
+// Founder decisions (2026-09-16):
+//   #1 · `in` IS included in PATH_VERBS_PREPS — enables natural phrases like
+//        "in services", "under components", "inside hooks".
+//   #2 · framework_anchor is MANDATORY co-occurrence with path_noun — a bare
+//        framework mention is not sufficient to claim a directory reference
+//        (prevents "React components are stateful" false positives).
+//   #3 · compound paths emit ONE reference with path + segments[] — not many
+//        independent references (preserves compound structure).
+
+const PATH_NOUNS: ReadonlySet<string> = new Set([
+  "directory",
+  "directories",
+  "folder",
+  "folders",
+  "dir",
+  "dirs",
+  "subdir",
+  "subdirs",
+  "subdirectory",
+  "subdirectories",
+  "path",
+  "paths",
+  "tree",
+  "layout",
+  "structure",
+]);
+
+const PATH_VERBS_PREPS: ReadonlySet<string> = new Set([
+  // navigation verbs
+  "cd",
+  "check",
+  "open",
+  "list",
+  "ls",
+  "view",
+  "explore",
+  // prepositions used in path phrasings
+  "into",
+  "in",
+  "inside",
+  "under",
+  "at",
+  "to",
+  "from",
+  "within",
+]);
+
+/**
+ * Terminal-position rule for path_verb_anchor emission (v5.0.0-alpha.9).
+ *
+ * FOUNDER DIRECTIVE 2026-09-16 (Native Understanding Fix Prompt):
+ *   "Make NEX1 understand the surrounding structural evidence sufficiently
+ *    to distinguish PATH CONTEXT (in src/lib) from NORMAL LANGUAGE
+ *    (in services rendered). Develop a deterministic, evidence-backed rule.
+ *    The solution must generalise to unseen examples."
+ *
+ * The rule: a bare-word target that is preceded by a path_verb_prep only
+ * emits `path_verb_anchor` when the target sits at a "path-terminal"
+ * position — one where the phrase either ENDS or continues with more
+ * path-related evidence. If English continues past the target with an
+ * unrelated word, no emission.
+ *
+ * Terminal signals (any ONE is sufficient):
+ *   T1 · End of goal (no meaningful character after)
+ *   T2 · Sentence-terminating punctuation next (`.`, `,`, `;`, `!`, `?`)
+ *   T3 · Next token is another WELL_KNOWN_PROJECT_DIRS entry (list of dirs)
+ *   T4 · Next token is a PATH_NOUNS entry (`directory`, `folder`, etc.)
+ *   T5 · Next token is `and`/`or` AND the token after is a WELL_KNOWN_PROJECT_DIRS
+ *        entry (list continuation via connector)
+ *
+ * If none of T1-T5 hold, the target sits in an English continuation. The
+ * detector refuses to emit — honest UNKNOWN over confident guessing.
+ */
+function isPathVerbTerminal(
+  goal: string,
+  tokens: readonly { text: string; span: Nex1TextSpan }[],
+  i: number,
+): boolean {
+  const t = tokens[i]!;
+
+  // If token itself ends with sentence-terminal punctuation (tokenizer greedy
+  // includes trailing `.` in char class), treat as terminal.
+  const lastChar = t.text.slice(-1);
+  if (".;!?".includes(lastChar)) return true;
+
+  // Look at the raw goal after token end. Skip whitespace, then inspect the
+  // next non-whitespace character (which may be punctuation or a token start).
+  let scanIdx = t.span.end;
+  while (scanIdx < goal.length && /\s/.test(goal[scanIdx]!)) scanIdx++;
+
+  // T1 · EOF after whitespace.
+  if (scanIdx >= goal.length) return true;
+
+  // T2 · Sentence-terminating punctuation immediately after target.
+  if (".,;!?".includes(goal[scanIdx]!)) return true;
+
+  // Look at the next word token by array position.
+  const nextT = i + 1 < tokens.length ? tokens[i + 1] : null;
+  if (!nextT) return true; // no next token → terminal
+  const nextLower = nextT.text.toLowerCase();
+
+  // T3 · Next token is another well-known dir (list continuation).
+  if (WELL_KNOWN_PROJECT_DIRS.has(nextLower)) return true;
+
+  // T4 · Next token is a path_noun (directory / folder / etc.).
+  if (PATH_NOUNS.has(nextLower)) return true;
+
+  // T5 · Connector + well-known dir (list-with-connector).
+  if (nextLower === "and" || nextLower === "or") {
+    const nextNextT = i + 2 < tokens.length ? tokens[i + 2] : null;
+    if (nextNextT && WELL_KNOWN_PROJECT_DIRS.has(nextNextT.text.toLowerCase())) return true;
+  }
+
+  // None of T1-T5 → English continuation. Suppress emission.
+  return false;
+}
+
+/**
+ * Extract project-directory references. Runs AFTER file-reference extraction
+ * (so file-ref spans can be respected) and BEFORE coding-concept extraction
+ * (so a well-known dir like `hooks` inside a path isn't double-counted as a
+ * bare concept). See design doc
+ * `project_nex1_cluster2_project_dirs_design_2026_09_16.md` and Founder
+ * decisions of 2026-09-16.
+ *
+ * Three passes, in order:
+ *   1. Directory portion of already-extracted file references → adjacent_file_ref
+ *   2. Compound-path tokens (containing '/', not a filename) → path_segment,
+ *      or trailing_slash if the token ends with '/'
+ *   3. Bare-word tokens matching WELL_KNOWN_PROJECT_DIRS → evidence-gated
+ *      emission (path_noun_anchor | path_verb_anchor | framework_anchor)
+ *
+ * A token can only be claimed once — later passes skip already-claimed spans.
+ * Passes 1 and 2 always emit when they see a known dir segment (strong evidence);
+ * pass 3 requires a nearby anchor per the founder-locked evidence gate.
+ */
+function extractProjectDirs(
+  goal: string,
+  tokens: readonly { text: string; span: Nex1TextSpan }[],
+  fileRefs: readonly Nex1FileReference[],
+): readonly Nex1ProjectDirReference[] {
+  const out: Nex1ProjectDirReference[] = [];
+  const claimed: { start: number; end: number }[] = [];
+
+  const overlapsClaimed = (span: { start: number; end: number }): boolean =>
+    claimed.some((r) => span.start < r.end && span.end > r.start);
+
+  const claim = (start: number, end: number): void => {
+    claimed.push({ start, end });
+  };
+
+  // ── Pass 1 · directory portion of file references ────────────────────────
+  for (const fref of fileRefs) {
+    const parts = fref.path.split("/");
+    if (parts.length < 2) continue;
+    const dirParts = parts.slice(0, -1);
+    const anyKnown = dirParts.some((s) => WELL_KNOWN_PROJECT_DIRS.has(s.toLowerCase()));
+    if (!anyKnown) continue;
+    const dirStr = dirParts.join("/");
+    const start = fref.span.start;
+    const end = start + dirStr.length;
+    out.push({
+      path: dirStr,
+      segments: dirParts.slice(),
+      evidence: "adjacent_file_ref",
+      span: { start, end, text: goal.slice(start, end) },
+    });
+    claim(fref.span.start, fref.span.end);
+  }
+
+  // ── Pass 2 · compound-path tokens (contain '/') ──────────────────────────
+  for (const tok of tokens) {
+    if (overlapsClaimed(tok.span)) continue;
+    const lower = tok.text.toLowerCase();
+    if (!lower.includes("/")) continue;
+
+    // Trim trailing slashes and leading slashes.
+    let stripped = lower;
+    let hadTrailingSlash = false;
+    while (stripped.endsWith("/")) {
+      stripped = stripped.slice(0, -1);
+      hadTrailingSlash = true;
+    }
+    while (stripped.startsWith("/")) stripped = stripped.slice(1);
+    if (stripped.length === 0) continue;
+
+    const segs = stripped.split("/").filter((s) => s.length > 0);
+    if (segs.length === 0) continue;
+
+    // Skip filename-shaped tokens (last segment has an internal dot). Dotfiles
+    // like `.env` start with a dot and are excluded anyway by the "no /" check
+    // in Pass 3.
+    const lastSeg = segs[segs.length - 1] ?? "";
+    if (lastSeg.includes(".") && !lastSeg.startsWith(".")) continue;
+
+    const anyKnown = segs.some((s) => WELL_KNOWN_PROJECT_DIRS.has(s));
+    if (!anyKnown) continue;
+
+    const evidence: Nex1ProjectDirEvidenceKind = hadTrailingSlash ? "trailing_slash" : "path_segment";
+    const spanEnd = hadTrailingSlash ? tok.span.end - 1 : tok.span.end;
+    out.push({
+      path: stripped,
+      segments: segs,
+      evidence,
+      span: { start: tok.span.start, end: spanEnd, text: goal.slice(tok.span.start, spanEnd) },
+    });
+    claim(tok.span.start, tok.span.end);
+  }
+
+  // ── Pass 3 · bare-word tokens matching WELL_KNOWN_PROJECT_DIRS ───────────
+  for (let i = 0; i < tokens.length; i++) {
+    const tok = tokens[i]!;
+    if (overlapsClaimed(tok.span)) continue;
+    const rawLower = tok.text.toLowerCase();
+    // Tokenizer includes trailing sentence punctuation (`.`, `;`, `!`, `?`)
+    // greedily in the token because those chars are in the char class. Strip
+    // them for the dir-lookup so "services." matches "services".
+    let lower = rawLower;
+    let trailingPunc = 0;
+    while (lower.length > 0 && ".;!?".includes(lower.slice(-1))) {
+      lower = lower.slice(0, -1);
+      trailingPunc++;
+    }
+    if (lower.includes("/") || lower.includes(".")) continue;
+    if (!WELL_KNOWN_PROJECT_DIRS.has(lower)) continue;
+
+    // Evidence gate. Priority (highest → lowest):
+    //   framework_anchor (requires path_noun co-occurrence · founder #2)
+    //   path_noun_anchor
+    //   path_verb_anchor
+    const prevLower = i > 0 ? tokens[i - 1]!.text.toLowerCase() : "";
+    const windowStart = Math.max(0, i - 2);
+    const windowEnd = Math.min(tokens.length - 1, i + 2);
+    let hasPathNoun = false;
+    let hasFramework = false;
+    for (let j = windowStart; j <= windowEnd; j++) {
+      if (j === i) continue;
+      const nlower = tokens[j]!.text.toLowerCase();
+      if (PATH_NOUNS.has(nlower)) hasPathNoun = true;
+      if (CODING_LEXEME_INDEX.get(nlower) === "framework") hasFramework = true;
+    }
+    const hasPathVerbBefore = PATH_VERBS_PREPS.has(prevLower);
+
+    let evidence: Nex1ProjectDirEvidenceKind | null = null;
+    if (hasFramework && hasPathNoun) {
+      // Founder decision #2 · framework anchor REQUIRES path_noun co-occurrence.
+      evidence = "framework_anchor";
+    } else if (hasPathNoun) {
+      evidence = "path_noun_anchor";
+    } else if (hasPathVerbBefore) {
+      // v5.0.0-alpha.9 · path_verb_anchor bare-word emission requires the
+      // target at a path-terminal position. See isPathVerbTerminal comment.
+      // "in services rendered" no longer emits; "in services", "in
+      // services.", "in services directory", "in components and hooks"
+      // still emit correctly.
+      if (isPathVerbTerminal(goal, tokens, i)) {
+        evidence = "path_verb_anchor";
+      }
+    }
+    if (!evidence) continue;
+
+    // Span excludes any trailing punctuation the tokenizer swallowed.
+    const emitSpanEnd = tok.span.end - trailingPunc;
+    out.push({
+      path: lower,
+      segments: [lower],
+      evidence,
+      span: {
+        start: tok.span.start,
+        end: emitSpanEnd,
+        text: goal.slice(tok.span.start, emitSpanEnd),
+      },
+    });
+    claim(tok.span.start, tok.span.end);
+  }
+
+  // Deterministic order: by span start.
+  return out.slice().sort((a, b) => a.span.start - b.span.start);
+}
+
 /**
  * Extract coding-concept tokens from the tokenised goal.
  *
@@ -226,7 +541,19 @@ function isWordBoundaryChar(ch: string): boolean {
   return !/[a-z0-9]/i.test(ch);
 }
 
-/** Extract requirement phrases anchored on locked markers. */
+/**
+ * Extract requirement phrases anchored on locked markers.
+ *
+ * v5.0.0-alpha.10 · Context Evidence Gate (CEG) integration:
+ * Each marker match is consulted against `requirementMarkerGate()` before
+ * emission. REJECT verdicts suppress emission (English perfective/passive,
+ * temporal "within", English quantifier "only", speculative modal frames).
+ * ACCEPT emissions retain the existing behaviour. UNKNOWN treated as REJECT
+ * per founder's "when NEX cannot know, it says UNKNOWN rather than guessing".
+ *
+ * Existing behaviour preserved for strong markers ("must be able to",
+ * "must not", "should not", "shall not", "verify/confirm/prove ...", etc.).
+ */
 function extractRequirementPhrases(goalLower: string, goal: string): readonly Nex1RequirementPhrase[] {
   const out: Nex1RequirementPhrase[] = [];
   const claimedRanges: { start: number; end: number }[] = [];
@@ -244,18 +571,30 @@ function extractRequirementPhrases(goalLower: string, goal: string): readonly Ne
       const endBoundary = isWordBoundaryChar(afterMarkerCh);
 
       if (startBoundary && endBoundary) {
-        const phraseEnd = findClauseEnd(goalLower, idx + marker.prefix.length);
         const alreadyClaimed = claimedRanges.some(
           (r) => idx >= r.start && idx < r.end,
         );
         if (!alreadyClaimed) {
-          const span: Nex1TextSpan = {
-            start: idx,
-            end: phraseEnd,
-            text: goal.slice(idx, phraseEnd).trim(),
-          };
-          out.push({ kind: marker.kind, evidence: span });
-          claimedRanges.push({ start: idx, end: phraseEnd });
+          // v5.0.0-alpha.10 · CEG check. Under founder rule, ACCEPT emits,
+          // REJECT and UNKNOWN both suppress.
+          const verdict = requirementMarkerGate(
+            goal,
+            marker.prefix,
+            idx,
+            idx + marker.prefix.length,
+          );
+          if (verdict === "ACCEPT") {
+            const phraseEnd = findClauseEnd(goalLower, idx + marker.prefix.length);
+            const span: Nex1TextSpan = {
+              start: idx,
+              end: phraseEnd,
+              text: goal.slice(idx, phraseEnd).trim(),
+            };
+            out.push({ kind: marker.kind, evidence: span });
+            claimedRanges.push({ start: idx, end: phraseEnd });
+          }
+          // REJECT / UNKNOWN → do NOT claim range; a stronger marker at
+          // a longer prefix (or a different position) may still match here.
         }
       }
       searchFrom = idx + marker.prefix.length;
@@ -344,10 +683,17 @@ function classifyVerbFamily(
   const hits: Nex1VerbHit[] = [];
   for (const t of tokens) {
     const lower = t.text.toLowerCase();
-    const family = VERB_LEXEME_INDEX.get(lower);
+    // Fix 2026-09-16 · TOKEN_RE includes "." in the character class (needed for
+    // filenames like foo.ts). This means a verb at the end of a sentence
+    // captures the trailing period · e.g. "Investigate." → "investigate.".
+    // Strip trailing punctuation before verb-family lookup so sentence-final
+    // verbs are recognised. Filename tokens still preserve their extension
+    // because the period is INTERNAL (e.g. "foo.ts" has no trailing punct).
+    const stripped = lower.replace(/[.,;:!?]+$/, "");
+    const family = VERB_LEXEME_INDEX.get(stripped);
     if (!family) continue;
     perFamily.set(family, (perFamily.get(family) ?? 0) + 1);
-    hits.push({ family, variant: lower, span: t.span });
+    hits.push({ family, variant: stripped, span: t.span });
   }
 
   const totalHits = hits.length;
@@ -445,14 +791,34 @@ export function classifyFounderIntent(goalRaw: string): Nex1IntentResult {
   trace.push(`token_count=${tokens.length}`);
 
   // Verb classification
-  const verbResult = classifyVerbFamily(tokens, trace);
+  let verbResult = classifyVerbFamily(tokens, trace);
   if (verbResult.winner === null) {
-    return refuse(
-      "refused_no_verb_recognised",
-      "no verb from the controlled vocabulary appeared in the goal",
-      trace,
-      goalLength,
-    );
+    // C2 Phase 3 · deterministic paraphrase fallback.
+    // Same shape as the orchestrator's Layer 1.5 fallback: only fires when the
+    // vocabulary's own verb lexicon missed. Synthesises a single verb hit from
+    // the paraphrase source span so downstream signals still have evidence.
+    const para = lookupParaphrase(goal);
+    const family = para ? PARAPHRASE_SLUG_TO_VERB_FAMILY[para.target_slug] ?? null : null;
+    if (para && family) {
+      const srcLower = para.source.toLowerCase();
+      const idx = goalLower.indexOf(srcLower);
+      const start = idx >= 0 ? idx : 0;
+      const end = idx >= 0 ? idx + srcLower.length : Math.min(goal.length, srcLower.length);
+      const paraphraseHit: Nex1VerbHit = {
+        family,
+        variant: srcLower,
+        span: { start, end, text: goal.slice(start, end) },
+      };
+      verbResult = { winner: family, confidence: 0.85, hits: [paraphraseHit], tiedTop: false };
+      trace.push(`paraphrase_fallback · "${para.source}" → verb_family=${family} · via ${para.match_method}`);
+    } else {
+      return refuse(
+        "refused_no_verb_recognised",
+        "no verb from the controlled vocabulary appeared in the goal",
+        trace,
+        goalLength,
+      );
+    }
   }
   // A tied top is a real refusal only when confidence is exactly split AND no first-appearance tiebreak is safe.
   // Our tiebreak IS deterministic (first-appearance), so we permit it and flag as ambiguity, not refusal.
@@ -472,6 +838,23 @@ export function classifyFounderIntent(goalRaw: string): Nex1IntentResult {
   // config files without an extension like Dockerfile / Gemfile).
   const fileRefs = extractFileReferences(goal);
   trace.push(`file_references=${fileRefs.length}`);
+
+  // Project directory references (Phase 1.10-alpha.2). Evidence-gated:
+  // bare-word tokens require a path_noun / path_verb / framework anchor,
+  // compound paths and trailing-slash tokens emit with structural evidence.
+  const projectDirRefs = extractProjectDirs(goal, tokens, fileRefs);
+  trace.push(
+    `project_dir_references=${projectDirRefs.length}${
+      projectDirRefs.length > 0
+        ? ` · by_evidence=${JSON.stringify(
+            projectDirRefs.reduce<Record<string, number>>((acc, r) => {
+              acc[r.evidence] = (acc[r.evidence] ?? 0) + 1;
+              return acc;
+            }, {}),
+          )}`
+        : ""
+    }`,
+  );
 
   // Requirement phrases
   const requirementPhrases = extractRequirementPhrases(goalLower, goal);
@@ -557,6 +940,7 @@ export function classifyFounderIntent(goalRaw: string): Nex1IntentResult {
     domain_tokens: domainTokens,
     coding_concepts: codingConcepts,
     file_references: fileRefs,
+    project_dir_references: projectDirRefs,
     requirement_phrases: requirementPhrases,
     ambiguities,
     overall_confidence: overallConfidence,

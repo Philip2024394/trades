@@ -103,6 +103,41 @@ export interface Nex1CodingConceptToken {
   readonly spans: readonly Nex1TextSpan[];
 }
 
+/**
+ * Kind of evidence supporting a project-dir detection. Bare English words that
+ * collide with directory names (`services`, `models`, `pages`) require positive
+ * context evidence before being emitted — the gate prevents false positives
+ * such as tagging `services` in "the company provides services".
+ */
+export type Nex1ProjectDirEvidenceKind =
+  | "trailing_slash"        // "services/"
+  | "path_segment"          // inside a "/"-containing path already captured by FILE_REF_RE
+  | "path_noun_anchor"      // "the services directory / folder / dir / subdir"
+  | "path_verb_anchor"      // "cd services", "into services"
+  | "adjacent_file_ref"     // directly inside an extracted file reference span
+  | "framework_anchor";     // "Next.js pages", "Rails app/models"
+
+/**
+ * A well-known project directory reference extracted from the goal. Emitted
+ * separately from `coding_concepts` because dir signals are ontologically
+ * path-shaped, not tool/framework/concept/language-shaped.
+ *
+ * For a compound path like `"src/lib/util"` the detector emits ONE reference
+ * with `path="src/lib/util"` and `segments=["src","lib","util"]` — never three
+ * independent references (Founder decision 2026-09-16 · Phase 1.10-alpha.2).
+ * This preserves the compound structure ("NEX1 understands the actual path")
+ * while retaining the individual segment evidence.
+ *
+ * For a bare-word reference like `"services"` the detector emits one reference
+ * with `path="services"` and `segments=["services"]`.
+ */
+export interface Nex1ProjectDirReference {
+  readonly path: string;
+  readonly segments: readonly string[];
+  readonly evidence: Nex1ProjectDirEvidenceKind;
+  readonly span: Nex1TextSpan;
+}
+
 /** Successful classification result. */
 export interface Nex1IntentClassified {
   readonly kind: "classified";
@@ -122,6 +157,8 @@ export interface Nex1IntentClassified {
   readonly coding_concepts: readonly Nex1CodingConceptToken[];
   /** File references regex-extracted from the goal (source files + well-known config files). */
   readonly file_references: readonly Nex1FileReference[];
+  /** Well-known project directory references gated by contextual evidence. Empty in alpha.1 (detector wires in alpha.2). */
+  readonly project_dir_references: readonly Nex1ProjectDirReference[];
   /** Extracted requirement phrases. */
   readonly requirement_phrases: readonly Nex1RequirementPhrase[];
   /** Any ambiguities noted during classification. */

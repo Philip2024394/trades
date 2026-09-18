@@ -523,13 +523,24 @@ function findEnclosingObjectLiteralAdjacent(
     return deepest;
   };
   const deepest = findDeepest(sf);
-  // Step 2 · parent-walk upward
+  // Step 2 · parent-walk upward · with sibling-initializer lookahead so
+  // diagnostics reported at a VariableDeclaration's name / type-annotation
+  // still resolve to the RHS object literal (Rung-5 gap: `export const x: T
+  // = { ... };` — tsc points at `x`, the object literal is the initializer).
   let cur: ts.Node | undefined = deepest;
   while (cur) {
     if (ts.isObjectLiteralExpression(cur)) return cur;
     if (ts.isParenthesizedExpression(cur) && ts.isObjectLiteralExpression(cur.expression)) {
       return cur.expression;
     }
+    // Sibling-initializer lookahead
+    if (ts.isVariableDeclaration(cur) && cur.initializer) {
+      if (ts.isObjectLiteralExpression(cur.initializer)) return cur.initializer;
+      if (ts.isAsExpression(cur.initializer) && ts.isObjectLiteralExpression(cur.initializer.expression)) return cur.initializer.expression;
+      if (ts.isParenthesizedExpression(cur.initializer) && ts.isObjectLiteralExpression(cur.initializer.expression)) return cur.initializer.expression;
+    }
+    // Return-statement lookahead: `return { ... }`
+    if (ts.isReturnStatement(cur) && cur.expression && ts.isObjectLiteralExpression(cur.expression)) return cur.expression;
     cur = cur.parent;
   }
   // Step 3 · descendant search within the deepest containing node, preferring
@@ -577,6 +588,611 @@ function deepCloneAsSynthetic<T extends ts.Node>(node: T): T {
     if (init) return init as unknown as T;
   }
   return node;
+}
+
+// ─── Operation 5 · add_array_element (Rung 3 · authorised 2026-09-15) ──
+//
+// taught_by = master_ai_engineer · Founder authorisation 2026-09-15
+//
+// Deterministic · zero LLM · text-splicing on AST-located coordinates.
+//
+// Purpose: consume the `Nex1DataflowProposal` emitted by capability-K
+// (change_kind = "add_array_element") and produce a mutated source that
+// inserts one new element per missing_id into an array-literal symbol.
+//
+// Reusable across ANY of these shapes:
+//   export const X = [ ... ];
+//   export const X: readonly T[] = [ ... ];
+//   export const X = Object.freeze([ ... ]);
+//   export const X: readonly T[] = Object.freeze([ ... ]);
+//
+// Element template = peer_element_source (verbatim text of an existing
+// element from the source array). The operator substitutes ONLY the
+// id_field's string-literal value with the missing id. Every other field
+// is preserved verbatim from the peer to keep behaviour predictable and
+// to avoid inventing semantic content.
+//
+// Refuses cleanly on: symbol not found · duplicate symbol · wrong initializer
+// shape · peer unparseable · peer missing id_field · already-present id ·
+// substitution would produce invalid TypeScript. Every refusal is named.
+
+export interface AddArrayElementInput {
+  readonly array_symbol: string;
+  readonly missing_ids: readonly string[];
+  readonly peer_element_source: string;
+  readonly id_field: string;
+}
+
+export type AddArrayElementRefusal =
+  | "input_no_missing_ids"
+  | "input_empty_peer"
+  | "input_empty_array_symbol"
+  | "source_unparseable"
+  | "symbol_not_found"
+  | "symbol_ambiguous_multiple_declarations"
+  | "initializer_not_supported_form"
+  | "array_literal_not_found"
+  | "peer_unparseable"
+  | "peer_missing_id_field"
+  | "peer_id_field_not_string_literal"
+  | "all_ids_already_present"
+  | "mutation_produced_invalid_source";
+
+export interface AddArrayElementApplyOk {
+  readonly ok: true;
+  readonly next: string;
+  readonly rationale: string;
+  readonly inserted_ids: readonly string[];
+  readonly skipped_already_present_ids: readonly string[];
+}
+export interface AddArrayElementApplyRefusal {
+  readonly ok: false;
+  readonly refusal: AddArrayElementRefusal;
+  readonly reason: string;
+}
+export type AddArrayElementResult = AddArrayElementApplyOk | AddArrayElementApplyRefusal;
+
+export function applyAddArrayElement(source: string, input: AddArrayElementInput): AddArrayElementResult {
+  // Input validation
+  if (!input.array_symbol || input.array_symbol.length === 0) {
+    return { ok: false, refusal: "input_empty_array_symbol", reason: "array_symbol is empty" };
+  }
+  if (input.missing_ids.length === 0) {
+    return { ok: false, refusal: "input_no_missing_ids", reason: "missing_ids is empty · nothing to add" };
+  }
+  if (!input.peer_element_source || input.peer_element_source.trim().length === 0) {
+    return { ok: false, refusal: "input_empty_peer", reason: "peer_element_source is empty" };
+  }
+
+  // Parse source
+  let sf: ts.SourceFile;
+  try {
+    sf = ts.createSourceFile("__nex1.ts", source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  } catch (e) {
+    return {
+      ok: false,
+      refusal: "source_unparseable",
+      reason: `source did not parse: ${e instanceof Error ? e.message.slice(0, 200) : String(e)}`,
+    };
+  }
+
+  // Locate exported variable declaration named array_symbol
+  const matches: ts.VariableDeclaration[] = [];
+  for (const stmt of sf.statements) {
+    if (!ts.isVariableStatement(stmt)) continue;
+    for (const d of stmt.declarationList.declarations) {
+      if (!ts.isIdentifier(d.name)) continue;
+      if (d.name.text !== input.array_symbol) continue;
+      matches.push(d);
+    }
+  }
+  if (matches.length === 0) {
+    return { ok: false, refusal: "symbol_not_found", reason: `no variable declaration named '${input.array_symbol}' at top level` };
+  }
+  if (matches.length > 1) {
+    return { ok: false, refusal: "symbol_ambiguous_multiple_declarations", reason: `${matches.length} top-level declarations named '${input.array_symbol}'` };
+  }
+  const decl = matches[0]!;
+  if (!decl.initializer) {
+    return { ok: false, refusal: "initializer_not_supported_form", reason: `'${input.array_symbol}' has no initializer` };
+  }
+
+  // Resolve to underlying ArrayLiteralExpression (bare or wrapped in Object.freeze)
+  const arr = resolveArrayLiteral(decl.initializer);
+  if (!arr) {
+    return { ok: false, refusal: "initializer_not_supported_form", reason: `initializer is not an array literal or Object.freeze([...]) · got ${ts.SyntaxKind[decl.initializer.kind]}` };
+  }
+
+  // Parse peer as a standalone expression via a template SourceFile
+  const peerTemplate = `const __peer = ${input.peer_element_source};`;
+  const peerSf = ts.createSourceFile("__peer.ts", peerTemplate, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  const peerStmt = peerSf.statements.find(ts.isVariableStatement);
+  const peerExpr = peerStmt?.declarationList.declarations[0]?.initializer;
+  if (!peerExpr || !ts.isObjectLiteralExpression(peerExpr)) {
+    return { ok: false, refusal: "peer_unparseable", reason: "peer_element_source did not parse as a valid ObjectLiteralExpression" };
+  }
+  // Verify peer has the id_field with a string-literal value
+  const peerIdProp = findIdProperty(peerExpr, input.id_field);
+  if (!peerIdProp) {
+    return { ok: false, refusal: "peer_missing_id_field", reason: `peer element has no '${input.id_field}' property` };
+  }
+  if (!ts.isStringLiteral(peerIdProp.initializer) && !ts.isNoSubstitutionTemplateLiteral(peerIdProp.initializer)) {
+    return { ok: false, refusal: "peer_id_field_not_string_literal", reason: `peer '${input.id_field}' property value is not a plain string literal` };
+  }
+  const peerIdValue = peerIdProp.initializer.text;
+
+  // Enumerate existing ids in the target array (dedup)
+  const existingIds = new Set<string>();
+  for (const el of arr.elements) {
+    if (!ts.isObjectLiteralExpression(el)) continue;
+    const idProp = findIdProperty(el, input.id_field);
+    if (!idProp) continue;
+    if (ts.isStringLiteral(idProp.initializer) || ts.isNoSubstitutionTemplateLiteral(idProp.initializer)) {
+      existingIds.add(idProp.initializer.text);
+    }
+  }
+  const toInsert: string[] = [];
+  const skipped: string[] = [];
+  for (const id of input.missing_ids) {
+    if (existingIds.has(id)) skipped.push(id);
+    else toInsert.push(id);
+  }
+  if (toInsert.length === 0) {
+    return {
+      ok: true,
+      next: source,
+      rationale: `all ${input.missing_ids.length} missing_ids already present · no-op`,
+      inserted_ids: [],
+      skipped_already_present_ids: skipped,
+    };
+  }
+
+  // Detect the element indent by looking at the char range preceding an
+  // existing element. Prefer the last element for the closest structural sibling.
+  const referenceElement = arr.elements[arr.elements.length - 1] ?? arr.elements[0];
+  let elementIndent = "  ";
+  if (referenceElement) {
+    const elStart = referenceElement.getStart(sf);
+    const prevNewline = source.lastIndexOf("\n", elStart - 1);
+    if (prevNewline >= 0) {
+      const candidate = source.slice(prevNewline + 1, elStart);
+      if (/^[ \t]*$/.test(candidate)) elementIndent = candidate;
+    }
+  }
+
+  // Build the insertion text: for each new id, take peer verbatim and
+  // substitute JUST the id_field's string-literal value. All other fields
+  // are preserved verbatim from the peer. Each element ends with ",".
+  //
+  // The substitution is anchored to the peer's actual id-property text via
+  // a positional splice inside the peer string (NOT a blind global regex),
+  // which avoids collateral edits if the peer id string happens to appear
+  // elsewhere in the element.
+  const peerText = input.peer_element_source;
+  // Locate the peer's id-property string span inside peerText using the
+  // peer AST offsets (peer AST was parsed from `const __peer = <peer>;`
+  // so we must translate offsets back to peer-only coordinates).
+  const peerConstPrefix = `const __peer = `;
+  const peerAstOffsetBase = peerConstPrefix.length;
+  const peerIdLiteralStart = peerIdProp.initializer.getStart(peerSf) - peerAstOffsetBase;
+  const peerIdLiteralEnd = peerIdProp.initializer.getEnd() - peerAstOffsetBase;
+  if (
+    peerIdLiteralStart < 0 ||
+    peerIdLiteralEnd > peerText.length ||
+    peerIdLiteralStart >= peerIdLiteralEnd
+  ) {
+    return {
+      ok: false,
+      refusal: "peer_unparseable",
+      reason: "peer id-property offsets did not resolve inside peer_element_source",
+    };
+  }
+  const peerLiteralQuote = peerText.charAt(peerIdLiteralStart); // " or ' or `
+
+  const newElements: string[] = [];
+  for (const id of toInsert) {
+    const escaped = escapeStringLiteralByQuote(id, peerLiteralQuote);
+    const substituted =
+      peerText.slice(0, peerIdLiteralStart) +
+      peerLiteralQuote + escaped + peerLiteralQuote +
+      peerText.slice(peerIdLiteralEnd);
+    newElements.push(substituted);
+  }
+
+  // Determine splice position: just before the array's closing bracket.
+  // Preserve the exact whitespace pattern used between existing elements.
+  const arrCloseBracketPos = arr.getEnd() - 1; // position OF `]`
+  // Scan backward from `]` to find the last non-whitespace char BEFORE it.
+  let cursor = arrCloseBracketPos - 1;
+  while (cursor >= 0 && (source.charAt(cursor) === " " || source.charAt(cursor) === "\t" || source.charAt(cursor) === "\n" || source.charAt(cursor) === "\r")) {
+    cursor--;
+  }
+  // If the char before is `,` we already have a trailing comma → element
+  // separator is just `<newline><indent>`. Otherwise we need to prepend ","
+  // to the first inserted element.
+  const needsLeadingComma = cursor >= 0 && source.charAt(cursor) !== ",";
+  // Build insertion text
+  const parts: string[] = [];
+  for (let i = 0; i < newElements.length; i++) {
+    const isFirst = i === 0;
+    if (isFirst && needsLeadingComma) parts.push(",");
+    parts.push("\n" + elementIndent + newElements[i] + ",");
+  }
+  parts.push("\n"); // ensure `]` stays on its own line if it was
+  // If the `]` didn't originally sit on its own line (single-line array),
+  // don't force a newline before it — just leave a space.
+  // Detect: was there any `\n` between last non-ws char and `]`?
+  const hadNewlineBeforeClose = source.slice(cursor + 1, arrCloseBracketPos).includes("\n");
+  const insertion = hadNewlineBeforeClose
+    ? parts.slice(0, -1).join("") // drop trailing newline · original already provides one before `]`
+    : parts.join("") + " ";
+
+  const next = source.slice(0, arrCloseBracketPos) + insertion + source.slice(arrCloseBracketPos);
+
+  // Re-parse the mutated source to verify it's still valid TypeScript
+  const verify = ts.createSourceFile("__nex1v.ts", next, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  // Rough validity check: reparse and count syntactic diagnostics (skip
+  // full type-check · adapter's contract is syntactic validity only)
+  if ((verify as unknown as { parseDiagnostics?: readonly ts.Diagnostic[] }).parseDiagnostics
+      && (verify as unknown as { parseDiagnostics: readonly ts.Diagnostic[] }).parseDiagnostics.length > 0) {
+    return {
+      ok: false,
+      refusal: "mutation_produced_invalid_source",
+      reason: `re-parse of mutated source produced ${(verify as unknown as { parseDiagnostics: readonly ts.Diagnostic[] }).parseDiagnostics.length} parse diagnostic(s)`,
+    };
+  }
+  void peerIdValue;
+
+  return {
+    ok: true,
+    next,
+    rationale:
+      `text-splice: inserted ${toInsert.length} element(s) into ${input.array_symbol} ` +
+      `(ids: ${toInsert.map((s) => `'${s}'`).join(", ")}${skipped.length > 0 ? ` · skipped already-present: ${skipped.map((s) => `'${s}'`).join(", ")}` : ""})`,
+    inserted_ids: toInsert,
+    skipped_already_present_ids: skipped,
+  };
+}
+
+function resolveArrayLiteral(expr: ts.Expression): ts.ArrayLiteralExpression | null {
+  if (ts.isArrayLiteralExpression(expr)) return expr;
+  // Object.freeze([...])
+  if (
+    ts.isCallExpression(expr) &&
+    ts.isPropertyAccessExpression(expr.expression) &&
+    ts.isIdentifier(expr.expression.expression) &&
+    expr.expression.expression.text === "Object" &&
+    expr.expression.name.getText() === "freeze" &&
+    expr.arguments.length === 1 &&
+    ts.isArrayLiteralExpression(expr.arguments[0]!)
+  ) {
+    return expr.arguments[0] as ts.ArrayLiteralExpression;
+  }
+  // `as const` assertion around an array literal (as ArrayLiteralExpression)
+  if (ts.isAsExpression(expr) && ts.isArrayLiteralExpression(expr.expression)) {
+    return expr.expression;
+  }
+  return null;
+}
+
+function findIdProperty(obj: ts.ObjectLiteralExpression, fieldName: string): ts.PropertyAssignment | null {
+  for (const p of obj.properties) {
+    if (!ts.isPropertyAssignment(p)) continue;
+    if (ts.isIdentifier(p.name) && p.name.text === fieldName) return p;
+    if (ts.isStringLiteral(p.name) && p.name.text === fieldName) return p;
+  }
+  return null;
+}
+
+function escapeStringLiteralByQuote(value: string, quote: string): string {
+  // Escape only the specific quote char and backslash. Also escape newlines
+  // as `\\n` since single-quoted / double-quoted literals cannot span lines.
+  // Template-literal (backtick) quote allows newlines, so leave them alone
+  // when quote === "`".
+  const esc = value.replace(/\\/g, "\\\\").replace(new RegExp(quote, "g"), `\\${quote}`);
+  if (quote === "`") return esc;
+  return esc.replace(/\r?\n/g, "\\n");
+}
+
+// ─── Operation 6 · replace_return_literal (Fix 23a · authorised 2026-09-17) ──
+//
+// Consume the `Nex1RepairProposal` emitted by capability-J.2 (change_kind =
+// "replace_return_literal") and produce a mutated source that replaces
+// exactly one literal within the named function body.
+//
+// Handles three sub-shapes deterministically:
+//   1. Direct literal return:  return 42;
+//   2. Object literal return with an explicit literal property:
+//        return { field: 42 };
+//   3. Object literal return with a shorthand property backed by a local var
+//      initialized with a literal:
+//        const field = 42; return { field };
+//
+// Refuses cleanly on any of:
+//   symbol_not_found · initializer_not_supported_form · no_match_for_literal ·
+//   multiple_matches_ambiguous · mutation_produced_invalid_source
+//
+// Zero LLM · zero randomness · zero fabrication.
+
+export interface ReplaceReturnLiteralInput {
+  readonly target_function: string;
+  readonly current_literal: string;
+  readonly proposed_literal: string;
+  /** Fix 23b · optional line-precise disambiguation for computed intermediates.
+   *  When set, the operator restricts its search to numeric literals whose
+   *  1-based line matches. */
+  readonly target_line?: number | null;
+  /** Fix 23b · optional exact char-range from the data-flow tracer. When set,
+   *  the operator replaces exactly that range · line/text checks are still
+   *  performed as safety belt. */
+  readonly target_range?: { readonly start: number; readonly end: number } | null;
+}
+
+export type ReplaceReturnLiteralRefusal =
+  | "input_empty_function"
+  | "input_empty_current_literal"
+  | "input_empty_proposed_literal"
+  | "source_unparseable"
+  | "symbol_not_found"
+  | "return_not_found"
+  | "no_match_for_literal"
+  | "multiple_matches_ambiguous"
+  | "mutation_produced_invalid_source"
+  | "target_range_safety_belt_failed";
+
+export interface ReplaceReturnLiteralOk {
+  readonly ok: true;
+  readonly next: string;
+  readonly rationale: string;
+  readonly replaced_at_line: number;
+  readonly replaced_shape:
+    | "direct_return"
+    | "object_property"
+    | "shorthand_local_literal"
+    | "line_precise_in_function";
+}
+export interface ReplaceReturnLiteralRefused {
+  readonly ok: false;
+  readonly refusal: ReplaceReturnLiteralRefusal;
+  readonly reason: string;
+}
+export type ReplaceReturnLiteralResult = ReplaceReturnLiteralOk | ReplaceReturnLiteralRefused;
+
+/** Normalise a literal string for comparison. Strips leading +. Retains
+ *  original quoting style for strings. Mirrors capability-j2's normaliser
+ *  behaviour just enough for equality checks. */
+function normLitForCompare(s: string): string {
+  const t = s.trim();
+  if (/^\+?-?\d+(\.\d+)?$/.test(t)) return t.replace(/^\+/, "");
+  return t;
+}
+
+export function applyReplaceReturnLiteral(
+  source: string,
+  input: ReplaceReturnLiteralInput,
+): ReplaceReturnLiteralResult {
+  if (!input.target_function) {
+    return { ok: false, refusal: "input_empty_function", reason: "target_function is empty" };
+  }
+  if (!input.current_literal || input.current_literal.trim() === "") {
+    return { ok: false, refusal: "input_empty_current_literal", reason: "current_literal is empty" };
+  }
+  if (!input.proposed_literal || input.proposed_literal.trim() === "") {
+    return { ok: false, refusal: "input_empty_proposed_literal", reason: "proposed_literal is empty" };
+  }
+
+  let sf: ts.SourceFile;
+  try {
+    sf = ts.createSourceFile("__t.ts", source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  } catch (e) {
+    return { ok: false, refusal: "source_unparseable", reason: `parse failed: ${e instanceof Error ? e.message : String(e)}` };
+  }
+
+  // Fix 23b · line-precise replacement (data-flow-aware repair path).
+  // When target_range is set, verify that the text at [start,end) equals the
+  // supplied current_literal (safety belt) and that start's line matches
+  // target_line if provided. Replace exactly that range.
+  if (input.target_range) {
+    const { start, end } = input.target_range;
+    if (start < 0 || end > source.length || start >= end) {
+      return { ok: false, refusal: "target_range_safety_belt_failed", reason: `range [${start},${end}) is invalid for source length ${source.length}` };
+    }
+    const slice = source.slice(start, end);
+    if (slice.trim() !== input.current_literal.trim()) {
+      return {
+        ok: false,
+        refusal: "target_range_safety_belt_failed",
+        reason: `text at range [${start},${end}) is '${slice}' but current_literal is '${input.current_literal}'`,
+      };
+    }
+    if (input.target_line != null) {
+      const line = sf.getLineAndCharacterOfPosition(start).line + 1;
+      if (line !== input.target_line) {
+        return {
+          ok: false,
+          refusal: "target_range_safety_belt_failed",
+          reason: `range starts at line ${line} but target_line=${input.target_line}`,
+        };
+      }
+    }
+    const next = source.slice(0, start) + input.proposed_literal + source.slice(end);
+    if (!isValidTypeScript(next)) {
+      return { ok: false, refusal: "mutation_produced_invalid_source", reason: "post-mutation TS parse failed" };
+    }
+    return {
+      ok: true,
+      next,
+      rationale:
+        `replaced line-precise literal '${input.current_literal}' with '${input.proposed_literal}' at ` +
+        `${input.target_function}:${sf.getLineAndCharacterOfPosition(start).line + 1} (range [${start},${end}))`,
+      replaced_at_line: sf.getLineAndCharacterOfPosition(start).line + 1,
+      replaced_shape: "line_precise_in_function",
+    };
+  }
+
+  // Locate the named function's body
+  let fnBody: ts.Block | undefined;
+  for (const stmt of sf.statements) {
+    if (ts.isFunctionDeclaration(stmt) && stmt.name?.text === input.target_function && stmt.body) {
+      fnBody = stmt.body;
+      break;
+    }
+    if (ts.isVariableStatement(stmt)) {
+      for (const d of stmt.declarationList.declarations) {
+        if (
+          ts.isIdentifier(d.name) &&
+          d.name.text === input.target_function &&
+          d.initializer &&
+          (ts.isArrowFunction(d.initializer) || ts.isFunctionExpression(d.initializer)) &&
+          ts.isBlock(d.initializer.body)
+        ) {
+          fnBody = d.initializer.body;
+          break;
+        }
+      }
+      if (fnBody) break;
+    }
+  }
+  if (!fnBody) {
+    return { ok: false, refusal: "symbol_not_found", reason: `no function '${input.target_function}' with a body found at top level` };
+  }
+
+  const wantedNorm = normLitForCompare(input.current_literal);
+
+  // Sub-shape 1 · direct literal return
+  for (const s of fnBody.statements) {
+    if (ts.isReturnStatement(s) && s.expression) {
+      const e = s.expression;
+      const isLit =
+        ts.isNumericLiteral(e) ||
+        ts.isStringLiteral(e) ||
+        e.kind === ts.SyntaxKind.TrueKeyword ||
+        e.kind === ts.SyntaxKind.FalseKeyword ||
+        e.kind === ts.SyntaxKind.NullKeyword;
+      if (isLit) {
+        const text = e.getText(sf);
+        if (normLitForCompare(text) === wantedNorm) {
+          const start = e.getStart(sf);
+          const end = e.getEnd();
+          const before = source.slice(0, start);
+          const after = source.slice(end);
+          const next = before + input.proposed_literal + after;
+          if (!isValidTypeScript(next)) {
+            return { ok: false, refusal: "mutation_produced_invalid_source", reason: "post-mutation TS parse failed" };
+          }
+          const line = sf.getLineAndCharacterOfPosition(start).line + 1;
+          return {
+            ok: true,
+            next,
+            rationale: `replaced direct return literal '${input.current_literal}' with '${input.proposed_literal}' in ${input.target_function} at line ${line}`,
+            replaced_at_line: line,
+            replaced_shape: "direct_return",
+          };
+        }
+      }
+    }
+  }
+
+  // Sub-shape 2 · object literal return with an explicit literal property
+  // Sub-shape 3 · shorthand property backed by a local variable literal
+  const matches: Array<{
+    start: number;
+    end: number;
+    line: number;
+    shape: "object_property" | "shorthand_local_literal";
+    localName?: string;
+  }> = [];
+
+  for (const s of fnBody.statements) {
+    if (!ts.isReturnStatement(s) || !s.expression) continue;
+    let expr: ts.Expression = s.expression;
+    while (ts.isParenthesizedExpression(expr) || ts.isAsExpression(expr) || ts.isTypeAssertionExpression(expr)) {
+      expr = (expr as any).expression;
+    }
+    if (!ts.isObjectLiteralExpression(expr)) continue;
+    for (const prop of expr.properties) {
+      if (ts.isPropertyAssignment(prop)) {
+        const val = prop.initializer;
+        const isLit =
+          ts.isNumericLiteral(val) ||
+          ts.isStringLiteral(val) ||
+          val.kind === ts.SyntaxKind.TrueKeyword ||
+          val.kind === ts.SyntaxKind.FalseKeyword ||
+          val.kind === ts.SyntaxKind.NullKeyword;
+        if (isLit && normLitForCompare(val.getText(sf)) === wantedNorm) {
+          matches.push({
+            start: val.getStart(sf),
+            end: val.getEnd(),
+            line: sf.getLineAndCharacterOfPosition(val.getStart(sf)).line + 1,
+            shape: "object_property",
+          });
+        }
+      } else if (ts.isShorthandPropertyAssignment(prop)) {
+        const localName = prop.name.text;
+        // Find the local variable declaration in fnBody
+        for (const inner of fnBody.statements) {
+          if (!ts.isVariableStatement(inner)) continue;
+          for (const d of inner.declarationList.declarations) {
+            if (ts.isIdentifier(d.name) && d.name.text === localName && d.initializer) {
+              const init = d.initializer;
+              const isLit =
+                ts.isNumericLiteral(init) ||
+                ts.isStringLiteral(init) ||
+                init.kind === ts.SyntaxKind.TrueKeyword ||
+                init.kind === ts.SyntaxKind.FalseKeyword ||
+                init.kind === ts.SyntaxKind.NullKeyword;
+              if (isLit && normLitForCompare(init.getText(sf)) === wantedNorm) {
+                matches.push({
+                  start: init.getStart(sf),
+                  end: init.getEnd(),
+                  line: sf.getLineAndCharacterOfPosition(init.getStart(sf)).line + 1,
+                  shape: "shorthand_local_literal",
+                  localName,
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  if (matches.length === 0) {
+    return { ok: false, refusal: "no_match_for_literal", reason: `no literal '${input.current_literal}' found in return chain of ${input.target_function}` };
+  }
+  if (matches.length > 1) {
+    return {
+      ok: false,
+      refusal: "multiple_matches_ambiguous",
+      reason: `${matches.length} literals in ${input.target_function} match '${input.current_literal}' · deterministic operator refuses without disambiguation`,
+    };
+  }
+  const m = matches[0];
+  const next = source.slice(0, m.start) + input.proposed_literal + source.slice(m.end);
+  if (!isValidTypeScript(next)) {
+    return { ok: false, refusal: "mutation_produced_invalid_source", reason: "post-mutation TS parse failed" };
+  }
+  return {
+    ok: true,
+    next,
+    rationale:
+      `replaced ${m.shape} literal '${input.current_literal}' with '${input.proposed_literal}' in ${input.target_function}` +
+      (m.localName ? ` (via shorthand local '${m.localName}')` : ``) +
+      ` at line ${m.line}`,
+    replaced_at_line: m.line,
+    replaced_shape: m.shape,
+  };
+}
+
+/** Deterministic TS parse validity check · no diagnostics semantics, just
+ *  "parser did not blow up." Mirrors the pattern used by applyAddArrayElement. */
+function isValidTypeScript(source: string): boolean {
+  try {
+    ts.createSourceFile("__v.ts", source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 // ─── Diff renderer (whole-file replacement · same shape as template-only) ──

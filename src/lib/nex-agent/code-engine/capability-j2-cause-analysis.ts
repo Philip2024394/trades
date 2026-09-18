@@ -28,6 +28,12 @@ import { readFileSync, existsSync } from "node:fs";
 import { resolve, dirname, relative } from "node:path";
 import type { Nex1RuntimeFailureFinding } from "./capability-j-runtime-diagnosis";
 import { isProtected } from "./scope-enforcer";
+import {
+  traceDataFlowForLiteralCandidates,
+  parseArgValue,
+  type EvalValue,
+  type LiteralCandidate,
+} from "./capability-data-flow-tracer";
 
 export type Nex1CauseAnalysisKind =
   | "proposal"
@@ -46,6 +52,13 @@ export interface Nex1RepairProposal {
   readonly current_literal: string;
   readonly proposed_literal: string;
   readonly rationale: string;
+  /** Fix 23b · 2026-09-17 · when set, the operator must replace the literal
+   *  at this specific line within the target function · disambiguates when
+   *  the literal text appears multiple times · used by data-flow-aware repair. */
+  readonly target_line?: number | null;
+  /** Fix 23b · 2026-09-17 · optional exact char range from the tracer. When
+   *  provided, the operator uses [start,end) directly instead of text search. */
+  readonly target_range?: { readonly start: number; readonly end: number } | null;
 }
 
 export interface Nex1FailureDiagnosis {
@@ -136,12 +149,175 @@ export function diagnoseAndPropose(
   if (assertionSite.actualKind === "member_access_on_local") {
     return diag("refused_unknown_test_shape", finding, "assertion asserts a member of a locally-declared identifier · no imported source producer · deferred", trace, 0.5);
   }
+
+  // Fix 20 · 2026-09-17 · Case E-prime · member access on local variable that
+  // was initialized from an imported function call:
+  //   const x = <importedFn>(...);
+  //   expect(x.<field>).toBe(<expected>);
+  // Traces to the source function's return-object field. Proposes a
+  // repair when the field's value is a simple literal. Refuses cleanly with
+  // a precise reason when the value is a computed expression (informs future
+  // repair operators without hardcoding).
+  if (assertionSite.actualKind === "member_access_on_local_from_imported_call") {
+    const importedFn = assertionSite.importedFunctionName!;
+    const importSpec = assertionSite.importSpecifier!;
+    const memberField = assertionSite.memberField;
+    if (!memberField) {
+      return diag("refused_low_confidence", finding, "member access has no field name · unusable for structural repair", trace, 0.55);
+    }
+    if (!importSpec.startsWith(".")) {
+      return diag("refused_no_source_reference", finding, `import '${importSpec}' is not relative · alias/pkg resolution deferred`, trace, 0.75);
+    }
+    const sourceAbs = resolveRelativeImport(dirname(testFileAbs), importSpec);
+    if (!sourceAbs) {
+      return diag("refused_no_source_reference", finding, `cannot resolve import '${importSpec}' from test file`, trace, 0.8);
+    }
+    const relSource = relative(repoRoot, sourceAbs).replace(/\\/g, "/");
+    if (isProtected(relSource) || isProtected(sourceAbs.replace(/\\/g, "/"))) {
+      return diag("refused_protected_target", finding, `source target '${relSource}' is protected`, trace, 0.95);
+    }
+    T(`fix20 · trace local → imported call · ${importedFn} from ${importSpec} → ${sourceAbs}`);
+
+    const sourceContent = readFileSync(sourceAbs, "utf8");
+    const fieldValue = findReturnObjectFieldValue(sourceContent, importedFn, memberField);
+    T(`fix20 · return object field '${memberField}' shape: ${fieldValue.kind}`);
+
+    if (fieldValue.kind === "function_not_found") {
+      return diag(
+        "refused_no_source_reference",
+        finding,
+        `imported function '${importedFn}' not found in ${relSource}`,
+        trace,
+        0.85,
+      );
+    }
+    if (fieldValue.kind === "return_not_object") {
+      return diag(
+        "refused_low_confidence",
+        finding,
+        `function '${importedFn}' in ${relSource} does not return an object literal · member access on non-object result is out of scope`,
+        trace,
+        0.6,
+      );
+    }
+    if (fieldValue.kind === "field_not_found") {
+      return diag(
+        "refused_low_confidence",
+        finding,
+        `field '${memberField}' not present in return object of '${importedFn}' in ${relSource}`,
+        trace,
+        0.65,
+      );
+    }
+    const testExpected = normaliseLiteralText(finding.expected ?? "");
+    if (testExpected === null) {
+      return diag("refused_low_confidence", finding, "test's expected value is not a simple primitive literal", trace, 0.55);
+    }
+
+    if (fieldValue.kind === "literal") {
+      const sourceCurrent = normaliseLiteralText(fieldValue.text);
+      if (sourceCurrent !== null && testExpected === sourceCurrent) {
+        return diag("refused_low_confidence", finding, "test expected and source field literal already agree · cause is elsewhere", trace, 0.4);
+      }
+      const proposal: Nex1RepairProposal = {
+        change_kind: "replace_return_literal",
+        target_file: relSource,
+        target_function: importedFn,
+        current_literal: fieldValue.text,
+        proposed_literal: finding.expected!,
+        rationale:
+          `test at ${finding.test_file}:${assertionSite.line} asserts ${importedFn}().${memberField} === ${finding.expected} · ` +
+          `source at ${relSource}#${importedFn} returns object with field '${memberField}' = ${fieldValue.text} · ` +
+          `disagreement at plain primitive literal · test's expectation treated as specification (Fix 20 path · imported-call → local → field.literal)`,
+      };
+      T(`fix20 · proposal · replace field '${memberField}' literal ${fieldValue.text} → ${finding.expected} in ${relSource}#${importedFn}`);
+      return {
+        kind: "proposal",
+        finding_ref: finding,
+        diagnosis:
+          `test contract expects ${importedFn}().${memberField} === ${finding.expected} · ` +
+          `source object-return hardcodes ${fieldValue.text} for that field · likely source-value error`,
+        proposal,
+        confidence: 0.82,
+        reasoning_trace: trace,
+        taught_by: "master_ai_engineer",
+      };
+    }
+
+    if (fieldValue.kind === "shorthand") {
+      // Try one more step · locate the local variable initializer inside the fn
+      const localInit = findLocalVarInFunction(sourceContent, importedFn, fieldValue.localName);
+      T(`fix20 · shorthand '${fieldValue.localName}' initializer shape: ${localInit.kind}`);
+      if (localInit.kind === "literal") {
+        const sourceCurrent = normaliseLiteralText(localInit.text);
+        if (sourceCurrent !== null && testExpected === sourceCurrent) {
+          return diag("refused_low_confidence", finding, "test expected and source local literal already agree · cause is elsewhere", trace, 0.4);
+        }
+        const proposal: Nex1RepairProposal = {
+          change_kind: "replace_return_literal",
+          target_file: relSource,
+          target_function: importedFn,
+          current_literal: localInit.text,
+          proposed_literal: finding.expected!,
+          rationale:
+            `test at ${finding.test_file}:${assertionSite.line} asserts ${importedFn}().${memberField} === ${finding.expected} · ` +
+            `source at ${relSource}#${importedFn} returns { ${memberField} } shorthand · local variable '${fieldValue.localName}' initialized with literal ${localInit.text} at line ${localInit.line} · ` +
+            `Fix 20 path · imported-call → shorthand → local.literal`,
+        };
+        T(`fix20 · proposal · replace shorthand local '${fieldValue.localName}' literal ${localInit.text} → ${finding.expected} in ${relSource}#${importedFn}`);
+        return {
+          kind: "proposal",
+          finding_ref: finding,
+          diagnosis:
+            `test contract expects ${importedFn}().${memberField} === ${finding.expected} · ` +
+            `source object-return uses shorthand for '${memberField}' backed by local literal ${localInit.text} · ` +
+            `likely source-value error`,
+          proposal,
+          confidence: 0.78,
+          reasoning_trace: trace,
+          taught_by: "master_ai_engineer",
+        };
+      }
+      // Fix 23b · 2026-09-17 · data-flow-aware repair for computed shorthand backing.
+      // Invoke the tracer to identify a literal in the reachable computation
+      // that, when substituted, causes the function to evaluate to expected.
+      return runDataFlowTracerAndPropose({
+        sourceContent,
+        relSource,
+        importedFn,
+        memberField,
+        assertionSite,
+        finding,
+        argTexts: assertionSite.argTexts ?? [],
+        trace,
+        T,
+        contextTag: `shorthand→computed local '${fieldValue.localName}'`,
+      });
+    }
+
+    // fieldValue.kind === "computed" · direct property with computed initializer
+    return runDataFlowTracerAndPropose({
+      sourceContent,
+      relSource,
+      importedFn,
+      memberField,
+      assertionSite,
+      finding,
+      argTexts: assertionSite.argTexts ?? [],
+      trace,
+      T,
+      contextTag: `property→computed expression (${fieldValue.text})`,
+    });
+  }
   if (assertionSite.actualKind === "local_computed_value") {
     return diag("refused_unknown_test_shape", finding, "assertion asserts a locally-computed value with no imported producer · deferred", trace, 0.5);
   }
 
   // Case A · imported function call · optionally wrapped in `as` cast
-  if (assertionSite.actualKind === "imported_function_call" || assertionSite.actualKind === "imported_function_call_with_cast") {
+  // Fix 33 · 2026-09-18 · Case B-prime handler: bare local from imported call.
+  // Routes to the same source-repair logic as `imported_function_call` since
+  // the target is identical — the imported function's return literal.
+  if (assertionSite.actualKind === "local_bare_from_imported_call" || assertionSite.actualKind === "imported_function_call" || assertionSite.actualKind === "imported_function_call_with_cast") {
     const importedFn = assertionSite.importedFunctionName!;
     const importSpec = assertionSite.importSpecifier!;
     // Resolve to source file (relative imports only, aligned with F)
@@ -341,12 +517,21 @@ interface AssertionSite {
     | "chained_call"
     | "member_access_on_call_result"
     | "member_access_on_local"
+    | "member_access_on_local_from_imported_call"  // Fix 20 · 2026-09-17
+    | "local_bare_from_imported_call"              // Fix 33 · 2026-09-18
     | "local_computed_value"
     | "member_access_on_literal_type"
     | "unknown";
   readonly importedFunctionName: string | null;
   readonly importSpecifier: string | null;
   readonly castTargetType?: string | null;
+  /** Fix 20 · 2026-09-17 · the field accessed when actualKind is
+   *  member_access_on_local_from_imported_call or member_access_on_local. */
+  readonly memberField?: string | null;
+  /** Fix 23b · 2026-09-17 · verbatim argument texts from the local's initializer
+   *  when actualKind is member_access_on_local_from_imported_call. Used by the
+   *  data-flow tracer to evaluate the target function at concrete args. */
+  readonly argTexts?: readonly string[];
 }
 
 function findAssertionSite(testSource: string, finding: Nex1RuntimeFailureFinding): AssertionSite | null {
@@ -438,6 +623,25 @@ function findAssertionSite(testSource: string, finding: Nex1RuntimeFailureFindin
           };
           return;
         }
+        // Fix 33 · 2026-09-18 · Case B-prime · BARE LOCAL FROM IMPORTED CALL.
+        //   const result = <importedFn>(...);
+        //   expect(result).toBe(<literal>);
+        // Analogous to Fix 20's Case E-prime but WITHOUT the property access.
+        // Trace the local identifier back to an imported function call and
+        // route to the same source-return-literal repair path used by
+        // `imported_function_call`.
+        const importedProducer = findLocalInitializedFromImportedCall(sf, inner.text, imports);
+        if (importedProducer) {
+          boxed.hit = {
+            line,
+            summary: `expect(${inner.text}).toBe(${assertLitText})`,
+            actualKind: "local_bare_from_imported_call",
+            importedFunctionName: importedProducer.fnName,
+            importSpecifier: importedProducer.spec,
+            argTexts: importedProducer.argTexts,
+          };
+          return;
+        }
         // Local identifier · unknown value
         boxed.hit = {
           line,
@@ -475,12 +679,35 @@ function findAssertionSite(testSource: string, finding: Nex1RuntimeFailureFindin
 
       // Case E · member access on a local identifier · x.field
       if (ts.isPropertyAccessExpression(inner) && ts.isIdentifier(inner.expression)) {
+        const localName = inner.expression.text;
+        const memberField = ts.isIdentifier(inner.name) ? inner.name.text : null;
+
+        // Fix 20 · 2026-09-17 · Case E-prime · detect the pattern
+        //   const x = <importedFn>(...);
+        //   expect(x.<field>).toBe(...)
+        // by looking for a variable declaration of `localName` initialized
+        // from a call to an imported identifier.
+        const importedProducer = findLocalInitializedFromImportedCall(sf, localName, imports);
+        if (importedProducer) {
+          boxed.hit = {
+            line,
+            summary: `expect(${inner.getText(sf)}).toBe(${assertLitText})`,
+            actualKind: "member_access_on_local_from_imported_call",
+            importedFunctionName: importedProducer.fnName,
+            importSpecifier: importedProducer.spec,
+            memberField,
+            argTexts: importedProducer.argTexts,
+          };
+          return;
+        }
+
         boxed.hit = {
           line,
           summary: `expect(${inner.getText(sf)}).toBe(${assertLitText})`,
           actualKind: "member_access_on_local",
           importedFunctionName: null,
           importSpecifier: null,
+          memberField,
         };
         return;
       }
@@ -510,6 +737,215 @@ function findAssertionSite(testSource: string, finding: Nex1RuntimeFailureFindin
   };
   visit(sf);
   return boxed.hit;
+}
+
+/** Fix 20 · 2026-09-17 · trace a local variable to an imported function call.
+ *  Looks for a top-level or nested statement `const <name> = <fn>(...)` where
+ *  `<fn>` is a bare identifier present in the `imports` map. Returns the
+ *  imported function name and specifier when found · null otherwise.
+ *  Deterministic · read-only · zero LLM · zero fabrication. */
+function findLocalInitializedFromImportedCall(
+  sf: ts.SourceFile,
+  localName: string,
+  imports: ReadonlyMap<string, string>,
+): { readonly fnName: string; readonly spec: string; readonly argTexts: readonly string[] } | null {
+  const box: { hit: { fnName: string; spec: string; argTexts: readonly string[] } | null } = { hit: null };
+  const visit = (node: ts.Node) => {
+    if (box.hit) return;
+    if (ts.isVariableStatement(node)) {
+      for (const decl of node.declarationList.declarations) {
+        if (
+          ts.isIdentifier(decl.name) &&
+          decl.name.text === localName &&
+          decl.initializer &&
+          ts.isCallExpression(decl.initializer) &&
+          ts.isIdentifier(decl.initializer.expression)
+        ) {
+          const fnName = decl.initializer.expression.text;
+          const spec = imports.get(fnName);
+          if (spec) {
+            const argTexts = decl.initializer.arguments.map((a) => a.getText(sf));
+            box.hit = { fnName, spec, argTexts };
+            return;
+          }
+        }
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sf);
+  return box.hit;
+}
+
+/** Fix 20 · 2026-09-17 · shape of a returned-object field value.
+ *  kind = "literal"          · the field's value is a primitive literal
+ *  kind = "shorthand"        · shorthand property · look up the local variable
+ *  kind = "computed"         · the field's value is a computed expression
+ *                              (arithmetic · function call · etc.)
+ *  kind = "field_not_found"  · no field with that name in the return object
+ *  kind = "return_not_object"· return statement did not return an object literal
+ *  kind = "function_not_found"· no function/arrow with that name */
+type ReturnObjectFieldValue =
+  | { readonly kind: "literal"; readonly text: string; readonly line: number }
+  | { readonly kind: "shorthand"; readonly localName: string; readonly line: number }
+  | { readonly kind: "computed"; readonly text: string; readonly line: number }
+  | { readonly kind: "field_not_found" }
+  | { readonly kind: "return_not_object" }
+  | { readonly kind: "function_not_found" };
+
+/** Fix 20 · 2026-09-17 · locate a specific field's value within the return
+ *  object literal of a named function/arrow. Read-only · deterministic. */
+function findReturnObjectFieldValue(
+  sourceContent: string,
+  functionName: string,
+  fieldName: string,
+): ReturnObjectFieldValue {
+  const sf = ts.createSourceFile("__s.ts", sourceContent, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  const box: { hit: ReturnObjectFieldValue | null } = { hit: null };
+  const visit = (node: ts.Node) => {
+    if (box.hit) return;
+    let fnBody: ts.Block | undefined;
+    if (ts.isFunctionDeclaration(node) && node.name?.text === functionName) {
+      fnBody = node.body;
+    } else if (
+      ts.isVariableStatement(node) &&
+      node.declarationList.declarations.some(
+        (d) =>
+          ts.isIdentifier(d.name) &&
+          d.name.text === functionName &&
+          d.initializer &&
+          (ts.isArrowFunction(d.initializer) || ts.isFunctionExpression(d.initializer)),
+      )
+    ) {
+      const decl = node.declarationList.declarations.find(
+        (d) => ts.isIdentifier(d.name) && d.name.text === functionName,
+      );
+      if (decl && decl.initializer && (ts.isArrowFunction(decl.initializer) || ts.isFunctionExpression(decl.initializer))) {
+        if (ts.isBlock(decl.initializer.body)) fnBody = decl.initializer.body;
+      }
+    }
+    if (fnBody) {
+      for (const s of fnBody.statements) {
+        if (ts.isReturnStatement(s) && s.expression) {
+          let expr: ts.Expression = s.expression;
+          while (ts.isParenthesizedExpression(expr) || ts.isAsExpression(expr) || ts.isTypeAssertionExpression(expr)) {
+            expr = (expr as any).expression;
+          }
+          if (!ts.isObjectLiteralExpression(expr)) {
+            box.hit = { kind: "return_not_object" };
+            return;
+          }
+          // Search for the field
+          for (const prop of expr.properties) {
+            if (ts.isShorthandPropertyAssignment(prop) && prop.name.text === fieldName) {
+              box.hit = {
+                kind: "shorthand",
+                localName: prop.name.text,
+                line: sf.getLineAndCharacterOfPosition(prop.getStart(sf)).line + 1,
+              };
+              return;
+            }
+            if (
+              ts.isPropertyAssignment(prop) &&
+              ((ts.isIdentifier(prop.name) && prop.name.text === fieldName) ||
+                (ts.isStringLiteral(prop.name) && prop.name.text === fieldName))
+            ) {
+              const val = prop.initializer;
+              const line = sf.getLineAndCharacterOfPosition(prop.getStart(sf)).line + 1;
+              const text = val.getText(sf);
+              const isSimpleLiteral =
+                ts.isNumericLiteral(val) ||
+                ts.isStringLiteral(val) ||
+                val.kind === ts.SyntaxKind.TrueKeyword ||
+                val.kind === ts.SyntaxKind.FalseKeyword ||
+                val.kind === ts.SyntaxKind.NullKeyword;
+              box.hit = isSimpleLiteral
+                ? { kind: "literal", text, line }
+                : { kind: "computed", text, line };
+              return;
+            }
+          }
+          box.hit = { kind: "field_not_found" };
+          return;
+        }
+      }
+      // No return statement found · not object
+      box.hit = { kind: "return_not_object" };
+      return;
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sf);
+  return box.hit ?? { kind: "function_not_found" };
+}
+
+/** Fix 20 · 2026-09-17 · shape of a local variable's initializer.
+ *  Similar categorization to ReturnObjectFieldValue but for a local var. */
+type LocalVarInitializerShape =
+  | { readonly kind: "literal"; readonly text: string; readonly line: number }
+  | { readonly kind: "computed"; readonly text: string; readonly line: number }
+  | { readonly kind: "not_found" };
+
+/** Fix 20 · 2026-09-17 · find the initializer expression of a local variable
+ *  declared inside a named function. Read-only · deterministic. */
+function findLocalVarInFunction(
+  sourceContent: string,
+  functionName: string,
+  localName: string,
+): LocalVarInitializerShape {
+  const sf = ts.createSourceFile("__s.ts", sourceContent, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  const box: { hit: LocalVarInitializerShape | null } = { hit: null };
+  const visit = (node: ts.Node) => {
+    if (box.hit) return;
+    let fnBody: ts.Block | undefined;
+    if (ts.isFunctionDeclaration(node) && node.name?.text === functionName) {
+      fnBody = node.body;
+    } else if (
+      ts.isVariableStatement(node) &&
+      node.declarationList.declarations.some(
+        (d) =>
+          ts.isIdentifier(d.name) &&
+          d.name.text === functionName &&
+          d.initializer &&
+          (ts.isArrowFunction(d.initializer) || ts.isFunctionExpression(d.initializer)),
+      )
+    ) {
+      const decl = node.declarationList.declarations.find(
+        (d) => ts.isIdentifier(d.name) && d.name.text === functionName,
+      );
+      if (decl && decl.initializer && (ts.isArrowFunction(decl.initializer) || ts.isFunctionExpression(decl.initializer))) {
+        if (ts.isBlock(decl.initializer.body)) fnBody = decl.initializer.body;
+      }
+    }
+    if (fnBody) {
+      for (const s of fnBody.statements) {
+        if (ts.isVariableStatement(s)) {
+          for (const d of s.declarationList.declarations) {
+            if (ts.isIdentifier(d.name) && d.name.text === localName && d.initializer) {
+              const init = d.initializer;
+              const text = init.getText(sf);
+              const line = sf.getLineAndCharacterOfPosition(d.getStart(sf)).line + 1;
+              const isSimpleLiteral =
+                ts.isNumericLiteral(init) ||
+                ts.isStringLiteral(init) ||
+                init.kind === ts.SyntaxKind.TrueKeyword ||
+                init.kind === ts.SyntaxKind.FalseKeyword ||
+                init.kind === ts.SyntaxKind.NullKeyword;
+              box.hit = isSimpleLiteral
+                ? { kind: "literal", text, line }
+                : { kind: "computed", text, line };
+              return;
+            }
+          }
+        }
+      }
+      box.hit = { kind: "not_found" };
+      return;
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sf);
+  return box.hit ?? { kind: "not_found" };
 }
 
 function resolveRelativeImport(fromDir: string, spec: string): string | null {
@@ -662,8 +1098,12 @@ function captureLiteralTypeInfo(
 function normaliseLiteralText(t: string): string | null {
   if (!t) return null;
   const s = t.trim();
-  // Numeric
-  if (/^-?\d+(\.\d+)?$/.test(s)) return s;
+  // Numeric · accept optional leading + (Fix 22 · 2026-09-17 · vitest's
+  // util.inspect emits "+0" for positive zero which the regex previously
+  // rejected). Strip the redundant "+" so downstream equality checks work
+  // against source literals like "0".
+  const numMatch = /^\+?(-?\d+(?:\.\d+)?)$/.exec(s);
+  if (numMatch) return numMatch[1];
   // Boolean · null · undefined
   if (s === "true" || s === "false" || s === "null" || s === "undefined") return s;
   // Quoted string · normalise to single-quoted form
@@ -675,6 +1115,153 @@ function normaliseLiteralText(t: string): string | null {
   const bt = /^`(.*)`$/.exec(s);
   if (bt) return `"${bt[1]}"`;
   return null;
+}
+
+// ─── Fix 23b · data-flow-aware repair proposal helper ────────────────
+
+interface DataFlowTracerArgs {
+  readonly sourceContent: string;
+  readonly relSource: string;
+  readonly importedFn: string;
+  readonly memberField: string;
+  readonly assertionSite: AssertionSite;
+  readonly finding: Nex1RuntimeFailureFinding;
+  readonly argTexts: readonly string[];
+  readonly trace: string[];
+  readonly T: (s: string) => void;
+  readonly contextTag: string;
+}
+
+function runDataFlowTracerAndPropose(a: DataFlowTracerArgs): Nex1FailureDiagnosis {
+  const testExpected = normaliseLiteralText(a.finding.expected ?? "");
+  if (testExpected === null) {
+    return diag("refused_low_confidence", a.finding, "test's expected value is not a simple primitive literal · data-flow tracer refused", a.trace, 0.55);
+  }
+
+  // Parse the expected value back into an EvalValue for comparison
+  const expectedEvalValue: EvalValue = parseArgValue(testExpected);
+
+  // Parse the concrete argument values from the test's call site
+  const argValues: EvalValue[] = a.argTexts.map((t) => parseArgValue(t));
+
+  a.T(`fix23b · data-flow tracer · fn=${a.importedFn} · argTexts=[${a.argTexts.join(", ")}] · expected=${testExpected} · field=${a.memberField}`);
+
+  // Candidate replacements to try: the expected value, then 0 / 1 / -1
+  const candidateReplacements = uniqueStrings([
+    testExpected,
+    "0",
+    "1",
+    "-1",
+  ]);
+
+  const tracer = traceDataFlowForLiteralCandidates({
+    source_content: a.sourceContent,
+    function_name: a.importedFn,
+    arg_values: argValues,
+    expected_field_value: expectedEvalValue,
+    target_field_name: a.memberField,
+    candidate_replacements: candidateReplacements,
+  });
+
+  if (!tracer.ok) {
+    a.T(`fix23b · tracer refused · ${tracer.refusal} · ${tracer.reason}`);
+    return diag(
+      "refused_low_confidence",
+      a.finding,
+      `data-flow tracer refused (${tracer.refusal}): ${tracer.reason} · context: ${a.contextTag}`,
+      a.trace,
+      0.55,
+    );
+  }
+  a.T(`fix23b · tracer ok · literals_examined=${tracer.literals_examined} evaluations=${tracer.evaluations_performed} candidates=${tracer.candidates.length}`);
+
+  if (tracer.candidates.length === 0) {
+    return diag(
+      "refused_low_confidence",
+      a.finding,
+      `data-flow tracer found zero literal candidates that satisfy the constraint · context: ${a.contextTag}`,
+      a.trace,
+      0.55,
+    );
+  }
+
+  // Prefer candidates hosted in the target function itself (locality)
+  const localCandidates = tracer.candidates.filter((c) => c.hosting_function === a.importedFn);
+  const chosen: LiteralCandidate | null = pickSingleUnambiguous(localCandidates.length > 0 ? localCandidates : tracer.candidates);
+  if (!chosen) {
+    // Multiple candidates: report but do not propose (avoid unsafe guess)
+    const preview = tracer.candidates.slice(0, 5).map((c) => `${c.hosting_function}:${c.line} '${c.current_text}'→'${c.proposed_text}'`).join(" · ");
+    return diag(
+      "refused_low_confidence",
+      a.finding,
+      `data-flow tracer found ${tracer.candidates.length} candidate literal(s); ambiguous · deterministic operator refuses to guess · preview: ${preview}`,
+      a.trace,
+      0.55,
+    );
+  }
+
+  a.T(`fix23b · chose ${chosen.hosting_function}:${chosen.line} '${chosen.current_text}' → '${chosen.proposed_text}'`);
+
+  const proposal: Nex1RepairProposal = {
+    change_kind: "replace_return_literal",
+    target_file: a.relSource,
+    target_function: a.importedFn,
+    current_literal: chosen.current_text,
+    proposed_literal: chosen.proposed_text,
+    target_line: chosen.line,
+    target_range: { start: chosen.position, end: chosen.end_position },
+    rationale:
+      `data-flow tracer identified literal '${chosen.current_text}' at ${a.relSource}:${chosen.line} ` +
+      `(within ${chosen.enclosing_expression}); substituting → '${chosen.proposed_text}' causes ${a.importedFn}(args).${a.memberField} to evaluate to expected value (${testExpected}). ` +
+      `Zero LLM · deterministic evaluator · Fix 23b path.`,
+  };
+
+  return {
+    kind: "proposal",
+    finding_ref: a.finding,
+    diagnosis:
+      `test contract expects ${a.importedFn}(args).${a.memberField} === ${a.finding.expected} · ` +
+      `data-flow trace through computed intermediate identified literal '${chosen.current_text}' at ` +
+      `${a.relSource}:${chosen.line} within ${chosen.hosting_function} as the controlling value`,
+    proposal,
+    confidence: 0.75,
+    reasoning_trace: a.trace,
+    taught_by: "master_ai_engineer",
+  };
+}
+
+/** Return a single candidate iff the list has exactly one unique
+ *  (hosting_function, line, position, proposed_text). Otherwise null. */
+function pickSingleUnambiguous(cands: readonly LiteralCandidate[]): LiteralCandidate | null {
+  if (cands.length === 0) return null;
+  if (cands.length === 1) return cands[0];
+  // Deduplicate by (fn, line, position) · if all candidates share these across
+  // multiple proposed_text choices, pick the one whose proposed_text is
+  // shortest / canonical to be deterministic.
+  const grouped = new Map<string, LiteralCandidate[]>();
+  for (const c of cands) {
+    const k = `${c.hosting_function}:${c.line}:${c.position}`;
+    const arr = grouped.get(k) ?? [];
+    arr.push(c);
+    grouped.set(k, arr);
+  }
+  if (grouped.size === 1) {
+    const list = [...grouped.values()][0]!;
+    // Pick the shortest proposed_text (typically the smallest change)
+    const chosen = [...list].sort((a, b) => {
+      if (a.proposed_text.length !== b.proposed_text.length) return a.proposed_text.length - b.proposed_text.length;
+      return a.proposed_text.localeCompare(b.proposed_text);
+    })[0];
+    return chosen;
+  }
+  return null;
+}
+
+function uniqueStrings(arr: readonly string[]): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const s of arr) if (!seen.has(s)) { seen.add(s); out.push(s); }
+  return out;
 }
 
 function diag(

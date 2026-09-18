@@ -16,7 +16,7 @@
 
 import type { Nex1DeliverableKind, Nex1VerbFamily } from "./types";
 
-export const VOCABULARY_VERSION = "v5.0.0-alpha.5" as const;
+export const VOCABULARY_VERSION = "v5.0.0-alpha.11" as const;
 
 /** Coding-context category. See Nex1CodingConceptToken. */
 export type Nex1CodingCategory = "tool" | "framework" | "concept" | "language";
@@ -180,6 +180,50 @@ export const VERB_FAMILY_VARIANTS: Readonly<Record<Nex1VerbFamily, readonly stri
     "audit",
     "audits",
     "auditing",
+    // Fix 2026-09-16 · founder-directed classifier vocab expansion.
+    // Investigation-family verbs that were previously not routed to
+    // INVESTIGATE. Chosen carefully to avoid collisions with existing
+    // families (checked via grep · none of these appear elsewhere in
+    // VERB_FAMILY_VARIANTS). "debug/why/what causes" deliberately excluded:
+    // "debug" already lives in FIX (moving would change existing behaviour);
+    // "why" and "what causes" are question words / phrases and would need
+    // phrase-level matching outside the single-token verb gate.
+    "find",
+    "finds",
+    "finding",
+    "discover",
+    "discovers",
+    "discovering",
+    "trace",
+    "traces",
+    // "tracing" deliberately NOT added · already in CODING_LEXEME_INDEX
+    // as "concept" · adding as verb would suppress its concept-extraction
+    // via classifier.ts:474 verbSpans skip · founder Connect-Before-Build.
+    "identify",
+    "identifies",
+    "identifying",
+    "locate",
+    "locates",
+    "locating",
+    "determine",
+    "determines",
+    "determining",
+    // Founder 2026-09-17 · C2 Phase 4 gap-close. `explain / describe / clarify`
+    // are natural request verbs that legitimately mean INVESTIGATE-then-tell.
+    // Adding them at token-verb level so the founder does not need to phrase
+    // requests as "investigate the auth flow" to be classified.
+    "explain",
+    "explains",
+    "explaining",
+    "describe",
+    "describes",
+    "describing",
+    "clarify",
+    "clarifies",
+    "clarifying",
+    "understand",
+    "understands",
+    "understanding",
   ]),
   VERIFY: Object.freeze([
     "verify",
@@ -3439,6 +3483,28 @@ export const CODE_CONCEPT_LEXEMES: ReadonlyMap<string, Nex1CodingCategory> = new
   ["background-sync", "concept"],
   ["share-target", "concept"],
   ["web-share", "concept"],
+  // Fix 2026-09-16 · Test G architectural-vocabulary addition.
+  // These terms are essential for problems that describe cross-file
+  // structural relationships (dependency graphs · module imports · edge
+  // resolution). Verified NOT in VERB_FAMILY_VARIANTS · zero collision.
+  // Added as `concept` category (whole-token match discipline preserved).
+  ["dependency", "concept"],
+  ["dependencies", "concept"],
+  ["import", "concept"],
+  ["imports", "concept"],
+  ["export", "concept"],
+  ["exports", "concept"],
+  ["edge", "concept"],
+  ["edges", "concept"],
+  ["graph", "concept"],
+  ["specifier", "concept"],
+  ["specifiers", "concept"],
+  ["module", "concept"],
+  ["modules", "concept"],
+  ["alias", "concept"],
+  ["aliases", "concept"],
+  ["reference", "concept"],
+  ["references", "concept"],
 ]);
 
 /** Programming languages recognised as language tokens. */
@@ -3802,6 +3868,142 @@ export const WELL_KNOWN_CONFIG_FILES: ReadonlySet<string> = new Set([
   "AGENTS.md",
   "copilot-instructions.md",
   ".github/copilot-instructions.md",
+]);
+
+/**
+ * Well-known project directory names. Detection ALWAYS requires positive
+ * contextual evidence (trailing slash, path noun, path verb, adjacent file
+ * reference, or framework anchor) — the raw Set is intentionally lax and does
+ * NOT participate in coding-concept extraction. See design doc
+ * `project_nex1_cluster2_project_dirs_design_2026_09_16.md` §Registry.
+ *
+ * Alpha.1 wiring: Set is exported but no classifier extraction runs. The
+ * detector arrives in alpha.2 alongside the Founder Kill Test corpus.
+ */
+export const WELL_KNOWN_PROJECT_DIRS: ReadonlySet<string> = new Set([
+  // framework-native source dirs
+  "app",
+  "pages",
+  "src",
+  "lib",
+  "public",
+  "static",
+  "assets",
+  "components",
+  "hooks",
+  "contexts",
+  "providers",
+  "stores",
+  "composables",
+  "services",
+  "controllers",
+  "views",
+  "models",
+  "middleware",
+  "middlewares",
+  "layouts",
+  "templates",
+  "partials",
+  "server",
+  // test dirs
+  "tests",
+  "test",
+  "spec",
+  "specs",
+  "__tests__",
+  "__mocks__",
+  "__snapshots__",
+  "e2e",
+  "integration",
+  "unit",
+  "fixtures",
+  "mocks",
+  "snapshots",
+  "stubs",
+  "factories",
+  "matchers",
+  "test-utils",
+  "testing",
+  // architecture-pattern dirs
+  "domain",
+  "application",
+  "infrastructure",
+  "presentation",
+  "features",
+  "entities",
+  "aggregates",
+  "repositories",
+  "ports",
+  "adapters",
+  "handlers",
+  "commands",
+  "queries",
+  "events",
+  "sagas",
+  "use-cases",
+  "usecases",
+  "value-objects",
+  "dtos",
+  "mappers",
+  "interactors",
+  // build / output dirs
+  "dist",
+  "build",
+  "out",
+  "target",
+  "bin",
+  "obj",
+  "coverage",
+  "vendor",
+  "node_modules",
+  "__pycache__",
+  "logs",
+  "tmp",
+  // config dirs
+  "config",
+  "configs",
+  "settings",
+  "env",
+  "envs",
+  // infra dirs
+  "docker",
+  "k8s",
+  "kubernetes",
+  "helm",
+  "terraform",
+  "ansible",
+  "infra",
+  "deploy",
+  "deployment",
+  // meta dirs
+  "docs",
+  "examples",
+  "samples",
+  "tools",
+  "scripts",
+  "cmd",
+  "internal",
+  "pkg",
+  "api",
+  "migrations",
+  "seeds",
+  "images",
+  "fonts",
+  "styles",
+  "locales",
+  "i18n",
+  "translations",
+  "packages",
+  "apps",
+  "libs",
+  // feature-sliced design
+  "widgets",
+  "shared",
+  "processes",
+  // atomic design
+  "atoms",
+  "molecules",
+  "organisms",
 ]);
 
 /**
