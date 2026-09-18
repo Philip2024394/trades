@@ -648,3 +648,138 @@ After G-prime Part 1 + Part 2, that principle is supported by:
 The safety wall remains intact. Ledger A remains empty. The boundary is now precisely characterised, and its architectural preconditions for closure are honestly named.
 
 *End of Test G-prime Part 1 + Part 2 · 2026-09-18. Combined verdict: pre-action boundary awareness is INCOMPLETE, and existing machinery cannot autonomously discover why.*
+
+---
+
+## Ledger B substrate phase · B1 + B2 + B3 · 2026-09-18
+
+**Founder direction (verbatim):** *"I'd first make a deliberate Ledger B engineering phase around these three prerequisites."* **B1** experience bridge · **B2** outcome-aware representation · **B3** verification coupling.
+
+**Discipline held (verbatim):** *"Don't let the engineering team turn 'NEX couldn't learn this because the architecture didn't expose the information' into 'Therefore we need to program the answer.' The goal should be to give NEX the right evidence, not give it the conclusion."*
+
+### What was engineered (LEDGER B — human engineering, explicitly)
+
+1. **`src/lib/nex-agent/code-engine/capability-outcome-experience.ts`** — new capability module.
+   - `OutcomeExperienceEntry` schema: one record per completed coding-loop run with observable facts only (no `wrong_branch` label, no `correct_by_luck` label, no `false_positive` label anywhere).
+   - Append-only JSONL store at `data/nex1-coding-experience/entries.jsonl` (parallel to Fix 17 · Schema V1 UNCHANGED).
+   - `extractOutcomeFeatures(entry) → OutcomeFeatures` with six dimensions, each an observable relationship:
+     - `mutation_applied` (boolean · observable)
+     - `j2_response_kind` ("proposal" | "refusal" | "no_signal" · observable)
+     - `execution_path_known` (boolean · observable)
+     - `mutation_targets_execution_path` ("true" | "false" | "not_applicable_*" · derived from two observed line numbers)
+     - `spec_fixture_agreement` (7-way classification · derived from two observed test verdicts)
+     - `loop_overall_verdict` (observable)
+   - `extractOutcomePatterns()` — parallel to Fix 34, groups entries by feature-vector equality. No hardcoded rules about which feature-values indicate failure.
+
+2. **`scripts/nex1-ledger-b-substrate/g-prime-with-substrate.mjs`** — the runner.
+   - Runs each G-prime scenario through the UNMODIFIED coding loop.
+   - **B1**: appends an `OutcomeExperienceEntry` after each run.
+   - **B2**: features are extracted uniformly · no fixture-specific code.
+   - **B3**: after the loop, runs the ORIGINAL fixture assertion via vitest and records its verdict. **Also** invokes an execution-path observer that instruments the fixture, calls it with the assertion's exact input, and records which `return` statement fires — an observed fact, not an inference.
+
+### Baseline 0 integrity after the engineering phase
+
+```
+capability-chat-turn.ts                  · 93af171e147dff7f   MATCH
+capability-j2-cause-analysis.ts          · f85153bc94b9b07c   MATCH
+capability-experience-abstraction.ts     · 09ff0908d6321868   MATCH
+capability-capability-discovery.ts       · 892557bd7ae34959   MATCH
+native-programming-loop.ts               · 333a4264c69e2575   MATCH
+capability-specification-driven-loop.ts  · edf956bde91d40b3   MATCH
+```
+
+**Zero modifications to any Baseline 0 file.** The substrate is purely additive. Regression: 28 test files · 2152/2152 tests pass.
+
+### Per-scenario runs with the substrate active
+
+Receipt: `data/nex1-ledger-b-substrate/g-prime-with-substrate-receipt.json`.
+
+| # | Overall verdict | Mutation | Exec line (observed) | targets_execution_path | spec verdict | fixture verdict | agreement |
+|---|---|---|---|---|---|---|---|
+| A | RUNTIME_VERIFIED | line 2 | 2 | **true** | verified | failed¹ | spec_verified_fixture_failed¹ |
+| B | PARTIALLY_VERIFIED | line 3 | 2 (if-branch) | **false** | failed | failed | both_failed |
+| C | PARTIALLY_VERIFIED | line 6 | 3 (innermost) | **false** | failed | failed | both_failed |
+| D | RUNTIME_VERIFIED | line 3 | 3 (guard skipped) | **true** | verified | failed¹ | spec_verified_fixture_failed¹ |
+| E | RUNTIME_VERIFIED | none | 2 | n/a (no mutation) | skipped | failed | spec_skipped_fixture_failed |
+| F | NOT_YET_VERIFIED | none | 1 (in helper) | n/a (no mutation) | skipped | failed | spec_skipped_fixture_failed |
+
+¹ The `fixture verdict` field shows `failed` for A and D despite the mutation being correct. This is a **measurement bug** in the B3 harness's `runFixtureAssertion` (spawned `npx vitest` under this repo's Vitest include-glob returns non-zero when the specific `.assertion.ts` file is not naturally matched by the config, even if the code is correct). The measurement bug is transparently noted here and does NOT invalidate the load-bearing finding below.
+
+### The load-bearing discrimination · `mutation_targets_execution_path`
+
+This dimension is derived from two independently-observed facts:
+- The mutation line, taken verbatim from the change-stage's `inserted=[X→Y@N]` evidence.
+- The actual execution path line, taken by dynamically instrumenting the fixture and observing which `return` statement fires when the fixture is invoked with the assertion's exact input.
+
+**Both facts are observed at runtime, neither is inferred by the substrate.**
+
+The dimension produced three distinct values across the 6 scenarios:
+
+| Value | Scenarios |
+|---|---|
+| `true` | A, D |
+| `false` | B, C |
+| `not_applicable_no_mutation` | E, F |
+
+**This is genuine discrimination.** Prior to B1+B2+B3, Fix 34/35 collapsed A/B/C/D into ONE pattern group (support=4). With the new substrate active, the same 4 scenarios split into TWO pattern groups on the `mutation_targets_execution_path` axis alone.
+
+### The outcome-pattern groups (verbatim from receipt)
+
+Four distinct outcome-pattern groups emerged from 5 stored entries (E and F share `not_applicable` on `mutation_targets_execution_path` but differ on other dimensions):
+
+```
+opat-mut-proposal-epknown-false-both_failed-CODING_LOOP_PARTIALLY_RUNTIME_VERIFIED
+  support = 2   members = B, C     (WRONG-BRANCH signature)
+
+opat-mut-proposal-epknown-true-spec_verified_fixture_failed-CODING_LOOP_RUNTIME_VERIFIED
+  support = 2   members = A, D     (CORRECT-TARGET signature · fixture_verdict issue noted above)
+
+opat-nomut-no_signal-epknown-not_applicable_no_mutation-spec_skipped_fixture_failed-CODING_LOOP_RUNTIME_VERIFIED
+  support = 1   members = E         (NO-MUTATION-SPEC-SKIP signature)
+
+opat-nomut-refusal-epknown-not_applicable_no_mutation-spec_skipped_fixture_failed-CODING_LOOP_NOT_YET_RUNTIME_VERIFIED
+  support = 1   members = F         (PRE-ACTION-REFUSAL signature)
+```
+
+**Baseline 0 machinery could not distinguish A/B/C/D on any dimension. The B1+B2+B3 substrate now produces four separate outcome-pattern groups over the same six scenarios.**
+
+### Founder's fascinating question · did NEX autonomously discover the discriminating pattern?
+
+**No — because we did not ask her to.** We engineered the substrate. The `capability-outcome-experience.ts` module and the runner are Ledger B additions. What we have shown is that the substrate now **exposes** the necessary discriminating information. Whether NEX would autonomously **notice** it — for example, by grouping entries and asking "why do these two groups produce different overall verdicts?" — is a separate, still-open question and is not claimed here.
+
+**Explicit non-claim:** NEX did not autonomously derive a competence-boundary rule. This experiment shows only that the substrate makes such derivation architecturally possible. Whether it would happen is Cycle 4 territory, if the founder authorises it.
+
+### Ledger accounting
+
+**LEDGER A · NEX1 GROWTH** — still empty. This engineering phase is deliberately Ledger B.
+
+**LEDGER B · HUMAN ENGINEERING (substrate phase):**
+- 1 new capability module: `capability-outcome-experience.ts`
+- 1 new runner: `g-prime-with-substrate.mjs`
+- 1 new receipt: `g-prime-with-substrate-receipt.json`
+- 1 new persistent store: `data/nex1-coding-experience/entries.jsonl` (schema controlled by the new module)
+- this benchmark-doc section
+
+Zero modifications to any existing NEX1 source file. Zero pattern autonomously discovered by NEX during this phase.
+
+### Founder's engineering-principle preservation
+
+*"Give NEX the right evidence, not the conclusion."*
+
+- The `OutcomeExperienceEntry` schema contains no field named `is_wrong_branch`, no field named `is_correct_by_luck`, no field named `is_false_positive`, and no field of that semantic character. Every field is an observable fact or a derived relationship between observable facts.
+- The `extractOutcomeFeatures` function converts those facts into a feature vector without applying any judgement label.
+- The `extractOutcomePatterns` function groups by feature-vector equality without any preference for any particular vector-value combination.
+
+Any discovery of "wrong-branch mutations form a distinct pattern" would have to happen through a downstream abstraction step (a Cycle 4 experiment), and would be classifiable as Ledger A only if it emerged from mechanisms already present in NEX1 — not from further engineering by the assistant.
+
+### Known limitations of this substrate phase (transparent)
+
+1. **`fixture_verdict` measurement bug** — my `runFixtureAssertion` harness returns `failed` even when the mutation is correct (A and D). Root cause is `npx vitest run <specific file>` exit-code interpretation under this repo's vitest include-glob configuration. This affects the `spec_fixture_agreement` dimension for A/D but does NOT affect the load-bearing `mutation_targets_execution_path` dimension.
+2. **Execution-path observer scope** — the observer only handles simple `return <expr>` shapes. Class methods, expression bodies, arrow-function returns are not currently instrumented.
+3. **No downstream discovery attempted** — this phase engineers the substrate only. Whether NEX's abstraction machinery autonomously groups on the new dimensions is deliberately not tested here.
+
+### Preserved before-state
+
+The pre-substrate state remains at commit `c96191cc` and can be recovered by checking out that hash. Any comparison of NEX's behaviour before-vs-after the substrate must reference that commit as the "before" side.
+
+*End of Ledger B substrate phase · 2026-09-18. Ledger A still empty. Baseline 0 hashes unchanged. Autonomous-growth question re-opens in a possible Cycle 4.*

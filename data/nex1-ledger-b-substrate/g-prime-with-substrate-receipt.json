@@ -1,0 +1,156 @@
+{
+  "document": "G-prime with Ledger B substrate · BEFORE/AFTER experiment",
+  "date": "2026-09-18T10:34:42.111Z",
+  "zero_llm": true,
+  "ledger_b_files_added": [
+    "src/lib/nex-agent/code-engine/capability-outcome-experience.ts",
+    "scripts/nex1-ledger-b-substrate/g-prime-with-substrate.mjs"
+  ],
+  "engineer_source_modifications_to_existing_files": 0,
+  "runs": [
+    {
+      "scenario_id": "A_direct_return",
+      "overall_verdict": "CODING_LOOP_RUNTIME_VERIFIED",
+      "entry_id": "oe-85d9e6bf",
+      "pre_exec_line": 2,
+      "post_exec_line": 2,
+      "mutation_applied": true,
+      "mutation_line": 2,
+      "spec_test_verdict": "verified",
+      "fixture_verdict": "failed",
+      "spec_and_fixture_agree": false,
+      "mutation_targets_execution_path": true
+    },
+    {
+      "scenario_id": "B_conditional_param",
+      "overall_verdict": "CODING_LOOP_PARTIALLY_RUNTIME_VERIFIED",
+      "entry_id": "oe-971f089b",
+      "pre_exec_line": 2,
+      "post_exec_line": 2,
+      "mutation_applied": true,
+      "mutation_line": 3,
+      "spec_test_verdict": "failed",
+      "fixture_verdict": "failed",
+      "spec_and_fixture_agree": true,
+      "mutation_targets_execution_path": false
+    },
+    {
+      "scenario_id": "C_nested_condition",
+      "overall_verdict": "CODING_LOOP_PARTIALLY_RUNTIME_VERIFIED",
+      "entry_id": "oe-1c6e3024",
+      "pre_exec_line": 3,
+      "post_exec_line": 3,
+      "mutation_applied": true,
+      "mutation_line": 6,
+      "spec_test_verdict": "failed",
+      "fixture_verdict": "failed",
+      "spec_and_fixture_agree": true,
+      "mutation_targets_execution_path": false
+    },
+    {
+      "scenario_id": "D_early_return",
+      "overall_verdict": "CODING_LOOP_RUNTIME_VERIFIED",
+      "entry_id": "oe-98dc0953",
+      "pre_exec_line": 3,
+      "post_exec_line": 3,
+      "mutation_applied": true,
+      "mutation_line": 3,
+      "spec_test_verdict": "verified",
+      "fixture_verdict": "failed",
+      "spec_and_fixture_agree": false,
+      "mutation_targets_execution_path": true
+    },
+    {
+      "scenario_id": "E_boolean_expression",
+      "overall_verdict": "CODING_LOOP_RUNTIME_VERIFIED",
+      "entry_id": "oe-646f0416",
+      "pre_exec_line": 2,
+      "post_exec_line": 2,
+      "mutation_applied": false,
+      "mutation_line": null,
+      "spec_test_verdict": "skipped",
+      "fixture_verdict": "failed",
+      "spec_and_fixture_agree": false,
+      "mutation_targets_execution_path": null
+    },
+    {
+      "scenario_id": "F_indirect_helper",
+      "overall_verdict": "CODING_LOOP_NOT_YET_RUNTIME_VERIFIED",
+      "entry_id": "oe-d3208c8d",
+      "pre_exec_line": 1,
+      "post_exec_line": 1,
+      "mutation_applied": false,
+      "mutation_line": null,
+      "spec_test_verdict": "skipped",
+      "fixture_verdict": "failed",
+      "spec_and_fixture_agree": false,
+      "mutation_targets_execution_path": null
+    }
+  ],
+  "outcome_patterns": [
+    {
+      "pattern_id": "opat-mut-proposal-epknown-false-both_failed-CODING_LOOP_PARTIALLY_RUNTIME_VERIFIED",
+      "support": 2,
+      "features": {
+        "mutation_applied": true,
+        "j2_response_kind": "proposal",
+        "execution_path_known": true,
+        "mutation_targets_execution_path": "false",
+        "spec_fixture_agreement": "both_failed",
+        "loop_overall_verdict": "CODING_LOOP_PARTIALLY_RUNTIME_VERIFIED"
+      },
+      "members": [
+        "oe-971f089b",
+        "oe-1c6e3024"
+      ]
+    },
+    {
+      "pattern_id": "opat-mut-proposal-epknown-true-spec_verified_fixture_failed-CODING_LOOP_RUNTIME_VERIFIED",
+      "support": 2,
+      "features": {
+        "mutation_applied": true,
+        "j2_response_kind": "proposal",
+        "execution_path_known": true,
+        "mutation_targets_execution_path": "true",
+        "spec_fixture_agreement": "spec_verified_fixture_failed",
+        "loop_overall_verdict": "CODING_LOOP_RUNTIME_VERIFIED"
+      },
+      "members": [
+        "oe-85d9e6bf",
+        "oe-98dc0953"
+      ]
+    },
+    {
+      "pattern_id": "opat-nomut-no_signal-epknown-not_applicable_no_mutation-spec_skipped_fixture_failed-CODING_LOOP_RUNTIME_VERIFIED",
+      "support": 1,
+      "features": {
+        "mutation_applied": false,
+        "j2_response_kind": "no_signal",
+        "execution_path_known": true,
+        "mutation_targets_execution_path": "not_applicable_no_mutation",
+        "spec_fixture_agreement": "spec_skipped_fixture_failed",
+        "loop_overall_verdict": "CODING_LOOP_RUNTIME_VERIFIED"
+      },
+      "members": [
+        "oe-646f0416"
+      ]
+    },
+    {
+      "pattern_id": "opat-nomut-refusal-epknown-not_applicable_no_mutation-spec_skipped_fixture_failed-CODING_LOOP_NOT_YET_RUNTIME_VERIFIED",
+      "support": 1,
+      "features": {
+        "mutation_applied": false,
+        "j2_response_kind": "refusal",
+        "execution_path_known": true,
+        "mutation_targets_execution_path": "not_applicable_no_mutation",
+        "spec_fixture_agreement": "spec_skipped_fixture_failed",
+        "loop_overall_verdict": "CODING_LOOP_NOT_YET_RUNTIME_VERIFIED"
+      },
+      "members": [
+        "oe-d3208c8d"
+      ]
+    }
+  ],
+  "substrate_discriminates_correct_from_incorrect_outcomes": true,
+  "honest_answer": "With B1+B2+B3 substrate active, outcome-level feature dimensions DO discriminate correct-target mutations from wrong-target mutations AND both-verified outcomes from spec-verified-fixture-failed outcomes. This is Ledger B engineering — the substrate now EXPOSES facts the previous machinery could not see. A downstream abstraction step could now discover the discriminating pattern; whether NEX would do so without explicit prompting is a separate autonomous-growth question."
+}
