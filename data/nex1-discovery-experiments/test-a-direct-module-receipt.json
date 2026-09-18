@@ -1,0 +1,92 @@
+{
+  "test": "A · switch-branch · direct-module · milestone a265645d",
+  "date": "2026-09-18T03:04:01.381Z",
+  "zero_llm": true,
+  "founder_goal": "Fix src/lib/nex1-discovery-fixtures/risk-classifier.ts. When classifyRiskLevel is called, it should return 30.",
+  "overall_verdict": "CODING_LOOP_NOT_YET_RUNTIME_VERIFIED",
+  "stages": [
+    {
+      "stage": "understand",
+      "verdict": "VERIFIED",
+      "summary": "target identified: src/lib/nex1-discovery-fixtures/risk-classifier.spec-derived.test.ts",
+      "evidence": [
+        "target=src/lib/nex1-discovery-fixtures/risk-classifier.spec-derived.test.ts"
+      ]
+    },
+    {
+      "stage": "inspect",
+      "verdict": "VERIFIED",
+      "summary": "Test Files  1 failed (1)",
+      "evidence": [
+        "exit_code=1",
+        "failing_tests=2",
+        "duration_ms=2964"
+      ]
+    },
+    {
+      "stage": "reason",
+      "verdict": "VERIFIED",
+      "summary": "2 finding(s) · kinds=[assertion_mismatch,assertion_mismatch]",
+      "evidence": [
+        "assertion_mismatch · test=src/lib/nex1-discovery-fixtures/risk-classifier.spec-derived.test.ts:NEX1 spec-derived · risk-classifier > classifyRiskLevel=called · it should toBe 30 · expected=30 · actual=10",
+        "assertion_mismatch · test=src/lib/nex1-discovery-fixtures/risk-classifier.spec-derived.test.ts:NEX1 spec-derived · risk-classifier > classifyRiskLevel=1 · result should toBe 30 · expected=30 · actual=10"
+      ]
+    },
+    {
+      "stage": "plan",
+      "verdict": "CAPABILITY_NOT_YET_IMPLEMENTED_WITHOUT_LLM",
+      "summary": "capability-J.2 and Capability K both refused · no proposal within deterministic scope",
+      "evidence": [
+        "J.2 · refused_low_confidence · function 'classifyRiskLevel' in src/lib/nex1-discovery-fixtures/risk-classifier.ts does not have a simple literal return · cause is not localised to a single literal · J.2 refuses ",
+        "J.2 · refused_low_confidence · function 'classifyRiskLevel' in src/lib/nex1-discovery-fixtures/risk-classifier.ts does not have a simple literal return · cause is not localised to a single literal · J.2 refuses "
+      ]
+    },
+    {
+      "stage": "change",
+      "verdict": "SKIPPED",
+      "summary": "no proposal · deterministic mutation not attempted",
+      "evidence": []
+    },
+    {
+      "stage": "test",
+      "verdict": "SKIPPED",
+      "summary": "no change · nothing to verify",
+      "evidence": []
+    },
+    {
+      "stage": "diagnose",
+      "verdict": "SKIPPED",
+      "summary": "no test rerun",
+      "evidence": []
+    },
+    {
+      "stage": "repair",
+      "verdict": "SKIPPED",
+      "summary": "no diagnosis",
+      "evidence": []
+    },
+    {
+      "stage": "verify",
+      "verdict": "SKIPPED",
+      "summary": "no repair",
+      "evidence": []
+    },
+    {
+      "stage": "learn",
+      "verdict": "CAPABILITY_NOT_YET_IMPLEMENTED_WITHOUT_LLM",
+      "summary": "NEX1 captured a real failure trace but no deterministic repair operator applies. Extending capability-C / capability-J.2 with a new repair class is required. Refusing to substitute an LLM.",
+      "evidence": [
+        "plan: J.2 refused with class 'refused_low_confidence' · reason: function 'classifyRiskLevel' in src/lib/nex1-discovery-fixtures/risk-classifier.ts does not have a simple literal return · cause is not localised to a single li",
+        "plan: J.2 refused with class 'refused_low_confidence' · reason: function 'classifyRiskLevel' in src/lib/nex1-discovery-fixtures/risk-classifier.ts does not have a simple literal return · cause is not localised to a single li"
+      ]
+    }
+  ],
+  "file_evidence": {
+    "changed": false,
+    "case3_now_30": false,
+    "case3_still_40": true,
+    "other_cases_intact": true,
+    "byte_identity_preserved": true
+  },
+  "honest_verdict": "REFUSED_HONESTLY"
+}
