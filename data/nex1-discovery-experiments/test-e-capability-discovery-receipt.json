@@ -1,0 +1,113 @@
+{
+  "test": "E · capability discovery · Fix 35",
+  "date": "2026-09-18T03:26:18.809Z",
+  "zero_llm": true,
+  "version": "fix35.v1",
+  "session_1": {
+    "session": 1,
+    "seeded_entry_ids": [
+      "seed-1f6d9e68",
+      "seed-3edb9dea",
+      "seed-e09ad8a5"
+    ],
+    "seeded_count": 3,
+    "rule_count": 1,
+    "rules_summary": [
+      {
+        "rule_id": "rule-0476695f90fd320b",
+        "support_count": 3,
+        "shape_signature": {
+          "has_signature_format": true,
+          "value_type": "number",
+          "path_dir_root": "src",
+          "path_dir_second": "lib",
+          "selection_state": "SELECTED"
+        },
+        "invariant_kinds": [
+          "selected_candidate_has_double_colon_separator",
+          "selected_candidate_prefix_equals_source_file",
+          "selected_candidate_suffix_is_numeric",
+          "all_entries_share_path_prefix"
+        ],
+        "path_prefix_extra": {
+          "path_prefix": "src/lib/family"
+        }
+      }
+    ],
+    "rules_path": "C:\\Users\\Victus\\trades\\data\\nex1-discovered-capabilities\\rules.jsonl",
+    "appended_lines": 1,
+    "induction_probe_count": 6,
+    "version": "fix35.v1"
+  },
+  "application": {
+    "A_same_family_novel": {
+      "kind": "value_from_selected_candidate_suffix",
+      "rule_id": "rule-0476695f90fd320b",
+      "predicted_value": 99,
+      "predicted_value_type": "number",
+      "explanation": "induced invariants: [selected_candidate_has_double_colon_separator,selected_candidate_prefix_equals_source_file,selected_candidate_suffix_is_numeric,all_entries_share_path_prefix] · suffix parsed as number",
+      "evidence_kind": "INFERRED",
+      "r11b_marker": "DISCOVERED_PREDICTION_MUST_NOT_ENTER_R4_SUPPORTING_COUNT"
+    },
+    "B_off_family_string": {
+      "kind": "no_applicable_rule",
+      "rule_id": null,
+      "predicted_value": null,
+      "predicted_value_type": null,
+      "explanation": "no discovered rule matches the input's shape signature",
+      "evidence_kind": "INFERRED",
+      "r11b_marker": "DISCOVERED_PREDICTION_MUST_NOT_ENTER_R4_SUPPORTING_COUNT"
+    },
+    "C_off_selection_state_TIE": {
+      "kind": "no_applicable_rule",
+      "rule_id": null,
+      "predicted_value": null,
+      "predicted_value_type": null,
+      "explanation": "no discovered rule matches the input's shape signature",
+      "evidence_kind": "INFERRED",
+      "r11b_marker": "DISCOVERED_PREDICTION_MUST_NOT_ENTER_R4_SUPPORTING_COUNT"
+    },
+    "D_no_separator": {
+      "kind": "no_applicable_rule",
+      "rule_id": null,
+      "predicted_value": null,
+      "predicted_value_type": null,
+      "explanation": "no discovered rule matches the input's shape signature",
+      "evidence_kind": "INFERRED",
+      "r11b_marker": "DISCOVERED_PREDICTION_MUST_NOT_ENTER_R4_SUPPORTING_COUNT"
+    }
+  },
+  "different_seed_produces_different_rule": {
+    "session_1_rule_ids": [
+      "rule-0476695f90fd320b"
+    ],
+    "different_seed_rule_ids": [
+      "rule-b2044a2efb6ba920"
+    ],
+    "distinct": true
+  },
+  "determinism": {
+    "run1_rule_ids": [
+      "rule-19771c399665dbde"
+    ],
+    "run2_rule_ids": [
+      "rule-19771c399665dbde"
+    ],
+    "identical": true
+  },
+  "empty_store": {
+    "rule_count": 0,
+    "correct": true
+  },
+  "correctness_matrix": {
+    "s1_ok": true,
+    "apply_A_ok": true,
+    "apply_B_ok": true,
+    "apply_C_ok": true,
+    "apply_D_ok": true,
+    "different_seed_ok": true,
+    "determinism_ok": true,
+    "empty_ok": true
+  },
+  "verdict": "VERIFIED"
+}

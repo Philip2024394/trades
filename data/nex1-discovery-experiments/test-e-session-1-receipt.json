@@ -1,0 +1,36 @@
+{
+  "session": 1,
+  "seeded_entry_ids": [
+    "seed-1f6d9e68",
+    "seed-3edb9dea",
+    "seed-e09ad8a5"
+  ],
+  "seeded_count": 3,
+  "rule_count": 1,
+  "rules_summary": [
+    {
+      "rule_id": "rule-0476695f90fd320b",
+      "support_count": 3,
+      "shape_signature": {
+        "has_signature_format": true,
+        "value_type": "number",
+        "path_dir_root": "src",
+        "path_dir_second": "lib",
+        "selection_state": "SELECTED"
+      },
+      "invariant_kinds": [
+        "selected_candidate_has_double_colon_separator",
+        "selected_candidate_prefix_equals_source_file",
+        "selected_candidate_suffix_is_numeric",
+        "all_entries_share_path_prefix"
+      ],
+      "path_prefix_extra": {
+        "path_prefix": "src/lib/family"
+      }
+    }
+  ],
+  "rules_path": "C:\\Users\\Victus\\trades\\data\\nex1-discovered-capabilities\\rules.jsonl",
+  "appended_lines": 1,
+  "induction_probe_count": 6,
+  "version": "fix35.v1"
+}

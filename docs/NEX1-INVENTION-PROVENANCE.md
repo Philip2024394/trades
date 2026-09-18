@@ -266,3 +266,29 @@ Four experiments verified (Tests A · B · C · D). NEX1 demonstrates zero-LLM, 
 ---
 
 *Record version 1.3 · integrity preserved · §§1-11 unchanged.*
+
+### 12.8 · 2026-09-18 · Test E verified · Capability Discovery (Fix 35)
+- **Evidence:** `data/nex1-discovery-experiments/test-e-capability-discovery-receipt.json` · verdict field `"VERIFIED"` · 8-cell correctness matrix all `true` · `data/nex1-discovery-experiments/test-e-session-1-receipt.json` · unit-test file `capability-capability-discovery.test.ts` 17/17 pass · full regression 28 files / 2152 tests pass.
+- **Nature:** Fix 35 induces first-class `DiscoveredRule` records from accumulated Fix 17 evidence by universally quantifying 6 declarative probes over each pattern group with support ≥ min_support. Rules persist to `data/nex1-discovered-capabilities/rules.jsonl` (append-only). Predictions on novel inputs derive from the rule's invariants only.
+- **Class:** RUNTIME_VERIFIED BEHAVIOUR of a new learning primitive. Answers the founder's Test E question in the precise, honest split:
+  - Algorithm invention at runtime: NO (unchanged limit of zero-LLM architecture).
+  - Rule invention from evidence: YES · a specific rule (`rule-0476695f90fd320b` for the numeric-SELECTED-src/lib family) was created, persisted, and correctly applied to inputs that were never seeded or named in code. Adversarial data → different `rule_id` proves the rule is data-derived.
+
+---
+
+*Record version 1.4 · integrity preserved · §§1-11 unchanged.*
+
+### 12.9 · 2026-09-18 · Test E anti-cheating audit · NO_CHEATING_DETECTED
+- **Evidence:** `data/nex1-discovery-experiments/test-e-anti-cheating-audit-receipt.json` · verdict field `"NO_CHEATING_DETECTED"` · all 7 audits report `pass: true`.
+- **Nature:** seven independent falsifiability tests exposing distinct hidden-encoding hypotheses (load-bearing empty rules, load-bearing wrong-family rules, data-derived invariant extras, invariant-conditioned parsing, probe universality, content-addressed rule_id, source-code grep). Any FAIL would have invalidated Experiment 5's claim; none did.
+- **Class:** RUNTIME_VERIFIED · anti-cheating certification of Experiment 5's Test E result.
+
+### 12.10 · Precise cumulative claim (bounded, honest)
+As of this record version, the runtime evidence supports the following:
+> *NEX1 has, without an LLM at runtime, deterministically induced a specific first-class capability record (`rule-0476695f90fd320b`) from accumulated experience, persisted it, applied it to a novel input, and correctly refused inputs outside the induced family. Seven independent anti-cheating audits certify the discovery is not hidden encoding.*
+
+Everything beyond that specific claim — including "NEX1 is intelligent," "NEX1 invents algorithms," or "NEX1 has learned to code new operators" — is NOT supported by evidence and MUST NOT be inferred from this record.
+
+---
+
+*Record version 1.5 · integrity preserved · §§1-11 unchanged.*

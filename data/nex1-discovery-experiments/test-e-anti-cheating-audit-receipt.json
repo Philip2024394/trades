@@ -1,0 +1,76 @@
+{
+  "test": "E · anti-cheating audit",
+  "date": "2026-09-18T03:29:59.458Z",
+  "zero_llm": true,
+  "audits": {
+    "audit_1_load_bearing_empty_rules": {
+      "prediction_kind": "no_applicable_rule",
+      "predicted_value": null,
+      "pass": true,
+      "description": "empty rules -> no_applicable_rule (proves the module cannot short-circuit around the rule)"
+    },
+    "audit_2_load_bearing_wrong_family_rules": {
+      "wrongFamilyRuleCount": 1,
+      "wrongFamilyInvariants": [
+        "selected_candidate_has_double_colon_separator",
+        "selected_candidate_prefix_equals_source_file",
+        "selected_candidate_suffix_is_quoted_string",
+        "all_entries_share_path_prefix"
+      ],
+      "prediction_kind": "no_applicable_rule",
+      "pass": true,
+      "description": "rules induced from docs+string family must NOT fire on src/lib+numeric input"
+    },
+    "audit_3_data_derived_path_prefix": {
+      "prefix_A": "src/lib/alpha",
+      "prefix_B": "src/lib/beta",
+      "pass": true,
+      "description": "path_prefix reflects the actual shared prefix in the seed; identical code, different data, different extras"
+    },
+    "audit_4_invariant_dependent_parsing": {
+      "numeric_input_type": "number",
+      "numeric_input_value": 777,
+      "string_input_type": "string",
+      "string_input_value": "seven",
+      "pass": true,
+      "description": "same input shape, different induced rule (numeric vs string invariants), different parsing → different prediction type"
+    },
+    "audit_5_probe_universality": {
+      "numeric_group_present": true,
+      "numeric_group_invariants": [
+        "selected_candidate_has_double_colon_separator",
+        "selected_candidate_prefix_equals_source_file",
+        "selected_candidate_suffix_is_numeric",
+        "all_entries_share_path_prefix"
+      ],
+      "numeric_group_support": 2,
+      "pass": true,
+      "description": "Fix 34 grouping isolates the contaminating string entry into its own group; the pure numeric group's invariants remain clean"
+    },
+    "audit_6_content_addressed_id": {
+      "identical_data_same_id": true,
+      "different_data_different_id": true,
+      "x_id": "rule-4406c6a5701f7a65",
+      "y_id": "rule-4406c6a5701f7a65",
+      "z_id": "rule-be77c926425fa555",
+      "pass": true,
+      "description": "rule_id is a content-hash of (shape_signature, invariants); identity is DATA-derived"
+    },
+    "audit_7_code_grep": {
+      "module_path": "C:\\Users\\Victus\\trades\\src\\lib\\nex-agent\\code-engine\\capability-capability-discovery.ts",
+      "module_bytes": 15103,
+      "forbidden_literals_checked": [
+        "0476695f90fd320b",
+        "genuinely-novel",
+        "newone.ts",
+        "src/lib/family",
+        "b2044a2efb6ba920"
+      ],
+      "hits": [],
+      "pass": true,
+      "description": "the module source must not contain the specific rule_ids or seed paths that appear in receipts"
+    }
+  },
+  "all_pass": true,
+  "verdict": "NO_CHEATING_DETECTED"
+}

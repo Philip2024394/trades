@@ -390,3 +390,150 @@ The founder's central question — *"Can NEX1 discover something that was NOT ex
 - DISCOVER ✅ · VALIDATE ✅ · STORE ✅ · APPLY 🟡 (retrieval works · runtime bias not proven · operator invention out of scope)
 
 *End of Cycle 1 · Discovery loop pauses here. The blocker for closing APPLY is architectural (runtime wire-in requires either a working dev server or a direct-module coding-loop harness) and is not a scientific unknown — it is a plumbing task.*
+
+---
+
+## Cycle 2 · The hardest remaining question
+
+## Experiment 5 · TEST E · Capability Discovery · **Can NEX1 discover and create a reusable capability that was not explicitly supplied by the developer?**
+
+### Question
+The founder's exact wording. Distinguishing carefully:
+- **Strong sense** (inventing a new *algorithm* from scratch, at runtime, with no LLM): out of reach for zero-LLM architecture. Any algorithm must be authored by hand.
+- **Weak sense** (inducing a new *rule / template / invariant* from evidence, storing it as a first-class capability, and reusing it on novel inputs): testable. This is what Test E measures.
+
+### Setup
+Fix 35 · `capability-capability-discovery.ts` implements an INDUCTION step over accumulated Fix 17 experience:
+- For each pattern group (from Fix 34) with support ≥ min_support
+- Run a fixed set of 6 declarative probes (`INDUCTION_PROBES`), each of which is a universal quantification over the supporting entries
+- Any probe that holds becomes an `Invariant` on the emerging `DiscoveredRule`
+- `rule_id` is a content-hash of `{shape_signature, invariants}`, so **different evidence produces a different rule_id automatically**
+- Rules persist to `data/nex1-discovered-capabilities/rules.jsonl` (append-only)
+
+Application step: given a NOVEL input's shape features, `predictFromRules` finds a matching rule and produces a `Prediction` derived from the rule's invariants.
+
+Two-session · direct-module · zero LLM · deterministic.
+
+### Prior Knowledge in NEX1
+Fix 17 store · Fix 34 pattern extractor + `ShapeFeatures`. No prior induction machinery. No prior `DiscoveredRule` type. Fix 35 introduces this artifact.
+
+### Novel Element
+The RULE that emerges. Its `rule_id`, its specific invariant set, its predictions on new inputs — none of these exist in the source code before induction runs; all are computed from the evidence supplied.
+
+### Mechanism
+`induceRules(entries, min_support)` → for each pattern group, apply 6 probes universally → assemble `DiscoveredRule[]`. `predictFromRules(rules, input)` → find applicable rule, apply invariant-driven prediction.
+
+Every probe is a pure function that returns `{holds: boolean, extra?: object}`. Universal quantification means: fires only when the property holds across ALL supporting entries. Any counter-example silently disables the probe.
+
+### Observation
+**Session 1 · seeded 3 successful experiences** under `src/lib/family/*` with `path::N` candidates (N ∈ {11, 22, 33}). Induction produced:
+- **1 rule**, `rule_id: rule-0476695f90fd320b`
+- `support_count: 3`
+- 4 invariants held across all 3 entries: `has_double_colon_separator` · `prefix_equals_source_file` · `suffix_is_numeric` · `all_entries_share_path_prefix` (extra: `path_prefix: "src/lib/family"`)
+- Rule persisted to `data/nex1-discovered-capabilities/rules.jsonl`.
+
+**Application** (novel inputs, never seen at induction time):
+| Case | Input | Expected | Actual | Correct |
+|---|---|---|---|---|
+| A | `src/lib/genuinely-novel/newone.ts::99` · SELECTED | rule fires · numeric prediction 99 | `value_from_selected_candidate_suffix` · value=`99` · type=`number` | ✅ |
+| B | `docs/pages/anything.md::"hello"` · SELECTED | no_applicable_rule (different family) | `no_applicable_rule` | ✅ |
+| C | `src/lib/family/whatever.ts::42` · **TIE** | no_applicable_rule (state mismatch) | `no_applicable_rule` | ✅ |
+| D | `src/lib/family/whatever.ts` · `selected_candidate: null` | no_applicable_rule (no separator) | `no_applicable_rule` | ✅ |
+
+**Adversarial · different-seed produces different rule:**
+- Session 1 seed (numeric): `rule-0476695f90fd320b`
+- Adversarial seed (quoted strings `path::"alpha"`, `path::"beta"`): `rule-b2044a2efb6ba920`
+- Distinct → proves the rule is data-derived, not code-baked.
+
+**Determinism:** running induction twice on the same store produced identical `rule_id` sequences.
+
+**Empty store:** zero rules emitted.
+
+### Evidence
+- `data/nex1-discovery-experiments/test-e-capability-discovery-receipt.json` · verdict field `"VERIFIED"` · 8-cell `correctness_matrix` all `true`.
+- `data/nex1-discovery-experiments/test-e-session-1-receipt.json` · records the seeded IDs + induced rule structure.
+- Unit tests: `src/lib/nex-agent/code-engine/capability-capability-discovery.test.ts` · 17/17.
+- Full regression: 28 test files · 2152/2152 tests pass.
+
+### Anti-Cheating Audit
+- **Fixture names in module:** zero (grep audit; the only matches are comments explicitly declaring "no fixture names").
+- **Hardcoded expected answers in module:** zero (grep audit).
+- **Zero LLM:** grep clean for OpenAI/Anthropic/Claude/Gemini/Groq/Ollama.
+- **Rule identity content-addressed:** `rule_id = "rule-" + sha256({shape, invariants}).slice(0, 16)`. Different data → different id **automatically**.
+- **Universal quantification:** every probe fires only when the property holds across ALL supporting entries, so cherry-picking is architecturally impossible.
+- **Application uses only rule invariants + input:** the prediction is a deterministic function of the applicable rule's invariants and the caller-supplied input. No `if (input.source_file === "...")` in the module.
+
+### Result
+**VERIFIED.**
+
+### Honest answer to the founder's question · *"Can NEX invent a new capability?"*
+Split cleanly:
+
+- **Algorithm invention** — NO. The induction algorithm (Fix 35) was authored by hand, deterministically. NEX1 does not invent new algorithms at runtime. This is a real limit of zero-LLM architecture.
+- **Rule invention** — YES. The specific `DiscoveredRule` with `rule_id: rule-0476695f90fd320b`, its four induced invariants, and its predictions for novel inputs are ALL new to NEX1's state. None of them appear in the source code. All of them are derived from accumulated evidence. All of them are persisted as first-class capability records. All of them are applied correctly to inputs never seen at induction time. Adversarial seed → different rule_id proves the rule is genuinely data-derived, not code-baked.
+
+**The precise statement supported by evidence:** NEX1 can discover, create, persist, and reuse new **inductive rules** derived from accumulated experience, without an LLM at runtime. NEX1 cannot invent new **algorithms** without an LLM.
+
+### What This Proves
+- NEX1's learning machinery is capable of producing genuinely new, reusable, first-class capability records from data.
+- The distinction between "the algorithm I wrote" and "the specific rule NEX1 induced" is materially visible in the evidence (different data → different rule_id).
+- Application of the discovered rule to novel inputs works with correct refusal on out-of-family cases.
+
+### What This Does NOT Prove
+- Algorithm invention (impossible for zero-LLM; already scoped honestly).
+- That the discovered rule changes runtime coding-loop behaviour (still not wired into `capability-chat-turn.ts`).
+- That NEX1 can invent NEW probes (`INDUCTION_PROBES` is a fixed hand-authored table; NEX1 does not extend it).
+- That NEX1 can discover higher-order rules (rules over rules).
+
+### Next Intelligence Target
+Two candidates, both smaller and both incremental:
+- **Test F · rule-consumer wire-in** — attach the discovered-rule prediction to Fix 25 salience gate as informational trace, verify observable output changes (finally closes the APPLY step end-to-end).
+- **Test G · probe extensibility** — add one new `INDUCTION_PROBES` entry (e.g., "all supporting entries have `investigation_id` starting with the same short prefix") and verify Fix 35 uses it without any other change to the induction algorithm. Tests architectural extensibility, not data invention.
+
+Test F is the more decisive closer of the founder's central question. Recommended next.
+
+---
+
+*End of Experiment 5 · Cycle 2 pauses here pending founder direction on next target.*
+
+---
+
+## Experiment 5b · TEST E ANTI-CHEATING AUDIT
+
+### Founder challenge (verbatim)
+> *"Did NEX1 actually discover the capability, or was the capability already encoded somewhere in the implementation/test fixture?"*
+
+### Setup
+Seven falsifiable audits, each designed to expose a distinct form of hidden encoding. Any FAIL falsifies the "Test E VERIFIED" claim. Direct-module · zero LLM · deterministic. Receipt: `data/nex1-discovery-experiments/test-e-anti-cheating-audit-receipt.json`.
+
+### Results
+
+| # | Audit | Result | What it rules out |
+|---|---|---|---|
+| 1 | Empty rules list · same input as Test E apply_A | PASS · `no_applicable_rule` returned | *"the module ignores rules and derives the answer from input alone"* |
+| 2 | WRONG-family rules (docs+string) · numeric input | PASS · `no_applicable_rule` | *"the module fires on any rule regardless of family"* |
+| 3 | Data-derived `path_prefix` extras · seed A (`src/lib/alpha`) vs seed B (`src/lib/beta`) | PASS · prefixes `src/lib/alpha` vs `src/lib/beta` (different) | *"the invariant extras are hardcoded"* |
+| 4 | Invariant-dependent parsing · numeric-family rule vs string-family rule · same-shape inputs | PASS · numeric→`777` (number) · string→`"seven"` (string) | *"the module always emits the same parser regardless of the rule"* |
+| 5 | Probe universality · contaminating string entry alongside numeric entries | PASS · numeric group's invariants remain clean; contaminant isolated into its own group | *"probes fire on non-uniform data"* |
+| 6 | Content-addressed rule_id · same data twice vs different data | PASS · same data → same id · different data → different id | *"rule_id is a constant / template"* |
+| 7 | Module grep for specific receipt values (rule_id `0476695f90fd320b`, seed path `src/lib/family`, adversarial id `b2044a2efb6ba920`, novel input path `genuinely-novel`) | PASS · zero hits | *"the answer is hardcoded in the source"* |
+
+### Result
+**VERDICT: `NO_CHEATING_DETECTED`.** All seven independent falsifiability tests pass. Any single failure would have invalidated the Test E claim; none did.
+
+### What the audit actually proves
+- The rule is **load-bearing**: absence of the rule (Audit 1) or wrong-family rules (Audit 2) produce refusal, not accidental prediction. The module cannot substitute for the rule.
+- The rule is **data-derived**: identical data → identical rule (Audit 6 same-id); different data → different rule (Audit 6 different-id, Audit 3 different extras).
+- The parsing is **invariant-conditioned**: the same syntactic input parses to `number 777` when the numeric-suffix invariant is present and to `string "seven"` when the string-suffix invariant is present (Audit 4).
+- The **content** of the discovered capability is not in the source code (Audit 7 grep): the specific rule_ids, seed paths, and invariant extras that appear in Test E receipts appear ZERO times in `capability-capability-discovery.ts`.
+
+### The remaining honest limit
+This audit certifies that NEX1 **discovered the specific rule from the specific data** without hidden encoding. It does NOT extend to:
+- Discovering new **algorithms** at runtime (still requires an LLM; still out of scope).
+- Discovering new **probe kinds** at runtime (`INDUCTION_PROBES` is a fixed 6-entry table; NEX1 does not add to it).
+- Applying the discovered rule to change runtime coding-loop decisions (still not wired into `capability-chat-turn.ts`).
+
+### What we can now say precisely (and only this)
+> *NEX1 has, without an LLM at runtime, deterministically induced a specific first-class capability record (`rule-0476695f90fd320b`) from three accumulated experiences, persisted it to disk, applied it to a novel input that was never named in any code or seed, and correctly refused inputs outside the induced family. Seven independent anti-cheating audits — testing load-bearing behaviour, data-derivation, invariant-conditioned parsing, universal quantification, content-addressed identity, and source-code integrity — all pass. The discovered capability is not the algorithm; the algorithm is authored. The discovered capability is the specific rule + invariant set + associated predictions produced by the algorithm from the data.*
+
+That statement, and only that statement, is what the evidence supports at this milestone.
