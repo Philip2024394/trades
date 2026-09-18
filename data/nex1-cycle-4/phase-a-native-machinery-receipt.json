@@ -1,0 +1,102 @@
+{
+  "experiment": "Cycle 4 · Phase A · native machinery on outcome-experience",
+  "date": "2026-09-18T10:44:01.050Z",
+  "zero_llm": true,
+  "engineer_source_modifications": 0,
+  "finding": {
+    "outcome_entries_in_store": 6,
+    "outcome_entry_keys": [
+      "actual_execution_path_line",
+      "assertion_expression",
+      "assertion_input_verbatim",
+      "confidence_reported_by_j2",
+      "entry_id",
+      "evidence_kind",
+      "execution_path_evidence_kind",
+      "fixture_test_after_mutation",
+      "founder_goal",
+      "j2_proposal_text",
+      "j2_refusal_kind",
+      "j2_response_kind",
+      "loop_overall_verdict",
+      "mutation_after_text",
+      "mutation_applied",
+      "mutation_before_text",
+      "mutation_target_line",
+      "mutation_target_matches_execution_path",
+      "r11b_marker",
+      "spec_and_fixture_verdicts_agree",
+      "spec_test_after_mutation",
+      "target_source_file",
+      "timestamp"
+    ],
+    "fix17_expected_keys": [
+      "entry_id",
+      "timestamp",
+      "investigation_id",
+      "trace_id",
+      "source_file",
+      "selection_state",
+      "selected_candidate",
+      "candidates_considered",
+      "rankings_reference",
+      "supporting_evidence_ids",
+      "contradicting_evidence_ids",
+      "insufficient_evidence_ids",
+      "unresolved_evidence_ids",
+      "decision_reason",
+      "confidence",
+      "provenance",
+      "policy_id",
+      "policy_version",
+      "uncertainty",
+      "recommended_next_action",
+      "evidence_kind"
+    ],
+    "schema_intersection": [
+      "entry_id",
+      "timestamp",
+      "evidence_kind"
+    ],
+    "fix34_native": {
+      "threw": false,
+      "error": null,
+      "pattern_count": 1,
+      "collapsed_or_uninformative": true,
+      "groups": [
+        {
+          "pattern_id": "pat--empty-nosig----",
+          "support": 6,
+          "features": {
+            "has_signature_format": false,
+            "value_type": "empty",
+            "path_dir_root": "",
+            "path_dir_second": null
+          }
+        }
+      ]
+    },
+    "fix35_native": {
+      "threw": false,
+      "error": null,
+      "rule_count": 1,
+      "rules": [
+        {
+          "rule_id": "rule-b58376ade54d0193",
+          "support": 6,
+          "features": {
+            "has_signature_format": false,
+            "value_type": "empty",
+            "path_dir_root": "",
+            "path_dir_second": null
+          },
+          "invariants": [
+            "all_entries_share_path_prefix"
+          ]
+        }
+      ]
+    }
+  },
+  "honest_answer": "Native Fix 34/35 machinery is NOT architecturally extensible to the outcome-experience schema. Feeding OutcomeExperienceEntry directly to Fix 34 either produces a single collapsed group or fails to discriminate. Fix 35 induction probes hardcoded to `selected_candidate` string patterns cannot see any outcome-specific structure. The substrate exposes facts native machinery cannot consume.",
+  "ledger": "A · NEX1 GROWTH: unchanged (empty). B · HUMAN ENGINEERING: this Phase-A script (observation only, no new capability)."
+}
