@@ -1,0 +1,94 @@
+{
+  "document": "G-prime · Part 2 · Option-2 · can NEX see the common property of failures?",
+  "date": "2026-09-18T10:25:18.606Z",
+  "zero_llm": true,
+  "engineer_source_modifications": 0,
+  "code_inspection": {
+    "coding_loop_writes_to_fix17": false,
+    "finding": "native-programming-loop.ts and capability-specification-driven-loop.ts contain NO import of investigation-conclusion-store and NO write to it. Coding-loop failures are TRANSIENT · they do not accumulate as Fix 17 evidence. Therefore in the live system NEX has zero evidence from B/C/D/E to abstract over."
+  },
+  "synthetic_seed": {
+    "entries_synthesised": 5,
+    "note": "These 5 entries are what the coding loop WOULD have written per scenario IF a bridge existed. Only natural Fix 17 fields are used. E has no synthetic entry because E never selected a candidate (spec-test passed without any mutation)."
+  },
+  "fix_34_patterns": {
+    "count": 2,
+    "grouped_by_pattern": [
+      {
+        "pattern_id": "pat-SELECTED-number-sig-src-lib",
+        "support": 4,
+        "features": {
+          "has_signature_format": true,
+          "value_type": "number",
+          "path_dir_root": "src",
+          "path_dir_second": "lib",
+          "selection_state": "SELECTED"
+        },
+        "member_source_files": [
+          "src/lib/nex1-gprime-fixtures/pinRingRadius.ts",
+          "src/lib/nex1-gprime-fixtures/cauldronBubble.ts",
+          "src/lib/nex1-gprime-fixtures/harpsichordTone.ts",
+          "src/lib/nex1-gprime-fixtures/quillFactor.ts"
+        ],
+        "member_classifications": [
+          "PRE_ACTION_CONFIDENT_AND_CORRECT",
+          "DELAYED_RECOGNITION",
+          "DELAYED_RECOGNITION",
+          "CORRECT_BY_LUCK"
+        ],
+        "distinct_classifications_in_this_group": [
+          "CORRECT_BY_LUCK",
+          "DELAYED_RECOGNITION",
+          "PRE_ACTION_CONFIDENT_AND_CORRECT"
+        ],
+        "pattern_group_pure": false
+      },
+      {
+        "pattern_id": "pat-REQUIRE_MORE_INVESTIGATION-empty-nosig-src-lib",
+        "support": 1,
+        "features": {
+          "has_signature_format": false,
+          "value_type": "empty",
+          "path_dir_root": "src",
+          "path_dir_second": "lib",
+          "selection_state": "REQUIRE_MORE_INVESTIGATION"
+        },
+        "member_source_files": [
+          "src/lib/nex1-gprime-fixtures/vellumWeight.ts"
+        ],
+        "member_classifications": [
+          "PRE_ACTION_REFUSAL"
+        ],
+        "distinct_classifications_in_this_group": [
+          "PRE_ACTION_REFUSAL"
+        ],
+        "pattern_group_pure": true
+      }
+    ],
+    "pure_pattern_group_count": 1,
+    "conflated_pattern_group_count": 1,
+    "distinguishes_failures_from_successes": false
+  },
+  "fix_35_rules": [
+    {
+      "rule_id": "rule-d0bc222889e194fc",
+      "support": 4,
+      "features": {
+        "has_signature_format": true,
+        "value_type": "number",
+        "path_dir_root": "src",
+        "path_dir_second": "lib",
+        "selection_state": "SELECTED"
+      },
+      "invariants": [
+        "selected_candidate_has_double_colon_separator",
+        "selected_candidate_prefix_equals_source_file",
+        "selected_candidate_suffix_is_numeric",
+        "all_entries_share_path_prefix"
+      ],
+      "path_prefix_extra": "src/lib/nex1-gprime-fixtures"
+    }
+  ],
+  "honest_answer_to_option_2": "Existing abstraction machinery CANNOT distinguish failed mutations (B, C, D) from a successful one (A). All four collapse into the same feature-signature group. The dimensions {has_signature_format, value_type, path_dir_root, path_dir_second, selection_state} contain no representation of execution-path correctness or verification-coupling. Fix 35 induction probes also cannot see this property. NEX therefore cannot discover the common property of the G-prime failures using existing machinery.",
+  "limit_description_generated_by_nex": "NONE"
+}
