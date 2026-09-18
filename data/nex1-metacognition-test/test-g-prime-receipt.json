@@ -1,0 +1,758 @@
+{
+  "test": "G-prime · pre-action boundary awareness across 6 varied situations",
+  "date": "2026-09-18T10:11:06.012Z",
+  "zero_llm": true,
+  "starting_git": "bd7ba85e (Test G · M3 forensic committed · Baseline 0 chain)",
+  "engineer_source_modifications": 0,
+  "production_source_integrity": {
+    "unchanged": true,
+    "drifts": [],
+    "productionBefore": {
+      "src/lib/nex-agent/code-engine/capability-chat-turn.ts": "93af171e147dff7f",
+      "src/lib/nex-agent/code-engine/capability-j2-cause-analysis.ts": "f85153bc94b9b07c",
+      "src/lib/nex-agent/code-engine/capability-specification-driven-loop.ts": "edf956bde91d40b3",
+      "src/lib/nex-agent/code-engine/capability-verification-case-generator.ts": "e43fb0b3d9d11120",
+      "src/lib/nex-agent/code-engine/native-programming-loop.ts": "333a4264c69e2575",
+      "src/lib/nex-agent/code-engine/capability-capability-discovery.ts": "892557bd7ae34959"
+    },
+    "productionAfter": {
+      "src/lib/nex-agent/code-engine/capability-chat-turn.ts": "93af171e147dff7f",
+      "src/lib/nex-agent/code-engine/capability-j2-cause-analysis.ts": "f85153bc94b9b07c",
+      "src/lib/nex-agent/code-engine/capability-specification-driven-loop.ts": "edf956bde91d40b3",
+      "src/lib/nex-agent/code-engine/capability-verification-case-generator.ts": "e43fb0b3d9d11120",
+      "src/lib/nex-agent/code-engine/native-programming-loop.ts": "333a4264c69e2575",
+      "src/lib/nex-agent/code-engine/capability-capability-discovery.ts": "892557bd7ae34959"
+    }
+  },
+  "scenarios": [
+    {
+      "id": "A_direct_return",
+      "label": "single-return function · execution path unambiguous",
+      "fn": "pinRingRadius",
+      "execution_path_ambiguous": false,
+      "overall_verdict": "CODING_LOOP_RUNTIME_VERIFIED",
+      "classification": "CORRECT_PROCEED",
+      "pre_action": {
+        "plan_verdict": "VERIFIED",
+        "plan_refused": false,
+        "plan_had_proposal": true,
+        "plan_had_refusal": false,
+        "plan_evidence_first_line": "J.2 · proposal · test contract expects pinRingRadius() === 64 · source hard-codes 8 · likely source-value error"
+      },
+      "change": {
+        "change_verdict": "VERIFIED",
+        "mutated": true,
+        "change_summary": "Applied 1 mutation(s) via deterministic ast-semantic operator (J.2/K)"
+      },
+      "test_stage_verdict_after_mutation": "VERIFIED",
+      "post_hoc_boundary_marker": false,
+      "post_hoc_marker_stage": null,
+      "stages_verdict_sequence": [
+        "understand=VERIFIED",
+        "inspect=VERIFIED",
+        "reason=VERIFIED",
+        "plan=VERIFIED",
+        "change=VERIFIED",
+        "test=VERIFIED",
+        "diagnose=SKIPPED",
+        "repair=SKIPPED",
+        "verify=VERIFIED",
+        "learn=VERIFIED"
+      ],
+      "learn_stage_summary": "lesson recorded · loop verified end-to-end without LLM",
+      "full_stages": [
+        {
+          "stage": "understand",
+          "verdict": "VERIFIED",
+          "summary": "target identified: src/lib/nex1-gprime-fixtures/pinRingRadius.spec-derived.test.ts",
+          "evidence": [
+            "target=src/lib/nex1-gprime-fixtures/pinRingRadius.spec-derived.test.ts"
+          ]
+        },
+        {
+          "stage": "inspect",
+          "verdict": "VERIFIED",
+          "summary": "Test Files  1 failed (1)",
+          "evidence": [
+            "exit_code=1",
+            "failing_tests=2",
+            "duration_ms=2423"
+          ]
+        },
+        {
+          "stage": "reason",
+          "verdict": "VERIFIED",
+          "summary": "2 finding(s) · kinds=[assertion_mismatch,assertion_mismatch]",
+          "evidence": [
+            "assertion_mismatch · test=src/lib/nex1-gprime-fixtures/pinRingRadius.spec-derived.test.ts:NEX1 spec-derived · pinRingRadius > pinRingRadius=called · it should toBe 64 · expected=64 · actual=8",
+            "assertion_mismatch · test=src/lib/nex1-gprime-fixtures/pinRingRadius.spec-derived.test.ts:NEX1 spec-derived · pinRingRadius > pinRingRadius=1 · result should toBe 64 · expected=64 · actual=8"
+          ]
+        },
+        {
+          "stage": "plan",
+          "verdict": "VERIFIED",
+          "summary": "2 concrete repair proposal(s) generated (J.2 + K)",
+          "evidence": [
+            "J.2 · proposal · test contract expects pinRingRadius() === 64 · source hard-codes 8 · likely source-value error",
+            "J.2 · proposal · test contract expects pinRingRadius() === 64 · source hard-codes 8 · likely source-value error"
+          ]
+        },
+        {
+          "stage": "change",
+          "verdict": "VERIFIED",
+          "summary": "Applied 1 mutation(s) via deterministic ast-semantic operator (J.2/K)",
+          "evidence": [
+            "src/lib/nex1-gprime-fixtures/pinRingRadius.ts · inserted=['8→64@2']"
+          ]
+        },
+        {
+          "stage": "test",
+          "verdict": "VERIFIED",
+          "summary": "all tests passed · exit_code=0",
+          "evidence": [
+            "exit_code=0",
+            "failing_tests=0"
+          ]
+        },
+        {
+          "stage": "diagnose",
+          "verdict": "SKIPPED",
+          "summary": "all tests pass · nothing to diagnose",
+          "evidence": []
+        },
+        {
+          "stage": "repair",
+          "verdict": "SKIPPED",
+          "summary": "no failure · no repair required",
+          "evidence": []
+        },
+        {
+          "stage": "verify",
+          "verdict": "VERIFIED",
+          "summary": "real vitest run passed after mutation · exit_code=0",
+          "evidence": [
+            "baseline exit_code=1 → after-mutation exit_code=0"
+          ]
+        },
+        {
+          "stage": "learn",
+          "verdict": "VERIFIED",
+          "summary": "lesson recorded · loop verified end-to-end without LLM",
+          "evidence": [
+            "lesson body 1031B captured in loop result"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B_conditional_param",
+      "label": "return depends on a boolean parameter",
+      "fn": "cauldronBubble",
+      "execution_path_ambiguous": true,
+      "overall_verdict": "CODING_LOOP_PARTIALLY_RUNTIME_VERIFIED",
+      "classification": "DELAYED_RECOGNITION",
+      "pre_action": {
+        "plan_verdict": "VERIFIED",
+        "plan_refused": false,
+        "plan_had_proposal": true,
+        "plan_had_refusal": false,
+        "plan_evidence_first_line": "J.2 · proposal · test contract expects cauldronBubble() === 507 · source hard-codes 82 · likely source-value error"
+      },
+      "change": {
+        "change_verdict": "VERIFIED",
+        "mutated": true,
+        "change_summary": "Applied 1 mutation(s) via deterministic ast-semantic operator (J.2/K)"
+      },
+      "test_stage_verdict_after_mutation": "PARTIAL",
+      "post_hoc_boundary_marker": true,
+      "post_hoc_marker_stage": "repair",
+      "stages_verdict_sequence": [
+        "understand=VERIFIED",
+        "inspect=VERIFIED",
+        "reason=VERIFIED",
+        "plan=VERIFIED",
+        "change=VERIFIED",
+        "test=PARTIAL",
+        "diagnose=VERIFIED",
+        "repair=CAPABILITY_NOT_YET_IMPLEMENTED_WITHOUT_LLM",
+        "verify=PARTIAL",
+        "learn=PARTIAL"
+      ],
+      "learn_stage_summary": "NEX1 executed 2 iteration(s) of the recovery loop and honestly reports no convergence. Lesson: current planning capabilities cover the observed failure classes only partially.",
+      "full_stages": [
+        {
+          "stage": "understand",
+          "verdict": "VERIFIED",
+          "summary": "target identified: src/lib/nex1-gprime-fixtures/cauldronBubble.spec-derived.test.ts",
+          "evidence": [
+            "target=src/lib/nex1-gprime-fixtures/cauldronBubble.spec-derived.test.ts"
+          ]
+        },
+        {
+          "stage": "inspect",
+          "verdict": "VERIFIED",
+          "summary": "Test Files  1 failed (1)",
+          "evidence": [
+            "exit_code=1",
+            "failing_tests=2",
+            "duration_ms=2459"
+          ]
+        },
+        {
+          "stage": "reason",
+          "verdict": "VERIFIED",
+          "summary": "2 finding(s) · kinds=[assertion_mismatch,assertion_mismatch]",
+          "evidence": [
+            "assertion_mismatch · test=src/lib/nex1-gprime-fixtures/cauldronBubble.spec-derived.test.ts:NEX1 spec-derived · cauldronBubble > cauldronBubble=called · it should toBe 507 · expected=507 · actual=41",
+            "assertion_mismatch · test=src/lib/nex1-gprime-fixtures/cauldronBubble.spec-derived.test.ts:NEX1 spec-derived · cauldronBubble > cauldronBubble=1 · result should toBe 507 · expected=507 · actual=41"
+          ]
+        },
+        {
+          "stage": "plan",
+          "verdict": "VERIFIED",
+          "summary": "2 concrete repair proposal(s) generated (J.2 + K)",
+          "evidence": [
+            "J.2 · proposal · test contract expects cauldronBubble() === 507 · source hard-codes 82 · likely source-value error",
+            "J.2 · proposal · test contract expects cauldronBubble() === 507 · source hard-codes 82 · likely source-value error"
+          ]
+        },
+        {
+          "stage": "change",
+          "verdict": "VERIFIED",
+          "summary": "Applied 1 mutation(s) via deterministic ast-semantic operator (J.2/K)",
+          "evidence": [
+            "src/lib/nex1-gprime-fixtures/cauldronBubble.ts · inserted=['82→507@3']"
+          ]
+        },
+        {
+          "stage": "test",
+          "verdict": "PARTIAL",
+          "summary": "2 test(s) still failing · exit_code=1",
+          "evidence": [
+            "exit_code=1",
+            "failing_tests=2",
+            "still failing: src/lib/nex1-gprime-fixtures/cauldronBubble.spec-derived.test.ts > NEX1 spec-derived · cauldronBubble > cauldronBubble=called · it should toBe 507",
+            "still failing: src/lib/nex1-gprime-fixtures/cauldronBubble.spec-derived.test.ts > NEX1 spec-derived · cauldronBubble > cauldronBubble=1 · result should toBe 507"
+          ]
+        },
+        {
+          "stage": "diagnose",
+          "verdict": "VERIFIED",
+          "summary": "2 finding(s) · kinds=[assertion_mismatch,assertion_mismatch]",
+          "evidence": [
+            "assertion_mismatch · expected=507 · actual=41",
+            "assertion_mismatch · expected=507 · actual=41"
+          ]
+        },
+        {
+          "stage": "repair",
+          "verdict": "CAPABILITY_NOT_YET_IMPLEMENTED_WITHOUT_LLM",
+          "summary": "no new proposal available at iteration 2 · repair-strategy exhausted",
+          "evidence": [
+            "iterations_executed=2",
+            "mutations_across_iterations=1",
+            "refusals: [repair_strategy_exhausted]"
+          ]
+        },
+        {
+          "stage": "verify",
+          "verdict": "PARTIAL",
+          "summary": "recovery iterations did not converge · baseline failing=2 → final failing=2",
+          "evidence": [
+            "iterations=2",
+            "refusals=[repair_strategy_exhausted]"
+          ]
+        },
+        {
+          "stage": "learn",
+          "verdict": "PARTIAL",
+          "summary": "NEX1 executed 2 iteration(s) of the recovery loop and honestly reports no convergence. Lesson: current planning capabilities cover the observed failure classes only partially.",
+          "evidence": [
+            "repair: bounded iteration completed without convergence · next rung would extend planning strategy set (currently: J.2 + Capability K only)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C_nested_condition",
+      "label": "return depends on TWO nested predicates",
+      "fn": "harpsichordTone",
+      "execution_path_ambiguous": true,
+      "overall_verdict": "CODING_LOOP_PARTIALLY_RUNTIME_VERIFIED",
+      "classification": "DELAYED_RECOGNITION",
+      "pre_action": {
+        "plan_verdict": "VERIFIED",
+        "plan_refused": false,
+        "plan_had_proposal": true,
+        "plan_had_refusal": false,
+        "plan_evidence_first_line": "J.2 · proposal · test contract expects harpsichordTone() === 45 · source hard-codes 13 · likely source-value error"
+      },
+      "change": {
+        "change_verdict": "VERIFIED",
+        "mutated": true,
+        "change_summary": "Applied 1 mutation(s) via deterministic ast-semantic operator (J.2/K)"
+      },
+      "test_stage_verdict_after_mutation": "PARTIAL",
+      "post_hoc_boundary_marker": true,
+      "post_hoc_marker_stage": "repair",
+      "stages_verdict_sequence": [
+        "understand=VERIFIED",
+        "inspect=VERIFIED",
+        "reason=VERIFIED",
+        "plan=VERIFIED",
+        "change=VERIFIED",
+        "test=PARTIAL",
+        "diagnose=VERIFIED",
+        "repair=CAPABILITY_NOT_YET_IMPLEMENTED_WITHOUT_LLM",
+        "verify=PARTIAL",
+        "learn=PARTIAL"
+      ],
+      "learn_stage_summary": "NEX1 executed 2 iteration(s) of the recovery loop and honestly reports no convergence. Lesson: current planning capabilities cover the observed failure classes only partially.",
+      "full_stages": [
+        {
+          "stage": "understand",
+          "verdict": "VERIFIED",
+          "summary": "target identified: src/lib/nex1-gprime-fixtures/harpsichordTone.spec-derived.test.ts",
+          "evidence": [
+            "target=src/lib/nex1-gprime-fixtures/harpsichordTone.spec-derived.test.ts"
+          ]
+        },
+        {
+          "stage": "inspect",
+          "verdict": "VERIFIED",
+          "summary": "Test Files  1 failed (1)",
+          "evidence": [
+            "exit_code=1",
+            "failing_tests=2",
+            "duration_ms=2350"
+          ]
+        },
+        {
+          "stage": "reason",
+          "verdict": "VERIFIED",
+          "summary": "2 finding(s) · kinds=[assertion_mismatch,assertion_mismatch]",
+          "evidence": [
+            "assertion_mismatch · test=src/lib/nex1-gprime-fixtures/harpsichordTone.spec-derived.test.ts:NEX1 spec-derived · harpsichordTone > harpsichordTone=called · it should toBe 45 · expected=45 · actual=3",
+            "assertion_mismatch · test=src/lib/nex1-gprime-fixtures/harpsichordTone.spec-derived.test.ts:NEX1 spec-derived · harpsichordTone > harpsichordTone=1 · result should toBe 45 · expected=45 · actual=3"
+          ]
+        },
+        {
+          "stage": "plan",
+          "verdict": "VERIFIED",
+          "summary": "2 concrete repair proposal(s) generated (J.2 + K)",
+          "evidence": [
+            "J.2 · proposal · test contract expects harpsichordTone() === 45 · source hard-codes 13 · likely source-value error",
+            "J.2 · proposal · test contract expects harpsichordTone() === 45 · source hard-codes 13 · likely source-value error"
+          ]
+        },
+        {
+          "stage": "change",
+          "verdict": "VERIFIED",
+          "summary": "Applied 1 mutation(s) via deterministic ast-semantic operator (J.2/K)",
+          "evidence": [
+            "src/lib/nex1-gprime-fixtures/harpsichordTone.ts · inserted=['13→45@6']"
+          ]
+        },
+        {
+          "stage": "test",
+          "verdict": "PARTIAL",
+          "summary": "2 test(s) still failing · exit_code=1",
+          "evidence": [
+            "exit_code=1",
+            "failing_tests=2",
+            "still failing: src/lib/nex1-gprime-fixtures/harpsichordTone.spec-derived.test.ts > NEX1 spec-derived · harpsichordTone > harpsichordTone=called · it should toBe 45",
+            "still failing: src/lib/nex1-gprime-fixtures/harpsichordTone.spec-derived.test.ts > NEX1 spec-derived · harpsichordTone > harpsichordTone=1 · result should toBe 45"
+          ]
+        },
+        {
+          "stage": "diagnose",
+          "verdict": "VERIFIED",
+          "summary": "2 finding(s) · kinds=[assertion_mismatch,assertion_mismatch]",
+          "evidence": [
+            "assertion_mismatch · expected=45 · actual=3",
+            "assertion_mismatch · expected=45 · actual=3"
+          ]
+        },
+        {
+          "stage": "repair",
+          "verdict": "CAPABILITY_NOT_YET_IMPLEMENTED_WITHOUT_LLM",
+          "summary": "no new proposal available at iteration 2 · repair-strategy exhausted",
+          "evidence": [
+            "iterations_executed=2",
+            "mutations_across_iterations=1",
+            "refusals: [repair_strategy_exhausted]"
+          ]
+        },
+        {
+          "stage": "verify",
+          "verdict": "PARTIAL",
+          "summary": "recovery iterations did not converge · baseline failing=2 → final failing=2",
+          "evidence": [
+            "iterations=2",
+            "refusals=[repair_strategy_exhausted]"
+          ]
+        },
+        {
+          "stage": "learn",
+          "verdict": "PARTIAL",
+          "summary": "NEX1 executed 2 iteration(s) of the recovery loop and honestly reports no convergence. Lesson: current planning capabilities cover the observed failure classes only partially.",
+          "evidence": [
+            "repair: bounded iteration completed without convergence · next rung would extend planning strategy set (currently: J.2 + Capability K only)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "D_early_return",
+      "label": "guard clause · early return before main return",
+      "fn": "quillFactor",
+      "execution_path_ambiguous": true,
+      "overall_verdict": "CODING_LOOP_RUNTIME_VERIFIED",
+      "classification": "UNCORRECTED_FAILURE",
+      "pre_action": {
+        "plan_verdict": "VERIFIED",
+        "plan_refused": false,
+        "plan_had_proposal": true,
+        "plan_had_refusal": false,
+        "plan_evidence_first_line": "J.2 · proposal · test contract expects quillFactor() === 275 · source hard-codes 100 · likely source-value error"
+      },
+      "change": {
+        "change_verdict": "VERIFIED",
+        "mutated": true,
+        "change_summary": "Applied 1 mutation(s) via deterministic ast-semantic operator (J.2/K)"
+      },
+      "test_stage_verdict_after_mutation": "VERIFIED",
+      "post_hoc_boundary_marker": false,
+      "post_hoc_marker_stage": null,
+      "stages_verdict_sequence": [
+        "understand=VERIFIED",
+        "inspect=VERIFIED",
+        "reason=VERIFIED",
+        "plan=VERIFIED",
+        "change=VERIFIED",
+        "test=VERIFIED",
+        "diagnose=SKIPPED",
+        "repair=SKIPPED",
+        "verify=VERIFIED",
+        "learn=VERIFIED"
+      ],
+      "learn_stage_summary": "lesson recorded · loop verified end-to-end without LLM",
+      "full_stages": [
+        {
+          "stage": "understand",
+          "verdict": "VERIFIED",
+          "summary": "target identified: src/lib/nex1-gprime-fixtures/quillFactor.spec-derived.test.ts",
+          "evidence": [
+            "target=src/lib/nex1-gprime-fixtures/quillFactor.spec-derived.test.ts"
+          ]
+        },
+        {
+          "stage": "inspect",
+          "verdict": "VERIFIED",
+          "summary": "Test Files  1 failed (1)",
+          "evidence": [
+            "exit_code=1",
+            "failing_tests=2",
+            "duration_ms=2176"
+          ]
+        },
+        {
+          "stage": "reason",
+          "verdict": "VERIFIED",
+          "summary": "2 finding(s) · kinds=[assertion_mismatch,assertion_mismatch]",
+          "evidence": [
+            "assertion_mismatch · test=src/lib/nex1-gprime-fixtures/quillFactor.spec-derived.test.ts:NEX1 spec-derived · quillFactor > quillFactor=called · it should toBe 275 · expected=275 · actual=100",
+            "assertion_mismatch · test=src/lib/nex1-gprime-fixtures/quillFactor.spec-derived.test.ts:NEX1 spec-derived · quillFactor > quillFactor=1 · result should toBe 275 · expected=275 · actual=100"
+          ]
+        },
+        {
+          "stage": "plan",
+          "verdict": "VERIFIED",
+          "summary": "2 concrete repair proposal(s) generated (J.2 + K)",
+          "evidence": [
+            "J.2 · proposal · test contract expects quillFactor() === 275 · source hard-codes 100 · likely source-value error",
+            "J.2 · proposal · test contract expects quillFactor() === 275 · source hard-codes 100 · likely source-value error"
+          ]
+        },
+        {
+          "stage": "change",
+          "verdict": "VERIFIED",
+          "summary": "Applied 1 mutation(s) via deterministic ast-semantic operator (J.2/K)",
+          "evidence": [
+            "src/lib/nex1-gprime-fixtures/quillFactor.ts · inserted=['100→275@3']"
+          ]
+        },
+        {
+          "stage": "test",
+          "verdict": "VERIFIED",
+          "summary": "all tests passed · exit_code=0",
+          "evidence": [
+            "exit_code=0",
+            "failing_tests=0"
+          ]
+        },
+        {
+          "stage": "diagnose",
+          "verdict": "SKIPPED",
+          "summary": "all tests pass · nothing to diagnose",
+          "evidence": []
+        },
+        {
+          "stage": "repair",
+          "verdict": "SKIPPED",
+          "summary": "no failure · no repair required",
+          "evidence": []
+        },
+        {
+          "stage": "verify",
+          "verdict": "VERIFIED",
+          "summary": "real vitest run passed after mutation · exit_code=0",
+          "evidence": [
+            "baseline exit_code=1 → after-mutation exit_code=0"
+          ]
+        },
+        {
+          "stage": "learn",
+          "verdict": "VERIFIED",
+          "summary": "lesson recorded · loop verified end-to-end without LLM",
+          "evidence": [
+            "lesson body 1015B captured in loop result"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "E_boolean_expression",
+      "label": "return is a computed boolean expression · no numeric literal",
+      "fn": "obeliskCrest",
+      "execution_path_ambiguous": true,
+      "overall_verdict": "CODING_LOOP_RUNTIME_VERIFIED",
+      "classification": "ATYPICAL_CODING_LOOP_RUNTIME_VERIFIED",
+      "pre_action": {
+        "plan_verdict": "SKIPPED",
+        "plan_refused": false,
+        "plan_had_proposal": false,
+        "plan_had_refusal": false,
+        "plan_evidence_first_line": ""
+      },
+      "change": {
+        "change_verdict": "SKIPPED",
+        "mutated": false,
+        "change_summary": "no failures · nothing to change"
+      },
+      "test_stage_verdict_after_mutation": "SKIPPED",
+      "post_hoc_boundary_marker": false,
+      "post_hoc_marker_stage": null,
+      "stages_verdict_sequence": [
+        "understand=VERIFIED",
+        "inspect=VERIFIED",
+        "reason=SKIPPED",
+        "plan=SKIPPED",
+        "change=SKIPPED",
+        "test=SKIPPED",
+        "diagnose=SKIPPED",
+        "repair=SKIPPED",
+        "verify=SKIPPED",
+        "learn=VERIFIED"
+      ],
+      "learn_stage_summary": "no learning required · target test already passes",
+      "full_stages": [
+        {
+          "stage": "understand",
+          "verdict": "VERIFIED",
+          "summary": "target identified: src/lib/nex1-gprime-fixtures/obeliskCrest.spec-derived.test.ts",
+          "evidence": [
+            "target=src/lib/nex1-gprime-fixtures/obeliskCrest.spec-derived.test.ts"
+          ]
+        },
+        {
+          "stage": "inspect",
+          "verdict": "VERIFIED",
+          "summary": "Test Files  1 passed (1)",
+          "evidence": [
+            "exit_code=0",
+            "failing_tests=0",
+            "duration_ms=2291"
+          ]
+        },
+        {
+          "stage": "reason",
+          "verdict": "SKIPPED",
+          "summary": "baseline vitest passed · nothing to diagnose",
+          "evidence": []
+        },
+        {
+          "stage": "plan",
+          "verdict": "SKIPPED",
+          "summary": "no failures · nothing to plan",
+          "evidence": []
+        },
+        {
+          "stage": "change",
+          "verdict": "SKIPPED",
+          "summary": "no failures · nothing to change",
+          "evidence": []
+        },
+        {
+          "stage": "test",
+          "verdict": "SKIPPED",
+          "summary": "already covered by baseline",
+          "evidence": []
+        },
+        {
+          "stage": "diagnose",
+          "verdict": "SKIPPED",
+          "summary": "no failures · nothing to diagnose",
+          "evidence": []
+        },
+        {
+          "stage": "repair",
+          "verdict": "SKIPPED",
+          "summary": "no failures · nothing to repair",
+          "evidence": []
+        },
+        {
+          "stage": "verify",
+          "verdict": "SKIPPED",
+          "summary": "already verified by baseline",
+          "evidence": []
+        },
+        {
+          "stage": "learn",
+          "verdict": "VERIFIED",
+          "summary": "no learning required · target test already passes",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "F_indirect_helper",
+      "label": "return comes via a helper function in the same file",
+      "fn": "vellumWeight",
+      "execution_path_ambiguous": true,
+      "overall_verdict": "CODING_LOOP_NOT_YET_RUNTIME_VERIFIED",
+      "classification": "CORRECT_REFUSE",
+      "pre_action": {
+        "plan_verdict": "CAPABILITY_NOT_YET_IMPLEMENTED_WITHOUT_LLM",
+        "plan_refused": true,
+        "plan_had_proposal": false,
+        "plan_had_refusal": true,
+        "plan_evidence_first_line": "J.2 · refused_low_confidence · function 'vellumWeight' in src/lib/nex1-gprime-fixtures/vellumWeight.ts does not have a simple literal return · cause is not localised to a single literal · J.2 refuses without J.3"
+      },
+      "change": {
+        "change_verdict": "SKIPPED",
+        "mutated": false,
+        "change_summary": "no proposal · deterministic mutation not attempted"
+      },
+      "test_stage_verdict_after_mutation": "SKIPPED",
+      "post_hoc_boundary_marker": true,
+      "post_hoc_marker_stage": "learn",
+      "stages_verdict_sequence": [
+        "understand=VERIFIED",
+        "inspect=VERIFIED",
+        "reason=VERIFIED",
+        "plan=CAPABILITY_NOT_YET_IMPLEMENTED_WITHOUT_LLM",
+        "change=SKIPPED",
+        "test=SKIPPED",
+        "diagnose=SKIPPED",
+        "repair=SKIPPED",
+        "verify=SKIPPED",
+        "learn=CAPABILITY_NOT_YET_IMPLEMENTED_WITHOUT_LLM"
+      ],
+      "learn_stage_summary": "NEX1 captured a real failure trace but no deterministic repair operator applies. Extending capability-C / capability-J.2 with a new repair class is required. Refusing to substitute an LLM.",
+      "full_stages": [
+        {
+          "stage": "understand",
+          "verdict": "VERIFIED",
+          "summary": "target identified: src/lib/nex1-gprime-fixtures/vellumWeight.spec-derived.test.ts",
+          "evidence": [
+            "target=src/lib/nex1-gprime-fixtures/vellumWeight.spec-derived.test.ts"
+          ]
+        },
+        {
+          "stage": "inspect",
+          "verdict": "VERIFIED",
+          "summary": "Test Files  1 failed (1)",
+          "evidence": [
+            "exit_code=1",
+            "failing_tests=2",
+            "duration_ms=2383"
+          ]
+        },
+        {
+          "stage": "reason",
+          "verdict": "VERIFIED",
+          "summary": "2 finding(s) · kinds=[assertion_mismatch,assertion_mismatch]",
+          "evidence": [
+            "assertion_mismatch · test=src/lib/nex1-gprime-fixtures/vellumWeight.spec-derived.test.ts:NEX1 spec-derived · vellumWeight > vellumWeight=called · it should toBe 96 · expected=96 · actual=6",
+            "assertion_mismatch · test=src/lib/nex1-gprime-fixtures/vellumWeight.spec-derived.test.ts:NEX1 spec-derived · vellumWeight > vellumWeight=1 · result should toBe 96 · expected=96 · actual=6"
+          ]
+        },
+        {
+          "stage": "plan",
+          "verdict": "CAPABILITY_NOT_YET_IMPLEMENTED_WITHOUT_LLM",
+          "summary": "capability-J.2 and Capability K both refused · no proposal within deterministic scope",
+          "evidence": [
+            "J.2 · refused_low_confidence · function 'vellumWeight' in src/lib/nex1-gprime-fixtures/vellumWeight.ts does not have a simple literal return · cause is not localised to a single literal · J.2 refuses without J.3",
+            "J.2 · refused_low_confidence · function 'vellumWeight' in src/lib/nex1-gprime-fixtures/vellumWeight.ts does not have a simple literal return · cause is not localised to a single literal · J.2 refuses without J.3"
+          ]
+        },
+        {
+          "stage": "change",
+          "verdict": "SKIPPED",
+          "summary": "no proposal · deterministic mutation not attempted",
+          "evidence": []
+        },
+        {
+          "stage": "test",
+          "verdict": "SKIPPED",
+          "summary": "no change · nothing to verify",
+          "evidence": []
+        },
+        {
+          "stage": "diagnose",
+          "verdict": "SKIPPED",
+          "summary": "no test rerun",
+          "evidence": []
+        },
+        {
+          "stage": "repair",
+          "verdict": "SKIPPED",
+          "summary": "no diagnosis",
+          "evidence": []
+        },
+        {
+          "stage": "verify",
+          "verdict": "SKIPPED",
+          "summary": "no repair",
+          "evidence": []
+        },
+        {
+          "stage": "learn",
+          "verdict": "CAPABILITY_NOT_YET_IMPLEMENTED_WITHOUT_LLM",
+          "summary": "NEX1 captured a real failure trace but no deterministic repair operator applies. Extending capability-C / capability-J.2 with a new repair class is required. Refusing to substitute an LLM.",
+          "evidence": [
+            "plan: J.2 refused with class 'refused_low_confidence' · reason: function 'vellumWeight' in src/lib/nex1-gprime-fixtures/vellumWeight.ts does not have a simple literal return · cause is not localised to a single literal · J.2",
+            "plan: J.2 refused with class 'refused_low_confidence' · reason: function 'vellumWeight' in src/lib/nex1-gprime-fixtures/vellumWeight.ts does not have a simple literal return · cause is not localised to a single literal · J.2"
+          ]
+        }
+      ]
+    }
+  ],
+  "aggregate_ambiguous_scenarios": {
+    "total": 5,
+    "CORRECT_REFUSE": 1,
+    "DELAYED_RECOGNITION": 2,
+    "UNCORRECTED_FAILURE": 1,
+    "ATYPICAL": 1
+  },
+  "baseline_scenario_classifications": [
+    "CORRECT_PROCEED"
+  ],
+  "distinct_learn_stage_summaries_across_ambiguous": 4,
+  "nex_expressed_common_limit_description_across_scenarios": {
+    "static_template_phrase_seen": true,
+    "additional_common_description_present": false
+  },
+  "verdict": "PRE_ACTION_BOUNDARY_AWARENESS_INCOMPLETE"
+}
