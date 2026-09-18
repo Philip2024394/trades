@@ -1,0 +1,118 @@
+{
+  "test": "D · monotonicity + order-independence",
+  "date": "2026-09-18T03:14:44.835Z",
+  "zero_llm": true,
+  "part_1_monotonicity": {
+    "growth_steps": [
+      {
+        "step": 1,
+        "total_entries": 1,
+        "numeric_selected_src_lib_support": 1,
+        "total_patterns": 1,
+        "all_pattern_supports": [
+          {
+            "id": "pat-SELECTED-number-sig-src-lib",
+            "s": 1
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "total_entries": 2,
+        "numeric_selected_src_lib_support": 2,
+        "total_patterns": 1,
+        "all_pattern_supports": [
+          {
+            "id": "pat-SELECTED-number-sig-src-lib",
+            "s": 2
+          }
+        ]
+      },
+      {
+        "step": 3,
+        "total_entries": 3,
+        "numeric_selected_src_lib_support": 3,
+        "total_patterns": 1,
+        "all_pattern_supports": [
+          {
+            "id": "pat-SELECTED-number-sig-src-lib",
+            "s": 3
+          }
+        ]
+      },
+      {
+        "step": 4,
+        "total_entries": 4,
+        "numeric_selected_src_lib_support": 3,
+        "total_patterns": 2,
+        "all_pattern_supports": [
+          {
+            "id": "pat-SELECTED-number-sig-src-lib",
+            "s": 3
+          },
+          {
+            "id": "pat-TIE-empty-nosig-src-lib",
+            "s": 1
+          }
+        ]
+      },
+      {
+        "step": 5,
+        "total_entries": 5,
+        "numeric_selected_src_lib_support": 3,
+        "total_patterns": 3,
+        "all_pattern_supports": [
+          {
+            "id": "pat-SELECTED-number-sig-src-lib",
+            "s": 3
+          },
+          {
+            "id": "pat-SELECTED-string-sig-docs-e.md",
+            "s": 1
+          },
+          {
+            "id": "pat-TIE-empty-nosig-src-lib",
+            "s": 1
+          }
+        ]
+      }
+    ],
+    "supports_over_time": [
+      1,
+      2,
+      3,
+      3,
+      3
+    ],
+    "supports_monotone_non_decreasing": true,
+    "expected_supports": [
+      1,
+      2,
+      3,
+      3,
+      3
+    ],
+    "matches_expected": true
+  },
+  "part_2_order_independence": {
+    "fingerprints": [
+      {
+        "seed": 1,
+        "fingerprint": "6b269a7afa688ffd3855827b0c4dd259",
+        "pattern_count": 3
+      },
+      {
+        "seed": 2,
+        "fingerprint": "6b269a7afa688ffd3855827b0c4dd259",
+        "pattern_count": 3
+      },
+      {
+        "seed": 3,
+        "fingerprint": "6b269a7afa688ffd3855827b0c4dd259",
+        "pattern_count": 3
+      }
+    ],
+    "all_same_fingerprint": true
+  },
+  "verdict": "VERIFIED"
+}

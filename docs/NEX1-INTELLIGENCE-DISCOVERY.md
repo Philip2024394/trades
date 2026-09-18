@@ -319,3 +319,74 @@ Path α is the more decisive test of the central question. Recommended next.
 ---
 
 *End of Experiment 3 · continuing loop*
+
+---
+
+## Experiment 4 · TEST D · Monotonicity + Order-Independence
+
+### Question
+Two invariants that any real learning system must satisfy:
+1. **Monotonicity** — as new same-family evidence arrives, the support count for that family's pattern must grow or stay equal, never shrink; new-family evidence must not collapse old patterns.
+2. **Order-independence** — the extracted pattern set must be invariant under permutation of the input entries; the same evidence in a different order must yield the same abstraction.
+
+Together these say: what NEX1 learned yesterday remains what NEX1 learned today, and the sequence of experiences does not distort the learning.
+
+### Setup
+Direct-module invocation of `capability-experience-abstraction.ts`. Five canonical entries (3 numeric-SELECTED under `src/lib/*` · 1 TIE · 1 string-SELECTED under `docs/`).
+
+Part 1 · monotonicity: grow the store one entry at a time; measure `numeric-SELECTED-src/lib` support at each step.
+
+Part 2 · order-independence: three deterministic permutations of the same five entries (using an LCG so the test is reproducible); compare pattern-set fingerprints.
+
+### Mechanism
+Same Fix 34 primitives (`extractPatterns`, `loadAllEntriesFromStore`). Fingerprint = SHA-256 of `JSON.stringify(patterns.map(p => ({id: p.pattern_id, s: p.support_count, f: p.features})))` truncated to 32 hex chars.
+
+### Observation
+- **Support growth:** `1 → 2 → 3 → 3 → 3` exactly as predicted. Monotone non-decreasing ✓. TIE and docs-string additions correctly did NOT affect the numeric-SELECTED-src/lib count.
+- **Fingerprints under 3 permutations:** all three identical (`6b269a7afa688ffd3855827b0c4dd259`).
+
+### Evidence
+`data/nex1-discovery-experiments/test-d-monotonicity-and-order-receipt.json` · verdict field `"VERIFIED"`.
+
+### Anti-Cheating Audit
+- The five entries are the SAME entries reordered; permutation function is deterministic (LCG seeded 1, 2, 3).
+- Fingerprint is a cryptographic hash of the pattern-set features + supports; identity implies byte-equal patterns.
+- No fixture names in Fix 34 (still applies from Test B audit).
+
+### Result
+**VERIFIED.**
+
+### What This Proves
+Fix 34 extraction is:
+1. Monotone under evidence accumulation.
+2. Independent of entry order.
+
+Combined with Test B (cross-source-file abstraction) and Test C (cross-session persistence), NEX1's learning machinery satisfies four foundational invariants: **discovery**, **persistence**, **monotonicity**, **order-independence**.
+
+### What This Does NOT Prove
+- APPLY-step at runtime is still open (Fix 34 not wired into `capability-chat-turn.ts`).
+- Operator invention (extending capability library from experience) remains not proven and, on current architecture, likely requires either explicit teacher input or an LLM.
+- Long-horizon accumulation across days (only tested with 5 entries).
+
+### Next Intelligence Target
+The single remaining unproven step in the founder's central question is APPLY. Direct next candidate:
+- **Test E · Runtime-wired abstraction bias** — instrument the coding-loop to consult Fix 34 at plan entry. Measure whether the retrieved pattern appears in the coding-loop trace and whether it influences confidence/rationale. Must remain INFORMATIONAL (never authoritative), consistent with the R11-B rule. Requires either a working dev server or a direct-module `runSpecificationDrivenCodingLoop` invocation with Fix 34 pre-integrated in a controlled prototype.
+
+---
+
+## Cycle 1 · Consolidated Intelligence-Discovery Verdict
+
+| # | Test | Capability | Result |
+|---|---|---|---|
+| A | Novel switch-branch | Truthful capability boundary · refusal, not fabrication | VERIFIED |
+| B | Cross-source-file abstraction | Discovery of shared structure across ≥ 2 experiences under different filenames | VERIFIED (7/7 adversarial cases) |
+| C | Cross-session persistence | Learned abstraction survives a fresh Node process boundary | VERIFIED |
+| D | Monotonicity + order-independence | Learning does not shrink under new evidence · learning is permutation-invariant | VERIFIED |
+
+**Cumulative claim (bounded, honest):** NEX1 demonstrates deterministic, zero-LLM, cross-experience, cross-session, monotone, order-invariant abstraction from accumulated experience — at the **recognition + persistence layer**. The **application layer** (turning a retrieved abstraction into an observable change in a runtime coding decision) remains unproven, and the **operator-invention layer** (generating a new repair operator for a genuinely novel shape family) remains unproven and out of reach for the current architecture without an LLM or explicit teacher input.
+
+The founder's central question — *"Can NEX1 discover something that was NOT explicitly programmed as the answer to the new problem, validate that discovery, store it, and later apply it successfully to a different situation?"* — resolves as:
+
+- DISCOVER ✅ · VALIDATE ✅ · STORE ✅ · APPLY 🟡 (retrieval works · runtime bias not proven · operator invention out of scope)
+
+*End of Cycle 1 · Discovery loop pauses here. The blocker for closing APPLY is architectural (runtime wire-in requires either a working dev server or a direct-module coding-loop harness) and is not a scientific unknown — it is a plumbing task.*

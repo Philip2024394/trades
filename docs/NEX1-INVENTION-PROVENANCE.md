@@ -252,3 +252,17 @@ The full experiment write-up (Question / Setup / Prior Knowledge / Novel Element
 ---
 
 *Record version 1.2 · integrity preserved · §§1-11 unchanged.*
+
+### 12.6 · 2026-09-18 · Test D verified · Monotonicity + Order-Independence
+- **Evidence:** `data/nex1-discovery-experiments/test-d-monotonicity-and-order-receipt.json` · verdict field `"VERIFIED"`.
+- **Nature:** proves the abstraction extractor satisfies two foundational invariants of any real learning system:
+  - MONOTONICITY: support-count for a family grows or stays equal as same-family evidence accumulates (measured `1 → 2 → 3 → 3 → 3` over 5 evidence-additions).
+  - ORDER-INDEPENDENCE: three deterministic permutations of the same 5 entries produced identical pattern-set fingerprints (`6b269a7afa688ffd3855827b0c4dd259`).
+- **Class:** RUNTIME_VERIFIED BEHAVIOUR of Fix 34.
+
+### 12.7 · 2026-09-18 · Cycle 1 · Consolidated verdict
+Four experiments verified (Tests A · B · C · D). NEX1 demonstrates zero-LLM, deterministic, cross-source-file, cross-session, monotone, order-invariant abstraction from accumulated experience — at the RECOGNITION + PERSISTENCE layer. APPLICATION at the runtime coding-loop bias level remains unproven pending a working dev-server round-trip or a direct-module coding-loop harness. OPERATOR INVENTION from experience remains unproven and outside current architecture without an LLM or explicit teacher input. Full discovery log at `docs/NEX1-INTELLIGENCE-DISCOVERY.md` §§1-4.
+
+---
+
+*Record version 1.3 · integrity preserved · §§1-11 unchanged.*
