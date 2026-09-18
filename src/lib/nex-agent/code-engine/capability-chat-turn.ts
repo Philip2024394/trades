@@ -1613,6 +1613,40 @@ export async function runChatTurn(input: RunChatTurnInput): Promise<RunChatTurnR
                 trace.push(
                   `fix30b · comparator · relationship=${relation.relationship} · current=${relation.current_signature ?? "n/a"} · prior=${relation.prior_signature ?? "n/a"}`,
                 );
+
+                // ─── FIX 35 · Runtime consultation of DISCOVERED CAPABILITIES ────
+                // Load discovered rules from disk and consult them against the
+                // current-turn shape signature. Emits an INFORMATIONAL trace
+                // line only. Never authoritative. Never bypasses operator
+                // library. R11-B preserved. This is the wire that closes the
+                // APPLY step of the founder's central question.
+                try {
+                  const {
+                    loadDiscoveredRules,
+                    predictFromRules,
+                  } = await import("./capability-capability-discovery");
+                  const discoveredRules = loadDiscoveredRules(repoRoot);
+                  const discovery = predictFromRules(discoveredRules, {
+                    source_file: posixTargetRel,
+                    selected_candidate: currentSignature,
+                    selection_state: "SELECTED",
+                  });
+                  trace.push(
+                    `fix35 · discovery · rule_id=${discovery.rule_id ?? "none"} · kind=${discovery.kind} · predicted_value=${discovery.predicted_value ?? "n/a"} · predicted_value_type=${discovery.predicted_value_type ?? "n/a"} · rule_count=${discoveredRules.length}`,
+                  );
+                  beat("capability_discovery", "consulted", {
+                    rule_id: discovery.rule_id,
+                    kind: discovery.kind,
+                    predicted_value: discovery.predicted_value,
+                    predicted_value_type: discovery.predicted_value_type,
+                    rules_available: discoveredRules.length,
+                  });
+                } catch (err) {
+                  trace.push(
+                    `fix35 · discovery consultation threw · ${err instanceof Error ? err.message.slice(0, 160) : String(err)}`,
+                  );
+                }
+                // ─── END FIX 35 discovery consultation ─────────────────────────
                 beat("prior_evidence_comparator", "assessed", {
                   relationship: relation.relationship,
                   current_signature: relation.current_signature,

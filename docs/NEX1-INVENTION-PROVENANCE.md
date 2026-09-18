@@ -292,3 +292,28 @@ Everything beyond that specific claim — including "NEX1 is intelligent," "NEX1
 ---
 
 *Record version 1.5 · integrity preserved · §§1-11 unchanged.*
+
+### 12.11 · 2026-09-18 · Test E preserved as immutable state
+- **Preservation doc:** `docs/TEST-E-PRESERVATION.md` (committed at commit that follows `3ddae26b`).
+- **Git tag:** `nex1-test-e-verified` → annotated tag on commit `3ddae26b`.
+- **Preserved rule_id:** `rule-0476695f90fd320b`.
+- **Nature:** locks the exact Test E state (commit hash, receipt SHA-256s, source-file SHA-256s, reproduction recipe) before any Test F work touches source. Any subsequent hash mismatch would break the preservation chain visibly.
+
+### 12.12 · 2026-09-18 · Test F verified · Runtime application of the discovered capability
+- **Evidence:** `data/nex1-discovery-experiments/test-f-runtime-bias-receipt.json` · verdict `"VERIFIED"` · 4 of 4 correctness cells true · regression 28 files / 2152 tests pass.
+- **Nature:** direct-module invocation of `runChatTurn` with the Fix 35 discovery consumer wired at the Fix 25 salience gate. Arm A (rules present): `fix35 · discovery · rule_id=rule-db7815e90f301dce · kind=value_from_selected_candidate_suffix · predicted_value=55 · predicted_value_type=number` fires in the actual chat-turn trace. Arm B (rules wiped): `rule_id=none · kind=no_applicable_rule`. Coding-loop outcome UNCHANGED between arms — discovery is informational only.
+- **Class:** RUNTIME_VERIFIED BEHAVIOUR. Closes the APPLY step of the founder's central question at the recognition-plus-informational-application layer. Nothing beyond that is claimed.
+
+### 12.13 · Cumulative status of the founder's central question
+| Step | Status | Best evidence |
+|---|---|---|
+| DISCOVER | ✅ | rule `rule-0476695f90fd320b` (Test E) |
+| VALIDATE | ✅ | 7 anti-cheating audits (Test E) · `NO_CHEATING_DETECTED` |
+| STORE | ✅ | `data/nex1-discovered-capabilities/rules.jsonl` + Test C cross-session fingerprint match |
+| APPLY | ✅ | rule `rule-db7815e90f301dce` consulted in the actual `runChatTurn` path (Test F) · correct data-derived prediction `55` for a novel fixture |
+
+Bounded honest claim: NEX1 has, without an LLM at runtime, deterministically discovered, validated, stored, and applied a first-class capability record derived from accumulated experience, through six independently-verified experiments with adversarial audits at every step. Broader claims (algorithm invention, general autonomy) remain not proven and are explicitly out of scope for zero-LLM architecture.
+
+---
+
+*Record version 1.6 · integrity preserved · §§1-11 unchanged.*

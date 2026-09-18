@@ -1,0 +1,55 @@
+{
+  "test": "F · runtime bias · Fix 35 discovery consulted at Fix 25 salience gate",
+  "date": "2026-09-18T03:43:16.322Z",
+  "zero_llm": true,
+  "starting_commit": "3ddae26b (nex1-test-e-verified) + Test F wire",
+  "session_1_induction": {
+    "rules_summary": [
+      {
+        "rule_id": "rule-db7815e90f301dce",
+        "features": {
+          "has_signature_format": true,
+          "value_type": "number",
+          "path_dir_root": "src",
+          "path_dir_second": "lib",
+          "selection_state": "SELECTED"
+        },
+        "support": 3,
+        "invariants": [
+          "selected_candidate_has_double_colon_separator",
+          "selected_candidate_prefix_equals_source_file",
+          "selected_candidate_suffix_is_numeric",
+          "all_entries_share_path_prefix"
+        ]
+      }
+    ],
+    "rules_path": "C:\\Users\\Victus\\trades\\data\\nex1-discovered-capabilities\\rules.jsonl",
+    "appended_lines": 1
+  },
+  "arm_A_rules_present": {
+    "conv_id": "F-A-1789702966080",
+    "state": "understood",
+    "discovery_line": "fix35 · discovery · rule_id=rule-db7815e90f301dce · kind=value_from_selected_candidate_suffix · predicted_value=55 · predicted_value_type=number · rule_count=1",
+    "discovery_rule_id": "rule-db7815e90f301dce",
+    "discovery_kind": "value_from_selected_candidate_suffix",
+    "discovery_predicted_value": "55",
+    "trace_had_discovery_line": true,
+    "file_mutated": false
+  },
+  "arm_B_rules_wiped": {
+    "conv_id": "F-B-1789702980813",
+    "state": "understood",
+    "discovery_line": "fix35 · discovery · rule_id=none · kind=no_applicable_rule · predicted_value=n/a · predicted_value_type=n/a · rule_count=0",
+    "discovery_rule_id": "none",
+    "discovery_kind": "no_applicable_rule",
+    "trace_had_discovery_line": true,
+    "file_mutated": false
+  },
+  "correctness_matrix": {
+    "A_discovery_trace_fired": true,
+    "B_discovery_trace_fired_with_none": true,
+    "coding_outcome_unchanged_by_discovery": true,
+    "no_file_mutation_from_discovery": true
+  },
+  "verdict": "VERIFIED"
+}

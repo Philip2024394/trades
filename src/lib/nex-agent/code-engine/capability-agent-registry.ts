@@ -308,6 +308,11 @@ export function ensureCanonicalAgentsRegistered(repo_root?: string): void {
     // Infrastructure
     { id: "chat_turn_orchestrator", name: "Chat-Turn Orchestrator", cognitive_layer: "infrastructure_orchestrator", description: "The conductor · assembles all cognitive layers per turn." },
     { id: "agent_registry", name: "Agent Registry (self)", cognitive_layer: "infrastructure_registry", description: "This module. Records its own heartbeats too." },
+    // Fix 35 · added 2026-09-18 · runtime-consulted capability discovery.
+    // Its DB accumulates every prediction produced by the discovered-rule
+    // consultation inside Fix 25's salience gate. Purely informational at
+    // runtime; never authoritative.
+    { id: "capability_discovery", name: "Capability Discovery (Fix 35)", cognitive_layer: "procedural_memory", description: "Consumes rules induced from experience and emits predictions for novel inputs." },
   ];
   for (const r of roster) {
     registerAgent({ ...r, repo_root });

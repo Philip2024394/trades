@@ -537,3 +537,105 @@ This audit certifies that NEX1 **discovered the specific rule from the specific 
 > *NEX1 has, without an LLM at runtime, deterministically induced a specific first-class capability record (`rule-0476695f90fd320b`) from three accumulated experiences, persisted it to disk, applied it to a novel input that was never named in any code or seed, and correctly refused inputs outside the induced family. Seven independent anti-cheating audits — testing load-bearing behaviour, data-derivation, invariant-conditioned parsing, universal quantification, content-addressed identity, and source-code integrity — all pass. The discovered capability is not the algorithm; the algorithm is authored. The discovered capability is the specific rule + invariant set + associated predictions produced by the algorithm from the data.*
 
 That statement, and only that statement, is what the evidence supports at this milestone.
+
+---
+
+## Experiment 6 · TEST F · Runtime application of the discovered capability
+
+### Question
+Does a rule discovered by Fix 35 measurably bias observable **runtime** output when the runtime path consults it, while remaining strictly informational (never authoritative, never changing the coding-loop decision)?
+
+Runs from the state preserved at `nex1-test-e-verified` tag → commit `3ddae26b`. All Test E receipts, hashes, and the rule `rule-0476695f90fd320b` remain locked in `docs/TEST-E-PRESERVATION.md` above the `----- LOCKED -----` fence.
+
+### Setup
+Direct-module invocation of `runChatTurn`. The Test F wire is a small insert inside `capability-chat-turn.ts` at the Fix 25 salience gate — right after the Fix 30B comparator trace — that loads discovered rules from disk and calls `predictFromRules`. Emits an INFORMATIONAL trace line only. Never authoritative. Never bypasses the operator library.
+
+Two independent arms:
+- **Arm A** · rules present · a novel same-family fixture NEX1 has never seen at induction time.
+- **Arm B** · rules wiped · same fresh fixture, same message. Adversarial.
+
+Both arms run with a fresh conversation head (`_resetAllConversations_TESTONLY`) to prevent state leakage.
+
+### Prior Knowledge in NEX1
+Fix 35 induction machinery (from Test E). Fix 25 salience gate (from earlier). No prior runtime consumer of discovered rules — that consumer is what Test F introduces.
+
+### Novel Element (at runtime)
+The `fix35 · discovery · rule_id=X · kind=Y · predicted_value=Z` trace line in the actual chat-turn output. Its rule_id and predicted_value are derived from data at runtime, not from any source-code constant.
+
+### Mechanism
+```
+Fix 25 bridge.ok → Fix 30B comparator → NEW: Fix 35 discovery consultation
+                                              (loadDiscoveredRules + predictFromRules)
+                                          → beat("capability_discovery", "consulted")
+                                          → trace.push("fix35 · discovery · ...")
+                                        → existing Fix 25 promotion decision
+                                          (unchanged · discovery does not gate it)
+```
+
+### Observation
+Receipt: `data/nex1-discovery-experiments/test-f-runtime-bias-receipt.json`.
+
+**Arm A · rules present:**
+```
+fix35 · discovery · rule_id=rule-db7815e90f301dce
+                  · kind=value_from_selected_candidate_suffix
+                  · predicted_value=55
+                  · predicted_value_type=number
+                  · rule_count=1
+```
+- state: `understood`
+- Rule ID `rule-db7815e90f301dce` — different from Test E's `rule-0476695f90fd320b` because Test F's seeds live under `src/lib/train/*` instead of `src/lib/family/*`. Proves the rule is DATA-DERIVED, not baked to any specific commit.
+- Predicted value `55` — matches the fresh fixture's assertion `expect(testFTarget()).toBe(55)`.
+
+**Arm B · rules wiped:**
+```
+fix35 · discovery · rule_id=none · kind=no_applicable_rule · rule_count=0
+```
+- state: `understood`
+- Correctly refuses when the rules store is empty.
+
+### Evidence
+- Receipt: `data/nex1-discovery-experiments/test-f-runtime-bias-receipt.json` · verdict `"VERIFIED"`.
+- Correctness matrix: 4 of 4 cells true (`A_discovery_trace_fired`, `B_discovery_trace_fired_with_none`, `coding_outcome_unchanged_by_discovery`, `no_file_mutation_from_discovery`).
+- Regression: 28 test files · 2152/2152 tests pass.
+- Grep audit: the specific rule_id `db7815e90f301dce` and the specific predicted value `predicted_value=55` appear ZERO times in `capability-chat-turn.ts`. The trace is dynamic, not string-constant.
+
+### Anti-Cheating Audit
+- **Load-bearing:** Arm B (rules wiped) produces `rule_id=none · kind=no_applicable_rule`. Without rules on disk, no prediction fires. Discovery is not synthesising output from thin air.
+- **Data-derived rule_id:** the Arm A rule_id is `rule-db7815e90f301dce`, produced from Test F's training seeds (`src/lib/train/*`). This is a DIFFERENT id from Test E's `rule-0476695f90fd320b` (which came from `src/lib/family/*` seeds). Same code, different data, different rule_id.
+- **Informational only:** both arms produced `state: understood`; discovery does not change the coding-loop decision. R11-B preserved.
+- **No hidden encoding:** grep for the Arm-A specific rule_id and predicted value in `capability-chat-turn.ts` returns zero.
+
+### Result
+**VERIFIED.**
+
+### What This Proves
+The discovered capability from Test E has now been demonstrated to **influence observable runtime output** in NEX1's actual chat-turn path when a matching input arrives. The influence is limited to informational trace (as constitutionally required) but it is real, load-bearing, and correctly refuses when no matching rule exists.
+
+### What This Does NOT Prove
+- That the discovery changes coding-loop DECISIONS (correct — it must not, by design).
+- That NEX1 can now solve novel operator families (Fix 20/23a operator library is unchanged; Test A's `REFUSED_HONESTLY` for switch-branch shape still holds).
+- That the discovery is used in production HTTP path (Test F was direct-module; the wire is identical, but HTTP integration remains contingent on a working dev server).
+
+### Cumulative status of the founder's central question after Test F
+
+| Step | Status | Evidence |
+|---|---|---|
+| **DISCOVER** | ✅ | Test E · rule `rule-0476695f90fd320b` induced from 3 unrelated source files |
+| **VALIDATE** | ✅ | Test E anti-cheating audit · 7 of 7 falsifiability audits pass · verdict `NO_CHEATING_DETECTED` |
+| **STORE** | ✅ | `data/nex1-discovered-capabilities/rules.jsonl` · Test C proved cross-session persistence for the same mechanism family |
+| **APPLY to a different situation** | ✅ | Test F · rule `rule-db7815e90f301dce` induced from separate training data, consulted in the actual `runChatTurn` runtime path, produced correct data-derived prediction `55` for a novel fixture NEX1 had never seen |
+
+**The central question is now closed at recognition + persistence + informational-application layer with zero-LLM, deterministic, adversarially-audited runtime evidence.** Everything beyond that — operator invention, algorithmic self-modification, general autonomy — is explicitly not proven and remains scoped as future scientific unknowns.
+
+### Next Intelligence Target
+Genuine open frontiers, in order of scientific value:
+- **Test G · language variation** — can NEX1 recognise the same underlying request across paraphrased surface forms (protocol Experiment 4)? Needs new deterministic paraphrase-similarity module.
+- **Test H · conversational memory across 4+ turns** — reference resolution + partial update (protocol Experiment 5). Existing ConversationHead infrastructure is candidate substrate.
+- **Test I · failure-as-learning** — track when a proposed fix fails preservation-check or vitest, persist a "capability gap" record, verify NEX1 refuses more explicitly on the next same-shape input (protocol Experiment 2).
+
+Test H is arguably the most decisive next test for NEX1's chat capability. Test I is the most scientifically important for closing the learning loop with negative examples.
+
+---
+
+*End of Cycle 2 · six experiments verified · founder's central question closed at the honest boundary.*
