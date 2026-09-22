@@ -40,7 +40,7 @@ type SectionDef = {
   href: string;
   label: string;
   icon: React.ComponentType<{ size?: number; strokeWidth?: number }>;
-  group: "core" | "verticals" | "workforce" | "review" | "external";
+  group: "core" | "verticals" | "workforce" | "review" | "external" | "email_harvest";
   /** Key into notification counts (server-fed) · when > 0 shows a red badge. */
   notificationKey?: "collector_claims";
   /** Key into walker statuses (server-fed) · when set renders a live green-light dot. */
@@ -100,14 +100,34 @@ const SECTIONS: SectionDef[] = [
   { href: "/nex-head-quarters/audit",                    label: "Audit",                icon: ScrollText,  group: "review" },
   { href: "/nex-head-quarters/comms-social-hq",          label: "Comms Social · HQ",    icon: Radio,       group: "external" },
   // ─── NEX1 Controlled Builder · workstation + review surfaces (BUILD PLAN v2.0)
-  { href: "/nex-head-quarters/workstation",              label: "Workstation",          icon: Activity,    group: "core" },
+  { href: "/nex1/workstation-live",                       label: "Workstation",          icon: Activity,    group: "core" },
   { href: "/nex-head-quarters/review-queue",             label: "Review Queue",         icon: CheckSquare, group: "review" },
   { href: "/nex-head-quarters/idea-lab",                 label: "Idea Lab",             icon: BookOpen,    group: "review" },
   { href: "/nex-head-quarters/security",                 label: "Security HQ",          icon: ScrollText,  group: "review" },
   { href: "/nex-head-quarters/section-intervention",     label: "Section Intervention", icon: Hammer,      group: "review" },
   { href: "/nex-head-quarters/component-registry",       label: "Component Registry",   icon: Database,    group: "core" },
-  { href: "/nex-head-quarters/email-marketing",          label: "Email Marketing · HQ", icon: Radio,       group: "external" },
   { href: "/nex-head-quarters/connection-audit",         label: "Connection Audit",     icon: MapIcon,     group: "core" },
+
+  // ─── EMAIL HARVEST · permanent Founder section · 2026-09-22 ───
+  // 17 sub-pages: real pages, real reused pages, and honest stubs.
+  // Manifest lives at src/lib/nex-hq/email-harvest-manifest.ts.
+  { href: "/nex-head-quarters/email-harvest",                       label: "Overview",             icon: Radio,       group: "email_harvest" },
+  { href: "/nex-head-quarters/email-harvest/live",                  label: "Live Harvest",         icon: Activity,    group: "email_harvest" },
+  { href: "/nex-head-quarters/email-harvest/queue",                 label: "Harvest Queue",        icon: ClipboardList, group: "email_harvest" },
+  { href: "/nex-head-quarters/world-discovery",                     label: "Countries",            icon: MapIcon,     group: "email_harvest" },
+  { href: "/nex-head-quarters/email-harvest/categories",            label: "Categories",           icon: BookOpen,    group: "email_harvest" },
+  { href: "/nex-head-quarters/email-harvest/businesses",            label: "Businesses",           icon: Database,    group: "email_harvest" },
+  { href: "/nex-head-quarters/email-marketing",                     label: "Emails",               icon: Radio,       group: "email_harvest" },
+  { href: "/nex-head-quarters/email-harvest/sources",               label: "Sources",              icon: HardDrive,   group: "email_harvest" },
+  { href: "/nex-head-quarters/email-harvest/websites",              label: "Website Harvest",      icon: Footprints,  group: "email_harvest" },
+  { href: "/nex-head-quarters/email-harvest/evidence",              label: "Evidence & Provenance",icon: ScrollText,  group: "email_harvest" },
+  { href: "/nex-head-quarters/email-harvest/workers",               label: "Workers & Recovery",   icon: Activity,    group: "email_harvest" },
+  { href: "/nex-head-quarters/email-harvest/cycles",                label: "Harvest Cycles",       icon: FileClock,   group: "email_harvest" },
+  { href: "/nex-head-quarters/email-harvest/analytics",             label: "Collection Analytics", icon: Database,    group: "email_harvest" },
+  { href: "/nex-head-quarters/email-harvest/sender-system",         label: "Sender System",        icon: Radio,       group: "email_harvest" },
+  { href: "/nex-head-quarters/email-harvest/send-activity",         label: "Send Activity",        icon: Radio,       group: "email_harvest" },
+  { href: "/nex-head-quarters/email-harvest/deliverability",        label: "Deliverability",       icon: CheckSquare, group: "email_harvest" },
+  { href: "/nex-head-quarters/email-harvest/proof-health",          label: "Proof & Health",       icon: CheckSquare, group: "email_harvest" },
 ];
 
 // ── Indonesia sidebar tree (2026-08-24) ────────────────────────────────
@@ -282,11 +302,12 @@ export type HQNotificationCounts = {
 };
 
 const GROUP_LABEL: Record<SectionDef["group"], string> = {
-  core:      "Command",
-  verticals: "Verticals",
-  workforce: "Workforce · Storage",
-  review:    "Review · Audit",
-  external:  "Cross-Tenant",
+  core:          "Command",
+  verticals:     "Verticals",
+  workforce:     "Workforce · Storage",
+  review:        "Review · Audit",
+  external:      "Cross-Tenant",
+  email_harvest: "Email Harvest",
 };
 
 function activeFor(pathname: string): SectionDef | undefined {
