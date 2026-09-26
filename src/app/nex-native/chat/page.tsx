@@ -480,7 +480,10 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
           // container (was 335px).
           padding: "16px 12px 32px",
           position: "relative",
-          overflow: "hidden",
+          // overflow-x hidden clips any incidental horizontal overflow
+          // (radial background, decorative shadows) without breaking
+          // vertical page scroll when the friend list is long.
+          overflowX: "hidden",
         }}
       >
         <div
