@@ -651,12 +651,12 @@ function PersonCard(props: {
   const avatarHalo = isPresenceActive
     ? `0 0 0 3px ${avatarRing}22, 0 2px 8px rgba(0,0,0,0.35)`
     : "0 2px 8px rgba(0,0,0,0.35)";
-  // Avatar matches card's inner content height (card minHeight 76
-  // minus 14px top + 14px bottom padding = 48). Negative vertical
-  // margins pull it out past the padding so its top and bottom edges
-  // are flush with the card's border · looks like the avatar is
-  // capping the card's left end.
-  const AVATAR_SIZE = 76;
+  // Avatar sits INSIDE the card at a fixed 52px · previous half-outside
+  // design forced 38+28px of reserved horizontal margin per card which
+  // squeezed the content and blew past narrow viewports. Sealed
+  // 2026-09-27: friend list cards fill the container width, Portrait
+  // Bloom lives on the individual chat surfaces.
+  const AVATAR_SIZE = 52;
   const cardBody = (
     <>
       <div
@@ -669,16 +669,7 @@ function PersonCard(props: {
           borderRadius: "50%",
           border: `2px solid ${avatarRing}`,
           boxShadow: avatarHalo,
-          // Pull the avatar half outside the card's left edge · matches
-          // the fingerprint chip's treatment on the right for visual
-          // symmetry. Card must have overflow: visible and reserve
-          // left space so the avatar isn't clipped by the viewport.
-          marginLeft: -(AVATAR_SIZE / 2),
-          // Break out of the card's 14px top/bottom padding so the
-          // avatar's top and bottom edges align with the card border.
-          marginTop: -14,
-          marginBottom: -14,
-          background: NEX.panel, // opaque · card border behind is hidden
+          background: NEX.panel,
           overflow: "visible",
         }}
       >
@@ -705,7 +696,7 @@ function PersonCard(props: {
               color: NEX.cyan,
               display: "grid",
               placeItems: "center",
-              fontSize: 22,
+              fontSize: 16,
               fontWeight: 600,
               letterSpacing: "0.05em",
             }}
@@ -814,26 +805,19 @@ function PersonCard(props: {
     position: "relative",
     display: "flex",
     alignItems: "center",
-    gap: 14,
-    // Both left and right padding are trimmed to let the avatar (left)
-    // and fingerprint chip (right) attach at the card edges · both
-    // elements use negative margins to spill half outside. Overflow
-    // stays visible so nothing is clipped.
-    padding: "14px 12px",
+    gap: 12,
+    // Card fills the container width · avatar and chip both live INSIDE
+    // the border now, so no reserved left/right margin is needed.
+    padding: "12px 14px",
     background: NEX.panel,
     border: `1px solid ${props.preview ? "rgba(0,175,255,0.18)" : NEX.cyanSoft}`,
-    borderRadius: 12,
+    borderRadius: 14,
     textDecoration: "none",
     color: NEX.textPrimary,
     minHeight: 76,
-    // Margins reserve room for the half-external avatar (38px overhang
-    // for the 76px avatar) and fingerprint chip (28px overhang for the
-    // 56px chip). Avoids viewport / stack-neighbour clipping.
-    marginLeft: 38,
-    marginRight: 28,
     transition: "border-color 200ms ease, box-shadow 200ms ease",
     opacity: props.preview ? 0.75 : 1,
-    overflow: "visible",
+    overflow: "hidden",
   };
   // AccentStripe (chat-theme colour on left edge) is dropped from
   // PersonCard while the avatar sits on the left edge · the stripe
@@ -1182,7 +1166,7 @@ function FingerprintChip(props: {
       ? "99+"
       : String(props.unread)
     : "";
-  const CHIP_SIZE = 56;
+  const CHIP_SIZE = 48;
   return (
     <div
       aria-hidden
@@ -1192,7 +1176,7 @@ function FingerprintChip(props: {
         width: CHIP_SIZE,
         height: CHIP_SIZE,
         borderRadius: "50%",
-        background: NEX.panel, // opaque so card border behind is hidden
+        background: NEX.panel,
         border: `2px solid ${ring}`,
         color: stroke,
         boxShadow: !isOffline
@@ -1203,9 +1187,6 @@ function FingerprintChip(props: {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        // Pull the chip half outside the card's right edge · the card
-        // must have overflow: visible (set on PersonCard's style).
-        marginRight: -(CHIP_SIZE / 2),
       }}
     >
       {/* Coloured tint layer · sits on top of the panel background so
@@ -1233,9 +1214,8 @@ function FingerprintChip(props: {
         {hasUnread ? (
           <span
             style={{
-              // Large count number · reads across the room at 56px chip.
-              // NEX orange draws the eye to the attention-needed card.
-              fontSize: unreadLabel.length >= 3 ? 16 : 22,
+              // Bold count · scannable at a glance at 48px chip.
+              fontSize: unreadLabel.length >= 3 ? 13 : 18,
               fontWeight: 700,
               letterSpacing: "-0.02em",
               color: NEX.orange,
@@ -1245,7 +1225,7 @@ function FingerprintChip(props: {
             {unreadLabel}
           </span>
         ) : (
-          <FingerprintIcon size={34} />
+          <FingerprintIcon size={26} />
         )}
       </div>
     </div>
@@ -1553,8 +1533,8 @@ function ShopBadge() {
         position: "absolute",
         bottom: -2,
         right: -2,
-        width: 26,
-        height: 26,
+        width: 20,
+        height: 20,
         borderRadius: "50%",
         background: NEX.orange,
         color: "#0B0F1A",
@@ -1566,17 +1546,17 @@ function ShopBadge() {
       }}
     >
       <svg
-        width="15"
-        height="15"
+        width="12"
+        height="12"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth={2.4}
+        strokeWidth={2.6}
         strokeLinecap="round"
         strokeLinejoin="round"
         aria-hidden
       >
-        {/* Storefront · awning + body + door · reads cleanly at 15px */}
+        {/* Storefront · awning + body + door · reads cleanly at 12px */}
         <path d="M3 9l1.5-5h15L21 9" />
         <path d="M4 9v11h16V9" />
         <path d="M10 20v-6h4v6" />
