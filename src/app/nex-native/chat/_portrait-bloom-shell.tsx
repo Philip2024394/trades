@@ -17,7 +17,6 @@
 // (PeerComposer) which is a headless client component that takes an
 // `action` prop, so both surfaces bind their own Server Action.
 
-import Link from "next/link";
 import * as React from "react";
 import { PeerComposer } from "./peer/[accountId]/_composer";
 
@@ -70,7 +69,9 @@ export interface PortraitBloomShellProps {
    *  for friends · NEX cyan default for businesses (unless they later
    *  set a brand colour). */
   rippleColor: string;
-  /** Href for the back button. */
+  /** Href for the back navigation. Currently unused visually (no back
+   *  button rendered) but retained so callers can keep supplying it
+   *  and a future affordance can wire in without a prop refactor. */
   backHref: string;
   /** Full ordered message list (asc by sent_at). */
   messages: PortraitBloomMessage[];
@@ -80,8 +81,8 @@ export interface PortraitBloomShellProps {
   composerPlaceholder: string;
   /** Data attribute for test/telemetry scoping. */
   scope: string;
-  /** Optional small badge shown in the top-right pill (defaults to a
-   *  visible surface tag like "NEX Chat"). */
+  /** Optional badge · currently unused visually (header tag removed
+   *  by Founder direction 2026-09-27). Callers may keep passing it. */
   headerTag?: string;
 }
 
@@ -93,12 +94,10 @@ export function PortraitBloomShell({
   presenceKind,
   presenceLabel,
   rippleColor,
-  backHref,
   messages,
   composerAction,
   composerPlaceholder,
   scope,
-  headerTag = "NEX Chat",
 }: PortraitBloomShellProps) {
   const isOffline = presenceKind !== "online";
 
@@ -252,78 +251,16 @@ export function PortraitBloomShell({
           }}
         />
 
-        {/* Header · back button + brand tag */}
-        <header
-          style={{
-            position: "relative",
-            zIndex: 3,
-            padding:
-              "calc(env(safe-area-inset-top, 0) + 14px) 20px 16px",
-            display: "flex",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
-            gap: 12,
-          }}
-        >
-          <Link
-            href={backHref}
-            aria-label="Back"
-            style={{
-              flexShrink: 0,
-              width: 42,
-              height: 42,
-              borderRadius: "50%",
-              background: "rgba(0,0,0,0.35)",
-              backdropFilter: "blur(14px)",
-              WebkitBackdropFilter: "blur(14px)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              color: NEX.text,
-              display: "grid",
-              placeItems: "center",
-              textDecoration: "none",
-            }}
-          >
-            <svg
-              width={22}
-              height={22}
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden
-            >
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </Link>
-
-          <span
-            style={{
-              alignSelf: "center",
-              fontSize: 10,
-              letterSpacing: "0.16em",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.75)",
-              padding: "6px 12px",
-              borderRadius: 999,
-              background: "rgba(0,0,0,0.35)",
-              backdropFilter: "blur(14px)",
-              WebkitBackdropFilter: "blur(14px)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              fontWeight: 600,
-            }}
-          >
-            {headerTag}
-          </span>
-        </header>
-
-        {/* Identity overlay ~ mid portrait */}
+        {/* Identity overlay · top-left · sealed 2026-09-27:
+            back arrow and "NEX Chat" tag intentionally removed per
+            Founder direction. Navigation is via swipe/browser back
+            until a new affordance lands. */}
         <div
           style={{
             position: "relative",
             zIndex: 3,
-            padding: "22vh 22px 0",
+            padding:
+              "calc(env(safe-area-inset-top, 0) + 18px) 22px 0",
             textShadow: "0 2px 20px rgba(0,0,0,0.75)",
           }}
         >
