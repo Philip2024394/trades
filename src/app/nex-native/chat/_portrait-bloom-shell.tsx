@@ -252,7 +252,10 @@ export function PortraitBloomShell({
         />
 
         {/* Identity overlay · top-left · compact so the portrait can
-            breathe and messages get more room. Sealed 2026-09-27. */}
+            breathe and messages get more room. The "NEX · chatting
+            with" label was removed 2026-09-27 · the portrait already
+            signals "chatting with" and the presence dot lives inline
+            beside the name. */}
         <div
           style={{
             position: "relative",
@@ -264,22 +267,19 @@ export function PortraitBloomShell({
         >
           <div
             style={{
-              fontSize: 10,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              opacity: 0.85,
-              color: presenceKind === "online" ? NEX.cyan : NEX.textDim,
-              display: "inline-flex",
+              display: "flex",
               alignItems: "center",
-              gap: 6,
+              gap: 10,
             }}
           >
             <span
-              aria-hidden
+              aria-label={presenceLabel}
+              title={presenceLabel}
               style={{
                 display: "inline-block",
-                width: 7,
-                height: 7,
+                flexShrink: 0,
+                width: 10,
+                height: 10,
                 borderRadius: "50%",
                 background:
                   presenceKind === "online"
@@ -289,23 +289,25 @@ export function PortraitBloomShell({
                       : "#7D9BC0",
                 boxShadow:
                   presenceKind === "online"
-                    ? `0 0 8px ${NEX.green}90`
+                    ? `0 0 10px ${NEX.green}, 0 0 0 3px ${NEX.green}22`
                     : "none",
                 transition: "background 500ms ease",
               }}
             />
-            {presenceLabel}
-          </div>
-          <div
-            style={{
-              fontSize: 22,
-              fontWeight: 700,
-              marginTop: 2,
-              lineHeight: 1.1,
-              letterSpacing: "-0.005em",
-            }}
-          >
-            {displayName}
+            <div
+              style={{
+                fontSize: 22,
+                fontWeight: 700,
+                lineHeight: 1.1,
+                letterSpacing: "-0.005em",
+                minWidth: 0,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {displayName}
+            </div>
           </div>
           {subtitle && (
             <div
