@@ -113,7 +113,11 @@ export function PortraitBloomShell({
   return (
     <>
       <style>{`
-        html, body { background: ${NEX.bg} !important; }
+        html, body {
+          background: ${NEX.bg} !important;
+          overflow: hidden;
+          overscroll-behavior: none;
+        }
         @keyframes nex-bloom-msg-in {
           from { opacity: 0; transform: translateY(8px); }
           to   { opacity: 1; transform: translateY(0); }
@@ -145,8 +149,12 @@ export function PortraitBloomShell({
       <main
         data-nex-bloom-scope={scope}
         style={{
-          position: "relative",
-          minHeight: "100dvh",
+          position: "fixed",
+          inset: 0,
+          // dvh accounts for mobile browser chrome (URL bar collapse/
+          // expand) · pins the shell exactly to the visible viewport
+          // so composer + name never slip off screen.
+          height: "100dvh",
           background: NEX.bg,
           color: NEX.text,
           fontFamily:
@@ -260,8 +268,9 @@ export function PortraitBloomShell({
           style={{
             position: "relative",
             zIndex: 3,
+            flexShrink: 0,
             padding:
-              "calc(env(safe-area-inset-top, 0) + 14px) 20px 0",
+              "calc(env(safe-area-inset-top, 0) + 14px) 20px 12px",
             textShadow: "0 2px 20px rgba(0,0,0,0.75)",
           }}
         >
@@ -396,6 +405,7 @@ export function PortraitBloomShell({
                   data-nex-bloom-msg
                   data-nex-bloom-msg-mine={m.mine ? "true" : undefined}
                   style={{
+                    position: "relative",
                     alignSelf: m.mine ? "flex-end" : "flex-start",
                     maxWidth: "78%",
                     padding: "11px 14px 9px",
@@ -403,8 +413,8 @@ export function PortraitBloomShell({
                     // sender. Outgoing: bottom-right sharp. Incoming:
                     // bottom-left sharp.
                     borderRadius: m.mine
-                      ? "18px 18px 4px 18px"
-                      : "18px 18px 18px 4px",
+                      ? "18px 18px 0 18px"
+                      : "18px 18px 18px 0",
                     // Relaxed glass · gray fill, neon-cyan rim, soft
                     // outer glow. Reads as "premium NEX" not "loud
                     // messenger blue".
@@ -426,6 +436,10 @@ export function PortraitBloomShell({
                       : "0 6px 22px rgba(0,0,0,0.55)",
                   }}
                 >
+                  {/* Directional tail · triangular pointer extending
+                      from the sender's corner. Fill matches bubble
+                      glass · stroke matches bubble rim. */}
+                  <BubbleTail mine={m.mine} />
                   <div>{m.body}</div>
                   <div
                     style={{
@@ -463,6 +477,7 @@ export function PortraitBloomShell({
           style={{
             position: "relative",
             zIndex: 4,
+            flexShrink: 0,
             padding:
               "14px 16px calc(env(safe-area-inset-bottom, 0) + 14px)",
             background:
@@ -490,6 +505,66 @@ function initialsFromName(name: string): string {
   const first = parts[0]?.charAt(0) ?? "";
   const last = parts.length > 1 ? (parts[parts.length - 1]?.charAt(0) ?? "") : "";
   return (first + last).toUpperCase() || "?";
+}
+
+/** Triangular bubble tail · attaches to the sender's corner and
+ *  extends outward. Fill matches bubble glass · stroke matches the
+ *  same neon-cyan rim on outgoing, faint outline on incoming. */
+function BubbleTail({ mine }: { mine: boolean }) {
+  // 10x10 svg box · positioned so its inner vertex sits at the
+  // bubble's corner. Outgoing: bottom-right of bubble, tail extends
+  // down-right. Incoming: mirror on bottom-left.
+  if (mine) {
+    return (
+      <svg
+        aria-hidden
+        width={10}
+        height={10}
+        viewBox="0 0 10 10"
+        style={{
+          position: "absolute",
+          right: -9,
+          bottom: -1,
+          overflow: "visible",
+          filter: "drop-shadow(0 0 6px rgba(0,159,239,0.28))",
+        }}
+      >
+        {/* Fill: closed triangle */}
+        <path d="M 0 0 L 10 10 L 0 10 Z" fill="rgba(120,140,180,0.14)" />
+        {/* Stroke: two outer edges only (hypotenuse + bottom) */}
+        <path
+          d="M 0 0 L 10 10 L 0 10"
+          fill="none"
+          stroke="rgba(0,159,239,0.85)"
+          strokeWidth={1}
+          strokeLinejoin="miter"
+        />
+      </svg>
+    );
+  }
+  return (
+    <svg
+      aria-hidden
+      width={10}
+      height={10}
+      viewBox="0 0 10 10"
+      style={{
+        position: "absolute",
+        left: -9,
+        bottom: -1,
+        overflow: "visible",
+      }}
+    >
+      <path d="M 10 0 L 0 10 L 10 10 Z" fill="rgba(255,255,255,0.06)" />
+      <path
+        d="M 10 0 L 0 10 L 10 10"
+        fill="none"
+        stroke="rgba(255,255,255,0.08)"
+        strokeWidth={1}
+        strokeLinejoin="miter"
+      />
+    </svg>
+  );
 }
 
 function formatTime(iso: string): string {
