@@ -2,15 +2,18 @@
 
 // src/app/nex-native/chat/peer/[accountId]/_composer.tsx
 //
-// NEX Chat composer · Aurora Rail + 3-dot media menu.
-// ---------------------------------------------------
-// Aurora-gradient rim around the input pill · send nested at the
-// right · a vertical 3-dot menu button on the far right. Tapping
-// the 3-dot slides out a small drawer with camera · video · mic
-// options that hover above the pill.
+// NEX Chat composer · Aurora Rail + centered media modal.
+// -------------------------------------------------------
+// Layout (bottom to top):
+//   Row 2  ·  [ + | textarea ................ | send ] · aurora pill
+//   Row 1  ·  [                      ⋮                ] · plain 3-dot,
+//               floats above the pill, right aligned, no circle/rim
 //
-// Sealed 2026-09-27. Functionality preserved: real textarea,
-// auto-grow, Enter submits, pending state via useFormStatus.
+// Both the + and the ⋮ open the same centered popup: three big
+// action buttons (Camera · Video · Voice). Popup dims + blurs the
+// rest of the screen and closes on backdrop tap.
+//
+// Sealed 2026-09-27.
 
 import * as React from "react";
 import { useFormStatus } from "react-dom";
@@ -37,15 +40,22 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
   const formRef = React.useRef<HTMLFormElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const [text, setText] = React.useState("");
-  const [menuOpen, setMenuOpen] = React.useState(false);
+  const [modalOpen, setModalOpen] = React.useState(false);
   const hasText = text.trim().length > 0;
 
   const resizeTextarea = React.useCallback(() => {
     const el = textareaRef.current;
     if (!el) return;
+    // Empty state: force the single-line height. scrollHeight of an
+    // empty textarea varies by browser + reports a stale value on
+    // first mount, which was rendering the pill as ~2 lines tall.
+    if (!el.value) {
+      el.style.height = "22px";
+      return;
+    }
     el.style.height = "auto";
     const next = Math.min(el.scrollHeight, 112);
-    el.style.height = `${Math.max(next, 24)}px`;
+    el.style.height = `${Math.max(next, 22)}px`;
   }, []);
 
   React.useEffect(() => {
@@ -83,14 +93,26 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
           background-size: 300% 100%;
           animation: nex-aurora-border 12s ease-in-out infinite;
         }
-        @keyframes nex-media-in {
-          from { opacity: 0; transform: translateX(20px) scale(0.85); }
-          to   { opacity: 1; transform: translateX(0) scale(1); }
+        @keyframes nex-modal-in {
+          from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+          to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         }
-        [data-nex-media-btn] {
-          animation: nex-media-in 260ms cubic-bezier(.2,.7,.2,1) both;
+        @keyframes nex-modal-backdrop-in {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+        [data-nex-media-modal] {
+          animation: nex-modal-in 220ms cubic-bezier(.2,.7,.2,1) both;
+        }
+        [data-nex-media-backdrop] {
+          animation: nex-modal-backdrop-in 220ms ease-out both;
         }
       `}</style>
+
+      {modalOpen && (
+        <MediaModal onClose={() => setModalOpen(false)} />
+      )}
+
       <form
         ref={formRef}
         action={action as (formData: FormData) => void | Promise<void>}
@@ -98,162 +120,123 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
         onSubmit={() => setText("")}
         style={{
           position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          gap: 20,
         }}
       >
-        {/* Media drawer · appears above the pill when the 3-dot is
-            active. Slides in from the right so it visually connects
-            to the dots button that spawned it. */}
-        {menuOpen && (
-          <div
-            style={{
-              position: "absolute",
-              right: 0,
-              bottom: "calc(100% + 8px)",
-              display: "flex",
-              gap: 8,
-              padding: "8px",
-              background: "rgba(3,16,29,0.92)",
-              border: "1px solid rgba(0,159,239,0.35)",
-              borderRadius: 999,
-              backdropFilter: "blur(14px)",
-              WebkitBackdropFilter: "blur(14px)",
-              boxShadow: "0 12px 30px rgba(0,0,0,0.55)",
-              zIndex: 5,
-            }}
-          >
-            <MediaButton label="Camera" onClose={() => setMenuOpen(false)}>
-              <CameraIcon />
-            </MediaButton>
-            <MediaButton label="Video" onClose={() => setMenuOpen(false)}>
-              <VideoIcon />
-            </MediaButton>
-            <MediaButton label="Voice" onClose={() => setMenuOpen(false)}>
-              <MicIcon />
-            </MediaButton>
-          </div>
-        )}
-
-        <div style={{ display: "flex", gap: 8, alignItems: "flex-end" }}>
-          {/* Aurora-bordered input pill · flex 1 to fill horizontal
-              space, leaving room for the 3-dot menu button on the
-              right. */}
-          <div
-            data-nex-aurora-pill
-            style={{
-              flex: 1,
-              minWidth: 0,
-              position: "relative",
-              padding: 2,
-              borderRadius: 24,
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "flex-end",
-                minHeight: 44,
-                padding: "6px 6px 6px 16px",
-                borderRadius: 22,
-                background: NEX.bg,
-              }}
-            >
-              <textarea
-                ref={textareaRef}
-                name="body"
-                required
-                maxLength={4000}
-                placeholder={placeholder}
-                rows={1}
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                onKeyDown={handleKeyDown}
-                style={{
-                  flex: 1,
-                  width: "100%",
-                  minHeight: 24,
-                  maxHeight: 112,
-                  padding: "6px 6px 6px 0",
-                  background: "transparent",
-                  color: NEX.textPrimary,
-                  border: "none",
-                  outline: "none",
-                  fontSize: 16,
-                  lineHeight: 1.4,
-                  fontFamily: "inherit",
-                  resize: "none",
-                  overflow: "auto",
-                }}
-              />
-              <SendButton armed={hasText} />
-            </div>
-          </div>
-
-          {/* Vertical 3-dot menu button · lower right of the composer.
-              Tap toggles the media drawer above. */}
+        {/* Row 1 · plain 3-dot pushed to the viewport right edge, 20px
+            of breathing room above the pill. No circle, no border, no
+            aurora · just the dots. */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginRight: -16,
+            marginBottom: -6,
+          }}
+        >
           <button
             type="button"
-            aria-label={menuOpen ? "Close media menu" : "Open media menu"}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((v) => !v)}
+            aria-label="More actions"
+            onClick={() => setModalOpen(true)}
             style={{
-              flexShrink: 0,
-              width: 40,
-              height: 44,
-              borderRadius: 22,
-              background: menuOpen
-                ? "rgba(0,159,239,0.18)"
-                : "rgba(4,20,36,0.7)",
-              border: menuOpen
-                ? "1px solid rgba(0,159,239,0.85)"
-                : `1px solid ${NEX.cyanSoft}`,
-              color: NEX.text,
+              width: 32,
+              height: 24,
+              background: "transparent",
+              border: "none",
+              color: NEX.textSecondary,
+              padding: 0,
               display: "grid",
               placeItems: "center",
               cursor: "pointer",
-              padding: 0,
-              transition:
-                "background 220ms ease, border-color 220ms ease, transform 160ms ease",
-              transform: menuOpen ? "scale(1)" : "scale(0.96)",
             }}
           >
             <DotsIcon />
           </button>
+        </div>
+
+        {/* Row 2 · aurora pill · + | textarea | send · translucent
+            inner so the chat glass shows through instead of reading
+            as a black container. */}
+        <div
+          data-nex-aurora-pill
+          style={{
+            position: "relative",
+            padding: 2,
+            borderRadius: 24,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              minHeight: 44,
+              padding: "4px 6px 4px 6px",
+              borderRadius: 22,
+              background: "rgba(4,20,36,0.55)",
+              backdropFilter: "blur(14px)",
+              WebkitBackdropFilter: "blur(14px)",
+            }}
+          >
+            <PlusButton onClick={() => setModalOpen(true)} />
+            <textarea
+              ref={textareaRef}
+              name="body"
+              required
+              maxLength={4000}
+              placeholder={placeholder}
+              rows={1}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              onKeyDown={handleKeyDown}
+              style={{
+                flex: 1,
+                width: "100%",
+                minHeight: 22,
+                maxHeight: 112,
+                padding: "0 6px",
+                background: "transparent",
+                color: NEX.textPrimary,
+                border: "none",
+                outline: "none",
+                fontSize: 16,
+                lineHeight: 1.35,
+                fontFamily: "inherit",
+                resize: "none",
+                overflow: "auto",
+              }}
+            />
+            <SendButton armed={hasText} />
+          </div>
         </div>
       </form>
     </>
   );
 }
 
-function MediaButton({
-  children,
-  label,
-  onClose,
-}: {
-  children: React.ReactNode;
-  label: string;
-  onClose: () => void;
-}) {
+function PlusButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       type="button"
-      data-nex-media-btn
-      aria-label={`${label} (coming soon)`}
-      title={`${label} · coming soon`}
-      onClick={onClose}
+      aria-label="Add photo, video, or voice"
+      onClick={onClick}
       style={{
-        width: 40,
-        height: 40,
+        flexShrink: 0,
+        width: 36,
+        height: 36,
         borderRadius: "50%",
         background: "rgba(0,159,239,0.12)",
-        border: "1px solid rgba(0,159,239,0.5)",
+        border: "1px solid rgba(0,159,239,0.45)",
         color: NEX.cyan,
         display: "grid",
         placeItems: "center",
         cursor: "pointer",
         padding: 0,
+        marginRight: 6,
       }}
     >
-      {children}
+      <PlusIcon />
     </button>
   );
 }
@@ -315,6 +298,154 @@ function SendButton({ armed }: { armed: boolean }) {
 }
 
 // ---------------------------------------------------------------------------
+// Centered media modal
+// ---------------------------------------------------------------------------
+
+function MediaModal({ onClose }: { onClose: () => void }) {
+  // Close on Escape
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return (
+    <>
+      <div
+        data-nex-media-backdrop
+        role="button"
+        aria-label="Close media menu"
+        onClick={onClose}
+        style={{
+          position: "fixed",
+          inset: 0,
+          background: "rgba(2,9,20,0.72)",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+          zIndex: 100,
+        }}
+      />
+      <div
+        data-nex-media-modal
+        role="dialog"
+        aria-modal="true"
+        aria-label="Add media"
+        style={{
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "min(320px, calc(100vw - 40px))",
+          padding: "22px 20px 20px",
+          background: NEX.panel,
+          border: `1px solid ${NEX.cyanSoft}`,
+          borderRadius: 24,
+          boxShadow:
+            "0 24px 60px rgba(0,0,0,0.65), 0 0 40px rgba(0,159,239,0.14)",
+          zIndex: 101,
+          color: NEX.textPrimary,
+          fontFamily: "inherit",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: NEX.cyan,
+            textAlign: "center",
+            marginBottom: 4,
+            fontWeight: 600,
+          }}
+        >
+          NEX · Add media
+        </div>
+        <div
+          style={{
+            fontSize: 12,
+            color: NEX.textSecondary,
+            textAlign: "center",
+            marginBottom: 18,
+          }}
+        >
+          Pick a source to add to your message
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: 12,
+          }}
+        >
+          <ModalOption icon={<CameraIcon size={26} />} label="Camera" onClose={onClose} />
+          <ModalOption icon={<VideoIcon size={26} />} label="Video" onClose={onClose} />
+          <ModalOption icon={<MicIcon size={26} />} label="Voice" onClose={onClose} />
+        </div>
+      </div>
+    </>
+  );
+}
+
+function ModalOption({
+  icon,
+  label,
+  onClose,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  onClose: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={`${label} (coming soon)`}
+      title={`${label} · coming soon`}
+      onClick={onClose}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 8,
+        padding: "14px 8px",
+        borderRadius: 14,
+        background: "rgba(0,159,239,0.08)",
+        border: "1px solid rgba(0,159,239,0.3)",
+        color: NEX.textPrimary,
+        cursor: "pointer",
+        transition: "background 180ms ease, transform 120ms ease",
+      }}
+    >
+      <span
+        style={{
+          width: 46,
+          height: 46,
+          borderRadius: "50%",
+          background: "rgba(0,159,239,0.14)",
+          border: "1px solid rgba(0,159,239,0.5)",
+          color: NEX.cyan,
+          display: "grid",
+          placeItems: "center",
+        }}
+      >
+        {icon}
+      </span>
+      <span
+        style={{
+          fontSize: 11,
+          letterSpacing: "0.06em",
+          fontWeight: 600,
+          color: NEX.textPrimary,
+        }}
+      >
+        {label}
+      </span>
+    </button>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Icons
 // ---------------------------------------------------------------------------
 
@@ -326,9 +457,18 @@ const strokeProps = {
   strokeLinejoin: "round" as const,
 };
 
+function PlusIcon() {
+  return (
+    <svg width={20} height={20} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+  );
+}
+
 function DotsIcon() {
   return (
-    <svg width={18} height={18} viewBox="0 0 24 24" aria-hidden {...strokeProps} strokeWidth={2.2}>
+    <svg width={16} height={16} viewBox="0 0 24 24" aria-hidden {...strokeProps} strokeWidth={2.4}>
       <circle cx="12" cy="5" r="1" />
       <circle cx="12" cy="12" r="1" />
       <circle cx="12" cy="19" r="1" />
@@ -336,27 +476,27 @@ function DotsIcon() {
   );
 }
 
-function CameraIcon() {
+function CameraIcon({ size = 20 }: { size?: number }) {
   return (
-    <svg width={18} height={18} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
       <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
       <circle cx="12" cy="13" r="4" />
     </svg>
   );
 }
 
-function VideoIcon() {
+function VideoIcon({ size = 20 }: { size?: number }) {
   return (
-    <svg width={18} height={18} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
       <polygon points="23 7 16 12 23 17 23 7" />
       <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
     </svg>
   );
 }
 
-function MicIcon() {
+function MicIcon({ size = 20 }: { size?: number }) {
   return (
-    <svg width={18} height={18} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
       <rect x="9" y="2" width="6" height="12" rx="3" />
       <path d="M19 10v2a7 7 0 01-14 0v-2" />
       <line x1="12" y1="19" x2="12" y2="23" />
