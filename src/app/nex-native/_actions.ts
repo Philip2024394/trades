@@ -35,7 +35,7 @@ import { DEFAULT_SITE_GEN_ADAPTER } from "@/lib/nex-native/site-gen-adapter";
 import type { NexBannerPalette, NexBannerStatus } from "@/lib/nex-native/banner-service";
 import { NEX_BANNER_PALETTES, NEX_BANNER_STATUSES } from "@/lib/nex-native/banner-service";
 import * as liveService from "@/lib/nex-native/live-service";
-import { NEX_ACCOUNT_KINDS, NEX_CHAT_THEMES, NEX_PRODUCT_STOCK_STATUSES, type NexAccountKind, type NexChatTheme, type NexProductStockStatus } from "@/lib/nex-native/types";
+import { NEX_ACCOUNT_KINDS, NEX_ACCOUNT_TIERS, NEX_CHAT_THEMES, NEX_PRODUCT_STOCK_STATUSES, type NexAccountKind, type NexAccountTier, type NexChatTheme, type NexProductStockStatus } from "@/lib/nex-native/types";
 import { enqueueNexReply } from "@/lib/nex-native/intelligence/enqueue-nex-reply";
 
 export type ActionResult =
@@ -2401,4 +2401,119 @@ export async function updateProfileAction(formData: FormData): Promise<never> {
   }
   revalidatePath("/nex-native/settings/profile");
   redirectToProfileWithBanner("profile_saved", "Profile saved.");
+}
+
+// ---------------------------------------------------------------------------
+// Admin tier management · migration 046 · package doctrine (sealed 2026-09-27)
+// ---------------------------------------------------------------------------
+
+function redirectToAdminTierWithBanner(code: string, message: string): never {
+  const qs = new URLSearchParams({ e: code, m: message });
+  redirect(`/nex-native/admin/tier?${qs.toString()}`);
+}
+
+/** Dev-admin-only server action to promote or demote an account tier.
+ *
+ *  Gate stack (BOTH must pass):
+ *    1 · env `NEX_ALLOW_DEV_ADMIN=1` (never enabled in production)
+ *    2 · caller's session is the provisioned dev-admin account
+ *        (`dev-admin@nex-native.local`)
+ *
+ *  On success: sets `tier` and `bisnis_expires_at` on the target account
+ *  and redirects back to /admin/tier with a success banner.
+ *
+ *  Phase 1 of the Indonesia payment sequence · unblocks first paying
+ *  customers before wallet/subscription infra exists.
+ */
+export async function adminSetAccountTierAction(formData: FormData): Promise<never> {
+  if (process.env.NEX_ALLOW_DEV_ADMIN !== "1") {
+    redirectToAdminTierWithBanner(
+      "admin_disabled",
+      "dev-admin mode is disabled in this environment",
+    );
+  }
+
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirectToInboxWithError("unauthenticated", "sign in first");
+
+  // Verify the caller's auth user matches the provisioned dev-admin
+  const auth = await accountService.getAccountBySupabaseUserId(session.account.supabase_user_id!);
+  if (!auth) redirectToAdminTierWithBanner("account_missing", "session has no account");
+  const supabaseUserId = auth.supabase_user_id;
+  if (!supabaseUserId) redirectToAdminTierWithBanner("no_auth_user", "session has no supabase user");
+  const authRow = await nexSupabaseAdmin.auth.admin.getUserById(supabaseUserId);
+  if (authRow.error || !authRow.data.user) {
+    redirectToAdminTierWithBanner("auth_lookup_failed", authRow.error?.message ?? "unknown");
+  }
+  if ((authRow.data.user.email ?? "").toLowerCase() !== "dev-admin@nex-native.local") {
+    redirectToAdminTierWithBanner(
+      "not_dev_admin",
+      "only the provisioned dev-admin account can promote tiers",
+    );
+  }
+
+  const emailRaw = String(formData.get("email") ?? "").trim().toLowerCase();
+  const tierRaw = String(formData.get("tier") ?? "").trim();
+  const monthsRaw = String(formData.get("months") ?? "1").trim();
+
+  if (!emailRaw) redirectToAdminTierWithBanner("missing_email", "enter an account email");
+  if (!NEX_ACCOUNT_TIERS.includes(tierRaw as NexAccountTier)) {
+    redirectToAdminTierWithBanner("invalid_tier", `unknown tier '${tierRaw}'`);
+  }
+  const tier = tierRaw as NexAccountTier;
+  const months = Number(monthsRaw);
+  if (!Number.isFinite(months) || months < 0 || months > 120) {
+    redirectToAdminTierWithBanner("invalid_months", "months must be a number 0-120");
+  }
+
+  // Look up the target account by email → supabase auth → nex_account
+  const list = await nexSupabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 200 });
+  const found = (list.data?.users ?? []).find((u) => (u.email ?? "").toLowerCase() === emailRaw);
+  if (!found) {
+    redirectToAdminTierWithBanner("no_auth_user_for_email", `no auth user for ${emailRaw}`);
+  }
+  const targetAcc = await nexSupabaseAdmin
+    .from("nex_account")
+    .select("id, display_name")
+    .eq("supabase_user_id", found.id)
+    .maybeSingle();
+  if (targetAcc.error || !targetAcc.data) {
+    redirectToAdminTierWithBanner(
+      "no_nex_account",
+      `no nex_account for auth user ${emailRaw}`,
+    );
+  }
+  const target = targetAcc.data as { id: string; display_name: string };
+
+  // Compute expiry for paid tiers
+  let bisnisExpiresAt: string | null = null;
+  if (tier === "bisnis" || tier === "pro") {
+    if (months > 0) {
+      const expiry = new Date(Date.now() + months * 30 * 24 * 60 * 60 * 1000);
+      bisnisExpiresAt = expiry.toISOString();
+    } else {
+      // months=0 → indefinite subscription (admin comp · never lapses)
+      bisnisExpiresAt = null;
+    }
+  }
+
+  const upd = await nexSupabaseAdmin
+    .from("nex_account")
+    .update({ tier, bisnis_expires_at: bisnisExpiresAt })
+    .eq("id", target.id);
+  if (upd.error) {
+    redirectToAdminTierWithBanner("update_failed", upd.error.message);
+  }
+
+  const successMsg =
+    tier === "gratis"
+      ? `${target.display_name} (${emailRaw}) → gratis`
+      : `${target.display_name} (${emailRaw}) → ${tier}${
+          bisnisExpiresAt
+            ? ` · expires ${bisnisExpiresAt.slice(0, 10)}`
+            : " · indefinite"
+        }`;
+
+  revalidatePath("/nex-native/admin/tier");
+  redirectToAdminTierWithBanner("tier_set", successMsg);
 }
