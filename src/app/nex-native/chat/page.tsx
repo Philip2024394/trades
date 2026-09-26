@@ -266,6 +266,22 @@ function initialsFromName(name: string): string {
   return (parts[0]![0]! + parts[parts.length - 1]![0]!).toUpperCase();
 }
 
+/** Reduce a full profession string to its single leading token so
+ *  the caption fits inside a friend card at any viewport width.
+ *  Splits on whitespace, middle-dot, hyphen, comma, and slash.
+ *   "Reseller · vintage cameras"  → "Reseller"
+ *   "Bakery owner"                → "Bakery"
+ *   "Student · Design"            → "Student"
+ *   "Barista/roaster"             → "Barista"
+ *  Null / empty stays null. */
+function firstProfessionWord(profession: string | null): string | null {
+  if (!profession) return null;
+  const trimmed = profession.trim();
+  if (!trimmed) return null;
+  const first = trimmed.split(/[\s·,/-]+/).filter(Boolean)[0];
+  return first ?? null;
+}
+
 export default async function ChatHubPage({ searchParams }: PageProps) {
   const session = await resolveNexAppSessionFromContext();
   if (!session) redirect("/nex-native/sign-in");
@@ -288,6 +304,12 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
     profession: string | null;
     location: string | null;
     hasShop: boolean;
+    /** Heuristic derived from last peer-chat activity ·
+     *  green (< 5 min) · yellow (< 30 min) · clear (older/none).
+     *  Real presence Bridge will replace this without changing the UI. */
+    presence: "green" | "yellow" | "clear";
+    /** Numeric sort key · lower = higher rank (online first). */
+    presenceRank: number;
   }> = [];
   let businessCards: Array<{
     conversationId: string;
@@ -323,33 +345,69 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
           })(),
         })),
     );
-    friendCards = profiles.map(({ account: r, profile }) => {
-      // Shop indicator derives from profile.kind · sellers / makers /
-      // resellers / business owners all read as "has a shop" for the
-      // storefront badge. Everyone else (professional, student, etc.)
-      // shows no badge.
-      const kind = profile?.kind ?? null;
-      const hasShop =
-        kind === "business_owner" ||
-        kind === "reseller" ||
-        kind === "seller" ||
-        kind === "maker" ||
-        kind === "affiliate";
-      return {
-        id: r.id,
-        name: r.display_name,
-        handle: r.nex_handle,
-        // Bridge 3 · friend cards now open the peer chat surface. The
-        // /nex-native/u/[handle] profile page is still reachable from
-        // inside the chat (via the identity header link) if needed.
-        href: `/nex-native/chat/peer/${r.id}`,
-        avatarUrl: profile?.avatar_url ?? null,
-        chatTheme: r.chat_theme,
-        profession: profile?.profession ?? null,
-        location: profile?.location_label ?? null,
-        hasShop,
-      };
-    });
+    // Presence heuristic · derive from Bridge 3 last_message_at on the
+    // peer conversation between the viewer and each friend. Cheap enough
+    // for a friend list (5-50 rows); if it becomes hot, batch to one
+    // query. When the real presence Bridge lands, swap this loop for a
+    // single service call and the sort order stays the same.
+    const peerSvc = await import(
+      "@/lib/nex-native/peer-conversation-service"
+    );
+    const withPresence = await Promise.all(
+      profiles.map(async ({ account: r, profile }) => {
+        const conv = await peerSvc
+          .findPeerConversation(session.account.id, r.id)
+          .catch(() => null);
+        const lastAt = conv?.last_message_at
+          ? new Date(conv.last_message_at).getTime()
+          : null;
+        const ageMinutes =
+          lastAt != null ? (Date.now() - lastAt) / 60_000 : Number.POSITIVE_INFINITY;
+        let presence: "green" | "yellow" | "clear";
+        let presenceRank: number;
+        if (ageMinutes < 5) {
+          presence = "green";
+          presenceRank = 0;
+        } else if (ageMinutes < 30) {
+          presence = "yellow";
+          presenceRank = 1;
+        } else {
+          presence = "clear";
+          presenceRank = 2;
+        }
+        return { account: r, profile, presence, presenceRank };
+      }),
+    );
+
+    friendCards = withPresence
+      .map(({ account: r, profile, presence, presenceRank }) => {
+        const kind = profile?.kind ?? null;
+        const hasShop =
+          kind === "business_owner" ||
+          kind === "reseller" ||
+          kind === "seller" ||
+          kind === "maker" ||
+          kind === "affiliate";
+        return {
+          id: r.id,
+          name: r.display_name,
+          handle: r.nex_handle,
+          href: `/nex-native/chat/peer/${r.id}`,
+          avatarUrl: profile?.avatar_url ?? null,
+          chatTheme: r.chat_theme,
+          // Only the first token of the profession so the caption fits
+          // the card on narrow viewports · "Reseller · vintage cameras"
+          // becomes "Reseller", "Bakery owner" becomes "Bakery" etc.
+          profession: firstProfessionWord(profile?.profession ?? null),
+          location: profile?.location_label ?? null,
+          hasShop,
+          presence,
+          presenceRank,
+        };
+      })
+      // Online first · then busy · then offline. Within the same tier,
+      // preserve original friend-service order (which is created-at asc).
+      .sort((a, b) => a.presenceRank - b.presenceRank);
   } else if (activeTab === "business") {
     const summaries = await conversationService
       .listConversationsForAccount(session.account.id)
@@ -417,7 +475,10 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
           color: NEX.textPrimary,
           fontFamily:
             "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
-          padding: "16px 20px 32px",
+          // Trimmed horizontal padding so friend cards get more room
+          // on narrow viewports · 375px viewport now has 351px inner
+          // container (was 335px).
+          padding: "16px 12px 32px",
           position: "relative",
           overflow: "hidden",
         }}
@@ -508,6 +569,7 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                     name={c.name}
                     subtitle={c.location ?? c.handle ?? `${c.id.slice(0, 8)}…`}
                     profession={c.profession}
+                    presence={c.presence}
                     hasShop={c.hasShop}
                     avatarUrl={c.avatarUrl}
                     chatTheme={c.chatTheme}
@@ -805,10 +867,10 @@ function PersonCard(props: {
     position: "relative",
     display: "flex",
     alignItems: "center",
-    gap: 12,
+    gap: 10,
     // Card fills the container width · avatar and chip both live INSIDE
     // the border now, so no reserved left/right margin is needed.
-    padding: "12px 14px",
+    padding: "12px 12px",
     background: NEX.panel,
     border: `1px solid ${props.preview ? "rgba(0,175,255,0.18)" : NEX.cyanSoft}`,
     borderRadius: 14,
