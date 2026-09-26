@@ -45,12 +45,16 @@ const TAB_LABEL: Record<Tab, string> = {
 
 // Preview mock cards · gated by NEX_ALLOW_DEV_ADMIN=1 so they render in
 // local development but never in production. Populate the visual design
-// while real friend / business / group data is still empty. Each card
-// carries a "PREVIEW" pill so nobody mistakes it for real state.
+// while real friend / business / group data is still empty. Cards use
+// slightly muted borders in preview so they're distinguishable from
+// real cards on inspection but read as native to the surface.
 //
 // Each mock also previews the "world-class chat" design details we
-// haven't shipped for real yet (Founder brainstorm 2026-09-27):
-//   · presence dot: "green" active · "yellow" busy · "clear" offline
+// haven't shipped for real yet (sealed 2026-09-27):
+//   · presence:      colours the fingerprint chip ring on the right
+//                    · green active · yellow busy · gray offline
+//   · last seen:     small "25m" label under the fingerprint chip
+//                    (offline only)
 //   · unread pill:   small orange badge on avatar top-right
 //   · shop tag:      "🛍 Shop" pill under name if user owns a shop
 //   · profession +   location as subtitle · richer than a bare handle
@@ -90,6 +94,9 @@ const MOCK_FRIENDS: ReadonlyArray<{
   profession: string;
   location: string;
   presence: MockPresence;
+  /** Minutes since last active · null when unknown (presence hidden by
+   *  the user or never online). Only rendered when presence = "clear". */
+  lastSeenMinutes: number | null;
   unread: number;
   hasShop: boolean;
   avatarUrl: string;
@@ -107,6 +114,7 @@ const MOCK_FRIENDS: ReadonlyArray<{
     profession: "Footwear designer",
     location: "Bandung",
     presence: "green",
+    lastSeenMinutes: null,
     unread: 0,
     hasShop: true,
     avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
@@ -121,6 +129,7 @@ const MOCK_FRIENDS: ReadonlyArray<{
     profession: "Reseller · vintage cameras",
     location: "Jakarta",
     presence: "yellow",
+    lastSeenMinutes: null,
     unread: 2,
     hasShop: true,
     avatarUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop",
@@ -135,6 +144,7 @@ const MOCK_FRIENDS: ReadonlyArray<{
     profession: "Photographer",
     location: "Tokyo",
     presence: "clear",
+    lastSeenMinutes: 25,
     unread: 0,
     hasShop: false,
     avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
@@ -149,6 +159,7 @@ const MOCK_FRIENDS: ReadonlyArray<{
     profession: "Student · Design",
     location: "Rio de Janeiro",
     presence: "green",
+    lastSeenMinutes: null,
     unread: 0,
     hasShop: false,
     avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop",
@@ -162,7 +173,8 @@ const MOCK_FRIENDS: ReadonlyArray<{
     handle: "nex-91280",
     profession: "Bakery owner",
     location: "Mumbai",
-    presence: "yellow",
+    presence: "clear",
+    lastSeenMinutes: 180,
     unread: 5,
     hasShop: true,
     avatarUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop",
@@ -476,6 +488,16 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
           <section style={{ marginTop: 22 }}>
             {activeTab === "friends" && (
               <div style={{ display: "grid", gap: 12 }}>
+                {/*
+                  Friend card destination: /nex-native/u/[handle] (profile
+                  page). The fingerprint icon signals "tap to open chat"
+                  but real peer-to-peer messaging depends on Bridge 3
+                  (nex_conversation.business_id currently NOT NULL).
+                  When Bridge 3 ships, this href becomes
+                  /nex-native/conversations/peer/[peerAccountId] (or
+                  whatever route peer chat lands on). The fingerprint
+                  UI stays.
+                */}
                 {friendCards.map((c) => (
                   <PersonCard
                     key={c.id}
@@ -497,6 +519,7 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                         c.lastMessage ?? `${c.profession} · ${c.location}`
                       }
                       presence={c.presence}
+                      lastSeenMinutes={c.lastSeenMinutes}
                       unread={c.unread}
                       hasShop={c.hasShop}
                       avatarUrl={c.avatarUrl}
@@ -597,8 +620,13 @@ function PersonCard(props: {
   /** Real avatar URL from nex_account_profile.avatar_url · null falls
    *  back to initials. */
   avatarUrl?: string | null;
-  /** Preview-only · presence indicator on the avatar bottom-right. */
+  /** Presence · drives the fingerprint chip ring colour. "clear" (or
+   *  omitted) renders a neutral fingerprint. Sealed 2026-09-27:
+   *  presence lives on the ACTION target (fingerprint), not the avatar. */
   presence?: CardPresence;
+  /** Minutes since this person was last active · only shown when
+   *  presence is "clear" (offline). Formatted 2m / 25m / 3h / 1d. */
+  lastSeenMinutes?: number | null;
   /** Preview-only · unread count pill on the avatar top-right. Zero hides it. */
   unread?: number;
   /** Preview-only · "🛍 Shop" tag under the name when the person owns a shop. */
@@ -658,9 +686,6 @@ function PersonCard(props: {
             {initialsFromName(props.name)}
           </div>
         )}
-        {props.presence && props.presence !== "clear" && (
-          <PresenceDot presence={props.presence} />
-        )}
         {typeof props.unread === "number" && props.unread > 0 && (
           <UnreadPill count={props.unread} />
         )}
@@ -687,7 +712,6 @@ function PersonCard(props: {
             {props.name}
           </span>
           {props.nexAddress && <NexAddressChip address={props.nexAddress} />}
-          {props.preview && <PreviewPill />}
         </div>
         {props.typing ? (
           <TypingBubble />
@@ -726,17 +750,11 @@ function PersonCard(props: {
           </div>
         )}
       </div>
-      <div
-        aria-hidden
-        style={{
-          flexShrink: 0,
-          color: props.preview ? NEX.textSecondary : NEX.cyan,
-          fontSize: 18,
-          lineHeight: 1,
-        }}
-      >
-        →
-      </div>
+      <FingerprintChip
+        presence={props.presence}
+        lastSeenMinutes={props.lastSeenMinutes ?? null}
+        muted={props.preview}
+      />
     </>
   );
   const accent = accentForTheme(props.chatTheme);
@@ -863,7 +881,6 @@ function BusinessCard(props: {
             >
               {props.name}
             </span>
-            {props.preview && <PreviewPill />}
           </div>
           {timeLabel && (
             <div
@@ -1040,7 +1057,6 @@ function GroupCard(props: {
           >
             {props.name}
           </span>
-          {props.preview && <PreviewPill />}
         </div>
         <div
           style={{
@@ -1070,56 +1086,168 @@ function GroupCard(props: {
   );
 }
 
-function PreviewPill() {
+/** Round fingerprint chip · replaces the → arrow AND the avatar presence
+ *  dot on friend cards. Circular 40px container. Ring colour carries
+ *  presence: green (online) · yellow (busy) · gray (offline / unknown).
+ *  When offline and last-seen is known, a small "25m" label appears
+ *  directly under the chip.
+ *
+ *  Sealed 2026-09-27: presence lives on the action target. Uniquely NEX
+ *  affordance — one signal for "who is around" + "tap to talk to them". */
+function FingerprintChip(props: {
+  muted?: boolean;
+  presence?: CardPresence;
+  lastSeenMinutes?: number | null;
+}) {
+  const isOffline = !props.presence || props.presence === "clear";
+  const ring = presenceRingColour(props.presence, !!props.muted);
+  const bg = presenceFillColour(props.presence, !!props.muted);
+  const stroke = presenceStrokeColour(props.presence, !!props.muted);
+  const showLastSeen =
+    isOffline &&
+    typeof props.lastSeenMinutes === "number" &&
+    Number.isFinite(props.lastSeenMinutes) &&
+    props.lastSeenMinutes >= 0;
   return (
-    <span
-      aria-label="preview"
+    <div
       style={{
-        display: "inline-flex",
-        alignItems: "center",
-        padding: "1px 6px",
-        fontSize: 9,
-        fontWeight: 600,
-        letterSpacing: "0.14em",
-        textTransform: "uppercase",
-        color: NEX.cyan,
-        border: `1px solid ${NEX.cyanSoft}`,
-        borderRadius: 4,
-        lineHeight: 1.3,
         flexShrink: 0,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 4,
       }}
     >
-      Preview
-    </span>
+      <div
+        aria-hidden
+        title={presenceTitle(props.presence, props.lastSeenMinutes ?? null)}
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: "50%",
+          background: bg,
+          border: `2px solid ${ring}`,
+          display: "grid",
+          placeItems: "center",
+          color: stroke,
+          boxShadow:
+            !isOffline && !props.muted
+              ? `0 0 0 3px ${ring}22`
+              : undefined,
+        }}
+      >
+        <FingerprintIcon />
+      </div>
+      {showLastSeen && (
+        <span
+          style={{
+            fontSize: 9,
+            fontWeight: 500,
+            letterSpacing: "0.04em",
+            color: NEX.textSecondary,
+            lineHeight: 1,
+          }}
+        >
+          {formatLastSeen(props.lastSeenMinutes as number)}
+        </span>
+      )}
+    </div>
   );
 }
 
-/** Presence dot overlaid on the avatar's bottom-right corner.
- *  Colours match the Signal-style opt-in privacy model that has been
- *  sealed as the future presence system (design note 2026-09-27).
- *  Rendered only when presence is 'green' or 'yellow' · 'clear' hides.
- */
-function PresenceDot({ presence }: { presence: "green" | "yellow" }) {
-  const color = presence === "green" ? "#10b981" : "#eab308";
-  const glow =
-    presence === "green"
-      ? "0 0 8px rgba(16, 185, 129, 0.6)"
-      : "0 0 8px rgba(234, 179, 8, 0.6)";
+const PRESENCE_GREEN = "#10b981";
+const PRESENCE_YELLOW = "#f59e0b";
+const PRESENCE_GRAY = "rgba(125,155,192,0.55)";
+
+function presenceRingColour(p: CardPresence | undefined, muted: boolean): string {
+  if (muted) return "rgba(125,155,192,0.35)";
+  switch (p) {
+    case "green":
+      return PRESENCE_GREEN;
+    case "yellow":
+      return PRESENCE_YELLOW;
+    default:
+      return PRESENCE_GRAY;
+  }
+}
+
+function presenceFillColour(p: CardPresence | undefined, muted: boolean): string {
+  if (muted) return "rgba(125,155,192,0.06)";
+  switch (p) {
+    case "green":
+      return "rgba(16,185,129,0.12)";
+    case "yellow":
+      return "rgba(245,158,11,0.12)";
+    default:
+      return "rgba(125,155,192,0.08)";
+  }
+}
+
+function presenceStrokeColour(p: CardPresence | undefined, muted: boolean): string {
+  if (muted) return NEX.textSecondary;
+  switch (p) {
+    case "green":
+      return PRESENCE_GREEN;
+    case "yellow":
+      return PRESENCE_YELLOW;
+    default:
+      return NEX.textSecondary;
+  }
+}
+
+function presenceTitle(
+  p: CardPresence | undefined,
+  lastSeenMinutes: number | null,
+): string {
+  switch (p) {
+    case "green":
+      return "Online · tap to chat";
+    case "yellow":
+      return "Busy · tap to chat";
+    default:
+      if (lastSeenMinutes != null) {
+        return `Last seen ${formatLastSeen(lastSeenMinutes)} ago · tap to chat`;
+      }
+      return "Offline · tap to chat";
+  }
+}
+
+/** 0-59 → "Nm" · 60-1439 → "Nh" · 1440+ → "Nd". Compact chat idiom. */
+function formatLastSeen(minutes: number): string {
+  const m = Math.max(0, Math.round(minutes));
+  if (m < 1) return "now";
+  if (m < 60) return `${m}m`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h`;
+  const d = Math.floor(h / 24);
+  return `${d}d`;
+}
+
+/** Fingerprint icon · the tap-to-open-chat affordance on friend cards.
+ *  Replaces the generic arrow with a signal of *personal identity* — the
+ *  friend is on the other end. Uniquely NEX among chat apps · Founder
+ *  brief 2026-09-27. Sized to match the arrow (18px) so cards stay
+ *  balanced. */
+function FingerprintIcon() {
   return (
-    <span
-      aria-label={presence === "green" ? "Active" : "Busy"}
-      style={{
-        position: "absolute",
-        bottom: -2,
-        right: -2,
-        width: 14,
-        height: 14,
-        borderRadius: "50%",
-        background: color,
-        border: `2px solid ${NEX.panel}`,
-        boxShadow: glow,
-      }}
-    />
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M12 11c0 4-2 6-2 6" />
+      <path d="M8 15c1-1 1.5-2 1.5-4a2.5 2.5 0 0 1 5 0v1a5 5 0 0 1-.5 2" />
+      <path d="M5 13a7 7 0 0 1 14 0v1" />
+      <path d="M3 11a9 9 0 0 1 18 0" />
+      <path d="M14 20c.5-1 1-2 1-4" />
+      <path d="M17 20c.5-1.5.8-3 .8-5" />
+    </svg>
   );
 }
 

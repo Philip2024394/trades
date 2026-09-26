@@ -49,6 +49,13 @@ export default async function SettingsIndex() {
         "Kind · headline · profession · bio · skills · location · privacy",
     },
     {
+      href: "/nex-native/settings/tier",
+      emoji: "🎯",
+      title: "Your NEX plan",
+      subtitle:
+        "See your current tier · compare Gratis vs. Bisnis · upgrade path",
+    },
+    {
       href: "/nex-native/settings/theme",
       emoji: "🎨",
       title: "Chat theme",
