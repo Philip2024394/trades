@@ -81,6 +81,75 @@ unauthenticated visitors to `/nex-native/sign-in` (never
 ## End three-doorways doctrine
 ## ═══════════════════════════════════════════════════════════════
 
+## ═══════════════════════════════════════════════════════════════
+## NEX PACKAGE DOCTRINE · Indonesia launch · sealed 2026-09-27
+## ═══════════════════════════════════════════════════════════════
+
+**Two tiers ship at launch. A third (Pro) is planned but deferred.**
+
+Every future feature must decide which tier owns it. The rule that
+outranks every other packaging decision:
+
+**NEVER gate chat · NEVER gate identity · NEVER gate discovery.**
+
+### 🟢 NEX GRATIS · free forever
+
+- Unlimited chat (person↔person · person↔business · groups)
+- Full profile · face sign-in · auto NEX Address (`nex-XXXXX.nex`)
+- **10 live products · 3 live posts/week · 100 email subscribers**
+- **7-day analytics · 20 NEX Assistant AI replies/day · 1 business**
+- Directory listing (standard visibility)
+- Manual payment methods (COD · bank transfer)
+
+### 🟠 NEX BISNIS · IDR 99,000 / month (≈ USD 6)
+
+Annual IDR 990,000 (12 for the price of 10). Everything in Gratis, plus:
+
+- Custom NEX Address (`yourname.nex`) — included
+- Unlimited products / posts / banners / subscribers
+- Priority in Directory ("Featured" chip)
+- Full analytics · CSV export · MoM growth
+- Advanced site builder · up to 5 businesses
+- Unlimited AI · verified checkmark ✓
+- 20 boosted messages/month · priority support
+- 0% platform fee on sales
+
+### 🔵 NEX PRO · IDR 299,000 / month · Phase 2, deferred
+
+Custom domain · team members · API access · white-label emails ·
+automation. Do NOT launch three tiers · ship Gratis + Bisnis first.
+
+### Indonesia payment sequence
+
+- **Phase 1 (launch):** manual bank transfer · admin action promotes
+  account to Bisnis
+- **Phase 2:** integrate one local wallet (GoPay or DANA)
+- **Phase 3:** all four wallets (GoPay · OVO · DANA · ShopeePay) +
+  cards + auto-renewing subscriptions
+
+### Wallet plug-in
+
+- Tokens as alternative to subscription (à la carte)
+- Referral rewards (refer to Bisnis, earn tokens)
+- Never sold before Bisnis has real utility to gate
+
+### Build order
+
+1. Seal doctrine (this section)
+2. Migration 046 · `nex_account.tier` + `nex_business.tier` enum
+3. Admin upgrade action (unblocks first paying customers)
+4. Feature gates in services (product / email / live / analytics / AI)
+5. Pricing surface at `/nex-native/settings/tier`
+6. Bisnis onboarding chat with NEX team
+7. Wallet backend
+8. Auto-renewing subscription integration
+
+Full detail: auto-memory `design_nex_packages_indonesia_launch_2026_09_27.md`
+
+## ═══════════════════════════════════════════════════════════════
+## End package doctrine
+## ═══════════════════════════════════════════════════════════════
+
 
 ## ═══════════════════════════════════════════════════════════════
 ## NEX PRODUCT CONSTITUTION · Read BEFORE writing any code
