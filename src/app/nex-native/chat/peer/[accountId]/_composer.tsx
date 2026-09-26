@@ -2,40 +2,36 @@
 
 // src/app/nex-native/chat/peer/[accountId]/_composer.tsx
 //
-// NEX Friend Chat composer · spec-accurate implementation.
-// --------------------------------------------------------
-// Client component that owns composer state so the send button can
-// arm/disarm based on input, auto-grow the textarea, submit on Enter,
-// and drive the pending state.
+// NEX Chat composer · Aurora Rail (Footer 08 promoted).
+// -----------------------------------------------------
+// Slow-animating aurora gradient border around the input pill · three
+// ghost action buttons (attach · camera · voice) hovering above it ·
+// send icon nested inside the pill on the right. Sealed 2026-09-27.
 //
-// Layout:
-//   [ + attach ]  [ input pill ...................  😊 ]  [ send ]
+// Functionality preserved from the previous composer:
+//   · real <textarea> with 16px font (no iOS focus zoom)
+//   · auto-grows to 4 lines then scrolls internally
+//   · Enter submits · Shift+Enter inserts newline
+//   · pending state via useFormStatus (single-source-of-truth from
+//     the parent form's Server Action)
 //
-// - Attach: 52×52 circle, cyan border, warm-orange edge accent, glass fill
-// - Input: 56px tall pill, 28px radius, cyan border, dark glass fill,
-//          16px placeholder, small emoji affordance nested at right
-// - Send: 60×60 circle, blue→purple→orange gradient, white paper plane,
-//         scales 0.94→1 on arm, 0.96 on press
-//
-// Backdrop blur is applied on the outer footer container in page.tsx.
+// Attach / Camera / Voice are visual affordances only until their
+// respective backends land (image upload · camera capture · voice
+// note). They render as ghost icons that read as real controls.
 
 import * as React from "react";
 import { useFormStatus } from "react-dom";
 
 const NEX = {
   bg: "#020914",
-  glassSurface: "rgba(5,20,36,0.72)",
-  glassAttach: "rgba(4,19,34,0.8)",
-  glassInput: "rgba(4,20,36,0.90)",
-  cyan: "#009FEF",
-  cyanSoft: "rgba(0,159,239,0.65)",
-  cyanEdge: "rgba(0,159,239,0.28)",
-  cyanFaint: "rgba(0,159,239,0.16)",
-  attachRing: "#008FDF",
+  panel: "#03101D",
+  fieldBg: "rgba(4,20,36,0.90)",
   textPrimary: "#F4F7FC",
   textSecondary: "#8BA9D1",
-  placeholder: "#6F8EAF",
+  textMute: "#526B89",
+  cyan: "#009FEF",
   orange: "#FF7800",
+  orangeSoft: "rgba(255,120,0,0.5)",
 };
 
 interface PeerComposerProps {
@@ -49,7 +45,6 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
   const [text, setText] = React.useState("");
   const hasText = text.trim().length > 0;
 
-  // Auto-grow textarea up to 4 lines, then scroll internally.
   const resizeTextarea = React.useCallback(() => {
     const el = textareaRef.current;
     if (!el) return;
@@ -74,163 +69,147 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
   );
 
   return (
-    <form
-      ref={formRef}
-      action={action as (formData: FormData) => void | Promise<void>}
-      data-nex-peer-composer
-      onSubmit={() => {
-        // Optimistic clear · redirect will refresh the message list.
-        setText("");
-      }}
-      style={{
-        display: "flex",
-        alignItems: "flex-end",
-        gap: 10,
-      }}
-    >
-      <AttachmentButton />
-
-      <div
+    <>
+      <style>{`
+        @keyframes nex-aurora-border {
+          0%   { background-position: 0% 50%; }
+          50%  { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        [data-nex-aurora-pill] {
+          background: linear-gradient(
+            90deg,
+            #00ffb4 0%,
+            #009fef 25%,
+            #6945f5 50%,
+            #ff7a00 75%,
+            #00ffb4 100%
+          );
+          background-size: 300% 100%;
+          animation: nex-aurora-border 12s ease-in-out infinite;
+        }
+      `}</style>
+      <form
+        ref={formRef}
+        action={action as (formData: FormData) => void | Promise<void>}
+        data-nex-peer-composer
+        onSubmit={() => {
+          setText("");
+        }}
         style={{
-          flex: 1,
-          minWidth: 0,
-          position: "relative",
           display: "flex",
-          alignItems: "center",
-          minHeight: 56,
-          padding: "6px 44px 6px 18px",
-          background: NEX.glassInput,
-          border: `1px solid ${NEX.cyanSoft}`,
-          borderRadius: 28,
+          flexDirection: "column",
+          gap: 6,
         }}
       >
-        <textarea
-          ref={textareaRef}
-          name="body"
-          required
-          maxLength={4000}
-          placeholder={placeholder}
-          rows={1}
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          onKeyDown={handleKeyDown}
+        {/* Ghost icon row · attach · camera · voice */}
+        <div
           style={{
-            flex: 1,
-            width: "100%",
-            minHeight: 24,
-            maxHeight: 112,
-            padding: 0,
-            background: "transparent",
-            color: NEX.textPrimary,
-            border: "none",
-            outline: "none",
-            // 16px prevents iOS Safari from auto-zooming on focus.
-            fontSize: 16,
-            lineHeight: 1.4,
-            fontFamily: "inherit",
-            resize: "none",
-            overflow: "auto",
+            display: "flex",
+            justifyContent: "center",
+            gap: 22,
           }}
-        />
-        <EmojiAffordance />
-      </div>
+        >
+          <GhostIcon label="Attach (coming soon)" title="Attach · coming soon">
+            <PlusIcon />
+          </GhostIcon>
+          <GhostIcon label="Photo (coming soon)" title="Photo · coming soon">
+            <CameraIcon />
+          </GhostIcon>
+          <GhostIcon label="Voice (coming soon)" title="Voice · coming soon">
+            <MicIcon />
+          </GhostIcon>
+        </div>
 
-      <SendButton armed={hasText} />
-    </form>
+        {/* Aurora-bordered input pill · 2px padding creates the visible
+            gradient rim around the inner dark input surface. */}
+        <div
+          data-nex-aurora-pill
+          style={{
+            position: "relative",
+            padding: 2,
+            borderRadius: 24,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-end",
+              minHeight: 44,
+              padding: "6px 6px 6px 16px",
+              borderRadius: 22,
+              background: NEX.bg,
+            }}
+          >
+            <textarea
+              ref={textareaRef}
+              name="body"
+              required
+              maxLength={4000}
+              placeholder={placeholder}
+              rows={1}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              onKeyDown={handleKeyDown}
+              style={{
+                flex: 1,
+                width: "100%",
+                minHeight: 24,
+                maxHeight: 112,
+                padding: "6px 6px 6px 0",
+                background: "transparent",
+                color: NEX.textPrimary,
+                border: "none",
+                outline: "none",
+                fontSize: 16,
+                lineHeight: 1.4,
+                fontFamily: "inherit",
+                resize: "none",
+                overflow: "auto",
+              }}
+            />
+            <SendButton armed={hasText} />
+          </div>
+        </div>
+      </form>
+    </>
   );
 }
 
-/** Left circular attach button · 52×52 · thin cyan border with subtle
- *  warm-orange edge highlight per the reference. Currently a visual
- *  affordance (disabled) · slice for image / file attach comes later. */
-function AttachmentButton() {
+function GhostIcon({
+  children,
+  label,
+  title,
+}: {
+  children: React.ReactNode;
+  label: string;
+  title: string;
+}) {
   return (
     <button
       type="button"
-      aria-label="Attach (coming soon)"
-      title="Attach · coming soon"
-      style={{
-        flexShrink: 0,
-        width: 52,
-        height: 52,
-        borderRadius: "50%",
-        background: NEX.glassAttach,
-        border: `1px solid ${NEX.attachRing}`,
-        color: NEX.textPrimary,
-        display: "grid",
-        placeItems: "center",
-        cursor: "not-allowed",
-        padding: 0,
-        marginBottom: 2,
-        boxShadow: `0 0 0 1px rgba(255,120,0,0.14), 0 4px 14px rgba(0,0,0,0.35)`,
-      }}
+      aria-label={label}
+      title={title}
       disabled
-    >
-      <svg
-        width={22}
-        height={22}
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden
-      >
-        <line x1="12" y1="5" x2="12" y2="19" />
-        <line x1="5" y1="12" x2="19" y2="12" />
-      </svg>
-    </button>
-  );
-}
-
-/** Emoji affordance nested at the right edge of the input pill.
- *  Non-functional stub · reads as a real control per the reference. */
-function EmojiAffordance() {
-  return (
-    <button
-      type="button"
-      aria-label="Emoji (coming soon)"
-      title="Emoji · coming soon"
       style={{
-        position: "absolute",
-        right: 6,
-        bottom: 10,
-        width: 36,
-        height: 36,
+        width: 34,
+        height: 34,
         borderRadius: "50%",
         background: "transparent",
-        border: "none",
         color: NEX.textSecondary,
+        border: "none",
         display: "grid",
         placeItems: "center",
         cursor: "not-allowed",
+        opacity: 0.85,
         padding: 0,
       }}
-      disabled
     >
-      <svg
-        width={22}
-        height={22}
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.8}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden
-      >
-        <circle cx="12" cy="12" r="9" />
-        <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-        <line x1="9" y1="9" x2="9.01" y2="9" />
-        <line x1="15" y1="9" x2="15.01" y2="9" />
-      </svg>
+      {children}
     </button>
   );
 }
 
-/** 60×60 send button · blue→purple→orange gradient · white paper plane.
- *  Scales 0.94 when disarmed, 1.0 when armed, 0.96 during press. */
 function SendButton({ armed }: { armed: boolean }) {
   const { pending } = useFormStatus();
   const active = armed && !pending;
@@ -241,56 +220,41 @@ function SendButton({ armed }: { armed: boolean }) {
       disabled={!armed || pending}
       style={{
         flexShrink: 0,
-        width: 60,
-        height: 60,
+        width: 36,
+        height: 36,
         borderRadius: "50%",
         background: active
-          ? "linear-gradient(135deg,#008CFF 0%,#4657FF 65%,#FF7A00 100%)"
+          ? "linear-gradient(135deg,#008CFF,#4657FF,#FF7A00)"
           : pending
-            ? "linear-gradient(135deg,#004a85 0%,#241f7a 65%,#7c3b00 100%)"
-            : "rgba(125,155,192,0.14)",
-        color: NEX.textPrimary,
-        border: "none",
+            ? "rgba(255,120,0,0.35)"
+            : "rgba(120,140,180,0.14)",
+        color: active || pending ? NEX.textPrimary : NEX.textMute,
+        border: active
+          ? `1px solid ${NEX.orangeSoft}`
+          : `1px solid transparent`,
         display: "grid",
         placeItems: "center",
         cursor: pending ? "wait" : armed ? "pointer" : "not-allowed",
         transition:
-          "background 200ms ease, transform 120ms ease, box-shadow 200ms ease, opacity 200ms ease",
-        transform: active ? "scale(1)" : "scale(0.94)",
-        boxShadow: active
-          ? "0 8px 25px rgba(0,120,255,0.25)"
-          : "0 4px 12px rgba(0,0,0,0.35)",
+          "background 220ms ease, color 220ms ease, border-color 220ms ease, transform 120ms ease",
+        transform: active ? "scale(1)" : "scale(0.92)",
+        marginLeft: 4,
         padding: 0,
-        marginBottom: 0,
-        opacity: pending ? 0.9 : 1,
       }}
     >
       {pending ? (
         <span
           aria-hidden
           style={{
-            width: 10,
-            height: 10,
+            width: 8,
+            height: 8,
             borderRadius: "50%",
             background: NEX.textPrimary,
             animation: "nex-composer-pulse 1s ease-in-out infinite",
           }}
         />
       ) : (
-        <svg
-          width={25}
-          height={25}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2.2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden
-        >
-          <path d="M22 2 11 13" />
-          <path d="M22 2 15 22 11 13 2 9 22 2z" />
-        </svg>
+        <SendIcon />
       )}
       <style>{`
         @keyframes nex-composer-pulse {
@@ -299,5 +263,55 @@ function SendButton({ armed }: { armed: boolean }) {
         }
       `}</style>
     </button>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Icons
+// ---------------------------------------------------------------------------
+
+const strokeProps = {
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+};
+
+function PlusIcon() {
+  return (
+    <svg width={20} height={20} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+  );
+}
+
+function CameraIcon() {
+  return (
+    <svg width={20} height={20} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
+      <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
+      <circle cx="12" cy="13" r="4" />
+    </svg>
+  );
+}
+
+function MicIcon() {
+  return (
+    <svg width={20} height={20} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
+      <rect x="9" y="2" width="6" height="12" rx="3" />
+      <path d="M19 10v2a7 7 0 01-14 0v-2" />
+      <line x1="12" y1="19" x2="12" y2="23" />
+      <line x1="8" y1="23" x2="16" y2="23" />
+    </svg>
+  );
+}
+
+function SendIcon() {
+  return (
+    <svg width={16} height={16} viewBox="0 0 24 24" aria-hidden {...strokeProps} strokeWidth={2.2}>
+      <path d="M22 2 11 13" />
+      <path d="M22 2 15 22 11 13 2 9 22 2z" />
+    </svg>
   );
 }
