@@ -55,6 +55,7 @@ const TAB_LABEL: Record<Tab, string> = {
 // These affordances only render on preview cards until the real
 // presence system + unread aggregation + peer chat exist.
 type MockPresence = "green" | "yellow" | "clear";
+type MockReceiptState = "sent" | "read" | "inbound" | null;
 
 // Sample avatar URLs from Unsplash · public, no attribution required for
 // small previews. Only used by mock cards (dev-only) · never persisted.
@@ -67,6 +68,11 @@ const MOCK_FRIENDS: ReadonlyArray<{
   unread: number;
   hasShop: boolean;
   avatarUrl: string;
+  /** Preview-only · when set, replaces the profession/location subtitle
+   *  with a real-message-like line + read receipt / typing indicator. */
+  lastMessage: string | null;
+  receiptState: MockReceiptState;
+  typing: boolean;
 }> = [
   {
     name: "Maria Santos",
@@ -77,6 +83,9 @@ const MOCK_FRIENDS: ReadonlyArray<{
     unread: 0,
     hasShop: true,
     avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
+    lastMessage: "Yeah I'll be there — 2 pm works ✓",
+    receiptState: "read",
+    typing: false,
   },
   {
     name: "Aisha Rahman",
@@ -87,6 +96,9 @@ const MOCK_FRIENDS: ReadonlyArray<{
     unread: 2,
     hasShop: true,
     avatarUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop",
+    lastMessage: "Just got a Leica M4 in — want photos?",
+    receiptState: "inbound",
+    typing: true,
   },
   {
     name: "Kenji Tanaka",
@@ -97,6 +109,9 @@ const MOCK_FRIENDS: ReadonlyArray<{
     unread: 0,
     hasShop: false,
     avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
+    lastMessage: null,
+    receiptState: null,
+    typing: false,
   },
   {
     name: "Lucas Ferreira",
@@ -107,6 +122,9 @@ const MOCK_FRIENDS: ReadonlyArray<{
     unread: 0,
     hasShop: false,
     avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop",
+    lastMessage: "Thanks for the portfolio review!",
+    receiptState: "sent",
+    typing: false,
   },
   {
     name: "Priya Patel",
@@ -117,6 +135,9 @@ const MOCK_FRIENDS: ReadonlyArray<{
     unread: 5,
     hasShop: true,
     avatarUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop",
+    lastMessage: "Delivery is out for tomorrow morning 🚗",
+    receiptState: "inbound",
+    typing: false,
   },
 ] as const;
 
@@ -126,6 +147,7 @@ const MOCK_BUSINESSES: ReadonlyArray<{
   subtitle: string;
   hoursAgo: number;
   unread: number;
+  receiptState: MockReceiptState;
 }> = [
   {
     name: "Cake Shop Jogja",
@@ -133,6 +155,7 @@ const MOCK_BUSINESSES: ReadonlyArray<{
     subtitle: "New batch of sourdough this Saturday · save one?",
     hoursAgo: 2,
     unread: 3,
+    receiptState: "inbound",
   },
   {
     name: "Bandung Bakery",
@@ -140,6 +163,7 @@ const MOCK_BUSINESSES: ReadonlyArray<{
     subtitle: "Order confirmed · pickup 3pm tomorrow.",
     hoursAgo: 6,
     unread: 0,
+    receiptState: "read",
   },
   {
     name: "Warung Nasi Padang",
@@ -147,6 +171,7 @@ const MOCK_BUSINESSES: ReadonlyArray<{
     subtitle: "Payment received · terima kasih!",
     hoursAgo: 24,
     unread: 1,
+    receiptState: "inbound",
   },
   {
     name: "Tukang Kayu Kreatif",
@@ -154,6 +179,7 @@ const MOCK_BUSINESSES: ReadonlyArray<{
     subtitle: "Custom shelf · 4 weeks turnaround · deposit ready?",
     hoursAgo: 72,
     unread: 0,
+    receiptState: "sent",
   },
 ] as const;
 
@@ -230,6 +256,12 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
     slug: string;
     subtitle: string;
     lastAt: string | null;
+    /** Read state of my own last message on this thread:
+     *  'sent'      · last message is mine, not yet read by them
+     *  'read'      · last message is mine, they've opened after it
+     *  'inbound'   · last message is from them (no receipt shown)
+     *  null        · no messages yet */
+    myReceiptState: "sent" | "read" | "inbound" | null;
   }> = [];
 
   if (activeTab === "friends") {
@@ -279,15 +311,28 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
         existing.last_message?.created_at ?? existing.conversation.created_at;
       if (stamp > existingStamp) perBusiness.set(s.business.id, s);
     }
-    businessCards = Array.from(perBusiness.values()).map((s) => ({
-      conversationId: s.conversation.id,
-      businessName: s.business.display_name,
-      slug: s.business.slug,
-      subtitle: s.last_message
-        ? s.last_message.body.slice(0, 90)
-        : "No messages yet",
-      lastAt: s.last_message?.created_at ?? null,
-    }));
+    businessCards = Array.from(perBusiness.values()).map((s) => {
+      let myReceiptState: "sent" | "read" | "inbound" | null = null;
+      if (s.last_message) {
+        if (s.last_message.sender_account_id === session.account.id) {
+          const readTs = s.other_last_read_at;
+          myReceiptState =
+            readTs && readTs >= s.last_message.created_at ? "read" : "sent";
+        } else {
+          myReceiptState = "inbound";
+        }
+      }
+      return {
+        conversationId: s.conversation.id,
+        businessName: s.business.display_name,
+        slug: s.business.slug,
+        subtitle: s.last_message
+          ? s.last_message.body.slice(0, 90)
+          : "No messages yet",
+        lastAt: s.last_message?.created_at ?? null,
+        myReceiptState,
+      };
+    });
     businessCards.sort((a, b) => {
       const at = a.lastAt ?? "";
       const bt = b.lastAt ?? "";
@@ -405,11 +450,15 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                       key={`mock-${i}`}
                       href={null}
                       name={c.name}
-                      subtitle={`${c.profession} · ${c.location}`}
+                      subtitle={
+                        c.lastMessage ?? `${c.profession} · ${c.location}`
+                      }
                       presence={c.presence}
                       unread={c.unread}
                       hasShop={c.hasShop}
                       avatarUrl={c.avatarUrl}
+                      receiptState={c.receiptState}
+                      typing={c.typing}
                       preview
                     />
                   ))}
@@ -435,6 +484,7 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                     slug={c.slug}
                     subtitle={c.subtitle}
                     lastAt={c.lastAt}
+                    receiptState={c.myReceiptState}
                   />
                 ))}
                 {showPreview &&
@@ -447,6 +497,7 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                       subtitle={c.subtitle}
                       lastAt={new Date(Date.now() - c.hoursAgo * 3600_000).toISOString()}
                       unread={c.unread}
+                      receiptState={c.receiptState}
                       preview
                     />
                   ))}
@@ -507,6 +558,11 @@ function PersonCard(props: {
   unread?: number;
   /** Preview-only · "🛍 Shop" tag under the name when the person owns a shop. */
   hasShop?: boolean;
+  /** Read-receipt state for my outbound last message · shown before the
+   *  subtitle text · null hides. */
+  receiptState?: "sent" | "read" | "inbound" | null;
+  /** Preview-only · replaces subtitle with an animated "typing…" bubble. */
+  typing?: boolean;
 }) {
   const cardBody = (
     <>
@@ -580,19 +636,37 @@ function PersonCard(props: {
           </span>
           {props.preview && <PreviewPill />}
         </div>
-        <div
-          style={{
-            marginTop: 2,
-            fontSize: 12,
-            color: NEX.textSecondary,
-            lineHeight: 1.4,
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {props.subtitle}
-        </div>
+        {props.typing ? (
+          <TypingBubble />
+        ) : (
+          <div
+            style={{
+              marginTop: 2,
+              fontSize: 12,
+              color: NEX.textSecondary,
+              lineHeight: 1.4,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+            }}
+          >
+            {(props.receiptState === "sent" || props.receiptState === "read") && (
+              <ReadReceipt state={props.receiptState} />
+            )}
+            <span
+              style={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                minWidth: 0,
+              }}
+            >
+              {props.subtitle}
+            </span>
+          </div>
+        )}
         {props.hasShop && (
           <div style={{ marginTop: 6 }}>
             <ShopTag />
@@ -659,6 +733,8 @@ function BusinessCard(props: {
   preview?: boolean;
   /** Preview-only · unread count pill on the avatar top-right. Zero hides it. */
   unread?: number;
+  /** Read-receipt state for my outbound last message. */
+  receiptState?: "sent" | "read" | "inbound" | null;
 }) {
   const timeLabel = props.lastAt
     ? new Date(props.lastAt).toLocaleString(undefined, {
@@ -752,9 +828,23 @@ function BusinessCard(props: {
             whiteSpace: "nowrap",
             overflow: "hidden",
             textOverflow: "ellipsis",
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
           }}
         >
-          {props.subtitle}
+          {(props.receiptState === "sent" || props.receiptState === "read") && (
+            <ReadReceipt state={props.receiptState} />
+          )}
+          <span
+            style={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              minWidth: 0,
+            }}
+          >
+            {props.subtitle}
+          </span>
         </div>
       </div>
       <div
@@ -995,6 +1085,106 @@ function UnreadPill({ count }: { count: number }) {
     >
       {label}
     </span>
+  );
+}
+
+/** Read-receipt inline mark before an outbound message subtitle.
+ *  ✓ single tick = sent · ✓✓ cyan double tick = read by the other party.
+ *  Same visual language iMessage / WhatsApp / Signal share · NEX uses
+ *  cyan instead of blue for the "read" state to match the palette. */
+function ReadReceipt({ state }: { state: "sent" | "read" }) {
+  const color = state === "read" ? NEX.cyan : NEX.textSecondary;
+  const label = state === "read" ? "Read" : "Sent";
+  return (
+    <span
+      aria-label={label}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        flexShrink: 0,
+        color,
+        lineHeight: 1,
+      }}
+    >
+      {state === "read" ? (
+        <svg width="14" height="10" viewBox="0 0 24 16" fill="none" aria-hidden>
+          <path
+            d="M1 8 L6 13 L14 3"
+            stroke="currentColor"
+            strokeWidth={2.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M9 8 L14 13 L23 3"
+            stroke="currentColor"
+            strokeWidth={2.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      ) : (
+        <svg width="10" height="10" viewBox="0 0 16 16" fill="none" aria-hidden>
+          <path
+            d="M1 8 L6 13 L15 3"
+            stroke="currentColor"
+            strokeWidth={2.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      )}
+    </span>
+  );
+}
+
+/** Animated "typing…" bubble that replaces the subtitle when the other
+ *  party is actively composing. Real-time typing is deferred until we
+ *  have a Realtime channel wired · this component preview-visualises the
+ *  intended shape for design consistency. Three cyan dots pulse with a
+ *  staggered animation. */
+function TypingBubble() {
+  return (
+    <>
+      <style>{`
+        @keyframes nex-typing-dot {
+          0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+          30%           { opacity: 1;   transform: translateY(-2px); }
+        }
+      `}</style>
+      <div
+        role="status"
+        aria-label="typing"
+        style={{
+          marginTop: 4,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 4,
+          padding: "3px 10px",
+          borderRadius: 999,
+          background: "rgba(0,175,255,0.10)",
+          color: NEX.cyan,
+          fontSize: 11,
+          fontStyle: "italic",
+          letterSpacing: "0.02em",
+        }}
+      >
+        <span>typing</span>
+        {[0, 1, 2].map((i) => (
+          <span
+            key={i}
+            aria-hidden
+            style={{
+              width: 4,
+              height: 4,
+              borderRadius: "50%",
+              background: NEX.cyan,
+              animation: `nex-typing-dot 1.4s ease-in-out ${i * 0.18}s infinite`,
+            }}
+          />
+        ))}
+      </div>
+    </>
   );
 }
 

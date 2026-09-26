@@ -130,6 +130,11 @@ export interface ConversationSummary {
   last_message: NexMessageRow | null;
   unread_count: number;
   other_display_name: string | null;
+  /** The other participant's last_read_at · used to render read receipts
+   *  on my own outbound messages: if my last_message was created before
+   *  or at this timestamp, they've seen it. Null when the other side has
+   *  never opened the thread. */
+  other_last_read_at: string | null;
 }
 
 /**
@@ -195,22 +200,28 @@ export async function listConversationsForAccount(
     if (!lastByConv.has(m.conversation_id)) lastByConv.set(m.conversation_id, m);
   }
 
-  // 3 · fetch other participants (to derive other_display_name)
+  // 3 · fetch other participants · pull their last_read_at too so we can
+  //     compute read receipts on my outbound messages (Founder Tier-1 UX
+  //     upgrade 2026-09-27).
   const { data: otherParts, error: otherErr } = await nexSupabaseAdmin
     .from("nex_conversation_participant")
-    .select("conversation_id, account_id, side, nex_account!inner ( id, display_name )")
+    .select("conversation_id, account_id, side, last_read_at, nex_account!inner ( id, display_name )")
     .in("conversation_id", convIds)
     .neq("account_id", accountId);
   if (otherErr) throw new Error(`conversation-service.listConversationsForAccount others: ${otherErr.message}`);
-  const otherByConv = new Map<NexUuid, { display_name: string }>();
+  const otherByConv = new Map<NexUuid, { display_name: string; last_read_at: string | null }>();
   for (const op of (otherParts ?? []) as unknown as Array<{
     conversation_id: NexUuid;
     account_id: NexUuid;
     side: string;
+    last_read_at: string | null;
     nex_account: { id: NexUuid; display_name: string };
   }>) {
     if (!otherByConv.has(op.conversation_id)) {
-      otherByConv.set(op.conversation_id, { display_name: op.nex_account.display_name });
+      otherByConv.set(op.conversation_id, {
+        display_name: op.nex_account.display_name,
+        last_read_at: op.last_read_at,
+      });
     }
   }
 
@@ -236,6 +247,7 @@ export async function listConversationsForAccount(
       last_message: lastByConv.get(r.conversation_id) ?? null,
       unread_count: unread,
       other_display_name: other?.display_name ?? null,
+      other_last_read_at: other?.last_read_at ?? null,
     };
   });
 
