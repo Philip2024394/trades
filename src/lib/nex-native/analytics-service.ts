@@ -98,6 +98,21 @@ export async function getDailyRevenue(
       `analytics-service.getDailyRevenue: currency must be 3-char ISO-4217 · got '${currency}'`
     );
   }
+  // Tier gate · Gratis owners clamped to 7-day analytics window ·
+  // Bisnis+ pass through. Non-throwing: reads just get a shorter
+  // window instead of failing hard (matches doctrine "never gate
+  // reads"). Migration 046 · Indonesia package doctrine 2026-09-27.
+  {
+    const biz = await nexSupabaseAdmin
+      .from("nex_business")
+      .select("owner_account_id")
+      .eq("id", businessId)
+      .maybeSingle();
+    const ownerId = (biz.data as { owner_account_id?: string } | null)?.owner_account_id;
+    if (ownerId) {
+      days = await (await import("./tier-gate")).clampAnalyticsWindow(ownerId, days);
+    }
+  }
 
   // Dense skeleton · today at index [days-1] · days-1 days ago at [0]
   const now = new Date();
@@ -149,6 +164,18 @@ export async function getDailyNetRevenue(
     throw new Error(
       `analytics-service.getDailyNetRevenue: currency must be 3-char ISO-4217 · got '${currency}'`,
     );
+  }
+  // Tier gate · same 7-day clamp as getDailyRevenue (Gratis).
+  {
+    const biz = await nexSupabaseAdmin
+      .from("nex_business")
+      .select("owner_account_id")
+      .eq("id", businessId)
+      .maybeSingle();
+    const ownerId = (biz.data as { owner_account_id?: string } | null)?.owner_account_id;
+    if (ownerId) {
+      days = await (await import("./tier-gate")).clampAnalyticsWindow(ownerId, days);
+    }
   }
 
   const now = new Date();

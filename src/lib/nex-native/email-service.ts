@@ -166,6 +166,9 @@ export async function addSubscriber(input: {
   if (!EMAIL_SHAPE.test(emailLower)) {
     throw new Error(`email-service.addSubscriber: invalid email shape · got '${emailLower}'`);
   }
+  // Tier gate · Gratis: 100 email subscribers per business.
+  // Migration 046 · Indonesia launch package doctrine 2026-09-27.
+  await (await import("./tier-gate")).assertCanCreateEmailSubscriber(input.list_id);
   const existing = await nexSupabaseAdmin
     .from("nex_email_subscriber")
     .select("*")

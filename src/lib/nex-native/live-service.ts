@@ -43,6 +43,9 @@ export async function createLivePost(input: CreateLivePostInput): Promise<NexLiv
   if (trimmed.length > NEX_LIVE_POST_BODY_MAX) {
     throw new Error(`nex-live · body too long (>${NEX_LIVE_POST_BODY_MAX})`);
   }
+  // Tier gate · Gratis: 3 live posts per business per rolling 7 days.
+  // Migration 046 · Indonesia launch package doctrine 2026-09-27.
+  await (await import("./tier-gate")).assertCanCreateLivePost(input.business_id);
   let expiresAt: string | null = null;
   if (input.expires_at) {
     const t = Date.parse(input.expires_at);

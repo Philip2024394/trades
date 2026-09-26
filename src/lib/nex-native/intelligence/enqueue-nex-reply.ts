@@ -58,6 +58,21 @@ export interface EnqueueNexReplyInput {
 export async function enqueueNexReply(
   input: EnqueueNexReplyInput
 ): Promise<EnqueueNexReplyResult> {
+  // Tier gate · Gratis: 20 NEX Assistant replies per account per day.
+  // Migration 046 · Indonesia launch package doctrine 2026-09-27. Wrap
+  // the throw so this path behaves like the existing admit/reason
+  // shape rather than surprising callers with an exception.
+  try {
+    const { assertAIReplyUnderCap } = await import("../tier-gate");
+    await assertAIReplyUnderCap(input.requester_account_id);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return {
+      admit: false,
+      reason: `nex-tier · ${msg}`,
+      retry_after_seconds: 60 * 60, // tell client to try again in an hour
+    };
+  }
   const admit = await shouldAdmitGenerationJob({ account_id: input.requester_account_id });
   if (!admit.admit) {
     return {

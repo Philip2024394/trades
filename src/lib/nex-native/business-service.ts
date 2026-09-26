@@ -125,6 +125,9 @@ export async function listBusinessesByOwner(
 
 /** Create a new business. Fails if the owner account doesn't exist (FK). */
 export async function createBusiness(input: NexBusinessInsert): Promise<NexBusinessRow> {
+  // Tier gate · Gratis: 1 business per account · Bisnis: 5 · Pro: 5.
+  // Migration 046 · Indonesia launch package doctrine 2026-09-27.
+  await (await import("./tier-gate")).assertCanCreateBusiness(input.owner_account_id);
   const { data, error } = await nexSupabaseAdmin
     .from("nex_business")
     .insert({

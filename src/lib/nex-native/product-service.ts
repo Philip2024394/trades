@@ -221,6 +221,9 @@ export async function listProductsByBusiness(
 
 /** Create a new product. Fails if business doesn't exist (FK). */
 export async function createProduct(input: NexProductInsert): Promise<NexProductRow> {
+  // Tier gate · Gratis owners capped at 10 live/draft products per business.
+  // Migration 046 · Indonesia launch package doctrine 2026-09-27.
+  await (await import("./tier-gate")).assertCanCreateProduct(input.business_id);
   const { data, error } = await nexSupabaseAdmin
     .from("nex_product")
     .insert({
