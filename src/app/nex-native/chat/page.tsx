@@ -28,7 +28,6 @@ import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as friendService from "@/lib/nex-native/friend-service";
 import * as accountService from "@/lib/nex-native/account-service";
 import * as conversationService from "@/lib/nex-native/conversation-service";
-import { nexAddressForAccount } from "@/lib/nex-native/nex-address";
 import type { NexChatTheme } from "@/lib/nex-native/types";
 import { NexPageHeader } from "../_page-header";
 
@@ -94,9 +93,6 @@ const MOCK_FRIENDS: ReadonlyArray<{
   profession: string;
   location: string;
   presence: MockPresence;
-  /** Minutes since last active · null when unknown (presence hidden by
-   *  the user or never online). Only rendered when presence = "clear". */
-  lastSeenMinutes: number | null;
   unread: number;
   hasShop: boolean;
   avatarUrl: string;
@@ -114,7 +110,6 @@ const MOCK_FRIENDS: ReadonlyArray<{
     profession: "Footwear designer",
     location: "Bandung",
     presence: "green",
-    lastSeenMinutes: null,
     unread: 0,
     hasShop: true,
     avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
@@ -129,7 +124,6 @@ const MOCK_FRIENDS: ReadonlyArray<{
     profession: "Reseller · vintage cameras",
     location: "Jakarta",
     presence: "yellow",
-    lastSeenMinutes: null,
     unread: 2,
     hasShop: true,
     avatarUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop",
@@ -144,7 +138,6 @@ const MOCK_FRIENDS: ReadonlyArray<{
     profession: "Photographer",
     location: "Tokyo",
     presence: "clear",
-    lastSeenMinutes: 25,
     unread: 0,
     hasShop: false,
     avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
@@ -159,7 +152,6 @@ const MOCK_FRIENDS: ReadonlyArray<{
     profession: "Student · Design",
     location: "Rio de Janeiro",
     presence: "green",
-    lastSeenMinutes: null,
     unread: 0,
     hasShop: false,
     avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop",
@@ -174,7 +166,6 @@ const MOCK_FRIENDS: ReadonlyArray<{
     profession: "Bakery owner",
     location: "Mumbai",
     presence: "clear",
-    lastSeenMinutes: 180,
     unread: 5,
     hasShop: true,
     avatarUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop",
@@ -293,7 +284,6 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
     handle: string | null;
     href: string;
     avatarUrl: string | null;
-    nexAddress: string | null;
     chatTheme: NexChatTheme | null;
   }> = [];
   let businessCards: Array<{
@@ -330,20 +320,14 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
           })(),
         })),
     );
-    friendCards = profiles.map(({ account: r, profile }) => {
-      const addr = nexAddressForAccount({
-        nex_handle: r.nex_handle,
-      });
-      return {
-        id: r.id,
-        name: r.display_name,
-        handle: r.nex_handle,
-        href: r.nex_handle ? `/nex-native/u/${r.nex_handle}` : `/nex-native/u/${r.id.slice(0, 8)}`,
-        avatarUrl: profile?.avatar_url ?? null,
-        nexAddress: addr?.display ?? null,
-        chatTheme: r.chat_theme,
-      };
-    });
+    friendCards = profiles.map(({ account: r, profile }) => ({
+      id: r.id,
+      name: r.display_name,
+      handle: r.nex_handle,
+      href: r.nex_handle ? `/nex-native/u/${r.nex_handle}` : `/nex-native/u/${r.id.slice(0, 8)}`,
+      avatarUrl: profile?.avatar_url ?? null,
+      chatTheme: r.chat_theme,
+    }));
   } else if (activeTab === "business") {
     const summaries = await conversationService
       .listConversationsForAccount(session.account.id)
@@ -505,7 +489,6 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                     name={c.name}
                     subtitle={c.handle ?? `${c.id.slice(0, 8)}…`}
                     avatarUrl={c.avatarUrl}
-                    nexAddress={c.nexAddress}
                     chatTheme={c.chatTheme}
                   />
                 ))}
@@ -515,17 +498,14 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                       key={`mock-${i}`}
                       href={null}
                       name={c.name}
-                      subtitle={
-                        c.lastMessage ?? `${c.profession} · ${c.location}`
-                      }
+                      subtitle={c.lastMessage ?? `${c.location}`}
+                      profession={c.profession}
                       presence={c.presence}
-                      lastSeenMinutes={c.lastSeenMinutes}
                       unread={c.unread}
                       hasShop={c.hasShop}
                       avatarUrl={c.avatarUrl}
                       receiptState={c.receiptState}
                       typing={c.typing}
-                      nexAddress={`${c.handle}.nex`}
                       chatTheme={c.chatTheme}
                       preview
                     />
@@ -624,10 +604,8 @@ function PersonCard(props: {
    *  omitted) renders a neutral fingerprint. Sealed 2026-09-27:
    *  presence lives on the ACTION target (fingerprint), not the avatar. */
   presence?: CardPresence;
-  /** Minutes since this person was last active · only shown when
-   *  presence is "clear" (offline). Formatted 2m / 25m / 3h / 1d. */
-  lastSeenMinutes?: number | null;
-  /** Preview-only · unread count pill on the avatar top-right. Zero hides it. */
+  /** Unread count · when > 0 the fingerprint chip renders the number
+   *  instead of the icon. Zero hides / falls back to the icon. */
   unread?: number;
   /** Preview-only · "🛍 Shop" tag under the name when the person owns a shop. */
   hasShop?: boolean;
@@ -636,14 +614,28 @@ function PersonCard(props: {
   receiptState?: "sent" | "read" | "inbound" | null;
   /** Preview-only · replaces subtitle with an animated "typing…" bubble. */
   typing?: boolean;
-  /** NEX Address display · rendered as a small monospace chip beside the
-   *  name (e.g. "nex-27418.nex" or "philip.nex"). Null hides the chip. */
-  nexAddress?: string | null;
+  /** Profession / role / study focus · shown as a small subdued caption
+   *  under the last-message line so the viewer knows what this person
+   *  does at a glance. Kept small so the card height doesn't grow.
+   *  From `nex_account_profile.profession` when we wire real friends. */
+  profession?: string | null;
   /** Chat theme drives the 3px accent stripe colour on the left edge
    *  of the card · this is the brand-identity moment · every friend
    *  wears their own colour. Null / missing → NEX cyan. */
   chatTheme?: NexChatTheme | string | null;
 }) {
+  const avatarRing = presenceRingColour(props.presence);
+  const isPresenceActive =
+    props.presence === "green" || props.presence === "yellow";
+  const avatarHalo = isPresenceActive
+    ? `0 0 0 3px ${avatarRing}22, 0 2px 8px rgba(0,0,0,0.35)`
+    : "0 2px 8px rgba(0,0,0,0.35)";
+  // Avatar matches card's inner content height (card minHeight 76
+  // minus 14px top + 14px bottom padding = 48). Negative vertical
+  // margins pull it out past the padding so its top and bottom edges
+  // are flush with the card's border · looks like the avatar is
+  // capping the card's left end.
+  const AVATAR_SIZE = 76;
   const cardBody = (
     <>
       <div
@@ -651,8 +643,22 @@ function PersonCard(props: {
         style={{
           flexShrink: 0,
           position: "relative",
-          width: 48,
-          height: 48,
+          width: AVATAR_SIZE,
+          height: AVATAR_SIZE,
+          borderRadius: "50%",
+          border: `2px solid ${avatarRing}`,
+          boxShadow: avatarHalo,
+          // Pull the avatar half outside the card's left edge · matches
+          // the fingerprint chip's treatment on the right for visual
+          // symmetry. Card must have overflow: visible and reserve
+          // left space so the avatar isn't clipped by the viewport.
+          marginLeft: -(AVATAR_SIZE / 2),
+          // Break out of the card's 14px top/bottom padding so the
+          // avatar's top and bottom edges align with the card border.
+          marginTop: -14,
+          marginBottom: -14,
+          background: NEX.panel, // opaque · card border behind is hidden
+          overflow: "visible",
         }}
       >
         {props.avatarUrl ? (
@@ -661,8 +667,8 @@ function PersonCard(props: {
             src={props.avatarUrl}
             alt=""
             style={{
-              width: 48,
-              height: 48,
+              width: "100%",
+              height: "100%",
               borderRadius: "50%",
               objectFit: "cover",
               display: "block",
@@ -671,14 +677,14 @@ function PersonCard(props: {
         ) : (
           <div
             style={{
-              width: 48,
-              height: 48,
+              width: "100%",
+              height: "100%",
               borderRadius: "50%",
               background: NEX.cyanFaint,
               color: NEX.cyan,
               display: "grid",
               placeItems: "center",
-              fontSize: 15,
+              fontSize: 22,
               fontWeight: 600,
               letterSpacing: "0.05em",
             }}
@@ -686,9 +692,7 @@ function PersonCard(props: {
             {initialsFromName(props.name)}
           </div>
         )}
-        {typeof props.unread === "number" && props.unread > 0 && (
-          <UnreadPill count={props.unread} />
-        )}
+        {props.hasShop && <ShopBadge />}
       </div>
       <div style={{ minWidth: 0, flex: 1 }}>
         <div
@@ -696,7 +700,11 @@ function PersonCard(props: {
             display: "flex",
             alignItems: "baseline",
             gap: 8,
-            flexWrap: "wrap",
+            // Locked to a single row · name truncates with ellipsis if
+            // the chip pushes it beyond available width. Wrapping would
+            // grow the card and break the uniform row height.
+            flexWrap: "nowrap",
+            minWidth: 0,
           }}
         >
           <span
@@ -707,11 +715,11 @@ function PersonCard(props: {
               overflow: "hidden",
               textOverflow: "ellipsis",
               minWidth: 0,
+              flexShrink: 1,
             }}
           >
             {props.name}
           </span>
-          {props.nexAddress && <NexAddressChip address={props.nexAddress} />}
         </div>
         {props.typing ? (
           <TypingBubble />
@@ -721,7 +729,7 @@ function PersonCard(props: {
               marginTop: 2,
               fontSize: 12,
               color: NEX.textSecondary,
-              lineHeight: 1.4,
+              lineHeight: 1.3,
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -744,37 +752,73 @@ function PersonCard(props: {
             </span>
           </div>
         )}
-        {props.hasShop && (
-          <div style={{ marginTop: 6 }}>
-            <ShopTag />
+        {props.profession && (
+          <div
+            style={{
+              marginTop: 2,
+              fontSize: 10,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              color: NEX.cyan,
+              opacity: 0.75,
+              lineHeight: 1.2,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "flex",
+              alignItems: "center",
+              gap: 5,
+            }}
+          >
+            <ProfessionIcon />
+            <span
+              style={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                minWidth: 0,
+              }}
+            >
+              {props.profession}
+            </span>
           </div>
         )}
       </div>
       <FingerprintChip
         presence={props.presence}
-        lastSeenMinutes={props.lastSeenMinutes ?? null}
-        muted={props.preview}
+        unread={props.unread}
       />
     </>
   );
-  const accent = accentForTheme(props.chatTheme);
   const style: React.CSSProperties = {
     position: "relative",
     display: "flex",
     alignItems: "center",
     gap: 14,
-    padding: "14px 16px 14px 20px",
+    // Both left and right padding are trimmed to let the avatar (left)
+    // and fingerprint chip (right) attach at the card edges · both
+    // elements use negative margins to spill half outside. Overflow
+    // stays visible so nothing is clipped.
+    padding: "14px 12px",
     background: NEX.panel,
     border: `1px solid ${props.preview ? "rgba(0,175,255,0.18)" : NEX.cyanSoft}`,
     borderRadius: 12,
     textDecoration: "none",
     color: NEX.textPrimary,
     minHeight: 76,
+    // Margins reserve room for the half-external avatar (38px overhang
+    // for the 76px avatar) and fingerprint chip (28px overhang for the
+    // 56px chip). Avoids viewport / stack-neighbour clipping.
+    marginLeft: 38,
+    marginRight: 28,
     transition: "border-color 200ms ease, box-shadow 200ms ease",
     opacity: props.preview ? 0.75 : 1,
-    overflow: "hidden",
+    overflow: "visible",
   };
-  const stripe = <AccentStripe color={accent} />;
+  // AccentStripe (chat-theme colour on left edge) is dropped from
+  // PersonCard while the avatar sits on the left edge · the stripe
+  // would collide with the avatar visually. BusinessCard and GroupCard
+  // still render their stripes (their left edges are free).
+  const stripe: React.ReactNode = null;
   if (!props.href) {
     return (
       <div
@@ -1086,71 +1130,103 @@ function GroupCard(props: {
   );
 }
 
-/** Round fingerprint chip · replaces the → arrow AND the avatar presence
- *  dot on friend cards. Circular 40px container. Ring colour carries
- *  presence: green (online) · yellow (busy) · gray (offline / unknown).
- *  When offline and last-seen is known, a small "25m" label appears
- *  directly under the chip.
+/** Hybrid action chip · when the friend has unread messages, the chip
+ *  displays the count as a large number (way more scannable than a
+ *  tiny badge on the avatar). When unread is zero, the chip falls back
+ *  to the fingerprint icon — the "tap to chat" affordance for quiet
+ *  cards.
+ *
+ *  56px container that sits HALF OUTSIDE the card's right edge via
+ *  negative margin — reads as a distinct action target while staying
+ *  visually attached to the card. Ring colour carries presence:
+ *  green (online) · yellow (busy) · gray (offline / unknown).
  *
  *  Sealed 2026-09-27: presence lives on the action target. Uniquely NEX
- *  affordance — one signal for "who is around" + "tap to talk to them". */
+ *  affordance — one signal for "who is around" + "how many are waiting"
+ *  + "tap to talk to them". */
 function FingerprintChip(props: {
-  muted?: boolean;
   presence?: CardPresence;
-  lastSeenMinutes?: number | null;
+  unread?: number;
 }) {
   const isOffline = !props.presence || props.presence === "clear";
-  const ring = presenceRingColour(props.presence, !!props.muted);
-  const bg = presenceFillColour(props.presence, !!props.muted);
-  const stroke = presenceStrokeColour(props.presence, !!props.muted);
-  const showLastSeen =
-    isOffline &&
-    typeof props.lastSeenMinutes === "number" &&
-    Number.isFinite(props.lastSeenMinutes) &&
-    props.lastSeenMinutes >= 0;
+  // Presence colour always reflects real state · preview cards still get
+  // the full colour so mocks demonstrate the design. Preview visual
+  // distinguisher lives on the card border + opacity, not on presence.
+  const ring = presenceRingColour(props.presence);
+  const bg = presenceFillColour(props.presence);
+  const stroke = presenceStrokeColour(props.presence);
+  const hasUnread = typeof props.unread === "number" && props.unread > 0;
+  const unreadLabel = hasUnread
+    ? (props.unread as number) > 99
+      ? "99+"
+      : String(props.unread)
+    : "";
+  const CHIP_SIZE = 56;
   return (
     <div
+      aria-hidden
+      title={presenceTitle(props.presence)}
       style={{
         flexShrink: 0,
+        width: CHIP_SIZE,
+        height: CHIP_SIZE,
+        borderRadius: "50%",
+        background: NEX.panel, // opaque so card border behind is hidden
+        border: `2px solid ${ring}`,
+        color: stroke,
+        boxShadow: !isOffline
+          ? `0 0 0 3px ${ring}22, 0 2px 8px rgba(0,0,0,0.35)`
+          : "0 2px 8px rgba(0,0,0,0.35)",
+        position: "relative",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 4,
+        justifyContent: "center",
+        // Pull the chip half outside the card's right edge · the card
+        // must have overflow: visible (set on PersonCard's style).
+        marginRight: -(CHIP_SIZE / 2),
       }}
     >
+      {/* Coloured tint layer · sits on top of the panel background so
+          the presence hue reads without letting the card border show
+          through the chip. */}
       <div
         aria-hidden
-        title={presenceTitle(props.presence, props.lastSeenMinutes ?? null)}
         style={{
-          width: 40,
-          height: 40,
+          position: "absolute",
+          inset: 0,
           borderRadius: "50%",
           background: bg,
-          border: `2px solid ${ring}`,
-          display: "grid",
-          placeItems: "center",
-          color: stroke,
-          boxShadow:
-            !isOffline && !props.muted
-              ? `0 0 0 3px ${ring}22`
-              : undefined,
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        style={{
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 1,
         }}
       >
-        <FingerprintIcon />
+        {hasUnread ? (
+          <span
+            style={{
+              // Large count number · reads across the room at 56px chip.
+              // NEX orange draws the eye to the attention-needed card.
+              fontSize: unreadLabel.length >= 3 ? 16 : 22,
+              fontWeight: 700,
+              letterSpacing: "-0.02em",
+              color: NEX.orange,
+              lineHeight: 1,
+            }}
+          >
+            {unreadLabel}
+          </span>
+        ) : (
+          <FingerprintIcon size={34} />
+        )}
       </div>
-      {showLastSeen && (
-        <span
-          style={{
-            fontSize: 9,
-            fontWeight: 500,
-            letterSpacing: "0.04em",
-            color: NEX.textSecondary,
-            lineHeight: 1,
-          }}
-        >
-          {formatLastSeen(props.lastSeenMinutes as number)}
-        </span>
-      )}
     </div>
   );
 }
@@ -1159,8 +1235,7 @@ const PRESENCE_GREEN = "#10b981";
 const PRESENCE_YELLOW = "#f59e0b";
 const PRESENCE_GRAY = "rgba(125,155,192,0.55)";
 
-function presenceRingColour(p: CardPresence | undefined, muted: boolean): string {
-  if (muted) return "rgba(125,155,192,0.35)";
+function presenceRingColour(p: CardPresence | undefined): string {
   switch (p) {
     case "green":
       return PRESENCE_GREEN;
@@ -1171,8 +1246,7 @@ function presenceRingColour(p: CardPresence | undefined, muted: boolean): string
   }
 }
 
-function presenceFillColour(p: CardPresence | undefined, muted: boolean): string {
-  if (muted) return "rgba(125,155,192,0.06)";
+function presenceFillColour(p: CardPresence | undefined): string {
   switch (p) {
     case "green":
       return "rgba(16,185,129,0.12)";
@@ -1183,8 +1257,7 @@ function presenceFillColour(p: CardPresence | undefined, muted: boolean): string
   }
 }
 
-function presenceStrokeColour(p: CardPresence | undefined, muted: boolean): string {
-  if (muted) return NEX.textSecondary;
+function presenceStrokeColour(p: CardPresence | undefined): string {
   switch (p) {
     case "green":
       return PRESENCE_GREEN;
@@ -1195,32 +1268,15 @@ function presenceStrokeColour(p: CardPresence | undefined, muted: boolean): stri
   }
 }
 
-function presenceTitle(
-  p: CardPresence | undefined,
-  lastSeenMinutes: number | null,
-): string {
+function presenceTitle(p: CardPresence | undefined): string {
   switch (p) {
     case "green":
       return "Online · tap to chat";
     case "yellow":
       return "Busy · tap to chat";
     default:
-      if (lastSeenMinutes != null) {
-        return `Last seen ${formatLastSeen(lastSeenMinutes)} ago · tap to chat`;
-      }
       return "Offline · tap to chat";
   }
-}
-
-/** 0-59 → "Nm" · 60-1439 → "Nh" · 1440+ → "Nd". Compact chat idiom. */
-function formatLastSeen(minutes: number): string {
-  const m = Math.max(0, Math.round(minutes));
-  if (m < 1) return "now";
-  if (m < 60) return `${m}m`;
-  const h = Math.floor(m / 60);
-  if (h < 24) return `${h}h`;
-  const d = Math.floor(h / 24);
-  return `${d}d`;
 }
 
 /** Fingerprint icon · the tap-to-open-chat affordance on friend cards.
@@ -1228,11 +1284,34 @@ function formatLastSeen(minutes: number): string {
  *  friend is on the other end. Uniquely NEX among chat apps · Founder
  *  brief 2026-09-27. Sized to match the arrow (18px) so cards stay
  *  balanced. */
-function FingerprintIcon() {
+/** Small briefcase icon rendered before the profession text · inherits
+ *  currentColor so it matches the caption's cyan tint automatically. */
+function ProfessionIcon({ size = 11 }: { size?: number } = {}) {
   return (
     <svg
-      width="20"
-      height="20"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      style={{ flexShrink: 0 }}
+    >
+      <rect x="3" y="7" width="18" height="13" rx="2" />
+      <path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+      <path d="M3 13h18" />
+    </svg>
+  );
+}
+
+function FingerprintIcon({ size = 20 }: { size?: number } = {}) {
+  return (
+    <svg
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -1352,6 +1431,7 @@ function TypingBubble() {
         aria-label="typing"
         style={{
           marginTop: 4,
+          marginBottom: 4,
           display: "inline-flex",
           alignItems: "center",
           gap: 4,
@@ -1383,34 +1463,6 @@ function TypingBubble() {
   );
 }
 
-/** NEX Address chip · small monospace pill beside the name that shows
- *  the person's shareable NEX address ("nex-27418.nex" or "philip.nex").
- *  This is the brand-identity element unique to NEX · every account has
- *  one and it never changes. */
-function NexAddressChip({ address }: { address: string }) {
-  return (
-    <span
-      aria-label={`NEX Address ${address}`}
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        padding: "1px 6px",
-        fontSize: 10,
-        fontFamily: "ui-monospace, monospace",
-        letterSpacing: "0.02em",
-        color: NEX.textSecondary,
-        background: "rgba(0, 175, 255, 0.06)",
-        border: `1px solid rgba(0, 175, 255, 0.18)`,
-        borderRadius: 4,
-        lineHeight: 1.4,
-        flexShrink: 0,
-      }}
-    >
-      {address}
-    </span>
-  );
-}
-
 /** 3px vertical stripe on the left inside edge of a card · coloured by
  *  the person's chat_theme. Zero interaction cost · pure identity signal
  *  · you learn to recognise cards by their stripe over time (Superhuman,
@@ -1428,6 +1480,11 @@ function AccentStripe({ color }: { color: string }) {
         bottom: 0,
         width: 3,
         background: color,
+        // Matches the card's borderRadius on the left corners · needed
+        // because the card now uses overflow: visible (to let the
+        // fingerprint chip spill out on the right).
+        borderTopLeftRadius: 12,
+        borderBottomLeftRadius: 12,
       }}
     />
   );
@@ -1455,6 +1512,40 @@ function ShopTag() {
     >
       <span aria-hidden>🛍</span>
       Shop
+    </span>
+  );
+}
+
+/** Floating shop badge · sits on the avatar's bottom-right corner like
+ *  a sticker · signals "this person also has a NEX Shop" without
+ *  adding vertical space to the card. Absolute-positioned so it never
+ *  grows the card · uniform row height regardless of hasShop.
+ *
+ *  Orange dot with a light-orange ring so it lifts off the panel and
+ *  reads at a glance next to the presence-coloured avatar ring. */
+function ShopBadge() {
+  return (
+    <span
+      aria-label="Has a NEX Shop"
+      title="NEX Shop owner"
+      style={{
+        position: "absolute",
+        bottom: -2,
+        right: -2,
+        width: 26,
+        height: 26,
+        borderRadius: "50%",
+        background: NEX.orange,
+        color: "#0B0F1A",
+        display: "grid",
+        placeItems: "center",
+        border: `2px solid ${NEX.panel}`,
+        boxShadow: "0 2px 6px rgba(0,0,0,0.4)",
+        fontSize: 14,
+        lineHeight: 1,
+      }}
+    >
+      <span aria-hidden>🛍</span>
     </span>
   );
 }
