@@ -72,18 +72,43 @@ export async function createNexAccountAction(formData: FormData): Promise<never>
   const fullName = String(formData.get("full_name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
+  const phoneCountryCodeRaw = String(formData.get("phone_country_code") ?? "").trim();
+  const phoneNationalNumberRaw = String(formData.get("phone_national_number") ?? "").trim();
 
   if (!fullName) redirectToCreateAccountWithError("missing_name", "Enter your full name");
   if (!email) redirectToCreateAccountWithError("missing_email", "Enter your email");
   if (!password || password.length < 6) {
     redirectToCreateAccountWithError("short_password", "Password must be 6+ characters");
   }
+  // Phone shape · same CHECKs as migration 024: country code +digits (1-4),
+  // national number 5-15 digits. Whitespace / dashes / parens stripped so
+  // "+62 812-345-6789" resolves cleanly.
+  const phoneCountryCode = phoneCountryCodeRaw;
+  const phoneNationalNumber = phoneNationalNumberRaw.replace(/[\s\-()]/g, "");
+  if (!phoneCountryCode || !/^\+[0-9]{1,4}$/.test(phoneCountryCode)) {
+    redirectToCreateAccountWithError(
+      "invalid_phone_country_code",
+      "Country code required · format like +44 · digits only after the +",
+    );
+  }
+  if (!phoneNationalNumber || !/^[0-9]{5,15}$/.test(phoneNationalNumber)) {
+    redirectToCreateAccountWithError(
+      "invalid_phone_number",
+      "Phone number required · digits only · 5-15 characters",
+    );
+  }
 
   const supabase = await nexAppSsrServerClient();
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { display_name: fullName } },
+    options: {
+      data: {
+        display_name: fullName,
+        phone_country_code: phoneCountryCode,
+        phone_national_number: phoneNationalNumber,
+      },
+    },
   });
   if (error) redirectToCreateAccountWithError("sign_up_failed", error.message);
 
@@ -94,6 +119,8 @@ export async function createNexAccountAction(formData: FormData): Promise<never>
         await accountService.createAccount({
           supabase_user_id: data.user.id,
           display_name: fullName,
+          phone_country_code: phoneCountryCode,
+          phone_national_number: phoneNationalNumber,
         });
       }
     } catch {

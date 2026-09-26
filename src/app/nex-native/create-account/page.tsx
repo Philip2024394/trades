@@ -11,10 +11,29 @@
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { createNexAccountAction } from "../_actions";
 import { NexPasswordField } from "./_password-field";
 import { NexCreateSubmit } from "./_create-submit";
+import { NexPhoneField } from "./_phone-field";
+
+// Parse an ISO2 country hint from common geo/language headers so the
+// first server render already shows the right country prefix. Client-side
+// detection (navigator.language, Intl timezone) refines on hydration.
+function readCountryHint(hdrs: Headers): string | undefined {
+  const geo =
+    hdrs.get("x-vercel-ip-country") ||
+    hdrs.get("cf-ipcountry") ||
+    hdrs.get("x-nex-ip-country");
+  if (geo && /^[A-Za-z]{2}$/.test(geo)) return geo.toUpperCase();
+  const al = hdrs.get("accept-language");
+  if (al) {
+    const m = al.match(/-([A-Za-z]{2})\b/);
+    if (m) return m[1]!.toUpperCase();
+  }
+  return undefined;
+}
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -41,6 +60,7 @@ export default async function CreateAccountPage({ searchParams }: PageProps) {
   if (session) redirect("/nex-native/conversations");
   const params = await searchParams;
   const authError = params.e && params.m ? { code: params.e, message: params.m } : null;
+  const initialIso2 = readCountryHint(await headers());
 
   return (
     <>
@@ -219,6 +239,8 @@ export default async function CreateAccountPage({ searchParams }: PageProps) {
                   style={inputStyle}
                 />
               </Field>
+
+              <NexPhoneField initialIso2={initialIso2} />
 
               <Field label="Password">
                 <NexPasswordField
