@@ -14,6 +14,7 @@ import { nexSupabaseAdmin } from "./supabase-admin";
 import type {
   NexAccountInsert,
   NexAccountRow,
+  NexAccountTier,
   NexChatTheme,
   NexUuid,
 } from "./types";
@@ -158,4 +159,39 @@ export async function ensureNexHandle(accountId: NexUuid): Promise<NexAccountRow
     );
   }
   return row;
+}
+
+// ---------------------------------------------------------------------------
+// Tier helpers · migration 046 · Indonesia launch package doctrine
+// (sealed 2026-09-27 · see CLAUDE.md "NEX PACKAGE DOCTRINE")
+// ---------------------------------------------------------------------------
+
+/** Return the effective package tier for an account.
+ *
+ *  This is the lazy-downgrade helper: if `tier === "bisnis"` but the
+ *  subscription has already lapsed (`bisnis_expires_at < now()`), we
+ *  treat the account as Gratis for feature-gate purposes without
+ *  needing a scheduled job to write the demotion back to the row.
+ *  Admin flows can still see the raw `tier` when displaying subscription
+ *  history; this helper is what every feature gate should call.
+ *
+ *  `pro` accounts are also lapsable via the same field in phase 2 · for
+ *  MVP `pro` is defined but unused.
+ */
+export function effectiveTier(
+  account: Pick<NexAccountRow, "tier" | "bisnis_expires_at">,
+): NexAccountTier {
+  if (account.tier === "gratis") return "gratis";
+  const expires = account.bisnis_expires_at;
+  if (!expires) return account.tier; // no expiry set · treat as current
+  if (new Date(expires).getTime() < Date.now()) return "gratis";
+  return account.tier;
+}
+
+/** Convenience predicate for the common feature-gate case. */
+export function isBisnisOrPro(
+  account: Pick<NexAccountRow, "tier" | "bisnis_expires_at">,
+): boolean {
+  const t = effectiveTier(account);
+  return t === "bisnis" || t === "pro";
 }

@@ -42,8 +42,41 @@ export interface NexAccountRow {
   phone_country_code: string | null;
   /** Signup credential attribute · migration 024 · digits only · 5-15 chars · never a relationship key. */
   phone_national_number: string | null;
+  /**
+   * Package tier · migration 046 · Indonesia launch (2026-09-27).
+   * `gratis` (default), `bisnis` (paid), `pro` (deferred phase 2).
+   * Businesses inherit owner-account tier. Use `effectiveTier(account)`
+   * from account-service to treat lapsed Bisnis as Gratis.
+   */
+  tier: NexAccountTier;
+  /**
+   * Bisnis subscription lapse timestamp · migration 046 · null when
+   * never upgraded or currently on gratis. Feature gates lazy-check
+   * `now() < bisnis_expires_at` before granting Bisnis features.
+   */
+  bisnis_expires_at: NexTimestamp | null;
   created_at: NexTimestamp;
 }
+
+/** Package tier · matches CHECK constraint on nex_account.tier
+ *  (migration 046). See CLAUDE.md "NEX PACKAGE DOCTRINE" for the
+ *  sealed launch limits and Bisnis unlocks. */
+export type NexAccountTier = "gratis" | "bisnis" | "pro";
+
+export const NEX_ACCOUNT_TIERS: readonly NexAccountTier[] = [
+  "gratis",
+  "bisnis",
+  "pro",
+] as const;
+
+/** Human-readable tier label · consumed by pricing surfaces and admin
+ *  tooling. Localised copy for Indonesia intentionally uses "Gratis"
+ *  and "Bisnis" (both direct Bahasa Indonesia loanwords). */
+export const NEX_ACCOUNT_TIER_LABEL: Record<NexAccountTier, string> = {
+  gratis: "NEX Gratis",
+  bisnis: "NEX Bisnis",
+  pro: "NEX Pro",
+};
 
 /** Known chat theme identifiers · matches migration 021 CHECK. */
 export type NexChatTheme = "default" | "titanium" | "pink" | "gold" | "night";
