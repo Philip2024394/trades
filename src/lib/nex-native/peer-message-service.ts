@@ -1,0 +1,145 @@
+// src/lib/nex-native/peer-message-service.ts
+//
+// Bridge 3 · peer-to-peer message service.
+// -----------------------------------------
+// Immutable append-only log of messages between two friends. Companion
+// to peer-conversation-service.ts.
+//
+// Doctrine:
+//   · Messages are IMMUTABLE · no updateMessage export. The only
+//     mutable column is read_at, which flips from null to a timestamp
+//     when the recipient views the message.
+//   · Send guards: sender must be a participant of the conversation.
+//     Enforced here at the service boundary in addition to RLS.
+//   · Body length: 1-4000 chars, matches DB CHECK. Longer messages
+//     should be split (client responsibility).
+
+import "server-only";
+import { nexSupabaseAdmin } from "./supabase-admin";
+import {
+  getPeerConversationById,
+  touchPeerConversation,
+} from "./peer-conversation-service";
+import type { NexUuid } from "./types";
+
+export interface NexPeerMessageRow {
+  id: NexUuid;
+  conversation_id: NexUuid;
+  sender_account_id: NexUuid;
+  body: string;
+  sent_at: string;
+  read_at: string | null;
+}
+
+export interface SendPeerMessageInput {
+  conversation_id: NexUuid;
+  sender_account_id: NexUuid;
+  body: string;
+}
+
+/** Persist a peer chat message. Sender must be a participant of the
+ *  conversation · throws otherwise. Bumps last_message_at on the
+ *  conversation as a side-effect (so listing conversations sorted by
+ *  recency works without an aggregate query). */
+export async function sendPeerMessage(
+  input: SendPeerMessageInput,
+): Promise<NexPeerMessageRow> {
+  const body = input.body.trim();
+  if (body.length === 0) {
+    throw new Error("peer-message-service.sendPeerMessage: body is empty");
+  }
+  if (body.length > 4000) {
+    throw new Error(
+      "peer-message-service.sendPeerMessage: body exceeds 4000 chars",
+    );
+  }
+  const conversation = await getPeerConversationById(input.conversation_id);
+  if (!conversation) {
+    throw new Error(
+      "peer-message-service.sendPeerMessage: conversation not found",
+    );
+  }
+  const isParticipant =
+    conversation.participant_a_id === input.sender_account_id ||
+    conversation.participant_b_id === input.sender_account_id;
+  if (!isParticipant) {
+    throw new Error(
+      "peer-message-service.sendPeerMessage: sender is not a participant of this conversation",
+    );
+  }
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_peer_message")
+    .insert({
+      conversation_id: input.conversation_id,
+      sender_account_id: input.sender_account_id,
+      body,
+    })
+    .select("*")
+    .single();
+  if (error || !data) {
+    throw new Error(
+      `peer-message-service.sendPeerMessage: ${error?.message ?? "no row returned"}`,
+    );
+  }
+  const row = data as NexPeerMessageRow;
+  await touchPeerConversation(row.conversation_id, row.sent_at).catch(() => {
+    // best-effort · leaving last_message_at stale won't break sends
+  });
+  return row;
+}
+
+/** List messages in a conversation, oldest first. Optional limit. */
+export async function listPeerMessages(
+  conversationId: NexUuid,
+  opts?: { limit?: number },
+): Promise<NexPeerMessageRow[]> {
+  let query = nexSupabaseAdmin
+    .from("nex_peer_message")
+    .select("*")
+    .eq("conversation_id", conversationId)
+    .order("sent_at", { ascending: true });
+  if (opts?.limit && opts.limit > 0) query = query.limit(opts.limit);
+  const { data, error } = await query;
+  if (error) {
+    throw new Error(`peer-message-service.listPeerMessages: ${error.message}`);
+  }
+  return (data as NexPeerMessageRow[]) ?? [];
+}
+
+/** Mark every inbound (not-from-viewer) message in the conversation as
+ *  read. Idempotent side-effect · safe to call on every page load. */
+export async function markPeerMessagesRead(
+  conversationId: NexUuid,
+  viewerAccountId: NexUuid,
+): Promise<void> {
+  const now = new Date().toISOString();
+  const { error } = await nexSupabaseAdmin
+    .from("nex_peer_message")
+    .update({ read_at: now })
+    .eq("conversation_id", conversationId)
+    .neq("sender_account_id", viewerAccountId)
+    .is("read_at", null);
+  if (error) {
+    // best-effort · never throw from a read-marker
+    // eslint-disable-next-line no-console
+    console.warn(
+      `peer-message-service.markPeerMessagesRead soft-fail: ${error.message}`,
+    );
+  }
+}
+
+/** Count unread messages for a viewer across a specific conversation.
+ *  Cheap · used for the chat surface unread pill. */
+export async function countUnreadPeerMessages(
+  conversationId: NexUuid,
+  viewerAccountId: NexUuid,
+): Promise<number> {
+  const { count, error } = await nexSupabaseAdmin
+    .from("nex_peer_message")
+    .select("id", { count: "exact", head: true })
+    .eq("conversation_id", conversationId)
+    .neq("sender_account_id", viewerAccountId)
+    .is("read_at", null);
+  if (error) return 0;
+  return count ?? 0;
+}

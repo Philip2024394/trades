@@ -20,6 +20,8 @@ import {
   resolveNexAppSessionFromContext,
 } from "@/lib/nex-native/app/session";
 import * as conversationService from "@/lib/nex-native/conversation-service";
+import * as peerConversationService from "@/lib/nex-native/peer-conversation-service";
+import * as peerMessageService from "@/lib/nex-native/peer-message-service";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as productService from "@/lib/nex-native/product-service";
 import * as orderService from "@/lib/nex-native/order-service";
@@ -372,6 +374,47 @@ export async function postMessageAction(
 
   revalidatePath(`/nex-native/conversations/${conversationId}`);
   redirect(`/nex-native/conversations/${conversationId}`);
+}
+
+// ---------------------------------------------------------------------------
+// Bridge 3 · peer-to-peer chat
+// ---------------------------------------------------------------------------
+
+/** Send a message on a peer (friend↔friend) conversation. The action
+ *  takes the *peer's* account id (not conversation id) so callers don't
+ *  need to know the conversation exists · it's created lazily on the
+ *  first send. Redirects back to the same peer chat surface after send. */
+export async function sendPeerMessageAction(
+  peerAccountId: string,
+  formData: FormData,
+): Promise<never> {
+  const body = String(formData.get("body") ?? "").trim();
+  if (!body) {
+    redirect(`/nex-native/chat/peer/${peerAccountId}`);
+  }
+
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) {
+    redirect(`/nex-native/sign-in`);
+  }
+  if (peerAccountId === session.account.id) {
+    // Self-chat is not supported · bounce back.
+    redirect(`/nex-native/chat`);
+  }
+
+  const conversation = await peerConversationService.getOrCreatePeerConversation(
+    session.account.id,
+    peerAccountId,
+  );
+
+  await peerMessageService.sendPeerMessage({
+    conversation_id: conversation.id,
+    sender_account_id: session.account.id,
+    body,
+  });
+
+  revalidatePath(`/nex-native/chat/peer/${peerAccountId}`);
+  redirect(`/nex-native/chat/peer/${peerAccountId}`);
 }
 
 // ---------------------------------------------------------------------------

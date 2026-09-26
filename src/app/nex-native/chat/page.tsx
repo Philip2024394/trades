@@ -324,7 +324,10 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
       id: r.id,
       name: r.display_name,
       handle: r.nex_handle,
-      href: r.nex_handle ? `/nex-native/u/${r.nex_handle}` : `/nex-native/u/${r.id.slice(0, 8)}`,
+      // Bridge 3 · friend cards now open the peer chat surface. The
+      // /nex-native/u/[handle] profile page is still reachable from
+      // inside the chat (via the identity header link) if needed.
+      href: `/nex-native/chat/peer/${r.id}`,
       avatarUrl: profile?.avatar_url ?? null,
       chatTheme: r.chat_theme,
     }));
@@ -473,14 +476,11 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
             {activeTab === "friends" && (
               <div style={{ display: "grid", gap: 12 }}>
                 {/*
-                  Friend card destination: /nex-native/u/[handle] (profile
-                  page). The fingerprint icon signals "tap to open chat"
-                  but real peer-to-peer messaging depends on Bridge 3
-                  (nex_conversation.business_id currently NOT NULL).
-                  When Bridge 3 ships, this href becomes
-                  /nex-native/conversations/peer/[peerAccountId] (or
-                  whatever route peer chat lands on). The fingerprint
-                  UI stays.
+                  Friend card destination · Bridge 3 (shipped 2026-09-27):
+                  /nex-native/chat/peer/[accountId] resolves the peer,
+                  gets-or-creates the peer conversation, and renders the
+                  message thread. Tapping anywhere on the card (fingerprint
+                  chip included) opens chat.
                 */}
                 {friendCards.map((c) => (
                   <PersonCard
