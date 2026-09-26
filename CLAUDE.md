@@ -3,6 +3,52 @@
 Auto-loaded at the start of every Claude Code session. Keep this file small and pointer-heavy — the real detail lives in `docs/`.
 
 ## ═══════════════════════════════════════════════════════════════
+## NEX / NEXAPP · CANONICAL REPOSITORY RULE · DO NOT VIOLATE
+## Sealed by owner Philip · 2026-09-26
+## ═══════════════════════════════════════════════════════════════
+
+**This repository (`D:/trades`) is the ONE and ONLY NEX / nexapp
+source of truth.** Every time the owner says `nex`, `nexapp`,
+`nex app`, `NEX Native`, `nex-native`, `NEX product`, `NEX source`,
+`NEX code`, or `NEX repo`, they mean this repository — nothing else.
+
+| Fact | Value |
+|---|---|
+| Canonical repo | `D:/trades` (this directory) |
+| GitHub remote | `https://github.com/Philip2024394/trades.git` |
+| Default branch | `main` |
+| NEX product surface | `src/app/nex-native/` |
+| NEX library layer | `src/lib/nex-native/` |
+| NEX API routes | `src/app/api/nex-native/` |
+| NEX DB migrations | `nex-supabase/migrations/` (001-043) |
+| NEX Supabase project ref | `ijvqdvsvwtwxzcqmoqit` |
+
+**Locations that are NOT the NEX source** (naming collisions only):
+- `C:/Users/Victus/nexapp` — separate 23-file prototype scaffold,
+  own remote `Philip2024394/nexapp.git`. Do NOT migrate/merge/delete
+  without explicit owner instruction.
+- `C:/Users/Victus/trades-harvest-deploy` — legitimate linked
+  worktree of THIS repo (branch `deploy/harvest-2026-09-22`).
+- `C:/Users/Victus/trades-external` — unrelated projects.
+- `C:/Users/Victus/nex-preservation` — evidence bundles, not code.
+- `D:/nex-backups` — Postgres dumps, not source.
+
+**Preserved checkpoints** (do not amend/reset/rebase):
+- Bridge 1 · `874e4d7d` · product-context chat destination
+- Bridge 2 · `fdec9f69` · account discovery profile
+- Preservation Wave 1 · `f5b5ba2d` · migrations 001-041
+- Preservation Wave 2 · `adbd2e16` · src/lib/nex-native
+- Bridge 2b · `7991095c` · face sign-in + /sign-in surface
+
+At session start, verify with `git rev-parse --show-toplevel` and
+`git remote get-url origin` before treating any directory as NEX.
+
+## ═══════════════════════════════════════════════════════════════
+## End canonical repository rule
+## ═══════════════════════════════════════════════════════════════
+
+
+## ═══════════════════════════════════════════════════════════════
 ## NEX PRODUCT CONSTITUTION · Read BEFORE writing any code
 ## `docs/product-constitution/README.md` (overview)
 ## `docs/product-constitution/principles/` (numbered principles)
