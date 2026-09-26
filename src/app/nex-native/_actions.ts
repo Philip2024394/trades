@@ -2272,6 +2272,85 @@ export async function setProfileKindAction(formData: FormData): Promise<never> {
   redirect("/nex-native/create-account/face");
 }
 
+// ---------------------------------------------------------------------------
+// Bridge 2c · profile avatar upload (migration 045)
+// ---------------------------------------------------------------------------
+
+const AVATAR_MAX_BYTES = 5 * 1024 * 1024; // 5 MB
+const AVATAR_ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+const AVATAR_TYPE_TO_EXT: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+};
+
+/** Accept a File from the settings/profile form, validate MIME + size,
+ *  upload it to the public `nex-avatars` Supabase Storage bucket under
+ *  `{account_id}/avatar-{timestamp}.{ext}`, and persist the resulting
+ *  public URL into nex_account_profile.avatar_url. */
+export async function uploadAvatarAction(formData: FormData): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirectToInboxWithError("unauthenticated", "sign in to upload a profile image");
+
+  const file = formData.get("avatar");
+  if (!(file instanceof File) || file.size === 0) {
+    redirectToProfileWithBanner("avatar_missing_file", "Pick an image to upload.");
+  }
+  if (file.size > AVATAR_MAX_BYTES) {
+    redirectToProfileWithBanner(
+      "avatar_too_large",
+      `Image must be ≤ 5 MB · yours is ${(file.size / 1024 / 1024).toFixed(1)} MB`,
+    );
+  }
+  if (!AVATAR_ALLOWED_TYPES.has(file.type)) {
+    redirectToProfileWithBanner(
+      "avatar_wrong_type",
+      `Only JPEG, PNG, and WebP images are allowed · got ${file.type || "unknown"}`,
+    );
+  }
+
+  const ext = AVATAR_TYPE_TO_EXT[file.type]!;
+  const path = `${session.account.id}/avatar-${Date.now()}.${ext}`;
+
+  const admin = (await import("@/lib/nex-native/supabase-admin")).nexSupabaseAdmin;
+  const bytes = new Uint8Array(await file.arrayBuffer());
+
+  const uploadResult = await admin.storage
+    .from("nex-avatars")
+    .upload(path, bytes, {
+      contentType: file.type,
+      cacheControl: "3600",
+      upsert: false,
+    });
+  if (uploadResult.error) {
+    redirectToProfileWithBanner(
+      "avatar_upload_failed",
+      uploadResult.error.message.slice(0, 200),
+    );
+  }
+
+  const publicUrl = admin.storage.from("nex-avatars").getPublicUrl(path).data.publicUrl;
+  if (!publicUrl) {
+    redirectToProfileWithBanner("avatar_url_missing", "Upload succeeded but URL missing.");
+  }
+
+  try {
+    await accountProfileService.upsertProfile(session.account.id, {
+      avatar_url: publicUrl,
+    });
+  } catch (e) {
+    redirectToProfileWithBanner(
+      "avatar_save_failed",
+      e instanceof Error ? e.message.slice(0, 200) : "unknown",
+    );
+  }
+
+  revalidatePath("/nex-native/settings/profile");
+  revalidatePath("/nex-native/home");
+  revalidatePath("/nex-native/chat");
+  redirectToProfileWithBanner("profile_saved", "Profile image updated.");
+}
+
 function parseCsvList(raw: string): string[] {
   if (typeof raw !== "string" || raw.trim().length === 0) return [];
   return raw

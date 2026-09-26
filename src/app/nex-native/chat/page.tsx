@@ -45,45 +45,142 @@ const TAB_LABEL: Record<Tab, string> = {
 // local development but never in production. Populate the visual design
 // while real friend / business / group data is still empty. Each card
 // carries a "PREVIEW" pill so nobody mistakes it for real state.
-const MOCK_FRIENDS = [
-  { name: "Maria Santos", handle: "nex-27418" },
-  { name: "Aisha Rahman", handle: "nex-52091" },
-  { name: "Kenji Tanaka", handle: "nex-38754" },
-  { name: "Lucas Ferreira", handle: "nex-15662" },
-  { name: "Priya Patel", handle: "nex-91280" },
+//
+// Each mock also previews the "world-class chat" design details we
+// haven't shipped for real yet (Founder brainstorm 2026-09-27):
+//   · presence dot: "green" active · "yellow" busy · "clear" offline
+//   · unread pill:   small orange badge on avatar top-right
+//   · shop tag:      "🛍 Shop" pill under name if user owns a shop
+//   · profession +   location as subtitle · richer than a bare handle
+// These affordances only render on preview cards until the real
+// presence system + unread aggregation + peer chat exist.
+type MockPresence = "green" | "yellow" | "clear";
+
+// Sample avatar URLs from Unsplash · public, no attribution required for
+// small previews. Only used by mock cards (dev-only) · never persisted.
+const MOCK_FRIENDS: ReadonlyArray<{
+  name: string;
+  handle: string;
+  profession: string;
+  location: string;
+  presence: MockPresence;
+  unread: number;
+  hasShop: boolean;
+  avatarUrl: string;
+}> = [
+  {
+    name: "Maria Santos",
+    handle: "nex-27418",
+    profession: "Footwear designer",
+    location: "Bandung",
+    presence: "green",
+    unread: 0,
+    hasShop: true,
+    avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
+  },
+  {
+    name: "Aisha Rahman",
+    handle: "nex-52091",
+    profession: "Reseller · vintage cameras",
+    location: "Jakarta",
+    presence: "yellow",
+    unread: 2,
+    hasShop: true,
+    avatarUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop",
+  },
+  {
+    name: "Kenji Tanaka",
+    handle: "nex-38754",
+    profession: "Photographer",
+    location: "Tokyo",
+    presence: "clear",
+    unread: 0,
+    hasShop: false,
+    avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
+  },
+  {
+    name: "Lucas Ferreira",
+    handle: "nex-15662",
+    profession: "Student · Design",
+    location: "Rio de Janeiro",
+    presence: "green",
+    unread: 0,
+    hasShop: false,
+    avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop",
+  },
+  {
+    name: "Priya Patel",
+    handle: "nex-91280",
+    profession: "Bakery owner",
+    location: "Mumbai",
+    presence: "yellow",
+    unread: 5,
+    hasShop: true,
+    avatarUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop",
+  },
 ] as const;
 
-const MOCK_BUSINESSES = [
+const MOCK_BUSINESSES: ReadonlyArray<{
+  name: string;
+  slug: string;
+  subtitle: string;
+  hoursAgo: number;
+  unread: number;
+}> = [
   {
     name: "Cake Shop Jogja",
     slug: "cakeshopjogja",
     subtitle: "New batch of sourdough this Saturday · save one?",
     hoursAgo: 2,
+    unread: 3,
   },
   {
     name: "Bandung Bakery",
     slug: "bandung-bakery",
     subtitle: "Order confirmed · pickup 3pm tomorrow.",
     hoursAgo: 6,
+    unread: 0,
   },
   {
     name: "Warung Nasi Padang",
     slug: "warung-nasi-padang",
     subtitle: "Payment received · terima kasih!",
     hoursAgo: 24,
+    unread: 1,
   },
   {
     name: "Tukang Kayu Kreatif",
     slug: "tukang-kayu-kreatif",
     subtitle: "Custom shelf · 4 weeks turnaround · deposit ready?",
     hoursAgo: 72,
+    unread: 0,
   },
 ] as const;
 
-const MOCK_GROUPS = [
-  { name: "NEX Founders Circle", members: 12, subtitle: "Started by Maria · daily active" },
-  { name: "Bandung Coffee Meetup", members: 27, subtitle: "Meets Saturdays 10am" },
-  { name: "Bali Digital Nomads", members: 45, subtitle: "Coworking · rides · food tips" },
+const MOCK_GROUPS: ReadonlyArray<{
+  name: string;
+  members: number;
+  subtitle: string;
+  unread: number;
+}> = [
+  {
+    name: "NEX Founders Circle",
+    members: 12,
+    subtitle: "Started by Maria · daily active",
+    unread: 8,
+  },
+  {
+    name: "Bandung Coffee Meetup",
+    members: 27,
+    subtitle: "Meets Saturdays 10am",
+    unread: 0,
+  },
+  {
+    name: "Bali Digital Nomads",
+    members: 45,
+    subtitle: "Coworking · rides · food tips",
+    unread: 2,
+  },
 ] as const;
 
 interface PageProps {
@@ -120,7 +217,13 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
   const showPreview = process.env.NEX_ALLOW_DEV_ADMIN === "1";
 
   // Load only the data for the active tab · keeps the page cheap.
-  let friendCards: Array<{ id: string; name: string; handle: string | null; href: string }> = [];
+  let friendCards: Array<{
+    id: string;
+    name: string;
+    handle: string | null;
+    href: string;
+    avatarUrl: string | null;
+  }> = [];
   let businessCards: Array<{
     conversationId: string;
     businessName: string;
@@ -132,11 +235,29 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
   if (activeTab === "friends") {
     const ids = await friendService.listFriends(session.account.id).catch(() => []);
     const rows = await Promise.all(ids.map((id) => accountService.getAccountById(id)));
-    friendCards = rows.filter((r): r is NonNullable<typeof r> => !!r).map((r) => ({
+    // Enrich with profile.avatar_url so real friend cards can show real images.
+    const profiles = await Promise.all(
+      rows
+        .filter((r): r is NonNullable<typeof r> => !!r)
+        .map(async (r) => ({
+          account: r,
+          profile: await (async () => {
+            try {
+              return await (
+                await import("@/lib/nex-native/account-profile-service")
+              ).getProfileByAccountId(r.id);
+            } catch {
+              return null;
+            }
+          })(),
+        })),
+    );
+    friendCards = profiles.map(({ account: r, profile }) => ({
       id: r.id,
       name: r.display_name,
       handle: r.nex_handle,
       href: r.nex_handle ? `/nex-native/u/${r.nex_handle}` : `/nex-native/u/${r.id.slice(0, 8)}`,
+      avatarUrl: profile?.avatar_url ?? null,
     }));
   } else if (activeTab === "business") {
     const summaries = await conversationService
@@ -275,6 +396,7 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                     href={c.href}
                     name={c.name}
                     subtitle={c.handle ?? `${c.id.slice(0, 8)}…`}
+                    avatarUrl={c.avatarUrl}
                   />
                 ))}
                 {showPreview &&
@@ -283,7 +405,11 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                       key={`mock-${i}`}
                       href={null}
                       name={c.name}
-                      subtitle={c.handle}
+                      subtitle={`${c.profession} · ${c.location}`}
+                      presence={c.presence}
+                      unread={c.unread}
+                      hasShop={c.hasShop}
+                      avatarUrl={c.avatarUrl}
                       preview
                     />
                   ))}
@@ -320,6 +446,7 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                       slug={c.slug}
                       subtitle={c.subtitle}
                       lastAt={new Date(Date.now() - c.hoursAgo * 3600_000).toISOString()}
+                      unread={c.unread}
                       preview
                     />
                   ))}
@@ -344,6 +471,7 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                       name={c.name}
                       subtitle={c.subtitle}
                       members={c.members}
+                      unread={c.unread}
                       preview
                     />
                   ))}
@@ -363,11 +491,22 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
   );
 }
 
+type CardPresence = "green" | "yellow" | "clear";
+
 function PersonCard(props: {
   href: string | null;
   name: string;
   subtitle: string;
   preview?: boolean;
+  /** Real avatar URL from nex_account_profile.avatar_url · null falls
+   *  back to initials. */
+  avatarUrl?: string | null;
+  /** Preview-only · presence indicator on the avatar bottom-right. */
+  presence?: CardPresence;
+  /** Preview-only · unread count pill on the avatar top-right. Zero hides it. */
+  unread?: number;
+  /** Preview-only · "🛍 Shop" tag under the name when the person owns a shop. */
+  hasShop?: boolean;
 }) {
   const cardBody = (
     <>
@@ -375,19 +514,48 @@ function PersonCard(props: {
         aria-hidden
         style={{
           flexShrink: 0,
+          position: "relative",
           width: 48,
           height: 48,
-          borderRadius: "50%",
-          background: NEX.cyanFaint,
-          color: NEX.cyan,
-          display: "grid",
-          placeItems: "center",
-          fontSize: 15,
-          fontWeight: 600,
-          letterSpacing: "0.05em",
         }}
       >
-        {initialsFromName(props.name)}
+        {props.avatarUrl ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={props.avatarUrl}
+            alt=""
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: "50%",
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: "50%",
+              background: NEX.cyanFaint,
+              color: NEX.cyan,
+              display: "grid",
+              placeItems: "center",
+              fontSize: 15,
+              fontWeight: 600,
+              letterSpacing: "0.05em",
+            }}
+          >
+            {initialsFromName(props.name)}
+          </div>
+        )}
+        {props.presence && props.presence !== "clear" && (
+          <PresenceDot presence={props.presence} />
+        )}
+        {typeof props.unread === "number" && props.unread > 0 && (
+          <UnreadPill count={props.unread} />
+        )}
       </div>
       <div style={{ minWidth: 0, flex: 1 }}>
         <div
@@ -415,13 +583,21 @@ function PersonCard(props: {
         <div
           style={{
             marginTop: 2,
-            fontSize: 11,
+            fontSize: 12,
             color: NEX.textSecondary,
-            fontFamily: "ui-monospace, monospace",
+            lineHeight: 1.4,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
         >
           {props.subtitle}
         </div>
+        {props.hasShop && (
+          <div style={{ marginTop: 6 }}>
+            <ShopTag />
+          </div>
+        )}
       </div>
       <div
         aria-hidden
@@ -481,6 +657,8 @@ function BusinessCard(props: {
   subtitle: string;
   lastAt: string | null;
   preview?: boolean;
+  /** Preview-only · unread count pill on the avatar top-right. Zero hides it. */
+  unread?: number;
 }) {
   const timeLabel = props.lastAt
     ? new Date(props.lastAt).toLocaleString(undefined, {
@@ -496,18 +674,29 @@ function BusinessCard(props: {
         aria-hidden
         style={{
           flexShrink: 0,
+          position: "relative",
           width: 48,
           height: 48,
-          borderRadius: 12,
-          background: NEX.cyanFaint,
-          color: NEX.cyan,
-          display: "grid",
-          placeItems: "center",
-          fontSize: 22,
-          lineHeight: 1,
         }}
       >
-        🛍
+        <div
+          style={{
+            width: 48,
+            height: 48,
+            borderRadius: 12,
+            background: NEX.cyanFaint,
+            color: NEX.cyan,
+            display: "grid",
+            placeItems: "center",
+            fontSize: 22,
+            lineHeight: 1,
+          }}
+        >
+          🛍
+        </div>
+        {typeof props.unread === "number" && props.unread > 0 && (
+          <UnreadPill count={props.unread} />
+        )}
       </div>
       <div style={{ minWidth: 0, flex: 1 }}>
         <div
@@ -624,6 +813,8 @@ function GroupCard(props: {
   subtitle: string;
   members: number;
   preview?: boolean;
+  /** Preview-only · unread count pill on the avatar top-right. */
+  unread?: number;
 }) {
   return (
     <div
@@ -647,18 +838,29 @@ function GroupCard(props: {
         aria-hidden
         style={{
           flexShrink: 0,
+          position: "relative",
           width: 48,
           height: 48,
-          borderRadius: 12,
-          background: NEX.cyanFaint,
-          color: NEX.cyan,
-          display: "grid",
-          placeItems: "center",
-          fontSize: 22,
-          lineHeight: 1,
         }}
       >
-        👥
+        <div
+          style={{
+            width: 48,
+            height: 48,
+            borderRadius: 12,
+            background: NEX.cyanFaint,
+            color: NEX.cyan,
+            display: "grid",
+            placeItems: "center",
+            fontSize: 22,
+            lineHeight: 1,
+          }}
+        >
+          👥
+        </div>
+        {typeof props.unread === "number" && props.unread > 0 && (
+          <UnreadPill count={props.unread} />
+        )}
       </div>
       <div style={{ minWidth: 0, flex: 1 }}>
         <div
@@ -731,6 +933,93 @@ function PreviewPill() {
       }}
     >
       Preview
+    </span>
+  );
+}
+
+/** Presence dot overlaid on the avatar's bottom-right corner.
+ *  Colours match the Signal-style opt-in privacy model that has been
+ *  sealed as the future presence system (design note 2026-09-27).
+ *  Rendered only when presence is 'green' or 'yellow' · 'clear' hides.
+ */
+function PresenceDot({ presence }: { presence: "green" | "yellow" }) {
+  const color = presence === "green" ? "#10b981" : "#eab308";
+  const glow =
+    presence === "green"
+      ? "0 0 8px rgba(16, 185, 129, 0.6)"
+      : "0 0 8px rgba(234, 179, 8, 0.6)";
+  return (
+    <span
+      aria-label={presence === "green" ? "Active" : "Busy"}
+      style={{
+        position: "absolute",
+        bottom: -2,
+        right: -2,
+        width: 14,
+        height: 14,
+        borderRadius: "50%",
+        background: color,
+        border: `2px solid ${NEX.panel}`,
+        boxShadow: glow,
+      }}
+    />
+  );
+}
+
+/** Unread count overlaid on the avatar's top-right corner. Small orange
+ *  pill · reads as a number when ≤99, "99+" otherwise. Never renders
+ *  when count is zero (the caller filters that). */
+function UnreadPill({ count }: { count: number }) {
+  const label = count > 99 ? "99+" : String(count);
+  return (
+    <span
+      aria-label={`${count} unread`}
+      style={{
+        position: "absolute",
+        top: -4,
+        right: -4,
+        minWidth: 18,
+        height: 18,
+        padding: "0 5px",
+        borderRadius: 9,
+        background: NEX.orange,
+        color: "#fff",
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: 10,
+        fontWeight: 700,
+        border: `2px solid ${NEX.panel}`,
+        lineHeight: 1,
+      }}
+    >
+      {label}
+    </span>
+  );
+}
+
+/** "🛍 Shop" pill · rendered under the name when the person owns a shop.
+ *  Preview surface for the future world-class card design · real friend
+ *  cards will read `nex_business.owner_account_id` when it's built. */
+function ShopTag() {
+  return (
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 4,
+        padding: "2px 8px",
+        fontSize: 10,
+        fontWeight: 600,
+        letterSpacing: "0.06em",
+        color: NEX.orange,
+        border: `1px solid rgba(255, 114, 0, 0.4)`,
+        borderRadius: 4,
+        lineHeight: 1.3,
+      }}
+    >
+      <span aria-hidden>🛍</span>
+      Shop
     </span>
   );
 }

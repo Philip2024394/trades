@@ -31,6 +31,9 @@ import {
   NEX_PROFILE_SKILLS_MAX,
 } from "./types";
 
+export const NEX_AVATAR_BUCKET = "nex-avatars";
+export const NEX_AVATAR_MAX_URL_LENGTH = 2048;
+
 const KIND_SET = new Set<NexAccountKind>(NEX_ACCOUNT_KINDS);
 
 function assertKind(k: unknown): NexAccountKind | null {
@@ -118,6 +121,7 @@ export async function insertProfile(
     location_label: normaliseText(input.location_label, NEX_PROFILE_LOCATION_LABEL_MAX, "location_label"),
     looking_for: normaliseArray(input.looking_for, NEX_PROFILE_LOOKING_FOR_MAX, "looking_for"),
     is_public: input.is_public ?? true,
+    avatar_url: normaliseText(input.avatar_url, NEX_AVATAR_MAX_URL_LENGTH, "avatar_url"),
   };
   const { data, error } = await nexSupabaseAdmin
     .from("nex_account_profile")
@@ -147,6 +151,7 @@ export async function updateProfile(
   if ("location_label" in patch) update.location_label = normaliseText(patch.location_label, NEX_PROFILE_LOCATION_LABEL_MAX, "location_label");
   if ("looking_for" in patch) update.looking_for = normaliseArray(patch.looking_for, NEX_PROFILE_LOOKING_FOR_MAX, "looking_for");
   if ("is_public" in patch) update.is_public = patch.is_public;
+  if ("avatar_url" in patch) update.avatar_url = normaliseText(patch.avatar_url, NEX_AVATAR_MAX_URL_LENGTH, "avatar_url");
 
   if (Object.keys(update).length === 0) {
     const current = await getProfileByAccountId(accountId);

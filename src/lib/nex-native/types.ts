@@ -106,6 +106,10 @@ export interface NexAccountProfileRow {
   location_label: string | null;
   looking_for: string[];
   is_public: boolean;
+  /** Public URL of the account's profile image · uploaded to the
+   *  nex-avatars Supabase Storage bucket · nullable · UI falls back
+   *  to initials when null. Migration 045. */
+  avatar_url: string | null;
   created_at: NexTimestamp;
   updated_at: NexTimestamp;
 }
@@ -122,6 +126,7 @@ export interface NexAccountProfileInsert {
   location_label?: string | null;
   looking_for?: string[];
   is_public?: boolean;
+  avatar_url?: string | null;
 }
 
 /** Patch shape · every field optional · empty string is normalised to null
@@ -135,6 +140,7 @@ export interface NexAccountProfilePatch {
   location_label?: string | null;
   looking_for?: string[];
   is_public?: boolean;
+  avatar_url?: string | null;
 }
 
 /** Length limits mirror the migration 042 CHECK constraints so the service

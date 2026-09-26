@@ -21,6 +21,7 @@ import * as accountProfileService from "@/lib/nex-native/account-profile-service
 import { updateProfileAction, signOutAction } from "../../_actions";
 import { SubmitButton } from "../../_submit-button";
 import { NexNativeShell } from "../../_shell";
+import { NexAvatarUploader } from "./_avatar-uploader";
 import {
   NEX_ACCOUNT_KINDS,
   NEX_ACCOUNT_KIND_LABEL,
@@ -80,6 +81,12 @@ export default async function Page({ searchParams }: PageProps) {
             {banner.message}
           </div>
         )}
+
+        <NexAvatarUploader
+          currentAvatarUrl={profile?.avatar_url ?? null}
+          displayName={session.account.display_name}
+          handle={session.account.nex_handle}
+        />
 
         <form
           action={updateProfileAction}
