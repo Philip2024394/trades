@@ -141,11 +141,11 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
             aria-label="More actions"
             onClick={() => setModalOpen(true)}
             style={{
-              width: 32,
-              height: 24,
+              width: 44,
+              height: 36,
               background: "transparent",
               border: "none",
-              color: NEX.textSecondary,
+              color: NEX.text,
               padding: 0,
               display: "grid",
               placeItems: "center",
@@ -468,10 +468,10 @@ function PlusIcon() {
 
 function DotsIcon() {
   return (
-    <svg width={16} height={16} viewBox="0 0 24 24" aria-hidden {...strokeProps} strokeWidth={2.4}>
-      <circle cx="12" cy="5" r="1" />
-      <circle cx="12" cy="12" r="1" />
-      <circle cx="12" cy="19" r="1" />
+    <svg width={26} height={26} viewBox="0 0 24 24" aria-hidden fill="currentColor">
+      <circle cx="12" cy="5" r="2" />
+      <circle cx="12" cy="12" r="2" />
+      <circle cx="12" cy="19" r="2" />
     </svg>
   );
 }
