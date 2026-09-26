@@ -146,24 +146,15 @@ export function PortraitBloomShell({
         [data-nex-bloom-ripple-inner] {
           animation: nex-bloom-ripple 2600ms cubic-bezier(.2,.7,.2,1) both;
         }
-        /* Custom scrollbar on the message list · thin cyan, always
-           visible so users know the surface is scrollable. */
+        /* Scrollbar hidden · scrolling still works, just no visible
+           bar on the side of the chat window. Sealed 2026-09-27. */
         [data-nex-message-scroll] {
-          scrollbar-width: thin;
-          scrollbar-color: rgba(0,159,239,0.5) transparent;
+          scrollbar-width: none;
         }
         [data-nex-message-scroll]::-webkit-scrollbar {
-          width: 6px;
-        }
-        [data-nex-message-scroll]::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        [data-nex-message-scroll]::-webkit-scrollbar-thumb {
-          background: rgba(0,159,239,0.5);
-          border-radius: 3px;
-        }
-        [data-nex-message-scroll]::-webkit-scrollbar-thumb:hover {
-          background: rgba(0,159,239,0.75);
+          display: none;
+          width: 0;
+          height: 0;
         }
       `}</style>
       <main
@@ -433,15 +424,9 @@ export function PortraitBloomShell({
                     alignSelf: m.mine ? "flex-end" : "flex-start",
                     maxWidth: "78%",
                     padding: "11px 14px 9px",
-                    // Directional tail · sharp corner points toward the
-                    // sender. Outgoing: bottom-right sharp. Incoming:
-                    // bottom-left sharp.
-                    borderRadius: m.mine
-                      ? "18px 18px 0 18px"
-                      : "18px 18px 18px 0",
-                    // Relaxed glass · gray fill, neon-cyan rim, soft
-                    // outer glow. Reads as "premium NEX" not "loud
-                    // messenger blue".
+                    // Uniform rounded corners · no directional tail.
+                    // Sealed 2026-09-27 · quieter, more premium.
+                    borderRadius: 18,
                     background: m.mine
                       ? "rgba(120,140,180,0.14)"
                       : NEX.glassBubble,
@@ -460,10 +445,6 @@ export function PortraitBloomShell({
                       : "0 6px 22px rgba(0,0,0,0.55)",
                   }}
                 >
-                  {/* Directional tail · triangular pointer extending
-                      from the sender's corner. Fill matches bubble
-                      glass · stroke matches bubble rim. */}
-                  <BubbleTail mine={m.mine} />
                   <div>{m.body}</div>
                   <div
                     style={{
@@ -496,19 +477,16 @@ export function PortraitBloomShell({
           </div>
         </section>
 
-        {/* Composer · glass footer · clearly anchored input area */}
+        {/* Composer · floats over the chat with no glass panel · the
+            aurora pill + ghost icons carry all the visual weight. */}
         <div
           style={{
             position: "relative",
             zIndex: 4,
             flexShrink: 0,
             padding:
-              "14px 16px calc(env(safe-area-inset-bottom, 0) + 14px)",
-            background:
-              "linear-gradient(180deg, rgba(2,9,20,0.65) 0%, rgba(2,9,20,0.92) 40%, rgba(2,9,20,0.98) 100%)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-            borderTop: "1px solid rgba(0,159,239,0.18)",
+              "10px 16px calc(env(safe-area-inset-bottom, 0) + 10px)",
+            background: "transparent",
           }}
         >
           <div style={{ maxWidth: 480, margin: "0 auto" }}>
@@ -530,66 +508,6 @@ function initialsFromName(name: string): string {
   const first = parts[0]?.charAt(0) ?? "";
   const last = parts.length > 1 ? (parts[parts.length - 1]?.charAt(0) ?? "") : "";
   return (first + last).toUpperCase() || "?";
-}
-
-/** Triangular bubble tail · attaches to the sender's corner and
- *  extends outward. Fill matches bubble glass · stroke matches the
- *  same neon-cyan rim on outgoing, faint outline on incoming. */
-function BubbleTail({ mine }: { mine: boolean }) {
-  // 10x10 svg box · positioned so its inner vertex sits at the
-  // bubble's corner. Outgoing: bottom-right of bubble, tail extends
-  // down-right. Incoming: mirror on bottom-left.
-  if (mine) {
-    return (
-      <svg
-        aria-hidden
-        width={10}
-        height={10}
-        viewBox="0 0 10 10"
-        style={{
-          position: "absolute",
-          right: -9,
-          bottom: -1,
-          overflow: "visible",
-          filter: "drop-shadow(0 0 6px rgba(0,159,239,0.28))",
-        }}
-      >
-        {/* Fill: closed triangle */}
-        <path d="M 0 0 L 10 10 L 0 10 Z" fill="rgba(120,140,180,0.14)" />
-        {/* Stroke: two outer edges only (hypotenuse + bottom) */}
-        <path
-          d="M 0 0 L 10 10 L 0 10"
-          fill="none"
-          stroke="rgba(0,159,239,0.85)"
-          strokeWidth={1}
-          strokeLinejoin="miter"
-        />
-      </svg>
-    );
-  }
-  return (
-    <svg
-      aria-hidden
-      width={10}
-      height={10}
-      viewBox="0 0 10 10"
-      style={{
-        position: "absolute",
-        left: -9,
-        bottom: -1,
-        overflow: "visible",
-      }}
-    >
-      <path d="M 10 0 L 0 10 L 10 10 Z" fill="rgba(255,255,255,0.06)" />
-      <path
-        d="M 10 0 L 0 10 L 10 10"
-        fill="none"
-        stroke="rgba(255,255,255,0.08)"
-        strokeWidth={1}
-        strokeLinejoin="miter"
-      />
-    </svg>
-  );
 }
 
 function formatTime(iso: string): string {

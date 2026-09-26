@@ -2,22 +2,15 @@
 
 // src/app/nex-native/chat/peer/[accountId]/_composer.tsx
 //
-// NEX Chat composer · Aurora Rail (Footer 08 promoted).
-// -----------------------------------------------------
-// Slow-animating aurora gradient border around the input pill · three
-// ghost action buttons (attach · camera · voice) hovering above it ·
-// send icon nested inside the pill on the right. Sealed 2026-09-27.
+// NEX Chat composer · Aurora Rail + 3-dot media menu.
+// ---------------------------------------------------
+// Aurora-gradient rim around the input pill · send nested at the
+// right · a vertical 3-dot menu button on the far right. Tapping
+// the 3-dot slides out a small drawer with camera · video · mic
+// options that hover above the pill.
 //
-// Functionality preserved from the previous composer:
-//   · real <textarea> with 16px font (no iOS focus zoom)
-//   · auto-grows to 4 lines then scrolls internally
-//   · Enter submits · Shift+Enter inserts newline
-//   · pending state via useFormStatus (single-source-of-truth from
-//     the parent form's Server Action)
-//
-// Attach / Camera / Voice are visual affordances only until their
-// respective backends land (image upload · camera capture · voice
-// note). They render as ghost icons that read as real controls.
+// Sealed 2026-09-27. Functionality preserved: real textarea,
+// auto-grow, Enter submits, pending state via useFormStatus.
 
 import * as React from "react";
 import { useFormStatus } from "react-dom";
@@ -30,6 +23,7 @@ const NEX = {
   textSecondary: "#8BA9D1",
   textMute: "#526B89",
   cyan: "#009FEF",
+  cyanSoft: "rgba(0,159,239,0.65)",
   orange: "#FF7800",
   orangeSoft: "rgba(255,120,0,0.5)",
 };
@@ -43,6 +37,7 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
   const formRef = React.useRef<HTMLFormElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const [text, setText] = React.useState("");
+  const [menuOpen, setMenuOpen] = React.useState(false);
   const hasText = text.trim().length > 0;
 
   const resizeTextarea = React.useCallback(() => {
@@ -88,120 +83,173 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
           background-size: 300% 100%;
           animation: nex-aurora-border 12s ease-in-out infinite;
         }
+        @keyframes nex-media-in {
+          from { opacity: 0; transform: translateX(20px) scale(0.85); }
+          to   { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        [data-nex-media-btn] {
+          animation: nex-media-in 260ms cubic-bezier(.2,.7,.2,1) both;
+        }
       `}</style>
       <form
         ref={formRef}
         action={action as (formData: FormData) => void | Promise<void>}
         data-nex-peer-composer
-        onSubmit={() => {
-          setText("");
-        }}
+        onSubmit={() => setText("")}
         style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 6,
+          position: "relative",
         }}
       >
-        {/* Ghost icon row · attach · camera · voice */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: 22,
-          }}
-        >
-          <GhostIcon label="Attach (coming soon)" title="Attach · coming soon">
-            <PlusIcon />
-          </GhostIcon>
-          <GhostIcon label="Photo (coming soon)" title="Photo · coming soon">
-            <CameraIcon />
-          </GhostIcon>
-          <GhostIcon label="Voice (coming soon)" title="Voice · coming soon">
-            <MicIcon />
-          </GhostIcon>
-        </div>
-
-        {/* Aurora-bordered input pill · 2px padding creates the visible
-            gradient rim around the inner dark input surface. */}
-        <div
-          data-nex-aurora-pill
-          style={{
-            position: "relative",
-            padding: 2,
-            borderRadius: 24,
-          }}
-        >
+        {/* Media drawer · appears above the pill when the 3-dot is
+            active. Slides in from the right so it visually connects
+            to the dots button that spawned it. */}
+        {menuOpen && (
           <div
             style={{
+              position: "absolute",
+              right: 0,
+              bottom: "calc(100% + 8px)",
               display: "flex",
-              alignItems: "flex-end",
-              minHeight: 44,
-              padding: "6px 6px 6px 16px",
-              borderRadius: 22,
-              background: NEX.bg,
+              gap: 8,
+              padding: "8px",
+              background: "rgba(3,16,29,0.92)",
+              border: "1px solid rgba(0,159,239,0.35)",
+              borderRadius: 999,
+              backdropFilter: "blur(14px)",
+              WebkitBackdropFilter: "blur(14px)",
+              boxShadow: "0 12px 30px rgba(0,0,0,0.55)",
+              zIndex: 5,
             }}
           >
-            <textarea
-              ref={textareaRef}
-              name="body"
-              required
-              maxLength={4000}
-              placeholder={placeholder}
-              rows={1}
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              onKeyDown={handleKeyDown}
-              style={{
-                flex: 1,
-                width: "100%",
-                minHeight: 24,
-                maxHeight: 112,
-                padding: "6px 6px 6px 0",
-                background: "transparent",
-                color: NEX.textPrimary,
-                border: "none",
-                outline: "none",
-                fontSize: 16,
-                lineHeight: 1.4,
-                fontFamily: "inherit",
-                resize: "none",
-                overflow: "auto",
-              }}
-            />
-            <SendButton armed={hasText} />
+            <MediaButton label="Camera" onClose={() => setMenuOpen(false)}>
+              <CameraIcon />
+            </MediaButton>
+            <MediaButton label="Video" onClose={() => setMenuOpen(false)}>
+              <VideoIcon />
+            </MediaButton>
+            <MediaButton label="Voice" onClose={() => setMenuOpen(false)}>
+              <MicIcon />
+            </MediaButton>
           </div>
+        )}
+
+        <div style={{ display: "flex", gap: 8, alignItems: "flex-end" }}>
+          {/* Aurora-bordered input pill · flex 1 to fill horizontal
+              space, leaving room for the 3-dot menu button on the
+              right. */}
+          <div
+            data-nex-aurora-pill
+            style={{
+              flex: 1,
+              minWidth: 0,
+              position: "relative",
+              padding: 2,
+              borderRadius: 24,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "flex-end",
+                minHeight: 44,
+                padding: "6px 6px 6px 16px",
+                borderRadius: 22,
+                background: NEX.bg,
+              }}
+            >
+              <textarea
+                ref={textareaRef}
+                name="body"
+                required
+                maxLength={4000}
+                placeholder={placeholder}
+                rows={1}
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                onKeyDown={handleKeyDown}
+                style={{
+                  flex: 1,
+                  width: "100%",
+                  minHeight: 24,
+                  maxHeight: 112,
+                  padding: "6px 6px 6px 0",
+                  background: "transparent",
+                  color: NEX.textPrimary,
+                  border: "none",
+                  outline: "none",
+                  fontSize: 16,
+                  lineHeight: 1.4,
+                  fontFamily: "inherit",
+                  resize: "none",
+                  overflow: "auto",
+                }}
+              />
+              <SendButton armed={hasText} />
+            </div>
+          </div>
+
+          {/* Vertical 3-dot menu button · lower right of the composer.
+              Tap toggles the media drawer above. */}
+          <button
+            type="button"
+            aria-label={menuOpen ? "Close media menu" : "Open media menu"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((v) => !v)}
+            style={{
+              flexShrink: 0,
+              width: 40,
+              height: 44,
+              borderRadius: 22,
+              background: menuOpen
+                ? "rgba(0,159,239,0.18)"
+                : "rgba(4,20,36,0.7)",
+              border: menuOpen
+                ? "1px solid rgba(0,159,239,0.85)"
+                : `1px solid ${NEX.cyanSoft}`,
+              color: NEX.text,
+              display: "grid",
+              placeItems: "center",
+              cursor: "pointer",
+              padding: 0,
+              transition:
+                "background 220ms ease, border-color 220ms ease, transform 160ms ease",
+              transform: menuOpen ? "scale(1)" : "scale(0.96)",
+            }}
+          >
+            <DotsIcon />
+          </button>
         </div>
       </form>
     </>
   );
 }
 
-function GhostIcon({
+function MediaButton({
   children,
   label,
-  title,
+  onClose,
 }: {
   children: React.ReactNode;
   label: string;
-  title: string;
+  onClose: () => void;
 }) {
   return (
     <button
       type="button"
-      aria-label={label}
-      title={title}
-      disabled
+      data-nex-media-btn
+      aria-label={`${label} (coming soon)`}
+      title={`${label} · coming soon`}
+      onClick={onClose}
       style={{
-        width: 34,
-        height: 34,
+        width: 40,
+        height: 40,
         borderRadius: "50%",
-        background: "transparent",
-        color: NEX.textSecondary,
-        border: "none",
+        background: "rgba(0,159,239,0.12)",
+        border: "1px solid rgba(0,159,239,0.5)",
+        color: NEX.cyan,
         display: "grid",
         placeItems: "center",
-        cursor: "not-allowed",
-        opacity: 0.85,
+        cursor: "pointer",
         padding: 0,
       }}
     >
@@ -278,27 +326,37 @@ const strokeProps = {
   strokeLinejoin: "round" as const,
 };
 
-function PlusIcon() {
+function DotsIcon() {
   return (
-    <svg width={20} height={20} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
-      <line x1="12" y1="5" x2="12" y2="19" />
-      <line x1="5" y1="12" x2="19" y2="12" />
+    <svg width={18} height={18} viewBox="0 0 24 24" aria-hidden {...strokeProps} strokeWidth={2.2}>
+      <circle cx="12" cy="5" r="1" />
+      <circle cx="12" cy="12" r="1" />
+      <circle cx="12" cy="19" r="1" />
     </svg>
   );
 }
 
 function CameraIcon() {
   return (
-    <svg width={20} height={20} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
+    <svg width={18} height={18} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
       <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
       <circle cx="12" cy="13" r="4" />
     </svg>
   );
 }
 
+function VideoIcon() {
+  return (
+    <svg width={18} height={18} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
+      <polygon points="23 7 16 12 23 17 23 7" />
+      <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+    </svg>
+  );
+}
+
 function MicIcon() {
   return (
-    <svg width={20} height={20} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
+    <svg width={18} height={18} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
       <rect x="9" y="2" width="6" height="12" rx="3" />
       <path d="M19 10v2a7 7 0 01-14 0v-2" />
       <line x1="12" y1="19" x2="12" y2="23" />
