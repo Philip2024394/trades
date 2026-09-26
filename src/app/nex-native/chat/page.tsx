@@ -28,6 +28,8 @@ import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as friendService from "@/lib/nex-native/friend-service";
 import * as accountService from "@/lib/nex-native/account-service";
 import * as conversationService from "@/lib/nex-native/conversation-service";
+import { nexAddressForAccount } from "@/lib/nex-native/nex-address";
+import type { NexChatTheme } from "@/lib/nex-native/types";
 import { NexPageHeader } from "../_page-header";
 
 export const runtime = "nodejs";
@@ -57,6 +59,29 @@ const TAB_LABEL: Record<Tab, string> = {
 type MockPresence = "green" | "yellow" | "clear";
 type MockReceiptState = "sent" | "read" | "inbound" | null;
 
+/** Colour a card's left accent stripe takes on based on the person's
+ *  chat_theme (nex_account.chat_theme). Businesses (which have no
+ *  chat theme) always get NEX cyan. Missing/default theme → cyan.
+ *
+ *  This is the brand-identity moment for the world-class card design:
+ *  every friend's card carries a subtle 3px stripe of *their* colour.
+ *  You know who a card is from before you read the name. */
+function accentForTheme(theme: NexChatTheme | string | null | undefined): string {
+  switch (theme) {
+    case "titanium":
+      return "#B0B7C3";
+    case "pink":
+      return "#EC4899";
+    case "gold":
+      return "#F59E0B";
+    case "night":
+      return "#3B82F6";
+    case "default":
+    default:
+      return "#00AFFF"; // NEX cyan
+  }
+}
+
 // Sample avatar URLs from Unsplash · public, no attribution required for
 // small previews. Only used by mock cards (dev-only) · never persisted.
 const MOCK_FRIENDS: ReadonlyArray<{
@@ -68,11 +93,13 @@ const MOCK_FRIENDS: ReadonlyArray<{
   unread: number;
   hasShop: boolean;
   avatarUrl: string;
-  /** Preview-only · when set, replaces the profession/location subtitle
-   *  with a real-message-like line + read receipt / typing indicator. */
   lastMessage: string | null;
   receiptState: MockReceiptState;
   typing: boolean;
+  /** Preview-only · chat_theme drives the 3px accent stripe colour on
+   *  the left edge of the card. Varied across mocks so the full palette
+   *  is visible in preview. */
+  chatTheme: NexChatTheme;
 }> = [
   {
     name: "Maria Santos",
@@ -86,6 +113,7 @@ const MOCK_FRIENDS: ReadonlyArray<{
     lastMessage: "Yeah I'll be there — 2 pm works ✓",
     receiptState: "read",
     typing: false,
+    chatTheme: "pink",
   },
   {
     name: "Aisha Rahman",
@@ -99,6 +127,7 @@ const MOCK_FRIENDS: ReadonlyArray<{
     lastMessage: "Just got a Leica M4 in — want photos?",
     receiptState: "inbound",
     typing: true,
+    chatTheme: "gold",
   },
   {
     name: "Kenji Tanaka",
@@ -112,6 +141,7 @@ const MOCK_FRIENDS: ReadonlyArray<{
     lastMessage: null,
     receiptState: null,
     typing: false,
+    chatTheme: "titanium",
   },
   {
     name: "Lucas Ferreira",
@@ -125,6 +155,7 @@ const MOCK_FRIENDS: ReadonlyArray<{
     lastMessage: "Thanks for the portfolio review!",
     receiptState: "sent",
     typing: false,
+    chatTheme: "default",
   },
   {
     name: "Priya Patel",
@@ -138,6 +169,7 @@ const MOCK_FRIENDS: ReadonlyArray<{
     lastMessage: "Delivery is out for tomorrow morning 🚗",
     receiptState: "inbound",
     typing: false,
+    chatTheme: "night",
   },
 ] as const;
 
@@ -249,6 +281,8 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
     handle: string | null;
     href: string;
     avatarUrl: string | null;
+    nexAddress: string | null;
+    chatTheme: NexChatTheme | null;
   }> = [];
   let businessCards: Array<{
     conversationId: string;
@@ -284,13 +318,20 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
           })(),
         })),
     );
-    friendCards = profiles.map(({ account: r, profile }) => ({
-      id: r.id,
-      name: r.display_name,
-      handle: r.nex_handle,
-      href: r.nex_handle ? `/nex-native/u/${r.nex_handle}` : `/nex-native/u/${r.id.slice(0, 8)}`,
-      avatarUrl: profile?.avatar_url ?? null,
-    }));
+    friendCards = profiles.map(({ account: r, profile }) => {
+      const addr = nexAddressForAccount({
+        nex_handle: r.nex_handle,
+      });
+      return {
+        id: r.id,
+        name: r.display_name,
+        handle: r.nex_handle,
+        href: r.nex_handle ? `/nex-native/u/${r.nex_handle}` : `/nex-native/u/${r.id.slice(0, 8)}`,
+        avatarUrl: profile?.avatar_url ?? null,
+        nexAddress: addr?.display ?? null,
+        chatTheme: r.chat_theme,
+      };
+    });
   } else if (activeTab === "business") {
     const summaries = await conversationService
       .listConversationsForAccount(session.account.id)
@@ -442,6 +483,8 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                     name={c.name}
                     subtitle={c.handle ?? `${c.id.slice(0, 8)}…`}
                     avatarUrl={c.avatarUrl}
+                    nexAddress={c.nexAddress}
+                    chatTheme={c.chatTheme}
                   />
                 ))}
                 {showPreview &&
@@ -459,6 +502,8 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                       avatarUrl={c.avatarUrl}
                       receiptState={c.receiptState}
                       typing={c.typing}
+                      nexAddress={`${c.handle}.nex`}
+                      chatTheme={c.chatTheme}
                       preview
                     />
                   ))}
@@ -563,6 +608,13 @@ function PersonCard(props: {
   receiptState?: "sent" | "read" | "inbound" | null;
   /** Preview-only · replaces subtitle with an animated "typing…" bubble. */
   typing?: boolean;
+  /** NEX Address display · rendered as a small monospace chip beside the
+   *  name (e.g. "nex-27418.nex" or "philip.nex"). Null hides the chip. */
+  nexAddress?: string | null;
+  /** Chat theme drives the 3px accent stripe colour on the left edge
+   *  of the card · this is the brand-identity moment · every friend
+   *  wears their own colour. Null / missing → NEX cyan. */
+  chatTheme?: NexChatTheme | string | null;
 }) {
   const cardBody = (
     <>
@@ -634,6 +686,7 @@ function PersonCard(props: {
           >
             {props.name}
           </span>
+          {props.nexAddress && <NexAddressChip address={props.nexAddress} />}
           {props.preview && <PreviewPill />}
         </div>
         {props.typing ? (
@@ -686,11 +739,13 @@ function PersonCard(props: {
       </div>
     </>
   );
+  const accent = accentForTheme(props.chatTheme);
   const style: React.CSSProperties = {
+    position: "relative",
     display: "flex",
     alignItems: "center",
     gap: 14,
-    padding: "14px 16px",
+    padding: "14px 16px 14px 20px",
     background: NEX.panel,
     border: `1px solid ${props.preview ? "rgba(0,175,255,0.18)" : NEX.cyanSoft}`,
     borderRadius: 12,
@@ -699,7 +754,9 @@ function PersonCard(props: {
     minHeight: 76,
     transition: "border-color 200ms ease, box-shadow 200ms ease",
     opacity: props.preview ? 0.75 : 1,
+    overflow: "hidden",
   };
+  const stripe = <AccentStripe color={accent} />;
   if (!props.href) {
     return (
       <div
@@ -708,6 +765,7 @@ function PersonCard(props: {
         data-nex-chat-card-preview={props.preview ? "true" : undefined}
         style={style}
       >
+        {stripe}
         {cardBody}
       </div>
     );
@@ -719,6 +777,7 @@ function PersonCard(props: {
       data-nex-chat-card-kind="person"
       style={style}
     >
+      {stripe}
       {cardBody}
     </Link>
   );
@@ -861,10 +920,11 @@ function BusinessCard(props: {
     </>
   );
   const style: React.CSSProperties = {
+    position: "relative",
     display: "flex",
     alignItems: "center",
     gap: 14,
-    padding: "14px 16px",
+    padding: "14px 16px 14px 20px",
     background: NEX.panel,
     border: `1px solid ${props.preview ? "rgba(0,175,255,0.18)" : NEX.cyanSoft}`,
     borderRadius: 12,
@@ -873,7 +933,9 @@ function BusinessCard(props: {
     minHeight: 76,
     transition: "border-color 200ms ease, box-shadow 200ms ease",
     opacity: props.preview ? 0.75 : 1,
+    overflow: "hidden",
   };
+  const stripe = <AccentStripe color={accentForTheme("default")} />;
   if (!props.href) {
     return (
       <div
@@ -882,6 +944,7 @@ function BusinessCard(props: {
         data-nex-chat-card-preview={props.preview ? "true" : undefined}
         style={style}
       >
+        {stripe}
         {cardBody}
       </div>
     );
@@ -893,6 +956,7 @@ function BusinessCard(props: {
       data-nex-chat-card-kind="business"
       style={style}
     >
+      {stripe}
       {cardBody}
     </Link>
   );
@@ -912,18 +976,21 @@ function GroupCard(props: {
       data-nex-chat-card-kind="group"
       data-nex-chat-card-preview={props.preview ? "true" : undefined}
       style={{
+        position: "relative",
         display: "flex",
         alignItems: "center",
         gap: 14,
-        padding: "14px 16px",
+        padding: "14px 16px 14px 20px",
         background: NEX.panel,
         border: `1px solid ${props.preview ? "rgba(0,175,255,0.18)" : NEX.cyanSoft}`,
         borderRadius: 12,
         color: NEX.textPrimary,
         minHeight: 76,
         opacity: props.preview ? 0.75 : 1,
+        overflow: "hidden",
       }}
     >
+      <AccentStripe color={accentForTheme("default")} />
       <div
         aria-hidden
         style={{
@@ -1185,6 +1252,56 @@ function TypingBubble() {
         ))}
       </div>
     </>
+  );
+}
+
+/** NEX Address chip · small monospace pill beside the name that shows
+ *  the person's shareable NEX address ("nex-27418.nex" or "philip.nex").
+ *  This is the brand-identity element unique to NEX · every account has
+ *  one and it never changes. */
+function NexAddressChip({ address }: { address: string }) {
+  return (
+    <span
+      aria-label={`NEX Address ${address}`}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        padding: "1px 6px",
+        fontSize: 10,
+        fontFamily: "ui-monospace, monospace",
+        letterSpacing: "0.02em",
+        color: NEX.textSecondary,
+        background: "rgba(0, 175, 255, 0.06)",
+        border: `1px solid rgba(0, 175, 255, 0.18)`,
+        borderRadius: 4,
+        lineHeight: 1.4,
+        flexShrink: 0,
+      }}
+    >
+      {address}
+    </span>
+  );
+}
+
+/** 3px vertical stripe on the left inside edge of a card · coloured by
+ *  the person's chat_theme. Zero interaction cost · pure identity signal
+ *  · you learn to recognise cards by their stripe over time (Superhuman,
+ *  Basecamp both use this pattern). Absolute-positioned so it never
+ *  affects card layout · overflow-hidden on the parent trims the top and
+ *  bottom into the rounded corners. */
+function AccentStripe({ color }: { color: string }) {
+  return (
+    <span
+      aria-hidden
+      style={{
+        position: "absolute",
+        left: 0,
+        top: 0,
+        bottom: 0,
+        width: 3,
+        background: color,
+      }}
+    />
   );
 }
 
