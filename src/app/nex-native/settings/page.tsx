@@ -26,10 +26,11 @@ const NEX = {
 };
 
 interface SettingRow {
-  href: string;
+  href: string | null;
   emoji: string;
   title: string;
   subtitle: string;
+  comingSoon?: boolean;
 }
 
 export default async function SettingsIndex() {
@@ -60,6 +61,17 @@ export default async function SettingsIndex() {
       subtitle: hasFace
         ? "Add another device or manage · re-scan to update"
         : "Set up fast return sign-in with your device biometric",
+    },
+    {
+      // Placeholder · sealed 2026-09-27. Deferred until the token ledger
+      // + wallet backend exist as a bounded Bridge. Reserves the settings
+      // slot so visitors know where the affordance will live.
+      href: null,
+      emoji: "⚡",
+      title: "Power tokens & wallet",
+      subtitle:
+        "Earn · spend · tip · affiliate commissions · chat boosts",
+      comingSoon: true,
     },
   ];
 
@@ -125,58 +137,114 @@ export default async function SettingsIndex() {
           </p>
 
           <div style={{ display: "grid", gap: 12 }}>
-            {rows.map((r) => (
-              <Link
-                key={r.href}
-                href={r.href}
-                data-nex-settings-row
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 14,
-                  padding: "14px 16px",
-                  background: NEX.panel,
-                  border: `1px solid ${NEX.cyanSoft}`,
-                  borderRadius: 12,
-                  textDecoration: "none",
-                  color: NEX.textPrimary,
-                  minHeight: 76,
-                }}
-              >
-                <div
-                  aria-hidden
-                  style={{
-                    flexShrink: 0,
-                    width: 48,
-                    height: 48,
-                    borderRadius: 12,
-                    background: NEX.cyanFaint,
-                    color: NEX.cyan,
-                    display: "grid",
-                    placeItems: "center",
-                    fontSize: 22,
-                  }}
-                >
-                  {r.emoji}
-                </div>
-                <div style={{ minWidth: 0, flex: 1 }}>
-                  <div style={{ fontSize: 15, fontWeight: 500 }}>{r.title}</div>
+            {rows.map((r, i) => {
+              const style: React.CSSProperties = {
+                display: "flex",
+                alignItems: "center",
+                gap: 14,
+                padding: "14px 16px",
+                background: NEX.panel,
+                border: `1px solid ${r.comingSoon ? "rgba(0,175,255,0.18)" : NEX.cyanSoft}`,
+                borderRadius: 12,
+                textDecoration: "none",
+                color: NEX.textPrimary,
+                minHeight: 76,
+                opacity: r.comingSoon ? 0.7 : 1,
+              };
+              const body = (
+                <>
                   <div
+                    aria-hidden
                     style={{
-                      marginTop: 2,
-                      fontSize: 12,
-                      color: NEX.textSecondary,
-                      lineHeight: 1.4,
+                      flexShrink: 0,
+                      width: 48,
+                      height: 48,
+                      borderRadius: 12,
+                      background: NEX.cyanFaint,
+                      color: r.comingSoon ? NEX.orange : NEX.cyan,
+                      display: "grid",
+                      placeItems: "center",
+                      fontSize: 22,
                     }}
                   >
-                    {r.subtitle}
+                    {r.emoji}
                   </div>
-                </div>
-                <div aria-hidden style={{ color: NEX.cyan, fontSize: 18 }}>
-                  →
-                </div>
-              </Link>
-            ))}
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "baseline",
+                        gap: 8,
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <span style={{ fontSize: 15, fontWeight: 500 }}>{r.title}</span>
+                      {r.comingSoon && (
+                        <span
+                          aria-label="coming soon"
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            padding: "1px 6px",
+                            fontSize: 9,
+                            fontWeight: 600,
+                            letterSpacing: "0.14em",
+                            textTransform: "uppercase",
+                            color: NEX.orange,
+                            border: `1px solid ${NEX.orange}`,
+                            borderRadius: 4,
+                            lineHeight: 1.3,
+                          }}
+                        >
+                          Soon
+                        </span>
+                      )}
+                    </div>
+                    <div
+                      style={{
+                        marginTop: 2,
+                        fontSize: 12,
+                        color: NEX.textSecondary,
+                        lineHeight: 1.4,
+                      }}
+                    >
+                      {r.subtitle}
+                    </div>
+                  </div>
+                  <div
+                    aria-hidden
+                    style={{
+                      color: r.comingSoon ? NEX.textSecondary : NEX.cyan,
+                      fontSize: 18,
+                    }}
+                  >
+                    →
+                  </div>
+                </>
+              );
+              if (!r.href) {
+                return (
+                  <div
+                    key={`row-${i}`}
+                    data-nex-settings-row
+                    data-nex-settings-row-coming-soon="true"
+                    style={style}
+                  >
+                    {body}
+                  </div>
+                );
+              }
+              return (
+                <Link
+                  key={r.href}
+                  href={r.href}
+                  data-nex-settings-row
+                  style={style}
+                >
+                  {body}
+                </Link>
+              );
+            })}
           </div>
 
           <form action={signOutAction} style={{ marginTop: 28, textAlign: "center" }}>
