@@ -19,6 +19,7 @@
 
 import * as React from "react";
 import { PeerComposer } from "./peer/[accountId]/_composer";
+import { ScrollToBottomOnMount } from "./_scroll-to-bottom";
 
 const NEX = {
   bg: "#020914",
@@ -144,6 +145,25 @@ export function PortraitBloomShell({
         }
         [data-nex-bloom-ripple-inner] {
           animation: nex-bloom-ripple 2600ms cubic-bezier(.2,.7,.2,1) both;
+        }
+        /* Custom scrollbar on the message list · thin cyan, always
+           visible so users know the surface is scrollable. */
+        [data-nex-message-scroll] {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(0,159,239,0.5) transparent;
+        }
+        [data-nex-message-scroll]::-webkit-scrollbar {
+          width: 6px;
+        }
+        [data-nex-message-scroll]::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        [data-nex-message-scroll]::-webkit-scrollbar-thumb {
+          background: rgba(0,159,239,0.5);
+          border-radius: 3px;
+        }
+        [data-nex-message-scroll]::-webkit-scrollbar-thumb:hover {
+          background: rgba(0,159,239,0.75);
         }
       `}</style>
       <main
@@ -361,28 +381,32 @@ export function PortraitBloomShell({
           )}
         </div>
 
-        {/* Message list · floats over the darkness */}
+        {/* Message list · the ONLY scrollable region on the surface.
+            flex:1 + minHeight:0 lets it shrink below its natural
+            content size so overflow-y: auto actually activates.
+            Auto-scroll to bottom on load lives in
+            _scroll-to-bottom.tsx (client component). */}
         <section
+          data-nex-message-scroll
           style={{
             position: "relative",
             zIndex: 3,
             flex: 1,
+            minHeight: 0,
+            overflowY: "auto",
+            WebkitOverflowScrolling: "touch",
+            overscrollBehavior: "contain",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "flex-end",
-            padding: "20px 20px 0",
-            overflow: "hidden",
+            padding: "20px 20px 12px",
           }}
         >
           <div
             style={{
-              overflowY: "auto",
-              WebkitOverflowScrolling: "touch",
-              overscrollBehavior: "contain",
+              marginTop: "auto",
               display: "flex",
               flexDirection: "column",
               gap: 10,
-              paddingBottom: 12,
             }}
           >
             {messages.length === 0 ? (
@@ -494,6 +518,7 @@ export function PortraitBloomShell({
             />
           </div>
         </div>
+        <ScrollToBottomOnMount />
       </main>
     </>
   );
