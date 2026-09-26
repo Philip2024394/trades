@@ -1,9 +1,12 @@
-// Root route redirects to the NEX home (Philip 2026-08-24 · single home doctrine).
+// Root route · session-aware NEX landing (Philip 2026-09-26).
 //
-// There is ONE home page: /nexapp. The former /nex-app front door was deleted
-// on 2026-08-24 per Philip: "there is only one home page nexapp". Sub-routes
-// under /nex-app/* (brains/staircase · app-builder · materials · etc.) still
-// exist as feature surfaces but /nex-app itself no longer resolves as a home.
+// The root URL / is now the NEX landing page. It forwards to the
+// /nex-native router, which itself sends:
+//   · signed-out visitors → /nex-native/create-account
+//   · signed-in visitors  → /nex-native/conversations
+//
+// This supersedes the 2026-08-24 "single home = /nexapp" doctrine.
+// /nexapp still resolves for anyone who deep-links to it.
 
 import { redirect } from "next/navigation";
 
@@ -11,5 +14,5 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "NEX", robots: { index: false } };
 
 export default function Home(): never {
-  redirect("/nexapp");
+  redirect("/nex-native");
 }

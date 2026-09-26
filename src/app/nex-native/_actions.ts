@@ -56,6 +56,11 @@ function redirectToCreateAccountWithError(code: string, message: string): never 
   redirect(`/nex-native/create-account?${qs.toString()}`);
 }
 
+function redirectToSignInWithError(code: string, message: string): never {
+  const qs = new URLSearchParams({ e: code, m: message });
+  redirect(`/nex-native/sign-in?${qs.toString()}`);
+}
+
 // -------------------------------------------------------------------------
 // NEX create-account (reference-design) · sealed 2026-09-25.
 // The new reference design has three fields only: full name / email /
@@ -175,12 +180,12 @@ export async function signInAction(formData: FormData): Promise<ActionResult> {
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
   if (!email || !password) {
-    redirectToInboxWithError("missing_credentials", "email and password required");
+    redirectToSignInWithError("missing_credentials", "email and password required");
   }
   const supabase = await nexAppSsrServerClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) {
-    redirectToInboxWithError("sign_in_failed", error.message);
+    redirectToSignInWithError("sign_in_failed", error.message);
   }
   revalidatePath("/nex-native/conversations");
   redirect("/nex-native/conversations");
@@ -191,7 +196,7 @@ export async function signInAction(formData: FormData): Promise<ActionResult> {
  *  Uses the well-known credentials from scripts/nex-provision-dev-admin.mts. */
 export async function signInAsDevAdminAction(_formData: FormData): Promise<never> {
   if (process.env.NEX_ALLOW_DEV_ADMIN !== "1") {
-    redirectToInboxWithError(
+    redirectToSignInWithError(
       "dev_admin_disabled",
       "dev-admin sign-in is disabled · set NEX_ALLOW_DEV_ADMIN=1 in .env.local",
     );
@@ -202,7 +207,7 @@ export async function signInAsDevAdminAction(_formData: FormData): Promise<never
     password: "NexDevAdmin!2026",
   });
   if (error) {
-    redirectToInboxWithError(
+    redirectToSignInWithError(
       "dev_admin_sign_in_failed",
       `${error.message} · run 'npx tsx scripts/nex-provision-dev-admin.mts' to provision the dev account`,
     );
