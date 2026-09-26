@@ -285,6 +285,9 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
     href: string;
     avatarUrl: string | null;
     chatTheme: NexChatTheme | null;
+    profession: string | null;
+    location: string | null;
+    hasShop: boolean;
   }> = [];
   let businessCards: Array<{
     conversationId: string;
@@ -320,17 +323,33 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
           })(),
         })),
     );
-    friendCards = profiles.map(({ account: r, profile }) => ({
-      id: r.id,
-      name: r.display_name,
-      handle: r.nex_handle,
-      // Bridge 3 · friend cards now open the peer chat surface. The
-      // /nex-native/u/[handle] profile page is still reachable from
-      // inside the chat (via the identity header link) if needed.
-      href: `/nex-native/chat/peer/${r.id}`,
-      avatarUrl: profile?.avatar_url ?? null,
-      chatTheme: r.chat_theme,
-    }));
+    friendCards = profiles.map(({ account: r, profile }) => {
+      // Shop indicator derives from profile.kind · sellers / makers /
+      // resellers / business owners all read as "has a shop" for the
+      // storefront badge. Everyone else (professional, student, etc.)
+      // shows no badge.
+      const kind = profile?.kind ?? null;
+      const hasShop =
+        kind === "business_owner" ||
+        kind === "reseller" ||
+        kind === "seller" ||
+        kind === "maker" ||
+        kind === "affiliate";
+      return {
+        id: r.id,
+        name: r.display_name,
+        handle: r.nex_handle,
+        // Bridge 3 · friend cards now open the peer chat surface. The
+        // /nex-native/u/[handle] profile page is still reachable from
+        // inside the chat (via the identity header link) if needed.
+        href: `/nex-native/chat/peer/${r.id}`,
+        avatarUrl: profile?.avatar_url ?? null,
+        chatTheme: r.chat_theme,
+        profession: profile?.profession ?? null,
+        location: profile?.location_label ?? null,
+        hasShop,
+      };
+    });
   } else if (activeTab === "business") {
     const summaries = await conversationService
       .listConversationsForAccount(session.account.id)
@@ -487,7 +506,9 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                     key={c.id}
                     href={c.href}
                     name={c.name}
-                    subtitle={c.handle ?? `${c.id.slice(0, 8)}…`}
+                    subtitle={c.location ?? c.handle ?? `${c.id.slice(0, 8)}…`}
+                    profession={c.profession}
+                    hasShop={c.hasShop}
                     avatarUrl={c.avatarUrl}
                     chatTheme={c.chatTheme}
                   />
@@ -1541,11 +1562,25 @@ function ShopBadge() {
         placeItems: "center",
         border: `2px solid ${NEX.panel}`,
         boxShadow: "0 2px 6px rgba(0,0,0,0.4)",
-        fontSize: 14,
         lineHeight: 1,
       }}
     >
-      <span aria-hidden>🛍</span>
+      <svg
+        width="15"
+        height="15"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2.4}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden
+      >
+        {/* Storefront · awning + body + door · reads cleanly at 15px */}
+        <path d="M3 9l1.5-5h15L21 9" />
+        <path d="M4 9v11h16V9" />
+        <path d="M10 20v-6h4v6" />
+      </svg>
     </span>
   );
 }

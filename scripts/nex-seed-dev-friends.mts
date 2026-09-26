@@ -59,7 +59,9 @@ const DEV_FRIENDS: DevFriend[] = [
     display_name: "Maria Santos",
     nex_handle: "nex-27418",
     chat_theme: "pink",
-    kind: "professional",
+    // business_owner so the shop storefront badge renders on her card ·
+    // she sells her own footwear line.
+    kind: "business_owner",
     profession: "Footwear designer",
     location_label: "Bandung",
     avatar_url:
@@ -178,7 +180,72 @@ try {
     console.log(`  ✓ ${f.display_name} · ${f.id.slice(0, 8)}…`);
   }
 
-  // 5. Confirm count
+  // 5. Seed the reference conversation with Maria Santos so the peer
+  //    chat surface visually matches the design brief on first load.
+  //    Idempotent · only seeds if the conversation has zero messages.
+  const maria = DEV_FRIENDS[0]!;
+  const [pa, pb] =
+    devAdminId < maria.id ? [devAdminId, maria.id] : [maria.id, devAdminId];
+  const conv = await pg.query<{ id: string }>(
+    `insert into nex_peer_conversation (participant_a_id, participant_b_id)
+       values ($1, $2)
+     on conflict (participant_a_id, participant_b_id)
+       do update set participant_a_id = excluded.participant_a_id
+     returning id`,
+    [pa, pb],
+  );
+  const conversationId = conv.rows[0]!.id;
+
+  const existingCount = await pg.query<{ n: string }>(
+    `select count(*)::text as n from nex_peer_message where conversation_id = $1`,
+    [conversationId],
+  );
+  if (Number(existingCount.rows[0]!.n) === 0) {
+    // Reference conversation from the pixel-accurate brief.
+    const refThread: Array<{ from: "peer" | "me"; body: string }> = [
+      { from: "peer", body: "Hey! Just saw your latest product post. Looks amazing! 👋" },
+      { from: "me", body: "Thanks! I'm really happy with how it turned out. The materials are so much better than I expected." },
+      { from: "peer", body: "That's awesome! I love the color options. Are you planning to do more styles soon?" },
+      { from: "me", body: "Yes! I'm working on a new collection right now. I'll share some previews with you soon." },
+      { from: "peer", body: "Perfect. I'd love to give you some feedback before you launch. Just let me know!" },
+      { from: "me", body: "Absolutely. Would love your input. You're always so helpful! 🙏" },
+      { from: "peer", body: "Sounds great! See you around!" },
+    ];
+    const nowIso = Date.now();
+    const spacingMs = 45_000; // 45 s between messages
+    let latestSentAt: string | null = null;
+    for (let i = 0; i < refThread.length; i++) {
+      const m = refThread[i]!;
+      const senderId = m.from === "peer" ? maria.id : devAdminId;
+      const sentAt = new Date(
+        nowIso - (refThread.length - i) * spacingMs,
+      ).toISOString();
+      // Mark my own messages as read by the peer (dev demo state); peer
+      // messages are marked unread so `markPeerMessagesRead` flips them
+      // to read on first view (idempotent).
+      const readAt = m.from === "me" ? sentAt : null;
+      await pg.query(
+        `insert into nex_peer_message
+           (conversation_id, sender_account_id, body, sent_at, read_at)
+         values ($1, $2, $3, $4, $5)`,
+        [conversationId, senderId, m.body, sentAt, readAt],
+      );
+      latestSentAt = sentAt;
+    }
+    if (latestSentAt) {
+      await pg.query(
+        `update nex_peer_conversation set last_message_at = $1 where id = $2`,
+        [latestSentAt, conversationId],
+      );
+    }
+    console.log(`  ✓ seeded ${refThread.length} reference messages with Maria`);
+  } else {
+    console.log(
+      `  · Maria conversation already has ${existingCount.rows[0]!.n} messages · skipping thread seed`,
+    );
+  }
+
+  // 6. Confirm count
   const cnt = await pg.query<{ n: string }>(
     `select count(*)::text as n from nex_friend_edge
       where (a_account_id = $1 or b_account_id = $1) and status = 'accepted'`,
