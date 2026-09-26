@@ -17,6 +17,7 @@ import { createNexAccountAction } from "../_actions";
 import { NexPasswordField } from "./_password-field";
 import { NexCreateSubmit } from "./_create-submit";
 import { NexPhoneField } from "./_phone-field";
+import { NexPageHeader } from "../_page-header";
 
 // Parse an ISO2 country hint from common geo/language headers so the
 // first server render already shows the right country prefix. Client-side
@@ -106,59 +107,21 @@ export default async function CreateAccountPage({ searchParams }: PageProps) {
         />
 
         <div style={{ position: "relative", maxWidth: 420, margin: "0 auto" }}>
-          {/* 1 · BACK BUTTON */}
-          <div style={{ paddingTop: "max(env(safe-area-inset-top, 0px), 8px)" }}>
-            <Link
-              href="/nex-native"
-              aria-label="Back"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 40,
-                height: 40,
-                borderRadius: "50%",
-                border: `1px solid ${NEX.cyanSoft}`,
-                background: "transparent",
-                color: NEX.cyan,
-                textDecoration: "none",
-              }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <polyline points="15 18 9 12 15 6" />
-              </svg>
-            </Link>
-          </div>
+          {/* Shared header · NEX brand (left) · search + gear (right) */}
+          <NexPageHeader dataScope="create-account" />
 
-          {/* 2 · NEX LOGO */}
-          <div style={{ marginTop: 28, textAlign: "center" }}>
-            <div
-              style={{
-                fontSize: 44,
-                lineHeight: 1,
-                letterSpacing: "0.08em",
-                fontWeight: 600,
-                display: "inline-flex",
-                alignItems: "baseline",
-                gap: 2,
-              }}
-              aria-label="NEX"
-            >
-              <span style={{ color: NEX.textPrimary }}>NE</span>
-              <span style={{ color: NEX.orange }}>X</span>
-            </div>
-            {/* 3 · NEX TAGLINE */}
-            <p
-              style={{
-                marginTop: 8,
-                fontSize: 12,
-                letterSpacing: "0.06em",
-                color: NEX.textSecondary,
-              }}
-            >
-              Your world is waiting.
-            </p>
-          </div>
+          {/* Tagline */}
+          <p
+            style={{
+              marginTop: 20,
+              textAlign: "center",
+              fontSize: 12,
+              letterSpacing: "0.06em",
+              color: NEX.textSecondary,
+            }}
+          >
+            Your world is waiting.
+          </p>
 
           {/* 4 · MAIN HEADING */}
           <header style={{ marginTop: 36, textAlign: "center" }}>

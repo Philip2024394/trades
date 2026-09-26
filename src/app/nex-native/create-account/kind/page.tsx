@@ -22,6 +22,7 @@ import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as accountProfileService from "@/lib/nex-native/account-profile-service";
 import { setProfileKindAction } from "../../_actions";
 import { NEX_ACCOUNT_KINDS, NEX_ACCOUNT_KIND_LABEL, type NexAccountKind } from "@/lib/nex-native/types";
+import { NexPageHeader } from "../../_page-header";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -92,34 +93,20 @@ export default async function KindPage({ searchParams }: PageProps) {
         />
 
         <div style={{ position: "relative", maxWidth: 480, margin: "0 auto" }}>
-          {/* Header echoes the create-account visual authority */}
-          <div style={{ marginTop: 28, textAlign: "center" }}>
-            <div
-              style={{
-                fontSize: 44,
-                lineHeight: 1,
-                letterSpacing: "0.08em",
-                fontWeight: 600,
-                display: "inline-flex",
-                alignItems: "baseline",
-                gap: 2,
-              }}
-              aria-label="NEX"
-            >
-              <span style={{ color: NEX.textPrimary }}>NE</span>
-              <span style={{ color: NEX.orange }}>X</span>
-            </div>
-            <p
-              style={{
-                marginTop: 8,
-                fontSize: 12,
-                letterSpacing: "0.06em",
-                color: NEX.textSecondary,
-              }}
-            >
-              One quick question.
-            </p>
-          </div>
+          {/* Shared header · NEX brand (left) · search + gear (right) */}
+          <NexPageHeader dataScope="create-account-kind" />
+
+          <p
+            style={{
+              marginTop: 20,
+              textAlign: "center",
+              fontSize: 12,
+              letterSpacing: "0.06em",
+              color: NEX.textSecondary,
+            }}
+          >
+            One quick question.
+          </p>
 
           <header style={{ marginTop: 36, textAlign: "center" }}>
             <h1

@@ -28,7 +28,7 @@ import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as friendService from "@/lib/nex-native/friend-service";
 import * as accountService from "@/lib/nex-native/account-service";
 import * as conversationService from "@/lib/nex-native/conversation-service";
-import { signOutAction } from "../_actions";
+import { NexPageHeader } from "../_page-header";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -40,6 +40,51 @@ const TAB_LABEL: Record<Tab, string> = {
   business: "Business",
   groups: "Groups",
 };
+
+// Preview mock cards · gated by NEX_ALLOW_DEV_ADMIN=1 so they render in
+// local development but never in production. Populate the visual design
+// while real friend / business / group data is still empty. Each card
+// carries a "PREVIEW" pill so nobody mistakes it for real state.
+const MOCK_FRIENDS = [
+  { name: "Maria Santos", handle: "nex-27418" },
+  { name: "Aisha Rahman", handle: "nex-52091" },
+  { name: "Kenji Tanaka", handle: "nex-38754" },
+  { name: "Lucas Ferreira", handle: "nex-15662" },
+  { name: "Priya Patel", handle: "nex-91280" },
+] as const;
+
+const MOCK_BUSINESSES = [
+  {
+    name: "Cake Shop Jogja",
+    slug: "cakeshopjogja",
+    subtitle: "New batch of sourdough this Saturday · save one?",
+    hoursAgo: 2,
+  },
+  {
+    name: "Bandung Bakery",
+    slug: "bandung-bakery",
+    subtitle: "Order confirmed · pickup 3pm tomorrow.",
+    hoursAgo: 6,
+  },
+  {
+    name: "Warung Nasi Padang",
+    slug: "warung-nasi-padang",
+    subtitle: "Payment received · terima kasih!",
+    hoursAgo: 24,
+  },
+  {
+    name: "Tukang Kayu Kreatif",
+    slug: "tukang-kayu-kreatif",
+    subtitle: "Custom shelf · 4 weeks turnaround · deposit ready?",
+    hoursAgo: 72,
+  },
+] as const;
+
+const MOCK_GROUPS = [
+  { name: "NEX Founders Circle", members: 12, subtitle: "Started by Maria · daily active" },
+  { name: "Bandung Coffee Meetup", members: 27, subtitle: "Meets Saturdays 10am" },
+  { name: "Bali Digital Nomads", members: 45, subtitle: "Coworking · rides · food tips" },
+] as const;
 
 interface PageProps {
   searchParams: Promise<{ tab?: string }>;
@@ -71,6 +116,8 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
   const activeTab: Tab = TABS.includes(sp.tab as Tab)
     ? (sp.tab as Tab)
     : "friends";
+  // Preview mocks · only in local development.
+  const showPreview = process.env.NEX_ALLOW_DEV_ADMIN === "1";
 
   // Load only the data for the active tab · keeps the page cheap.
   let friendCards: Array<{ id: string; name: string; handle: string | null; href: string }> = [];
@@ -161,77 +208,8 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
           }}
         />
         <div style={{ position: "relative", maxWidth: 480, margin: "0 auto" }}>
-          {/* Header */}
-          <header
-            style={{
-              paddingTop: "max(env(safe-area-inset-top, 0px), 8px)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 12,
-            }}
-          >
-            <Link
-              href="/nex-native/home"
-              aria-label="Back to home"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 40,
-                height: 40,
-                borderRadius: "50%",
-                border: `1px solid ${NEX.cyanSoft}`,
-                background: "transparent",
-                color: NEX.cyan,
-                textDecoration: "none",
-              }}
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden
-              >
-                <polyline points="15 18 9 12 15 6" />
-              </svg>
-            </Link>
-            <div
-              style={{
-                fontSize: 24,
-                letterSpacing: "0.08em",
-                fontWeight: 600,
-                display: "inline-flex",
-                alignItems: "baseline",
-                gap: 2,
-              }}
-              aria-label="NEX"
-            >
-              <span style={{ color: NEX.textPrimary }}>NE</span>
-              <span style={{ color: NEX.orange }}>X</span>
-            </div>
-            <form action={signOutAction}>
-              <button
-                type="submit"
-                style={{
-                  background: "transparent",
-                  color: NEX.textSecondary,
-                  border: "none",
-                  padding: 4,
-                  fontSize: 12,
-                  cursor: "pointer",
-                  textDecoration: "underline",
-                }}
-              >
-                sign out
-              </button>
-            </form>
-          </header>
+          {/* Shared header · magnifier (search) · NEX wordmark (home) · gear (settings) */}
+          <NexPageHeader dataScope="chat" />
 
           {/* Toggle bar · Friends · Business · Groups */}
           <nav
@@ -290,8 +268,26 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
           {/* Panel · landscape cards for the active tab */}
           <section style={{ marginTop: 22 }}>
             {activeTab === "friends" && (
-              <>
-                {friendCards.length === 0 ? (
+              <div style={{ display: "grid", gap: 12 }}>
+                {friendCards.map((c) => (
+                  <PersonCard
+                    key={c.id}
+                    href={c.href}
+                    name={c.name}
+                    subtitle={c.handle ?? `${c.id.slice(0, 8)}…`}
+                  />
+                ))}
+                {showPreview &&
+                  MOCK_FRIENDS.map((c, i) => (
+                    <PersonCard
+                      key={`mock-${i}`}
+                      href={null}
+                      name={c.name}
+                      subtitle={c.handle}
+                      preview
+                    />
+                  ))}
+                {friendCards.length === 0 && !showPreview && (
                   <EmptyState
                     icon="👥"
                     title="No friends yet"
@@ -299,24 +295,35 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                     ctaHref="/nex-native/friends"
                     ctaLabel="Manage friends"
                   />
-                ) : (
-                  <div style={{ display: "grid", gap: 12 }}>
-                    {friendCards.map((c) => (
-                      <PersonCard
-                        key={c.id}
-                        href={c.href}
-                        name={c.name}
-                        subtitle={c.handle ?? `${c.id.slice(0, 8)}…`}
-                      />
-                    ))}
-                  </div>
                 )}
-              </>
+              </div>
             )}
 
             {activeTab === "business" && (
-              <>
-                {businessCards.length === 0 ? (
+              <div style={{ display: "grid", gap: 12 }}>
+                {businessCards.map((c) => (
+                  <BusinessCard
+                    key={c.conversationId}
+                    href={`/nex-native/conversations/${c.conversationId}`}
+                    name={c.businessName}
+                    slug={c.slug}
+                    subtitle={c.subtitle}
+                    lastAt={c.lastAt}
+                  />
+                ))}
+                {showPreview &&
+                  MOCK_BUSINESSES.map((c, i) => (
+                    <BusinessCard
+                      key={`mock-${i}`}
+                      href={null}
+                      name={c.name}
+                      slug={c.slug}
+                      subtitle={c.subtitle}
+                      lastAt={new Date(Date.now() - c.hoursAgo * 3600_000).toISOString()}
+                      preview
+                    />
+                  ))}
+                {businessCards.length === 0 && !showPreview && (
                   <EmptyState
                     icon="🛍"
                     title="No business chats yet"
@@ -324,29 +331,30 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                     ctaHref="/nex-native/search"
                     ctaLabel="Find a business"
                   />
-                ) : (
-                  <div style={{ display: "grid", gap: 12 }}>
-                    {businessCards.map((c) => (
-                      <BusinessCard
-                        key={c.conversationId}
-                        href={`/nex-native/conversations/${c.conversationId}`}
-                        name={c.businessName}
-                        slug={c.slug}
-                        subtitle={c.subtitle}
-                        lastAt={c.lastAt}
-                      />
-                    ))}
-                  </div>
                 )}
-              </>
+              </div>
             )}
 
             {activeTab === "groups" && (
-              <EmptyState
-                icon="👨‍👩‍👧"
-                title="Groups coming soon"
-                body="Group chats are on the NEX roadmap. Until then, keep the conversations one-to-one."
-              />
+              <div style={{ display: "grid", gap: 12 }}>
+                {showPreview &&
+                  MOCK_GROUPS.map((c, i) => (
+                    <GroupCard
+                      key={`mock-${i}`}
+                      name={c.name}
+                      subtitle={c.subtitle}
+                      members={c.members}
+                      preview
+                    />
+                  ))}
+                {!showPreview && (
+                  <EmptyState
+                    icon="👨‍👩‍👧"
+                    title="Groups coming soon"
+                    body="Group chats are on the NEX roadmap. Until then, keep the conversations one-to-one."
+                  />
+                )}
+              </div>
             )}
           </section>
         </div>
@@ -356,29 +364,13 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
 }
 
 function PersonCard(props: {
-  href: string;
+  href: string | null;
   name: string;
   subtitle: string;
+  preview?: boolean;
 }) {
-  return (
-    <Link
-      href={props.href}
-      data-nex-chat-card
-      data-nex-chat-card-kind="person"
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 14,
-        padding: "14px 16px",
-        background: NEX.panel,
-        border: `1px solid ${NEX.cyanSoft}`,
-        borderRadius: 12,
-        textDecoration: "none",
-        color: NEX.textPrimary,
-        minHeight: 76,
-        transition: "border-color 200ms ease, box-shadow 200ms ease",
-      }}
-    >
+  const cardBody = (
+    <>
       <div
         aria-hidden
         style={{
@@ -400,14 +392,25 @@ function PersonCard(props: {
       <div style={{ minWidth: 0, flex: 1 }}>
         <div
           style={{
-            fontSize: 15,
-            fontWeight: 500,
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
+            display: "flex",
+            alignItems: "baseline",
+            gap: 8,
+            flexWrap: "wrap",
           }}
         >
-          {props.name}
+          <span
+            style={{
+              fontSize: 15,
+              fontWeight: 500,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              minWidth: 0,
+            }}
+          >
+            {props.name}
+          </span>
+          {props.preview && <PreviewPill />}
         </div>
         <div
           style={{
@@ -422,20 +425,62 @@ function PersonCard(props: {
       </div>
       <div
         aria-hidden
-        style={{ flexShrink: 0, color: NEX.cyan, fontSize: 18, lineHeight: 1 }}
+        style={{
+          flexShrink: 0,
+          color: props.preview ? NEX.textSecondary : NEX.cyan,
+          fontSize: 18,
+          lineHeight: 1,
+        }}
       >
         →
       </div>
+    </>
+  );
+  const style: React.CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    gap: 14,
+    padding: "14px 16px",
+    background: NEX.panel,
+    border: `1px solid ${props.preview ? "rgba(0,175,255,0.18)" : NEX.cyanSoft}`,
+    borderRadius: 12,
+    textDecoration: "none",
+    color: NEX.textPrimary,
+    minHeight: 76,
+    transition: "border-color 200ms ease, box-shadow 200ms ease",
+    opacity: props.preview ? 0.75 : 1,
+  };
+  if (!props.href) {
+    return (
+      <div
+        data-nex-chat-card
+        data-nex-chat-card-kind="person"
+        data-nex-chat-card-preview={props.preview ? "true" : undefined}
+        style={style}
+      >
+        {cardBody}
+      </div>
+    );
+  }
+  return (
+    <Link
+      href={props.href}
+      data-nex-chat-card
+      data-nex-chat-card-kind="person"
+      style={style}
+    >
+      {cardBody}
     </Link>
   );
 }
 
 function BusinessCard(props: {
-  href: string;
+  href: string | null;
   name: string;
   slug: string;
   subtitle: string;
   lastAt: string | null;
+  preview?: boolean;
 }) {
   const timeLabel = props.lastAt
     ? new Date(props.lastAt).toLocaleString(undefined, {
@@ -445,25 +490,8 @@ function BusinessCard(props: {
         minute: "2-digit",
       })
     : null;
-  return (
-    <Link
-      href={props.href}
-      data-nex-chat-card
-      data-nex-chat-card-kind="business"
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 14,
-        padding: "14px 16px",
-        background: NEX.panel,
-        border: `1px solid ${NEX.cyanSoft}`,
-        borderRadius: 12,
-        textDecoration: "none",
-        color: NEX.textPrimary,
-        minHeight: 76,
-        transition: "border-color 200ms ease, box-shadow 200ms ease",
-      }}
-    >
+  const cardBody = (
+    <>
       <div
         aria-hidden
         style={{
@@ -492,15 +520,26 @@ function BusinessCard(props: {
         >
           <div
             style={{
-              fontSize: 15,
-              fontWeight: 500,
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
+              display: "flex",
+              alignItems: "baseline",
+              gap: 8,
               minWidth: 0,
+              flex: 1,
             }}
           >
-            {props.name}
+            <span
+              style={{
+                fontSize: 15,
+                fontWeight: 500,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                minWidth: 0,
+              }}
+            >
+              {props.name}
+            </span>
+            {props.preview && <PreviewPill />}
           </div>
           {timeLabel && (
             <div
@@ -531,11 +570,168 @@ function BusinessCard(props: {
       </div>
       <div
         aria-hidden
-        style={{ flexShrink: 0, color: NEX.cyan, fontSize: 18, lineHeight: 1 }}
+        style={{
+          flexShrink: 0,
+          color: props.preview ? NEX.textSecondary : NEX.cyan,
+          fontSize: 18,
+          lineHeight: 1,
+        }}
       >
         →
       </div>
+    </>
+  );
+  const style: React.CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    gap: 14,
+    padding: "14px 16px",
+    background: NEX.panel,
+    border: `1px solid ${props.preview ? "rgba(0,175,255,0.18)" : NEX.cyanSoft}`,
+    borderRadius: 12,
+    textDecoration: "none",
+    color: NEX.textPrimary,
+    minHeight: 76,
+    transition: "border-color 200ms ease, box-shadow 200ms ease",
+    opacity: props.preview ? 0.75 : 1,
+  };
+  if (!props.href) {
+    return (
+      <div
+        data-nex-chat-card
+        data-nex-chat-card-kind="business"
+        data-nex-chat-card-preview={props.preview ? "true" : undefined}
+        style={style}
+      >
+        {cardBody}
+      </div>
+    );
+  }
+  return (
+    <Link
+      href={props.href}
+      data-nex-chat-card
+      data-nex-chat-card-kind="business"
+      style={style}
+    >
+      {cardBody}
     </Link>
+  );
+}
+
+function GroupCard(props: {
+  name: string;
+  subtitle: string;
+  members: number;
+  preview?: boolean;
+}) {
+  return (
+    <div
+      data-nex-chat-card
+      data-nex-chat-card-kind="group"
+      data-nex-chat-card-preview={props.preview ? "true" : undefined}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 14,
+        padding: "14px 16px",
+        background: NEX.panel,
+        border: `1px solid ${props.preview ? "rgba(0,175,255,0.18)" : NEX.cyanSoft}`,
+        borderRadius: 12,
+        color: NEX.textPrimary,
+        minHeight: 76,
+        opacity: props.preview ? 0.75 : 1,
+      }}
+    >
+      <div
+        aria-hidden
+        style={{
+          flexShrink: 0,
+          width: 48,
+          height: 48,
+          borderRadius: 12,
+          background: NEX.cyanFaint,
+          color: NEX.cyan,
+          display: "grid",
+          placeItems: "center",
+          fontSize: 22,
+          lineHeight: 1,
+        }}
+      >
+        👥
+      </div>
+      <div style={{ minWidth: 0, flex: 1 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+            gap: 8,
+            flexWrap: "wrap",
+          }}
+        >
+          <span
+            style={{
+              fontSize: 15,
+              fontWeight: 500,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              minWidth: 0,
+            }}
+          >
+            {props.name}
+          </span>
+          {props.preview && <PreviewPill />}
+        </div>
+        <div
+          style={{
+            marginTop: 2,
+            fontSize: 12,
+            color: NEX.textSecondary,
+            lineHeight: 1.4,
+          }}
+        >
+          <span style={{ color: NEX.cyan }}>{props.members} members</span>
+          {" · "}
+          {props.subtitle}
+        </div>
+      </div>
+      <div
+        aria-hidden
+        style={{
+          flexShrink: 0,
+          color: NEX.textSecondary,
+          fontSize: 18,
+          lineHeight: 1,
+        }}
+      >
+        →
+      </div>
+    </div>
+  );
+}
+
+function PreviewPill() {
+  return (
+    <span
+      aria-label="preview"
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        padding: "1px 6px",
+        fontSize: 9,
+        fontWeight: 600,
+        letterSpacing: "0.14em",
+        textTransform: "uppercase",
+        color: NEX.cyan,
+        border: `1px solid ${NEX.cyanSoft}`,
+        borderRadius: 4,
+        lineHeight: 1.3,
+        flexShrink: 0,
+      }}
+    >
+      Preview
+    </span>
   );
 }
 

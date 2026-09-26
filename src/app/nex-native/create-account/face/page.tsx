@@ -19,6 +19,7 @@ import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { listCredentialsForAccount } from "@/lib/nex-native/webauthn-service";
 import { FaceScanClient } from "./_face-scan-client";
+import { NexPageHeader } from "../../_page-header";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -83,34 +84,20 @@ export default async function FaceEnrolPage() {
         />
 
         <div style={{ position: "relative", maxWidth: 420, margin: "0 auto" }}>
-          {/* NEX wordmark */}
-          <div style={{ marginTop: 28, textAlign: "center" }}>
-            <div
-              style={{
-                fontSize: 40,
-                lineHeight: 1,
-                letterSpacing: "0.08em",
-                fontWeight: 600,
-                display: "inline-flex",
-                alignItems: "baseline",
-                gap: 2,
-              }}
-              aria-label="NEX"
-            >
-              <span style={{ color: NEX.textPrimary }}>NE</span>
-              <span style={{ color: NEX.orange }}>X</span>
-            </div>
-            <p
-              style={{
-                marginTop: 8,
-                fontSize: 12,
-                letterSpacing: "0.06em",
-                color: NEX.textSecondary,
-              }}
-            >
-              One quick option.
-            </p>
-          </div>
+          {/* Shared header · NEX brand (left) · search + gear (right) */}
+          <NexPageHeader dataScope="create-account-face" />
+
+          <p
+            style={{
+              marginTop: 20,
+              textAlign: "center",
+              fontSize: 12,
+              letterSpacing: "0.06em",
+              color: NEX.textSecondary,
+            }}
+          >
+            One quick option.
+          </p>
 
           <header style={{ marginTop: 24, textAlign: "center" }}>
             <h1

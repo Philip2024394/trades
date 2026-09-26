@@ -22,8 +22,8 @@ import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as accountProfileService from "@/lib/nex-native/account-profile-service";
 import * as businessService from "@/lib/nex-native/business-service";
-import { signOutAction } from "../_actions";
 import type { NexAccountKind } from "@/lib/nex-native/types";
+import { NexPageHeader } from "../_page-header";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -152,69 +152,29 @@ export default async function HomePage() {
         />
 
         <div style={{ position: "relative", maxWidth: 480, margin: "0 auto" }}>
-          {/* Header · NEX wordmark + who's signed in + sign-out */}
-          <header
+          {/* Shared header · magnifier (search) · NEX wordmark · gear (settings) */}
+          <NexPageHeader dataScope="home" />
+
+          {/* Welcome line beneath the shared header */}
+          <p
             style={{
-              paddingTop: "max(env(safe-area-inset-top, 0px), 8px)",
-              display: "flex",
-              alignItems: "flex-start",
-              justifyContent: "space-between",
-              gap: 16,
+              marginTop: 18,
+              textAlign: "center",
+              fontSize: 13,
+              color: NEX.textSecondary,
             }}
           >
-            <div>
-              <div
-                style={{
-                  fontSize: 32,
-                  lineHeight: 1,
-                  letterSpacing: "0.08em",
-                  fontWeight: 600,
-                  display: "inline-flex",
-                  alignItems: "baseline",
-                  gap: 2,
-                }}
-                aria-label="NEX"
-              >
-                <span style={{ color: NEX.textPrimary }}>NE</span>
-                <span style={{ color: NEX.orange }}>X</span>
-              </div>
-              <p
-                style={{
-                  marginTop: 8,
-                  fontSize: 13,
-                  color: NEX.textSecondary,
-                }}
-              >
-                Welcome back, {displayName}
-                {handle && (
-                  <>
-                    {" "}·{" "}
-                    <code style={{ fontFamily: "ui-monospace, monospace", color: NEX.cyan }}>
-                      {handle}
-                    </code>
-                  </>
-                )}
-                .
-              </p>
-            </div>
-            <form action={signOutAction}>
-              <button
-                type="submit"
-                style={{
-                  background: "transparent",
-                  color: NEX.textSecondary,
-                  border: "none",
-                  padding: 4,
-                  fontSize: 12,
-                  cursor: "pointer",
-                  textDecoration: "underline",
-                }}
-                data-nex-home-signout
-              >
-                sign out
-              </button>
-            </form>
-          </header>
+            Welcome back, <span style={{ color: NEX.textPrimary }}>{displayName}</span>
+            {handle && (
+              <>
+                {" "}·{" "}
+                <code style={{ fontFamily: "ui-monospace, monospace", color: NEX.cyan }}>
+                  {handle}
+                </code>
+              </>
+            )}
+            .
+          </p>
 
           {/* Three landscape doorways */}
           <div style={{ marginTop: 28, display: "grid", gap: 14 }}>

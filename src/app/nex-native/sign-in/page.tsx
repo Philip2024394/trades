@@ -16,6 +16,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { signInAction, signInAsDevAdminAction } from "../_actions";
+import { NexPageHeader } from "../_page-header";
 import { SignInFaceButton } from "./_face-button";
 
 export const runtime = "nodejs";
@@ -91,71 +92,24 @@ export default async function SignInPage({ searchParams }: PageProps) {
         />
 
         <div style={{ position: "relative", maxWidth: 420, margin: "0 auto" }}>
-          {/* 1 · BACK BUTTON */}
-          <div style={{ paddingTop: "max(env(safe-area-inset-top, 0px), 8px)" }}>
-            <Link
-              href="/nex-native"
-              aria-label="Back"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 40,
-                height: 40,
-                borderRadius: "50%",
-                border: `1px solid ${NEX.cyanSoft}`,
-                background: "transparent",
-                color: NEX.cyan,
-                textDecoration: "none",
-              }}
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden
-              >
-                <polyline points="15 18 9 12 15 6" />
-              </svg>
-            </Link>
-          </div>
+          {/* Shared header · NEX brand (left) · search + gear (right) */}
+          <NexPageHeader dataScope="sign-in" />
 
-          {/* 2 · NEX LOGO */}
-          <div style={{ marginTop: 28, textAlign: "center" }}>
-            <div
-              style={{
-                fontSize: 44,
-                lineHeight: 1,
-                letterSpacing: "0.08em",
-                fontWeight: 600,
-                display: "inline-flex",
-                alignItems: "baseline",
-                gap: 2,
-              }}
-              aria-label="NEX"
-            >
-              <span style={{ color: NEX.textPrimary }}>NE</span>
-              <span style={{ color: NEX.orange }}>X</span>
-            </div>
-            <p
-              style={{
-                marginTop: 8,
-                fontSize: 12,
-                letterSpacing: "0.06em",
-                color: NEX.textSecondary,
-              }}
-            >
-              Welcome back.
-            </p>
-          </div>
+          {/* Tagline */}
+          <p
+            style={{
+              marginTop: 20,
+              textAlign: "center",
+              fontSize: 12,
+              letterSpacing: "0.06em",
+              color: NEX.textSecondary,
+            }}
+          >
+            Welcome back.
+          </p>
 
-          {/* 3 · HEADLINE */}
-          <header style={{ marginTop: 32, textAlign: "center" }}>
+          {/* Headline */}
+          <header style={{ marginTop: 20, textAlign: "center" }}>
             <h1
               style={{
                 margin: 0,
