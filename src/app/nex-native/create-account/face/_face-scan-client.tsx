@@ -24,19 +24,14 @@
 // browser and never leaves the device.
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  startRegistration,
-  startAuthentication,
-} from "@simplewebauthn/browser";
-import type {
-  PublicKeyCredentialCreationOptionsJSON,
-  PublicKeyCredentialRequestOptionsJSON,
-} from "@simplewebauthn/browser";
+import { startRegistration } from "@simplewebauthn/browser";
+import type { PublicKeyCredentialCreationOptionsJSON } from "@simplewebauthn/browser";
 import { FaceDetector, FilesetResolver } from "@mediapipe/tasks-vision";
 
-interface Props {
-  mode: "enroll" | "assert";
-}
+// Enrolment-only after Founder decision 2026-09-26: face is a
+// post-signup fast-sign-in offer, never a sign-in surface itself.
+// Sign-in with face happens inline on /nex-native/sign-in via a
+// separate small button that goes straight to a WebAuthn assertion.
 
 type ScanState =
   | { kind: "idle" }
@@ -76,7 +71,7 @@ const MP_WASM_URL = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10/w
 const MP_FACE_MODEL_URL =
   "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/latest/blaze_face_short_range.tflite";
 
-export function FaceScanClient({ mode }: Props) {
+export function FaceScanClient() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const detectorRef = useRef<FaceDetector | null>(null);
@@ -193,68 +188,48 @@ export function FaceScanClient({ mode }: Props) {
     detectionRafRef.current = requestAnimationFrame(runDetectionFrame);
   }, []);
 
-  // WebAuthn ceremony · runs at countdown = 0.
+  // WebAuthn enrolment ceremony · runs at countdown = 0.
   const runWebAuthn = useCallback(async () => {
     stopDetectionLoop();
     setState({ kind: "webauthn_prompting" });
     try {
-      if (mode === "enroll") {
-        const startRes = await fetch("/api/nex-native/auth/webauthn/enroll-start", {
-          method: "POST",
-          credentials: "include",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({}),
-        });
-        if (!startRes.ok) throw new Error(await startRes.text().catch(() => `enroll-start ${startRes.status}`));
-        const startJson = (await startRes.json()) as {
-          options: PublicKeyCredentialCreationOptionsJSON;
-        };
-        const attestation = await startRegistration({ optionsJSON: startJson.options });
-        const finishRes = await fetch("/api/nex-native/auth/webauthn/enroll-finish", {
-          method: "POST",
-          credentials: "include",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({
-            response: attestation,
-            deviceLabel:
-              typeof navigator !== "undefined" ? navigator.platform || null : null,
-          }),
-        });
-        if (!finishRes.ok) throw new Error(await finishRes.text().catch(() => `enroll-finish ${finishRes.status}`));
-        setState({ kind: "success", redirect: "/nex-native/settings/profile" });
-      } else {
-        const startRes = await fetch("/api/nex-native/auth/webauthn/assert-start", {
-          method: "POST",
-          credentials: "include",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({}),
-        });
-        if (!startRes.ok) throw new Error(await startRes.text().catch(() => `assert-start ${startRes.status}`));
-        const startJson = (await startRes.json()) as {
-          options: PublicKeyCredentialRequestOptionsJSON;
-        };
-        const assertion = await startAuthentication({ optionsJSON: startJson.options });
-        const finishRes = await fetch("/api/nex-native/auth/webauthn/assert-finish", {
-          method: "POST",
-          credentials: "include",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({ response: assertion }),
-        });
-        if (!finishRes.ok) throw new Error(await finishRes.text().catch(() => `assert-finish ${finishRes.status}`));
-        const finishJson = (await finishRes.json()) as { redirect?: string };
-        setState({ kind: "success", redirect: finishJson.redirect ?? "/nex-native/conversations" });
-      }
+      const startRes = await fetch("/api/nex-native/auth/webauthn/enroll-start", {
+        method: "POST",
+        credentials: "include",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({}),
+      });
+      if (!startRes.ok) throw new Error(await startRes.text().catch(() => `enroll-start ${startRes.status}`));
+      const startJson = (await startRes.json()) as {
+        options: PublicKeyCredentialCreationOptionsJSON;
+      };
+      const attestation = await startRegistration({ optionsJSON: startJson.options });
+      const finishRes = await fetch("/api/nex-native/auth/webauthn/enroll-finish", {
+        method: "POST",
+        credentials: "include",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          response: attestation,
+          deviceLabel:
+            typeof navigator !== "undefined" ? navigator.platform || null : null,
+        }),
+      });
+      if (!finishRes.ok) throw new Error(await finishRes.text().catch(() => `enroll-finish ${finishRes.status}`));
+      // Success · the enroll-finish endpoint has set the nex-has-face
+      // device cookie so /sign-in on this device will show the face
+      // sign-in button on return visits.
+      setState({ kind: "success", redirect: "/nex-native/home" });
     } catch (e) {
       setState({
         kind: "error",
         message:
           (e instanceof Error ? e.message : String(e)).slice(0, 240) ||
-          "Face sign-in failed · try password sign in.",
+          "Face enrolment failed · use password to continue.",
       });
     } finally {
       stopCamera();
     }
-  }, [mode, stopCamera, stopDetectionLoop]);
+  }, [stopCamera, stopDetectionLoop]);
 
   // Countdown ticker · 3 → 2 → 1 → run WebAuthn.
   useEffect(() => {
@@ -574,8 +549,7 @@ export function FaceScanClient({ mode }: Props) {
                 ? "Hold still"
                 : "Aligning face…")}
           {state.kind === "webauthn_prompting" && "Confirm with your device"}
-          {state.kind === "success" &&
-            (mode === "enroll" ? "Enrolled" : "Signed in")}
+          {state.kind === "success" && "Enrolled"}
           {state.kind === "error" && "Try again"}
         </div>
       </div>
@@ -602,17 +576,11 @@ export function FaceScanClient({ mode }: Props) {
         }}
         data-nex-face-scan-button
       >
-        {mode === "enroll"
-          ? state.kind === "idle" || state.kind === "error"
-            ? "Scan face"
-            : state.kind === "success"
-              ? "Enrolled"
-              : "Scanning…"
-          : state.kind === "idle" || state.kind === "error"
-            ? "Scan face to sign in"
-            : state.kind === "success"
-              ? "Signed in"
-              : "Scanning…"}
+        {state.kind === "idle" || state.kind === "error"
+          ? "Scan face and remember me"
+          : state.kind === "success"
+            ? "Enrolled"
+            : "Scanning…"}
       </button>
 
       {!webauthnSupported && (

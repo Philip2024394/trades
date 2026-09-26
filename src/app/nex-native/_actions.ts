@@ -214,8 +214,8 @@ export async function signInAction(formData: FormData): Promise<ActionResult> {
   if (error) {
     redirectToSignInWithError("sign_in_failed", error.message);
   }
-  revalidatePath("/nex-native/conversations");
-  redirect("/nex-native/conversations");
+  revalidatePath("/nex-native/home");
+  redirect("/nex-native/home");
 }
 
 /** One-click dev-only sign-in as the provisioned Dev Admin account. Gated
@@ -239,8 +239,8 @@ export async function signInAsDevAdminAction(_formData: FormData): Promise<never
       `${error.message} · run 'npx tsx scripts/nex-provision-dev-admin.mts' to provision the dev account`,
     );
   }
-  revalidatePath("/nex-native/conversations");
-  redirect("/nex-native/conversations");
+  revalidatePath("/nex-native/home");
+  redirect("/nex-native/home");
 }
 
 export async function signUpAction(formData: FormData): Promise<ActionResult> {
@@ -315,15 +315,15 @@ export async function signUpAction(formData: FormData): Promise<ActionResult> {
       "check your email for a confirmation link before signing in"
     );
   }
-  revalidatePath("/nex-native/conversations");
-  redirect("/nex-native/conversations");
+  revalidatePath("/nex-native/home");
+  redirect("/nex-native/home");
 }
 
 export async function signOutAction(): Promise<never> {
   const supabase = await nexAppSsrServerClient();
   await supabase.auth.signOut();
-  revalidatePath("/nex-native/conversations");
-  redirect("/nex-native/conversations");
+  revalidatePath("/nex-native/sign-in");
+  redirect("/nex-native/sign-in");
 }
 
 // ---------------------------------------------------------------------------
@@ -2266,7 +2266,10 @@ export async function setProfileKindAction(formData: FormData): Promise<never> {
   }
   revalidatePath("/nex-native/conversations");
   revalidatePath("/nex-native/settings/profile");
-  redirect("/nex-native/conversations");
+  // Post-signup chain: kind → face enrolment offer → inbox. The face
+  // page presents a deliberate two-button consent · users who don't
+  // want biometric enrolment can decline there and land on /conversations.
+  redirect("/nex-native/create-account/face");
 }
 
 function parseCsvList(raw: string): string[] {

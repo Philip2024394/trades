@@ -141,7 +141,7 @@ export async function POST(req: Request) {
 
   const res = NextResponse.json({
     ok: true,
-    redirect: "/nex-native/conversations",
+    redirect: "/nex-native/home",
     account_id: stored.account_id,
   });
   res.cookies.set({

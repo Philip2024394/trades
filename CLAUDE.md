@@ -47,6 +47,40 @@ At session start, verify with `git rev-parse --show-toplevel` and
 ## End canonical repository rule
 ## ═══════════════════════════════════════════════════════════════
 
+## ═══════════════════════════════════════════════════════════════
+## THREE DOORWAYS · signed-in home doctrine · sealed 2026-09-26
+## ═══════════════════════════════════════════════════════════════
+
+**Softens the earlier "Chat is the product" landing.** A signed-in
+NEX user lands at **`/nex-native/home`** — a three-doorway hub with
+these landscape buttons:
+
+1. 💬 **Chat with friends** → `/nex-native/conversations`
+2. 🛍 **My shop / My work / My journey** (adaptive to
+   `nex_account_profile.kind`) → `/manage` · `/onboarding` · `/settings/profile`
+3. 📊 **Account health & stats** → `/settings/profile` (future: dedicated /stats)
+
+Chat, shop, and account are equal doorways. Chat is no longer THE
+front door; it's one of three. This does **not** repudiate the
+existing chat surfaces — it just stops privileging Chat as the
+landing.
+
+**Post-auth landing:** every successful sign-in / sign-up /
+face-enrolment flow lands on `/nex-native/home` (never `/conversations`).
+
+**Signed-out bounces:** every authed-only surface redirects
+unauthenticated visitors to `/nex-native/sign-in` (never
+`/conversations`).
+
+**Tile 2 label adapts to** `nex_account_profile.kind`:
+- `business_owner` · `other` · null → **My shop**
+- `professional` → **My work**
+- `student` · `seeking_work` · `exploring` → **My journey**
+
+## ═══════════════════════════════════════════════════════════════
+## End three-doorways doctrine
+## ═══════════════════════════════════════════════════════════════
+
 
 ## ═══════════════════════════════════════════════════════════════
 ## NEX PRODUCT CONSTITUTION · Read BEFORE writing any code

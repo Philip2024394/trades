@@ -13,8 +13,10 @@
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
-import { signInAction } from "../_actions";
+import { signInAction, signInAsDevAdminAction } from "../_actions";
+import { SignInFaceButton } from "./_face-button";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -37,10 +39,16 @@ const NEX = {
 
 export default async function SignInPage({ searchParams }: PageProps) {
   const session = await resolveNexAppSessionFromContext();
-  if (session) redirect("/nex-native/conversations");
+  if (session) redirect("/nex-native/home");
 
   const params = await searchParams;
   const banner = params.e && params.m ? { code: params.e, message: params.m } : null;
+
+  // Only render the SIGN IN WITH FACE button on devices where enrolment
+  // happened. The cookie carries no PII · it's a boolean device hint
+  // set by /api/nex-native/auth/webauthn/enroll-finish.
+  const jar = await cookies();
+  const hasFaceOnDevice = jar.get("nex-has-face")?.value === "1";
 
   return (
     <>
@@ -246,50 +254,31 @@ export default async function SignInPage({ searchParams }: PageProps) {
             </button>
           </form>
 
-          {/* 7 · OR DIVIDER */}
-          <div
-            style={{
-              marginTop: 22,
-              display: "grid",
-              gridTemplateColumns: "1fr auto 1fr",
-              alignItems: "center",
-              gap: 12,
-              color: NEX.cyan,
-              fontSize: 12,
-              letterSpacing: "0.14em",
-            }}
-          >
-            <span style={{ height: 1, background: NEX.cyanFaint }} />
-            <span>OR</span>
-            <span style={{ height: 1, background: NEX.cyanFaint }} />
-          </div>
+          {/* 7 · OR DIVIDER + FACE BUTTON · only rendered on devices where
+               enrolment already happened (nex-has-face cookie). New devices
+               and never-enrolled users get password-only, no dead button. */}
+          {hasFaceOnDevice && (
+            <>
+              <div
+                style={{
+                  marginTop: 22,
+                  display: "grid",
+                  gridTemplateColumns: "1fr auto 1fr",
+                  alignItems: "center",
+                  gap: 12,
+                  color: NEX.cyan,
+                  fontSize: 12,
+                  letterSpacing: "0.14em",
+                }}
+              >
+                <span style={{ height: 1, background: NEX.cyanFaint }} />
+                <span>OR</span>
+                <span style={{ height: 1, background: NEX.cyanFaint }} />
+              </div>
 
-          {/* 8 · SIGN IN WITH FACE */}
-          <Link
-            href="/nex-native/create-account/face"
-            style={{
-              marginTop: 18,
-              display: "inline-flex",
-              width: "100%",
-              minHeight: 48,
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 10,
-              padding: "12px 18px",
-              background: NEX.panel,
-              color: NEX.cyan,
-              border: `1px solid ${NEX.cyanSoft}`,
-              borderRadius: 8,
-              textDecoration: "none",
-              fontSize: 13,
-              fontWeight: 500,
-              letterSpacing: "0.16em",
-            }}
-            data-nex-sign-in-face
-          >
-            <FaceScanIcon />
-            SIGN IN WITH FACE
-          </Link>
+              <SignInFaceButton />
+            </>
+          )}
 
           {/* 9 · CREATE ACCOUNT LINK */}
           <p
@@ -312,6 +301,56 @@ export default async function SignInPage({ searchParams }: PageProps) {
               Create one
             </Link>
           </p>
+
+          {/* Dev-admin bypass · gated by NEX_ALLOW_DEV_ADMIN=1 in
+              .env.local · never exposed in production · one-click
+              sign-in as the provisioned dev-admin@nex-native.local */}
+          {process.env.NEX_ALLOW_DEV_ADMIN === "1" && (
+            <form
+              action={signInAsDevAdminAction}
+              style={{
+                marginTop: 28,
+                padding: 12,
+                border: `1px dashed ${NEX.orange}`,
+                borderRadius: 8,
+                background: "rgba(255,114,0,0.05)",
+              }}
+            >
+              <p
+                style={{
+                  margin: "0 0 8px",
+                  fontSize: 11,
+                  color: NEX.textSecondary,
+                  lineHeight: 1.4,
+                }}
+              >
+                <strong style={{ color: NEX.orange }}>Dev mode</strong> · one-click
+                sign-in as{" "}
+                <code style={{ fontFamily: "ui-monospace, monospace" }}>
+                  dev-admin@nex-native.local
+                </code>
+                . Disabled in production.
+              </p>
+              <button
+                type="submit"
+                style={{
+                  width: "100%",
+                  minHeight: 40,
+                  background: "transparent",
+                  color: NEX.orange,
+                  border: `1px solid ${NEX.orange}`,
+                  borderRadius: 6,
+                  fontSize: 12,
+                  fontWeight: 500,
+                  letterSpacing: "0.08em",
+                  cursor: "pointer",
+                }}
+                data-nex-sign-in-dev-admin
+              >
+                SIGN IN AS DEV ADMIN
+              </button>
+            </form>
+          )}
         </div>
       </main>
     </>
@@ -353,26 +392,4 @@ function Field(props: { label: string; children: React.ReactNode }) {
   );
 }
 
-function FaceScanIcon() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M4 8V6a2 2 0 0 1 2-2h2" />
-      <path d="M16 4h2a2 2 0 0 1 2 2v2" />
-      <path d="M20 16v2a2 2 0 0 1-2 2h-2" />
-      <path d="M8 20H6a2 2 0 0 1-2-2v-2" />
-      <path d="M9 10h.01" />
-      <path d="M15 10h.01" />
-      <path d="M9.5 15c.5.5 1.5 1 2.5 1s2-.5 2.5-1" />
-    </svg>
-  );
-}
+// FaceScanIcon moved into _face-button.tsx alongside the button that uses it.

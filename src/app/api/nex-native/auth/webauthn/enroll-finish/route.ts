@@ -81,6 +81,7 @@ export async function POST(req: Request) {
   }
 
   const res = NextResponse.json({ ok: true });
+  // Clear the challenge cookie now that enrolment succeeded.
   res.cookies.set({
     name: "nex-webauthn-enroll-challenge",
     value: "",
@@ -88,6 +89,20 @@ export async function POST(req: Request) {
     sameSite: "strict",
     path: "/api/nex-native/auth/webauthn",
     maxAge: 0,
+    secure: cfg.origin.startsWith("https://"),
+  });
+  // Mark this device as having a face credential so /nex-native/sign-in
+  // can render the "SIGN IN WITH FACE" button only on devices where the
+  // ceremony has a realistic chance of succeeding. The cookie carries no
+  // identity; it's a boolean hint scoped to the device (Apple/Google's
+  // Face ID appears on the enrolled device only, same pattern).
+  res.cookies.set({
+    name: "nex-has-face",
+    value: "1",
+    httpOnly: false,
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 365,
     secure: cfg.origin.startsWith("https://"),
   });
   return res;

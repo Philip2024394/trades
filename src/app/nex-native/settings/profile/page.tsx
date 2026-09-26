@@ -41,7 +41,7 @@ const SUCCESS_CODES = new Set(["profile_saved"]);
 
 export default async function Page({ searchParams }: PageProps) {
   const session = await resolveNexAppSessionFromContext();
-  if (!session) redirect("/nex-native/conversations");
+  if (!session) redirect("/nex-native/sign-in");
   const params = await searchParams;
   const banner = params.e && params.m ? { code: params.e, message: params.m } : null;
   const isSuccess = banner ? SUCCESS_CODES.has(banner.code) : false;

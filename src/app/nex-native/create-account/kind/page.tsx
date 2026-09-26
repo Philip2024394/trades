@@ -46,7 +46,7 @@ const NEX = {
 export default async function KindPage({ searchParams }: PageProps) {
   const session = await resolveNexAppSessionFromContext();
   if (!session) {
-    redirect("/nex-native/conversations");
+    redirect("/nex-native/sign-in");
   }
 
   const params = await searchParams;

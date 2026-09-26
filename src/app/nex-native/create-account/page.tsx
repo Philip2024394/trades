@@ -57,7 +57,7 @@ const NEX = {
 
 export default async function CreateAccountPage({ searchParams }: PageProps) {
   const session = await resolveNexAppSessionFromContext();
-  if (session) redirect("/nex-native/conversations");
+  if (session) redirect("/nex-native/home");
   const params = await searchParams;
   const authError = params.e && params.m ? { code: params.e, message: params.m } : null;
   const initialIso2 = readCountryHint(await headers());

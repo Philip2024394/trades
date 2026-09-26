@@ -1,21 +1,21 @@
 // src/app/nex-native/create-account/face/page.tsx
 //
-// NEX face sign-in surface.
+// NEX face enrolment · post-signup convenience offer.
 // -------------------------------------------------------------------------
-// Same dark-navy visual authority as /nex-native/create-account. Owns the
-// framing (back button, NEX wordmark, headline) and delegates the actual
-// interactive scan to <FaceScanClient>, which handles:
-//   · round blue rim (SVG)
-//   · pixel-head silhouette (idle)
-//   · vertical scan line (always)
-//   · live camera preview (during scan)
-//   · WebAuthn ceremony via @simplewebauthn/browser
+// This page is reached AFTER account creation. It is not a sign-in
+// surface. Signed-out visitors are bounced to /nex-native/sign-in so
+// they never see the enrolment prompt before they have an account.
 //
-// The surface auto-selects mode based on session:
-//   · signed-in    → "enroll" · adds a face credential to the account
-//   · signed-out   → "assert" · signs the user in with an existing face
+// The page presents a deliberate two-button consent:
+//   · Scan face and remember me   (primary orange · full ceremony)
+//   · I'll use password           (secondary outlined · skip → inbox)
+//
+// Face sign-in is a *fast return* affordance. The OS platform
+// authenticator remembers the biometric; NEX only stores the opaque
+// credential material returned by WebAuthn.
 
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { listCredentialsForAccount } from "@/lib/nex-native/webauthn-service";
 import { FaceScanClient } from "./_face-scan-client";
@@ -33,31 +33,27 @@ const NEX = {
   orange: "#FF7200",
 };
 
-export default async function FacePage() {
+export default async function FaceEnrolPage() {
   const session = await resolveNexAppSessionFromContext();
-  const mode: "enroll" | "assert" = session ? "enroll" : "assert";
-
-  // For enroll mode, tell the visitor whether they've already enrolled.
-  let alreadyEnrolled = false;
-  if (session) {
-    try {
-      const list = await listCredentialsForAccount(session.account.id);
-      alreadyEnrolled = list.length > 0;
-    } catch { /* non-fatal */ }
+  if (!session) {
+    // Face enrolment is only meaningful for an authenticated NEX
+    // account. Signed-out visitors go to the sign-in surface.
+    redirect("/nex-native/sign-in");
   }
 
-  const headline =
-    mode === "enroll"
-      ? alreadyEnrolled
-        ? "Add another face"
-        : "Enrol your face"
-      : "Sign in with your face";
-  const subtitle =
-    mode === "enroll"
-      ? alreadyEnrolled
-        ? "You already have face sign-in on this account · adding another device works too."
-        : "Your device stores the biometric · NEX only remembers that you passed."
-      : "Look at the camera · your device confirms it&rsquo;s you.";
+  // Detect a repeat visitor who has already enrolled on some device.
+  let alreadyEnrolled = false;
+  try {
+    const list = await listCredentialsForAccount(session.account.id);
+    alreadyEnrolled = list.length > 0;
+  } catch { /* non-fatal */ }
+
+  const headline = alreadyEnrolled
+    ? "Add another device for fast sign-in"
+    : "Fast sign-in next time?";
+  const subtitle = alreadyEnrolled
+    ? "You already have face sign-in on another device. Add this one to sign in from it the same way."
+    : "NEX can remember you on this device. Next time you sign in, look at the camera instead of typing your password.";
 
   return (
     <>
@@ -87,32 +83,8 @@ export default async function FacePage() {
         />
 
         <div style={{ position: "relative", maxWidth: 420, margin: "0 auto" }}>
-          {/* Back button */}
-          <div style={{ paddingTop: "max(env(safe-area-inset-top, 0px), 8px)" }}>
-            <Link
-              href={mode === "enroll" ? "/nex-native/settings/profile" : "/nex-native/create-account"}
-              aria-label="Back"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 40,
-                height: 40,
-                borderRadius: "50%",
-                border: `1px solid ${NEX.cyanSoft}`,
-                background: "transparent",
-                color: NEX.cyan,
-                textDecoration: "none",
-              }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <polyline points="15 18 9 12 15 6" />
-              </svg>
-            </Link>
-          </div>
-
           {/* NEX wordmark */}
-          <div style={{ marginTop: 20, textAlign: "center" }}>
+          <div style={{ marginTop: 28, textAlign: "center" }}>
             <div
               style={{
                 fontSize: 40,
@@ -136,11 +108,10 @@ export default async function FacePage() {
                 color: NEX.textSecondary,
               }}
             >
-              Face sign-in
+              One quick option.
             </p>
           </div>
 
-          {/* Headline */}
           <header style={{ marginTop: 24, textAlign: "center" }}>
             <h1
               style={{
@@ -160,56 +131,52 @@ export default async function FacePage() {
                 color: NEX.textSecondary,
                 lineHeight: 1.5,
               }}
-              dangerouslySetInnerHTML={{ __html: subtitle }}
-            />
+            >
+              {subtitle}
+            </p>
           </header>
 
-          {/* Interactive scan · client component */}
-          <FaceScanClient mode={mode} />
+          {/* Interactive scan · client component · primary orange button
+              lives inside it labelled "Scan face and remember me" */}
+          <FaceScanClient />
 
-          {/* Secondary action · sign-out visitors get a full-width
-              "Password sign in" button parallel to the "Scan face" one;
-              signed-in enrollers get a plain "Skip for now" link. */}
-          {mode === "assert" ? (
-            <Link
-              href="/nex-native/sign-in"
-              style={{
-                marginTop: 14,
-                display: "inline-flex",
-                width: "100%",
-                minHeight: 48,
-                alignItems: "center",
-                justifyContent: "center",
-                background: "transparent",
-                color: NEX.cyan,
-                border: `1px solid ${NEX.cyanSoft}`,
-                borderRadius: 8,
-                fontSize: 14,
-                fontWeight: 500,
-                letterSpacing: "0.06em",
-                textDecoration: "none",
-              }}
-              data-nex-face-password-signin
-            >
-              Password sign in
-            </Link>
-          ) : (
-            <p
-              style={{
-                marginTop: 22,
-                textAlign: "center",
-                fontSize: 13,
-                color: NEX.textSecondary,
-              }}
-            >
-              <Link
-                href="/nex-native/settings/profile"
-                style={{ color: NEX.textSecondary, textDecoration: "underline" }}
-              >
-                Skip for now
-              </Link>
-            </p>
-          )}
+          {/* Secondary action · explicit consent to use password only */}
+          <Link
+            href="/nex-native/home"
+            style={{
+              marginTop: 14,
+              display: "inline-flex",
+              width: "100%",
+              minHeight: 48,
+              alignItems: "center",
+              justifyContent: "center",
+              background: "transparent",
+              color: NEX.cyan,
+              border: `1px solid ${NEX.cyanSoft}`,
+              borderRadius: 8,
+              fontSize: 14,
+              fontWeight: 500,
+              letterSpacing: "0.06em",
+              textDecoration: "none",
+            }}
+            data-nex-face-decline
+          >
+            I&rsquo;ll use password
+          </Link>
+
+          <p
+            style={{
+              marginTop: 18,
+              textAlign: "center",
+              fontSize: 11,
+              color: NEX.textSecondary,
+              lineHeight: 1.5,
+            }}
+          >
+            Your face never leaves this device. NEX stores only the encrypted
+            confirmation that your device recognises you. You can turn it off
+            in settings any time.
+          </p>
         </div>
       </main>
     </>
