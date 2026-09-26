@@ -399,20 +399,30 @@ export function PortraitBloomShell({
                     alignSelf: m.mine ? "flex-end" : "flex-start",
                     maxWidth: "78%",
                     padding: "11px 14px 9px",
-                    borderRadius: 20,
+                    // Directional tail · sharp corner points toward the
+                    // sender. Outgoing: bottom-right sharp. Incoming:
+                    // bottom-left sharp.
+                    borderRadius: m.mine
+                      ? "18px 18px 4px 18px"
+                      : "18px 18px 18px 4px",
+                    // Relaxed glass · gray fill, neon-cyan rim, soft
+                    // outer glow. Reads as "premium NEX" not "loud
+                    // messenger blue".
                     background: m.mine
-                      ? "linear-gradient(120deg, #087FFF 0%, #6945F5 100%)"
+                      ? "rgba(120,140,180,0.14)"
                       : NEX.glassBubble,
-                    backdropFilter: m.mine ? "none" : "blur(14px)",
-                    WebkitBackdropFilter: m.mine ? "none" : "blur(14px)",
-                    border: m.mine ? "none" : `1px solid ${NEX.glassBorder}`,
+                    backdropFilter: "blur(14px)",
+                    WebkitBackdropFilter: "blur(14px)",
+                    border: m.mine
+                      ? "1px solid rgba(0,159,239,0.85)"
+                      : `1px solid ${NEX.glassBorder}`,
                     color: NEX.text,
                     fontSize: 15,
                     lineHeight: 1.42,
                     whiteSpace: "pre-wrap",
                     wordBreak: "break-word",
                     boxShadow: m.mine
-                      ? "0 10px 28px rgba(8,127,255,0.35)"
+                      ? "0 0 14px rgba(0,159,239,0.25), 0 6px 20px rgba(0,0,0,0.45)"
                       : "0 6px 22px rgba(0,0,0,0.55)",
                   }}
                 >
