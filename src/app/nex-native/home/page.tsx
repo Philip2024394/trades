@@ -66,6 +66,16 @@ function shopTile(kind: NexAccountKind | null, hasBusiness: boolean): TileCopy {
       subtitle: "Skills · availability · what you&rsquo;re looking for",
     };
   }
+  if (kind === "reseller") {
+    return {
+      href: hasBusiness ? "/nex-native/manage" : "/nex-native/onboarding",
+      emoji: "🛒",
+      title: "My reselling",
+      subtitle: hasBusiness
+        ? "List products · update stock · manage orders"
+        : "Set up your reselling shop · start with your first product",
+    };
+  }
   // business_owner · other · null → shop path
   return {
     href: hasBusiness ? "/nex-native/manage" : "/nex-native/onboarding",
@@ -81,9 +91,11 @@ function healthTile(kind: NexAccountKind | null): TileCopy {
   const subtitle =
     kind === "business_owner"
       ? "Orders · products · profile completeness"
-      : kind === "professional"
-        ? "Enquiries · profile completeness · endorsements"
-        : "Profile completeness · connections · activity";
+      : kind === "reseller"
+        ? "Sales · commissions · profile completeness"
+        : kind === "professional"
+          ? "Enquiries · profile completeness · endorsements"
+          : "Profile completeness · connections · activity";
   return {
     href: "/nex-native/settings/profile",
     emoji: "📊",

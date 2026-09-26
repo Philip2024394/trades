@@ -63,10 +63,12 @@ export interface NexAccountInsert {
 // ---------------------------------------------------------------------------
 
 /** The "what best describes what you do?" onboarding answer set.
- *  Matches the CHECK constraint in migration 042. */
+ *  Matches the CHECK constraint in migration 042 (with `reseller` added
+ *  by migration 044). */
 export type NexAccountKind =
   | "professional"
   | "business_owner"
+  | "reseller"
   | "student"
   | "seeking_work"
   | "exploring"
@@ -75,6 +77,7 @@ export type NexAccountKind =
 export const NEX_ACCOUNT_KINDS: readonly NexAccountKind[] = [
   "professional",
   "business_owner",
+  "reseller",
   "student",
   "seeking_work",
   "exploring",
@@ -86,6 +89,7 @@ export const NEX_ACCOUNT_KINDS: readonly NexAccountKind[] = [
 export const NEX_ACCOUNT_KIND_LABEL: Record<NexAccountKind, string> = {
   professional: "I have a profession",
   business_owner: "I run a business",
+  reseller: "I resell products",
   student: "I'm a student",
   seeking_work: "I'm looking for work",
   exploring: "I'm exploring / between professions",
