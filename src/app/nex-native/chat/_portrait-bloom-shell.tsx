@@ -251,37 +251,35 @@ export function PortraitBloomShell({
           }}
         />
 
-        {/* Identity overlay · top-left · sealed 2026-09-27:
-            back arrow and "NEX Chat" tag intentionally removed per
-            Founder direction. Navigation is via swipe/browser back
-            until a new affordance lands. */}
+        {/* Identity overlay · top-left · compact so the portrait can
+            breathe and messages get more room. Sealed 2026-09-27. */}
         <div
           style={{
             position: "relative",
             zIndex: 3,
             padding:
-              "calc(env(safe-area-inset-top, 0) + 18px) 22px 0",
+              "calc(env(safe-area-inset-top, 0) + 14px) 20px 0",
             textShadow: "0 2px 20px rgba(0,0,0,0.75)",
           }}
         >
           <div
             style={{
-              fontSize: 11,
-              letterSpacing: "0.16em",
+              fontSize: 10,
+              letterSpacing: "0.14em",
               textTransform: "uppercase",
               opacity: 0.85,
               color: presenceKind === "online" ? NEX.cyan : NEX.textDim,
               display: "inline-flex",
               alignItems: "center",
-              gap: 8,
+              gap: 6,
             }}
           >
             <span
               aria-hidden
               style={{
                 display: "inline-block",
-                width: 8,
-                height: 8,
+                width: 7,
+                height: 7,
                 borderRadius: "50%",
                 background:
                   presenceKind === "online"
@@ -300,11 +298,11 @@ export function PortraitBloomShell({
           </div>
           <div
             style={{
-              fontSize: 34,
+              fontSize: 22,
               fontWeight: 700,
-              marginTop: 4,
-              lineHeight: 1.05,
-              letterSpacing: "-0.01em",
+              marginTop: 2,
+              lineHeight: 1.1,
+              letterSpacing: "-0.005em",
             }}
           >
             {displayName}
@@ -312,9 +310,9 @@ export function PortraitBloomShell({
           {subtitle && (
             <div
               style={{
-                marginTop: 6,
-                fontSize: 14,
-                color: "rgba(244,247,252,0.85)",
+                marginTop: 2,
+                fontSize: 12,
+                color: "rgba(244,247,252,0.78)",
                 whiteSpace: "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
@@ -326,21 +324,21 @@ export function PortraitBloomShell({
           {contextChip && (
             <div
               style={{
-                marginTop: 10,
+                marginTop: 6,
                 display: "inline-flex",
                 alignItems: "center",
-                gap: 8,
-                padding: "6px 12px",
+                gap: 6,
+                padding: "4px 10px",
                 borderRadius: 999,
                 background: "rgba(0,159,239,0.14)",
                 border: "1px solid rgba(0,159,239,0.4)",
                 color: NEX.text,
-                fontSize: 12,
+                fontSize: 11,
                 letterSpacing: "0.02em",
                 textShadow: "none",
               }}
             >
-              <span style={{ opacity: 0.75, fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase" }}>About</span>
+              <span style={{ opacity: 0.75, fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase" }}>About</span>
               <span style={{ fontWeight: 600 }}>{contextChip.label}</span>
               {contextChip.sublabel && (
                 <>
@@ -448,17 +446,18 @@ export function PortraitBloomShell({
           </div>
         </section>
 
-        {/* Composer · glass footer */}
+        {/* Composer · glass footer · clearly anchored input area */}
         <div
           style={{
             position: "relative",
             zIndex: 4,
             padding:
-              "12px 16px calc(env(safe-area-inset-bottom, 0) + 14px)",
+              "14px 16px calc(env(safe-area-inset-bottom, 0) + 14px)",
             background:
-              "linear-gradient(180deg, rgba(2,9,20,0) 0%, rgba(2,9,20,0.65) 40%, rgba(2,9,20,0.95) 100%)",
+              "linear-gradient(180deg, rgba(2,9,20,0.65) 0%, rgba(2,9,20,0.92) 40%, rgba(2,9,20,0.98) 100%)",
             backdropFilter: "blur(20px)",
             WebkitBackdropFilter: "blur(20px)",
+            borderTop: "1px solid rgba(0,159,239,0.18)",
           }}
         >
           <div style={{ maxWidth: 480, margin: "0 auto" }}>
