@@ -493,6 +493,153 @@ export async function uploadPeerAttachmentAction(
   redirect(`/nex-native/chat/peer/${peerAccountId}?${qs.toString()}`);
 }
 
+/** Bridge 13b · turn shop Away mode on. Owner-only · reads
+ *  away_until (YYYY-MM-DD) + optional away_message from the form.
+ *  Redirects back to /manage/shop with a banner. */
+export async function setBusinessAwayModeAction(
+  businessId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const business = await businessService.getBusinessById(businessId);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirect(
+      "/nex-native/manage/shop?e=away_forbidden&m=" +
+        encodeURIComponent("You don't own this shop"),
+    );
+  }
+
+  const awayUntilRaw = String(formData.get("away_until") ?? "").trim();
+  const awayMessage =
+    String(formData.get("away_message") ?? "").trim() || null;
+  // Client sends YYYY-MM-DD from <input type="date"> · normalise to
+  // an ISO timestamp at end-of-day so "back on the 5th" behaves as
+  // expected (i.e. away through the whole 4th).
+  const awayUntil = awayUntilRaw
+    ? new Date(awayUntilRaw + "T23:59:59Z").toISOString()
+    : null;
+
+  try {
+    await sellerResponsivenessService.setAwayMode(businessId, {
+      awayUntil,
+      awayMessage,
+    });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      "/nex-native/manage/shop?e=away_failed&m=" + encodeURIComponent(msg),
+    );
+  }
+  revalidatePath("/nex-native/manage/shop");
+  revalidatePath(`/nex-native/${business.slug}`);
+  redirect(
+    "/nex-native/manage/shop?e=away_on&m=" +
+      encodeURIComponent(
+        awayUntil
+          ? `Away mode on · back on ${new Date(awayUntil).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })}`
+          : "Away mode on",
+      ),
+  );
+}
+
+/** Bridge 13b · end shop Away mode · owner-only. */
+export async function endBusinessAwayModeAction(
+  businessId: string,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const business = await businessService.getBusinessById(businessId);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirect(
+      "/nex-native/manage/shop?e=away_forbidden&m=" +
+        encodeURIComponent("You don't own this shop"),
+    );
+  }
+
+  try {
+    await sellerResponsivenessService.endAwayMode(businessId);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      "/nex-native/manage/shop?e=away_failed&m=" + encodeURIComponent(msg),
+    );
+  }
+  revalidatePath("/nex-native/manage/shop");
+  revalidatePath(`/nex-native/${business.slug}`);
+  redirect(
+    "/nex-native/manage/shop?e=away_off&m=" +
+      encodeURIComponent("Away mode off · shop is active"),
+  );
+}
+
+/** Bridge 13b · update a single product's stock_status · owner-only.
+ *  Called by the pill toggles on /manage/shop. */
+export async function updateProductStockStatusAction(
+  productId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const stockStatusRaw = String(
+    formData.get("stock_status") ?? "",
+  ).trim();
+  const allowed = new Set([
+    "in_stock",
+    "low_stock",
+    "made_to_order",
+    "sold_out",
+  ]);
+  if (!allowed.has(stockStatusRaw)) {
+    redirect(
+      "/nex-native/manage/shop?e=stock_failed&m=" +
+        encodeURIComponent("Unknown stock status"),
+    );
+  }
+
+  const product = await productService.getProductById(productId);
+  if (!product) {
+    redirect(
+      "/nex-native/manage/shop?e=stock_failed&m=" +
+        encodeURIComponent("Product not found"),
+    );
+  }
+  const business = await businessService.getBusinessById(product.business_id);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirect(
+      "/nex-native/manage/shop?e=stock_forbidden&m=" +
+        encodeURIComponent("You don't own this product"),
+    );
+  }
+
+  try {
+    await productService.updateProductStockStatus(
+      productId,
+      stockStatusRaw as "in_stock" | "low_stock" | "made_to_order" | "sold_out",
+    );
+    // Any product edit counts as seller activity · keeps the shop's
+    // green pulse honest even when the seller isn't chatting.
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      "/nex-native/manage/shop?e=stock_failed&m=" + encodeURIComponent(msg),
+    );
+  }
+  revalidatePath("/nex-native/manage/shop");
+  revalidatePath(`/nex-native/${business.slug}`);
+  revalidatePath(`/nex-native/${business.slug}/${productId}`);
+  redirect(
+    "/nex-native/manage/shop?e=stock_ok&m=" +
+      encodeURIComponent(`${product.name} · ${stockStatusRaw.replace("_", " ")}`),
+  );
+}
+
 /** Bridge 6 · retract a peer message ("delete for everyone").
  *  Sender-only within a 1-hour window · service enforces both. */
 /** Bridge 11 · send a product inquiry from the peer's shop into the
