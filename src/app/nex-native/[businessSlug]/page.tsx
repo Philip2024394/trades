@@ -83,14 +83,19 @@ export default async function Page({
           top: 0,
           zIndex: 10,
           padding:
-            "calc(env(safe-area-inset-top, 0) + 12px) 16px 10px",
+            "calc(env(safe-area-inset-top, 0) + 12px) 16px 12px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          background:
-            "linear-gradient(180deg, rgba(2,9,20,0.85) 0%, rgba(2,9,20,0.55) 60%, rgba(2,9,20,0) 100%)",
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
+          // Solid dark shade so the header always reads as a proper
+          // container, even over bright hero photos. Backdrop blur
+          // softens what's behind. Hairline bottom border separates
+          // header from content below.
+          background: "rgba(3,16,29,0.82)",
+          borderBottom: `1px solid ${NEX.border}`,
+          backdropFilter: "blur(14px) saturate(1.15)",
+          WebkitBackdropFilter: "blur(14px) saturate(1.15)",
+          boxShadow: "0 4px 18px rgba(0,0,0,0.4)",
         }}
       >
         {/* Brand · NE (white) + X (orange) · matches the create-account
