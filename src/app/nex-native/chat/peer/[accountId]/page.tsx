@@ -35,6 +35,7 @@ import type {
   PendingInvite,
 } from "../../_side-nav-panel";
 import * as businessService from "@/lib/nex-native/business-service";
+import * as productService from "@/lib/nex-native/product-service";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -100,17 +101,38 @@ export default async function PeerChatPage({
   const bindDelete = deletePeerMessageAction.bind(null, peer.id);
   const bindUpload = uploadPeerAttachmentAction.bind(null, peer.id);
 
-  // Bridge · side-nav rail · does the peer own a business? If so, the
-  // rail shows a shop icon that (for now) opens a placeholder pointing
-  // at their public storefront · Bridge 11 will replace with an
-  // inline product picker.
+  // Bridge · shop icon in header · when the peer owns a business
+  // with live products, the header renders a shop button that
+  // opens the product grid modal. Fully fails safe · any service
+  // error just hides the shop icon.
   const peerBusinesses = await businessService
     .listBusinessesByOwner(peer.id)
     .catch(() => [] as Awaited<ReturnType<typeof businessService.listBusinessesByOwner>>);
-  const peerShop = peerBusinesses[0] ?? null;
-  const peerShopHref = peerShop?.slug
-    ? `/nex-native/${peerShop.slug}`
-    : null;
+  const peerBusiness = peerBusinesses[0] ?? null;
+  const peerProducts = peerBusiness
+    ? await productService
+        .listProductsByBusiness(peerBusiness.id, "live")
+        .catch(() => [] as Awaited<ReturnType<typeof productService.listProductsByBusiness>>)
+    : [];
+  const peerShop =
+    peerBusiness && peerProducts.length > 0
+      ? {
+          name: peerBusiness.display_name,
+          href: peerBusiness.slug
+            ? `/nex-native/${peerBusiness.slug}`
+            : null,
+          products: peerProducts.map((p) => ({
+            id: p.id,
+            name: p.name,
+            description: p.description ?? null,
+            price_pence: p.price_pence,
+            currency: p.currency,
+            image_url: p.image_url ?? null,
+            tags: p.tags ?? null,
+            stock_status: p.stock_status ?? null,
+          })),
+        }
+      : null;
 
   // Bridge 8+9 · resolve the pending attachment from URL state.
   const attachUrl = sp.attachment_url?.trim() || null;
@@ -288,8 +310,7 @@ export default async function PeerChatPage({
       deleteAction={bindDelete}
       uploadAction={bindUpload}
       pendingAttachment={pendingAttachment}
-      peerHasShop={!!peerShop}
-      peerShopHref={peerShopHref}
+      peerShop={peerShop}
       composerPlaceholder={`Message ${peer.display_name}…`}
       headerTag="NEX Chat"
       contacts={contacts}

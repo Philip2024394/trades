@@ -77,39 +77,25 @@ export interface PendingInvite {
 interface SideNavPanelProps {
   contacts: SideNavContact[];
   pendingInvites: PendingInvite[];
-  /** When true, the shop button renders as the second rail slot.
-   *  The click handler currently opens a "coming with Bridge 11"
-   *  placeholder · will become the inline product picker. */
-  peerHasShop?: boolean;
-  /** Public NEX handle of the peer's business · when supplied, the
-   *  shop placeholder can offer a "Open shop page →" fallback link
-   *  to their public storefront. */
-  peerShopHref?: string | null;
 }
 
 export function SideNavPanel({
   contacts,
   pendingInvites,
-  peerHasShop,
-  peerShopHref,
 }: SideNavPanelProps) {
   const [contactsOpen, setContactsOpen] = React.useState(false);
-  const [shopOpen, setShopOpen] = React.useState(false);
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => setMounted(true), []);
 
   React.useEffect(() => {
-    if (!contactsOpen && !shopOpen) return;
+    if (!contactsOpen) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setContactsOpen(false);
-        setShopOpen(false);
-      }
+      if (e.key === "Escape") setContactsOpen(false);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [contactsOpen, shopOpen]);
+  }, [contactsOpen]);
 
   const inviteCount = pendingInvites.length;
 
@@ -130,23 +116,25 @@ export function SideNavPanel({
         }
       `}</style>
 
-      {/* The rail itself · fixed to viewport right so bubble width
-          is never compressed · z-index 5 sits above bubbles + ripple
-          but below drawer + modals. */}
+      {/* Rail · fixed to viewport right at vertical center. Narrow
+          (36px buttons) with white icons so it reads as a subtle
+          overlay chip rather than a heavy nav bar. Founder direction
+          2026-09-27 · "movedown center · reduce width · icons white". */}
       <div
         role="toolbar"
         aria-label="Chat side navigation"
         style={{
           position: "fixed",
-          right: 10,
-          top: "calc(env(safe-area-inset-top, 0) + 100px)",
+          right: 8,
+          top: "50%",
+          transform: "translateY(-50%)",
           display: "flex",
           flexDirection: "column",
-          gap: 6,
-          padding: 5,
+          gap: 4,
+          padding: 4,
           background: NEX.railBg,
           border: `1px solid ${NEX.cyanBorder}`,
-          borderRadius: 26,
+          borderRadius: 22,
           backdropFilter: "blur(14px) saturate(1.2)",
           WebkitBackdropFilter: "blur(14px) saturate(1.2)",
           boxShadow:
@@ -162,16 +150,6 @@ export function SideNavPanel({
         >
           <HomeIcon />
         </RailLink>
-
-        {peerHasShop && (
-          <RailButton
-            ariaLabel="Browse peer's shop"
-            title="Shop"
-            onClick={() => setShopOpen(true)}
-          >
-            <ShopIcon />
-          </RailButton>
-        )}
 
         <RailButton
           ariaLabel="Show chat contacts"
@@ -189,15 +167,6 @@ export function SideNavPanel({
             contacts={contacts}
             pendingInvites={pendingInvites}
             onClose={() => setContactsOpen(false)}
-          />,
-          document.body,
-        )}
-
-      {shopOpen && mounted &&
-        createPortal(
-          <ShopPlaceholder
-            onClose={() => setShopOpen(false)}
-            shopHref={peerShopHref ?? null}
           />,
           document.body,
         )}
@@ -226,12 +195,12 @@ function RailButton({
       onClick={onClick}
       style={{
         position: "relative",
-        width: 40,
-        height: 40,
+        width: 36,
+        height: 36,
         borderRadius: "50%",
         background: "transparent",
         border: "none",
-        color: NEX.orange,
+        color: NEX.text, // white
         padding: 0,
         display: "grid",
         placeItems: "center",
@@ -239,7 +208,7 @@ function RailButton({
         transition: "background 160ms ease",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.background = "rgba(0,159,239,0.14)";
+        e.currentTarget.style.background = "rgba(255,255,255,0.10)";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.background = "transparent";
@@ -290,18 +259,18 @@ function RailLink({
       aria-label={ariaLabel}
       title={title}
       style={{
-        width: 40,
-        height: 40,
+        width: 36,
+        height: 36,
         borderRadius: "50%",
         background: "transparent",
-        color: NEX.orange,
+        color: NEX.text, // white
         display: "grid",
         placeItems: "center",
         textDecoration: "none",
         transition: "background 160ms ease",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.background = "rgba(0,159,239,0.14)";
+        e.currentTarget.style.background = "rgba(255,255,255,0.10)";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.background = "transparent";
@@ -309,127 +278,6 @@ function RailLink({
     >
       {children}
     </Link>
-  );
-}
-
-function ShopPlaceholder({
-  onClose,
-  shopHref,
-}: {
-  onClose: () => void;
-  shopHref: string | null;
-}) {
-  return (
-    <>
-      <div
-        role="button"
-        aria-label="Close shop"
-        onClick={onClose}
-        style={{
-          position: "fixed",
-          inset: 0,
-          background: "rgba(2,9,20,0.65)",
-          backdropFilter: "blur(10px)",
-          WebkitBackdropFilter: "blur(10px)",
-          zIndex: 999,
-          animation: "nex-nav-fade 200ms ease-out both",
-        }}
-      />
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label="Peer's shop"
-        style={{
-          position: "fixed",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "min(320px, calc(100vw - 32px))",
-          padding: "24px 20px 18px",
-          background: NEX.panelSolid,
-          border: `1px solid ${NEX.cyanSoft}`,
-          borderRadius: 22,
-          zIndex: 1000,
-          boxShadow:
-            "0 24px 60px rgba(0,0,0,0.65), 0 0 40px rgba(0,159,239,0.14)",
-          color: NEX.text,
-          fontFamily: "inherit",
-          textAlign: "center",
-          animation: "nex-nav-panel-in 220ms cubic-bezier(.2,.7,.2,1) both",
-        }}
-      >
-        <div style={{ fontSize: 48, marginBottom: 10 }} aria-hidden>
-          🛍️
-        </div>
-        <div
-          style={{
-            fontSize: 13,
-            fontWeight: 700,
-            marginBottom: 6,
-            letterSpacing: "0.02em",
-          }}
-        >
-          Shop · coming inline
-        </div>
-        <div
-          style={{
-            fontSize: 12,
-            color: NEX.textDim,
-            lineHeight: 1.55,
-            marginBottom: 16,
-          }}
-        >
-          Browsing their products{" "}
-          <span style={{ color: NEX.cyan, fontWeight: 600 }}>
-            inside the chat
-          </span>
-          {" "}ships with Bridge 11 · attach a product card to your next
-          message with one tap.
-        </div>
-        <div style={{ display: "flex", gap: 8 }}>
-          <button
-            type="button"
-            onClick={onClose}
-            style={{
-              flex: 1,
-              padding: "10px",
-              borderRadius: 10,
-              background: "rgba(0,0,0,0.35)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              color: NEX.text,
-              fontSize: 12,
-              fontWeight: 600,
-              cursor: "pointer",
-              fontFamily: "inherit",
-            }}
-          >
-            Close
-          </button>
-          {shopHref && (
-            <Link
-              href={shopHref}
-              onClick={onClose}
-              style={{
-                flex: 1,
-                padding: "10px",
-                borderRadius: 10,
-                background:
-                  "linear-gradient(180deg, rgba(0,159,239,0.35) 0%, rgba(0,159,239,0.22) 100%)",
-                border: `1px solid ${NEX.cyanSoft}`,
-                color: NEX.text,
-                fontSize: 12,
-                fontWeight: 700,
-                textDecoration: "none",
-                textAlign: "center",
-                letterSpacing: "0.04em",
-              }}
-            >
-              Open shop →
-            </Link>
-          )}
-        </div>
-      </div>
-    </>
   );
 }
 
@@ -913,26 +761,6 @@ function HomeIcon() {
     >
       <path d="M3 12l9-9 9 9" />
       <path d="M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10" />
-    </svg>
-  );
-}
-
-function ShopIcon() {
-  return (
-    <svg
-      width={22}
-      height={22}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.9}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-      <line x1="3" y1="6" x2="21" y2="6" />
-      <path d="M16 10a4 4 0 01-8 0" />
     </svg>
   );
 }

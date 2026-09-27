@@ -28,6 +28,8 @@ import {
 } from "./_side-nav-panel";
 import { AmbientMotion } from "./_ambient-motion";
 import { FirstConnectionEmpty } from "./_first-connection-empty";
+import { ShopGridModal, type ShopProduct } from "./_shop-grid-modal";
+import { ShopHeaderButton } from "./_shop-header-button";
 
 const NEX = {
   bg: "#020914",
@@ -161,14 +163,14 @@ export interface PortraitBloomShellProps {
     kind: "image" | "video" | "audio";
     clearHref: string;
   } | null;
-  /** When true, the side nav rail includes a shop icon that opens
-   *  a placeholder (Bridge 11 will wire it to the inline product
-   *  picker). Set by the peer chat page after checking whether the
-   *  peer owns a nex_business row. */
-  peerHasShop?: boolean;
-  /** Optional public shop URL · shown as an "Open shop →" fallback
-   *  from the placeholder while Bridge 11 is still pending. */
-  peerShopHref?: string | null;
+  /** When present, the header renders a shop icon top-right that
+   *  opens the peer's product grid modal. Populated by the peer
+   *  chat page after fetching the peer's live products. */
+  peerShop?: {
+    name: string;
+    href: string | null;
+    products: ShopProduct[];
+  } | null;
   /** Optional theme wallpaper · painted behind the message zone as
    *  a soft, dimmed layer so the theme picks up an atmosphere
    *  distinct from the peer's profile image. Sealed 2026-09-27 ·
@@ -211,8 +213,7 @@ export function PortraitBloomShell({
   wallpaperConfig,
   uploadAction,
   pendingAttachment,
-  peerHasShop,
-  peerShopHref,
+  peerShop,
 }: PortraitBloomShellProps) {
   const isOffline = presenceKind !== "online";
   // Per-element theme colours · fall back to rippleColor (accent)
@@ -417,11 +418,11 @@ export function PortraitBloomShell({
             position: "relative",
             zIndex: 3,
             flexShrink: 0,
-            /* Right padding leaves room for the floating side nav
-               rail (docked at right: 10px, 50px wide) so the header
-               text never underlaps the rail's home icon. */
+            /* Right padding leaves room for the header shop button
+               (40px round at right:12px) when the peer has a shop.
+               Rail lives at 50% vertical, doesn't touch the header. */
             padding:
-              "calc(env(safe-area-inset-top, 0) + 14px) 68px 12px 20px",
+              "calc(env(safe-area-inset-top, 0) + 14px) 62px 12px 20px",
             textShadow: "0 2px 20px rgba(0,0,0,0.75)",
           }}
         >
@@ -983,8 +984,13 @@ export function PortraitBloomShell({
         <SideNavPanel
           contacts={contacts}
           pendingInvites={pendingInvites ?? []}
-          peerHasShop={peerHasShop}
-          peerShopHref={peerShopHref}
+        />
+      )}
+      {peerShop && (
+        <ShopHeaderButton
+          shopName={peerShop.name}
+          shopHref={peerShop.href}
+          products={peerShop.products}
         />
       )}
     </>
