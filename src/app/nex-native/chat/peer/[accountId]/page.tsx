@@ -21,7 +21,10 @@ import * as friendService from "@/lib/nex-native/friend-service";
 import * as peerConversationService from "@/lib/nex-native/peer-conversation-service";
 import * as peerMessageService from "@/lib/nex-native/peer-message-service";
 import * as chatThemeService from "@/lib/nex-native/chat-theme-service";
-import { sendPeerMessageAction } from "../../../_actions";
+import {
+  sendPeerMessageAction,
+  deletePeerMessageAction,
+} from "../../../_actions";
 import {
   PortraitBloomShell,
   type PortraitBloomPresenceKind,
@@ -44,13 +47,22 @@ export default async function PeerChatPage({
   searchParams,
 }: {
   params: Promise<{ accountId: string }>;
-  searchParams: Promise<{ online?: string; reply?: string }>;
+  searchParams: Promise<{
+    online?: string;
+    reply?: string;
+    delete_error?: string;
+  }>;
 }) {
   const { accountId: peerAccountId } = await params;
   const sp = await searchParams;
   // Presence Bridge isn't built yet · query param toggle for preview.
   const isOffline = sp.online === "0";
   const replyId = sp.reply?.trim() || null;
+  // Bridge 6 · surfaced by deletePeerMessageAction on retract failure.
+  // Parsed for future banner surface · currently only observable via
+  // the URL (the confirm modal closes, the message remains). Wiring
+  // a proper toast is a follow-up.
+  void sp.delete_error;
 
   const session = await resolveNexAppSessionFromContext();
   if (!session) redirect("/nex-native/sign-in");
@@ -80,6 +92,7 @@ export default async function PeerChatPage({
   ]);
 
   const bind = sendPeerMessageAction.bind(null, peer.id);
+  const bindDelete = deletePeerMessageAction.bind(null, peer.id);
 
   // Resolve peer's theme colours · bubble rims + composer rim +
   // ripple. Multi-colour themes (Rose etc.) supply per-element hex
@@ -202,10 +215,13 @@ export default async function PeerChatPage({
       reply_to_id: m.reply_to_id ?? null,
       reply_preview: quoted
         ? {
-            body: quoted.body,
+            body: quoted.deleted_for_everyone
+              ? "🚫 This message was deleted"
+              : quoted.body,
             mine: quoted.sender_account_id === session.account.id,
           }
         : null,
+      deleted_for_everyone: !!m.deleted_for_everyone,
     };
   });
 
@@ -223,6 +239,7 @@ export default async function PeerChatPage({
       backHref="/nex-native/chat"
       messages={bloomMessages}
       composerAction={bind}
+      deleteAction={bindDelete}
       composerPlaceholder={`Message ${peer.display_name}…`}
       headerTag="NEX Chat"
       contacts={contacts}
@@ -230,7 +247,10 @@ export default async function PeerChatPage({
       replyTarget={(() => {
         if (!replyId) return null;
         const target = messages.find((m) => m.id === replyId);
-        if (!target) return null;
+        // Silently drop the reply target when the message is gone
+        // or has been retracted · quoting a deleted message would
+        // leak the original body back into the send flow.
+        if (!target || target.deleted_for_everyone) return null;
         return {
           id: target.id,
           body: target.body,

@@ -32,7 +32,18 @@ export interface NexPeerMessageRow {
   /** When non-null, this message is a reply that quotes the target
    *  peer message. Introduced Bridge 5 · migration 052. */
   reply_to_id: NexUuid | null;
+  /** Set to true when the sender retracts the message. UI renders a
+   *  "🚫 deleted" placeholder in its slot. Body is preserved for
+   *  audit. Sealed Bridge 6 · migration 053. */
+  deleted_for_everyone: boolean;
+  /** When the retraction happened. */
+  deleted_at: string | null;
 }
+
+/** Window in which a sender can still retract a message. WhatsApp
+ *  uses roughly 1 hour · we match that. Beyond the window the
+ *  service refuses to delete. */
+export const NEX_PEER_MESSAGE_DELETE_WINDOW_MS = 60 * 60 * 1000;
 
 export interface SendPeerMessageInput {
   conversation_id: NexUuid;
@@ -156,6 +167,56 @@ export async function markPeerMessagesRead(
     // eslint-disable-next-line no-console
     console.warn(
       `peer-message-service.markPeerMessagesRead soft-fail: ${error.message}`,
+    );
+  }
+}
+
+/** Retract a peer message · "delete for everyone". Sender-only,
+ *  within a 1-hour window from send time. Sets deleted_for_everyone
+ *  + deleted_at · body is preserved for audit. Throws with clear
+ *  reasons the Server Action can surface as user-facing banners. */
+export async function deletePeerMessageForEveryone(
+  messageId: NexUuid,
+  viewerAccountId: NexUuid,
+): Promise<void> {
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_peer_message")
+    .select("id, sender_account_id, sent_at, deleted_for_everyone")
+    .eq("id", messageId)
+    .maybeSingle();
+  if (error) {
+    throw new Error(
+      `peer-message-service.deletePeerMessageForEveryone lookup: ${error.message}`,
+    );
+  }
+  if (!data) {
+    throw new Error("message not found");
+  }
+  const row = data as Pick<
+    NexPeerMessageRow,
+    "sender_account_id" | "sent_at" | "deleted_for_everyone"
+  > & { id: NexUuid };
+  if (row.deleted_for_everyone) {
+    // Idempotent · already deleted · nothing to do.
+    return;
+  }
+  if (row.sender_account_id !== viewerAccountId) {
+    throw new Error("only the sender can delete this message");
+  }
+  const age = Date.now() - new Date(row.sent_at).getTime();
+  if (age > NEX_PEER_MESSAGE_DELETE_WINDOW_MS) {
+    throw new Error(
+      "delete window has passed · you can retract messages within an hour",
+    );
+  }
+  const now = new Date().toISOString();
+  const upd = await nexSupabaseAdmin
+    .from("nex_peer_message")
+    .update({ deleted_for_everyone: true, deleted_at: now })
+    .eq("id", messageId);
+  if (upd.error) {
+    throw new Error(
+      `peer-message-service.deletePeerMessageForEveryone update: ${upd.error.message}`,
     );
   }
 }

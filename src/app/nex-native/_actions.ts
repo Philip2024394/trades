@@ -423,6 +423,34 @@ export async function sendPeerMessageAction(
   redirect(`/nex-native/chat/peer/${peerAccountId}`);
 }
 
+/** Bridge 6 · retract a peer message ("delete for everyone").
+ *  Sender-only within a 1-hour window · service enforces both. */
+export async function deletePeerMessageAction(
+  peerAccountId: string,
+  formData: FormData,
+): Promise<never> {
+  const messageId = String(formData.get("message_id") ?? "").trim();
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+  if (!messageId) redirect(`/nex-native/chat/peer/${peerAccountId}`);
+
+  try {
+    await peerMessageService.deletePeerMessageForEveryone(
+      messageId,
+      session.account.id,
+    );
+  } catch (e) {
+    // Failure surfaces in the URL as a small banner. Keeps the send
+    // path simple · no throw across the server boundary.
+    const msg = e instanceof Error ? e.message : String(e);
+    const qs = new URLSearchParams({ delete_error: msg });
+    redirect(`/nex-native/chat/peer/${peerAccountId}?${qs.toString()}`);
+  }
+
+  revalidatePath(`/nex-native/chat/peer/${peerAccountId}`);
+  redirect(`/nex-native/chat/peer/${peerAccountId}`);
+}
+
 // ---------------------------------------------------------------------------
 // Onboarding · create business + first product
 // ---------------------------------------------------------------------------

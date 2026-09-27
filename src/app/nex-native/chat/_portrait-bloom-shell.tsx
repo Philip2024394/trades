@@ -61,6 +61,10 @@ export interface PortraitBloomMessage {
      *  was the peer · lets the quote header show "You" vs peer name */
     mine: boolean;
   } | null;
+  /** Bridge 6 · when true, the sender retracted this message. The
+   *  bubble renders a "🚫 This message was deleted" placeholder in
+   *  its slot instead of the body. */
+  deleted_for_everyone?: boolean;
 }
 
 export interface PortraitBloomContextChip {
@@ -131,6 +135,11 @@ export interface PortraitBloomShellProps {
     peerName: string;
     clearHref: string;
   } | null;
+  /** Bridge 6 · Server Action bound with the peer id. When present,
+   *  long-press on your own bubble (< 1 hour old) opens a confirm
+   *  modal that submits this action with a hidden `message_id`.
+   *  Omit on surfaces that don't yet support retract. */
+  deleteAction?: (formData: FormData) => Promise<never> | void | Promise<void>;
 }
 
 export function PortraitBloomShell({
@@ -150,6 +159,7 @@ export function PortraitBloomShell({
   contacts,
   pendingInvites,
   replyTarget,
+  deleteAction,
 }: PortraitBloomShellProps) {
   const isOffline = presenceKind !== "online";
   // Per-element theme colours · fall back to rippleColor (accent)
@@ -173,6 +183,11 @@ export function PortraitBloomShell({
           background: ${NEX.bg} !important;
           overflow: hidden;
           overscroll-behavior: none;
+          /* Belt-and-braces horizontal lock · bubble swipe gestures
+             translate up to 96px · without this a wide iPhone could
+             show a hairline of horizontal scroll. */
+          max-width: 100vw;
+          overflow-x: hidden;
         }
         @keyframes nex-bloom-msg-in {
           from { opacity: 0; transform: translateY(8px); }
@@ -565,26 +580,39 @@ export function PortraitBloomShell({
                         {formatDayLabel(m.sent_at)}
                       </div>
                     )}
-                    <MessageBubbleClient messageId={m.id} mine={m.mine}>
+                    <MessageBubbleClient
+                      messageId={m.id}
+                      mine={m.mine}
+                      sentAtMs={new Date(m.sent_at).getTime()}
+                      deletedForEveryone={!!m.deleted_for_everyone}
+                      deleteAction={deleteAction}
+                    >
                     <div
                       data-nex-bloom-msg
                       data-nex-bloom-msg-mine={m.mine ? "true" : undefined}
+                      data-nex-bloom-msg-deleted={
+                        m.deleted_for_everyone ? "true" : undefined
+                      }
                       data-nex-msg-id={m.id}
                       style={{
                         position: "relative",
                         alignSelf: m.mine ? "flex-end" : "flex-start",
                         maxWidth: "78%",
-                        padding: showTimestamp
-                          ? "11px 14px 9px"
-                          : "10px 14px",
+                        padding: m.deleted_for_everyone
+                          ? "9px 14px"
+                          : showTimestamp
+                            ? "11px 14px 9px"
+                            : "10px 14px",
                         marginTop,
                         borderRadius: 18,
                         // Darker shaded glass · bubbles carry a
                         // distinctly dark tint so they read as their
                         // own containers over the portrait.
-                        background: m.mine
-                          ? "rgba(12,32,58,0.62)"
-                          : NEX.glassBubble,
+                        background: m.deleted_for_everyone
+                          ? "rgba(20,26,38,0.48)"
+                          : m.mine
+                            ? "rgba(12,32,58,0.62)"
+                            : NEX.glassBubble,
                         backdropFilter: "blur(24px) saturate(1.2)",
                         WebkitBackdropFilter: "blur(24px) saturate(1.2)",
                         // Outgoing bubble rim adopts the peer's
@@ -592,20 +620,51 @@ export function PortraitBloomShell({
                         // 2026-09-27. Incoming bubble rim stays a
                         // neutral frosted gray so the other person's
                         // messages read as content, not as another
-                        // identity paint layer.
-                        border: m.mine
-                          ? `1px solid ${themeRimStrong(bubbleRim)}`
-                          : "1px solid rgba(150,160,180,0.55)",
+                        // identity paint layer. Deleted bubbles wear a
+                        // muted dashed rim so they read as tombstones.
+                        border: m.deleted_for_everyone
+                          ? "1px dashed rgba(139,169,209,0.35)"
+                          : m.mine
+                            ? `1px solid ${themeRimStrong(bubbleRim)}`
+                            : "1px solid rgba(150,160,180,0.55)",
                         color: NEX.text,
                         fontSize: 15,
                         lineHeight: 1.42,
                         whiteSpace: "pre-wrap",
                         wordBreak: "break-word",
-                        boxShadow: m.mine
-                          ? "0 0 14px rgba(0,159,239,0.25), 0 6px 20px rgba(0,0,0,0.45)"
-                          : "0 6px 22px rgba(0,0,0,0.55)",
+                        boxShadow: m.deleted_for_everyone
+                          ? "0 4px 14px rgba(0,0,0,0.4)"
+                          : m.mine
+                            ? "0 0 14px rgba(0,159,239,0.25), 0 6px 20px rgba(0,0,0,0.45)"
+                            : "0 6px 22px rgba(0,0,0,0.55)",
                       }}
                     >
+                      {/* Bridge 6 · retracted message placeholder ·
+                          shows in the sender's OR the recipient's
+                          bubble slot so the space is preserved but
+                          no content leaks. Reply quotes + timestamps
+                          are suppressed for deleted messages so the
+                          tombstone reads as a single quiet line. */}
+                      {m.deleted_for_everyone ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 8,
+                            color: "rgba(139,169,209,0.75)",
+                            fontStyle: "italic",
+                            fontSize: 13,
+                          }}
+                        >
+                          <span aria-hidden style={{ fontSize: 14 }}>🚫</span>
+                          <span>
+                            {m.mine
+                              ? "You deleted this message"
+                              : "This message was deleted"}
+                          </span>
+                        </div>
+                      ) : (
+                        <>
                       {/* Bridge 5 · reply quote header · rendered at
                           the top of the bubble when this message
                           quotes another. Coloured vertical stripe +
@@ -682,6 +741,8 @@ export function PortraitBloomShell({
                             </span>
                           )}
                         </div>
+                      )}
+                        </>
                       )}
                     </div>
                     </MessageBubbleClient>
