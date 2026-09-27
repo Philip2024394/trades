@@ -542,22 +542,27 @@ function MediaModal({ onClose }: { onClose: () => void }) {
 // Emoji picker · centered modal grid
 // ---------------------------------------------------------------------------
 
+// Nature / night sky curated set · matches the mountain-moon-star
+// theme wallpaper doctrine. No faces, gestures, food, or commerce
+// glyphs · every emoji reads as "environmental" so the picker
+// belongs to the same world as the chat surface. Sealed 2026-09-27.
 const EMOJI_SET: readonly string[] = [
-  // Faces · smiles
-  "😀", "😄", "😊", "😍", "🥰", "😘", "😎", "🤩",
-  "🥳", "😇", "🙂", "😉", "😌", "😏", "🤗", "🫶",
-  // Faces · sad/serious
-  "🤔", "😐", "😶", "😑", "🙄", "😢", "😭", "😤",
-  "😬", "🥺", "😳", "🤯", "😴", "🤤", "🤒", "🤕",
-  // Gestures
-  "👍", "👎", "👏", "🙌", "🤝", "🤞", "👊", "✌️",
-  "🫡", "🙏", "💪", "👋", "🤙", "👌", "☝️", "✋",
-  // Hearts + affect
-  "❤️", "🧡", "💛", "💚", "💙", "💜", "🖤", "🤍",
-  "💯", "🔥", "✨", "💫", "⭐", "🌟", "💥", "🎉",
-  // Objects + commerce
-  "🛍️", "🎁", "💰", "💳", "📦", "📸", "🎨", "👟",
-  "👗", "☕", "🍰", "🍞", "🌮", "🍔", "🎵", "🎧",
+  // Moon + stars
+  "🌙", "🌕", "🌛", "🌜", "⭐", "✨", "🌟", "💫",
+  // Celestial + space
+  "🌠", "☄️", "🌌", "🪐", "🌍", "🔭", "🌃", "🌉",
+  // Sunrise / sunset / sky moods
+  "🌅", "🌄", "🌇", "🌆", "🌤️", "🌥️", "⛅", "☁️",
+  // Weather · storms, snow, light
+  "🌦️", "🌧️", "⛈️", "🌩️", "🌨️", "❄️", "🌈", "🌊",
+  // Mountains + land + fire
+  "⛰️", "🏔️", "🗻", "🌋", "🏕️", "⛺", "🔥", "💧",
+  // Trees
+  "🌲", "🌳", "🌴", "🌵", "🎋", "🌱", "🌿", "🎍",
+  // Leaves + flowers
+  "🍃", "🍂", "🍁", "🌾", "🌷", "🌸", "🌹", "🌺",
+  // Night life · owls, bats, wildlife
+  "🌻", "🌼", "🦉", "🦇", "🕊️", "🦌", "🦊", "🐺",
 ];
 
 function EmojiModal({
@@ -591,6 +596,16 @@ function EmojiModal({
           zIndex: 100,
         }}
       />
+      <style>{`
+        [data-nex-emoji-scroll] {
+          scrollbar-width: none;
+        }
+        [data-nex-emoji-scroll]::-webkit-scrollbar {
+          display: none;
+          width: 0;
+          height: 0;
+        }
+      `}</style>
       <div
         data-nex-media-modal
         role="dialog"
@@ -630,6 +645,7 @@ function EmojiModal({
           NEX · Pick an emoji
         </div>
         <div
+          data-nex-emoji-scroll
           style={{
             flex: 1,
             overflowY: "auto",
