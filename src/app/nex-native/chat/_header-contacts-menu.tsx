@@ -14,11 +14,12 @@
 // by the peer chat page.
 
 import * as React from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import {
   acceptFriendInviteAction,
   declineFriendInviteAction,
-} from "../../_actions";
+} from "../_actions";
 
 const NEX = {
   panel: "#03101D",
@@ -61,6 +62,11 @@ export function HeaderContactsMenu({
   pendingInvites: PendingInvite[];
 }) {
   const [open, setOpen] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   React.useEffect(() => {
     if (!open) return;
@@ -161,7 +167,11 @@ export function HeaderContactsMenu({
         </button>
       </div>
 
-      {open && (
+      {/* Drawer + backdrop are portaled to document.body so they
+          escape the header's zIndex:3 stacking context and always
+          paint above bubbles (whose backdrop-filter creates their
+          own stacking contexts). */}
+      {open && mounted && createPortal(
         <>
           <div
             role="button"
@@ -173,7 +183,7 @@ export function HeaderContactsMenu({
               background: "rgba(2,9,20,0.55)",
               backdropFilter: "blur(6px)",
               WebkitBackdropFilter: "blur(6px)",
-              zIndex: 200,
+              zIndex: 999,
               animation: "nex-contacts-fade 200ms ease-out both",
             }}
           />
@@ -190,7 +200,7 @@ export function HeaderContactsMenu({
               background: NEX.panelSolid,
               border: `1px solid ${NEX.cyanSoft}`,
               borderRadius: 20,
-              zIndex: 201,
+              zIndex: 1000,
               padding: 0,
               overflow: "hidden",
               animation:
@@ -367,7 +377,8 @@ export function HeaderContactsMenu({
               </Link>
             </div>
           </aside>
-        </>
+        </>,
+        document.body,
       )}
     </>
   );
