@@ -620,6 +620,72 @@ export function PortraitBloomShell({
                             : "0 6px 22px rgba(0,0,0,0.55)",
                       }}
                     >
+                      {/* Sender header · avatar top-left + name to
+                          the right · shown only on the first
+                          incoming bubble of a same-sender group so
+                          the avatar doesn't repeat on every
+                          continuation message. Reuses displayName +
+                          portraitUrl since in 1:1 chat those are
+                          always the peer's identity. */}
+                      {!m.mine && !m.deleted_for_everyone && senderChanged && (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 8,
+                            marginBottom: 6,
+                          }}
+                        >
+                          <div
+                            style={{
+                              flexShrink: 0,
+                              width: 22,
+                              height: 22,
+                              borderRadius: "50%",
+                              overflow: "hidden",
+                              backgroundImage: portraitUrl
+                                ? `url(${portraitUrl})`
+                                : `linear-gradient(135deg, ${NEX.cyanDeep} 0%, #05101f 100%)`,
+                              backgroundSize: "cover",
+                              backgroundPosition: "center 22%",
+                              border: "1px solid rgba(255,255,255,0.15)",
+                              position: "relative",
+                            }}
+                            aria-hidden
+                          >
+                            {!portraitUrl && (
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  inset: 0,
+                                  display: "grid",
+                                  placeItems: "center",
+                                  fontSize: 9,
+                                  fontWeight: 700,
+                                  color: NEX.cyan,
+                                  letterSpacing: "0.06em",
+                                }}
+                              >
+                                {initialsFromName(displayName)}
+                              </div>
+                            )}
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 700,
+                              color: bubbleRim,
+                              letterSpacing: "0.02em",
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              minWidth: 0,
+                            }}
+                          >
+                            {displayName}
+                          </div>
+                        </div>
+                      )}
                       {/* Bridge 6 · retracted message placeholder ·
                           shows in the sender's OR the recipient's
                           bubble slot so the space is preserved but
