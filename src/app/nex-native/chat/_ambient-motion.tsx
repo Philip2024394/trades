@@ -303,12 +303,25 @@ export function AmbientMotion({
       }, rand(minMs, maxMs));
     };
 
-    // Preview mode · ?nex_preview_ambient=1 triggers a fast first
-    // appearance so live-testing is instant.
-    const previewMode =
-      new URLSearchParams(window.location.search).get("nex_preview_ambient") ===
-      "1";
-    if (previewMode) {
+    // Preview modes ·
+    //   ?nex_preview_ambient=1     · first flock in 1.5–2.5s, then
+    //                                normal rare cadence (3–8 min)
+    //   ?nex_preview_ambient=fast  · continuous · every 5–15 s ·
+    //                                for actively iterating on the
+    //                                visual · never ship this to
+    //                                real users (kills the rarity)
+    const preview =
+      new URLSearchParams(window.location.search).get("nex_preview_ambient");
+    const scheduleFast = (min: number, max: number) => {
+      if (!alive) return;
+      appearanceT = setTimeout(() => {
+        spawnAppearance();
+        scheduleFast(5_000, 15_000);
+      }, rand(min, max));
+    };
+    if (preview === "fast") {
+      scheduleFast(800, 1_800);
+    } else if (preview === "1") {
       scheduleNextAppearance(1_500, 2_500);
     } else {
       scheduleNextAppearance(FIRST_APPEARANCE_MIN_MS, FIRST_APPEARANCE_MAX_MS);
