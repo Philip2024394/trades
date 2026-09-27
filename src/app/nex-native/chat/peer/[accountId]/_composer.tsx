@@ -579,6 +579,7 @@ function EmojiModal({
   onClose: () => void;
   onPick: (emoji: string) => void;
 }) {
+  const [tab, setTab] = React.useState<"emoji" | "mascot">("emoji");
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -597,9 +598,9 @@ function EmojiModal({
         style={{
           position: "fixed",
           inset: 0,
-          background: "rgba(2,9,20,0.72)",
-          backdropFilter: "blur(10px)",
-          WebkitBackdropFilter: "blur(10px)",
+          background: "rgba(2,9,20,0.78)",
+          backdropFilter: "blur(14px)",
+          WebkitBackdropFilter: "blur(14px)",
           zIndex: 100,
         }}
       />
@@ -612,88 +613,215 @@ function EmojiModal({
           width: 0;
           height: 0;
         }
+        @keyframes nex-emoji-modal-in {
+          from { opacity: 0; transform: translate(-50%, -46%) scale(0.96); }
+          to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
       `}</style>
       <div
         data-nex-media-modal
         role="dialog"
         aria-modal="true"
-        aria-label="Pick an emoji"
+        aria-label="Pick an emoji or mascot"
         style={{
           position: "fixed",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "min(340px, calc(100vw - 40px))",
-          maxHeight: "60vh",
-          padding: "18px 16px",
-          background: NEX.panel,
+          width: "min(380px, calc(100vw - 32px))",
+          height: "min(560px, calc(100vh - 96px))",
+          padding: "20px 18px 18px",
+          // Frosted glass with a subtle theme accent ring · reads
+          // higher fidelity than the previous flat panel.
+          background:
+            "linear-gradient(180deg, rgba(6,15,28,0.92) 0%, rgba(3,10,20,0.94) 100%)",
+          backdropFilter: "blur(18px) saturate(1.2)",
+          WebkitBackdropFilter: "blur(18px) saturate(1.2)",
           border: `1px solid ${NEX.cyanSoft}`,
-          borderRadius: 24,
+          borderRadius: 26,
           boxShadow:
-            "0 24px 60px rgba(0,0,0,0.65), 0 0 40px rgba(0,159,239,0.14)",
+            "0 32px 80px rgba(0,0,0,0.7), 0 0 60px rgba(0,159,239,0.16), inset 0 1px 0 rgba(255,255,255,0.06)",
           zIndex: 101,
           color: NEX.textPrimary,
           fontFamily: "inherit",
           display: "flex",
           flexDirection: "column",
+          animation: "nex-emoji-modal-in 220ms cubic-bezier(.2,.7,.2,1) both",
         }}
       >
+        {/* Title · plain, no "NEX ·" prefix */}
         <div
           style={{
-            fontSize: 10,
+            fontSize: 11,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
             color: NEX.cyan,
             textAlign: "center",
-            marginBottom: 12,
+            marginBottom: 14,
             fontWeight: 600,
           }}
         >
-          NEX · Pick an emoji
+          {tab === "emoji" ? "Pick an emoji" : "Pick a mascot"}
         </div>
+
+        {/* Emoji / Mascot toggle · segmented control */}
         <div
-          data-nex-emoji-scroll
+          role="tablist"
+          aria-label="Picker tabs"
           style={{
-            flex: 1,
-            overflowY: "auto",
             display: "grid",
-            gridTemplateColumns: "repeat(8, 1fr)",
+            gridTemplateColumns: "1fr 1fr",
             gap: 4,
-            paddingRight: 4,
+            padding: 4,
+            marginBottom: 14,
+            background: "rgba(0,0,0,0.35)",
+            border: "1px solid rgba(255,255,255,0.06)",
+            borderRadius: 12,
           }}
         >
-          {EMOJI_SET.map((emoji) => (
-            <button
-              key={emoji}
-              type="button"
-              onClick={() => onPick(emoji)}
-              style={{
-                width: "100%",
-                aspectRatio: "1 / 1",
-                background: "transparent",
-                border: "none",
-                borderRadius: 8,
-                fontSize: 22,
-                cursor: "pointer",
-                padding: 0,
-                lineHeight: 1,
-                display: "grid",
-                placeItems: "center",
-                transition: "background 120ms ease, transform 100ms ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(0,159,239,0.12)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "transparent";
-              }}
-            >
-              {emoji}
-            </button>
-          ))}
+          <PickerTab
+            active={tab === "emoji"}
+            onClick={() => setTab("emoji")}
+            label="Emoji"
+          />
+          <PickerTab
+            active={tab === "mascot"}
+            onClick={() => setTab("mascot")}
+            label="Mascot"
+          />
         </div>
+
+        {tab === "emoji" ? (
+          <div
+            data-nex-emoji-scroll
+            style={{
+              flex: 1,
+              overflowY: "auto",
+              display: "grid",
+              gridTemplateColumns: "repeat(8, 1fr)",
+              gap: 4,
+              paddingRight: 4,
+            }}
+          >
+            {EMOJI_SET.map((emoji) => (
+              <button
+                key={emoji}
+                type="button"
+                onClick={() => onPick(emoji)}
+                style={{
+                  width: "100%",
+                  aspectRatio: "1 / 1",
+                  background: "transparent",
+                  border: "none",
+                  borderRadius: 10,
+                  fontSize: 22,
+                  cursor: "pointer",
+                  padding: 0,
+                  lineHeight: 1,
+                  display: "grid",
+                  placeItems: "center",
+                  transition: "background 120ms ease, transform 100ms ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "rgba(0,159,239,0.14)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent";
+                }}
+              >
+                {emoji}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <MascotEmpty />
+        )}
       </div>
     </>
+  );
+}
+
+function PickerTab({
+  active,
+  onClick,
+  label,
+}: {
+  active: boolean;
+  onClick: () => void;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      role="tab"
+      aria-selected={active}
+      onClick={onClick}
+      style={{
+        padding: "9px 10px",
+        borderRadius: 8,
+        background: active
+          ? "linear-gradient(180deg, rgba(0,159,239,0.28) 0%, rgba(0,159,239,0.18) 100%)"
+          : "transparent",
+        border: active
+          ? `1px solid ${NEX.cyanSoft}`
+          : "1px solid transparent",
+        color: active ? NEX.textPrimary : "rgba(180, 195, 220, 0.7)",
+        fontSize: 12,
+        fontWeight: 600,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+        cursor: "pointer",
+        transition: "all 160ms ease",
+        boxShadow: active
+          ? "0 0 18px rgba(0,159,239,0.22), inset 0 1px 0 rgba(255,255,255,0.06)"
+          : "none",
+      }}
+    >
+      {label}
+    </button>
+  );
+}
+
+function MascotEmpty() {
+  return (
+    <div
+      style={{
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "32px 24px",
+        textAlign: "center",
+        gap: 10,
+      }}
+    >
+      <div style={{ fontSize: 56, lineHeight: 1 }} aria-hidden>
+        🦉
+      </div>
+      <div
+        style={{
+          fontSize: 13,
+          fontWeight: 700,
+          color: NEX.textPrimary,
+          letterSpacing: "0.02em",
+        }}
+      >
+        Mascots · coming soon
+      </div>
+      <div
+        style={{
+          fontSize: 12,
+          color: "rgba(155, 175, 205, 0.85)",
+          lineHeight: 1.55,
+          maxWidth: 260,
+        }}
+      >
+        Send an animated NEX mascot as your reply. Unlocking with{" "}
+        <span style={{ color: "#FF7800", fontWeight: 700 }}>NEX Bisnis</span>
+        {" "}when the mascot library ships.
+      </div>
+    </div>
   );
 }
 
