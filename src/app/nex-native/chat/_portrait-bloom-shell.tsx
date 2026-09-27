@@ -443,10 +443,12 @@ export function PortraitBloomShell({
                     fontSize: 12,
                     fontWeight: 600,
                     letterSpacing: "0.04em",
-                    color: NEX.orange,
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
+                    // Dark gray · profession recedes from the name
+                    // instead of competing with it in orange.
+                    // Sealed 2026-09-27.
+                    color: "#8B95A5",
+                    // No text-overflow ellipsis · profession lines
+                    // wrap naturally rather than getting cut with "..."
                   }}
                 >
                   {subtitle}
