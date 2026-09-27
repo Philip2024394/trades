@@ -76,30 +76,28 @@ export default async function Page({
         fontFamily: SANS,
       }}
     >
-      {/* --- TOP HEADER · NEX brand + home + settings ---------------- */}
+      {/* --- TOP HEADER · NEX brand + home + settings ----------------
+          Transparent · no container · floats directly over the hero
+          photograph. The wordmark carries a subtle text-shadow and
+          the icon buttons carry their own orange fill so nothing
+          needs an outer shell for legibility. */}
       <header
         style={{
           position: "sticky",
           top: 0,
           zIndex: 10,
           padding:
-            "calc(env(safe-area-inset-top, 0) + 12px) 16px 12px",
+            "calc(env(safe-area-inset-top, 0) + 12px) 14px 8px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          // Solid dark shade so the header always reads as a proper
-          // container, even over bright hero photos. Backdrop blur
-          // softens what's behind. Hairline bottom border separates
-          // header from content below.
-          background: "rgba(3,16,29,0.82)",
-          borderBottom: `1px solid ${NEX.border}`,
-          backdropFilter: "blur(14px) saturate(1.15)",
-          WebkitBackdropFilter: "blur(14px) saturate(1.15)",
-          boxShadow: "0 4px 18px rgba(0,0,0,0.4)",
+          background: "transparent",
         }}
       >
         {/* Brand · NE (white) + X (orange) · matches the create-account
-            wordmark exactly · sans + letterSpacing 0.08em. */}
+            wordmark exactly · sans + letterSpacing 0.08em. Soft text
+            shadow so it stays legible over any hero photo without
+            needing a container behind it. */}
         <Link
           href="/nex-native"
           aria-label="NEX home"
@@ -114,6 +112,7 @@ export default async function Page({
             fontWeight: 600,
             letterSpacing: "0.08em",
             padding: "6px 4px",
+            textShadow: "0 2px 12px rgba(0,0,0,0.75)",
           }}
         >
           <span style={{ color: "#F2F5F8" }}>NE</span>
@@ -788,8 +787,8 @@ function HeaderIconLink({
       aria-label={ariaLabel}
       title={title}
       style={{
-        width: 40,
-        height: 40,
+        width: 32,
+        height: 32,
         borderRadius: "50%",
         background: "#FF7200",
         border: "1px solid rgba(255,255,255,0.14)",
@@ -798,7 +797,7 @@ function HeaderIconLink({
         placeItems: "center",
         textDecoration: "none",
         boxShadow:
-          "0 6px 16px rgba(255,114,0,0.35), inset 0 1px 0 rgba(255,255,255,0.28)",
+          "0 4px 12px rgba(255,114,0,0.4), inset 0 1px 0 rgba(255,255,255,0.28)",
       }}
     >
       {children}
@@ -809,8 +808,8 @@ function HeaderIconLink({
 function HomeIcon() {
   return (
     <svg
-      width={18}
-      height={18}
+      width={15}
+      height={15}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -828,8 +827,8 @@ function HomeIcon() {
 function SettingsIcon() {
   return (
     <svg
-      width={18}
-      height={18}
+      width={15}
+      height={15}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
