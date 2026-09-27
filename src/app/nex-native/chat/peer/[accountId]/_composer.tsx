@@ -542,27 +542,34 @@ function MediaModal({ onClose }: { onClose: () => void }) {
 // Emoji picker · centered modal grid
 // ---------------------------------------------------------------------------
 
-// Nature / night sky curated set · matches the mountain-moon-star
-// theme wallpaper doctrine. No faces, gestures, food, or commerce
-// glyphs · every emoji reads as "environmental" so the picker
-// belongs to the same world as the chat surface. Sealed 2026-09-27.
+// Nature-themed expression set · sealed 2026-09-27.
+// -------------------------------------------------
+// Users still need to convey feelings — happy, sad, laughing, in
+// love, tired, angry — but not through generic smileys. This set
+// uses animal faces + emotional nature objects to carry the same
+// emotional range while staying inside the mountain-moon-star
+// theme world. Cat faces map cleanly to normal smiley emotions
+// (Unicode ships them exactly for this purpose · 😸😹😻😼🙀😿😾).
+// Lanterns / candles / fireworks carry warmth + celebration. Rain
+// + wilted flowers + fallen leaves carry sadness. Every glyph
+// belongs to the same environment as the chat wallpaper.
 const EMOJI_SET: readonly string[] = [
-  // Moon + stars
+  // Happy / smiling / playful animals — the main "smiley" row
+  "😸", "😹", "😻", "😼", "🐰", "🦊", "🐻", "🐨",
+  // Curious / calm / wise
+  "🦉", "🐧", "🐢", "🦔", "🐿️", "🐹", "🐭", "🐦",
+  // Peaceful / loving / gentle
+  "🕊️", "🐝", "🦋", "🐞", "🐬", "🦌", "🐺", "🐇",
+  // Sad / weary / angry (nature's negative moods)
+  "😿", "😾", "🙀", "🥀", "🍂", "🍁", "🌧️", "⛈️",
+  // Moon + stars — for wonder, dreams, awe
   "🌙", "🌕", "🌛", "🌜", "⭐", "✨", "🌟", "💫",
-  // Celestial + space
-  "🌠", "☄️", "🌌", "🪐", "🌍", "🔭", "🌃", "🌉",
-  // Sunrise / sunset / sky moods
-  "🌅", "🌄", "🌇", "🌆", "🌤️", "🌥️", "⛅", "☁️",
-  // Weather · storms, snow, light
-  "🌦️", "🌧️", "⛈️", "🌩️", "🌨️", "❄️", "🌈", "🌊",
-  // Mountains + land + fire
-  "⛰️", "🏔️", "🗻", "🌋", "🏕️", "⛺", "🔥", "💧",
-  // Trees
-  "🌲", "🌳", "🌴", "🌵", "🎋", "🌱", "🌿", "🎍",
-  // Leaves + flowers
-  "🍃", "🍂", "🍁", "🌾", "🌷", "🌸", "🌹", "🌺",
-  // Night life · owls, bats, wildlife
-  "🌻", "🌼", "🦉", "🦇", "🕊️", "🦌", "🦊", "🐺",
+  // Celebration + energy + warmth
+  "🌠", "☄️", "🌌", "🌈", "🎆", "🎇", "🔥", "💧",
+  // Camping / lanterns / warmth / adventure
+  "🏕️", "⛺", "🔦", "🕯️", "🏮", "🪔", "🌡️", "🧭",
+  // Flowers · love, gratitude, blooming
+  "🌹", "🌷", "🌸", "🌺", "🌻", "🌼", "🌿", "🌱",
 ];
 
 function EmojiModal({
