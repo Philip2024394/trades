@@ -25,8 +25,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as productService from "@/lib/nex-native/product-service";
+import * as menuService from "@/lib/nex-native/menu-service";
 import * as sellerResponsivenessService from "@/lib/nex-native/seller-responsiveness-service";
 import { HeroSidePanel } from "./_hero-side-panel";
+
+const MENU_CATEGORIES = new Set(["restaurant", "cafe"]);
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -67,7 +70,17 @@ export default async function Page({
     "live",
   );
 
+  // Bridge 15a · restaurant/cafe menu · lifted to the top of the
+  // landing when the shop is one of the menu categories.
+  const isMenuVertical = MENU_CATEGORIES.has(business.business_category ?? "");
+  const menuBundle = isMenuVertical
+    ? await menuService
+        .getMenuBundleForBusiness(business.id, { onlyLive: true })
+        .catch(() => ({ sections: [], totalItems: 0 }))
+    : { sections: [], totalItems: 0 };
+
   const chatHref = `/nex-native/chat/peer/${business.owner_account_id}`;
+  const menuHref = `/nex-native/${business.slug}/menu`;
 
   // Bridge 13 · resolve the seller's activity status so the hero
   // can carry an honest badge (active / slow / away / archived).
@@ -302,6 +315,59 @@ export default async function Page({
           }}
         />
       </section>
+
+      {/* --- MENU PREVIEW (restaurant / cafe) ----------------------- */}
+      {isMenuVertical && menuBundle.totalItems > 0 && (
+        <section
+          style={{
+            maxWidth: 720,
+            margin: "0 auto",
+            padding: "32px 20px 12px",
+          }}
+        >
+          <MenuPreviewCard
+            menuHref={menuHref}
+            totalItems={menuBundle.totalItems}
+            featuredItems={menuBundle.sections
+              .flatMap((s) => s.items)
+              .filter((it) => it.is_featured && it.is_available)
+              .slice(0, 3)}
+            sections={menuBundle.sections
+              .map((s) => s.section?.name ?? "Menu")
+              .slice(0, 5)}
+          />
+        </section>
+      )}
+      {isMenuVertical && menuBundle.totalItems === 0 && (
+        <section
+          style={{
+            maxWidth: 720,
+            margin: "0 auto",
+            padding: "32px 20px 12px",
+          }}
+        >
+          <div
+            style={{
+              padding: "18px 20px",
+              borderRadius: 16,
+              background: NEX.panelSoft,
+              border: `1px solid ${NEX.border}`,
+              fontSize: 13,
+              color: NEX.textDim,
+              lineHeight: 1.55,
+            }}
+          >
+            The menu is being written. Message{" "}
+            <Link
+              href={chatHref}
+              style={{ color: NEX.cyan, textDecoration: "none" }}
+            >
+              {business.display_name}
+            </Link>{" "}
+            to hear today&apos;s specials.
+          </div>
+        </section>
+      )}
 
       {/* --- PRODUCTS ------------------------------------------------ */}
       {products.length > 0 && (
@@ -839,6 +905,152 @@ function formatPrice(pence: number, currency: string): string {
   if (currency === "GBP") return `£${(pence / 100).toFixed(2)}`;
   if (currency === "USD") return `$${(pence / 100).toFixed(2)}`;
   return `${currency} ${withCommas}`;
+}
+
+function MenuPreviewCard({
+  menuHref,
+  totalItems,
+  featuredItems,
+  sections,
+}: {
+  menuHref: string;
+  totalItems: number;
+  featuredItems: import("@/lib/nex-native/menu-service").NexMenuItemRow[];
+  sections: string[];
+}) {
+  return (
+    <Link
+      href={menuHref}
+      style={{
+        display: "block",
+        borderRadius: 20,
+        overflow: "hidden",
+        background:
+          "linear-gradient(180deg, rgba(255,114,0,0.10) 0%, rgba(6,15,28,0.85) 40%, rgba(3,10,20,0.9) 100%)",
+        border: "1px solid rgba(255,114,0,0.5)",
+        boxShadow:
+          "0 24px 60px rgba(0,0,0,0.55), 0 0 40px rgba(255,114,0,0.14), inset 0 1px 0 rgba(255,255,255,0.05)",
+        color: NEX.text,
+        textDecoration: "none",
+      }}
+    >
+      {featuredItems.length > 0 && (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns:
+              featuredItems.length === 1
+                ? "1fr"
+                : featuredItems.length === 2
+                  ? "1fr 1fr"
+                  : "1fr 1fr 1fr",
+            gap: 2,
+            background: "#050f1e",
+          }}
+        >
+          {featuredItems.map((it) => (
+            <div
+              key={it.id}
+              style={{
+                aspectRatio: "1 / 1",
+                overflow: "hidden",
+                background: "#050f1e",
+              }}
+            >
+              {it.image_url && (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={it.image_url}
+                  alt={it.name}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <div style={{ padding: "22px 22px 24px" }}>
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.28em",
+            textTransform: "uppercase",
+            color: NEX.orange,
+            fontWeight: 700,
+            marginBottom: 6,
+          }}
+        >
+          The Menu · {totalItems} live items
+        </div>
+        <h2
+          style={{
+            margin: 0,
+            fontFamily: SERIF,
+            fontWeight: 500,
+            fontSize: 30,
+            letterSpacing: "-0.012em",
+            lineHeight: 1.05,
+            marginBottom: 8,
+          }}
+        >
+          View today&apos;s menu
+        </h2>
+        {sections.length > 0 && (
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 6,
+              marginBottom: 16,
+            }}
+          >
+            {sections.map((s) => (
+              <span
+                key={s}
+                style={{
+                  padding: "3px 10px",
+                  borderRadius: 999,
+                  border: `1px solid ${NEX.borderStrong}`,
+                  background: "rgba(0,0,0,0.35)",
+                  color: NEX.textDim,
+                  fontSize: 10,
+                  fontWeight: 600,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                }}
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+        )}
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            padding: "12px 18px",
+            borderRadius: 12,
+            background:
+              "linear-gradient(180deg, #FF9033 0%, #FF7200 100%)",
+            color: "#0B0F1A",
+            fontSize: 12,
+            fontWeight: 800,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            boxShadow: "0 10px 24px rgba(255,114,0,0.4)",
+          }}
+        >
+          Open menu <span aria-hidden>→</span>
+        </div>
+      </div>
+    </Link>
+  );
 }
 
 function CategoryChip({ category }: { category: string }) {
