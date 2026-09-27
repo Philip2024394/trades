@@ -50,7 +50,7 @@ export interface NexPeerMessageRow {
   attachment_meta: NexPeerAttachmentMeta | null;
 }
 
-export type NexPeerAttachmentKind = "image" | "video" | "audio";
+export type NexPeerAttachmentKind = "image" | "video" | "audio" | "product";
 
 export interface NexPeerAttachmentMeta {
   duration_ms?: number;
@@ -58,6 +58,24 @@ export interface NexPeerAttachmentMeta {
   height?: number;
   size_bytes?: number;
   mime?: string;
+  /** Bridge 11 · when attachment_type='product', a snapshot of the
+   *  product captured at send time. Frozen so the card stays
+   *  renderable even if the product is later edited or deleted. */
+  product?: NexPeerProductSnapshot;
+}
+
+/** Product snapshot embedded in an attachment_meta when a peer
+ *  message carries a product inquiry. Sealed 2026-09-27 · migration
+ *  059. */
+export interface NexPeerProductSnapshot {
+  product_id: string;
+  business_id: string;
+  business_slug: string | null;
+  name: string;
+  price_pence: number;
+  currency: string;
+  image_url: string | null;
+  short_description: string | null;
 }
 
 /** Window in which a sender can still retract a message. WhatsApp

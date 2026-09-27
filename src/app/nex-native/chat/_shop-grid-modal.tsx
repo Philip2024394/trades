@@ -17,6 +17,7 @@
 import * as React from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import { ProductDetailSheet } from "./_product-detail-sheet";
 
 const NEX = {
   panel: "rgba(3,16,29,0.96)",
@@ -46,6 +47,13 @@ interface Props {
   shopName: string;
   shopHref: string | null;
   products: ShopProduct[];
+  /** Peer's display name · used in the product detail sheet copy. */
+  peerName: string;
+  /** Server Action bound with peerAccountId · fired when user taps
+   *  Ask about this / I want this on a product detail. */
+  inquiryAction?: (
+    formData: FormData,
+  ) => Promise<never> | void | Promise<void>;
 }
 
 export function ShopGridModal({
@@ -54,18 +62,30 @@ export function ShopGridModal({
   shopName,
   shopHref,
   products,
+  peerName,
+  inquiryAction,
 }: Props) {
   const [mounted, setMounted] = React.useState(false);
+  const [selectedProductId, setSelectedProductId] = React.useState<
+    string | null
+  >(null);
   React.useEffect(() => setMounted(true), []);
 
   React.useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        if (selectedProductId) setSelectedProductId(null);
+        else onClose();
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
+  }, [open, onClose, selectedProductId]);
+
+  const selectedProduct = selectedProductId
+    ? products.find((p) => p.id === selectedProductId) ?? null
+    : null;
 
   if (!open || !mounted) return null;
 
@@ -231,7 +251,11 @@ export function ShopGridModal({
               }}
             >
               {products.map((p) => (
-                <ProductCard key={p.id} product={p} />
+                <ProductCard
+                  key={p.id}
+                  product={p}
+                  onOpen={() => setSelectedProductId(p.id)}
+                />
               ))}
             </div>
           )}
@@ -283,15 +307,42 @@ export function ShopGridModal({
           )}
         </div>
       </section>
+
+      {/* Product detail sheet · stacks over the grid on card tap.
+          Escape / backdrop tap closes to grid · close button on the
+          detail also fires the parent onClose so the whole shop
+          collapses. */}
+      {inquiryAction && (
+        <ProductDetailSheet
+          open={!!selectedProduct}
+          onClose={() => {
+            setSelectedProductId(null);
+            onClose();
+          }}
+          onBack={() => setSelectedProductId(null)}
+          product={selectedProduct}
+          peerName={peerName}
+          inquiryAction={inquiryAction}
+        />
+      )}
     </>,
     document.body,
   );
 }
 
-function ProductCard({ product }: { product: ShopProduct }) {
+function ProductCard({
+  product,
+  onOpen,
+}: {
+  product: ShopProduct;
+  onOpen: () => void;
+}) {
   const price = formatPrice(product.price_pence, product.currency);
   return (
-    <div
+    <button
+      type="button"
+      onClick={onOpen}
+      aria-label={`Open ${product.name}`}
       style={{
         borderRadius: 14,
         background: "rgba(0,0,0,0.35)",
@@ -299,6 +350,18 @@ function ProductCard({ product }: { product: ShopProduct }) {
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
+        cursor: "pointer",
+        padding: 0,
+        color: "inherit",
+        fontFamily: "inherit",
+        textAlign: "left",
+        transition: "transform 140ms ease, border-color 140ms ease",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = "rgba(0,159,239,0.4)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)";
       }}
     >
       {/* Image · fixed 4:3 aspect · falls back to a neutral tile
@@ -365,7 +428,7 @@ function ProductCard({ product }: { product: ShopProduct }) {
           {price}
         </div>
       </div>
-    </div>
+    </button>
   );
 }
 

@@ -69,10 +69,23 @@ export interface PortraitBloomMessage {
    *  bubble renders a "🚫 This message was deleted" placeholder in
    *  its slot instead of the body. */
   deleted_for_everyone?: boolean;
-  /** Bridge 8+9 · optional attachment carried on the message ·
-   *  photo, video, or voice note · rendered inline above the body. */
+  /** Bridge 8+9+11 · optional attachment · photo, video, voice
+   *  note, or a peer product card · rendered inline above the body. */
   attachment_url?: string | null;
-  attachment_type?: "image" | "video" | "audio" | null;
+  attachment_type?: "image" | "video" | "audio" | "product" | null;
+  /** Bridge 11 · when attachment_type='product' this carries the
+   *  frozen product snapshot so the card renders correctly even if
+   *  the underlying product is later edited or deleted. */
+  attachment_product?: {
+    product_id: string;
+    business_id: string;
+    business_slug: string | null;
+    name: string;
+    price_pence: number;
+    currency: string;
+    image_url: string | null;
+    short_description: string | null;
+  } | null;
 }
 
 export interface PortraitBloomContextChip {
@@ -164,13 +177,18 @@ export interface PortraitBloomShellProps {
     clearHref: string;
   } | null;
   /** When present, the header renders a shop icon top-right that
-   *  opens the peer's product grid modal. Populated by the peer
-   *  chat page after fetching the peer's live products. */
+   *  opens the peer's product grid bottom sheet. Populated by the
+   *  peer chat page after fetching the peer's live products. */
   peerShop?: {
     name: string;
     href: string | null;
     products: ShopProduct[];
   } | null;
+  /** Bridge 11 · Server Action bound with peerAccountId · fires when
+   *  the user taps Ask about this / I want this on a product detail. */
+  productInquiryAction?: (
+    formData: FormData,
+  ) => Promise<never> | void | Promise<void>;
   /** Optional theme wallpaper · painted behind the message zone as
    *  a soft, dimmed layer so the theme picks up an atmosphere
    *  distinct from the peer's profile image. Sealed 2026-09-27 ·
@@ -214,6 +232,7 @@ export function PortraitBloomShell({
   uploadAction,
   pendingAttachment,
   peerShop,
+  productInquiryAction,
 }: PortraitBloomShellProps) {
   const isOffline = presenceKind !== "online";
   // Per-element theme colours · fall back to rippleColor (accent)
@@ -883,16 +902,27 @@ export function PortraitBloomShell({
                           </div>
                         </div>
                       )}
-                      {/* Bridge 8+9 · inline attachment (image /
-                          video / voice) · sits above the body so a
-                          caption reads under the media. */}
-                      {m.attachment_url && m.attachment_type && (
+                      {/* Bridge 8+9+11 · inline attachment · media
+                          (image/video/audio) uses MessageAttachment ·
+                          product cards get their own richer renderer
+                          via MessageProductCard so the price + name
+                          + shop context reads as commerce not media. */}
+                      {m.attachment_type === "product" && m.attachment_product ? (
+                        <MessageProductCard
+                          product={m.attachment_product}
+                          hasBody={!!m.body}
+                          accent={bubbleRim}
+                        />
+                      ) : m.attachment_url &&
+                        (m.attachment_type === "image" ||
+                          m.attachment_type === "video" ||
+                          m.attachment_type === "audio") ? (
                         <MessageAttachment
                           url={m.attachment_url}
                           kind={m.attachment_type}
                           hasBody={!!m.body}
                         />
-                      )}
+                      ) : null}
                       {m.body && (
                         <div
                           style={{
@@ -991,6 +1021,8 @@ export function PortraitBloomShell({
           shopName={peerShop.name}
           shopHref={peerShop.href}
           products={peerShop.products}
+          peerName={displayName}
+          inquiryAction={productInquiryAction}
         />
       )}
     </>
@@ -1144,4 +1176,141 @@ function MessageAttachment({
       />
     </div>
   );
+}
+
+/** Bridge 11 · product card renderer inside a bubble.
+ *  Compact card with the product image, name, price, and a subtle
+ *  "See in shop →" affordance that links to the peer's public shop
+ *  page. Bridge 12 will make the whole card tap-to-reopen the
+ *  product detail sheet directly. */
+function MessageProductCard({
+  product,
+  hasBody,
+  accent,
+}: {
+  product: {
+    product_id: string;
+    business_id: string;
+    business_slug: string | null;
+    name: string;
+    price_pence: number;
+    currency: string;
+    image_url: string | null;
+    short_description: string | null;
+  };
+  hasBody: boolean;
+  accent: string;
+}) {
+  const marginBottom = hasBody ? 8 : 0;
+  const price = formatBubblePrice(product.price_pence, product.currency);
+  const href = product.business_slug
+    ? `/nex-native/${product.business_slug}`
+    : null;
+  const inner = (
+    <>
+      {product.image_url && (
+        <div
+          style={{
+            width: "100%",
+            aspectRatio: "16 / 9",
+            background: "#0a1a30",
+            overflow: "hidden",
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={product.image_url}
+            alt={product.name}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
+        </div>
+      )}
+      <div style={{ padding: "8px 10px 10px" }}>
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: accent,
+            fontWeight: 700,
+            marginBottom: 2,
+          }}
+        >
+          Product
+        </div>
+        <div
+          style={{
+            fontSize: 13,
+            fontWeight: 700,
+            lineHeight: 1.3,
+            marginBottom: 3,
+          }}
+        >
+          {product.name}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+            justifyContent: "space-between",
+            gap: 8,
+          }}
+        >
+          <div
+            style={{
+              fontSize: 13,
+              fontWeight: 700,
+              color: "#FF7800",
+            }}
+          >
+            {price}
+          </div>
+          {href && (
+            <span
+              style={{
+                fontSize: 10,
+                color: "rgba(139,169,209,0.85)",
+                letterSpacing: "0.04em",
+              }}
+            >
+              See in shop →
+            </span>
+          )}
+        </div>
+      </div>
+    </>
+  );
+  const shared: React.CSSProperties = {
+    display: "block",
+    marginBottom,
+    borderRadius: 12,
+    overflow: "hidden",
+    background: "rgba(0,0,0,0.42)",
+    border: `1px solid ${accent}55`,
+    color: "inherit",
+    textDecoration: "none",
+    minWidth: 220,
+  };
+  if (href) {
+    return (
+      <a href={href} style={shared}>
+        {inner}
+      </a>
+    );
+  }
+  return <div style={shared}>{inner}</div>;
+}
+
+function formatBubblePrice(pence: number, currency: string): string {
+  const majors = Math.round(pence / 100);
+  const withCommas = majors.toLocaleString();
+  if (currency === "IDR") return `Rp ${withCommas}`;
+  if (currency === "GBP") return `£${(pence / 100).toFixed(2)}`;
+  if (currency === "USD") return `$${(pence / 100).toFixed(2)}`;
+  return `${currency} ${withCommas}`;
 }

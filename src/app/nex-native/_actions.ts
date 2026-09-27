@@ -487,6 +487,90 @@ export async function uploadPeerAttachmentAction(
 
 /** Bridge 6 · retract a peer message ("delete for everyone").
  *  Sender-only within a 1-hour window · service enforces both. */
+/** Bridge 11 · send a product inquiry from the peer's shop into the
+ *  chat. Called when the user taps "Ask about this" or "I want this"
+ *  in the product detail sheet. Fetches the product, snapshots it into
+ *  attachment_meta, then sends via peerMessageService with
+ *  attachment_type='product'. The default body is derived from intent
+ *  but the client may override via the `custom_body` field. */
+export async function sendProductInquiryAction(
+  peerAccountId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+  if (peerAccountId === session.account.id) redirect("/nex-native/chat");
+
+  const productId = String(formData.get("product_id") ?? "").trim();
+  const intentRaw = String(formData.get("intent") ?? "").trim();
+  const intent: "ask" | "want" =
+    intentRaw === "want" ? "want" : "ask";
+  const customBody = String(formData.get("body") ?? "").trim();
+
+  if (!productId) redirect(`/nex-native/chat/peer/${peerAccountId}`);
+
+  const product = await productService.getProductById(productId);
+  if (!product) {
+    redirect(
+      `/nex-native/chat/peer/${peerAccountId}?product_error=not_found`,
+    );
+  }
+  // Sanity: product must belong to the peer's business · we don't want
+  // users injecting arbitrary product ids into someone else's chat.
+  const businesses = await businessService.listBusinessesByOwner(
+    peerAccountId,
+  );
+  const ownedByPeer = businesses.some((b) => b.id === product.business_id);
+  if (!ownedByPeer) {
+    redirect(
+      `/nex-native/chat/peer/${peerAccountId}?product_error=not_from_peer`,
+    );
+  }
+  const business = businesses.find((b) => b.id === product.business_id)!;
+
+  const snapshot: peerMessageService.NexPeerProductSnapshot = {
+    product_id: product.id,
+    business_id: business.id,
+    business_slug: business.slug ?? null,
+    name: product.name,
+    price_pence: product.price_pence,
+    currency: product.currency,
+    image_url: product.image_url ?? null,
+    short_description:
+      product.description?.split(/[.··]/)[0]?.trim().slice(0, 140) ?? null,
+  };
+
+  const defaultBody =
+    intent === "want"
+      ? `I'd like to buy the ${product.name} · what's next?`
+      : `Is the ${product.name} still available?`;
+  const body = customBody || defaultBody;
+
+  const conversation =
+    await peerConversationService.getOrCreatePeerConversation(
+      session.account.id,
+      peerAccountId,
+    );
+
+  // The DB pair-check + service both require url+type set together ·
+  // when a product has no image we skip the attachment entirely and
+  // send the inquiry as plain text (still with the product name in
+  // the body). Once we relax the pair-check for product type, this
+  // guard can go away.
+  const hasImage = !!product.image_url;
+  await peerMessageService.sendPeerMessage({
+    conversation_id: conversation.id,
+    sender_account_id: session.account.id,
+    body,
+    attachment_url: hasImage ? product.image_url : null,
+    attachment_type: hasImage ? "product" : null,
+    attachment_meta: hasImage ? { product: snapshot } : null,
+  });
+
+  revalidatePath(`/nex-native/chat/peer/${peerAccountId}`);
+  redirect(`/nex-native/chat/peer/${peerAccountId}`);
+}
+
 export async function deletePeerMessageAction(
   peerAccountId: string,
   formData: FormData,

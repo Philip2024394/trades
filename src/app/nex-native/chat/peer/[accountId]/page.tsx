@@ -25,6 +25,7 @@ import {
   sendPeerMessageAction,
   deletePeerMessageAction,
   uploadPeerAttachmentAction,
+  sendProductInquiryAction,
 } from "../../../_actions";
 import {
   PortraitBloomShell,
@@ -100,6 +101,7 @@ export default async function PeerChatPage({
   const bind = sendPeerMessageAction.bind(null, peer.id);
   const bindDelete = deletePeerMessageAction.bind(null, peer.id);
   const bindUpload = uploadPeerAttachmentAction.bind(null, peer.id);
+  const bindProductInquiry = sendProductInquiryAction.bind(null, peer.id);
 
   // Bridge · shop icon in header · when the peer owns a business
   // with live products, the header renders a shop button that
@@ -282,6 +284,14 @@ export default async function PeerChatPage({
       deleted_for_everyone: !!m.deleted_for_everyone,
       attachment_url: m.attachment_url ?? null,
       attachment_type: m.attachment_type ?? null,
+      attachment_product:
+        m.attachment_type === "product" &&
+        m.attachment_meta &&
+        typeof m.attachment_meta === "object" &&
+        "product" in m.attachment_meta &&
+        m.attachment_meta.product
+          ? m.attachment_meta.product
+          : null,
     };
   });
 
@@ -311,6 +321,7 @@ export default async function PeerChatPage({
       uploadAction={bindUpload}
       pendingAttachment={pendingAttachment}
       peerShop={peerShop}
+      productInquiryAction={bindProductInquiry}
       composerPlaceholder={`Message ${peer.display_name}…`}
       headerTag="NEX Chat"
       contacts={contacts}

@@ -23,9 +23,19 @@ interface Props {
   shopName: string;
   shopHref: string | null;
   products: ShopProduct[];
+  peerName: string;
+  inquiryAction?: (
+    formData: FormData,
+  ) => Promise<never> | void | Promise<void>;
 }
 
-export function ShopHeaderButton({ shopName, shopHref, products }: Props) {
+export function ShopHeaderButton({
+  shopName,
+  shopHref,
+  products,
+  peerName,
+  inquiryAction,
+}: Props) {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -70,6 +80,8 @@ export function ShopHeaderButton({ shopName, shopHref, products }: Props) {
         shopName={shopName}
         shopHref={shopHref}
         products={products}
+        peerName={peerName}
+        inquiryAction={inquiryAction}
       />
     </>
   );
