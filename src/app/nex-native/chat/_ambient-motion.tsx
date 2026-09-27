@@ -343,10 +343,12 @@ export function AmbientMotion({
             : "warm";
       return {
         id: `t-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-        // Stars cluster in the sky (upper 55% of the surface) ·
-        // never over the composer or reading zone.
+        // Stars only in the sky zone above the mountain silhouettes
+        // (upper ~28% of the surface for theme3.png). Below that is
+        // the mountain / forest layer where painted stars don't
+        // belong. Sealed 2026-09-27.
         x: rand(3, 97),
-        y: rand(2, 55),
+        y: rand(2, 28),
         size,
         // Duration correlates with brightness · dim stars flicker
         // briefly, bright stars linger through their fade.
