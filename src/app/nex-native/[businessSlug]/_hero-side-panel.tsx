@@ -721,20 +721,15 @@ function AcceptChip({ label, on }: { label: string; on: boolean }) {
 function SafeTradeContent() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 12,
-        }}
-      >
+      {/* Identity + one-line frame */}
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <div
           style={{
             width: 44,
             height: 44,
             borderRadius: 12,
             background:
-              "linear-gradient(135deg, rgba(0,175,255,0.28), rgba(22,214,107,0.28))",
+              "linear-gradient(135deg, rgba(22,214,107,0.35), rgba(0,175,255,0.28))",
             border: "1px solid rgba(255,255,255,0.14)",
             display: "grid",
             placeItems: "center",
@@ -746,13 +741,12 @@ function SafeTradeContent() {
         <div>
           <div
             style={{
-              fontFamily: "inherit",
               fontSize: 18,
               fontWeight: 800,
               letterSpacing: "-0.005em",
             }}
           >
-            NEX SafeTrade
+            NEX Center Safe Trade
           </div>
           <div
             style={{
@@ -761,7 +755,7 @@ function SafeTradeContent() {
               letterSpacing: "0.02em",
             }}
           >
-            Trust built on conversation
+            Optional protection for buyers
           </div>
         </div>
       </div>
@@ -771,55 +765,365 @@ function SafeTradeContent() {
           margin: 0,
           fontSize: 15,
           lineHeight: 1.65,
-          color: "rgba(244,247,252,0.9)",
+          color: "rgba(244,247,252,0.92)",
         }}
       >
-        Every order on NEX happens inside a chat that stays permanent
-        for both sides. That&apos;s the whole trust model — no accounts
-        to close, no reviews to game, no support tickets that vanish.
-        The conversation IS the receipt.
+        <b>NEX Center Safe Trade</b> is an <b>optional service</b>{" "}
+        available to buyers who want their order physically inspected
+        before the supplier receives payment.
       </p>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        <SafeItem
-          title="Immutable message history"
-          body="Every message between you and the seller is preserved. Neither side can delete the other's messages · both sides always hold the same copy of the deal."
-        />
-        <SafeItem
-          title="No hidden fees"
-          body="NEX doesn't take a percentage of your sale. Sellers set their price · buyers pay it. Fee-free · forever."
-        />
-        <SafeItem
-          title="Cash on delivery supported"
-          body="Where sellers offer it, you can inspect the item before paying. NEX doesn't force digital-only checkout."
-        />
-        <SafeItem
-          title="Report + block"
-          body="If a seller ignores you, misrepresents an item, or breaches trust, one tap surfaces it to the NEX team + blocks further contact."
-        />
-        <SafeItem
-          title="Community-verified sellers · coming"
-          body="A visible ✓ next to verified sellers ships with NEX Bisnis · until then, every conversation carries its own signal."
-        />
+      {/* Explicit fee-payer callout · the whole reason this exists */}
+      <div
+        style={{
+          padding: 14,
+          borderRadius: 12,
+          background: "rgba(255,114,0,0.10)",
+          border: "1px solid rgba(255,114,0,0.45)",
+          fontSize: 13,
+          color: "rgba(244,247,252,0.94)",
+          lineHeight: 1.6,
+        }}
+      >
+        The <b>buyer chooses</b> whether to use Safe Trade and pays
+        the <b style={{ color: NEX.orange }}>NEX Center service fee</b>{" "}
+        directly. The <b>supplier does not pay</b> the Safe Trade
+        inspection fee.
       </div>
 
+      {/* 7-step flow */}
+      <div>
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.24em",
+            textTransform: "uppercase",
+            color: NEX.cyan,
+            fontWeight: 700,
+            marginBottom: 10,
+          }}
+        >
+          How it works
+        </div>
+        <ol
+          style={{
+            margin: 0,
+            padding: 0,
+            listStyle: "none",
+            display: "flex",
+            flexDirection: "column",
+            gap: 10,
+          }}
+        >
+          <SafeStep
+            n={1}
+            title="Buyer and supplier agree the order"
+            body="Product, quantity, specifications, quality requirements, and any other conditions are agreed between the buyer and supplier in chat."
+          />
+          <SafeStep
+            n={2}
+            title="Buyer selects NEX Center Safe Trade"
+            body="If the buyer wants the additional inspection service, they select NEX Center Safe Trade and pay the applicable 20% NEX Center service fee."
+          />
+          <SafeStep
+            n={3}
+            title="Supplier sends the goods to NEX Center"
+            body="The supplier delivers the ordered goods to NEX Center in Yogyakarta City for physical inspection."
+          />
+          <SafeStep
+            n={4}
+            title="NEX Center inspects the order"
+            body="Goods are checked against the agreed buyer requirements and the supplier's stated product supply — applicable specifications, quantity, condition, quality."
+          />
+          <SafeStep
+            n={5}
+            title="Order approval"
+            body="If the goods meet the agreed requirements, the Safe Trade inspection is completed and the order proceeds to payment release."
+          />
+          <SafeStep
+            n={6}
+            title="Supplier payment is released"
+            body="Once the order passes the agreed inspection, the purchase payment is released to the supplier in full, according to the Safe Trade transaction terms."
+          />
+          <SafeStep
+            n={7}
+            title="Export & shipping support"
+            body="NEX Center can provide available documentation and coordinate storage + freight arrangements where required."
+          />
+        </ol>
+      </div>
+
+      {/* Storage + Freight */}
+      <div
+        style={{
+          padding: 14,
+          borderRadius: 12,
+          background: "rgba(6,15,28,0.72)",
+          border: "1px solid rgba(255,255,255,0.08)",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: NEX.cyan,
+            fontWeight: 700,
+            marginBottom: 8,
+          }}
+        >
+          Storage &amp; Freight support
+        </div>
+        <p
+          style={{
+            margin: "0 0 10px",
+            fontSize: 13,
+            lineHeight: 1.55,
+            color: "rgba(244,247,252,0.85)",
+          }}
+        >
+          Following inspection, goods can be held at NEX Center while
+          shipping arrangements are completed. NEX Center can coordinate
+          with freight and logistics brokers for:
+        </p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+          <FreightPill icon="✈️" label="Air Freight" />
+          <FreightPill icon="🌊" label="Sea Freight" />
+        </div>
+      </div>
+
+      {/* Fee callout */}
+      <div
+        style={{
+          padding: 16,
+          borderRadius: 14,
+          background:
+            "linear-gradient(180deg, rgba(255,114,0,0.16) 0%, rgba(255,114,0,0.06) 100%)",
+          border: "1px solid rgba(255,114,0,0.45)",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: NEX.orange,
+            fontWeight: 700,
+            marginBottom: 8,
+          }}
+        >
+          NEX Center Safe Trade Fee
+        </div>
+        <div
+          style={{
+            fontSize: 20,
+            fontWeight: 800,
+            color: NEX.text,
+            marginBottom: 10,
+          }}
+        >
+          20% ·{" "}
+          <span style={{ color: NEX.orange }}>paid by the buyer</span>{" "}
+          directly to NEX Center.
+        </div>
+        <div
+          style={{
+            fontSize: 12,
+            color: "rgba(244,247,252,0.82)",
+            marginBottom: 8,
+            lineHeight: 1.5,
+          }}
+        >
+          The fee covers the applicable NEX Center Safe Trade services,
+          which may include:
+        </div>
+        <ul
+          style={{
+            margin: 0,
+            padding: 0,
+            listStyle: "none",
+            display: "flex",
+            flexDirection: "column",
+            gap: 4,
+          }}
+        >
+          {[
+            "Physical product inspection",
+            "Checking goods against agreed buyer specifications",
+            "Quantity and condition checking",
+            "Inspection documentation",
+            "Storage coordination",
+            "Export documentation support",
+            "Freight broker coordination",
+            "Air or sea freight arrangement support",
+          ].map((item) => (
+            <FeeLine key={item}>{item}</FeeLine>
+          ))}
+        </ul>
+      </div>
+
+      {/* Optional callout */}
       <div
         style={{
           padding: 14,
           borderRadius: 12,
           background: "rgba(22,214,107,0.08)",
           border: "1px solid rgba(22,214,107,0.3)",
+          fontSize: 13,
+          color: "rgba(244,247,252,0.9)",
+          lineHeight: 1.6,
+        }}
+      >
+        <b style={{ color: "#B8F1CC" }}>Safe Trade is completely optional.</b>{" "}
+        A buyer may purchase directly from the supplier without using
+        NEX Center Safe Trade, subject to the supplier&apos;s normal
+        trading terms.
+      </div>
+
+      {/* Important disclaimer */}
+      <div
+        style={{
+          padding: 14,
+          borderRadius: 12,
+          background: "rgba(0,0,0,0.35)",
+          border: "1px solid rgba(255,255,255,0.1)",
           fontSize: 12,
-          color: "rgba(244,247,252,0.85)",
+          color: "rgba(244,247,252,0.75)",
           lineHeight: 1.55,
         }}
       >
-        <b style={{ color: "#B8F1CC" }}>Golden rule.</b>{" "}
-        Anything a seller promises in chat is binding. If something
-        arrives different from the message, the receipt is the chat
-        history itself.
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: NEX.textDim,
+            fontWeight: 700,
+            marginBottom: 6,
+          }}
+        >
+          Important
+        </div>
+        NEX Center Safe Trade is an <b>independent inspection and
+        trade-support service</b>. The inspection verifies the goods
+        against the agreed order requirements at the time and location
+        of inspection. It does not replace the buyer&apos;s
+        responsibility for import regulations, customs requirements,
+        product certifications, or other requirements applicable in
+        the destination country.
       </div>
     </div>
+  );
+}
+
+function SafeStep({
+  n,
+  title,
+  body,
+}: {
+  n: number;
+  title: string;
+  body: string;
+}) {
+  return (
+    <li
+      style={{
+        display: "grid",
+        gridTemplateColumns: "34px 1fr",
+        gap: 12,
+        alignItems: "start",
+      }}
+    >
+      <div
+        style={{
+          width: 30,
+          height: 30,
+          borderRadius: "50%",
+          background: "#FF7200",
+          color: "#0B0F1A",
+          fontSize: 13,
+          fontWeight: 800,
+          display: "grid",
+          placeItems: "center",
+          boxShadow: "0 4px 12px rgba(255,114,0,0.35)",
+        }}
+      >
+        {n}
+      </div>
+      <div style={{ paddingTop: 3 }}>
+        <div
+          style={{
+            fontSize: 14,
+            fontWeight: 700,
+            marginBottom: 3,
+          }}
+        >
+          {title}
+        </div>
+        <div
+          style={{
+            fontSize: 12.5,
+            lineHeight: 1.55,
+            color: "rgba(244,247,252,0.8)",
+          }}
+        >
+          {body}
+        </div>
+      </div>
+    </li>
+  );
+}
+
+function FreightPill({ icon, label }: { icon: string; label: string }) {
+  return (
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 8,
+        padding: "8px 14px",
+        borderRadius: 10,
+        background: "rgba(0,175,255,0.10)",
+        border: "1px solid rgba(0,175,255,0.35)",
+        color: NEX.text,
+        fontSize: 13,
+        fontWeight: 600,
+        letterSpacing: "0.02em",
+      }}
+    >
+      <span aria-hidden style={{ fontSize: 16 }}>
+        {icon}
+      </span>
+      {label}
+    </span>
+  );
+}
+
+function FeeLine({ children }: { children: React.ReactNode }) {
+  return (
+    <li
+      style={{
+        display: "flex",
+        alignItems: "flex-start",
+        gap: 8,
+        fontSize: 12.5,
+        color: "rgba(244,247,252,0.88)",
+        lineHeight: 1.5,
+      }}
+    >
+      <span
+        aria-hidden
+        style={{
+          flexShrink: 0,
+          width: 4,
+          height: 4,
+          borderRadius: "50%",
+          background: NEX.orange,
+          marginTop: 8,
+        }}
+      />
+      <span>{children}</span>
+    </li>
   );
 }
 

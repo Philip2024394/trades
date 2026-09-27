@@ -272,6 +272,86 @@ export default async function Page({
         />
       </section>
 
+      {/* --- SAFE TRADE RIBBON ---------------------------------------
+          Visible marker beside the supplier's listing so it's clear
+          NEX Center Safe Trade is available AND that the buyer (not
+          the seller) pays the 20% fee only if they opt in. */}
+      <section
+        style={{
+          maxWidth: 720,
+          margin: "0 auto",
+          padding: "24px 20px 0",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            gap: 12,
+            padding: "14px 16px",
+            borderRadius: 14,
+            background:
+              "linear-gradient(90deg, rgba(22,214,107,0.14) 0%, rgba(0,175,255,0.10) 100%)",
+            border: "1px solid rgba(22,214,107,0.4)",
+            boxShadow: "0 6px 20px rgba(0,0,0,0.35)",
+          }}
+        >
+          <div
+            style={{
+              flexShrink: 0,
+              width: 34,
+              height: 34,
+              borderRadius: 10,
+              background:
+                "linear-gradient(135deg, rgba(22,214,107,0.4), rgba(0,175,255,0.35))",
+              border: "1px solid rgba(255,255,255,0.14)",
+              display: "grid",
+              placeItems: "center",
+              color: "#FFFFFF",
+            }}
+            aria-hidden
+          >
+            <svg
+              width={18}
+              height={18}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.9}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              <path d="M9 12l2 2 4-4" />
+            </svg>
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div
+              style={{
+                fontSize: 13,
+                fontWeight: 800,
+                letterSpacing: "0.01em",
+                marginBottom: 3,
+              }}
+            >
+              NEX Center Safe Trade Available
+            </div>
+            <div
+              style={{
+                fontSize: 11.5,
+                lineHeight: 1.55,
+                color: "rgba(244,247,252,0.82)",
+              }}
+            >
+              Optional buyer-paid inspection service ·{" "}
+              <b style={{ color: "#FF7200" }}>20% NEX Center service fee</b>{" "}
+              · Yogyakarta inspection · Storage &amp; freight support
+              available
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* --- PRODUCTS ------------------------------------------------ */}
       {products.length > 0 && (
         <section
