@@ -486,10 +486,9 @@ function ProductSpread({
         boxShadow: "0 12px 32px rgba(0,0,0,0.4)",
       }}
     >
-      {/* Hero photo · 3:2 aspect · price now sits INSIDE the image
-          at the lower-right as a glass pill, so the card leads
-          with the visual and the number lands where the eye
-          finishes scanning the frame. Stock pill stays top-left. */}
+      {/* Hero photo · 3:2 aspect · bottom corners rounded so the
+          image reads as its own self-contained photo, with the meta
+          block sitting below it in the card. */}
       <div
         style={{
           width: "100%",
@@ -497,6 +496,7 @@ function ProductSpread({
           background: "#050f1e",
           overflow: "hidden",
           position: "relative",
+          borderRadius: "0 0 18px 18px",
         }}
       >
         {imageUrl ? (
