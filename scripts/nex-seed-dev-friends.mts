@@ -74,7 +74,7 @@ const DEV_FRIENDS: DevFriend[] = [
     nex_handle: "nex-52091",
     chat_theme: "gold",
     kind: "reseller",
-    profession: "Reseller · vintage cameras",
+    profession: "Reseller · Vintage",
     location_label: "Jakarta",
     avatar_url:
       "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop",
@@ -110,7 +110,7 @@ const DEV_FRIENDS: DevFriend[] = [
     nex_handle: "nex-91280",
     chat_theme: "night",
     kind: "business_owner",
-    profession: "Bakery owner",
+    profession: "Bakery Owner",
     location_label: "Mumbai",
     avatar_url:
       "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop",
