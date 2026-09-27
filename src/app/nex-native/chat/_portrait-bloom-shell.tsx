@@ -435,7 +435,8 @@ export function PortraitBloomShell({
             overscrollBehavior: "contain",
             display: "flex",
             flexDirection: "column",
-            padding: "20px 20px 160px",
+            padding:
+              "20px 20px calc(env(safe-area-inset-bottom, 0) + 118px)",
           }}
         >
           <div
@@ -624,7 +625,7 @@ export function PortraitBloomShell({
             />
           </div>
         </div>
-        <ScrollToBottomOnMount />
+        <ScrollToBottomOnMount signal={messages.length} />
       </main>
     </>
   );
