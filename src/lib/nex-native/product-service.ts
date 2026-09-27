@@ -237,12 +237,50 @@ export async function createProduct(input: NexProductInsert): Promise<NexProduct
       price_pence: input.price_pence,
       currency: input.currency,
       status: input.status ?? "draft",
+      dispatch_time: input.dispatch_time ?? null,
+      sample_request_time: input.sample_request_time ?? null,
     })
     .select("*")
     .single();
   if (error || !data) {
     throw new Error(
       `product-service.createProduct: ${error?.message ?? "no row returned"}`
+    );
+  }
+  return data as NexProductRow;
+}
+
+/** Bridge 13c · update the buyer-facing turnaround texts on a single
+ *  product. Empty string clears the value · service treats "" as
+ *  NULL so seller edits behave intuitively. */
+export async function updateProductTurnaround(
+  productId: NexUuid,
+  input: {
+    dispatchTime?: string | null;
+    sampleRequestTime?: string | null;
+  },
+): Promise<NexProductRow> {
+  const patch: {
+    dispatch_time?: string | null;
+    sample_request_time?: string | null;
+  } = {};
+  if (input.dispatchTime !== undefined) {
+    const v = (input.dispatchTime ?? "").trim();
+    patch.dispatch_time = v.length > 0 ? v : null;
+  }
+  if (input.sampleRequestTime !== undefined) {
+    const v = (input.sampleRequestTime ?? "").trim();
+    patch.sample_request_time = v.length > 0 ? v : null;
+  }
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_product")
+    .update(patch)
+    .eq("id", productId)
+    .select("*")
+    .single();
+  if (error || !data) {
+    throw new Error(
+      `product-service.updateProductTurnaround: ${error?.message ?? "no row returned"}`,
     );
   }
   return data as NexProductRow;

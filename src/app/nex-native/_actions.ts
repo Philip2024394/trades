@@ -640,6 +640,58 @@ export async function updateProductStockStatusAction(
   );
 }
 
+/** Bridge 13c · update a single product's dispatch_time +
+ *  sample_request_time · owner-only. Called by the two text
+ *  inputs on /manage/shop under each product row. */
+export async function updateProductTurnaroundAction(
+  productId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const dispatchTime = String(formData.get("dispatch_time") ?? "");
+  const sampleTime = String(formData.get("sample_request_time") ?? "");
+
+  const product = await productService.getProductById(productId);
+  if (!product) {
+    redirect(
+      "/nex-native/manage/shop?e=turnaround_failed&m=" +
+        encodeURIComponent("Product not found"),
+    );
+  }
+  const business = await businessService.getBusinessById(product.business_id);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirect(
+      "/nex-native/manage/shop?e=turnaround_forbidden&m=" +
+        encodeURIComponent("You don't own this product"),
+    );
+  }
+
+  try {
+    await productService.updateProductTurnaround(productId, {
+      dispatchTime,
+      sampleRequestTime: sampleTime,
+    });
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      "/nex-native/manage/shop?e=turnaround_failed&m=" +
+        encodeURIComponent(msg),
+    );
+  }
+  revalidatePath("/nex-native/manage/shop");
+  revalidatePath(`/nex-native/${business.slug}`);
+  revalidatePath(`/nex-native/${business.slug}/${productId}`);
+  redirect(
+    "/nex-native/manage/shop?e=turnaround_ok&m=" +
+      encodeURIComponent(`${product.name} · turnaround updated`),
+  );
+}
+
 /** Bridge 6 · retract a peer message ("delete for everyone").
  *  Sender-only within a 1-hour window · service enforces both. */
 /** Bridge 11 · send a product inquiry from the peer's shop into the

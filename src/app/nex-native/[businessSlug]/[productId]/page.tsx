@@ -359,6 +359,35 @@ export default async function Page({
           </section>
         )}
 
+        {/* --- TURNAROUND ------------------------------------------ */}
+        {(product.dispatch_time || product.sample_request_time) && (
+          <section style={{ marginBottom: 28 }}>
+            <SectionHeading eyebrow="Turnaround" />
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr",
+                gap: 10,
+              }}
+            >
+              {product.dispatch_time && (
+                <TurnaroundRow
+                  icon="📦"
+                  label="Dispatch"
+                  value={product.dispatch_time}
+                />
+              )}
+              {product.sample_request_time && (
+                <TurnaroundRow
+                  icon="🧪"
+                  label="Sample request"
+                  value={product.sample_request_time}
+                />
+              )}
+            </div>
+          </section>
+        )}
+
         {/* --- SELLER CARD ----------------------------------------- */}
         <section style={{ marginBottom: 28 }}>
           <SectionHeading eyebrow="Sold by" />
@@ -507,6 +536,64 @@ export default async function Page({
           >
             Chat Now
           </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TurnaroundRow({
+  icon,
+  label,
+  value,
+}: {
+  icon: string;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        padding: "12px 14px",
+        borderRadius: 12,
+        background: NEX.panelSoft,
+        border: `1px solid ${NEX.border}`,
+      }}
+    >
+      <span
+        aria-hidden
+        style={{
+          flexShrink: 0,
+          width: 36,
+          height: 36,
+          borderRadius: 10,
+          background: "rgba(0,175,255,0.10)",
+          border: "1px solid rgba(0,175,255,0.24)",
+          display: "grid",
+          placeItems: "center",
+          fontSize: 18,
+        }}
+      >
+        {icon}
+      </span>
+      <div style={{ minWidth: 0, flex: 1 }}>
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: NEX.cyan,
+            fontWeight: 700,
+            marginBottom: 2,
+          }}
+        >
+          {label}
+        </div>
+        <div style={{ fontSize: 13, color: NEX.text, lineHeight: 1.5 }}>
+          {value}
         </div>
       </div>
     </div>

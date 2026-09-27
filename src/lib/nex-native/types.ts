@@ -329,6 +329,11 @@ export interface NexProductRow {
   price_pence: number;
   currency: NexCurrency;
   status: NexProductStatus;
+  /** Bridge 13c · migration 064 · free-form buyer-facing text for
+   *  turnaround expectations. Both nullable · empty simply doesn't
+   *  render on the product page. */
+  dispatch_time: string | null;
+  sample_request_time: string | null;
   created_at: NexTimestamp;
   updated_at: NexTimestamp;
 }
@@ -345,6 +350,8 @@ export interface NexProductInsert {
   price_pence: number;
   currency: NexCurrency;
   status?: NexProductStatus;
+  dispatch_time?: string | null;
+  sample_request_time?: string | null;
 }
 
 // ---------------------------------------------------------------------------

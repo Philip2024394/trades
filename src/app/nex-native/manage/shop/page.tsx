@@ -21,6 +21,7 @@ import {
   setBusinessAwayModeAction,
   endBusinessAwayModeAction,
   updateProductStockStatusAction,
+  updateProductTurnaroundAction,
 } from "../../_actions";
 
 export const runtime = "nodejs";
@@ -551,90 +552,150 @@ function ProductStockRow({
   product: import("@/lib/nex-native/types").NexProductRow;
   currentStatus: string;
 }) {
-  const action = updateProductStockStatusAction.bind(null, product.id);
+  const stockAction = updateProductStockStatusAction.bind(null, product.id);
+  const turnaroundAction = updateProductTurnaroundAction.bind(
+    null,
+    product.id,
+  );
   const statuses = ["in_stock", "low_stock", "made_to_order", "sold_out"];
   return (
     <div
       style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 12,
-        padding: 12,
+        padding: 14,
         borderRadius: 12,
         background: "rgba(0,0,0,0.32)",
         border: `1px solid ${NEX.border}`,
+        display: "flex",
+        flexDirection: "column",
+        gap: 12,
       }}
     >
-      {product.image_url && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={product.image_url}
-          alt=""
-          style={{
-            flexShrink: 0,
-            width: 48,
-            height: 48,
-            borderRadius: 8,
-            objectFit: "cover",
-            border: `1px solid ${NEX.border}`,
-          }}
-        />
-      )}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div
-          style={{
-            fontSize: 13,
-            fontWeight: 700,
-            marginBottom: 4,
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {product.name}
-        </div>
-        <form action={action}>
+      {/* Row 1 · thumb + name + stock pills */}
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        {product.image_url && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={product.image_url}
+            alt=""
+            style={{
+              flexShrink: 0,
+              width: 48,
+              height: 48,
+              borderRadius: 8,
+              objectFit: "cover",
+              border: `1px solid ${NEX.border}`,
+            }}
+          />
+        )}
+        <div style={{ flex: 1, minWidth: 0 }}>
           <div
             style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 4,
+              fontSize: 13,
+              fontWeight: 700,
+              marginBottom: 4,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
             }}
           >
-            {statuses.map((s) => (
-              <button
-                key={s}
-                type="submit"
-                name="stock_status"
-                value={s}
-                aria-current={currentStatus === s ? "true" : undefined}
-                style={{
-                  padding: "5px 10px",
-                  borderRadius: 999,
-                  border:
-                    currentStatus === s
-                      ? `1px solid ${statusColor(s)}`
-                      : `1px solid ${NEX.borderStrong}`,
-                  background:
-                    currentStatus === s
-                      ? statusBg(s)
-                      : "rgba(0,0,0,0.28)",
-                  color:
-                    currentStatus === s ? statusColor(s) : NEX.textDim,
-                  fontSize: 10,
-                  fontWeight: 700,
-                  letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                }}
-              >
-                {STOCK_LABEL[s]}
-              </button>
-            ))}
+            {product.name}
           </div>
-        </form>
+          <form action={stockAction}>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 4,
+              }}
+            >
+              {statuses.map((s) => (
+                <button
+                  key={s}
+                  type="submit"
+                  name="stock_status"
+                  value={s}
+                  aria-current={currentStatus === s ? "true" : undefined}
+                  style={{
+                    padding: "5px 10px",
+                    borderRadius: 999,
+                    border:
+                      currentStatus === s
+                        ? `1px solid ${statusColor(s)}`
+                        : `1px solid ${NEX.borderStrong}`,
+                    background:
+                      currentStatus === s
+                        ? statusBg(s)
+                        : "rgba(0,0,0,0.28)",
+                    color:
+                      currentStatus === s ? statusColor(s) : NEX.textDim,
+                    fontSize: 10,
+                    fontWeight: 700,
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                  }}
+                >
+                  {STOCK_LABEL[s]}
+                </button>
+              ))}
+            </div>
+          </form>
+        </div>
       </div>
+
+      {/* Row 2 · dispatch time + sample request time + save button */}
+      <form
+        action={turnaroundAction}
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 10,
+          paddingTop: 12,
+          borderTop: `1px solid ${NEX.border}`,
+        }}
+      >
+        <FormRow label="Dispatch time">
+          <input
+            type="text"
+            name="dispatch_time"
+            defaultValue={product.dispatch_time ?? ""}
+            placeholder="24-48 hours after payment"
+            maxLength={140}
+            style={inputStyle}
+          />
+        </FormRow>
+        <FormRow label="Sample request time">
+          <input
+            type="text"
+            name="sample_request_time"
+            defaultValue={product.sample_request_time ?? ""}
+            placeholder="5-7 days"
+            maxLength={140}
+            style={inputStyle}
+          />
+        </FormRow>
+        <div style={{ gridColumn: "1 / -1" }}>
+          <button
+            type="submit"
+            style={{
+              padding: "9px 14px",
+              borderRadius: 10,
+              background: "rgba(0,175,255,0.14)",
+              border: `1px solid ${NEX.cyanSoft}`,
+              color: NEX.text,
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              cursor: "pointer",
+              fontFamily: "inherit",
+            }}
+          >
+            Save turnaround
+          </button>
+        </div>
+      </form>
     </div>
   );
 }
