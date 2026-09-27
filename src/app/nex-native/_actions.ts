@@ -27,6 +27,7 @@ import * as chatThemeService from "@/lib/nex-native/chat-theme-service";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as productService from "@/lib/nex-native/product-service";
 import * as menuService from "@/lib/nex-native/menu-service";
+import * as safeTradeConsentService from "@/lib/nex-native/safe-trade-consent-service";
 import * as orderService from "@/lib/nex-native/order-service";
 import * as commerceService from "@/lib/nex-native/commerce-service";
 import * as accountService from "@/lib/nex-native/account-service";
@@ -687,6 +688,38 @@ export async function updateBusinessCategoryAndKeywordsAction(
     "/nex-native/manage/shop?e=category_ok&m=" +
       encodeURIComponent("Category and keywords updated"),
   );
+}
+
+/** Bridge 16b · record the buyer's/seller's acknowledgement of the
+ *  NEX safe-trade doctrine + terms. Called by the JIT modal on
+ *  first commerce chat entry. Stamps
+ *  nex_account.safe_trade_consent_at + version. */
+export async function acknowledgeSafeTradeAction(
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const nextHref = String(formData.get("next") ?? "").trim();
+  const safeNext =
+    nextHref.startsWith("/nex-native/") && !nextHref.includes("?e=")
+      ? nextHref
+      : "/nex-native/chat";
+
+  try {
+    await safeTradeConsentService.recordSafeTradeConsent(session.account.id);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      safeNext +
+        (safeNext.includes("?") ? "&" : "?") +
+        "consent_error=" +
+        encodeURIComponent(msg),
+    );
+  }
+
+  revalidatePath(safeNext);
+  redirect(safeNext);
 }
 
 /** Bridge 16a · update the seller's accepted payment methods.

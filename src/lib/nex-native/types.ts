@@ -55,6 +55,17 @@ export interface NexAccountRow {
    * `now() < bisnis_expires_at` before granting Bisnis features.
    */
   bisnis_expires_at: NexTimestamp | null;
+  /** Bridge 16b · when the user acknowledged the NEX safe-trade
+   *  terms via the JIT modal · migration 069. NULL means they
+   *  haven't seen the modal yet. Sets the legal basis for saying
+   *  "you were warned about off-doctrine payment risks". */
+  safe_trade_consent_at: NexTimestamp | null;
+  /** Bridge 16b · which terms version they acknowledged · migration
+   *  069. Format YYYY-MM-DD matching the doctrine seal date. When
+   *  we materially update the doctrine we bump the constant in
+   *  safe-trade-consent-service and can re-prompt anyone on an old
+   *  version. */
+  safe_trade_consent_version: string | null;
   created_at: NexTimestamp;
 }
 

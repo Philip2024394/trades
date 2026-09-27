@@ -36,6 +36,12 @@ import type {
   PendingInvite,
 } from "../../_side-nav-panel";
 import * as businessService from "@/lib/nex-native/business-service";
+import {
+  hasCurrentSafeTradeConsent,
+  CURRENT_SAFE_TRADE_TERMS_VERSION,
+} from "@/lib/nex-native/safe-trade-consent-service";
+import { acknowledgeSafeTradeAction } from "../../../_actions";
+import { SafeTradeConsentModal } from "./_safe-trade-consent-modal";
 import * as productService from "@/lib/nex-native/product-service";
 
 export const runtime = "nodejs";
@@ -116,6 +122,14 @@ export default async function PeerChatPage({
         .listProductsByBusiness(peerBusiness.id, "live")
         .catch(() => [] as Awaited<ReturnType<typeof productService.listProductsByBusiness>>)
     : [];
+  // Bridge 16b · JIT safe-trade consent gate. Fires only when the
+  // peer owns a business (i.e. this is a commerce chat) AND the
+  // viewer hasn't yet acknowledged the current terms version. The
+  // modal blocks the surface until they tick + submit.
+  const needsSafeTradeConsent = peerBusiness
+    ? !(await hasCurrentSafeTradeConsent(session.account.id).catch(() => true))
+    : false;
+
   const peerShop =
     peerBusiness && peerProducts.length > 0
       ? {
@@ -304,8 +318,16 @@ export default async function PeerChatPage({
   });
 
   return (
-    <PortraitBloomShell
-      scope="peer-chat"
+    <>
+      {needsSafeTradeConsent && (
+        <SafeTradeConsentModal
+          action={acknowledgeSafeTradeAction}
+          nextHref={`/nex-native/chat/peer/${peer.id}`}
+          termsVersion={CURRENT_SAFE_TRADE_TERMS_VERSION}
+        />
+      )}
+      <PortraitBloomShell
+        scope="peer-chat"
       /* Free accounts display only the first name on the chat
          header per Founder direction 2026-09-27 · full name lives
          on friend cards + directory. Splits on any whitespace so
@@ -349,6 +371,7 @@ export default async function PeerChatPage({
           clearHref: `/nex-native/chat/peer/${peer.id}`,
         };
       })()}
-    />
+      />
+    </>
   );
 }

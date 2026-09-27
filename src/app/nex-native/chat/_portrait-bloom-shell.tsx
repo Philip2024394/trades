@@ -989,6 +989,14 @@ export function PortraitBloomShell({
                       )}
                     </div>
                     </MessageBubbleClient>
+                    {/* Bridge 16b · payment-request warning · fires
+                        when a bubble body contains bank/account/wallet
+                        keywords. Sits just below the offending bubble
+                        so the buyer sees the warning in context. */}
+                    {!m.deleted_for_everyone &&
+                      detectPaymentRequestInBody(m.body ?? "") && (
+                        <PaymentRequestWarning mine={m.mine} />
+                      )}
                   </React.Fragment>
                 );
               })
@@ -1519,4 +1527,131 @@ function formatBubblePrice(pence: number, currency: string): string {
   if (currency === "GBP") return `£${(pence / 100).toFixed(2)}`;
   if (currency === "USD") return `$${(pence / 100).toFixed(2)}`;
   return `${currency} ${withCommas}`;
+}
+
+/** Bridge 16b · heuristic detector for "seller is asking for direct
+ *  payment before delivery". Runs client-side on every bubble body ·
+ *  when true the shell renders a red warning bubble below.
+ *
+ *  Signals we flag:
+ *    · Indonesian bank name in the body (BCA, Mandiri, BRI, BNI, CIMB,
+ *      Permata, Danamon, Panin, Maybank, Sinarmas)
+ *    · The word "rekening" or "nomor rekening" (Bahasa Indonesia
+ *      for bank account / account number)
+ *    · Indonesian e-wallet names (GoPay, OVO, DANA, ShopeePay,
+ *      LinkAja) paired with a numeric string
+ *    · A plausible bank account number: 10-16 consecutive digits
+ *      NOT looking like a phone number (starts 0812/0813/etc)
+ *
+ *  Deliberately biased towards false positives · we would rather
+ *  warn twice than miss once. Buyers can still send whatever they
+ *  want · the warning is educational, not a block. */
+function detectPaymentRequestInBody(body: string): boolean {
+  if (!body || body.length < 3) return false;
+  const b = body.toLowerCase();
+
+  // Bank names
+  const bankNames = [
+    "bca",
+    "mandiri",
+    "bri",
+    "bni",
+    "cimb",
+    "permata",
+    "danamon",
+    "panin",
+    "maybank",
+    "sinarmas",
+    "ocbc",
+    "btpn",
+    "jenius",
+  ];
+  for (const name of bankNames) {
+    // Match as a standalone word · avoids "brief" matching "bri".
+    const re = new RegExp(`(^|[^a-z0-9])${name}([^a-z0-9]|$)`, "i");
+    if (re.test(b)) return true;
+  }
+
+  // "rekening" / "nomor rekening" / "no rek" / "no. rek"
+  if (/\brekening\b|\bno\.?\s*rek(ening)?\b/i.test(body)) return true;
+
+  // E-wallets
+  const wallets = ["gopay", "ovo", "dana", "shopeepay", "linkaja"];
+  for (const w of wallets) {
+    if (b.includes(w)) return true;
+  }
+
+  // Long numeric string that looks like a bank account (10-16 digits).
+  // We skip strings that look like Indonesian mobile numbers (start
+  // with 08, 62 8 or +62 8) since those show up in every chat.
+  const numeric = body.match(/\b\d{10,16}\b/g);
+  if (numeric) {
+    for (const n of numeric) {
+      const looksMobile =
+        n.startsWith("08") ||
+        n.startsWith("628") ||
+        n.startsWith("6208") ||
+        n.startsWith("+628");
+      if (!looksMobile) return true;
+    }
+  }
+
+  return false;
+}
+
+function PaymentRequestWarning({ mine }: { mine: boolean }) {
+  return (
+    <div
+      style={{
+        margin: "6px 0 12px",
+        display: "flex",
+        justifyContent: mine ? "flex-end" : "flex-start",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 320,
+          padding: "10px 12px",
+          borderRadius: 12,
+          background: "rgba(255,51,85,0.10)",
+          border: "1px solid rgba(255,51,85,0.35)",
+          color: "#FFB4C0",
+          fontSize: 12,
+          lineHeight: 1.5,
+          boxShadow: "0 6px 14px rgba(0,0,0,0.35)",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: "#FF7A85",
+            fontWeight: 700,
+            marginBottom: 4,
+          }}
+        >
+          ⚠ Payment request detected
+        </div>
+        <div style={{ color: "rgba(255,255,255,0.9)" }}>
+          Direct transfers before delivery are <b>not protected</b> by
+          NEX. Ask for <b>COD</b> or <b>Escrow (Rekber)</b> instead ·{" "}
+          <a
+            href="/nex-native/safe-trade"
+            target="_blank"
+            rel="noopener"
+            style={{
+              color: "#FF7A85",
+              textDecoration: "underline",
+              textDecorationColor: "rgba(255,51,85,0.6)",
+              textUnderlineOffset: 2,
+            }}
+          >
+            learn how
+          </a>
+          .
+        </div>
+      </div>
+    </div>
+  );
 }
