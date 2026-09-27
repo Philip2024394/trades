@@ -228,7 +228,13 @@ export default async function PeerChatPage({
   return (
     <PortraitBloomShell
       scope="peer-chat"
-      displayName={peer.display_name}
+      /* Free accounts display only the first name on the chat
+         header per Founder direction 2026-09-27 · full name lives
+         on friend cards + directory. Splits on any whitespace so
+         "Maria Santos" → "Maria", "Philip J. Wright" → "Philip".
+         Bisnis tier will get full-name rendering when tier gating
+         lands (migration 046 pending). */
+      displayName={peer.display_name.split(/\s+/)[0] ?? peer.display_name}
       subtitle={profile?.profession ?? null}
       portraitUrl={profile?.avatar_url ?? null}
       presenceKind={presenceKind}

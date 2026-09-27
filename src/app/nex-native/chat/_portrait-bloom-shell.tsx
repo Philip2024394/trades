@@ -406,38 +406,42 @@ export function PortraitBloomShell({
                 </div>
               )}
             </div>
-            <div
-              style={{
-                fontSize: 22,
-                fontWeight: 700,
-                lineHeight: 1.1,
-                letterSpacing: "-0.005em",
-                minWidth: 0,
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                flex: 1,
-              }}
-            >
-              {displayName}
+            {/* Right column · name stacks over subtitle so
+                "Footwear designer" sits directly under "Maria",
+                not under the whole row. Sealed 2026-09-27. */}
+            <div style={{ minWidth: 0, flex: 1 }}>
+              <div
+                style={{
+                  fontSize: 22,
+                  fontWeight: 700,
+                  lineHeight: 1.1,
+                  letterSpacing: "-0.005em",
+                  minWidth: 0,
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {displayName}
+              </div>
+              {subtitle && (
+                <div
+                  style={{
+                    marginTop: 2,
+                    fontSize: 12,
+                    fontWeight: 600,
+                    letterSpacing: "0.04em",
+                    color: NEX.orange,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {subtitle}
+                </div>
+              )}
             </div>
           </div>
-          {subtitle && (
-            <div
-              style={{
-                marginTop: 2,
-                fontSize: 12,
-                fontWeight: 600,
-                letterSpacing: "0.04em",
-                color: NEX.orange,
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {subtitle}
-            </div>
-          )}
           {contextChip && (
             <div
               style={{
