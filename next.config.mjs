@@ -6,6 +6,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   turbopack: { root: __dirname },
+  // Hide the Next.js "N" dev indicator (bottom-left in dev mode) ·
+  // was overlapping the chat composer / footer UI. Doesn't affect
+  // production builds.
+  devIndicators: false,
   // Preview-deploy pragmatism: the codebase has legacy TS errors that
   // production build would fail on. Local `tsc --skipLibCheck` passes.
   // Turn these OFF before shipping real production traffic — they are

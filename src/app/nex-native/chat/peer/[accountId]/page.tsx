@@ -17,6 +17,7 @@
 import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as accountService from "@/lib/nex-native/account-service";
+import * as friendService from "@/lib/nex-native/friend-service";
 import * as peerConversationService from "@/lib/nex-native/peer-conversation-service";
 import * as peerMessageService from "@/lib/nex-native/peer-message-service";
 import { sendPeerMessageAction } from "../../../_actions";
@@ -24,6 +25,7 @@ import {
   PortraitBloomShell,
   type PortraitBloomPresenceKind,
 } from "../../_portrait-bloom-shell";
+import type { HeaderContact } from "../../_header-contacts-menu";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -86,6 +88,52 @@ export default async function PeerChatPage({
 
   const bind = sendPeerMessageAction.bind(null, peer.id);
 
+  // Header contacts menu · list of accepted friends so the user can
+  // hop between peer chats without leaving the chat surface. Best-
+  // effort · if any lookup fails we return an empty list rather than
+  // block the page render.
+  const contacts: HeaderContact[] = await (async () => {
+    try {
+      const friendIds = await friendService.listFriends(session.account.id);
+      const others = friendIds.filter((id) => id !== peer.id);
+      // Put the current peer FIRST so it's obvious you're in that
+      // chat when the drawer opens · include ALL friends after.
+      const orderedIds = [peer.id, ...others];
+      const list = await Promise.all(
+        orderedIds.map(async (id) => {
+          const [acc, profile] = await Promise.all([
+            accountService.getAccountById(id),
+            (async () => {
+              try {
+                const svc = await import(
+                  "@/lib/nex-native/account-profile-service"
+                );
+                return await svc.getProfileByAccountId(id);
+              } catch {
+                return null;
+              }
+            })(),
+          ]);
+          if (!acc) return null;
+          const professionShort = profile?.profession
+            ? profile.profession.split(/[\s·,/-]+/).filter(Boolean)[0] ?? null
+            : null;
+          return {
+            id: acc.id,
+            name: acc.display_name,
+            profession: professionShort,
+            avatarUrl: profile?.avatar_url ?? null,
+            href: `/nex-native/chat/peer/${acc.id}`,
+            isCurrent: acc.id === peer.id,
+          };
+        }),
+      );
+      return list.filter((c): c is HeaderContact => !!c);
+    } catch {
+      return [];
+    }
+  })();
+
   const presenceKind: PortraitBloomPresenceKind = isOffline
     ? "offline"
     : "online";
@@ -115,6 +163,7 @@ export default async function PeerChatPage({
       composerAction={bind}
       composerPlaceholder={`Message ${peer.display_name}…`}
       headerTag="NEX Chat"
+      contacts={contacts}
     />
   );
 }

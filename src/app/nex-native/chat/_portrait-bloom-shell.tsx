@@ -20,6 +20,10 @@
 import * as React from "react";
 import { PeerComposer } from "./peer/[accountId]/_composer";
 import { ScrollToBottomOnMount } from "./_scroll-to-bottom";
+import {
+  HeaderContactsMenu,
+  type HeaderContact,
+} from "./_header-contacts-menu";
 
 const NEX = {
   bg: "#020914",
@@ -85,6 +89,11 @@ export interface PortraitBloomShellProps {
   /** Optional badge · currently unused visually (header tag removed
    *  by Founder direction 2026-09-27). Callers may keep passing it. */
   headerTag?: string;
+  /** Optional contacts list · when present, the header renders a
+   *  home icon + 3-dot menu that opens a drawer showing these
+   *  contacts. Omit on surfaces that shouldn't show contact
+   *  switching (e.g. business chat for now). */
+  contacts?: HeaderContact[];
 }
 
 export function PortraitBloomShell({
@@ -99,6 +108,7 @@ export function PortraitBloomShell({
   composerAction,
   composerPlaceholder,
   scope,
+  contacts,
 }: PortraitBloomShellProps) {
   const isOffline = presenceKind !== "online";
 
@@ -296,10 +306,11 @@ export function PortraitBloomShell({
             zIndex: 3,
             flexShrink: 0,
             padding:
-              "calc(env(safe-area-inset-top, 0) + 14px) 20px 12px",
+              "calc(env(safe-area-inset-top, 0) + 14px) 96px 12px 20px",
             textShadow: "0 2px 20px rgba(0,0,0,0.75)",
           }}
         >
+          {contacts && <HeaderContactsMenu contacts={contacts} />}
           <div
             style={{
               display: "flex",
