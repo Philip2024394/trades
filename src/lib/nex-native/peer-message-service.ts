@@ -29,12 +29,18 @@ export interface NexPeerMessageRow {
   body: string;
   sent_at: string;
   read_at: string | null;
+  /** When non-null, this message is a reply that quotes the target
+   *  peer message. Introduced Bridge 5 · migration 052. */
+  reply_to_id: NexUuid | null;
 }
 
 export interface SendPeerMessageInput {
   conversation_id: NexUuid;
   sender_account_id: NexUuid;
   body: string;
+  /** Optional · when set, the message quotes this target and the UI
+   *  renders a reply-quote header inside the bubble. */
+  reply_to_id?: NexUuid | null;
 }
 
 /** Persist a peer chat message. Sender must be a participant of the
@@ -67,12 +73,38 @@ export async function sendPeerMessage(
       "peer-message-service.sendPeerMessage: sender is not a participant of this conversation",
     );
   }
+  // Validate the reply target exists AND belongs to the same
+  // conversation · defends against replying to a message in another
+  // thread (impossible via UI but cheap to enforce here).
+  let replyToId: NexUuid | null = null;
+  if (input.reply_to_id) {
+    const { data: target, error: targetErr } = await nexSupabaseAdmin
+      .from("nex_peer_message")
+      .select("id, conversation_id")
+      .eq("id", input.reply_to_id)
+      .maybeSingle();
+    if (targetErr) {
+      throw new Error(
+        `peer-message-service.sendPeerMessage · reply target lookup failed: ${targetErr.message}`,
+      );
+    }
+    if (
+      target &&
+      (target as { conversation_id: string }).conversation_id ===
+        input.conversation_id
+    ) {
+      replyToId = input.reply_to_id;
+    }
+    // Silently drop bad reply pointers rather than erroring the send.
+  }
+
   const { data, error } = await nexSupabaseAdmin
     .from("nex_peer_message")
     .insert({
       conversation_id: input.conversation_id,
       sender_account_id: input.sender_account_id,
       body,
+      reply_to_id: replyToId,
     })
     .select("*")
     .single();

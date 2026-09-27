@@ -44,12 +44,13 @@ export default async function PeerChatPage({
   searchParams,
 }: {
   params: Promise<{ accountId: string }>;
-  searchParams: Promise<{ online?: string }>;
+  searchParams: Promise<{ online?: string; reply?: string }>;
 }) {
   const { accountId: peerAccountId } = await params;
   const sp = await searchParams;
   // Presence Bridge isn't built yet · query param toggle for preview.
   const isOffline = sp.online === "0";
+  const replyId = sp.reply?.trim() || null;
 
   const session = await resolveNexAppSessionFromContext();
   if (!session) redirect("/nex-native/sign-in");
@@ -186,13 +187,27 @@ export default async function PeerChatPage({
     ? "Away · will see later"
     : "NEX · chatting with";
 
-  const bloomMessages = messages.map((m) => ({
-    id: m.id,
-    body: m.body,
-    sent_at: m.sent_at,
-    read_at: m.read_at,
-    mine: m.sender_account_id === session.account.id,
-  }));
+  // Bridge 5 · resolve reply-preview snippets so bubbles can render
+  // their quote header without an extra client round-trip. O(n²) but
+  // conversations are small · we can index later if this ever gets hot.
+  const byId = new Map(messages.map((m) => [m.id, m]));
+  const bloomMessages = messages.map((m) => {
+    const quoted = m.reply_to_id ? byId.get(m.reply_to_id) : null;
+    return {
+      id: m.id,
+      body: m.body,
+      sent_at: m.sent_at,
+      read_at: m.read_at,
+      mine: m.sender_account_id === session.account.id,
+      reply_to_id: m.reply_to_id ?? null,
+      reply_preview: quoted
+        ? {
+            body: quoted.body,
+            mine: quoted.sender_account_id === session.account.id,
+          }
+        : null,
+    };
+  });
 
   return (
     <PortraitBloomShell
@@ -212,6 +227,18 @@ export default async function PeerChatPage({
       headerTag="NEX Chat"
       contacts={contacts}
       pendingInvites={pendingInvites}
+      replyTarget={(() => {
+        if (!replyId) return null;
+        const target = messages.find((m) => m.id === replyId);
+        if (!target) return null;
+        return {
+          id: target.id,
+          body: target.body,
+          mine: target.sender_account_id === session.account.id,
+          peerName: peer.display_name,
+          clearHref: `/nex-native/chat/peer/${peer.id}`,
+        };
+      })()}
     />
   );
 }

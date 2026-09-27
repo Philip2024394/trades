@@ -20,6 +20,7 @@
 import * as React from "react";
 import { PeerComposer } from "./peer/[accountId]/_composer";
 import { ScrollToBottomOnMount } from "./_scroll-to-bottom";
+import { MessageBubbleClient } from "./_message-bubble-client";
 import {
   HeaderContactsMenu,
   type HeaderContact,
@@ -48,6 +49,18 @@ export interface PortraitBloomMessage {
   sent_at: string;
   read_at: string | null;
   mine: boolean;
+  /** Bridge 5 · when non-null this message quotes another. The
+   *  shell renders a reply-quote header at the top of the bubble
+   *  showing the quoted sender + preview snippet. */
+  reply_to_id?: string | null;
+  /** Cached preview data for the message being quoted · avoids the
+   *  bubble having to join the message list. */
+  reply_preview?: {
+    body: string;
+    /** true if the quoted message was from the viewer, false if it
+     *  was the peer · lets the quote header show "You" vs peer name */
+    mine: boolean;
+  } | null;
 }
 
 export interface PortraitBloomContextChip {
@@ -108,6 +121,16 @@ export interface PortraitBloomShellProps {
    *  decline from the header drawer. Empty array (or omit) means
    *  no invites section renders. */
   pendingInvites?: PendingInvite[];
+  /** Bridge 5 · reply state pass-through · when set, the composer
+   *  shows a reply header and smuggles reply_to_id into the send
+   *  form. Server-side resolved from ?reply=<id> in the URL. */
+  replyTarget?: {
+    id: string;
+    body: string;
+    mine: boolean;
+    peerName: string;
+    clearHref: string;
+  } | null;
 }
 
 export function PortraitBloomShell({
@@ -126,6 +149,7 @@ export function PortraitBloomShell({
   scope,
   contacts,
   pendingInvites,
+  replyTarget,
 }: PortraitBloomShellProps) {
   const isOffline = presenceKind !== "online";
   // Per-element theme colours · fall back to rippleColor (accent)
@@ -541,9 +565,11 @@ export function PortraitBloomShell({
                         {formatDayLabel(m.sent_at)}
                       </div>
                     )}
+                    <MessageBubbleClient messageId={m.id} mine={m.mine}>
                     <div
                       data-nex-bloom-msg
                       data-nex-bloom-msg-mine={m.mine ? "true" : undefined}
+                      data-nex-msg-id={m.id}
                       style={{
                         position: "relative",
                         alignSelf: m.mine ? "flex-end" : "flex-start",
@@ -580,6 +606,47 @@ export function PortraitBloomShell({
                           : "0 6px 22px rgba(0,0,0,0.55)",
                       }}
                     >
+                      {/* Bridge 5 · reply quote header · rendered at
+                          the top of the bubble when this message
+                          quotes another. Coloured vertical stripe +
+                          sender label + snippet. */}
+                      {m.reply_preview && (
+                        <div
+                          style={{
+                            marginBottom: 6,
+                            padding: "5px 10px 5px 12px",
+                            borderRadius: 10,
+                            background: "rgba(0,0,0,0.28)",
+                            borderLeft: `3px solid ${bubbleRim}`,
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontSize: 10,
+                              fontWeight: 700,
+                              letterSpacing: "0.08em",
+                              textTransform: "uppercase",
+                              color: bubbleRim,
+                              marginBottom: 1,
+                            }}
+                          >
+                            {m.reply_preview.mine ? "You" : displayName}
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 12,
+                              color: "rgba(244,247,252,0.72)",
+                              lineHeight: 1.35,
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              maxWidth: 260,
+                            }}
+                          >
+                            {m.reply_preview.body}
+                          </div>
+                        </div>
+                      )}
                       <div
                         style={{
                           // Free legibility insurance for edge cases
@@ -617,6 +684,7 @@ export function PortraitBloomShell({
                         </div>
                       )}
                     </div>
+                    </MessageBubbleClient>
                   </React.Fragment>
                 );
               })
@@ -654,6 +722,7 @@ export function PortraitBloomShell({
               action={composerAction}
               placeholder={composerPlaceholder}
               themeAccent={composerRim}
+              replyTarget={replyTarget ?? null}
             />
           </div>
         </div>

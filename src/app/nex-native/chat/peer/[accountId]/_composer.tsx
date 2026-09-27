@@ -38,12 +38,23 @@ interface PeerComposerProps {
    *  the composer belongs to "their space" doctrine sealed
    *  2026-09-27. Falls back to NEX cyan if omitted. */
   themeAccent?: string;
+  /** Bridge 5 · when set, the composer shows a "replying to X"
+   *  header + sends the message with a reply_to_id. Reply state
+   *  lives in the URL (?reply=<id>) so it survives refresh. */
+  replyTarget?: {
+    id: string;
+    body: string;
+    mine: boolean;
+    peerName: string;
+    clearHref: string;
+  } | null;
 }
 
 export function PeerComposer({
   action,
   placeholder,
   themeAccent,
+  replyTarget,
 }: PeerComposerProps) {
   const formRef = React.useRef<HTMLFormElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
@@ -155,6 +166,86 @@ export function PeerComposer({
           gap: 20,
         }}
       >
+        {/* Bridge 5 · reply header · when the URL carries ?reply=<id>
+            the composer shows a "replying to" quote card above the
+            pill + smuggles the reply_to_id via a hidden input. */}
+        {replyTarget && (
+          <>
+            <input
+              type="hidden"
+              name="reply_to_id"
+              value={replyTarget.id}
+            />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "stretch",
+                gap: 0,
+                padding: "8px 10px 8px 12px",
+                borderRadius: 10,
+                background: "rgba(0,0,0,0.4)",
+                border: `1px solid ${
+                  themeAccent
+                    ? composerRim(themeAccent)
+                    : "rgba(0,159,239,0.5)"
+                }`,
+                borderLeft: `4px solid ${
+                  themeAccent ?? NEX.cyan
+                }`,
+                marginBottom: -12,
+              }}
+            >
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 700,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: themeAccent ?? NEX.cyan,
+                    marginBottom: 2,
+                  }}
+                >
+                  Replying to {replyTarget.mine ? "yourself" : replyTarget.peerName}
+                </div>
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: NEX.textSecondary,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    lineHeight: 1.35,
+                  }}
+                >
+                  {replyTarget.body}
+                </div>
+              </div>
+              <a
+                href={replyTarget.clearHref}
+                aria-label="Cancel reply"
+                title="Cancel reply"
+                style={{
+                  flexShrink: 0,
+                  width: 28,
+                  height: 28,
+                  borderRadius: "50%",
+                  background: "rgba(0,0,0,0.42)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  color: NEX.textPrimary,
+                  display: "grid",
+                  placeItems: "center",
+                  textDecoration: "none",
+                  alignSelf: "center",
+                  marginLeft: 8,
+                }}
+              >
+                <ReplyCancelIcon />
+              </a>
+            </div>
+          </>
+        )}
+
         {/* Row 1 · plain 3-dot pushed to the viewport right edge, 20px
             of breathing room above the pill. No circle, no border, no
             aurora · just the dots. */}
@@ -800,6 +891,15 @@ function _hexToRgb(hex: string): { r: number; g: number; b: number } {
     g: (num >> 8) & 0xff,
     b: num & 0xff,
   };
+}
+
+function ReplyCancelIcon() {
+  return (
+    <svg width={12} height={12} viewBox="0 0 24 24" aria-hidden {...strokeProps} strokeWidth={2.4}>
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  );
 }
 
 function SmileIcon() {

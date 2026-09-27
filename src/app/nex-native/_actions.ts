@@ -393,6 +393,10 @@ export async function sendPeerMessageAction(
   if (!body) {
     redirect(`/nex-native/chat/peer/${peerAccountId}`);
   }
+  // Optional reply target · when set, the message quotes the referenced
+  // message id · service validates it belongs to the same conversation.
+  const replyToRaw = String(formData.get("reply_to_id") ?? "").trim();
+  const replyToId = replyToRaw && replyToRaw.length >= 32 ? replyToRaw : null;
 
   const session = await resolveNexAppSessionFromContext();
   if (!session) {
@@ -412,6 +416,7 @@ export async function sendPeerMessageAction(
     conversation_id: conversation.id,
     sender_account_id: session.account.id,
     body,
+    reply_to_id: replyToId,
   });
 
   revalidatePath(`/nex-native/chat/peer/${peerAccountId}`);
