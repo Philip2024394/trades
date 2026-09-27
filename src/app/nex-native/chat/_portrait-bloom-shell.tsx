@@ -472,9 +472,19 @@ export function PortraitBloomShell({
                   : Number.POSITIVE_INFINITY;
                 const bigTimeGap = timeGapMs > 5 * 60_000;
                 const isFirst = idx === 0;
+                // Day divider · shows Today / Yesterday / short date
+                // at the very top and whenever the day changes.
+                // Never repeats a time — the bubble already carries
+                // its own timestamp so a time-pill would be noise.
+                const prevDay = prev
+                  ? new Date(prev.sent_at).toDateString()
+                  : null;
+                const currDay = new Date(m.sent_at).toDateString();
+                const dayChanged = prevDay !== null && prevDay !== currDay;
+                const showDayDivider = isFirst || dayChanged;
                 // Grouping rhythm · tight cluster within same-sender
-                // run · larger gap on sender change · time separator
-                // + biggest gap on >5min pauses.
+                // run · larger gap on sender change · biggest gap on
+                // >5min pauses (spacing only, no label).
                 const marginTop = isFirst
                   ? 0
                   : bigTimeGap
@@ -496,12 +506,12 @@ export function PortraitBloomShell({
                 const showTimestamp = nextSenderDiffers || nextTimeGap;
                 return (
                   <React.Fragment key={m.id}>
-                    {bigTimeGap && !isFirst && (
+                    {showDayDivider && (
                       <div
                         style={{
                           alignSelf: "center",
-                          padding: "4px 12px",
-                          margin: "6px 0",
+                          padding: "4px 14px",
+                          margin: isFirst ? "0 0 8px" : "10px 0 6px",
                           borderRadius: 999,
                           background: "rgba(8,39,68,0.55)",
                           color: NEX.textDim,
@@ -511,7 +521,7 @@ export function PortraitBloomShell({
                           fontWeight: 600,
                         }}
                       >
-                        {formatTime(m.sent_at)}
+                        {formatDayLabel(m.sent_at)}
                       </div>
                     )}
                     <div
@@ -643,5 +653,30 @@ function formatTime(iso: string): string {
   return new Date(iso).toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
+  });
+}
+
+/** Format a message's date as a day divider label.
+ *   · Same calendar day as now → "Today"
+ *   · One day earlier → "Yesterday"
+ *   · Same week (< 7 days ago) → weekday name (Mon / Tue / ...)
+ *   · Older → short date (Sep 24)
+ *  Uses local time so the boundary matches what the user sees on
+ *  the timestamps inside each bubble. */
+function formatDayLabel(iso: string): string {
+  const d = new Date(iso);
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const target = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const dayMs = 24 * 60 * 60 * 1000;
+  const diffDays = Math.round((today.getTime() - target.getTime()) / dayMs);
+  if (diffDays === 0) return "Today";
+  if (diffDays === 1) return "Yesterday";
+  if (diffDays > 1 && diffDays < 7) {
+    return d.toLocaleDateString(undefined, { weekday: "long" });
+  }
+  return d.toLocaleDateString(undefined, {
+    day: "numeric",
+    month: "short",
   });
 }
