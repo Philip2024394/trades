@@ -291,6 +291,11 @@ export default async function Page({
               }
             />
           </ul>
+          {/* Bridge 16a · buyer-safe payment chips + link to explainer.
+              Every chip is a method NEX vouches for as buyer-safe. */}
+          <SafeTradeChipStrip
+            methods={business.accepted_payment_methods ?? ["cod"]}
+          />
         </div>
         {/* Right-side vertical rail · About / Order / SafeTrade ·
             each opens a full-screen overlay with the relevant info. */}
@@ -1165,6 +1170,125 @@ const ACTIVITY_PALETTE: Record<
     detail: "rgba(184,198,218,0.85)",
   },
 };
+
+/** Bridge 16a · Buyer-safe payment chips + explainer link. Renders
+ *  the seller's accepted methods as small chips beneath the reach
+ *  bullets · every chip is a method NEX vouches for as buyer-safe.
+ *  Tapping the "🛡 Safe on NEX" link opens /safe-trade for the full
+ *  explanation. */
+function SafeTradeChipStrip({ methods }: { methods: string[] }) {
+  if (!methods || methods.length === 0) return null;
+  const displayable = methods.filter(
+    (m) =>
+      m === "cod" ||
+      m === "qris_delivery" ||
+      m === "courier_cod" ||
+      m === "meetup" ||
+      m === "escrow" ||
+      m === "paypal",
+  );
+  if (displayable.length === 0) return null;
+  return (
+    <div
+      style={{
+        marginTop: 18,
+        paddingTop: 16,
+        borderTop: "1px solid rgba(139,169,209,0.14)",
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          flexWrap: "wrap",
+        }}
+      >
+        <Link
+          href="/nex-native/safe-trade"
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.24em",
+            textTransform: "uppercase",
+            color: "#16D66B",
+            fontWeight: 700,
+            textDecoration: "none",
+            padding: "4px 10px",
+            borderRadius: 999,
+            background: "rgba(22,214,107,0.10)",
+            border: "1px solid rgba(22,214,107,0.35)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          🛡 Safe on NEX
+        </Link>
+        <span
+          style={{
+            fontSize: 12,
+            color: "rgba(139,169,209,0.85)",
+            textShadow: "0 1px 8px rgba(0,0,0,0.5)",
+          }}
+        >
+          Accepts:
+        </span>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 6,
+        }}
+      >
+        {displayable.map((m) => (
+          <SafeTradeChip key={m} slug={m} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SafeTradeChip({ slug }: { slug: string }) {
+  const EMOJI: Record<string, string> = {
+    cod: "💵",
+    qris_delivery: "📱",
+    courier_cod: "📦",
+    meetup: "🤝",
+    escrow: "🔒",
+    paypal: "🌏",
+  };
+  const LABEL: Record<string, string> = {
+    cod: "COD",
+    qris_delivery: "QRIS on delivery",
+    courier_cod: "Courier COD",
+    meetup: "Meet in person",
+    escrow: "Escrow",
+    paypal: "PayPal G&S",
+  };
+  return (
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 5,
+        padding: "5px 10px",
+        borderRadius: 999,
+        background: "rgba(6,15,28,0.72)",
+        border: "1px solid rgba(139,169,209,0.24)",
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: "0.01em",
+        color: "rgba(244,247,252,0.9)",
+        textShadow: "0 1px 4px rgba(0,0,0,0.5)",
+      }}
+    >
+      <span aria-hidden>{EMOJI[slug] ?? "•"}</span>
+      {LABEL[slug] ?? slug}
+    </span>
+  );
+}
 
 function ReachBullet({ label, on }: { label: string; on: boolean }) {
   return (

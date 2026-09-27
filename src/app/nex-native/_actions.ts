@@ -689,6 +689,49 @@ export async function updateBusinessCategoryAndKeywordsAction(
   );
 }
 
+/** Bridge 16a · update the seller's accepted payment methods.
+ *  Enforces the safe-trade chip vocabulary at the service layer ·
+ *  action just marshals FormData.getAll and passes through. */
+export async function updateBusinessPaymentMethodsAction(
+  businessId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const business = await businessService.getBusinessById(businessId);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirect(
+      "/nex-native/manage/shop?e=payments_forbidden&m=" +
+        encodeURIComponent("You don't own this shop"),
+    );
+  }
+
+  const methods = formData
+    .getAll("payment_methods")
+    .map((v) => String(v).trim())
+    .filter((v) => v.length > 0);
+
+  try {
+    await businessService.updateBusinessPaymentMethods(businessId, methods);
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      "/nex-native/manage/shop?e=payments_failed&m=" + encodeURIComponent(msg),
+    );
+  }
+
+  revalidatePath("/nex-native/manage/shop");
+  revalidatePath(`/nex-native/${business.slug}`);
+  redirect(
+    "/nex-native/manage/shop?e=payments_ok&m=" +
+      encodeURIComponent("Payment methods updated"),
+  );
+}
+
 /** Bridge 13c · update a single product's dispatch_time +
  *  sample_request_time · owner-only. Called by the two text
  *  inputs on /manage/shop under each product row. */

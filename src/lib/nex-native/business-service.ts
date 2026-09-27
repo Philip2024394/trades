@@ -348,6 +348,90 @@ export async function updateBusinessCategoryAndKeywords(
   return data as NexBusinessRow;
 }
 
+/** Bridge 16a · canonical buyer-safety chips a seller can declare.
+ *  Order in this list drives display order in the shop landing +
+ *  seller selector. */
+export const NEX_PAYMENT_METHODS = [
+  "cod",
+  "qris_delivery",
+  "courier_cod",
+  "meetup",
+  "escrow",
+  "paypal",
+] as const;
+
+export type NexPaymentMethod = (typeof NEX_PAYMENT_METHODS)[number];
+
+/** Human-friendly labels + emoji · consumed by the seller selector,
+ *  the shop-landing chip strip, and the /safe-trade explainer. */
+export const NEX_PAYMENT_METHOD_META: Record<
+  NexPaymentMethod,
+  { emoji: string; label: string; blurb: string }
+> = {
+  cod: {
+    emoji: "💵",
+    label: "Cash on Delivery",
+    blurb: "Driver collects rupiah cash at your door · local only",
+  },
+  qris_delivery: {
+    emoji: "📱",
+    label: "QRIS on Delivery",
+    blurb: "Scan the seller's QR when the package arrives · no cash",
+  },
+  courier_cod: {
+    emoji: "📦",
+    label: "Courier COD",
+    blurb: "JNE / J&T / SiCepat holds your payment · remits to seller after delivery",
+  },
+  meetup: {
+    emoji: "🤝",
+    label: "Meet in Person",
+    blurb: "Inspect the item live · pay cash on the spot",
+  },
+  escrow: {
+    emoji: "🔒",
+    label: "Escrow (Rekber)",
+    blurb: "Third-party holds your money until you confirm receipt · Rekber, Xendit, Midtrans",
+  },
+  paypal: {
+    emoji: "🌏",
+    label: "PayPal Goods & Services",
+    blurb: "International · PayPal Buyer Protection · verified sellers only",
+  },
+};
+
+/** Bridge 16a · update the seller's accepted payment methods.
+ *  Validates every value against NEX_PAYMENT_METHODS and enforces
+ *  at least one selection (cod fallback). */
+export async function updateBusinessPaymentMethods(
+  id: NexUuid,
+  methods: string[],
+): Promise<NexBusinessRow> {
+  const allowed = new Set(NEX_PAYMENT_METHODS);
+  const cleaned = Array.from(
+    new Set(
+      methods
+        .map((m) => (typeof m === "string" ? m.trim() : ""))
+        .filter((m): m is NexPaymentMethod => allowed.has(m as NexPaymentMethod)),
+    ),
+  );
+  // Enforce at least one method · fall back to cod if the seller
+  // somehow submitted an empty form (cod is always safe).
+  const final = cleaned.length > 0 ? cleaned : ["cod"];
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_business")
+    .update({ accepted_payment_methods: final })
+    .eq("id", id)
+    .select("*")
+    .single();
+  if (error || !data) {
+    throw new Error(
+      `business-service.updateBusinessPaymentMethods: ${error?.message ?? "no row returned"}`,
+    );
+  }
+  return data as NexBusinessRow;
+}
+
 export async function updateBusinessHours(
   id: NexUuid,
   hours: NexWeeklyHours | null,

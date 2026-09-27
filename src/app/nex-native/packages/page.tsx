@@ -138,6 +138,30 @@ export default function PackagesPage() {
           when you&apos;re ready for international reach and unlimited
           local market capacity.
         </p>
+        {/* Bridge 16a · Safe-trade doctrine callout · the reason we
+            can charge 0% is because NEX never touches payments.
+            Every reader gets one tap to the full explanation. */}
+        <Link
+          href="/nex-native/safe-trade"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 10,
+            marginTop: 22,
+            padding: "10px 16px",
+            borderRadius: 999,
+            background: "rgba(22,214,107,0.10)",
+            border: "1px solid rgba(22,214,107,0.35)",
+            color: "#16D66B",
+            fontSize: 12,
+            fontWeight: 700,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            textDecoration: "none",
+          }}
+        >
+          🛡 Safe on NEX · how buyers stay protected →
+        </Link>
       </section>
 
       {/* --- PACKAGE CARDS ----------------------------------------- */}

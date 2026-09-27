@@ -249,6 +249,12 @@ export interface NexBusinessRow {
    *  Complements product tags for service businesses that have
    *  no products of their own to tag. */
   search_keywords: string[] | null;
+  /** Bridge 16a · buyer-safety chips the seller supports · migration
+   *  068. Subset of NEX_PAYMENT_METHODS from business-service. Default
+   *  ['cod'] · every shop starts COD-only, seller opts into more
+   *  from /manage/shop. Doctrine: NEX never handles payments · buyer
+   *  is always safe. */
+  accepted_payment_methods: string[];
   /** Bridge 13 · Responsiveness signals · migration 063.
    *  last_seller_activity_at drives the graduated status badge on
    *  every shop landing (active · slow · away · archived). Bumped

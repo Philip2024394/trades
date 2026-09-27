@@ -23,8 +23,13 @@ import {
   updateProductStockStatusAction,
   updateProductTurnaroundAction,
   updateBusinessCategoryAndKeywordsAction,
+  updateBusinessPaymentMethodsAction,
 } from "../../_actions";
 import { NEX_BUSINESS_CATEGORIES } from "@/lib/nex-native/site-templates";
+import {
+  NEX_PAYMENT_METHODS,
+  NEX_PAYMENT_METHOD_META,
+} from "@/lib/nex-native/business-service";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -145,6 +150,11 @@ export default async function ShopSettingsPage({
     null,
     business.id,
   );
+  const paymentsBound = updateBusinessPaymentMethodsAction.bind(
+    null,
+    business.id,
+  );
+  const accepted = new Set(business.accepted_payment_methods ?? ["cod"]);
   const awayUntilInputValue = business.away_until
     ? new Date(business.away_until).toISOString().slice(0, 10)
     : "";
@@ -474,6 +484,117 @@ export default async function ShopSettingsPage({
               />
             </FormRow>
             <SubmitButton label="Save category & keywords" tone="primary" />
+          </form>
+        </SectionCard>
+
+        {/* --- Accepted payment methods (Bridge 16a) --------------- */}
+        <SectionCard>
+          <SectionEyebrow color={NEX.green}>Safe trade</SectionEyebrow>
+          <h2
+            style={{
+              margin: "6px 0 6px",
+              fontSize: 18,
+              fontWeight: 700,
+              letterSpacing: "-0.005em",
+            }}
+          >
+            Payment methods you accept
+          </h2>
+          <p
+            style={{
+              margin: "0 0 6px",
+              fontSize: 13,
+              lineHeight: 1.55,
+              color: NEX.textDim,
+            }}
+          >
+            Tick every method you can take. Buyers see these as chips
+            on your shop page. NEX never handles payments · every
+            option keeps the buyer safe (they never pay before they
+            receive, unless a third party is holding the money).
+          </p>
+          <p
+            style={{
+              margin: "0 0 16px",
+              fontSize: 12,
+              lineHeight: 1.55,
+              color: NEX.textMute,
+            }}
+          >
+            Learn how buyers stay protected on{" "}
+            <Link
+              href="/nex-native/safe-trade"
+              style={{ color: NEX.cyan, textDecoration: "none" }}
+            >
+              /safe-trade
+            </Link>
+            .
+          </p>
+          <form
+            action={paymentsBound}
+            style={{ display: "flex", flexDirection: "column", gap: 10 }}
+          >
+            {NEX_PAYMENT_METHODS.map((m) => {
+              const meta = NEX_PAYMENT_METHOD_META[m];
+              const isChecked = accepted.has(m);
+              return (
+                <label
+                  key={m}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "24px 1fr",
+                    gap: 12,
+                    padding: "12px 14px",
+                    borderRadius: 12,
+                    background: isChecked
+                      ? "rgba(22,214,107,0.08)"
+                      : "rgba(0,0,0,0.28)",
+                    border: isChecked
+                      ? `1px solid rgba(22,214,107,0.35)`
+                      : `1px solid ${NEX.border}`,
+                    cursor: "pointer",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    name="payment_methods"
+                    value={m}
+                    defaultChecked={isChecked}
+                    style={{
+                      accentColor: NEX.green,
+                      width: 18,
+                      height: 18,
+                      marginTop: 2,
+                    }}
+                  />
+                  <div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        fontSize: 13,
+                        fontWeight: 700,
+                        marginBottom: 2,
+                      }}
+                    >
+                      <span aria-hidden>{meta.emoji}</span>
+                      {meta.label}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 12,
+                        color: NEX.textDim,
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      {meta.blurb}
+                    </div>
+                  </div>
+                </label>
+              );
+            })}
+            <SubmitButton label="Save payment methods" tone="primary" />
           </form>
         </SectionCard>
 
