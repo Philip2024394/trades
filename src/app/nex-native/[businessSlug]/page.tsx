@@ -75,6 +75,62 @@ export default async function Page({
         fontFamily: SANS,
       }}
     >
+      {/* --- TOP HEADER · NEX brand + home + settings ---------------- */}
+      <header
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 10,
+          padding:
+            "calc(env(safe-area-inset-top, 0) + 12px) 16px 10px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          background:
+            "linear-gradient(180deg, rgba(2,9,20,0.85) 0%, rgba(2,9,20,0.55) 60%, rgba(2,9,20,0) 100%)",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+        }}
+      >
+        {/* Brand · NE (white) + X (orange) · NEX identity mark */}
+        <Link
+          href="/nex-native"
+          aria-label="NEX home"
+          style={{
+            display: "inline-flex",
+            alignItems: "baseline",
+            gap: 1,
+            textDecoration: "none",
+            fontFamily: SERIF,
+            fontSize: 22,
+            fontWeight: 600,
+            letterSpacing: "0.02em",
+            padding: "6px 4px",
+          }}
+        >
+          <span style={{ color: NEX.text }}>NE</span>
+          <span style={{ color: NEX.orange }}>X</span>
+        </Link>
+
+        {/* Right cluster · home + settings */}
+        <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+          <HeaderIconLink
+            href="/nex-native/home"
+            ariaLabel="Home"
+            title="Home"
+          >
+            <HomeIcon />
+          </HeaderIconLink>
+          <HeaderIconLink
+            href="/nex-native/settings"
+            ariaLabel="Settings"
+            title="Settings"
+          >
+            <SettingsIcon />
+          </HeaderIconLink>
+        </div>
+      </header>
+
       {/* --- HERO ---------------------------------------------------- */}
       <section
         style={{
@@ -82,6 +138,7 @@ export default async function Page({
           width: "100%",
           minHeight: "min(78vh, 720px)",
           overflow: "hidden",
+          marginTop: -64, // header floats over the hero
         }}
       >
         {/* Cover photograph · falls back to a moody gradient when the
@@ -704,4 +761,76 @@ function formatPrice(pence: number, currency: string): string {
   if (currency === "GBP") return `£${(pence / 100).toFixed(2)}`;
   if (currency === "USD") return `$${(pence / 100).toFixed(2)}`;
   return `${currency} ${withCommas}`;
+}
+
+function HeaderIconLink({
+  href,
+  ariaLabel,
+  title,
+  children,
+}: {
+  href: string;
+  ariaLabel: string;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      aria-label={ariaLabel}
+      title={title}
+      style={{
+        width: 40,
+        height: 40,
+        borderRadius: "50%",
+        background: "rgba(0,0,0,0.35)",
+        border: `1px solid ${NEX.borderStrong}`,
+        color: NEX.text,
+        display: "grid",
+        placeItems: "center",
+        textDecoration: "none",
+        backdropFilter: "blur(6px)",
+      }}
+    >
+      {children}
+    </Link>
+  );
+}
+
+function HomeIcon() {
+  return (
+    <svg
+      width={18}
+      height={18}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.9}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M3 12l9-9 9 9" />
+      <path d="M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10" />
+    </svg>
+  );
+}
+
+function SettingsIcon() {
+  return (
+    <svg
+      width={18}
+      height={18}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z" />
+    </svg>
+  );
 }
