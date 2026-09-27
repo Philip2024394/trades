@@ -22,6 +22,7 @@ import {
 import * as conversationService from "@/lib/nex-native/conversation-service";
 import * as peerConversationService from "@/lib/nex-native/peer-conversation-service";
 import * as peerMessageService from "@/lib/nex-native/peer-message-service";
+import * as sellerResponsivenessService from "@/lib/nex-native/seller-responsiveness-service";
 import * as chatThemeService from "@/lib/nex-native/chat-theme-service";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as productService from "@/lib/nex-native/product-service";
@@ -432,6 +433,13 @@ export async function sendPeerMessageAction(
     attachment_url: attachmentUrl,
     attachment_type: attachmentType,
   });
+
+  // Bridge 13 · every send bumps the sender's shop activity so the
+  // green pulse on their landing stays honest. Best-effort · a
+  // signal failure never blocks the send.
+  await sellerResponsivenessService
+    .markBusinessOwnerActive(session.account.id)
+    .catch(() => {});
 
   revalidatePath(`/nex-native/chat/peer/${peerAccountId}`);
   redirect(`/nex-native/chat/peer/${peerAccountId}`);

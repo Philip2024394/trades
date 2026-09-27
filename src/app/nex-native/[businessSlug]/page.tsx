@@ -25,6 +25,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as productService from "@/lib/nex-native/product-service";
+import * as sellerResponsivenessService from "@/lib/nex-native/seller-responsiveness-service";
 import { HeroSidePanel } from "./_hero-side-panel";
 
 export const dynamic = "force-dynamic";
@@ -67,6 +68,18 @@ export default async function Page({
   );
 
   const chatHref = `/nex-native/chat/peer/${business.owner_account_id}`;
+
+  // Bridge 13 · resolve the seller's activity status so the hero
+  // can carry an honest badge (active / slow / away / archived).
+  // Reads existing columns · auto-archives crossings for 30+ days.
+  const activity = await sellerResponsivenessService.resolveActivity({
+    business_id: business.id,
+    last_seller_activity_at: business.last_seller_activity_at,
+    is_away: business.is_away,
+    away_until: business.away_until ?? null,
+    away_message: business.away_message ?? null,
+    archived_at: business.archived_at ?? null,
+  });
 
   return (
     <div
@@ -216,6 +229,9 @@ export default async function Page({
           >
             {business.display_name}
           </h1>
+          {/* Bridge 13 · activity badge · green/amber/purple/gray
+              signal computed from last_seller_activity_at */}
+          <ActivityBadge activity={activity} />
           {business.description && (
             <p
               style={{
@@ -820,6 +836,104 @@ function formatPrice(pence: number, currency: string): string {
   if (currency === "USD") return `$${(pence / 100).toFixed(2)}`;
   return `${currency} ${withCommas}`;
 }
+
+function ActivityBadge({
+  activity,
+}: {
+  activity: import("@/lib/nex-native/seller-responsiveness-service").SellerActivityBundle;
+}) {
+  const palette = ACTIVITY_PALETTE[activity.status];
+  return (
+    <div
+      role="status"
+      aria-label={`Seller status · ${activity.label} · ${activity.detail}`}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 8,
+        padding: "6px 12px",
+        borderRadius: 999,
+        background: palette.bg,
+        border: `1px solid ${palette.border}`,
+        color: palette.text,
+        fontSize: 11,
+        fontWeight: 700,
+        letterSpacing: "0.06em",
+        textTransform: "uppercase",
+        marginTop: 4,
+        marginBottom: 16,
+        backdropFilter: "blur(6px)",
+      }}
+    >
+      <span
+        aria-hidden
+        style={{
+          width: 8,
+          height: 8,
+          borderRadius: "50%",
+          background: palette.dot,
+          boxShadow:
+            activity.status === "active"
+              ? `0 0 0 4px ${palette.dot}22`
+              : "none",
+        }}
+      />
+      <span>{activity.label}</span>
+      {activity.detail && (
+        <span
+          style={{
+            color: palette.detail,
+            fontWeight: 500,
+            letterSpacing: "0.02em",
+            textTransform: "none",
+          }}
+        >
+          · {activity.detail}
+        </span>
+      )}
+    </div>
+  );
+}
+
+const ACTIVITY_PALETTE: Record<
+  "active" | "slow" | "away" | "archived",
+  {
+    bg: string;
+    border: string;
+    text: string;
+    dot: string;
+    detail: string;
+  }
+> = {
+  active: {
+    bg: "rgba(22,214,107,0.14)",
+    border: "rgba(22,214,107,0.5)",
+    text: "#B8F1CC",
+    dot: "#16D66B",
+    detail: "rgba(184,241,204,0.85)",
+  },
+  slow: {
+    bg: "rgba(245,158,11,0.14)",
+    border: "rgba(245,158,11,0.5)",
+    text: "#FCD9A8",
+    dot: "#F59E0B",
+    detail: "rgba(252,217,168,0.85)",
+  },
+  away: {
+    bg: "rgba(163,132,255,0.16)",
+    border: "rgba(163,132,255,0.5)",
+    text: "#DDD4FF",
+    dot: "#A384FF",
+    detail: "rgba(221,212,255,0.85)",
+  },
+  archived: {
+    bg: "rgba(139,169,209,0.12)",
+    border: "rgba(139,169,209,0.35)",
+    text: "#B8C6DA",
+    dot: "#8BA9D1",
+    detail: "rgba(184,198,218,0.85)",
+  },
+};
 
 function ReachBullet({ label, on }: { label: string; on: boolean }) {
   return (

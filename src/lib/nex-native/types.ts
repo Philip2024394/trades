@@ -240,6 +240,16 @@ export interface NexBusinessRow {
    *  Defaults to 'both' at the DB level so existing rows stay
    *  visible everywhere. */
   market_reach: NexBusinessMarketReach;
+  /** Bridge 13 · Responsiveness signals · migration 063.
+   *  last_seller_activity_at drives the graduated status badge on
+   *  every shop landing (active · slow · away · archived). Bumped
+   *  by peer-message-service on every seller send. Archived rows
+   *  disappear from Directory search until the seller reactivates. */
+  last_seller_activity_at: NexTimestamp;
+  is_away: boolean;
+  away_until: NexTimestamp | null;
+  away_message: string | null;
+  archived_at: NexTimestamp | null;
   /** Seller detail fields · migration 061 · every field powers a
    *  row in the About overlay on the public shop page. Booleans
    *  default false, languages default to ['id'] Indonesian,
