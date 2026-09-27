@@ -236,6 +236,7 @@ export default async function PeerChatPage({
       rippleColor={themeColours.accent}
       bubbleRimColor={themeColours.bubbleRim}
       composerRimColor={themeColours.composerRim}
+      wallpaperUrl={peerThemeRow?.hero_image_url ?? null}
       backHref="/nex-native/chat"
       messages={bloomMessages}
       composerAction={bind}

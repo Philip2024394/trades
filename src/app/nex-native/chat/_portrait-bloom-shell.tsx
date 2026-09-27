@@ -140,6 +140,12 @@ export interface PortraitBloomShellProps {
    *  modal that submits this action with a hidden `message_id`.
    *  Omit on surfaces that don't yet support retract. */
   deleteAction?: (formData: FormData) => Promise<never> | void | Promise<void>;
+  /** Optional theme wallpaper · painted behind the message zone as
+   *  a soft, dimmed layer so the theme picks up an atmosphere
+   *  distinct from the peer's profile image. Sealed 2026-09-27 ·
+   *  Founder direction: "the theme saves the background image, the
+   *  profile image must be of the profile user". */
+  wallpaperUrl?: string | null;
 }
 
 export function PortraitBloomShell({
@@ -160,6 +166,7 @@ export function PortraitBloomShell({
   pendingInvites,
   replyTarget,
   deleteAction,
+  wallpaperUrl,
 }: PortraitBloomShellProps) {
   const isOffline = presenceKind !== "online";
   // Per-element theme colours · fall back to rippleColor (accent)
@@ -247,6 +254,30 @@ export function PortraitBloomShell({
           flexDirection: "column",
         }}
       >
+        {/* Theme wallpaper · painted behind the message zone only ·
+            starts under the hero portrait and stops above the
+            composer. Dimmed + blurred so bubbles stay legible. The
+            peer's profile image stays the hero portrait above ·
+            these two never share a slot. */}
+        {wallpaperUrl && (
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              top: "40vh",
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundImage: `url(${wallpaperUrl})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              opacity: 0.28,
+              filter: "saturate(1.05)",
+              zIndex: 0,
+            }}
+          />
+        )}
         {/* Hero portrait layer · the peer's photo dominates the top
             of the surface (Founder direction 2026-09-27: keep the
             hero image · the "solid dark navy" ask applied to the
