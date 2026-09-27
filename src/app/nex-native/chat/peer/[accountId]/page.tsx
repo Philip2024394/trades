@@ -31,9 +31,10 @@ import {
   type PortraitBloomPresenceKind,
 } from "../../_portrait-bloom-shell";
 import type {
-  HeaderContact,
+  SideNavContact,
   PendingInvite,
-} from "../../_header-contacts-menu";
+} from "../../_side-nav-panel";
+import * as businessService from "@/lib/nex-native/business-service";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -99,6 +100,18 @@ export default async function PeerChatPage({
   const bindDelete = deletePeerMessageAction.bind(null, peer.id);
   const bindUpload = uploadPeerAttachmentAction.bind(null, peer.id);
 
+  // Bridge · side-nav rail · does the peer own a business? If so, the
+  // rail shows a shop icon that (for now) opens a placeholder pointing
+  // at their public storefront · Bridge 11 will replace with an
+  // inline product picker.
+  const peerBusinesses = await businessService
+    .listBusinessesByOwner(peer.id)
+    .catch(() => [] as Awaited<ReturnType<typeof businessService.listBusinessesByOwner>>);
+  const peerShop = peerBusinesses[0] ?? null;
+  const peerShopHref = peerShop?.slug
+    ? `/nex-native/${peerShop.slug}`
+    : null;
+
   // Bridge 8+9 · resolve the pending attachment from URL state.
   const attachUrl = sp.attachment_url?.trim() || null;
   const attachTypeRaw = sp.attachment_type?.trim() || null;
@@ -132,7 +145,7 @@ export default async function PeerChatPage({
   // hop between peer chats without leaving the chat surface. Best-
   // effort · if any lookup fails we return an empty list rather than
   // block the page render.
-  const contacts: HeaderContact[] = await (async () => {
+  const contacts: SideNavContact[] = await (async () => {
     try {
       const friendIds = await friendService.listFriends(session.account.id);
       const others = friendIds.filter((id) => id !== peer.id);
@@ -168,7 +181,7 @@ export default async function PeerChatPage({
           };
         }),
       );
-      return list.filter((c): c is HeaderContact => !!c);
+      return list.filter((c): c is SideNavContact => !!c);
     } catch {
       return [];
     }
@@ -275,6 +288,8 @@ export default async function PeerChatPage({
       deleteAction={bindDelete}
       uploadAction={bindUpload}
       pendingAttachment={pendingAttachment}
+      peerHasShop={!!peerShop}
+      peerShopHref={peerShopHref}
       composerPlaceholder={`Message ${peer.display_name}…`}
       headerTag="NEX Chat"
       contacts={contacts}

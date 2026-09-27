@@ -22,10 +22,10 @@ import { PeerComposer } from "./peer/[accountId]/_composer";
 import { ScrollToBottomOnMount } from "./_scroll-to-bottom";
 import { MessageBubbleClient } from "./_message-bubble-client";
 import {
-  HeaderContactsMenu,
-  type HeaderContact,
+  SideNavPanel,
+  type SideNavContact,
   type PendingInvite,
-} from "./_header-contacts-menu";
+} from "./_side-nav-panel";
 import { AmbientMotion } from "./_ambient-motion";
 import { FirstConnectionEmpty } from "./_first-connection-empty";
 
@@ -126,7 +126,7 @@ export interface PortraitBloomShellProps {
    *  home icon + 3-dot menu that opens a drawer showing these
    *  contacts. Omit on surfaces that shouldn't show contact
    *  switching (e.g. business chat for now). */
-  contacts?: HeaderContact[];
+  contacts?: SideNavContact[];
   /** Pending incoming friend invites the viewer can accept or
    *  decline from the header drawer. Empty array (or omit) means
    *  no invites section renders. */
@@ -161,6 +161,14 @@ export interface PortraitBloomShellProps {
     kind: "image" | "video" | "audio";
     clearHref: string;
   } | null;
+  /** When true, the side nav rail includes a shop icon that opens
+   *  a placeholder (Bridge 11 will wire it to the inline product
+   *  picker). Set by the peer chat page after checking whether the
+   *  peer owns a nex_business row. */
+  peerHasShop?: boolean;
+  /** Optional public shop URL · shown as an "Open shop →" fallback
+   *  from the placeholder while Bridge 11 is still pending. */
+  peerShopHref?: string | null;
   /** Optional theme wallpaper · painted behind the message zone as
    *  a soft, dimmed layer so the theme picks up an atmosphere
    *  distinct from the peer's profile image. Sealed 2026-09-27 ·
@@ -203,6 +211,8 @@ export function PortraitBloomShell({
   wallpaperConfig,
   uploadAction,
   pendingAttachment,
+  peerHasShop,
+  peerShopHref,
 }: PortraitBloomShellProps) {
   const isOffline = presenceKind !== "online";
   // Per-element theme colours · fall back to rippleColor (accent)
@@ -407,17 +417,14 @@ export function PortraitBloomShell({
             position: "relative",
             zIndex: 3,
             flexShrink: 0,
+            /* Right padding leaves room for the floating side nav
+               rail (docked at right: 10px, 50px wide) so the header
+               text never underlaps the rail's home icon. */
             padding:
-              "calc(env(safe-area-inset-top, 0) + 14px) 96px 12px 20px",
+              "calc(env(safe-area-inset-top, 0) + 14px) 68px 12px 20px",
             textShadow: "0 2px 20px rgba(0,0,0,0.75)",
           }}
         >
-          {contacts && (
-            <HeaderContactsMenu
-              contacts={contacts}
-              pendingInvites={pendingInvites ?? []}
-            />
-          )}
           <div
             style={{
               display: "flex",
@@ -972,6 +979,14 @@ export function PortraitBloomShell({
         </div>
         <ScrollToBottomOnMount signal={messages.length} />
       </main>
+      {contacts && (
+        <SideNavPanel
+          contacts={contacts}
+          pendingInvites={pendingInvites ?? []}
+          peerHasShop={peerHasShop}
+          peerShopHref={peerShopHref}
+        />
+      )}
     </>
   );
 }
