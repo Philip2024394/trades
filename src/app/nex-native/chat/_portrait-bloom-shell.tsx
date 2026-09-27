@@ -299,7 +299,7 @@ export function PortraitBloomShell({
               ambientTint={`${rippleColor}55`}
               moonGlow={{
                 x: "72%",
-                y: "11%",
+                y: "calc(11% - 15px)",
                 size: 180,
                 color: "rgba(225, 238, 255, 0.6)",
               }}
