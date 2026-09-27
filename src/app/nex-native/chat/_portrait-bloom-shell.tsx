@@ -23,6 +23,7 @@ import { ScrollToBottomOnMount } from "./_scroll-to-bottom";
 import {
   HeaderContactsMenu,
   type HeaderContact,
+  type PendingInvite,
 } from "./_header-contacts-menu";
 
 const NEX = {
@@ -94,6 +95,10 @@ export interface PortraitBloomShellProps {
    *  contacts. Omit on surfaces that shouldn't show contact
    *  switching (e.g. business chat for now). */
   contacts?: HeaderContact[];
+  /** Pending incoming friend invites the viewer can accept or
+   *  decline from the header drawer. Empty array (or omit) means
+   *  no invites section renders. */
+  pendingInvites?: PendingInvite[];
 }
 
 export function PortraitBloomShell({
@@ -109,6 +114,7 @@ export function PortraitBloomShell({
   composerPlaceholder,
   scope,
   contacts,
+  pendingInvites,
 }: PortraitBloomShellProps) {
   const isOffline = presenceKind !== "online";
 
@@ -310,7 +316,12 @@ export function PortraitBloomShell({
             textShadow: "0 2px 20px rgba(0,0,0,0.75)",
           }}
         >
-          {contacts && <HeaderContactsMenu contacts={contacts} />}
+          {contacts && (
+            <HeaderContactsMenu
+              contacts={contacts}
+              pendingInvites={pendingInvites ?? []}
+            />
+          )}
           <div
             style={{
               display: "flex",

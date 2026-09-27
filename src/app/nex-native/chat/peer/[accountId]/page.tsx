@@ -25,7 +25,10 @@ import {
   PortraitBloomShell,
   type PortraitBloomPresenceKind,
 } from "../../_portrait-bloom-shell";
-import type { HeaderContact } from "../../_header-contacts-menu";
+import type {
+  HeaderContact,
+  PendingInvite,
+} from "../../_header-contacts-menu";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -134,6 +137,48 @@ export default async function PeerChatPage({
     }
   })();
 
+  // Pending friend invites the viewer can accept · shown at the top
+  // of the header drawer.
+  const pendingInvites: PendingInvite[] = await (async () => {
+    try {
+      const edges = await friendService.listPendingIncoming(session.account.id);
+      const rows = await Promise.all(
+        edges.map(async (edge) => {
+          const otherId =
+            edge.a_account_id === session.account.id
+              ? edge.b_account_id
+              : edge.a_account_id;
+          const [acc, profile] = await Promise.all([
+            accountService.getAccountById(otherId),
+            (async () => {
+              try {
+                const svc = await import(
+                  "@/lib/nex-native/account-profile-service"
+                );
+                return await svc.getProfileByAccountId(otherId);
+              } catch {
+                return null;
+              }
+            })(),
+          ]);
+          if (!acc) return null;
+          const professionShort = profile?.profession
+            ? profile.profession.split(/[\s·,/-]+/).filter(Boolean)[0] ?? null
+            : null;
+          return {
+            otherAccountId: acc.id,
+            name: acc.display_name,
+            avatarUrl: profile?.avatar_url ?? null,
+            profession: professionShort,
+          };
+        }),
+      );
+      return rows.filter((r): r is PendingInvite => !!r);
+    } catch {
+      return [];
+    }
+  })();
+
   const presenceKind: PortraitBloomPresenceKind = isOffline
     ? "offline"
     : "online";
@@ -164,6 +209,7 @@ export default async function PeerChatPage({
       composerPlaceholder={`Message ${peer.display_name}…`}
       headerTag="NEX Chat"
       contacts={contacts}
+      pendingInvites={pendingInvites}
     />
   );
 }
