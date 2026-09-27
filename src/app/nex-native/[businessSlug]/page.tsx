@@ -562,25 +562,26 @@ function ProductSpread({
                   : stockStatus.replace(/_/g, " ")}
           </div>
         )}
-        {/* Price overlay · lower-right corner of the image */}
+        {/* Price overlay · lower-right corner of the image · compact
+            pill so it lands as a signature not a banner. */}
         <div
           style={{
             position: "absolute",
-            right: 14,
-            bottom: 14,
-            padding: "8px 14px",
-            borderRadius: 12,
+            right: 12,
+            bottom: 12,
+            padding: "4px 9px",
+            borderRadius: 8,
             background:
-              "linear-gradient(180deg, rgba(2,9,20,0.72) 0%, rgba(2,9,20,0.88) 100%)",
+              "linear-gradient(180deg, rgba(2,9,20,0.75) 0%, rgba(2,9,20,0.9) 100%)",
             border: `1px solid ${NEX.orangeSoft}`,
             color: NEX.orange,
-            fontSize: 18,
+            fontSize: 12,
             fontWeight: 700,
             letterSpacing: "0.01em",
             fontFamily: SANS,
-            backdropFilter: "blur(10px)",
-            WebkitBackdropFilter: "blur(10px)",
-            boxShadow: "0 8px 20px rgba(0,0,0,0.55)",
+            backdropFilter: "blur(8px)",
+            WebkitBackdropFilter: "blur(8px)",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
           }}
         >
           {price}
