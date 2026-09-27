@@ -353,38 +353,181 @@ interface FeatureRow {
   label: string;
   on: boolean;
   hint?: string;
+  /** One-line plain-English explanation shown under the label so
+   *  visitors don't have to guess what each capability actually
+   *  gives them. Sealed 2026-09-28. */
+  explain?: string;
 }
 
 const GRATIS_FEATURES: FeatureRow[] = [
-  { label: "0% commission on every sale", on: true },
-  { label: "Full chat + relationships", on: true },
-  { label: "10 products listed", on: true },
-  { label: "3 posts per week", on: true },
-  { label: "100 email subscribers", on: true },
-  { label: "20 AI replies per day", on: true },
-  { label: "1 business", on: true },
-  { label: "7-day analytics window", on: true },
-  { label: "COD · bank · e-wallet · SafeTrade opt-in", on: true },
-  { label: "Custom name.nex address", on: false, hint: "Bisnis unlock" },
-  { label: "Featured chip in directory", on: false, hint: "Bisnis unlock" },
-  { label: "Verified ✓ badge", on: false, hint: "Bisnis unlock" },
-  { label: "International (export) visibility", on: false, hint: "Bisnis unlock" },
-  { label: "Unlimited products + posts + AI", on: false, hint: "Bisnis unlock" },
+  {
+    label: "0% commission on every sale",
+    on: true,
+    explain:
+      "NEX never takes a percentage of what you sell · a Rp 285 million camera pays you Rp 285 million.",
+  },
+  {
+    label: "Full chat + relationships",
+    on: true,
+    explain:
+      "Every message with a buyer is preserved · the conversation itself is your receipt.",
+  },
+  {
+    label: "10 products listed",
+    on: true,
+    explain:
+      "Showcase up to 10 items on your shop page at a time.",
+  },
+  {
+    label: "3 posts per week",
+    on: true,
+    explain:
+      "Announcements, restock alerts, or promotions you push to your NEX followers.",
+  },
+  {
+    label: "100 email subscribers",
+    on: true,
+    explain:
+      "Capture buyer emails from a small \"Get updates\" signup on your shop · blast new arrivals or Ramadan sales to up to 100 contacts.",
+  },
+  {
+    label: "20 AI replies per day",
+    on: true,
+    explain:
+      "NEX AI auto-replies to buyers when you're away · holding messages (\"back in 3 hours\") or common Q&A from your product data. 20 auto-replies daily.",
+  },
+  {
+    label: "1 business",
+    on: true,
+    explain:
+      "One shop under your account · e.g. yourshop.nex. Second and third shops need Bisnis.",
+  },
+  {
+    label: "7-day analytics window",
+    on: true,
+    explain:
+      "See visitor, chat-open, and order stats for the last 7 days. Older history + CSV export are Bisnis.",
+  },
+  {
+    label: "COD · bank · e-wallet · SafeTrade opt-in",
+    on: true,
+    explain:
+      "All payment methods available: cash on delivery, bank transfer, GoPay / DANA / OVO / QRIS, plus SafeTrade if a buyer opts in.",
+  },
+  {
+    label: "No priority customer service",
+    on: false,
+    explain:
+      "Community + docs only · Bisnis unlocks direct NEX support with a same-business-day reply.",
+  },
+  {
+    label: "Custom name.nex address",
+    on: false,
+    hint: "Bisnis unlock",
+    explain:
+      "Own aisha.nex directly instead of the long aisha-vintage-cameras.nex slug.",
+  },
+  {
+    label: "Featured chip in directory",
+    on: false,
+    hint: "Bisnis unlock",
+    explain:
+      "Your shop appears above free listings in NEX Directory search results.",
+  },
+  {
+    label: "Verified ✓ badge",
+    on: false,
+    hint: "Bisnis unlock",
+    explain:
+      "Visible verified checkmark · NEX confirms your registration + identity so buyers see the trust signal at a glance.",
+  },
+  {
+    label: "International (export) visibility",
+    on: false,
+    hint: "Bisnis unlock",
+    explain:
+      "Appear in international buyer searches. Gratis sellers stay local-only by doctrine.",
+  },
+  {
+    label: "Unlimited products + posts + AI",
+    on: false,
+    hint: "Bisnis unlock",
+    explain:
+      "No caps on catalogue size, weekly posts, email subscribers, or AI replies.",
+  },
 ];
 
 const BISNIS_FEATURES: FeatureRow[] = [
-  { label: "0% commission on every sale", on: true },
-  { label: "Everything in Gratis", on: true },
-  { label: "Unlimited products + posts + email subs + AI", on: true },
-  { label: "Custom name.nex address (yourshop.nex)", on: true },
-  { label: "Featured chip · sorts above free listings", on: true },
-  { label: "Verified ✓ badge on shop + directory", on: true },
-  { label: "International (export) reach unlocked", on: true },
-  { label: "Full analytics + CSV export", on: true },
-  { label: "Up to 5 businesses under one account", on: true },
-  { label: "20 boosted messages per month", on: true },
-  { label: "Priority support", on: true },
-  { label: "SafeTrade eligible for cross-region orders", on: true },
+  {
+    label: "0% commission on every sale",
+    on: true,
+    explain: "Same doctrine as Gratis · NEX never takes a percentage.",
+  },
+  {
+    label: "Everything in Gratis",
+    on: true,
+    explain: "Chat, relationships, all payment methods · plus everything below.",
+  },
+  {
+    label: "Unlimited products + posts + email subs + AI",
+    on: true,
+    explain:
+      "All Gratis caps lifted: uncapped catalogue, posts, email list, and AI auto-replies.",
+  },
+  {
+    label: "Custom name.nex address (yourshop.nex)",
+    on: true,
+    explain:
+      "Direct address like aisha.nex without the slug · easier to share, better in bios.",
+  },
+  {
+    label: "Featured chip · sorts above free listings",
+    on: true,
+    explain:
+      "Priority placement in every Directory search result · you're seen first.",
+  },
+  {
+    label: "Verified ✓ badge on shop + directory",
+    on: true,
+    explain:
+      "Trust signal from NEX verification of your registration and business identity.",
+  },
+  {
+    label: "International (export) reach unlocked",
+    on: true,
+    explain:
+      "Appear in international buyer searches worldwide · doctrine reserves export for Bisnis.",
+  },
+  {
+    label: "Full analytics + CSV export",
+    on: true,
+    explain:
+      "Track months of trend data on the dashboard · download for your own bookkeeping.",
+  },
+  {
+    label: "Up to 5 businesses under one account",
+    on: true,
+    explain:
+      "Run separate shops for different product lines under one login (e.g. cameras + lenses + prints).",
+  },
+  {
+    label: "20 boosted messages per month",
+    on: true,
+    explain:
+      "Highlighted messages that stand out in a buyer's inbox · use them for closing important orders.",
+  },
+  {
+    label: "Priority customer service",
+    on: true,
+    explain:
+      "Direct NEX support · same-business-day reply on account, payment, and Directory questions.",
+  },
+  {
+    label: "SafeTrade eligible for cross-region orders",
+    on: true,
+    explain:
+      "Buyers can opt into NEX Center inspection in Yogyakarta before releasing payment · higher-value trade unlocks.",
+  },
 ];
 
 function PackageCard({
@@ -513,7 +656,7 @@ function PackageCard({
           listStyle: "none",
           display: "flex",
           flexDirection: "column",
-          gap: 7,
+          gap: 12,
           flex: 1,
         }}
       >
@@ -586,9 +729,10 @@ function FeatureItem({ feature }: { feature: FeatureRow }) {
       >
         {feature.on ? "✓" : "×"}
       </span>
-      <span style={{ lineHeight: 1.5 }}>
+      <span style={{ lineHeight: 1.5, minWidth: 0 }}>
         <span
           style={{
+            fontWeight: 600,
             textDecoration: feature.on ? "none" : "line-through",
           }}
         >
@@ -612,6 +756,22 @@ function FeatureItem({ feature }: { feature: FeatureRow }) {
             }}
           >
             {feature.hint}
+          </span>
+        )}
+        {feature.explain && (
+          <span
+            style={{
+              display: "block",
+              marginTop: 3,
+              fontSize: 11.5,
+              lineHeight: 1.45,
+              color: feature.on
+                ? "rgba(139,169,209,0.85)"
+                : "rgba(82,107,137,0.85)",
+              fontWeight: 400,
+            }}
+          >
+            {feature.explain}
           </span>
         )}
       </span>
