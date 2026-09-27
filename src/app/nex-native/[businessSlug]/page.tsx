@@ -269,6 +269,17 @@ export default async function Page({
           acceptsPickup={!!business.accepts_pickup}
           paymentInstructions={business.payment_instructions ?? null}
           marketReach={business.market_reach ?? "both"}
+          sellerDetails={{
+            yearEstablished: business.year_established ?? null,
+            staffCount: business.staff_count ?? null,
+            samplesAvailable: !!business.samples_available,
+            acceptsOem: !!business.accepts_oem,
+            minOrderQuantity: business.min_order_quantity ?? null,
+            localPostageIncluded: !!business.local_postage_included,
+            sellerKind: business.seller_kind ?? "private",
+            languages: business.languages ?? ["id"],
+            additionalDetails: business.additional_details ?? null,
+          }}
         />
       </section>
 

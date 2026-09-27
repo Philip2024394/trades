@@ -37,6 +37,22 @@ interface Props {
   /** Ships-to reach · surfaces in the About + Order overlays so
    *  visitors know whether they can buy from this seller. */
   marketReach: "both" | "export_only" | "local_only";
+  /** Full seller detail bundle · surfaces as a definition-list
+   *  section in the About overlay. Every field is optional at the
+   *  render layer · empty rows just don't render. */
+  sellerDetails: SellerDetails;
+}
+
+export interface SellerDetails {
+  yearEstablished: number | null;
+  staffCount: string | null;
+  samplesAvailable: boolean;
+  acceptsOem: boolean;
+  minOrderQuantity: string | null;
+  localPostageIncluded: boolean;
+  sellerKind: "private" | "registered_company";
+  languages: string[];
+  additionalDetails: string | null;
 }
 
 export function HeroSidePanel({
@@ -47,6 +63,7 @@ export function HeroSidePanel({
   acceptsPickup,
   paymentInstructions,
   marketReach,
+  sellerDetails,
 }: Props) {
   const [open, setOpen] = React.useState<PanelKind | null>(null);
   const [mounted, setMounted] = React.useState(false);
@@ -139,6 +156,7 @@ export function HeroSidePanel({
                 businessDescription={businessDescription}
                 address={address}
                 marketReach={marketReach}
+                sellerDetails={sellerDetails}
               />
             )}
             {open === "order" && (
@@ -406,16 +424,147 @@ function ReachBulletRow({ label, on }: { label: string; on: boolean }) {
   );
 }
 
+function SellerDetailsBlock({ details }: { details: SellerDetails }) {
+  const rows: Array<{ label: string; value: React.ReactNode }> = [];
+  if (details.yearEstablished) {
+    rows.push({
+      label: "Established",
+      value: `${details.yearEstablished}`,
+    });
+  }
+  if (details.staffCount) {
+    rows.push({ label: "Team", value: details.staffCount });
+  }
+  rows.push({
+    label: "Seller type",
+    value:
+      details.sellerKind === "registered_company"
+        ? "Registered company"
+        : "Private seller",
+  });
+  if (details.languages.length > 0) {
+    rows.push({
+      label: "Languages",
+      value: details.languages.map(languageName).join(" · "),
+    });
+  }
+  rows.push({
+    label: "Samples",
+    value: details.samplesAvailable
+      ? "Available on request"
+      : "Not offered",
+  });
+  rows.push({
+    label: "OEM / custom",
+    value: details.acceptsOem
+      ? "Custom-made per buyer spec"
+      : "Not offered",
+  });
+  if (details.minOrderQuantity) {
+    rows.push({
+      label: "Min order",
+      value: details.minOrderQuantity,
+    });
+  }
+  rows.push({
+    label: "Local shipping",
+    value: details.localPostageIncluded
+      ? "Included in shop prices"
+      : "Not included · arranged separately",
+  });
+
+  return (
+    <div>
+      <div
+        style={{
+          fontSize: 10,
+          letterSpacing: "0.24em",
+          textTransform: "uppercase",
+          color: NEX.cyan,
+          fontWeight: 700,
+          marginBottom: 10,
+        }}
+      >
+        Business details
+      </div>
+      <dl
+        style={{
+          margin: 0,
+          display: "grid",
+          gridTemplateColumns: "120px 1fr",
+          rowGap: 8,
+          columnGap: 12,
+          fontSize: 13,
+        }}
+      >
+        {rows.map((r) => (
+          <React.Fragment key={r.label}>
+            <dt
+              style={{
+                color: NEX.textMute,
+                fontSize: 11,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                fontWeight: 600,
+                paddingTop: 2,
+              }}
+            >
+              {r.label}
+            </dt>
+            <dd style={{ margin: 0, color: NEX.text, lineHeight: 1.5 }}>
+              {r.value}
+            </dd>
+          </React.Fragment>
+        ))}
+      </dl>
+      {details.additionalDetails && (
+        <p
+          style={{
+            marginTop: 14,
+            marginBottom: 0,
+            fontSize: 13,
+            lineHeight: 1.6,
+            color: "rgba(244,247,252,0.82)",
+            whiteSpace: "pre-wrap",
+          }}
+        >
+          {details.additionalDetails}
+        </p>
+      )}
+    </div>
+  );
+}
+
+/** ISO-code → display name for the common NEX languages. Unknown
+ *  codes fall through as-is so future additions render without a
+ *  code change. */
+function languageName(code: string): string {
+  const c = code.toLowerCase();
+  if (c === "id") return "Indonesian";
+  if (c === "en") return "English";
+  if (c === "zh") return "Chinese";
+  if (c === "nl") return "Dutch";
+  if (c === "ar") return "Arabic";
+  if (c === "es") return "Spanish";
+  if (c === "fr") return "French";
+  if (c === "de") return "German";
+  if (c === "ja") return "Japanese";
+  if (c === "ko") return "Korean";
+  return code.toUpperCase();
+}
+
 function AboutContent({
   businessName,
   businessDescription,
   address,
   marketReach,
+  sellerDetails,
 }: {
   businessName: string;
   businessDescription: string | null;
   address: string | null;
   marketReach: "both" | "export_only" | "local_only";
+  sellerDetails: SellerDetails;
 }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -445,6 +594,8 @@ function AboutContent({
       </div>
 
       <ReachBulletList marketReach={marketReach} />
+
+      <SellerDetailsBlock details={sellerDetails} />
 
       {businessDescription ? (
         <p

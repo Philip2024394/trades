@@ -210,6 +210,8 @@ export const NEX_WEEK_DAYS: readonly (keyof NexWeeklyHours)[] = [
 
 export type NexBusinessMarketReach = "both" | "export_only" | "local_only";
 
+export type NexBusinessSellerKind = "private" | "registered_company";
+
 export interface NexBusinessRow {
   id: NexUuid;
   owner_account_id: NexUuid;
@@ -238,6 +240,19 @@ export interface NexBusinessRow {
    *  Defaults to 'both' at the DB level so existing rows stay
    *  visible everywhere. */
   market_reach: NexBusinessMarketReach;
+  /** Seller detail fields · migration 061 · every field powers a
+   *  row in the About overlay on the public shop page. Booleans
+   *  default false, languages default to ['id'] Indonesian,
+   *  seller_kind default 'private', text fields default NULL. */
+  year_established: number | null;
+  staff_count: string | null;
+  samples_available: boolean;
+  accepts_oem: boolean;
+  min_order_quantity: string | null;
+  local_postage_included: boolean;
+  seller_kind: NexBusinessSellerKind;
+  languages: string[];
+  additional_details: string | null;
   /** Social handles · migration 026 · all nullable · stored WITHOUT leading @. */
   instagram_handle: string | null;
   facebook_handle: string | null;
