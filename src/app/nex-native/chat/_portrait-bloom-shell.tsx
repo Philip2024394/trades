@@ -72,7 +72,7 @@ export interface PortraitBloomMessage {
   /** Bridge 8+9+11 · optional attachment · photo, video, voice
    *  note, or a peer product card · rendered inline above the body. */
   attachment_url?: string | null;
-  attachment_type?: "image" | "video" | "audio" | "product" | null;
+  attachment_type?: "image" | "video" | "audio" | "product" | "menu_item" | null;
   /** Bridge 11 · when attachment_type='product' this carries the
    *  frozen product snapshot so the card renders correctly even if
    *  the underlying product is later edited or deleted. */
@@ -85,6 +85,23 @@ export interface PortraitBloomMessage {
     currency: string;
     image_url: string | null;
     short_description: string | null;
+  } | null;
+  /** Bridge 15c · when attachment_type='menu_item' this carries the
+   *  frozen dish snapshot so the card renders correctly even if the
+   *  underlying dish is later edited, marked sold-out, or deleted. */
+  attachment_menu_item?: {
+    menu_item_id: string;
+    business_id: string;
+    business_slug: string | null;
+    section_name: string | null;
+    name: string;
+    price_pence: number;
+    currency: string;
+    image_url: string | null;
+    short_description: string | null;
+    spice_level: number;
+    dietary_tags: string[];
+    portion_note: string | null;
   } | null;
 }
 
@@ -913,6 +930,13 @@ export function PortraitBloomShell({
                           hasBody={!!m.body}
                           accent={bubbleRim}
                         />
+                      ) : m.attachment_type === "menu_item" &&
+                        m.attachment_menu_item ? (
+                        <MessageMenuItemCard
+                          item={m.attachment_menu_item}
+                          hasBody={!!m.body}
+                          accent={bubbleRim}
+                        />
                       ) : m.attachment_url &&
                         (m.attachment_type === "image" ||
                           m.attachment_type === "video" ||
@@ -1279,6 +1303,188 @@ function MessageProductCard({
               }}
             >
               See in shop →
+            </span>
+          )}
+        </div>
+      </div>
+    </>
+  );
+  const shared: React.CSSProperties = {
+    display: "block",
+    marginBottom,
+    borderRadius: 12,
+    overflow: "hidden",
+    background: "rgba(0,0,0,0.42)",
+    border: `1px solid ${accent}55`,
+    color: "inherit",
+    textDecoration: "none",
+    minWidth: 220,
+  };
+  if (href) {
+    return (
+      <a href={href} style={shared}>
+        {inner}
+      </a>
+    );
+  }
+  return <div style={shared}>{inner}</div>;
+}
+
+function MessageMenuItemCard({
+  item,
+  hasBody,
+  accent,
+}: {
+  item: {
+    menu_item_id: string;
+    business_id: string;
+    business_slug: string | null;
+    section_name: string | null;
+    name: string;
+    price_pence: number;
+    currency: string;
+    image_url: string | null;
+    short_description: string | null;
+    spice_level: number;
+    dietary_tags: string[];
+    portion_note: string | null;
+  };
+  hasBody: boolean;
+  accent: string;
+}) {
+  const marginBottom = hasBody ? 8 : 0;
+  const price = formatBubblePrice(item.price_pence, item.currency);
+  const href = item.business_slug
+    ? `/nex-native/${item.business_slug}/menu`
+    : null;
+  const spiceChilies = item.spice_level > 0 ? "🌶".repeat(item.spice_level) : null;
+  const inner = (
+    <>
+      {item.image_url && (
+        <div
+          style={{
+            width: "100%",
+            aspectRatio: "16 / 9",
+            background: "#0a1a30",
+            overflow: "hidden",
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={item.image_url}
+            alt={item.name}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
+        </div>
+      )}
+      <div style={{ padding: "8px 10px 10px" }}>
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: accent,
+            fontWeight: 700,
+            marginBottom: 2,
+          }}
+        >
+          {item.section_name ? `Menu · ${item.section_name}` : "Menu"}
+        </div>
+        <div
+          style={{
+            fontSize: 13,
+            fontWeight: 700,
+            lineHeight: 1.3,
+            marginBottom: 4,
+          }}
+        >
+          {item.name}
+        </div>
+        {(spiceChilies || item.dietary_tags.length > 0 || item.portion_note) && (
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 4,
+              marginBottom: 6,
+            }}
+          >
+            {spiceChilies && (
+              <span
+                style={{
+                  fontSize: 9,
+                  padding: "2px 6px",
+                  borderRadius: 999,
+                  background: "rgba(255,90,60,0.14)",
+                  color: "#FF9A80",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                {spiceChilies}
+              </span>
+            )}
+            {item.dietary_tags.slice(0, 3).map((t) => (
+              <span
+                key={t}
+                style={{
+                  fontSize: 9,
+                  padding: "2px 6px",
+                  borderRadius: 999,
+                  background: "rgba(22,214,107,0.14)",
+                  color: "#4EE38A",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                {t}
+              </span>
+            ))}
+            {item.portion_note && (
+              <span
+                style={{
+                  fontSize: 9,
+                  padding: "2px 6px",
+                  borderRadius: 999,
+                  background: "rgba(139,169,209,0.10)",
+                  color: "rgba(244,247,252,0.75)",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                🍽 {item.portion_note}
+              </span>
+            )}
+          </div>
+        )}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+            justifyContent: "space-between",
+            gap: 8,
+          }}
+        >
+          <div
+            style={{
+              fontSize: 13,
+              fontWeight: 700,
+              color: "#FF7800",
+            }}
+          >
+            {price}
+          </div>
+          {href && (
+            <span
+              style={{
+                fontSize: 10,
+                color: "rgba(139,169,209,0.85)",
+                letterSpacing: "0.04em",
+              }}
+            >
+              See on menu →
             </span>
           )}
         </div>

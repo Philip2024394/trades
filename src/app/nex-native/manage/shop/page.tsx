@@ -233,6 +233,67 @@ export default async function ShopSettingsPage({
 
         {banner && <Banner code={banner.code} message={banner.message} />}
 
+        {(business.business_category === "restaurant" ||
+          business.business_category === "cafe") && (
+          <Link
+            href="/nex-native/manage/menu"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 12,
+              padding: "14px 16px",
+              borderRadius: 14,
+              background: "rgba(255,114,0,0.10)",
+              border: `1px solid ${NEX.orangeSoft}`,
+              textDecoration: "none",
+              color: NEX.text,
+              marginBottom: 18,
+              boxShadow: "0 8px 22px rgba(255,114,0,0.18)",
+            }}
+          >
+            <div style={{ minWidth: 0 }}>
+              <div
+                style={{
+                  fontSize: 10,
+                  letterSpacing: "0.24em",
+                  textTransform: "uppercase",
+                  color: NEX.orange,
+                  fontWeight: 700,
+                  marginBottom: 4,
+                }}
+              >
+                Menu editor
+              </div>
+              <div style={{ fontSize: 14, fontWeight: 700 }}>
+                Build your menu · sections and dishes
+              </div>
+              <div
+                style={{
+                  fontSize: 12,
+                  color: NEX.textDim,
+                  marginTop: 2,
+                }}
+              >
+                Add starters, mains, drinks, sweets · toggle sold-out
+                without deleting.
+              </div>
+            </div>
+            <div
+              style={{
+                fontSize: 12,
+                color: NEX.orange,
+                fontWeight: 700,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Open →
+            </div>
+          </Link>
+        )}
+
         {/* --- Away mode ------------------------------------------- */}
         <SectionCard>
           <SectionEyebrow color={business.is_away ? NEX.purple : NEX.cyan}>

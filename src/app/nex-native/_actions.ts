@@ -26,6 +26,7 @@ import * as sellerResponsivenessService from "@/lib/nex-native/seller-responsive
 import * as chatThemeService from "@/lib/nex-native/chat-theme-service";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as productService from "@/lib/nex-native/product-service";
+import * as menuService from "@/lib/nex-native/menu-service";
 import * as orderService from "@/lib/nex-native/order-service";
 import * as commerceService from "@/lib/nex-native/commerce-service";
 import * as accountService from "@/lib/nex-native/account-service";
@@ -820,6 +821,93 @@ export async function sendProductInquiryAction(
     attachment_url: hasImage ? product.image_url : null,
     attachment_type: hasImage ? "product" : null,
     attachment_meta: hasImage ? { product: snapshot } : null,
+  });
+
+  revalidatePath(`/nex-native/chat/peer/${peerAccountId}`);
+  redirect(`/nex-native/chat/peer/${peerAccountId}`);
+}
+
+/** Bridge 15c · send a dish inquiry from a restaurant/cafe menu into
+ *  the peer chat. Mirrors sendProductInquiryAction · snapshots the
+ *  dish (with spice, dietary, portion) into attachment_meta so the
+ *  bubble renders an inline menu-item card. Called by "Chat about X"
+ *  on /nex-native/[slug]/menu and the dish detail sheet. */
+export async function sendMenuItemInquiryAction(
+  peerAccountId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+  if (peerAccountId === session.account.id) redirect("/nex-native/chat");
+
+  const menuItemId = String(formData.get("menu_item_id") ?? "").trim();
+  const intentRaw = String(formData.get("intent") ?? "").trim();
+  const intent: "ask" | "order" = intentRaw === "order" ? "order" : "ask";
+  const customBody = String(formData.get("body") ?? "").trim();
+
+  if (!menuItemId) redirect(`/nex-native/chat/peer/${peerAccountId}`);
+
+  const item = await menuService.getMenuItemById(menuItemId);
+  if (!item) {
+    redirect(
+      `/nex-native/chat/peer/${peerAccountId}?menu_error=not_found`,
+    );
+  }
+  // Sanity: dish must belong to the peer's business.
+  const businesses = await businessService.listBusinessesByOwner(
+    peerAccountId,
+  );
+  const ownedByPeer = businesses.some((b) => b.id === item.business_id);
+  if (!ownedByPeer) {
+    redirect(
+      `/nex-native/chat/peer/${peerAccountId}?menu_error=not_from_peer`,
+    );
+  }
+  const business = businesses.find((b) => b.id === item.business_id)!;
+
+  // Resolve section name for the snapshot · nice-to-have context.
+  let sectionName: string | null = null;
+  if (item.section_id) {
+    const sections = await menuService.listSectionsByBusiness(business.id);
+    sectionName = sections.find((s) => s.id === item.section_id)?.name ?? null;
+  }
+
+  const snapshot: peerMessageService.NexPeerMenuItemSnapshot = {
+    menu_item_id: item.id,
+    business_id: business.id,
+    business_slug: business.slug ?? null,
+    section_name: sectionName,
+    name: item.name,
+    price_pence: item.price_pence,
+    currency: item.currency,
+    image_url: item.image_url ?? null,
+    short_description:
+      item.description?.split(/[.··]/)[0]?.trim().slice(0, 140) ?? null,
+    spice_level: item.spice_level,
+    dietary_tags: item.dietary_tags,
+    portion_note: item.portion_note,
+  };
+
+  const defaultBody =
+    intent === "order"
+      ? `I'd like to order the ${item.name} · what's next?`
+      : `Is the ${item.name} available?`;
+  const body = customBody || defaultBody;
+
+  const conversation =
+    await peerConversationService.getOrCreatePeerConversation(
+      session.account.id,
+      peerAccountId,
+    );
+
+  const hasImage = !!item.image_url;
+  await peerMessageService.sendPeerMessage({
+    conversation_id: conversation.id,
+    sender_account_id: session.account.id,
+    body,
+    attachment_url: hasImage ? item.image_url : null,
+    attachment_type: hasImage ? "menu_item" : null,
+    attachment_meta: hasImage ? { menu_item: snapshot } : null,
   });
 
   revalidatePath(`/nex-native/chat/peer/${peerAccountId}`);
@@ -3129,4 +3217,356 @@ export async function adminCreateChatThemeAction(
     "theme_created",
     `${name} (${id}) created${heroImageUrl ? " with background image" : ""}`,
   );
+}
+
+// ---------------------------------------------------------------------------
+// Bridge 15b · Menu editor (restaurants + cafes)
+// ---------------------------------------------------------------------------
+//
+// Ownership pattern: for section actions we bind businessId; for item
+// actions we bind either businessId (create) or itemId (mutate/delete).
+// In every case we resolve back to the business + verify
+// owner_account_id === session.account.id before touching the DB.
+
+function redirectToMenuWithBanner(code: string, message: string): never {
+  redirect(
+    "/nex-native/manage/menu?e=" + code + "&m=" + encodeURIComponent(message),
+  );
+}
+
+/** Bridge 15b · create a new menu section for the seller's business. */
+export async function createMenuSectionAction(
+  businessId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const business = await businessService.getBusinessById(businessId);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirectToMenuWithBanner("section_forbidden", "You don't own this shop");
+  }
+
+  const name = String(formData.get("name") ?? "").trim();
+  const description = String(formData.get("description") ?? "").trim() || null;
+  const sortOrderRaw = String(formData.get("sort_order") ?? "").trim();
+  const sortOrder = sortOrderRaw ? Number.parseInt(sortOrderRaw, 10) : 0;
+
+  if (name.length < 1 || name.length > 80) {
+    redirectToMenuWithBanner(
+      "section_failed",
+      "Section name must be 1-80 characters",
+    );
+  }
+
+  try {
+    await menuService.createSection({
+      business_id: businessId,
+      name,
+      description,
+      sort_order: Number.isFinite(sortOrder) ? sortOrder : 0,
+    });
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirectToMenuWithBanner("section_failed", msg);
+  }
+
+  revalidatePath("/nex-native/manage/menu");
+  revalidatePath(`/nex-native/${business.slug}`);
+  revalidatePath(`/nex-native/${business.slug}/menu`);
+  redirectToMenuWithBanner("section_ok", `Section "${name}" added`);
+}
+
+/** Bridge 15b · rename a menu section · owner-only. */
+export async function updateMenuSectionAction(
+  sectionId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const sections = await businessService.listBusinessesByOwner(
+    session.account.id,
+  );
+  // Resolve owner via section → business join. Simpler path: fetch the
+  // section row via any listSectionsByBusiness call across owned
+  // businesses. Cheaper alt: expose a getSectionById in the service.
+  // For now iterate owned businesses (usually 1) and match.
+  let ownerBusiness: (typeof sections)[number] | null = null;
+  for (const b of sections) {
+    const arr = await menuService.listSectionsByBusiness(b.id);
+    if (arr.some((s) => s.id === sectionId)) {
+      ownerBusiness = b;
+      break;
+    }
+  }
+  if (!ownerBusiness) {
+    redirectToMenuWithBanner("section_forbidden", "Section not found");
+  }
+
+  const name = String(formData.get("name") ?? "").trim();
+  const description = String(formData.get("description") ?? "").trim();
+
+  if (name.length < 1 || name.length > 80) {
+    redirectToMenuWithBanner(
+      "section_failed",
+      "Section name must be 1-80 characters",
+    );
+  }
+
+  try {
+    await menuService.updateSection(sectionId, {
+      name,
+      description: description.length > 0 ? description : null,
+    });
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirectToMenuWithBanner("section_failed", msg);
+  }
+
+  revalidatePath("/nex-native/manage/menu");
+  revalidatePath(`/nex-native/${ownerBusiness.slug}/menu`);
+  redirectToMenuWithBanner("section_ok", "Section updated");
+}
+
+/** Bridge 15b · delete a menu section · items in it become uncategorised. */
+export async function deleteMenuSectionAction(
+  sectionId: string,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const ownedBusinesses = await businessService.listBusinessesByOwner(
+    session.account.id,
+  );
+  let ownerBusiness: (typeof ownedBusinesses)[number] | null = null;
+  for (const b of ownedBusinesses) {
+    const arr = await menuService.listSectionsByBusiness(b.id);
+    if (arr.some((s) => s.id === sectionId)) {
+      ownerBusiness = b;
+      break;
+    }
+  }
+  if (!ownerBusiness) {
+    redirectToMenuWithBanner("section_forbidden", "Section not found");
+  }
+
+  try {
+    await menuService.deleteSection(sectionId);
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirectToMenuWithBanner("section_failed", msg);
+  }
+
+  revalidatePath("/nex-native/manage/menu");
+  revalidatePath(`/nex-native/${ownerBusiness.slug}`);
+  revalidatePath(`/nex-native/${ownerBusiness.slug}/menu`);
+  redirectToMenuWithBanner("section_ok", "Section deleted");
+}
+
+/** Bridge 15b · create a menu item. Reads canonical dietary_tags[] +
+ *  allergens[] via FormData.getAll. Price is IDR (whole rupiah stored
+ *  as price_pence · IDR has no fractional unit). */
+export async function createMenuItemAction(
+  businessId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const business = await businessService.getBusinessById(businessId);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirectToMenuWithBanner("item_forbidden", "You don't own this shop");
+  }
+
+  const name = String(formData.get("name") ?? "").trim();
+  const description = String(formData.get("description") ?? "").trim() || null;
+  const sectionIdRaw = String(formData.get("section_id") ?? "").trim();
+  const sectionId = sectionIdRaw.length > 0 ? sectionIdRaw : null;
+  const priceRaw = String(formData.get("price_idr") ?? "").trim();
+  const priceIdr = Number.parseInt(priceRaw, 10);
+  // Menu items store centi-rupiah (matches product-service) · UI takes
+  // whole IDR, service stores * 100.
+  const price = Number.isFinite(priceIdr) ? priceIdr * 100 : NaN;
+  const imageUrl = String(formData.get("image_url") ?? "").trim() || null;
+  const dietaryTags = formData
+    .getAll("dietary_tags")
+    .map((v) => String(v).trim())
+    .filter((v) => v.length > 0);
+  const allergens = formData
+    .getAll("allergens")
+    .map((v) => String(v).trim())
+    .filter((v) => v.length > 0);
+  const spiceRaw = String(formData.get("spice_level") ?? "0").trim();
+  const spice = Number.parseInt(spiceRaw, 10);
+  const isFeatured = String(formData.get("is_featured") ?? "") === "on";
+  const preparationTime =
+    String(formData.get("preparation_time") ?? "").trim() || null;
+  const portionNote =
+    String(formData.get("portion_note") ?? "").trim() || null;
+
+  if (name.length < 1 || name.length > 120) {
+    redirectToMenuWithBanner(
+      "item_failed",
+      "Dish name must be 1-120 characters",
+    );
+  }
+  if (!Number.isFinite(price) || price < 0) {
+    redirectToMenuWithBanner("item_failed", "Price must be a positive number");
+  }
+
+  try {
+    await menuService.createMenuItem({
+      business_id: businessId,
+      section_id: sectionId,
+      name,
+      description,
+      price_pence: price,
+      currency: "IDR",
+      image_url: imageUrl,
+      dietary_tags: dietaryTags,
+      allergens: allergens,
+      spice_level: Number.isFinite(spice) ? spice : 0,
+      is_available: true,
+      is_featured: isFeatured,
+      preparation_time: preparationTime,
+      portion_note: portionNote,
+      status: "live",
+    });
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirectToMenuWithBanner("item_failed", msg);
+  }
+
+  revalidatePath("/nex-native/manage/menu");
+  revalidatePath(`/nex-native/${business.slug}`);
+  revalidatePath(`/nex-native/${business.slug}/menu`);
+  redirectToMenuWithBanner("item_ok", `"${name}" added to the menu`);
+}
+
+async function resolveMenuItemOwnership(
+  itemId: string,
+  accountId: string,
+): Promise<{
+  item: NonNullable<Awaited<ReturnType<typeof menuService.getMenuItemById>>>;
+  business: NonNullable<Awaited<ReturnType<typeof businessService.getBusinessById>>>;
+} | null> {
+  const item = await menuService.getMenuItemById(itemId);
+  if (!item) return null;
+  const business = await businessService.getBusinessById(item.business_id);
+  if (!business || business.owner_account_id !== accountId) return null;
+  return { item, business };
+}
+
+/** Bridge 15b · toggle a menu item's daily availability (sold-out state). */
+export async function toggleMenuItemAvailableAction(
+  itemId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const nextRaw = String(formData.get("is_available") ?? "").trim();
+  const nextAvailable = nextRaw === "true";
+
+  const owned = await resolveMenuItemOwnership(itemId, session.account.id);
+  if (!owned) {
+    redirectToMenuWithBanner("item_forbidden", "Dish not found");
+  }
+
+  try {
+    await menuService.updateMenuItem(itemId, { is_available: nextAvailable });
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirectToMenuWithBanner("item_failed", msg);
+  }
+
+  revalidatePath("/nex-native/manage/menu");
+  revalidatePath(`/nex-native/${owned.business.slug}/menu`);
+  redirectToMenuWithBanner(
+    "item_ok",
+    nextAvailable
+      ? `${owned.item.name} · available`
+      : `${owned.item.name} · sold out today`,
+  );
+}
+
+/** Bridge 15b · toggle the chef's-choice star on a menu item. */
+export async function toggleMenuItemFeaturedAction(
+  itemId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const nextRaw = String(formData.get("is_featured") ?? "").trim();
+  const nextFeatured = nextRaw === "true";
+
+  const owned = await resolveMenuItemOwnership(itemId, session.account.id);
+  if (!owned) {
+    redirectToMenuWithBanner("item_forbidden", "Dish not found");
+  }
+
+  try {
+    await menuService.updateMenuItem(itemId, { is_featured: nextFeatured });
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirectToMenuWithBanner("item_failed", msg);
+  }
+
+  revalidatePath("/nex-native/manage/menu");
+  revalidatePath(`/nex-native/${owned.business.slug}`);
+  revalidatePath(`/nex-native/${owned.business.slug}/menu`);
+  redirectToMenuWithBanner(
+    "item_ok",
+    nextFeatured
+      ? `${owned.item.name} · marked as house special`
+      : `${owned.item.name} · no longer featured`,
+  );
+}
+
+/** Bridge 15b · delete a menu item permanently. */
+export async function deleteMenuItemAction(
+  itemId: string,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const owned = await resolveMenuItemOwnership(itemId, session.account.id);
+  if (!owned) {
+    redirectToMenuWithBanner("item_forbidden", "Dish not found");
+  }
+
+  try {
+    await menuService.deleteMenuItem(itemId);
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirectToMenuWithBanner("item_failed", msg);
+  }
+
+  revalidatePath("/nex-native/manage/menu");
+  revalidatePath(`/nex-native/${owned.business.slug}`);
+  revalidatePath(`/nex-native/${owned.business.slug}/menu`);
+  redirectToMenuWithBanner("item_ok", `${owned.item.name} deleted`);
 }

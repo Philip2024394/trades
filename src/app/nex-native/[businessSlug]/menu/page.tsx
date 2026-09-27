@@ -16,6 +16,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as menuService from "@/lib/nex-native/menu-service";
+import { sendMenuItemInquiryAction } from "../../_actions";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -64,6 +65,10 @@ export default async function Page({
 
   const chatHref = `/nex-native/chat/peer/${business.owner_account_id}`;
   const shopHref = `/nex-native/${business.slug}`;
+  const dishInquiryAction = sendMenuItemInquiryAction.bind(
+    null,
+    business.owner_account_id,
+  );
 
   return (
     <div
@@ -270,6 +275,7 @@ export default async function Page({
                       key={it.id}
                       item={it}
                       chatHref={chatHref}
+                      dishInquiryAction={dishInquiryAction}
                     />
                   ))}
                 </div>
@@ -378,9 +384,11 @@ function SectionHead({
 function MenuDishCard({
   item,
   chatHref,
+  dishInquiryAction,
 }: {
   item: import("@/lib/nex-native/menu-service").NexMenuItemRow;
   chatHref: string;
+  dishInquiryAction: (formData: FormData) => Promise<never>;
 }) {
   const unavailable = !item.is_available;
   return (
@@ -581,32 +589,56 @@ function MenuDishCard({
         )}
 
         {/* CTA · always Chat to order · doctrine · commerce lives
-            in chat */}
-        <Link
-          href={chatHref}
-          style={{
-            display: "block",
-            padding: "11px 14px",
-            borderRadius: 12,
-            background: unavailable
-              ? "rgba(0,0,0,0.35)"
-              : "rgba(0,175,255,0.16)",
-            border: unavailable
-              ? "1px solid rgba(255,255,255,0.08)"
-              : `1px solid ${NEX.cyanSoft}`,
-            color: unavailable ? NEX.textMute : NEX.text,
-            fontSize: 12,
-            fontWeight: 700,
-            letterSpacing: "0.06em",
-            textTransform: "uppercase",
-            textDecoration: "none",
-            textAlign: "center",
-            pointerEvents: unavailable ? "none" : "auto",
-          }}
-          aria-disabled={unavailable}
-        >
-          {unavailable ? "Currently unavailable" : `Chat about ${firstWord(item.name)} →`}
-        </Link>
+            in chat. Bridge 15c · fires sendMenuItemInquiryAction so
+            the dish arrives in the peer chat as an inline card
+            (mirrors Bridge 11 product inquiries). */}
+        {unavailable ? (
+          <div
+            aria-disabled
+            style={{
+              display: "block",
+              padding: "11px 14px",
+              borderRadius: 12,
+              background: "rgba(0,0,0,0.35)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              color: NEX.textMute,
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              textAlign: "center",
+              pointerEvents: "none",
+            }}
+          >
+            Currently unavailable
+          </div>
+        ) : (
+          <form action={dishInquiryAction}>
+            <input type="hidden" name="menu_item_id" value={item.id} />
+            <input type="hidden" name="intent" value="ask" />
+            <button
+              type="submit"
+              style={{
+                display: "block",
+                width: "100%",
+                padding: "11px 14px",
+                borderRadius: 12,
+                background: "rgba(0,175,255,0.16)",
+                border: `1px solid ${NEX.cyanSoft}`,
+                color: NEX.text,
+                fontSize: 12,
+                fontWeight: 700,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                textAlign: "center",
+                cursor: "pointer",
+                fontFamily: "inherit",
+              }}
+            >
+              Chat about {firstWord(item.name)} →
+            </button>
+          </form>
+        )}
       </div>
     </article>
   );

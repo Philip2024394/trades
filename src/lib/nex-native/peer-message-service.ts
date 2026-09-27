@@ -50,7 +50,12 @@ export interface NexPeerMessageRow {
   attachment_meta: NexPeerAttachmentMeta | null;
 }
 
-export type NexPeerAttachmentKind = "image" | "video" | "audio" | "product";
+export type NexPeerAttachmentKind =
+  | "image"
+  | "video"
+  | "audio"
+  | "product"
+  | "menu_item";
 
 export interface NexPeerAttachmentMeta {
   duration_ms?: number;
@@ -62,6 +67,10 @@ export interface NexPeerAttachmentMeta {
    *  product captured at send time. Frozen so the card stays
    *  renderable even if the product is later edited or deleted. */
   product?: NexPeerProductSnapshot;
+  /** Bridge 15c · when attachment_type='menu_item', a snapshot of the
+   *  dish captured at send time. Frozen so the card stays renderable
+   *  even if the dish is later edited or deleted. */
+  menu_item?: NexPeerMenuItemSnapshot;
 }
 
 /** Product snapshot embedded in an attachment_meta when a peer
@@ -76,6 +85,25 @@ export interface NexPeerProductSnapshot {
   currency: string;
   image_url: string | null;
   short_description: string | null;
+}
+
+/** Menu-item (dish) snapshot embedded in an attachment_meta when a
+ *  peer message carries a dish inquiry. Sealed 2026-09-28 · migration
+ *  067. Restaurants + cafes get their own card renderer that shows
+ *  spice + dietary chips alongside price + image. */
+export interface NexPeerMenuItemSnapshot {
+  menu_item_id: string;
+  business_id: string;
+  business_slug: string | null;
+  section_name: string | null;
+  name: string;
+  price_pence: number;
+  currency: string;
+  image_url: string | null;
+  short_description: string | null;
+  spice_level: number;
+  dietary_tags: string[];
+  portion_note: string | null;
 }
 
 /** Window in which a sender can still retract a message. WhatsApp
