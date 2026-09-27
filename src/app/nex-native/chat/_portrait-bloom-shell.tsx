@@ -224,12 +224,29 @@ export function PortraitBloomShell({
         [data-nex-bloom-ripple-inner] {
           animation: nex-bloom-ripple 2600ms cubic-bezier(.2,.7,.2,1) both;
         }
-        /* Scrollbar hidden · scrolling still works, just no visible
-           bar on the side of the chat window. Sealed 2026-09-27.
-           Fade mask removed 2026-09-27 · with solid dark navy
-           behind the whole surface there is nothing to fade into. */
+        /* Scrollbar hidden + top-fade mask · bubbles dissolve into
+           the header area on scroll instead of cutting hard. The
+           first ~72px of the scroll region fades to transparent
+           so nothing pops behind the identity block. Sealed
+           2026-09-27. */
         [data-nex-message-scroll] {
           scrollbar-width: none;
+          mask-image: linear-gradient(
+            180deg,
+            transparent 0px,
+            rgba(0,0,0,0.15) 24px,
+            rgba(0,0,0,0.55) 48px,
+            #000 72px,
+            #000 100%
+          );
+          -webkit-mask-image: linear-gradient(
+            180deg,
+            transparent 0px,
+            rgba(0,0,0,0.15) 24px,
+            rgba(0,0,0,0.55) 48px,
+            #000 72px,
+            #000 100%
+          );
         }
         [data-nex-message-scroll]::-webkit-scrollbar {
           display: none;
@@ -340,9 +357,11 @@ export function PortraitBloomShell({
           )}
         </div>
 
-        {/* Identity overlay · text sits directly on the hero portrait
-            with a soft shadow for legibility. Message zone below has
-            no gradient overlay so it reads as solid dark navy. */}
+        {/* Identity overlay · text sits directly on the theme
+            wallpaper with a soft shadow for legibility. No bottom
+            border line · bubbles dissolve into this zone via the
+            scroll region's fade mask instead of cutting against a
+            hairline. */}
         <div
           style={{
             position: "relative",
