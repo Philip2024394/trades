@@ -579,9 +579,10 @@ function ProductSpread({
         boxShadow: "0 12px 32px rgba(0,0,0,0.4)",
       }}
     >
-      {/* Hero photo · 3:2 aspect for that vintage-camera magazine
-          feel · falls back to a shop-glyph tile when there's no
-          image. */}
+      {/* Hero photo · 3:2 aspect · price now sits INSIDE the image
+          at the lower-right as a glass pill, so the card leads
+          with the visual and the number lands where the eye
+          finishes scanning the frame. Stock pill stays top-left. */}
       <div
         style={{
           width: "100%",
@@ -654,44 +655,47 @@ function ProductSpread({
                   : stockStatus.replace(/_/g, " ")}
           </div>
         )}
-      </div>
-
-      {/* Meta */}
-      <div style={{ padding: "20px 22px 22px" }}>
+        {/* Price overlay · lower-right corner of the image */}
         <div
           style={{
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-            gap: 14,
-            marginBottom: 12,
+            position: "absolute",
+            right: 14,
+            bottom: 14,
+            padding: "8px 14px",
+            borderRadius: 12,
+            background:
+              "linear-gradient(180deg, rgba(2,9,20,0.72) 0%, rgba(2,9,20,0.88) 100%)",
+            border: `1px solid ${NEX.orangeSoft}`,
+            color: NEX.orange,
+            fontSize: 18,
+            fontWeight: 700,
+            letterSpacing: "0.01em",
+            fontFamily: SANS,
+            backdropFilter: "blur(10px)",
+            WebkitBackdropFilter: "blur(10px)",
+            boxShadow: "0 8px 20px rgba(0,0,0,0.55)",
           }}
         >
-          <h3
-            style={{
-              margin: 0,
-              fontFamily: SERIF,
-              fontWeight: 500,
-              fontSize: 26,
-              letterSpacing: "-0.01em",
-              lineHeight: 1.1,
-            }}
-          >
-            {name}
-          </h3>
-          <div
-            style={{
-              flexShrink: 0,
-              fontSize: 18,
-              fontWeight: 700,
-              color: NEX.orange,
-              letterSpacing: "0.01em",
-              fontFamily: SANS,
-            }}
-          >
-            {price}
-          </div>
+          {price}
         </div>
+      </div>
+
+      {/* Meta · name lives under the image now (its own row), then
+          tags, then description, then the CTAs. */}
+      <div style={{ padding: "18px 22px 22px" }}>
+        <h3
+          style={{
+            margin: 0,
+            fontFamily: SERIF,
+            fontWeight: 500,
+            fontSize: 26,
+            letterSpacing: "-0.01em",
+            lineHeight: 1.1,
+            marginBottom: 10,
+          }}
+        >
+          {name}
+        </h3>
         {tags.length > 0 && (
           <div
             style={{
@@ -729,12 +733,13 @@ function ProductSpread({
               lineHeight: 1.6,
               color: "rgba(244,247,252,0.85)",
               marginBottom: 18,
+              whiteSpace: "pre-wrap",
             }}
           >
             {description}
           </p>
         )}
-        {/* Inline CTAs */}
+        {/* Two CTAs · Purchase (primary orange) + Chat Now (cyan) */}
         <div style={{ display: "flex", gap: 10 }}>
           <Link
             href={chatHref}
@@ -753,7 +758,7 @@ function ProductSpread({
               boxShadow: "0 8px 20px rgba(255,120,0,0.35)",
             }}
           >
-            Ask about this
+            Purchase
           </Link>
           <Link
             href={chatHref}
@@ -772,7 +777,7 @@ function ProductSpread({
               textAlign: "center",
             }}
           >
-            I want this
+            Chat Now
           </Link>
         </div>
       </div>
