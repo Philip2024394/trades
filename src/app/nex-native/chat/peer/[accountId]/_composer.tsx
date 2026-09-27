@@ -95,6 +95,17 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
   return (
     <>
       <style>{`
+        /* Hide native scrollbar inside the composer textarea · scroll
+           still works when content exceeds max height, just no visible
+           bar. */
+        [data-nex-peer-composer] textarea {
+          scrollbar-width: none;
+        }
+        [data-nex-peer-composer] textarea::-webkit-scrollbar {
+          display: none;
+          width: 0;
+          height: 0;
+        }
         @keyframes nex-modal-in {
           from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
           to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
@@ -167,9 +178,10 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
           </button>
         </div>
 
-        {/* Row 2 · glass input rectangle · + | textarea | emoji |
-            send · frosted gray inner with a static solid blue rim.
-            No animation, no gradient · calmer NEX composer. */}
+        {/* Row 2 · glass input rectangle · matches the outgoing
+            chat bubble · same dark-navy fill, same cyan rim, so the
+            composer visually belongs to the same family as the
+            messages I've sent. */}
         <div
           style={{
             display: "flex",
@@ -177,11 +189,12 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
             minHeight: 44,
             padding: "4px 6px 4px 6px",
             borderRadius: 14,
-            background: "rgba(150,160,180,0.16)",
-            backdropFilter: "blur(20px) saturate(1.1)",
-            WebkitBackdropFilter: "blur(20px) saturate(1.1)",
-            border: `1px solid ${NEX.cyan}`,
-            boxShadow: "0 0 0 1px rgba(0,159,239,0.18)",
+            background: "rgba(12,32,58,0.62)",
+            backdropFilter: "blur(24px) saturate(1.2)",
+            WebkitBackdropFilter: "blur(24px) saturate(1.2)",
+            border: "1px solid rgba(0,159,239,0.85)",
+            boxShadow:
+              "0 0 14px rgba(0,159,239,0.15), 0 6px 20px rgba(0,0,0,0.45)",
           }}
         >
             <PlusButton onClick={() => setModalOpen(true)} />
@@ -288,23 +301,17 @@ function SendButton({ armed }: { armed: boolean }) {
         width: 36,
         height: 36,
         borderRadius: "50%",
-        // Solid NEX orange when armed · calmer than the gradient
-        // now that the aurora rim carries the animated colour.
-        background: active
-          ? NEX.orange
-          : pending
-            ? "rgba(255,120,0,0.4)"
-            : "rgba(120,140,180,0.14)",
-        color: active || pending ? "#0B0F1A" : NEX.textMute,
-        border: active
-          ? `1px solid ${NEX.orangeSoft}`
-          : `1px solid transparent`,
+        // Always orange · opacity + scale carry the enabled state.
+        background: NEX.orange,
+        color: "#0B0F1A",
+        border: `1px solid ${NEX.orangeSoft}`,
         display: "grid",
         placeItems: "center",
         cursor: pending ? "wait" : armed ? "pointer" : "not-allowed",
         transition:
-          "background 220ms ease, color 220ms ease, border-color 220ms ease, transform 120ms ease, box-shadow 220ms ease",
+          "opacity 220ms ease, transform 120ms ease, box-shadow 220ms ease",
         transform: active ? "scale(1)" : "scale(0.92)",
+        opacity: active ? 1 : pending ? 0.85 : 0.4,
         boxShadow: active
           ? "0 6px 18px rgba(255,120,0,0.35)"
           : "none",
