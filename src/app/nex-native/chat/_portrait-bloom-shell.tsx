@@ -285,13 +285,11 @@ export function PortraitBloomShell({
           }}
         />
 
-        {/* Identity overlay · top-left · compact so the portrait can
-            breathe and messages get more room. The "NEX · chatting
-            with" label was removed 2026-09-27 · the portrait already
-            signals "chatting with" and the presence dot lives inline
-            beside the name. Backdrop-blur means bubbles scrolling
-            behind get blurred rather than cutting hard against the
-            header. */}
+        {/* Identity overlay · text sits directly on the portrait with
+            a soft shadow for legibility. No glass panel, no backdrop-
+            blur · reverted per Founder direction 2026-09-27. The fade
+            mask on the message region below still hides the cut edge
+            when bubbles scroll past. */}
         <div
           style={{
             position: "relative",
@@ -300,8 +298,6 @@ export function PortraitBloomShell({
             padding:
               "calc(env(safe-area-inset-top, 0) + 14px) 20px 12px",
             textShadow: "0 2px 20px rgba(0,0,0,0.75)",
-            backdropFilter: "blur(14px)",
-            WebkitBackdropFilter: "blur(14px)",
           }}
         >
           <div
