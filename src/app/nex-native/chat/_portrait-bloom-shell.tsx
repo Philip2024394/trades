@@ -254,90 +254,43 @@ export function PortraitBloomShell({
           flexDirection: "column",
         }}
       >
-        {/* Theme wallpaper · painted behind the message zone only ·
-            starts under the hero portrait and stops above the
-            composer. Dimmed + blurred so bubbles stay legible. The
-            peer's profile image stays the hero portrait above ·
-            these two never share a slot. */}
+        {/* Theme wallpaper · fills the whole chat surface (Founder
+            direction 2026-09-27: hero portrait layer removed · theme1
+            is the full background image). Bubbles + composer + header
+            all sit over this layer. A subtle scrim keeps the reading
+            zone legible without dulling the theme's colour. */}
         {wallpaperUrl && (
-          <div
-            aria-hidden
-            style={{
-              position: "absolute",
-              top: "40vh",
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundImage: `url(${wallpaperUrl})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              opacity: 0.28,
-              filter: "saturate(1.05)",
-              zIndex: 0,
-            }}
-          />
+          <>
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                inset: 0,
+                backgroundImage: `url(${wallpaperUrl})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                filter: `saturate(1.05)${isOffline ? " grayscale(0.6)" : ""}`,
+                zIndex: 0,
+              }}
+            />
+            {/* Legibility scrim · a soft dark tint over the wallpaper
+                so text + bubbles never fight the theme photograph. */}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "linear-gradient(180deg, rgba(2,9,20,0.55) 0%, rgba(2,9,20,0.35) 30%, rgba(2,9,20,0.55) 100%)",
+                zIndex: 0,
+              }}
+            />
+          </>
         )}
-        {/* Hero portrait layer · the peer's photo dominates the top
-            of the surface (Founder direction 2026-09-27: keep the
-            hero image · the "solid dark navy" ask applied to the
-            message reading zone, not this hero). The portrait fades
-            at its bottom edge, then the message list below sits on
-            solid #020914 with no abyss gradient overlay. */}
-        <div
-          aria-hidden
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: "40vh",
-            maskImage:
-              "linear-gradient(180deg, #000 0%, #000 60%, rgba(0,0,0,0.7) 82%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(180deg, #000 0%, #000 60%, rgba(0,0,0,0.7) 82%, transparent 100%)",
-            overflow: "hidden",
-            zIndex: 1,
-          }}
-        >
-          <div
-            data-nex-bloom-portrait
-            data-nex-bloom-offline={isOffline ? "true" : undefined}
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundImage: portraitUrl
-                ? `url(${portraitUrl})`
-                : `linear-gradient(135deg, ${NEX.cyanDeep} 0%, #05101f 60%, #020914 100%)`,
-              backgroundSize: "cover",
-              backgroundPosition: "center 22%",
-              backgroundColor: NEX.cyanDeep,
-            }}
-          >
-            {!portraitUrl && (
-              <div
-                aria-hidden
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  display: "grid",
-                  placeItems: "center",
-                  color: NEX.cyan,
-                  fontSize: 96,
-                  fontWeight: 700,
-                  letterSpacing: "0.06em",
-                  opacity: 0.4,
-                }}
-              >
-                {initialsFromName(displayName)}
-              </div>
-            )}
-          </div>
-        </div>
 
-        {/* Chat-theme ripple · flashes over the hero when a fresh
-            inbound arrives · centered on the portrait so it reads
-            as identity, not decoration. */}
+        {/* Chat-theme ripple · flashes over the wallpaper when a
+            fresh inbound arrives. */}
         <div
           key={rippleKey}
           aria-hidden
@@ -392,31 +345,61 @@ export function PortraitBloomShell({
             style={{
               display: "flex",
               alignItems: "center",
-              gap: 10,
+              gap: 12,
             }}
           >
-            <span
+            {/* Small round profile avatar · the peer's face lives
+                here now that the hero portrait layer is gone. The
+                theme wallpaper is the environment · this dot is the
+                person. Presence colour lives on the ring. */}
+            <div
               aria-label={presenceLabel}
               title={presenceLabel}
               style={{
-                display: "inline-block",
+                position: "relative",
                 flexShrink: 0,
-                width: 10,
-                height: 10,
+                width: 42,
+                height: 42,
                 borderRadius: "50%",
-                background:
+                overflow: "hidden",
+                border: `2px solid ${
                   presenceKind === "online"
                     ? NEX.green
                     : presenceKind === "away"
                       ? "#F59E0B"
-                      : "#7D9BC0",
+                      : "rgba(139,169,209,0.5)"
+                }`,
                 boxShadow:
                   presenceKind === "online"
-                    ? `0 0 10px ${NEX.green}, 0 0 0 3px ${NEX.green}22`
-                    : "none",
-                transition: "background 500ms ease",
+                    ? `0 0 0 3px ${NEX.green}22, 0 4px 14px rgba(0,0,0,0.6)`
+                    : "0 4px 14px rgba(0,0,0,0.6)",
+                backgroundImage: portraitUrl
+                  ? `url(${portraitUrl})`
+                  : `linear-gradient(135deg, ${NEX.cyanDeep} 0%, #05101f 100%)`,
+                backgroundSize: "cover",
+                backgroundPosition: "center 22%",
+                transition: "border-color 500ms ease, box-shadow 500ms ease",
               }}
-            />
+            >
+              {!portraitUrl && (
+                <div
+                  aria-hidden
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "grid",
+                    placeItems: "center",
+                    color: NEX.cyan,
+                    fontSize: 15,
+                    fontWeight: 700,
+                    letterSpacing: "0.06em",
+                    opacity: 0.9,
+                  }}
+                >
+                  {initialsFromName(displayName)}
+                </div>
+              )}
+            </div>
             <div
               style={{
                 fontSize: 22,
@@ -427,6 +410,7 @@ export function PortraitBloomShell({
                 whiteSpace: "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
+                flex: 1,
               }}
             >
               {displayName}
