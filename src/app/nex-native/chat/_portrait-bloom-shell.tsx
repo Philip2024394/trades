@@ -34,8 +34,10 @@ const NEX = {
   green: "#16D66B",
   text: "#F4F7FC",
   textDim: "#8BA9D1",
-  glassBubble: "rgba(255,255,255,0.16)",
-  glassBorder: "rgba(255,255,255,0.08)",
+  glassBubble: "rgba(8,20,36,0.55)",
+  // Same tone as the incoming-timestamp text so the bubble rim reads
+  // as visually coherent with the caption it wraps.
+  glassBorder: "rgba(139,169,209,0.55)",
 };
 
 export type PortraitBloomPresenceKind = "online" | "offline" | "away";
@@ -415,8 +417,11 @@ export function PortraitBloomShell({
 
         {/* Message list · the ONLY scrollable region on the surface.
             flex:1 + minHeight:0 lets it shrink below its natural
-            content size so overflow-y: auto actually activates.
-            Auto-scroll to bottom on load lives in
+            content size so overflow-y: auto actually activates. The
+            large paddingBottom reserves visual space for the
+            absolute-positioned composer to float over · without
+            reserving, the last message would slide behind it when
+            auto-scrolled. Auto-scroll to bottom on load lives in
             _scroll-to-bottom.tsx (client component). */}
         <section
           data-nex-message-scroll
@@ -430,7 +435,7 @@ export function PortraitBloomShell({
             overscrollBehavior: "contain",
             display: "flex",
             flexDirection: "column",
-            padding: "20px 20px 12px",
+            padding: "20px 20px 160px",
           }}
         >
           <div
@@ -520,14 +525,13 @@ export function PortraitBloomShell({
                           : "10px 14px",
                         marginTop,
                         borderRadius: 18,
-                        // Denser frosted glass · 24px blur diffuses
-                        // the portrait behind into a soft wash so
-                        // text reads regardless of the underlying
-                        // colour. Alpha bumped to 26% (outgoing) /
-                        // 16% (incoming) for extra legibility on
-                        // mid-tone portrait zones.
+                        // Darker shaded glass · bubbles now carry a
+                        // distinctly dark tint so they read as their
+                        // own containers over the portrait even in
+                        // the bright hero zone. Blur diffuses the
+                        // portrait beneath into an abstract wash.
                         background: m.mine
-                          ? "rgba(120,140,180,0.26)"
+                          ? "rgba(12,32,58,0.62)"
                           : NEX.glassBubble,
                         backdropFilter: "blur(24px) saturate(1.2)",
                         WebkitBackdropFilter: "blur(24px) saturate(1.2)",
@@ -588,19 +592,32 @@ export function PortraitBloomShell({
           </div>
         </section>
 
-        {/* Composer · floats over the chat with no glass panel · the
-            aurora pill + ghost icons carry all the visual weight. */}
+        {/* Composer · absolutely positioned at the bottom so it
+            floats over the message list · bubbles scroll freely
+            behind it (transparent background, no black panel). */}
         <div
           style={{
-            position: "relative",
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
             zIndex: 4,
-            flexShrink: 0,
             padding:
               "10px 16px calc(env(safe-area-inset-bottom, 0) + 10px)",
             background: "transparent",
+            pointerEvents: "none",
           }}
         >
-          <div style={{ maxWidth: 480, margin: "0 auto" }}>
+          <div
+            style={{
+              maxWidth: 480,
+              margin: "0 auto",
+              // Re-enable pointer events on the composer itself · the
+              // wrapping padding area passes clicks through to bubbles
+              // scrolling behind.
+              pointerEvents: "auto",
+            }}
+          >
             <PeerComposer
               action={composerAction}
               placeholder={composerPlaceholder}

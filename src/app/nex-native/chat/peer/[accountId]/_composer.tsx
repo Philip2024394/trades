@@ -101,16 +101,16 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
           100% { background-position: 0% 50%; }
         }
         [data-nex-aurora-pill] {
+          /* Blue + orange running-light rim · the two NEX accents
+             sweep back and forth. */
           background: linear-gradient(
             90deg,
-            #00ffb4 0%,
-            #009fef 25%,
-            #6945f5 50%,
-            #ff7a00 75%,
-            #00ffb4 100%
+            #009fef 0%,
+            #ff7a00 50%,
+            #009fef 100%
           );
-          background-size: 300% 100%;
-          animation: nex-aurora-border 12s ease-in-out infinite;
+          background-size: 250% 100%;
+          animation: nex-aurora-border 9s ease-in-out infinite;
         }
         @keyframes nex-modal-in {
           from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
@@ -184,15 +184,16 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
           </button>
         </div>
 
-        {/* Row 2 · aurora pill · + | textarea | send · translucent
-            inner so the chat glass shows through instead of reading
-            as a black container. */}
+        {/* Row 2 · running-light bordered rectangle · + | textarea |
+            emoji | send · plain frosted gray inner. Rounded 14px
+            corners so it reads as a proper rectangular field, not
+            a pill. */}
         <div
           data-nex-aurora-pill
           style={{
             position: "relative",
             padding: 2,
-            borderRadius: 24,
+            borderRadius: 14,
           }}
         >
           <div
@@ -201,10 +202,13 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
               alignItems: "center",
               minHeight: 44,
               padding: "4px 6px 4px 6px",
-              borderRadius: 22,
-              background: "rgba(4,20,36,0.55)",
-              backdropFilter: "blur(14px)",
-              WebkitBackdropFilter: "blur(14px)",
+              borderRadius: 12,
+              // Plain frosted gray · light neutral tint over the
+              // portrait-fade backdrop. Reads as a proper input
+              // field, not a colored container.
+              background: "rgba(150,160,180,0.16)",
+              backdropFilter: "blur(20px) saturate(1.1)",
+              WebkitBackdropFilter: "blur(20px) saturate(1.1)",
             }}
           >
             <PlusButton onClick={() => setModalOpen(true)} />
