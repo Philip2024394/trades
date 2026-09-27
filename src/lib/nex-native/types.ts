@@ -208,6 +208,8 @@ export const NEX_WEEK_DAYS: readonly (keyof NexWeeklyHours)[] = [
   "mon", "tue", "wed", "thu", "fri", "sat", "sun",
 ] as const;
 
+export type NexBusinessMarketReach = "both" | "export_only" | "local_only";
+
 export interface NexBusinessRow {
   id: NexUuid;
   owner_account_id: NexUuid;
@@ -230,6 +232,12 @@ export interface NexBusinessRow {
   status_message: string | null;
   /** Optional TTL for status_message · migration 022 · nullable · consumers filter past-expiry. */
   status_message_expires_at: NexTimestamp | null;
+  /** Market reach · migration 060 · declares whether the shop serves
+   *  local buyers, export buyers, or both. Drives Directory search
+   *  filtering + the reach bullets on the public shop landing.
+   *  Defaults to 'both' at the DB level so existing rows stay
+   *  visible everywhere. */
+  market_reach: NexBusinessMarketReach;
   /** Social handles · migration 026 · all nullable · stored WITHOUT leading @. */
   instagram_handle: string | null;
   facebook_handle: string | null;

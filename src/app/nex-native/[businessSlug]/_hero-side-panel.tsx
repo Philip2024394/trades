@@ -34,6 +34,9 @@ interface Props {
   acceptsCod: boolean;
   acceptsPickup: boolean;
   paymentInstructions: string | null;
+  /** Ships-to reach · surfaces in the About + Order overlays so
+   *  visitors know whether they can buy from this seller. */
+  marketReach: "both" | "export_only" | "local_only";
 }
 
 export function HeroSidePanel({
@@ -43,6 +46,7 @@ export function HeroSidePanel({
   acceptsCod,
   acceptsPickup,
   paymentInstructions,
+  marketReach,
 }: Props) {
   const [open, setOpen] = React.useState<PanelKind | null>(null);
   const [mounted, setMounted] = React.useState(false);
@@ -134,6 +138,7 @@ export function HeroSidePanel({
                 businessName={businessName}
                 businessDescription={businessDescription}
                 address={address}
+                marketReach={marketReach}
               />
             )}
             {open === "order" && (
@@ -142,6 +147,7 @@ export function HeroSidePanel({
                 acceptsCod={acceptsCod}
                 acceptsPickup={acceptsPickup}
                 paymentInstructions={paymentInstructions}
+                marketReach={marketReach}
               />
             )}
             {open === "safetrade" && <SafeTradeContent />}
@@ -341,14 +347,75 @@ function OverlayFrame({
  * ABOUT
  * ──────────────────────────────────────────────────────────────── */
 
+function ReachBulletList({
+  marketReach,
+}: {
+  marketReach: "both" | "export_only" | "local_only";
+}) {
+  const local = marketReach === "both" || marketReach === "local_only";
+  const exp = marketReach === "both" || marketReach === "export_only";
+  return (
+    <ul
+      style={{
+        margin: 0,
+        padding: 0,
+        listStyle: "none",
+        display: "flex",
+        flexDirection: "column",
+        gap: 6,
+      }}
+    >
+      <ReachBulletRow label="Ships to local buyers" on={local} />
+      <ReachBulletRow label="Ships internationally (export)" on={exp} />
+    </ul>
+  );
+}
+
+function ReachBulletRow({ label, on }: { label: string; on: boolean }) {
+  return (
+    <li
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        fontSize: 13,
+        color: on ? "rgba(244,247,252,0.94)" : "rgba(139,169,209,0.55)",
+        textDecoration: on ? "none" : "line-through",
+      }}
+    >
+      <span
+        aria-hidden
+        style={{
+          width: 18,
+          height: 18,
+          borderRadius: "50%",
+          background: on ? "#16D66B" : "rgba(255,255,255,0.12)",
+          color: on ? "#0B0F1A" : "rgba(255,255,255,0.6)",
+          display: "grid",
+          placeItems: "center",
+          fontSize: 11,
+          fontWeight: 800,
+          flexShrink: 0,
+          boxShadow: on ? "0 4px 10px rgba(22,214,107,0.35)" : "none",
+        }}
+      >
+        {on ? "✓" : "×"}
+      </span>
+      <span>{label}</span>
+    </li>
+  );
+}
+
 function AboutContent({
   businessName,
   businessDescription,
   address,
+  marketReach,
 }: {
   businessName: string;
   businessDescription: string | null;
   address: string | null;
+  marketReach: "both" | "export_only" | "local_only";
 }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -376,6 +443,8 @@ function AboutContent({
           </div>
         )}
       </div>
+
+      <ReachBulletList marketReach={marketReach} />
 
       {businessDescription ? (
         <p
@@ -450,11 +519,13 @@ function OrderContent({
   acceptsCod,
   acceptsPickup,
   paymentInstructions,
+  marketReach,
 }: {
   businessName: string;
   acceptsCod: boolean;
   acceptsPickup: boolean;
   paymentInstructions: string | null;
+  marketReach: "both" | "export_only" | "local_only";
 }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
@@ -510,6 +581,21 @@ function OrderContent({
           border: "1px solid rgba(255,255,255,0.08)",
         }}
       >
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: NEX.cyan,
+            fontWeight: 700,
+            marginBottom: 8,
+          }}
+        >
+          Ships to
+        </div>
+        <div style={{ marginBottom: 14 }}>
+          <ReachBulletList marketReach={marketReach} />
+        </div>
         <div
           style={{
             fontSize: 10,

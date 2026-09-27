@@ -230,6 +230,34 @@ export default async function Page({
               {business.description}
             </p>
           )}
+          {/* Two reach bullets · migration 060 · shows visitors at a
+              glance whether this seller ships to their region. */}
+          <ul
+            style={{
+              margin: "18px 0 0",
+              padding: 0,
+              listStyle: "none",
+              display: "flex",
+              flexDirection: "column",
+              gap: 6,
+              maxWidth: 520,
+            }}
+          >
+            <ReachBullet
+              label="Ships to local buyers"
+              on={
+                business.market_reach === "both" ||
+                business.market_reach === "local_only"
+              }
+            />
+            <ReachBullet
+              label="Ships internationally (export)"
+              on={
+                business.market_reach === "both" ||
+                business.market_reach === "export_only"
+              }
+            />
+          </ul>
         </div>
         {/* Right-side vertical rail · About / Order / SafeTrade ·
             each opens a full-screen overlay with the relevant info. */}
@@ -240,6 +268,7 @@ export default async function Page({
           acceptsCod={!!business.accepts_cod}
           acceptsPickup={!!business.accepts_pickup}
           paymentInstructions={business.payment_instructions ?? null}
+          marketReach={business.market_reach ?? "both"}
         />
       </section>
 
@@ -779,6 +808,42 @@ function formatPrice(pence: number, currency: string): string {
   if (currency === "GBP") return `£${(pence / 100).toFixed(2)}`;
   if (currency === "USD") return `$${(pence / 100).toFixed(2)}`;
   return `${currency} ${withCommas}`;
+}
+
+function ReachBullet({ label, on }: { label: string; on: boolean }) {
+  return (
+    <li
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        fontSize: 13,
+        color: on ? "rgba(244,247,252,0.94)" : "rgba(139,169,209,0.55)",
+        textDecoration: on ? "none" : "line-through",
+        textShadow: on ? "0 1px 10px rgba(0,0,0,0.5)" : undefined,
+      }}
+    >
+      <span
+        aria-hidden
+        style={{
+          width: 18,
+          height: 18,
+          borderRadius: "50%",
+          background: on ? "#16D66B" : "rgba(255,255,255,0.12)",
+          color: on ? "#0B0F1A" : "rgba(255,255,255,0.6)",
+          display: "grid",
+          placeItems: "center",
+          fontSize: 11,
+          fontWeight: 800,
+          flexShrink: 0,
+          boxShadow: on ? "0 4px 10px rgba(22,214,107,0.35)" : "none",
+        }}
+      >
+        {on ? "✓" : "×"}
+      </span>
+      <span>{label}</span>
+    </li>
+  );
 }
 
 function HeaderIconLink({
