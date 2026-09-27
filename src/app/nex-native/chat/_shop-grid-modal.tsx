@@ -73,9 +73,9 @@ export function ShopGridModal({
     <>
       <style>{`
         @keyframes nex-shop-fade { from { opacity: 0 } to { opacity: 1 } }
-        @keyframes nex-shop-in {
-          from { opacity: 0; transform: translate(-50%, -46%) scale(0.96); }
-          to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        @keyframes nex-shop-slide-up {
+          from { transform: translateY(100%); }
+          to   { transform: translateY(0); }
         }
         [data-nex-shop-scroll] { scrollbar-width: none; }
         [data-nex-shop-scroll]::-webkit-scrollbar {
@@ -83,6 +83,9 @@ export function ShopGridModal({
         }
       `}</style>
 
+      {/* Dim backdrop over the chat surface · tap to close. Sits
+          only over the message zone so the header identity chip
+          stays legible above and the composer stays reachable. */}
       <div
         role="button"
         aria-label="Close shop"
@@ -90,39 +93,56 @@ export function ShopGridModal({
         style={{
           position: "fixed",
           inset: 0,
-          background: "rgba(2,9,20,0.78)",
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
+          background: "rgba(2,9,20,0.42)",
+          backdropFilter: "blur(6px)",
+          WebkitBackdropFilter: "blur(6px)",
           zIndex: 1000,
           animation: "nex-shop-fade 200ms ease-out both",
         }}
       />
 
-      <div
+      {/* Bottom sheet · slides up from the bottom of the chat page.
+          Founder direction 2026-09-27 · "shop cards open on the chat
+          page not container" · this is a chat-anchored panel, not a
+          floating modal. */}
+      <section
         role="dialog"
         aria-modal="true"
         aria-label={`${shopName} products`}
         style={{
           position: "fixed",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "min(420px, calc(100vw - 24px))",
-          height: "min(640px, calc(100vh - 64px))",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          maxHeight: "78vh",
           background:
-            "linear-gradient(180deg, rgba(6,15,28,0.94) 0%, rgba(3,10,20,0.96) 100%)",
-          border: `1px solid ${NEX.cyanSoft}`,
-          borderRadius: 24,
+            "linear-gradient(180deg, rgba(6,15,28,0.96) 0%, rgba(3,10,20,0.98) 100%)",
+          borderTop: `1px solid ${NEX.cyanSoft}`,
+          borderTopLeftRadius: 22,
+          borderTopRightRadius: 22,
           boxShadow:
-            "0 32px 80px rgba(0,0,0,0.7), 0 0 60px rgba(0,159,239,0.16), inset 0 1px 0 rgba(255,255,255,0.06)",
+            "0 -20px 60px rgba(0,0,0,0.7), 0 0 60px rgba(0,159,239,0.12), inset 0 1px 0 rgba(255,255,255,0.06)",
           zIndex: 1001,
           color: NEX.text,
           fontFamily: "inherit",
           display: "flex",
           flexDirection: "column",
-          animation: "nex-shop-in 220ms cubic-bezier(.2,.7,.2,1) both",
+          animation: "nex-shop-slide-up 320ms cubic-bezier(.2,.7,.2,1) both",
+          paddingBottom: "env(safe-area-inset-bottom, 0)",
         }}
       >
+        {/* Drag handle · visual affordance that this is a bottom sheet */}
+        <div
+          aria-hidden
+          style={{
+            width: 40,
+            height: 4,
+            borderRadius: 2,
+            background: "rgba(255,255,255,0.28)",
+            margin: "8px auto 0",
+            flexShrink: 0,
+          }}
+        />
         {/* Header */}
         <div
           style={{
@@ -262,7 +282,7 @@ export function ShopGridModal({
             </Link>
           )}
         </div>
-      </div>
+      </section>
     </>,
     document.body,
   );

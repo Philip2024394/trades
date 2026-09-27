@@ -20,6 +20,7 @@
 // the composer sitting below.
 
 import * as React from "react";
+import { createPortal } from "react-dom";
 
 interface ConfettiPiece {
   id: string;
@@ -71,7 +72,10 @@ function makeConfettiBurst(count: number): ConfettiPiece[] {
     // Gravity carries them past the peak · horizontal drift decays
     // (air resistance), vertical accelerates down.
     const fallX = peakX * rand(1.05, 1.4);
-    const fallY = rand(220, 380); // drops well past the empty-state block
+    // Fall well past the viewport so pieces exit off-screen instead
+    // of stopping mid-air · portal container is document.body so we
+    // have the whole viewport height to work with.
+    const fallY = rand(520, 820);
     pieces.push({
       id: `c-${i}-${Math.random().toString(36).slice(2, 6)}`,
       color: pick(CONFETTI_COLORS),
@@ -100,17 +104,42 @@ export function FirstConnectionEmpty({
   themeAccent?: string;
 }) {
   const [pieces, setPieces] = React.useState<ConfettiPiece[]>([]);
+  const [origin, setOrigin] = React.useState<{ x: number; y: number } | null>(
+    null,
+  );
+  const [mounted, setMounted] = React.useState(false);
+  const iconRef = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(() => setMounted(true), []);
 
   React.useEffect(() => {
     // Respect reduced motion · celebrations included.
     if (typeof window !== "undefined") {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     }
-    setPieces(makeConfettiBurst(36));
-    // Cleanup after the longest piece finishes falling · keeps
-    // the DOM clean for anyone who leaves the empty state open.
-    const t = setTimeout(() => setPieces([]), 6500);
-    return () => clearTimeout(t);
+    // Wait one frame so the icon has finished laying out · then take
+    // its bounding rect as the burst origin. Portaled confetti uses
+    // viewport-relative coordinates so it can fall the whole screen
+    // height instead of being clipped by the empty-state card.
+    const raf = requestAnimationFrame(() => {
+      const el = iconRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      setOrigin({
+        x: r.left + r.width / 2,
+        y: r.top + r.height / 2,
+      });
+      setPieces(makeConfettiBurst(36));
+    });
+    // Cleanup after the longest piece finishes falling.
+    const t = setTimeout(() => {
+      setPieces([]);
+      setOrigin(null);
+    }, 6500);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(t);
+    };
   }, []);
 
   const accent = themeAccent ?? "#00AFFF";
@@ -123,7 +152,6 @@ export function FirstConnectionEmpty({
         width: "100%",
         maxWidth: 320,
         padding: "48px 16px 32px",
-        overflow: "hidden",
       }}
     >
       <style>{`
@@ -158,50 +186,55 @@ export function FirstConnectionEmpty({
         }
       `}</style>
 
-      {/* Confetti layer · pieces originate at the icon center
-          (~48px from top of the card, horizontally centered) and
-          burst outward. Overflow visible so pieces can travel
-          beyond the card bounds during the arc. */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          pointerEvents: "none",
-          overflow: "visible",
-        }}
-      >
-        {pieces.map((p) => {
-          const style: React.CSSProperties & { [key: string]: string } = {
-            position: "absolute",
-            top: 68, // matches the icon's vertical center inside the card
-            left: "50%",
-            marginLeft: -(p.size / 2),
-            width: p.shape === "strip" ? p.size * 0.35 : p.size,
-            height: p.shape === "strip" ? p.size * 1.4 : p.size,
-            background: p.color,
-            borderRadius: p.shape === "circle" ? "50%" : 2,
-            animationName: "nex-confetti-burst",
-            animationDuration: `${p.duration}ms`,
-            // Ease-out on the arc · slows near the peak, then
-            // accelerates into the fall via the keyframe curve.
-            animationTimingFunction: "cubic-bezier(0.25, 0.6, 0.4, 1)",
-            animationFillMode: "forwards",
-            animationDelay: `${p.delay}ms`,
-            boxShadow: `0 0 6px ${p.color}88`,
-            "--r-start": `${p.rotation}deg`,
-            "--r-mid": `${(p.rotationEnd - p.rotation) * 0.5}deg`,
-            "--r-end": `${p.rotationEnd}deg`,
-            "--px": `${p.peakX}px`,
-            "--py": `${p.peakY}px`,
-            "--fx": `${p.fallX}px`,
-            "--fy": `${p.fallY}px`,
-          };
-          return <div key={p.id} style={style} />;
-        })}
-      </div>
+      {/* Confetti layer · portaled to document.body so it can burst
+          the full viewport height without being clipped by the
+          empty-state card or the message scroll region above. */}
+      {mounted && origin && pieces.length > 0 &&
+        createPortal(
+          <div
+            aria-hidden
+            style={{
+              position: "fixed",
+              inset: 0,
+              pointerEvents: "none",
+              overflow: "visible",
+              zIndex: 4,
+            }}
+          >
+            {pieces.map((p) => {
+              const style: React.CSSProperties & { [key: string]: string } = {
+                position: "fixed",
+                top: origin.y,
+                left: origin.x,
+                marginLeft: -(p.size / 2),
+                marginTop: -(p.size / 2),
+                width: p.shape === "strip" ? p.size * 0.35 : p.size,
+                height: p.shape === "strip" ? p.size * 1.4 : p.size,
+                background: p.color,
+                borderRadius: p.shape === "circle" ? "50%" : 2,
+                animationName: "nex-confetti-burst",
+                animationDuration: `${p.duration}ms`,
+                animationTimingFunction: "cubic-bezier(0.25, 0.6, 0.4, 1)",
+                animationFillMode: "forwards",
+                animationDelay: `${p.delay}ms`,
+                boxShadow: `0 0 6px ${p.color}88`,
+                "--r-start": `${p.rotation}deg`,
+                "--r-mid": `${(p.rotationEnd - p.rotation) * 0.5}deg`,
+                "--r-end": `${p.rotationEnd}deg`,
+                "--px": `${p.peakX}px`,
+                "--py": `${p.peakY}px`,
+                "--fx": `${p.fallX}px`,
+                "--fy": `${p.fallY}px`,
+              };
+              return <div key={p.id} style={style} />;
+            })}
+          </div>,
+          document.body,
+        )}
 
-      {/* Celebration icon · soft bounce entry, gentle float loop */}
+      {/* Celebration icon · soft bounce entry, gentle float loop.
+          Ref captures the icon's position so the portaled confetti
+          knows where to burst from. */}
       <div
         style={{
           position: "relative",
@@ -211,6 +244,7 @@ export function FirstConnectionEmpty({
         }}
       >
         <div
+          ref={iconRef}
           style={{
             fontSize: 68,
             lineHeight: 1,
