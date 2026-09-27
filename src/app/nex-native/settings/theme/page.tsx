@@ -1,133 +1,442 @@
 // src/app/nex-native/settings/theme/page.tsx
 //
-// Chat Theme picker · Wave B Slice 7a.
-// -------------------------------------
-// Server Component · reads the caller's current chat_theme preference and
-// renders 5 theme swatches. Selecting one posts to updateChatThemeAction
-// which persists on nex_account and redirects back here with a banner.
+// Chat theme picker · Bridge 4.
+// -----------------------------
+// Reads every active theme from nex_chat_theme (migration 048), splits
+// them into "Your themes" (gratis · always usable) and "NEX Bisnis"
+// (premium · unlocked when the caller has an active bisnis tier).
 //
-// Doctrine references:
-//   · doctrine_nex_identity_and_capability_constitution_2026_09_24
-//     Lock 2 · Capability 5 "Chat Theme" · persisted as account preference ·
-//     survives reload/sign-out/sign-in · NEVER URL parameter state
-//   · No-fake-buttons · only real themes ship
+// Doctrine · doctrine_theme_ownership_2026_09_27.md:
+//   Your chat_theme is your PUBLIC visual identity. Every friend
+//   sees your theme when they open your chat. Free tier gets base
+//   themes · Bisnis unlocks premium.
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
+import { effectiveTier } from "@/lib/nex-native/account-service";
+import * as chatThemeService from "@/lib/nex-native/chat-theme-service";
+import { nexSupabaseAdmin } from "@/lib/nex-native/supabase-admin";
 import { updateChatThemeAction } from "../../_actions";
-import { SubmitButton } from "../../_submit-button";
-import { NexNativeShell } from "../../_shell";
+import type { NexAccountRow } from "@/lib/nex-native/types";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-interface PageProps {
-  searchParams: Promise<{ e?: string; m?: string }>;
-}
-
-interface ThemeOption {
-  id: "default" | "titanium" | "pink" | "gold" | "night";
-  label: string;
-  hint: string;
-  swatch: string;   // hex or gradient stub · visible in the swatch chip
-}
-
-const THEMES: ThemeOption[] = [
-  { id: "default",  label: "Default",  hint: "The base NEX look",          swatch: "#ffffff" },
-  { id: "titanium", label: "Titanium", hint: "Dark neutral",               swatch: "#1f2937" },
-  { id: "pink",     label: "Pink",     hint: "Warm blush",                 swatch: "#f9a8d4" },
-  { id: "gold",     label: "Gold",     hint: "Warm gold",                  swatch: "#d4a017" },
-  { id: "night",    label: "Night",    hint: "Deep blue",                  swatch: "#1e3a8a" },
-];
+const NEX = {
+  bg: "#020914",
+  panel: "#03101D",
+  cyan: "#00AFFF",
+  cyanSoft: "rgba(0,175,255,0.4)",
+  orange: "#FF7800",
+  green: "#16D66B",
+  text: "#F4F7FC",
+  textDim: "#8BA9D1",
+  textMute: "#526B89",
+};
 
 const SUCCESS_CODES = new Set(["theme_updated"]);
 
-export default async function Page({ searchParams }: PageProps) {
+export default async function ThemePickerPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ e?: string; m?: string }>;
+}) {
   const session = await resolveNexAppSessionFromContext();
   if (!session) redirect("/nex-native/sign-in");
-  const params = await searchParams;
-  const banner = params.e && params.m ? { code: params.e, message: params.m } : null;
+
+  // Read tier + current theme from the latest DB row (session may be stale).
+  const row = await nexSupabaseAdmin
+    .from("nex_account")
+    .select("tier, bisnis_expires_at, chat_theme")
+    .eq("id", session.account.id)
+    .maybeSingle();
+  const account = (row.data ?? {}) as Pick<
+    NexAccountRow,
+    "tier" | "bisnis_expires_at" | "chat_theme"
+  >;
+  const currentTier = effectiveTier(account);
+  const currentThemeId = account.chat_theme ?? "default";
+  const canUsePremium = currentTier === "bisnis" || currentTier === "pro";
+
+  const themes = await chatThemeService.listActiveThemes();
+  const { standard, premium } = chatThemeService.groupByCategory(themes);
+
+  const sp = await searchParams;
+  const banner = sp.e && sp.m ? { code: sp.e, message: sp.m } : null;
   const isSuccess = banner ? SUCCESS_CODES.has(banner.code) : false;
-  const current = session.account.chat_theme ?? "default";
 
   return (
-    <NexNativeShell themeId={current}>
-      <main className="mx-auto max-w-2xl px-4 py-6">
-        <header className="mb-4 flex flex-wrap items-start justify-between gap-2 border-b border-neutral-300 pb-3">
-          <div>
-            <h1 className="text-lg font-semibold text-neutral-900">Chat theme</h1>
-            <p className="text-xs text-neutral-500">
-              <Link href="/nex-native/conversations" className="underline">← inbox</Link>
-              {" · "}
-              Preference stored on your account · survives sign-out.
-            </p>
+    <>
+      <style>{`html, body { background: ${NEX.bg} !important; }`}</style>
+      <main
+        style={{
+          minHeight: "100dvh",
+          background: NEX.bg,
+          color: NEX.text,
+          fontFamily:
+            "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+          padding: "20px 16px 40px",
+        }}
+      >
+        <div style={{ maxWidth: 640, margin: "0 auto" }}>
+          <div style={{ marginBottom: 16 }}>
+            <Link
+              href="/nex-native/settings"
+              style={{
+                fontSize: 11,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: NEX.cyan,
+                textDecoration: "none",
+              }}
+            >
+              ← Settings
+            </Link>
           </div>
-        </header>
 
-        {banner && (
-          <div
-            className={`mb-4 rounded border p-3 text-xs ${
-              isSuccess
-                ? "border-green-300 bg-green-50 text-green-900"
-                : "border-red-300 bg-red-50 text-red-900"
-            }`}
-            role="status"
+          <h1
+            style={{
+              margin: "0 0 6px",
+              fontSize: 24,
+              fontWeight: 700,
+              letterSpacing: "-0.01em",
+            }}
           >
-            {isSuccess
-              ? <>Theme saved · <span className="font-medium">{banner.message}</span></>
-              : banner.message}
+            Your chat theme
+          </h1>
+          <p
+            style={{
+              margin: "0 0 18px",
+              fontSize: 13,
+              color: NEX.textDim,
+              lineHeight: 1.55,
+              maxWidth: 520,
+            }}
+          >
+            Every friend sees YOUR theme when they open your chat. Free
+            themes are yours forever. Premium themes unlock with{" "}
+            <Link
+              href="/nex-native/settings/tier"
+              style={{ color: NEX.orange, textDecoration: "underline" }}
+            >
+              NEX Bisnis
+            </Link>
+            .
+          </p>
+
+          {banner && (
+            <div
+              style={{
+                marginBottom: 16,
+                padding: "10px 14px",
+                borderRadius: 10,
+                background: isSuccess
+                  ? "rgba(22,214,107,0.14)"
+                  : "rgba(255,120,0,0.14)",
+                border: `1px solid ${
+                  isSuccess ? "rgba(22,214,107,0.5)" : "rgba(255,120,0,0.5)"
+                }`,
+                color: NEX.text,
+                fontSize: 12,
+              }}
+              role="status"
+            >
+              {isSuccess
+                ? `Theme saved · ${banner.message}`
+                : banner.message}
+            </div>
+          )}
+
+          <ThemeSection
+            title="Your themes"
+            subtitle="Free forever · yours to keep"
+            themes={standard}
+            currentThemeId={currentThemeId}
+            canUse
+          />
+
+          <ThemeSection
+            title="NEX Bisnis · premium"
+            subtitle={
+              canUsePremium
+                ? "Included with your Bisnis subscription"
+                : "Unlock all premium themes with NEX Bisnis"
+            }
+            themes={premium}
+            currentThemeId={currentThemeId}
+            canUse={canUsePremium}
+          />
+        </div>
+      </main>
+    </>
+  );
+}
+
+function ThemeSection({
+  title,
+  subtitle,
+  themes,
+  currentThemeId,
+  canUse,
+}: {
+  title: string;
+  subtitle: string;
+  themes: chatThemeService.NexChatThemeRow[];
+  currentThemeId: string;
+  canUse: boolean;
+}) {
+  if (themes.length === 0) return null;
+  return (
+    <section style={{ marginBottom: 24 }}>
+      <div
+        style={{
+          fontSize: 10,
+          letterSpacing: "0.16em",
+          textTransform: "uppercase",
+          color: NEX.textDim,
+          fontWeight: 600,
+        }}
+      >
+        {title}
+      </div>
+      <div
+        style={{
+          marginTop: 3,
+          marginBottom: 10,
+          fontSize: 12,
+          color: NEX.textMute,
+        }}
+      >
+        {subtitle}
+      </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
+          gap: 10,
+        }}
+      >
+        {themes.map((t) => (
+          <ThemeCard
+            key={t.id}
+            theme={t}
+            active={t.id === currentThemeId}
+            locked={!canUse}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ThemeCard({
+  theme,
+  active,
+  locked,
+}: {
+  theme: chatThemeService.NexChatThemeRow;
+  active: boolean;
+  locked: boolean;
+}) {
+  if (locked) {
+    return (
+      <Link
+        href="/nex-native/settings/tier"
+        style={{
+          display: "block",
+          padding: "12px 12px 10px",
+          borderRadius: 14,
+          background: NEX.panel,
+          border: `1px solid rgba(255,120,0,0.35)`,
+          color: NEX.text,
+          textDecoration: "none",
+          opacity: 0.85,
+        }}
+      >
+        <ThemeSwatch theme={theme} />
+        <div
+          style={{
+            marginTop: 8,
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            fontSize: 13,
+            fontWeight: 600,
+          }}
+        >
+          <LockIcon />
+          <span>{theme.name}</span>
+        </div>
+        {theme.tagline && (
+          <div
+            style={{
+              marginTop: 2,
+              fontSize: 10,
+              color: NEX.textDim,
+              lineHeight: 1.4,
+            }}
+          >
+            {theme.tagline}
           </div>
         )}
+        <div
+          style={{
+            marginTop: 8,
+            fontSize: 9,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: NEX.orange,
+            fontWeight: 700,
+          }}
+        >
+          Upgrade to unlock →
+        </div>
+      </Link>
+    );
+  }
+  return (
+    <form action={updateChatThemeAction}>
+      <input type="hidden" name="chat_theme" value={theme.id} />
+      <button
+        type="submit"
+        disabled={active}
+        aria-pressed={active}
+        style={{
+          display: "block",
+          width: "100%",
+          padding: "12px 12px 10px",
+          borderRadius: 14,
+          background: NEX.panel,
+          border: active
+            ? `1px solid ${theme.accent_hex}`
+            : `1px solid ${NEX.cyanSoft}`,
+          color: NEX.text,
+          textAlign: "left",
+          cursor: active ? "default" : "pointer",
+          boxShadow: active
+            ? `0 0 18px ${theme.accent_hex}33`
+            : "none",
+        }}
+      >
+        <ThemeSwatch theme={theme} />
+        <div
+          style={{
+            marginTop: 8,
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+          }}
+        >
+          <span style={{ fontSize: 13, fontWeight: 600 }}>{theme.name}</span>
+          {active && (
+            <span
+              style={{
+                fontSize: 9,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                fontWeight: 700,
+                padding: "2px 6px",
+                borderRadius: 999,
+                background: `${theme.accent_hex}33`,
+                color: theme.accent_hex,
+              }}
+            >
+              Active
+            </span>
+          )}
+        </div>
+        {theme.tagline && (
+          <div
+            style={{
+              marginTop: 2,
+              fontSize: 10,
+              color: NEX.textDim,
+              lineHeight: 1.4,
+            }}
+          >
+            {theme.tagline}
+          </div>
+        )}
+      </button>
+    </form>
+  );
+}
 
-        <p className="mb-4 text-sm text-neutral-700">
-          Current theme · <span className="font-medium">{current}</span>
-        </p>
+function ThemeSwatch({
+  theme,
+}: {
+  theme: chatThemeService.NexChatThemeRow;
+}) {
+  return (
+    <div
+      style={{
+        height: 72,
+        borderRadius: 10,
+        background: NEX.bg,
+        border: "1px solid rgba(255,255,255,0.06)",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          top: 12,
+          left: 10,
+          width: 34,
+          height: 34,
+          borderRadius: "50%",
+          background: theme.accent_hex,
+          boxShadow: `0 0 18px ${theme.accent_hex}66`,
+        }}
+      />
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          top: 14,
+          right: 10,
+          left: 54,
+          height: 20,
+          borderRadius: 10,
+          background: "rgba(8,20,36,0.55)",
+          border: `1px solid ${theme.accent_hex}80`,
+        }}
+      />
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          bottom: 12,
+          left: 30,
+          right: 10,
+          height: 18,
+          borderRadius: 9,
+          background: "rgba(12,32,58,0.62)",
+          border: `1px solid ${theme.accent_hex}D9`,
+        }}
+      />
+    </div>
+  );
+}
 
-        <ul className="grid gap-3 sm:grid-cols-2">
-          {THEMES.map((t) => {
-            const active = t.id === current;
-            return (
-              <li key={t.id}>
-                <form action={updateChatThemeAction}>
-                  <input type="hidden" name="chat_theme" value={t.id} />
-                  <button
-                    type="submit"
-                    disabled={active}
-                    className={`flex w-full items-center gap-3 rounded border px-3 py-3 text-left text-sm transition ${
-                      active
-                        ? "border-neutral-900 bg-neutral-50 cursor-default"
-                        : "border-neutral-300 bg-white hover:border-neutral-500 hover:bg-neutral-50"
-                    }`}
-                    aria-pressed={active}
-                    aria-label={`${t.label} theme${active ? " · currently active" : ""}`}
-                  >
-                    <span
-                      aria-hidden
-                      className="h-8 w-8 flex-shrink-0 rounded border border-neutral-300"
-                      style={{ backgroundColor: t.swatch }}
-                    />
-                    <span className="min-w-0">
-                      <span className="block font-medium text-neutral-900">{t.label}</span>
-                      <span className="block text-xs text-neutral-500">{t.hint}</span>
-                    </span>
-                    {active && (
-                      <span className="ml-auto text-xs font-medium text-neutral-700">
-                        active
-                      </span>
-                    )}
-                  </button>
-                </form>
-              </li>
-            );
-          })}
-        </ul>
-
-        <p className="mt-4 text-xs text-neutral-500">
-          Themes currently apply as a data-attribute hook (data-theme) on the app shell.
-          Full visual styling for each theme lands in a follow-up slice.
-        </p>
-      </main>
-    </NexNativeShell>
+function LockIcon() {
+  return (
+    <svg
+      width={12}
+      height={12}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <rect x="4" y="11" width="16" height="10" rx="2" />
+      <path d="M8 11V7a4 4 0 118 0v4" />
+    </svg>
   );
 }

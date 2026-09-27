@@ -22,6 +22,7 @@ import {
 import * as conversationService from "@/lib/nex-native/conversation-service";
 import * as peerConversationService from "@/lib/nex-native/peer-conversation-service";
 import * as peerMessageService from "@/lib/nex-native/peer-message-service";
+import * as chatThemeService from "@/lib/nex-native/chat-theme-service";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as productService from "@/lib/nex-native/product-service";
 import * as orderService from "@/lib/nex-native/order-service";
@@ -2559,4 +2560,111 @@ export async function adminSetAccountTierAction(formData: FormData): Promise<nev
 
   revalidatePath("/nex-native/admin/tier");
   redirectToAdminTierWithBanner("tier_set", successMsg);
+}
+
+// ---------------------------------------------------------------------------
+// Admin theme builder · Bridge 4 · migration 048
+// ---------------------------------------------------------------------------
+
+function redirectToAdminThemeWithBanner(code: string, message: string): never {
+  const qs = new URLSearchParams({ e: code, m: message });
+  redirect(`/nex-native/admin/theme?${qs.toString()}`);
+}
+
+/** Dev-admin-only server action to CREATE a new chat theme.
+ *
+ *  Gate stack (BOTH must pass):
+ *    1 · env `NEX_ALLOW_DEV_ADMIN=1`
+ *    2 · caller's session is `dev-admin@nex-native.local`
+ *
+ *  Persists via chat-theme-service.createTheme. Slug must be unique.
+ */
+export async function adminCreateChatThemeAction(
+  formData: FormData,
+): Promise<never> {
+  if (process.env.NEX_ALLOW_DEV_ADMIN !== "1") {
+    redirectToAdminThemeWithBanner(
+      "admin_disabled",
+      "dev-admin mode is disabled in this environment",
+    );
+  }
+
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirectToInboxWithError("unauthenticated", "sign in first");
+
+  const auth = await accountService.getAccountBySupabaseUserId(
+    session.account.supabase_user_id!,
+  );
+  if (!auth) redirectToAdminThemeWithBanner("account_missing", "session has no account");
+  const supabaseUserId = auth.supabase_user_id;
+  if (!supabaseUserId) redirectToAdminThemeWithBanner("no_auth_user", "session has no supabase user");
+  const authRow = await nexSupabaseAdmin.auth.admin.getUserById(supabaseUserId);
+  if (authRow.error || !authRow.data.user) {
+    redirectToAdminThemeWithBanner("auth_lookup_failed", authRow.error?.message ?? "unknown");
+  }
+  if ((authRow.data.user.email ?? "").toLowerCase() !== "dev-admin@nex-native.local") {
+    redirectToAdminThemeWithBanner(
+      "not_dev_admin",
+      "only the provisioned dev-admin account can create themes",
+    );
+  }
+
+  const id = String(formData.get("id") ?? "").trim().toLowerCase();
+  const name = String(formData.get("name") ?? "").trim();
+  const tagline = String(formData.get("tagline") ?? "").trim();
+  const accentHex = String(formData.get("accent_hex") ?? "").trim();
+  const tier = String(formData.get("tier") ?? "gratis").trim() as
+    | "gratis"
+    | "bisnis";
+  const category = String(formData.get("category") ?? "standard").trim() as
+    | "standard"
+    | "premium";
+  const heroImageUrl = String(formData.get("hero_image_url") ?? "").trim();
+  const sortOrderRaw = String(formData.get("sort_order") ?? "100").trim();
+
+  if (!id) redirectToAdminThemeWithBanner("missing_id", "slug is required");
+  if (!/^[a-z][a-z0-9_-]{1,30}$/.test(id)) {
+    redirectToAdminThemeWithBanner(
+      "invalid_id",
+      "slug must be 2-31 chars, lowercase alphanumerics/underscore/hyphen, starting with a letter",
+    );
+  }
+  if (!name) redirectToAdminThemeWithBanner("missing_name", "name is required");
+  if (!/^#[0-9A-Fa-f]{6}$/.test(accentHex)) {
+    redirectToAdminThemeWithBanner("invalid_accent", "accent must be a #RRGGBB hex");
+  }
+  if (tier !== "gratis" && tier !== "bisnis") {
+    redirectToAdminThemeWithBanner("invalid_tier", `unknown tier '${tier}'`);
+  }
+  if (category !== "standard" && category !== "premium") {
+    redirectToAdminThemeWithBanner("invalid_category", `unknown category '${category}'`);
+  }
+  const sortOrder = Number(sortOrderRaw);
+  if (!Number.isFinite(sortOrder) || sortOrder < 0 || sortOrder > 10000) {
+    redirectToAdminThemeWithBanner("invalid_sort", "sort_order must be 0-10000");
+  }
+  if (heroImageUrl && heroImageUrl.length > 1024) {
+    redirectToAdminThemeWithBanner("invalid_image", "hero_image_url too long");
+  }
+
+  try {
+    await chatThemeService.createTheme({
+      id,
+      name,
+      tagline: tagline || null,
+      accent_hex: accentHex.toUpperCase(),
+      tier,
+      category,
+      hero_image_url: heroImageUrl || null,
+      sort_order: sortOrder,
+      is_active: true,
+    });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    redirectToAdminThemeWithBanner("create_failed", msg);
+  }
+
+  revalidatePath("/nex-native/admin/theme");
+  revalidatePath("/nex-native/settings/theme");
+  redirectToAdminThemeWithBanner("theme_created", `${name} (${id}) created`);
 }

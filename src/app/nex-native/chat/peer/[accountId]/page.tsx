@@ -20,6 +20,7 @@ import * as accountService from "@/lib/nex-native/account-service";
 import * as friendService from "@/lib/nex-native/friend-service";
 import * as peerConversationService from "@/lib/nex-native/peer-conversation-service";
 import * as peerMessageService from "@/lib/nex-native/peer-message-service";
+import * as chatThemeService from "@/lib/nex-native/chat-theme-service";
 import { sendPeerMessageAction } from "../../../_actions";
 import {
   PortraitBloomShell,
@@ -33,22 +34,10 @@ import type {
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-/** Chat-theme → ripple accent · every friend gets their own colour. */
-function chatThemeAccent(theme: string | null | undefined): string {
-  switch (theme) {
-    case "pink":
-      return "#EC4899";
-    case "gold":
-      return "#F59E0B";
-    case "titanium":
-      return "#B0B7C3";
-    case "night":
-      return "#3B82F6";
-    case "default":
-    default:
-      return "#00AFFF";
-  }
-}
+// Peer's chat theme now resolves via chat-theme-service (Bridge 4 ·
+// nex_chat_theme table) so admin-created themes light up on any
+// existing peer's chat without a code change. Fallback baked in for
+// unknown / inactive rows.
 
 export default async function PeerChatPage({
   params,
@@ -202,7 +191,7 @@ export default async function PeerChatPage({
       portraitUrl={profile?.avatar_url ?? null}
       presenceKind={presenceKind}
       presenceLabel={presenceLabel}
-      rippleColor={chatThemeAccent(peer.chat_theme)}
+      rippleColor={await chatThemeService.accentForTheme(peer.chat_theme)}
       backHref="/nex-native/chat"
       messages={bloomMessages}
       composerAction={bind}

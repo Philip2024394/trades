@@ -428,13 +428,19 @@ function MediaModal({ onClose }: { onClose: () => void }) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
+            gridTemplateColumns: "repeat(2, 1fr)",
             gap: 12,
           }}
         >
           <ModalOption icon={<CameraIcon size={26} />} label="Camera" onClose={onClose} />
           <ModalOption icon={<VideoIcon size={26} />} label="Video" onClose={onClose} />
           <ModalOption icon={<MicIcon size={26} />} label="Voice" onClose={onClose} />
+          <ModalOption
+            icon={<PaletteIcon size={26} />}
+            label="Themes"
+            onClose={onClose}
+            href="/nex-native/settings/theme"
+          />
         </div>
       </div>
     </>
@@ -581,31 +587,59 @@ function ModalOption({
   icon,
   label,
   onClose,
+  href,
 }: {
   icon: React.ReactNode;
   label: string;
   onClose: () => void;
+  /** Optional destination · when supplied the option acts as a Link
+   *  and hard-navigates on tap. Without href it's a "coming soon"
+   *  stub that just closes the modal. */
+  href?: string;
 }) {
+  const sharedStyle: React.CSSProperties = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 8,
+    padding: "14px 8px",
+    borderRadius: 14,
+    background: "rgba(0,159,239,0.08)",
+    border: "1px solid rgba(0,159,239,0.3)",
+    color: NEX.textPrimary,
+    cursor: "pointer",
+    transition: "background 180ms ease, transform 120ms ease",
+    textDecoration: "none",
+  };
+  if (href) {
+    return (
+      <a
+        href={href}
+        aria-label={label}
+        title={label}
+        onClick={onClose}
+        style={sharedStyle}
+      >
+        {renderOptionInner(icon, label)}
+      </a>
+    );
+  }
   return (
     <button
       type="button"
       aria-label={`${label} (coming soon)`}
       title={`${label} · coming soon`}
       onClick={onClose}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 8,
-        padding: "14px 8px",
-        borderRadius: 14,
-        background: "rgba(0,159,239,0.08)",
-        border: "1px solid rgba(0,159,239,0.3)",
-        color: NEX.textPrimary,
-        cursor: "pointer",
-        transition: "background 180ms ease, transform 120ms ease",
-      }}
+      style={sharedStyle}
     >
+      {renderOptionInner(icon, label)}
+    </button>
+  );
+}
+
+function renderOptionInner(icon: React.ReactNode, label: string) {
+  return (
+    <>
       <span
         style={{
           width: 46,
@@ -630,7 +664,7 @@ function ModalOption({
       >
         {label}
       </span>
-    </button>
+    </>
   );
 }
 
@@ -679,6 +713,18 @@ function VideoIcon({ size = 20 }: { size?: number }) {
     <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
       <polygon points="23 7 16 12 23 17 23 7" />
       <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+    </svg>
+  );
+}
+
+function PaletteIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
+      <path d="M12 2a10 10 0 100 20c1.66 0 3-1.34 3-3v-1a2 2 0 012-2h1c2.76 0 5-2.24 5-5A10 10 0 0012 2z" />
+      <circle cx="7.5" cy="10.5" r="1.2" fill="currentColor" />
+      <circle cx="12" cy="7" r="1.2" fill="currentColor" />
+      <circle cx="16.5" cy="10.5" r="1.2" fill="currentColor" />
+      <circle cx="9.5" cy="15.5" r="1.2" fill="currentColor" />
     </svg>
   );
 }
