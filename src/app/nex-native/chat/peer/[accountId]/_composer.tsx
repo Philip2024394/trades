@@ -22,6 +22,7 @@ import {
   type MediaCaptureHandle,
   type CaptureKind,
 } from "./_media-capture";
+import { MediaRecorderModal } from "./_media-recorder";
 
 const NEX = {
   bg: "#020914",
@@ -86,20 +87,66 @@ export function PeerComposer({
   const [text, setText] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
   const [emojiOpen, setEmojiOpen] = React.useState(false);
+  const [recorderKind, setRecorderKind] = React.useState<CaptureKind | null>(
+    null,
+  );
   const hasText = text.trim().length > 0;
   // Send is armed whenever there's text OR a pending attachment.
   const canSend = hasText || !!pendingAttachment;
 
+  /** Desktop check · true when we should prefer the in-browser
+   *  recorder (getUserMedia + MediaRecorder) over the native
+   *  camera app that mobile OSes launch via the file input's
+   *  `capture` attribute. Rough heuristic on viewport width ·
+   *  the recorder's own fallback handles unsupported browsers. */
+  const preferRecorder = React.useCallback(() => {
+    if (typeof window === "undefined") return false;
+    if (!navigator.mediaDevices?.getUserMedia) return false;
+    return window.innerWidth >= 768;
+  }, []);
+
   const handleCapturePick = React.useCallback(
     (kind: CaptureKind) => {
       setModalOpen(false);
-      // Defer so the modal unmount doesn't race with the file input
-      // click (Chrome sometimes eats the click if focus is shifting).
+      if (preferRecorder()) {
+        // Desktop · open the in-browser recorder modal.
+        setRecorderKind(kind);
+        return;
+      }
+      // Mobile · trigger the hidden file input · OS opens native
+      // camera / recorder for a higher-fidelity capture.
       requestAnimationFrame(() => {
         mediaCaptureRef.current?.open(kind);
       });
     },
-    [],
+    [preferRecorder],
+  );
+
+  /** Send a File that came out of the recorder · we POST it via
+   *  the same upload Server Action by building a FormData and
+   *  submitting a hidden form. Redirect chain matches the file-
+   *  input flow · attachment_url lands on the URL, composer picks
+   *  it up as pendingAttachment. */
+  const recorderSend = React.useCallback(
+    (file: File) => {
+      if (!uploadAction) return;
+      // Server Actions accept FormData directly · we don't need a
+      // real <form> submit path. Build the FormData and invoke.
+      // The action redirects on success · the browser navigates
+      // and this recorder unmounts on the next render.
+      const fd = new FormData();
+      fd.set("attachment_file", file);
+      Promise.resolve(uploadAction(fd)).catch((e) => {
+        const msg = e instanceof Error ? e.message : String(e);
+        // NEXT_REDIRECT is Next's internal navigation signal · expected.
+        if (!msg.includes("NEXT_REDIRECT")) {
+          // eslint-disable-next-line no-console
+          console.error("uploadAction failed:", e);
+        }
+      });
+      setRecorderKind(null);
+    },
+    [uploadAction],
   );
 
   const insertEmoji = React.useCallback((emoji: string) => {
@@ -189,6 +236,18 @@ export function PeerComposer({
       )}
       {uploadAction && (
         <MediaCapture ref={mediaCaptureRef} uploadAction={uploadAction} />
+      )}
+      {recorderKind && (
+        <MediaRecorderModal
+          kind={recorderKind}
+          onClose={() => setRecorderKind(null)}
+          onSend={recorderSend}
+          onFallbackToFileInput={() => {
+            const k = recorderKind;
+            setRecorderKind(null);
+            requestAnimationFrame(() => mediaCaptureRef.current?.open(k));
+          }}
+        />
       )}
       {emojiOpen && (
         <EmojiModal
