@@ -843,6 +843,7 @@ function ActivityBadge({
   activity: import("@/lib/nex-native/seller-responsiveness-service").SellerActivityBundle;
 }) {
   const palette = ACTIVITY_PALETTE[activity.status];
+  const text = activity.detail || activity.label;
   return (
     <div
       role="status"
@@ -850,47 +851,29 @@ function ActivityBadge({
       style={{
         display: "inline-flex",
         alignItems: "center",
-        gap: 8,
-        padding: "6px 12px",
-        borderRadius: 999,
-        background: palette.bg,
-        border: `1px solid ${palette.border}`,
-        color: palette.text,
-        fontSize: 11,
-        fontWeight: 700,
-        letterSpacing: "0.06em",
-        textTransform: "uppercase",
-        marginTop: 4,
-        marginBottom: 16,
-        backdropFilter: "blur(6px)",
+        gap: 6,
+        marginTop: 6,
+        marginBottom: 14,
+        fontSize: 12,
+        color: palette.detail,
+        letterSpacing: "0.02em",
+        textShadow: "0 1px 8px rgba(0,0,0,0.55)",
       }}
     >
       <span
         aria-hidden
         style={{
-          width: 8,
-          height: 8,
+          width: 7,
+          height: 7,
           borderRadius: "50%",
           background: palette.dot,
           boxShadow:
             activity.status === "active"
-              ? `0 0 0 4px ${palette.dot}22`
+              ? `0 0 0 3px ${palette.dot}22`
               : "none",
         }}
       />
-      <span>{activity.label}</span>
-      {activity.detail && (
-        <span
-          style={{
-            color: palette.detail,
-            fontWeight: 500,
-            letterSpacing: "0.02em",
-            textTransform: "none",
-          }}
-        >
-          · {activity.detail}
-        </span>
-      )}
+      <span>{text}</span>
     </div>
   );
 }
