@@ -161,7 +161,6 @@ export function PortraitBloomShell({
   replyTarget,
   deleteAction,
 }: PortraitBloomShellProps) {
-  const isOffline = presenceKind !== "online";
   // Per-element theme colours · fall back to rippleColor (accent)
   // when the theme doesn't provide overrides.
   const bubbleRim = bubbleRimColor ?? rippleColor;
@@ -196,18 +195,6 @@ export function PortraitBloomShell({
         [data-nex-bloom-msg] {
           animation: nex-bloom-msg-in 260ms cubic-bezier(.2,.7,.2,1) both;
         }
-        @keyframes nex-portrait-breathe {
-          0%, 100% { transform: scale(1); }
-          50%      { transform: scale(1.025); }
-        }
-        [data-nex-bloom-portrait] {
-          animation: nex-portrait-breathe 8s ease-in-out infinite;
-          transform-origin: 50% 30%;
-          transition: filter 900ms ease;
-        }
-        [data-nex-bloom-offline] {
-          filter: grayscale(0.72) brightness(0.72) contrast(0.92);
-        }
         @keyframes nex-bloom-ripple {
           0%   { opacity: 0.0; transform: translate(-50%, -50%) scale(0.6); }
           40%  { opacity: 0.55; }
@@ -217,24 +204,11 @@ export function PortraitBloomShell({
           animation: nex-bloom-ripple 2600ms cubic-bezier(.2,.7,.2,1) both;
         }
         /* Scrollbar hidden · scrolling still works, just no visible
-           bar on the side of the chat window. Sealed 2026-09-27. */
+           bar on the side of the chat window. Sealed 2026-09-27.
+           Fade mask removed 2026-09-27 · with solid dark navy
+           behind the whole surface there is nothing to fade into. */
         [data-nex-message-scroll] {
           scrollbar-width: none;
-          /* Fade the top edge so bubbles dissolve into the header
-             instead of cutting hard against it. Bottom stays sharp
-             so the composer keeps a clean boundary. */
-          mask-image: linear-gradient(
-            180deg,
-            transparent 0px,
-            #000 56px,
-            #000 100%
-          );
-          -webkit-mask-image: linear-gradient(
-            180deg,
-            transparent 0px,
-            #000 56px,
-            #000 100%
-          );
         }
         [data-nex-message-scroll]::-webkit-scrollbar {
           display: none;
@@ -260,65 +234,16 @@ export function PortraitBloomShell({
           flexDirection: "column",
         }}
       >
-        {/* Portrait layer · masked to fade into the abyss */}
-        <div
-          aria-hidden
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: "58vh",
-            maskImage:
-              "linear-gradient(180deg, #000 0%, #000 50%, rgba(0,0,0,0.6) 78%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(180deg, #000 0%, #000 50%, rgba(0,0,0,0.6) 78%, transparent 100%)",
-            overflow: "hidden",
-          }}
-        >
-          <div
-            data-nex-bloom-portrait
-            data-nex-bloom-offline={isOffline ? "true" : undefined}
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundImage: portraitUrl
-                ? `url(${portraitUrl})`
-                : `linear-gradient(135deg, ${NEX.cyanDeep} 0%, #05101f 60%, #020914 100%)`,
-              backgroundSize: "cover",
-              backgroundPosition: "center 22%",
-              backgroundColor: NEX.cyanDeep,
-            }}
-          >
-            {/* Initials fallback when no portrait image */}
-            {!portraitUrl && (
-              <div
-                aria-hidden
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  display: "grid",
-                  placeItems: "center",
-                  color: NEX.cyan,
-                  fontSize: 96,
-                  fontWeight: 700,
-                  letterSpacing: "0.06em",
-                  opacity: 0.4,
-                }}
-              >
-                {initialsFromName(displayName)}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Chat-theme ripple */}
+        {/* Chat-theme ripple · retained as a small identity flash
+            behind the header when a fresh inbound arrives · no
+            portrait layer any more (removed 2026-09-27 per Founder
+            direction · "solid dark navy everywhere"). */}
         <div
           key={rippleKey}
           aria-hidden
           style={{
             position: "absolute",
-            top: "28vh",
+            top: 68,
             left: "50%",
             width: 0,
             height: 0,
@@ -344,34 +269,18 @@ export function PortraitBloomShell({
           )}
         </div>
 
-        {/* Abyss gradient · pulled UP so darkness dominates the mid
-            zone earlier. Portrait / hero stays visible in the top
-            ~18% of the viewport · abyss ramps in by 38% · fully dark
-            by ~76%. Result: more legible reading area for messages
-            without shrinking the portrait layer itself. */}
-        <div
-          aria-hidden
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(180deg, transparent 18%, rgba(2,9,20,0.55) 38%, rgba(2,9,20,0.9) 58%, #020914 76%)",
-          }}
-        />
-
-        {/* Identity overlay · text sits directly on the portrait with
-            a soft shadow for legibility. No glass panel, no backdrop-
-            blur · reverted per Founder direction 2026-09-27. The fade
-            mask on the message region below still hides the cut edge
-            when bubbles scroll past. */}
+        {/* Identity header · sits on solid dark navy (portrait layer
+            removed 2026-09-27). Small round avatar + name + subtitle.
+            A hairline divider under it separates the identity zone
+            from the message list. */}
         <div
           style={{
             position: "relative",
             zIndex: 3,
             flexShrink: 0,
             padding:
-              "calc(env(safe-area-inset-top, 0) + 14px) 96px 12px 20px",
-            textShadow: "0 2px 20px rgba(0,0,0,0.75)",
+              "calc(env(safe-area-inset-top, 0) + 12px) 96px 12px 16px",
+            borderBottom: "1px solid rgba(139,169,209,0.14)",
           }}
         >
           {contacts && (
@@ -384,62 +293,93 @@ export function PortraitBloomShell({
             style={{
               display: "flex",
               alignItems: "center",
-              gap: 10,
+              gap: 12,
             }}
           >
-            <span
-              aria-label={presenceLabel}
-              title={presenceLabel}
+            {/* Small round avatar · identity anchor now that the
+                giant portrait layer is gone. Presence pip sits on
+                the ring like a status badge. */}
+            <div
               style={{
-                display: "inline-block",
+                position: "relative",
                 flexShrink: 0,
-                width: 10,
-                height: 10,
+                width: 44,
+                height: 44,
                 borderRadius: "50%",
-                background:
+                overflow: "hidden",
+                border: `2px solid ${
                   presenceKind === "online"
                     ? NEX.green
                     : presenceKind === "away"
                       ? "#F59E0B"
-                      : "#7D9BC0",
+                      : "rgba(139,169,209,0.4)"
+                }`,
                 boxShadow:
                   presenceKind === "online"
-                    ? `0 0 10px ${NEX.green}, 0 0 0 3px ${NEX.green}22`
+                    ? `0 0 0 3px ${NEX.green}22`
                     : "none",
-                transition: "background 500ms ease",
+                backgroundImage: portraitUrl
+                  ? `url(${portraitUrl})`
+                  : `linear-gradient(135deg, ${NEX.cyanDeep} 0%, #05101f 100%)`,
+                backgroundSize: "cover",
+                backgroundPosition: "center 22%",
+                transition: "border-color 500ms ease, box-shadow 500ms ease",
               }}
-            />
-            <div
-              style={{
-                fontSize: 22,
-                fontWeight: 700,
-                lineHeight: 1.1,
-                letterSpacing: "-0.005em",
-                minWidth: 0,
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
+              aria-label={presenceLabel}
+              title={presenceLabel}
             >
-              {displayName}
+              {!portraitUrl && (
+                <div
+                  aria-hidden
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "grid",
+                    placeItems: "center",
+                    color: NEX.cyan,
+                    fontSize: 16,
+                    fontWeight: 700,
+                    letterSpacing: "0.06em",
+                    opacity: 0.85,
+                  }}
+                >
+                  {initialsFromName(displayName)}
+                </div>
+              )}
+            </div>
+            <div style={{ minWidth: 0, flex: 1 }}>
+              <div
+                style={{
+                  fontSize: 20,
+                  fontWeight: 700,
+                  lineHeight: 1.15,
+                  letterSpacing: "-0.005em",
+                  minWidth: 0,
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {displayName}
+              </div>
+              {subtitle && (
+                <div
+                  style={{
+                    marginTop: 1,
+                    fontSize: 12,
+                    fontWeight: 600,
+                    letterSpacing: "0.04em",
+                    color: NEX.orange,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {subtitle}
+                </div>
+              )}
             </div>
           </div>
-          {subtitle && (
-            <div
-              style={{
-                marginTop: 2,
-                fontSize: 12,
-                fontWeight: 600,
-                letterSpacing: "0.04em",
-                color: NEX.orange,
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {subtitle}
-            </div>
-          )}
           {contextChip && (
             <div
               style={{
@@ -596,15 +536,19 @@ export function PortraitBloomShell({
                       data-nex-msg-id={m.id}
                       style={{
                         position: "relative",
-                        alignSelf: m.mine ? "flex-end" : "flex-start",
-                        maxWidth: "78%",
                         padding: m.deleted_for_everyone
                           ? "9px 14px"
                           : showTimestamp
                             ? "11px 14px 9px"
                             : "10px 14px",
                         marginTop,
-                        borderRadius: 18,
+                        // Squarer corners with a tail corner near the
+                        // sender · 14px main, 4px tail. Mine = tail
+                        // bottom-right, theirs = tail bottom-left.
+                        // Sealed 2026-09-27.
+                        borderRadius: m.mine
+                          ? "14px 14px 4px 14px"
+                          : "14px 14px 14px 4px",
                         // Darker shaded glass · bubbles carry a
                         // distinctly dark tint so they read as their
                         // own containers over the portrait.

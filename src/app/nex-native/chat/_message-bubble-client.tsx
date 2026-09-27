@@ -151,6 +151,12 @@ export function MessageBubbleClient({
       onPointerCancel={finishSwipe}
       style={{
         position: "relative",
+        // This wrapper is the direct child of the message-list flex
+        // column · alignSelf lives HERE, not on the bubble inside,
+        // otherwise every bubble stays left-aligned inside a
+        // full-width wrapper (Bridge 5 regression, fixed 2026-09-27).
+        alignSelf: mine ? "flex-end" : "flex-start",
+        maxWidth: "78%",
         touchAction: "pan-y",
         transform: `translateX(${dragX}px)`,
         transition:
