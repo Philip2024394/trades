@@ -281,9 +281,12 @@ function PlusButton({ onClick }: { onClick: () => void }) {
         width: 36,
         height: 36,
         borderRadius: "50%",
-        background: "rgba(0,159,239,0.12)",
-        border: "1px solid rgba(0,159,239,0.45)",
-        color: NEX.cyan,
+        // Dark glass · reads as secondary action without competing
+        // with the orange send button on the right. Pure black would
+        // vanish against the dark navy backdrop.
+        background: "rgba(0,0,0,0.42)",
+        border: "1px solid rgba(255,255,255,0.10)",
+        color: NEX.textPrimary,
         display: "grid",
         placeItems: "center",
         cursor: "pointer",
@@ -309,12 +312,14 @@ function SendButton({ armed }: { armed: boolean }) {
         width: 36,
         height: 36,
         borderRadius: "50%",
+        // Solid NEX orange when armed · calmer than the gradient
+        // now that the aurora rim carries the animated colour.
         background: active
-          ? "linear-gradient(135deg,#008CFF,#4657FF,#FF7A00)"
+          ? NEX.orange
           : pending
-            ? "rgba(255,120,0,0.35)"
+            ? "rgba(255,120,0,0.4)"
             : "rgba(120,140,180,0.14)",
-        color: active || pending ? NEX.textPrimary : NEX.textMute,
+        color: active || pending ? "#0B0F1A" : NEX.textMute,
         border: active
           ? `1px solid ${NEX.orangeSoft}`
           : `1px solid transparent`,
@@ -322,8 +327,11 @@ function SendButton({ armed }: { armed: boolean }) {
         placeItems: "center",
         cursor: pending ? "wait" : armed ? "pointer" : "not-allowed",
         transition:
-          "background 220ms ease, color 220ms ease, border-color 220ms ease, transform 120ms ease",
+          "background 220ms ease, color 220ms ease, border-color 220ms ease, transform 120ms ease, box-shadow 220ms ease",
         transform: active ? "scale(1)" : "scale(0.92)",
+        boxShadow: active
+          ? "0 6px 18px rgba(255,120,0,0.35)"
+          : "none",
         marginLeft: 4,
         padding: 0,
       }}
