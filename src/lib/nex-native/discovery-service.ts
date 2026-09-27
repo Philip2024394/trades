@@ -106,25 +106,47 @@ export async function countProducts(query: string): Promise<number> {
 }
 
 /**
- * Search businesses by display_name, description, or exact slug.
- * Empty / whitespace query returns [] · never a full scan.
+ * Search businesses by display_name, description, exact slug, OR
+ * an entry in search_keywords[] (Bridge 14). When a category is
+ * supplied, the result is additionally scoped to that vertical ·
+ * pass an empty query + a category to browse "all restaurants".
+ * Archived shops are always excluded.
  */
 export async function searchBusinesses(
   query: string,
   optsOrLimit: number | PageOpts = 20,
+  filter: { category?: string | null } = {},
 ): Promise<NexBusinessRow[]> {
   const q = normaliseQuery(query);
-  if (!q) return [];
+  const category = filter.category?.trim() || null;
+  // Category-only browse is allowed · text-only requires a query.
+  if (!q && !category) return [];
   const { limit, offset } = clampPage(optsOrLimit);
-  const pattern = `%${q.replace(/[\\%,]/g, "\\$&")}%`;
-  const slugCandidate = q.toLowerCase();
 
-  const orFilter = `display_name.ilike.${pattern},description.ilike.${pattern},slug.eq.${slugCandidate}`;
-
-  const { data, error } = await nexSupabaseAdmin
+  let builder = nexSupabaseAdmin
     .from("nex_business")
     .select("*")
-    .or(orFilter)
+    .is("archived_at", null);
+
+  if (q) {
+    const pattern = `%${q.replace(/[\\%,]/g, "\\$&")}%`;
+    const slugCandidate = q.toLowerCase();
+    // ILIKE on name/description + exact slug + keyword-array match.
+    // Postgrest's `cs` (contains) operator hits the GIN index we
+    // built in migration 065.
+    const orFilter = [
+      `display_name.ilike.${pattern}`,
+      `description.ilike.${pattern}`,
+      `slug.eq.${slugCandidate}`,
+      `search_keywords.cs.{${slugCandidate}}`,
+    ].join(",");
+    builder = builder.or(orFilter);
+  }
+  if (category) {
+    builder = builder.eq("business_category", category);
+  }
+
+  const { data, error } = await builder
     .order("created_at", { ascending: false })
     .range(offset, offset + limit - 1);
 
@@ -134,17 +156,34 @@ export async function searchBusinesses(
   return (data as NexBusinessRow[]) ?? [];
 }
 
-/** Count of matching businesses for a query. Empty query → 0. */
-export async function countBusinesses(query: string): Promise<number> {
+/** Count of matching businesses for a query + optional category. */
+export async function countBusinesses(
+  query: string,
+  filter: { category?: string | null } = {},
+): Promise<number> {
   const q = normaliseQuery(query);
-  if (!q) return 0;
-  const pattern = `%${q.replace(/[\\%,]/g, "\\$&")}%`;
-  const slugCandidate = q.toLowerCase();
-  const orFilter = `display_name.ilike.${pattern},description.ilike.${pattern},slug.eq.${slugCandidate}`;
-  const { count, error } = await nexSupabaseAdmin
+  const category = filter.category?.trim() || null;
+  if (!q && !category) return 0;
+  let builder = nexSupabaseAdmin
     .from("nex_business")
     .select("*", { count: "exact", head: true })
-    .or(orFilter);
+    .is("archived_at", null);
+  if (q) {
+    const pattern = `%${q.replace(/[\\%,]/g, "\\$&")}%`;
+    const slugCandidate = q.toLowerCase();
+    builder = builder.or(
+      [
+        `display_name.ilike.${pattern}`,
+        `description.ilike.${pattern}`,
+        `slug.eq.${slugCandidate}`,
+        `search_keywords.cs.{${slugCandidate}}`,
+      ].join(","),
+    );
+  }
+  if (category) {
+    builder = builder.eq("business_category", category);
+  }
+  const { count, error } = await builder;
   if (error) throw new Error(`discovery-service.countBusinesses: ${error.message}`);
   return count ?? 0;
 }

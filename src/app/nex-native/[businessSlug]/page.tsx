@@ -232,6 +232,10 @@ export default async function Page({
           {/* Bridge 13 · activity badge · green/amber/purple/gray
               signal computed from last_seller_activity_at */}
           <ActivityBadge activity={activity} />
+          {/* Bridge 14 · category chip · small pill under the name */}
+          {business.business_category && (
+            <CategoryChip category={business.business_category} />
+          )}
           {business.description && (
             <p
               style={{
@@ -835,6 +839,38 @@ function formatPrice(pence: number, currency: string): string {
   if (currency === "GBP") return `£${(pence / 100).toFixed(2)}`;
   if (currency === "USD") return `$${(pence / 100).toFixed(2)}`;
   return `${currency} ${withCommas}`;
+}
+
+function CategoryChip({ category }: { category: string }) {
+  const label = category
+    .split("-")
+    .map((w) => (w.length > 0 ? w[0]!.toUpperCase() + w.slice(1) : w))
+    .join(" ");
+  return (
+    <Link
+      href={`/nex-native/search?category=${encodeURIComponent(category)}`}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        padding: "5px 12px",
+        borderRadius: 999,
+        background: "rgba(0,175,255,0.14)",
+        border: "1px solid rgba(0,175,255,0.45)",
+        color: "#66CFFF",
+        fontSize: 11,
+        fontWeight: 700,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+        textDecoration: "none",
+        marginBottom: 14,
+        backdropFilter: "blur(6px)",
+        textShadow: "0 1px 8px rgba(0,0,0,0.55)",
+      }}
+    >
+      {label}
+    </Link>
+  );
 }
 
 function ActivityBadge({

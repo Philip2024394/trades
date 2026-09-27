@@ -640,6 +640,54 @@ export async function updateProductStockStatusAction(
   );
 }
 
+/** Bridge 14 · update a business's category + search keywords ·
+ *  owner-only. Keywords come in as a comma-separated string from
+ *  the /manage/shop form. */
+export async function updateBusinessCategoryAndKeywordsAction(
+  businessId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const business = await businessService.getBusinessById(businessId);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirect(
+      "/nex-native/manage/shop?e=category_forbidden&m=" +
+        encodeURIComponent("You don't own this shop"),
+    );
+  }
+
+  const categoryRaw = String(formData.get("business_category") ?? "").trim();
+  const keywordsRaw = String(formData.get("search_keywords") ?? "");
+  const keywords = keywordsRaw
+    .split(",")
+    .map((k) => k.trim())
+    .filter((k) => k.length > 0);
+
+  try {
+    await businessService.updateBusinessCategoryAndKeywords(businessId, {
+      category: categoryRaw || null,
+      keywords: keywords.length > 0 ? keywords : null,
+    });
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      "/nex-native/manage/shop?e=category_failed&m=" + encodeURIComponent(msg),
+    );
+  }
+  revalidatePath("/nex-native/manage/shop");
+  revalidatePath(`/nex-native/${business.slug}`);
+  revalidatePath("/nex-native/search");
+  redirect(
+    "/nex-native/manage/shop?e=category_ok&m=" +
+      encodeURIComponent("Category and keywords updated"),
+  );
+}
+
 /** Bridge 13c · update a single product's dispatch_time +
  *  sample_request_time · owner-only. Called by the two text
  *  inputs on /manage/shop under each product row. */

@@ -10,7 +10,63 @@ import Link from "next/link";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as discoveryService from "@/lib/nex-native/discovery-service";
+import { NEX_BUSINESS_CATEGORIES } from "@/lib/nex-native/site-templates";
 import { NexNativeShell } from "../_shell";
+
+function CategoryFacetRow({
+  query,
+  activeCategory,
+}: {
+  query: string;
+  activeCategory: string;
+}) {
+  function labelFor(slug: string): string {
+    return slug
+      .split("-")
+      .map((w) => (w.length > 0 ? w[0]!.toUpperCase() + w.slice(1) : w))
+      .join(" ");
+  }
+  function href(category: string | null): string {
+    const p = new URLSearchParams();
+    if (query) p.set("q", query);
+    if (category) p.set("category", category);
+    const qs = p.toString();
+    return qs ? `/nex-native/search?${qs}` : "/nex-native/search";
+  }
+  return (
+    <div
+      className="mt-3 flex flex-wrap gap-1.5 border-t border-neutral-200 pt-3"
+      aria-label="Browse by category"
+    >
+      <Link
+        href={href(null)}
+        className={
+          !activeCategory
+            ? "rounded-full border border-neutral-900 bg-neutral-900 px-3 py-1 text-[11px] font-medium text-white"
+            : "rounded-full border border-neutral-300 bg-white px-3 py-1 text-[11px] text-neutral-700 hover:border-neutral-500"
+        }
+      >
+        All
+      </Link>
+      {NEX_BUSINESS_CATEGORIES.map((c) => {
+        const active = c === activeCategory;
+        return (
+          <Link
+            key={c}
+            href={href(c)}
+            className={
+              active
+                ? "rounded-full border border-neutral-900 bg-neutral-900 px-3 py-1 text-[11px] font-medium text-white"
+                : "rounded-full border border-neutral-300 bg-white px-3 py-1 text-[11px] text-neutral-700 hover:border-neutral-500"
+            }
+          >
+            {labelFor(c)}
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
 
 async function PopularTagsBlock() {
   let popular: Awaited<ReturnType<typeof discoveryService.getPopularTags>> = [];
@@ -54,7 +110,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 interface PageProps {
-  searchParams: Promise<{ q?: string; page?: string }>;
+  searchParams: Promise<{ q?: string; page?: string; category?: string }>;
 }
 
 const PAGE_SIZE = 20;
@@ -63,6 +119,11 @@ export default async function Page({ searchParams }: PageProps) {
   const sp = await searchParams;
   const rawQuery = sp.q ?? "";
   const query = rawQuery.trim();
+  // Bridge 14 · category facet · query-only search still works,
+  // but adding ?category=restaurant scopes businesses (and turns
+  // a category-only browse into a valid request).
+  const rawCategory = sp.category ?? "";
+  const category = (rawCategory as string).trim().toLowerCase();
   // Slice 8c · pagination
   const pageRaw = Number(sp.page ?? "1");
   const page = Number.isFinite(pageRaw) && pageRaw >= 1 ? Math.floor(pageRaw) : 1;
@@ -76,13 +137,26 @@ export default async function Page({ searchParams }: PageProps) {
   let businesses: Awaited<ReturnType<typeof discoveryService.searchBusinesses>> = [];
   let productCount = 0;
   let businessCount = 0;
-  if (query.length > 0) {
+  const hasSearch = query.length > 0 || category.length > 0;
+  if (hasSearch) {
     try {
+      const businessFilter = category ? { category } : {};
       [products, businesses, productCount, businessCount] = await Promise.all([
-        discoveryService.searchProducts(query, { limit: PAGE_SIZE, offset }),
-        discoveryService.searchBusinesses(query, { limit: PAGE_SIZE, offset }),
-        discoveryService.countProducts(query),
-        discoveryService.countBusinesses(query),
+        // Product search stays query-driven · category doesn't apply
+        // at the product level (a shop's category doesn't tag its
+        // products individually).
+        query.length > 0
+          ? discoveryService.searchProducts(query, { limit: PAGE_SIZE, offset })
+          : Promise.resolve([]),
+        discoveryService.searchBusinesses(
+          query,
+          { limit: PAGE_SIZE, offset },
+          businessFilter,
+        ),
+        query.length > 0
+          ? discoveryService.countProducts(query)
+          : Promise.resolve(0),
+        discoveryService.countBusinesses(query, businessFilter),
       ]);
     } catch (e) {
       errorMsg = e instanceof Error ? e.message : String(e);
@@ -93,7 +167,9 @@ export default async function Page({ searchParams }: PageProps) {
   const hasNextBusinesses = offset + businesses.length < businessCount;
   const hasNext = hasNextProducts || hasNextBusinesses;
   function pageLink(newPage: number): string {
-    const p = new URLSearchParams({ q: query, page: String(newPage) });
+    const p = new URLSearchParams({ page: String(newPage) });
+    if (query) p.set("q", query);
+    if (category) p.set("category", category);
     return `/nex-native/search?${p.toString()}`;
   }
 
@@ -122,6 +198,9 @@ export default async function Page({ searchParams }: PageProps) {
               autoFocus
               className="min-h-[44px] flex-1 rounded border border-neutral-300 px-3 py-2 text-sm"
             />
+            {category && (
+              <input type="hidden" name="category" value={category} />
+            )}
             <button
               type="submit"
               className="min-h-[44px] rounded bg-neutral-900 px-4 text-sm font-medium text-white hover:bg-neutral-700"
@@ -129,6 +208,9 @@ export default async function Page({ searchParams }: PageProps) {
               Search
             </button>
           </form>
+          {/* Bridge 14 · category facet · always visible · clicking a
+              chip scopes results to that vertical · "All" clears. */}
+          <CategoryFacetRow query={query} activeCategory={category} />
           <p className="mt-2 text-xs text-neutral-500">
             <Link href="/nex-native/conversations" className="underline">← inbox</Link>
           </p>
@@ -140,7 +222,7 @@ export default async function Page({ searchParams }: PageProps) {
           </div>
         )}
 
-        {query.length === 0 ? (
+        {!hasSearch ? (
           <PopularTagsBlock />
         ) : (
           <>

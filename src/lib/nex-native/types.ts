@@ -240,6 +240,15 @@ export interface NexBusinessRow {
    *  Defaults to 'both' at the DB level so existing rows stay
    *  visible everywhere. */
   market_reach: NexBusinessMarketReach;
+  /** Bridge 14 · vertical · migration 065. One of the 19
+   *  NEX_BUSINESS_CATEGORIES from site-templates.ts, or NULL when
+   *  the seller hasn't picked yet · Directory treats NULL as
+   *  uncategorised. */
+  business_category: string | null;
+  /** Bridge 14 · per-shop discovery terms · migration 065.
+   *  Complements product tags for service businesses that have
+   *  no products of their own to tag. */
+  search_keywords: string[] | null;
   /** Bridge 13 · Responsiveness signals · migration 063.
    *  last_seller_activity_at drives the graduated status badge on
    *  every shop landing (active · slow · away · archived). Bumped

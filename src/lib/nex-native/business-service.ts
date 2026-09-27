@@ -294,6 +294,60 @@ export function normaliseWeeklyHours(input: unknown): NexWeeklyHours {
 /** Set (or clear) the weekly hours for a business.
  *  Pass `null` to clear · pass a full 7-day object to set.
  *  Validation is done here (DB CHECK is only the object-with-7-keys shape). */
+import { NEX_BUSINESS_CATEGORIES } from "./site-templates";
+
+/** Bridge 14 · update the vertical + discovery keywords on a
+ *  business row. Category must be one of NEX_BUSINESS_CATEGORIES or
+ *  null (unset). Keywords are trimmed, deduped, and capped at 20 to
+ *  keep the array manageable. Empty array clears back to NULL. */
+export async function updateBusinessCategoryAndKeywords(
+  id: NexUuid,
+  input: {
+    category?: string | null;
+    keywords?: string[] | null;
+  },
+): Promise<NexBusinessRow> {
+  const patch: Record<string, string | string[] | null> = {};
+  if (input.category !== undefined) {
+    if (input.category === null || input.category === "") {
+      patch.business_category = null;
+    } else {
+      if (!(NEX_BUSINESS_CATEGORIES as readonly string[]).includes(input.category)) {
+        throw new Error(
+          `business-service.updateBusinessCategoryAndKeywords: unknown category '${input.category}'`,
+        );
+      }
+      patch.business_category = input.category;
+    }
+  }
+  if (input.keywords !== undefined) {
+    if (!Array.isArray(input.keywords) || input.keywords.length === 0) {
+      patch.search_keywords = null;
+    } else {
+      const cleaned = Array.from(
+        new Set(
+          input.keywords
+            .map((k) => (typeof k === "string" ? k.trim() : ""))
+            .filter((k) => k.length > 0 && k.length <= 60),
+        ),
+      ).slice(0, 20);
+      patch.search_keywords = cleaned.length > 0 ? cleaned : null;
+    }
+  }
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_business")
+    .update(patch)
+    .eq("id", id)
+    .select("*")
+    .single();
+  if (error || !data) {
+    throw new Error(
+      `business-service.updateBusinessCategoryAndKeywords: ${error?.message ?? "no row returned"}`,
+    );
+  }
+  return data as NexBusinessRow;
+}
+
 export async function updateBusinessHours(
   id: NexUuid,
   hours: NexWeeklyHours | null,

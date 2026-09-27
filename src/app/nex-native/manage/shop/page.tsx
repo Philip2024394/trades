@@ -22,7 +22,9 @@ import {
   endBusinessAwayModeAction,
   updateProductStockStatusAction,
   updateProductTurnaroundAction,
+  updateBusinessCategoryAndKeywordsAction,
 } from "../../_actions";
+import { NEX_BUSINESS_CATEGORIES } from "@/lib/nex-native/site-templates";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -139,6 +141,10 @@ export default async function ShopSettingsPage({
 
   const setAwayBound = setBusinessAwayModeAction.bind(null, business.id);
   const endAwayBound = endBusinessAwayModeAction.bind(null, business.id);
+  const categoryBound = updateBusinessCategoryAndKeywordsAction.bind(
+    null,
+    business.id,
+  );
   const awayUntilInputValue = business.away_until
     ? new Date(business.away_until).toISOString().slice(0, 10)
     : "";
@@ -340,6 +346,74 @@ export default async function ShopSettingsPage({
               <SubmitButton label="Turn Away on" tone="primary" />
             </form>
           )}
+        </SectionCard>
+
+        {/* --- Category + search keywords -------------------------- */}
+        <SectionCard>
+          <SectionEyebrow color={NEX.cyan}>
+            Discovery
+          </SectionEyebrow>
+          <h2
+            style={{
+              margin: "6px 0 6px",
+              fontSize: 18,
+              fontWeight: 700,
+              letterSpacing: "-0.005em",
+            }}
+          >
+            Category &amp; search keywords
+          </h2>
+          <p
+            style={{
+              margin: "0 0 16px",
+              fontSize: 13,
+              lineHeight: 1.55,
+              color: NEX.textDim,
+            }}
+          >
+            Category tells buyers what your shop is · drives the
+            category chip on your public page and the Directory
+            facet. Keywords surface your shop when buyers search
+            those terms · comma-separated · max 20.
+          </p>
+          <form
+            action={categoryBound}
+            style={{ display: "flex", flexDirection: "column", gap: 12 }}
+          >
+            <FormRow label="Category">
+              <select
+                name="business_category"
+                defaultValue={business.business_category ?? ""}
+                style={{
+                  ...inputStyle,
+                  appearance: "auto",
+                }}
+              >
+                <option value="">— Uncategorised —</option>
+                {NEX_BUSINESS_CATEGORIES.map((c) => (
+                  <option key={c} value={c}>
+                    {formatCategoryLabel(c)}
+                  </option>
+                ))}
+              </select>
+            </FormRow>
+            <FormRow label="Search keywords (comma-separated)">
+              <textarea
+                name="search_keywords"
+                rows={3}
+                maxLength={800}
+                placeholder="vintage cameras, film cameras, leica, jakarta, cla serviced"
+                defaultValue={(business.search_keywords ?? []).join(", ")}
+                style={{
+                  ...inputStyle,
+                  resize: "vertical",
+                  fontFamily: "inherit",
+                  lineHeight: 1.5,
+                }}
+              />
+            </FormRow>
+            <SubmitButton label="Save category & keywords" tone="primary" />
+          </form>
         </SectionCard>
 
         {/* --- Product stock status -------------------------------- */}
@@ -698,6 +772,16 @@ function ProductStockRow({
       </form>
     </div>
   );
+}
+
+/** Turn 'staircase-company' into 'Staircase Company', etc. Simple
+ *  hyphen → space + Title Case. Categories are stable so no fancy
+ *  lookup table needed. */
+function formatCategoryLabel(slug: string): string {
+  return slug
+    .split("-")
+    .map((w) => (w.length > 0 ? w[0]!.toUpperCase() + w.slice(1) : w))
+    .join(" ");
 }
 
 function statusColor(s: string): string {
