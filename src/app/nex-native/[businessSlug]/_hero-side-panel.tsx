@@ -186,20 +186,22 @@ function PanelButton({
         width: 36,
         height: 36,
         borderRadius: "50%",
-        background: "transparent",
-        border: "none",
-        color: "#FFFFFF",
+        background: "#FF7200",
+        border: "1px solid rgba(255,255,255,0.16)",
+        color: "#0B0F1A",
         padding: 0,
         display: "grid",
         placeItems: "center",
         cursor: "pointer",
-        transition: "background 160ms ease",
+        boxShadow:
+          "0 4px 10px rgba(255,114,0,0.35), inset 0 1px 0 rgba(255,255,255,0.28)",
+        transition: "transform 120ms ease, filter 120ms ease",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.background = "rgba(255,255,255,0.14)";
+        e.currentTarget.style.filter = "brightness(1.06)";
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.background = "transparent";
+        e.currentTarget.style.filter = "none";
       }}
     >
       {children}
