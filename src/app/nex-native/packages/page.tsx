@@ -136,7 +136,7 @@ export default function PackagesPage() {
           NEX doesn&apos;t take a percentage of what you sell.
           <b> Ever.</b> Stay on Gratis forever, or upgrade to Bisnis
           when you&apos;re ready for international reach and unlimited
-          capacity.
+          local market capacity.
         </p>
       </section>
 
