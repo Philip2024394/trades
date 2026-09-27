@@ -54,6 +54,19 @@ export default async function ThemePickerPage({
   const currentThemeId = account.chat_theme ?? "default";
   const canUsePremium = currentTier === "bisnis" || currentTier === "pro";
 
+  // Viewer's own profile photo · used by themes that don't ship
+  // their own hero_image_url (Rose · Origin · etc.) to preview the
+  // Portrait Bloom mechanic with the viewer's actual face.
+  const viewerAvatarUrl = await (async () => {
+    try {
+      const svc = await import("@/lib/nex-native/account-profile-service");
+      const profile = await svc.getProfileByAccountId(session.account.id);
+      return profile?.avatar_url ?? null;
+    } catch {
+      return null;
+    }
+  })();
+
   const themes = await chatThemeService.listActiveThemes();
   const browserThemes: BrowserThemeRow[] = themes.map((t) => ({
     id: t.id,
@@ -156,6 +169,7 @@ export default async function ThemePickerPage({
             currentThemeId={currentThemeId}
             canUsePremium={canUsePremium}
             activateAction={updateChatThemeAction}
+            viewerAvatarUrl={viewerAvatarUrl}
           />
         </div>
       </main>

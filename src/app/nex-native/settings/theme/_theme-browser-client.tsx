@@ -43,6 +43,10 @@ interface Props {
   currentThemeId: string;
   canUsePremium: boolean;
   activateAction: (formData: FormData) => Promise<never> | void | Promise<void>;
+  /** User's own profile avatar URL · when set, themes without a
+   *  built-in hero_image_url paint the preview with this. When null,
+   *  the preview prompts them to upload a photo. */
+  viewerAvatarUrl: string | null;
 }
 
 export function ThemeBrowserClient({
@@ -50,6 +54,7 @@ export function ThemeBrowserClient({
   currentThemeId,
   canUsePremium,
   activateAction,
+  viewerAvatarUrl,
 }: Props) {
   const [query, setQuery] = React.useState("");
   const [filter, setFilter] = React.useState<FilterMode>("all");
@@ -310,6 +315,7 @@ export function ThemeBrowserClient({
             locked={preview.tier === "bisnis" && !canUsePremium}
             activateAction={activateAction}
             onClose={() => setPreviewId(null)}
+            viewerAvatarUrl={viewerAvatarUrl}
           />,
           document.body,
         )}
@@ -525,12 +531,14 @@ function PreviewModal({
   locked,
   activateAction,
   onClose,
+  viewerAvatarUrl,
 }: {
   theme: BrowserThemeRow;
   active: boolean;
   locked: boolean;
   activateAction: (formData: FormData) => Promise<never> | void | Promise<void>;
   onClose: () => void;
+  viewerAvatarUrl: string | null;
 }) {
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -686,30 +694,119 @@ function PreviewModal({
             </div>
           )}
 
-          <div
-            style={{
-              borderRadius: 18,
-              background: theme.hero_image_url
-                ? `url(${theme.hero_image_url}) center/cover no-repeat, ${NEX.bg}`
-                : NEX.bg,
-              border: `1px solid ${outgoingRim}44`,
-              padding: 14,
-              minHeight: 260,
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            {theme.hero_image_url && (
+          {/* Portrait Bloom identity hint · themes without a built-in
+              hero rely on the viewer's own profile photo. Nudge to
+              upload one when it's still missing. */}
+          {!theme.hero_image_url && (
+            <div
+              style={{
+                marginBottom: 12,
+                padding: "10px 12px",
+                borderRadius: 10,
+                background: viewerAvatarUrl
+                  ? "rgba(0,175,255,0.10)"
+                  : "rgba(255,120,0,0.12)",
+                border: viewerAvatarUrl
+                  ? "1px solid rgba(0,175,255,0.32)"
+                  : "1px solid rgba(255,120,0,0.4)",
+                fontSize: 11,
+                lineHeight: 1.5,
+                color: NEX.text,
+              }}
+            >
+              {viewerAvatarUrl ? (
+                <>
+                  <strong style={{ color: NEX.cyan }}>Portrait Bloom</strong>
+                  {" · "}your profile photo becomes the hero. Everyone
+                  who opens your chat sees you.
+                </>
+              ) : (
+                <>
+                  <strong style={{ color: NEX.orange }}>Upload a photo</strong>
+                  {" · "}this theme uses your profile picture as the
+                  hero.{" "}
+                  <a
+                    href="/nex-native/settings/profile"
+                    style={{ color: NEX.orange, textDecoration: "underline" }}
+                  >
+                    Add one →
+                  </a>
+                </>
+              )}
+            </div>
+          )}
+
+          {/* Rose · themes without a built-in hero use the viewer's
+              own profile photo as the hero. That mechanic is the
+              whole Portrait Bloom identity contract sealed 2026-09-27.
+              Fallback background: a fixed hero image if the theme
+              provides one; else viewer's avatar; else a stub. */}
+          {(() => {
+            const heroSrc = theme.hero_image_url ?? viewerAvatarUrl ?? null;
+            const usesViewerFace =
+              !theme.hero_image_url && !!viewerAvatarUrl;
+            const noHeroYet = !theme.hero_image_url && !viewerAvatarUrl;
+            return (
               <div
-                aria-hidden
                 style={{
-                  position: "absolute",
-                  inset: 0,
-                  background:
-                    "linear-gradient(180deg, transparent 20%, rgba(2,9,20,0.55) 50%, rgba(2,9,20,0.92) 100%)",
+                  borderRadius: 18,
+                  background: heroSrc
+                    ? `url(${heroSrc}) center/cover no-repeat, ${NEX.bg}`
+                    : NEX.bg,
+                  border: `1px solid ${outgoingRim}44`,
+                  padding: 14,
+                  minHeight: 300,
+                  position: "relative",
+                  overflow: "hidden",
                 }}
-              />
-            )}
+              >
+                {heroSrc && (
+                  <div
+                    aria-hidden
+                    // Abyss gradient · fades from bottom UP onto the
+                    // hero image · sealed Portrait Bloom mechanic.
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background:
+                        "linear-gradient(180deg, transparent 18%, rgba(2,9,20,0.55) 42%, rgba(2,9,20,0.92) 68%, #020914 88%)",
+                    }}
+                  />
+                )}
+                {noHeroYet && (
+                  <div
+                    aria-hidden
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background:
+                        "radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.06), rgba(2,9,20,0.5) 55%, #020914 90%)",
+                    }}
+                  />
+                )}
+                {usesViewerFace && (
+                  <div
+                    aria-hidden
+                    style={{
+                      position: "absolute",
+                      top: 10,
+                      left: 12,
+                      padding: "3px 8px",
+                      borderRadius: 999,
+                      background: "rgba(0,0,0,0.5)",
+                      backdropFilter: "blur(8px)",
+                      WebkitBackdropFilter: "blur(8px)",
+                      fontSize: 9,
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      color: NEX.text,
+                      fontWeight: 700,
+                      zIndex: 2,
+                    }}
+                  >
+                    Your photo · live
+                  </div>
+                )}
             <div
               style={{
                 position: "relative",
@@ -780,7 +877,12 @@ function PreviewModal({
                 ➤
               </span>
             </div>
-          </div>
+              </div>
+            );
+          })()}
+          {/* End of hero-wrapper IIFE · viewer avatar OR built-in hero
+              image OR stub background · Portrait Bloom fade painted
+              over the top. */}
         </div>
 
         {/* Footer · CTA */}
