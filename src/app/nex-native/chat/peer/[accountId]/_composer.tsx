@@ -17,6 +17,11 @@
 
 import * as React from "react";
 import { useFormStatus } from "react-dom";
+import {
+  MediaCapture,
+  type MediaCaptureHandle,
+  type CaptureKind,
+} from "./_media-capture";
 
 const NEX = {
   bg: "#020914",
@@ -48,6 +53,23 @@ interface PeerComposerProps {
     peerName: string;
     clearHref: string;
   } | null;
+  /** Bridge 8+9 · Server Action bound to peer id · takes a form
+   *  with `attachment_file` and redirects back with the uploaded
+   *  URL on the query string. When omitted, Camera/Video/Voice
+   *  buttons in the media modal fall back to their "coming soon"
+   *  state. */
+  uploadAction?: (
+    formData: FormData,
+  ) => Promise<never> | void | Promise<void>;
+  /** Bridge 8+9 · pending attachment resolved server-side from
+   *  ?attachment_url + ?attachment_type. When set, the composer
+   *  shows a preview thumbnail above the pill and smuggles the
+   *  URL + type into the send form. */
+  pendingAttachment?: {
+    url: string;
+    kind: "image" | "video" | "audio";
+    clearHref: string;
+  } | null;
 }
 
 export function PeerComposer({
@@ -55,13 +77,30 @@ export function PeerComposer({
   placeholder,
   themeAccent,
   replyTarget,
+  uploadAction,
+  pendingAttachment,
 }: PeerComposerProps) {
   const formRef = React.useRef<HTMLFormElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+  const mediaCaptureRef = React.useRef<MediaCaptureHandle | null>(null);
   const [text, setText] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
   const [emojiOpen, setEmojiOpen] = React.useState(false);
   const hasText = text.trim().length > 0;
+  // Send is armed whenever there's text OR a pending attachment.
+  const canSend = hasText || !!pendingAttachment;
+
+  const handleCapturePick = React.useCallback(
+    (kind: CaptureKind) => {
+      setModalOpen(false);
+      // Defer so the modal unmount doesn't race with the file input
+      // click (Chrome sometimes eats the click if focus is shifting).
+      requestAnimationFrame(() => {
+        mediaCaptureRef.current?.open(kind);
+      });
+    },
+    [],
+  );
 
   const insertEmoji = React.useCallback((emoji: string) => {
     const el = textareaRef.current;
@@ -104,11 +143,11 @@ export function PeerComposer({
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
-        if (!hasText) return;
+        if (!canSend) return;
         formRef.current?.requestSubmit();
       }
     },
-    [hasText],
+    [canSend],
   );
 
   return (
@@ -142,7 +181,14 @@ export function PeerComposer({
       `}</style>
 
       {modalOpen && (
-        <MediaModal onClose={() => setModalOpen(false)} />
+        <MediaModal
+          onClose={() => setModalOpen(false)}
+          onPickCapture={handleCapturePick}
+          captureEnabled={!!uploadAction}
+        />
+      )}
+      {uploadAction && (
+        <MediaCapture ref={mediaCaptureRef} uploadAction={uploadAction} />
       )}
       {emojiOpen && (
         <EmojiModal
@@ -246,6 +292,90 @@ export function PeerComposer({
           </>
         )}
 
+        {/* Bridge 8+9 · pending attachment preview · rendered above
+            the pill when the URL carries ?attachment_url. Hidden
+            inputs smuggle the URL + kind into the send form. */}
+        {pendingAttachment && (
+          <>
+            <input
+              type="hidden"
+              name="attachment_url"
+              value={pendingAttachment.url}
+            />
+            <input
+              type="hidden"
+              name="attachment_type"
+              value={pendingAttachment.kind}
+            />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                padding: 8,
+                borderRadius: 12,
+                background: "rgba(0,0,0,0.4)",
+                border: `1px solid ${
+                  themeAccent
+                    ? composerRim(themeAccent)
+                    : "rgba(0,159,239,0.5)"
+                }`,
+                marginBottom: -12,
+              }}
+            >
+              <AttachmentPreview
+                url={pendingAttachment.url}
+                kind={pendingAttachment.kind}
+              />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 700,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: themeAccent ?? NEX.cyan,
+                  }}
+                >
+                  {pendingAttachment.kind === "image"
+                    ? "Photo ready"
+                    : pendingAttachment.kind === "video"
+                      ? "Video ready"
+                      : "Voice note ready"}
+                </div>
+                <div
+                  style={{
+                    fontSize: 11,
+                    color: NEX.textSecondary,
+                    marginTop: 2,
+                  }}
+                >
+                  Type a caption or send as-is
+                </div>
+              </div>
+              <a
+                href={pendingAttachment.clearHref}
+                aria-label="Discard attachment"
+                title="Discard attachment"
+                style={{
+                  flexShrink: 0,
+                  width: 28,
+                  height: 28,
+                  borderRadius: "50%",
+                  background: "rgba(0,0,0,0.42)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  color: NEX.textPrimary,
+                  display: "grid",
+                  placeItems: "center",
+                  textDecoration: "none",
+                }}
+              >
+                <ReplyCancelIcon />
+              </a>
+            </div>
+          </>
+        )}
+
         {/* Row 1 · plain 3-dot pushed to the viewport right edge, 20px
             of breathing room above the pill. No circle, no border, no
             aurora · just the dots. */}
@@ -299,7 +429,6 @@ export function PeerComposer({
             <textarea
               ref={textareaRef}
               name="body"
-              required
               maxLength={4000}
               placeholder={placeholder}
               rows={1}
@@ -324,7 +453,7 @@ export function PeerComposer({
               }}
             />
             <EmojiButton onClick={() => setEmojiOpen(true)} />
-            <SendButton armed={hasText} />
+            <SendButton armed={canSend} />
         </div>
       </form>
     </>
@@ -445,7 +574,17 @@ function SendButton({ armed }: { armed: boolean }) {
 // Centered media modal
 // ---------------------------------------------------------------------------
 
-function MediaModal({ onClose }: { onClose: () => void }) {
+function MediaModal({
+  onClose,
+  onPickCapture,
+  captureEnabled,
+}: {
+  onClose: () => void;
+  onPickCapture?: (kind: CaptureKind) => void;
+  /** When true, Camera / Video / Voice trigger real capture flows;
+   *  when false, they fall back to the "coming soon" no-op stubs. */
+  captureEnabled?: boolean;
+}) {
   // Close on Escape
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -495,7 +634,7 @@ function MediaModal({ onClose }: { onClose: () => void }) {
       >
         <div
           style={{
-            fontSize: 10,
+            fontSize: 11,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
             color: NEX.cyan,
@@ -504,7 +643,7 @@ function MediaModal({ onClose }: { onClose: () => void }) {
             fontWeight: 600,
           }}
         >
-          NEX · Add media
+          Add media
         </div>
         <div
           style={{
@@ -523,9 +662,30 @@ function MediaModal({ onClose }: { onClose: () => void }) {
             gap: 12,
           }}
         >
-          <ModalOption icon={<CameraIcon size={26} />} label="Camera" onClose={onClose} />
-          <ModalOption icon={<VideoIcon size={26} />} label="Video" onClose={onClose} />
-          <ModalOption icon={<MicIcon size={26} />} label="Voice" onClose={onClose} />
+          <ModalOption
+            icon={<CameraIcon size={26} />}
+            label="Camera"
+            onClose={onClose}
+            onActivate={
+              captureEnabled ? () => onPickCapture?.("camera") : undefined
+            }
+          />
+          <ModalOption
+            icon={<VideoIcon size={26} />}
+            label="Video"
+            onClose={onClose}
+            onActivate={
+              captureEnabled ? () => onPickCapture?.("video") : undefined
+            }
+          />
+          <ModalOption
+            icon={<MicIcon size={26} />}
+            label="Voice"
+            onClose={onClose}
+            onActivate={
+              captureEnabled ? () => onPickCapture?.("voice") : undefined
+            }
+          />
           <ModalOption
             icon={<PaletteIcon size={26} />}
             label="Themes"
@@ -830,14 +990,19 @@ function ModalOption({
   label,
   onClose,
   href,
+  onActivate,
 }: {
   icon: React.ReactNode;
   label: string;
   onClose: () => void;
   /** Optional destination · when supplied the option acts as a Link
-   *  and hard-navigates on tap. Without href it's a "coming soon"
-   *  stub that just closes the modal. */
+   *  and hard-navigates on tap. */
   href?: string;
+  /** Optional handler · when supplied, the option acts as a button
+   *  and calls onActivate on click (closing the modal too). Takes
+   *  precedence over href. Used for Camera / Video / Voice which
+   *  trigger a file input rather than navigating. */
+  onActivate?: () => void;
 }) {
   const sharedStyle: React.CSSProperties = {
     display: "flex",
@@ -853,6 +1018,21 @@ function ModalOption({
     transition: "background 180ms ease, transform 120ms ease",
     textDecoration: "none",
   };
+  if (onActivate) {
+    return (
+      <button
+        type="button"
+        aria-label={label}
+        title={label}
+        onClick={() => {
+          onActivate();
+        }}
+        style={sharedStyle}
+      >
+        {renderOptionInner(icon, label)}
+      </button>
+    );
+  }
   if (href) {
     return (
       <a
@@ -1042,6 +1222,61 @@ function _hexToRgb(hex: string): { r: number; g: number; b: number } {
     g: (num >> 8) & 0xff,
     b: num & 0xff,
   };
+}
+
+function AttachmentPreview({
+  url,
+  kind,
+}: {
+  url: string;
+  kind: "image" | "video" | "audio";
+}) {
+  const wrap: React.CSSProperties = {
+    flexShrink: 0,
+    width: 46,
+    height: 46,
+    borderRadius: 10,
+    overflow: "hidden",
+    background: "rgba(0,0,0,0.35)",
+    border: "1px solid rgba(255,255,255,0.08)",
+    display: "grid",
+    placeItems: "center",
+  };
+  if (kind === "image") {
+    return (
+      <div style={wrap}>
+        <img
+          src={url}
+          alt="Photo attachment"
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      </div>
+    );
+  }
+  if (kind === "video") {
+    return (
+      <div style={wrap}>
+        <video
+          src={url}
+          muted
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      </div>
+    );
+  }
+  // Audio · glyph placeholder · no thumb possible without waveform work.
+  return (
+    <div
+      style={{
+        ...wrap,
+        fontSize: 22,
+        color: NEX.cyan,
+      }}
+      aria-hidden
+    >
+      🎙️
+    </div>
+  );
 }
 
 function ReplyCancelIcon() {

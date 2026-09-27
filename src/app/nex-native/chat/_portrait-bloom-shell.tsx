@@ -66,6 +66,10 @@ export interface PortraitBloomMessage {
    *  bubble renders a "🚫 This message was deleted" placeholder in
    *  its slot instead of the body. */
   deleted_for_everyone?: boolean;
+  /** Bridge 8+9 · optional attachment carried on the message ·
+   *  photo, video, or voice note · rendered inline above the body. */
+  attachment_url?: string | null;
+  attachment_type?: "image" | "video" | "audio" | null;
 }
 
 export interface PortraitBloomContextChip {
@@ -141,6 +145,21 @@ export interface PortraitBloomShellProps {
    *  modal that submits this action with a hidden `message_id`.
    *  Omit on surfaces that don't yet support retract. */
   deleteAction?: (formData: FormData) => Promise<never> | void | Promise<void>;
+  /** Bridge 8+9 · Server Action bound with peer id · takes a form
+   *  with `attachment_file` and redirects back with the uploaded
+   *  URL on the query string. Enables Camera / Video / Voice in the
+   *  media modal. */
+  uploadAction?: (
+    formData: FormData,
+  ) => Promise<never> | void | Promise<void>;
+  /** Bridge 8+9 · pending attachment resolved from URL query state
+   *  by the peer chat page · when set, the composer shows a preview
+   *  thumbnail above the pill. */
+  pendingAttachment?: {
+    url: string;
+    kind: "image" | "video" | "audio";
+    clearHref: string;
+  } | null;
   /** Optional theme wallpaper · painted behind the message zone as
    *  a soft, dimmed layer so the theme picks up an atmosphere
    *  distinct from the peer's profile image. Sealed 2026-09-27 ·
@@ -168,6 +187,8 @@ export function PortraitBloomShell({
   replyTarget,
   deleteAction,
   wallpaperUrl,
+  uploadAction,
+  pendingAttachment,
 }: PortraitBloomShellProps) {
   const isOffline = presenceKind !== "online";
   // Per-element theme colours · fall back to rippleColor (accent)
@@ -811,15 +832,27 @@ export function PortraitBloomShell({
                           </div>
                         </div>
                       )}
-                      <div
-                        style={{
-                          // Free legibility insurance for edge cases
-                          // (bright portrait zones + light text).
-                          textShadow: "0 1px 3px rgba(0,0,0,0.35)",
-                        }}
-                      >
-                        {m.body}
-                      </div>
+                      {/* Bridge 8+9 · inline attachment (image /
+                          video / voice) · sits above the body so a
+                          caption reads under the media. */}
+                      {m.attachment_url && m.attachment_type && (
+                        <MessageAttachment
+                          url={m.attachment_url}
+                          kind={m.attachment_type}
+                          hasBody={!!m.body}
+                        />
+                      )}
+                      {m.body && (
+                        <div
+                          style={{
+                            // Free legibility insurance for edge cases
+                            // (bright portrait zones + light text).
+                            textShadow: "0 1px 3px rgba(0,0,0,0.35)",
+                          }}
+                        >
+                          {m.body}
+                        </div>
+                      )}
                       {showTimestamp && (
                         <div
                           style={{
@@ -889,6 +922,8 @@ export function PortraitBloomShell({
               placeholder={composerPlaceholder}
               themeAccent={composerRim}
               replyTarget={replyTarget ?? null}
+              uploadAction={uploadAction}
+              pendingAttachment={pendingAttachment ?? null}
             />
           </div>
         </div>
@@ -966,4 +1001,83 @@ function formatDayLabel(iso: string): string {
     day: "numeric",
     month: "short",
   });
+}
+
+/** Bridge 8+9 · inline attachment renderer for a bubble.
+ *   · image · <img> · click opens the original in a new tab
+ *   · video · <video controls> with a poster fallback via the same file
+ *   · audio · <audio controls> · voice-note bar
+ *  Rounded to match the bubble corners · caps at bubble maxWidth so
+ *  media never blows the layout. */
+function MessageAttachment({
+  url,
+  kind,
+  hasBody,
+}: {
+  url: string;
+  kind: "image" | "video" | "audio";
+  hasBody: boolean;
+}) {
+  const rounding = 12;
+  const marginBottom = hasBody ? 8 : 0;
+  if (kind === "image") {
+    return (
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open photo in a new tab"
+        style={{
+          display: "block",
+          marginBottom,
+          borderRadius: rounding,
+          overflow: "hidden",
+          maxWidth: "100%",
+          background: "rgba(0,0,0,0.35)",
+          textDecoration: "none",
+        }}
+      >
+        <img
+          src={url}
+          alt="Photo"
+          style={{
+            display: "block",
+            width: "100%",
+            maxHeight: 320,
+            objectFit: "cover",
+          }}
+        />
+      </a>
+    );
+  }
+  if (kind === "video") {
+    return (
+      <div style={{ marginBottom, borderRadius: rounding, overflow: "hidden" }}>
+        <video
+          src={url}
+          controls
+          playsInline
+          preload="metadata"
+          style={{
+            display: "block",
+            width: "100%",
+            maxHeight: 320,
+            background: "#000",
+            borderRadius: rounding,
+          }}
+        />
+      </div>
+    );
+  }
+  // audio
+  return (
+    <div style={{ marginBottom, padding: "6px 4px" }}>
+      <audio
+        src={url}
+        controls
+        preload="metadata"
+        style={{ width: "100%", height: 36 }}
+      />
+    </div>
+  );
 }

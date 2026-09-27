@@ -390,7 +390,19 @@ export async function sendPeerMessageAction(
   formData: FormData,
 ): Promise<never> {
   const body = String(formData.get("body") ?? "").trim();
-  if (!body) {
+  // Bridge 8+9 · optional attachment carried on the form. When set,
+  // an empty body is allowed (image/video/voice-only messages).
+  const attachmentUrl =
+    String(formData.get("attachment_url") ?? "").trim() || null;
+  const attachmentTypeRaw =
+    String(formData.get("attachment_type") ?? "").trim() || null;
+  const attachmentType: "image" | "video" | "audio" | null =
+    attachmentTypeRaw === "image" ||
+    attachmentTypeRaw === "video" ||
+    attachmentTypeRaw === "audio"
+      ? attachmentTypeRaw
+      : null;
+  if (!body && !attachmentUrl) {
     redirect(`/nex-native/chat/peer/${peerAccountId}`);
   }
   // Optional reply target · when set, the message quotes the referenced
@@ -417,10 +429,60 @@ export async function sendPeerMessageAction(
     sender_account_id: session.account.id,
     body,
     reply_to_id: replyToId,
+    attachment_url: attachmentUrl,
+    attachment_type: attachmentType,
   });
 
   revalidatePath(`/nex-native/chat/peer/${peerAccountId}`);
   redirect(`/nex-native/chat/peer/${peerAccountId}`);
+}
+
+/** Bridge 8+9 · upload a file (photo, video, or voice note) to the
+ *  peer-chat attachments bucket, then redirect back to the peer chat
+ *  surface with `?attachment_url=...&attachment_type=...` on the URL.
+ *  The composer reads those query params, shows a preview thumbnail,
+ *  and includes them in the next send form. This split (upload →
+ *  compose → send) means the user can add text to accompany the
+ *  attachment before committing the message. */
+export async function uploadPeerAttachmentAction(
+  peerAccountId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+  if (peerAccountId === session.account.id) {
+    redirect(`/nex-native/chat`);
+  }
+
+  const file = formData.get("attachment_file");
+  if (!(file instanceof File) || file.size === 0) {
+    // Nothing to upload · bounce back without state.
+    redirect(`/nex-native/chat/peer/${peerAccountId}`);
+  }
+
+  let successUrl: { url: string; kind: string } | null = null;
+  let failure: string | null = null;
+  try {
+    const { url, kind } = await peerMessageService.uploadPeerAttachment(
+      session.account.id,
+      file,
+    );
+    successUrl = { url, kind };
+  } catch (e) {
+    failure = e instanceof Error ? e.message : String(e);
+  }
+
+  // Redirects live outside the try/catch so Next's internal
+  // NEXT_REDIRECT throw always bubbles cleanly.
+  if (successUrl) {
+    const qs = new URLSearchParams({
+      attachment_url: successUrl.url,
+      attachment_type: successUrl.kind,
+    });
+    redirect(`/nex-native/chat/peer/${peerAccountId}?${qs.toString()}`);
+  }
+  const qs = new URLSearchParams({ upload_error: failure ?? "unknown" });
+  redirect(`/nex-native/chat/peer/${peerAccountId}?${qs.toString()}`);
 }
 
 /** Bridge 6 · retract a peer message ("delete for everyone").

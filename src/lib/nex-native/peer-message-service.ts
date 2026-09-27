@@ -38,6 +38,26 @@ export interface NexPeerMessageRow {
   deleted_for_everyone: boolean;
   /** When the retraction happened. */
   deleted_at: string | null;
+  /** Bridge 8+9 · public URL of an attached photo, video, or voice
+   *  note in the nex-peer-chat-attachments bucket. NULL for text-only
+   *  messages. Sealed 2026-09-27 · migration 054. */
+  attachment_url: string | null;
+  /** 'image' | 'video' | 'audio' · which inline renderer to use. */
+  attachment_type: NexPeerAttachmentKind | null;
+  /** Optional client metadata about the attachment · duration_ms,
+   *  width, height, size_bytes, mime · used for waveform, poster,
+   *  progress indicators. */
+  attachment_meta: NexPeerAttachmentMeta | null;
+}
+
+export type NexPeerAttachmentKind = "image" | "video" | "audio";
+
+export interface NexPeerAttachmentMeta {
+  duration_ms?: number;
+  width?: number;
+  height?: number;
+  size_bytes?: number;
+  mime?: string;
 }
 
 /** Window in which a sender can still retract a message. WhatsApp
@@ -52,6 +72,12 @@ export interface SendPeerMessageInput {
   /** Optional · when set, the message quotes this target and the UI
    *  renders a reply-quote header inside the bubble. */
   reply_to_id?: NexUuid | null;
+  /** Optional attachment on the message · Bridge 8+9. Body may be
+   *  empty (attachment-only messages are allowed at the DB level
+   *  via the body_or_attachment CHECK constraint). */
+  attachment_url?: string | null;
+  attachment_type?: NexPeerAttachmentKind | null;
+  attachment_meta?: NexPeerAttachmentMeta | null;
 }
 
 /** Persist a peer chat message. Sender must be a participant of the
@@ -62,12 +88,23 @@ export async function sendPeerMessage(
   input: SendPeerMessageInput,
 ): Promise<NexPeerMessageRow> {
   const body = input.body.trim();
-  if (body.length === 0) {
-    throw new Error("peer-message-service.sendPeerMessage: body is empty");
+  const hasAttachment = !!input.attachment_url && !!input.attachment_type;
+  if (body.length === 0 && !hasAttachment) {
+    throw new Error(
+      "peer-message-service.sendPeerMessage: body is empty and no attachment provided",
+    );
   }
   if (body.length > 4000) {
     throw new Error(
       "peer-message-service.sendPeerMessage: body exceeds 4000 chars",
+    );
+  }
+  if (
+    (input.attachment_url && !input.attachment_type) ||
+    (input.attachment_type && !input.attachment_url)
+  ) {
+    throw new Error(
+      "peer-message-service.sendPeerMessage: attachment_url + attachment_type must be set together",
     );
   }
   const conversation = await getPeerConversationById(input.conversation_id);
@@ -116,6 +153,9 @@ export async function sendPeerMessage(
       sender_account_id: input.sender_account_id,
       body,
       reply_to_id: replyToId,
+      attachment_url: input.attachment_url ?? null,
+      attachment_type: input.attachment_type ?? null,
+      attachment_meta: input.attachment_meta ?? null,
     })
     .select("*")
     .single();
@@ -219,6 +259,87 @@ export async function deletePeerMessageForEveryone(
       `peer-message-service.deletePeerMessageForEveryone update: ${upd.error.message}`,
     );
   }
+}
+
+/** Storage bucket that holds peer-chat attachments · created by
+ *  migration 055 · public read, 25 MB cap, image/video/audio MIMEs. */
+const NEX_PEER_ATTACHMENT_BUCKET = "nex-peer-chat-attachments";
+
+/** Max upload size (bytes) · matches the bucket's file_size_limit. */
+export const NEX_PEER_ATTACHMENT_MAX_BYTES = 25 * 1024 * 1024;
+
+/** MIME → kind classifier · rejects anything outside the whitelist. */
+export function classifyPeerAttachmentMime(
+  mime: string,
+): NexPeerAttachmentKind | null {
+  const m = mime.toLowerCase();
+  if (m.startsWith("image/")) return "image";
+  if (m.startsWith("video/")) return "video";
+  if (m.startsWith("audio/")) return "audio";
+  return null;
+}
+
+/** Upload a file to the peer-chat attachments bucket. Returns the
+ *  public URL + resolved kind + metadata so the caller can either
+ *  attach it to a message right away or stash it in URL state and
+ *  attach on next send. Throws on MIME rejection, size cap, or
+ *  storage error. */
+export async function uploadPeerAttachment(
+  senderAccountId: NexUuid,
+  file: File,
+): Promise<{
+  url: string;
+  kind: NexPeerAttachmentKind;
+  meta: NexPeerAttachmentMeta;
+}> {
+  if (file.size > NEX_PEER_ATTACHMENT_MAX_BYTES) {
+    throw new Error(
+      `attachment exceeds ${NEX_PEER_ATTACHMENT_MAX_BYTES / (1024 * 1024)}MB cap`,
+    );
+  }
+  const kind = classifyPeerAttachmentMime(file.type || "");
+  if (!kind) {
+    throw new Error(`attachment MIME '${file.type}' is not allowed`);
+  }
+  const extMap: Record<string, string> = {
+    "image/png": "png",
+    "image/jpeg": "jpg",
+    "image/webp": "webp",
+    "image/avif": "avif",
+    "image/gif": "gif",
+    "video/mp4": "mp4",
+    "video/webm": "webm",
+    "video/quicktime": "mov",
+    "audio/webm": "webm",
+    "audio/mp4": "m4a",
+    "audio/mpeg": "mp3",
+    "audio/ogg": "ogg",
+    "audio/wav": "wav",
+  };
+  const ext = extMap[file.type.toLowerCase()] ?? "bin";
+  // Path layout · senderId/timestamp-randomshort.ext · keeps every
+  // sender's uploads in their own prefix (useful for future
+  // per-sender cleanup) and avoids collision without a UUID lookup.
+  const objectPath = `${senderAccountId}/${Date.now()}-${Math.random()
+    .toString(36)
+    .slice(2, 8)}.${ext}`;
+  const bucket = nexSupabaseAdmin.storage.from(NEX_PEER_ATTACHMENT_BUCKET);
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  const { error } = await bucket.upload(objectPath, bytes, {
+    contentType: file.type,
+    upsert: false,
+  });
+  if (error) {
+    throw new Error(
+      `peer-message-service.uploadPeerAttachment: ${error.message}`,
+    );
+  }
+  const { data: pub } = bucket.getPublicUrl(objectPath);
+  const meta: NexPeerAttachmentMeta = {
+    size_bytes: file.size,
+    mime: file.type,
+  };
+  return { url: pub.publicUrl, kind, meta };
 }
 
 /** Count unread messages for a viewer across a specific conversation.

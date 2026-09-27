@@ -24,6 +24,7 @@ import * as chatThemeService from "@/lib/nex-native/chat-theme-service";
 import {
   sendPeerMessageAction,
   deletePeerMessageAction,
+  uploadPeerAttachmentAction,
 } from "../../../_actions";
 import {
   PortraitBloomShell,
@@ -51,6 +52,9 @@ export default async function PeerChatPage({
     online?: string;
     reply?: string;
     delete_error?: string;
+    attachment_url?: string;
+    attachment_type?: string;
+    upload_error?: string;
   }>;
 }) {
   const { accountId: peerAccountId } = await params;
@@ -93,6 +97,25 @@ export default async function PeerChatPage({
 
   const bind = sendPeerMessageAction.bind(null, peer.id);
   const bindDelete = deletePeerMessageAction.bind(null, peer.id);
+  const bindUpload = uploadPeerAttachmentAction.bind(null, peer.id);
+
+  // Bridge 8+9 · resolve the pending attachment from URL state.
+  const attachUrl = sp.attachment_url?.trim() || null;
+  const attachTypeRaw = sp.attachment_type?.trim() || null;
+  const attachKind: "image" | "video" | "audio" | null =
+    attachTypeRaw === "image" ||
+    attachTypeRaw === "video" ||
+    attachTypeRaw === "audio"
+      ? attachTypeRaw
+      : null;
+  const pendingAttachment =
+    attachUrl && attachKind
+      ? {
+          url: attachUrl,
+          kind: attachKind,
+          clearHref: `/nex-native/chat/peer/${peer.id}`,
+        }
+      : null;
 
   // Resolve peer's theme colours · bubble rims + composer rim +
   // ripple. Multi-colour themes (Rose etc.) supply per-element hex
@@ -222,6 +245,8 @@ export default async function PeerChatPage({
           }
         : null,
       deleted_for_everyone: !!m.deleted_for_everyone,
+      attachment_url: m.attachment_url ?? null,
+      attachment_type: m.attachment_type ?? null,
     };
   });
 
@@ -247,6 +272,8 @@ export default async function PeerChatPage({
       messages={bloomMessages}
       composerAction={bind}
       deleteAction={bindDelete}
+      uploadAction={bindUpload}
+      pendingAttachment={pendingAttachment}
       composerPlaceholder={`Message ${peer.display_name}…`}
       headerTag="NEX Chat"
       contacts={contacts}
