@@ -690,12 +690,43 @@ function PlusIcon() {
 }
 
 function DotsIcon() {
+  // Running-light animation · three blue dots pulse in sequence so
+  // the composer's 3-dot menu button reads as "alive" · Founder
+  // direction 2026-09-27 "running light through the dots dancing blue".
   return (
-    <svg width={26} height={26} viewBox="0 0 24 24" aria-hidden fill="currentColor">
-      <circle cx="12" cy="5" r="2" />
-      <circle cx="12" cy="12" r="2" />
-      <circle cx="12" cy="19" r="2" />
-    </svg>
+    <>
+      <svg
+        width={26}
+        height={26}
+        viewBox="0 0 24 24"
+        aria-hidden
+      >
+        <circle cx="12" cy="5" r="2.2" fill="#009FEF" data-nex-dot="0" />
+        <circle cx="12" cy="12" r="2.2" fill="#009FEF" data-nex-dot="1" />
+        <circle cx="12" cy="19" r="2.2" fill="#009FEF" data-nex-dot="2" />
+      </svg>
+      <style>{`
+        @keyframes nex-dot-dance {
+          0%, 100% {
+            opacity: 0.32;
+            transform: scale(1);
+            filter: none;
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.14);
+            filter: drop-shadow(0 0 4px #00CFFF);
+          }
+        }
+        [data-nex-dot] {
+          animation: nex-dot-dance 1.2s ease-in-out infinite;
+          transform-origin: center;
+        }
+        [data-nex-dot="0"] { animation-delay: 0s; }
+        [data-nex-dot="1"] { animation-delay: 0.18s; }
+        [data-nex-dot="2"] { animation-delay: 0.36s; }
+      `}</style>
+    </>
   );
 }
 

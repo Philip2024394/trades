@@ -80,6 +80,17 @@ export default async function PeerChatPage({
 
   const bind = sendPeerMessageAction.bind(null, peer.id);
 
+  // Resolve peer's theme colours · bubble rims + composer rim +
+  // ripple. Multi-colour themes (Rose etc.) supply per-element hex
+  // overrides · single-accent themes fall back to accent for every
+  // slot. Sealed 2026-09-27 · migration 051.
+  const peerThemeRow = peer.chat_theme
+    ? await chatThemeService.getThemeById(peer.chat_theme).catch(() => null)
+    : null;
+  const themeColours = peerThemeRow
+    ? chatThemeService.resolveThemeColours(peerThemeRow)
+    : { accent: "#00AFFF", bubbleRim: "#00AFFF", composerRim: "#00AFFF" };
+
   // Header contacts menu · list of accepted friends so the user can
   // hop between peer chats without leaving the chat surface. Best-
   // effort · if any lookup fails we return an empty list rather than
@@ -191,7 +202,9 @@ export default async function PeerChatPage({
       portraitUrl={profile?.avatar_url ?? null}
       presenceKind={presenceKind}
       presenceLabel={presenceLabel}
-      rippleColor={await chatThemeService.accentForTheme(peer.chat_theme)}
+      rippleColor={themeColours.accent}
+      bubbleRimColor={themeColours.bubbleRim}
+      composerRimColor={themeColours.composerRim}
       backHref="/nex-native/chat"
       messages={bloomMessages}
       composerAction={bind}

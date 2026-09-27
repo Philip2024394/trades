@@ -73,10 +73,17 @@ export interface PortraitBloomShellProps {
   /** Small label above the name · presence-aware. "NEX · chatting
    *  with" / "Away · will see later" / "OPEN · here now" etc. */
   presenceLabel: string;
-  /** Accent colour for the fresh-inbound ripple. Chat-theme colour
-   *  for friends · NEX cyan default for businesses (unless they later
-   *  set a brand colour). */
+  /** Accent colour for the fresh-inbound ripple + portrait halo.
+   *  Chat-theme accent for friends · NEX cyan default for businesses. */
   rippleColor: string;
+  /** Bubble rim colour · optional override that lets themes paint
+   *  message bubbles a DIFFERENT colour from the accent (see Rose ·
+   *  blue bubbles + pink accent). Falls back to rippleColor. */
+  bubbleRimColor?: string;
+  /** Composer input rim colour · optional override for themes that
+   *  want the composer to read as its own zone (see Rose · orange
+   *  composer + pink accent). Falls back to rippleColor. */
+  composerRimColor?: string;
   /** Href for the back navigation. Currently unused visually (no back
    *  button rendered) but retained so callers can keep supplying it
    *  and a future affordance can wire in without a prop refactor. */
@@ -111,6 +118,8 @@ export function PortraitBloomShell({
   presenceKind,
   presenceLabel,
   rippleColor,
+  bubbleRimColor,
+  composerRimColor,
   messages,
   composerAction,
   composerPlaceholder,
@@ -119,6 +128,10 @@ export function PortraitBloomShell({
   pendingInvites,
 }: PortraitBloomShellProps) {
   const isOffline = presenceKind !== "online";
+  // Per-element theme colours · fall back to rippleColor (accent)
+  // when the theme doesn't provide overrides.
+  const bubbleRim = bubbleRimColor ?? rippleColor;
+  const composerRim = composerRimColor ?? rippleColor;
 
   const lastMessage = messages[messages.length - 1];
   const now = Date.now();
@@ -377,7 +390,9 @@ export function PortraitBloomShell({
               style={{
                 marginTop: 2,
                 fontSize: 12,
-                color: "rgba(244,247,252,0.78)",
+                fontWeight: 600,
+                letterSpacing: "0.04em",
+                color: NEX.orange,
                 whiteSpace: "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
@@ -482,16 +497,18 @@ export function PortraitBloomShell({
                 const currDay = new Date(m.sent_at).toDateString();
                 const dayChanged = prevDay !== null && prevDay !== currDay;
                 const showDayDivider = isFirst || dayChanged;
-                // Grouping rhythm · tight cluster within same-sender
-                // run · larger gap on sender change · biggest gap on
-                // >5min pauses (spacing only, no label).
+                // Tighter grouping rhythm sealed 2026-09-27:
+                // "we need close the space between the chat bubbles".
+                //   · same sender consecutive · 2px (tight cluster)
+                //   · sender change · 8px (breath, half the previous)
+                //   · time gap > 5 min · 14px + centered day pill
                 const marginTop = isFirst
                   ? 0
                   : bigTimeGap
-                    ? 22
+                    ? 14
                     : senderChanged
-                      ? 16
-                      : 4;
+                      ? 8
+                      : 2;
                 // Only show timestamp inside the bubble for the last
                 // message in a same-sender group OR when there's a
                 // big time gap coming after this message. Reduces
@@ -544,13 +561,15 @@ export function PortraitBloomShell({
                           : NEX.glassBubble,
                         backdropFilter: "blur(24px) saturate(1.2)",
                         WebkitBackdropFilter: "blur(24px) saturate(1.2)",
-                        // Both rims wear the peer's theme colour ·
-                        // sealed 2026-09-27 · "you're in their space"
-                        // doctrine. Alignment (left/right) still tells
-                        // you which side spoke.
+                        // Outgoing bubble rim adopts the peer's
+                        // theme bubble colour (Rose = blue) · sealed
+                        // 2026-09-27. Incoming bubble rim stays a
+                        // neutral frosted gray so the other person's
+                        // messages read as content, not as another
+                        // identity paint layer.
                         border: m.mine
-                          ? `1px solid ${themeRimStrong(rippleColor)}`
-                          : `1px solid ${themeRimSoft(rippleColor)}`,
+                          ? `1px solid ${themeRimStrong(bubbleRim)}`
+                          : "1px solid rgba(150,160,180,0.55)",
                         color: NEX.text,
                         fontSize: 15,
                         lineHeight: 1.42,
@@ -634,7 +653,7 @@ export function PortraitBloomShell({
             <PeerComposer
               action={composerAction}
               placeholder={composerPlaceholder}
-              themeAccent={rippleColor}
+              themeAccent={composerRim}
             />
           </div>
         </div>

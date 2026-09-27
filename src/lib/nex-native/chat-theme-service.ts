@@ -20,6 +20,12 @@ export interface NexChatThemeRow {
   name: string;
   tagline: string | null;
   accent_hex: string;
+  /** Optional override for message bubble rims (both sides) · when
+   *  null, bubbles use accent_hex. Sealed 2026-09-27 · migration 051. */
+  bubble_rim_hex: string | null;
+  /** Optional override for composer input rim · when null, composer
+   *  uses accent_hex. Send button stays universal orange regardless. */
+  composer_rim_hex: string | null;
   tier: NexChatThemeTier;
   category: NexChatThemeCategory;
   hero_image_url: string | null;
@@ -29,11 +35,34 @@ export interface NexChatThemeRow {
   updated_at: string;
 }
 
+/** Resolved colour bundle for a theme · every element has a concrete
+ *  hex. Callers use this to paint bubbles / composer / ripple without
+ *  reaching for null-check boilerplate. */
+export interface NexChatThemeColours {
+  accent: string;
+  bubbleRim: string;
+  composerRim: string;
+}
+
+/** Given a theme row, resolve every element's colour with fallbacks
+ *  to accent when overrides are null. Pure function · safe anywhere. */
+export function resolveThemeColours(
+  row: Pick<NexChatThemeRow, "accent_hex" | "bubble_rim_hex" | "composer_rim_hex">,
+): NexChatThemeColours {
+  return {
+    accent: row.accent_hex,
+    bubbleRim: row.bubble_rim_hex ?? row.accent_hex,
+    composerRim: row.composer_rim_hex ?? row.accent_hex,
+  };
+}
+
 export interface NexChatThemeInsert {
   id: string;
   name: string;
   tagline?: string | null;
   accent_hex: string;
+  bubble_rim_hex?: string | null;
+  composer_rim_hex?: string | null;
   tier?: NexChatThemeTier;
   category?: NexChatThemeCategory;
   hero_image_url?: string | null;
@@ -99,6 +128,8 @@ export async function createTheme(
       name: input.name,
       tagline: input.tagline ?? null,
       accent_hex: input.accent_hex,
+      bubble_rim_hex: input.bubble_rim_hex ?? null,
+      composer_rim_hex: input.composer_rim_hex ?? null,
       tier: input.tier ?? "gratis",
       category: input.category ?? "standard",
       hero_image_url: input.hero_image_url ?? null,

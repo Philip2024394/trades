@@ -30,6 +30,8 @@ export interface BrowserThemeRow {
   name: string;
   tagline: string | null;
   accent_hex: string;
+  bubble_rim_hex: string | null;
+  composer_rim_hex: string | null;
   tier: "gratis" | "bisnis";
   category: "standard" | "premium";
   hero_image_url: string | null;
@@ -548,10 +550,23 @@ function PreviewModal({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  const rgb = hexToRgb(theme.accent_hex);
-  const outgoingRim = `rgba(${rgb.r},${rgb.g},${rgb.b},0.85)`;
-  const incomingRim = `rgba(${rgb.r},${rgb.g},${rgb.b},0.5)`;
-  const glow = `rgba(${rgb.r},${rgb.g},${rgb.b},0.28)`;
+  // Per-element colours · sealed 2026-09-27 · migration 051.
+  //   accent (ripple + halo) = theme.accent_hex
+  //   bubble rim (incoming + outgoing) = bubble_rim_hex ?? accent
+  //   composer rim = composer_rim_hex ?? accent
+  const accentHex = theme.accent_hex;
+  const bubbleHex = theme.bubble_rim_hex ?? accentHex;
+  const composerHex = theme.composer_rim_hex ?? accentHex;
+  const bubbleRgb = hexToRgb(bubbleHex);
+  const composerRgb = hexToRgb(composerHex);
+  const accentRgb = hexToRgb(accentHex);
+  const outgoingRim = `rgba(${bubbleRgb.r},${bubbleRgb.g},${bubbleRgb.b},0.85)`;
+  // Incoming bubble rim is fixed frosted gray · sealed 2026-09-27.
+  // Only outgoing bubbles + composer pick up the theme colour.
+  const incomingRim = "rgba(150,160,180,0.55)";
+  const composerRimStyle = `rgba(${composerRgb.r},${composerRgb.g},${composerRgb.b},0.85)`;
+  const composerGlow = `rgba(${composerRgb.r},${composerRgb.g},${composerRgb.b},0.22)`;
+  const glow = `rgba(${accentRgb.r},${accentRgb.g},${accentRgb.b},0.28)`;
 
   return (
     <>
@@ -828,7 +843,9 @@ function PreviewModal({
                 Yes! New collection dropping this weekend.
               </MockBubble>
             </div>
-            {/* Mock composer */}
+            {/* Mock composer · rim uses per-element composer_rim_hex
+                so themes can paint the composer differently from
+                bubbles (Rose = blue bubbles + orange composer). */}
             <div
               style={{
                 marginTop: 14,
@@ -839,8 +856,8 @@ function PreviewModal({
                 padding: "6px 8px",
                 borderRadius: 12,
                 background: "rgba(12,32,58,0.62)",
-                border: `1px solid ${outgoingRim}`,
-                boxShadow: `0 0 12px ${glow}`,
+                border: `1px solid ${composerRimStyle}`,
+                boxShadow: `0 0 12px ${composerGlow}`,
               }}
             >
               <span

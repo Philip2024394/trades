@@ -73,6 +73,8 @@ export default async function ThemePickerPage({
     name: t.name,
     tagline: t.tagline,
     accent_hex: t.accent_hex,
+    bubble_rim_hex: t.bubble_rim_hex,
+    composer_rim_hex: t.composer_rim_hex,
     tier: t.tier,
     category: t.category,
     hero_image_url: t.hero_image_url,
