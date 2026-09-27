@@ -232,6 +232,15 @@ export function PortraitBloomShell({
           max-width: 100vw;
           overflow-x: hidden;
         }
+        /* Presence heartbeat · a soft ring expands + fades out
+           from the profile chip every 1.2s (~75 bpm) whenever the
+           peer is online. Signals "here, right now" without shouting.
+           Composited transform + opacity keep it cheap. */
+        @keyframes nex-presence-heartbeat {
+          0%   { transform: scale(1);    opacity: 0.55; }
+          70%  { transform: scale(1.32); opacity: 0; }
+          100% { transform: scale(1.32); opacity: 0; }
+        }
         @keyframes nex-bloom-msg-in {
           from { opacity: 0; transform: translateY(8px); }
           to   { opacity: 1; transform: translateY(0); }
@@ -420,6 +429,10 @@ export function PortraitBloomShell({
                 here now that the hero portrait layer is gone. The
                 theme wallpaper is the environment · this dot is the
                 person. Presence colour lives on the ring. */}
+            {/* Chip wrapper · outer container carries the heartbeat
+                pulse ring (overflow:visible so it can expand past
+                the chip's 42px). The inner chip keeps overflow:
+                hidden so the avatar image stays circle-cropped. */}
             <div
               aria-label={presenceLabel}
               title={presenceLabel}
@@ -428,45 +441,73 @@ export function PortraitBloomShell({
                 flexShrink: 0,
                 width: 42,
                 height: 42,
-                borderRadius: "50%",
-                overflow: "hidden",
-                border: `2px solid ${
-                  presenceKind === "online"
-                    ? NEX.green
-                    : presenceKind === "away"
-                      ? "#F59E0B"
-                      : "rgba(139,169,209,0.5)"
-                }`,
-                boxShadow:
-                  presenceKind === "online"
-                    ? `0 0 0 3px ${NEX.green}22, 0 4px 14px rgba(0,0,0,0.6)`
-                    : "0 4px 14px rgba(0,0,0,0.6)",
-                backgroundImage: portraitUrl
-                  ? `url(${portraitUrl})`
-                  : `linear-gradient(135deg, ${NEX.cyanDeep} 0%, #05101f 100%)`,
-                backgroundSize: "cover",
-                backgroundPosition: "center 22%",
-                transition: "border-color 500ms ease, box-shadow 500ms ease",
               }}
             >
-              {!portraitUrl && (
+              {/* Heartbeat pulse ring · sealed 2026-09-27. Renders
+                  only when the peer is online · matches the presence
+                  ring colour · expands + fades at ~75 bpm to signal
+                  "here, right now". GPU-friendly (transform +
+                  opacity, no box-shadow animation). */}
+              {presenceKind === "online" && (
                 <div
                   aria-hidden
                   style={{
                     position: "absolute",
-                    inset: 0,
-                    display: "grid",
-                    placeItems: "center",
-                    color: NEX.cyan,
-                    fontSize: 15,
-                    fontWeight: 700,
-                    letterSpacing: "0.06em",
-                    opacity: 0.9,
+                    inset: -2,
+                    borderRadius: "50%",
+                    border: `2px solid ${NEX.green}`,
+                    animation:
+                      "nex-presence-heartbeat 1200ms cubic-bezier(0.4, 0, 0.2, 1) infinite",
+                    pointerEvents: "none",
+                    willChange: "transform, opacity",
                   }}
-                >
-                  {initialsFromName(displayName)}
-                </div>
+                />
               )}
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  borderRadius: "50%",
+                  overflow: "hidden",
+                  border: `2px solid ${
+                    presenceKind === "online"
+                      ? NEX.green
+                      : presenceKind === "away"
+                        ? "#F59E0B"
+                        : "rgba(139,169,209,0.5)"
+                  }`,
+                  boxShadow:
+                    presenceKind === "online"
+                      ? `0 0 0 3px ${NEX.green}22, 0 4px 14px rgba(0,0,0,0.6)`
+                      : "0 4px 14px rgba(0,0,0,0.6)",
+                  backgroundImage: portraitUrl
+                    ? `url(${portraitUrl})`
+                    : `linear-gradient(135deg, ${NEX.cyanDeep} 0%, #05101f 100%)`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center 22%",
+                  transition:
+                    "border-color 500ms ease, box-shadow 500ms ease",
+                }}
+              >
+                {!portraitUrl && (
+                  <div
+                    aria-hidden
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      display: "grid",
+                      placeItems: "center",
+                      color: NEX.cyan,
+                      fontSize: 15,
+                      fontWeight: 700,
+                      letterSpacing: "0.06em",
+                      opacity: 0.9,
+                    }}
+                  >
+                    {initialsFromName(displayName)}
+                  </div>
+                )}
+              </div>
             </div>
             {/* Right column · name stacks over subtitle so
                 "Footwear designer" sits directly under "Maria",
