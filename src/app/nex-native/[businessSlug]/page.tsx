@@ -165,76 +165,6 @@ export default async function Page({
               {business.description}
             </p>
           )}
-          {/* Signal chips */}
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 6,
-              marginTop: 18,
-            }}
-          >
-            {business.address && (
-              <SignalChip label={business.address.split("·")[0]!.trim()} icon="📍" />
-            )}
-            {products.length > 0 && (
-              <SignalChip
-                label={`${products.length} pieces available`}
-                icon="✦"
-              />
-            )}
-            {business.accepts_pickup && (
-              <SignalChip label="Local pickup" icon="🤝" />
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* --- PRIMARY CHAT CTA ---------------------------------------- */}
-      <section
-        style={{
-          maxWidth: 720,
-          margin: "0 auto",
-          padding: "24px 20px 8px",
-        }}
-      >
-        <Link
-          href={chatHref}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 10,
-            width: "100%",
-            padding: "16px 20px",
-            borderRadius: 14,
-            background:
-              "linear-gradient(180deg, #FF9033 0%, #FF7800 100%)",
-            color: "#0B0F1A",
-            fontSize: 15,
-            fontWeight: 700,
-            letterSpacing: "0.02em",
-            textDecoration: "none",
-            boxShadow:
-              "0 12px 28px rgba(255,120,0,0.4), inset 0 1px 0 rgba(255,255,255,0.28)",
-          }}
-        >
-          <span aria-hidden style={{ fontSize: 18 }}>
-            💬
-          </span>
-          Chat with {firstName(business.display_name)}
-          <span aria-hidden>→</span>
-        </Link>
-        <div
-          style={{
-            textAlign: "center",
-            fontSize: 11,
-            color: NEX.textMute,
-            marginTop: 10,
-            letterSpacing: "0.02em",
-          }}
-        >
-          Ask about a piece · negotiate · buy · all in one conversation
         </div>
       </section>
 
@@ -450,29 +380,6 @@ function SectionHeading({
       >
         {title}
       </h2>
-    </div>
-  );
-}
-
-function SignalChip({ label, icon }: { label: string; icon: string }) {
-  return (
-    <div
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 6,
-        padding: "5px 10px",
-        borderRadius: 999,
-        background: "rgba(0,0,0,0.42)",
-        border: `1px solid ${NEX.borderStrong}`,
-        color: NEX.text,
-        fontSize: 11,
-        letterSpacing: "0.02em",
-        backdropFilter: "blur(6px)",
-      }}
-    >
-      <span aria-hidden>{icon}</span>
-      <span>{label}</span>
     </div>
   );
 }
@@ -783,10 +690,6 @@ function ProductSpread({
       </div>
     </article>
   );
-}
-
-function firstName(name: string): string {
-  return name.split(/[·\s]+/)[0] ?? name;
 }
 
 function formatPrice(pence: number, currency: string): string {
