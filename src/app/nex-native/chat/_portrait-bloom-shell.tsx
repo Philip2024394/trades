@@ -27,6 +27,7 @@ import {
   type PendingInvite,
 } from "./_header-contacts-menu";
 import { AmbientMotion } from "./_ambient-motion";
+import { FirstConnectionEmpty } from "./_first-connection-empty";
 
 const NEX = {
   bg: "#020914",
@@ -569,18 +570,10 @@ export function PortraitBloomShell({
             }}
           >
             {messages.length === 0 ? (
-              <div
-                style={{
-                  alignSelf: "center",
-                  maxWidth: 260,
-                  textAlign: "center",
-                  color: NEX.textDim,
-                  fontSize: 13,
-                  padding: "20px 12px",
-                }}
-              >
-                Say hi to {displayName} · every message persists on NEX.
-              </div>
+              <FirstConnectionEmpty
+                peerName={displayName}
+                themeAccent={rippleColor}
+              />
             ) : (
               messages.map((m, idx) => {
                 const prev = messages[idx - 1];
