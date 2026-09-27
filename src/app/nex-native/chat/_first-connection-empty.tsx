@@ -23,7 +23,6 @@ import * as React from "react";
 
 interface ConfettiPiece {
   id: string;
-  x: number; // % across the container
   color: string;
   size: number; // px
   duration: number; // ms
@@ -31,6 +30,14 @@ interface ConfettiPiece {
   rotation: number; // deg initial
   rotationEnd: number; // deg end
   shape: "square" | "circle" | "strip";
+  /** Peak offset from origin · this is where the piece reaches at
+   *  the top of its arc before gravity pulls it back down. */
+  peakX: number; // px, positive right / negative left
+  peakY: number; // px, always negative (upward)
+  /** Final landing offset from origin · where it drifts to after
+   *  gravity takes over. */
+  fallX: number; // px
+  fallY: number; // px, always positive (downward, off-screen)
 }
 
 // NEX palette confetti · cyan / orange / white / warm pinks and greens.
@@ -54,16 +61,32 @@ function pick<T>(arr: readonly T[]): T {
 function makeConfettiBurst(count: number): ConfettiPiece[] {
   const pieces: ConfettiPiece[] = [];
   for (let i = 0; i < count; i++) {
+    // Angle in the upper hemisphere · 180°..360° in trig terms
+    // (roughly -30° to -150° from horizontal · a wedge shooting
+    // upward and outward like a real popper).
+    const angle = rand(Math.PI * 1.05, Math.PI * 1.95);
+    const power = rand(60, 200); // outward reach at peak
+    const peakX = Math.cos(angle) * power;
+    const peakY = Math.sin(angle) * power; // negative because upper half
+    // Gravity carries them past the peak · horizontal drift decays
+    // (air resistance), vertical accelerates down.
+    const fallX = peakX * rand(1.05, 1.4);
+    const fallY = rand(220, 380); // drops well past the empty-state block
     pieces.push({
       id: `c-${i}-${Math.random().toString(36).slice(2, 6)}`,
-      x: rand(0, 100),
       color: pick(CONFETTI_COLORS),
       size: rand(6, 12),
-      duration: rand(2600, 4400),
-      delay: rand(0, 1800),
+      duration: rand(1800, 3200),
+      // Small stagger so the burst reads as an explosion rather
+      // than a metronome · most pieces launch within 260 ms.
+      delay: rand(0, 260),
       rotation: rand(0, 360),
-      rotationEnd: rand(-720, 720),
+      rotationEnd: rand(-540, 540),
       shape: pick(["square", "circle", "strip"] as const),
+      peakX,
+      peakY,
+      fallX,
+      fallY,
     });
   }
   return pieces;
@@ -104,11 +127,20 @@ export function FirstConnectionEmpty({
       }}
     >
       <style>{`
-        @keyframes nex-confetti-fall {
-          0%   { transform: translateY(-40px) rotate(var(--r-start));
+        /* Party-popper burst · pieces launch outward from the icon
+           center, reach a peak, then gravity pulls them past it
+           into a downward fall. Each piece carries its own peak +
+           fall coordinates via CSS custom properties so 36 pieces
+           share one keyframe rule. */
+        @keyframes nex-confetti-burst {
+          0%   { transform: translate(0, 0) rotate(var(--r-start));
                  opacity: 0; }
-          8%   { opacity: 1; }
-          100% { transform: translateY(min(80vh, 480px)) rotate(var(--r-end));
+          10%  { opacity: 1; }
+          38%  { transform: translate(var(--px), var(--py))
+                            rotate(calc(var(--r-start) + var(--r-mid)));
+                 opacity: 1; }
+          100% { transform: translate(var(--fx), var(--fy))
+                            rotate(var(--r-end));
                  opacity: 0; }
         }
         @keyframes nex-celebration-in {
@@ -126,33 +158,44 @@ export function FirstConnectionEmpty({
         }
       `}</style>
 
-      {/* Confetti layer · absolute over the empty-state block only */}
+      {/* Confetti layer · pieces originate at the icon center
+          (~48px from top of the card, horizontally centered) and
+          burst outward. Overflow visible so pieces can travel
+          beyond the card bounds during the arc. */}
       <div
         aria-hidden
         style={{
           position: "absolute",
           inset: 0,
           pointerEvents: "none",
-          overflow: "hidden",
+          overflow: "visible",
         }}
       >
         {pieces.map((p) => {
           const style: React.CSSProperties & { [key: string]: string } = {
             position: "absolute",
-            top: 0,
-            left: `${p.x}%`,
+            top: 68, // matches the icon's vertical center inside the card
+            left: "50%",
+            marginLeft: -(p.size / 2),
             width: p.shape === "strip" ? p.size * 0.35 : p.size,
             height: p.shape === "strip" ? p.size * 1.4 : p.size,
             background: p.color,
             borderRadius: p.shape === "circle" ? "50%" : 2,
-            animationName: "nex-confetti-fall",
+            animationName: "nex-confetti-burst",
             animationDuration: `${p.duration}ms`,
-            animationTimingFunction: "cubic-bezier(0.3, 0.7, 0.3, 1)",
+            // Ease-out on the arc · slows near the peak, then
+            // accelerates into the fall via the keyframe curve.
+            animationTimingFunction: "cubic-bezier(0.25, 0.6, 0.4, 1)",
             animationFillMode: "forwards",
             animationDelay: `${p.delay}ms`,
             boxShadow: `0 0 6px ${p.color}88`,
             "--r-start": `${p.rotation}deg`,
+            "--r-mid": `${(p.rotationEnd - p.rotation) * 0.5}deg`,
             "--r-end": `${p.rotationEnd}deg`,
+            "--px": `${p.peakX}px`,
+            "--py": `${p.peakY}px`,
+            "--fx": `${p.fallX}px`,
+            "--fy": `${p.fallY}px`,
           };
           return <div key={p.id} style={style} />;
         })}
