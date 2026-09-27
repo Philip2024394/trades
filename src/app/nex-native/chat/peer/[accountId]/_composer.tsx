@@ -41,7 +41,26 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const [text, setText] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
+  const [emojiOpen, setEmojiOpen] = React.useState(false);
   const hasText = text.trim().length > 0;
+
+  const insertEmoji = React.useCallback((emoji: string) => {
+    const el = textareaRef.current;
+    if (!el) {
+      setText((prev) => prev + emoji);
+      return;
+    }
+    const start = el.selectionStart ?? el.value.length;
+    const end = el.selectionEnd ?? el.value.length;
+    const next = el.value.slice(0, start) + emoji + el.value.slice(end);
+    setText(next);
+    // Restore cursor after the inserted emoji · defer so React flushes
+    // the new value first.
+    requestAnimationFrame(() => {
+      el.focus();
+      el.setSelectionRange(start + emoji.length, start + emoji.length);
+    });
+  }, []);
 
   const resizeTextarea = React.useCallback(() => {
     const el = textareaRef.current;
@@ -111,6 +130,15 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
 
       {modalOpen && (
         <MediaModal onClose={() => setModalOpen(false)} />
+      )}
+      {emojiOpen && (
+        <EmojiModal
+          onClose={() => setEmojiOpen(false)}
+          onPick={(e) => {
+            insertEmoji(e);
+            setEmojiOpen(false);
+          }}
+        />
       )}
 
       <form
@@ -207,11 +235,38 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
                 overflow: "auto",
               }}
             />
+            <EmojiButton onClick={() => setEmojiOpen(true)} />
             <SendButton armed={hasText} />
           </div>
         </div>
       </form>
     </>
+  );
+}
+
+function EmojiButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      aria-label="Insert emoji"
+      onClick={onClick}
+      style={{
+        flexShrink: 0,
+        width: 36,
+        height: 36,
+        borderRadius: "50%",
+        background: "transparent",
+        border: "none",
+        color: NEX.textSecondary,
+        display: "grid",
+        placeItems: "center",
+        cursor: "pointer",
+        padding: 0,
+        marginRight: 2,
+      }}
+    >
+      <SmileIcon />
+    </button>
   );
 }
 
@@ -388,6 +443,142 @@ function MediaModal({ onClose }: { onClose: () => void }) {
   );
 }
 
+// ---------------------------------------------------------------------------
+// Emoji picker · centered modal grid
+// ---------------------------------------------------------------------------
+
+const EMOJI_SET: readonly string[] = [
+  // Faces · smiles
+  "😀", "😄", "😊", "😍", "🥰", "😘", "😎", "🤩",
+  "🥳", "😇", "🙂", "😉", "😌", "😏", "🤗", "🫶",
+  // Faces · sad/serious
+  "🤔", "😐", "😶", "😑", "🙄", "😢", "😭", "😤",
+  "😬", "🥺", "😳", "🤯", "😴", "🤤", "🤒", "🤕",
+  // Gestures
+  "👍", "👎", "👏", "🙌", "🤝", "🤞", "👊", "✌️",
+  "🫡", "🙏", "💪", "👋", "🤙", "👌", "☝️", "✋",
+  // Hearts + affect
+  "❤️", "🧡", "💛", "💚", "💙", "💜", "🖤", "🤍",
+  "💯", "🔥", "✨", "💫", "⭐", "🌟", "💥", "🎉",
+  // Objects + commerce
+  "🛍️", "🎁", "💰", "💳", "📦", "📸", "🎨", "👟",
+  "👗", "☕", "🍰", "🍞", "🌮", "🍔", "🎵", "🎧",
+];
+
+function EmojiModal({
+  onClose,
+  onPick,
+}: {
+  onClose: () => void;
+  onPick: (emoji: string) => void;
+}) {
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return (
+    <>
+      <div
+        data-nex-media-backdrop
+        role="button"
+        aria-label="Close emoji picker"
+        onClick={onClose}
+        style={{
+          position: "fixed",
+          inset: 0,
+          background: "rgba(2,9,20,0.72)",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+          zIndex: 100,
+        }}
+      />
+      <div
+        data-nex-media-modal
+        role="dialog"
+        aria-modal="true"
+        aria-label="Pick an emoji"
+        style={{
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "min(340px, calc(100vw - 40px))",
+          maxHeight: "60vh",
+          padding: "18px 16px",
+          background: NEX.panel,
+          border: `1px solid ${NEX.cyanSoft}`,
+          borderRadius: 24,
+          boxShadow:
+            "0 24px 60px rgba(0,0,0,0.65), 0 0 40px rgba(0,159,239,0.14)",
+          zIndex: 101,
+          color: NEX.textPrimary,
+          fontFamily: "inherit",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: NEX.cyan,
+            textAlign: "center",
+            marginBottom: 12,
+            fontWeight: 600,
+          }}
+        >
+          NEX · Pick an emoji
+        </div>
+        <div
+          style={{
+            flex: 1,
+            overflowY: "auto",
+            display: "grid",
+            gridTemplateColumns: "repeat(8, 1fr)",
+            gap: 4,
+            paddingRight: 4,
+          }}
+        >
+          {EMOJI_SET.map((emoji) => (
+            <button
+              key={emoji}
+              type="button"
+              onClick={() => onPick(emoji)}
+              style={{
+                width: "100%",
+                aspectRatio: "1 / 1",
+                background: "transparent",
+                border: "none",
+                borderRadius: 8,
+                fontSize: 22,
+                cursor: "pointer",
+                padding: 0,
+                lineHeight: 1,
+                display: "grid",
+                placeItems: "center",
+                transition: "background 120ms ease, transform 100ms ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(0,159,239,0.12)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "transparent";
+              }}
+            >
+              {emoji}
+            </button>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
 function ModalOption({
   icon,
   label,
@@ -510,6 +701,17 @@ function SendIcon() {
     <svg width={16} height={16} viewBox="0 0 24 24" aria-hidden {...strokeProps} strokeWidth={2.2}>
       <path d="M22 2 11 13" />
       <path d="M22 2 15 22 11 13 2 9 22 2z" />
+    </svg>
+  );
+}
+
+function SmileIcon() {
+  return (
+    <svg width={20} height={20} viewBox="0 0 24 24" aria-hidden {...strokeProps} strokeWidth={1.9}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+      <line x1="9" y1="9" x2="9.01" y2="9" />
+      <line x1="15" y1="9" x2="15.01" y2="9" />
     </svg>
   );
 }

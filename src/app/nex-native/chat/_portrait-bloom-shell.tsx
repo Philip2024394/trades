@@ -150,6 +150,21 @@ export function PortraitBloomShell({
            bar on the side of the chat window. Sealed 2026-09-27. */
         [data-nex-message-scroll] {
           scrollbar-width: none;
+          /* Fade the top edge so bubbles dissolve into the header
+             instead of cutting hard against it. Bottom stays sharp
+             so the composer keeps a clean boundary. */
+          mask-image: linear-gradient(
+            180deg,
+            transparent 0px,
+            #000 56px,
+            #000 100%
+          );
+          -webkit-mask-image: linear-gradient(
+            180deg,
+            transparent 0px,
+            #000 56px,
+            #000 100%
+          );
         }
         [data-nex-message-scroll]::-webkit-scrollbar {
           display: none;
@@ -274,7 +289,9 @@ export function PortraitBloomShell({
             breathe and messages get more room. The "NEX · chatting
             with" label was removed 2026-09-27 · the portrait already
             signals "chatting with" and the presence dot lives inline
-            beside the name. */}
+            beside the name. Backdrop-blur means bubbles scrolling
+            behind get blurred rather than cutting hard against the
+            header. */}
         <div
           style={{
             position: "relative",
@@ -283,6 +300,8 @@ export function PortraitBloomShell({
             padding:
               "calc(env(safe-area-inset-top, 0) + 14px) 20px 12px",
             textShadow: "0 2px 20px rgba(0,0,0,0.75)",
+            backdropFilter: "blur(14px)",
+            WebkitBackdropFilter: "blur(14px)",
           }}
         >
           <div
@@ -397,7 +416,9 @@ export function PortraitBloomShell({
               marginTop: "auto",
               display: "flex",
               flexDirection: "column",
-              gap: 10,
+              // Explicit per-message spacing replaces the flex gap ·
+              // grouping rhythm is applied via marginTop on each item.
+              gap: 0,
             }}
           >
             {messages.length === 0 ? (
@@ -414,65 +435,119 @@ export function PortraitBloomShell({
                 Say hi to {displayName} · every message persists on NEX.
               </div>
             ) : (
-              messages.map((m) => (
-                <div
-                  key={m.id}
-                  data-nex-bloom-msg
-                  data-nex-bloom-msg-mine={m.mine ? "true" : undefined}
-                  style={{
-                    position: "relative",
-                    alignSelf: m.mine ? "flex-end" : "flex-start",
-                    maxWidth: "78%",
-                    padding: "11px 14px 9px",
-                    // Uniform rounded corners · no directional tail.
-                    // Sealed 2026-09-27 · quieter, more premium.
-                    borderRadius: 18,
-                    background: m.mine
-                      ? "rgba(120,140,180,0.14)"
-                      : NEX.glassBubble,
-                    backdropFilter: "blur(14px)",
-                    WebkitBackdropFilter: "blur(14px)",
-                    border: m.mine
-                      ? "1px solid rgba(0,159,239,0.85)"
-                      : `1px solid ${NEX.glassBorder}`,
-                    color: NEX.text,
-                    fontSize: 15,
-                    lineHeight: 1.42,
-                    whiteSpace: "pre-wrap",
-                    wordBreak: "break-word",
-                    boxShadow: m.mine
-                      ? "0 0 14px rgba(0,159,239,0.25), 0 6px 20px rgba(0,0,0,0.45)"
-                      : "0 6px 22px rgba(0,0,0,0.55)",
-                  }}
-                >
-                  <div>{m.body}</div>
-                  <div
-                    style={{
-                      marginTop: 4,
-                      fontSize: 10,
-                      color: m.mine
-                        ? "rgba(255,255,255,0.75)"
-                        : "rgba(139,169,209,0.85)",
-                      textAlign: "right",
-                      letterSpacing: "0.02em",
-                    }}
-                  >
-                    {formatTime(m.sent_at)}
-                    {m.mine && (
-                      <span
+              messages.map((m, idx) => {
+                const prev = messages[idx - 1];
+                const senderChanged = !prev || prev.mine !== m.mine;
+                const timeGapMs = prev
+                  ? new Date(m.sent_at).getTime() -
+                    new Date(prev.sent_at).getTime()
+                  : Number.POSITIVE_INFINITY;
+                const bigTimeGap = timeGapMs > 5 * 60_000;
+                const isFirst = idx === 0;
+                // Grouping rhythm · tight cluster within same-sender
+                // run · larger gap on sender change · time separator
+                // + biggest gap on >5min pauses.
+                const marginTop = isFirst
+                  ? 0
+                  : bigTimeGap
+                    ? 22
+                    : senderChanged
+                      ? 16
+                      : 4;
+                // Only show timestamp inside the bubble for the last
+                // message in a same-sender group OR when there's a
+                // big time gap coming after this message. Reduces
+                // visual noise in a rapid burst.
+                const next = messages[idx + 1];
+                const nextSenderDiffers = !next || next.mine !== m.mine;
+                const nextTimeGap = next
+                  ? new Date(next.sent_at).getTime() -
+                    new Date(m.sent_at).getTime() >
+                    5 * 60_000
+                  : true;
+                const showTimestamp = nextSenderDiffers || nextTimeGap;
+                return (
+                  <React.Fragment key={m.id}>
+                    {bigTimeGap && !isFirst && (
+                      <div
                         style={{
-                          marginLeft: 5,
-                          color: m.read_at
-                            ? "#C4E5FF"
-                            : "rgba(255,255,255,0.6)",
+                          alignSelf: "center",
+                          padding: "4px 12px",
+                          margin: "6px 0",
+                          borderRadius: 999,
+                          background: "rgba(8,39,68,0.55)",
+                          color: NEX.textDim,
+                          fontSize: 10,
+                          letterSpacing: "0.14em",
+                          textTransform: "uppercase",
+                          fontWeight: 600,
                         }}
                       >
-                        {m.read_at ? "✓✓" : "✓"}
-                      </span>
+                        {formatTime(m.sent_at)}
+                      </div>
                     )}
-                  </div>
-                </div>
-              ))
+                    <div
+                      data-nex-bloom-msg
+                      data-nex-bloom-msg-mine={m.mine ? "true" : undefined}
+                      style={{
+                        position: "relative",
+                        alignSelf: m.mine ? "flex-end" : "flex-start",
+                        maxWidth: "78%",
+                        padding: showTimestamp
+                          ? "11px 14px 9px"
+                          : "10px 14px",
+                        marginTop,
+                        borderRadius: 18,
+                        background: m.mine
+                          ? "rgba(120,140,180,0.14)"
+                          : NEX.glassBubble,
+                        backdropFilter: "blur(14px)",
+                        WebkitBackdropFilter: "blur(14px)",
+                        border: m.mine
+                          ? "1px solid rgba(0,159,239,0.85)"
+                          : `1px solid ${NEX.glassBorder}`,
+                        color: NEX.text,
+                        fontSize: 15,
+                        lineHeight: 1.42,
+                        whiteSpace: "pre-wrap",
+                        wordBreak: "break-word",
+                        boxShadow: m.mine
+                          ? "0 0 14px rgba(0,159,239,0.25), 0 6px 20px rgba(0,0,0,0.45)"
+                          : "0 6px 22px rgba(0,0,0,0.55)",
+                      }}
+                    >
+                      <div>{m.body}</div>
+                      {showTimestamp && (
+                        <div
+                          style={{
+                            marginTop: 4,
+                            fontSize: 10,
+                            color: m.mine
+                              ? "rgba(255,255,255,0.75)"
+                              : "rgba(139,169,209,0.85)",
+                            textAlign: "right",
+                            letterSpacing: "0.02em",
+                          }}
+                        >
+                          {formatTime(m.sent_at)}
+                          {m.mine && (
+                            <span
+                              style={{
+                                marginLeft: 5,
+                                color: m.read_at
+                                  ? "#C4E5FF"
+                                  : "rgba(255,255,255,0.6)",
+                              }}
+                            >
+                              {m.read_at ? "✓✓" : "✓"}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </React.Fragment>
+                );
+              })
             )}
           </div>
         </section>
