@@ -20,6 +20,7 @@
 // Zero legacy chrome: no SKU column, no idempotency inputs, no
 // inline order forms · commerce happens inside chat per doctrine.
 
+import type * as React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import * as businessService from "@/lib/nex-native/business-service";
