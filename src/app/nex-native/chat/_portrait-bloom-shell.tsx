@@ -26,6 +26,7 @@ import {
   type HeaderContact,
   type PendingInvite,
 } from "./_header-contacts-menu";
+import { AmbientMotion } from "./_ambient-motion";
 
 const NEX = {
   bg: "#020914",
@@ -286,6 +287,11 @@ export function PortraitBloomShell({
                 zIndex: 0,
               }}
             />
+            {/* Ambient motion · crows + twinkles · only when a
+                wallpaper is present so unthemed surfaces stay quiet.
+                Sits at z-index 1 (above wallpaper + scrim, below
+                header + bubbles). */}
+            <AmbientMotion />
           </>
         )}
 
