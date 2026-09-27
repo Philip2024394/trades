@@ -92,24 +92,26 @@ export default async function Page({
           WebkitBackdropFilter: "blur(8px)",
         }}
       >
-        {/* Brand · NE (white) + X (orange) · NEX identity mark */}
+        {/* Brand · NE (white) + X (orange) · matches the create-account
+            wordmark exactly · sans + letterSpacing 0.08em. */}
         <Link
           href="/nex-native"
           aria-label="NEX home"
           style={{
             display: "inline-flex",
             alignItems: "baseline",
-            gap: 1,
+            gap: 2,
             textDecoration: "none",
-            fontFamily: SERIF,
+            fontFamily: SANS,
             fontSize: 22,
+            lineHeight: 1,
             fontWeight: 600,
-            letterSpacing: "0.02em",
+            letterSpacing: "0.08em",
             padding: "6px 4px",
           }}
         >
-          <span style={{ color: NEX.text }}>NE</span>
-          <span style={{ color: NEX.orange }}>X</span>
+          <span style={{ color: "#F2F5F8" }}>NE</span>
+          <span style={{ color: "#FF7200" }}>X</span>
         </Link>
 
         {/* Right cluster · home + settings */}
@@ -783,13 +785,14 @@ function HeaderIconLink({
         width: 40,
         height: 40,
         borderRadius: "50%",
-        background: "rgba(0,0,0,0.35)",
-        border: `1px solid ${NEX.borderStrong}`,
-        color: NEX.text,
+        background: "#FF7200",
+        border: "1px solid rgba(255,255,255,0.14)",
+        color: "#0B0F1A",
         display: "grid",
         placeItems: "center",
         textDecoration: "none",
-        backdropFilter: "blur(6px)",
+        boxShadow:
+          "0 6px 16px rgba(255,114,0,0.35), inset 0 1px 0 rgba(255,255,255,0.28)",
       }}
     >
       {children}
