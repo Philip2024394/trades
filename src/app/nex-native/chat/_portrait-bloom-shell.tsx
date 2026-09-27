@@ -289,9 +289,13 @@ export function PortraitBloomShell({
             />
             {/* Ambient motion · crows + twinkles · only when a
                 wallpaper is present so unthemed surfaces stay quiet.
-                Sits at z-index 1 (above wallpaper + scrim, below
-                header + bubbles). */}
-            <AmbientMotion />
+                Sits at z-index 2 (above wallpaper + scrim, below
+                header + bubbles). Theme accent painted as ambient
+                tint so distant crows blend with the wallpaper's
+                light instead of reading as flat stickers. */}
+            <AmbientMotion
+              ambientTint={`${rippleColor}55`}
+            />
           </>
         )}
 

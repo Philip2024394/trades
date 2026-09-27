@@ -1,0 +1,4 @@
+{
+  "clips": [],
+  "notes": "Add photorealistic crow clip descriptors here. See README.md in this directory for the schema. Empty clips array = runtime falls back to the SVG crow silhouette."
+}
