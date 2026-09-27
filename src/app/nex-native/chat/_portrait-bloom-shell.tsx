@@ -290,14 +290,18 @@ export function PortraitBloomShell({
           )}
         </div>
 
-        {/* Abyss gradient over full viewport */}
+        {/* Abyss gradient · pulled UP so darkness dominates the mid
+            zone earlier. Portrait / hero stays visible in the top
+            ~18% of the viewport · abyss ramps in by 38% · fully dark
+            by ~76%. Result: more legible reading area for messages
+            without shrinking the portrait layer itself. */}
         <div
           aria-hidden
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(180deg, transparent 34%, rgba(2,9,20,0.55) 54%, rgba(2,9,20,0.9) 72%, #020914 90%)",
+              "linear-gradient(180deg, transparent 18%, rgba(2,9,20,0.55) 38%, rgba(2,9,20,0.9) 58%, #020914 76%)",
           }}
         />
 
