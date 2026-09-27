@@ -29,7 +29,7 @@ const NEX = {
   green: "#16D66B",
   text: "#F4F7FC",
   textDim: "#8BA9D1",
-  glassBubble: "rgba(255,255,255,0.06)",
+  glassBubble: "rgba(255,255,255,0.16)",
   glassBorder: "rgba(255,255,255,0.08)",
 };
 
@@ -494,11 +494,17 @@ export function PortraitBloomShell({
                           : "10px 14px",
                         marginTop,
                         borderRadius: 18,
+                        // Denser frosted glass · 24px blur diffuses
+                        // the portrait behind into a soft wash so
+                        // text reads regardless of the underlying
+                        // colour. Alpha bumped to 26% (outgoing) /
+                        // 16% (incoming) for extra legibility on
+                        // mid-tone portrait zones.
                         background: m.mine
-                          ? "rgba(120,140,180,0.14)"
+                          ? "rgba(120,140,180,0.26)"
                           : NEX.glassBubble,
-                        backdropFilter: "blur(14px)",
-                        WebkitBackdropFilter: "blur(14px)",
+                        backdropFilter: "blur(24px) saturate(1.2)",
+                        WebkitBackdropFilter: "blur(24px) saturate(1.2)",
                         border: m.mine
                           ? "1px solid rgba(0,159,239,0.85)"
                           : `1px solid ${NEX.glassBorder}`,
@@ -512,7 +518,15 @@ export function PortraitBloomShell({
                           : "0 6px 22px rgba(0,0,0,0.55)",
                       }}
                     >
-                      <div>{m.body}</div>
+                      <div
+                        style={{
+                          // Free legibility insurance for edge cases
+                          // (bright portrait zones + light text).
+                          textShadow: "0 1px 3px rgba(0,0,0,0.35)",
+                        }}
+                      >
+                        {m.body}
+                      </div>
                       {showTimestamp && (
                         <div
                           style={{
