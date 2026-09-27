@@ -66,11 +66,7 @@ export const MediaCapture = React.forwardRef<MediaCaptureHandle, Props>(
     return (
       <div aria-hidden style={{ position: "absolute", width: 0, height: 0 }}>
         {/* Camera · rear camera on iOS/Android · file picker on desktop */}
-        <form
-          ref={cameraFormRef}
-          action={uploadAction}
-          encType="multipart/form-data"
-        >
+        <form ref={cameraFormRef} action={uploadAction}>
           <input
             ref={cameraInputRef}
             name="attachment_file"
@@ -84,11 +80,7 @@ export const MediaCapture = React.forwardRef<MediaCaptureHandle, Props>(
           />
         </form>
         {/* Video · rear camera video recorder on mobile */}
-        <form
-          ref={videoFormRef}
-          action={uploadAction}
-          encType="multipart/form-data"
-        >
+        <form ref={videoFormRef} action={uploadAction}>
           <input
             ref={videoInputRef}
             name="attachment_file"
@@ -101,11 +93,7 @@ export const MediaCapture = React.forwardRef<MediaCaptureHandle, Props>(
         </form>
         {/* Voice · mic capture on mobile · falls back to audio file
             picker on desktop (users can drop a pre-recorded clip in). */}
-        <form
-          ref={voiceFormRef}
-          action={uploadAction}
-          encType="multipart/form-data"
-        >
+        <form ref={voiceFormRef} action={uploadAction}>
           <input
             ref={voiceInputRef}
             name="attachment_file"
