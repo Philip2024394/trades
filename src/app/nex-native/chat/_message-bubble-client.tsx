@@ -156,7 +156,10 @@ export function MessageBubbleClient({
         // otherwise every bubble stays left-aligned inside a
         // full-width wrapper (Bridge 5 regression, fixed 2026-09-27).
         alignSelf: mine ? "flex-end" : "flex-start",
-        maxWidth: "78%",
+        // Incoming bubbles get an extra 20px to breathe · the sender
+        // header (avatar + name) pushes body content wider, so 78%
+        // was cramping their first line. Founder direction 2026-09-27.
+        maxWidth: mine ? "78%" : "calc(78% + 20px)",
         touchAction: "pan-y",
         transform: `translateX(${dragX}px)`,
         transition:
