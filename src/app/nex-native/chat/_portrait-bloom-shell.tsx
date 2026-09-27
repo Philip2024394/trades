@@ -445,10 +445,10 @@ export function PortraitBloomShell({
                     letterSpacing: "0.04em",
                     // Dark gray · profession recedes from the name
                     // instead of competing with it in orange.
-                    // Sealed 2026-09-27.
                     color: "#8B95A5",
-                    // No text-overflow ellipsis · profession lines
-                    // wrap naturally rather than getting cut with "..."
+                    // One line · no ellipsis · profession is short
+                    // enough to always fit at 12px.
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {subtitle}

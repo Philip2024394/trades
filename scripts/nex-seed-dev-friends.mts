@@ -62,7 +62,7 @@ const DEV_FRIENDS: DevFriend[] = [
     // business_owner so the shop storefront badge renders on her card ·
     // she sells her own footwear line.
     kind: "business_owner",
-    profession: "Footwear designer",
+    profession: "Footwear Designer",
     location_label: "Bandung",
     avatar_url:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
