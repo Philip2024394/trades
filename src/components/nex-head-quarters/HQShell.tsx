@@ -33,6 +33,7 @@ import {
   Footprints,
   ClipboardList,
   Map as MapIcon,
+  Palette,
 } from "lucide-react";
 import { WALKER_VERTICALS, type WalkerLiveTier, type WalkerSidebarStatus } from "@/lib/nex-hq/walker-verticals";
 
@@ -108,26 +109,15 @@ const SECTIONS: SectionDef[] = [
   { href: "/nex-head-quarters/component-registry",       label: "Component Registry",   icon: Database,    group: "core" },
   { href: "/nex-head-quarters/connection-audit",         label: "Connection Audit",     icon: MapIcon,     group: "core" },
 
-  // ─── EMAIL HARVEST · permanent Founder section · 2026-09-22 ───
-  // 17 sub-pages: real pages, real reused pages, and honest stubs.
-  // Manifest lives at src/lib/nex-hq/email-harvest-manifest.ts.
-  { href: "/nex-head-quarters/email-harvest",                       label: "Overview",             icon: Radio,       group: "email_harvest" },
-  { href: "/nex-head-quarters/email-harvest/live",                  label: "Live Harvest",         icon: Activity,    group: "email_harvest" },
-  { href: "/nex-head-quarters/email-harvest/queue",                 label: "Harvest Queue",        icon: ClipboardList, group: "email_harvest" },
-  { href: "/nex-head-quarters/world-discovery",                     label: "Countries",            icon: MapIcon,     group: "email_harvest" },
-  { href: "/nex-head-quarters/email-harvest/categories",            label: "Categories",           icon: BookOpen,    group: "email_harvest" },
-  { href: "/nex-head-quarters/email-harvest/businesses",            label: "Businesses",           icon: Database,    group: "email_harvest" },
-  { href: "/nex-head-quarters/email-marketing",                     label: "Emails",               icon: Radio,       group: "email_harvest" },
-  { href: "/nex-head-quarters/email-harvest/sources",               label: "Sources",              icon: HardDrive,   group: "email_harvest" },
-  { href: "/nex-head-quarters/email-harvest/websites",              label: "Website Harvest",      icon: Footprints,  group: "email_harvest" },
-  { href: "/nex-head-quarters/email-harvest/evidence",              label: "Evidence & Provenance",icon: ScrollText,  group: "email_harvest" },
-  { href: "/nex-head-quarters/email-harvest/workers",               label: "Workers & Recovery",   icon: Activity,    group: "email_harvest" },
-  { href: "/nex-head-quarters/email-harvest/cycles",                label: "Harvest Cycles",       icon: FileClock,   group: "email_harvest" },
-  { href: "/nex-head-quarters/email-harvest/analytics",             label: "Collection Analytics", icon: Database,    group: "email_harvest" },
-  { href: "/nex-head-quarters/email-harvest/sender-system",         label: "Sender System",        icon: Radio,       group: "email_harvest" },
-  { href: "/nex-head-quarters/email-harvest/send-activity",         label: "Send Activity",        icon: Radio,       group: "email_harvest" },
-  { href: "/nex-head-quarters/email-harvest/deliverability",        label: "Deliverability",       icon: CheckSquare, group: "email_harvest" },
-  { href: "/nex-head-quarters/email-harvest/proof-health",          label: "Proof & Health",       icon: CheckSquare, group: "email_harvest" },
+  // ─── EMAIL HARVEST · consolidated Founder console · 2026-09-22 ───
+  // Single page: batch sender on top · live harvested emails on bottom.
+  // Old sub-pages (/live · /operations-live · /evidence · /proof-health · etc.)
+  // now redirect to this consolidated view.
+  { href: "/nex-head-quarters/email-harvest", label: "Email Harvest", icon: Radio, group: "email_harvest" },
+
+  // ─── NEX-native chat themes · Bridge 4 · sealed 2026-09-27 ───
+  // Founder builds premium themes here · Bisnis users unlock them.
+  { href: "/nex-head-quarters/nex-native-themes", label: "NEX Chat Themes", icon: Palette, group: "core" },
 ];
 
 // ── Indonesia sidebar tree (2026-08-24) ────────────────────────────────

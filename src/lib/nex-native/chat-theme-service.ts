@@ -134,6 +134,34 @@ export async function updateTheme(
   return data as NexChatThemeRow;
 }
 
+/** Upload a hero image for a theme to Supabase Storage
+ *  (bucket `nex-chat-theme-hero`, public read · migration 049).
+ *  Returns the public URL to save into `nex_chat_theme.hero_image_url`.
+ *  Throws on failure · caller decides how to surface it. */
+export async function uploadThemeHero(
+  themeSlug: string,
+  file: File,
+): Promise<string> {
+  const ext = (file.name.split(".").pop() ?? "png").toLowerCase();
+  const safeExt = ["png", "jpg", "jpeg", "webp", "avif"].includes(ext)
+    ? ext
+    : "png";
+  const objectPath = `${themeSlug}-${Date.now()}.${safeExt}`;
+  const bucket = nexSupabaseAdmin.storage.from("nex-chat-theme-hero");
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  const { error } = await bucket.upload(objectPath, bytes, {
+    contentType: file.type || `image/${safeExt}`,
+    upsert: true,
+  });
+  if (error) {
+    throw new Error(
+      `chat-theme-service.uploadThemeHero: ${error.message}`,
+    );
+  }
+  const { data } = bucket.getPublicUrl(objectPath);
+  return data.publicUrl;
+}
+
 /** Group themes by category for picker rendering.
  *  Guarantees at least an empty array on each category. */
 export function groupByCategory(themes: NexChatThemeRow[]): {

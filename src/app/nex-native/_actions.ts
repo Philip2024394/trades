@@ -2568,7 +2568,7 @@ export async function adminSetAccountTierAction(formData: FormData): Promise<nev
 
 function redirectToAdminThemeWithBanner(code: string, message: string): never {
   const qs = new URLSearchParams({ e: code, m: message });
-  redirect(`/nex-native/admin/theme?${qs.toString()}`);
+  redirect(`/nex-head-quarters/nex-native-themes?${qs.toString()}`);
 }
 
 /** Dev-admin-only server action to CREATE a new chat theme.
@@ -2616,35 +2616,60 @@ export async function adminCreateChatThemeAction(
   const tier = String(formData.get("tier") ?? "gratis").trim() as
     | "gratis"
     | "bisnis";
-  const category = String(formData.get("category") ?? "standard").trim() as
-    | "standard"
-    | "premium";
-  const heroImageUrl = String(formData.get("hero_image_url") ?? "").trim();
   const sortOrderRaw = String(formData.get("sort_order") ?? "100").trim();
+  // Category is derived from tier · gratis → standard · bisnis →
+  // premium. Keeps the admin form simple by removing a redundant field.
+  const category: "standard" | "premium" =
+    tier === "bisnis" ? "premium" : "standard";
+  // Hero image · optional file upload. When provided, upload to the
+  // nex-chat-theme-hero bucket and use the returned public URL.
+  const heroFile = formData.get("hero_image_file");
 
-  if (!id) redirectToAdminThemeWithBanner("missing_id", "slug is required");
+  if (!id) redirectToAdminThemeWithBanner("missing_id", "theme id is required");
   if (!/^[a-z][a-z0-9_-]{1,30}$/.test(id)) {
     redirectToAdminThemeWithBanner(
       "invalid_id",
-      "slug must be 2-31 chars, lowercase alphanumerics/underscore/hyphen, starting with a letter",
+      "theme id must be 2-31 chars, lowercase letters/numbers/hyphens/underscores, starting with a letter",
     );
   }
-  if (!name) redirectToAdminThemeWithBanner("missing_name", "name is required");
+  if (!name) redirectToAdminThemeWithBanner("missing_name", "theme name is required");
   if (!/^#[0-9A-Fa-f]{6}$/.test(accentHex)) {
-    redirectToAdminThemeWithBanner("invalid_accent", "accent must be a #RRGGBB hex");
+    redirectToAdminThemeWithBanner(
+      "invalid_accent",
+      "accent must be a hex colour like #009FEF",
+    );
   }
   if (tier !== "gratis" && tier !== "bisnis") {
     redirectToAdminThemeWithBanner("invalid_tier", `unknown tier '${tier}'`);
   }
-  if (category !== "standard" && category !== "premium") {
-    redirectToAdminThemeWithBanner("invalid_category", `unknown category '${category}'`);
-  }
   const sortOrder = Number(sortOrderRaw);
   if (!Number.isFinite(sortOrder) || sortOrder < 0 || sortOrder > 10000) {
-    redirectToAdminThemeWithBanner("invalid_sort", "sort_order must be 0-10000");
+    redirectToAdminThemeWithBanner("invalid_sort", "sort order must be a number between 0 and 10000");
   }
-  if (heroImageUrl && heroImageUrl.length > 1024) {
-    redirectToAdminThemeWithBanner("invalid_image", "hero_image_url too long");
+
+  let heroImageUrl: string | null = null;
+  if (heroFile && heroFile instanceof File && heroFile.size > 0) {
+    if (heroFile.size > 5 * 1024 * 1024) {
+      redirectToAdminThemeWithBanner(
+        "image_too_big",
+        "background image must be under 5 MB",
+      );
+    }
+    const okMime = ["image/png", "image/jpeg", "image/webp", "image/avif"].includes(
+      heroFile.type,
+    );
+    if (!okMime) {
+      redirectToAdminThemeWithBanner(
+        "image_bad_type",
+        `background image must be PNG, JPG, WebP or AVIF (got ${heroFile.type || "unknown"})`,
+      );
+    }
+    try {
+      heroImageUrl = await chatThemeService.uploadThemeHero(id, heroFile);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      redirectToAdminThemeWithBanner("upload_failed", `image upload failed · ${msg}`);
+    }
   }
 
   try {
@@ -2655,7 +2680,7 @@ export async function adminCreateChatThemeAction(
       accent_hex: accentHex.toUpperCase(),
       tier,
       category,
-      hero_image_url: heroImageUrl || null,
+      hero_image_url: heroImageUrl,
       sort_order: sortOrder,
       is_active: true,
     });
@@ -2664,7 +2689,10 @@ export async function adminCreateChatThemeAction(
     redirectToAdminThemeWithBanner("create_failed", msg);
   }
 
-  revalidatePath("/nex-native/admin/theme");
+  revalidatePath("/nex-head-quarters/nex-native-themes");
   revalidatePath("/nex-native/settings/theme");
-  redirectToAdminThemeWithBanner("theme_created", `${name} (${id}) created`);
+  redirectToAdminThemeWithBanner(
+    "theme_created",
+    `${name} (${id}) created${heroImageUrl ? " with background image" : ""}`,
+  );
 }
