@@ -25,6 +25,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as productService from "@/lib/nex-native/product-service";
+import { HeroSidePanel } from "./_hero-side-panel";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -230,6 +231,16 @@ export default async function Page({
             </p>
           )}
         </div>
+        {/* Right-side vertical rail · About / Order / SafeTrade ·
+            each opens a full-screen overlay with the relevant info. */}
+        <HeroSidePanel
+          businessName={business.display_name}
+          businessDescription={business.description ?? null}
+          address={business.address ?? null}
+          acceptsCod={!!business.accepts_cod}
+          acceptsPickup={!!business.accepts_pickup}
+          paymentInstructions={business.payment_instructions ?? null}
+        />
       </section>
 
       {/* --- PRODUCTS ------------------------------------------------ */}
