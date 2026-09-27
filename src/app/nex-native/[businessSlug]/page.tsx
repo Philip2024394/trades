@@ -193,6 +193,7 @@ export default async function Page({
                 tags={p.tags ?? []}
                 stockStatus={p.stock_status}
                 chatHref={chatHref}
+                detailHref={`/nex-native/${business.slug}/${p.id}`}
               />
             ))}
           </div>
@@ -467,6 +468,7 @@ function ProductSpread({
   tags,
   stockStatus,
   chatHref,
+  detailHref,
 }: {
   name: string;
   description: string | null;
@@ -475,6 +477,7 @@ function ProductSpread({
   tags: string[];
   stockStatus: string | null;
   chatHref: string;
+  detailHref: string;
 }) {
   return (
     <article
@@ -647,7 +650,8 @@ function ProductSpread({
             {description}
           </p>
         )}
-        {/* Two CTAs · Purchase (primary orange) + Chat Now (cyan) */}
+        {/* Two CTAs · Order Now (primary orange, goes to chat) +
+            More Details (secondary cyan, opens the full product page) */}
         <div style={{ display: "flex", gap: 10 }}>
           <Link
             href={chatHref}
@@ -666,10 +670,10 @@ function ProductSpread({
               boxShadow: "0 8px 20px rgba(255,120,0,0.35)",
             }}
           >
-            Purchase
+            Order Now
           </Link>
           <Link
-            href={chatHref}
+            href={detailHref}
             style={{
               flex: 1,
               padding: "12px 14px",
@@ -685,7 +689,7 @@ function ProductSpread({
               textAlign: "center",
             }}
           >
-            Chat Now
+            More Details
           </Link>
         </div>
       </div>
