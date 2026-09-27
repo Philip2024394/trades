@@ -550,6 +550,13 @@ function CrowAppearanceSprite({ appearance }: { appearance: CrowAppearance }) {
   // → depth 0.5 (mid)      ≈ 13.0s ± 1.5s
   // → depth 0.7 (closer)   ≈ 11.8s ± 1.5s   still leisurely
 
+  // Horizontal flip is applied to the INNER wrapper (not baked into
+  // the keyframe transform) so the flight animation stays a pure
+  // translate. Some browsers were dropping RTL-scaled keyframes
+  // when composing translate + scaleX in the same transform. Sealed
+  // 2026-09-27.
+  const rtl = startEdge === "right";
+
   return (
     <div
       style={{
@@ -568,20 +575,28 @@ function CrowAppearanceSprite({ appearance }: { appearance: CrowAppearance }) {
         willChange: "transform, opacity, filter",
       }}
     >
-      {clip ? (
-        <VideoCrow
-          src={clip.src}
-          playbackRate={playbackRate}
-          ambientTint={ambientTint}
-          depth={depth}
-        />
-      ) : (
-        <SvgCrowFallback
-          flapMs={appearance.flapMs ?? 380}
-          ambientTint={ambientTint}
-          depth={depth}
-        />
-      )}
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          transform: rtl ? "scaleX(-1)" : undefined,
+        }}
+      >
+        {clip ? (
+          <VideoCrow
+            src={clip.src}
+            playbackRate={playbackRate}
+            ambientTint={ambientTint}
+            depth={depth}
+          />
+        ) : (
+          <SvgCrowFallback
+            flapMs={appearance.flapMs ?? 380}
+            ambientTint={ambientTint}
+            depth={depth}
+          />
+        )}
+      </div>
     </div>
   );
 }
@@ -858,44 +873,48 @@ const ambientCss = `
     88%  { transform: translate(88vw, 6px)     rotate(0.5deg); }
     100% { transform: translate(calc(100vw + 100px), 10px) rotate(0deg); }
   }
+  /* RTL keyframes · pure translate + rotate · the horizontal flip
+     lives on the SvgCrowFallback / VideoCrow wrapper (via scaleX(-1)
+     on an inner div) so the browser doesn't have to composite scale
+     into every animation frame. Sealed 2026-09-27. */
   @keyframes nex-crow-fly-rtl-low {
-    0%   { transform: translate(calc(100vw + 100px), 0px) scaleX(-1) rotate(0.4deg); }
-    18%  { transform: translate(82vw, -3px)    scaleX(-1) rotate(-0.3deg); }
-    36%  { transform: translate(64vw, -7px)    scaleX(-1) rotate(0.5deg); }
-    58%  { transform: translate(42vw, -12px)   scaleX(-1) rotate(-0.7deg); }
-    76%  { transform: translate(24vw, -6px)    scaleX(-1) rotate(0.3deg); }
-    100% { transform: translate(-160px, 2px)   scaleX(-1) rotate(0deg); }
+    0%   { transform: translate(calc(100vw + 100px), 0px) rotate(0.4deg); }
+    18%  { transform: translate(82vw, -3px)    rotate(-0.3deg); }
+    36%  { transform: translate(64vw, -7px)    rotate(0.5deg); }
+    58%  { transform: translate(42vw, -12px)   rotate(-0.7deg); }
+    76%  { transform: translate(24vw, -6px)    rotate(0.3deg); }
+    100% { transform: translate(-160px, 2px)   rotate(0deg); }
   }
   @keyframes nex-crow-fly-rtl-high {
-    0%   { transform: translate(calc(100vw + 100px), 6px) scaleX(-1) rotate(-0.5deg); }
-    22%  { transform: translate(78vw, -6px)    scaleX(-1) rotate(0.6deg); }
-    42%  { transform: translate(58vw, -18px)   scaleX(-1) rotate(-0.4deg); }
-    64%  { transform: translate(36vw, -22px)   scaleX(-1) rotate(0.3deg); }
-    86%  { transform: translate(14vw, -14px)   scaleX(-1) rotate(-0.6deg); }
-    100% { transform: translate(-160px, -4px)  scaleX(-1) rotate(0.2deg); }
+    0%   { transform: translate(calc(100vw + 100px), 6px) rotate(-0.5deg); }
+    22%  { transform: translate(78vw, -6px)    rotate(0.6deg); }
+    42%  { transform: translate(58vw, -18px)   rotate(-0.4deg); }
+    64%  { transform: translate(36vw, -22px)   rotate(0.3deg); }
+    86%  { transform: translate(14vw, -14px)   rotate(-0.6deg); }
+    100% { transform: translate(-160px, -4px)  rotate(0.2deg); }
   }
   @keyframes nex-crow-fly-rtl-flat {
-    0%   { transform: translate(calc(100vw + 100px), 0) scaleX(-1) rotate(0deg); }
-    30%  { transform: translate(70vw, -2px)    scaleX(-1) rotate(0.2deg); }
-    55%  { transform: translate(45vw, -5px)    scaleX(-1) rotate(-0.3deg); }
-    80%  { transform: translate(20vw, -3px)    scaleX(-1) rotate(0.2deg); }
-    100% { transform: translate(-160px, -4px)  scaleX(-1) rotate(0deg); }
+    0%   { transform: translate(calc(100vw + 100px), 0) rotate(0deg); }
+    30%  { transform: translate(70vw, -2px)    rotate(0.2deg); }
+    55%  { transform: translate(45vw, -5px)    rotate(-0.3deg); }
+    80%  { transform: translate(20vw, -3px)    rotate(0.2deg); }
+    100% { transform: translate(-160px, -4px)  rotate(0deg); }
   }
   @keyframes nex-crow-fly-rtl-wander {
-    0%   { transform: translate(calc(100vw + 100px), 0) scaleX(-1) rotate(-0.3deg); }
-    14%  { transform: translate(86vw, -4px)    scaleX(-1) rotate(0.4deg); }
-    28%  { transform: translate(70vw, -14px)   scaleX(-1) rotate(-0.6deg); }
-    46%  { transform: translate(52vw, -9px)    scaleX(-1) rotate(0.7deg); }
-    62%  { transform: translate(38vw, -16px)   scaleX(-1) rotate(-0.5deg); }
-    80%  { transform: translate(20vw, -10px)   scaleX(-1) rotate(0.4deg); }
-    100% { transform: translate(-160px, -6px)  scaleX(-1) rotate(-0.2deg); }
+    0%   { transform: translate(calc(100vw + 100px), 0) rotate(-0.3deg); }
+    14%  { transform: translate(86vw, -4px)    rotate(0.4deg); }
+    28%  { transform: translate(70vw, -14px)   rotate(-0.6deg); }
+    46%  { transform: translate(52vw, -9px)    rotate(0.7deg); }
+    62%  { transform: translate(38vw, -16px)   rotate(-0.5deg); }
+    80%  { transform: translate(20vw, -10px)   rotate(0.4deg); }
+    100% { transform: translate(-160px, -6px)  rotate(-0.2deg); }
   }
   @keyframes nex-crow-fly-rtl-settle {
-    0%   { transform: translate(calc(100vw + 100px), -18px) scaleX(-1) rotate(0.6deg); }
-    30%  { transform: translate(70vw, -10px)   scaleX(-1) rotate(-0.4deg); }
-    60%  { transform: translate(40vw, -2px)    scaleX(-1) rotate(0.3deg); }
-    88%  { transform: translate(12vw, 6px)     scaleX(-1) rotate(-0.5deg); }
-    100% { transform: translate(-160px, 10px)  scaleX(-1) rotate(0deg); }
+    0%   { transform: translate(calc(100vw + 100px), -18px) rotate(0.6deg); }
+    30%  { transform: translate(70vw, -10px)   rotate(-0.4deg); }
+    60%  { transform: translate(40vw, -2px)    rotate(0.3deg); }
+    88%  { transform: translate(12vw, 6px)     rotate(-0.5deg); }
+    100% { transform: translate(-160px, 10px)  rotate(0deg); }
   }
   @keyframes nex-twinkle {
     0%   { opacity: 0; transform: scale(0.3); }

@@ -31,8 +31,30 @@ export interface NexChatThemeRow {
   hero_image_url: string | null;
   is_active: boolean;
   sort_order: number;
+  /** Per-theme environmental overlay settings · e.g. moon glow
+   *  position, size, colour. When null, the theme's chat surface
+   *  paints no environmental overlay. Sealed 2026-09-27 · migration
+   *  056. */
+  wallpaper_config: NexChatThemeWallpaperConfig | null;
   created_at: string;
   updated_at: string;
+}
+
+/** Structured shape of nex_chat_theme.wallpaper_config JSONB. Every
+ *  key is optional so themes can opt into whichever overlays fit. */
+export interface NexChatThemeWallpaperConfig {
+  /** Soft breathing halo positioned over a moon (or other point
+   *  source) in the wallpaper photograph. */
+  moonGlow?: {
+    /** CSS left · e.g. "72%" */
+    x: string;
+    /** CSS top · e.g. "calc(11% - 15px)" */
+    y: string;
+    /** Halo diameter in px */
+    size: number;
+    /** Core colour of the halo · e.g. "rgba(225, 238, 255, 0.6)" */
+    color?: string;
+  };
 }
 
 /** Resolved colour bundle for a theme · every element has a concrete

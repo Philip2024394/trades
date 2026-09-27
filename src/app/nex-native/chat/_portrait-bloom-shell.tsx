@@ -166,6 +166,18 @@ export interface PortraitBloomShellProps {
    *  Founder direction: "the theme saves the background image, the
    *  profile image must be of the profile user". */
   wallpaperUrl?: string | null;
+  /** Per-theme environmental overlay config from
+   *  nex_chat_theme.wallpaper_config · currently drives the moon
+   *  glow position + size + colour. When null, no overlay renders.
+   *  Sealed 2026-09-27 · migration 056. */
+  wallpaperConfig?: {
+    moonGlow?: {
+      x: string;
+      y: string;
+      size: number;
+      color?: string;
+    };
+  } | null;
 }
 
 export function PortraitBloomShell({
@@ -187,6 +199,7 @@ export function PortraitBloomShell({
   replyTarget,
   deleteAction,
   wallpaperUrl,
+  wallpaperConfig,
   uploadAction,
   pendingAttachment,
 }: PortraitBloomShellProps) {
@@ -331,16 +344,12 @@ export function PortraitBloomShell({
                 header + bubbles). Theme accent painted as ambient
                 tint so distant crows blend with the wallpaper's
                 light instead of reading as flat stickers. Moon
-                halo positioned over the moon in theme3.png (upper-
-                right) with a slow breathing pulse for natural glow. */}
+                glow position comes from the theme's wallpaper_config
+                (sealed 2026-09-27 · migration 056) so every theme
+                declares its own overlay · no more hardcoded values. */}
             <AmbientMotion
               ambientTint={`${rippleColor}55`}
-              moonGlow={{
-                x: "72%",
-                y: "calc(11% - 15px)",
-                size: 180,
-                color: "rgba(225, 238, 255, 0.6)",
-              }}
+              moonGlow={wallpaperConfig?.moonGlow ?? null}
             />
           </>
         )}
