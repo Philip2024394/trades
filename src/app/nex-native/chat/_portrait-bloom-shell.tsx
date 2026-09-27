@@ -536,19 +536,21 @@ export function PortraitBloomShell({
                           : "10px 14px",
                         marginTop,
                         borderRadius: 18,
-                        // Darker shaded glass · bubbles now carry a
+                        // Darker shaded glass · bubbles carry a
                         // distinctly dark tint so they read as their
-                        // own containers over the portrait even in
-                        // the bright hero zone. Blur diffuses the
-                        // portrait beneath into an abstract wash.
+                        // own containers over the portrait.
                         background: m.mine
                           ? "rgba(12,32,58,0.62)"
                           : NEX.glassBubble,
                         backdropFilter: "blur(24px) saturate(1.2)",
                         WebkitBackdropFilter: "blur(24px) saturate(1.2)",
+                        // Both rims wear the peer's theme colour ·
+                        // sealed 2026-09-27 · "you're in their space"
+                        // doctrine. Alignment (left/right) still tells
+                        // you which side spoke.
                         border: m.mine
-                          ? "1px solid rgba(0,159,239,0.85)"
-                          : `1px solid ${NEX.glassBorder}`,
+                          ? `1px solid ${themeRimStrong(rippleColor)}`
+                          : `1px solid ${themeRimSoft(rippleColor)}`,
                         color: NEX.text,
                         fontSize: 15,
                         lineHeight: 1.42,
@@ -632,6 +634,7 @@ export function PortraitBloomShell({
             <PeerComposer
               action={composerAction}
               placeholder={composerPlaceholder}
+              themeAccent={rippleColor}
             />
           </div>
         </div>
@@ -647,6 +650,36 @@ function initialsFromName(name: string): string {
   const first = parts[0]?.charAt(0) ?? "";
   const last = parts.length > 1 ? (parts[parts.length - 1]?.charAt(0) ?? "") : "";
   return (first + last).toUpperCase() || "?";
+}
+
+/** Peer-theme accent at high alpha for the outgoing bubble rim.
+ *  Accepts the hex passed as rippleColor and forces it to 0.85 alpha
+ *  regardless of source format · sealed 2026-09-27. */
+function themeRimStrong(hex: string): string {
+  const rgb = hexToRgb(hex);
+  return `rgba(${rgb.r},${rgb.g},${rgb.b},0.85)`;
+}
+
+/** Peer-theme accent at low alpha for the incoming bubble rim ·
+ *  softer so the two bubble kinds still read as slightly different
+ *  weight even though they share a theme colour. */
+function themeRimSoft(hex: string): string {
+  const rgb = hexToRgb(hex);
+  return `rgba(${rgb.r},${rgb.g},${rgb.b},0.5)`;
+}
+
+function hexToRgb(hex: string): { r: number; g: number; b: number } {
+  const clean = hex.replace(/^#/, "");
+  const full =
+    clean.length === 3
+      ? clean.split("").map((c) => c + c).join("")
+      : clean;
+  const num = parseInt(full, 16);
+  return {
+    r: (num >> 16) & 0xff,
+    g: (num >> 8) & 0xff,
+    b: num & 0xff,
+  };
 }
 
 function formatTime(iso: string): string {

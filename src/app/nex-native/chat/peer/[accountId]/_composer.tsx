@@ -34,9 +34,17 @@ const NEX = {
 interface PeerComposerProps {
   action: (formData: FormData) => Promise<never> | void | Promise<void>;
   placeholder: string;
+  /** Peer's chat theme accent (hex) · paints the composer rim so
+   *  the composer belongs to "their space" doctrine sealed
+   *  2026-09-27. Falls back to NEX cyan if omitted. */
+  themeAccent?: string;
 }
 
-export function PeerComposer({ action, placeholder }: PeerComposerProps) {
+export function PeerComposer({
+  action,
+  placeholder,
+  themeAccent,
+}: PeerComposerProps) {
   const formRef = React.useRef<HTMLFormElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const [text, setText] = React.useState("");
@@ -179,9 +187,9 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
         </div>
 
         {/* Row 2 · glass input rectangle · matches the outgoing
-            chat bubble · same dark-navy fill, same cyan rim, so the
-            composer visually belongs to the same family as the
-            messages I've sent. */}
+            chat bubble family. Rim adopts the peer's chat theme so
+            the composer belongs to the peer's chat space, not a
+            neutral universal element. */}
         <div
           style={{
             display: "flex",
@@ -192,9 +200,8 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
             background: "rgba(12,32,58,0.62)",
             backdropFilter: "blur(24px) saturate(1.2)",
             WebkitBackdropFilter: "blur(24px) saturate(1.2)",
-            border: "1px solid rgba(0,159,239,0.85)",
-            boxShadow:
-              "0 0 14px rgba(0,159,239,0.15), 0 6px 20px rgba(0,0,0,0.45)",
+            border: `1px solid ${composerRim(themeAccent ?? NEX.cyan)}`,
+            boxShadow: `0 0 14px ${composerGlow(themeAccent ?? NEX.cyan)}, 0 6px 20px rgba(0,0,0,0.45)`,
           }}
         >
             <PlusButton onClick={() => setModalOpen(true)} />
@@ -694,6 +701,28 @@ function SendIcon() {
       <path d="M22 2 15 22 11 13 2 9 22 2z" />
     </svg>
   );
+}
+
+function composerRim(hex: string): string {
+  const rgb = _hexToRgb(hex);
+  return `rgba(${rgb.r},${rgb.g},${rgb.b},0.85)`;
+}
+function composerGlow(hex: string): string {
+  const rgb = _hexToRgb(hex);
+  return `rgba(${rgb.r},${rgb.g},${rgb.b},0.18)`;
+}
+function _hexToRgb(hex: string): { r: number; g: number; b: number } {
+  const clean = hex.replace(/^#/, "");
+  const full =
+    clean.length === 3
+      ? clean.split("").map((c) => c + c).join("")
+      : clean;
+  const num = parseInt(full, 16);
+  return {
+    r: (num >> 16) & 0xff,
+    g: (num >> 8) & 0xff,
+    b: num & 0xff,
+  };
 }
 
 function SmileIcon() {
