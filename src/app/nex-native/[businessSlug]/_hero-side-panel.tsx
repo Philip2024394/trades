@@ -505,6 +505,24 @@ function AboutContent({
           your history with this seller — questions, negotiations,
           receipts, aftercare.
         </p>
+        <p
+          style={{
+            margin: "12px 0 0",
+            fontSize: 13,
+            lineHeight: 1.6,
+            color: "rgba(244,247,252,0.85)",
+          }}
+        >
+          <b style={{ color: "#B8F1CC" }}>NEX SafeTrade is available</b>{" "}
+          on this shop. It&apos;s an optional buyer-paid inspection
+          service · a{" "}
+          <b style={{ color: NEX.orange }}>20% NEX service fee</b>{" "}
+          covers physical inspection at NEX Center in Yogyakarta, plus
+          storage and freight (air or sea) support. The supplier
+          doesn&apos;t pay the fee · buyers only pay it if they
+          choose SafeTrade. Full details on the SafeTrade shield in
+          the right rail.
+        </p>
       </div>
     </div>
   );
