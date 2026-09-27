@@ -82,7 +82,7 @@ interface CrowAppearance {
   atmosphericBlur: number; // 0..2 px
   // For SVG fallback only:
   flapMs?: number;
-  arc?: "low" | "high" | "flat";
+  arc?: "low" | "high" | "flat" | "wander" | "settle";
 }
 
 interface Twinkle {
@@ -199,34 +199,54 @@ export function AmbientMotion({
         Math.random() > 0.5 ? "left" : "right";
       const groupBaseY = rand(8, 55);
       for (let i = 0; i < count; i++) {
-        const depth = rand(0.35, 1); // never fully far · always visible
-        // Depth drives visual atmospherics — bigger + sharper when
-        // close, smaller + softer when far. These map to physical
-        // properties, not warping the anatomy.
+        // Distance bias · Founder direction 2026-09-27: "the crow
+        // is a DISTANT environmental detail". Quadratic bias skews
+        // toward the far end · most sightings are small silhouettes
+        // in atmospheric haze, close fly-bys are the rare exception.
+        //   sample²  · squared uniform → probability density high near 0
+        //   remap    · from [0,1] to [0.05, 0.72] so 90% of sightings
+        //              are depth ≤ 0.5 (small + hazy)
+        const depth = 0.05 + Math.pow(Math.random(), 2) * 0.67;
+        // Scale · dramatically smaller than the previous foreground
+        // sizes. Even a "close" crow now caps around 68px so it
+        // never dominates the reading zone.
         const scaleWidth =
-          depth < 0.55
-            ? rand(80, 130) // far
-            : depth < 0.8
-              ? rand(140, 200) // mid
-              : rand(210, 300); // close fly-by
+          depth < 0.35
+            ? rand(20, 32) // very distant · silhouette
+            : depth < 0.55
+              ? rand(30, 44) // mid-distance
+              : rand(44, 68); // occasional closer pass
         flock.push({
           id: `crow-${now}-${i}-${Math.random().toString(36).slice(2, 6)}`,
           clip:
             lowPerf || manifest.clips.length === 0
               ? null
               : pickClipForDepth(manifest.clips, depth),
-          startY: groupBaseY + rand(-4, 4),
+          // Cluster crows over the upper 60% of the surface · never
+          // where a message would sit. Distant crows drift toward
+          // the top of the sky for stronger atmospheric read.
+          startY: (groupBaseY + rand(-4, 4)) * (0.5 + depth * 0.5),
           startEdge: groupStartEdge,
           depth,
           scale: scaleWidth,
-          playbackRate: rand(0.92, 1.08),
-          delay: i === 0 ? 0 : i * rand(280, 720),
-          drift: rand(-16, 16),
+          // Playback rate variation is tiny · never enough to break
+          // anatomy · matches Founder direction ("do not distort").
+          playbackRate: rand(0.94, 1.06),
+          delay: i === 0 ? 0 : i * rand(320, 900),
+          // Vertical drift is much smaller now (bird is small on
+          // screen · big drifts look wrong).
+          drift: rand(-6, 6),
           ambientTint,
-          atmosphericOpacity: 0.55 + depth * 0.45, // 0.55..1
-          atmosphericBlur: (1 - depth) * 1.8, // 0..1.8 px
-          flapMs: rand(320, 440),
-          arc: (["low", "high", "flat"] as const)[randInt(0, 2)],
+          // Atmospheric opacity fades harder for distant crows so
+          // they read as silhouettes in haze, not as flat overlays.
+          atmosphericOpacity: 0.38 + depth * 0.5, // 0.38..0.88
+          // Distance blur is stronger at the far end · a distant
+          // bird has no visible feather detail.
+          atmosphericBlur: (1 - depth) * 2.8 + 0.15, // 0.15..2.95 px
+          flapMs: rand(340, 460),
+          arc: (["low", "high", "flat", "wander", "settle"] as const)[
+            randInt(0, 4)
+          ] as CrowAppearance["arc"],
         });
       }
       setAppearances((prev) => [...prev, ...flock]);
@@ -378,22 +398,38 @@ function CrowAppearanceSprite({ appearance }: { appearance: CrowAppearance }) {
   const width = scale;
   const height = scale / aspect;
 
-  // Container translates across the screen via the same keyframes we
-  // built for the SVG fallback. Direction chosen at spawn.
-  const arcKey =
+  // Container translates across the screen · five arc variants per
+  // direction (low, high, flat, wander, settle) so the trajectory
+  // never plots as a clean A→B. Randomized per appearance so the
+  // same path doesn't repeat.
+  const arcVariants =
     startEdge === "left"
-      ? (["nex-crow-fly-lr-low", "nex-crow-fly-lr-high", "nex-crow-fly-lr-flat"] as const)[
-          Math.floor(Math.random() * 3)
-        ]
-      : (["nex-crow-fly-rtl-low", "nex-crow-fly-rtl-high", "nex-crow-fly-rtl-flat"] as const)[
-          Math.floor(Math.random() * 3)
-        ];
-  // Longer duration for closer crows (they cover more visual distance
-  // proportionally), shorter for far. Also stretches with playback
-  // rate so wing physics stay coherent.
+      ? ([
+          "nex-crow-fly-lr-low",
+          "nex-crow-fly-lr-high",
+          "nex-crow-fly-lr-flat",
+          "nex-crow-fly-lr-wander",
+          "nex-crow-fly-lr-settle",
+        ] as const)
+      : ([
+          "nex-crow-fly-rtl-low",
+          "nex-crow-fly-rtl-high",
+          "nex-crow-fly-rtl-flat",
+          "nex-crow-fly-rtl-wander",
+          "nex-crow-fly-rtl-settle",
+        ] as const);
+  const arcKey = arcVariants[Math.floor(Math.random() * arcVariants.length)]!;
+  // Flight duration · distant crows take longer to cross the frame
+  // because they move less angular distance per second (real-world
+  // parallax). Video clips run at their native duration; SVG mode
+  // varies with depth so far birds drift slowly, close birds cross
+  // faster.
   const flightDurationMs = clip
     ? clip.duration_ms / playbackRate
-    : rand(6_000, 9_500);
+    : (1 - depth) * 6_000 + 10_000 + rand(-1_500, 1_500);
+  // → depth 0.1 (very far) ≈ 15.4s ± 1.5s   very slow drift
+  // → depth 0.5 (mid)      ≈ 13.0s ± 1.5s
+  // → depth 0.7 (closer)   ≈ 11.8s ± 1.5s   still leisurely
 
   return (
     <div
@@ -418,7 +454,11 @@ function CrowAppearanceSprite({ appearance }: { appearance: CrowAppearance }) {
           depth={depth}
         />
       ) : (
-        <SvgCrowFallback flapMs={appearance.flapMs ?? 380} delay={delay} />
+        <SvgCrowFallback
+          flapMs={appearance.flapMs ?? 380}
+          ambientTint={ambientTint}
+          depth={depth}
+        />
       )}
     </div>
   );
@@ -478,59 +518,166 @@ function VideoCrow({
 }
 
 // ---------------------------------------------------------------------------
-// SVG fallback · low-perf mode + waiting for source clips
+// SVG fallback · distant environmental crow · sealed 2026-09-27
 // ---------------------------------------------------------------------------
+//
+// JS-driven wing state rather than a fixed CSS opacity cycle so
+// each crow gets its own flap → glide → correction rhythm. The
+// sequence is randomized per crow so the same beat pattern never
+// repeats within a session. Structure:
+//
+//   flap flap flap flap  (3–5 wing beats · 320–440ms per beat)
+//   glide                 (1.4–3.2s · wings held mid-extension)
+//   flap flap flap        (variable count again)
+//   ...
+//
+// A single beat is 4 frames: up → mid → down → mid. The mid frame
+// during a glide reads as "wings held out" which is close enough
+// to a real gliding silhouette at this small scale (< 70px). Frame
+// values are computed once per crow and captured in a ref so the
+// timing loop stays cheap.
+
+type WingFrame = "up" | "mid" | "down" | "glide";
+
+interface RhythmStep {
+  frame: WingFrame;
+  dur: number;
+}
+
+function buildFlightRhythm(flapMs: number): RhythmStep[] {
+  const frameMs = flapMs / 4; // 4 frames per beat
+  const steps: RhythmStep[] = [];
+  // Total rhythm loop: 2–3 flap bursts separated by glides. Each
+  // burst is 3–5 beats. Randomized so no crow shares a cadence.
+  const bursts = randInt(2, 3);
+  for (let b = 0; b < bursts; b++) {
+    const beats = randInt(3, 5);
+    for (let i = 0; i < beats; i++) {
+      steps.push({ frame: "up", dur: frameMs });
+      steps.push({ frame: "mid", dur: frameMs });
+      steps.push({ frame: "down", dur: frameMs });
+      steps.push({ frame: "mid", dur: frameMs });
+    }
+    // Glide period · longer glides after longer flap bursts so the
+    // rhythm feels breathed rather than metronomic.
+    steps.push({
+      frame: "glide",
+      dur: rand(1_400, 3_200),
+    });
+  }
+  return steps;
+}
 
 function SvgCrowFallback({
   flapMs,
-  delay,
+  ambientTint,
+  depth,
 }: {
   flapMs: number;
-  delay: number;
+  ambientTint: string;
+  depth: number;
 }) {
-  const FILL = "#0b0b0b";
+  const [frame, setFrame] = React.useState<WingFrame>("glide");
+  const rhythmRef = React.useRef<RhythmStep[]>(buildFlightRhythm(flapMs));
+
+  React.useEffect(() => {
+    let alive = true;
+    let idx = randInt(0, rhythmRef.current.length - 1); // random entry
+    let t: ReturnType<typeof setTimeout> | null = null;
+    const advance = () => {
+      if (!alive) return;
+      const step = rhythmRef.current[idx]!;
+      setFrame(step.frame);
+      idx = (idx + 1) % rhythmRef.current.length;
+      // Rebuild the rhythm at the start of each loop so the next
+      // pass has different beat counts + glide lengths.
+      if (idx === 0) rhythmRef.current = buildFlightRhythm(flapMs);
+      t = setTimeout(advance, step.dur);
+    };
+    advance();
+    return () => {
+      alive = false;
+      if (t) clearTimeout(t);
+    };
+  }, [flapMs]);
+
+  // Fill · never pure black. Softer edges + reduced contrast for
+  // atmospheric distance · a bird 300m away doesn't render as
+  // #000. Very distant crows fade toward the ambient tint.
+  const contrast = 0.55 + depth * 0.4; // 0.55..0.95
+  const FILL = `rgba(14, 14, 18, ${contrast})`;
+  const WING_FAR = `rgba(14, 14, 18, ${contrast * 0.78})`;
+
   return (
-    <svg
-      viewBox="-30 -15 60 30"
-      width="100%"
-      height="100%"
-      style={{ overflow: "visible", display: "block" }}
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "100%",
+        // Soft edge shadow blends the silhouette into the wallpaper
+        // instead of showing hard vector edges.
+        filter: "drop-shadow(0 0 0.7px rgba(0,0,0,0.35))",
+      }}
     >
-      <ellipse cx="0" cy="0" rx="10" ry="3" fill={FILL} />
-      <circle cx="10" cy="-1" r="3" fill={FILL} />
-      <path d="M13 -1 L19 -1.5 L13 0.5 Z" fill={FILL} />
-      <path d="M-10 0 L-17 -2 L-19 0 L-17 2 Z" fill={FILL} />
-      <g
-        fill={FILL}
-        style={{
-          animation: `nex-crow-wing-up ${flapMs}ms steps(1, end) infinite`,
-          animationDelay: `${delay}ms`,
-        }}
+      <svg
+        viewBox="-30 -15 60 30"
+        width="100%"
+        height="100%"
+        style={{ overflow: "visible", display: "block" }}
       >
-        <path d="M-3 -1 L-14 -13 L-8 -6 Z" />
-        <path d="M3 -1 L14 -13 L8 -6 Z" opacity="0.78" />
-      </g>
-      <g
-        fill={FILL}
+        {/* Body · slightly slimmer for a corvid silhouette read.
+            Head + beak + tail are always visible regardless of frame. */}
+        <ellipse cx="0" cy="0" rx="9.5" ry="2.8" fill={FILL} />
+        <circle cx="9.5" cy="-1" r="2.9" fill={FILL} />
+        <path d="M12.5 -1 L18.5 -1.5 L12.5 0.5 Z" fill={FILL} />
+        <path d="M-9.5 0 L-17 -2 L-19 0 L-17 2 Z" fill={FILL} />
+
+        {/* Wing frames · opacity swap on the React-driven `frame`.
+            Held glide silhouette is added as a fourth state so the
+            crow can pause its flap and actually glide, not just
+            hold a mid-flap pose. */}
+        {frame === "up" && (
+          <g fill={FILL}>
+            <path d="M-3 -1 L-14 -13 L-8 -6 Z" />
+            <path d="M3 -1 L14 -13 L8 -6 Z" fill={WING_FAR} />
+          </g>
+        )}
+        {frame === "mid" && (
+          <g fill={FILL}>
+            <path d="M-3 -0.5 L-17 -3 L-11 0 Z" />
+            <path d="M3 -0.5 L17 -3 L11 0 Z" fill={WING_FAR} />
+          </g>
+        )}
+        {frame === "down" && (
+          <g fill={FILL}>
+            <path d="M-3 0 L-16 6 L-9 3 Z" />
+            <path d="M3 0 L16 6 L9 3 Z" fill={WING_FAR} />
+          </g>
+        )}
+        {frame === "glide" && (
+          /* Wings held extended · slightly cambered · subtle upward
+             tip lift reads as gliding rather than dead-hold. */
+          <g fill={FILL}>
+            <path d="M-2 -0.5 L-18 -2 L-13 0.5 Z" />
+            <path d="M2 -0.5 L18 -2 L13 0.5 Z" fill={WING_FAR} />
+          </g>
+        )}
+      </svg>
+      {/* Ambient tint · multiplied over the silhouette so it blends
+          with the wallpaper's dominant colour · stronger for more
+          distant crows so they recede into the atmosphere. */}
+      <div
+        aria-hidden
         style={{
-          animation: `nex-crow-wing-mid ${flapMs}ms steps(1, end) infinite`,
-          animationDelay: `${delay}ms`,
+          position: "absolute",
+          inset: 0,
+          background: ambientTint,
+          mixBlendMode: "multiply",
+          opacity: 0.6 - depth * 0.35, // more tint when far
+          pointerEvents: "none",
         }}
-      >
-        <path d="M-3 -0.5 L-17 -3 L-11 0 Z" />
-        <path d="M3 -0.5 L17 -3 L11 0 Z" opacity="0.78" />
-      </g>
-      <g
-        fill={FILL}
-        style={{
-          animation: `nex-crow-wing-down ${flapMs}ms steps(1, end) infinite`,
-          animationDelay: `${delay}ms`,
-        }}
-      >
-        <path d="M-3 0 L-16 6 L-9 3 Z" />
-        <path d="M3 0 L16 6 L9 3 Z" opacity="0.78" />
-      </g>
-    </svg>
+      />
+    </div>
   );
 }
 
@@ -540,53 +687,93 @@ function SvgCrowFallback({
 // ---------------------------------------------------------------------------
 
 const ambientCss = `
+  /* Flight paths · restrained rotations (±1° max) so bank/turn reads
+     as a real bird correcting course, not a UI wiggle. Each path has
+     6+ waypoints of subtle irregularity — small rises, drops, and
+     heading changes — so the trajectory never plots as a clean line.
+     Five arc variants per direction so the same path doesn't repeat
+     within a session. */
   @keyframes nex-crow-fly-lr-low {
-    0%   { transform: translate(-140px, 0px)     rotate(-1deg); }
-    30%  { transform: translate(30vw, -6px)      rotate(1deg); }
-    55%  { transform: translate(55vw, -14px)     rotate(-1deg); }
-    80%  { transform: translate(80vw, -4px)      rotate(2deg); }
-    100% { transform: translate(calc(100vw + 80px), 4px) rotate(0deg); }
+    0%   { transform: translate(-160px, 0px)   rotate(-0.4deg); }
+    18%  { transform: translate(18vw, -3px)    rotate(0.3deg); }
+    36%  { transform: translate(36vw, -7px)    rotate(-0.5deg); }
+    58%  { transform: translate(58vw, -12px)   rotate(0.7deg); }
+    76%  { transform: translate(76vw, -6px)    rotate(-0.3deg); }
+    100% { transform: translate(calc(100vw + 100px), 2px)  rotate(0deg); }
   }
   @keyframes nex-crow-fly-lr-high {
-    0%   { transform: translate(-140px, 8px)     rotate(1deg); }
-    35%  { transform: translate(38vw, -18px)     rotate(-2deg); }
-    65%  { transform: translate(68vw, -22px)     rotate(1deg); }
-    100% { transform: translate(calc(100vw + 80px), -2px) rotate(-1deg); }
+    0%   { transform: translate(-160px, 6px)   rotate(0.5deg); }
+    22%  { transform: translate(22vw, -6px)    rotate(-0.6deg); }
+    42%  { transform: translate(42vw, -18px)   rotate(0.4deg); }
+    64%  { transform: translate(64vw, -22px)   rotate(-0.3deg); }
+    86%  { transform: translate(86vw, -14px)   rotate(0.6deg); }
+    100% { transform: translate(calc(100vw + 100px), -4px) rotate(-0.2deg); }
   }
   @keyframes nex-crow-fly-lr-flat {
-    0%   { transform: translate(-140px, 0)       rotate(0deg); }
-    50%  { transform: translate(50vw, -3px)      rotate(0deg); }
-    100% { transform: translate(calc(100vw + 80px), -4px) rotate(0deg); }
+    0%   { transform: translate(-160px, 0)     rotate(0deg); }
+    30%  { transform: translate(30vw, -2px)    rotate(-0.2deg); }
+    55%  { transform: translate(55vw, -5px)    rotate(0.3deg); }
+    80%  { transform: translate(80vw, -3px)    rotate(-0.2deg); }
+    100% { transform: translate(calc(100vw + 100px), -4px) rotate(0deg); }
+  }
+  /* Wander · the crow drifts diagonally, corrects, drifts back ·
+     the trajectory reads as "navigating open air" not "crossing". */
+  @keyframes nex-crow-fly-lr-wander {
+    0%   { transform: translate(-160px, 0)     rotate(0.3deg); }
+    14%  { transform: translate(14vw, -4px)    rotate(-0.4deg); }
+    28%  { transform: translate(30vw, -14px)   rotate(0.6deg); }
+    46%  { transform: translate(48vw, -9px)    rotate(-0.7deg); }
+    62%  { transform: translate(62vw, -16px)   rotate(0.5deg); }
+    80%  { transform: translate(80vw, -10px)   rotate(-0.4deg); }
+    100% { transform: translate(calc(100vw + 100px), -6px) rotate(0.2deg); }
+  }
+  /* Settle · descending gradually · reads as a bird dropping toward
+     a perch just off screen. */
+  @keyframes nex-crow-fly-lr-settle {
+    0%   { transform: translate(-160px, -18px) rotate(-0.6deg); }
+    30%  { transform: translate(30vw, -10px)   rotate(0.4deg); }
+    60%  { transform: translate(60vw, -2px)    rotate(-0.3deg); }
+    88%  { transform: translate(88vw, 6px)     rotate(0.5deg); }
+    100% { transform: translate(calc(100vw + 100px), 10px) rotate(0deg); }
   }
   @keyframes nex-crow-fly-rtl-low {
-    0%   { transform: translate(calc(100vw + 80px), 0px) scaleX(-1) rotate(1deg); }
-    30%  { transform: translate(70vw, -6px)      scaleX(-1) rotate(-1deg); }
-    55%  { transform: translate(45vw, -14px)     scaleX(-1) rotate(1deg); }
-    80%  { transform: translate(20vw, -4px)      scaleX(-1) rotate(-2deg); }
-    100% { transform: translate(-140px, 4px)     scaleX(-1) rotate(0deg); }
+    0%   { transform: translate(calc(100vw + 100px), 0px) scaleX(-1) rotate(0.4deg); }
+    18%  { transform: translate(82vw, -3px)    scaleX(-1) rotate(-0.3deg); }
+    36%  { transform: translate(64vw, -7px)    scaleX(-1) rotate(0.5deg); }
+    58%  { transform: translate(42vw, -12px)   scaleX(-1) rotate(-0.7deg); }
+    76%  { transform: translate(24vw, -6px)    scaleX(-1) rotate(0.3deg); }
+    100% { transform: translate(-160px, 2px)   scaleX(-1) rotate(0deg); }
   }
   @keyframes nex-crow-fly-rtl-high {
-    0%   { transform: translate(calc(100vw + 80px), 8px) scaleX(-1) rotate(-1deg); }
-    35%  { transform: translate(62vw, -18px)     scaleX(-1) rotate(2deg); }
-    65%  { transform: translate(32vw, -22px)     scaleX(-1) rotate(-1deg); }
-    100% { transform: translate(-140px, -2px)    scaleX(-1) rotate(1deg); }
+    0%   { transform: translate(calc(100vw + 100px), 6px) scaleX(-1) rotate(-0.5deg); }
+    22%  { transform: translate(78vw, -6px)    scaleX(-1) rotate(0.6deg); }
+    42%  { transform: translate(58vw, -18px)   scaleX(-1) rotate(-0.4deg); }
+    64%  { transform: translate(36vw, -22px)   scaleX(-1) rotate(0.3deg); }
+    86%  { transform: translate(14vw, -14px)   scaleX(-1) rotate(-0.6deg); }
+    100% { transform: translate(-160px, -4px)  scaleX(-1) rotate(0.2deg); }
   }
   @keyframes nex-crow-fly-rtl-flat {
-    0%   { transform: translate(calc(100vw + 80px), 0) scaleX(-1) rotate(0deg); }
-    100% { transform: translate(-140px, -4px)    scaleX(-1) rotate(0deg); }
+    0%   { transform: translate(calc(100vw + 100px), 0) scaleX(-1) rotate(0deg); }
+    30%  { transform: translate(70vw, -2px)    scaleX(-1) rotate(0.2deg); }
+    55%  { transform: translate(45vw, -5px)    scaleX(-1) rotate(-0.3deg); }
+    80%  { transform: translate(20vw, -3px)    scaleX(-1) rotate(0.2deg); }
+    100% { transform: translate(-160px, -4px)  scaleX(-1) rotate(0deg); }
   }
-  @keyframes nex-crow-wing-up {
-    0%, 32%   { opacity: 1; }
-    33%, 100% { opacity: 0; }
+  @keyframes nex-crow-fly-rtl-wander {
+    0%   { transform: translate(calc(100vw + 100px), 0) scaleX(-1) rotate(-0.3deg); }
+    14%  { transform: translate(86vw, -4px)    scaleX(-1) rotate(0.4deg); }
+    28%  { transform: translate(70vw, -14px)   scaleX(-1) rotate(-0.6deg); }
+    46%  { transform: translate(52vw, -9px)    scaleX(-1) rotate(0.7deg); }
+    62%  { transform: translate(38vw, -16px)   scaleX(-1) rotate(-0.5deg); }
+    80%  { transform: translate(20vw, -10px)   scaleX(-1) rotate(0.4deg); }
+    100% { transform: translate(-160px, -6px)  scaleX(-1) rotate(-0.2deg); }
   }
-  @keyframes nex-crow-wing-mid {
-    0%, 32%   { opacity: 0; }
-    33%, 65%  { opacity: 1; }
-    66%, 100% { opacity: 0; }
-  }
-  @keyframes nex-crow-wing-down {
-    0%, 65%   { opacity: 0; }
-    66%, 100% { opacity: 1; }
+  @keyframes nex-crow-fly-rtl-settle {
+    0%   { transform: translate(calc(100vw + 100px), -18px) scaleX(-1) rotate(0.6deg); }
+    30%  { transform: translate(70vw, -10px)   scaleX(-1) rotate(-0.4deg); }
+    60%  { transform: translate(40vw, -2px)    scaleX(-1) rotate(0.3deg); }
+    88%  { transform: translate(12vw, 6px)     scaleX(-1) rotate(-0.5deg); }
+    100% { transform: translate(-160px, 10px)  scaleX(-1) rotate(0deg); }
   }
   @keyframes nex-twinkle {
     0%   { opacity: 0; transform: scale(0.3); }
