@@ -292,9 +292,17 @@ export function PortraitBloomShell({
                 Sits at z-index 2 (above wallpaper + scrim, below
                 header + bubbles). Theme accent painted as ambient
                 tint so distant crows blend with the wallpaper's
-                light instead of reading as flat stickers. */}
+                light instead of reading as flat stickers. Moon
+                halo positioned over the moon in theme3.png (upper-
+                right) with a slow breathing pulse for natural glow. */}
             <AmbientMotion
               ambientTint={`${rippleColor}55`}
+              moonGlow={{
+                x: "72%",
+                y: "11%",
+                size: 180,
+                color: "rgba(225, 238, 255, 0.6)",
+              }}
             />
           </>
         )}

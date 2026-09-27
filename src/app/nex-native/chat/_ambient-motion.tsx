@@ -91,6 +91,12 @@ interface Twinkle {
   y: number; // %
   size: number; // px
   duration: number; // ms
+  /** Peak opacity · dim stars are more common than bright ones so
+   *  the sky has visual depth instead of every star burning equally. */
+  brightness: number; // 0.35 .. 1
+  /** Slight colour cast · mostly white, some cool-blue, some warm.
+   *  Real starlight varies with stellar type. */
+  tint: "white" | "cool" | "warm";
 }
 
 // ---------------------------------------------------------------------------
@@ -101,8 +107,12 @@ const APPEARANCE_INTERVAL_MIN_MS = 180_000; // 3 min
 const APPEARANCE_INTERVAL_MAX_MS = 480_000; // 8 min
 const FIRST_APPEARANCE_MIN_MS = 45_000; // 45 s
 const FIRST_APPEARANCE_MAX_MS = 120_000; // 2 min
-const TWINKLE_INTERVAL_MIN_MS = 1_800;
-const TWINKLE_INTERVAL_MAX_MS = 4_400;
+// Twinkles · sealed 2026-09-27. Shorter cadence + burst mode so the
+// sky feels alive with stars actively coming + going, matching the
+// theme wallpaper's painted stars instead of feeling sparse.
+const TWINKLE_INTERVAL_MIN_MS = 700;
+const TWINKLE_INTERVAL_MAX_MS = 1_900;
+const TWINKLE_BURST_CHANCE = 0.22; // 22% of spawns are bursts of 2–4 stars
 
 const MANIFEST_URL = "/nex-native/chat/crows/manifest.json";
 
@@ -154,7 +164,24 @@ export function AmbientMotion({
    *  of the environment rather than a sticker. Defaults to a warm
    *  neutral · pass the theme accent when available. */
   ambientTint = "rgba(220, 180, 200, 0.35)",
-}: { ambientTint?: string } = {}) {
+  /** Optional soft-glow halo positioned over a moon (or other bright
+   *  point-source) in the theme wallpaper · pulses gently to sell the
+   *  "real moonlight" read. Coordinates are CSS values (%, px, etc)
+   *  so themes can tune them per wallpaper composition. */
+  moonGlow = null,
+}: {
+  ambientTint?: string;
+  moonGlow?: {
+    /** CSS left · e.g. "74%" or "280px" */
+    x: string;
+    /** CSS top */
+    y: string;
+    /** Halo diameter in px · the radial fades out inside this box */
+    size: number;
+    /** Core colour of the halo · pale cool white by default */
+    color?: string;
+  } | null;
+} = {}) {
   const [manifest, setManifest] = React.useState<CrowManifest | null>(null);
   const [appearances, setAppearances] = React.useState<CrowAppearance[]>([]);
   const [twinkles, setTwinkles] = React.useState<Twinkle[]>([]);
@@ -287,6 +314,35 @@ export function AmbientMotion({
       scheduleNextAppearance(FIRST_APPEARANCE_MIN_MS, FIRST_APPEARANCE_MAX_MS);
     }
 
+    const makeTwinkle = (): Twinkle => {
+      // Brightness · dim stars far more common than bright, so the
+      // sky has depth. Pow bias skews toward the dim end.
+      const brightness = 0.35 + Math.pow(Math.random(), 2) * 0.65;
+      // Size correlates loosely with brightness · brighter stars
+      // read as a touch larger.
+      const size = 1.2 + brightness * 2.5;
+      // Colour spread · 70% white, 18% cool-blue, 12% warm.
+      const tint: Twinkle["tint"] =
+        Math.random() < 0.7
+          ? "white"
+          : Math.random() < 0.6
+            ? "cool"
+            : "warm";
+      return {
+        id: `t-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        // Stars cluster in the sky (upper 55% of the surface) ·
+        // never over the composer or reading zone.
+        x: rand(3, 97),
+        y: rand(2, 55),
+        size,
+        // Duration correlates with brightness · dim stars flicker
+        // briefly, bright stars linger through their fade.
+        duration: 1_800 + brightness * 2_400 + rand(-300, 300),
+        brightness,
+        tint,
+      };
+    };
+
     const spawnTwinkle = () => {
       if (!alive) return;
       if (document.visibilityState !== "visible") {
@@ -296,24 +352,26 @@ export function AmbientMotion({
         );
         return;
       }
-      const t: Twinkle = {
-        id: `t-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-        x: rand(4, 96),
-        y: rand(4, 78),
-        size: rand(1.5, 3.5),
-        duration: rand(1_200, 2_400),
-      };
-      setTwinkles((prev) => [...prev.slice(-14), t]);
-      setTimeout(() => {
-        if (!alive) return;
-        setTwinkles((prev) => prev.filter((p) => p.id !== t.id));
-      }, t.duration + 200);
+      // Burst mode · occasionally 2–4 stars appear near-simultaneously
+      // so the sky pulses with life rather than plodding through a
+      // metronomic cadence.
+      const burst = Math.random() < TWINKLE_BURST_CHANCE;
+      const count = burst ? randInt(2, 4) : 1;
+      const spawned: Twinkle[] = [];
+      for (let i = 0; i < count; i++) spawned.push(makeTwinkle());
+      setTwinkles((prev) => [...prev.slice(-(28 - spawned.length)), ...spawned]);
+      spawned.forEach((t) => {
+        setTimeout(() => {
+          if (!alive) return;
+          setTwinkles((prev) => prev.filter((p) => p.id !== t.id));
+        }, t.duration + 200);
+      });
       twinkleT = setTimeout(
         spawnTwinkle,
         rand(TWINKLE_INTERVAL_MIN_MS, TWINKLE_INTERVAL_MAX_MS),
       );
     };
-    twinkleT = setTimeout(spawnTwinkle, rand(2_000, 5_000));
+    twinkleT = setTimeout(spawnTwinkle, rand(1_400, 3_200));
 
     return () => {
       alive = false;
@@ -335,29 +393,75 @@ export function AmbientMotion({
     >
       <style>{ambientCss}</style>
 
+      {/* Moon halo · a soft breathing radial-gradient positioned
+          over the moon in the theme wallpaper. Sits below crows
+          (z-index 1 inside this container) so a passing crow still
+          reads above the moonlight. */}
+      {moonGlow && (
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            left: moonGlow.x,
+            top: moonGlow.y,
+            width: moonGlow.size,
+            height: moonGlow.size,
+            transform: "translate(-50%, -50%)",
+            pointerEvents: "none",
+            zIndex: 1,
+            background: `radial-gradient(circle at 50% 50%, ${
+              moonGlow.color ?? "rgba(220, 235, 255, 0.55)"
+            } 0%, rgba(220, 235, 255, 0.22) 22%, rgba(200, 220, 250, 0.08) 45%, transparent 70%)`,
+            filter: "blur(2px)",
+            animation: "nex-moon-breathe 6.4s ease-in-out infinite",
+            mixBlendMode: "screen",
+          }}
+        />
+      )}
+
       {appearances.map((a) => (
         <CrowAppearanceSprite key={a.id} appearance={a} />
       ))}
 
-      {twinkles.map((t) => (
-        <div
-          key={t.id}
-          style={{
-            position: "absolute",
-            left: `${t.x}%`,
-            top: `${t.y}%`,
-            width: t.size,
-            height: t.size,
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.7) 30%, transparent 70%)",
-            boxShadow:
-              "0 0 4px rgba(255,255,255,0.5), 0 0 8px rgba(200,220,255,0.35)",
-            animation: `nex-twinkle ${t.duration}ms ease-in-out both`,
-            willChange: "opacity, transform",
-          }}
-        />
-      ))}
+      {twinkles.map((t) => {
+        const core =
+          t.tint === "cool"
+            ? "rgba(210, 225, 255,"
+            : t.tint === "warm"
+              ? "rgba(255, 240, 220,"
+              : "rgba(255, 255, 255,";
+        const halo =
+          t.tint === "cool"
+            ? "rgba(160, 190, 240,"
+            : t.tint === "warm"
+              ? "rgba(240, 210, 170,"
+              : "rgba(220, 230, 250,";
+        const coreAlpha = 0.6 + t.brightness * 0.4; // 0.6..1
+        const haloAlpha = 0.25 + t.brightness * 0.35; // 0.25..0.6
+        return (
+          <div
+            key={t.id}
+            style={{
+              position: "absolute",
+              left: `${t.x}%`,
+              top: `${t.y}%`,
+              width: t.size,
+              height: t.size,
+              borderRadius: "50%",
+              background: `radial-gradient(circle, ${core} ${coreAlpha}) 0%, ${core} ${
+                coreAlpha * 0.7
+              }) 30%, transparent 72%)`,
+              boxShadow: `0 0 ${3 + t.brightness * 4}px ${halo} ${haloAlpha}), 0 0 ${
+                6 + t.brightness * 8
+              }px ${halo} ${haloAlpha * 0.55})`,
+              // Longer ease keeps twinkles from popping · they
+              // fade in slowly, hold, fade out slowly.
+              animation: `nex-twinkle-soft ${t.duration}ms cubic-bezier(0.4, 0, 0.6, 1) both`,
+              willChange: "opacity, transform",
+            }}
+          />
+        );
+      })}
     </div>
   );
 }
@@ -780,5 +884,22 @@ const ambientCss = `
     25%  { opacity: 0.85; transform: scale(1); }
     65%  { opacity: 0.85; transform: scale(1); }
     100% { opacity: 0; transform: scale(0.6); }
+  }
+  /* Softer twinkle · slower rise, held hold, slower fall. The
+     alpha ramp goes further than nex-twinkle so bright stars
+     linger, dim ones flicker briefly. */
+  @keyframes nex-twinkle-soft {
+    0%   { opacity: 0; transform: scale(0.35); }
+    18%  { opacity: 1; transform: scale(1); }
+    72%  { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.7); }
+  }
+  /* Moon breathe · very subtle opacity + scale oscillation so the
+     moon looks like it's radiating warmth into the sky rather than
+     sitting as a flat painted disc. Deliberately slow (6.4s cycle)
+     so it never becomes noticeable UI motion. */
+  @keyframes nex-moon-breathe {
+    0%, 100% { opacity: 0.78; transform: translate(-50%, -50%) scale(1); }
+    50%      { opacity: 1;    transform: translate(-50%, -50%) scale(1.06); }
   }
 `;
