@@ -95,23 +95,6 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
   return (
     <>
       <style>{`
-        @keyframes nex-aurora-border {
-          0%   { background-position: 0% 50%; }
-          50%  { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        [data-nex-aurora-pill] {
-          /* Blue + orange running-light rim · the two NEX accents
-             sweep back and forth. */
-          background: linear-gradient(
-            90deg,
-            #009fef 0%,
-            #ff7a00 50%,
-            #009fef 100%
-          );
-          background-size: 250% 100%;
-          animation: nex-aurora-border 9s ease-in-out infinite;
-        }
         @keyframes nex-modal-in {
           from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
           to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
@@ -184,33 +167,23 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
           </button>
         </div>
 
-        {/* Row 2 · running-light bordered rectangle · + | textarea |
-            emoji | send · plain frosted gray inner. Rounded 14px
-            corners so it reads as a proper rectangular field, not
-            a pill. */}
+        {/* Row 2 · glass input rectangle · + | textarea | emoji |
+            send · frosted gray inner with a static solid blue rim.
+            No animation, no gradient · calmer NEX composer. */}
         <div
-          data-nex-aurora-pill
           style={{
-            position: "relative",
-            padding: 2,
+            display: "flex",
+            alignItems: "center",
+            minHeight: 44,
+            padding: "4px 6px 4px 6px",
             borderRadius: 14,
+            background: "rgba(150,160,180,0.16)",
+            backdropFilter: "blur(20px) saturate(1.1)",
+            WebkitBackdropFilter: "blur(20px) saturate(1.1)",
+            border: `1px solid ${NEX.cyan}`,
+            boxShadow: "0 0 0 1px rgba(0,159,239,0.18)",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              minHeight: 44,
-              padding: "4px 6px 4px 6px",
-              borderRadius: 12,
-              // Plain frosted gray · light neutral tint over the
-              // portrait-fade backdrop. Reads as a proper input
-              // field, not a colored container.
-              background: "rgba(150,160,180,0.16)",
-              backdropFilter: "blur(20px) saturate(1.1)",
-              WebkitBackdropFilter: "blur(20px) saturate(1.1)",
-            }}
-          >
             <PlusButton onClick={() => setModalOpen(true)} />
             <textarea
               ref={textareaRef}
@@ -241,7 +214,6 @@ export function PeerComposer({ action, placeholder }: PeerComposerProps) {
             />
             <EmojiButton onClick={() => setEmojiOpen(true)} />
             <SendButton armed={hasText} />
-          </div>
         </div>
       </form>
     </>
