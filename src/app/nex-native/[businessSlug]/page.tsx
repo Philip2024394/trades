@@ -697,18 +697,21 @@ function ProductSpread({
   description,
   price,
   imageUrl,
-  tags,
   stockStatus,
-  chatHref,
   detailHref,
 }: {
   name: string;
   description: string | null;
   price: string;
   imageUrl: string | null;
-  tags: string[];
+  /** Kept in the signature so callers don't need to change · no
+   *  longer rendered on the card · Founder direction 2026-09-28. */
+  tags?: string[];
   stockStatus: string | null;
-  chatHref: string;
+  /** Kept in the signature so callers don't need to change · card
+   *  now has a single "More info" button that goes to detailHref
+   *  and the chat CTA lives on the product page itself. */
+  chatHref?: string;
   detailHref: string;
 }) {
   return (
@@ -797,77 +800,49 @@ function ProductSpread({
                   : stockStatus.replace(/_/g, " ")}
           </div>
         )}
-        {/* Price overlay · lower-right corner of the image · compact
-            pill so it lands as a signature not a banner. */}
-        <div
-          style={{
-            position: "absolute",
-            right: 12,
-            bottom: 12,
-            padding: "4px 9px",
-            borderRadius: 8,
-            background:
-              "linear-gradient(180deg, rgba(2,9,20,0.75) 0%, rgba(2,9,20,0.9) 100%)",
-            border: `1px solid ${NEX.orangeSoft}`,
-            color: NEX.orange,
-            fontSize: 12,
-            fontWeight: 700,
-            letterSpacing: "0.01em",
-            fontFamily: SANS,
-            backdropFilter: "blur(8px)",
-            WebkitBackdropFilter: "blur(8px)",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
-          }}
-        >
-          {price}
-        </div>
       </div>
 
-      {/* Meta · name lives under the image now (its own row), then
-          tags, then description, then the CTAs. */}
+      {/* Meta · name + price on one row · optional description below ·
+          single "More info" CTA that opens the full product page.
+          Founder direction 2026-09-28 · no tag badges, no price
+          overlay badge, no dual CTA (chat lives on the product page). */}
       <div style={{ padding: "18px 22px 22px" }}>
-        <h3
+        <div
           style={{
-            margin: 0,
-            fontFamily: SERIF,
-            fontWeight: 500,
-            fontSize: 26,
-            letterSpacing: "-0.01em",
-            lineHeight: 1.1,
-            marginBottom: 10,
+            display: "flex",
+            alignItems: "baseline",
+            justifyContent: "space-between",
+            gap: 14,
+            marginBottom: description ? 12 : 16,
           }}
         >
-          {name}
-        </h3>
-        {tags.length > 0 && (
-          <div
+          <h3
             style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 6,
-              marginBottom: 14,
+              margin: 0,
+              fontFamily: SERIF,
+              fontWeight: 500,
+              fontSize: 26,
+              letterSpacing: "-0.01em",
+              lineHeight: 1.1,
+              flex: 1,
+              minWidth: 0,
             }}
           >
-            {tags.slice(0, 5).map((tag) => (
-              <span
-                key={tag}
-                style={{
-                  padding: "3px 10px",
-                  borderRadius: 999,
-                  border: `1px solid ${NEX.borderStrong}`,
-                  background: "rgba(0,175,255,0.08)",
-                  color: NEX.cyan,
-                  fontSize: 10,
-                  letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                  fontWeight: 600,
-                }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
+            {name}
+          </h3>
+          <span
+            style={{
+              flexShrink: 0,
+              fontFamily: SANS,
+              fontSize: 16,
+              fontWeight: 800,
+              color: NEX.orange,
+              letterSpacing: "0.01em",
+            }}
+          >
+            {price}
+          </span>
+        </div>
         {description && (
           <p
             style={{
@@ -882,48 +857,25 @@ function ProductSpread({
             {description}
           </p>
         )}
-        {/* Two CTAs · Order Now (primary orange, goes to chat) +
-            More Details (secondary cyan, opens the full product page) */}
-        <div style={{ display: "flex", gap: 10 }}>
-          <Link
-            href={chatHref}
-            style={{
-              flex: 1,
-              padding: "12px 14px",
-              borderRadius: 12,
-              background: NEX.orange,
-              color: "#0B0F1A",
-              fontSize: 12,
-              fontWeight: 700,
-              letterSpacing: "0.04em",
-              textTransform: "uppercase",
-              textDecoration: "none",
-              textAlign: "center",
-              boxShadow: "0 8px 20px rgba(255,120,0,0.35)",
-            }}
-          >
-            Order Now
-          </Link>
-          <Link
-            href={detailHref}
-            style={{
-              flex: 1,
-              padding: "12px 14px",
-              borderRadius: 12,
-              background: "rgba(0,175,255,0.16)",
-              border: `1px solid ${NEX.cyanSoft}`,
-              color: NEX.text,
-              fontSize: 12,
-              fontWeight: 700,
-              letterSpacing: "0.04em",
-              textTransform: "uppercase",
-              textDecoration: "none",
-              textAlign: "center",
-            }}
-          >
-            More Details
-          </Link>
-        </div>
+        <Link
+          href={detailHref}
+          style={{
+            display: "block",
+            padding: "12px 14px",
+            borderRadius: 12,
+            background: "rgba(0,175,255,0.16)",
+            border: `1px solid ${NEX.cyanSoft}`,
+            color: NEX.text,
+            fontSize: 12,
+            fontWeight: 700,
+            letterSpacing: "0.04em",
+            textTransform: "uppercase",
+            textDecoration: "none",
+            textAlign: "center",
+          }}
+        >
+          More info →
+        </Link>
       </div>
     </article>
   );
