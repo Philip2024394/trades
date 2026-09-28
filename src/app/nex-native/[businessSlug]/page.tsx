@@ -229,6 +229,9 @@ export default async function Page({
             justifyContent: "flex-end",
           }}
         >
+          {/* Cyan address label · pushed down with explicit top margin
+              so it never bumps into the sticky NEX brand mark on tall
+              viewports · Founder direction 2026-09-28. */}
           <div
             style={{
               fontSize: 11,
@@ -236,6 +239,7 @@ export default async function Page({
               textTransform: "uppercase",
               color: NEX.cyan,
               fontWeight: 700,
+              marginTop: 72,
               marginBottom: 16,
             }}
           >
@@ -1207,9 +1211,9 @@ function SafeTradeChipStrip({ methods }: { methods: string[] }) {
     paypal: "🌏",
   };
   const LABEL: Record<string, string> = {
-    cod: "Cash on Delivery",
+    cod: "C.O.D",
     qris_delivery: "QRIS on delivery",
-    courier_cod: "Courier COD",
+    courier_cod: "Courier C.O.D",
     meetup: "Meet in person",
     escrow: "Escrow (Rekber)",
     paypal: "PayPal G&S",

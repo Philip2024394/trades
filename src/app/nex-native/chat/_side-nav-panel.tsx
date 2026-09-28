@@ -125,20 +125,15 @@ export function SideNavPanel({
         aria-label="Chat side navigation"
         style={{
           position: "fixed",
-          right: 8,
+          right: 2,
           top: "50%",
           transform: "translateY(-50%)",
           display: "flex",
           flexDirection: "column",
-          gap: 4,
-          padding: 4,
-          background: NEX.railBg,
-          border: `1px solid ${NEX.cyanBorder}`,
-          borderRadius: 22,
-          backdropFilter: "blur(14px) saturate(1.2)",
-          WebkitBackdropFilter: "blur(14px) saturate(1.2)",
-          boxShadow:
-            "0 12px 32px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.05)",
+          gap: 6,
+          padding: 0,
+          background: "transparent",
+          border: "none",
           zIndex: 5,
           animation: "nex-nav-slide-in 260ms cubic-bezier(.2,.7,.2,1) both",
         }}
@@ -195,23 +190,25 @@ function RailButton({
       onClick={onClick}
       style={{
         position: "relative",
-        width: 36,
-        height: 36,
+        width: 32,
+        height: 32,
         borderRadius: "50%",
-        background: "transparent",
-        border: "none",
+        background: "#0B0F1A",
+        border: "1px solid rgba(255,255,255,0.14)",
         color: NEX.text, // white
         padding: 0,
         display: "grid",
         placeItems: "center",
         cursor: "pointer",
         transition: "background 160ms ease",
+        boxShadow:
+          "0 4px 10px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06)",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.background = "rgba(255,255,255,0.10)";
+        e.currentTarget.style.background = "#141b2a";
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.background = "transparent";
+        e.currentTarget.style.background = "#0B0F1A";
       }}
     >
       {children}
@@ -220,19 +217,20 @@ function RailButton({
           aria-label={`${badge} pending`}
           style={{
             position: "absolute",
-            top: 2,
-            right: 2,
-            minWidth: 16,
-            height: 16,
+            top: -3,
+            right: -3,
+            minWidth: 14,
+            height: 14,
             borderRadius: 999,
             padding: "0 4px",
-            background: NEX.orange,
-            color: "#0B0F1A",
-            fontSize: 10,
-            fontWeight: 700,
+            background: "#0B0F1A",
+            border: "1px solid rgba(255,255,255,0.28)",
+            color: "#FFFFFF",
+            fontSize: 9,
+            fontWeight: 800,
             display: "grid",
             placeItems: "center",
-            boxShadow: "0 0 6px rgba(255,120,0,0.7)",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.55)",
           }}
         >
           {badge > 9 ? "9+" : badge}
@@ -259,14 +257,17 @@ function RailLink({
       aria-label={ariaLabel}
       title={title}
       style={{
-        width: 36,
-        height: 36,
+        width: 32,
+        height: 32,
         borderRadius: "50%",
-        background: "transparent",
+        background: "#0B0F1A",
+        border: "1px solid rgba(255,255,255,0.14)",
         color: NEX.text, // white
         display: "grid",
         placeItems: "center",
         textDecoration: "none",
+        boxShadow:
+          "0 4px 10px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06)",
         transition: "background 160ms ease",
       }}
       onMouseEnter={(e) => {

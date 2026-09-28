@@ -370,7 +370,7 @@ export const NEX_PAYMENT_METHOD_META: Record<
 > = {
   cod: {
     emoji: "💵",
-    label: "Cash on Delivery",
+    label: "C.O.D",
     blurb: "Driver collects rupiah cash at your door · local only",
   },
   qris_delivery: {
@@ -380,7 +380,7 @@ export const NEX_PAYMENT_METHOD_META: Record<
   },
   courier_cod: {
     emoji: "📦",
-    label: "Courier COD",
+    label: "Courier C.O.D",
     blurb: "JNE / J&T / SiCepat holds your payment · remits to seller after delivery",
   },
   meetup: {

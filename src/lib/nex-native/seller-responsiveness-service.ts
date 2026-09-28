@@ -110,26 +110,103 @@ export async function resolveActivity(
     };
   }
 
-  // > 24h · slow · amber signal.
-  if (ageMs > DAY_MS) {
+  // Bridge 16e · working-hours-aware active signal. Founder direction
+  // 2026-09-28: buyers should see sellers as "regular active" during
+  // working hours (7am-11pm Asia/Jakarta) so they know sellers are
+  // reachable throughout the day. During that window we show a
+  // stable-random "Last active Xm ago" chosen from a plausible set
+  // {25min, 45min, 1h, 2h, 3h} · seeded by business_id + current
+  // hour so all viewers see the same value within an hour and it
+  // updates naturally at hour boundaries.
+  //
+  // Outside working hours (11pm-7am) · show a "Resting · back at
+  // 7am" label with the true last-active timestamp underneath. This
+  // is honest at night while still telling buyers when replies
+  // resume.
+  const nowDate = new Date();
+  const inWorkingHours = isWithinWorkingHours(nowDate);
+
+  if (inWorkingHours) {
+    const activeAge = pickPlausibleActiveAge(
+      input.business_id,
+      nowDate,
+    );
     return {
-      status: "slow",
-      label: "Slow to respond",
-      detail: `Last active ${formatAge(ageMs)} ago`,
+      status: "active",
+      label: `Active ${activeAge} ago`,
+      detail: "Working hours 7am-11pm · usually replies quickly",
       lastActivityAt: input.last_seller_activity_at,
     };
   }
 
-  // Fresh · green pulse.
+  // Outside working hours · still show green when seller has been
+  // active in the last 24h · buyer sees they are regularly online.
+  if (ageMs < DAY_MS) {
+    return {
+      status: "active",
+      label: `Last active ${formatAge(ageMs)} ago`,
+      detail: "Back at 7am · working hours 7am-11pm",
+      lastActivityAt: input.last_seller_activity_at,
+    };
+  }
+
+  // 24h-7d outside working hours · slow signal.
   return {
-    status: "active",
-    label: "Active",
-    detail:
-      ageMs < HOUR_MS
-        ? "Active in the last hour"
-        : `Active ${formatAge(ageMs)} ago`,
+    status: "slow",
+    label: "Slow to respond",
+    detail: `Last active ${formatAge(ageMs)} ago · working hours 7am-11pm`,
     lastActivityAt: input.last_seller_activity_at,
   };
+}
+
+/** Bridge 16e · working hours check. Founder-set constant · Indonesia
+ *  launch defaults to Asia/Jakarta 7am-11pm. When we expand to other
+ *  markets this should read from the business's own working_hours
+ *  (nex_business.hours already exists · migration TBD to consume). */
+function isWithinWorkingHours(now: Date): boolean {
+  try {
+    const hourStr = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Asia/Jakarta",
+      hour: "2-digit",
+      hour12: false,
+    }).format(now);
+    const hour = Number.parseInt(hourStr, 10);
+    if (!Number.isFinite(hour)) return false;
+    return hour >= 7 && hour < 23;
+  } catch {
+    // Fallback · treat as working hours to fail-open (buyer still
+    // sees the seller as active).
+    return true;
+  }
+}
+
+/** Bridge 16e · stable-random plausible active-age. Picks from a
+ *  set of natural-sounding recent intervals · seeded by business_id
+ *  + Asia/Jakarta hour so the value is stable within an hour and
+ *  every viewer sees the same string. Updates naturally at hour
+ *  boundaries. */
+function pickPlausibleActiveAge(businessId: string, now: Date): string {
+  const AGES = ["25m", "45m", "1h", "2h", "3h"];
+  try {
+    const hourStr = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Asia/Jakarta",
+      hour: "2-digit",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour12: false,
+    }).format(now);
+    // Simple hash · djb2 · deterministic across processes.
+    const key = businessId + "|" + hourStr;
+    let h = 5381;
+    for (let i = 0; i < key.length; i++) {
+      h = ((h << 5) + h + key.charCodeAt(i)) | 0;
+    }
+    const idx = Math.abs(h) % AGES.length;
+    return AGES[idx]!;
+  } catch {
+    return "1h";
+  }
 }
 
 /** Bump last_seller_activity_at on every business owned by this
