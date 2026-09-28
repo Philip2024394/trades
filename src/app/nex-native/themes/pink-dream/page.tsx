@@ -485,15 +485,18 @@ function TimelineRow({
     <div
       style={{
         marginTop: extraTop + (isFirstOfCluster ? 6 : 0),
-        maxWidth: "82%",
+        maxWidth: "78%",
       }}
     >
-      {/* Bridge 24w · panel attached to the left window edge · left
-         corners squared + border-left dropped so the slate reads
-         as fused to the wall. Right corners rounded 18. */}
+      {/* Bridge 24x · panel still attached to the left window edge
+         but reverted to inline-block so it only extends as far
+         right as the text needs · matches the previous per-message
+         width envelope, just anchored to the wall instead of
+         floating. */}
       <div
         style={{
-          display: "block",
+          display: "inline-block",
+          maxWidth: "100%",
           padding: "8px 14px 8px 14px",
           borderRadius: "0 18px 18px 0",
           background: panelFill,
