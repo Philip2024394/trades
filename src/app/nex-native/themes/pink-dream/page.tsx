@@ -16,6 +16,7 @@
 // source of truth. Do not reinterpret into a generic pink chat.
 
 import type * as React from "react";
+import { PinkDreamHud } from "./_hud";
 
 export const dynamic = "force-static";
 export const runtime = "nodejs";
@@ -240,7 +241,11 @@ export default function PinkDreamPreviewPage() {
         </HeaderIcon>
       </header>
 
-      {/* ---------------- Conversation ---------------- */}
+      {/* ---------------- Conversation ----------------
+         Bridge 24g · right padding reserved for the floating rail
+         (Home + Contacts sit at right:6 · 34px wide + a little air).
+         Bubbles now wrap cleanly instead of tucking under the
+         rail. */}
       <main
         style={{
           position: "relative",
@@ -250,7 +255,7 @@ export default function PinkDreamPreviewPage() {
           width: "100%",
           overflowY: "auto",
           WebkitOverflowScrolling: "touch",
-          padding: "12px 14px 18px",
+          padding: "12px 52px 18px 14px",
           display: "flex",
           flexDirection: "column",
           gap: 10,
@@ -287,74 +292,61 @@ export default function PinkDreamPreviewPage() {
          composer always fills the phone width minus the 12px inset
          and never suffers from position:fixed containing-block
          quirks. */}
+      {/* ---------------- Composer + Send ----------------
+         Bridge 24f · pill container removed per Founder direction
+         2026-09-28 · the input sits naked on the wallpaper with a
+         single subtle underline; attach + camera moved to the
+         lower-right 3-dot menu (Camera / Video / Mic / Themes).
+         Send stays as a separate circular pink button.  */}
       <footer
         style={{
           position: "relative",
-          padding: "10px 10px calc(env(safe-area-inset-bottom, 0) + 10px)",
+          padding: "12px 14px calc(env(safe-area-inset-bottom, 0) + 12px)",
           display: "flex",
           alignItems: "center",
-          gap: 8,
+          gap: 10,
           width: "100%",
-          maxWidth: "100%",
           boxSizing: "border-box",
           zIndex: 6,
-          overflow: "hidden",
         }}
       >
-        {/* Long pill-shaped composer */}
         <div
           style={{
             flex: "1 1 0%",
-            minWidth: 0, // let the pill shrink smaller than intrinsic
+            minWidth: 0,
             display: "flex",
             alignItems: "center",
-            gap: 4,
-            padding: "0 8px 0 10px",
-            height: 54,
-            borderRadius: 32,
-            background: "rgba(24,15,30,0.88)",
-            border: "1px solid rgba(255,139,197,0.75)",
-            boxShadow: "0 0 18px rgba(255,79,163,0.18)",
-            backdropFilter: "blur(18px)",
-            WebkitBackdropFilter: "blur(18px)",
-            overflow: "hidden",
+            gap: 6,
+            paddingRight: 8,
           }}
         >
-          <ComposerIcon aria-label="Emoji">
-            <SmileIcon />
-          </ComposerIcon>
+          <SmileIcon />
           <input
             type="text"
-            placeholder="Type a message…"
+            placeholder="Message…"
             aria-label="Message"
             style={{
               flex: "1 1 0%",
               minWidth: 0,
               width: "100%",
-              padding: "0 4px",
+              padding: "10px 6px",
               background: "transparent",
               border: "none",
+              borderBottom: "1px solid rgba(255,139,197,0.35)",
               color: P.softWhite,
-              fontSize: 15,
+              fontSize: 16,
               fontFamily: SANS,
               outline: "none",
             }}
           />
-          <ComposerIcon aria-label="Attach">
-            <PaperclipIcon />
-          </ComposerIcon>
-          <ComposerIcon aria-label="Camera">
-            <CameraIcon />
-          </ComposerIcon>
         </div>
-        {/* Separate circular send button */}
         <button
           type="button"
           aria-label="Send"
           style={{
             flex: "0 0 auto",
-            width: 54,
-            height: 54,
+            width: 52,
+            height: 52,
             borderRadius: "50%",
             background: "linear-gradient(135deg, #FF8AC5, #FF3F9F)",
             border: "1px solid rgba(255,205,230,0.75)",
@@ -370,6 +362,9 @@ export default function PinkDreamPreviewPage() {
           <SendIcon />
         </button>
       </footer>
+
+      {/* Bridge 24f · floating rail + 3-dot action sheet */}
+      <PinkDreamHud />
 
       {/* Admin footer chip · out of view on mobile keyboard but useful
          when the Founder is checking the preview on desktop. */}
@@ -552,34 +547,6 @@ function HeaderIcon({
   );
 }
 
-function ComposerIcon({
-  children,
-  ...rest
-}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
-  return (
-    <button
-      type="button"
-      {...rest}
-      style={{
-        flex: "0 0 auto",
-        width: 36,
-        height: 36,
-        padding: 0,
-        borderRadius: 999,
-        background: "transparent",
-        border: "none",
-        color: "#FFD4E8",
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      {children}
-    </button>
-  );
-}
-
 // -- Icons · thin rounded strokes -------------------------------
 function PhoneIcon() {
   return (
@@ -643,38 +610,6 @@ function SmileIcon() {
       />
       <circle cx="9" cy="10" r="1" fill="currentColor" />
       <circle cx="15" cy="10" r="1" fill="currentColor" />
-    </svg>
-  );
-}
-function PaperclipIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M21 12l-8.5 8.5a5 5 0 01-7-7L14 5a3.5 3.5 0 015 5L9.5 19.5a2 2 0 01-3-3L15 8"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-function CameraIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M4 8h3l1.5-2h7L17 8h3a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V9a1 1 0 011-1z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
-      <circle
-        cx="12"
-        cy="13"
-        r="3.5"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
     </svg>
   );
 }
