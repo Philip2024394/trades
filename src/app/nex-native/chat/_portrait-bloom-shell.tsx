@@ -922,37 +922,19 @@ export function PortraitBloomShell({
                         // sender · 14px main, 4px tail. Mine = tail
                         // bottom-right, theirs = tail bottom-left.
                         // Sealed 2026-09-27.
-                        // Sky Cards (Bridge 34) round every corner
-                        // symmetrically so the panel reads as a cloud
-                        // rather than a chat bubble.
-                        borderRadius:
-                          layoutStyle === "sky_cards"
-                            ? "18px"
-                            : m.mine
-                              ? "14px 14px 4px 14px"
-                              : "14px 14px 14px 4px",
-                        // Bridge 34 · when the theme catalog sets
-                        // layout_style='sky_cards', outgoing You bubbles
-                        // wear white-glass (frozen moonlight) and
-                        // incoming peer bubbles wear blue-frost.
-                        // Bubbles style keeps the classic dark glass.
+                        borderRadius: m.mine
+                          ? "14px 14px 4px 14px"
+                          : "14px 14px 14px 4px",
+                        // Darker shaded glass · bubbles carry a
+                        // distinctly dark tint so they read as their
+                        // own containers over the portrait.
                         background: m.deleted_for_everyone
                           ? "rgba(20,26,38,0.48)"
-                          : layoutStyle === "sky_cards"
-                            ? m.mine
-                              ? "linear-gradient(180deg, rgba(255,255,255,0.90) 0%, rgba(221,233,250,0.78) 100%)"
-                              : "rgba(0,159,239,0.35)"
-                            : m.mine
-                              ? "rgba(12,32,58,0.62)"
-                              : NEX.glassBubble,
-                        backdropFilter:
-                          layoutStyle === "sky_cards"
-                            ? "blur(14px) saturate(1.6)"
-                            : "blur(24px) saturate(1.2)",
-                        WebkitBackdropFilter:
-                          layoutStyle === "sky_cards"
-                            ? "blur(14px) saturate(1.6)"
-                            : "blur(24px) saturate(1.2)",
+                          : m.mine
+                            ? "rgba(12,32,58,0.62)"
+                            : NEX.glassBubble,
+                        backdropFilter: "blur(24px) saturate(1.2)",
+                        WebkitBackdropFilter: "blur(24px) saturate(1.2)",
                         // Outgoing bubble rim adopts the peer's
                         // theme bubble colour (Rose = blue) · sealed
                         // 2026-09-27. Incoming bubble rim stays a
@@ -962,19 +944,10 @@ export function PortraitBloomShell({
                         // muted dashed rim so they read as tombstones.
                         border: m.deleted_for_everyone
                           ? "1px dashed rgba(139,169,209,0.35)"
-                          : layoutStyle === "sky_cards"
-                            ? m.mine
-                              ? "1px solid rgba(221,233,250,0.75)"
-                              : "1px solid rgba(0,159,239,0.55)"
-                            : m.mine
-                              ? `1px solid ${themeRimStrong(bubbleRim)}`
-                              : "1px solid rgba(150,160,180,0.55)",
-                        // Sky Cards mine bubble is white-glass so text
-                        // must switch to dark navy for legibility.
-                        color:
-                          layoutStyle === "sky_cards" && m.mine
-                            ? "#0B1B2E"
-                            : NEX.text,
+                          : m.mine
+                            ? `1px solid ${themeRimStrong(bubbleRim)}`
+                            : "1px solid rgba(150,160,180,0.55)",
+                        color: NEX.text,
                         fontSize: 15,
                         lineHeight: 1.42,
                         whiteSpace: "pre-wrap",
