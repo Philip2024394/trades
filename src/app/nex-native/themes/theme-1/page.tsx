@@ -295,12 +295,19 @@ export default function Theme1PreviewPage() {
               body={m.body}
               time={m.time}
               extraTop={gapTop}
-              fill="rgba(255, 255, 255, 0.60)"
-              border="rgba(255, 255, 255, 0.55)"
-              accent="#DDE9FA"
+              // Bridge 27f · true glass panel · vertical gradient
+              // (bright top → dim bottom) simulates the light
+              // refracting through a real glass slab. Higher-alpha
+              // border catches light on the edge. Backdrop blur
+              // bumped to 28px on this card so the wallpaper reads
+              // as diffused through frosted crystal.
+              fill="linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.18) 100%)"
+              border="rgba(255, 255, 255, 0.85)"
+              accent="#FFFFFF"
               textColor="#0A1830"
-              eyebrowColor="#2A4670"
+              eyebrowColor="#1E4A7A"
               driftDelay={`${i * 0.4 + 0.2}s`}
+              glass
             />
           );
         })}
@@ -328,6 +335,7 @@ function SkyCard({
   textColor,
   eyebrowColor,
   driftDelay,
+  glass,
 }: {
   side: "left" | "right";
   speaker: string;
@@ -340,6 +348,10 @@ function SkyCard({
   textColor: string;
   eyebrowColor: string;
   driftDelay: string;
+  /** Bridge 27f · when true, layer in extra glass effects · thicker
+   *  backdrop blur, prominent inner top-highlight, subtle bottom
+   *  inner glow, and a bright edge sparkle in the top-inside corner. */
+  glass?: boolean;
 }) {
   const isRight = side === "right";
   return (
@@ -366,16 +378,57 @@ function SkyCard({
           borderBottom: `1px solid ${border}`,
           borderLeft: isRight ? `1px solid ${border}` : `3px solid ${accent}`,
           borderRight: isRight ? `3px solid ${accent}` : `1px solid ${border}`,
-          backdropFilter: "blur(20px) saturate(120%)",
-          WebkitBackdropFilter: "blur(20px) saturate(120%)",
-          boxShadow: isRight
-            ? `-8px 6px 20px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.18)`
-            : `8px 6px 20px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.18)`,
+          backdropFilter: glass
+            ? "blur(28px) saturate(180%)"
+            : "blur(20px) saturate(120%)",
+          WebkitBackdropFilter: glass
+            ? "blur(28px) saturate(180%)"
+            : "blur(20px) saturate(120%)",
+          boxShadow: glass
+            ? [
+                // Outer drop-shadow · direction from the attach edge
+                isRight
+                  ? "-10px 8px 24px rgba(0,0,0,0.32)"
+                  : "10px 8px 24px rgba(0,0,0,0.32)",
+                // Prominent inner top highlight (glass shine)
+                "inset 0 1px 0 rgba(255,255,255,0.85)",
+                // Softer secondary highlight for depth
+                "inset 0 2px 3px rgba(255,255,255,0.30)",
+                // Inner bottom edge for refraction
+                "inset 0 -1px 0 rgba(255,255,255,0.20)",
+              ].join(", ")
+            : isRight
+              ? `-8px 6px 20px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.18)`
+              : `8px 6px 20px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.18)`,
           animation: `t1-cloud-drift 5s ease-in-out ${driftDelay} infinite`,
+          overflow: "hidden",
         }}
       >
+        {/* Bridge 27f · diagonal glass shine · a long soft white
+           streak crossing the top-inside corner opposite the attach
+           edge · mimics the light-catch on a real piece of curved
+           glass. Only rendered when glass prop is true. */}
+        {glass && (
+          <span
+            aria-hidden
+            style={{
+              position: "absolute",
+              top: -10,
+              [isRight ? "left" : "right"]: -10,
+              width: "70%",
+              height: 22,
+              background:
+                "linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.65) 45%, rgba(255,255,255,0.85) 50%, transparent 100%)",
+              transform: "rotate(-8deg)",
+              pointerEvents: "none",
+              filter: "blur(4px)",
+              opacity: 0.85,
+            }}
+          />
+        )}
         <div
           style={{
+            position: "relative",
             fontSize: 10,
             letterSpacing: "0.22em",
             color: eyebrowColor,
@@ -389,6 +442,7 @@ function SkyCard({
         </div>
         <div
           style={{
+            position: "relative",
             fontSize: 15,
             lineHeight: 1.45,
             color: textColor,
