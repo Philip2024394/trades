@@ -265,11 +265,10 @@ export default function Theme1PreviewPage() {
           const prev = CONVO[i - 1];
           const speakerChanged = !prev || prev.side !== m.side;
           const gapTop = speakerChanged ? 6 : 0;
-          // Bridge 27d · both speakers on pure white frosted glass
-          // per Founder direction 2026-09-28 · identity carried
-          // only by the 3px rail (deep blue for Maria · pale silver
-          // for You). Reads as real frosted glass instead of tinted
-          // panels.
+          // Bridge 27e · Maria's blue frost restored per Founder
+          // direction 2026-09-28 · only YOU cards move to white
+          // frosted glass. Two distinct materials · Maria = tinted
+          // sky panel · You = neutral white glass slab.
           if (m.side === "in") {
             return (
               <SkyCard
@@ -279,11 +278,11 @@ export default function Theme1PreviewPage() {
                 body={m.body}
                 time={m.time}
                 extraTop={gapTop}
-                fill="rgba(255, 255, 255, 0.60)"
-                border="rgba(255, 255, 255, 0.55)"
+                fill="rgba(0, 159, 239, 0.28)"
+                border="rgba(126, 182, 255, 0.75)"
                 accent={P.accentDeep}
-                textColor="#0A1830"
-                eyebrowColor={P.accentDeep}
+                textColor="#F4F7FC"
+                eyebrowColor="#B4DBFF"
                 driftDelay={`${i * 0.4}s`}
               />
             );
