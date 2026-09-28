@@ -476,9 +476,10 @@ function BusinessTab(props: {
         maxWidth: 440,
       }}
     >
-      Your business identity · be seen, get noticed, bring in new
-      opportunities. Verified businesses appear in the NEX Directory
-      for buyers to find.
+      Sell your products to local and international buyers. Once your
+      listing is fully set up and NEX-verified, buyers worldwide find
+      you in the NEX Directory. Profile can be a photo or your company
+      logo — face-verification is not required for businesses.
     </p>
   );
 
@@ -516,9 +517,11 @@ function BusinessTab(props: {
             lineHeight: 1.5,
           }}
         >
-          Set up a NEX Shop and be found by customers looking for what
-          you sell · list products, take orders, share your address
-          everywhere.
+          Set up a NEX Shop and reach local + international buyers.
+          List products, take orders, share your address everywhere.
+          Once your listing is complete and NEX-verified, you appear
+          in the worldwide NEX Directory · Bisnis premium unlocks
+          priority placement + unlimited products + boosted messages.
         </p>
         <Link
           href="/nex-native/manage/shop"
@@ -658,6 +661,54 @@ function BusinessTab(props: {
             📍 {business.city}
           </div>
         )}
+
+        {/* Bridge 43a · Directory-status indicator · founder doctrine
+            2026-09-28: verified businesses are what buyers worldwide
+            find in the NEX Directory. Unverified rows still exist but
+            aren't Directory-listed. */}
+        <div
+          style={{
+            marginTop: 12,
+            padding: "8px 12px",
+            borderRadius: 8,
+            background: isVerified
+              ? "rgba(0,175,255,0.10)"
+              : "rgba(0,175,255,0.04)",
+            border: `1px ${isVerified ? "solid" : "dashed"} ${
+              isVerified ? NEX.cyan : `${NEX.cyan}66`
+            }`,
+            fontSize: 12,
+            color: NEX.textPrimary,
+            lineHeight: 1.45,
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+          }}
+        >
+          {isVerified ? (
+            <>
+              <VerifiedTick size={14} />
+              <span>
+                <strong style={{ color: NEX.cyan, fontWeight: 700 }}>
+                  In the NEX Directory ·
+                </strong>{" "}
+                buyers worldwide can find you.
+              </span>
+            </>
+          ) : (
+            <>
+              <span aria-hidden style={{ color: NEX.cyan, fontSize: 14 }}>
+                ⏳
+              </span>
+              <span>
+                <strong style={{ color: NEX.cyan, fontWeight: 700 }}>
+                  Not in Directory yet ·
+                </strong>{" "}
+                finish setup and NEX will verify you.
+              </span>
+            </>
+          )}
+        </div>
       </div>
 
       <div
