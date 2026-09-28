@@ -82,13 +82,21 @@ export function PinkDreamComposer() {
           zIndex: 6,
         }}
       >
-        {/* Bridge 24n · left "+" opens Shop / Marketing / Live / Post / Share */}
+        {/* Bridge 24af · left "+" opens Shop / Marketing / Live /
+           Post / Share · sized 30% smaller (42→30) per Founder
+           direction 2026-09-28 so it reads as a secondary action ·
+           Send remains 42 as the primary. */}
         <button
           type="button"
           aria-label="Open shop and marketing panel"
           aria-expanded={plusOpen}
           onClick={() => setPlusOpen(true)}
-          style={circleButton("linear-gradient(135deg, #FF8AC5, #FF3F9F)")}
+          style={{
+            ...circleButton("linear-gradient(135deg, #FF8AC5, #FF3F9F)"),
+            width: 30,
+            height: 30,
+            boxShadow: "0 3px 10px rgba(255,79,163,0.30)",
+          }}
         >
           <PlusIcon />
         </button>
@@ -569,7 +577,7 @@ function circleButton(background: string): React.CSSProperties {
 /* Icons */
 function PlusIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
       <line
         x1="12"
         y1="5"
