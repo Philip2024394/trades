@@ -45,7 +45,10 @@ import {
   SAFE_TRADE_STRINGS,
 } from "@/lib/nex-native/i18n/safe-trade-strings";
 import { headers } from "next/headers";
-import { acknowledgeSafeTradeAction } from "../../../_actions";
+import {
+  acknowledgeSafeTradeAction,
+  toggleLikeProductAction,
+} from "../../../_actions";
 import { SafeTradeConsentModal } from "./_safe-trade-consent-modal";
 import * as productService from "@/lib/nex-native/product-service";
 
@@ -390,6 +393,7 @@ export default async function PeerChatPage({
           : null
       }
       tradeAgreementActivated={!!peerBusiness?.safe_trade_activated}
+      likeProductAction={toggleLikeProductAction}
       composerPlaceholder={`Message ${peer.display_name}…`}
       headerTag="NEX Chat"
       contacts={contacts}

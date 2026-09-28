@@ -29,6 +29,7 @@ import * as productService from "@/lib/nex-native/product-service";
 import * as menuService from "@/lib/nex-native/menu-service";
 import * as safeTradeConsentService from "@/lib/nex-native/safe-trade-consent-service";
 import * as reportService from "@/lib/nex-native/report-service";
+import * as likedProductService from "@/lib/nex-native/liked-product-service";
 import * as orderService from "@/lib/nex-native/order-service";
 import * as commerceService from "@/lib/nex-native/commerce-service";
 import * as accountService from "@/lib/nex-native/account-service";
@@ -1177,6 +1178,92 @@ export async function sendMenuItemInquiryAction(
 
   revalidatePath(`/nex-native/chat/peer/${peerAccountId}`);
   redirect(`/nex-native/chat/peer/${peerAccountId}`);
+}
+
+/** Bridge 18 · toggle a like on a product. The hidden `intent`
+ *  field tells us whether to add or remove · caller can also just
+ *  omit it and the action flips whatever the current state is. */
+export async function toggleLikeProductAction(
+  productId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+  if (!productId) redirect("/nex-native/liked");
+
+  const backHref =
+    String(formData.get("back") ?? "").trim() || "/nex-native/liked";
+  const safeBack = backHref.startsWith("/nex-native/")
+    ? backHref
+    : "/nex-native/liked";
+  const intent = String(formData.get("intent") ?? "").trim();
+
+  try {
+    if (intent === "unlike") {
+      await likedProductService.unlikeProduct(session.account.id, productId);
+    } else if (intent === "like") {
+      await likedProductService.likeProduct(session.account.id, productId);
+    } else {
+      // No explicit intent · flip the state.
+      const liked = await likedProductService.isLikedByViewer(
+        session.account.id,
+        productId,
+      );
+      if (liked) {
+        await likedProductService.unlikeProduct(session.account.id, productId);
+      } else {
+        await likedProductService.likeProduct(session.account.id, productId);
+      }
+    }
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      safeBack +
+        (safeBack.includes("?") ? "&" : "?") +
+        "like_error=" +
+        encodeURIComponent(msg),
+    );
+  }
+
+  revalidatePath("/nex-native/liked");
+  revalidatePath(safeBack);
+  redirect(safeBack);
+}
+
+/** Bridge 18 · bulk-delete liked rows by id · consumes the checked
+ *  boxes on /nex-native/liked. */
+export async function bulkDeleteLikedProductsAction(
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const ids = formData
+    .getAll("liked_id")
+    .map((v) => String(v).trim())
+    .filter((v) => /^[0-9a-f-]{36}$/i.test(v));
+
+  if (ids.length === 0) {
+    redirect(
+      "/nex-native/liked?bulk_error=" +
+        encodeURIComponent("Pick at least one item"),
+    );
+  }
+
+  try {
+    await likedProductService.deleteLikedRowsByIds(session.account.id, ids);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      "/nex-native/liked?bulk_error=" + encodeURIComponent(msg),
+    );
+  }
+
+  revalidatePath("/nex-native/liked");
+  redirect(
+    "/nex-native/liked?bulk_ok=" +
+      encodeURIComponent(`${ids.length} removed`),
+  );
 }
 
 /** Bridge 17 · share a product from ANY seller's shop to a NEX

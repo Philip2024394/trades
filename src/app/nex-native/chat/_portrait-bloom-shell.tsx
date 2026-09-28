@@ -213,6 +213,13 @@ export interface PortraitBloomShellProps {
    *  safe_trade_activated flag. Only meaningful on commerce chats. */
   tradeAgreementSellerName?: string | null;
   tradeAgreementActivated?: boolean;
+  /** Bridge 18 · when set, product-card bubbles show a heart icon
+   *  that fires this bound action with hidden product_id to save
+   *  the product to the viewer's /nex-native/liked list. */
+  likeProductAction?: (
+    productId: string,
+    formData: FormData,
+  ) => Promise<never> | void;
   /** Optional theme wallpaper · painted behind the message zone as
    *  a soft, dimmed layer so the theme picks up an atmosphere
    *  distinct from the peer's profile image. Sealed 2026-09-27 ·
@@ -259,6 +266,7 @@ export function PortraitBloomShell({
   productInquiryAction,
   tradeAgreementSellerName,
   tradeAgreementActivated,
+  likeProductAction,
 }: PortraitBloomShellProps) {
   const isOffline = presenceKind !== "online";
   // Per-element theme colours · fall back to rippleColor (accent)
@@ -944,6 +952,14 @@ export function PortraitBloomShell({
                           product={m.attachment_product}
                           hasBody={!!m.body}
                           accent={bubbleRim}
+                          likeAction={
+                            likeProductAction
+                              ? likeProductAction.bind(
+                                  null,
+                                  m.attachment_product.product_id,
+                                )
+                              : undefined
+                          }
                         />
                       ) : m.attachment_type === "menu_item" &&
                         m.attachment_menu_item ? (
@@ -1245,6 +1261,7 @@ function MessageProductCard({
   product,
   hasBody,
   accent,
+  likeAction,
 }: {
   product: {
     product_id: string;
@@ -1258,17 +1275,25 @@ function MessageProductCard({
   };
   hasBody: boolean;
   accent: string;
+  /** Bridge 18 · when set, a heart icon appears on the card image
+   *  top-right · submitting the form adds the product to the
+   *  viewer's /nex-native/liked list. */
+  likeAction?: (formData: FormData) => Promise<never> | void;
 }) {
   const marginBottom = hasBody ? 8 : 0;
   const price = formatBubblePrice(product.price_pence, product.currency);
   const href = product.business_slug
     ? `/nex-native/${product.business_slug}`
     : null;
+  const shopDomain = product.business_slug
+    ? `${product.business_slug}.nex`
+    : "NEX";
   const inner = (
     <>
       {product.image_url && (
         <div
           style={{
+            position: "relative",
             width: "100%",
             aspectRatio: "16 / 9",
             background: "#0a1a30",
@@ -1286,6 +1311,45 @@ function MessageProductCard({
               display: "block",
             }}
           />
+          {/* Save heart · top-right · inside a form that fires the
+              bound toggleLikeProductAction. Anonymous viewers get
+              routed to sign-in by the action's guard. */}
+          {likeAction && (
+            <form
+              action={likeAction}
+              style={{
+                position: "absolute",
+                top: 8,
+                right: 8,
+                margin: 0,
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <input type="hidden" name="intent" value="like" />
+              <button
+                type="submit"
+                aria-label="Save to liked items"
+                title="Save to Liked"
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: 999,
+                  background: "rgba(2,9,20,0.72)",
+                  border: "1px solid rgba(255,51,85,0.45)",
+                  color: "#FF7A85",
+                  fontSize: 15,
+                  lineHeight: 1,
+                  cursor: "pointer",
+                  fontFamily: "inherit",
+                  backdropFilter: "blur(6px)",
+                  WebkitBackdropFilter: "blur(6px)",
+                  boxShadow: "0 4px 10px rgba(0,0,0,0.5)",
+                }}
+              >
+                ♥
+              </button>
+            </form>
+          )}
         </div>
       )}
       <div style={{ padding: "8px 10px 10px" }}>
@@ -1296,10 +1360,23 @@ function MessageProductCard({
             textTransform: "uppercase",
             color: accent,
             fontWeight: 700,
-            marginBottom: 2,
+            marginBottom: 4,
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            flexWrap: "wrap",
           }}
         >
-          Product
+          <span>Product</span>
+          <span style={{ color: "rgba(139,169,209,0.55)" }}>·</span>
+          <span
+            style={{
+              color: "rgba(139,169,209,0.85)",
+              fontWeight: 600,
+            }}
+          >
+            {shopDomain}
+          </span>
         </div>
         <div
           style={{
