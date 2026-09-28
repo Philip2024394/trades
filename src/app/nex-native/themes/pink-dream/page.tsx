@@ -534,8 +534,8 @@ function IncomingRow({
       time={time}
       extraTop={extraTop}
       isFirstOfCluster={isFirstOfCluster}
-      panelFill="rgba(255, 79, 163, 0.28)"
-      panelBorder="rgba(255, 139, 197, 0.55)"
+      panelFill="rgba(180, 32, 96, 0.82)"
+      panelBorder="rgba(255, 139, 197, 0.70)"
     />
   );
 }
@@ -550,6 +550,8 @@ function TimelineRow({
   isFirstOfCluster,
   panelFill,
   panelBorder,
+  textColor = "#FFF5FA",
+  eyebrowColor,
 }: {
   color: string;
   glow: string;
@@ -560,6 +562,8 @@ function TimelineRow({
   isFirstOfCluster: boolean;
   panelFill: string;
   panelBorder: string;
+  textColor?: string;
+  eyebrowColor?: string;
 }) {
   return (
     <div
@@ -605,11 +609,11 @@ function TimelineRow({
           style={{
             fontSize: 10,
             letterSpacing: "0.22em",
-            color,
+            color: eyebrowColor ?? color,
             fontWeight: 700,
             textTransform: "uppercase",
             marginBottom: 4,
-            textShadow: `0 0 8px ${glow}`,
+            textShadow: eyebrowColor ? "none" : `0 0 8px ${glow}`,
           }}
         >
           {speaker} · {time}
@@ -618,7 +622,7 @@ function TimelineRow({
           style={{
             fontSize: 15,
             lineHeight: 1.5,
-            color: "#FFF5FA",
+            color: textColor,
             whiteSpace: "pre-wrap",
             letterSpacing: "-0.003em",
           }}
@@ -643,15 +647,17 @@ function OutgoingRow({
 }) {
   return (
     <TimelineRow
-      color="#FFFFFF"
-      glow="rgba(255, 255, 255, 0.55)"
+      color="#FF4FA3"
+      glow="rgba(255, 79, 163, 0.55)"
       speaker={`You${read ? " · ✓✓" : ""}`}
       body={body}
       time={time}
       extraTop={extraTop}
       isFirstOfCluster={true}
-      panelFill="rgba(255, 255, 255, 0.22)"
-      panelBorder="rgba(255, 255, 255, 0.45)"
+      panelFill="rgba(255, 255, 255, 0.72)"
+      panelBorder="rgba(255, 255, 255, 0.85)"
+      textColor="#1A0F22"
+      eyebrowColor="#8B2560"
     />
   );
 }
