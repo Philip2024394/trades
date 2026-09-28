@@ -337,7 +337,8 @@ export default function PinkDreamPreviewPage() {
               color: P.softWhite,
             }}
           >
-            Bunny <span aria-hidden>💗</span>
+            <PinkHeart size={22} />
+            <span style={{ marginLeft: 8 }}>Bunny</span>
           </div>
         </div>
         {/* Bridge 24ab · header is now peer-scoped ONLY per messenger
@@ -435,7 +436,12 @@ function IncomingRow({
     <TimelineRow
       color="#FF4FA3" // hot pink rail = Bunny (theme owner)
       glow="rgba(255, 79, 163, 0.55)"
-      speaker="Bunny 💗"
+      speaker={
+        <>
+          <PinkHeart size={13} />
+          <span style={{ marginLeft: 5 }}>Bunny</span>
+        </>
+      }
       body={body}
       time={time}
       extraTop={extraTop}
@@ -464,7 +470,7 @@ function TimelineRow({
 }: {
   color: string;
   glow: string;
-  speaker: string;
+  speaker: React.ReactNode;
   body: string;
   time: string;
   extraTop: number;
@@ -575,4 +581,47 @@ function OutgoingRow({
   );
 }
 
+/* Bridge 24ae · custom pink heart · SVG with hot-pink → light-pink
+   gradient fill + white shine highlight + soft neon glow. Sits
+   inline with a name (baseline-adjusted via vertical-align). */
+function PinkHeart({ size = 16 }: { size?: number }) {
+  const gid = `pink-heart-${size}`;
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      aria-hidden
+      style={{
+        display: "inline-block",
+        verticalAlign: "-0.18em",
+        filter: "drop-shadow(0 0 4px rgba(255,79,163,0.75))",
+        flexShrink: 0,
+      }}
+    >
+      <defs>
+        <linearGradient id={gid} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#FFB6DA" />
+          <stop offset="55%" stopColor="#FF4FA3" />
+          <stop offset="100%" stopColor="#C61E70" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M12 20.5S3.5 14.8 3.5 9.2C3.5 6.3 5.8 4 8.6 4c1.9 0 3.1 1.1 3.4 2 .3-.9 1.5-2 3.4-2 2.8 0 5.1 2.3 5.1 5.2 0 5.6-8.5 11.3-8.5 11.3z"
+        fill={`url(#${gid})`}
+        stroke="rgba(255,180,210,0.7)"
+        strokeWidth="0.6"
+      />
+      {/* shine highlight */}
+      <path
+        d="M7.6 7.4c.9-1.2 2.4-1.3 3.1-.4"
+        stroke="rgba(255,255,255,0.85)"
+        strokeWidth="1.1"
+        strokeLinecap="round"
+        fill="none"
+      />
+      <circle cx="9.6" cy="9.4" r="0.9" fill="rgba(255,255,255,0.55)" />
+    </svg>
+  );
+}
 
