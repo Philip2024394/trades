@@ -128,32 +128,27 @@ export default function PinkDreamPreviewPage() {
       <span
         aria-hidden
         className="nex-pd-city-light"
-        style={{ left: "38%", top: "40%", animationDelay: "0s" }}
+        style={{ left: "48%", top: "36%", animationDelay: "0s" }}
       />
       <span
         aria-hidden
         className="nex-pd-city-light"
-        style={{ left: "48%", top: "42%", animationDelay: "0.4s" }}
+        style={{ left: "56%", top: "38%", animationDelay: "0.6s" }}
       />
       <span
         aria-hidden
         className="nex-pd-city-light"
-        style={{ left: "56%", top: "38%", animationDelay: "0.8s" }}
+        style={{ left: "62%", top: "35%", animationDelay: "1.2s" }}
       />
       <span
         aria-hidden
         className="nex-pd-city-light"
-        style={{ left: "63%", top: "44%", animationDelay: "1.2s" }}
+        style={{ left: "68%", top: "39%", animationDelay: "1.8s" }}
       />
       <span
         aria-hidden
         className="nex-pd-city-light"
-        style={{ left: "72%", top: "40%", animationDelay: "1.6s" }}
-      />
-      <span
-        aria-hidden
-        className="nex-pd-city-light"
-        style={{ left: "82%", top: "43%", animationDelay: "2.0s" }}
+        style={{ left: "75%", top: "36%", animationDelay: "2.4s" }}
       />
       {/* Fonts + speech-tail shapes · scoped inline so this page is
          fully self-contained and doesn't leak into other themes. */}
@@ -194,55 +189,52 @@ export default function PinkDreamPreviewPage() {
            The bedroom foreground (bear, pillows) stays perfectly
            still · only the "sky outside the window" feels alive. */
 
-        /* Sun glow · a radial pink/orange bloom over the window.
-           Sits ABOVE the readability overlay (z 3) so it isn't
-           washed out by the dark scrim. Opacity swings wide
-           (0.55 → 1.0) so the effect is unmistakable. */
+        /* Sun glow · a radial pink/orange bloom positioned where
+           the setting sun sits in the wallpaper. Opacity breathes
+           between 0.35 and 0.75 over 7s so it feels like the sun
+           is pulsing warm light through the window. */
         @keyframes nex-pd-sun {
-          0%, 100% { opacity: 0.55; transform: scale(1); }
-          50%      { opacity: 1.00; transform: scale(1.14); }
+          0%, 100% { opacity: 0.35; transform: scale(1); }
+          50%      { opacity: 0.75; transform: scale(1.10); }
         }
         [data-nex-pink-dream-preview] [data-nex-pd-sun] {
           position: absolute;
-          left: 30%;
-          top: 14%;
-          width: 65%;
-          height: 34%;
-          z-index: 3;
+          left: 42%;
+          top: 22%;
+          width: 44%;
+          height: 22%;
+          z-index: 1;
           pointer-events: none;
           background: radial-gradient(
-            ellipse at 50% 55%,
-            rgba(255, 230, 170, 1)   0%,
-            rgba(255, 170, 100, 0.85) 22%,
-            rgba(255, 100, 140, 0.55) 48%,
-            rgba(255, 79, 163, 0.20)  70%,
-            transparent 88%
+            ellipse at center,
+            rgba(255, 195, 130, 0.85) 0%,
+            rgba(255, 138, 90, 0.45) 30%,
+            rgba(255, 79, 163, 0.20) 60%,
+            transparent 80%
           );
-          filter: blur(14px);
+          filter: blur(20px);
           mix-blend-mode: screen;
-          animation: nex-pd-sun 6s ease-in-out infinite;
+          animation: nex-pd-sun 7s ease-in-out infinite;
           transform-origin: center;
         }
 
-        /* City lights · larger, brighter twinkles along the
-           skyline. Sits above the overlay so they're visible on
-           the darker sky pixels. */
+        /* City lights · 5 tiny dots positioned along the skyline
+           band, each with its own delay so they twinkle out of
+           sync. Uses transform + opacity for GPU compositing. */
         @keyframes nex-pd-twinkle {
-          0%, 100% { opacity: 0.15; transform: scale(0.6); }
-          50%      { opacity: 1;    transform: scale(1.6); }
+          0%, 100% { opacity: 0.25; transform: scale(0.9); }
+          50%      { opacity: 1;    transform: scale(1.2); }
         }
         [data-nex-pink-dream-preview] .nex-pd-city-light {
           position: absolute;
-          width: 7px;
-          height: 7px;
+          width: 4px;
+          height: 4px;
           border-radius: 50%;
-          background: #FFF5CF;
-          box-shadow:
-            0 0 8px 3px rgba(255, 230, 150, 1),
-            0 0 18px 6px rgba(255, 190, 120, 0.6);
-          z-index: 3;
+          background: #FFE9B8;
+          box-shadow: 0 0 6px 2px rgba(255, 220, 150, 0.9);
+          z-index: 1;
           pointer-events: none;
-          animation: nex-pd-twinkle 2.6s ease-in-out infinite;
+          animation: nex-pd-twinkle 3.4s ease-in-out infinite;
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -320,9 +312,9 @@ export default function PinkDreamPreviewPage() {
         style={{
           position: "absolute",
           inset: 0,
-          zIndex: 2,
+          zIndex: 1,
           background:
-            "linear-gradient(180deg, rgba(12,7,18,0.05) 0%, rgba(12,7,18,0.14) 100%)",
+            "linear-gradient(180deg, rgba(12,7,18,0.08) 0%, rgba(12,7,18,0.16) 100%)",
           pointerEvents: "none",
         }}
       />
