@@ -327,6 +327,29 @@ export default function PinkDreamPreviewPage() {
               boxShadow: "0 0 12px rgba(255,79,163,0.65)",
             }}
           />
+          {/* Bridge 24ah · heart badge sits on the portrait rim at
+             bottom-right · like an identity charm attached to the
+             ring. Wrapper adds a dark navy halo so the heart pops
+             against the sunset. */}
+          <span
+            aria-hidden
+            style={{
+              position: "absolute",
+              bottom: -3,
+              right: -3,
+              width: 22,
+              height: 22,
+              borderRadius: "50%",
+              background: "#17121F",
+              border: "1.5px solid rgba(255,255,255,0.85)",
+              display: "grid",
+              placeItems: "center",
+              zIndex: 3,
+              boxShadow: "0 2px 6px rgba(0,0,0,0.45)",
+            }}
+          >
+            <PinkHeart size={14} />
+          </span>
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div
@@ -337,8 +360,7 @@ export default function PinkDreamPreviewPage() {
               color: P.softWhite,
             }}
           >
-            <PinkHeart size={22} />
-            <span style={{ marginLeft: 8 }}>Bunny</span>
+            Bunny
           </div>
         </div>
         {/* Bridge 24ab · header is now peer-scoped ONLY per messenger
