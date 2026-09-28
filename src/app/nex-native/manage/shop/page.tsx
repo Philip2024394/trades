@@ -377,6 +377,59 @@ export default async function ShopSettingsPage({
           </Link>
         )}
 
+        {/* Bridge 49c · NEX Direct Price discovery link · always
+            visible so every seller finds the ladder editor. */}
+        <Link
+          href="/nex-native/manage/ladder"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 12,
+            padding: "14px 16px",
+            borderRadius: 14,
+            background: "rgba(255,114,0,0.10)",
+            border: `1px solid ${NEX.orangeSoft}`,
+            textDecoration: "none",
+            color: NEX.text,
+            marginBottom: 18,
+            boxShadow: "0 8px 22px rgba(255,114,0,0.18)",
+          }}
+        >
+          <div style={{ minWidth: 0 }}>
+            <div
+              style={{
+                fontSize: 10,
+                letterSpacing: "0.24em",
+                textTransform: "uppercase",
+                color: NEX.orange,
+                fontWeight: 700,
+                marginBottom: 4,
+              }}
+            >
+              NEX Direct Price
+            </div>
+            <div style={{ fontSize: 14, fontWeight: 700 }}>
+              Loyalty ladder + share rewards
+            </div>
+            <div style={{ fontSize: 12, color: NEX.textDim, marginTop: 2 }}>
+              More orders → bigger discount for buyers · you still net more than on GoFood
+            </div>
+          </div>
+          <div
+            style={{
+              fontSize: 12,
+              color: NEX.orange,
+              fontWeight: 700,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Open →
+          </div>
+        </Link>
+
         {/* --- Away mode ------------------------------------------- */}
         <SectionCard>
           <SectionEyebrow color={business.is_away ? NEX.purple : NEX.cyan}>

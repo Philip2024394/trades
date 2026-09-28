@@ -3104,6 +3104,25 @@ export async function markOrderCompletedAction(formData: FormData): Promise<neve
     const msg = e instanceof Error ? e.message : String(e);
     redirectToManageOrdersWithBanner("mark_completed_failed", msg);
   }
+  // Bridge 49b · NEX Direct Price · when the seller marks an order
+  // completed, bump the buyer's tier progress for this business. This
+  // is the only "order truly happened" event we trust · order created
+  // and even paid can be reversed · completion is the commitment
+  // moment. Non-fatal · progress bump failure never blocks the
+  // completion itself.
+  try {
+    const ladderSvc = await import("@/lib/nex-native/ladder-service");
+    await ladderSvc.incrementBuyerProgress(
+      order.customer_account_id,
+      order.business_id,
+    );
+  } catch (e) {
+    console.warn(
+      "[nex-direct-price] tier progress bump failed for order",
+      order.id.slice(0, 8),
+      e instanceof Error ? e.message : e,
+    );
+  }
   revalidatePath("/nex-native/manage/orders");
   redirectToManageOrdersWithBanner("marked_completed", order.id.slice(0, 8));
 }
