@@ -304,30 +304,34 @@ export default function PinkDreamPreviewPage() {
       <footer
         style={{
           position: "relative",
-          padding: "12px 12px calc(env(safe-area-inset-bottom, 0) + 12px)",
+          padding: "10px 10px calc(env(safe-area-inset-bottom, 0) + 10px)",
           display: "flex",
           alignItems: "center",
-          gap: 10,
+          gap: 8,
           width: "100%",
+          maxWidth: "100%",
           boxSizing: "border-box",
           zIndex: 6,
+          overflow: "hidden",
         }}
       >
         {/* Long pill-shaped composer */}
         <div
           style={{
-            flex: 1,
+            flex: "1 1 0%",
+            minWidth: 0, // let the pill shrink smaller than intrinsic
             display: "flex",
             alignItems: "center",
-            gap: 10,
-            padding: "0 12px 0 14px",
-            height: 60,
+            gap: 4,
+            padding: "0 8px 0 10px",
+            height: 54,
             borderRadius: 32,
             background: "rgba(24,15,30,0.88)",
             border: "1px solid rgba(255,139,197,0.75)",
             boxShadow: "0 0 18px rgba(255,79,163,0.18)",
             backdropFilter: "blur(18px)",
             WebkitBackdropFilter: "blur(18px)",
+            overflow: "hidden",
           }}
         >
           <ComposerIcon aria-label="Emoji">
@@ -338,8 +342,9 @@ export default function PinkDreamPreviewPage() {
             placeholder="Type a message…"
             aria-label="Message"
             style={{
-              flex: 1,
+              flex: "1 1 0%",
               minWidth: 0,
+              width: "100%",
               padding: "0 4px",
               background: "transparent",
               border: "none",
@@ -361,8 +366,9 @@ export default function PinkDreamPreviewPage() {
           type="button"
           aria-label="Send"
           style={{
-            width: 60,
-            height: 60,
+            flex: "0 0 auto",
+            width: 54,
+            height: 54,
             borderRadius: "50%",
             background: "linear-gradient(135deg, #FF8AC5, #FF3F9F)",
             border: "1px solid rgba(255,205,230,0.75)",
@@ -569,8 +575,10 @@ function ComposerIcon({
       type="button"
       {...rest}
       style={{
-        width: 40,
-        height: 40,
+        flex: "0 0 auto",
+        width: 36,
+        height: 36,
+        padding: 0,
         borderRadius: 999,
         background: "transparent",
         border: "none",
