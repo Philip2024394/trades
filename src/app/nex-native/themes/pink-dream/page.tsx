@@ -439,19 +439,23 @@ function IncomingRow({
   extraTop: number;
   isFirstOfCluster: boolean;
 }) {
-  const color = "#FF4FA3"; // Bunny · hot pink · theme owner
-  const glow = "rgba(255, 79, 163, 0.55)";
+  // Bridge 24z · quiet-luxury variant · same white-frosted glass
+  // for both speakers · identity carried only by the 3px left rail
+  // and the eyebrow tint. Feels more Vision Pro / Airbnb than the
+  // colour-coded version.
   return (
     <TimelineRow
-      color={color}
-      glow={glow}
+      color="#FF4FA3" // hot pink rail = Bunny (theme owner)
+      glow="rgba(255, 79, 163, 0.55)"
       speaker="Bunny ♡"
       body={body}
       time={time}
       extraTop={extraTop}
       isFirstOfCluster={isFirstOfCluster}
-      panelFill="rgba(180, 32, 96, 0.82)"
-      panelBorder="rgba(255, 139, 197, 0.70)"
+      panelFill="rgba(255, 255, 255, 0.72)"
+      panelBorder="rgba(255, 79, 163, 0.55)"
+      textColor="#1A0F22"
+      eyebrowColor="#8B2560"
     />
   );
 }
