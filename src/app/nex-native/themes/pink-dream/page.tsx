@@ -100,14 +100,29 @@ export default function PinkDreamPreviewPage() {
         color: P.white,
         fontFamily: SANS,
         overflow: "hidden",
-        // Warm sunset bedroom wallpaper covers the entire viewport ·
-        // every chat surface floats over it per the master prompt.
-        backgroundImage: "url(/nex-themes/pink-dream.png)",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        // Bridge 24k · wallpaper moved onto a dedicated animated
+        // layer below (data-nex-pd-wallpaper) so we can Ken-Burns
+        // the image without also transforming the chat surface.
         backgroundColor: "#2b1638",
       }}
     >
+      {/* Bridge 24k · animated wallpaper · slow Ken Burns pan+zoom
+         over 40s, seamless loop. Sits below every other layer via
+         zIndex 0. Uses transform on a full-bleed div so we don't
+         touch the composer / header positioning. */}
+      <div
+        aria-hidden
+        data-nex-pd-wallpaper
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 0,
+          backgroundImage: "url(/nex-themes/pink-dream.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          willChange: "transform",
+        }}
+      />
       {/* Fonts + speech-tail shapes · scoped inline so this page is
          fully self-contained and doesn't leak into other themes. */}
       <style>{`
@@ -139,6 +154,30 @@ export default function PinkDreamPreviewPage() {
         }
         [data-nex-pink-dream-preview] [data-portrait-ping-2] {
           animation-delay: 0.9s;
+        }
+        /* Bridge 24k · Ken Burns wallpaper · slow pan + zoom that
+           loops on 80s (goes 0→100 then symmetrically 100→0 via
+           alternate) so the return trip mirrors the outbound and
+           the frame never "snaps". Total drift ≈ 3% both axes,
+           scale peaks at 1.08 · below the perceptual jitter
+           threshold on a phone but adds real life to the sunset. */
+        @keyframes nex-pd-kenburns {
+          0%   { transform: scale(1.00) translate(0%, 0%); }
+          50%  { transform: scale(1.08) translate(-1.5%, 1.5%); }
+          100% { transform: scale(1.00) translate(0%, 0%); }
+        }
+        [data-nex-pink-dream-preview] [data-nex-pd-wallpaper] {
+          animation: nex-pd-kenburns 80s ease-in-out infinite;
+          transform-origin: 55% 45%; /* pull toward the sun on the horizon */
+        }
+        @media (prefers-reduced-motion: reduce) {
+          [data-nex-pink-dream-preview] [data-nex-pd-wallpaper] {
+            animation: none;
+          }
+          [data-nex-pink-dream-preview] [data-portrait-ping] {
+            animation: none;
+            opacity: 0.35;
+          }
         }
         /* Bridge 24i · top-fade mask on the message scroll · bubbles
            dissolve into the header instead of cutting hard against
@@ -204,6 +243,7 @@ export default function PinkDreamPreviewPage() {
         style={{
           position: "absolute",
           inset: 0,
+          zIndex: 1,
           background:
             "linear-gradient(180deg, rgba(12,7,18,0.08) 0%, rgba(12,7,18,0.16) 100%)",
           pointerEvents: "none",
@@ -217,8 +257,7 @@ export default function PinkDreamPreviewPage() {
          against the sunset. */}
       <header
         style={{
-          position: "sticky",
-          top: 0,
+          position: "relative",
           zIndex: 5,
           padding:
             "calc(env(safe-area-inset-top, 0) + 6px) 14px 6px",
