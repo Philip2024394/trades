@@ -462,7 +462,9 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
           right: 12,
           bottom: BUTTON_BOTTOM,
           height: BUTTON_HEIGHT,
-          borderRadius: 999,
+          // Square-side edges with a small radius per Founder ·
+          // 2026-09-28 · no more pill · reads as a solid action tile.
+          borderRadius: 10,
           background: `linear-gradient(180deg, ${NEX.orangeStrong} 0%, ${NEX.orange} 100%)`,
           color: "#0B0F1A",
           border: "none",
@@ -481,7 +483,7 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: 8,
+          gap: 10,
         }}
       >
         <span
@@ -490,14 +492,12 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
             display: "inline-flex",
             alignItems: "center",
             justifyContent: "center",
-            width: 20,
-            height: 20,
-            fontSize: 14,
+            fontSize: 13,
           }}
         >
           ▲
         </span>
-        <span>Swipe up · order + details</span>
+        <span>Swipe up · Order</span>
       </button>
 
       {/* Chat FAB · floats above the button when drawer is closed ·
