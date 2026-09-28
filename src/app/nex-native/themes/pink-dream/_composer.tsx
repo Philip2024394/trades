@@ -156,15 +156,20 @@ export function PinkDreamComposer() {
           />
         </div>
 
-        {/* Send · Bridge 24n · scaled down per Founder direction */}
+        {/* Send · Bridge 24ag · gradient matches YOUR outgoing card
+           strip (warm peach #FFC97C) so the send action reads as
+           belonging to you · Bunny's own chat would render this in
+           her pink rail colour when she's the composer. */}
         <button
           type="button"
           aria-label="Send"
           style={{
-            ...circleButton("linear-gradient(135deg, #FF8AC5, #FF3F9F)"),
+            ...circleButton("linear-gradient(135deg, #FFE2B8, #FFC97C)"),
             width: 42,
             height: 42,
-            boxShadow: "0 0 16px rgba(255,79,163,0.40)",
+            border: "1px solid rgba(255,232,180,0.85)",
+            color: "#0B0F1A",
+            boxShadow: "0 0 16px rgba(255,201,124,0.45)",
           }}
         >
           <SendIcon />
