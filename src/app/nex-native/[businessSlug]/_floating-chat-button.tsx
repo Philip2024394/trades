@@ -54,17 +54,17 @@ export function FloatingChatButton({
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            width: 64,
-            height: 64,
+            width: 32,
+            height: 32,
             borderRadius: 999,
             background:
               "linear-gradient(180deg, #FF9033 0%, #FF7200 100%)",
             border: "1px solid rgba(255,114,0,0.60)",
             color: "#0B0F1A",
-            fontSize: 26,
+            fontSize: 14,
             textDecoration: "none",
             boxShadow:
-              "0 18px 42px rgba(255,114,0,0.42), 0 6px 14px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.35)",
+              "0 10px 24px rgba(255,114,0,0.42), 0 3px 8px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.35)",
             pointerEvents: "auto",
             transition: "transform 120ms ease-out",
             fontFamily:
@@ -75,14 +75,12 @@ export function FloatingChatButton({
             💬
           </span>
         </Link>
-        {/* Small "Chat" label chip beneath · reinforces the affordance
-            without cluttering the round button. Rendered as a
-            separate element so a11y and pointer events stay clean. */}
+        {/* Tiny "Chat" caption beneath · optional legibility. */}
         <div
           aria-hidden
           style={{
-            marginTop: 6,
-            fontSize: 9,
+            marginTop: 3,
+            fontSize: 7,
             letterSpacing: "0.18em",
             textTransform: "uppercase",
             color: "#FF7200",

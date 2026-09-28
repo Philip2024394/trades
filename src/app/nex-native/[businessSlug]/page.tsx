@@ -258,10 +258,9 @@ export default async function Page({
           {/* Bridge 13 · activity badge · green/amber/purple/gray
               signal computed from last_seller_activity_at */}
           <ActivityBadge activity={activity} />
-          {/* Bridge 14 · category chip · small pill under the name */}
-          {business.business_category && (
-            <CategoryChip category={business.business_category} />
-          )}
+          {/* Bridge 14 · category chip removed from hero per Founder
+              direction 2026-09-28 · still used on Directory facet
+              chips + shop-settings picker · component kept below. */}
           {business.description && (
             <p
               style={{
