@@ -172,6 +172,164 @@ export default function SafeTradePage() {
           </p>
         </div>
 
+        {/* --- What is Safe Trade? ---------------------------------- */}
+        <section style={{ marginBottom: 40 }}>
+          <SectionEyebrow color={NEX.cyan}>What is Safe Trade?</SectionEyebrow>
+          <h2 style={sectionH2}>In one sentence</h2>
+          <p style={sectionLede}>
+            <b>Safe Trade is a promise that your money stays out of a
+            stranger&apos;s hands until you actually receive what you
+            ordered.</b> That&apos;s it. Either you pay when the courier
+            hands you the package (Cash on Delivery), or a neutral
+            third party you already trust (Rekber, Xendit, PayPal)
+            holds the money for you and only releases it to the
+            seller once you say &quot;yes, I received it and it&apos;s
+            correct.&quot;
+          </p>
+          <p
+            style={{
+              margin: "14px 0 0",
+              fontSize: 13,
+              lineHeight: 1.65,
+              color: NEX.textDim,
+            }}
+          >
+            NEX itself is a chat and marketplace platform · we do not
+            handle money. Safe Trade is our name for the rules
+            everyone follows so nobody gets scammed by paying a
+            seller directly and then having that seller vanish.
+          </p>
+        </section>
+
+        {/* --- How you're protected --------------------------------- */}
+        <section style={{ marginBottom: 40 }}>
+          <SectionEyebrow color={NEX.green}>How you&apos;re protected</SectionEyebrow>
+          <h2 style={sectionH2}>Five scenarios · five outcomes</h2>
+          <p style={sectionLede}>
+            The whole point of Safe Trade is that these bad things
+            can happen and you still get your money back or the right
+            item. Every scenario below assumes you used one of the
+            five Safe Trade paths.
+          </p>
+
+          <div style={{ display: "grid", gap: 12, marginTop: 24 }}>
+            <ProtectionCard
+              scenario="🚫 The item never arrives"
+              body="You paid via COD → nothing to reverse, the driver
+                    never handed you the package. You paid via Courier
+                    COD → call the courier (JNE 1500 111, J&T
+                    021-8066 1888, SiCepat 021-5020 0050) with your
+                    tracking number and they refund you. You paid via
+                    Rekber / Xendit / PayPal → open the provider's
+                    dispute panel and click 'Item not received' · they
+                    hold the seller's funds and return yours."
+            />
+            <ProtectionCard
+              scenario="📦 The item arrives damaged"
+              body="Take photos of the package + the damage BEFORE
+                    opening more than needed to see the problem. In
+                    escrow: open a dispute with the photos attached ·
+                    the escrow refunds you or arranges a replacement.
+                    In COD: refuse the package if the damage is
+                    obvious at the door. Already accepted? Contact the
+                    seller in chat with photos · if unresolved, file
+                    an off-doctrine escalation via /support."
+            />
+            <ProtectionCard
+              scenario="🎭 The item doesn't match the description"
+              body="Fake, wrong colour, wrong size, wrong model.
+                    Photograph the received item next to the listing
+                    screenshot. Open a 'Significantly Not as
+                    Described' dispute with your escrow provider (all
+                    of them support this). PayPal Buyer Protection is
+                    especially strong on this scenario · they refund
+                    you and require the seller to prove otherwise."
+            />
+            <ProtectionCard
+              scenario="👻 The seller stops responding"
+              body="They took your escrow payment, said 'ok shipping
+                    now', then went silent. Wait 3-5 working days
+                    (they may just be sick or on holiday). If still
+                    silent, open a non-delivery dispute with your
+                    escrow provider · they contact the seller directly
+                    and release your funds back if there's no response
+                    within their window (typically 7-14 days)."
+            />
+            <ProtectionCard
+              scenario="🤔 You changed your mind"
+              body="Safe Trade doesn't cover buyer's remorse ·
+                    that's between you and the seller's return
+                    policy. Ask the seller in chat before you
+                    confirm receipt (before you release the escrow).
+                    Many sellers accept returns within 3-7 days for
+                    unopened items · read their shop's About page or
+                    just ask."
+            />
+          </div>
+        </section>
+
+        {/* --- What the payment actually looks like ----------------- */}
+        <section style={{ marginBottom: 40 }}>
+          <SectionEyebrow color={NEX.orange}>The payment · step by step</SectionEyebrow>
+          <h2 style={sectionH2}>What actually happens when you pay</h2>
+          <p style={sectionLede}>
+            First time using escrow? Here&apos;s exactly what you see.
+            The seller never touches your money · the escrow provider
+            does.
+          </p>
+          <div style={{ display: "grid", gap: 12, marginTop: 24 }}>
+            <PaymentStep
+              num="1"
+              title="You and the seller agree to use Rekber (or Xendit / Midtrans / PayPal)"
+              body="In your NEX chat with the seller, you write 'Let's
+                    use Rekber for this Rp 800,000 order.' Seller
+                    confirms · sends you the escrow provider's contact
+                    or link."
+            />
+            <PaymentStep
+              num="2"
+              title="Escrow provider gives you a unique reference number"
+              body="Example: REKBER-2026-K93XR · This number is YOUR
+                    trade · nobody else's. Keep it safe · it's how
+                    every step below is tracked."
+            />
+            <PaymentStep
+              num="3"
+              title="Escrow gives you their bank account, not the seller's"
+              body="You transfer to (for example) BCA 1234567890 in the
+                    name of PT Rekber Blackpanda / Xendit Indonesia /
+                    similar. NEVER a personal name. The bank statement
+                    on your side will read the escrow provider's
+                    business name. Add the reference number as the
+                    transfer note."
+            />
+            <PaymentStep
+              num="4"
+              title="Escrow notifies the seller: funds received · you may ship"
+              body="Seller sees a notification in their escrow portal
+                    that says 'REKBER-2026-K93XR is funded'. They now
+                    ship the goods · they still don't have your money."
+            />
+            <PaymentStep
+              num="5"
+              title="You receive the package · you inspect it"
+              body="If everything is fine, log into the escrow portal
+                    and click 'Confirm receipt' or 'Release funds'.
+                    Escrow releases the money to the seller (usually
+                    same day or T+1)."
+            />
+            <PaymentStep
+              num="6"
+              title="If something is wrong, click 'Dispute' instead"
+              body="Escrow freezes the funds and mediates · you upload
+                    photos, seller responds, provider decides. If the
+                    dispute is in your favour, funds return to you.
+                    Typical resolution: 3-14 days depending on
+                    provider."
+            />
+          </div>
+        </section>
+
         {/* --- The five options ------------------------------------- */}
         <section style={{ marginBottom: 40 }}>
           <SectionEyebrow color={NEX.cyan}>Your five options</SectionEyebrow>
@@ -574,6 +732,103 @@ function SectionEyebrow({
       }}
     >
       {children}
+    </div>
+  );
+}
+
+function ProtectionCard({
+  scenario,
+  body,
+}: {
+  scenario: string;
+  body: string;
+}) {
+  return (
+    <div
+      style={{
+        padding: "16px 18px",
+        borderRadius: 14,
+        background: "rgba(22,214,107,0.06)",
+        border: `1px solid rgba(22,214,107,0.28)`,
+      }}
+    >
+      <div
+        style={{
+          fontSize: 14,
+          fontWeight: 800,
+          letterSpacing: "-0.005em",
+          marginBottom: 6,
+          color: NEX.text,
+        }}
+      >
+        {scenario}
+      </div>
+      <div
+        style={{
+          fontSize: 13,
+          lineHeight: 1.6,
+          color: "rgba(244,247,252,0.85)",
+        }}
+      >
+        {body}
+      </div>
+    </div>
+  );
+}
+
+function PaymentStep({
+  num,
+  title,
+  body,
+}: {
+  num: string;
+  title: string;
+  body: string;
+}) {
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "40px 1fr",
+        gap: 14,
+        padding: "16px 18px",
+        borderRadius: 14,
+        background: NEX.panelSoft,
+        border: `1px solid ${NEX.border}`,
+      }}
+    >
+      <div
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 12,
+          background: "rgba(255,114,0,0.14)",
+          border: "1px solid rgba(255,114,0,0.4)",
+          color: NEX.orange,
+          display: "grid",
+          placeItems: "center",
+          fontSize: 16,
+          fontWeight: 800,
+          fontFamily: SERIF,
+        }}
+      >
+        {num}
+      </div>
+      <div>
+        <div
+          style={{
+            fontSize: 14,
+            fontWeight: 700,
+            letterSpacing: "-0.003em",
+            marginBottom: 4,
+          }}
+        >
+          {title}
+        </div>
+        <div style={{ fontSize: 13, lineHeight: 1.55, color: NEX.textDim }}>
+          {body}
+        </div>
+      </div>
     </div>
   );
 }
