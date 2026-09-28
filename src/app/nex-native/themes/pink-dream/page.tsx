@@ -16,6 +16,7 @@
 // source of truth. Do not reinterpret into a generic pink chat.
 
 import type * as React from "react";
+import Link from "next/link";
 import { PinkDreamHud } from "./_hud";
 
 export const dynamic = "force-static";
@@ -375,9 +376,18 @@ export default function PinkDreamPreviewPage() {
             Bunny <span aria-hidden>♡</span>
           </div>
         </div>
-        {/* Bridge 24h · phone + video icons removed · Call / Video
-           / Mic / Camera / Themes all live in the 3-dot action
-           sheet at the lower right. */}
+        {/* Bridge 24m · standard header icons on every theme ·
+           settings · cart (with pink badge count) · shop (only
+           when the owner has a shop, mocked here as true). */}
+        <HeaderIconLink href="/nex-native/settings" ariaLabel="Settings">
+          <SettingsIcon />
+        </HeaderIconLink>
+        <HeaderIconLink href="/nex-native/cart" ariaLabel="Cart" badge={3}>
+          <CartIcon />
+        </HeaderIconLink>
+        <HeaderIconLink href="/nex-native/manage/shop" ariaLabel="My shop">
+          <ShopIcon />
+        </HeaderIconLink>
       </header>
 
       {/* ---------------- Conversation ----------------
@@ -664,7 +674,125 @@ function OutgoingRow({
   );
 }
 
+// -- Header icon (Link + optional pink badge) -------------------
+function HeaderIconLink({
+  href,
+  ariaLabel,
+  badge,
+  children,
+}: {
+  href: string;
+  ariaLabel: string;
+  badge?: number;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      aria-label={badge ? `${ariaLabel} · ${badge} unread` : ariaLabel}
+      title={ariaLabel}
+      style={{
+        position: "relative",
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 38,
+        height: 38,
+        borderRadius: "50%",
+        background: "transparent",
+        color: "#FFD4E8",
+        textDecoration: "none",
+        flexShrink: 0,
+      }}
+    >
+      {children}
+      {typeof badge === "number" && badge > 0 && (
+        <span
+          aria-hidden
+          style={{
+            position: "absolute",
+            top: -2,
+            right: -2,
+            minWidth: 16,
+            height: 16,
+            padding: "0 4px",
+            borderRadius: 999,
+            background: "linear-gradient(180deg, #FF77BC, #FF3F9F)",
+            color: "#0B0F1A",
+            fontSize: 9,
+            fontWeight: 800,
+            lineHeight: 1,
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 3px 8px rgba(255,63,159,0.55)",
+            border: "1.5px solid rgba(23,18,31,0.85)",
+            fontFamily: SANS,
+          }}
+        >
+          {badge > 99 ? "99+" : badge}
+        </span>
+      )}
+    </Link>
+  );
+}
+
 // -- Icons · thin rounded strokes -------------------------------
+function SettingsIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.8" />
+      <path
+        d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06A2 2 0 017.04 4.4l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+function CartIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <circle cx="9" cy="21" r="1.5" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="18" cy="21" r="1.5" stroke="currentColor" strokeWidth="1.8" />
+      <path
+        d="M3 3h2l2.7 12.3a2 2 0 0 0 2 1.7h7.6a2 2 0 0 0 2-1.6L21 8H6"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+function ShopIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M3 8l1.5-4h15L21 8"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9 8V5m6 3V5"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 function SmileIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
