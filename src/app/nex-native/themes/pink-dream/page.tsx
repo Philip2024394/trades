@@ -423,6 +423,7 @@ export default function PinkDreamPreviewPage() {
                 body={m.body}
                 time={m.time}
                 extraTop={gapTop}
+                isFirstOfCluster={speakerChanged}
               />
             );
           }
@@ -478,37 +479,36 @@ function IncomingRow({
   body,
   time,
   extraTop,
+  isFirstOfCluster,
 }: {
   body: string;
   time: string;
   extraTop: number;
+  isFirstOfCluster: boolean;
 }) {
+  // Bridge 24p · overlap-corner avatar · 36px portrait bites the
+  // top-left corner of the bubble (50% inside · 50% outside) on the
+  // FIRST bubble of an incoming cluster only. Follow-up bubbles in
+  // the same cluster stay bare so the pattern reads as a "speaker
+  // block" with one identity anchor.
+  const AVATAR = 36;
+  const OVERLAP = AVATAR / 2; // 18px extra padding-top-left on the first bubble
   return (
     <div
       style={{
         display: "flex",
-        alignItems: "flex-end",
-        gap: 7,
-        marginTop: extraTop,
+        justifyContent: "flex-start",
+        marginTop: extraTop + (isFirstOfCluster ? OVERLAP : 0),
       }}
     >
       <div
         style={{
-          width: 28,
-          height: 28,
-          borderRadius: "50%",
-          background: "url(/nex-themes/pink-dream.png) center/cover",
-          border: "1.5px solid rgba(255,255,255,0.75)",
-          boxShadow: "0 0 6px rgba(255,79,163,0.45)",
-          flexShrink: 0,
-        }}
-        aria-hidden
-      />
-      <div
-        style={{
           position: "relative",
           maxWidth: "80%",
-          padding: "9px 14px 8px",
+          paddingTop: isFirstOfCluster ? 9 + OVERLAP - 4 : 9,
+          paddingRight: 14,
+          paddingBottom: 8,
+          paddingLeft: isFirstOfCluster ? 14 + OVERLAP - 6 : 14,
           borderRadius: 22,
           background: "linear-gradient(135deg, #2A1833, #17121F)",
           border: "1px solid rgba(255,139,197,0.55)",
@@ -519,8 +519,27 @@ function IncomingRow({
           lineHeight: 1.29,
           whiteSpace: "pre-wrap",
           letterSpacing: "-0.005em",
+          marginLeft: isFirstOfCluster ? 4 : AVATAR + 4,
         }}
       >
+        {isFirstOfCluster && (
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              top: -OVERLAP,
+              left: -OVERLAP,
+              width: AVATAR,
+              height: AVATAR,
+              borderRadius: "50%",
+              background: "url(/nex-themes/pink-dream.png) center/cover",
+              border: "2px solid rgba(255,255,255,0.85)",
+              boxShadow:
+                "0 0 10px rgba(255,79,163,0.55), 0 2px 6px rgba(0,0,0,0.35)",
+              zIndex: 2,
+            }}
+          />
+        )}
         {body}
         <div
           style={{
