@@ -523,7 +523,7 @@ function IncomingRow({
   extraTop: number;
   isFirstOfCluster: boolean;
 }) {
-  const color = "#FF4FA3"; // Bunny · hot pink
+  const color = "#FF4FA3"; // Bunny · hot pink · theme owner
   const glow = "rgba(255, 79, 163, 0.55)";
   return (
     <TimelineRow
@@ -534,6 +534,8 @@ function IncomingRow({
       time={time}
       extraTop={extraTop}
       isFirstOfCluster={isFirstOfCluster}
+      panelFill="rgba(255, 79, 163, 0.28)"
+      panelBorder="rgba(255, 139, 197, 0.55)"
     />
   );
 }
@@ -546,6 +548,8 @@ function TimelineRow({
   time,
   extraTop,
   isFirstOfCluster,
+  panelFill,
+  panelBorder,
 }: {
   color: string;
   glow: string;
@@ -554,6 +558,8 @@ function TimelineRow({
   time: string;
   extraTop: number;
   isFirstOfCluster: boolean;
+  panelFill: string;
+  panelBorder: string;
 }) {
   return (
     <div
@@ -577,7 +583,24 @@ function TimelineRow({
           border: "1.5px solid rgba(255,255,255,0.85)",
         }}
       />
-      {isFirstOfCluster && (
+      {/* Bridge 24s · speaker + time now lives INSIDE the frosted
+         panel at the top per Founder direction 2026-09-28. Panel
+         hue changes per speaker · pink-frosted for the theme owner
+         (Bunny), white-frosted for the messaging sender (You). */}
+      <div
+        style={{
+          display: "inline-block",
+          maxWidth: "100%",
+          padding: "8px 12px",
+          borderRadius: 12,
+          background: panelFill,
+          border: `1px solid ${panelBorder}`,
+          backdropFilter: "blur(12px) saturate(140%)",
+          WebkitBackdropFilter: "blur(12px) saturate(140%)",
+          boxShadow:
+            "0 4px 14px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.10)",
+        }}
+      >
         <div
           style={{
             fontSize: 10,
@@ -591,29 +614,11 @@ function TimelineRow({
         >
           {speaker} · {time}
         </div>
-      )}
-      {/* Bridge 24r · frosted glass panel behind the text so the
-         message reads cleanly over the sunset wallpaper. Speaker-
-         coloured hairline border ties the panel back to the tick. */}
-      <div
-        style={{
-          display: "inline-block",
-          maxWidth: "100%",
-          padding: "8px 12px",
-          borderRadius: 12,
-          background: "rgba(12, 7, 18, 0.42)",
-          border: `1px solid ${color}30`,
-          backdropFilter: "blur(10px) saturate(120%)",
-          WebkitBackdropFilter: "blur(10px) saturate(120%)",
-          boxShadow:
-            "0 4px 14px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.06)",
-        }}
-      >
         <div
           style={{
             fontSize: 15,
             lineHeight: 1.5,
-            color: "#F4F7FC",
+            color: "#FFF5FA",
             whiteSpace: "pre-wrap",
             letterSpacing: "-0.003em",
           }}
@@ -621,20 +626,6 @@ function TimelineRow({
           {body}
         </div>
       </div>
-      {!isFirstOfCluster && (
-        <div
-          style={{
-            fontSize: 10,
-            letterSpacing: "0.14em",
-            color,
-            opacity: 0.75,
-            fontWeight: 700,
-            marginTop: 3,
-          }}
-        >
-          {time}
-        </div>
-      )}
     </div>
   );
 }
@@ -652,13 +643,15 @@ function OutgoingRow({
 }) {
   return (
     <TimelineRow
-      color="#FFC97C"
-      glow="rgba(255, 201, 124, 0.55)"
+      color="#FFFFFF"
+      glow="rgba(255, 255, 255, 0.55)"
       speaker={`You${read ? " · ✓✓" : ""}`}
       body={body}
       time={time}
       extraTop={extraTop}
       isFirstOfCluster={true}
+      panelFill="rgba(255, 255, 255, 0.22)"
+      panelBorder="rgba(255, 255, 255, 0.45)"
     />
   );
 }
