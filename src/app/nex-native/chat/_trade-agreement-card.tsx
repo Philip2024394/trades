@@ -41,7 +41,7 @@ export function TradeAgreementCard({
       data-nex-trade-agreement
     >
       {activated ? (
-        <span>
+        <div>
           🛡 <b>{sellerName} has Safe Trade activated.</b>{" "}
           <Link
             href="/nex-native/safe-trade"
@@ -49,19 +49,36 @@ export function TradeAgreementCard({
           >
             Learn more
           </Link>
-        </span>
+        </div>
       ) : (
-        <span>
-          ⚠ <b>{sellerName} has not yet activated Safe Trade.</b> Ask
-          them to activate it before placing an order · always follow{" "}
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          <div>
+            ⚠ <b>{sellerName} has not yet activated Safe Trade for
+            online payments yet.</b>
+          </div>
+          <div>
+            All orders are strictly <b>COD</b> until Safe Trade is
+            active. Ask {sellerName} to activate Safe Trade before
+            transferring payment for any product or service.
+          </div>
           <Link
             href="/nex-native/safe-trade"
-            style={{ color: "#FFC96B", textDecoration: "underline" }}
+            style={{
+              display: "block",
+              marginTop: 4,
+              fontSize: 10,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              fontWeight: 800,
+              color: "#FFC96B",
+              textDecoration: "underline",
+              textDecorationColor: "rgba(245,158,11,0.5)",
+              textUnderlineOffset: 2,
+            }}
           >
             NEX Safe Trade
           </Link>
-          .
-        </span>
+        </div>
       )}
     </div>
   );
