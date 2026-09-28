@@ -108,7 +108,7 @@ export default function DirectPriceGallery() {
         }}
       >
         <header style={{ maxWidth: 1080, margin: "0 auto 32px" }}>
-          <div style={{ marginBottom: 8 }}>
+          <div style={{ marginBottom: 8, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <Link
               href="/nex-native/shop-prototypes"
               style={{
@@ -120,6 +120,24 @@ export default function DirectPriceGallery() {
               }}
             >
               ← Back to shop prototypes
+            </Link>
+            <Link
+              href="/nex-native/shop-prototypes/direct-price/share-banner"
+              style={{
+                display: "inline-flex",
+                padding: "5px 12px",
+                borderRadius: 999,
+                background: NEX.orange,
+                color: "#0B0F1A",
+                fontSize: 10,
+                fontWeight: 800,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                textDecoration: "none",
+                boxShadow: `0 6px 18px rgba(255,114,0,0.4)`,
+              }}
+            >
+              🎁 Share banners →
             </Link>
           </div>
           <h1
