@@ -32,8 +32,7 @@ export interface NexServerCart {
 export async function getServerCart(
   accountId: NexUuid,
 ): Promise<NexServerCart> {
-  const db = nexSupabaseAdmin();
-  const { data, error } = await db
+  const { data, error } = await nexSupabaseAdmin
     .from("nex_cart")
     .select("items,delivery_address,updated_at")
     .eq("account_id", accountId)
@@ -74,7 +73,6 @@ export async function saveServerCart(
   items: NexCartItem[],
   deliveryAddress: NexDeliveryAddress,
 ): Promise<NexServerCart> {
-  const db = nexSupabaseAdmin();
   const now = new Date().toISOString();
   const cleanItems = items
     .filter(
@@ -92,7 +90,7 @@ export async function saveServerCart(
     ...NEX_DELIVERY_ADDRESS_EMPTY,
     ...deliveryAddress,
   };
-  const { data, error } = await db
+  const { data, error } = await nexSupabaseAdmin
     .from("nex_cart")
     .upsert(
       {
@@ -121,8 +119,7 @@ export async function saveServerCart(
 /** Wipe a NEX account's cart · called after a successful Send order so
  *  the same items don't linger on the buyer's other devices. */
 export async function clearServerCart(accountId: NexUuid): Promise<void> {
-  const db = nexSupabaseAdmin();
-  const { error } = await db
+  const { error } = await nexSupabaseAdmin
     .from("nex_cart")
     .delete()
     .eq("account_id", accountId);

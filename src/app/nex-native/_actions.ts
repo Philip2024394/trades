@@ -886,6 +886,49 @@ export async function updateBusinessCityAndHoursAction(
   );
 }
 
+/** Bridge 25d · Save the seller's pickup lat/lng for the /cart bike-
+ *  delivery estimator. Reads latitude + longitude off the form ·
+ *  passing empty strings clears both. */
+export async function updateBusinessLocationAction(
+  businessId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const business = await businessService.getBusinessById(businessId);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirect(
+      "/nex-native/manage/shop?e=location_forbidden&m=" +
+        encodeURIComponent("You don't own this shop"),
+    );
+  }
+
+  const latRaw = String(formData.get("location_lat") ?? "").trim();
+  const lngRaw = String(formData.get("location_lng") ?? "").trim();
+  const lat = latRaw.length > 0 ? Number.parseFloat(latRaw) : null;
+  const lng = lngRaw.length > 0 ? Number.parseFloat(lngRaw) : null;
+
+  try {
+    await businessService.updateBusinessLocation(business.id, { lat, lng });
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      "/nex-native/manage/shop?e=location_failed&m=" + encodeURIComponent(msg),
+    );
+  }
+
+  revalidatePath("/nex-native/manage/shop");
+  revalidatePath(`/nex-native/${business.slug}`);
+  redirect(
+    "/nex-native/manage/shop?e=location_ok&m=" +
+      encodeURIComponent("Pickup location saved"),
+  );
+}
+
 /** Bridge 23b · update the seller's events profile jsonb. Every
  *  checkbox / number / text field arrives on formData and the service
  *  normalises + clamps before writing. Called from /manage/venue.

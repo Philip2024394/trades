@@ -614,6 +614,47 @@ export async function updateBusinessEventsProfile(
   return data as NexBusinessRow;
 }
 
+/** Bridge 25d · Save seller pickup lat/lng for the /cart bike-
+ *  delivery estimator. Both must be finite decimal degrees within
+ *  WGS84 range · pass null/null to clear. */
+export async function updateBusinessLocation(
+  id: NexUuid,
+  input: { lat: number | null; lng: number | null },
+): Promise<NexBusinessRow> {
+  const patch: Record<string, number | null> = {};
+  if (input.lat === null && input.lng === null) {
+    patch.location_lat = null;
+    patch.location_lng = null;
+  } else {
+    if (
+      !Number.isFinite(input.lat as number) ||
+      !Number.isFinite(input.lng as number) ||
+      (input.lat as number) < -90 ||
+      (input.lat as number) > 90 ||
+      (input.lng as number) < -180 ||
+      (input.lng as number) > 180
+    ) {
+      throw new Error(
+        "business-service.updateBusinessLocation: lat/lng out of range",
+      );
+    }
+    patch.location_lat = input.lat;
+    patch.location_lng = input.lng;
+  }
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_business")
+    .update(patch)
+    .eq("id", id)
+    .select("*")
+    .single();
+  if (error || !data) {
+    throw new Error(
+      `business-service.updateBusinessLocation: ${error?.message ?? "no row"}`,
+    );
+  }
+  return data as NexBusinessRow;
+}
+
 /** Bridge 23c · Upload a venue photo to Supabase storage and return
  *  the public URL. Reuses the existing nex-peer-chat-attachments
  *  bucket (public read, image MIMEs allowed, 25MB cap). Path prefix

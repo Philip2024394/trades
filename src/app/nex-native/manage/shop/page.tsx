@@ -25,6 +25,7 @@ import {
   updateBusinessCategoryAndKeywordsAction,
   updateBusinessPaymentMethodsAction,
   updateBusinessCityAndHoursAction,
+  updateBusinessLocationAction,
   setBusinessSafeTradeActivatedAction,
   updateReturnPolicyAction,
 } from "../../_actions";
@@ -37,6 +38,7 @@ import {
 } from "@/lib/nex-native/types";
 import { NEX_BUSINESS_CATEGORIES } from "@/lib/nex-native/site-templates";
 import { isVenueCategory } from "@/lib/nex-native/types";
+import { SellerLocationEditor } from "./_location-editor";
 import {
   NEX_PAYMENT_METHODS,
   NEX_PAYMENT_METHOD_META,
@@ -169,6 +171,7 @@ export default async function ShopSettingsPage({
     null,
     business.id,
   );
+  const locationBound = updateBusinessLocationAction.bind(null, business.id);
   const accepted = new Set(business.accepted_payment_methods ?? ["cod"]);
   const awayUntilInputValue = business.away_until
     ? new Date(business.away_until).toISOString().slice(0, 10)
@@ -607,6 +610,49 @@ export default async function ShopSettingsPage({
               />
             </FormRow>
             <SubmitButton label="Save About page" tone="primary" />
+          </form>
+        </SectionCard>
+
+        {/* --- Pickup location for bike-delivery estimate (Bridge 25d) --- */}
+        <SectionCard>
+          <SectionEyebrow color={NEX.orange}>Pickup location</SectionEyebrow>
+          <h2
+            style={{
+              margin: "6px 0 6px",
+              fontSize: 18,
+              fontWeight: 700,
+              letterSpacing: "-0.005em",
+            }}
+          >
+            Where should couriers pick up from?
+          </h2>
+          <p
+            style={{
+              margin: "0 0 16px",
+              fontSize: 13,
+              lineHeight: 1.55,
+              color: NEX.textDim,
+            }}
+          >
+            Tap once when you&apos;re standing at your shop and NEX
+            saves the coordinates. Buyers see an instant bike-delivery
+            fare on the cart page (GoSend / GrabExpress / Maxim rate),
+            so they know before they order what the courier will cost.
+            Nothing is shown to buyers as a raw address · only the
+            estimated fare.
+          </p>
+          <form
+            action={locationBound}
+            style={{ display: "flex", flexDirection: "column", gap: 12 }}
+          >
+            <SellerLocationEditor
+              initialLat={business.location_lat ?? null}
+              initialLng={business.location_lng ?? null}
+            />
+            <SubmitButton
+              label="Save pickup location"
+              tone="primary"
+            />
           </form>
         </SectionCard>
 
