@@ -526,15 +526,19 @@ function SkyCard({
           accent={accent}
           align={isRight ? "right" : "left"}
         />
-        {/* Cloud bumps · bottom edge, opposite the attach side, so
-           the panel silhouette reads as a soft cloud rolling off
-           its window frame anchor. */}
+        {/* Cloud bumps · bottom edge, ON THE ATTACH side so they sit
+           closest to the screen edge · Founder direction 2026-09-28.
+           Panel silhouette now reads as a cloud rolling INWARD from
+           its window-frame anchor rather than trailing off the far
+           side. Offsets tightened (bigger bump at 4px from the anchor
+           edge, smaller bump at 0px flush with the anchor edge) so the
+           cloud kisses the screen boundary. */}
         <span
           aria-hidden
           style={{
             position: "absolute",
             bottom: -6,
-            [isRight ? "left" : "right"]: 16,
+            [isRight ? "right" : "left"]: 4,
             width: 18,
             height: 12,
             borderRadius: "50%",
@@ -550,7 +554,7 @@ function SkyCard({
           style={{
             position: "absolute",
             bottom: -3,
-            [isRight ? "left" : "right"]: 8,
+            [isRight ? "right" : "left"]: 0,
             width: 10,
             height: 7,
             borderRadius: "50%",
