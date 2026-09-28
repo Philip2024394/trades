@@ -401,30 +401,38 @@ function SkyCard({
               ? `-8px 6px 20px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.18)`
               : `8px 6px 20px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.18)`,
           animation: `t1-cloud-drift 5s ease-in-out ${driftDelay} infinite`,
-          overflow: "hidden",
         }}
       >
-        {/* Bridge 27f · diagonal glass shine · a long soft white
-           streak crossing the top-inside corner opposite the attach
-           edge · mimics the light-catch on a real piece of curved
-           glass. Only rendered when glass prop is true. */}
+        {/* Bridge 27g · diagonal glass shine · confined INSIDE the
+           panel bounds and clipped by an inner-wrapper with its own
+           border-radius so we don't need overflow:hidden on the
+           outer panel (which was clipping the cloud bumps). */}
         {glass && (
           <span
             aria-hidden
             style={{
               position: "absolute",
-              top: -10,
-              [isRight ? "left" : "right"]: -10,
-              width: "70%",
-              height: 22,
-              background:
-                "linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.65) 45%, rgba(255,255,255,0.85) 50%, transparent 100%)",
-              transform: "rotate(-8deg)",
+              inset: 0,
+              borderRadius: "inherit",
+              overflow: "hidden",
               pointerEvents: "none",
-              filter: "blur(4px)",
-              opacity: 0.85,
             }}
-          />
+          >
+            <span
+              style={{
+                position: "absolute",
+                top: 0,
+                [isRight ? "left" : "right"]: 0,
+                width: "70%",
+                height: 22,
+                background:
+                  "linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.65) 45%, rgba(255,255,255,0.85) 50%, transparent 100%)",
+                transform: "rotate(-8deg) translateY(-2px)",
+                filter: "blur(4px)",
+                opacity: 0.85,
+              }}
+            />
+          </span>
         )}
         <div
           style={{
