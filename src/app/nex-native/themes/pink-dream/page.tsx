@@ -155,7 +155,15 @@ export default function PinkDreamPreviewPage() {
       {/* Fonts + speech-tail shapes · scoped inline so this page is
          fully self-contained and doesn't leak into other themes. */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Caveat:wght@400;500;600;700&display=swap');
+        /* Bridge 24q · neon flicker keyframe · used by both incoming
+           and outgoing rows in Neon Signs mode. Steady 96% of the
+           time with a tiny 4% dip so the glow feels alive without
+           strobing. */
+        @keyframes nex-pd-neon {
+          0%, 96%, 100% { opacity: 1; }
+          97%, 99%      { opacity: 0.55; }
+        }
         [data-nex-pink-dream-preview] * { box-sizing: border-box; }
         /* Bridge 24b · html/body might carry padding from a parent
            layout wrapper (nex-native-root) · this preview is
@@ -406,12 +414,30 @@ export default function PinkDreamPreviewPage() {
           width: "100%",
           overflowY: "auto",
           WebkitOverflowScrolling: "touch",
-          padding: "4px 52px 14px 14px",
+          padding: "4px 52px 14px 34px",
           display: "flex",
           flexDirection: "column",
           gap: 6,
         }}
       >
+        {/* Bridge 24q · Timeline Ribbon spine · vertical pink→peach
+           gradient down the left of the message column · every row
+           renders its own coloured tick on top of this line. */}
+        <span
+          aria-hidden
+          style={{
+            position: "absolute",
+            left: 20,
+            top: 10,
+            bottom: 10,
+            width: 2,
+            borderRadius: 2,
+            background:
+              "linear-gradient(180deg, rgba(255,79,163,0.9) 0%, rgba(255,201,124,0.9) 100%)",
+            boxShadow:
+              "0 0 6px rgba(255,79,163,0.55), 0 0 14px rgba(255,201,124,0.35)",
+          }}
+        />
         {CONVO.map((m, i) => {
           const prev = CONVO[i - 1];
           const speakerChanged = !prev || prev.side !== m.side;
@@ -474,7 +500,18 @@ export default function PinkDreamPreviewPage() {
   );
 }
 
-// -- Rows --------------------------------------------------------
+// -- Rows · Timeline Ribbon treatment · Bridge 24q -------------
+// Vertical pink→peach spine down the left of the message column ·
+// each message has a coloured tick + eyebrow (speaker + time) + raw
+// text. No bubble containers. Peer chat reads like a shared journal
+// timeline.
+
+// Spine sits at main-left:20, main-padding-left is 34, so a row
+// starting at main's content edge (34) needs its tick at -14 to
+// centre on the spine · tick width 10 → left: -19 puts the centre
+// of the tick on the spine line.
+const TICK_LEFT = -19;
+
 function IncomingRow({
   body,
   time,
@@ -486,75 +523,101 @@ function IncomingRow({
   extraTop: number;
   isFirstOfCluster: boolean;
 }) {
-  // Bridge 24p · overlap-corner avatar · 36px portrait bites the
-  // top-left corner of the bubble (50% inside · 50% outside) on the
-  // FIRST bubble of an incoming cluster only. Follow-up bubbles in
-  // the same cluster stay bare so the pattern reads as a "speaker
-  // block" with one identity anchor.
-  const AVATAR = 36;
-  const OVERLAP = AVATAR / 2; // 18px extra padding-top-left on the first bubble
+  const color = "#FF4FA3"; // Bunny · hot pink
+  const glow = "rgba(255, 79, 163, 0.55)";
+  return (
+    <TimelineRow
+      color={color}
+      glow={glow}
+      speaker="Bunny ♡"
+      body={body}
+      time={time}
+      extraTop={extraTop}
+      isFirstOfCluster={isFirstOfCluster}
+    />
+  );
+}
+
+function TimelineRow({
+  color,
+  glow,
+  speaker,
+  body,
+  time,
+  extraTop,
+  isFirstOfCluster,
+}: {
+  color: string;
+  glow: string;
+  speaker: string;
+  body: string;
+  time: string;
+  extraTop: number;
+  isFirstOfCluster: boolean;
+}) {
   return (
     <div
       style={{
-        display: "flex",
-        justifyContent: "flex-start",
-        marginTop: extraTop + (isFirstOfCluster ? OVERLAP : 0),
+        position: "relative",
+        paddingLeft: 26,
+        marginTop: extraTop + (isFirstOfCluster ? 6 : 0),
       }}
     >
-      <div
+      <span
+        aria-hidden
         style={{
-          position: "relative",
-          maxWidth: "80%",
-          paddingTop: isFirstOfCluster ? 9 + OVERLAP - 4 : 9,
-          paddingRight: 14,
-          paddingBottom: 8,
-          paddingLeft: isFirstOfCluster ? 14 + OVERLAP - 6 : 14,
-          borderRadius: 22,
-          background: "linear-gradient(135deg, #2A1833, #17121F)",
-          border: "1px solid rgba(255,139,197,0.55)",
-          boxShadow: "0 3px 12px rgba(0,0,0,0.24)",
-          color: P.softWhite,
-          fontSize: 17,
-          fontWeight: 400,
-          lineHeight: 1.29,
-          whiteSpace: "pre-wrap",
-          letterSpacing: "-0.005em",
-          marginLeft: isFirstOfCluster ? 4 : AVATAR + 4,
+          position: "absolute",
+          left: TICK_LEFT,
+          top: 4,
+          width: 10,
+          height: 10,
+          borderRadius: "50%",
+          background: color,
+          boxShadow: `0 0 10px ${glow}, inset -1px -1px 2px rgba(0,0,0,0.35)`,
+          border: "1.5px solid rgba(255,255,255,0.85)",
         }}
-      >
-        {isFirstOfCluster && (
-          <div
-            aria-hidden
-            style={{
-              position: "absolute",
-              top: -OVERLAP,
-              left: -OVERLAP,
-              width: AVATAR,
-              height: AVATAR,
-              borderRadius: "50%",
-              background: "url(/nex-themes/pink-dream.png) center/cover",
-              border: "2px solid rgba(255,255,255,0.85)",
-              boxShadow:
-                "0 0 10px rgba(255,79,163,0.55), 0 2px 6px rgba(0,0,0,0.35)",
-              zIndex: 2,
-            }}
-          />
-        )}
-        {body}
+      />
+      {isFirstOfCluster && (
         <div
           style={{
-            marginTop: 3,
-            fontSize: 11,
-            opacity: 0.72,
-            textAlign: "right",
-            color: P.mutedText,
-            letterSpacing: "0.02em",
+            fontSize: 10,
+            letterSpacing: "0.22em",
+            color,
+            fontWeight: 700,
+            textTransform: "uppercase",
+            marginBottom: 3,
+            textShadow: `0 0 8px ${glow}`,
+          }}
+        >
+          {speaker} · {time}
+        </div>
+      )}
+      <div
+        style={{
+          fontSize: 15,
+          lineHeight: 1.5,
+          color: "#F4F7FC",
+          whiteSpace: "pre-wrap",
+          letterSpacing: "-0.003em",
+          textShadow: "0 1px 4px rgba(0,0,0,0.35)",
+        }}
+      >
+        {body}
+      </div>
+      {!isFirstOfCluster && (
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.14em",
+            color,
+            opacity: 0.75,
+            fontWeight: 700,
+            marginTop: 2,
           }}
         >
           {time}
         </div>
-        <span aria-hidden className="tail-in" />
-      </div>
+      )}
     </div>
   );
 }
@@ -571,56 +634,15 @@ function OutgoingRow({
   extraTop: number;
 }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "flex-end",
-        marginTop: extraTop,
-      }}
-    >
-      <div
-        style={{
-          position: "relative",
-          maxWidth: "80%",
-          padding: "9px 14px 8px",
-          borderRadius: 22,
-          background: "linear-gradient(135deg, #FF77BC, #FF3F9F)",
-          border: "1px solid rgba(255,205,230,0.65)",
-          boxShadow: "0 4px 16px rgba(255,63,159,0.24)",
-          color: P.white,
-          fontSize: 17,
-          fontWeight: 400,
-          lineHeight: 1.29,
-          whiteSpace: "pre-wrap",
-          letterSpacing: "-0.005em",
-        }}
-      >
-        {body}
-        <div
-          style={{
-            marginTop: 3,
-            fontSize: 11,
-            opacity: 0.85,
-            textAlign: "right",
-            color: P.softWhite,
-            display: "inline-flex",
-            gap: 4,
-            alignItems: "center",
-            justifyContent: "flex-end",
-            width: "100%",
-            letterSpacing: "0.02em",
-          }}
-        >
-          <span>{time}</span>
-          {read && (
-            <span aria-label="Read" style={{ color: P.softWhite }}>
-              ✓✓
-            </span>
-          )}
-        </div>
-        <span aria-hidden className="tail-out" />
-      </div>
-    </div>
+    <TimelineRow
+      color="#FFC97C"
+      glow="rgba(255, 201, 124, 0.55)"
+      speaker={`You${read ? " · ✓✓" : ""}`}
+      body={body}
+      time={time}
+      extraTop={extraTop}
+      isFirstOfCluster={true}
+    />
   );
 }
 
