@@ -32,12 +32,9 @@ export function PinkDreamPeerHeader() {
 
   return (
     <>
-      <IconButton ariaLabel="Voice call">
-        <PhoneIcon />
-      </IconButton>
-      <IconButton ariaLabel="Video call">
-        <VideoIcon />
-      </IconButton>
+      {/* Bridge 24al · Call + Video icons retired from header per
+         Founder direction 2026-09-28. Overflow ⋮ still opens the
+         peer-scoped menu (Mute · Wallpaper · Info · Block · Report). */}
       <IconButton
         ariaLabel="More"
         onClick={() => setMenuOpen(true)}
@@ -210,27 +207,6 @@ function MenuRow({
 }
 
 /* Icons */
-function PhoneIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M5 4h3l2 5-2.5 1.5a12 12 0 006 6L15 14l5 2v3a2 2 0 01-2 2A15 15 0 013 6a2 2 0 012-2z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-function VideoIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <rect x="3" y="6" width="13" height="12" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M16 10l5-3v10l-5-3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
 function DotsIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>

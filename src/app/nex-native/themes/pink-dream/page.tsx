@@ -17,7 +17,6 @@
 
 import type * as React from "react";
 import { PinkDreamComposer } from "./_composer";
-import { PinkDreamPeerHeader } from "./_peer-menu";
 
 export const dynamic = "force-static";
 export const runtime = "nodejs";
@@ -301,10 +300,7 @@ export default function PinkDreamPreviewPage() {
           gap: 10,
         }}
       >
-        {/* Bridge 24h · portrait wrapped in relative box so the
-           two ping rings pulse from the same origin as the rim.
-           Presence is signalled by the pink halo · no more "online"
-           text row per Founder direction 2026-09-28. */}
+        {/* Portrait · two ping rings + heart charm at bottom-right */}
         <div
           style={{
             position: "relative",
@@ -374,11 +370,25 @@ export default function PinkDreamPreviewPage() {
             Illustrator
           </div>
         </div>
-        {/* Bridge 24ab · header is now peer-scoped ONLY per messenger
-           convention · Call · Video · ⋮ (mute/wallpaper/info/block/
-           report). App-level surfaces (settings · cart · shop) moved
-           to the bottom tab bar. */}
-        <PinkDreamPeerHeader />
+        {/* Bridge 24am · right-side cluster · peer-Shop then Home
+           (Home is rightmost per Founder direction 2026-09-28) ·
+           overflow ⋮ retired · Call + Video already retired. */}
+        <a
+          href="/nex-native/bunny"
+          aria-label="Visit Bunny's shop"
+          title="Bunny's shop"
+          style={pinkCircleStyle()}
+        >
+          <ShopGlyph />
+        </a>
+        <a
+          href="/nex-native/chat"
+          aria-label="Home"
+          title="Home"
+          style={pinkCircleStyle()}
+        >
+          <HomeGlyph />
+        </a>
       </header>
 
       {/* ---------------- Conversation ----------------
@@ -611,6 +621,66 @@ function OutgoingRow({
       eyebrowColor="#8B5A00"
       side="right"
     />
+  );
+}
+
+/* Bridge 24al · shared header pink-circle style · matches the
+   composer's "+" button (Bridge 24af) so the header + composer
+   circular actions read as one visual family. */
+function pinkCircleStyle(): React.CSSProperties {
+  return {
+    width: 30,
+    height: 30,
+    borderRadius: "50%",
+    background: "linear-gradient(135deg, #FF8AC5, #FF3F9F)",
+    border: "1px solid rgba(255,205,230,0.75)",
+    boxShadow: "0 3px 10px rgba(255,79,163,0.30)",
+    color: "#FFF5FA",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    textDecoration: "none",
+    flexShrink: 0,
+  };
+}
+function HomeGlyph() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M3 12l9-9 9 9"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+function ShopGlyph() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M3 8l1.5-4h15L21 8"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4 8h16v11a1 1 0 01-1 1H5a1 1 0 01-1-1V8z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
+      <path d="M9 8V5m6 3V5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
   );
 }
 
