@@ -507,16 +507,16 @@ function IncomingRow({
       <div
         style={{
           position: "relative",
-          maxWidth: "72%",
-          padding: "8px 12px 6px",
-          borderRadius: 18,
+          maxWidth: "80%",
+          padding: "9px 14px 8px",
+          borderRadius: 22,
           background: "linear-gradient(135deg, #2A1833, #17121F)",
           border: "1px solid rgba(255,139,197,0.55)",
           boxShadow: "0 3px 12px rgba(0,0,0,0.24)",
           color: P.softWhite,
-          fontSize: 14,
+          fontSize: 17,
           fontWeight: 400,
-          lineHeight: 1.32,
+          lineHeight: 1.29,
           whiteSpace: "pre-wrap",
           letterSpacing: "-0.005em",
         }}
@@ -524,9 +524,9 @@ function IncomingRow({
         {body}
         <div
           style={{
-            marginTop: 2,
-            fontSize: 9,
-            opacity: 0.68,
+            marginTop: 3,
+            fontSize: 11,
+            opacity: 0.72,
             textAlign: "right",
             color: P.mutedText,
             letterSpacing: "0.02em",
@@ -562,16 +562,16 @@ function OutgoingRow({
       <div
         style={{
           position: "relative",
-          maxWidth: "72%",
-          padding: "8px 12px 6px",
-          borderRadius: 18,
+          maxWidth: "80%",
+          padding: "9px 14px 8px",
+          borderRadius: 22,
           background: "linear-gradient(135deg, #FF77BC, #FF3F9F)",
           border: "1px solid rgba(255,205,230,0.65)",
           boxShadow: "0 4px 16px rgba(255,63,159,0.24)",
           color: P.white,
-          fontSize: 14,
+          fontSize: 17,
           fontWeight: 400,
-          lineHeight: 1.32,
+          lineHeight: 1.29,
           whiteSpace: "pre-wrap",
           letterSpacing: "-0.005em",
         }}
@@ -579,13 +579,13 @@ function OutgoingRow({
         {body}
         <div
           style={{
-            marginTop: 2,
-            fontSize: 9,
+            marginTop: 3,
+            fontSize: 11,
             opacity: 0.85,
             textAlign: "right",
             color: P.softWhite,
             display: "inline-flex",
-            gap: 3,
+            gap: 4,
             alignItems: "center",
             justifyContent: "flex-end",
             width: "100%",
