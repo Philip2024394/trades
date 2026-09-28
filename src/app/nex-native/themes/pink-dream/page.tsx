@@ -155,19 +155,18 @@ export default function PinkDreamPreviewPage() {
         [data-nex-pink-dream-preview] [data-portrait-ping-2] {
           animation-delay: 0.9s;
         }
-        /* Bridge 24k · Ken Burns wallpaper · slow pan + zoom that
-           loops on 80s (goes 0→100 then symmetrically 100→0 via
-           alternate) so the return trip mirrors the outbound and
-           the frame never "snaps". Total drift ≈ 3% both axes,
-           scale peaks at 1.08 · below the perceptual jitter
-           threshold on a phone but adds real life to the sunset. */
+        /* Bridge 24k · Ken Burns wallpaper · pan + zoom the sunset
+           bedroom so the frame feels alive. Big enough to notice
+           on a phone (scale 1.00 → 1.18, drift ±4%) and fast
+           enough to catch the eye within a few seconds (24s
+           round-trip, ease-in-out). */
         @keyframes nex-pd-kenburns {
           0%   { transform: scale(1.00) translate(0%, 0%); }
-          50%  { transform: scale(1.08) translate(-1.5%, 1.5%); }
+          50%  { transform: scale(1.18) translate(-4%, 3%); }
           100% { transform: scale(1.00) translate(0%, 0%); }
         }
         [data-nex-pink-dream-preview] [data-nex-pd-wallpaper] {
-          animation: nex-pd-kenburns 80s ease-in-out infinite;
+          animation: nex-pd-kenburns 24s ease-in-out infinite;
           transform-origin: 55% 45%; /* pull toward the sun on the horizon */
         }
         @media (prefers-reduced-motion: reduce) {
