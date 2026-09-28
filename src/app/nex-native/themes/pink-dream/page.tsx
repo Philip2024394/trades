@@ -376,24 +376,9 @@ export default function PinkDreamPreviewPage() {
           gap: 6,
         }}
       >
-        {/* Bridge 24q · Timeline Ribbon spine · vertical pink→peach
-           gradient down the left of the message column · every row
-           renders its own coloured tick on top of this line. */}
-        <span
-          aria-hidden
-          style={{
-            position: "absolute",
-            left: 20,
-            top: 10,
-            bottom: 10,
-            width: 2,
-            borderRadius: 2,
-            background:
-              "linear-gradient(180deg, rgba(255,79,163,0.9) 0%, rgba(255,201,124,0.9) 100%)",
-            boxShadow:
-              "0 0 6px rgba(255,79,163,0.55), 0 0 14px rgba(255,201,124,0.35)",
-          }}
-        />
+        {/* Bridge 24v · timeline spine retired per Founder direction
+           2026-09-28 · ticks alone read as speaker markers without
+           the connecting line. Cleaner, more editorial. */}
         {CONVO.map((m, i) => {
           const prev = CONVO[i - 1];
           const speakerChanged = !prev || prev.side !== m.side;
@@ -430,28 +415,6 @@ export default function PinkDreamPreviewPage() {
       {/* Bridge 24f · floating rail + 3-dot action sheet */}
       <PinkDreamHud />
 
-      {/* Admin footer chip · out of view on mobile keyboard but useful
-         when the Founder is checking the preview on desktop. */}
-      <div
-        style={{
-          position: "fixed",
-          top: "calc(env(safe-area-inset-top, 0) + 10px)",
-          right: 14,
-          zIndex: 10,
-          padding: "4px 10px",
-          borderRadius: 999,
-          background: "rgba(0,0,0,0.55)",
-          border: "1px solid rgba(255,139,197,0.35)",
-          color: P.softWhite,
-          fontSize: 10,
-          letterSpacing: "0.08em",
-          textTransform: "uppercase",
-          fontWeight: 700,
-          pointerEvents: "none",
-        }}
-      >
-        Preview
-      </div>
     </div>
   );
 }
