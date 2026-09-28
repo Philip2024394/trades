@@ -43,16 +43,10 @@ import {
 import {
   resolveLocale,
   SAFE_TRADE_STRINGS,
-  REPORT_STRINGS,
 } from "@/lib/nex-native/i18n/safe-trade-strings";
-import * as reportService from "@/lib/nex-native/report-service";
 import { headers } from "next/headers";
-import {
-  acknowledgeSafeTradeAction,
-  reportUserAction,
-} from "../../../_actions";
+import { acknowledgeSafeTradeAction } from "../../../_actions";
 import { SafeTradeConsentModal } from "./_safe-trade-consent-modal";
-import { ReportUserAffordance } from "./_report-user-affordance";
 import * as productService from "@/lib/nex-native/product-service";
 
 export const runtime = "nodejs";
@@ -105,7 +99,6 @@ export default async function PeerChatPage({
     acceptLanguage,
   });
   const safeTradeStrings = SAFE_TRADE_STRINGS[locale];
-  const reportStrings = REPORT_STRINGS[locale];
 
   const peer = await accountService.getAccountById(peerAccountId);
   if (!peer) redirect("/nex-native/chat");
@@ -156,20 +149,9 @@ export default async function PeerChatPage({
     ? !(await hasCurrentSafeTradeConsent(session.account.id).catch(() => true))
     : false;
 
-  // Bridge 16d · report affordance rendered on commerce chats
-  // when the viewer hasn't yet filed a report against this peer.
-  const canShowReport = peerBusiness
-    ? !(await reportService
-        .viewerHasReported(session.account.id, peer.id)
-        .catch(() => true))
-    : false;
-  const reportBound = reportUserAction.bind(null, peer.id);
-  const reportReasons = reportService.NEX_REPORT_REASONS.map((slug) => ({
-    slug,
-    emoji: reportService.NEX_REPORT_REASON_LABEL[slug].emoji,
-    label: reportStrings.reasons[slug].label,
-    blurb: reportStrings.reasons[slug].blurb,
-  }));
+  // Bridge 17e · report affordance moved to /nex-native/report/[id]
+  // and surfaced from the /friends list next to Remove / Block · no
+  // longer rendered on the peer chat surface.
 
   // Bridge 17b · shop button in the chat header shows whenever the
   // peer owns a business, even if they have no products (a cafe or
@@ -373,25 +355,9 @@ export default async function PeerChatPage({
           strings={safeTradeStrings}
         />
       )}
-      {canShowReport && (
-        <ReportUserAffordance
-          action={reportBound}
-          peerName={peer.display_name.split(/\s+/)[0] ?? peer.display_name}
-          backHref={`/nex-native/chat/peer/${peer.id}`}
-          reasons={reportReasons}
-          strings={{
-            trigger: reportStrings.trigger,
-            title: reportStrings.title,
-            lede: reportStrings.lede,
-            reason_label: reportStrings.reason_label,
-            note_label: reportStrings.note_label,
-            note_placeholder: reportStrings.note_placeholder,
-            submit: reportStrings.submit,
-            cancel: reportStrings.cancel,
-            disclaimer: reportStrings.disclaimer,
-          }}
-        />
-      )}
+      {/* Bridge 17e · Report affordance moved from the peer chat to
+          /nex-native/report/[accountId] · reachable from /friends
+          next to Remove / Block · keeps the chat surface clean. */}
       <PortraitBloomShell
         scope="peer-chat"
       /* Free accounts display only the first name on the chat
