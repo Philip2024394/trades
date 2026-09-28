@@ -108,6 +108,19 @@ const DESIGNS: ReadonlyArray<{
   { id: "V4", title: "Neon Stamp", tagline: "Dark bg + neon-outlined vouchers · night-market energy", render: () => <V4NeonStamp /> },
   { id: "V5", title: "Editorial Coupon Book", tagline: "Kinfolk serif · minimal ivory paper · curated collection", render: () => <V5Editorial /> },
   { id: "V6", title: "Progress Ladder", tagline: "Tiered rewards · unlock more as you spend · gamification", render: () => <V6ProgressLadder /> },
+  // 12 more · professional slant · added in the same gallery.
+  { id: "V7", title: "Concierge Folio", tagline: "Hotel folio · dark navy + gold · serif titles · quiet luxury", render: () => <V7Concierge /> },
+  { id: "V8", title: "Bank Statement", tagline: "Fintech clean · monospaced serials · ledger rows · Mercury/Revolut", render: () => <V8BankStatement /> },
+  { id: "V9", title: "Boarding Pass", tagline: "Airline pass · perforated stub · GATE/FLIGHT/SEAT labels", render: () => <V9BoardingPass /> },
+  { id: "V10", title: "Corporate Perks", tagline: "Enterprise HR grid · icons + status pills · Workday/Rippling", render: () => <V10CorporatePerks /> },
+  { id: "V11", title: "Black Card", tagline: "Luxury membership · brushed metal + gold · member numbers", render: () => <V11BlackCard /> },
+  { id: "V12", title: "Terminal", tagline: "Bloomberg density · mono · amber-on-black · dense tabular", render: () => <V12Terminal /> },
+  { id: "V13", title: "Editorial Digest", tagline: "Serif newsletter · drop-cap numbers · hairline dividers", render: () => <V13EditorialDigest /> },
+  { id: "V14", title: "Muji Neutral", tagline: "Japanese minimal · warm gray on ivory · quiet + spacious", render: () => <V14Muji /> },
+  { id: "V15", title: "iOS Grouped", tagline: "System grouped rows · SF · chevrons · segmented top filter", render: () => <V15IOSGrouped /> },
+  { id: "V16", title: "Swiss Grid", tagline: "Bauhaus · red accent · grid + geometric · typographic value", render: () => <V16SwissGrid /> },
+  { id: "V17", title: "Notion Database", tagline: "Table-view rows · tag chips · productivity tool aesthetic", render: () => <V17Notion /> },
+  { id: "V18", title: "Aesop Apothecary", tagline: "Product labels · numbered No. 01 · beige + serif · luxe", render: () => <V18Aesop /> },
 ];
 
 export default function VoucherPagesGallery() {
@@ -1309,6 +1322,518 @@ function TierRow({ label, unlocked, voucher }: { label: string; unlocked: boolea
           Apply →
         </button>
       )}
+    </div>
+  );
+}
+
+// =====================================================================
+// 12 additional professional-slant prototypes (V7-V18)
+// =====================================================================
+
+// ---------------------------------------------------------------------
+// V7 · Concierge Folio · dark navy + gold + serif · quiet luxury
+// ---------------------------------------------------------------------
+function V7Concierge() {
+  const gold = "#C9A24C";
+  const bg = "#0C1A2E";
+  return (
+    <div style={{ width: "100%", height: "100%", background: bg, position: "relative", overflow: "hidden", color: "#EFE7D4" }}>
+      <ShopHeader tint="#EFE7D4" accent={gold} subtle="rgba(239,231,212,0.65)" />
+      <div style={{ position: "absolute", top: 104, left: 22, right: 22, bottom: 20, overflowY: "auto", paddingBottom: 20 }}>
+        <div style={{ fontSize: 10, letterSpacing: "0.30em", textTransform: "uppercase", color: gold, fontWeight: 700, marginBottom: 20, textAlign: "center" }}>
+          — In-house folio —
+        </div>
+        {VOUCHERS.map((v, i) => {
+          const isDim = v.status === "used" || v.status === "locked";
+          const isLast = i === VOUCHERS.length - 1;
+          return (
+            <div key={v.id} style={{ display: "flex", alignItems: "flex-start", padding: "16px 0", borderBottom: isLast ? "none" : "1px solid rgba(201,162,76,0.25)", opacity: isDim ? 0.5 : 1 }}>
+              <div style={{ minWidth: 0, flex: 1, paddingRight: 12 }}>
+                <div style={{ fontSize: 9, letterSpacing: "0.20em", textTransform: "uppercase", color: gold, fontWeight: 700 }}>
+                  {v.status === "expiring" ? "Priority" : v.status === "locked" ? "Reserved" : "Available"}
+                </div>
+                <h3 style={{ margin: "6px 0 4px", fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 20, fontWeight: 500, letterSpacing: "-0.005em", lineHeight: 1.15 }}>
+                  {v.title}
+                </h3>
+                <p style={{ margin: 0, fontSize: 11, color: "rgba(239,231,212,0.7)", lineHeight: 1.5, fontStyle: "italic" }}>
+                  {v.note}
+                </p>
+                <div style={{ marginTop: 6, fontSize: 9, letterSpacing: "0.12em", color: "rgba(239,231,212,0.55)" }}>
+                  {v.expiresLabel}
+                </div>
+              </div>
+              <div style={{ textAlign: "right", flexShrink: 0 }}>
+                <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 30, fontWeight: 500, color: gold, letterSpacing: "-0.03em", lineHeight: 1 }}>
+                  {v.value}
+                </div>
+                {(v.status === "available" || v.status === "expiring") && (
+                  <button type="button" style={{ marginTop: 10, padding: "6px 14px", background: "transparent", border: `1px solid ${gold}`, color: gold, fontSize: 9, fontWeight: 700, letterSpacing: "0.24em", textTransform: "uppercase", cursor: "pointer" }}>
+                    Redeem
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------
+// V8 · Bank Statement · fintech clean · Mercury/Revolut aesthetic
+// ---------------------------------------------------------------------
+function V8BankStatement() {
+  return (
+    <div style={{ width: "100%", height: "100%", background: "#FCFCFB", position: "relative", overflow: "hidden", color: "#0B0F1A" }}>
+      <ShopHeader tint="#0B0F1A" accent="#0057FF" subtle="rgba(11,15,26,0.55)" />
+      <div style={{ position: "absolute", top: 104, left: 16, right: 16, bottom: 20, overflowY: "auto", paddingBottom: 20 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "0 4px 12px", borderBottom: "1px solid #E6E7EA" }}>
+          <div style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "#6B7280", fontWeight: 700 }}>Credits available</div>
+          <div style={{ fontFamily: "ui-monospace, monospace", fontSize: 11, color: "#6B7280" }}>Balance · {VOUCHERS.filter((v) => v.status !== "used").length}</div>
+        </div>
+        {VOUCHERS.map((v) => {
+          const dim = v.status === "used" || v.status === "locked";
+          const green = v.status === "available";
+          const amber = v.status === "expiring";
+          return (
+            <div key={v.id} style={{ display: "flex", alignItems: "center", padding: "14px 4px", borderBottom: "1px solid #EEF0F3", opacity: dim ? 0.5 : 1 }}>
+              <div style={{ width: 34, height: 34, borderRadius: 8, background: green ? "#E3F5E4" : amber ? "#FFF2E0" : "#F1F2F4", color: green ? "#0F7D22" : amber ? "#A65A00" : "#6B7280", display: "grid", placeItems: "center", fontSize: 15, marginRight: 12, flexShrink: 0 }}>
+                {green ? "↓" : amber ? "!" : "◔"}
+              </div>
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: "#0B0F1A", letterSpacing: "-0.005em" }}>{v.title}</div>
+                <div style={{ marginTop: 2, fontSize: 11, color: "#6B7280", fontFamily: "ui-monospace, monospace" }}>{v.code} · {v.expiresLabel.split("·")[0]?.trim()}</div>
+              </div>
+              <div style={{ textAlign: "right", flexShrink: 0 }}>
+                <div style={{ fontSize: 15, fontWeight: 700, color: green ? "#0F7D22" : amber ? "#A65A00" : "#6B7280", fontFamily: "ui-monospace, monospace" }}>{v.value}</div>
+                {(green || amber) && (
+                  <button type="button" style={{ marginTop: 4, padding: "3px 10px", borderRadius: 6, background: "#0057FF", color: "#fff", border: "none", fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", cursor: "pointer" }}>
+                    Apply →
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------
+// V9 · Boarding Pass · airline-style with perforated stub
+// ---------------------------------------------------------------------
+function V9BoardingPass() {
+  const palettes = ["#DA291C", "#003399", "#7A1A2F", "#004225", "#B7481B", "#4A0E4E"];
+  return (
+    <div style={{ width: "100%", height: "100%", background: "#F5EFE4", position: "relative", overflow: "hidden", color: "#1A1A1A" }}>
+      <ShopHeader tint="#1A1A1A" accent="#DA291C" subtle="rgba(26,26,26,0.55)" />
+      <div style={{ position: "absolute", top: 104, left: 12, right: 12, bottom: 20, overflowY: "auto", display: "flex", flexDirection: "column", gap: 14, paddingBottom: 20 }}>
+        {VOUCHERS.map((v, i) => {
+          const accent = palettes[i % palettes.length]!;
+          const dim = v.status === "used" || v.status === "locked";
+          return (
+            <div key={v.id} style={{ display: "flex", background: "#fff", borderRadius: 8, overflow: "hidden", boxShadow: "0 4px 12px rgba(0,0,0,0.15)", opacity: dim ? 0.55 : 1 }}>
+              <div style={{ flex: 1, padding: "12px 14px" }}>
+                <div style={{ height: 4, background: accent, borderRadius: 999, marginBottom: 10 }} />
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 8, letterSpacing: "0.20em", textTransform: "uppercase", color: "#6B7280", fontWeight: 700 }}>
+                  <span>Voucher</span>
+                  <span>Code · {v.code}</span>
+                </div>
+                <div style={{ marginTop: 6, fontSize: 15, fontWeight: 800, letterSpacing: "-0.01em" }}>{v.title}</div>
+                <div style={{ marginTop: 6, display: "flex", gap: 18 }}>
+                  <div>
+                    <div style={{ fontSize: 8, letterSpacing: "0.14em", textTransform: "uppercase", color: "#6B7280", fontWeight: 700 }}>Value</div>
+                    <div style={{ fontSize: 20, fontWeight: 900, color: accent, letterSpacing: "-0.02em" }}>{v.value}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 8, letterSpacing: "0.14em", textTransform: "uppercase", color: "#6B7280", fontWeight: 700 }}>Valid</div>
+                    <div style={{ fontSize: 11, color: "#1A1A1A", fontWeight: 600 }}>{v.expiresLabel.split("·")[0]?.trim()}</div>
+                  </div>
+                </div>
+              </div>
+              <div aria-hidden style={{ width: 10, background: "repeating-linear-gradient(180deg, transparent 0 4px, #F5EFE4 4px 8px)", borderLeft: "1px dashed #C7BFAF", borderRight: "1px dashed #C7BFAF" }} />
+              <div style={{ width: 80, padding: "12px 8px", background: accent, color: "#fff", display: "grid", placeItems: "center", textAlign: "center" }}>
+                <div>
+                  <div style={{ fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase", opacity: 0.85, fontWeight: 700 }}>Apply</div>
+                  <div style={{ marginTop: 4, fontSize: 18, fontWeight: 900 }}>{v.value}</div>
+                  <div style={{ marginTop: 6, fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase", opacity: 0.75 }}>
+                    {v.status === "available" ? "Ready" : v.status === "expiring" ? "Now" : v.status === "locked" ? "Locked" : "Used"}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------
+// V10 · Corporate Perks · enterprise HR grid · Workday/Rippling
+// ---------------------------------------------------------------------
+function V10CorporatePerks() {
+  const tints = [
+    { bg: "#EAF2FF", fg: "#0057FF" },
+    { bg: "#FFF3E5", fg: "#B7481B" },
+    { bg: "#E6F7EF", fg: "#0A7A44" },
+    { bg: "#F3E9FF", fg: "#5A21A1" },
+    { bg: "#FFE9EC", fg: "#B02445" },
+    { bg: "#E5F5F8", fg: "#0C6E85" },
+  ];
+  return (
+    <div style={{ width: "100%", height: "100%", background: "#F5F6F8", position: "relative", overflow: "hidden", color: "#0B0F1A" }}>
+      <ShopHeader tint="#0B0F1A" accent="#0057FF" subtle="rgba(11,15,26,0.55)" />
+      <div style={{ position: "absolute", top: 104, left: 12, right: 12, bottom: 20, overflowY: "auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, paddingBottom: 20 }}>
+        {VOUCHERS.map((v, i) => {
+          const t = tints[i % tints.length]!;
+          const dim = v.status === "used" || v.status === "locked";
+          return (
+            <div key={v.id} style={{ padding: 14, background: "#fff", borderRadius: 14, boxShadow: "0 1px 3px rgba(11,15,26,0.06)", border: "1px solid #E6E8EC", opacity: dim ? 0.55 : 1, display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: 160 }}>
+              <div>
+                <div style={{ width: 34, height: 34, borderRadius: 10, background: t.bg, color: t.fg, display: "grid", placeItems: "center", fontSize: 16, marginBottom: 10 }}>
+                  🎁
+                </div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#0B0F1A", lineHeight: 1.2, letterSpacing: "-0.005em" }}>{v.title}</div>
+                <div style={{ marginTop: 4, fontSize: 11, color: "#6B7280", lineHeight: 1.35 }}>{v.note}</div>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8 }}>
+                <span style={{ padding: "3px 8px", borderRadius: 4, fontSize: 9, letterSpacing: "0.10em", textTransform: "uppercase", fontWeight: 800, background: t.bg, color: t.fg }}>
+                  {v.value}
+                </span>
+                {(v.status === "available" || v.status === "expiring") && (
+                  <button type="button" aria-label="Apply" style={{ width: 28, height: 28, borderRadius: "50%", background: "#0057FF", color: "#fff", border: "none", cursor: "pointer", fontSize: 14 }}>→</button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------
+// V11 · Black Card · luxury metallic · gold text · member numbers
+// ---------------------------------------------------------------------
+function V11BlackCard() {
+  const finishes = [
+    { bg: "linear-gradient(135deg, #0F0F0F, #1A1A1A)", edge: "#C9A24C" },
+    { bg: "linear-gradient(135deg, #0A0A0A, #2A2A2A)", edge: "#B8B8B8" },
+    { bg: "linear-gradient(135deg, #050505, #151515)", edge: "#7C5AB8" },
+    { bg: "linear-gradient(135deg, #0F0F0F, #1A1A1A)", edge: "#C9A24C" },
+    { bg: "linear-gradient(135deg, #0A0A0A, #2A2A2A)", edge: "#B8B8B8" },
+    { bg: "linear-gradient(135deg, #050505, #151515)", edge: "#7C5AB8" },
+  ];
+  return (
+    <div style={{ width: "100%", height: "100%", background: "#0A0A0A", position: "relative", overflow: "hidden", color: "#EFE7D4" }}>
+      <ShopHeader tint="#EFE7D4" accent="#C9A24C" subtle="rgba(239,231,212,0.55)" />
+      <div style={{ position: "absolute", top: 104, left: 16, right: 16, bottom: 20, overflowY: "auto", display: "flex", flexDirection: "column", gap: 12, paddingBottom: 20 }}>
+        {VOUCHERS.map((v, i) => {
+          const f = finishes[i % finishes.length]!;
+          const dim = v.status === "used" || v.status === "locked";
+          return (
+            <div key={v.id} style={{ position: "relative", padding: 18, borderRadius: 14, background: f.bg, boxShadow: `0 12px 24px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)`, border: `1px solid ${f.edge}44`, opacity: dim ? 0.55 : 1 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <div style={{ fontSize: 8, letterSpacing: "0.30em", textTransform: "uppercase", color: f.edge, fontWeight: 700 }}>
+                    {SHOP.name}
+                  </div>
+                  <div style={{ marginTop: 6, fontSize: 14, fontWeight: 500, color: "#EFE7D4", fontFamily: "'Cormorant Garamond', Georgia, serif", letterSpacing: "-0.005em" }}>
+                    {v.title}
+                  </div>
+                </div>
+                <div style={{ fontSize: 22, fontWeight: 500, color: f.edge, fontFamily: "'Cormorant Garamond', Georgia, serif", letterSpacing: "-0.02em" }}>
+                  {v.value}
+                </div>
+              </div>
+              <div style={{ marginTop: 20, display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+                <div>
+                  <div style={{ fontSize: 8, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(239,231,212,0.55)", fontWeight: 700 }}>Member</div>
+                  <div style={{ fontFamily: "ui-monospace, monospace", fontSize: 12, color: f.edge, letterSpacing: "0.10em" }}>
+                    04 · 892 · {String(1000 + i * 137).padStart(4, "0")}
+                  </div>
+                </div>
+                {(v.status === "available" || v.status === "expiring") && (
+                  <button type="button" style={{ padding: "6px 14px", background: f.edge, color: "#0A0A0A", border: "none", borderRadius: 2, fontSize: 9, fontWeight: 800, letterSpacing: "0.20em", textTransform: "uppercase", cursor: "pointer" }}>
+                    Redeem
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------
+// V12 · Terminal · Bloomberg-style dense mono · amber-on-black
+// ---------------------------------------------------------------------
+function V12Terminal() {
+  const amber = "#F5A623";
+  const green = "#4CFF7A";
+  const red = "#FF5C4C";
+  return (
+    <div style={{ width: "100%", height: "100%", background: "#000", position: "relative", overflow: "hidden", color: amber, fontFamily: "ui-monospace, monospace" }}>
+      <ShopHeader tint={amber} accent={amber} subtle={`${amber}88`} />
+      <div style={{ position: "absolute", top: 104, left: 10, right: 10, bottom: 20, overflowY: "auto", paddingBottom: 20 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "58px 1fr 44px 42px", gap: 6, padding: "6px 4px", borderBottom: `1px solid ${amber}44`, fontSize: 8, letterSpacing: "0.12em", textTransform: "uppercase", color: `${amber}AA` }}>
+          <span>CODE</span><span>DESCRIPTION</span><span style={{ textAlign: "right" }}>VAL</span><span style={{ textAlign: "right" }}>EXP</span>
+        </div>
+        {VOUCHERS.map((v) => {
+          const dim = v.status === "used" || v.status === "locked";
+          const c = v.status === "available" ? green : v.status === "expiring" ? red : v.status === "locked" ? `${amber}66` : `${amber}44`;
+          return (
+            <div key={v.id} style={{ display: "grid", gridTemplateColumns: "58px 1fr 44px 42px", gap: 6, padding: "10px 4px", borderBottom: `1px solid ${amber}22`, fontSize: 11, opacity: dim ? 0.55 : 1 }}>
+              <span style={{ color: c, fontWeight: 700 }}>{v.code}</span>
+              <span style={{ color: amber, letterSpacing: "-0.01em" }}>{v.title.toUpperCase()}</span>
+              <span style={{ textAlign: "right", color: c, fontWeight: 700 }}>{v.value}</span>
+              <span style={{ textAlign: "right", color: `${amber}AA`, fontSize: 9 }}>{v.status === "expiring" ? "3D" : v.status === "locked" ? "🔒" : v.status === "used" ? "USED" : "42D"}</span>
+              {(v.status === "available" || v.status === "expiring") && (
+                <button type="button" style={{ gridColumn: "1 / -1", marginTop: 6, padding: "4px 8px", background: "transparent", border: `1px solid ${c}`, color: c, fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", cursor: "pointer", fontFamily: "inherit" }}>
+                  ► Apply {v.code}
+                </button>
+              )}
+            </div>
+          );
+        })}
+        <div style={{ marginTop: 12, padding: "8px 4px", borderTop: `1px solid ${amber}44`, fontSize: 9, color: `${amber}88`, letterSpacing: "0.10em" }}>
+          NEX/VCH.API · LIVE · {VOUCHERS.filter((v) => v.status === "available").length} READY
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------
+// V13 · Editorial Digest · newsletter · serif · drop-cap numbers
+// ---------------------------------------------------------------------
+function V13EditorialDigest() {
+  return (
+    <div style={{ width: "100%", height: "100%", background: "#F3EEE4", position: "relative", overflow: "hidden", color: "#1F1912" }}>
+      <ShopHeader tint="#1F1912" accent="#7A2B1F" subtle="#7A6A55" />
+      <div style={{ position: "absolute", top: 100, left: 22, right: 22, bottom: 20, overflowY: "auto", paddingBottom: 20 }}>
+        <div style={{ textAlign: "center", padding: "12px 0 20px", borderBottom: "2px solid #1F1912" }}>
+          <div style={{ fontSize: 9, letterSpacing: "0.32em", textTransform: "uppercase", fontWeight: 700, color: "#7A6A55" }}>Vol. VII</div>
+          <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 32, fontWeight: 500, letterSpacing: "-0.01em", lineHeight: 1 }}>The Vouchers Digest</div>
+          <div style={{ marginTop: 4, fontSize: 10, letterSpacing: "0.24em", textTransform: "uppercase", color: "#7A6A55" }}>{SHOP.name} · Oct edition</div>
+        </div>
+        {VOUCHERS.map((v, i) => {
+          const dim = v.status === "used" || v.status === "locked";
+          return (
+            <article key={v.id} style={{ padding: "18px 0", borderBottom: "1px solid rgba(31,25,18,0.20)", opacity: dim ? 0.55 : 1 }}>
+              <div style={{ display: "flex", gap: 14 }}>
+                <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 48, lineHeight: 0.9, color: "#7A2B1F", fontWeight: 500, letterSpacing: "-0.04em", flexShrink: 0 }}>
+                  {String(i + 1).padStart(2, "0")}
+                </div>
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <h3 style={{ margin: 0, fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 20, fontWeight: 500, letterSpacing: "-0.005em", lineHeight: 1.1 }}>{v.title}</h3>
+                  <p style={{ margin: "6px 0 6px", fontSize: 12, fontStyle: "italic", color: "#5B4A34", lineHeight: 1.5 }}>{v.note}</p>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "#7A2B1F", fontWeight: 700 }}>{v.value} · {v.code}</span>
+                    {(v.status === "available" || v.status === "expiring") && (
+                      <button type="button" style={{ padding: "5px 12px", background: "transparent", border: "1px solid #1F1912", color: "#1F1912", fontSize: 9, fontWeight: 700, letterSpacing: "0.24em", textTransform: "uppercase", cursor: "pointer" }}>
+                        Read →
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------
+// V14 · Muji Neutral · Japanese minimal · warm gray on ivory
+// ---------------------------------------------------------------------
+function V14Muji() {
+  return (
+    <div style={{ width: "100%", height: "100%", background: "#FAF9F5", position: "relative", overflow: "hidden", color: "#3B372E" }}>
+      <ShopHeader tint="#3B372E" accent="#8A8378" subtle="rgba(59,55,46,0.55)" />
+      <div style={{ position: "absolute", top: 104, left: 22, right: 22, bottom: 20, overflowY: "auto", paddingBottom: 20, display: "flex", flexDirection: "column", gap: 22 }}>
+        {VOUCHERS.map((v) => {
+          const dim = v.status === "used" || v.status === "locked";
+          return (
+            <div key={v.id} style={{ opacity: dim ? 0.55 : 1 }}>
+              <div style={{ fontSize: 9, letterSpacing: "0.24em", textTransform: "uppercase", color: "#8A8378", fontWeight: 500, fontFamily: "ui-monospace, monospace" }}>
+                {v.code}
+              </div>
+              <div style={{ marginTop: 8, display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 12 }}>
+                <div style={{ fontSize: 15, fontWeight: 500, letterSpacing: "-0.005em" }}>{v.title}</div>
+                <div style={{ fontSize: 18, fontWeight: 600, color: "#3B372E", letterSpacing: "-0.01em", flexShrink: 0 }}>{v.value}</div>
+              </div>
+              <div style={{ marginTop: 4, fontSize: 11, color: "#6D665A", lineHeight: 1.5 }}>{v.note}</div>
+              <div style={{ marginTop: 10, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontSize: 10, color: "#8A8378" }}>{v.expiresLabel}</span>
+                {(v.status === "available" || v.status === "expiring") && (
+                  <button type="button" style={{ padding: "6px 14px", background: "#3B372E", color: "#FAF9F5", border: "none", fontSize: 10, fontWeight: 500, letterSpacing: "0.14em", cursor: "pointer" }}>
+                    Apply
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------
+// V15 · iOS Grouped · system rows · SF · segmented top filter
+// ---------------------------------------------------------------------
+function V15IOSGrouped() {
+  return (
+    <div style={{ width: "100%", height: "100%", background: "#F2F2F7", position: "relative", overflow: "hidden", color: "#000", fontFamily: "-apple-system, 'SF Pro Text', BlinkMacSystemFont, sans-serif" }}>
+      <ShopHeader tint="#000" accent="#007AFF" subtle="rgba(0,0,0,0.55)" />
+      <div style={{ position: "absolute", top: 104, left: 12, right: 12, bottom: 20, overflowY: "auto", paddingBottom: 20 }}>
+        <div style={{ display: "flex", background: "#E4E4EC", borderRadius: 9, padding: 3, marginBottom: 18 }}>
+          {["All", "Available", "Locked", "Used"].map((tab, i) => (
+            <div key={tab} style={{ flex: 1, textAlign: "center", padding: "5px 0", borderRadius: 7, background: i === 0 ? "#fff" : "transparent", boxShadow: i === 0 ? "0 1px 2px rgba(0,0,0,0.10)" : "none", fontSize: 12, fontWeight: 600, color: "#000" }}>
+              {tab}
+            </div>
+          ))}
+        </div>
+        <div style={{ fontSize: 12, letterSpacing: "-0.01em", color: "#6B6B70", padding: "0 16px 6px", textTransform: "uppercase", fontWeight: 500 }}>{SHOP.name} · vouchers</div>
+        <div style={{ background: "#fff", borderRadius: 12, overflow: "hidden" }}>
+          {VOUCHERS.map((v, i) => {
+            const dim = v.status === "used" || v.status === "locked";
+            const isLast = i === VOUCHERS.length - 1;
+            const tint = v.status === "available" ? "#34C759" : v.status === "expiring" ? "#FF9500" : "#8E8E93";
+            return (
+              <div key={v.id} style={{ display: "flex", alignItems: "center", padding: "10px 14px", borderBottom: isLast ? "none" : "0.5px solid #C6C6C8", opacity: dim ? 0.55 : 1 }}>
+                <div style={{ width: 32, height: 32, borderRadius: 7, background: tint, color: "#fff", display: "grid", placeItems: "center", fontSize: 15, marginRight: 12, flexShrink: 0 }}>🎁</div>
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <div style={{ fontSize: 15, fontWeight: 500, color: "#000", letterSpacing: "-0.01em" }}>{v.title}</div>
+                  <div style={{ fontSize: 12, color: "#8E8E93" }}>{v.value} · {v.expiresLabel.split("·")[0]?.trim()}</div>
+                </div>
+                <span style={{ color: "#C6C6C8", fontSize: 16, marginLeft: 6 }}>›</span>
+              </div>
+            );
+          })}
+        </div>
+        <div style={{ marginTop: 8, fontSize: 11, color: "#6B6B70", padding: "0 16px", lineHeight: 1.4 }}>
+          Tap any voucher to apply. Locked vouchers unlock as you order more from {SHOP.name}.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------
+// V16 · Swiss Grid · Bauhaus · red accent · typographic value
+// ---------------------------------------------------------------------
+function V16SwissGrid() {
+  return (
+    <div style={{ width: "100%", height: "100%", background: "#FBFBF7", position: "relative", overflow: "hidden", color: "#101010" }}>
+      <ShopHeader tint="#101010" accent="#E4002B" subtle="rgba(16,16,16,0.55)" />
+      <div style={{ position: "absolute", top: 104, left: 20, right: 20, bottom: 20, overflowY: "auto", paddingBottom: 20 }}>
+        <div style={{ paddingBottom: 12, marginBottom: 16, borderBottom: "3px solid #101010", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+          <div style={{ fontSize: 42, fontWeight: 900, letterSpacing: "-0.04em", lineHeight: 0.9, textTransform: "uppercase" }}>Vouchers</div>
+          <div style={{ fontSize: 10, letterSpacing: "0.20em", textTransform: "uppercase", color: "#E4002B", fontWeight: 700 }}>Vol. 06 / 26</div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          {VOUCHERS.map((v, i) => {
+            const dim = v.status === "used" || v.status === "locked";
+            return (
+              <div key={v.id} style={{ display: "grid", gridTemplateColumns: "40px 1fr 80px", gap: 10, padding: "12px 0", borderBottom: "1px solid #101010", opacity: dim ? 0.55 : 1, alignItems: "center" }}>
+                <div style={{ fontSize: 26, fontWeight: 900, color: "#E4002B", letterSpacing: "-0.04em", lineHeight: 1 }}>{String(i + 1).padStart(2, "0")}</div>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: 13, fontWeight: 900, letterSpacing: "-0.01em", textTransform: "uppercase" }}>{v.title}</div>
+                  <div style={{ marginTop: 3, fontSize: 10, color: "#565656", letterSpacing: "0.02em", textTransform: "uppercase", fontWeight: 700 }}>{v.expiresLabel.split("·")[0]?.trim()} · {v.code}</div>
+                </div>
+                <div style={{ textAlign: "right", fontSize: 22, fontWeight: 900, letterSpacing: "-0.03em", color: "#101010" }}>{v.value}</div>
+                {(v.status === "available" || v.status === "expiring") && (
+                  <button type="button" style={{ gridColumn: "1 / -1", marginTop: 6, padding: "8px 12px", background: "#E4002B", color: "#FBFBF7", border: "none", fontSize: 10, fontWeight: 900, letterSpacing: "0.24em", textTransform: "uppercase", cursor: "pointer" }}>
+                    APPLY  →
+                  </button>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------
+// V17 · Notion Database · table-view rows + tag chips
+// ---------------------------------------------------------------------
+function V17Notion() {
+  return (
+    <div style={{ width: "100%", height: "100%", background: "#FBFAF8", position: "relative", overflow: "hidden", color: "#37352F" }}>
+      <ShopHeader tint="#37352F" accent="#0369A1" subtle="rgba(55,53,47,0.55)" />
+      <div style={{ position: "absolute", top: 104, left: 16, right: 16, bottom: 20, overflowY: "auto", paddingBottom: 20 }}>
+        <div style={{ padding: "0 4px 8px", borderBottom: "1px solid #E9E9E7", display: "grid", gridTemplateColumns: "20px 1fr 60px 60px", gap: 8, fontSize: 10, color: "#78756E", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+          <span></span><span>Title</span><span>Value</span><span>Status</span>
+        </div>
+        {VOUCHERS.map((v) => {
+          const dim = v.status === "used" || v.status === "locked";
+          const chip = v.status === "available" ? { bg: "#DAF1E1", fg: "#0F7D3C" } : v.status === "expiring" ? { bg: "#FFE6C7", fg: "#A65A00" } : v.status === "locked" ? { bg: "#E6E6E4", fg: "#78756E" } : { bg: "#E6E6E4", fg: "#78756E" };
+          return (
+            <div key={v.id} style={{ display: "grid", gridTemplateColumns: "20px 1fr 60px 60px", gap: 8, padding: "10px 4px", borderBottom: "1px solid #EEEDEB", alignItems: "center", opacity: dim ? 0.7 : 1 }}>
+              <span style={{ fontSize: 14 }}>🎁</span>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: 13, fontWeight: 500, color: "#37352F", textDecoration: dim ? "line-through" : "none", letterSpacing: "-0.005em" }}>{v.title}</div>
+                <div style={{ fontSize: 11, color: "#78756E", fontFamily: "ui-monospace, monospace" }}>{v.code}</div>
+              </div>
+              <div style={{ fontSize: 13, fontWeight: 600 }}>{v.value}</div>
+              <span style={{ fontSize: 9, padding: "2px 6px", borderRadius: 4, background: chip.bg, color: chip.fg, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", textAlign: "center", whiteSpace: "nowrap" }}>
+                {v.status}
+              </span>
+            </div>
+          );
+        })}
+        <div style={{ marginTop: 12, padding: "6px 4px", color: "#78756E", fontSize: 11 }}>+ New voucher</div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------
+// V18 · Aesop Apothecary · numbered product-label · beige + serif
+// ---------------------------------------------------------------------
+function V18Aesop() {
+  return (
+    <div style={{ width: "100%", height: "100%", background: "#E8E4DA", position: "relative", overflow: "hidden", color: "#2A251E" }}>
+      <ShopHeader tint="#2A251E" accent="#5B4A34" subtle="rgba(42,37,30,0.55)" />
+      <div style={{ position: "absolute", top: 100, left: 22, right: 22, bottom: 20, overflowY: "auto", paddingBottom: 20 }}>
+        <div style={{ textAlign: "center", fontSize: 9, letterSpacing: "0.36em", textTransform: "uppercase", color: "#5B4A34", fontWeight: 500, marginBottom: 24 }}>
+          — Discount labels · a collection —
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+          {VOUCHERS.map((v, i) => {
+            const dim = v.status === "used" || v.status === "locked";
+            return (
+              <div key={v.id} style={{ padding: "18px 20px", background: "#F5F1E8", border: "1px solid rgba(42,37,30,0.15)", opacity: dim ? 0.55 : 1 }}>
+                <div style={{ fontSize: 9, letterSpacing: "0.30em", textTransform: "uppercase", color: "#5B4A34", fontWeight: 500 }}>No. {String(i + 1).padStart(2, "0")}</div>
+                <div style={{ marginTop: 10, fontSize: 18, fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 500, letterSpacing: "-0.005em", lineHeight: 1.15 }}>{v.title}</div>
+                <div style={{ marginTop: 6, fontSize: 11, color: "#5B4A34", lineHeight: 1.55, fontStyle: "italic" }}>{v.note}</div>
+                <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid rgba(42,37,30,0.15)", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+                  <div>
+                    <div style={{ fontSize: 8, letterSpacing: "0.20em", textTransform: "uppercase", color: "#5B4A34", fontWeight: 500 }}>Value</div>
+                    <div style={{ fontSize: 24, fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 500, letterSpacing: "-0.02em", color: "#2A251E" }}>{v.value}</div>
+                  </div>
+                  {(v.status === "available" || v.status === "expiring") && (
+                    <button type="button" style={{ padding: "6px 16px", background: "#2A251E", color: "#F5F1E8", border: "none", fontSize: 10, fontWeight: 500, letterSpacing: "0.30em", cursor: "pointer" }}>
+                      Apply
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
