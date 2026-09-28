@@ -21,6 +21,7 @@ import * as businessService from "@/lib/nex-native/business-service";
 import * as productService from "@/lib/nex-native/product-service";
 import { sendProductInquiryAction } from "../../_actions";
 import { OrderBar } from "./_order-bar";
+import { VariantPicker } from "./_variant-picker";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -317,53 +318,71 @@ export default async function Page({
           </section>
         )}
 
-        {/* --- VARIANTS -------------------------------------------- */}
+        {/* --- VARIANTS · grouped picker (Bridge 20c) ------------- */}
         {variants.length > 0 && (
           <section style={{ marginBottom: 28 }}>
             <SectionHeading eyebrow="Options" />
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 8,
-              }}
-            >
-              {variants.map((v) => (
-                <div
-                  key={v.id}
-                  style={{
-                    padding: "8px 12px",
-                    borderRadius: 10,
-                    background: NEX.panelSoft,
-                    border: `1px solid ${NEX.borderStrong}`,
-                    fontSize: 13,
-                    display: "flex",
-                    alignItems: "baseline",
-                    gap: 8,
-                  }}
-                >
-                  <span style={{ color: NEX.text, fontWeight: 600 }}>
-                    {v.name}
-                  </span>
-                  {v.price_pence !== null && (
-                    <span
-                      style={{
-                        color: NEX.orange,
-                        fontSize: 12,
-                        fontWeight: 700,
-                      }}
-                    >
-                      {formatPrice(v.price_pence, product.currency)}
-                    </span>
-                  )}
-                </div>
-              ))}
-            </div>
+            <VariantPicker
+              variants={variants.map((v) => ({
+                id: v.id,
+                name: v.name,
+                attribute: v.attribute ?? "other",
+                price_pence: v.price_pence,
+                stock_status: v.stock_status,
+              }))}
+              currency={product.currency}
+              basePricePence={product.price_pence}
+              formatPrice={formatPrice}
+            />
           </section>
         )}
 
         {/* --- SPECIFICATIONS (Bridge 20) -------------------------- */}
         <SpecificationsSection spec={product.spec ?? {}} />
+
+        {/* --- RETURN POLICY LINK (Bridge 21) ---------------------- */}
+        <section style={{ marginBottom: 28 }}>
+          <SectionHeading eyebrow="Returns" />
+          <Link
+            href={`/nex-native/${business.slug}/returns`}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 12,
+              padding: "14px 16px",
+              borderRadius: 14,
+              background: NEX.panelSoft,
+              border: `1px solid ${NEX.borderStrong}`,
+              textDecoration: "none",
+              color: NEX.text,
+            }}
+          >
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 2 }}>
+                🔄 {business.display_name}&apos;s return policy
+              </div>
+              <div style={{ fontSize: 12, color: NEX.textDim, lineHeight: 1.5 }}>
+                {business.return_policy?.window_days ?? 7}-day return
+                window · refund within{" "}
+                {business.return_policy?.refund_days ?? 3} working
+                days · read before you buy
+              </div>
+            </div>
+            <div
+              style={{
+                fontSize: 11,
+                color: NEX.cyan,
+                fontWeight: 700,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Open →
+            </div>
+          </Link>
+        </section>
 
         {/* --- TURNAROUND ------------------------------------------ */}
         {(product.dispatch_time || product.sample_request_time) && (

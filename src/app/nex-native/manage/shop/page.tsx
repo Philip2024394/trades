@@ -26,7 +26,15 @@ import {
   updateBusinessPaymentMethodsAction,
   updateBusinessCityAndHoursAction,
   setBusinessSafeTradeActivatedAction,
+  updateReturnPolicyAction,
 } from "../../_actions";
+import {
+  NEX_RETURN_REASONS,
+  NEX_RETURN_SHIPPING_PAID_BY,
+  NEX_RETURN_LEGAL_MIN_WINDOW_DAYS,
+  NEX_RETURN_LEGAL_MIN_REFUND_DAYS,
+  NEX_RETURN_POLICY_DEFAULT,
+} from "@/lib/nex-native/types";
 import { NEX_BUSINESS_CATEGORIES } from "@/lib/nex-native/site-templates";
 import {
   NEX_PAYMENT_METHODS,
@@ -711,6 +719,210 @@ export default async function ShopSettingsPage({
             })}
             <SubmitButton label="Save payment methods" tone="primary" />
           </form>
+        </SectionCard>
+
+        {/* --- Return policy (Bridge 21) ---------------------------- */}
+        <SectionCard>
+          <SectionEyebrow color={NEX.orange}>Return policy</SectionEyebrow>
+          <h2
+            style={{
+              margin: "6px 0 6px",
+              fontSize: 18,
+              fontWeight: 700,
+              letterSpacing: "-0.005em",
+            }}
+          >
+            Your returns rules
+          </h2>
+          <p
+            style={{
+              margin: "0 0 12px",
+              fontSize: 13,
+              lineHeight: 1.55,
+              color: NEX.textDim,
+            }}
+          >
+            Indonesian consumer protection law (UU No 8/1999) requires
+            at least a 7-day return window with a 3-day refund for
+            defective / wrong-item / not-as-described orders. NEX
+            enforces those minimums · you can extend them but can&apos;t
+            go below. Everything below is what buyers see on your
+            shop&apos;s{" "}
+            <Link
+              href={`/nex-native/${business.slug}/returns`}
+              style={{ color: NEX.cyan, textDecoration: "none" }}
+            >
+              Returns page
+            </Link>
+            .
+          </p>
+
+          {(() => {
+            const rp = business.return_policy ?? NEX_RETURN_POLICY_DEFAULT;
+            const bound = updateReturnPolicyAction.bind(null, business.id);
+            return (
+              <form
+                action={bound}
+                style={{ display: "flex", flexDirection: "column", gap: 12 }}
+              >
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    fontSize: 13,
+                    color: NEX.textDim,
+                    cursor: "pointer",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    name="accepts_returns"
+                    defaultChecked={rp.accepts_returns !== false}
+                    style={{ accentColor: NEX.green }}
+                  />
+                  Accept returns (highly recommended · required by
+                  Indonesian law for defective / wrong-item)
+                </label>
+
+                <div
+                  style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}
+                >
+                  <FormRow label={`Return window (days · min ${NEX_RETURN_LEGAL_MIN_WINDOW_DAYS})`}>
+                    <input
+                      type="number"
+                      name="window_days"
+                      defaultValue={rp.window_days ?? NEX_RETURN_LEGAL_MIN_WINDOW_DAYS}
+                      min={NEX_RETURN_LEGAL_MIN_WINDOW_DAYS}
+                      max={90}
+                      style={inputStyle}
+                    />
+                  </FormRow>
+                  <FormRow label={`Refund within (days · min ${NEX_RETURN_LEGAL_MIN_REFUND_DAYS})`}>
+                    <input
+                      type="number"
+                      name="refund_days"
+                      defaultValue={rp.refund_days ?? NEX_RETURN_LEGAL_MIN_REFUND_DAYS}
+                      min={NEX_RETURN_LEGAL_MIN_REFUND_DAYS}
+                      max={14}
+                      style={inputStyle}
+                    />
+                  </FormRow>
+                </div>
+
+                <FormRow label="Accepted return reasons">
+                  <div
+                    style={{ display: "flex", flexWrap: "wrap", gap: 6 }}
+                  >
+                    {NEX_RETURN_REASONS.map((r) => {
+                      const isRequired = r === "defective" || r === "wrong_item";
+                      const isSelected =
+                        rp.accepts_reasons?.includes(r) || isRequired;
+                      return (
+                        <label
+                          key={r}
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 6,
+                            padding: "5px 10px",
+                            borderRadius: 999,
+                            border: isSelected
+                              ? `1px solid ${NEX.cyanSoft}`
+                              : `1px solid ${NEX.borderStrong}`,
+                            background: isSelected
+                              ? "rgba(0,175,255,0.10)"
+                              : "rgba(0,0,0,0.28)",
+                            color: isSelected ? NEX.text : NEX.textDim,
+                            fontSize: 11,
+                            fontWeight: 700,
+                            letterSpacing: "0.02em",
+                            cursor: isRequired ? "not-allowed" : "pointer",
+                            opacity: isRequired ? 0.85 : 1,
+                          }}
+                          title={
+                            isRequired
+                              ? "Required by Indonesian consumer protection law"
+                              : undefined
+                          }
+                        >
+                          <input
+                            type="checkbox"
+                            name="accepts_reasons"
+                            value={r}
+                            defaultChecked={isSelected}
+                            disabled={isRequired}
+                            style={{ accentColor: NEX.cyan }}
+                          />
+                          {r.replace(/_/g, " ")}
+                          {isRequired && (
+                            <span style={{ color: NEX.orange }}>*</span>
+                          )}
+                        </label>
+                      );
+                    })}
+                  </div>
+                </FormRow>
+
+                <div
+                  style={{ display: "grid", gridTemplateColumns: "1fr 120px", gap: 10 }}
+                >
+                  <FormRow label="Return shipping paid by">
+                    <select
+                      name="shipping_paid_by"
+                      defaultValue={rp.shipping_paid_by ?? "buyer_unless_defective"}
+                      style={{ ...inputStyle, appearance: "auto" }}
+                    >
+                      {NEX_RETURN_SHIPPING_PAID_BY.map((s) => (
+                        <option key={s} value={s}>
+                          {s.replace(/_/g, " ")}
+                        </option>
+                      ))}
+                    </select>
+                  </FormRow>
+                  <FormRow label="Restocking fee %">
+                    <input
+                      type="number"
+                      name="restocking_fee_percent"
+                      defaultValue={rp.restocking_fee_percent ?? 0}
+                      min={0}
+                      max={25}
+                      style={inputStyle}
+                    />
+                  </FormRow>
+                </div>
+
+                <FormRow label="Non-returnable categories (comma-separated · optional)">
+                  <input
+                    type="text"
+                    name="non_returnable"
+                    defaultValue={(rp.non_returnable ?? []).join(", ")}
+                    maxLength={400}
+                    placeholder="e.g. perishable, custom made, digital, opened cosmetics"
+                    style={inputStyle}
+                  />
+                </FormRow>
+
+                <FormRow label="Extra notes (shown to buyers · optional)">
+                  <textarea
+                    name="notes"
+                    rows={3}
+                    maxLength={2000}
+                    defaultValue={rp.notes ?? ""}
+                    placeholder="Any custom terms you want buyers to see · language they'll understand · e.g. 'Return item in original box with all accessories'"
+                    style={{
+                      ...inputStyle,
+                      resize: "vertical",
+                      fontFamily: "inherit",
+                      lineHeight: 1.5,
+                    }}
+                  />
+                </FormRow>
+
+                <SubmitButton label="Save return policy" tone="primary" />
+              </form>
+            );
+          })()}
         </SectionCard>
 
         {/* --- Product stock status -------------------------------- */}

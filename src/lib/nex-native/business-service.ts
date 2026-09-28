@@ -400,6 +400,96 @@ export const NEX_PAYMENT_METHOD_META: Record<
   },
 };
 
+/** Bridge 21 · replace the seller's return policy. Full replacement ·
+ *  the seller admin form does read-modify-write. Enforces Indonesian
+ *  legal minimums (7-day window · 3-day refund · defective always
+ *  accepted) · rejects attempts to weaken below the floor. */
+import {
+  NEX_RETURN_REASONS,
+  NEX_RETURN_SHIPPING_PAID_BY,
+  NEX_RETURN_LEGAL_MIN_WINDOW_DAYS,
+  NEX_RETURN_LEGAL_MIN_REFUND_DAYS,
+  NEX_RETURN_POLICY_DEFAULT,
+  type NexReturnPolicy,
+  type NexReturnReason,
+  type NexReturnShippingPaidBy,
+} from "./types";
+
+export async function updateReturnPolicy(
+  id: NexUuid,
+  input: Partial<NexReturnPolicy>,
+): Promise<NexBusinessRow> {
+  // Start from the legal-min default so callers can safely
+  // partial-update.
+  const current = { ...NEX_RETURN_POLICY_DEFAULT, ...input };
+
+  // Enforce legal floors · never weaken.
+  const windowDays = Math.max(
+    NEX_RETURN_LEGAL_MIN_WINDOW_DAYS,
+    Math.min(90, Math.floor(Number(current.window_days) || 0)),
+  );
+  const refundDays = Math.max(
+    NEX_RETURN_LEGAL_MIN_REFUND_DAYS,
+    Math.min(14, Math.floor(Number(current.refund_days) || 0)),
+  );
+  const restockingFee = Math.max(
+    0,
+    Math.min(25, Math.floor(Number(current.restocking_fee_percent) || 0)),
+  );
+
+  // Enforce always-accepted reasons · defective + wrong_item are
+  // non-negotiable per Indonesian consumer protection law.
+  const alwaysAccepted: NexReturnReason[] = ["defective", "wrong_item"];
+  const reasons = new Set<NexReturnReason>(alwaysAccepted);
+  for (const r of current.accepts_reasons ?? []) {
+    if ((NEX_RETURN_REASONS as readonly string[]).includes(r)) {
+      reasons.add(r as NexReturnReason);
+    }
+  }
+
+  const shippingPaidBy: NexReturnShippingPaidBy =
+    (NEX_RETURN_SHIPPING_PAID_BY as readonly string[]).includes(
+      current.shipping_paid_by,
+    )
+      ? current.shipping_paid_by
+      : "buyer_unless_defective";
+
+  const nonReturnable = Array.from(
+    new Set(
+      (current.non_returnable ?? [])
+        .map((s) => (typeof s === "string" ? s.trim() : ""))
+        .filter((s) => s.length > 0 && s.length <= 60),
+    ),
+  ).slice(0, 12);
+
+  const notesRaw = (current.notes ?? "").toString().trim();
+  const notes = notesRaw.length > 0 ? notesRaw.slice(0, 2000) : null;
+
+  const policy: NexReturnPolicy = {
+    accepts_returns: current.accepts_returns !== false,
+    window_days: windowDays,
+    refund_days: refundDays,
+    accepts_reasons: Array.from(reasons),
+    shipping_paid_by: shippingPaidBy,
+    restocking_fee_percent: restockingFee,
+    non_returnable: nonReturnable,
+    notes,
+  };
+
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_business")
+    .update({ return_policy: policy })
+    .eq("id", id)
+    .select("*")
+    .single();
+  if (error || !data) {
+    throw new Error(
+      `business-service.updateReturnPolicy: ${error?.message ?? "no row"}`,
+    );
+  }
+  return data as NexBusinessRow;
+}
+
 /** Bridge 17d · flip the seller's safe-trade commitment. Buyers
  *  see one of two binary messages at the top of every commerce
  *  chat based on this flag. */

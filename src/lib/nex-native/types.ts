@@ -228,6 +228,60 @@ export type NexBusinessMarketReach = "both" | "export_only" | "local_only";
 
 export type NexBusinessSellerKind = "private" | "registered_company";
 
+/** Bridge 21 · Return-policy canonical vocabularies + type. */
+export const NEX_RETURN_REASONS = [
+  "defective",
+  "wrong_item",
+  "not_as_described",
+  "damaged_in_transit",
+  "changed_mind",
+  "sized_wrong",
+  "arrived_late",
+] as const;
+export type NexReturnReason = (typeof NEX_RETURN_REASONS)[number];
+
+export const NEX_RETURN_SHIPPING_PAID_BY = [
+  "buyer",
+  "seller",
+  "split",
+  "buyer_unless_defective",
+] as const;
+export type NexReturnShippingPaidBy =
+  (typeof NEX_RETURN_SHIPPING_PAID_BY)[number];
+
+export const NEX_RETURN_LEGAL_MIN_WINDOW_DAYS = 7 as const;
+export const NEX_RETURN_LEGAL_MIN_REFUND_DAYS = 3 as const;
+
+export interface NexReturnPolicy {
+  accepts_returns: boolean;
+  window_days: number;
+  refund_days: number;
+  accepts_reasons: NexReturnReason[];
+  shipping_paid_by: NexReturnShippingPaidBy;
+  restocking_fee_percent: number;
+  non_returnable: string[];
+  notes: string | null;
+}
+
+/** Default policy that matches UU No 8/1999 minimums · used when a
+ *  business row has no policy stored (shouldn't happen after
+ *  migration 076 but defensive). */
+export const NEX_RETURN_POLICY_DEFAULT: NexReturnPolicy = {
+  accepts_returns: true,
+  window_days: NEX_RETURN_LEGAL_MIN_WINDOW_DAYS,
+  refund_days: NEX_RETURN_LEGAL_MIN_REFUND_DAYS,
+  accepts_reasons: [
+    "defective",
+    "wrong_item",
+    "not_as_described",
+    "damaged_in_transit",
+  ],
+  shipping_paid_by: "buyer_unless_defective",
+  restocking_fee_percent: 0,
+  non_returnable: [],
+  notes: null,
+};
+
 export interface NexBusinessRow {
   id: NexUuid;
   owner_account_id: NexUuid;
@@ -284,6 +338,12 @@ export interface NexBusinessRow {
    *  /manage/shop. Drives the compact TradeAgreementCard binary
    *  message in every commerce chat. */
   safe_trade_activated: boolean;
+  /** Bridge 21 · seller return policy · migration 076. JSONB with
+   *  Indonesian legal-min defaults (7-day window, 3-day refund,
+   *  defective/wrong-item/not-as-described/damaged-in-transit
+   *  auto-accepted). Rendered on /[shop]/returns + a small link
+   *  on every product page. Seller edits inline on /manage/shop. */
+  return_policy: NexReturnPolicy;
   /** Bridge 13 · Responsiveness signals · migration 063.
    *  last_seller_activity_at drives the graduated status badge on
    *  every shop landing (active · slow · away · archived). Bumped

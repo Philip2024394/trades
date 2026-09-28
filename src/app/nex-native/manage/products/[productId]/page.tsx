@@ -17,7 +17,15 @@ import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as productService from "@/lib/nex-native/product-service";
 import * as businessService from "@/lib/nex-native/business-service";
 import type { NexProductSpec } from "@/lib/nex-native/types";
-import { updateProductSpecAction } from "../../../_actions";
+import {
+  updateProductSpecAction,
+  createProductVariantAction,
+  deleteProductVariantAction,
+} from "../../../_actions";
+import {
+  NEX_VARIANT_ATTRIBUTES,
+  NEX_PRODUCT_STOCK_STATUSES,
+} from "@/lib/nex-native/types";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -69,6 +77,16 @@ export default async function ManageProductPage({
   const spec: NexProductSpec = product.spec ?? {};
   const banner = sp.e && sp.m ? { code: sp.e, message: sp.m } : null;
   const action = updateProductSpecAction.bind(null, productId);
+  const createVariantBound = createProductVariantAction.bind(null, productId);
+  // Fetch existing variants for the grouped list.
+  const variants = await productService.listVariants(productId);
+  const variantsByAttribute = new Map<string, typeof variants>();
+  for (const v of variants) {
+    const key = v.attribute ?? "other";
+    const arr = variantsByAttribute.get(key) ?? [];
+    arr.push(v);
+    variantsByAttribute.set(key, arr);
+  }
 
   return (
     <div
@@ -519,9 +537,276 @@ export default async function ManageProductPage({
             Save Specifications
           </button>
         </form>
+
+        {/* --- VARIANTS EDITOR (Bridge 20b) ----------------------- */}
+        <section
+          style={{
+            marginTop: 32,
+            padding: "20px 22px",
+            borderRadius: 18,
+            background: NEX.panelSoft,
+            border: `1px solid ${NEX.border}`,
+          }}
+        >
+          <div
+            style={{
+              fontSize: 10,
+              letterSpacing: "0.24em",
+              textTransform: "uppercase",
+              color: NEX.cyan,
+              fontWeight: 700,
+              marginBottom: 4,
+            }}
+          >
+            Variants
+          </div>
+          <h2
+            style={{
+              margin: 0,
+              fontSize: 18,
+              fontWeight: 700,
+              letterSpacing: "-0.005em",
+              marginBottom: 4,
+            }}
+          >
+            Size · Colour · Package · Duration
+          </h2>
+          <p
+            style={{
+              margin: "0 0 18px",
+              fontSize: 13,
+              lineHeight: 1.55,
+              color: NEX.textDim,
+            }}
+          >
+            Each variant belongs to an <b>attribute axis</b>. Buyers
+            see one picker per axis (Size · Colour · etc.) instead of
+            a flat list. Optional price override + per-variant stock
+            status.
+          </p>
+
+          {/* Existing variants grouped by attribute */}
+          {variants.length > 0 && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 18 }}>
+              {Array.from(variantsByAttribute.entries()).map(
+                ([axis, list]) => (
+                  <div key={axis}>
+                    <div
+                      style={{
+                        fontSize: 10,
+                        letterSpacing: "0.22em",
+                        textTransform: "uppercase",
+                        color: NEX.textMute,
+                        fontWeight: 700,
+                        marginBottom: 6,
+                      }}
+                    >
+                      {formatAttributeLabel(axis)}
+                    </div>
+                    <div
+                      style={{ display: "flex", flexDirection: "column", gap: 6 }}
+                    >
+                      {list.map((v) => (
+                        <div
+                          key={v.id}
+                          style={{
+                            display: "grid",
+                            gridTemplateColumns: "1fr auto auto auto",
+                            gap: 10,
+                            alignItems: "center",
+                            padding: "10px 12px",
+                            borderRadius: 10,
+                            background: "rgba(0,0,0,0.32)",
+                            border: `1px solid ${NEX.border}`,
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontSize: 13,
+                              fontWeight: 700,
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {v.name}
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 11,
+                              color: NEX.textDim,
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {v.price_pence
+                              ? `Rp ${(v.price_pence / 100).toLocaleString("id-ID")}`
+                              : "same price"}
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 10,
+                              padding: "2px 8px",
+                              borderRadius: 999,
+                              border: `1px solid ${NEX.borderStrong}`,
+                              color: v.stock_status === "sold_out" ? NEX.red : NEX.textDim,
+                              background:
+                                v.stock_status === "sold_out"
+                                  ? "rgba(255,51,85,0.10)"
+                                  : "rgba(139,169,209,0.05)",
+                              fontWeight: 700,
+                              letterSpacing: "0.06em",
+                              textTransform: "uppercase",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {v.stock_status
+                              ? v.stock_status.replace(/_/g, " ")
+                              : "in stock"}
+                          </div>
+                          <form
+                            action={deleteProductVariantAction.bind(
+                              null,
+                              v.id,
+                            )}
+                          >
+                            <input
+                              type="hidden"
+                              name="product_id"
+                              value={productId}
+                            />
+                            <button
+                              type="submit"
+                              style={{
+                                padding: "4px 10px",
+                                borderRadius: 999,
+                                background: "rgba(255,51,85,0.08)",
+                                border: "1px solid rgba(255,51,85,0.30)",
+                                color: NEX.red,
+                                fontSize: 10,
+                                fontWeight: 700,
+                                letterSpacing: "0.06em",
+                                textTransform: "uppercase",
+                                cursor: "pointer",
+                                fontFamily: "inherit",
+                              }}
+                            >
+                              Delete
+                            </button>
+                          </form>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ),
+              )}
+            </div>
+          )}
+
+          {/* Add-a-variant form */}
+          <div
+            style={{
+              padding: "14px 16px",
+              borderRadius: 12,
+              background: "rgba(0,175,255,0.06)",
+              border: `1px solid ${NEX.cyanSoft}`,
+            }}
+          >
+            <div
+              style={{
+                fontSize: 10,
+                letterSpacing: "0.24em",
+                textTransform: "uppercase",
+                color: NEX.cyan,
+                fontWeight: 700,
+                marginBottom: 10,
+              }}
+            >
+              Add a variant
+            </div>
+            <form
+              action={createVariantBound}
+              style={{ display: "flex", flexDirection: "column", gap: 10 }}
+            >
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "140px 1fr",
+                  gap: 10,
+                }}
+              >
+                <FormRow label="Attribute">
+                  <select
+                    name="attribute"
+                    required
+                    defaultValue="size"
+                    style={{ ...inputStyle, appearance: "auto" }}
+                  >
+                    {NEX_VARIANT_ATTRIBUTES.map((a) => (
+                      <option key={a} value={a}>
+                        {formatAttributeLabel(a)}
+                      </option>
+                    ))}
+                  </select>
+                </FormRow>
+                <FormRow label="Name / value (e.g. XL · Red · Premium)">
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    maxLength={100}
+                    placeholder="e.g. XL, Red, Premium, 1 hour"
+                    style={inputStyle}
+                  />
+                </FormRow>
+              </div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: 10,
+                }}
+              >
+                <FormRow
+                  label="Price override (IDR · optional)"
+                  hint="Leave blank to inherit the product price"
+                >
+                  <input
+                    type="number"
+                    name="price_idr"
+                    min={0}
+                    max={99999999}
+                    placeholder="e.g. 285000"
+                    style={inputStyle}
+                  />
+                </FormRow>
+                <FormRow label="Stock (optional)">
+                  <select
+                    name="stock_status"
+                    defaultValue=""
+                    style={{ ...inputStyle, appearance: "auto" }}
+                  >
+                    <option value="">— inherit —</option>
+                    {NEX_PRODUCT_STOCK_STATUSES.map((s) => (
+                      <option key={s} value={s}>
+                        {s.replace(/_/g, " ")}
+                      </option>
+                    ))}
+                  </select>
+                </FormRow>
+              </div>
+              <button type="submit" style={{ ...primaryButtonStyle, marginTop: 4 }}>
+                Add variant
+              </button>
+            </form>
+          </div>
+        </section>
       </main>
     </div>
   );
+}
+
+function formatAttributeLabel(a: string): string {
+  return a.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 /* --------------------------------------------------------------------- *

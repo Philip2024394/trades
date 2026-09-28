@@ -1188,6 +1188,180 @@ export async function sendMenuItemInquiryAction(
   redirect(`/nex-native/chat/peer/${peerAccountId}`);
 }
 
+/** Bridge 21 · update the seller's return policy. Owner-only.
+ *  Server-side enforces Indonesian legal minimums · seller can't
+ *  weaken below UU No 8/1999. */
+export async function updateReturnPolicyAction(
+  businessId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const business = await businessService.getBusinessById(businessId);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirect(
+      "/nex-native/manage/shop?e=returns_forbidden&m=" +
+        encodeURIComponent("You don't own this shop"),
+    );
+  }
+
+  const asStr = (k: string) => String(formData.get(k) ?? "").trim();
+  const asBool = (k: string) => asStr(k) === "on" || asStr(k) === "true";
+  const asNum = (k: string) => {
+    const n = Number.parseInt(asStr(k), 10);
+    return Number.isFinite(n) ? n : 0;
+  };
+  const reasons = formData.getAll("accepts_reasons").map((v) => String(v));
+  const nonReturnable = String(formData.get("non_returnable") ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+
+  try {
+    await businessService.updateReturnPolicy(businessId, {
+      accepts_returns: asBool("accepts_returns"),
+      window_days: asNum("window_days"),
+      refund_days: asNum("refund_days"),
+      accepts_reasons:
+        reasons as import("@/lib/nex-native/types").NexReturnReason[],
+      shipping_paid_by: (asStr("shipping_paid_by") ||
+        "buyer_unless_defective") as import("@/lib/nex-native/types").NexReturnShippingPaidBy,
+      restocking_fee_percent: asNum("restocking_fee_percent"),
+      non_returnable: nonReturnable,
+      notes: asStr("notes") || null,
+    });
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      "/nex-native/manage/shop?e=returns_failed&m=" + encodeURIComponent(msg),
+    );
+  }
+
+  revalidatePath("/nex-native/manage/shop");
+  revalidatePath(`/nex-native/${business.slug}/returns`);
+  revalidatePath(`/nex-native/${business.slug}`);
+  redirect(
+    "/nex-native/manage/shop?e=returns_ok&m=" +
+      encodeURIComponent("Return policy saved · legal minimums enforced"),
+  );
+}
+
+/** Bridge 20b · create a typed product variant. Owner-only. Reads
+ *  attribute (size/colour/etc.), name (S/M/L/Red/etc.), optional
+ *  price override (IDR), optional per-variant stock status. */
+export async function createProductVariantAction(
+  productId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const product = await productService.getProductById(productId);
+  if (!product) {
+    redirect(
+      "/nex-native/manage?e=variant_failed&m=" +
+        encodeURIComponent("Product not found"),
+    );
+  }
+  const business = await businessService.getBusinessById(product.business_id);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirect(
+      "/nex-native/manage?e=variant_forbidden&m=" +
+        encodeURIComponent("You don't own this product"),
+    );
+  }
+
+  const attribute = String(formData.get("attribute") ?? "").trim();
+  const name = String(formData.get("name") ?? "").trim();
+  const priceIdrRaw = String(formData.get("price_idr") ?? "").trim();
+  const stockRaw = String(formData.get("stock_status") ?? "").trim() || null;
+
+  if (!name || !attribute) {
+    redirect(
+      `/nex-native/manage/products/${productId}?e=variant_failed&m=` +
+        encodeURIComponent("Attribute + name are required"),
+    );
+  }
+
+  let pricePence: number | null = null;
+  if (priceIdrRaw) {
+    const n = Number.parseInt(priceIdrRaw, 10);
+    if (Number.isFinite(n) && n >= 0) {
+      pricePence = n * 100; // IDR → pence storage convention
+    }
+  }
+
+  type Attr = import("@/lib/nex-native/types").NexVariantAttribute;
+  type Stock = import("@/lib/nex-native/types").NexProductStockStatus | null;
+  try {
+    await productService.createVariant({
+      product_id: productId,
+      name,
+      attribute: attribute as Attr,
+      price_pence: pricePence,
+      stock_status: stockRaw as Stock,
+    });
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      `/nex-native/manage/products/${productId}?e=variant_failed&m=` +
+        encodeURIComponent(msg),
+    );
+  }
+
+  revalidatePath(`/nex-native/manage/products/${productId}`);
+  revalidatePath(`/nex-native/${business.slug}/${productId}`);
+  redirect(
+    `/nex-native/manage/products/${productId}?e=variant_ok&m=` +
+      encodeURIComponent(`${name} added`),
+  );
+}
+
+/** Bridge 20b · delete a variant. Owner-only. */
+export async function deleteProductVariantAction(
+  variantId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+  const productId = String(formData.get("product_id") ?? "").trim();
+  if (!productId) redirect("/nex-native/manage");
+
+  const product = await productService.getProductById(productId);
+  if (!product) redirect("/nex-native/manage");
+  const business = await businessService.getBusinessById(product.business_id);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirect(
+      `/nex-native/manage/products/${productId}?e=variant_forbidden&m=` +
+        encodeURIComponent("You don't own this product"),
+    );
+  }
+
+  try {
+    await productService.deleteVariant(variantId);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      `/nex-native/manage/products/${productId}?e=variant_failed&m=` +
+        encodeURIComponent(msg),
+    );
+  }
+
+  revalidatePath(`/nex-native/manage/products/${productId}`);
+  revalidatePath(`/nex-native/${business.slug}/${productId}`);
+  redirect(
+    `/nex-native/manage/products/${productId}?e=variant_ok&m=` +
+      encodeURIComponent("Variant deleted"),
+  );
+}
+
 /** Bridge 20 · update the Specifications JSONB on a product. Owner-
  *  only. Reads a curated set of fields from FormData, coerces to
  *  the NexProductSpec shape, and calls the service. Empty strings
