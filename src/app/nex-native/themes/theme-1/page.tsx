@@ -291,17 +291,15 @@ export default function Theme1PreviewPage() {
               body={m.body}
               time={m.time}
               extraTop={gapTop}
-              // Bridge 27b · You panels pulled to a moonlit silvery
-              // frost per Founder direction 2026-09-28 · replaces the
-              // orange "brown" tone with a pale blue-white that
-              // reads as a fragment of the moon glow floating in
-              // the sky. Dark navy text keeps legibility on the
-              // near-opaque moon fill.
-              fill="rgba(225, 238, 255, 0.75)"
-              border="rgba(180, 214, 255, 0.90)"
-              accent="#B4D6FF"
+              // Bridge 27c · You panels shifted to a true frosted
+              // mist tone per Founder direction 2026-09-28 · cooler
+              // silver-grey with more transparency + stronger blur
+              // so the wallpaper reads through as diffused fog.
+              fill="rgba(210, 224, 240, 0.48)"
+              border="rgba(230, 240, 252, 0.55)"
+              accent="#DDE9FA"
               textColor="#0A1830"
-              eyebrowColor="#1E4A7A"
+              eyebrowColor="#2A4670"
               driftDelay={`${i * 0.4 + 0.2}s`}
             />
           );
@@ -368,11 +366,11 @@ function SkyCard({
           borderBottom: `1px solid ${border}`,
           borderLeft: isRight ? `1px solid ${border}` : `3px solid ${accent}`,
           borderRight: isRight ? `3px solid ${accent}` : `1px solid ${border}`,
-          backdropFilter: "blur(14px) saturate(140%)",
-          WebkitBackdropFilter: "blur(14px) saturate(140%)",
+          backdropFilter: "blur(20px) saturate(120%)",
+          WebkitBackdropFilter: "blur(20px) saturate(120%)",
           boxShadow: isRight
-            ? `-8px 6px 18px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.14)`
-            : `8px 6px 18px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.14)`,
+            ? `-8px 6px 20px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.18)`
+            : `8px 6px 20px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.18)`,
           animation: `t1-cloud-drift 5s ease-in-out ${driftDelay} infinite`,
         }}
       >
