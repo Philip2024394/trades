@@ -937,13 +937,171 @@ function D6SwissNEX() {
         </div>
       </div>
 
-      {/* Square-edged CTA + chat · Bauhaus discipline */}
+      {/* Quantity stepper · Bauhaus discipline · square-edged · lives
+          above the CTA row so the subtotal reads live. Founder rule
+          2026-09-29: every product/menu page shows +/− quantity ·
+          starts at 1 · adjustable. */}
+      <div
+        style={{
+          margin: "0 18px",
+          padding: "10px 0",
+          borderTop: `1px solid ${NEX.cyanFaint}`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 12,
+        }}
+      >
+        <div>
+          <div
+            style={{
+              fontSize: 9,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: NEX.textSecondary,
+              fontWeight: 800,
+            }}
+          >
+            Quantity
+          </div>
+          <div style={{ marginTop: 4, display: "inline-flex", alignItems: "stretch", border: `1px solid ${NEX.cyan}` }}>
+            <button
+              type="button"
+              aria-label="Decrease quantity"
+              style={{
+                width: 38,
+                height: 38,
+                background: NEX.panel,
+                color: NEX.cyan,
+                border: "none",
+                borderRight: `1px solid ${NEX.cyan}`,
+                fontSize: 18,
+                fontWeight: 900,
+                cursor: "pointer",
+                lineHeight: 1,
+              }}
+            >
+              −
+            </button>
+            <div
+              style={{
+                minWidth: 44,
+                height: 38,
+                display: "grid",
+                placeItems: "center",
+                background: NEX.panelHi,
+                color: NEX.textPrimary,
+                fontSize: 15,
+                fontWeight: 800,
+                fontFamily: "ui-monospace, monospace",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              1
+            </div>
+            <button
+              type="button"
+              aria-label="Increase quantity"
+              style={{
+                width: 38,
+                height: 38,
+                background: NEX.panel,
+                color: NEX.cyan,
+                border: "none",
+                borderLeft: `1px solid ${NEX.cyan}`,
+                fontSize: 18,
+                fontWeight: 900,
+                cursor: "pointer",
+                lineHeight: 1,
+              }}
+            >
+              +
+            </button>
+          </div>
+        </div>
+        <div style={{ textAlign: "right" }}>
+          <div
+            style={{
+              fontSize: 9,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: NEX.textSecondary,
+              fontWeight: 800,
+            }}
+          >
+            Subtotal
+          </div>
+          <div
+            style={{
+              marginTop: 4,
+              fontSize: 22,
+              fontWeight: 900,
+              color: NEX.orange,
+              letterSpacing: "-0.02em",
+              lineHeight: 1,
+            }}
+          >
+            {PRODUCT.priceLabel}
+          </div>
+        </div>
+      </div>
+
+      {/* Two-CTA row · every page has BOTH Add-to-cart AND
+          Checkout-to-chat · Founder rule 2026-09-29. Cart accumulates
+          for multi-item · chat sends order via NEX peer chat direct
+          to seller (single-item quick-order · matches sendMenuItemInquiry
+          + sendProductInquiry pattern from Bridge 11 / Bridge 15c). */}
       <div style={{ padding: "0 18px 20px", display: "flex", gap: 8 }}>
-        <button type="button" style={{ flex: 1, minHeight: 52, background: `linear-gradient(180deg, ${NEX.orangeStrong}, ${NEX.orange})`, color: "#0B0F1A", border: "none", fontSize: 13, fontWeight: 900, letterSpacing: "0.20em", textTransform: "uppercase", cursor: "pointer", boxShadow: `0 10px 26px rgba(255,114,0,0.45)` }}>
-          🛒 Order · {PRODUCT.priceLabel}
+        <button
+          type="button"
+          style={{
+            flex: 1,
+            minHeight: 52,
+            background: `linear-gradient(180deg, ${NEX.orangeStrong}, ${NEX.orange})`,
+            color: "#0B0F1A",
+            border: "none",
+            fontSize: 12,
+            fontWeight: 900,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            cursor: "pointer",
+            boxShadow: `0 10px 26px rgba(255,114,0,0.45)`,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 2,
+          }}
+        >
+          <span>🛒 Add to cart</span>
+          <span style={{ fontSize: 10, letterSpacing: "0.10em", opacity: 0.85, fontWeight: 700 }}>
+            {PRODUCT.priceLabel}
+          </span>
         </button>
-        <button type="button" aria-label="Chat" style={{ width: 52, height: 52, background: NEX.panel, color: NEX.cyan, border: `1px solid ${NEX.cyan}`, fontSize: 20, cursor: "pointer" }}>
-          💬
+        <button
+          type="button"
+          style={{
+            flex: 1,
+            minHeight: 52,
+            background: NEX.panel,
+            color: NEX.cyan,
+            border: `1px solid ${NEX.cyan}`,
+            fontSize: 12,
+            fontWeight: 900,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            cursor: "pointer",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 2,
+          }}
+        >
+          <span>💬 Checkout · chat</span>
+          <span style={{ fontSize: 10, letterSpacing: "0.10em", opacity: 0.85, fontWeight: 700 }}>
+            Direct to seller
+          </span>
         </button>
       </div>
     </div>

@@ -830,69 +830,176 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
           </SpecGroup>
         </div>
 
-        {/* Sticky bottom CTA + chat inside the full-height drawer.
-            Order + chat both reachable without scrolling to the top. */}
+        {/* Sticky bottom · quantity stepper + two CTAs (Add to cart
+            AND Checkout to chat) · Founder rule 2026-09-29 · every
+            product/menu page carries BOTH actions + +/− quantity
+            starting at 1. */}
         <div
           style={{
             position: "absolute",
             left: 0,
             right: 0,
             bottom: 0,
-            padding: "12px 16px 22px",
+            padding: "10px 16px 22px",
             background:
-              "linear-gradient(180deg, rgba(11,15,26,0) 0%, rgba(11,15,26,0.90) 30%, rgba(11,15,26,0.96) 100%)",
+              "linear-gradient(180deg, rgba(11,15,26,0) 0%, rgba(11,15,26,0.92) 20%, rgba(11,15,26,0.98) 100%)",
             display: "flex",
+            flexDirection: "column",
             gap: 10,
-            alignItems: "center",
           }}
         >
-          <button
-            type="button"
-            onClick={() =>
-              alert(
-                `Add to cart · ${current.name} · ${currentVariant.label} · ${currentVariant.price}`,
-              )
-            }
-            style={{
-              flex: 1,
-              minHeight: 54,
-              borderRadius: 14,
-              background: `linear-gradient(180deg, ${NEX.orangeStrong} 0%, ${NEX.orange} 100%)`,
-              color: "#0B0F1A",
-              border: "none",
-              fontSize: 14,
-              fontWeight: 800,
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              boxShadow:
-                "0 10px 24px rgba(255,114,0,0.45), inset 0 1px 0 rgba(255,255,255,0.3)",
-              cursor: "pointer",
-            }}
-          >
-            🛒 Let's go · {currentVariant.price}
-          </button>
-          <button
-            type="button"
-            onClick={() =>
-              alert("Chat with " + current.seller + " (prototype)")
-            }
-            aria-label="Chat with seller"
-            style={{
-              width: 54,
-              height: 54,
-              borderRadius: "50%",
-              background: "rgba(255,255,255,0.10)",
-              border: `1px solid ${NEX.border}`,
-              color: "#fff",
-              fontSize: 22,
-              display: "grid",
-              placeItems: "center",
-              cursor: "pointer",
-              flexShrink: 0,
-            }}
-          >
-            💬
-          </button>
+          <StoryReelQuantityRow price={currentVariant.price} />
+          <div style={{ display: "flex", gap: 8 }}>
+            <button
+              type="button"
+              onClick={() =>
+                alert(
+                  `Add to cart · ${current.name} · ${currentVariant.label} · ${currentVariant.price}`,
+                )
+              }
+              style={{
+                flex: 1,
+                minHeight: 50,
+                borderRadius: 12,
+                background: `linear-gradient(180deg, ${NEX.orangeStrong} 0%, ${NEX.orange} 100%)`,
+                color: "#0B0F1A",
+                border: "none",
+                fontSize: 12,
+                fontWeight: 800,
+                letterSpacing: "0.10em",
+                textTransform: "uppercase",
+                boxShadow: "0 10px 24px rgba(255,114,0,0.45)",
+                cursor: "pointer",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 1,
+              }}
+            >
+              <span>🛒 Add to cart</span>
+              <span style={{ fontSize: 10, letterSpacing: "0.08em", opacity: 0.85, fontWeight: 700 }}>
+                {currentVariant.price}
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                alert(
+                  `Checkout to chat · sending ${current.name} order to ${current.seller} (prototype)`,
+                )
+              }
+              style={{
+                flex: 1,
+                minHeight: 50,
+                borderRadius: 12,
+                background: "transparent",
+                color: NEX.textPrimary,
+                border: `1px solid rgba(255,255,255,0.30)`,
+                fontSize: 12,
+                fontWeight: 800,
+                letterSpacing: "0.10em",
+                textTransform: "uppercase",
+                cursor: "pointer",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 1,
+              }}
+            >
+              <span>💬 Checkout · chat</span>
+              <span style={{ fontSize: 10, letterSpacing: "0.08em", opacity: 0.75, fontWeight: 700 }}>
+                Direct to seller
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Founder rule 2026-09-29 · every product/menu page has +/−
+ *  quantity stepper starting at 1 · adjustable. Client-only state ·
+ *  subtotal echoes the running total. */
+function StoryReelQuantityRow({ price }: { price: string }) {
+  const [qty, setQty] = useState(1);
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: 12,
+        padding: "6px 4px",
+      }}
+    >
+      <div
+        style={{
+          display: "inline-flex",
+          alignItems: "stretch",
+          border: "1px solid rgba(255,255,255,0.28)",
+          borderRadius: 999,
+          overflow: "hidden",
+          background: "rgba(255,255,255,0.06)",
+        }}
+      >
+        <button
+          type="button"
+          aria-label="Decrease quantity"
+          onClick={() => setQty((q) => Math.max(1, q - 1))}
+          style={{
+            width: 36,
+            height: 36,
+            background: "transparent",
+            color: NEX.textPrimary,
+            border: "none",
+            fontSize: 18,
+            fontWeight: 900,
+            cursor: qty > 1 ? "pointer" : "not-allowed",
+            opacity: qty > 1 ? 1 : 0.4,
+            lineHeight: 1,
+          }}
+        >
+          −
+        </button>
+        <div
+          style={{
+            minWidth: 40,
+            height: 36,
+            display: "grid",
+            placeItems: "center",
+            color: NEX.textPrimary,
+            fontSize: 14,
+            fontWeight: 800,
+            fontFamily: "ui-monospace, monospace",
+          }}
+        >
+          {qty}
+        </div>
+        <button
+          type="button"
+          aria-label="Increase quantity"
+          onClick={() => setQty((q) => Math.min(99, q + 1))}
+          style={{
+            width: 36,
+            height: 36,
+            background: "transparent",
+            color: NEX.textPrimary,
+            border: "none",
+            fontSize: 18,
+            fontWeight: 900,
+            cursor: "pointer",
+            lineHeight: 1,
+          }}
+        >
+          +
+        </button>
+      </div>
+      <div style={{ textAlign: "right" }}>
+        <div style={{ fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 700, color: NEX.textDim }}>
+          Subtotal · {qty} × {price}
         </div>
       </div>
     </div>
