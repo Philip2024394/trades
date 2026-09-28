@@ -102,6 +102,7 @@ export interface PortraitBloomMessage {
     | "product"
     | "menu_item"
     | "cart_order"
+    | "product_share"
     | null;
   /** Bridge 11 · when attachment_type='product' this carries the
    *  frozen product snapshot so the card renders correctly even if
@@ -185,6 +186,25 @@ export interface PortraitBloomMessage {
       eta_minutes?: number;
       free_reason?: string | null;
     } | null;
+  } | null;
+  /** Bridge 49b · when attachment_type='product_share' this carries
+   *  the frozen banner snapshot the sharer sent. Rendered as B4
+   *  Swiss NEX Banner in the recipient's chat. */
+  attachment_product_share?: {
+    grant_id: string;
+    business_id: string;
+    business_name: string;
+    business_slug: string;
+    business_location: string | null;
+    product_id: string;
+    product_name: string;
+    product_image_url: string | null;
+    price_pence: number;
+    currency: string;
+    receiver_bonus_pct: number;
+    expires_at: string;
+    personal_note: string | null;
+    open_href: string;
   } | null;
 }
 
@@ -1125,6 +1145,12 @@ export function PortraitBloomShell({
                           hasBody={!!m.body}
                           accent={bubbleRim}
                         />
+                      ) : m.attachment_type === "product_share" &&
+                        m.attachment_product_share ? (
+                        <MessageProductShareBanner
+                          share={m.attachment_product_share}
+                          hasBody={!!m.body}
+                        />
                       ) : m.attachment_url &&
                         (m.attachment_type === "image" ||
                           m.attachment_type === "video" ||
@@ -1407,6 +1433,241 @@ function MessageAttachment({
       />
     </div>
   );
+}
+
+/** Bridge 49b · B4 Swiss NEX Banner · rendered when a peer sends a
+ *  product_share attachment. Landscape · shop identity · product name
+ *  + price · personal note · huge typographic reward · "Open · claim
+ *  reward" CTA that deep-links to the buyer-facing D6 view with the
+ *  grant hydrated. Matches the sealed B4 design from
+ *  /nex-native/shop-prototypes/direct-price/share-banner. */
+function MessageProductShareBanner({
+  share,
+  hasBody,
+}: {
+  share: {
+    grant_id: string;
+    business_id: string;
+    business_name: string;
+    business_slug: string;
+    business_location: string | null;
+    product_id: string;
+    product_name: string;
+    product_image_url: string | null;
+    price_pence: number;
+    currency: string;
+    receiver_bonus_pct: number;
+    expires_at: string;
+    personal_note: string | null;
+    open_href: string;
+  };
+  hasBody: boolean;
+}) {
+  const priceLabel = formatPriceForShare(share.price_pence, share.currency);
+  const hoursLeft = Math.max(
+    0,
+    Math.round((new Date(share.expires_at).getTime() - Date.now()) / (60 * 60 * 1000)),
+  );
+  const expiryLabel =
+    hoursLeft <= 0 ? "expired" : hoursLeft < 1 ? "<1 hr" : `${hoursLeft}hr window`;
+  return (
+    <div
+      data-nex-product-share-banner
+      style={{
+        margin: hasBody ? "-2px -6px 8px" : "-2px -6px 2px",
+        borderRadius: 12,
+        overflow: "hidden",
+        background: "#020914",
+        border: "1px solid rgba(0,175,255,0.35)",
+        boxShadow: "0 6px 16px rgba(0,0,0,0.45)",
+      }}
+    >
+      {/* Top row · landscape image + Bauhaus product headline */}
+      <div style={{ display: "flex", minHeight: 116 }}>
+        {share.product_image_url ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={share.product_image_url}
+            alt=""
+            style={{
+              width: 116,
+              height: 116,
+              objectFit: "cover",
+              flexShrink: 0,
+            }}
+          />
+        ) : (
+          <div
+            aria-hidden
+            style={{
+              width: 116,
+              height: 116,
+              flexShrink: 0,
+              background: "linear-gradient(135deg, #FF9033, #FF7200)",
+              display: "grid",
+              placeItems: "center",
+              fontSize: 30,
+            }}
+          >
+            🛍
+          </div>
+        )}
+        <div
+          style={{
+            flex: 1,
+            padding: "10px 12px",
+            borderLeft: "2px solid #00AFFF",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            minWidth: 0,
+          }}
+        >
+          <div>
+            <div
+              style={{
+                fontSize: 8,
+                letterSpacing: "0.20em",
+                textTransform: "uppercase",
+                fontWeight: 900,
+                color: "#00AFFF",
+              }}
+            >
+              🛍 {share.business_name}
+            </div>
+            <div
+              style={{
+                marginTop: 4,
+                fontSize: 14,
+                fontWeight: 900,
+                textTransform: "uppercase",
+                letterSpacing: "-0.02em",
+                lineHeight: 1.05,
+                color: "#F2F5F8",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {share.product_name}
+            </div>
+            {share.business_location && (
+              <div
+                style={{
+                  marginTop: 2,
+                  fontSize: 9,
+                  color: "rgba(125,155,192,0.85)",
+                  letterSpacing: "0.06em",
+                }}
+              >
+                📍 {share.business_location}
+              </div>
+            )}
+          </div>
+          <div
+            style={{
+              fontSize: 20,
+              fontWeight: 900,
+              color: "#FF7200",
+              letterSpacing: "-0.03em",
+              lineHeight: 1,
+            }}
+          >
+            {priceLabel}
+          </div>
+        </div>
+      </div>
+
+      {/* Personal note strip · only when the sharer added one */}
+      {share.personal_note && (
+        <div
+          style={{
+            padding: "8px 12px",
+            borderTop: "1px solid rgba(0,175,255,0.15)",
+            fontSize: 11,
+            color: "#F2F5F8",
+            fontStyle: "italic",
+            lineHeight: 1.4,
+          }}
+        >
+          &ldquo;{share.personal_note}&rdquo;
+        </div>
+      )}
+
+      {/* Reward row · huge typographic value */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "auto 1fr",
+          gap: 12,
+          padding: "8px 12px",
+          borderTop: "2px solid #FF7200",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 22,
+            fontWeight: 900,
+            letterSpacing: "-0.03em",
+            color: "#FF7200",
+            lineHeight: 1,
+          }}
+        >
+          −{share.receiver_bonus_pct}%
+        </div>
+        <div>
+          <div
+            style={{
+              fontSize: 8,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              fontWeight: 900,
+              color: "#FF7200",
+            }}
+          >
+            Your reward
+          </div>
+          <div
+            style={{
+              fontSize: 9,
+              color: "rgba(125,155,192,0.85)",
+              letterSpacing: "0.02em",
+            }}
+          >
+            Order within {expiryLabel}
+          </div>
+        </div>
+      </div>
+
+      {/* Open CTA */}
+      <a
+        href={share.open_href}
+        style={{
+          display: "block",
+          padding: "10px 12px",
+          background: "linear-gradient(180deg, #FF9033 0%, #FF7200 100%)",
+          color: "#0B0F1A",
+          textAlign: "center",
+          fontSize: 10,
+          fontWeight: 900,
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+          textDecoration: "none",
+          cursor: "pointer",
+        }}
+      >
+        Open · claim reward
+      </a>
+    </div>
+  );
+}
+
+function formatPriceForShare(pence: number, currency: string): string {
+  const rupiah = pence / 100;
+  const formatted = rupiah.toLocaleString("en-US", { maximumFractionDigits: 0 });
+  const symbol = currency.toUpperCase() === "IDR" ? "Rp" : currency;
+  return `${symbol} ${formatted}`;
 }
 
 /** Bridge 11 · product card renderer inside a bubble.

@@ -5124,6 +5124,86 @@ export async function deleteMenuItemAction(
 }
 
 // ---------------------------------------------------------------------
+// Bridge 49b-next · NEX Direct Price · share to a NEX friend
+// ---------------------------------------------------------------------
+
+/** Server action · buyer taps "Share · friend" on the /direct product
+ *  view, picks a friend, adds an optional note, submits. Runs all
+ *  doctrine gates through share-service (cooldown 7d · active
+ *  recipient · self-share · ladder active) · returns redirects that
+ *  the picker client component reads as banners.
+ *
+ *  FormData:
+ *    receiver_account_id  · UUID of the picked friend
+ *    business_id          · UUID of the shop
+ *    product_id           · UUID of the product being shared
+ *    personal_note        · optional (200 chars)
+ */
+export async function shareToFriendAction(formData: FormData): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const receiverId = String(formData.get("receiver_account_id") ?? "").trim();
+  const businessId = String(formData.get("business_id") ?? "").trim();
+  const productId = String(formData.get("product_id") ?? "").trim();
+  const personalNote = String(formData.get("personal_note") ?? "").trim();
+
+  const business = await businessService.getBusinessById(businessId);
+  const product = await productService.getProductById(productId);
+  if (!business || !product || product.business_id !== business.id) {
+    const qs = new URLSearchParams({
+      e: "share_bad_product",
+      m: "Product not found · try again from the product page",
+    });
+    redirect(`/nex-native/${business?.slug ?? ""}?${qs.toString()}`);
+  }
+
+  const shareSvc = await import("@/lib/nex-native/share-service");
+  try {
+    await shareSvc.createFriendShareGrant({
+      sharer_account_id: session.account.id,
+      receiver_account_id: receiverId,
+      business_id: businessId,
+      product_id: productId,
+      product_name: product.name,
+      product_price_pence: product.price_pence,
+      product_currency: product.currency,
+      product_image_url: product.image_url ?? product.gallery_urls?.[0] ?? null,
+      business_name: business.display_name,
+      business_slug: business.slug,
+      business_location: business.city,
+      personal_note: personalNote.length > 0 ? personalNote : null,
+    });
+  } catch (e) {
+    if (e instanceof shareSvc.ShareRejectedError) {
+      const qs = new URLSearchParams({
+        e: `share_${e.reason}`,
+        m: e.detail,
+      });
+      redirect(
+        `/nex-native/${business.slug}/${product.id}/direct?${qs.toString()}`,
+      );
+    }
+    const qs = new URLSearchParams({
+      e: "share_unknown",
+      m: e instanceof Error ? e.message.slice(0, 200) : "unknown",
+    });
+    redirect(
+      `/nex-native/${business.slug}/${product.id}/direct?${qs.toString()}`,
+    );
+  }
+
+  revalidatePath(`/nex-native/${business.slug}/${product.id}/direct`);
+  const qs = new URLSearchParams({
+    e: "share_ok",
+    m: "Shared · both of you get the discount",
+  });
+  redirect(
+    `/nex-native/${business.slug}/${product.id}/direct?${qs.toString()}`,
+  );
+}
+
+// ---------------------------------------------------------------------
 // Bridge 49c · NEX Direct Price · seller ladder editor
 // ---------------------------------------------------------------------
 

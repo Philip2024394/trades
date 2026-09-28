@@ -21,18 +21,36 @@ import { notFound } from "next/navigation";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as productService from "@/lib/nex-native/product-service";
 import * as ladderService from "@/lib/nex-native/ladder-service";
+import * as friendService from "@/lib/nex-native/friend-service";
+import * as accountService from "@/lib/nex-native/account-service";
+import * as peerConversationService from "@/lib/nex-native/peer-conversation-service";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { DirectPriceView } from "./_view";
+import type { ActiveFriend } from "./_share-picker";
+
+interface PageProps {
+  params: Promise<{ businessSlug: string; productId: string }>;
+  searchParams: Promise<{ e?: string; m?: string }>;
+}
+
+const ACTIVE_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+
+function relativeLabel(iso: string | null | undefined): string {
+  if (!iso) return "recently";
+  const diffMs = Date.now() - new Date(iso).getTime();
+  if (diffMs < 60_000) return "just now";
+  if (diffMs < 60 * 60_000) return `${Math.round(diffMs / 60_000)}m ago`;
+  if (diffMs < 24 * 60 * 60_000) return `${Math.round(diffMs / (60 * 60_000))}h ago`;
+  return `${Math.round(diffMs / (24 * 60 * 60_000))}d ago`;
+}
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-interface PageProps {
-  params: Promise<{ businessSlug: string; productId: string }>;
-}
-
-export default async function DirectPricePage({ params }: PageProps) {
+export default async function DirectPricePage({ params, searchParams }: PageProps) {
   const { businessSlug, productId } = await params;
+  const sp = await searchParams;
+  const banner = sp.e && sp.m ? { code: sp.e, message: sp.m } : null;
   const business = await businessService.getBusinessBySlug(businessSlug);
   if (!business) notFound();
   const product = await productService.getProductById(productId);
@@ -47,6 +65,54 @@ export default async function DirectPricePage({ params }: PageProps) {
         .getBuyerProgress(session.account.id, business.id)
         .catch(() => null)
     : null;
+
+  // Bridge 49b-next · hydrate the buyer's ACTIVE NEX friends for the
+  // share picker. "Active" = has a peer conversation with the buyer
+  // AND that conversation's last_message_at is within 7 days. Server
+  // enforces the same rule again on share submit (defence in depth).
+  let activeFriends: ActiveFriend[] = [];
+  if (session) {
+    try {
+      const friendIds = await friendService.listFriends(session.account.id);
+      const hydrated = await Promise.all(
+        friendIds.map(async (id) => {
+          const [acc, conv] = await Promise.all([
+            accountService.getAccountById(id),
+            peerConversationService
+              .findPeerConversation(session.account.id, id)
+              .catch(() => null),
+          ]);
+          if (!acc) return null;
+          const lastMs = conv?.last_message_at
+            ? new Date(conv.last_message_at).getTime()
+            : 0;
+          if (!conv || Date.now() - lastMs > ACTIVE_WINDOW_MS) return null;
+          // Best-effort avatar hydration · non-fatal if the profile
+          // service isn't reachable.
+          let avatarUrl: string | null = null;
+          try {
+            const svc = await import("@/lib/nex-native/account-profile-service");
+            const profile = await svc.getProfileByAccountId(id);
+            avatarUrl = profile?.avatar_url ?? null;
+          } catch {
+            // ignore · picker falls back to initials
+          }
+          return {
+            id: acc.id,
+            name: acc.display_name,
+            handle: acc.nex_handle,
+            avatarUrl,
+            lastActiveLabel: relativeLabel(conv.last_message_at),
+          } satisfies ActiveFriend;
+        }),
+      );
+      activeFriends = hydrated.filter(
+        (f): f is ActiveFriend => f !== null,
+      );
+    } catch {
+      // Non-fatal · picker just shows empty state
+    }
+  }
 
   const orderCount = buyerProgress?.order_count ?? 0;
   const activeLadder = ladder && ladder.active;
@@ -108,6 +174,8 @@ export default async function DirectPricePage({ params }: PageProps) {
       classicHref={classicHref}
       chatHref={chatHref}
       signedIn={!!session}
+      activeFriends={activeFriends}
+      banner={banner}
     />
   );
 }

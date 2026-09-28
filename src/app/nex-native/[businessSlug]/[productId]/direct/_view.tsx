@@ -19,6 +19,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
+import { ShareToFriendPicker, type ActiveFriend } from "./_share-picker";
 
 interface Business {
   readonly id: string;
@@ -70,6 +71,11 @@ interface Props {
   classicHref: string;
   chatHref: string;
   signedIn: boolean;
+  /** Bridge 49b-next · buyer's ACTIVE NEX friends (peer chat in last
+   *  7 days) · empty when signed-out or nobody active. Picker uses. */
+  activeFriends: ActiveFriend[];
+  /** Server-action outcome banner · e.g. share_ok, share_cooldown_7d. */
+  banner: { code: string; message: string } | null;
 }
 
 const NEX = {
@@ -98,6 +104,7 @@ function formatCurrency(pence: number, currency: string): string {
 
 export function DirectPriceView(props: Props) {
   const [qty, setQty] = useState(1);
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   const priceAfterTier = useMemo(() => {
     const pct = props.buyerTier.currentDiscountPct;
@@ -111,19 +118,21 @@ export function DirectPriceView(props: Props) {
 
   const onShare = useCallback((kind: "friend" | "group") => {
     if (!props.ladder) return;
-    // Bridge 49b-next · NEX contact/group picker + share-service.
-    // For now, surface a clear stub so the seller/founder can eyeball
-    // the flow live.
+    if (kind === "friend") {
+      if (!props.signedIn) {
+        alert("Sign in to share products with friends and earn bonus rewards.");
+        return;
+      }
+      setPickerOpen(true);
+      return;
+    }
+    // Group share picker is Bridge 49b-next-2 · needs the NEX groups
+    // service which doesn't ship yet (groups exist as a shell in
+    // /nex-native/chat but the backend lands with Bridge 47+).
     alert(
-      `Share to NEX ${kind} · +${
-        kind === "friend"
-          ? props.ladder.shareFriendBonusPct
-          : props.ladder.shareGroupBonusPct
-      }% both sides · ${
-        props.ladder.shareExpiryHours
-      }hr window · picker opens in the next bridge (49b-next).`,
+      `Group share · +${props.ladder.shareGroupBonusPct}% for you + every group member · ${props.ladder.shareExpiryHours}hr window · group picker opens once NEX groups ship.`,
     );
-  }, [props.ladder]);
+  }, [props.ladder, props.signedIn]);
 
   const noLadder = props.ladder === null;
   const tiers = props.ladder?.tiers ?? [];
@@ -141,6 +150,53 @@ export function DirectPriceView(props: Props) {
       }}
       data-nex-direct-price
     >
+      {/* Server action outcome banner · share_ok / share_cooldown_7d
+          / share_recipient_inactive etc. Bridge 49b-next. */}
+      {props.banner && (
+        <div
+          role="status"
+          data-nex-share-banner={props.banner.code}
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 40,
+            padding: "10px 14px",
+            background:
+              props.banner.code === "share_ok"
+                ? "rgba(16,185,129,0.15)"
+                : "rgba(239,68,68,0.15)",
+            borderBottom: `1px solid ${
+              props.banner.code === "share_ok" ? NEX.green : "#EF4444"
+            }55`,
+            color:
+              props.banner.code === "share_ok" ? NEX.green : "#FFB989",
+            fontSize: 12,
+            fontWeight: 700,
+            letterSpacing: "0.02em",
+            textAlign: "center",
+            lineHeight: 1.4,
+          }}
+        >
+          {props.banner.code === "share_ok" ? "✓ " : "· "}
+          {props.banner.message}
+        </div>
+      )}
+
+      {/* NEX contact picker · rendered only when the user taps
+          the friend-share chip · handles its own submit. */}
+      {props.ladder && (
+        <ShareToFriendPicker
+          businessId={props.business.id}
+          productId={props.product.id}
+          productName={props.product.name}
+          friendBonusPct={props.ladder.shareFriendBonusPct}
+          expiryHours={props.ladder.shareExpiryHours}
+          activeFriends={props.activeFriends}
+          open={pickerOpen}
+          onClose={() => setPickerOpen(false)}
+        />
+      )}
+
       {/* Top strip · seller pill + × close (to classic view) · thick
           cyan rule beneath */}
       <div
