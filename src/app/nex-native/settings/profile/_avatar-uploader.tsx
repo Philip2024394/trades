@@ -60,7 +60,6 @@ export function NexAvatarUploader({ currentAvatarUrl, displayName, handle }: Pro
     <form
       ref={formRef}
       action={uploadAvatarAction}
-      encType="multipart/form-data"
       className="mb-4 rounded border border-neutral-300 bg-white p-4"
       data-nex-avatar-uploader
     >
