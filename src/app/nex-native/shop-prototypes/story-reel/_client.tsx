@@ -535,38 +535,11 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
         <span>Swipe up · Order</span>
       </button>
 
-      {/* Chat FAB · floats above the button when drawer is closed ·
-          hidden when open (drawer has its own inline chat). */}
-      {!open && (
-        <button
-          type="button"
-          onClick={() =>
-            alert("Chat with " + current.seller + " (prototype · would open peer chat)")
-          }
-          aria-label="Chat with seller"
-          style={{
-            position: "absolute",
-            right: 16,
-            bottom: CLOSED_BOTTOM + 18,
-            width: 52,
-            height: 52,
-            borderRadius: "50%",
-            background: "rgba(0,0,0,0.55)",
-            color: "#fff",
-            border: "1px solid rgba(255,255,255,0.25)",
-            fontSize: 22,
-            display: "grid",
-            placeItems: "center",
-            boxShadow: "0 10px 24px rgba(0,0,0,0.45)",
-            backdropFilter: "blur(10px)",
-            WebkitBackdropFilter: "blur(10px)",
-            cursor: "pointer",
-            zIndex: 26,
-          }}
-        >
-          💬
-        </button>
-      )}
+      {/* Bridge 45i · 2026-09-28 · chat FAB retired from the hero
+          page per Founder direction. Chat still available inside
+          the swipe-up spec page (sticky bottom bar has a round 💬
+          next to "Let's go"). Hero stays clean · swipe-up button
+          is the only footer affordance. */}
 
       {/* Full-height PAGE · slides in from below · not a drawer.
           No rounded top corners · no translucency · fills the whole
