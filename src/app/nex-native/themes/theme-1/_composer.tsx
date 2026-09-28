@@ -128,18 +128,30 @@ export function Theme1Composer() {
           />
         </div>
 
-        {/* Send · orange gradient (Theme 1 composer accent) so the
-           send action visually belongs to YOU · Maria's own composer
-           in her chat would render this in her blue rail colour. */}
+        {/* Send · white frosted glass · matches YOUR outgoing card
+           style per Founder direction 2026-09-28. If Maria were
+           the composer in her own chat, this would render in her
+           deep-blue rail colour to match her cards. */}
         <button
           type="button"
           aria-label="Send"
           style={{
-            ...circleButton("linear-gradient(135deg, #FFB877, #FF7800)"),
-            width: 42, height: 42,
-            border: "1px solid rgba(255,205,150,0.85)",
-            color: "#0B0F1A",
-            boxShadow: "0 0 16px rgba(255,120,0,0.45)",
+            flex: "0 0 auto",
+            width: 42,
+            height: 42,
+            borderRadius: "50%",
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.30) 100%)",
+            border: "1px solid rgba(255,255,255,0.85)",
+            boxShadow:
+              "0 6px 18px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.85), inset 0 -1px 0 rgba(255,255,255,0.20)",
+            backdropFilter: "blur(24px) saturate(160%)",
+            WebkitBackdropFilter: "blur(24px) saturate(160%)",
+            color: "#0A1830",
+            display: "grid",
+            placeItems: "center",
+            cursor: "pointer",
+            padding: 0,
           }}
         >
           <SendIcon />
