@@ -585,24 +585,41 @@ function TimelineRow({
             color,
             fontWeight: 700,
             textTransform: "uppercase",
-            marginBottom: 3,
+            marginBottom: 4,
             textShadow: `0 0 8px ${glow}`,
           }}
         >
           {speaker} · {time}
         </div>
       )}
+      {/* Bridge 24r · frosted glass panel behind the text so the
+         message reads cleanly over the sunset wallpaper. Speaker-
+         coloured hairline border ties the panel back to the tick. */}
       <div
         style={{
-          fontSize: 15,
-          lineHeight: 1.5,
-          color: "#F4F7FC",
-          whiteSpace: "pre-wrap",
-          letterSpacing: "-0.003em",
-          textShadow: "0 1px 4px rgba(0,0,0,0.35)",
+          display: "inline-block",
+          maxWidth: "100%",
+          padding: "8px 12px",
+          borderRadius: 12,
+          background: "rgba(12, 7, 18, 0.42)",
+          border: `1px solid ${color}30`,
+          backdropFilter: "blur(10px) saturate(120%)",
+          WebkitBackdropFilter: "blur(10px) saturate(120%)",
+          boxShadow:
+            "0 4px 14px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.06)",
         }}
       >
-        {body}
+        <div
+          style={{
+            fontSize: 15,
+            lineHeight: 1.5,
+            color: "#F4F7FC",
+            whiteSpace: "pre-wrap",
+            letterSpacing: "-0.003em",
+          }}
+        >
+          {body}
+        </div>
       </div>
       {!isFirstOfCluster && (
         <div
@@ -612,7 +629,7 @@ function TimelineRow({
             color,
             opacity: 0.75,
             fontWeight: 700,
-            marginTop: 2,
+            marginTop: 3,
           }}
         >
           {time}
