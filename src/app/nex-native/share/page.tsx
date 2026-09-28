@@ -4,7 +4,7 @@
 // ------------------------------------------------
 // Landing page opened when a buyer taps the share icon on a product
 // card. Server-side resolves the viewer's friend list · renders one
-// form per contact bound to sendProductInquiryAction · submitting
+// form per contact bound to shareProductToContactAction · submitting
 // drops the product into that peer's chat as a Bridge 11 product
 // card (attachment_type='product' + snapshot in attachment_meta).
 //
@@ -20,7 +20,7 @@ import * as businessService from "@/lib/nex-native/business-service";
 import * as accountService from "@/lib/nex-native/account-service";
 import * as friendService from "@/lib/nex-native/friend-service";
 import * as accountProfileService from "@/lib/nex-native/account-profile-service";
-import { sendProductInquiryAction } from "../_actions";
+import { shareProductToContactAction } from "../_actions";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -275,7 +275,7 @@ function FriendShareRow({
   profession: string | null;
   productId: string;
 }) {
-  const shareAction = sendProductInquiryAction.bind(null, friendId);
+  const shareAction = shareProductToContactAction.bind(null, friendId);
   const firstName = friendName.split(/\s+/)[0] ?? friendName;
   return (
     <form
@@ -292,11 +292,15 @@ function FriendShareRow({
       }}
     >
       <input type="hidden" name="product_id" value={productId} />
-      <input type="hidden" name="intent" value="ask" />
+      <input
+        type="hidden"
+        name="back"
+        value={`/nex-native/share?product=${productId}`}
+      />
       <input
         type="hidden"
         name="body"
-        value={`Look at this on NEX · ${firstName}, what do you think?`}
+        value={`Just seen and it looks keen 👀 · ${firstName}, what do you think?`}
       />
       <div
         style={{

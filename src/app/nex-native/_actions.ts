@@ -793,6 +793,48 @@ export async function updateAccountLocaleAction(
   redirect(safeNext);
 }
 
+/** Bridge 17d · flip the seller's safe-trade commitment flag.
+ *  Called by a toggle on /manage/shop. */
+export async function setBusinessSafeTradeActivatedAction(
+  businessId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const business = await businessService.getBusinessById(businessId);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirect(
+      "/nex-native/manage/shop?e=safe_trade_forbidden&m=" +
+        encodeURIComponent("You don't own this shop"),
+    );
+  }
+
+  const activated = String(formData.get("activated") ?? "").trim() === "true";
+
+  try {
+    await businessService.setSafeTradeActivated(businessId, activated);
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      "/nex-native/manage/shop?e=safe_trade_failed&m=" +
+        encodeURIComponent(msg),
+    );
+  }
+
+  revalidatePath("/nex-native/manage/shop");
+  revalidatePath(`/nex-native/${business.slug}`);
+  redirect(
+    "/nex-native/manage/shop?e=safe_trade_ok&m=" +
+      encodeURIComponent(
+        activated ? "Safe trade activated" : "Safe trade deactivated",
+      ),
+  );
+}
+
 /** Bridge 16e · update the seller's city + free-text opening
  *  hours. Called by the "About page" section on /manage/shop. */
 export async function updateBusinessCityAndHoursAction(
@@ -1131,6 +1173,97 @@ export async function sendMenuItemInquiryAction(
     attachment_url: hasImage ? item.image_url : null,
     attachment_type: hasImage ? "menu_item" : null,
     attachment_meta: hasImage ? { menu_item: snapshot } : null,
+  });
+
+  revalidatePath(`/nex-native/chat/peer/${peerAccountId}`);
+  redirect(`/nex-native/chat/peer/${peerAccountId}`);
+}
+
+/** Bridge 17 · share a product from ANY seller's shop to a NEX
+ *  contact. Different from sendProductInquiryAction (Bridge 11)
+ *  which locks the product to the peer's own shop. This one is
+ *  cross-shop by design · Philip can browse Aisha's cameras and
+ *  drop one into Priya's chat with a "just seen and it looks
+ *  keen?" note.
+ *
+ *  Requires: viewer is signed in · peer != viewer · product exists.
+ *  Snapshot carries the ORIGINATING shop's slug + name so the
+ *  product card links back to the source shop, not to the peer's
+ *  shop (peer may not have a shop at all). */
+export async function shareProductToContactAction(
+  peerAccountId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+  if (peerAccountId === session.account.id) redirect("/nex-native/chat");
+
+  const productId = String(formData.get("product_id") ?? "").trim();
+  const customBody = String(formData.get("body") ?? "").trim();
+  const shareBackHref = String(formData.get("back") ?? "").trim();
+  const safeBack =
+    shareBackHref.startsWith("/nex-native/") && !shareBackHref.includes("?e=")
+      ? shareBackHref
+      : "/nex-native/chat";
+
+  if (!productId) {
+    redirect(
+      safeBack +
+        (safeBack.includes("?") ? "&" : "?") +
+        "share_error=missing_product",
+    );
+  }
+
+  const product = await productService.getProductById(productId);
+  if (!product) {
+    redirect(
+      safeBack +
+        (safeBack.includes("?") ? "&" : "?") +
+        "share_error=not_found",
+    );
+  }
+
+  // Resolve the originating shop from the product's business_id.
+  const originShop = await businessService.getBusinessById(
+    product.business_id,
+  );
+  if (!originShop) {
+    redirect(
+      safeBack +
+        (safeBack.includes("?") ? "&" : "?") +
+        "share_error=shop_not_found",
+    );
+  }
+
+  const snapshot: peerMessageService.NexPeerProductSnapshot = {
+    product_id: product.id,
+    business_id: originShop.id,
+    business_slug: originShop.slug ?? null,
+    name: product.name,
+    price_pence: product.price_pence,
+    currency: product.currency,
+    image_url: product.image_url ?? null,
+    short_description:
+      product.description?.split(/[.··]/)[0]?.trim().slice(0, 140) ?? null,
+  };
+
+  const defaultBody = `Just seen and it looks keen 👀 · from ${originShop.display_name}`;
+  const body = customBody || defaultBody;
+
+  const conversation =
+    await peerConversationService.getOrCreatePeerConversation(
+      session.account.id,
+      peerAccountId,
+    );
+
+  const hasImage = !!product.image_url;
+  await peerMessageService.sendPeerMessage({
+    conversation_id: conversation.id,
+    sender_account_id: session.account.id,
+    body,
+    attachment_url: hasImage ? product.image_url : null,
+    attachment_type: hasImage ? "product" : null,
+    attachment_meta: hasImage ? { product: snapshot } : null,
   });
 
   revalidatePath(`/nex-native/chat/peer/${peerAccountId}`);

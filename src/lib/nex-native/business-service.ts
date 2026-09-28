@@ -400,6 +400,27 @@ export const NEX_PAYMENT_METHOD_META: Record<
   },
 };
 
+/** Bridge 17d · flip the seller's safe-trade commitment. Buyers
+ *  see one of two binary messages at the top of every commerce
+ *  chat based on this flag. */
+export async function setSafeTradeActivated(
+  id: NexUuid,
+  activated: boolean,
+): Promise<NexBusinessRow> {
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_business")
+    .update({ safe_trade_activated: activated })
+    .eq("id", id)
+    .select("*")
+    .single();
+  if (error || !data) {
+    throw new Error(
+      `business-service.setSafeTradeActivated: ${error?.message ?? "no row"}`,
+    );
+  }
+  return data as NexBusinessRow;
+}
+
 /** Bridge 16e · update the seller's city + human-readable opening
  *  hours. Both are optional · pass null to clear. */
 export async function updateBusinessCityAndHours(

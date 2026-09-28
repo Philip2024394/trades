@@ -208,11 +208,11 @@ export interface PortraitBloomShellProps {
   productInquiryAction?: (
     formData: FormData,
   ) => Promise<never> | void | Promise<void>;
-  /** Bridge 17c · when set, a compact "Trade Agreement with X" card
-   *  renders at the top of the message stream · persistent reminder
-   *  of the five safe paths + off-path warning. Only meaningful on
-   *  commerce chats · leave undefined on friend chats. */
+  /** Bridge 17d · when set, a compact safe-trade status line renders
+   *  at the top of the message stream. Binary based on the seller's
+   *  safe_trade_activated flag. Only meaningful on commerce chats. */
   tradeAgreementSellerName?: string | null;
+  tradeAgreementActivated?: boolean;
   /** Optional theme wallpaper · painted behind the message zone as
    *  a soft, dimmed layer so the theme picks up an atmosphere
    *  distinct from the peer's profile image. Sealed 2026-09-27 ·
@@ -258,6 +258,7 @@ export function PortraitBloomShell({
   peerShop,
   productInquiryAction,
   tradeAgreementSellerName,
+  tradeAgreementActivated,
 }: PortraitBloomShellProps) {
   const isOffline = presenceKind !== "online";
   // Per-element theme colours · fall back to rippleColor (accent)
@@ -663,7 +664,10 @@ export function PortraitBloomShell({
             }}
           >
             {tradeAgreementSellerName && (
-              <TradeAgreementCard sellerName={tradeAgreementSellerName} />
+              <TradeAgreementCard
+                sellerName={tradeAgreementSellerName}
+                activated={!!tradeAgreementActivated}
+              />
             )}
             {messages.length === 0 ? (
               <FirstConnectionEmpty

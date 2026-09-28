@@ -423,6 +423,7 @@ export default async function PeerChatPage({
           ? peer.display_name.split(/\s+/)[0] ?? peer.display_name
           : null
       }
+      tradeAgreementActivated={!!peerBusiness?.safe_trade_activated}
       composerPlaceholder={`Message ${peer.display_name}…`}
       headerTag="NEX Chat"
       contacts={contacts}

@@ -279,6 +279,11 @@ export interface NexBusinessRow {
    *  Free-text 0-200 chars ("Mon-Sat 9am-6pm · closed Sunday").
    *  Complements the structured nex_business.hours JSONB. */
   hours_display: string | null;
+  /** Bridge 17d · seller has explicitly committed to NEX safe-trade
+   *  practices · migration 073. Default false · seller opts in from
+   *  /manage/shop. Drives the compact TradeAgreementCard binary
+   *  message in every commerce chat. */
+  safe_trade_activated: boolean;
   /** Bridge 13 · Responsiveness signals · migration 063.
    *  last_seller_activity_at drives the graduated status badge on
    *  every shop landing (active · slow · away · archived). Bumped

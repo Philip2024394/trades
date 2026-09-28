@@ -25,6 +25,7 @@ import {
   updateBusinessCategoryAndKeywordsAction,
   updateBusinessPaymentMethodsAction,
   updateBusinessCityAndHoursAction,
+  setBusinessSafeTradeActivatedAction,
 } from "../../_actions";
 import { NEX_BUSINESS_CATEGORIES } from "@/lib/nex-native/site-templates";
 import {
@@ -542,6 +543,62 @@ export default async function ShopSettingsPage({
               />
             </FormRow>
             <SubmitButton label="Save About page" tone="primary" />
+          </form>
+        </SectionCard>
+
+        {/* --- Safe-trade activation toggle (Bridge 17d) ----------- */}
+        <SectionCard>
+          <SectionEyebrow
+            color={business.safe_trade_activated ? NEX.green : NEX.amber}
+          >
+            {business.safe_trade_activated
+              ? "🛡 Safe trade · activated"
+              : "🛡 Safe trade · NOT activated"}
+          </SectionEyebrow>
+          <h2
+            style={{
+              margin: "6px 0 6px",
+              fontSize: 18,
+              fontWeight: 700,
+              letterSpacing: "-0.005em",
+            }}
+          >
+            {business.safe_trade_activated
+              ? "Buyers see a green safe-trade badge on every chat with you"
+              : "Buyers see a warning until you commit to safe trade"}
+          </h2>
+          <p
+            style={{
+              margin: "0 0 16px",
+              fontSize: 13,
+              lineHeight: 1.55,
+              color: NEX.textDim,
+            }}
+          >
+            Activating safe trade means you commit to only accepting
+            payment via one of the five NEX safe paths (COD, QRIS on
+            delivery, Courier COD, Meet in person, Escrow). Buyers
+            trust you more · you get more orders.
+          </p>
+          <form
+            action={setBusinessSafeTradeActivatedAction.bind(
+              null,
+              business.id,
+            )}
+          >
+            <input
+              type="hidden"
+              name="activated"
+              value={business.safe_trade_activated ? "false" : "true"}
+            />
+            <SubmitButton
+              label={
+                business.safe_trade_activated
+                  ? "Deactivate safe trade"
+                  : "Activate safe trade"
+              }
+              tone={business.safe_trade_activated ? "ghost" : "primary"}
+            />
           </form>
         </SectionCard>
 
