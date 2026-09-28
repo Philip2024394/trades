@@ -21,6 +21,7 @@ import * as accountService from "@/lib/nex-native/account-service";
 import * as friendService from "@/lib/nex-native/friend-service";
 import * as accountProfileService from "@/lib/nex-native/account-profile-service";
 import { shareProductToContactAction } from "../_actions";
+import { SharePicker, type ShareFriend } from "./_share-picker";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -226,32 +227,23 @@ export default async function SharePage({
         {validFriends.length === 0 ? (
           <EmptyContacts />
         ) : (
-          <>
-            <div
-              style={{
-                fontSize: 10,
-                letterSpacing: "0.28em",
-                textTransform: "uppercase",
-                color: NEX.textMute,
-                fontWeight: 700,
-                marginBottom: 10,
-              }}
-            >
-              Your NEX contacts
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {validFriends.map(({ account, profile }) => (
-                <FriendShareRow
-                  key={account.id}
-                  friendId={account.id}
-                  friendName={account.display_name}
-                  avatarUrl={profile?.avatar_url ?? null}
-                  profession={profile?.profession ?? null}
-                  productId={productId}
-                />
-              ))}
-            </div>
-          </>
+          <SharePicker
+            productId={productId}
+            productName={product.name}
+            currentUserFirstName={
+              session.account.display_name.split(/\s+/)[0] ??
+              session.account.display_name
+            }
+            friends={validFriends.map<ShareFriend>(({ account, profile }) => ({
+              id: account.id,
+              firstName:
+                account.display_name.split(/\s+/)[0] ?? account.display_name,
+              displayName: account.display_name,
+              avatarUrl: profile?.avatar_url ?? null,
+              profession: profile?.profession ?? null,
+              action: shareProductToContactAction.bind(null, account.id),
+            }))}
+          />
         )}
       </main>
     </div>
@@ -261,116 +253,6 @@ export default async function SharePage({
 /* --------------------------------------------------------------------- *
  * Sub-components                                                        *
  * --------------------------------------------------------------------- */
-
-function FriendShareRow({
-  friendId,
-  friendName,
-  avatarUrl,
-  profession,
-  productId,
-}: {
-  friendId: string;
-  friendName: string;
-  avatarUrl: string | null;
-  profession: string | null;
-  productId: string;
-}) {
-  const shareAction = shareProductToContactAction.bind(null, friendId);
-  const firstName = friendName.split(/\s+/)[0] ?? friendName;
-  return (
-    <form
-      action={shareAction}
-      style={{
-        display: "grid",
-        gridTemplateColumns: "40px 1fr auto",
-        gap: 12,
-        alignItems: "center",
-        padding: "12px 14px",
-        borderRadius: 12,
-        background: NEX.panelSoft,
-        border: `1px solid ${NEX.border}`,
-      }}
-    >
-      <input type="hidden" name="product_id" value={productId} />
-      <input
-        type="hidden"
-        name="back"
-        value={`/nex-native/share?product=${productId}`}
-      />
-      <input
-        type="hidden"
-        name="body"
-        value={`Just seen and it looks keen 👀 · ${firstName}, what do you think?`}
-      />
-      <div
-        style={{
-          width: 40,
-          height: 40,
-          borderRadius: "50%",
-          background: avatarUrl
-            ? `url(${avatarUrl}) center/cover`
-            : "linear-gradient(135deg, #143552 0%, #052041 100%)",
-          border: `1px solid ${NEX.border}`,
-          display: "grid",
-          placeItems: "center",
-          color: NEX.textDim,
-          fontSize: 14,
-          fontWeight: 700,
-        }}
-        aria-hidden
-      >
-        {!avatarUrl && (firstName[0] ?? "?").toUpperCase()}
-      </div>
-      <div style={{ minWidth: 0 }}>
-        <div
-          style={{
-            fontSize: 14,
-            fontWeight: 700,
-            letterSpacing: "-0.003em",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {firstName}
-        </div>
-        {profession && (
-          <div
-            style={{
-              fontSize: 11,
-              color: NEX.textDim,
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {profession}
-          </div>
-        )}
-      </div>
-      <button
-        type="submit"
-        style={{
-          padding: "8px 14px",
-          borderRadius: 10,
-          background: "linear-gradient(180deg, #FF9033 0%, #FF7200 100%)",
-          border: `1px solid ${NEX.orangeSoft}`,
-          color: "#0B0F1A",
-          fontSize: 11,
-          fontWeight: 800,
-          letterSpacing: "0.06em",
-          textTransform: "uppercase",
-          cursor: "pointer",
-          fontFamily: "inherit",
-          boxShadow:
-            "0 6px 14px rgba(255,114,0,0.30), inset 0 1px 0 rgba(255,255,255,0.28)",
-        }}
-      >
-        Send
-      </button>
-    </form>
-  );
-}
 
 function EmptyContacts() {
   return (

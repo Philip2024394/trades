@@ -1344,7 +1344,13 @@ function MessageProductCard({
     </>
   );
   const shared: React.CSSProperties = {
+    // Product/menu card fills the bubble width exactly · no minWidth
+    // forcing the bubble to grow, no maxWidth capping. Sealed
+    // 2026-09-28 · Bridge 17f · fix for shared product bubble
+    // escaping its container on narrow viewports.
     display: "block",
+    width: "100%",
+    boxSizing: "border-box",
     marginBottom,
     borderRadius: 12,
     overflow: "hidden",
@@ -1352,7 +1358,6 @@ function MessageProductCard({
     border: `1px solid ${accent}55`,
     color: "inherit",
     textDecoration: "none",
-    minWidth: 220,
   };
   if (href) {
     return (
@@ -1526,7 +1531,13 @@ function MessageMenuItemCard({
     </>
   );
   const shared: React.CSSProperties = {
+    // Product/menu card fills the bubble width exactly · no minWidth
+    // forcing the bubble to grow, no maxWidth capping. Sealed
+    // 2026-09-28 · Bridge 17f · fix for shared product bubble
+    // escaping its container on narrow viewports.
     display: "block",
+    width: "100%",
+    boxSizing: "border-box",
     marginBottom,
     borderRadius: 12,
     overflow: "hidden",
@@ -1534,7 +1545,6 @@ function MessageMenuItemCard({
     border: `1px solid ${accent}55`,
     color: "inherit",
     textDecoration: "none",
-    minWidth: 220,
   };
   if (href) {
     return (
