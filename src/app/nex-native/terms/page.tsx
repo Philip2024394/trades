@@ -82,19 +82,34 @@ export default function TermsPage() {
         >
           ← NEX
         </Link>
-        <Link
-          href="/nex-native/safe-trade"
-          style={{
-            fontSize: 11,
-            color: NEX.cyan,
-            textDecoration: "none",
-            letterSpacing: "0.06em",
-            textTransform: "uppercase",
-            fontWeight: 700,
-          }}
-        >
-          Safe trade ↗
-        </Link>
+        <div style={{ display: "flex", gap: 16 }}>
+          <Link
+            href="/nex-native/support"
+            style={{
+              fontSize: 11,
+              color: NEX.textDim,
+              textDecoration: "none",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              fontWeight: 700,
+            }}
+          >
+            Support ↗
+          </Link>
+          <Link
+            href="/nex-native/safe-trade"
+            style={{
+              fontSize: 11,
+              color: NEX.cyan,
+              textDecoration: "none",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              fontWeight: 700,
+            }}
+          >
+            Safe trade ↗
+          </Link>
+        </div>
       </header>
 
       <main style={{ maxWidth: 720, margin: "0 auto", padding: "40px 20px" }}>

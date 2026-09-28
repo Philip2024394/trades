@@ -40,6 +40,11 @@ import {
   hasCurrentSafeTradeConsent,
   CURRENT_SAFE_TRADE_TERMS_VERSION,
 } from "@/lib/nex-native/safe-trade-consent-service";
+import {
+  resolveLocale,
+  SAFE_TRADE_STRINGS,
+} from "@/lib/nex-native/i18n/safe-trade-strings";
+import { headers } from "next/headers";
 import { acknowledgeSafeTradeAction } from "../../../_actions";
 import { SafeTradeConsentModal } from "./_safe-trade-consent-modal";
 import * as productService from "@/lib/nex-native/product-service";
@@ -64,10 +69,19 @@ export default async function PeerChatPage({
     attachment_url?: string;
     attachment_type?: string;
     upload_error?: string;
+    lang?: string;
   }>;
 }) {
   const { accountId: peerAccountId } = await params;
   const sp = await searchParams;
+  // Bridge 16c · locale resolution for the consent modal. URL param
+  // wins, then Accept-Language, then Bahasa Indonesia (launch market).
+  const acceptLanguage = (await headers()).get("accept-language");
+  const locale = resolveLocale({
+    urlParam: sp.lang ?? null,
+    acceptLanguage,
+  });
+  const safeTradeStrings = SAFE_TRADE_STRINGS[locale];
   // Presence Bridge isn't built yet · query param toggle for preview.
   const isOffline = sp.online === "0";
   const replyId = sp.reply?.trim() || null;
@@ -324,6 +338,7 @@ export default async function PeerChatPage({
           action={acknowledgeSafeTradeAction}
           nextHref={`/nex-native/chat/peer/${peer.id}`}
           termsVersion={CURRENT_SAFE_TRADE_TERMS_VERSION}
+          strings={safeTradeStrings}
         />
       )}
       <PortraitBloomShell

@@ -24,11 +24,13 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import type { SafeTradeStrings } from "@/lib/nex-native/i18n/safe-trade-strings";
 
 export function SafeTradeConsentModal({
   action,
   nextHref,
   termsVersion,
+  strings,
 }: {
   /** Bound Server Action · acknowledgeSafeTradeAction. */
   action: (formData: FormData) => Promise<never> | void;
@@ -37,6 +39,8 @@ export function SafeTradeConsentModal({
   nextHref: string;
   /** Current terms version · shown in the modal footer. */
   termsVersion: string;
+  /** Locale-aware copy · resolved server-side by resolveLocale(). */
+  strings: SafeTradeStrings;
 }) {
   const [mounted, setMounted] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -99,7 +103,7 @@ export function SafeTradeConsentModal({
             marginBottom: 8,
           }}
         >
-          🛡 Before you start
+          {strings.modal_eyebrow}
         </div>
 
         <h2
@@ -115,7 +119,7 @@ export function SafeTradeConsentModal({
             marginBottom: 12,
           }}
         >
-          How NEX keeps you safe.
+          {strings.modal_title}
         </h2>
 
         <p
@@ -126,13 +130,10 @@ export function SafeTradeConsentModal({
             color: "rgba(244,247,252,0.88)",
             marginBottom: 14,
           }}
-        >
-          On NEX, <b>you never pay before you receive</b> · unless a
-          third party you trust (Rekber / Xendit / PayPal) is holding
-          the money. Five safe paths:{" "}
-          <b>COD</b> · <b>QRIS on delivery</b> · <b>Courier COD</b> ·{" "}
-          <b>Meet in person</b> · <b>Escrow</b>.
-        </p>
+          dangerouslySetInnerHTML={{
+            __html: `${strings.modal_lede} <b>${strings.modal_paths_short}</b>.`,
+          }}
+        />
 
         <div
           style={{
@@ -153,7 +154,7 @@ export function SafeTradeConsentModal({
               marginBottom: 6,
             }}
           >
-            ⚠ What this means for you
+            {strings.modal_warning_eyebrow}
           </div>
           <div
             style={{
@@ -161,13 +162,8 @@ export function SafeTradeConsentModal({
               lineHeight: 1.6,
               color: "rgba(244,247,252,0.9)",
             }}
-          >
-            If you send money to a seller <b>outside these five paths</b>
-            {" "}(for example, direct bank transfer to their private
-            account before delivery), <b>NEX support cannot help you
-            recover it</b>. That is your choice, not something NEX will
-            mediate.
-          </div>
+            dangerouslySetInnerHTML={{ __html: strings.modal_warning_body }}
+          />
         </div>
 
         <p
@@ -179,7 +175,7 @@ export function SafeTradeConsentModal({
             marginBottom: 22,
           }}
         >
-          Read the full terms:{" "}
+          {strings.modal_read_terms}{" "}
           <Link
             href="/nex-native/terms"
             target="_blank"
@@ -205,7 +201,7 @@ export function SafeTradeConsentModal({
               textUnderlineOffset: 3,
             }}
           >
-            Safe trade explainer
+            {strings.modal_safe_trade_link}
           </Link>
         </p>
 
@@ -253,9 +249,7 @@ export function SafeTradeConsentModal({
                 color: "rgba(244,247,252,0.92)",
               }}
             >
-              I understand · I will use one of the five NEX-supported
-              payment paths, and I accept that off-path payments are
-              not protected or mediated by NEX support.
+              {strings.modal_checkbox_label}
             </span>
           </label>
 
@@ -283,7 +277,7 @@ export function SafeTradeConsentModal({
                 : "none",
             }}
           >
-            🛡 Agree · enter chat
+            {strings.modal_submit}
           </button>
         </form>
 
@@ -297,7 +291,7 @@ export function SafeTradeConsentModal({
             textAlign: "center",
           }}
         >
-          Version {termsVersion}
+          {strings.modal_version_prefix} {termsVersion}
         </div>
       </div>
     </div>,

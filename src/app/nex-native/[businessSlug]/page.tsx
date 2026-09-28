@@ -27,7 +27,9 @@ import * as businessService from "@/lib/nex-native/business-service";
 import * as productService from "@/lib/nex-native/product-service";
 import * as menuService from "@/lib/nex-native/menu-service";
 import * as sellerResponsivenessService from "@/lib/nex-native/seller-responsiveness-service";
+import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { HeroSidePanel } from "./_hero-side-panel";
+import { FloatingChatButton } from "./_floating-chat-button";
 
 const MENU_CATEGORIES = new Set(["restaurant", "cafe"]);
 
@@ -64,6 +66,17 @@ export default async function Page({
   const { businessSlug } = await params;
   const business = await businessService.getBusinessBySlug(businessSlug);
   if (!business) notFound();
+
+  // Bridge 16c · resolve viewer to decide whether the floating chat
+  // button renders (hide it for the shop owner viewing their own
+  // shop · they'd be chatting with themselves).
+  const viewerSession = await resolveNexAppSessionFromContext().catch(
+    () => null,
+  );
+  const isOwnerViewing =
+    viewerSession?.account.id === business.owner_account_id;
+  const sellerFirstName =
+    business.display_name.split(/\s+/)[0] ?? business.display_name;
 
   const products = await productService.listProductsByBusiness(
     business.id,
@@ -547,6 +560,14 @@ export default async function Page({
           </Link>
         </div>
       </footer>
+      {/* Bridge 16c · Floating "Chat with seller" button · pinned to
+          bottom-right of the viewport. Hidden when the shop owner is
+          viewing their own shop. */}
+      <FloatingChatButton
+        ownerAccountId={business.owner_account_id}
+        sellerFirstName={sellerFirstName}
+        isOwnerViewing={isOwnerViewing}
+      />
     </div>
   );
 }
