@@ -362,10 +362,9 @@ export default function PinkDreamPreviewPage() {
           width: "100%",
           overflowY: "auto",
           WebkitOverflowScrolling: "touch",
-          // Bridge 24ab · rail retired · right padding no longer
-          // needs to reserve room for floating icons · slates now
-          // span the whole viewport width.
-          padding: "4px 14px 14px 0",
+          // Bridge 24ad · zero left/right padding so slates can
+          // fuse to both window edges (you-right · them-left).
+          padding: "4px 0 14px 0",
           display: "flex",
           flexDirection: "column",
           gap: 6,
@@ -461,6 +460,7 @@ function TimelineRow({
   panelBorder,
   textColor = "#FFF5FA",
   eyebrowColor,
+  side = "left",
 }: {
   color: string;
   glow: string;
@@ -473,34 +473,46 @@ function TimelineRow({
   panelBorder: string;
   textColor?: string;
   eyebrowColor?: string;
+  side?: "left" | "right";
 }) {
+  const isRight = side === "right";
   return (
     <div
       style={{
         marginTop: extraTop + (isFirstOfCluster ? 6 : 0),
         maxWidth: "calc(78% + 30px)",
+        // Bridge 24ad · outgoing rows push to the right edge so the
+        // slate attaches to the RIGHT window frame · convention:
+        // your messages right, theirs left.
+        marginLeft: isRight ? "auto" : undefined,
+        display: isRight ? "flex" : undefined,
+        justifyContent: isRight ? "flex-end" : undefined,
       }}
     >
-      {/* Bridge 24x · panel still attached to the left window edge
-         but reverted to inline-block so it only extends as far
-         right as the text needs · matches the previous per-message
-         width envelope, just anchored to the wall instead of
-         floating. */}
       <div
         style={{
           display: "inline-block",
           maxWidth: "100%",
           padding: "8px 14px 8px 14px",
-          borderRadius: "0 18px 18px 0",
+          // Left-attached · right-corners rounded, left rail hue.
+          // Right-attached · left-corners rounded, right rail hue.
+          borderRadius: isRight ? "18px 0 0 18px" : "0 18px 18px 0",
           background: panelFill,
           borderTop: `1px solid ${panelBorder}`,
-          borderRight: `1px solid ${panelBorder}`,
           borderBottom: `1px solid ${panelBorder}`,
-          borderLeft: `3px solid ${color}`,
+          borderLeft: isRight
+            ? `1px solid ${panelBorder}`
+            : `3px solid ${color}`,
+          borderRight: isRight
+            ? `3px solid ${color}`
+            : `1px solid ${panelBorder}`,
           backdropFilter: "blur(12px) saturate(140%)",
           WebkitBackdropFilter: "blur(12px) saturate(140%)",
-          boxShadow:
-            "6px 4px 14px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.10)",
+          // Shadow casts inward toward the middle of the screen for
+          // both sides so slates always feel raised off the wall.
+          boxShadow: isRight
+            ? "-6px 4px 14px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.10)"
+            : "6px 4px 14px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.10)",
         }}
       >
         <div
@@ -512,6 +524,7 @@ function TimelineRow({
             textTransform: "uppercase",
             marginBottom: 4,
             textShadow: eyebrowColor ? "none" : `0 0 8px ${glow}`,
+            textAlign: isRight ? "right" : "left",
           }}
         >
           {speaker} · {time}
@@ -523,6 +536,7 @@ function TimelineRow({
             color: textColor,
             whiteSpace: "pre-wrap",
             letterSpacing: "-0.003em",
+            textAlign: isRight ? "right" : "left",
           }}
         >
           {body}
@@ -556,6 +570,7 @@ function OutgoingRow({
       panelBorder="rgba(255, 201, 124, 0.75)"
       textColor="#1A0F22"
       eyebrowColor="#8B5A00"
+      side="right"
     />
   );
 }
