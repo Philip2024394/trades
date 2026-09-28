@@ -16,7 +16,6 @@
 // source of truth. Do not reinterpret into a generic pink chat.
 
 import type * as React from "react";
-import Link from "next/link";
 
 export const dynamic = "force-static";
 export const runtime = "nodejs";
@@ -180,22 +179,9 @@ export default function PinkDreamPreviewPage() {
           gap: 12,
         }}
       >
-        <Link
-          href="/nex-native/settings/theme"
-          aria-label="Back"
-          style={{
-            width: 44,
-            height: 44,
-            borderRadius: 999,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: P.softWhite,
-            textDecoration: "none",
-          }}
-        >
-          <ArrowLeftIcon />
-        </Link>
+        {/* Bridge 24e · back arrow removed · profile portrait now
+           anchors the leftmost slot of the header per Founder
+           direction 2026-09-28. */}
         <div
           style={{
             width: 52,
@@ -595,19 +581,6 @@ function ComposerIcon({
 }
 
 // -- Icons · thin rounded strokes -------------------------------
-function ArrowLeftIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M15 6l-6 6 6 6"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 function PhoneIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
