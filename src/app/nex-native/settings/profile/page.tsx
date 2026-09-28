@@ -156,7 +156,7 @@ export default async function Page({ searchParams }: PageProps) {
         <div style={{ position: "relative", maxWidth: 480, margin: "0 auto" }}>
           <NexPageHeader dataScope="profile" />
 
-          {/* Framing · why the user should care */}
+          {/* Framing · shared title · per-tab subheading below the toggle */}
           <section style={{ marginTop: 22 }}>
             <h1
               style={{
@@ -169,19 +169,6 @@ export default async function Page({ searchParams }: PageProps) {
             >
               Your NEX profile
             </h1>
-            <p
-              style={{
-                marginTop: 6,
-                fontSize: 13,
-                lineHeight: 1.5,
-                color: NEX.textSecondary,
-                maxWidth: 420,
-              }}
-            >
-              Be seen · get noticed · bring in new opportunities. A
-              professional profile puts you in front of the buyers,
-              clients, and collaborators looking for what you offer.
-            </p>
           </section>
 
           {/* Toggle bar · Personal · Business */}
@@ -265,20 +252,6 @@ export default async function Page({ searchParams }: PageProps) {
             )}
             {activeTab === "business" && <BusinessTab business={business} />}
           </section>
-
-          <p
-            style={{
-              marginTop: 18,
-              fontSize: 11,
-              color: NEX.textSecondary,
-              opacity: 0.7,
-              lineHeight: 1.5,
-            }}
-          >
-            Discovery UI reads this profile · the NEX Directory People
-            surface will match against your kind + profession + skills
-            + looking-for.
-          </p>
         </div>
       </main>
     </>
@@ -298,6 +271,55 @@ function PersonalTab(props: {
   const { profile, account } = props;
   return (
     <>
+      <p
+        style={{
+          margin: "0 0 14px",
+          fontSize: 13,
+          lineHeight: 1.5,
+          color: NEX.textSecondary,
+          maxWidth: 440,
+        }}
+      >
+        Your identity to friends · this is who people see when you chat.
+        Say who you are and what you do so friends recognise you.
+      </p>
+
+      {/* Safety notice · personal profiles are never listed in the
+          NEX Directory. Only businesses appear there. Founder doctrine
+          2026-09-28. */}
+      <div
+        role="note"
+        data-nex-profile-safety-note
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          gap: 10,
+          padding: "10px 12px",
+          marginBottom: 14,
+          borderRadius: 10,
+          background: "rgba(16,185,129,0.08)",
+          border: `1px solid ${NEX.green}55`,
+          color: NEX.textPrimary,
+          fontSize: 12,
+          lineHeight: 1.5,
+        }}
+      >
+        <span
+          aria-hidden
+          style={{ flexShrink: 0, color: NEX.green, fontSize: 14, lineHeight: 1.2 }}
+        >
+          🛡
+        </span>
+        <span>
+          <strong style={{ color: NEX.green, fontWeight: 700 }}>
+            Private by design ·
+          </strong>{" "}
+          personal profiles are never listed in the NEX Directory. Only
+          verified businesses appear there. You're only visible to
+          friends you accept.
+        </span>
+      </div>
+
       <NexAvatarUploader
         currentAvatarUrl={profile?.avatar_url ?? null}
         displayName={account.display_name}
@@ -314,6 +336,9 @@ function PersonalTab(props: {
           borderRadius: 14,
         }}
       >
+        {/* Personal profiles are never in the Directory · force
+            is_public=false on save regardless of legacy value. */}
+        <input type="hidden" name="is_public" value="false" />
         <FieldGroup legend="What best describes what you do?">
           <div style={{ display: "grid", gap: 6 }}>
             <RadioRow
@@ -383,35 +408,6 @@ function PersonalTab(props: {
           placeholder="work, clients, collaborators"
         />
 
-        <label
-          style={{
-            display: "flex",
-            alignItems: "flex-start",
-            gap: 10,
-            padding: "10px 12px",
-            marginTop: 12,
-            marginBottom: 16,
-            borderRadius: 10,
-            background: NEX.fieldBg,
-            border: `1px solid ${NEX.cyanFaint}`,
-            fontSize: 12,
-            color: NEX.textPrimary,
-            lineHeight: 1.5,
-          }}
-        >
-          <input
-            type="checkbox"
-            name="is_public"
-            defaultChecked={profile?.is_public ?? true}
-            data-nex-profile-input="is_public"
-            style={{ marginTop: 3, accentColor: NEX.cyan }}
-          />
-          <span>
-            Make my profile discoverable in the NEX Directory (uncheck to
-            keep it private for now · you can flip this back on later).
-          </span>
-        </label>
-
         <button
           type="submit"
           style={{
@@ -450,8 +446,26 @@ function BusinessTab(props: {
 }) {
   const { business } = props;
 
+  const intro = (
+    <p
+      style={{
+        margin: "0 0 14px",
+        fontSize: 13,
+        lineHeight: 1.5,
+        color: NEX.textSecondary,
+        maxWidth: 440,
+      }}
+    >
+      Your business identity · be seen, get noticed, bring in new
+      opportunities. Verified businesses appear in the NEX Directory
+      for buyers to find.
+    </p>
+  );
+
   if (!business) {
     return (
+      <>
+        {intro}
       <div
         style={{
           padding: 20,
@@ -506,6 +520,7 @@ function BusinessTab(props: {
           Create your business →
         </Link>
       </div>
+      </>
     );
   }
 
@@ -517,7 +532,9 @@ function BusinessTab(props: {
   const isVerified = !!business.verified_at;
 
   return (
-    <div style={{ display: "grid", gap: 14 }}>
+    <>
+      {intro}
+      <div style={{ display: "grid", gap: 14 }}>
       <div
         style={{
           padding: 16,
@@ -655,7 +672,8 @@ function BusinessTab(props: {
           Open business editor →
         </Link>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 
