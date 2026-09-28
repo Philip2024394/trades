@@ -49,10 +49,15 @@ export interface SampleProduct {
   readonly deliveryNote: string;
   readonly stockNote: string;
   /** Bridge 45f · optional spice level · 0 = no display · 1-5 render
-   *  a small pill above the product name. Mirrors the nex_menu_item
-   *  spice scale (Bridge 23a): 1 mild · 2 medium · 3 hot · 4 very hot ·
-   *  5 volcano. */
+   *  the meter chart. Mirrors nex_menu_item.spice_level. */
   readonly spiceLevel?: 0 | 1 | 2 | 3 | 4 | 5;
+  /** Bridge 45h · social proof · small avatar stack above the name.
+   *  Up to 3 avatar URLs render as overlapping circles + "+N" count.
+   *  Empty array hides the stack. */
+  readonly recentBuyerAvatars?: readonly string[];
+  /** Total buyer count (used for the +N label · defaults to
+   *  recentBuyerAvatars.length when omitted). */
+  readonly recentBuyerCount?: number;
 }
 
 const NEX = {
@@ -394,11 +399,10 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
 
       {/* Product identity · text-overlay on hero · no panel.
           Founder direction 2026-09-28 (revised):
-            0. Spice-level pill on the LEFT above the name (only when
-               spiceLevel > 0) · Bridge 45f.
             1. Name · single line · truncates with ellipsis · no wrap.
             2. Small description directly under the name.
-            3. Price sits under the description, RIGHT-aligned.
+            3. Bottom row · spice-level chart LEFT · price RIGHT.
+               (Spice chart hidden when level is 0/undefined.)
           Fades away as the drawer opens so it doesn't compete. */}
       <div
         style={{
@@ -413,8 +417,11 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
           transition: "opacity 200ms ease",
         }}
       >
-        {current.spiceLevel && current.spiceLevel > 0 && (
-          <SpiceBadge level={current.spiceLevel} />
+        {current.recentBuyerAvatars && current.recentBuyerAvatars.length > 0 && (
+          <SocialProofStack
+            avatars={current.recentBuyerAvatars}
+            totalCount={current.recentBuyerCount ?? current.recentBuyerAvatars.length}
+          />
         )}
         <h1
           style={{
@@ -445,16 +452,25 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
         </div>
         <div
           style={{
-            marginTop: 6,
-            textAlign: "right",
-            fontSize: 26,
-            fontWeight: 800,
-            color: NEX.orange,
-            letterSpacing: "-0.01em",
-            textShadow: "0 2px 14px rgba(0,0,0,0.85)",
+            marginTop: 8,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 12,
           }}
         >
-          {current.priceLabel}
+          <SpiceChart level={current.spiceLevel ?? 0} />
+          <div
+            style={{
+              fontSize: 26,
+              fontWeight: 800,
+              color: NEX.orange,
+              letterSpacing: "-0.01em",
+              textShadow: "0 2px 14px rgba(0,0,0,0.85)",
+            }}
+          >
+            {current.priceLabel}
+          </div>
         </div>
       </div>
 
@@ -910,41 +926,120 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
   );
 }
 
-/** Bridge 45f · small spice-level pill rendered above the product
- *  name in the hero overlay. Chili emojis scale with level, label
- *  reads "Mild" / "Medium" / "Hot" / "Very hot" / "Volcano". Pill
- *  sits inline on the left · no panel behind it, just a subtle
- *  translucent capsule so it lifts off the hero photo. */
-function SpiceBadge({ level }: { level: 1 | 2 | 3 | 4 | 5 }) {
-  const chilies = "🌶".repeat(level);
+/** Bridge 45h · social-proof avatar stack rendered ABOVE the name
+ *  in the hero overlay. Up to 3 overlapping circular avatars +
+ *  a small "+N ordered" label. Founder direction 2026-09-28: the
+ *  visual gives the impression that real people are already
+ *  ordering, without the noise of full reviews. Empty avatar list
+ *  hides the component entirely (component only mounts when the
+ *  caller passes at least one URL). */
+function SocialProofStack({
+  avatars,
+  totalCount,
+}: {
+  avatars: readonly string[];
+  totalCount: number;
+}) {
+  const shown = avatars.slice(0, 3);
+  return (
+    <div
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 8,
+        marginBottom: 8,
+        padding: "3px 10px 3px 4px",
+        borderRadius: 999,
+        background: "rgba(0,0,0,0.42)",
+        border: "1px solid rgba(255,255,255,0.20)",
+        backdropFilter: "blur(10px) saturate(1.4)",
+        WebkitBackdropFilter: "blur(10px) saturate(1.4)",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center" }}>
+        {shown.map((src, i) => (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            key={i}
+            src={src}
+            alt=""
+            style={{
+              width: 22,
+              height: 22,
+              borderRadius: "50%",
+              objectFit: "cover",
+              border: "1.5px solid rgba(0,0,0,0.65)",
+              marginLeft: i === 0 ? 0 : -8,
+              boxShadow: "0 2px 4px rgba(0,0,0,0.5)",
+            }}
+          />
+        ))}
+      </div>
+      <span
+        style={{
+          fontSize: 10,
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          fontWeight: 800,
+          color: "#fff",
+          textShadow: "0 1px 4px rgba(0,0,0,0.55)",
+        }}
+      >
+        +{totalCount} ordered
+      </span>
+    </div>
+  );
+}
+
+/** Bridge 45g · 5-chili meter chart rendered LEFT of the price in
+ *  the hero overlay. Always renders 5 chili spots so the max range
+ *  is visible · filled ones are full-opacity, empty ones dimmed
+ *  to 25% so the level reads at a glance ("2 of 5 = medium").
+ *  Level 0 renders an invisible placeholder so the price row stays
+ *  balanced when the product isn't spicy. Small label under the
+ *  chart names the level. */
+function SpiceChart({ level }: { level: 0 | 1 | 2 | 3 | 4 | 5 }) {
+  if (level === 0) return <span aria-hidden style={{ width: 1 }} />;
   const label = SPICE_LABEL[level];
   return (
     <div
       aria-label={`Spice · ${label}`}
       style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 6,
-        marginBottom: 8,
-        padding: "3px 10px 3px 8px",
-        borderRadius: 999,
-        background: "rgba(0,0,0,0.42)",
-        border: "1px solid rgba(255,63,63,0.55)",
-        color: "#FFD8CF",
-        fontSize: 10,
-        fontWeight: 800,
-        letterSpacing: "0.14em",
-        textTransform: "uppercase",
-        lineHeight: 1,
-        backdropFilter: "blur(10px) saturate(1.4)",
-        WebkitBackdropFilter: "blur(10px) saturate(1.4)",
-        textShadow: "0 1px 4px rgba(0,0,0,0.55)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        gap: 2,
+        textShadow: "0 1px 6px rgba(0,0,0,0.7)",
       }}
     >
-      <span aria-hidden style={{ fontSize: 12, letterSpacing: 0 }}>
-        {chilies}
-      </span>
-      <span>{label}</span>
+      <div aria-hidden style={{ display: "flex", gap: 1, fontSize: 15, lineHeight: 1 }}>
+        {[1, 2, 3, 4, 5].map((i) => (
+          <span
+            key={i}
+            style={{
+              opacity: i <= level ? 1 : 0.22,
+              filter:
+                i <= level
+                  ? "drop-shadow(0 1px 3px rgba(0,0,0,0.6))"
+                  : "grayscale(0.75) brightness(0.7)",
+              transition: "opacity 200ms ease",
+            }}
+          >
+            🌶
+          </span>
+        ))}
+      </div>
+      <div
+        style={{
+          fontSize: 9,
+          letterSpacing: "0.14em",
+          textTransform: "uppercase",
+          fontWeight: 800,
+          color: "#FFD8CF",
+        }}
+      >
+        {label}
+      </div>
     </div>
   );
 }

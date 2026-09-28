@@ -31,6 +31,17 @@ import { StoryReelLive } from "./_client";
 export const runtime = "nodejs";
 export const dynamic = "force-static";
 
+// Bridge 45h · social-proof avatar pool · reused across products
+// (in real usage this would be the last N buyers' avatars pulled
+// from nex_order joined to nex_account_profile.avatar_url).
+const BUYER_AVATARS = [
+  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop",
+  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&h=120&fit=crop",
+  "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&h=120&fit=crop",
+  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop",
+  "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop",
+];
+
 const SAMPLE_STACK = [
   {
     id: "coconut-pandan",
@@ -53,6 +64,8 @@ const SAMPLE_STACK = [
     allergens: ["Eggs", "Wheat", "Dairy"],
     deliveryNote: "Same-day pickup · Grab / Gojek delivery within Mumbai (Rp 12k-25k)",
     stockNote: "In stock · 4 available today",
+    recentBuyerAvatars: [BUYER_AVATARS[0]!, BUYER_AVATARS[1]!, BUYER_AVATARS[2]!],
+    recentBuyerCount: 14,
   },
   {
     id: "dark-choc-truffle",
@@ -75,6 +88,8 @@ const SAMPLE_STACK = [
     deliveryNote: "Same-day pickup · order by 2pm for pickup by 6pm",
     stockNote: "In stock · 2 available today",
     spiceLevel: 2,
+    recentBuyerAvatars: [BUYER_AVATARS[3]!, BUYER_AVATARS[4]!, BUYER_AVATARS[0]!],
+    recentBuyerCount: 8,
   },
   {
     id: "croissant-six",
@@ -96,6 +111,8 @@ const SAMPLE_STACK = [
     allergens: ["Wheat", "Dairy"],
     deliveryNote: "Morning batch only · pre-order by 8pm the night before",
     stockNote: "Pre-order tomorrow's batch · 12 packs available",
+    recentBuyerAvatars: [BUYER_AVATARS[2]!, BUYER_AVATARS[1]!, BUYER_AVATARS[4]!],
+    recentBuyerCount: 27,
   },
   {
     id: "sourdough",
@@ -117,6 +134,8 @@ const SAMPLE_STACK = [
     allergens: ["Wheat"],
     deliveryNote: "Fresh daily · pickup same day · delivery within 5km",
     stockNote: "In stock · 8 loaves today",
+    recentBuyerAvatars: [BUYER_AVATARS[0]!, BUYER_AVATARS[3]!, BUYER_AVATARS[1]!],
+    recentBuyerCount: 42,
   },
 ] as const;
 
