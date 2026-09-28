@@ -123,8 +123,7 @@ export default async function Page({
           needs an outer shell for legibility. */}
       <header
         style={{
-          position: "sticky",
-          top: 0,
+          position: "relative",
           zIndex: 10,
           padding:
             "calc(env(safe-area-inset-top, 0) + 12px) 14px 8px",
@@ -418,6 +417,7 @@ export default async function Page({
                 stockStatus={p.stock_status}
                 chatHref={chatHref}
                 detailHref={`/nex-native/${business.slug}/${p.id}`}
+                shareHref={`/nex-native/share?product=${p.id}&back=${encodeURIComponent(`/nex-native/${business.slug}`)}`}
               />
             ))}
           </div>
@@ -699,6 +699,7 @@ function ProductSpread({
   imageUrl,
   stockStatus,
   detailHref,
+  shareHref,
 }: {
   name: string;
   description: string | null;
@@ -713,6 +714,9 @@ function ProductSpread({
    *  and the chat CTA lives on the product page itself. */
   chatHref?: string;
   detailHref: string;
+  /** Bridge 17 · opens /share?product=<id> · pick a NEX contact
+   *  and drop the product into their chat as a Bridge 11 card. */
+  shareHref?: string;
 }) {
   return (
     <article
@@ -763,6 +767,36 @@ function ProductSpread({
           >
             🛍️
           </div>
+        )}
+        {/* Bridge 17 · share to a NEX contact · top-right icon on the
+            image. Anonymous visitors get bounced through /sign-in. */}
+        {shareHref && (
+          <Link
+            href={shareHref}
+            aria-label="Share this product"
+            title="Share with a NEX contact"
+            style={{
+              position: "absolute",
+              top: 12,
+              right: 12,
+              width: 36,
+              height: 36,
+              borderRadius: "50%",
+              background: "rgba(2,9,20,0.75)",
+              border: `1px solid ${NEX.borderStrong}`,
+              display: "grid",
+              placeItems: "center",
+              color: "#F4F7FC",
+              textDecoration: "none",
+              backdropFilter: "blur(6px)",
+              WebkitBackdropFilter: "blur(6px)",
+              boxShadow: "0 4px 10px rgba(0,0,0,0.5)",
+              fontSize: 15,
+              lineHeight: 1,
+            }}
+          >
+            <span aria-hidden>↗</span>
+          </Link>
         )}
         {stockStatus && stockStatus !== "in_stock" && (
           <div
