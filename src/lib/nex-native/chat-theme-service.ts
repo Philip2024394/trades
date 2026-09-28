@@ -36,9 +36,22 @@ export interface NexChatThemeRow {
    *  paints no environmental overlay. Sealed 2026-09-27 · migration
    *  056. */
   wallpaper_config: NexChatThemeWallpaperConfig | null;
+  /** Bridge 34 · feed shape · migration 085. Determines the message
+   *  row renderer used by PortraitBloomShell:
+   *    'bubbles'         · classic bubble feed (default)
+   *    'sky_cards'       · cloud-shaped panels · sealed as Theme 1
+   *    'timeline_ribbon' · tab-slate panels · sealed as Theme 4
+   *  When the DB row predates migration 085 or the value is missing
+   *  in code, callers should treat it as 'bubbles'. */
+  layout_style: NexChatThemeLayoutStyle;
   created_at: string;
   updated_at: string;
 }
+
+export type NexChatThemeLayoutStyle =
+  | "bubbles"
+  | "sky_cards"
+  | "timeline_ribbon";
 
 /** Structured shape of nex_chat_theme.wallpaper_config JSONB. Every
  *  key is optional so themes can opt into whichever overlays fit. */

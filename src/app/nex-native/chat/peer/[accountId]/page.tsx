@@ -380,6 +380,7 @@ export default async function PeerChatPage({
          lands (migration 046 pending). */
       displayName={peer.display_name.split(/\s+/)[0] ?? peer.display_name}
       isOfficialPeer={isNexOfficialAccount(peer.id)}
+      layoutStyle={peerThemeRow?.layout_style ?? "bubbles"}
       subtitle={profile?.profession ?? null}
       portraitUrl={profile?.avatar_url ?? null}
       presenceKind={presenceKind}
