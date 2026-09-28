@@ -2159,10 +2159,15 @@ function NexOfficialCard() {
           width: 52,
           height: 52,
           borderRadius: "50%",
-          border: `2px solid ${NEX.cyan}`,
-          boxShadow: `0 0 0 3px ${NEX.cyan}22, 0 2px 8px rgba(0,0,0,0.35)`,
+          // Ring is white per Founder direction 2026-09-28 · matches
+          // the page header text colour so the card reads as neutral
+          // NEX identity rather than "another cyan chip".
+          border: `2px solid ${NEX.textPrimary}`,
+          boxShadow: `0 0 0 3px rgba(242,245,248,0.15), 0 2px 8px rgba(0,0,0,0.35)`,
           background: NEX.cyanFaint,
-          color: NEX.cyan,
+          // "NEX" label inside the avatar uses the same white header
+          // text colour, not the cyan accent.
+          color: NEX.textPrimary,
           display: "grid",
           placeItems: "center",
           fontSize: 20,
