@@ -18,6 +18,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as productService from "@/lib/nex-native/product-service";
+import { sendProductInquiryAction } from "../../_actions";
+import { OrderBar } from "./_order-bar";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -488,55 +490,14 @@ export default async function Page({
           WebkitBackdropFilter: "blur(12px)",
         }}
       >
-        <div
-          style={{
-            maxWidth: 720,
-            margin: "0 auto",
-            display: "flex",
-            gap: 10,
-          }}
-        >
-          <Link
-            href={chatHref}
-            style={{
-              flex: 1.4,
-              padding: "14px 16px",
-              borderRadius: 14,
-              background:
-                "linear-gradient(180deg, #FF9033 0%, #FF7800 100%)",
-              color: "#0B0F1A",
-              fontSize: 13,
-              fontWeight: 700,
-              letterSpacing: "0.06em",
-              textTransform: "uppercase",
-              textDecoration: "none",
-              textAlign: "center",
-              boxShadow:
-                "0 12px 28px rgba(255,120,0,0.4), inset 0 1px 0 rgba(255,255,255,0.28)",
-            }}
-          >
-            Order Now
-          </Link>
-          <Link
-            href={chatHref}
-            style={{
-              flex: 1,
-              padding: "14px 16px",
-              borderRadius: 14,
-              background: "rgba(0,175,255,0.16)",
-              border: `1px solid ${NEX.cyanSoft}`,
-              color: NEX.text,
-              fontSize: 13,
-              fontWeight: 700,
-              letterSpacing: "0.06em",
-              textTransform: "uppercase",
-              textDecoration: "none",
-              textAlign: "center",
-            }}
-          >
-            Chat Now
-          </Link>
-        </div>
+        <OrderBar
+          productId={product.id}
+          chatHref={chatHref}
+          orderAction={sendProductInquiryAction.bind(
+            null,
+            business.owner_account_id,
+          )}
+        />
       </div>
     </div>
   );

@@ -30,6 +30,7 @@ import * as sellerResponsivenessService from "@/lib/nex-native/seller-responsive
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { HeroSidePanel } from "./_hero-side-panel";
 import { FloatingChatButton } from "./_floating-chat-button";
+import { toggleLikeProductAction } from "../_actions";
 
 const MENU_CATEGORIES = new Set(["restaurant", "cafe"]);
 
@@ -418,6 +419,8 @@ export default async function Page({
                 chatHref={chatHref}
                 detailHref={`/nex-native/${business.slug}/${p.id}`}
                 shareHref={`/nex-native/share?product=${p.id}&back=${encodeURIComponent(`/nex-native/${business.slug}`)}`}
+                likeAction={toggleLikeProductAction.bind(null, p.id)}
+                likeBackHref={`/nex-native/${business.slug}`}
               />
             ))}
           </div>
@@ -700,6 +703,8 @@ function ProductSpread({
   stockStatus,
   detailHref,
   shareHref,
+  likeAction,
+  likeBackHref,
 }: {
   name: string;
   description: string | null;
@@ -717,6 +722,11 @@ function ProductSpread({
   /** Bridge 17 · opens /share?product=<id> · pick a NEX contact
    *  and drop the product into their chat as a Bridge 11 card. */
   shareHref?: string;
+  /** Bridge 18 · heart icon top-left of the image · saves to the
+   *  viewer's liked list. Anonymous viewers get bounced to sign-in
+   *  by the action's guard. */
+  likeAction?: (formData: FormData) => Promise<never> | void;
+  likeBackHref?: string;
 }) {
   return (
     <article
@@ -767,6 +777,50 @@ function ProductSpread({
           >
             🛍️
           </div>
+        )}
+        {/* Bridge 18 · like/save · top-left icon on the image.
+            Complements the share icon at top-right. */}
+        {likeAction && (
+          <form
+            action={likeAction}
+            style={{
+              position: "absolute",
+              top: 12,
+              left: 12,
+              margin: 0,
+            }}
+          >
+            <input type="hidden" name="intent" value="like" />
+            <input
+              type="hidden"
+              name="back"
+              value={likeBackHref ?? "/nex-native/liked"}
+            />
+            <button
+              type="submit"
+              aria-label="Save to liked items"
+              title="Save to Liked"
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: "50%",
+                background: "rgba(2,9,20,0.75)",
+                border: "1px solid rgba(255,51,85,0.45)",
+                display: "grid",
+                placeItems: "center",
+                color: "#FF7A85",
+                fontSize: 15,
+                lineHeight: 1,
+                cursor: "pointer",
+                backdropFilter: "blur(6px)",
+                WebkitBackdropFilter: "blur(6px)",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.5)",
+                fontFamily: "inherit",
+              }}
+            >
+              ♥
+            </button>
+          </form>
         )}
         {/* Bridge 17 · share to a NEX contact · top-right icon on the
             image. Anonymous visitors get bounced through /sign-in. */}

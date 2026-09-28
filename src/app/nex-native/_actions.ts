@@ -1028,6 +1028,13 @@ export async function sendProductInquiryAction(
   const intent: "ask" | "want" =
     intentRaw === "want" ? "want" : "ask";
   const customBody = String(formData.get("body") ?? "").trim();
+  // Bridge 19 · quantity from the +/- picker on product detail.
+  const qtyRaw = String(formData.get("quantity") ?? "").trim();
+  const qtyParsed = Number.parseInt(qtyRaw, 10);
+  const quantity =
+    Number.isFinite(qtyParsed) && qtyParsed >= 1 && qtyParsed <= 999
+      ? qtyParsed
+      : 1;
 
   if (!productId) redirect(`/nex-native/chat/peer/${peerAccountId}`);
 
@@ -1062,9 +1069,10 @@ export async function sendProductInquiryAction(
       product.description?.split(/[.··]/)[0]?.trim().slice(0, 140) ?? null,
   };
 
+  const qtyPrefix = quantity > 1 ? `${quantity}× ` : "";
   const defaultBody =
     intent === "want"
-      ? `I'd like to buy the ${product.name} · what's next?`
+      ? `I'd like to buy ${qtyPrefix}${product.name} · what's next?`
       : `Is the ${product.name} still available?`;
   const body = customBody || defaultBody;
 
