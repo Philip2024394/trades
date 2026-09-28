@@ -335,26 +335,129 @@ export async function markGrantConsumed(
   const nowIso = new Date().toISOString();
   const { data: grant, error: gErr } = await nexSupabaseAdmin
     .from("nex_product_share_grant")
-    .select("id, sharer_account_id, receiver_account_id, consumed_by_sharer_at, consumed_by_receiver_at")
+    .select(
+      "id, sharer_account_id, receiver_account_id, business_id, product_id, sharer_bonus_pct, receiver_bonus_pct, consumed_by_sharer_at, consumed_by_receiver_at",
+    )
     .eq("id", grantId)
     .maybeSingle();
   if (gErr || !grant) return; // silent · grant may already be gone
   const patch: Record<string, string> = {};
   const g = grant as {
+    id: string;
     sharer_account_id: string;
     receiver_account_id: string | null;
+    business_id: string;
+    product_id: string | null;
+    sharer_bonus_pct: number;
+    receiver_bonus_pct: number;
     consumed_by_sharer_at: string | null;
     consumed_by_receiver_at: string | null;
   };
+  const receiverJustConsumed =
+    g.receiver_account_id === buyerAccountId && !g.consumed_by_receiver_at;
   if (g.sharer_account_id === buyerAccountId && !g.consumed_by_sharer_at) {
     patch.consumed_by_sharer_at = nowIso;
   }
-  if (g.receiver_account_id === buyerAccountId && !g.consumed_by_receiver_at) {
+  if (receiverJustConsumed) {
     patch.consumed_by_receiver_at = nowIso;
   }
   if (Object.keys(patch).length === 0) return;
-  await nexSupabaseAdmin
+  const { error: updateErr } = await nexSupabaseAdmin
     .from("nex_product_share_grant")
     .update(patch)
     .eq("id", grantId);
+  if (updateErr) return;
+
+  // Bridge 49-notify · when the RECEIVER side is the one being
+  // consumed, notify the sharer in their existing peer chat that
+  // their friend used the reward. This closes the viral loop and
+  // gives the sharer positive reinforcement to share again.
+  // Non-fatal · notification failure never breaks consumption.
+  if (receiverJustConsumed && g.receiver_account_id) {
+    try {
+      await notifyShareConsumedByReceiver({
+        grant: g,
+        receiverAccountId: g.receiver_account_id,
+      });
+    } catch (e) {
+      // silent · log for observability, do not throw
+      // eslint-disable-next-line no-console
+      console.warn(
+        "[nex-share] receiver-consumed notification failed",
+        e instanceof Error ? e.message : e,
+      );
+    }
+  }
+}
+
+/** Bridge 49-notify · send a celebration peer message from the
+ *  receiver to the sharer when the receiver actually consumes their
+ *  half of the grant. The message goes into the existing peer chat
+ *  between the two (the same chat where the original banner landed).
+ *
+ *  Private helper · not exported · only called by markGrantConsumed. */
+async function notifyShareConsumedByReceiver(input: {
+  grant: {
+    id: string;
+    sharer_account_id: string;
+    receiver_account_id: string | null;
+    business_id: string;
+    product_id: string | null;
+    sharer_bonus_pct: number;
+    receiver_bonus_pct: number;
+  };
+  receiverAccountId: string;
+}): Promise<void> {
+  // Fetch just enough context to write a natural message.
+  const [businessRes, productRes, receiverRes] = await Promise.all([
+    nexSupabaseAdmin
+      .from("nex_business")
+      .select("display_name")
+      .eq("id", input.grant.business_id)
+      .maybeSingle(),
+    input.grant.product_id
+      ? nexSupabaseAdmin
+          .from("nex_product")
+          .select("name")
+          .eq("id", input.grant.product_id)
+          .maybeSingle()
+      : Promise.resolve({ data: null }),
+    nexSupabaseAdmin
+      .from("nex_account")
+      .select("display_name")
+      .eq("id", input.receiverAccountId)
+      .maybeSingle(),
+  ]);
+  const businessName =
+    (businessRes.data as { display_name?: string } | null)?.display_name ??
+    "this shop";
+  const productName =
+    (productRes.data as { name?: string } | null)?.name ?? "the product";
+  const receiverName =
+    (receiverRes.data as { display_name?: string } | null)?.display_name ??
+    "your friend";
+  const bothPct = input.grant.receiver_bonus_pct; // same for both sides on friend shares
+
+  const body = [
+    `🎉 ${receiverName} just ordered ${productName} from ${businessName}`,
+    `You both used the NEX Direct Price reward · saved −${bothPct}% each.`,
+    `Thanks for sharing.`,
+  ].join("\n");
+
+  const conv = await getOrCreatePeerConversation(
+    input.grant.sharer_account_id,
+    input.receiverAccountId,
+  );
+
+  // Sent by the receiver so it lands as an incoming message in the
+  // sharer's chat with them (matches the "your friend just did X"
+  // mental model · no fake system-bot voice).
+  await sendPeerMessage({
+    conversation_id: conv.id,
+    sender_account_id: input.receiverAccountId,
+    body,
+    attachment_url: null,
+    attachment_type: null,
+    attachment_meta: null,
+  });
 }
