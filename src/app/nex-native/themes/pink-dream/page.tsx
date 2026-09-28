@@ -18,6 +18,7 @@
 import type * as React from "react";
 import Link from "next/link";
 import { PinkDreamHud } from "./_hud";
+import { PinkDreamComposer } from "./_composer";
 
 export const dynamic = "force-static";
 export const runtime = "nodejs";
@@ -437,81 +438,11 @@ export default function PinkDreamPreviewPage() {
         })}
       </main>
 
-      {/* ---------------- Composer + Send ----------------
-         Bridge 24c · normal flow inside the flex column so the
-         composer always fills the phone width minus the 12px inset
-         and never suffers from position:fixed containing-block
-         quirks. */}
-      {/* ---------------- Composer + Send ----------------
-         Bridge 24f · pill container removed per Founder direction
-         2026-09-28 · the input sits naked on the wallpaper with a
-         single subtle underline; attach + camera moved to the
-         lower-right 3-dot menu (Camera / Video / Mic / Themes).
-         Send stays as a separate circular pink button.  */}
-      <footer
-        style={{
-          position: "relative",
-          padding: "12px 14px calc(env(safe-area-inset-bottom, 0) + 12px)",
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-          width: "100%",
-          boxSizing: "border-box",
-          zIndex: 6,
-        }}
-      >
-        <div
-          style={{
-            flex: "1 1 0%",
-            minWidth: 0,
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            paddingRight: 8,
-          }}
-        >
-          <SmileIcon />
-          <input
-            type="text"
-            placeholder="Message…"
-            aria-label="Message"
-            style={{
-              flex: "1 1 0%",
-              minWidth: 0,
-              width: "100%",
-              padding: "10px 6px",
-              background: "transparent",
-              border: "none",
-              borderBottom: "1px solid rgba(255,139,197,0.35)",
-              color: P.softWhite,
-              fontSize: 16,
-              fontFamily: SANS,
-              outline: "none",
-            }}
-          />
-        </div>
-        <button
-          type="button"
-          aria-label="Send"
-          style={{
-            flex: "0 0 auto",
-            width: 52,
-            height: 52,
-            borderRadius: "50%",
-            background: "linear-gradient(135deg, #FF8AC5, #FF3F9F)",
-            border: "1px solid rgba(255,205,230,0.75)",
-            boxShadow: "0 0 20px rgba(255,79,163,0.45)",
-            color: P.softWhite,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            padding: 0,
-          }}
-        >
-          <SendIcon />
-        </button>
-      </footer>
+      {/* Bridge 24n · client composer · left "+" opens Shop &
+         Marketing panel · centre smile opens Emoji + Mascot picker
+         · input naked with pink underline · send button shrunk
+         per Founder direction 2026-09-28. */}
+      <PinkDreamComposer />
 
       {/* Bridge 24f · floating rail + 3-dot action sheet */}
       <PinkDreamHud />
@@ -793,37 +724,3 @@ function ShopIcon() {
   );
 }
 
-function SmileIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <circle
-        cx="12"
-        cy="12"
-        r="9"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M8.5 14c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-      <circle cx="9" cy="10" r="1" fill="currentColor" />
-      <circle cx="15" cy="10" r="1" fill="currentColor" />
-    </svg>
-  );
-}
-function SendIcon() {
-  return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M4 12l16-8-6 16-2.5-6.5L4 12z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
