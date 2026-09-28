@@ -378,8 +378,11 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
         </div>
       )}
 
-      {/* Product identity · text-overlay on hero · no panel. Name +
-          price + tagline. Positioned above the swipe-up button.
+      {/* Product identity · text-overlay on hero · no panel.
+          Founder direction 2026-09-28 (revised):
+            1. Name · single line · truncates with ellipsis · no wrap.
+            2. Small description directly under the name.
+            3. Price sits under the description, RIGHT-aligned.
           Fades away as the drawer opens so it doesn't compete. */}
       <div
         style={{
@@ -389,7 +392,6 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
           bottom: CLOSED_BOTTOM + 22,
           color: "#fff",
           zIndex: 20,
-          textAlign: "left",
           pointerEvents: "none",
           opacity: open ? 0 : 1,
           transition: "opacity 200ms ease",
@@ -398,11 +400,14 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
         <h1
           style={{
             margin: 0,
-            fontSize: 30,
+            fontSize: 24,
             fontWeight: 800,
-            lineHeight: 1.05,
+            lineHeight: 1.15,
             letterSpacing: "-0.01em",
             textShadow: "0 3px 16px rgba(0,0,0,0.85)",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
         >
           {current.name}
@@ -410,7 +415,20 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
         <div
           style={{
             marginTop: 6,
-            fontSize: 24,
+            fontSize: 13,
+            lineHeight: 1.4,
+            fontWeight: 500,
+            color: "rgba(255,255,255,0.92)",
+            textShadow: "0 1px 8px rgba(0,0,0,0.75)",
+          }}
+        >
+          {current.tagline}
+        </div>
+        <div
+          style={{
+            marginTop: 6,
+            textAlign: "right",
+            fontSize: 26,
             fontWeight: 800,
             color: NEX.orange,
             letterSpacing: "-0.01em",
@@ -418,19 +436,6 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
           }}
         >
           {current.priceLabel}
-        </div>
-        <div
-          style={{
-            marginTop: 6,
-            fontSize: 11,
-            letterSpacing: "0.16em",
-            textTransform: "uppercase",
-            fontWeight: 700,
-            color: "rgba(255,255,255,0.9)",
-            textShadow: "0 1px 8px rgba(0,0,0,0.75)",
-          }}
-        >
-          {current.tagline}
         </div>
       </div>
 
