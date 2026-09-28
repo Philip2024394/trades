@@ -106,10 +106,9 @@ export default function PinkDreamPreviewPage() {
         backgroundColor: "#2b1638",
       }}
     >
-      {/* Bridge 24k · animated wallpaper · slow Ken Burns pan+zoom
-         over 40s, seamless loop. Sits below every other layer via
-         zIndex 0. Uses transform on a full-bleed div so we don't
-         touch the composer / header positioning. */}
+      {/* Bridge 24k-2 · static wallpaper · Ken Burns dropped in
+         favour of local sky effects (sun glow + city twinkles)
+         layered on top of a still image. */}
       <div
         aria-hidden
         data-nex-pd-wallpaper
@@ -120,8 +119,36 @@ export default function PinkDreamPreviewPage() {
           backgroundImage: "url(/nex-themes/pink-dream.png)",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          willChange: "transform",
         }}
+      />
+
+      {/* Bridge 24k-2 · sky-only animations · confined to the
+         window pane so the bedroom foreground doesn't move. */}
+      <div aria-hidden data-nex-pd-sun />
+      <span
+        aria-hidden
+        className="nex-pd-city-light"
+        style={{ left: "48%", top: "36%", animationDelay: "0s" }}
+      />
+      <span
+        aria-hidden
+        className="nex-pd-city-light"
+        style={{ left: "56%", top: "38%", animationDelay: "0.6s" }}
+      />
+      <span
+        aria-hidden
+        className="nex-pd-city-light"
+        style={{ left: "62%", top: "35%", animationDelay: "1.2s" }}
+      />
+      <span
+        aria-hidden
+        className="nex-pd-city-light"
+        style={{ left: "68%", top: "39%", animationDelay: "1.8s" }}
+      />
+      <span
+        aria-hidden
+        className="nex-pd-city-light"
+        style={{ left: "75%", top: "36%", animationDelay: "2.4s" }}
       />
       {/* Fonts + speech-tail shapes · scoped inline so this page is
          fully self-contained and doesn't leak into other themes. */}
@@ -155,23 +182,66 @@ export default function PinkDreamPreviewPage() {
         [data-nex-pink-dream-preview] [data-portrait-ping-2] {
           animation-delay: 0.9s;
         }
-        /* Bridge 24k · Ken Burns wallpaper · pan + zoom the sunset
-           bedroom so the frame feels alive. Big enough to notice
-           on a phone (scale 1.00 → 1.18, drift ±4%) and fast
-           enough to catch the eye within a few seconds (24s
-           round-trip, ease-in-out). */
-        @keyframes nex-pd-kenburns {
-          0%   { transform: scale(1.00) translate(0%, 0%); }
-          50%  { transform: scale(1.18) translate(-4%, 3%); }
-          100% { transform: scale(1.00) translate(0%, 0%); }
+        /* Bridge 24k-2 · Ken Burns dropped per Founder direction
+           2026-09-28 · replaced with LOCAL sky effects only:
+           a soft sunset glow that breathes over the window area,
+           and 5 tiny city lights that twinkle along the skyline.
+           The bedroom foreground (bear, pillows) stays perfectly
+           still · only the "sky outside the window" feels alive. */
+
+        /* Sun glow · a radial pink/orange bloom positioned where
+           the setting sun sits in the wallpaper. Opacity breathes
+           between 0.35 and 0.75 over 7s so it feels like the sun
+           is pulsing warm light through the window. */
+        @keyframes nex-pd-sun {
+          0%, 100% { opacity: 0.35; transform: scale(1); }
+          50%      { opacity: 0.75; transform: scale(1.10); }
         }
-        [data-nex-pink-dream-preview] [data-nex-pd-wallpaper] {
-          animation: nex-pd-kenburns 24s ease-in-out infinite;
-          transform-origin: 55% 45%; /* pull toward the sun on the horizon */
+        [data-nex-pink-dream-preview] [data-nex-pd-sun] {
+          position: absolute;
+          left: 42%;
+          top: 22%;
+          width: 44%;
+          height: 22%;
+          z-index: 1;
+          pointer-events: none;
+          background: radial-gradient(
+            ellipse at center,
+            rgba(255, 195, 130, 0.85) 0%,
+            rgba(255, 138, 90, 0.45) 30%,
+            rgba(255, 79, 163, 0.20) 60%,
+            transparent 80%
+          );
+          filter: blur(20px);
+          mix-blend-mode: screen;
+          animation: nex-pd-sun 7s ease-in-out infinite;
+          transform-origin: center;
         }
+
+        /* City lights · 5 tiny dots positioned along the skyline
+           band, each with its own delay so they twinkle out of
+           sync. Uses transform + opacity for GPU compositing. */
+        @keyframes nex-pd-twinkle {
+          0%, 100% { opacity: 0.25; transform: scale(0.9); }
+          50%      { opacity: 1;    transform: scale(1.2); }
+        }
+        [data-nex-pink-dream-preview] .nex-pd-city-light {
+          position: absolute;
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background: #FFE9B8;
+          box-shadow: 0 0 6px 2px rgba(255, 220, 150, 0.9);
+          z-index: 1;
+          pointer-events: none;
+          animation: nex-pd-twinkle 3.4s ease-in-out infinite;
+        }
+
         @media (prefers-reduced-motion: reduce) {
-          [data-nex-pink-dream-preview] [data-nex-pd-wallpaper] {
+          [data-nex-pink-dream-preview] [data-nex-pd-sun],
+          [data-nex-pink-dream-preview] .nex-pd-city-light {
             animation: none;
+            opacity: 0.5;
           }
           [data-nex-pink-dream-preview] [data-portrait-ping] {
             animation: none;
