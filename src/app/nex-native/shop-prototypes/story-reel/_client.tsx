@@ -70,10 +70,9 @@ const BUTTON_HEIGHT = 60;
 const BUTTON_BOTTOM = 20;
 const CLOSED_BOTTOM = BUTTON_HEIGHT + BUTTON_BOTTOM + 4; // room for the button
 
-// When open, the drawer top offset · leaves room for the notch and
-// a small breathing gap so it reads as a full-height page, not
-// literally full-screen.
-const OPEN_TOP = 44;
+// When open, the sheet fills the entire viewport · reads as a full
+// PAGE, not a bottom drawer. Founder tightening 2026-09-28.
+const OPEN_TOP = 0;
 
 const SWIPE_TRIGGER = 60;
 
@@ -191,6 +190,12 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
       }}
       data-nex-story-reel-root
     >
+      {/* Hide the inner scrollbar on the spec page · WebKit + Firefox.
+          Body still scrolls · we just don't render the visible track. */}
+      <style>{`
+        .nex-story-reel-scroll::-webkit-scrollbar { display: none; }
+        .nex-story-reel-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+      `}</style>
       {/* Hero image + gradient · full-viewport */}
       <div
         style={{
@@ -506,8 +511,9 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
         </button>
       )}
 
-      {/* Drawer · slides from below to full-height spec page. Only
-          hittable when open. */}
+      {/* Full-height PAGE · slides in from below · not a drawer.
+          No rounded top corners · no translucency · fills the whole
+          viewport when open · Founder tightening 2026-09-28. */}
       <div
         role="dialog"
         aria-label="Product details"
@@ -518,76 +524,78 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
           left: 0,
           right: 0,
           bottom: 0,
-          background: NEX.panelSoft,
-          borderTopLeftRadius: 26,
-          borderTopRightRadius: 26,
-          boxShadow: "0 -24px 60px rgba(0,0,0,0.65)",
+          background: NEX.panel,
           transition:
             dragOffset == null ? "top 300ms cubic-bezier(.2,.7,.2,1)" : "none",
           zIndex: 30,
           overflow: "hidden",
-          backdropFilter: "blur(20px) saturate(1.4)",
-          WebkitBackdropFilter: "blur(20px) saturate(1.4)",
-          border: `1px solid ${NEX.border}`,
-          borderBottom: "none",
           display: "flex",
           flexDirection: "column",
           pointerEvents: open || dragOffset != null ? "auto" : "none",
         }}
       >
-        {/* Draggable handle · pull-to-close */}
+        {/* Page header · back arrow left · draggable strip acts as
+            pull-down-to-close for gesture parity, but no visible
+            drag handle (pages don't have those). */}
         <div
           onPointerDown={onSheetPointerDown}
           onPointerMove={onSheetPointerMove}
           onPointerUp={onSheetPointerUp}
           onPointerCancel={onSheetPointerUp}
           style={{
-            padding: "12px 16px 8px",
+            padding: "16px 16px 8px",
             cursor: "grab",
             touchAction: "none",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
             gap: 12,
+            borderBottom: `1px solid ${NEX.borderSoft}`,
           }}
         >
-          <div style={{ width: 36, height: 36 }} aria-hidden />
-          <div
-            aria-hidden
-            style={{
-              width: 44,
-              height: 4,
-              borderRadius: 999,
-              background: "rgba(255,255,255,0.35)",
-            }}
-          />
           <button
             type="button"
             onClick={closeDrawer}
-            aria-label="Close product details"
+            aria-label="Back to product image"
             style={{
-              width: 36,
-              height: 36,
+              width: 40,
+              height: 40,
               borderRadius: "50%",
-              background: "rgba(255,255,255,0.10)",
+              background: "rgba(255,255,255,0.08)",
               color: "#fff",
-              border: `1px solid ${NEX.border}`,
-              fontSize: 18,
+              border: `1px solid ${NEX.borderSoft}`,
+              fontSize: 20,
               cursor: "pointer",
               lineHeight: 1,
               padding: 0,
+              display: "grid",
+              placeItems: "center",
             }}
           >
-            ×
+            ←
           </button>
+          <div
+            style={{
+              fontSize: 11,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              fontWeight: 700,
+              color: "rgba(255,255,255,0.55)",
+            }}
+          >
+            Product details
+          </div>
+          <div style={{ width: 40, height: 40 }} aria-hidden />
         </div>
 
-        {/* Scrollable body · full-height spec page */}
+        {/* Scrollable body · scrollbar hidden via WebKit/Firefox rules
+            emitted below. Padding matches the sticky bottom bar. */}
         <div
+          className="nex-story-reel-scroll"
           style={{
             flex: 1,
             overflowY: "auto",
-            padding: "6px 22px 130px",
+            padding: "18px 22px 130px",
             color: NEX.textPrimary,
           }}
         >
