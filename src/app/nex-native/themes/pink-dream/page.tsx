@@ -1,26 +1,23 @@
+"use client";
+
 // src/app/nex-native/themes/pink-dream/page.tsx
 //
 // Bridge 24 · Pink Dream chat theme · admin preview.
 // ---------------------------------------------------
-// Static, isolated preview of the "Pink Dream" theme built strictly
-// to the Founder-supplied master prompt (2026-09-28). Nothing on this
-// page is wired to a live conversation · it exists so the Founder can
-// share a URL, judge the design, and approve. Once approved the
-// palette is already registered in nex_chat_theme (migration 081)
-// and available in /nex-native/settings/theme.
-//
-// Reference image: /nex-themes/pink-dream-reference.png
-// Wallpaper       : /nex-themes/pink-dream.png
-//
-// Design authority: the reference image is the pixel-level visual
-// source of truth. Do not reinterpret into a generic pink chat.
+// Client component so message rows can carry swipe-to-reply +
+// long-press emoji reactions (Bridge 28 · preview interactivity).
 
-import type * as React from "react";
+import * as React from "react";
+import { useState } from "react";
 import { PinkDreamComposer } from "./_composer";
-
-export const dynamic = "force-static";
-export const runtime = "nodejs";
-export const metadata = { title: "NEX · Pink Dream theme preview" };
+import {
+  useMessageGestures,
+  ReactionPicker,
+  ReplyChip,
+  MessageReactions,
+  type ReactionPickerAnchor,
+  type ReplyTarget,
+} from "../_shared/gestures";
 
 // -- Palette -----------------------------------------------------
 const P = {
@@ -42,45 +39,83 @@ const SANS =
   "'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
 
 interface Msg {
+  id: string;
   side: "in" | "out";
   body: string;
   time: string;
   read?: boolean;
 }
 const CONVO: Msg[] = [
-  { side: "in", body: "Hey! 💕\nHow are you today?", time: "10:24" },
+  { id: "m1", side: "in", body: "Hey! 💕\nHow are you today?", time: "10:24" },
   {
+    id: "m2",
     side: "out",
     body: "I'm good! 😊\nJust relaxing at home.\nHow about you?",
     time: "10:25",
     read: true,
   },
   {
+    id: "m3",
     side: "in",
     body: "Aww that sounds perfect! 💖\nWish I was there with you.",
     time: "10:26",
   },
   {
+    id: "m4",
     side: "out",
     body: "Hehe... maybe soon 😉\nWhat are you up to now?",
     time: "10:27",
     read: true,
   },
   {
+    id: "m5",
     side: "in",
     body: "Just watching the sunset\nand thinking about you... 💕",
     time: "10:28",
   },
   {
+    id: "m6",
     side: "out",
     body: "Aww that's so sweet 🥰\nYou're the best!",
     time: "10:29",
     read: true,
   },
-  { side: "in", body: "Always for you 💕\nTalk later, okay?", time: "10:30" },
+  { id: "m7", side: "in", body: "Always for you 💕\nTalk later, okay?", time: "10:30" },
 ];
 
 export default function PinkDreamPreviewPage() {
+  // Bridge 28 · preview-only gesture state · not persisted.
+  const [reactions, setReactions] = useState<Record<string, string[]>>({});
+  const [replyTarget, setReplyTarget] = useState<ReplyTarget | null>(null);
+  const [pickerAnchor, setPickerAnchor] = useState<ReactionPickerAnchor | null>(null);
+  const [pickerFor, setPickerFor] = useState<string | null>(null);
+
+  const openPicker = (id: string, anchor: ReactionPickerAnchor) => {
+    setPickerFor(id);
+    setPickerAnchor(anchor);
+  };
+  const closePicker = () => {
+    setPickerFor(null);
+    setPickerAnchor(null);
+  };
+  const addReaction = (emoji: string) => {
+    if (!pickerFor) return;
+    setReactions((prev) => ({
+      ...prev,
+      [pickerFor]: [...(prev[pickerFor] ?? []), emoji],
+    }));
+    closePicker();
+  };
+  const triggerReply = (id: string) => {
+    const m = CONVO.find((x) => x.id === id);
+    if (!m) return;
+    setReplyTarget({
+      id,
+      speaker: m.side === "in" ? "Bunny" : "You",
+      preview: m.body.replace(/\n/g, " · ").slice(0, 80),
+      accent: m.side === "in" ? "#FF4FA3" : "#FFC97C",
+    });
+  };
   return (
     <div
       data-nex-pink-dream-preview
@@ -424,21 +459,29 @@ export default function PinkDreamPreviewPage() {
           if (m.side === "in") {
             return (
               <IncomingRow
-                key={i}
+                key={m.id}
+                messageId={m.id}
                 body={m.body}
                 time={m.time}
                 extraTop={gapTop}
                 isFirstOfCluster={speakerChanged}
+                reactions={reactions[m.id] ?? []}
+                onSwipeReply={triggerReply}
+                onLongPress={openPicker}
               />
             );
           }
           return (
             <OutgoingRow
-              key={i}
+              key={m.id}
+              messageId={m.id}
               body={m.body}
               time={m.time}
               read={!!m.read}
               extraTop={gapTop}
+              reactions={reactions[m.id] ?? []}
+              onSwipeReply={triggerReply}
+              onLongPress={openPicker}
             />
           );
         })}
@@ -448,8 +491,18 @@ export default function PinkDreamPreviewPage() {
          Marketing panel · centre smile opens Emoji + Mascot picker
          · input naked with pink underline · send button shrunk
          per Founder direction 2026-09-28. */}
+      <ReplyChip
+        target={replyTarget}
+        onCancel={() => setReplyTarget(null)}
+        accentFallback="#FF4FA3"
+      />
       <PinkDreamComposer />
 
+      <ReactionPicker
+        anchor={pickerFor ? pickerAnchor : null}
+        onPick={addReaction}
+        onClose={closePicker}
+      />
     </div>
   );
 }
@@ -461,23 +514,29 @@ export default function PinkDreamPreviewPage() {
 // timeline.
 
 function IncomingRow({
+  messageId,
   body,
   time,
   extraTop,
   isFirstOfCluster,
+  reactions,
+  onSwipeReply,
+  onLongPress,
 }: {
+  messageId: string;
   body: string;
   time: string;
   extraTop: number;
   isFirstOfCluster: boolean;
+  reactions: string[];
+  onSwipeReply: (id: string) => void;
+  onLongPress: (id: string, anchor: ReactionPickerAnchor) => void;
 }) {
-  // Bridge 24z · quiet-luxury variant · same white-frosted glass
-  // for both speakers · identity carried only by the 3px left rail
-  // and the eyebrow tint. Feels more Vision Pro / Airbnb than the
-  // colour-coded version.
   return (
     <TimelineRow
-      color="#FF4FA3" // hot pink rail = Bunny (theme owner)
+      messageId={messageId}
+      side="left"
+      color="#FF4FA3"
       glow="rgba(255, 79, 163, 0.55)"
       speaker={
         <>
@@ -493,11 +552,15 @@ function IncomingRow({
       panelBorder="rgba(255, 79, 163, 0.55)"
       textColor="#1A0F22"
       eyebrowColor="#8B2560"
+      reactions={reactions}
+      onSwipeReply={onSwipeReply}
+      onLongPress={onLongPress}
     />
   );
 }
 
 function TimelineRow({
+  messageId,
   color,
   glow,
   speaker,
@@ -510,7 +573,11 @@ function TimelineRow({
   textColor = "#FFF5FA",
   eyebrowColor,
   side = "left",
+  reactions = [],
+  onSwipeReply,
+  onLongPress,
 }: {
+  messageId: string;
   color: string;
   glow: string;
   speaker: React.ReactNode;
@@ -523,8 +590,17 @@ function TimelineRow({
   textColor?: string;
   eyebrowColor?: string;
   side?: "left" | "right";
+  reactions?: string[];
+  onSwipeReply?: (id: string) => void;
+  onLongPress?: (id: string, anchor: ReactionPickerAnchor) => void;
 }) {
   const isRight = side === "right";
+  const { handlers, translate } = useMessageGestures({
+    messageId,
+    side,
+    onSwipeReply: onSwipeReply ?? (() => undefined),
+    onLongPress: onLongPress ?? (() => undefined),
+  });
   return (
     <div
       style={{
@@ -539,12 +615,11 @@ function TimelineRow({
       }}
     >
       <div
+        {...handlers}
         style={{
           display: "inline-block",
           maxWidth: "100%",
           padding: "8px 14px 8px 14px",
-          // Left-attached · right-corners rounded, left rail hue.
-          // Right-attached · left-corners rounded, right rail hue.
           borderRadius: isRight ? "18px 0 0 18px" : "0 18px 18px 0",
           background: panelFill,
           borderTop: `1px solid ${panelBorder}`,
@@ -557,11 +632,14 @@ function TimelineRow({
             : `1px solid ${panelBorder}`,
           backdropFilter: "blur(12px) saturate(140%)",
           WebkitBackdropFilter: "blur(12px) saturate(140%)",
-          // Shadow casts inward toward the middle of the screen for
-          // both sides so slates always feel raised off the wall.
           boxShadow: isRight
             ? "-6px 4px 14px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.10)"
             : "6px 4px 14px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.10)",
+          transform: `translateX(${translate}px)`,
+          transition: translate === 0 ? "transform 180ms cubic-bezier(.2,.7,.2,1)" : "none",
+          touchAction: "pan-y",
+          userSelect: "none",
+          cursor: "pointer",
         }}
       >
         <div
@@ -590,24 +668,39 @@ function TimelineRow({
         >
           {body}
         </div>
+        <MessageReactions
+          list={reactions}
+          accent={color}
+          align={isRight ? "right" : "left"}
+        />
       </div>
     </div>
   );
 }
 
 function OutgoingRow({
+  messageId,
   body,
   time,
   read,
   extraTop,
+  reactions,
+  onSwipeReply,
+  onLongPress,
 }: {
+  messageId: string;
   body: string;
   time: string;
   read: boolean;
   extraTop: number;
+  reactions: string[];
+  onSwipeReply: (id: string) => void;
+  onLongPress: (id: string, anchor: ReactionPickerAnchor) => void;
 }) {
   return (
     <TimelineRow
+      messageId={messageId}
+      side="right"
       color="#FFC97C"
       glow="rgba(255, 201, 124, 0.55)"
       speaker={`You${read ? " · ✓✓" : ""}`}
@@ -619,7 +712,9 @@ function OutgoingRow({
       panelBorder="rgba(255, 201, 124, 0.75)"
       textColor="#1A0F22"
       eyebrowColor="#8B5A00"
-      side="right"
+      reactions={reactions}
+      onSwipeReply={onSwipeReply}
+      onLongPress={onLongPress}
     />
   );
 }

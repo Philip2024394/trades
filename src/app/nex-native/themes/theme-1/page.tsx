@@ -1,22 +1,21 @@
+"use client";
+
 // src/app/nex-native/themes/theme-1/page.tsx
 //
 // Bridge 27 · Theme 1 (Night Sky) admin preview.
-// -----------------------------------------------
-// Shares the SAME navigation conventions as Pink Dream (peer-only
-// header · Home + Shop pink circles on right · naked composer with
-// + / smile / send buttons) but paints the FEED differently:
-// Prototype 02 (Sky Cards) — cloud-shaped floating messages —
-// attached to the left/right window edges like Pink Dream's tabs.
-//
-// This is exactly the doctrine: nav = shared, feed = distinct.
-// Two themes, two worlds, same muscle-memory.
+// Bridge 28 · client · adds swipe-to-reply + long-press reactions.
 
-import type * as React from "react";
+import * as React from "react";
+import { useState } from "react";
 import { Theme1Composer } from "./_composer";
-
-export const dynamic = "force-static";
-export const runtime = "nodejs";
-export const metadata = { title: "NEX · Theme 1 · Night Sky preview" };
+import {
+  useMessageGestures,
+  ReactionPicker,
+  ReplyChip,
+  MessageReactions,
+  type ReactionPickerAnchor,
+  type ReplyTarget,
+} from "../_shared/gestures";
 
 const P = {
   accent: "#7EB6FF",      // Theme 1 accent (light sky blue)
@@ -35,19 +34,50 @@ const WALLPAPER =
   "https://ijvqdvsvwtwxzcqmoqit.supabase.co/storage/v1/object/public/nex-chat-theme-hero/maria-santos-hero-1790481483761.png";
 
 interface Msg {
+  id: string;
   side: "in" | "out";
   body: string;
   time: string;
   read?: boolean;
 }
 const CONVO: Msg[] = [
-  { side: "in", body: "Sunset shoot went perfectly ✨\nWant to see the proofs?", time: "18:04" },
-  { side: "out", body: "Yes please. Send whenever.", time: "18:06", read: true },
-  { side: "in", body: "Sending the top 10 now.\nRoll #2 is my favourite.", time: "18:07" },
-  { side: "out", body: "The one with the golden hour light?\nLegendary.", time: "18:08", read: true },
+  { id: "t1", side: "in", body: "Sunset shoot went perfectly ✨\nWant to see the proofs?", time: "18:04" },
+  { id: "t2", side: "out", body: "Yes please. Send whenever.", time: "18:06", read: true },
+  { id: "t3", side: "in", body: "Sending the top 10 now.\nRoll #2 is my favourite.", time: "18:07" },
+  { id: "t4", side: "out", body: "The one with the golden hour light?\nLegendary.", time: "18:08", read: true },
 ];
 
 export default function Theme1PreviewPage() {
+  const [reactions, setReactions] = useState<Record<string, string[]>>({});
+  const [replyTarget, setReplyTarget] = useState<ReplyTarget | null>(null);
+  const [pickerAnchor, setPickerAnchor] = useState<ReactionPickerAnchor | null>(null);
+  const [pickerFor, setPickerFor] = useState<string | null>(null);
+  const openPicker = (id: string, anchor: ReactionPickerAnchor) => {
+    setPickerFor(id);
+    setPickerAnchor(anchor);
+  };
+  const closePicker = () => {
+    setPickerFor(null);
+    setPickerAnchor(null);
+  };
+  const addReaction = (emoji: string) => {
+    if (!pickerFor) return;
+    setReactions((prev) => ({
+      ...prev,
+      [pickerFor]: [...(prev[pickerFor] ?? []), emoji],
+    }));
+    closePicker();
+  };
+  const triggerReply = (id: string) => {
+    const m = CONVO.find((x) => x.id === id);
+    if (!m) return;
+    setReplyTarget({
+      id,
+      speaker: m.side === "in" ? "Maria" : "You",
+      preview: m.body.replace(/\n/g, " · ").slice(0, 80),
+      accent: m.side === "in" ? "#009FEF" : "#DDE9FA",
+    });
+  };
   return (
     <div
       data-nex-theme1-preview
@@ -272,7 +302,8 @@ export default function Theme1PreviewPage() {
           if (m.side === "in") {
             return (
               <SkyCard
-                key={i}
+                key={m.id}
+                messageId={m.id}
                 side="left"
                 speaker="Maria"
                 body={m.body}
@@ -284,23 +315,21 @@ export default function Theme1PreviewPage() {
                 textColor="#F4F7FC"
                 eyebrowColor="#B4DBFF"
                 driftDelay={`${i * 0.4}s`}
+                reactions={reactions[m.id] ?? []}
+                onSwipeReply={triggerReply}
+                onLongPress={openPicker}
               />
             );
           }
           return (
             <SkyCard
-              key={i}
+              key={m.id}
+              messageId={m.id}
               side="right"
               speaker={`You${m.read ? " · ✓✓" : ""}`}
               body={m.body}
               time={m.time}
               extraTop={gapTop}
-              // Bridge 27f · true glass panel · vertical gradient
-              // (bright top → dim bottom) simulates the light
-              // refracting through a real glass slab. Higher-alpha
-              // border catches light on the edge. Backdrop blur
-              // bumped to 28px on this card so the wallpaper reads
-              // as diffused through frosted crystal.
               fill="linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.18) 100%)"
               border="rgba(255, 255, 255, 0.85)"
               accent="#FFFFFF"
@@ -308,13 +337,27 @@ export default function Theme1PreviewPage() {
               eyebrowColor="#1E4A7A"
               driftDelay={`${i * 0.4 + 0.2}s`}
               glass
+              reactions={reactions[m.id] ?? []}
+              onSwipeReply={triggerReply}
+              onLongPress={openPicker}
             />
           );
         })}
       </main>
 
+      <ReplyChip
+        target={replyTarget}
+        onCancel={() => setReplyTarget(null)}
+        accentFallback="#009FEF"
+      />
       {/* Composer · same shape as Pink Dream · blue palette */}
       <Theme1Composer />
+
+      <ReactionPicker
+        anchor={pickerFor ? pickerAnchor : null}
+        onPick={addReaction}
+        onClose={closePicker}
+      />
     </div>
   );
 }
@@ -324,6 +367,7 @@ export default function Theme1PreviewPage() {
  * ─────────────────────────────────────────────────────────────── */
 
 function SkyCard({
+  messageId,
   side,
   speaker,
   body,
@@ -336,7 +380,11 @@ function SkyCard({
   eyebrowColor,
   driftDelay,
   glass,
+  reactions = [],
+  onSwipeReply,
+  onLongPress,
 }: {
+  messageId: string;
   side: "left" | "right";
   speaker: string;
   body: string;
@@ -348,12 +396,18 @@ function SkyCard({
   textColor: string;
   eyebrowColor: string;
   driftDelay: string;
-  /** Bridge 27f · when true, layer in extra glass effects · thicker
-   *  backdrop blur, prominent inner top-highlight, subtle bottom
-   *  inner glow, and a bright edge sparkle in the top-inside corner. */
   glass?: boolean;
+  reactions?: string[];
+  onSwipeReply?: (id: string) => void;
+  onLongPress?: (id: string, anchor: ReactionPickerAnchor) => void;
 }) {
   const isRight = side === "right";
+  const { handlers, translate } = useMessageGestures({
+    messageId,
+    side,
+    onSwipeReply: onSwipeReply ?? (() => undefined),
+    onLongPress: onLongPress ?? (() => undefined),
+  });
   return (
     <div
       style={{
@@ -365,6 +419,7 @@ function SkyCard({
       }}
     >
       <div
+        {...handlers}
         style={{
           position: "relative",
           display: "inline-block",
@@ -378,6 +433,11 @@ function SkyCard({
           borderBottom: `1px solid ${border}`,
           borderLeft: isRight ? `1px solid ${border}` : `3px solid ${accent}`,
           borderRight: isRight ? `3px solid ${accent}` : `1px solid ${border}`,
+          transform: `translateX(${translate}px)`,
+          transition: translate === 0 ? "transform 180ms cubic-bezier(.2,.7,.2,1)" : "none",
+          touchAction: "pan-y",
+          userSelect: "none",
+          cursor: "pointer",
           backdropFilter: glass
             ? "blur(28px) saturate(180%)"
             : "blur(20px) saturate(120%)",
@@ -461,6 +521,11 @@ function SkyCard({
         >
           {body}
         </div>
+        <MessageReactions
+          list={reactions}
+          accent={accent}
+          align={isRight ? "right" : "left"}
+        />
         {/* Cloud bumps · bottom edge, opposite the attach side, so
            the panel silhouette reads as a soft cloud rolling off
            its window frame anchor. */}
