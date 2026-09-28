@@ -388,6 +388,14 @@ export interface NexBusinessRow {
    *  "confirm delivery in chat". */
   location_lat: number | null;
   location_lng: number | null;
+  /** Bridge 30 · Admin-set verification signal · migration 083.
+   *  NULL when unverified · timestamp when an admin has confirmed the
+   *  shop is a real trading entity. Drives the "Business" tab
+   *  visibility on /nex-native/chat (verified only). */
+  verified_at: NexTimestamp | null;
+  /** Bridge 30 · Admin-only note about the verification event ·
+   *  migration 083. Never shown to buyers. */
+  verified_note: string | null;
   created_at: NexTimestamp;
   updated_at: NexTimestamp;
 }

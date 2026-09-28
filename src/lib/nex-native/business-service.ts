@@ -110,6 +110,26 @@ export async function getBusinessBySlug(slug: string): Promise<NexBusinessRow | 
   return (data as NexBusinessRow) ?? null;
 }
 
+/** Batch-fetch business rows by id. Preserves the caller's id order in
+ *  the returned array; missing ids are silently dropped. Deduplicates
+ *  input ids · empty input returns []. Sealed 2026-09-28 · Bridge 30 ·
+ *  used by the chat page Business tab to filter unverified rows in
+ *  one query instead of N. */
+export async function listBusinessesByIds(
+  ids: readonly NexUuid[],
+): Promise<NexBusinessRow[]> {
+  const unique = Array.from(new Set(ids)).filter(Boolean);
+  if (unique.length === 0) return [];
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_business")
+    .select("*")
+    .in("id", unique);
+  if (error) throw new Error(`business-service.listBusinessesByIds: ${error.message}`);
+  const rows = (data as NexBusinessRow[]) ?? [];
+  const byId = new Map(rows.map((r) => [r.id, r]));
+  return unique.map((id) => byId.get(id)).filter((r): r is NexBusinessRow => !!r);
+}
+
 /** List every business owned by a given account. */
 export async function listBusinessesByOwner(
   ownerAccountId: NexUuid

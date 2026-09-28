@@ -28,7 +28,7 @@ import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as friendService from "@/lib/nex-native/friend-service";
 import * as accountService from "@/lib/nex-native/account-service";
 import * as conversationService from "@/lib/nex-native/conversation-service";
-import type { NexChatTheme } from "@/lib/nex-native/types";
+import type { NexBusinessRow, NexChatTheme } from "@/lib/nex-native/types";
 import { NexPageHeader } from "../_page-header";
 import {
   acceptFriendInviteAction,
@@ -183,6 +183,9 @@ const MOCK_FRIENDS: ReadonlyArray<{
 const MOCK_BUSINESSES: ReadonlyArray<{
   name: string;
   slug: string;
+  /** Preview equivalent of businessSellsCaption() output · what the
+   *  shop makes or sells, shown under the name. */
+  sells: string;
   subtitle: string;
   hoursAgo: number;
   unread: number;
@@ -191,6 +194,7 @@ const MOCK_BUSINESSES: ReadonlyArray<{
   {
     name: "Cake Shop Jogja",
     slug: "cakeshopjogja",
+    sells: "Bakery",
     subtitle: "New batch of sourdough this Saturday · save one?",
     hoursAgo: 2,
     unread: 3,
@@ -199,6 +203,7 @@ const MOCK_BUSINESSES: ReadonlyArray<{
   {
     name: "Bandung Bakery",
     slug: "bandung-bakery",
+    sells: "Bakery",
     subtitle: "Order confirmed · pickup 3pm tomorrow.",
     hoursAgo: 6,
     unread: 0,
@@ -207,6 +212,7 @@ const MOCK_BUSINESSES: ReadonlyArray<{
   {
     name: "Warung Nasi Padang",
     slug: "warung-nasi-padang",
+    sells: "Restaurant",
     subtitle: "Payment received · terima kasih!",
     hoursAgo: 24,
     unread: 1,
@@ -215,6 +221,7 @@ const MOCK_BUSINESSES: ReadonlyArray<{
   {
     name: "Tukang Kayu Kreatif",
     slug: "tukang-kayu-kreatif",
+    sells: "Tradesperson · furniture",
     subtitle: "Custom shelf · 4 weeks turnaround · deposit ready?",
     hoursAgo: 72,
     unread: 0,
@@ -319,6 +326,56 @@ function initialsFromName(name: string): string {
  *   "Bakery owner"                → "Bakery owner"  (no separator)
  *   "Photographer"                → "Photographer"  (no separator)
  *  Null / empty stays null. */
+/** Category slug → human label for the Business-tab card caption.
+ *  Founder direction 2026-09-28 · every business card should tell the
+ *  buyer WHAT this shop makes or sells at a glance. Mirrors the
+ *  NEX_BUSINESS_CATEGORIES enum in site-templates.ts. */
+const NEX_BUSINESS_CATEGORY_LABEL: Record<string, string> = {
+  "bakery": "Bakery",
+  "restaurant": "Restaurant",
+  "cafe": "Cafe",
+  "ice-cream": "Ice cream shop",
+  "dessert-shop": "Dessert shop",
+  "drinks-shop": "Drinks shop",
+  "juice-bar": "Juice bar",
+  "tradesperson": "Tradesperson",
+  "construction": "Construction",
+  "staircase-company": "Staircase maker",
+  "salon": "Salon",
+  "beauty": "Beauty",
+  "fitness": "Fitness studio",
+  "consultant": "Consultant",
+  "agency": "Agency",
+  "ecommerce": "Online shop",
+  "product-brand": "Product brand",
+  "local-service": "Local service",
+  "portfolio": "Portfolio",
+  "community": "Community",
+  "event": "Event organiser",
+  "creator": "Creator",
+  "professional-service": "Professional service",
+};
+
+/** Renders the "what this business makes / sells" caption for the
+ *  Business-tab card. Preference order:
+ *   1. Category label mapped from business_category slug
+ *   2. First line of the description (up to 60 chars)
+ *   3. null · caption row omitted
+ *  Sealed 2026-09-28 · Bridge 30. */
+function businessSellsCaption(b: NexBusinessRow): string | null {
+  if (b.business_category) {
+    const label = NEX_BUSINESS_CATEGORY_LABEL[b.business_category];
+    if (label) return label;
+  }
+  if (b.description) {
+    const firstLine = b.description.split(/\r?\n/)[0]?.trim() ?? "";
+    if (firstLine) {
+      return firstLine.length > 60 ? firstLine.slice(0, 57) + "…" : firstLine;
+    }
+  }
+  return null;
+}
+
 function professionCaption(profession: string | null): string | null {
   if (!profession) return null;
   const trimmed = profession.trim();
@@ -378,6 +435,11 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
     conversationId: string;
     businessName: string;
     slug: string;
+    /** Category label ("Bakery", "Restaurant") or first line of the
+     *  business description · the "what they make or sell" caption
+     *  shown under the business name. Null when nothing to display. */
+    sells: string | null;
+    /** Last-message body preview · the second line of the card. */
     subtitle: string;
     lastAt: string | null;
     /** Read state of my own last message on this thread:
@@ -523,28 +585,48 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
         existing.last_message?.created_at ?? existing.conversation.created_at;
       if (stamp > existingStamp) perBusiness.set(s.business.id, s);
     }
-    businessCards = Array.from(perBusiness.values()).map((s) => {
-      let myReceiptState: "sent" | "read" | "inbound" | null = null;
-      if (s.last_message) {
-        if (s.last_message.sender_account_id === session.account.id) {
-          const readTs = s.other_last_read_at;
-          myReceiptState =
-            readTs && readTs >= s.last_message.created_at ? "read" : "sent";
-        } else {
-          myReceiptState = "inbound";
+    // Hydrate the full business rows in one shot so we can filter to
+    // verified real businesses only (Founder doctrine 2026-09-28) and
+    // pull the category label for the "what they make or sell" caption.
+    const businessIds = Array.from(perBusiness.keys());
+    const businessSvc = await import("@/lib/nex-native/business-service");
+    const businessRows = await businessSvc
+      .listBusinessesByIds(businessIds)
+      .catch(() => [] as NexBusinessRow[]);
+    const verifiedById = new Map<string, NexBusinessRow>();
+    for (const b of businessRows) {
+      if (b.verified_at) verifiedById.set(b.id, b);
+    }
+
+    businessCards = Array.from(perBusiness.values())
+      // Drop conversations whose linked business isn't verified · they
+      // still live in the DB and buyers can still open them via product /
+      // menu / direct link, but this "trusted directory" tab hides them.
+      .filter((s) => verifiedById.has(s.business.id))
+      .map((s) => {
+        let myReceiptState: "sent" | "read" | "inbound" | null = null;
+        if (s.last_message) {
+          if (s.last_message.sender_account_id === session.account.id) {
+            const readTs = s.other_last_read_at;
+            myReceiptState =
+              readTs && readTs >= s.last_message.created_at ? "read" : "sent";
+          } else {
+            myReceiptState = "inbound";
+          }
         }
-      }
-      return {
-        conversationId: s.conversation.id,
-        businessName: s.business.display_name,
-        slug: s.business.slug,
-        subtitle: s.last_message
-          ? s.last_message.body.slice(0, 90)
-          : "No messages yet",
-        lastAt: s.last_message?.created_at ?? null,
-        myReceiptState,
-      };
-    });
+        const full = verifiedById.get(s.business.id)!;
+        return {
+          conversationId: s.conversation.id,
+          businessName: s.business.display_name,
+          slug: s.business.slug,
+          sells: businessSellsCaption(full),
+          subtitle: s.last_message
+            ? s.last_message.body.slice(0, 90)
+            : "No messages yet",
+          lastAt: s.last_message?.created_at ?? null,
+          myReceiptState,
+        };
+      });
     businessCards.sort((a, b) => {
       const at = a.lastAt ?? "";
       const bt = b.lastAt ?? "";
@@ -667,6 +749,7 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                     href={`/nex-native/conversations/${c.conversationId}`}
                     name={c.businessName}
                     slug={c.slug}
+                    sells={c.sells}
                     subtitle={c.subtitle}
                     lastAt={c.lastAt}
                     receiptState={c.myReceiptState}
@@ -679,6 +762,7 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                       href={null}
                       name={c.name}
                       slug={c.slug}
+                      sells={c.sells}
                       subtitle={c.subtitle}
                       lastAt={new Date(Date.now() - c.hoursAgo * 3600_000).toISOString()}
                       unread={c.unread}
@@ -689,8 +773,8 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                 {businessCards.length === 0 && !showPreview && (
                   <EmptyState
                     icon="🛍"
-                    title="No business chats yet"
-                    body="When you message a NEX business, they'll appear here."
+                    title="No verified businesses yet"
+                    body="This tab only shows NEX-verified businesses · shops we've confirmed as real trading entities. Chat with any shop lives on the shop's landing page until they're verified."
                     ctaHref="/nex-native/search"
                     ctaLabel="Find a business"
                   />
@@ -970,6 +1054,10 @@ function BusinessCard(props: {
   href: string | null;
   name: string;
   slug: string;
+  /** What this business makes or sells · shown as a small caption row
+   *  under the name. Comes from business_category or description in
+   *  the real data path · null hides the row. Bridge 30. */
+  sells?: string | null;
   subtitle: string;
   lastAt: string | null;
   preview?: boolean;
@@ -986,6 +1074,10 @@ function BusinessCard(props: {
         minute: "2-digit",
       })
     : null;
+  // Timestamp moved from top-right to bottom-right in Bridge 30 so the
+  // top row can host name + "verified" mark + "sells" caption without
+  // colliding with the date. The date reads naturally next to the last
+  // message preview and no longer squeezes the name column.
   const cardBody = (
     <>
       <div
@@ -1020,31 +1112,80 @@ function BusinessCard(props: {
         <div
           style={{
             display: "flex",
-            alignItems: "baseline",
+            alignItems: "center",
+            gap: 6,
+            minWidth: 0,
+          }}
+        >
+          <span
+            style={{
+              fontSize: 15,
+              fontWeight: 500,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              minWidth: 0,
+              flexShrink: 1,
+            }}
+          >
+            {props.name}
+          </span>
+          <VerifiedTick />
+        </div>
+        {props.sells && (
+          <div
+            style={{
+              marginTop: 2,
+              fontSize: 10,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              color: NEX.cyan,
+              opacity: 0.75,
+              lineHeight: 1.2,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {props.sells}
+          </div>
+        )}
+        <div
+          style={{
+            marginTop: 4,
+            display: "flex",
+            alignItems: "flex-end",
             justifyContent: "space-between",
             gap: 8,
+            minWidth: 0,
           }}
         >
           <div
             style={{
+              fontSize: 12,
+              color: NEX.textSecondary,
+              lineHeight: 1.4,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
               display: "flex",
-              alignItems: "baseline",
-              gap: 8,
+              alignItems: "center",
+              gap: 6,
               minWidth: 0,
               flex: 1,
             }}
           >
+            {(props.receiptState === "sent" || props.receiptState === "read") && (
+              <ReadReceipt state={props.receiptState} />
+            )}
             <span
               style={{
-                fontSize: 15,
-                fontWeight: 500,
-                whiteSpace: "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 minWidth: 0,
               }}
             >
-              {props.name}
+              {props.subtitle}
             </span>
           </div>
           {timeLabel && (
@@ -1054,50 +1195,13 @@ function BusinessCard(props: {
                 fontSize: 10,
                 color: NEX.textSecondary,
                 letterSpacing: "0.02em",
+                whiteSpace: "nowrap",
               }}
             >
               {timeLabel}
             </div>
           )}
         </div>
-        <div
-          style={{
-            marginTop: 2,
-            fontSize: 12,
-            color: NEX.textSecondary,
-            lineHeight: 1.4,
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-          }}
-        >
-          {(props.receiptState === "sent" || props.receiptState === "read") && (
-            <ReadReceipt state={props.receiptState} />
-          )}
-          <span
-            style={{
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              minWidth: 0,
-            }}
-          >
-            {props.subtitle}
-          </span>
-        </div>
-      </div>
-      <div
-        aria-hidden
-        style={{
-          flexShrink: 0,
-          color: props.preview ? NEX.textSecondary : NEX.cyan,
-          fontSize: 18,
-          lineHeight: 1,
-        }}
-      >
-        →
       </div>
     </>
   );
@@ -1586,6 +1690,45 @@ function TypingBubble() {
  *  Basecamp both use this pattern). Absolute-positioned so it never
  *  affects card layout · overflow-hidden on the parent trims the top and
  *  bottom into the rounded corners. */
+/** Small cyan verified tick · rendered next to the name on Business-tab
+ *  cards. Every card in that tab is verified (Founder doctrine 2026-09-28)
+ *  so the tick is unconditional here. Also used sparingly elsewhere when
+ *  we need to signal "this business has been checked by NEX". */
+function VerifiedTick({ size = 14 }: { size?: number } = {}) {
+  return (
+    <span
+      aria-label="Verified business"
+      title="Verified by NEX"
+      style={{
+        flexShrink: 0,
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: size,
+        height: size,
+        borderRadius: "50%",
+        background: NEX.cyan,
+        color: "#0B0F1A",
+        lineHeight: 1,
+      }}
+    >
+      <svg
+        width={size * 0.68}
+        height={size * 0.68}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={3.2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden
+      >
+        <path d="M5 12 L10 17 L20 6" />
+      </svg>
+    </span>
+  );
+}
+
 function AccentStripe({ color }: { color: string }) {
   return (
     <span
