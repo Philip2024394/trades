@@ -124,34 +124,10 @@ export default function PinkDreamPreviewPage() {
         }}
       />
 
-      {/* Bridge 24k-2 · sky-only animations · confined to the
-         window pane so the bedroom foreground doesn't move. */}
+      {/* Bridge 24u · city twinkles retired to reduce ambient
+         motion · portrait ping + dancing dots + sun glow already
+         cover the "alive" quota. Sun glow stays. */}
       <div aria-hidden data-nex-pd-sun />
-      <span
-        aria-hidden
-        className="nex-pd-city-light"
-        style={{ left: "48%", top: "36%", animationDelay: "0s" }}
-      />
-      <span
-        aria-hidden
-        className="nex-pd-city-light"
-        style={{ left: "56%", top: "38%", animationDelay: "0.6s" }}
-      />
-      <span
-        aria-hidden
-        className="nex-pd-city-light"
-        style={{ left: "62%", top: "35%", animationDelay: "1.2s" }}
-      />
-      <span
-        aria-hidden
-        className="nex-pd-city-light"
-        style={{ left: "68%", top: "39%", animationDelay: "1.8s" }}
-      />
-      <span
-        aria-hidden
-        className="nex-pd-city-light"
-        style={{ left: "75%", top: "36%", animationDelay: "2.4s" }}
-      />
       {/* Fonts + speech-tail shapes · scoped inline so this page is
          fully self-contained and doesn't leak into other themes. */}
       <style>{`
@@ -228,28 +204,8 @@ export default function PinkDreamPreviewPage() {
           transform-origin: center;
         }
 
-        /* City lights · 5 tiny dots positioned along the skyline
-           band, each with its own delay so they twinkle out of
-           sync. Uses transform + opacity for GPU compositing. */
-        @keyframes nex-pd-twinkle {
-          0%, 100% { opacity: 0.25; transform: scale(0.9); }
-          50%      { opacity: 1;    transform: scale(1.2); }
-        }
-        [data-nex-pink-dream-preview] .nex-pd-city-light {
-          position: absolute;
-          width: 4px;
-          height: 4px;
-          border-radius: 50%;
-          background: #FFE9B8;
-          box-shadow: 0 0 6px 2px rgba(255, 220, 150, 0.9);
-          z-index: 1;
-          pointer-events: none;
-          animation: nex-pd-twinkle 3.4s ease-in-out infinite;
-        }
-
         @media (prefers-reduced-motion: reduce) {
-          [data-nex-pink-dream-preview] [data-nex-pd-sun],
-          [data-nex-pink-dream-preview] .nex-pd-city-light {
+          [data-nex-pink-dream-preview] [data-nex-pd-sun] {
             animation: none;
             opacity: 0.5;
           }
@@ -647,17 +603,17 @@ function OutgoingRow({
 }) {
   return (
     <TimelineRow
-      color="#FF4FA3"
-      glow="rgba(255, 79, 163, 0.55)"
+      color="#FFC97C"
+      glow="rgba(255, 201, 124, 0.55)"
       speaker={`You${read ? " · ✓✓" : ""}`}
       body={body}
       time={time}
       extraTop={extraTop}
       isFirstOfCluster={true}
       panelFill="rgba(255, 255, 255, 0.72)"
-      panelBorder="rgba(255, 255, 255, 0.85)"
+      panelBorder="rgba(255, 201, 124, 0.75)"
       textColor="#1A0F22"
-      eyebrowColor="#8B2560"
+      eyebrowColor="#8B5A00"
     />
   );
 }

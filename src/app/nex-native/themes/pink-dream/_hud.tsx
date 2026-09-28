@@ -39,7 +39,22 @@ export function PinkDreamHud() {
 
   return (
     <>
-      {/* Right-side rail · Home + Contacts (Theme 1 pattern) */}
+      {/* Bridge 24u · dancing 3-dot merged INTO the right-side rail
+         as a third RailButton per Founder polish direction · one
+         clean stack instead of two competing right-edge clusters. */}
+      <style>{`
+        @keyframes nex-pd-dance {
+          0%, 60%, 100% {
+            opacity: 0.45;
+            transform: translateY(0) scale(1);
+          }
+          30% {
+            opacity: 1;
+            transform: translateY(-2px) scale(1.2);
+            box-shadow: 0 0 8px rgba(255, 139, 197, 0.9);
+          }
+        }
+      `}</style>
       <div
         role="toolbar"
         aria-label="Chat navigation"
@@ -63,64 +78,35 @@ export function PinkDreamHud() {
         >
           <ContactsIcon />
         </RailButton>
-      </div>
-
-      {/* Lower-right 3-dot · button chrome removed · just three
-         dancing pink dots hugging the right edge. */}
-      <style>{`
-        @keyframes nex-pd-dance {
-          0%, 60%, 100% {
-            opacity: 0.35;
-            transform: translateY(0) scale(1);
-            box-shadow: 0 0 6px rgba(255, 79, 163, 0.35);
-          }
-          30% {
-            opacity: 1;
-            transform: translateY(-3px) scale(1.25);
-            box-shadow:
-              0 0 10px rgba(255, 139, 197, 0.95),
-              0 0 22px rgba(255, 79, 163, 0.65);
-          }
-        }
-      `}</style>
-      <button
-        type="button"
-        aria-label="More"
-        aria-expanded={actionsOpen}
-        onClick={() => setActionsOpen(true)}
-        style={{
-          position: "fixed",
-          right: 2,
-          bottom: "calc(env(safe-area-inset-bottom, 0) + 84px)",
-          zIndex: 7,
-          width: 34,
-          padding: "6px 4px",
-          background: "transparent",
-          border: "none",
-          color: "#FFF5FA",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 6,
-          cursor: "pointer",
-        }}
-      >
-        {[0, 1, 2].map((i) => (
+        <RailButton
+          ariaLabel="More · Call / Video / Camera / Mic / Themes"
+          onClick={() => setActionsOpen(true)}
+        >
           <span
-            key={i}
             aria-hidden
             style={{
-              display: "block",
-              width: 9,
-              height: 9,
-              borderRadius: "50%",
-              background: PINK,
-              animation: `nex-pd-dance 1.2s ease-in-out ${i * 0.18}s infinite`,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 3,
             }}
-          />
-        ))}
-      </button>
+          >
+            {[0, 1, 2].map((i) => (
+              <span
+                key={i}
+                style={{
+                  display: "block",
+                  width: 5,
+                  height: 5,
+                  borderRadius: "50%",
+                  background: PINK,
+                  animation: `nex-pd-dance 1.2s ease-in-out ${i * 0.18}s infinite`,
+                }}
+              />
+            ))}
+          </span>
+        </RailButton>
+      </div>
 
       {contactsOpen && (
         <CenterPanel
