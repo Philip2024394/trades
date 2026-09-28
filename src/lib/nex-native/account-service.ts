@@ -161,6 +161,32 @@ export async function ensureNexHandle(accountId: NexUuid): Promise<NexAccountRow
   return row;
 }
 
+/** Bridge 16d · update the account's persisted locale preference.
+ *  Validated against the canonical set (id | en) · anything else
+ *  throws so we can't accidentally write junk. */
+export async function updateAccountLocale(
+  accountId: NexUuid,
+  locale: "id" | "en" | null,
+): Promise<NexAccountRow> {
+  if (locale !== null && locale !== "id" && locale !== "en") {
+    throw new Error(
+      `account-service.updateAccountLocale: invalid locale '${locale}'`,
+    );
+  }
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_account")
+    .update({ locale })
+    .eq("id", accountId)
+    .select("*")
+    .single();
+  if (error || !data) {
+    throw new Error(
+      `account-service.updateAccountLocale(${accountId}): ${error?.message ?? "no row"}`,
+    );
+  }
+  return data as NexAccountRow;
+}
+
 // ---------------------------------------------------------------------------
 // Tier helpers · migration 046 · Indonesia launch package doctrine
 // (sealed 2026-09-27 · see CLAUDE.md "NEX PACKAGE DOCTRINE")

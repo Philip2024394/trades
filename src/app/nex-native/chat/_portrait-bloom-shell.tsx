@@ -30,6 +30,7 @@ import { AmbientMotion } from "./_ambient-motion";
 import { FirstConnectionEmpty } from "./_first-connection-empty";
 import { ShopGridModal, type ShopProduct } from "./_shop-grid-modal";
 import { ShopHeaderButton } from "./_shop-header-button";
+import { ImageQrProbe } from "./_qr-image-scanner";
 
 const NEX = {
   bg: "#020914",
@@ -996,6 +997,17 @@ export function PortraitBloomShell({
                     {!m.deleted_for_everyone &&
                       detectPaymentRequestInBody(m.body ?? "") && (
                         <PaymentRequestWarning mine={m.mine} />
+                      )}
+                    {/* Bridge 16d · QR-code payment-image warning ·
+                        client-side jsQR decode of the image bytes ·
+                        flags Indonesian QRIS / wallet / bank payloads. */}
+                    {!m.deleted_for_everyone &&
+                      m.attachment_type === "image" &&
+                      m.attachment_url && (
+                        <ImageQrProbe
+                          imageUrl={m.attachment_url}
+                          mine={m.mine}
+                        />
                       )}
                   </React.Fragment>
                 );

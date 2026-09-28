@@ -43,10 +43,16 @@ import {
 import {
   resolveLocale,
   SAFE_TRADE_STRINGS,
+  REPORT_STRINGS,
 } from "@/lib/nex-native/i18n/safe-trade-strings";
+import * as reportService from "@/lib/nex-native/report-service";
 import { headers } from "next/headers";
-import { acknowledgeSafeTradeAction } from "../../../_actions";
+import {
+  acknowledgeSafeTradeAction,
+  reportUserAction,
+} from "../../../_actions";
 import { SafeTradeConsentModal } from "./_safe-trade-consent-modal";
+import { ReportUserAffordance } from "./_report-user-affordance";
 import * as productService from "@/lib/nex-native/product-service";
 
 export const runtime = "nodejs";
@@ -77,11 +83,6 @@ export default async function PeerChatPage({
   // Bridge 16c · locale resolution for the consent modal. URL param
   // wins, then Accept-Language, then Bahasa Indonesia (launch market).
   const acceptLanguage = (await headers()).get("accept-language");
-  const locale = resolveLocale({
-    urlParam: sp.lang ?? null,
-    acceptLanguage,
-  });
-  const safeTradeStrings = SAFE_TRADE_STRINGS[locale];
   // Presence Bridge isn't built yet · query param toggle for preview.
   const isOffline = sp.online === "0";
   const replyId = sp.reply?.trim() || null;
@@ -94,6 +95,17 @@ export default async function PeerChatPage({
   const session = await resolveNexAppSessionFromContext();
   if (!session) redirect("/nex-native/sign-in");
   if (peerAccountId === session.account.id) redirect("/nex-native/chat");
+
+  // Bridge 16d · locale resolution now considers the account's
+  // persisted preference (migration 071). URL param > account > header
+  // > Indonesian market default.
+  const locale = resolveLocale({
+    urlParam: sp.lang ?? null,
+    accountLocale: session.account.locale ?? null,
+    acceptLanguage,
+  });
+  const safeTradeStrings = SAFE_TRADE_STRINGS[locale];
+  const reportStrings = REPORT_STRINGS[locale];
 
   const peer = await accountService.getAccountById(peerAccountId);
   if (!peer) redirect("/nex-native/chat");
@@ -143,6 +155,21 @@ export default async function PeerChatPage({
   const needsSafeTradeConsent = peerBusiness
     ? !(await hasCurrentSafeTradeConsent(session.account.id).catch(() => true))
     : false;
+
+  // Bridge 16d · report affordance rendered on commerce chats
+  // when the viewer hasn't yet filed a report against this peer.
+  const canShowReport = peerBusiness
+    ? !(await reportService
+        .viewerHasReported(session.account.id, peer.id)
+        .catch(() => true))
+    : false;
+  const reportBound = reportUserAction.bind(null, peer.id);
+  const reportReasons = reportService.NEX_REPORT_REASONS.map((slug) => ({
+    slug,
+    emoji: reportService.NEX_REPORT_REASON_LABEL[slug].emoji,
+    label: reportStrings.reasons[slug].label,
+    blurb: reportStrings.reasons[slug].blurb,
+  }));
 
   const peerShop =
     peerBusiness && peerProducts.length > 0
@@ -339,6 +366,25 @@ export default async function PeerChatPage({
           nextHref={`/nex-native/chat/peer/${peer.id}`}
           termsVersion={CURRENT_SAFE_TRADE_TERMS_VERSION}
           strings={safeTradeStrings}
+        />
+      )}
+      {canShowReport && (
+        <ReportUserAffordance
+          action={reportBound}
+          peerName={peer.display_name.split(/\s+/)[0] ?? peer.display_name}
+          backHref={`/nex-native/chat/peer/${peer.id}`}
+          reasons={reportReasons}
+          strings={{
+            trigger: reportStrings.trigger,
+            title: reportStrings.title,
+            lede: reportStrings.lede,
+            reason_label: reportStrings.reason_label,
+            note_label: reportStrings.note_label,
+            note_placeholder: reportStrings.note_placeholder,
+            submit: reportStrings.submit,
+            cancel: reportStrings.cancel,
+            disclaimer: reportStrings.disclaimer,
+          }}
         />
       )}
       <PortraitBloomShell

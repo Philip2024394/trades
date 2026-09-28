@@ -1,25 +1,29 @@
 // src/app/nex-native/terms/page.tsx
 //
 // Bridge 16b · NEX Terms of Service · public.
-// -------------------------------------------
-// The canonical legal terms. Written in plain English (with Bahasa
-// Indonesia translation queued for a follow-up bridge). The safe-
-// trade doctrine is the load-bearing centrepiece: NEX never handles
-// payments, therefore NEX does not mediate off-doctrine payment
-// disputes.
+// Bridge 16d · Fully bilingual (Bahasa Indonesia + English).
+// ----------------------------------------------------------
+// The canonical legal terms. Locale resolves via the same precedence
+// chain used everywhere: ?lang override > account preference >
+// Accept-Language header > Indonesian market default.
 //
-// Consumed by:
-//   · The JIT SafeTradeConsentModal (peer chat first entry into a
-//     commerce chat) · a link plus a required-tick box
-//   · Footer link on shop landings and packages page
-//   · Support flows
+// Translation done 2026-09-28 · native-speaker legal review queued.
 
 import type * as React from "react";
 import Link from "next/link";
-import { CURRENT_SAFE_TRADE_TERMS_VERSION } from "@/lib/nex-native/safe-trade-consent-service";
+import { headers } from "next/headers";
+import {
+  CURRENT_SAFE_TRADE_TERMS_VERSION,
+} from "@/lib/nex-native/safe-trade-consent-service";
+import {
+  resolveLocale,
+  TERMS_STRINGS,
+  SAFE_TRADE_STRINGS,
+} from "@/lib/nex-native/i18n/safe-trade-strings";
+import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 
 export const runtime = "nodejs";
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 const NEX = {
   bg: "#020914",
@@ -46,10 +50,27 @@ const SANS =
 export const metadata = {
   title: "NEX · Terms of Service",
   description:
-    "The rules of using NEX. Plain English. NEX never handles payments · buyers stay safe by using COD or third-party escrow · off-doctrine payments are not mediated by NEX support.",
+    "The rules of using NEX · plain English + Bahasa Indonesia · NEX never handles payments · off-doctrine payments are not mediated by NEX support.",
 };
 
-export default function TermsPage() {
+export default async function TermsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string }>;
+}) {
+  const sp = await searchParams;
+  const acceptLanguage = (await headers()).get("accept-language");
+  const session = await resolveNexAppSessionFromContext().catch(() => null);
+  const locale = resolveLocale({
+    urlParam: sp.lang ?? null,
+    accountLocale: session?.account.locale ?? null,
+    acceptLanguage,
+  });
+  const t = TERMS_STRINGS[locale];
+  const promise = SAFE_TRADE_STRINGS[locale];
+  const otherLang = locale === "id" ? "en" : "id";
+  const otherLabel = locale === "id" ? "English" : "Bahasa Indonesia";
+
   return (
     <div
       style={{
@@ -82,7 +103,26 @@ export default function TermsPage() {
         >
           ← NEX
         </Link>
-        <div style={{ display: "flex", gap: 16 }}>
+        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+          {/* Bridge 16d · quick language toggle in the header · does
+              not persist for anonymous visitors · signed-in users can
+              persist via /nex-native/settings/language. */}
+          <Link
+            href={`/nex-native/terms?lang=${otherLang}`}
+            style={{
+              fontSize: 11,
+              color: NEX.textDim,
+              textDecoration: "none",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              fontWeight: 700,
+              padding: "4px 10px",
+              borderRadius: 999,
+              border: `1px solid ${NEX.border}`,
+            }}
+          >
+            {otherLang === "id" ? "🇮🇩" : "🌏"} {otherLabel}
+          </Link>
           <Link
             href="/nex-native/support"
             style={{
@@ -125,7 +165,7 @@ export default function TermsPage() {
               marginBottom: 10,
             }}
           >
-            NEX terms of service
+            {t.hero_eyebrow}
           </div>
           <h1
             style={{
@@ -138,7 +178,7 @@ export default function TermsPage() {
               marginBottom: 12,
             }}
           >
-            Plain rules for a fair place.
+            {t.hero_title}
           </h1>
           <p
             style={{
@@ -148,248 +188,26 @@ export default function TermsPage() {
               color: NEX.textDim,
             }}
           >
-            Version{" "}
+            {t.hero_version_prefix}{" "}
             <b style={{ color: NEX.text }}>
               {CURRENT_SAFE_TRADE_TERMS_VERSION}
-            </b>
-            · Sealed 2026-09-28 · By using NEX you agree to what&apos;s below.
+            </b>{" "}
+            {t.hero_version_suffix}
           </p>
         </div>
 
-        {/* --- 1 · The Safe-Trade Doctrine (the important part) -------- */}
-        <TermSection
-          num="1"
-          title="How money works on NEX"
-          tone="critical"
-        >
-          <p>
-            <b>NEX is not a payment platform.</b> NEX has no wallet, no
-            escrow, no processing fee, no stored card details, and no
-            way to collect, hold, or move money on behalf of any user.
-          </p>
-          <p>
-            You pay the seller <b>directly</b>, or you pay a{" "}
-            <b>third-party escrow provider</b> the seller and you both
-            agree on. NEX only holds the conversation record.
-          </p>
-          <p>
-            NEX charges <b>0% commission</b> on sales, on both Gratis and
-            Bisnis tiers, forever. This is possible <em>because</em> NEX
-            never touches your money · the two facts are the same fact.
-          </p>
-        </TermSection>
+        <TermSection meta={t.s1} />
+        <TermSection meta={t.s2} />
+        <TermSection meta={t.s3} tone="critical" />
+        <TermSection meta={t.s4} tone="ok" />
+        <TermSection meta={t.s5} />
+        <TermSection meta={t.s6} />
+        <TermSection meta={t.s7} />
+        <TermSection meta={t.s8} />
+        <TermSection meta={t.s9} />
+        <TermSection meta={t.s10} />
 
-        {/* --- 2 · The five safe payment paths ---------------------- */}
-        <TermSection
-          num="2"
-          title="The five NEX-supported payment paths"
-        >
-          <p>
-            When you use NEX, we recommend and support these five paths,
-            and only these five. All of them satisfy one rule:{" "}
-            <b>you never pay before you receive, unless a third party
-            you trust is holding the money.</b>
-          </p>
-          <ul style={ulStyle}>
-            <li>
-              <b>💵 Cash on Delivery (COD)</b> · driver collects rupiah
-              cash when they hand you the package.
-            </li>
-            <li>
-              <b>📱 QRIS on Delivery</b> · you scan the seller&apos;s or
-              driver&apos;s QR code when the package arrives.
-            </li>
-            <li>
-              <b>📦 Courier COD</b> · JNE / J&amp;T / SiCepat / AnterAja
-              collects on delivery and remits to the seller · the courier
-              acts as informal escrow.
-            </li>
-            <li>
-              <b>🤝 Meet in Person</b> · you visit the seller, inspect
-              the item, and pay cash on the spot.
-            </li>
-            <li>
-              <b>🔒 Escrow (Rekber / Xendit / Midtrans / DOKU / PayPal
-              G&amp;S)</b> · you transfer to the escrow provider, they
-              hold, seller ships, you confirm, they release.
-            </li>
-          </ul>
-          <p>
-            Full breakdown at{" "}
-            <Link
-              href="/nex-native/safe-trade"
-              style={{ color: NEX.cyan, textDecoration: "none" }}
-            >
-              /nex-native/safe-trade
-            </Link>
-            .
-          </p>
-        </TermSection>
-
-        {/* --- 3 · Off-doctrine · what NEX won't mediate ------------- */}
-        <TermSection
-          num="3"
-          title="What NEX will NOT mediate"
-          tone="critical"
-        >
-          <p>
-            If you choose to pay a seller using any method{" "}
-            <b>not on the list in section 2</b> — for example, transferring
-            directly to a seller&apos;s private bank account or e-wallet
-            before receiving the goods — <b>NEX support will not intervene
-            in disputes about that payment</b>.
-          </p>
-          <p>Specifically, NEX will NOT:</p>
-          <ul style={ulStyle}>
-            <li>Refund you</li>
-            <li>Chase the seller for repayment</li>
-            <li>Contact the seller&apos;s bank</li>
-            <li>File a police report on your behalf</li>
-            <li>Mediate a dispute over an off-doctrine payment</li>
-          </ul>
-          <p>
-            NEX will still preserve the conversation as evidence. You may
-            use the chat log yourself to file a bank dispute, police
-            report, or civil claim under Indonesian consumer protection
-            law · but the choice to pay off-doctrine, and any loss that
-            follows, is yours alone.
-          </p>
-          <p>
-            When the app detects a seller asking for direct payment before
-            delivery, we show you a red warning in the chat. Read it. If
-            you proceed anyway, you have agreed to this section.
-          </p>
-        </TermSection>
-
-        {/* --- 4 · What NEX will help with -------------------------- */}
-        <TermSection
-          num="4"
-          title="What NEX will help with"
-          tone="ok"
-        >
-          <ul style={ulStyle}>
-            <li>
-              Reporting a seller who scams or ships gross fakes · we
-              suspend their listings after enough verified reports.
-            </li>
-            <li>
-              Snapshotting a conversation as evidence when you file a
-              report or dispute · one-tap export of the full chat.
-            </li>
-            <li>
-              Bugs in NEX itself · anything that breaks the promise in
-              section 1, section 2, or section 8 (privacy).
-            </li>
-            <li>
-              Billing questions about your own NEX subscription (Bisnis).
-            </li>
-          </ul>
-        </TermSection>
-
-        {/* --- 5 · What NEX charges --------------------------------- */}
-        <TermSection num="5" title="What NEX charges">
-          <p>
-            <b>NEX Gratis · Rp 0/mo forever.</b> No commission, no listing
-            fee, no chat fee.
-          </p>
-          <p>
-            <b>NEX Bisnis · Rp 99,000/mo</b> (or Rp 990,000/year). Unlocks
-            international export, verified badge, featured chip, unlimited
-            caps, and up to five businesses under one account. Still 0%
-            commission on sales. The Bisnis subscription itself is paid
-            via bank transfer or e-wallet directly to the NEX operating
-            account · we do not process the payment through a NEX-hosted
-            rail.
-          </p>
-          <p>
-            Full details at{" "}
-            <Link
-              href="/nex-native/packages"
-              style={{ color: NEX.cyan, textDecoration: "none" }}
-            >
-              /nex-native/packages
-            </Link>
-            .
-          </p>
-        </TermSection>
-
-        {/* --- 6 · Content + conduct rules -------------------------- */}
-        <TermSection num="6" title="Content and conduct">
-          <p>You agree not to:</p>
-          <ul style={ulStyle}>
-            <li>Sell illegal goods · drugs, weapons, endangered wildlife, counterfeit currency, stolen goods.</li>
-            <li>Impersonate someone else · sellers must trade under their real identity or a clearly-declared business name.</li>
-            <li>Harass, threaten, or scam other users.</li>
-            <li>Post spam, viruses, phishing links, or malware.</li>
-            <li>Ask a buyer to move payment off NEX to a hostile channel (e.g. &quot;transfer to my WhatsApp then delete this chat&quot;).</li>
-            <li>Circumvent the safe-trade doctrine by pressuring a buyer to pay off-doctrine · we treat this as a scam signal.</li>
-          </ul>
-          <p>
-            Violations result in a suspended listing, then a suspended
-            account. Repeat offenders are permanently banned. NEX
-            cooperates with Indonesian law enforcement when required.
-          </p>
-        </TermSection>
-
-        {/* --- 7 · Reviews + reputation ----------------------------- */}
-        <TermSection num="7" title="Reviews and reputation">
-          <p>
-            Buyers may leave a review after each order. Reviews are
-            permanent · they cannot be deleted by the seller. False
-            reviews (paid reviews, retaliatory reviews, bot reviews) can
-            be reported and are removed. The seller may respond publicly
-            to a review but cannot suppress it.
-          </p>
-        </TermSection>
-
-        {/* --- 8 · Privacy ------------------------------------------ */}
-        <TermSection num="8" title="Your data">
-          <p>
-            NEX stores your account details, your chats (peer-to-peer,
-            encrypted at rest by Supabase), your listings, and your
-            activity signals (last seen, response time). We do not sell
-            your data. We do not share your chats with third parties
-            except when compelled by an Indonesian court order.
-          </p>
-          <p>
-            You can request a full data export at any time via support.
-            You can delete your account · after 30 days your account is
-            wiped, your listings archived, your chats retained (both
-            sides need them as receipts).
-          </p>
-        </TermSection>
-
-        {/* --- 9 · Changes to these terms --------------------------- */}
-        <TermSection num="9" title="When we update these terms">
-          <p>
-            When the safe-trade doctrine or any material term changes,
-            we bump the version number at the top of this page and
-            re-prompt every user with a fresh consent modal on their
-            next commerce action. You will always know what you
-            agreed to and when.
-          </p>
-          <p>
-            Historical versions are preserved in the git history of the
-            NEX repository · both parties can go back and check what
-            was in force when their trade happened.
-          </p>
-        </TermSection>
-
-        {/* --- 10 · Governing law + contact ------------------------- */}
-        <TermSection num="10" title="Governing law and contact">
-          <p>
-            These terms are governed by the laws of the Republic of
-            Indonesia. Disputes not resolved by NEX support may be filed
-            with the appropriate Indonesian courts.
-          </p>
-          <p>
-            Questions about these terms: reach out via the NEX support
-            channel or email hello at nex.id (placeholder · production
-            address TBD).
-          </p>
-        </TermSection>
-
-        {/* --- The one-line promise (again, at the bottom) --------- */}
+        {/* --- The one-line promise -------------------------------- */}
         <div
           style={{
             marginTop: 48,
@@ -411,7 +229,7 @@ export default function TermsPage() {
               marginBottom: 8,
             }}
           >
-            🛡 The one-line promise
+            {promise.promise_eyebrow}
           </div>
           <p
             style={{
@@ -424,10 +242,9 @@ export default function TermsPage() {
               color: NEX.text,
             }}
           >
-            You never pay before you receive
+            {promise.promise_line1}
             <br />
-            <span style={{ color: NEX.green }}>—</span> unless a third
-            party you trust is holding the money.
+            <span style={{ color: NEX.green }}>—</span> {promise.promise_line2}
           </p>
         </div>
       </main>
@@ -436,28 +253,34 @@ export default function TermsPage() {
 }
 
 /* --------------------------------------------------------------------- *
- * Sub-components                                                        *
+ * Term section renderer                                                 *
  * --------------------------------------------------------------------- */
 
 function TermSection({
-  num,
-  title,
-  tone = "default",
-  children,
+  meta,
+  tone,
 }: {
-  num: string;
-  title: string;
-  tone?: "default" | "critical" | "ok";
-  children: React.ReactNode;
+  meta: {
+    badge: string;
+    title: string;
+    body_html: string;
+    tone?: "critical" | "ok";
+  };
+  tone?: "critical" | "ok";
 }) {
+  const effective = tone ?? meta.tone ?? "default";
   const border =
-    tone === "critical"
+    effective === "critical"
       ? "rgba(255,51,85,0.30)"
-      : tone === "ok"
+      : effective === "ok"
         ? "rgba(22,214,107,0.30)"
         : NEX.border;
   const eyebrow =
-    tone === "critical" ? NEX.red : tone === "ok" ? NEX.green : NEX.cyan;
+    effective === "critical"
+      ? NEX.red
+      : effective === "ok"
+        ? NEX.green
+        : NEX.cyan;
   return (
     <section
       style={{
@@ -478,7 +301,7 @@ function TermSection({
           marginBottom: 4,
         }}
       >
-        Section {num}
+        {meta.badge}
       </div>
       <h2
         style={{
@@ -490,7 +313,7 @@ function TermSection({
           letterSpacing: "-0.005em",
         }}
       >
-        {title}
+        {meta.title}
       </h2>
       <div
         style={{
@@ -498,17 +321,8 @@ function TermSection({
           lineHeight: 1.65,
           color: "rgba(244,247,252,0.88)",
         }}
-      >
-        {children}
-      </div>
+        dangerouslySetInnerHTML={{ __html: meta.body_html }}
+      />
     </section>
   );
 }
-
-const ulStyle: React.CSSProperties = {
-  margin: "8px 0 12px",
-  padding: "0 0 0 20px",
-  fontSize: 14,
-  lineHeight: 1.7,
-  color: "rgba(244,247,252,0.88)",
-};

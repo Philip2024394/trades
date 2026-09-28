@@ -38,7 +38,7 @@ import {
   createVariantAction,
   deleteVariantAction,
   updateProductSkuAction,
-  updateProductStockStatusAction,
+  updateProductStockStatusFromManageAction,
   updateProductTagsAction,
 } from "../_actions";
 import { SubmitButton } from "../_submit-button";
@@ -753,7 +753,7 @@ export default async function Page({ searchParams }: PageProps) {
                 </form>
 
                 <form
-                  action={updateProductStockStatusAction}
+                  action={updateProductStockStatusFromManageAction}
                   className="mt-3 rounded border border-neutral-200 bg-neutral-50 p-2"
                 >
                   <input type="hidden" name="product_id" value={p.id} />

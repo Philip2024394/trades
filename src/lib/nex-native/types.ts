@@ -66,6 +66,11 @@ export interface NexAccountRow {
    *  safe-trade-consent-service and can re-prompt anyone on an old
    *  version. */
   safe_trade_consent_version: string | null;
+  /** Bridge 16d · user locale preference · migration 071. NULL
+   *  means "no preference" · resolveLocale() falls back to
+   *  Accept-Language + Indonesian market default. Values: 'id',
+   *  'en'. Updated via updateAccountLocaleAction. */
+  locale: string | null;
   created_at: NexTimestamp;
 }
 

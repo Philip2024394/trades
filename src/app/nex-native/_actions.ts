@@ -28,6 +28,7 @@ import * as businessService from "@/lib/nex-native/business-service";
 import * as productService from "@/lib/nex-native/product-service";
 import * as menuService from "@/lib/nex-native/menu-service";
 import * as safeTradeConsentService from "@/lib/nex-native/safe-trade-consent-service";
+import * as reportService from "@/lib/nex-native/report-service";
 import * as orderService from "@/lib/nex-native/order-service";
 import * as commerceService from "@/lib/nex-native/commerce-service";
 import * as accountService from "@/lib/nex-native/account-service";
@@ -688,6 +689,108 @@ export async function updateBusinessCategoryAndKeywordsAction(
     "/nex-native/manage/shop?e=category_ok&m=" +
       encodeURIComponent("Category and keywords updated"),
   );
+}
+
+/** Bridge 16d · file a report against another user (scam,
+ *  harassment, prohibited goods, etc.). Snapshots the peer
+ *  conversation into chat_snapshot so evidence survives even if
+ *  the reported party later deletes messages. Called by the
+ *  report modal in the peer chat 3-dot menu. */
+export async function reportUserAction(
+  reportedAccountId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+  if (reportedAccountId === session.account.id) {
+    redirect(
+      "/nex-native/support?topic=report&report_error=" +
+        encodeURIComponent("You cannot report yourself"),
+    );
+  }
+
+  const reasonRaw = String(formData.get("reason") ?? "").trim();
+  const note = String(formData.get("note") ?? "").trim();
+  const backHref =
+    String(formData.get("back") ?? "").trim() ||
+    `/nex-native/chat/peer/${reportedAccountId}`;
+  const isBackSafe =
+    backHref.startsWith("/nex-native/") && !backHref.includes("?e=");
+  const safeBack = isBackSafe
+    ? backHref
+    : `/nex-native/chat/peer/${reportedAccountId}`;
+
+  if (
+    !(reportService.NEX_REPORT_REASONS as readonly string[]).includes(
+      reasonRaw,
+    )
+  ) {
+    redirect(
+      safeBack +
+        (safeBack.includes("?") ? "&" : "?") +
+        "report_error=" +
+        encodeURIComponent("Please choose a reason"),
+    );
+  }
+
+  try {
+    await reportService.createReport({
+      reporterAccountId: session.account.id,
+      reportedAccountId,
+      reason: reasonRaw as reportService.NexReportReason,
+      note: note || null,
+    });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      safeBack +
+        (safeBack.includes("?") ? "&" : "?") +
+        "report_error=" +
+        encodeURIComponent(msg),
+    );
+  }
+
+  redirect(
+    safeBack +
+      (safeBack.includes("?") ? "&" : "?") +
+      "report_ok=1",
+  );
+}
+
+/** Bridge 16d · update the signed-in user's locale preference.
+ *  Called from Settings and from an inline language toggle on
+ *  legal-facing pages. Falls back to the /settings surface after
+ *  write. */
+export async function updateAccountLocaleAction(
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const localeRaw = String(formData.get("locale") ?? "").trim();
+  const nextHref = String(formData.get("next") ?? "").trim();
+  const safeNext =
+    nextHref.startsWith("/nex-native/") && !nextHref.includes("?e=")
+      ? nextHref
+      : "/nex-native/settings/language";
+
+  const locale: "id" | "en" | null =
+    localeRaw === "id" || localeRaw === "en" ? localeRaw : null;
+
+  try {
+    await accountService.updateAccountLocale(session.account.id, locale);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      safeNext +
+        (safeNext.includes("?") ? "&" : "?") +
+        "locale_error=" +
+        encodeURIComponent(msg),
+    );
+  }
+
+  revalidatePath(safeNext);
+  redirect(safeNext);
 }
 
 /** Bridge 16b · record the buyer's/seller's acknowledgement of the
@@ -1534,7 +1637,12 @@ export async function updateProductTagsAction(formData: FormData): Promise<never
   redirectToManageWithBanner("tags_updated", product.name);
 }
 
-export async function updateProductStockStatusAction(formData: FormData): Promise<never> {
+/** Legacy Slice-6 stock-status action · takes product_id from the
+ *  FormData rather than the bound-id signature. Renamed 2026-09-28
+ *  to unblock a duplicate-export error introduced by Bridge 13's
+ *  bound-id equivalent. Kept live because /manage/page.tsx still
+ *  uses this form shape. */
+export async function updateProductStockStatusFromManageAction(formData: FormData): Promise<never> {
   const productId = String(formData.get("product_id") ?? "").trim();
   const raw = String(formData.get("stock_status") ?? "").trim();
   const clearing = raw === "" || raw === "none";
