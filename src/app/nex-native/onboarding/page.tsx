@@ -178,6 +178,35 @@ export default async function Page({ searchParams }: PageProps) {
             </label>
 
             <label className="mb-3 block text-xs text-neutral-600">
+              City / neighbourhood
+              <input
+                type="text"
+                name="city"
+                maxLength={80}
+                placeholder="e.g. Jakarta Selatan, Bandung, Ubud"
+                className="mt-1 block min-h-[44px] w-full rounded border border-neutral-300 px-2 py-2 text-sm"
+              />
+              <span className="mt-1 block text-xs text-neutral-500">
+                shown on your About page so buyers know where you are
+              </span>
+            </label>
+
+            <label className="mb-3 block text-xs text-neutral-600">
+              Opening hours
+              <input
+                type="text"
+                name="hours_display"
+                maxLength={200}
+                placeholder="e.g. Mon-Sat 9am-6pm · closed Sunday"
+                className="mt-1 block min-h-[44px] w-full rounded border border-neutral-300 px-2 py-2 text-sm"
+              />
+              <span className="mt-1 block text-xs text-neutral-500">
+                buyers see exactly what you type · leave blank if you
+                prefer not to publish hours
+              </span>
+            </label>
+
+            <label className="mb-3 block text-xs text-neutral-600">
               First product name
               <input
                 required

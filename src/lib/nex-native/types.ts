@@ -271,6 +271,14 @@ export interface NexBusinessRow {
    *  from /manage/shop. Doctrine: NEX never handles payments · buyer
    *  is always safe. */
   accepted_payment_methods: string[];
+  /** Bridge 16e · single-line city / neighbourhood · migration 072.
+   *  Shown on the About panel with a 📍 pin. Free-text 1-80 chars
+   *  when set. Directory facet reads this via lower(city) index. */
+  city: string | null;
+  /** Bridge 16e · human-readable opening hours · migration 072.
+   *  Free-text 0-200 chars ("Mon-Sat 9am-6pm · closed Sunday").
+   *  Complements the structured nex_business.hours JSONB. */
+  hours_display: string | null;
   /** Bridge 13 · Responsiveness signals · migration 063.
    *  last_seller_activity_at drives the graduated status badge on
    *  every shop landing (active · slow · away · archived). Bumped

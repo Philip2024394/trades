@@ -41,6 +41,10 @@ interface Props {
    *  section in the About overlay. Every field is optional at the
    *  render layer · empty rows just don't render. */
   sellerDetails: SellerDetails;
+  /** Bridge 16e · single-line city / neighbourhood · migration 072. */
+  city?: string | null;
+  /** Bridge 16e · free-text opening hours · migration 072. */
+  hoursDisplay?: string | null;
 }
 
 export interface SellerDetails {
@@ -64,6 +68,8 @@ export function HeroSidePanel({
   paymentInstructions,
   marketReach,
   sellerDetails,
+  city,
+  hoursDisplay,
 }: Props) {
   const [open, setOpen] = React.useState<PanelKind | null>(null);
   const [mounted, setMounted] = React.useState(false);
@@ -157,6 +163,8 @@ export function HeroSidePanel({
                 address={address}
                 marketReach={marketReach}
                 sellerDetails={sellerDetails}
+                city={city ?? null}
+                hoursDisplay={hoursDisplay ?? null}
               />
             )}
             {open === "order" && (
@@ -559,12 +567,16 @@ function AboutContent({
   address,
   marketReach,
   sellerDetails,
+  city,
+  hoursDisplay,
 }: {
   businessName: string;
   businessDescription: string | null;
   address: string | null;
   marketReach: "both" | "export_only" | "local_only";
   sellerDetails: SellerDetails;
+  city: string | null;
+  hoursDisplay: string | null;
 }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -580,15 +592,43 @@ function AboutContent({
         >
           {businessName}
         </h3>
-        {address && (
+        {(city || address) && (
           <div
             style={{
               fontSize: 12,
               color: NEX.textDim,
               letterSpacing: "0.02em",
+              display: "flex",
+              flexDirection: "column",
+              gap: 4,
+              marginTop: 4,
             }}
           >
-            📍 {address}
+            {city && (
+              <div>
+                📍 <b style={{ color: "rgba(244,247,252,0.92)" }}>{city}</b>
+              </div>
+            )}
+            {address && !city && <div>📍 {address}</div>}
+            {address && city && (
+              <div style={{ opacity: 0.75 }}>{address}</div>
+            )}
+          </div>
+        )}
+        {hoursDisplay && (
+          <div
+            style={{
+              marginTop: 8,
+              fontSize: 12,
+              color: NEX.textDim,
+              letterSpacing: "0.02em",
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 6,
+            }}
+          >
+            <span aria-hidden>⏰</span>
+            <span>{hoursDisplay}</span>
           </div>
         )}
       </div>

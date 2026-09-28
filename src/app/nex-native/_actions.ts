@@ -793,6 +793,50 @@ export async function updateAccountLocaleAction(
   redirect(safeNext);
 }
 
+/** Bridge 16e · update the seller's city + free-text opening
+ *  hours. Called by the "About page" section on /manage/shop. */
+export async function updateBusinessCityAndHoursAction(
+  businessId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const business = await businessService.getBusinessById(businessId);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirect(
+      "/nex-native/manage/shop?e=about_forbidden&m=" +
+        encodeURIComponent("You don't own this shop"),
+    );
+  }
+
+  const cityInput = String(formData.get("city") ?? "").trim();
+  const hoursDisplayInput = String(formData.get("hours_display") ?? "").trim();
+
+  try {
+    await businessService.updateBusinessCityAndHours(businessId, {
+      city: cityInput.length > 0 ? cityInput : null,
+      hoursDisplay:
+        hoursDisplayInput.length > 0 ? hoursDisplayInput : null,
+    });
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      "/nex-native/manage/shop?e=about_failed&m=" + encodeURIComponent(msg),
+    );
+  }
+
+  revalidatePath("/nex-native/manage/shop");
+  revalidatePath(`/nex-native/${business.slug}`);
+  redirect(
+    "/nex-native/manage/shop?e=about_ok&m=" +
+      encodeURIComponent("About page updated"),
+  );
+}
+
 /** Bridge 16b · record the buyer's/seller's acknowledgement of the
  *  NEX safe-trade doctrine + terms. Called by the JIT modal on
  *  first commerce chat entry. Stamps
@@ -1128,6 +1172,9 @@ export async function createBusinessAction(formData: FormData): Promise<never> {
   const slug = String(formData.get("slug") ?? "").trim().toLowerCase();
   const productName = String(formData.get("product_name") ?? "").trim();
   const priceRaw = String(formData.get("product_price_gbp") ?? "").trim();
+  // Bridge 16e · optional profile fields collected during shop create.
+  const cityInput = String(formData.get("city") ?? "").trim();
+  const hoursDisplayInput = String(formData.get("hours_display") ?? "").trim();
 
   const session = await resolveNexAppSessionFromContext();
   if (!session) {
@@ -1191,6 +1238,23 @@ export async function createBusinessAction(formData: FormData): Promise<never> {
       display_name: displayName,
       slug,
     });
+    // Bridge 16e · stash the two optional profile fields right after
+    // create · silent if either is blank · non-blocking failure.
+    if (cityInput.length > 0 || hoursDisplayInput.length > 0) {
+      try {
+        await businessService.updateBusinessCityAndHours(business.id, {
+          city: cityInput.length > 0 ? cityInput : null,
+          hoursDisplay:
+            hoursDisplayInput.length > 0 ? hoursDisplayInput : null,
+        });
+      } catch (persistErr) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          "createBusinessAction · city/hours soft-fail:",
+          persistErr,
+        );
+      }
+    }
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     const looksLikeSlugCollision =

@@ -319,6 +319,8 @@ export default async function Page({
           businessName={business.display_name}
           businessDescription={business.description ?? null}
           address={business.address ?? null}
+          city={business.city ?? null}
+          hoursDisplay={business.hours_display ?? null}
           acceptsCod={!!business.accepts_cod}
           acceptsPickup={!!business.accepts_pickup}
           paymentInstructions={business.payment_instructions ?? null}

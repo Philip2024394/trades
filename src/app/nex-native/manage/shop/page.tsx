@@ -24,6 +24,7 @@ import {
   updateProductTurnaroundAction,
   updateBusinessCategoryAndKeywordsAction,
   updateBusinessPaymentMethodsAction,
+  updateBusinessCityAndHoursAction,
 } from "../../_actions";
 import { NEX_BUSINESS_CATEGORIES } from "@/lib/nex-native/site-templates";
 import {
@@ -151,6 +152,10 @@ export default async function ShopSettingsPage({
     business.id,
   );
   const paymentsBound = updateBusinessPaymentMethodsAction.bind(
+    null,
+    business.id,
+  );
+  const cityHoursBound = updateBusinessCityAndHoursAction.bind(
     null,
     business.id,
   );
@@ -484,6 +489,59 @@ export default async function ShopSettingsPage({
               />
             </FormRow>
             <SubmitButton label="Save category & keywords" tone="primary" />
+          </form>
+        </SectionCard>
+
+        {/* --- About page · city + opening hours (Bridge 16e) ------ */}
+        <SectionCard>
+          <SectionEyebrow color={NEX.cyan}>About page</SectionEyebrow>
+          <h2
+            style={{
+              margin: "6px 0 6px",
+              fontSize: 18,
+              fontWeight: 700,
+              letterSpacing: "-0.005em",
+            }}
+          >
+            City &amp; opening hours
+          </h2>
+          <p
+            style={{
+              margin: "0 0 16px",
+              fontSize: 13,
+              lineHeight: 1.55,
+              color: NEX.textDim,
+            }}
+          >
+            Buyers see both on your About page. City helps local
+            buyers know if they can meet or COD · opening hours set
+            expectations for when to expect a reply.
+          </p>
+          <form
+            action={cityHoursBound}
+            style={{ display: "flex", flexDirection: "column", gap: 12 }}
+          >
+            <FormRow label="City / neighbourhood">
+              <input
+                type="text"
+                name="city"
+                defaultValue={business.city ?? ""}
+                maxLength={80}
+                placeholder="e.g. Jakarta Selatan, Bandung, Ubud"
+                style={inputStyle}
+              />
+            </FormRow>
+            <FormRow label="Opening hours (single line)">
+              <input
+                type="text"
+                name="hours_display"
+                defaultValue={business.hours_display ?? ""}
+                maxLength={200}
+                placeholder="e.g. Mon-Sat 9am-6pm · closed Sunday"
+                style={inputStyle}
+              />
+            </FormRow>
+            <SubmitButton label="Save About page" tone="primary" />
           </form>
         </SectionCard>
 

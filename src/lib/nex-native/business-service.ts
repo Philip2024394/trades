@@ -400,6 +400,45 @@ export const NEX_PAYMENT_METHOD_META: Record<
   },
 };
 
+/** Bridge 16e · update the seller's city + human-readable opening
+ *  hours. Both are optional · pass null to clear. */
+export async function updateBusinessCityAndHours(
+  id: NexUuid,
+  input: { city?: string | null; hoursDisplay?: string | null },
+): Promise<NexBusinessRow> {
+  const patch: Record<string, string | null> = {};
+  if (input.city !== undefined) {
+    const v = (input.city ?? "").trim();
+    if (v.length > 0 && (v.length < 1 || v.length > 80)) {
+      throw new Error(
+        `business-service.updateBusinessCityAndHours: city must be 1-80 chars`,
+      );
+    }
+    patch.city = v.length > 0 ? v : null;
+  }
+  if (input.hoursDisplay !== undefined) {
+    const v = (input.hoursDisplay ?? "").trim();
+    if (v.length > 200) {
+      throw new Error(
+        `business-service.updateBusinessCityAndHours: hours_display max 200 chars`,
+      );
+    }
+    patch.hours_display = v.length > 0 ? v : null;
+  }
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_business")
+    .update(patch)
+    .eq("id", id)
+    .select("*")
+    .single();
+  if (error || !data) {
+    throw new Error(
+      `business-service.updateBusinessCityAndHours: ${error?.message ?? "no row"}`,
+    );
+  }
+  return data as NexBusinessRow;
+}
+
 /** Bridge 16a · update the seller's accepted payment methods.
  *  Validates every value against NEX_PAYMENT_METHODS and enforces
  *  at least one selection (cod fallback). */
