@@ -17,7 +17,6 @@
 
 import type * as React from "react";
 import { PinkDreamComposer } from "./_composer";
-import { PinkDreamBottomTabs } from "./_bottom-tabs";
 import { PinkDreamPeerHeader } from "./_peer-menu";
 
 export const dynamic = "force-static";
@@ -408,10 +407,6 @@ export default function PinkDreamPreviewPage() {
          per Founder direction 2026-09-28. */}
       <PinkDreamComposer />
 
-      {/* Bridge 24ab · standard native-messenger bottom tabs ·
-         Chats · Discover · Cart · Profile · replaces the retired
-         right-side floating rail. Cart carries a pink badge. */}
-      <PinkDreamBottomTabs activeKey="chats" cartCount={3} />
     </div>
   );
 }
