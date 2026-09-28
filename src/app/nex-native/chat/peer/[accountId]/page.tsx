@@ -345,6 +345,14 @@ export default async function PeerChatPage({
         m.attachment_meta.menu_item
           ? m.attachment_meta.menu_item
           : null,
+      attachment_cart:
+        m.attachment_type === "cart_order" &&
+        m.attachment_meta &&
+        typeof m.attachment_meta === "object" &&
+        "cart" in m.attachment_meta &&
+        m.attachment_meta.cart
+          ? m.attachment_meta.cart
+          : null,
     };
   });
 

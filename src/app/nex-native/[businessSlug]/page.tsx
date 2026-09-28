@@ -28,11 +28,17 @@ import * as productService from "@/lib/nex-native/product-service";
 import * as menuService from "@/lib/nex-native/menu-service";
 import * as sellerResponsivenessService from "@/lib/nex-native/seller-responsiveness-service";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
+import { isMenuFirstCategory } from "@/lib/nex-native/site-templates";
 import { HeroSidePanel } from "./_hero-side-panel";
 import { FloatingChatButton } from "./_floating-chat-button";
 import { toggleLikeProductAction } from "../_actions";
+import { AddToCartButton } from "../_add-to-cart-button";
+import { FloatingCartPill } from "../_floating-cart-pill";
 
-const MENU_CATEGORIES = new Set(["restaurant", "cafe"]);
+// Bridge 22 · food + drink verticals are menu-first · we skip the
+// product-grid section for these entirely and render the full menu
+// with Add-to-cart buttons on the landing. All other categories
+// keep the product-grid landing.
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -86,7 +92,7 @@ export default async function Page({
 
   // Bridge 15a · restaurant/cafe menu · lifted to the top of the
   // landing when the shop is one of the menu categories.
-  const isMenuVertical = MENU_CATEGORIES.has(business.business_category ?? "");
+  const isMenuVertical = isMenuFirstCategory(business.business_category);
   const menuBundle = isMenuVertical
     ? await menuService
         .getMenuBundleForBusiness(business.id, { onlyLive: true })
@@ -339,26 +345,58 @@ export default async function Page({
         />
       </section>
 
-      {/* --- MENU PREVIEW (restaurant / cafe) ----------------------- */}
+      {/* --- FULL MENU on landing (food + drink verticals) --------- */}
       {isMenuVertical && menuBundle.totalItems > 0 && (
         <section
           style={{
             maxWidth: 720,
             margin: "0 auto",
             padding: "32px 20px 12px",
+            display: "flex",
+            flexDirection: "column",
+            gap: 24,
           }}
+          id="menu"
         >
-          <MenuPreviewCard
-            menuHref={menuHref}
-            totalItems={menuBundle.totalItems}
-            featuredItems={menuBundle.sections
-              .flatMap((s) => s.items)
-              .filter((it) => it.is_featured && it.is_available)
-              .slice(0, 3)}
-            sections={menuBundle.sections
-              .map((s) => s.section?.name ?? "Menu")
-              .slice(0, 5)}
-          />
+          <SectionHeading eyebrow="The menu" title="Order here" />
+          {menuBundle.sections.map((s, i) => (
+            <div key={s.section?.id ?? `unc-${i}`}>
+              <div
+                style={{
+                  fontSize: 11,
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  color: NEX.cyan,
+                  fontWeight: 700,
+                  marginBottom: 4,
+                }}
+              >
+                Section {i + 1}
+              </div>
+              <h3
+                style={{
+                  margin: 0,
+                  fontFamily: SERIF,
+                  fontSize: 24,
+                  lineHeight: 1.15,
+                  fontWeight: 500,
+                  letterSpacing: "-0.008em",
+                  marginBottom: 14,
+                }}
+              >
+                {s.section?.name ?? "Menu"}
+              </h3>
+              <div style={{ display: "grid", gap: 12 }}>
+                {s.items.map((it) => (
+                  <MenuDishAddRow
+                    key={it.id}
+                    dish={it}
+                    business={business}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
         </section>
       )}
       {isMenuVertical && menuBundle.totalItems === 0 && (
@@ -392,8 +430,8 @@ export default async function Page({
         </section>
       )}
 
-      {/* --- PRODUCTS ------------------------------------------------ */}
-      {products.length > 0 && (
+      {/* --- PRODUCTS · skipped for menu-first shops ---------------- */}
+      {!isMenuVertical && products.length > 0 && (
         <section
           id="products"
           style={{
@@ -421,13 +459,33 @@ export default async function Page({
                 shareHref={`/nex-native/share?product=${p.id}&back=${encodeURIComponent(`/nex-native/${business.slug}`)}`}
                 likeAction={toggleLikeProductAction.bind(null, p.id)}
                 likeBackHref={`/nex-native/${business.slug}`}
+                addToCart={
+                  <AddToCartButton
+                    compact
+                    tone="ghost"
+                    label="+ Add to cart"
+                    item={{
+                      kind: "product",
+                      id: p.id,
+                      shop_id: business.id,
+                      shop_slug: business.slug ?? "",
+                      shop_owner_account_id: business.owner_account_id,
+                      shop_display_name: business.display_name,
+                      name: p.name,
+                      price_pence: p.price_pence,
+                      currency: p.currency,
+                      image_url: p.image_url,
+                      variants: [],
+                    }}
+                  />
+                }
               />
             ))}
           </div>
         </section>
       )}
 
-      {products.length === 0 && (
+      {!isMenuVertical && products.length === 0 && (
         <section
           style={{
             maxWidth: 720,
@@ -576,7 +634,209 @@ export default async function Page({
         sellerFirstName={sellerFirstName}
         isOwnerViewing={isOwnerViewing}
       />
+      {/* Bridge 22 · Floating cart pill · visible whenever the cart
+          has items · centered bottom · above the chat button in
+          z-order. */}
+      <FloatingCartPill />
     </div>
+  );
+}
+
+/* --------------------------------------------------------------------- *
+ * Bridge 22 · Menu dish row on the menu-first landing                    *
+ * --------------------------------------------------------------------- */
+
+function MenuDishAddRow({
+  dish,
+  business,
+}: {
+  dish: import("@/lib/nex-native/menu-service").NexMenuItemRow;
+  business: import("@/lib/nex-native/types").NexBusinessRow;
+}) {
+  const unavailable = !dish.is_available;
+  const priceIdr = Math.round(dish.price_pence / 100).toLocaleString();
+  const spice =
+    dish.spice_level > 0 ? "🌶".repeat(dish.spice_level) : null;
+  return (
+    <article
+      style={{
+        display: "grid",
+        gridTemplateColumns: "96px 1fr auto",
+        gap: 14,
+        padding: 12,
+        borderRadius: 16,
+        background: dish.is_featured
+          ? "rgba(255,114,0,0.05)"
+          : NEX.panelSoft,
+        border: dish.is_featured
+          ? `1px solid ${NEX.orangeSoft}`
+          : `1px solid ${NEX.border}`,
+        opacity: unavailable ? 0.6 : 1,
+      }}
+    >
+      <div
+        style={{
+          width: 96,
+          height: 96,
+          borderRadius: 10,
+          background: dish.image_url
+            ? `url(${dish.image_url}) center/cover`
+            : "rgba(139,169,209,0.08)",
+          border: `1px solid ${NEX.border}`,
+        }}
+        aria-hidden
+      />
+      <div style={{ minWidth: 0 }}>
+        {dish.is_featured && (
+          <div
+            style={{
+              fontSize: 9,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: NEX.orange,
+              fontWeight: 800,
+              marginBottom: 4,
+            }}
+          >
+            ★ House special
+          </div>
+        )}
+        <div
+          style={{
+            fontFamily: SERIF,
+            fontSize: 20,
+            fontWeight: 500,
+            letterSpacing: "-0.005em",
+            lineHeight: 1.15,
+            marginBottom: 4,
+          }}
+        >
+          {dish.name}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 5,
+            marginBottom: 6,
+          }}
+        >
+          {spice && (
+            <span
+              style={{
+                fontSize: 10,
+                padding: "2px 8px",
+                borderRadius: 999,
+                background: "rgba(255,90,60,0.14)",
+                color: "#FF9A80",
+              }}
+            >
+              {spice}
+            </span>
+          )}
+          {dish.dietary_tags.slice(0, 3).map((t) => (
+            <span
+              key={t}
+              style={{
+                fontSize: 10,
+                padding: "2px 8px",
+                borderRadius: 999,
+                background: "rgba(22,214,107,0.14)",
+                color: "#4EE38A",
+              }}
+            >
+              {t}
+            </span>
+          ))}
+          {dish.portion_note && (
+            <span
+              style={{
+                fontSize: 10,
+                padding: "2px 8px",
+                borderRadius: 999,
+                background: "rgba(139,169,209,0.10)",
+                color: NEX.textDim,
+              }}
+            >
+              🍽 {dish.portion_note}
+            </span>
+          )}
+        </div>
+        {dish.description && (
+          <p
+            style={{
+              margin: 0,
+              fontSize: 13,
+              lineHeight: 1.5,
+              color: "rgba(244,247,252,0.85)",
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            }}
+          >
+            {dish.description}
+          </p>
+        )}
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-end",
+          gap: 8,
+          justifyContent: "space-between",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 16,
+            fontWeight: 800,
+            color: NEX.orange,
+            letterSpacing: "0.01em",
+            whiteSpace: "nowrap",
+          }}
+        >
+          Rp {priceIdr}
+        </div>
+        {unavailable ? (
+          <span
+            style={{
+              fontSize: 9,
+              padding: "4px 10px",
+              borderRadius: 999,
+              background: "rgba(255,51,85,0.10)",
+              border: "1px solid rgba(255,51,85,0.35)",
+              color: "#FF7A85",
+              letterSpacing: "0.10em",
+              textTransform: "uppercase",
+              fontWeight: 700,
+              whiteSpace: "nowrap",
+            }}
+          >
+            Sold out
+          </span>
+        ) : (
+          <AddToCartButton
+            compact
+            item={{
+              kind: "menu_item",
+              id: dish.id,
+              shop_id: business.id,
+              shop_slug: business.slug ?? "",
+              shop_owner_account_id: business.owner_account_id,
+              shop_display_name: business.display_name,
+              name: dish.name,
+              price_pence: dish.price_pence,
+              currency: dish.currency,
+              image_url: dish.image_url,
+              variants: [],
+            }}
+            label="+ Add"
+          />
+        )}
+      </div>
+    </article>
   );
 }
 
@@ -705,6 +965,7 @@ function ProductSpread({
   shareHref,
   likeAction,
   likeBackHref,
+  addToCart,
 }: {
   name: string;
   description: string | null;
@@ -727,6 +988,10 @@ function ProductSpread({
    *  by the action's guard. */
   likeAction?: (formData: FormData) => Promise<never> | void;
   likeBackHref?: string;
+  /** Bridge 22 · optional add-to-cart client button rendered next
+   *  to More info. Pre-configured by the caller (has all product
+   *  fields it needs to persist into localStorage). */
+  addToCart?: React.ReactNode;
 }) {
   return (
     <article
@@ -940,25 +1205,34 @@ function ProductSpread({
         >
           {price}
         </div>
-        <Link
-          href={detailHref}
+        <div
           style={{
-            display: "block",
-            padding: "12px 14px",
-            borderRadius: 12,
-            background: "rgba(0,175,255,0.16)",
-            border: `1px solid ${NEX.cyanSoft}`,
-            color: NEX.text,
-            fontSize: 12,
-            fontWeight: 700,
-            letterSpacing: "0.04em",
-            textTransform: "uppercase",
-            textDecoration: "none",
-            textAlign: "center",
+            display: "grid",
+            gridTemplateColumns: addToCart ? "1fr auto" : "1fr",
+            gap: 10,
           }}
         >
-          More info →
-        </Link>
+          <Link
+            href={detailHref}
+            style={{
+              display: "block",
+              padding: "12px 14px",
+              borderRadius: 12,
+              background: "rgba(0,175,255,0.16)",
+              border: `1px solid ${NEX.cyanSoft}`,
+              color: NEX.text,
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              textDecoration: "none",
+              textAlign: "center",
+            }}
+          >
+            More info →
+          </Link>
+          {addToCart}
+        </div>
       </div>
     </article>
   );

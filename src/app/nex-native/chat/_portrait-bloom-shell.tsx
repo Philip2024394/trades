@@ -74,7 +74,14 @@ export interface PortraitBloomMessage {
   /** Bridge 8+9+11 · optional attachment · photo, video, voice
    *  note, or a peer product card · rendered inline above the body. */
   attachment_url?: string | null;
-  attachment_type?: "image" | "video" | "audio" | "product" | "menu_item" | null;
+  attachment_type?:
+    | "image"
+    | "video"
+    | "audio"
+    | "product"
+    | "menu_item"
+    | "cart_order"
+    | null;
   /** Bridge 11 · when attachment_type='product' this carries the
    *  frozen product snapshot so the card renders correctly even if
    *  the underlying product is later edited or deleted. */
@@ -104,6 +111,29 @@ export interface PortraitBloomMessage {
     spice_level: number;
     dietary_tags: string[];
     portion_note: string | null;
+  } | null;
+  /** Bridge 22 · when attachment_type='cart_order' this carries the
+   *  full cart snapshot · list of items + qty + variants + notes +
+   *  subtotal. Rendered as MessageCartOrderCard in the bubble. */
+  attachment_cart?: {
+    shop_id: string;
+    shop_slug: string | null;
+    shop_display_name: string;
+    items: Array<{
+      kind: "product" | "menu_item";
+      id: string;
+      name: string;
+      price_pence: number;
+      currency: string;
+      quantity: number;
+      variants: string[];
+      note: string | null;
+      image_url: string | null;
+    }>;
+    buyer_notes: string | null;
+    subtotal_pence: number;
+    currency: string;
+    item_count: number;
   } | null;
 }
 
@@ -979,6 +1009,13 @@ export function PortraitBloomShell({
                           hasBody={!!m.body}
                           accent={bubbleRim}
                         />
+                      ) : m.attachment_type === "cart_order" &&
+                        m.attachment_cart ? (
+                        <MessageCartOrderCard
+                          cart={m.attachment_cart}
+                          hasBody={!!m.body}
+                          accent={bubbleRim}
+                        />
                       ) : m.attachment_url &&
                         (m.attachment_type === "image" ||
                           m.attachment_type === "video" ||
@@ -1649,6 +1686,235 @@ function MessageMenuItemCard({
     );
   }
   return <div style={shared}>{inner}</div>;
+}
+
+function MessageCartOrderCard({
+  cart,
+  hasBody,
+  accent,
+}: {
+  cart: NonNullable<PortraitBloomMessage["attachment_cart"]>;
+  hasBody: boolean;
+  accent: string;
+}) {
+  const marginBottom = hasBody ? 8 : 0;
+  const subtotal = formatBubblePrice(cart.subtotal_pence, cart.currency);
+  const href = cart.shop_slug ? `/nex-native/${cart.shop_slug}` : null;
+  return (
+    <div
+      style={{
+        display: "block",
+        width: "100%",
+        boxSizing: "border-box",
+        marginBottom,
+        borderRadius: 14,
+        overflow: "hidden",
+        background: "rgba(0,0,0,0.42)",
+        border: `1px solid ${accent}55`,
+      }}
+    >
+      {/* Header · shop identity + order badge */}
+      <div
+        style={{
+          padding: "10px 12px",
+          borderBottom: `1px solid rgba(139,169,209,0.15)`,
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+        }}
+      >
+        <span
+          style={{
+            fontSize: 9,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: accent,
+            fontWeight: 800,
+            padding: "3px 8px",
+            borderRadius: 999,
+            background: `${accent}20`,
+          }}
+        >
+          🛒 Order
+        </span>
+        <span
+          style={{
+            fontSize: 12,
+            fontWeight: 700,
+            letterSpacing: "-0.003em",
+            color: "#F4F7FC",
+            minWidth: 0,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            flex: 1,
+          }}
+        >
+          {cart.shop_display_name}
+        </span>
+      </div>
+      {/* Items · one line each */}
+      <div style={{ padding: "8px 10px" }}>
+        {cart.items.map((it, i) => (
+          <div
+            key={i}
+            style={{
+              display: "grid",
+              gridTemplateColumns: "auto 1fr auto",
+              gap: 8,
+              alignItems: "flex-start",
+              padding: "6px 0",
+              borderBottom:
+                i < cart.items.length - 1
+                  ? "1px solid rgba(139,169,209,0.10)"
+                  : "none",
+            }}
+          >
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 800,
+                color: "#FF7800",
+                paddingTop: 1,
+                minWidth: 20,
+              }}
+            >
+              {it.quantity}×
+            </span>
+            <div style={{ minWidth: 0 }}>
+              <div
+                style={{
+                  fontSize: 12,
+                  fontWeight: 700,
+                  color: "#F4F7FC",
+                  lineHeight: 1.3,
+                }}
+              >
+                {it.name}
+              </div>
+              {it.variants.length > 0 && (
+                <div
+                  style={{
+                    fontSize: 10,
+                    color: "rgba(139,169,209,0.85)",
+                    lineHeight: 1.35,
+                    marginTop: 1,
+                  }}
+                >
+                  {it.variants.join(" · ")}
+                </div>
+              )}
+              {it.note && (
+                <div
+                  style={{
+                    fontSize: 10,
+                    color: "#FFC96B",
+                    lineHeight: 1.35,
+                    marginTop: 2,
+                    fontStyle: "italic",
+                  }}
+                >
+                  “{it.note}”
+                </div>
+              )}
+            </div>
+            <span
+              style={{
+                fontSize: 11,
+                color: "rgba(244,247,252,0.75)",
+                whiteSpace: "nowrap",
+                paddingTop: 1,
+              }}
+            >
+              {formatBubblePrice(
+                it.price_pence * it.quantity,
+                it.currency,
+              )}
+            </span>
+          </div>
+        ))}
+      </div>
+      {/* Buyer note block */}
+      {cart.buyer_notes && (
+        <div
+          style={{
+            margin: "0 10px 8px",
+            padding: "8px 10px",
+            borderRadius: 10,
+            background: "rgba(255,201,107,0.10)",
+            border: "1px solid rgba(245,158,11,0.30)",
+            fontSize: 11,
+            lineHeight: 1.5,
+            color: "#FFE1A8",
+          }}
+        >
+          <span
+            style={{
+              fontSize: 9,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              fontWeight: 800,
+              color: "#FFC96B",
+              marginRight: 6,
+            }}
+          >
+            Note
+          </span>
+          {cart.buyer_notes}
+        </div>
+      )}
+      {/* Subtotal + shop link */}
+      <div
+        style={{
+          padding: "8px 12px 10px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 8,
+          background: "rgba(0,0,0,0.30)",
+        }}
+      >
+        <div>
+          <div
+            style={{
+              fontSize: 9,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: "rgba(139,169,209,0.85)",
+              fontWeight: 800,
+            }}
+          >
+            Subtotal · {cart.item_count} item{cart.item_count === 1 ? "" : "s"}
+          </div>
+          <div
+            style={{
+              fontSize: 14,
+              fontWeight: 800,
+              color: "#FF7800",
+              marginTop: 1,
+            }}
+          >
+            {subtotal}
+          </div>
+        </div>
+        {href && (
+          <a
+            href={href}
+            style={{
+              fontSize: 9,
+              letterSpacing: "0.10em",
+              textTransform: "uppercase",
+              color: "rgba(139,169,209,0.85)",
+              textDecoration: "none",
+              fontWeight: 700,
+            }}
+          >
+            See shop →
+          </a>
+        )}
+      </div>
+    </div>
+  );
 }
 
 function formatBubblePrice(pence: number, currency: string): string {

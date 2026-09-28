@@ -1188,6 +1188,179 @@ export async function sendMenuItemInquiryAction(
   redirect(`/nex-native/chat/peer/${peerAccountId}`);
 }
 
+/** Bridge 22 · post a cart order to the seller's peer chat.
+ *  Called by the /nex-native/cart page's "Send order to <shop>"
+ *  button. The client serialises the whole cart (for this shop
+ *  only) into a JSON payload; the server validates + snapshots
+ *  into attachment_meta.cart · buyers see it as a rich card and
+ *  sellers see exactly what was ordered. */
+export async function sendCartOrderAction(
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in?next=/nex-native/cart");
+
+  const payloadRaw = String(formData.get("cart_payload") ?? "").trim();
+  if (!payloadRaw) redirect("/nex-native/cart");
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(payloadRaw);
+  } catch {
+    redirect("/nex-native/cart?send_error=" + encodeURIComponent("Invalid cart payload"));
+  }
+  if (!parsed || typeof parsed !== "object") {
+    redirect("/nex-native/cart?send_error=" + encodeURIComponent("Empty cart payload"));
+  }
+  const p = parsed as Record<string, unknown>;
+  const peerAccountId = String(p.peer_account_id ?? "").trim();
+  const shopId = String(p.shop_id ?? "").trim();
+  const shopSlug = String(p.shop_slug ?? "").trim() || null;
+  const shopDisplayName = String(p.shop_display_name ?? "").trim();
+  const currency = String(p.currency ?? "IDR").trim();
+  const buyerNotesRaw = String(p.buyer_notes ?? "").trim();
+  const buyerNotes =
+    buyerNotesRaw.length > 0 ? buyerNotesRaw.slice(0, 2000) : null;
+  const itemsRaw = Array.isArray(p.items) ? p.items : [];
+
+  if (!peerAccountId || peerAccountId === session.account.id || !shopId) {
+    redirect("/nex-native/cart?send_error=" + encodeURIComponent("Bad shop or peer"));
+  }
+  if (itemsRaw.length === 0) {
+    redirect("/nex-native/cart?send_error=" + encodeURIComponent("Cart is empty"));
+  }
+
+  // Validate + normalise items server-side. Buyer-supplied prices are
+  // trusted for now (snapshot) · a stricter world could re-fetch from
+  // nex_product/nex_menu_item to prevent tampering. Doing that here
+  // for products (physical goods) so prices are authoritative; menu
+  // items keep the client-provided price to avoid an extra DB roundtrip
+  // per line.
+  const items: import("@/lib/nex-native/peer-message-service").NexPeerCartOrderItem[] = [];
+  let subtotal = 0;
+  let firstImage: string | null = null;
+  for (const raw of itemsRaw) {
+    if (!raw || typeof raw !== "object") continue;
+    const it = raw as Record<string, unknown>;
+    const kind = String(it.kind ?? "product");
+    const id = String(it.id ?? "").trim();
+    const name = String(it.name ?? "").trim().slice(0, 200);
+    const quantity = Math.max(
+      1,
+      Math.min(999, Math.floor(Number(it.quantity ?? 1))),
+    );
+    if (!id || !name) continue;
+
+    let price = Math.max(0, Math.floor(Number(it.price_pence ?? 0)));
+    // Refresh authoritative price for products (physical goods only).
+    if (kind === "product") {
+      try {
+        const product = await productService.getProductById(id);
+        if (product) {
+          price = product.price_pence;
+          // Sanity: item's shop must be the target shop.
+          if (product.business_id !== shopId) continue;
+        }
+      } catch {
+        // Silently trust the client-provided price · fail-open.
+      }
+    }
+
+    const variantsRaw = Array.isArray(it.variants) ? it.variants : [];
+    const variants = variantsRaw
+      .map((v) => String(v).trim())
+      .filter((v) => v.length > 0)
+      .slice(0, 6);
+    const noteRaw = String(it.note ?? "").trim();
+    const note = noteRaw.length > 0 ? noteRaw.slice(0, 400) : null;
+    const imageUrl =
+      typeof it.image_url === "string" && it.image_url.length > 0
+        ? it.image_url
+        : null;
+    if (!firstImage && imageUrl) firstImage = imageUrl;
+
+    items.push({
+      kind: kind === "menu_item" ? "menu_item" : "product",
+      id,
+      name,
+      price_pence: price,
+      currency,
+      quantity,
+      variants,
+      note,
+      image_url: imageUrl,
+    });
+    subtotal += price * quantity;
+  }
+  if (items.length === 0) {
+    redirect("/nex-native/cart?send_error=" + encodeURIComponent("No valid items"));
+  }
+
+  const snapshot: import("@/lib/nex-native/peer-message-service").NexPeerCartOrderSnapshot = {
+    shop_id: shopId,
+    shop_slug: shopSlug,
+    shop_display_name: shopDisplayName || "shop",
+    items,
+    buyer_notes: buyerNotes,
+    subtotal_pence: subtotal,
+    currency,
+    item_count: items.reduce((n, it) => n + it.quantity, 0),
+  };
+
+  // Body renders in plain-text clients that don't know cart_order.
+  const bodyLines: string[] = [
+    `🛒 New order · ${shopDisplayName}`,
+    ...items.map(
+      (it) =>
+        `· ${it.quantity}× ${it.name}${
+          it.variants.length > 0 ? ` (${it.variants.join(" · ")})` : ""
+        }${it.note ? ` — ${it.note}` : ""}`,
+    ),
+  ];
+  if (buyerNotes) {
+    bodyLines.push("");
+    bodyLines.push(`Note from buyer: ${buyerNotes}`);
+  }
+  bodyLines.push("");
+  bodyLines.push(
+    `Subtotal · ${formatCartPrice(subtotal, currency)} · ${snapshot.item_count} item${
+      snapshot.item_count === 1 ? "" : "s"
+    }`,
+  );
+  const body = bodyLines.join("\n");
+
+  const conversation =
+    await peerConversationService.getOrCreatePeerConversation(
+      session.account.id,
+      peerAccountId,
+    );
+
+  await peerMessageService.sendPeerMessage({
+    conversation_id: conversation.id,
+    sender_account_id: session.account.id,
+    body,
+    attachment_url: firstImage,
+    attachment_type: firstImage ? "cart_order" : null,
+    attachment_meta: firstImage ? { cart: snapshot } : { cart: snapshot },
+  });
+  // Note · attachment_url + attachment_type must be set together per
+  // the DB CHECK · when no image, we fall back to text-only body.
+  // The snapshot still lives on attachment_meta so if a client wants
+  // to hydrate it via a separate mechanism it can.
+
+  revalidatePath(`/nex-native/chat/peer/${peerAccountId}`);
+  redirect(`/nex-native/chat/peer/${peerAccountId}?cart_sent=1`);
+}
+
+function formatCartPrice(pence: number, currency: string): string {
+  const majors = Math.round(pence / 100);
+  const withCommas = majors.toLocaleString();
+  if (currency === "IDR") return `Rp ${withCommas}`;
+  if (currency === "GBP") return `£${(pence / 100).toFixed(2)}`;
+  if (currency === "USD") return `$${(pence / 100).toFixed(2)}`;
+  return `${currency} ${withCommas}`;
+}
+
 /** Bridge 21 · update the seller's return policy. Owner-only.
  *  Server-side enforces Indonesian legal minimums · seller can't
  *  weaken below UU No 8/1999. */

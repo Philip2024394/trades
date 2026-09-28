@@ -17,6 +17,8 @@ import { notFound } from "next/navigation";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as menuService from "@/lib/nex-native/menu-service";
 import { sendMenuItemInquiryAction } from "../../_actions";
+import { AddToCartButton } from "../../_add-to-cart-button";
+import { FloatingCartPill } from "../../_floating-cart-pill";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -276,6 +278,25 @@ export default async function Page({
                       item={it}
                       chatHref={chatHref}
                       dishInquiryAction={dishInquiryAction}
+                      cartAdd={
+                        <AddToCartButton
+                          compact
+                          label="+ Add to cart"
+                          item={{
+                            kind: "menu_item",
+                            id: it.id,
+                            shop_id: business.id,
+                            shop_slug: business.slug ?? "",
+                            shop_owner_account_id: business.owner_account_id,
+                            shop_display_name: business.display_name,
+                            name: it.name,
+                            price_pence: it.price_pence,
+                            currency: it.currency,
+                            image_url: it.image_url,
+                            variants: [],
+                          }}
+                        />
+                      }
                     />
                   ))}
                 </div>
@@ -320,6 +341,7 @@ export default async function Page({
           </Link>
         </div>
       </main>
+      <FloatingCartPill />
     </div>
   );
 }
@@ -385,10 +407,12 @@ function MenuDishCard({
   item,
   chatHref,
   dishInquiryAction,
+  cartAdd,
 }: {
   item: import("@/lib/nex-native/menu-service").NexMenuItemRow;
   chatHref: string;
   dishInquiryAction: (formData: FormData) => Promise<never>;
+  cartAdd?: React.ReactNode;
 }) {
   const unavailable = !item.is_available;
   return (
@@ -592,6 +616,9 @@ function MenuDishCard({
             in chat. Bridge 15c · fires sendMenuItemInquiryAction so
             the dish arrives in the peer chat as an inline card
             (mirrors Bridge 11 product inquiries). */}
+        {!unavailable && cartAdd && (
+          <div style={{ marginBottom: 8 }}>{cartAdd}</div>
+        )}
         {unavailable ? (
           <div
             aria-disabled

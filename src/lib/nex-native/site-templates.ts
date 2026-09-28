@@ -30,6 +30,10 @@ export const NEX_BUSINESS_CATEGORIES = [
   "bakery",
   "restaurant",
   "cafe",
+  "ice-cream",
+  "dessert-shop",
+  "drinks-shop",
+  "juice-bar",
   "tradesperson",
   "construction",
   "staircase-company",
@@ -48,6 +52,28 @@ export const NEX_BUSINESS_CATEGORIES = [
   "professional-service",
 ] as const;
 export type NexBusinessCategory = (typeof NEX_BUSINESS_CATEGORIES)[number];
+
+/** Bridge 22 · food + drink verticals get a menu-first landing
+ *  instead of the product-grid landing. Menu editor available
+ *  under /manage/menu · shopping cart line items are of kind
+ *  "menu_item" for these. */
+export const NEX_MENU_FIRST_CATEGORIES = [
+  "restaurant",
+  "cafe",
+  "bakery",
+  "ice-cream",
+  "dessert-shop",
+  "drinks-shop",
+  "juice-bar",
+] as const;
+export type NexMenuFirstCategory = (typeof NEX_MENU_FIRST_CATEGORIES)[number];
+
+export function isMenuFirstCategory(
+  category: string | null | undefined,
+): boolean {
+  if (!category) return false;
+  return (NEX_MENU_FIRST_CATEGORIES as readonly string[]).includes(category);
+}
 
 /** Primary purpose · the "WHAT is the primary purpose?" answer. */
 export const NEX_TEMPLATE_PURPOSES = [

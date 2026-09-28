@@ -55,7 +55,8 @@ export type NexPeerAttachmentKind =
   | "video"
   | "audio"
   | "product"
-  | "menu_item";
+  | "menu_item"
+  | "cart_order";
 
 export interface NexPeerAttachmentMeta {
   duration_ms?: number;
@@ -71,6 +72,34 @@ export interface NexPeerAttachmentMeta {
    *  dish captured at send time. Frozen so the card stays renderable
    *  even if the dish is later edited or deleted. */
   menu_item?: NexPeerMenuItemSnapshot;
+  /** Bridge 22 · when attachment_type='cart_order', a snapshot of
+   *  the entire cart at send time. Frozen prices + variant labels ·
+   *  the seller sees exactly what was ordered even if products are
+   *  later edited or archived. */
+  cart?: NexPeerCartOrderSnapshot;
+}
+
+export interface NexPeerCartOrderItem {
+  kind: "product" | "menu_item";
+  id: string;
+  name: string;
+  price_pence: number;
+  currency: string;
+  quantity: number;
+  variants: string[]; // human labels e.g. ["Black paint", "Body + Summicron"]
+  note: string | null;
+  image_url: string | null;
+}
+
+export interface NexPeerCartOrderSnapshot {
+  shop_id: string;
+  shop_slug: string | null;
+  shop_display_name: string;
+  items: NexPeerCartOrderItem[];
+  buyer_notes: string | null;
+  subtotal_pence: number;
+  currency: string;
+  item_count: number;
 }
 
 /** Product snapshot embedded in an attachment_meta when a peer
