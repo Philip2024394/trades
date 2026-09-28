@@ -1299,12 +1299,30 @@ function MessageProductCard({
   const shopDomain = product.business_slug
     ? `${product.business_slug}.nex`
     : "NEX";
-  const inner = (
+  // Bridge 19b · card structure changed to avoid nesting a <form>
+  // inside <a> (invalid HTML) and to keep the shell as a Server
+  // Component (no onClick handlers permitted on this side of the
+  // boundary). The anchor covers the whole card at z-index 1; the
+  // heart form sits above it at z-index 2 as a sibling. Clicking
+  // the heart submits the form only; clicking anywhere else follows
+  // the anchor to the shop landing.
+  const shared: React.CSSProperties = {
+    position: "relative",
+    display: "block",
+    width: "100%",
+    boxSizing: "border-box",
+    marginBottom,
+    borderRadius: 12,
+    overflow: "hidden",
+    background: "rgba(0,0,0,0.42)",
+    border: `1px solid ${accent}55`,
+    color: "inherit",
+  };
+  const cardBody = (
     <>
       {product.image_url && (
         <div
           style={{
-            position: "relative",
             width: "100%",
             aspectRatio: "16 / 9",
             background: "#0a1a30",
@@ -1322,45 +1340,6 @@ function MessageProductCard({
               display: "block",
             }}
           />
-          {/* Save heart · top-right · inside a form that fires the
-              bound toggleLikeProductAction. Anonymous viewers get
-              routed to sign-in by the action's guard. */}
-          {likeAction && (
-            <form
-              action={likeAction}
-              style={{
-                position: "absolute",
-                top: 8,
-                right: 8,
-                margin: 0,
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <input type="hidden" name="intent" value="like" />
-              <button
-                type="submit"
-                aria-label="Save to liked items"
-                title="Save to Liked"
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 999,
-                  background: "rgba(2,9,20,0.72)",
-                  border: "1px solid rgba(255,51,85,0.45)",
-                  color: "#FF7A85",
-                  fontSize: 15,
-                  lineHeight: 1,
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                  backdropFilter: "blur(6px)",
-                  WebkitBackdropFilter: "blur(6px)",
-                  boxShadow: "0 4px 10px rgba(0,0,0,0.5)",
-                }}
-              >
-                ♥
-              </button>
-            </form>
-          )}
         </div>
       )}
       <div style={{ padding: "8px 10px 10px" }}>
@@ -1425,30 +1404,64 @@ function MessageProductCard({
       </div>
     </>
   );
-  const shared: React.CSSProperties = {
-    // Product/menu card fills the bubble width exactly · no minWidth
-    // forcing the bubble to grow, no maxWidth capping. Sealed
-    // 2026-09-28 · Bridge 17f · fix for shared product bubble
-    // escaping its container on narrow viewports.
-    display: "block",
-    width: "100%",
-    boxSizing: "border-box",
-    marginBottom,
-    borderRadius: 12,
-    overflow: "hidden",
-    background: "rgba(0,0,0,0.42)",
-    border: `1px solid ${accent}55`,
-    color: "inherit",
-    textDecoration: "none",
-  };
-  if (href) {
-    return (
-      <a href={href} style={shared}>
-        {inner}
-      </a>
-    );
-  }
-  return <div style={shared}>{inner}</div>;
+  const heartForm = likeAction ? (
+    <form
+      action={likeAction}
+      style={{
+        position: "absolute",
+        top: 8,
+        right: 8,
+        margin: 0,
+        zIndex: 3,
+      }}
+    >
+      <input type="hidden" name="intent" value="like" />
+      <input type="hidden" name="product_id" value={product.product_id} />
+      <button
+        type="submit"
+        aria-label="Save to liked items"
+        title="Save to Liked"
+        style={{
+          width: 32,
+          height: 32,
+          borderRadius: 999,
+          background: "rgba(2,9,20,0.85)",
+          border: "1px solid rgba(255,51,85,0.55)",
+          color: "#FF7A85",
+          fontSize: 15,
+          lineHeight: 1,
+          cursor: "pointer",
+          fontFamily: "inherit",
+          backdropFilter: "blur(6px)",
+          WebkitBackdropFilter: "blur(6px)",
+          boxShadow: "0 4px 10px rgba(0,0,0,0.5)",
+        }}
+      >
+        ♥
+      </button>
+    </form>
+  ) : null;
+  return (
+    <div style={shared}>
+      {href ? (
+        <a
+          href={href}
+          aria-label={`Open ${product.name} in shop`}
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 1,
+            textDecoration: "none",
+            color: "inherit",
+          }}
+        />
+      ) : null}
+      <div style={{ position: "relative", zIndex: 2, pointerEvents: "none" }}>
+        {cardBody}
+      </div>
+      {heartForm}
+    </div>
+  );
 }
 
 function MessageMenuItemCard({
