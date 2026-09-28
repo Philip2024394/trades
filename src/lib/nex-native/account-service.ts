@@ -111,17 +111,34 @@ export async function createAccount(input: NexAccountInsert): Promise<NexAccount
  */
 /**
  * Update the account's chat theme preference. `null` clears back to default.
- * Value MUST be one of NEX_CHAT_THEMES · rejected app-side before hitting
- * the DB CHECK. Storage untouched on rejection.
+ * Value must be a live row id in nex_chat_theme (source of truth · the
+ * old NEX_CHAT_THEMES static list was frozen at 5 themes and blocked
+ * every catalogue-registered theme like theme-1, aurora, sunset,
+ * pink-dream). We now validate against the DB and only fall back to
+ * the static list when the catalogue lookup fails (never lets the
+ * user set a totally-unknown value).
  */
 export async function updateChatTheme(
   accountId: NexUuid,
-  theme: NexChatTheme | null
+  theme: string | null
 ): Promise<NexAccountRow> {
-  if (theme !== null && !NEX_CHAT_THEMES.includes(theme)) {
-    throw new Error(
-      `account-service.updateChatTheme: unknown theme '${theme}' · allowed: ${NEX_CHAT_THEMES.join(", ")}`
-    );
+  if (theme !== null) {
+    let allowed = false;
+    try {
+      const { data: row, error } = await nexSupabaseAdmin
+        .from("nex_chat_theme")
+        .select("id,is_active")
+        .eq("id", theme)
+        .maybeSingle();
+      if (!error && row && row.is_active) allowed = true;
+    } catch {
+      // fall through to static allow-list
+    }
+    if (!allowed && !(NEX_CHAT_THEMES as readonly string[]).includes(theme)) {
+      throw new Error(
+        `account-service.updateChatTheme: unknown theme '${theme}'`,
+      );
+    }
   }
   const { data, error } = await nexSupabaseAdmin
     .from("nex_account")

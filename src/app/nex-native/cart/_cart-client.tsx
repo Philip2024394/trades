@@ -23,6 +23,8 @@ import {
   DeliveryAddressForm,
   useDeliveryAddress,
 } from "./_delivery-address-form";
+import { DeliveryEstimator } from "./_delivery-estimator";
+import type { NexCartDeliveryQuote } from "@/lib/nex-native/bike-delivery-service";
 
 const NEX = {
   bg: "#020914",
@@ -100,6 +102,27 @@ export function CartClient({
   const [notes, setNotes] = useState<Record<string, string>>({});
   const { address: deliveryAddress } = useDeliveryAddress();
   const addressComplete = isDeliveryAddressComplete(deliveryAddress);
+  const [quotes, setQuotes] = useState<Record<string, NexCartDeliveryQuote>>({});
+  const setQuoteForShop = useCallback(
+    (shopId: string, quote: NexCartDeliveryQuote) => {
+      setQuotes((prev) => {
+        const existing = prev[shopId];
+        // Skip when identical to avoid a re-render loop from the
+        // estimator's useEffect.
+        if (
+          existing &&
+          existing.kind === quote.kind &&
+          existing.distance_km === quote.distance_km &&
+          existing.fare_pence === quote.fare_pence &&
+          existing.free_reason === quote.free_reason
+        ) {
+          return prev;
+        }
+        return { ...prev, [shopId]: quote };
+      });
+    },
+    [],
+  );
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const skipNextSync = useRef(true); // don't sync on hydration write
 
@@ -246,6 +269,15 @@ export function CartClient({
         const itemCount = list.reduce((n, it) => n + it.quantity, 0);
         const currency = first.currency;
         const noteText = notes[shopId] ?? "";
+        // Bridge 25c · pick the free_delivery perk from any line so
+        // the estimator can jump straight to FREE without asking for
+        // geolocation. Reason is the dish name that triggered it.
+        const freeReason =
+          list.find((it) => (it.perks ?? []).includes("free_delivery"))?.name ??
+          null;
+        const shopLat = first.shop_lat ?? null;
+        const shopLng = first.shop_lng ?? null;
+        const currentQuote: NexCartDeliveryQuote | undefined = quotes[shopId];
         const payload: NexCartSendPayload = {
           peer_account_id: first.shop_owner_account_id,
           shop_id: shopId,
@@ -254,6 +286,7 @@ export function CartClient({
           currency,
           buyer_notes: noteText.trim() || null,
           delivery_address: addressComplete ? deliveryAddress : null,
+          delivery_quote: currentQuote ?? null,
           items: list.map((it) => ({
             kind: it.kind,
             id: it.id,
@@ -392,6 +425,16 @@ export function CartClient({
                 }}
               />
             </div>
+
+            {/* Bridge 25c · bike-delivery estimator per shop */}
+            <DeliveryEstimator
+              shopId={shopId}
+              shopDisplayName={first.shop_display_name}
+              shopLat={shopLat}
+              shopLng={shopLng}
+              freeReason={freeReason}
+              onQuote={setQuoteForShop}
+            />
 
             {/* Totals + Send */}
             <div

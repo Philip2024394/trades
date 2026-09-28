@@ -24,6 +24,7 @@ import {
 import { sendMenuItemInquiryAction } from "../../_actions";
 import { AddToCartButton } from "../../_add-to-cart-button";
 import { FloatingCartPill } from "../../_floating-cart-pill";
+import { HeaderCartIcon } from "../../_header-cart-icon";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -294,6 +295,8 @@ export default async function Page({
                             shop_slug: business.slug ?? "",
                             shop_owner_account_id: business.owner_account_id,
                             shop_display_name: business.display_name,
+                            shop_lat: business.location_lat ?? null,
+                            shop_lng: business.location_lng ?? null,
                             name: it.name,
                             price_pence: it.price_pence,
                             currency: it.currency,
@@ -348,6 +351,7 @@ export default async function Page({
           </Link>
         </div>
       </main>
+      <HeaderCartIcon />
       <FloatingCartPill />
     </div>
   );

@@ -24,6 +24,10 @@ export interface AddToCartItemInit {
   shop_slug: string;
   shop_owner_account_id: string;
   shop_display_name: string;
+  /** Bridge 25c · frozen at add-time so /cart can estimate bike
+   *  delivery without re-fetching the seller row. */
+  shop_lat?: number | null;
+  shop_lng?: number | null;
   name: string;
   price_pence: number;
   currency: string;
@@ -83,6 +87,8 @@ export function AddToCartButton({
           shop_slug: item.shop_slug,
           shop_owner_account_id: item.shop_owner_account_id,
           shop_display_name: item.shop_display_name,
+          shop_lat: item.shop_lat ?? null,
+          shop_lng: item.shop_lng ?? null,
           name: item.name,
           price_pence: item.price_pence,
           currency: item.currency,

@@ -381,6 +381,13 @@ export interface NexBusinessRow {
    *  room · private space · sound stage · outdoor catering setup.
    *  Empty array when the seller hasn't uploaded any. */
   venue_gallery: string[];
+  /** Bridge 25c · WGS84 lat/lng of the seller pickup point ·
+   *  migration 082. Used by the /cart bike-delivery estimator to
+   *  compute distance to the buyer's browser geolocation. NULL means
+   *  the seller hasn't disclosed a location · cart falls back to
+   *  "confirm delivery in chat". */
+  location_lat: number | null;
+  location_lng: number | null;
   created_at: NexTimestamp;
   updated_at: NexTimestamp;
 }

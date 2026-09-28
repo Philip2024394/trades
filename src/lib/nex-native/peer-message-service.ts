@@ -120,6 +120,18 @@ export interface NexPeerCartOrderSnapshot {
   /** Bridge 22c-2 · structured delivery address block. NULL means the
    *  buyer sent from a device where it wasn't filled in (legacy carts). */
   delivery_address?: NexPeerCartOrderDeliveryAddress | null;
+  /** Bridge 25c · bike-delivery quote the buyer saw at Send time.
+   *  Frozen · seller uses it to book GoSend / GrabExpress / Maxim
+   *  and reconcile if the driver quote differs. NULL for legacy or
+   *  when the buyer opted out of geolocation. */
+  delivery_quote?: {
+    kind: "free" | "estimate" | "unknown";
+    distance_km?: number;
+    fare_pence?: number;
+    currency?: "IDR";
+    eta_minutes?: number;
+    free_reason?: string | null;
+  } | null;
 }
 
 /** Product snapshot embedded in an attachment_meta when a peer

@@ -69,6 +69,12 @@ export interface NexCartItem {
   shop_slug: string;
   shop_owner_account_id: string;
   shop_display_name: string;
+  /** Bridge 25c · seller pickup coordinates · frozen at add-time so
+   *  the /cart page's bike-delivery estimator doesn't need to re-
+   *  query the seller row per render. Nullable · restaurants that
+   *  haven't disclosed lat/lng fall back to "confirm in chat". */
+  shop_lat?: number | null;
+  shop_lng?: number | null;
   name: string;
   price_pence: number;
   currency: string;
@@ -100,6 +106,15 @@ export interface NexCartSendPayload {
    *  hasn't filled it in yet (falls back to buyer_notes for legacy
    *  compat). */
   delivery_address: NexDeliveryAddress | null;
+  /** Bridge 25c · bike-delivery quote frozen at send time. */
+  delivery_quote?: {
+    kind: "free" | "estimate" | "unknown";
+    distance_km?: number;
+    fare_pence?: number;
+    currency?: "IDR";
+    eta_minutes?: number;
+    free_reason?: string | null;
+  } | null;
   items: Array<{
     kind: "product" | "menu_item";
     id: string;

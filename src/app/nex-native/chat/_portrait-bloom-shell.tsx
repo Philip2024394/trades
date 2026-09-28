@@ -176,6 +176,15 @@ export interface PortraitBloomMessage {
       country: string;
       notes: string;
     } | null;
+    /** Bridge 25c · bike-delivery quote block. */
+    delivery_quote?: {
+      kind: "free" | "estimate" | "unknown";
+      distance_km?: number;
+      fare_pence?: number;
+      currency?: "IDR";
+      eta_minutes?: number;
+      free_reason?: string | null;
+    } | null;
   } | null;
 }
 
@@ -1960,6 +1969,93 @@ function MessageCartOrderCard({
           {cart.buyer_notes}
         </div>
       )}
+      {/* Bridge 25c · bike-delivery quote · lets seller book courier
+          at the same Rp figure the buyer was quoted. */}
+      {cart.delivery_quote && cart.delivery_quote.kind !== "unknown" && (
+        <div
+          style={{
+            margin: "0 10px 8px",
+            padding: "8px 10px",
+            borderRadius: 10,
+            background:
+              cart.delivery_quote.kind === "free"
+                ? "rgba(22,214,107,0.10)"
+                : "rgba(255,120,0,0.10)",
+            border: `1px solid ${
+              cart.delivery_quote.kind === "free"
+                ? "rgba(22,214,107,0.35)"
+                : "rgba(255,120,0,0.35)"
+            }`,
+            fontSize: 11,
+            lineHeight: 1.55,
+            color: "#F4F7FC",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 9,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              fontWeight: 800,
+              color:
+                cart.delivery_quote.kind === "free" ? "#B8F1CC" : "#FFC96B",
+              marginBottom: 4,
+            }}
+          >
+            🚚 Delivery
+          </div>
+          {cart.delivery_quote.kind === "free" ? (
+            <div style={{ fontWeight: 700 }}>
+              FREE
+              {cart.delivery_quote.free_reason
+                ? ` · included with ${cart.delivery_quote.free_reason}`
+                : ""}
+            </div>
+          ) : (
+            <div style={{ fontWeight: 700 }}>
+              {typeof cart.delivery_quote.fare_pence === "number"
+                ? `Rp ${Math.round(
+                    cart.delivery_quote.fare_pence / 100,
+                  ).toLocaleString("id-ID")}`
+                : "—"}
+              {typeof cart.delivery_quote.distance_km === "number" && (
+                <span
+                  style={{
+                    marginLeft: 6,
+                    color: "rgba(244,247,252,0.75)",
+                    fontWeight: 600,
+                  }}
+                >
+                  · {cart.delivery_quote.distance_km.toFixed(1)} km
+                </span>
+              )}
+              {typeof cart.delivery_quote.eta_minutes === "number" && (
+                <span
+                  style={{
+                    marginLeft: 6,
+                    color: "rgba(244,247,252,0.75)",
+                    fontWeight: 600,
+                  }}
+                >
+                  · ~{cart.delivery_quote.eta_minutes} min
+                </span>
+              )}
+            </div>
+          )}
+          <div
+            style={{
+              marginTop: 3,
+              fontSize: 10,
+              color: "rgba(244,247,252,0.62)",
+            }}
+          >
+            {cart.delivery_quote.kind === "free"
+              ? "Seller pays the courier · book as usual."
+              : "NEX standard bike rate (GoSend / GrabExpress / Maxim tier) · book your courier and confirm the final fare with the buyer if it differs."}
+          </div>
+        </div>
+      )}
+
       {/* Bridge 22c-2 · structured delivery address block · rendered
           as a copy-friendly panel so sellers can paste straight into a
           courier booking screen. */}

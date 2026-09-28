@@ -1403,6 +1403,40 @@ export async function sendCartOrderAction(
     deliveryAddress.city
   );
 
+  // Bridge 25c · bike-delivery quote from the estimator · one of
+  // free/estimate/unknown. Coerce every field so a bad client can't
+  // stuff junk into the snapshot.
+  let deliveryQuote:
+    | {
+        kind: "free" | "estimate" | "unknown";
+        distance_km?: number;
+        fare_pence?: number;
+        currency?: "IDR";
+        eta_minutes?: number;
+        free_reason?: string | null;
+      }
+    | null = null;
+  if (p.delivery_quote && typeof p.delivery_quote === "object") {
+    const dq = p.delivery_quote as Record<string, unknown>;
+    const kindRaw = String(dq.kind ?? "unknown");
+    const kind: "free" | "estimate" | "unknown" =
+      kindRaw === "free" || kindRaw === "estimate" ? kindRaw : "unknown";
+    deliveryQuote = { kind };
+    if (kind === "estimate") {
+      const d = Number(dq.distance_km);
+      const f = Number(dq.fare_pence);
+      const e = Number(dq.eta_minutes);
+      if (Number.isFinite(d) && d >= 0) deliveryQuote.distance_km = d;
+      if (Number.isFinite(f) && f >= 0) deliveryQuote.fare_pence = f;
+      if (Number.isFinite(e) && e >= 0) deliveryQuote.eta_minutes = e;
+      deliveryQuote.currency = "IDR";
+    }
+    if (kind === "free") {
+      const reason = String(dq.free_reason ?? "").trim();
+      deliveryQuote.free_reason = reason.length > 0 ? reason.slice(0, 200) : null;
+    }
+  }
+
   if (!peerAccountId || peerAccountId === session.account.id || !shopId) {
     redirect("/nex-native/cart?send_error=" + encodeURIComponent("Bad shop or peer"));
   }
@@ -1507,6 +1541,7 @@ export async function sendCartOrderAction(
     currency,
     item_count: items.reduce((n, it) => n + it.quantity, 0),
     delivery_address: addressComplete ? deliveryAddress : null,
+    delivery_quote: deliveryQuote,
   };
 
   // Body renders in plain-text clients that don't know cart_order.
@@ -1553,6 +1588,36 @@ export async function sendCartOrderAction(
     if (deliveryAddress.country) bodyLines.push(deliveryAddress.country);
     if (deliveryAddress.notes) {
       bodyLines.push(`Delivery note: ${deliveryAddress.notes}`);
+    }
+  }
+  if (deliveryQuote) {
+    bodyLines.push("");
+    if (deliveryQuote.kind === "free") {
+      bodyLines.push(
+        `🚚 Delivery · FREE${
+          deliveryQuote.free_reason ? ` (${deliveryQuote.free_reason})` : ""
+        }`,
+      );
+    } else if (
+      deliveryQuote.kind === "estimate" &&
+      typeof deliveryQuote.fare_pence === "number"
+    ) {
+      bodyLines.push(
+        `🚚 Bike-delivery estimate · ${formatCartPrice(
+          deliveryQuote.fare_pence,
+          "IDR",
+        )}${
+          typeof deliveryQuote.distance_km === "number"
+            ? ` · ${deliveryQuote.distance_km.toFixed(1)} km`
+            : ""
+        }${
+          typeof deliveryQuote.eta_minutes === "number"
+            ? ` · ~${deliveryQuote.eta_minutes} min`
+            : ""
+        }`,
+      );
+    } else {
+      bodyLines.push("🚚 Delivery · confirm in chat");
     }
   }
   bodyLines.push("");
@@ -3089,15 +3154,32 @@ export async function customerMarkPaymentSentAction(formData: FormData): Promise
 export async function updateChatThemeAction(formData: FormData): Promise<never> {
   const raw = String(formData.get("chat_theme") ?? "").trim();
   const clearing = raw === "" || raw === "default";
-  const theme = clearing ? null : (raw as NexChatTheme);
+  const theme = clearing ? null : raw;
 
   const session = await resolveNexAppSessionFromContext();
   if (!session) {
     redirectToInboxWithError("unauthenticated", "sign in to change your theme");
   }
-  if (theme !== null && !NEX_CHAT_THEMES.includes(theme)) {
-    const qs = new URLSearchParams({ e: "invalid_theme", m: `unknown theme '${raw}'` });
-    redirect(`/nex-native/settings/theme?${qs.toString()}`);
+  // Bridge 25a · Validate against the live catalogue (chatThemeService)
+  // instead of the frozen NEX_CHAT_THEMES list · any theme registered
+  // via nex_chat_theme + active passes. Fall back to static list only
+  // if the DB lookup fails so we never leak stack traces on transient
+  // connection blips.
+  if (theme !== null) {
+    let allowed = false;
+    try {
+      const row = await chatThemeService.getThemeById(theme);
+      if (row && row.is_active) allowed = true;
+    } catch {
+      // fall through
+    }
+    if (!allowed && !(NEX_CHAT_THEMES as readonly string[]).includes(theme)) {
+      const qs = new URLSearchParams({
+        e: "invalid_theme",
+        m: `unknown theme '${raw}'`,
+      });
+      redirect(`/nex-native/settings/theme?${qs.toString()}`);
+    }
   }
   try {
     await accountService.updateChatTheme(session.account.id, theme);

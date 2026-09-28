@@ -34,6 +34,7 @@ import { FloatingChatButton } from "./_floating-chat-button";
 import { toggleLikeProductAction } from "../_actions";
 import { AddToCartButton } from "../_add-to-cart-button";
 import { FloatingCartPill } from "../_floating-cart-pill";
+import { HeaderCartIcon } from "../_header-cart-icon";
 
 // Bridge 22 · food + drink verticals are menu-first · we skip the
 // product-grid section for these entirely and render the full menu
@@ -473,6 +474,8 @@ export default async function Page({
                       shop_slug: business.slug ?? "",
                       shop_owner_account_id: business.owner_account_id,
                       shop_display_name: business.display_name,
+                      shop_lat: business.location_lat ?? null,
+                      shop_lng: business.location_lng ?? null,
                       name: p.name,
                       price_pence: p.price_pence,
                       currency: p.currency,
@@ -639,6 +642,7 @@ export default async function Page({
       {/* Bridge 22 · Floating cart pill · visible whenever the cart
           has items · centered bottom · above the chat button in
           z-order. */}
+      <HeaderCartIcon />
       <FloatingCartPill />
     </div>
   );
@@ -877,6 +881,8 @@ function MenuDishAddRow({
               shop_slug: business.slug ?? "",
               shop_owner_account_id: business.owner_account_id,
               shop_display_name: business.display_name,
+              shop_lat: business.location_lat ?? null,
+              shop_lng: business.location_lng ?? null,
               name: dish.name,
               price_pence: dish.price_pence,
               currency: dish.currency,
