@@ -1,26 +1,41 @@
 // src/app/nex-native/settings/profile/page.tsx
 //
-// Bridge 2 · canonical NEX identity / discovery profile editor.
+// NEX identity + discovery profile editor.
 // -------------------------------------------------------------------------
-// Owner-only. Reads/edits the caller's nex_account_profile row
-// (migration 042). Uses the existing NEX-native shell + tokens so this
-// feels like a natural extension of /nex-native/settings/theme.
+// Owner-only. Reads/edits the caller's nex_account_profile (personal
+// tab) or their first nex_business (business tab).
+//
+// Bridge 37 · 2026-09-28 · Founder-directed redesign:
+//   · Palette matches /nex-native/chat cards · dark navy panels, cyan
+//     borders, orange primary CTA · reads as one continuous NEX product.
+//   · Header messaging reframes the surface as "how you get seen and
+//     bring in opportunities" · not just a settings page.
+//   · Two toggles under the header:
+//       [ Personal account ]   [ Business ]
+//     Query-param driven (?tab=personal|business · defaults personal).
+//   · Personal tab · full editor for nex_account_profile (avatar +
+//     kind + profession + headline + bio + skills + location +
+//     looking_for + discoverability toggle).
+//   · Business tab · hydrates the caller's business row via
+//     listBusinessesByOwner. Shows a summary card + deep-link to
+//     /manage/shop for detailed editing (products, hours, category,
+//     verification, gallery, staff). Empty-state guides to create one.
 //
 // Doctrine:
-//   · Every value shown here comes from the authoritative NEX Supabase
-//     (ijvqdvsvwtwxzcqmoqit) via account-profile-service. No mock row.
+//   · Every value shown here comes from the authoritative NEX
+//     Supabase (ijvqdvsvwtwxzcqmoqit). No mock data.
 //   · Save posts to updateProfileAction which validates lengths/enums
 //     before touching the DB.
-//   · Directory discovery UI is deliberately NOT wired here — this route
-//     is only the owner-facing profile management surface for Bridge 2.
+//   · Business editing intentionally routes to /manage/shop rather
+//     than duplicating the editor here.
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as accountProfileService from "@/lib/nex-native/account-profile-service";
-import { updateProfileAction, signOutAction } from "../../_actions";
-import { SubmitButton } from "../../_submit-button";
-import { NexNativeShell } from "../../_shell";
+import * as businessService from "@/lib/nex-native/business-service";
+import { updateProfileAction } from "../../_actions";
+import { NexPageHeader } from "../../_page-header";
 import { NexAvatarUploader } from "./_avatar-uploader";
 import {
   NEX_ACCOUNT_KINDS,
@@ -34,194 +49,805 @@ import {
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+type ProfileTab = "personal" | "business";
+const TABS: readonly ProfileTab[] = ["personal", "business"] as const;
+const TAB_LABEL: Record<ProfileTab, string> = {
+  personal: "Personal account",
+  business: "Business",
+};
+
+const NEX = {
+  bg: "#020914",
+  panel: "#03101D",
+  fieldBg: "#04101F",
+  textPrimary: "#F2F5F8",
+  textSecondary: "#7D9BC0",
+  cyan: "#00AFFF",
+  cyanSoft: "rgba(0, 175, 255, 0.35)",
+  cyanFaint: "rgba(0, 175, 255, 0.12)",
+  orange: "#FF7200",
+  green: "#10B981",
+  red: "#EF4444",
+};
+
 interface PageProps {
-  searchParams: Promise<{ e?: string; m?: string }>;
+  searchParams: Promise<{ e?: string; m?: string; tab?: string }>;
 }
 
 const SUCCESS_CODES = new Set(["profile_saved"]);
 
+const NEX_BUSINESS_CATEGORY_LABEL: Record<string, string> = {
+  bakery: "Bakery",
+  restaurant: "Restaurant",
+  cafe: "Cafe",
+  "ice-cream": "Ice cream shop",
+  "dessert-shop": "Dessert shop",
+  "drinks-shop": "Drinks shop",
+  "juice-bar": "Juice bar",
+  tradesperson: "Tradesperson",
+  construction: "Construction",
+  "staircase-company": "Staircase maker",
+  salon: "Salon",
+  beauty: "Beauty",
+  fitness: "Fitness studio",
+  consultant: "Consultant",
+  agency: "Agency",
+  ecommerce: "Online shop",
+  "product-brand": "Product brand",
+  "local-service": "Local service",
+  portfolio: "Portfolio",
+  community: "Community",
+  event: "Event organiser",
+  creator: "Creator",
+  "professional-service": "Professional service",
+};
+
 export default async function Page({ searchParams }: PageProps) {
   const session = await resolveNexAppSessionFromContext();
   if (!session) redirect("/nex-native/sign-in");
-  const params = await searchParams;
-  const banner = params.e && params.m ? { code: params.e, message: params.m } : null;
+  const sp = await searchParams;
+  const activeTab: ProfileTab = TABS.includes(sp.tab as ProfileTab)
+    ? (sp.tab as ProfileTab)
+    : "personal";
+  const banner = sp.e && sp.m ? { code: sp.e, message: sp.m } : null;
   const isSuccess = banner ? SUCCESS_CODES.has(banner.code) : false;
 
-  const profile = await accountProfileService.getProfileByAccountId(session.account.id);
+  const [profile, businesses] = await Promise.all([
+    accountProfileService.getProfileByAccountId(session.account.id),
+    businessService.listBusinessesByOwner(session.account.id).catch(() => []),
+  ]);
+  const business = businesses[0] ?? null;
 
   return (
-    <NexNativeShell themeId={session.account.chat_theme ?? undefined}>
-      <main className="mx-auto max-w-2xl px-4 py-6">
-        <header className="mb-4 flex flex-wrap items-start justify-between gap-2 border-b border-neutral-300 pb-3">
-          <div>
-            <h1 className="text-lg font-semibold text-neutral-900">Your NEX profile</h1>
-            <p className="text-xs text-neutral-500">
-              <Link href="/nex-native/conversations" className="underline">← inbox</Link>
-              {" · "}
-              Persisted on your NEX account · powers future NEX Directory discovery.
+    <>
+      <style>{`
+        html, body { background: ${NEX.bg} !important; }
+        [data-nex-profile-root] * { box-sizing: border-box; }
+        [data-nex-profile-input]:focus,
+        [data-nex-profile-textarea]:focus {
+          outline: none;
+          border-color: ${NEX.cyan};
+          box-shadow: 0 0 0 2px rgba(0,175,255,0.20);
+        }
+      `}</style>
+      <main
+        data-nex-profile-root
+        style={{
+          minHeight: "100dvh",
+          background: NEX.bg,
+          color: NEX.textPrimary,
+          fontFamily:
+            "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+          padding: "16px 12px 40px",
+          position: "relative",
+          overflowX: "hidden",
+        }}
+      >
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "radial-gradient(60% 40% at 50% 0%, rgba(0,175,255,0.09), transparent 70%)",
+            pointerEvents: "none",
+          }}
+        />
+        <div style={{ position: "relative", maxWidth: 480, margin: "0 auto" }}>
+          <NexPageHeader dataScope="profile" />
+
+          {/* Framing · why the user should care */}
+          <section style={{ marginTop: 22 }}>
+            <h1
+              style={{
+                margin: 0,
+                fontSize: 22,
+                fontWeight: 600,
+                letterSpacing: "-0.01em",
+                color: NEX.textPrimary,
+              }}
+            >
+              Your NEX profile
+            </h1>
+            <p
+              style={{
+                marginTop: 6,
+                fontSize: 13,
+                lineHeight: 1.5,
+                color: NEX.textSecondary,
+                maxWidth: 420,
+              }}
+            >
+              Be seen · get noticed · bring in new opportunities. A
+              professional profile puts you in front of the buyers,
+              clients, and collaborators looking for what you offer.
             </p>
-          </div>
-          <form action={signOutAction}>
-            <button type="submit" className="text-xs text-neutral-500 underline">
-              sign out
-            </button>
-          </form>
-        </header>
+          </section>
 
-        {banner && (
-          <div
-            className={`mb-4 rounded border p-3 text-xs ${
-              isSuccess
-                ? "border-green-300 bg-green-50 text-green-900"
-                : "border-red-300 bg-red-50 text-red-900"
-            }`}
-            role="status"
-            data-nex-profile-banner={banner.code}
+          {/* Toggle bar · Personal · Business */}
+          <nav
+            aria-label="Profile modes"
+            data-nex-profile-toggle
+            style={{
+              marginTop: 20,
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              borderBottom: `1px solid ${NEX.cyanFaint}`,
+            }}
           >
-            {banner.message}
-          </div>
-        )}
+            {TABS.map((t) => {
+              const isActive = t === activeTab;
+              return (
+                <Link
+                  key={t}
+                  href={`/nex-native/settings/profile?tab=${t}`}
+                  data-nex-profile-tab={t}
+                  data-nex-profile-tab-active={isActive ? "true" : "false"}
+                  style={{
+                    position: "relative",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: "14px 8px 12px",
+                    fontSize: 13,
+                    fontWeight: isActive ? 600 : 400,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: isActive ? NEX.textPrimary : NEX.textSecondary,
+                    textDecoration: "none",
+                  }}
+                >
+                  {TAB_LABEL[t]}
+                  {isActive && (
+                    <span
+                      aria-hidden
+                      style={{
+                        position: "absolute",
+                        bottom: -1,
+                        left: "20%",
+                        right: "20%",
+                        height: 3,
+                        background: NEX.cyan,
+                        borderRadius: "3px 3px 0 0",
+                        boxShadow: `0 0 12px ${NEX.cyan}`,
+                      }}
+                    />
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
 
-        <NexAvatarUploader
-          currentAvatarUrl={profile?.avatar_url ?? null}
-          displayName={session.account.display_name}
-          handle={session.account.nex_handle}
+          {banner && (
+            <div
+              role="status"
+              data-nex-profile-banner={banner.code}
+              style={{
+                marginTop: 16,
+                padding: "10px 14px",
+                borderRadius: 10,
+                border: `1px solid ${isSuccess ? NEX.green : NEX.red}55`,
+                background: isSuccess
+                  ? "rgba(16,185,129,0.10)"
+                  : "rgba(239,68,68,0.10)",
+                color: isSuccess ? NEX.green : NEX.red,
+                fontSize: 12,
+              }}
+            >
+              {banner.message}
+            </div>
+          )}
+
+          {/* Panel · active tab body */}
+          <section style={{ marginTop: 20 }}>
+            {activeTab === "personal" && (
+              <PersonalTab profile={profile} account={session.account} />
+            )}
+            {activeTab === "business" && <BusinessTab business={business} />}
+          </section>
+
+          <p
+            style={{
+              marginTop: 18,
+              fontSize: 11,
+              color: NEX.textSecondary,
+              opacity: 0.7,
+              lineHeight: 1.5,
+            }}
+          >
+            Discovery UI reads this profile · the NEX Directory People
+            surface will match against your kind + profession + skills
+            + looking-for.
+          </p>
+        </div>
+      </main>
+    </>
+  );
+}
+
+// ---------------------------------------------------------------------
+// Personal tab · edits nex_account_profile
+// ---------------------------------------------------------------------
+
+function PersonalTab(props: {
+  profile: Awaited<
+    ReturnType<typeof accountProfileService.getProfileByAccountId>
+  >;
+  account: { id: string; display_name: string; nex_handle: string | null };
+}) {
+  const { profile, account } = props;
+  return (
+    <>
+      <NexAvatarUploader
+        currentAvatarUrl={profile?.avatar_url ?? null}
+        displayName={account.display_name}
+        handle={account.nex_handle}
+      />
+
+      <form
+        action={updateProfileAction}
+        data-nex-profile-form
+        style={{
+          padding: 16,
+          background: NEX.panel,
+          border: `1px solid ${NEX.cyanSoft}`,
+          borderRadius: 14,
+        }}
+      >
+        <FieldGroup legend="What best describes what you do?">
+          <div style={{ display: "grid", gap: 6 }}>
+            <RadioRow
+              name="kind"
+              value="unset"
+              label="Not yet set"
+              muted
+              defaultChecked={!profile?.kind}
+            />
+            {NEX_ACCOUNT_KINDS.map((k) => (
+              <RadioRow
+                key={k}
+                name="kind"
+                value={k}
+                label={NEX_ACCOUNT_KIND_LABEL[k]}
+                defaultChecked={profile?.kind === k}
+                dataOption={k}
+              />
+            ))}
+          </div>
+        </FieldGroup>
+
+        <TextField
+          name="profession"
+          label={`Profession (single term · e.g. "footwear designer")`}
+          defaultValue={profile?.profession ?? ""}
+          maxLength={NEX_PROFILE_PROFESSION_MAX}
+          placeholder="e.g. footwear designer"
         />
 
-        <form
-          action={updateProfileAction}
-          className="rounded border border-neutral-300 bg-white p-4"
-          data-nex-profile-form
+        <TextField
+          name="headline"
+          label="Headline (short · one line)"
+          defaultValue={profile?.headline ?? ""}
+          maxLength={NEX_PROFILE_HEADLINE_MAX}
+          placeholder="e.g. 12 years of footwear · Bandung"
+        />
+
+        <TextAreaField
+          name="bio"
+          label={`About you (up to ${NEX_PROFILE_BIO_MAX} chars)`}
+          defaultValue={profile?.bio ?? ""}
+          maxLength={NEX_PROFILE_BIO_MAX}
+          rows={4}
+          placeholder="A short paragraph in your own words · what you make, who you work with, what you're best at."
+        />
+
+        <TextField
+          name="skills"
+          label="Skills (comma-separated · max 20 · e.g. sample-making, CAD, sourcing)"
+          defaultValue={(profile?.skills ?? []).join(", ")}
+          placeholder="sample-making, CAD, sourcing"
+        />
+
+        <TextField
+          name="location_label"
+          label="Location label (freeform · country, city, or region)"
+          defaultValue={profile?.location_label ?? ""}
+          maxLength={NEX_PROFILE_LOCATION_LABEL_MAX}
+          placeholder="e.g. Bandung, Indonesia"
+        />
+
+        <TextField
+          name="looking_for"
+          label="Looking for (comma-separated · max 10 · e.g. work, clients, collaborators)"
+          defaultValue={(profile?.looking_for ?? []).join(", ")}
+          placeholder="work, clients, collaborators"
+        />
+
+        <label
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            gap: 10,
+            padding: "10px 12px",
+            marginTop: 12,
+            marginBottom: 16,
+            borderRadius: 10,
+            background: NEX.fieldBg,
+            border: `1px solid ${NEX.cyanFaint}`,
+            fontSize: 12,
+            color: NEX.textPrimary,
+            lineHeight: 1.5,
+          }}
         >
-          <fieldset className="mb-4">
-            <legend className="mb-2 text-xs font-medium uppercase tracking-wide text-neutral-500">
-              What best describes what you do?
-            </legend>
-            <div className="grid gap-1.5">
-              <label className="flex items-center gap-2 rounded border border-neutral-200 px-3 py-2 text-sm">
-                <input
-                  type="radio"
-                  name="kind"
-                  value="unset"
-                  defaultChecked={!profile?.kind}
-                />
-                <span className="text-neutral-600">Not yet set</span>
-              </label>
-              {NEX_ACCOUNT_KINDS.map((k) => (
-                <label
-                  key={k}
-                  className="flex items-center gap-2 rounded border border-neutral-200 px-3 py-2 text-sm"
-                  data-nex-profile-kind-option={k}
-                >
-                  <input
-                    type="radio"
-                    name="kind"
-                    value={k}
-                    defaultChecked={profile?.kind === k}
-                  />
-                  <span>{NEX_ACCOUNT_KIND_LABEL[k]}</span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
+          <input
+            type="checkbox"
+            name="is_public"
+            defaultChecked={profile?.is_public ?? true}
+            data-nex-profile-input="is_public"
+            style={{ marginTop: 3, accentColor: NEX.cyan }}
+          />
+          <span>
+            Make my profile discoverable in the NEX Directory (uncheck to
+            keep it private for now · you can flip this back on later).
+          </span>
+        </label>
 
-          <label className="mb-3 block text-xs text-neutral-600">
-            Profession (single term · e.g. "footwear designer")
-            <input
-              type="text"
-              name="profession"
-              defaultValue={profile?.profession ?? ""}
-              maxLength={NEX_PROFILE_PROFESSION_MAX}
-              placeholder="e.g. footwear designer"
-              className="mt-1 block min-h-[44px] w-full rounded border border-neutral-300 px-2 py-2 text-sm"
-              data-nex-profile-input="profession"
-            />
-          </label>
+        <button
+          type="submit"
+          style={{
+            display: "inline-flex",
+            width: "100%",
+            minHeight: 48,
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "12px 20px",
+            background: NEX.orange,
+            color: "#0B0F1A",
+            border: "none",
+            borderRadius: 10,
+            fontSize: 14,
+            fontWeight: 700,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            cursor: "pointer",
+          }}
+        >
+          Save profile
+        </button>
+      </form>
+    </>
+  );
+}
 
-          <label className="mb-3 block text-xs text-neutral-600">
-            Headline (short · one line)
-            <input
-              type="text"
-              name="headline"
-              defaultValue={profile?.headline ?? ""}
-              maxLength={NEX_PROFILE_HEADLINE_MAX}
-              placeholder="e.g. 12 years of footwear · Bandung"
-              className="mt-1 block min-h-[44px] w-full rounded border border-neutral-300 px-2 py-2 text-sm"
-              data-nex-profile-input="headline"
-            />
-          </label>
+// ---------------------------------------------------------------------
+// Business tab · summary + deep-link to /manage/shop
+// ---------------------------------------------------------------------
 
-          <label className="mb-3 block text-xs text-neutral-600">
-            About you (up to {NEX_PROFILE_BIO_MAX} chars)
-            <textarea
-              name="bio"
-              defaultValue={profile?.bio ?? ""}
-              maxLength={NEX_PROFILE_BIO_MAX}
-              rows={4}
-              placeholder="A short paragraph in your own words · what you make, who you work with, what you're best at."
-              className="mt-1 block w-full rounded border border-neutral-300 px-2 py-2 text-sm"
-              data-nex-profile-input="bio"
-            />
-          </label>
+function BusinessTab(props: {
+  business: Awaited<
+    ReturnType<typeof businessService.listBusinessesByOwner>
+  >[number] | null;
+}) {
+  const { business } = props;
 
-          <label className="mb-3 block text-xs text-neutral-600">
-            Skills (comma-separated · max 20 · e.g. sample-making, CAD, sourcing)
-            <input
-              type="text"
-              name="skills"
-              defaultValue={(profile?.skills ?? []).join(", ")}
-              placeholder="sample-making, CAD, sourcing"
-              className="mt-1 block min-h-[44px] w-full rounded border border-neutral-300 px-2 py-2 text-sm"
-              data-nex-profile-input="skills"
-            />
-          </label>
-
-          <label className="mb-3 block text-xs text-neutral-600">
-            Location label (freeform · country, city, or region)
-            <input
-              type="text"
-              name="location_label"
-              defaultValue={profile?.location_label ?? ""}
-              maxLength={NEX_PROFILE_LOCATION_LABEL_MAX}
-              placeholder="e.g. Bandung, Indonesia"
-              className="mt-1 block min-h-[44px] w-full rounded border border-neutral-300 px-2 py-2 text-sm"
-              data-nex-profile-input="location_label"
-            />
-          </label>
-
-          <label className="mb-4 block text-xs text-neutral-600">
-            Looking for (comma-separated · max 10 · e.g. work, clients, collaborators)
-            <input
-              type="text"
-              name="looking_for"
-              defaultValue={(profile?.looking_for ?? []).join(", ")}
-              placeholder="work, clients, collaborators"
-              className="mt-1 block min-h-[44px] w-full rounded border border-neutral-300 px-2 py-2 text-sm"
-              data-nex-profile-input="looking_for"
-            />
-          </label>
-
-          <label className="mb-4 flex items-center gap-2 text-xs text-neutral-700">
-            <input
-              type="checkbox"
-              name="is_public"
-              defaultChecked={profile?.is_public ?? true}
-              data-nex-profile-input="is_public"
-            />
-            <span>
-              Make my profile discoverable in the NEX Directory (uncheck to keep it private for
-              now · you can flip this back on later).
-            </span>
-          </label>
-
-          <SubmitButton label="Save profile" pendingLabel="Saving…" fullWidth />
-        </form>
-
-        <p className="mt-3 text-[11px] text-neutral-500">
-          Discovery UI does not read this yet — the NEX Directory People section arrives in a
-          later bounded bridge. Your profile is persisted honestly today; nothing is fabricated.
+  if (!business) {
+    return (
+      <div
+        style={{
+          padding: 20,
+          background: NEX.panel,
+          border: `1px solid ${NEX.cyanSoft}`,
+          borderRadius: 14,
+          textAlign: "center",
+        }}
+      >
+        <div style={{ fontSize: 32, lineHeight: 1, marginBottom: 8 }} aria-hidden>
+          🛍
+        </div>
+        <h2
+          style={{
+            margin: 0,
+            fontSize: 15,
+            fontWeight: 600,
+            color: NEX.textPrimary,
+          }}
+        >
+          No business yet
+        </h2>
+        <p
+          style={{
+            marginTop: 8,
+            fontSize: 12,
+            color: NEX.textSecondary,
+            lineHeight: 1.5,
+          }}
+        >
+          Set up a NEX Shop and be found by customers looking for what
+          you sell · list products, take orders, share your address
+          everywhere.
         </p>
-      </main>
-    </NexNativeShell>
+        <Link
+          href="/nex-native/manage/shop"
+          style={{
+            display: "inline-flex",
+            marginTop: 14,
+            padding: "10px 18px",
+            background: NEX.orange,
+            color: "#0B0F1A",
+            border: "none",
+            borderRadius: 8,
+            fontSize: 12,
+            fontWeight: 700,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            textDecoration: "none",
+          }}
+        >
+          Create your business →
+        </Link>
+      </div>
+    );
+  }
+
+  const categoryLabel =
+    (business.business_category &&
+      NEX_BUSINESS_CATEGORY_LABEL[business.business_category]) ||
+    business.business_category ||
+    null;
+  const isVerified = !!business.verified_at;
+
+  return (
+    <div style={{ display: "grid", gap: 14 }}>
+      <div
+        style={{
+          padding: 16,
+          background: NEX.panel,
+          border: `1px solid ${NEX.cyanSoft}`,
+          borderRadius: 14,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div
+            aria-hidden
+            style={{
+              flexShrink: 0,
+              width: 52,
+              height: 52,
+              borderRadius: 12,
+              background: NEX.cyanFaint,
+              color: NEX.cyan,
+              display: "grid",
+              placeItems: "center",
+              fontSize: 24,
+              lineHeight: 1,
+            }}
+          >
+            🛍
+          </div>
+          <div style={{ minWidth: 0, flex: 1 }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                minWidth: 0,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 16,
+                  fontWeight: 600,
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  minWidth: 0,
+                  flexShrink: 1,
+                }}
+              >
+                {business.display_name}
+              </span>
+              {isVerified && <VerifiedTick />}
+            </div>
+            {categoryLabel && (
+              <div
+                style={{
+                  marginTop: 2,
+                  fontSize: 11,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  color: NEX.cyan,
+                  opacity: 0.85,
+                }}
+              >
+                {categoryLabel}
+              </div>
+            )}
+            <div
+              style={{
+                marginTop: 2,
+                fontSize: 12,
+                color: NEX.textSecondary,
+              }}
+            >
+              /nex-native/{business.slug}
+            </div>
+          </div>
+        </div>
+
+        {business.description && (
+          <p
+            style={{
+              marginTop: 12,
+              marginBottom: 0,
+              fontSize: 13,
+              color: NEX.textPrimary,
+              lineHeight: 1.5,
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-word",
+            }}
+          >
+            {business.description}
+          </p>
+        )}
+
+        {business.city && (
+          <div
+            style={{
+              marginTop: 10,
+              fontSize: 12,
+              color: NEX.textSecondary,
+            }}
+          >
+            📍 {business.city}
+          </div>
+        )}
+      </div>
+
+      <div
+        style={{
+          padding: 16,
+          background: NEX.panel,
+          border: `1px solid ${NEX.cyanFaint}`,
+          borderRadius: 14,
+        }}
+      >
+        <div style={{ fontSize: 13, color: NEX.textPrimary, lineHeight: 1.5 }}>
+          Rich business editing — products, menu, hours, category,
+          verification, gallery, staff — lives on the business editor.
+        </div>
+        <Link
+          href="/nex-native/manage/shop"
+          style={{
+            display: "inline-flex",
+            marginTop: 12,
+            padding: "10px 18px",
+            background: NEX.cyan,
+            color: "#0B0F1A",
+            border: "none",
+            borderRadius: 8,
+            fontSize: 12,
+            fontWeight: 700,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            textDecoration: "none",
+          }}
+        >
+          Open business editor →
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------
+// Field primitives · dark chat-card palette
+// ---------------------------------------------------------------------
+
+function FieldGroup(props: { legend: string; children: React.ReactNode }) {
+  return (
+    <fieldset style={{ marginBottom: 16, padding: 0, border: "none" }}>
+      <legend
+        style={{
+          marginBottom: 8,
+          fontSize: 11,
+          fontWeight: 600,
+          letterSpacing: "0.10em",
+          textTransform: "uppercase",
+          color: NEX.textSecondary,
+        }}
+      >
+        {props.legend}
+      </legend>
+      {props.children}
+    </fieldset>
+  );
+}
+
+function RadioRow(props: {
+  name: string;
+  value: string;
+  label: string;
+  defaultChecked?: boolean;
+  muted?: boolean;
+  dataOption?: string;
+}) {
+  return (
+    <label
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+        padding: "10px 12px",
+        borderRadius: 10,
+        background: NEX.fieldBg,
+        border: `1px solid ${NEX.cyanFaint}`,
+        fontSize: 13,
+        color: props.muted ? NEX.textSecondary : NEX.textPrimary,
+        cursor: "pointer",
+      }}
+      data-nex-profile-kind-option={props.dataOption}
+    >
+      <input
+        type="radio"
+        name={props.name}
+        value={props.value}
+        defaultChecked={props.defaultChecked}
+        style={{ accentColor: NEX.cyan }}
+      />
+      <span>{props.label}</span>
+    </label>
+  );
+}
+
+function TextField(props: {
+  name: string;
+  label: string;
+  defaultValue: string;
+  placeholder?: string;
+  maxLength?: number;
+}) {
+  return (
+    <label
+      style={{
+        display: "block",
+        marginBottom: 12,
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+        color: NEX.textSecondary,
+      }}
+    >
+      {props.label}
+      <input
+        type="text"
+        name={props.name}
+        defaultValue={props.defaultValue}
+        placeholder={props.placeholder}
+        maxLength={props.maxLength}
+        data-nex-profile-input={props.name}
+        style={{
+          display: "block",
+          marginTop: 6,
+          width: "100%",
+          minHeight: 44,
+          padding: "10px 12px",
+          background: NEX.fieldBg,
+          color: NEX.textPrimary,
+          border: `1px solid ${NEX.cyanFaint}`,
+          borderRadius: 8,
+          fontSize: 14,
+          fontFamily: "inherit",
+          letterSpacing: 0,
+          textTransform: "none",
+          fontWeight: 400,
+        }}
+      />
+    </label>
+  );
+}
+
+function TextAreaField(props: {
+  name: string;
+  label: string;
+  defaultValue: string;
+  placeholder?: string;
+  maxLength?: number;
+  rows?: number;
+}) {
+  return (
+    <label
+      style={{
+        display: "block",
+        marginBottom: 12,
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+        color: NEX.textSecondary,
+      }}
+    >
+      {props.label}
+      <textarea
+        name={props.name}
+        defaultValue={props.defaultValue}
+        placeholder={props.placeholder}
+        maxLength={props.maxLength}
+        rows={props.rows ?? 4}
+        data-nex-profile-textarea={props.name}
+        style={{
+          display: "block",
+          marginTop: 6,
+          width: "100%",
+          padding: "10px 12px",
+          background: NEX.fieldBg,
+          color: NEX.textPrimary,
+          border: `1px solid ${NEX.cyanFaint}`,
+          borderRadius: 8,
+          fontSize: 14,
+          fontFamily: "inherit",
+          letterSpacing: 0,
+          textTransform: "none",
+          fontWeight: 400,
+          resize: "vertical",
+          lineHeight: 1.5,
+        }}
+      />
+    </label>
+  );
+}
+
+function VerifiedTick({ size = 14 }: { size?: number } = {}) {
+  return (
+    <span
+      aria-label="Verified by NEX"
+      title="Verified by NEX"
+      style={{
+        flexShrink: 0,
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: size,
+        height: size,
+        borderRadius: "50%",
+        background: NEX.cyan,
+        color: "#0B0F1A",
+        lineHeight: 1,
+      }}
+    >
+      <svg
+        width={size * 0.68}
+        height={size * 0.68}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={3.2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden
+      >
+        <path d="M5 12 L10 17 L20 6" />
+      </svg>
+    </span>
   );
 }

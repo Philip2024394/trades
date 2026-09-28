@@ -6,6 +6,11 @@
 // avatar slot. Renders the current avatar (or initials fallback), opens
 // a file picker when tapped, shows a live preview, and posts the file
 // to uploadAvatarAction on submit.
+//
+// Bridge 37 (2026-09-28) · restyled to match the chat card palette:
+// dark navy panel + cyan accents + orange primary action. Matches the
+// visual language of /nex-native/chat so the profile surface reads as
+// one continuous NEX product.
 
 import { useRef, useState } from "react";
 import { uploadAvatarAction } from "../../_actions";
@@ -15,6 +20,18 @@ interface Props {
   displayName: string;
   handle: string | null;
 }
+
+const NEX = {
+  panel: "#03101D",
+  fieldBg: "#04101F",
+  textPrimary: "#F2F5F8",
+  textSecondary: "#7D9BC0",
+  cyan: "#00AFFF",
+  cyanSoft: "rgba(0, 175, 255, 0.35)",
+  cyanFaint: "rgba(0, 175, 255, 0.12)",
+  orange: "#FF7200",
+  red: "#EF4444",
+};
 
 function initialsFrom(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean);
@@ -60,47 +77,121 @@ export function NexAvatarUploader({ currentAvatarUrl, displayName, handle }: Pro
     <form
       ref={formRef}
       action={uploadAvatarAction}
-      className="mb-4 rounded border border-neutral-300 bg-white p-4"
       data-nex-avatar-uploader
+      style={{
+        marginBottom: 16,
+        padding: 16,
+        background: NEX.panel,
+        border: `1px solid ${NEX.cyanSoft}`,
+        borderRadius: 14,
+      }}
     >
-      <div className="flex items-center gap-4">
+      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          className="relative flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-full border border-neutral-300 bg-neutral-100 text-lg font-semibold text-neutral-700 hover:border-neutral-500"
           aria-label="Choose profile image"
           data-nex-avatar-choose
+          style={{
+            position: "relative",
+            flexShrink: 0,
+            width: 80,
+            height: 80,
+            borderRadius: "50%",
+            border: `2px solid ${NEX.cyanSoft}`,
+            background: NEX.cyanFaint,
+            color: NEX.cyan,
+            display: "grid",
+            placeItems: "center",
+            fontSize: 18,
+            fontWeight: 700,
+            letterSpacing: "0.05em",
+            cursor: "pointer",
+            overflow: "visible",
+          }}
         >
           {displayed ? (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
               src={displayed}
               alt="Profile"
-              className="h-full w-full rounded-full object-cover"
+              style={{
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
+                objectFit: "cover",
+                display: "block",
+              }}
             />
           ) : (
             <span>{initialsFrom(displayName)}</span>
           )}
           <span
             aria-hidden
-            className="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-neutral-900 text-xs text-white"
+            style={{
+              position: "absolute",
+              bottom: -3,
+              right: -3,
+              width: 26,
+              height: 26,
+              borderRadius: "50%",
+              border: `2px solid ${NEX.panel}`,
+              background: NEX.cyan,
+              color: "#0B0F1A",
+              display: "grid",
+              placeItems: "center",
+              fontSize: 12,
+            }}
           >
             📷
           </span>
         </button>
-        <div className="min-w-0 flex-1">
-          <div className="text-sm font-medium text-neutral-900">Profile image</div>
-          <div className="mt-1 text-xs text-neutral-500">
-            JPEG, PNG, or WebP · up to 5 MB · shown on your NEX cards and profile.
+        <div style={{ minWidth: 0, flex: 1 }}>
+          <div
+            style={{
+              fontSize: 14,
+              fontWeight: 500,
+              color: NEX.textPrimary,
+            }}
+          >
+            Profile image
+          </div>
+          <div
+            style={{
+              marginTop: 4,
+              fontSize: 12,
+              color: NEX.textSecondary,
+              lineHeight: 1.45,
+            }}
+          >
+            JPEG, PNG, or WebP · up to 5 MB · shown on your NEX cards + profile.
           </div>
           {selectedName && (
-            <div className="mt-2 text-xs text-neutral-700" data-nex-avatar-selected>
-              Selected: <span className="font-medium">{selectedName}</span>
+            <div
+              data-nex-avatar-selected
+              style={{
+                marginTop: 8,
+                fontSize: 12,
+                color: NEX.textPrimary,
+              }}
+            >
+              Selected · <span style={{ fontWeight: 500 }}>{selectedName}</span>
             </div>
           )}
           {handle && (
-            <div className="mt-1 text-[10px] text-neutral-400">
-              Path <code className="font-mono">{handle}/avatar</code>
+            <div
+              style={{
+                marginTop: 4,
+                fontSize: 10,
+                color: NEX.textSecondary,
+                opacity: 0.7,
+                letterSpacing: "0.02em",
+              }}
+            >
+              Path{" "}
+              <code style={{ fontFamily: "ui-monospace, monospace" }}>
+                {handle}/avatar
+              </code>
             </div>
           )}
         </div>
@@ -111,26 +202,46 @@ export function NexAvatarUploader({ currentAvatarUrl, displayName, handle }: Pro
         type="file"
         name="avatar"
         accept="image/jpeg,image/png,image/webp"
-        className="hidden"
+        style={{ display: "none" }}
         onChange={onFileChange}
       />
 
       {errorMsg && (
         <p
-          className="mt-3 rounded bg-red-50 px-2 py-1 text-xs text-red-800"
           role="status"
           data-nex-avatar-error
+          style={{
+            marginTop: 12,
+            padding: "6px 10px",
+            borderRadius: 6,
+            background: "rgba(239,68,68,0.10)",
+            color: NEX.red,
+            fontSize: 12,
+            border: "1px solid rgba(239,68,68,0.35)",
+          }}
         >
           {errorMsg}
         </p>
       )}
 
       {preview && (
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div style={{ marginTop: 12, display: "flex", flexWrap: "wrap", gap: 8 }}>
           <button
             type="submit"
-            className="min-h-[36px] rounded bg-neutral-900 px-4 py-1.5 text-xs font-medium text-white hover:bg-neutral-700"
             data-nex-avatar-upload
+            style={{
+              minHeight: 40,
+              padding: "8px 16px",
+              borderRadius: 8,
+              background: NEX.orange,
+              color: "#0B0F1A",
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              border: "none",
+              cursor: "pointer",
+            }}
           >
             Upload image
           </button>
@@ -142,7 +253,18 @@ export function NexAvatarUploader({ currentAvatarUrl, displayName, handle }: Pro
               setErrorMsg(null);
               if (inputRef.current) inputRef.current.value = "";
             }}
-            className="min-h-[36px] rounded border border-neutral-300 px-4 py-1.5 text-xs text-neutral-700 hover:bg-neutral-50"
+            style={{
+              minHeight: 40,
+              padding: "8px 16px",
+              borderRadius: 8,
+              background: "transparent",
+              color: NEX.textSecondary,
+              border: `1px solid ${NEX.cyanFaint}`,
+              fontSize: 12,
+              fontWeight: 500,
+              letterSpacing: "0.04em",
+              cursor: "pointer",
+            }}
           >
             Cancel
           </button>
