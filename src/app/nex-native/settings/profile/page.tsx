@@ -45,7 +45,6 @@ import {
   NEX_PROFILE_HEADLINE_MAX,
   NEX_PROFILE_LOCATION_LABEL_MAX,
   NEX_PROFILE_PROFESSION_MAX,
-  isPersonalVerified,
 } from "@/lib/nex-native/types";
 
 export const runtime = "nodejs";
@@ -286,47 +285,23 @@ function PersonalTab(props: {
         Say who you are and what you do so friends recognise you.
       </p>
 
-      {/* Safety notice · personal profiles are never listed in the
-          NEX Directory. Only businesses appear there. Founder doctrine
-          2026-09-28. */}
-      <div
-        role="note"
-        data-nex-profile-safety-note
+      {/* Bridge 43d · 2026-09-28 · founder tightening. Retired the
+          green "Private by design" panel + the Verified Personal ✓
+          checklist card in favour of a single-line note. The tick
+          still exists (isPersonalVerified helper) · surfaces are
+          Bridge 43c. */}
+      <p
+        data-nex-profile-privacy-line
         style={{
-          display: "flex",
-          alignItems: "flex-start",
-          gap: 10,
-          padding: "10px 12px",
-          marginBottom: 14,
-          borderRadius: 10,
-          background: "rgba(16,185,129,0.08)",
-          border: `1px solid ${NEX.green}55`,
-          color: NEX.textPrimary,
+          margin: "0 0 14px",
           fontSize: 12,
           lineHeight: 1.5,
+          color: NEX.textSecondary,
         }}
       >
-        <span
-          aria-hidden
-          style={{ flexShrink: 0, color: NEX.green, fontSize: 14, lineHeight: 1.2 }}
-        >
-          🛡
-        </span>
-        <span>
-          <strong style={{ color: NEX.green, fontWeight: 700 }}>
-            Private by design ·
-          </strong>{" "}
-          personal profiles are never listed in the NEX Directory. Only
-          verified businesses appear there. You're only visible to
-          friends you accept.
-        </span>
-      </div>
-
-      {/* Bridge 41 · Verified Personal ✓ status · shown always so
-          the user knows what's needed to earn the tick. Green + tick
-          when both conditions met · dashed cyan outline + checklist
-          when either is missing. */}
-      <VerifiedPersonalStatus profile={profile} />
+        Personal accounts are private · you're only found on NEX when
+        you share your NEX ID.
+      </p>
 
       <NexFaceCameraUploader
         currentAvatarUrl={profile?.avatar_url ?? null}
@@ -903,127 +878,6 @@ function TextAreaField(props: {
         }}
       />
     </label>
-  );
-}
-
-/** Bridge 41 · shows the user their current Verified Personal ✓
- *  status. Two states:
- *    · verified · green banner + ✓ tick + "Verified Personal ·
- *      shown on your friend cards".
- *    · not yet · dashed cyan card + checklist showing the two
- *      requirements (avatar_face_verified + daily_activity) so the
- *      user knows exactly what to complete. */
-function VerifiedPersonalStatus(props: {
-  profile: Awaited<
-    ReturnType<typeof accountProfileService.getProfileByAccountId>
-  >;
-}) {
-  const { profile } = props;
-  const verified = isPersonalVerified(profile);
-  const hasFace = !!profile?.avatar_face_verified;
-  const hasActivity = !!profile?.daily_activity;
-
-  if (verified) {
-    return (
-      <div
-        role="status"
-        data-nex-personal-verified
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-          padding: "10px 12px",
-          marginBottom: 14,
-          borderRadius: 10,
-          background: "rgba(0,175,255,0.10)",
-          border: `1px solid ${NEX.cyan}`,
-          color: NEX.textPrimary,
-          fontSize: 12,
-          lineHeight: 1.5,
-        }}
-      >
-        <VerifiedTick size={16} />
-        <span>
-          <strong style={{ color: NEX.cyan, fontWeight: 700 }}>
-            Verified Personal ·
-          </strong>{" "}
-          your friends see the ✓ tick on your card. Thanks for
-          confirming you're a real human on NEX.
-        </span>
-      </div>
-    );
-  }
-
-  return (
-    <div
-      role="note"
-      data-nex-personal-verified="pending"
-      style={{
-        padding: 12,
-        marginBottom: 14,
-        borderRadius: 10,
-        background: "rgba(0,175,255,0.04)",
-        border: `1px dashed ${NEX.cyan}88`,
-        fontSize: 12,
-        color: NEX.textPrimary,
-        lineHeight: 1.5,
-      }}
-    >
-      <div
-        style={{
-          fontSize: 11,
-          fontWeight: 700,
-          letterSpacing: "0.10em",
-          textTransform: "uppercase",
-          color: NEX.cyan,
-          marginBottom: 6,
-        }}
-      >
-        Earn the Verified Personal ✓
-      </div>
-      <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 4 }}>
-        <ChecklistRow done={hasFace} label="Live-camera profile photo" />
-        <ChecklistRow done={hasActivity} label="Fill in what you do day-to-day" />
-      </ul>
-      <p style={{ margin: "8px 0 0", fontSize: 11, color: NEX.textSecondary }}>
-        Both done → your friend cards + chat header pick up the tick
-        automatically.
-      </p>
-    </div>
-  );
-}
-
-function ChecklistRow(props: { done: boolean; label: string }) {
-  return (
-    <li style={{ display: "flex", alignItems: "center", gap: 8 }}>
-      <span
-        aria-hidden
-        style={{
-          flexShrink: 0,
-          width: 16,
-          height: 16,
-          borderRadius: "50%",
-          display: "grid",
-          placeItems: "center",
-          background: props.done ? NEX.cyan : "transparent",
-          border: props.done ? "none" : `1px solid ${NEX.cyanFaint}`,
-          color: props.done ? "#0B0F1A" : NEX.textSecondary,
-          fontSize: 10,
-        }}
-      >
-        {props.done ? "✓" : "○"}
-      </span>
-      <span
-        style={{
-          fontSize: 12,
-          color: props.done ? NEX.textSecondary : NEX.textPrimary,
-          textDecoration: props.done ? "line-through" : "none",
-          opacity: props.done ? 0.75 : 1,
-        }}
-      >
-        {props.label}
-      </span>
-    </li>
   );
 }
 
