@@ -52,7 +52,7 @@ export const dynamic = "force-dynamic";
 type ProfileTab = "personal" | "business";
 const TABS: readonly ProfileTab[] = ["personal", "business"] as const;
 const TAB_LABEL: Record<ProfileTab, string> = {
-  personal: "Personal account",
+  personal: "Personal",
   business: "Business",
 };
 
