@@ -122,21 +122,22 @@ export function PinkDreamHud() {
               gap: 10,
             }}
           >
-            <ActionTile label="Camera" icon={<CameraIcon />} />
+            <ActionTile label="Call" icon={<PhoneIcon />} />
             <ActionTile label="Video" icon={<VideoIcon />} />
+            <ActionTile label="Camera" icon={<CameraIcon />} />
             <ActionTile label="Mic" icon={<MicIcon />} />
             <Link
               href="/nex-native/settings/theme"
               onClick={() => setActionsOpen(false)}
-              style={{ textDecoration: "none" }}
+              style={{ textDecoration: "none", gridColumn: "1 / -1" }}
             >
               <ActionTile label="Themes" icon={<PaletteIcon />} />
             </Link>
           </div>
           <PanelHint>
-            Camera / Video / Mic are visual only in this preview · the
-            live peer chat wires each into the attachments flow (Bridge
-            8+9).
+            Call / Video / Camera / Mic are visual only in this preview
+            · the live peer chat wires each into the calling +
+            attachments flow (Bridge 8+9).
           </PanelHint>
         </CenterPanel>
       )}
@@ -442,6 +443,19 @@ function DotsIcon() {
       <circle cx="12" cy="5" r="1.7" fill="currentColor" />
       <circle cx="12" cy="12" r="1.7" fill="currentColor" />
       <circle cx="12" cy="19" r="1.7" fill="currentColor" />
+    </svg>
+  );
+}
+function PhoneIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M5 4h3l2 5-2.5 1.5a12 12 0 006 6L15 14l5 2v3a2 2 0 01-2 2A15 15 0 013 6a2 2 0 012-2z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }

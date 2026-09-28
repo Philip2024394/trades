@@ -120,6 +120,26 @@ export default function PinkDreamPreviewPage() {
         body:has([data-nex-pink-dream-preview]) {
           margin: 0; padding: 0; background: #17121F;
         }
+        /* Bridge 24h · presence ping · the header portrait rim
+           breathes with a pink halo when the peer is online. Two
+           expanding rings staggered 900ms apart keep the pulse alive
+           without feeling frantic. */
+        @keyframes nex-pink-ping {
+          0%   { transform: scale(1);   opacity: 0.55; }
+          80%  { transform: scale(1.55); opacity: 0; }
+          100% { transform: scale(1.55); opacity: 0; }
+        }
+        [data-nex-pink-dream-preview] [data-portrait-ping] {
+          position: absolute;
+          inset: -3px;
+          border-radius: 50%;
+          border: 2px solid rgba(255, 79, 163, 0.75);
+          animation: nex-pink-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+          pointer-events: none;
+        }
+        [data-nex-pink-dream-preview] [data-portrait-ping-2] {
+          animation-delay: 0.9s;
+        }
         /* Small soft speech corner rendered with a rotated square +
            overflow-hidden trick would need extra markup. Simpler:
            use CSS masks on a small trailing wedge coloured to match
@@ -180,21 +200,33 @@ export default function PinkDreamPreviewPage() {
           gap: 12,
         }}
       >
-        {/* Bridge 24e · back arrow removed · profile portrait now
-           anchors the leftmost slot of the header per Founder
-           direction 2026-09-28. */}
+        {/* Bridge 24h · portrait wrapped in relative box so the
+           two ping rings pulse from the same origin as the rim.
+           Presence is signalled by the pink halo · no more "online"
+           text row per Founder direction 2026-09-28. */}
         <div
           style={{
+            position: "relative",
             width: 52,
             height: 52,
-            borderRadius: "50%",
-            background: "url(/nex-themes/pink-dream.png) center/cover",
-            border: "2px solid rgba(255,255,255,0.85)",
-            boxShadow: "0 0 12px rgba(255,79,163,0.65)",
             flexShrink: 0,
           }}
-          aria-hidden
-        />
+        >
+          <span aria-hidden data-portrait-ping />
+          <span aria-hidden data-portrait-ping data-portrait-ping-2 />
+          <div
+            aria-hidden
+            style={{
+              position: "relative",
+              width: 52,
+              height: 52,
+              borderRadius: "50%",
+              background: "url(/nex-themes/pink-dream.png) center/cover",
+              border: "2px solid rgba(255,255,255,0.85)",
+              boxShadow: "0 0 12px rgba(255,79,163,0.65)",
+            }}
+          />
+        </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div
             style={{
@@ -206,39 +238,10 @@ export default function PinkDreamPreviewPage() {
           >
             Bunny <span aria-hidden>♡</span>
           </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              fontSize: 12,
-              color: P.softBabyPink,
-              opacity: 0.92,
-              marginTop: 1,
-            }}
-          >
-            <span
-              aria-hidden
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: 999,
-                background: P.onlineGreen,
-                boxShadow: "0 0 6px rgba(123,228,149,0.7)",
-              }}
-            />
-            online
-          </div>
         </div>
-        <HeaderIcon aria-label="Call">
-          <PhoneIcon />
-        </HeaderIcon>
-        <HeaderIcon aria-label="Video">
-          <VideoIcon />
-        </HeaderIcon>
-        <HeaderIcon aria-label="More">
-          <DotsIcon />
-        </HeaderIcon>
+        {/* Bridge 24h · phone + video icons removed · Call / Video
+           / Mic / Camera / Themes all live in the 3-dot action
+           sheet at the lower right. */}
       </header>
 
       {/* ---------------- Conversation ----------------
@@ -520,78 +523,7 @@ function OutgoingRow({
   );
 }
 
-// -- Small components -------------------------------------------
-function HeaderIcon({
-  children,
-  ...rest
-}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
-  return (
-    <button
-      type="button"
-      {...rest}
-      style={{
-        width: 44,
-        height: 44,
-        borderRadius: 999,
-        background: "transparent",
-        border: "none",
-        color: "#FFD4E8",
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      {children}
-    </button>
-  );
-}
-
 // -- Icons · thin rounded strokes -------------------------------
-function PhoneIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M5 4h3l2 5-2.5 1.5a12 12 0 006 6L15 14l5 2v3a2 2 0 01-2 2A15 15 0 013 6a2 2 0 012-2z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-function VideoIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <rect
-        x="3"
-        y="6"
-        width="13"
-        height="12"
-        rx="2.5"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M16 10l5-3v10l-5-3"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-function DotsIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <circle cx="12" cy="6" r="1.6" fill="currentColor" />
-      <circle cx="12" cy="12" r="1.6" fill="currentColor" />
-      <circle cx="12" cy="18" r="1.6" fill="currentColor" />
-    </svg>
-  );
-}
 function SmileIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
