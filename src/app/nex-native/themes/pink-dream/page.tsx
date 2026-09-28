@@ -327,28 +327,20 @@ export default function PinkDreamPreviewPage() {
               boxShadow: "0 0 12px rgba(255,79,163,0.65)",
             }}
           />
-          {/* Bridge 24ah · heart badge sits on the portrait rim at
-             bottom-right · like an identity charm attached to the
-             ring. Wrapper adds a dark navy halo so the heart pops
-             against the sunset. */}
+          {/* Bridge 24aj · heart sits DIRECTLY on the portrait rim ·
+             no dark-navy badge, no white ring · just the SVG heart
+             with its own gradient + glow floating on the corner. */}
           <span
             aria-hidden
             style={{
               position: "absolute",
-              bottom: -3,
-              right: -3,
-              width: 22,
-              height: 22,
-              borderRadius: "50%",
-              background: "#17121F",
-              border: "1.5px solid rgba(255,255,255,0.85)",
-              display: "grid",
-              placeItems: "center",
+              bottom: -4,
+              right: -4,
               zIndex: 3,
-              boxShadow: "0 2px 6px rgba(0,0,0,0.45)",
+              lineHeight: 0,
             }}
           >
-            <PinkHeart size={14} />
+            <PinkHeart size={20} />
           </span>
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
