@@ -31,6 +31,7 @@ import { FirstConnectionEmpty } from "./_first-connection-empty";
 import { ShopGridModal, type ShopProduct } from "./_shop-grid-modal";
 import { ShopHeaderButton } from "./_shop-header-button";
 import { ImageQrProbe } from "./_qr-image-scanner";
+import { TradeAgreementCard } from "./_trade-agreement-card";
 
 const NEX = {
   bg: "#020914",
@@ -207,6 +208,11 @@ export interface PortraitBloomShellProps {
   productInquiryAction?: (
     formData: FormData,
   ) => Promise<never> | void | Promise<void>;
+  /** Bridge 17c · when set, a compact "Trade Agreement with X" card
+   *  renders at the top of the message stream · persistent reminder
+   *  of the five safe paths + off-path warning. Only meaningful on
+   *  commerce chats · leave undefined on friend chats. */
+  tradeAgreementSellerName?: string | null;
   /** Optional theme wallpaper · painted behind the message zone as
    *  a soft, dimmed layer so the theme picks up an atmosphere
    *  distinct from the peer's profile image. Sealed 2026-09-27 ·
@@ -251,6 +257,7 @@ export function PortraitBloomShell({
   pendingAttachment,
   peerShop,
   productInquiryAction,
+  tradeAgreementSellerName,
 }: PortraitBloomShellProps) {
   const isOffline = presenceKind !== "online";
   // Per-element theme colours · fall back to rippleColor (accent)
@@ -655,6 +662,9 @@ export function PortraitBloomShell({
               gap: 0,
             }}
           >
+            {tradeAgreementSellerName && (
+              <TradeAgreementCard sellerName={tradeAgreementSellerName} />
+            )}
             {messages.length === 0 ? (
               <FirstConnectionEmpty
                 peerName={displayName}

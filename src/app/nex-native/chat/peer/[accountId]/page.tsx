@@ -171,25 +171,30 @@ export default async function PeerChatPage({
     blurb: reportStrings.reasons[slug].blurb,
   }));
 
-  const peerShop =
-    peerBusiness && peerProducts.length > 0
-      ? {
-          name: peerBusiness.display_name,
-          href: peerBusiness.slug
-            ? `/nex-native/${peerBusiness.slug}`
-            : null,
-          products: peerProducts.map((p) => ({
-            id: p.id,
-            name: p.name,
-            description: p.description ?? null,
-            price_pence: p.price_pence,
-            currency: p.currency,
-            image_url: p.image_url ?? null,
-            tags: p.tags ?? null,
-            stock_status: p.stock_status ?? null,
-          })),
-        }
-      : null;
+  // Bridge 17b · shop button in the chat header shows whenever the
+  // peer owns a business, even if they have no products (a cafe or
+  // restaurant carries menu items in nex_menu_item, not products ·
+  // sellers of services may have zero SKUs at all). When there are
+  // products the grid modal renders · otherwise the button just
+  // navigates straight to the shop landing.
+  const peerShop = peerBusiness
+    ? {
+        name: peerBusiness.display_name,
+        href: peerBusiness.slug
+          ? `/nex-native/${peerBusiness.slug}`
+          : null,
+        products: peerProducts.map((p) => ({
+          id: p.id,
+          name: p.name,
+          description: p.description ?? null,
+          price_pence: p.price_pence,
+          currency: p.currency,
+          image_url: p.image_url ?? null,
+          tags: p.tags ?? null,
+          stock_status: p.stock_status ?? null,
+        })),
+      }
+    : null;
 
   // Bridge 8+9 · resolve the pending attachment from URL state.
   const attachUrl = sp.attachment_url?.trim() || null;
@@ -413,6 +418,11 @@ export default async function PeerChatPage({
       pendingAttachment={pendingAttachment}
       peerShop={peerShop}
       productInquiryAction={bindProductInquiry}
+      tradeAgreementSellerName={
+        peerBusiness
+          ? peer.display_name.split(/\s+/)[0] ?? peer.display_name
+          : null
+      }
       composerPlaceholder={`Message ${peer.display_name}…`}
       headerTag="NEX Chat"
       contacts={contacts}

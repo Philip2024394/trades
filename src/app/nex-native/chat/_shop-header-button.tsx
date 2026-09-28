@@ -37,6 +37,44 @@ export function ShopHeaderButton({
   inquiryAction,
 }: Props) {
   const [open, setOpen] = React.useState(false);
+  const hasProducts = products && products.length > 0;
+
+  const buttonStyle: React.CSSProperties = {
+    position: "absolute",
+    top: "calc(env(safe-area-inset-top, 0) + 14px)",
+    right: 12,
+    width: 40,
+    height: 40,
+    borderRadius: "50%",
+    background: "rgba(0,0,0,0.32)",
+    border: "1px solid rgba(255,120,0,0.5)",
+    color: NEX.orange,
+    padding: 0,
+    display: "grid",
+    placeItems: "center",
+    cursor: "pointer",
+    zIndex: 6,
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
+    transition: "background 160ms ease, transform 120ms ease",
+    textDecoration: "none",
+  };
+
+  // Bridge 17b · when the seller has products, the button opens the
+  // in-chat shop grid modal. When they don't (menu-only shops,
+  // service sellers) it navigates straight to the shop landing.
+  if (!hasProducts) {
+    return (
+      <a
+        href={shopHref ?? "#"}
+        aria-label={`Open ${shopName}'s shop`}
+        title="Shop"
+        style={buttonStyle}
+      >
+        <ShopIcon />
+      </a>
+    );
+  }
 
   return (
     <>
@@ -45,25 +83,7 @@ export function ShopHeaderButton({
         aria-label={`Open ${shopName}'s shop`}
         title="Shop"
         onClick={() => setOpen(true)}
-        style={{
-          position: "absolute",
-          top: "calc(env(safe-area-inset-top, 0) + 14px)",
-          right: 12,
-          width: 40,
-          height: 40,
-          borderRadius: "50%",
-          background: "rgba(0,0,0,0.32)",
-          border: "1px solid rgba(255,120,0,0.5)",
-          color: NEX.orange,
-          padding: 0,
-          display: "grid",
-          placeItems: "center",
-          cursor: "pointer",
-          zIndex: 6,
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
-          transition: "background 160ms ease, transform 120ms ease",
-        }}
+        style={buttonStyle}
         onMouseEnter={(e) => {
           e.currentTarget.style.background = "rgba(255,120,0,0.16)";
         }}
