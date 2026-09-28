@@ -85,11 +85,17 @@ export default function PinkDreamPreviewPage() {
     <div
       data-nex-pink-dream-preview
       style={{
+        // Bridge 24b · lock shell to the mobile viewport · width + dvh
+        // so the wallpaper covers 100% of the visible area with no
+        // horizontal scroll / letterbox. overflow-x hidden defends
+        // against any child that tries to grow past the edge.
+        width: "100vw",
         minHeight: "100dvh",
+        maxWidth: "100vw",
         position: "relative",
         color: P.white,
         fontFamily: SANS,
-        overflow: "hidden",
+        overflowX: "hidden",
         // Warm sunset bedroom wallpaper covers the entire viewport ·
         // every chat surface floats over it per the master prompt.
         backgroundImage: "url(/nex-themes/pink-dream.png)",
@@ -103,6 +109,13 @@ export default function PinkDreamPreviewPage() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap');
         [data-nex-pink-dream-preview] * { box-sizing: border-box; }
+        /* Bridge 24b · html/body might carry padding from a parent
+           layout wrapper (nex-native-root) · this preview is
+           deliberately full-bleed, so we scope a reset. */
+        html:has([data-nex-pink-dream-preview]),
+        body:has([data-nex-pink-dream-preview]) {
+          margin: 0; padding: 0; background: #17121F;
+        }
         /* Small soft speech corner rendered with a rotated square +
            overflow-hidden trick would need extra markup. Simpler:
            use CSS masks on a small trailing wedge coloured to match
@@ -145,7 +158,11 @@ export default function PinkDreamPreviewPage() {
         }}
       />
 
-      {/* ---------------- Header ---------------- */}
+      {/* ---------------- Header ----------------
+         Bridge 24b · shade + blur + border-bottom removed per
+         Founder direction 2026-09-28. Header now floats directly
+         over the wallpaper · icons + name are white for legibility
+         against the sunset. */}
       <header
         style={{
           position: "sticky",
@@ -153,10 +170,7 @@ export default function PinkDreamPreviewPage() {
           zIndex: 5,
           padding:
             "calc(env(safe-area-inset-top, 0) + 12px) 16px 12px",
-          background: "rgba(20, 12, 28, 0.40)",
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
-          borderBottom: "1px solid rgba(255, 139, 197, 0.16)",
+          background: "transparent",
           display: "flex",
           alignItems: "center",
           gap: 12,
@@ -241,9 +255,10 @@ export default function PinkDreamPreviewPage() {
         style={{
           position: "relative",
           zIndex: 1,
+          width: "100%",
           maxWidth: 480,
           margin: "0 auto",
-          padding: "18px 16px calc(env(safe-area-inset-bottom, 0) + 130px)",
+          padding: "12px 14px calc(env(safe-area-inset-bottom, 0) + 130px)",
           display: "flex",
           flexDirection: "column",
           gap: 10,
