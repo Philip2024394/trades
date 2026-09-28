@@ -2,23 +2,31 @@
 
 // src/app/nex-native/chat/_product-detail-sheet.tsx
 //
-// Bridge 11 · product detail bottom sheet.
-// ----------------------------------------
-// Stacks over the shop grid bottom sheet when a user taps a product
-// card. Fills more of the viewport (88vh) so the product's photo +
-// description + intent CTAs get room to breathe.
+// Bridge 52 · product / menu-item detail bottom sheet.
+// ----------------------------------------------------
+// Stacks over the shop grid bottom sheet when a user taps a card.
+// Fills 88vh so photo + description + CTAs get room to breathe.
 //
-// Two intent buttons anchor the sheet at the bottom:
-//   · "Ask about this"  · secondary · default body "Is the <name> still available?"
-//   · "I want this"     · primary   · default body "I'd like to buy the <name> · what's next?"
+// Two CTAs anchor the sheet (chat-native doctrine sealed 2026-09-29):
+//   · "Add to cart"      · secondary · writes localStorage using the
+//                          same NEX_CART_STORAGE_KEY as landing pages
+//   · "Send in chat"     · primary   · adds this item if not present,
+//                          then fires sendCartOrderAction for THIS
+//                          shop's items into the current peer chat
+//                          (no /cart detour). Server redirects back
+//                          to the peer chat page with cart_sent=1.
 //
-// Both submit sendProductInquiryAction bound to peerAccountId · the
-// server builds the product snapshot + sends the peer message with
-// attachment_type='product'. Sheet closes via Next's redirect chain.
+// Legacy `inquiryAction` prop retained as fallback for callers that
+// haven't wired shopContext + sendCartOrderAction yet · when only
+// inquiryAction is present, the old Ask / Want CTAs render instead.
 
 import * as React from "react";
 import { createPortal } from "react-dom";
-import type { ShopProduct } from "./_shop-grid-modal";
+import type { ShopProduct, ShopContext } from "./_shop-grid-modal";
+import {
+  NEX_CART_STORAGE_KEY,
+  type NexCartItem,
+} from "@/lib/nex-native/cart-types";
 
 const NEX = {
   panel: "rgba(3,16,29,0.98)",
@@ -38,9 +46,21 @@ interface Props {
   onBack: () => void;
   product: ShopProduct | null;
   peerName: string;
-  /** Server Action bound with peerAccountId · takes product_id +
-   *  intent + optional custom body. Redirects to the peer chat. */
-  inquiryAction: (
+  /** True when the peer is a venue seller · swaps microcopy so this
+   *  reads as a menu-item rather than a product. */
+  isVenue?: boolean;
+  /** Shop identity fields · required with sendCartOrderAction for
+   *  the Add-to-cart + Send-in-chat CTAs. */
+  shopContext?: ShopContext;
+  /** Server Action bound with peerAccountId · posts a cart_order
+   *  peer message with this shop's items · redirects back to the
+   *  peer chat on success. */
+  sendCartOrderAction?: (
+    formData: FormData,
+  ) => Promise<never> | void | Promise<void>;
+  /** Legacy inquiry action · used only when the modern chat-native
+   *  props (shopContext + sendCartOrderAction) aren't supplied. */
+  inquiryAction?: (
     formData: FormData,
   ) => Promise<never> | void | Promise<void>;
 }
@@ -51,6 +71,9 @@ export function ProductDetailSheet({
   onBack,
   product,
   peerName,
+  isVenue = false,
+  shopContext,
+  sendCartOrderAction,
   inquiryAction,
 }: Props) {
   const [mounted, setMounted] = React.useState(false);
@@ -320,7 +343,7 @@ export function ProductDetailSheet({
             </p>
           )}
 
-          {/* Seller hint */}
+          {/* Seller hint · reflects the chat-native flow */}
           <div
             style={{
               padding: "10px 12px",
@@ -333,16 +356,31 @@ export function ProductDetailSheet({
               marginBottom: 4,
             }}
           >
-            Sending a message attaches this product card to your chat
-            with{" "}
-            <span style={{ color: NEX.text, fontWeight: 600 }}>
-              {peerName}
-            </span>
-            . They&apos;ll see the card and can reply here.
+            {shopContext && sendCartOrderAction ? (
+              <>
+                Add to cart to build your order, or send it straight
+                into your chat with{" "}
+                <span style={{ color: NEX.text, fontWeight: 600 }}>
+                  {peerName}
+                </span>
+                .
+              </>
+            ) : (
+              <>
+                Sending a message attaches this {isVenue ? "dish" : "product"}{" "}
+                card to your chat with{" "}
+                <span style={{ color: NEX.text, fontWeight: 600 }}>
+                  {peerName}
+                </span>
+                . They&apos;ll see the card and can reply here.
+              </>
+            )}
           </div>
         </div>
 
-        {/* Anchored intent CTAs · always visible */}
+        {/* Anchored CTAs · chat-native (Add-to-cart + Send-in-chat)
+            when shopContext + sendCartOrderAction are wired · legacy
+            Ask / Want otherwise. */}
         <div
           style={{
             display: "grid",
@@ -355,24 +393,207 @@ export function ProductDetailSheet({
               "linear-gradient(180deg, rgba(3,10,20,0) 0%, rgba(3,10,20,0.4) 100%)",
           }}
         >
-          <IntentForm
-            action={inquiryAction}
-            productId={product.id}
-            intent="ask"
-            label="Ask about this"
-            variant="secondary"
-          />
-          <IntentForm
-            action={inquiryAction}
-            productId={product.id}
-            intent="want"
-            label="I want this"
-            variant="primary"
-          />
+          {shopContext && sendCartOrderAction ? (
+            <>
+              <AddToCartCtaButton
+                product={product}
+                shopContext={shopContext}
+              />
+              <SendInChatCtaButton
+                product={product}
+                shopContext={shopContext}
+                sendAction={sendCartOrderAction}
+              />
+            </>
+          ) : inquiryAction ? (
+            <>
+              <IntentForm
+                action={inquiryAction}
+                productId={product.id}
+                intent="ask"
+                label="Ask about this"
+                variant="secondary"
+              />
+              <IntentForm
+                action={inquiryAction}
+                productId={product.id}
+                intent="want"
+                label="I want this"
+                variant="primary"
+              />
+            </>
+          ) : null}
         </div>
       </section>
     </>,
     document.body,
+  );
+}
+
+/** Reads localStorage, dedupes on (shop_id, item_id, variants), bumps
+ *  quantity or appends a new line, writes back + fires the standard
+ *  `nex-cart-changed` event so header counters refresh. Mirrors the
+ *  AddToCartButton logic used on shop landing pages. */
+function writeItemToCart(
+  product: ShopProduct,
+  shopContext: ShopContext,
+): NexCartItem[] {
+  const raw = window.localStorage.getItem(NEX_CART_STORAGE_KEY);
+  const arr: NexCartItem[] = raw ? JSON.parse(raw) : [];
+  const dedupeKey = `${shopContext.shop_id}::${product.id}::`;
+  const idx = arr.findIndex(
+    (x) =>
+      x &&
+      `${x.shop_id}::${x.id}::${(x.variants ?? []).slice().sort().join("|")}` ===
+        dedupeKey,
+  );
+  if (idx >= 0) {
+    arr[idx] = {
+      ...arr[idx]!,
+      quantity: (arr[idx]!.quantity || 1) + 1,
+    };
+  } else {
+    arr.push({
+      key:
+        typeof crypto !== "undefined" && "randomUUID" in crypto
+          ? crypto.randomUUID()
+          : `${dedupeKey}::${Date.now()}`,
+      kind: product.kind === "menu_item" ? "menu_item" : "product",
+      id: product.id,
+      shop_id: shopContext.shop_id,
+      shop_slug: shopContext.shop_slug ?? "",
+      shop_owner_account_id: shopContext.shop_owner_account_id,
+      shop_display_name: shopContext.shop_display_name,
+      shop_lat: null,
+      shop_lng: null,
+      name: product.name,
+      price_pence: product.price_pence,
+      currency: product.currency,
+      image_url: product.image_url,
+      quantity: 1,
+      variants: [],
+      perks: [],
+      perks_note: null,
+      note: null,
+      added_at: Date.now(),
+    });
+  }
+  window.localStorage.setItem(NEX_CART_STORAGE_KEY, JSON.stringify(arr));
+  window.dispatchEvent(new CustomEvent("nex-cart-changed"));
+  return arr;
+}
+
+function AddToCartCtaButton({
+  product,
+  shopContext,
+}: {
+  product: ShopProduct;
+  shopContext: ShopContext;
+}) {
+  const [added, setAdded] = React.useState(false);
+  function onClick() {
+    try {
+      writeItemToCart(product, shopContext);
+      setAdded(true);
+      setTimeout(() => setAdded(false), 1400);
+    } catch {
+      // localStorage may be disabled · silently no-op.
+    }
+  }
+  const style: React.CSSProperties = {
+    width: "100%",
+    padding: "13px 14px",
+    borderRadius: 12,
+    background: added
+      ? "linear-gradient(180deg, #22E37A 0%, #16D66B 100%)"
+      : "linear-gradient(180deg, rgba(0,159,239,0.24) 0%, rgba(0,159,239,0.16) 100%)",
+    border: added
+      ? "1px solid rgba(22,214,107,0.55)"
+      : `1px solid ${NEX.cyanSoft}`,
+    color: added ? "#0B0F1A" : NEX.text,
+    fontSize: 13,
+    fontWeight: 700,
+    letterSpacing: "0.02em",
+    cursor: "pointer",
+    fontFamily: "inherit",
+    transition: "background 160ms ease, border-color 160ms ease",
+  };
+  return (
+    <button type="button" onClick={onClick} style={style}>
+      {added ? "✓ Added" : "Add to cart"}
+    </button>
+  );
+}
+
+function SendInChatCtaButton({
+  product,
+  shopContext,
+  sendAction,
+}: {
+  product: ShopProduct;
+  shopContext: ShopContext;
+  sendAction: (formData: FormData) => Promise<never> | void | Promise<void>;
+}) {
+  const [pending, startTransition] = React.useTransition();
+  function onClick() {
+    if (pending) return;
+    let arr: NexCartItem[];
+    try {
+      arr = writeItemToCart(product, shopContext);
+    } catch {
+      return;
+    }
+    // Filter to THIS shop only · sendCartOrderAction posts one
+    // cart_order per shop. Other shops' items stay in the cart.
+    const shopItems = arr.filter((x) => x.shop_id === shopContext.shop_id);
+    const cartPayload = {
+      peer_account_id: shopContext.shop_owner_account_id,
+      shop_id: shopContext.shop_id,
+      shop_slug: shopContext.shop_slug ?? "",
+      shop_display_name: shopContext.shop_display_name,
+      currency: product.currency,
+      buyer_notes: "",
+      items: shopItems.map((x) => ({
+        kind: x.kind,
+        id: x.id,
+        name: x.name,
+        price_pence: x.price_pence,
+        currency: x.currency,
+        quantity: x.quantity,
+        variants: x.variants ?? [],
+        perks: x.perks ?? [],
+        perks_note: x.perks_note ?? null,
+        note: x.note ?? null,
+        image_url: x.image_url ?? null,
+      })),
+      delivery_address: null,
+    };
+    const fd = new FormData();
+    fd.append("cart_payload", JSON.stringify(cartPayload));
+    startTransition(() => {
+      void sendAction(fd);
+    });
+  }
+  const style: React.CSSProperties = {
+    width: "100%",
+    padding: "13px 14px",
+    borderRadius: 12,
+    background:
+      "linear-gradient(180deg, rgba(255,120,0,0.94) 0%, rgba(255,120,0,0.82) 100%)",
+    border: `1px solid ${NEX.orangeSoft}`,
+    color: "#0B0F1A",
+    fontSize: 13,
+    fontWeight: 700,
+    letterSpacing: "0.02em",
+    cursor: pending ? "wait" : "pointer",
+    fontFamily: "inherit",
+    boxShadow: "0 6px 18px rgba(255,120,0,0.35)",
+    opacity: pending ? 0.7 : 1,
+  };
+  return (
+    <button type="button" onClick={onClick} style={style} disabled={pending}>
+      {pending ? "Sending…" : "Send in chat"}
+    </button>
   );
 }
 

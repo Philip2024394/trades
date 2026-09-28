@@ -2,15 +2,19 @@
 
 // src/app/nex-native/_header-cart-icon.tsx
 //
-// Bridge 25b · Fixed cart icon in the top-right of a shop/restaurant
-// landing · sits immediately left of the P2 capabilities menu button
-// (NexNativeCapabilitiesMenu). Renders a pink badge showing the total
-// item count from localStorage. Tapping navigates to /cart.
+// Cart icon that sits in the top header of shop/restaurant surfaces.
+// Two visual variants:
+//   • "fixed"  (default) · absolute-positioned floating icon · used on
+//                          subpages without a header right-cluster
+//                          (e.g. /nex-native/[businessSlug]/menu).
+//   • "inline"           · 15px icon that slots into the shop landing
+//                          page's Home/Settings cluster · matches the
+//                          HeaderIconLink styling exactly.
 //
 // Reads NEX_CART_STORAGE_KEY on mount + listens for `nex-cart-changed`
-// so the badge updates whenever any AddToCartButton fires anywhere on
-// the page. Zero-count state renders the icon without the badge · the
-// icon itself stays visible so users always know where the cart lives.
+// so the badge count updates whenever any AddToCartButton fires. Zero
+// count renders the icon without a badge · the icon stays visible so
+// buyers always know where the cart lives.
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -39,7 +43,11 @@ function readCount(): number {
   }
 }
 
-export function HeaderCartIcon() {
+export function HeaderCartIcon({
+  variant = "fixed",
+}: {
+  variant?: "fixed" | "inline";
+} = {}) {
   const [count, setCount] = useState(0);
   const [hydrated, setHydrated] = useState(false);
 
@@ -48,8 +56,6 @@ export function HeaderCartIcon() {
     setHydrated(true);
     const onChange = () => setCount(readCount());
     window.addEventListener("nex-cart-changed", onChange);
-    // Also listen to storage events so a sibling tab's cart changes
-    // reflect here without a reload.
     const onStorage = (e: StorageEvent) => {
       if (e.key === NEX_CART_STORAGE_KEY) setCount(readCount());
     };
@@ -60,7 +66,81 @@ export function HeaderCartIcon() {
     };
   }, []);
 
-  // 44 (P2 menu) + 16 (right inset of that menu) + 8 (gap) = 68px right offset.
+  const isInline = variant === "inline";
+  const iconSize = isInline ? 15 : 20;
+
+  const svg = (
+    <svg
+      width={iconSize}
+      height={iconSize}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={isInline ? 1.9 : 2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <circle cx="9" cy="21" r="1.5" />
+      <circle cx="18" cy="21" r="1.5" />
+      <path d="M3 3h2l2.7 12.3a2 2 0 0 0 2 1.7h7.6a2 2 0 0 0 2-1.6L21 8H6" />
+    </svg>
+  );
+
+  const badge =
+    hydrated && count > 0 ? (
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          top: isInline ? -5 : -4,
+          right: isInline ? -6 : -4,
+          minWidth: isInline ? 14 : 20,
+          height: isInline ? 14 : 20,
+          padding: isInline ? "0 3px" : "0 5px",
+          borderRadius: 999,
+          background: "linear-gradient(180deg, #FF77BC, #FF3F9F)",
+          color: "#0B0F1A",
+          fontSize: isInline ? 9 : 11,
+          fontWeight: 800,
+          lineHeight: 1,
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          border: isInline ? "1px solid #050f1e" : "1.5px solid #050f1e",
+          boxShadow: "0 4px 10px rgba(255,63,159,0.55)",
+          fontFamily:
+            "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+        }}
+      >
+        {count > 99 ? "99+" : count}
+      </span>
+    ) : null;
+
+  if (isInline) {
+    return (
+      <Link
+        href="/nex-native/cart"
+        aria-label={
+          count > 0 ? `Open cart · ${count} item${count === 1 ? "" : "s"}` : "Open cart"
+        }
+        style={{
+          position: "relative",
+          display: "inline-grid",
+          placeItems: "center",
+          padding: 6,
+          color: "#FFFFFF",
+          textDecoration: "none",
+          filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.65))",
+        }}
+      >
+        {svg}
+        {badge}
+      </Link>
+    );
+  }
+
+  // "fixed" · 44 (P2 menu) + 16 (right inset) + 8 (gap) = 68px right offset.
   return (
     <Link
       href="/nex-native/cart"
@@ -70,49 +150,8 @@ export function HeaderCartIcon() {
       className="fixed z-40 inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-neutral-900/80 text-white shadow-md backdrop-blur hover:bg-neutral-900"
       style={{ right: 68, top: 16 }}
     >
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden
-      >
-        <circle cx="9" cy="21" r="1.5" />
-        <circle cx="18" cy="21" r="1.5" />
-        <path d="M3 3h2l2.7 12.3a2 2 0 0 0 2 1.7h7.6a2 2 0 0 0 2-1.6L21 8H6" />
-      </svg>
-      {hydrated && count > 0 && (
-        <span
-          aria-hidden
-          style={{
-            position: "absolute",
-            top: -4,
-            right: -4,
-            minWidth: 20,
-            height: 20,
-            padding: "0 5px",
-            borderRadius: 999,
-            background: "linear-gradient(180deg, #FF77BC, #FF3F9F)",
-            color: "#0B0F1A",
-            fontSize: 11,
-            fontWeight: 800,
-            lineHeight: 1,
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            border: "1.5px solid #050f1e",
-            boxShadow: "0 4px 10px rgba(255,63,159,0.55)",
-            fontFamily:
-              "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
-          }}
-        >
-          {count > 99 ? "99+" : count}
-        </span>
-      )}
+      {svg}
+      {badge}
     </Link>
   );
 }

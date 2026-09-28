@@ -33,7 +33,6 @@ import { HeroSidePanel } from "./_hero-side-panel";
 import { FloatingChatButton } from "./_floating-chat-button";
 import { toggleLikeProductAction } from "../_actions";
 import { AddToCartButton } from "../_add-to-cart-button";
-import { FloatingCartPill } from "../_floating-cart-pill";
 import { HeaderCartIcon } from "../_header-cart-icon";
 
 // Bridge 22 · food + drink verticals are menu-first · we skip the
@@ -166,7 +165,8 @@ export default async function Page({
           <span style={{ color: "#FF7200" }}>X</span>
         </Link>
 
-        {/* Right cluster · home + settings */}
+        {/* Right cluster · home + cart + settings · cart sits between so
+            the badge count reads next to the two anchor icons. */}
         <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
           <HeaderIconLink
             href="/nex-native/home"
@@ -175,6 +175,7 @@ export default async function Page({
           >
             <HomeIcon />
           </HeaderIconLink>
+          <HeaderCartIcon variant="inline" />
           <HeaderIconLink
             href="/nex-native/settings"
             ariaLabel="Settings"
@@ -639,11 +640,6 @@ export default async function Page({
         sellerFirstName={sellerFirstName}
         isOwnerViewing={isOwnerViewing}
       />
-      {/* Bridge 22 · Floating cart pill · visible whenever the cart
-          has items · centered bottom · above the chat button in
-          z-order. */}
-      <HeaderCartIcon />
-      <FloatingCartPill />
     </div>
   );
 }

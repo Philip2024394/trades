@@ -29,7 +29,7 @@ import {
 import { AmbientMotion } from "./_ambient-motion";
 import { FirstConnectionEmpty } from "./_first-connection-empty";
 import { ShopGridModal, type ShopProduct } from "./_shop-grid-modal";
-import { ShopHeaderButton } from "./_shop-header-button";
+import { HeaderRightCluster } from "./_header-right-cluster";
 import { ImageQrProbe } from "./_qr-image-scanner";
 import { TradeAgreementCard } from "./_trade-agreement-card";
 
@@ -317,14 +317,34 @@ export interface PortraitBloomShellProps {
   } | null;
   /** When present, the header renders a shop icon top-right that
    *  opens the peer's product grid bottom sheet. Populated by the
-   *  peer chat page after fetching the peer's live products. */
+   *  peer chat page after fetching the peer's live products +
+   *  (Bridge 51) menu items when the peer is a venue seller. */
   peerShop?: {
     name: string;
     href: string | null;
     products: ShopProduct[];
+    /** True when the peer's business_category is a venue (bakery /
+     *  restaurant / cafe / bar / …). Threads through to the header
+     *  icon (cutlery vs shop-bag) + slider labels (Menu vs Shop). */
+    isVenue?: boolean;
+    /** Shop identity fields required by the chat-native
+     *  Add-to-cart + Send-in-chat CTAs inside the detail sheet. */
+    context?: {
+      shop_id: string;
+      shop_slug: string | null;
+      shop_owner_account_id: string;
+      shop_display_name: string;
+    };
   } | null;
+  /** Server Action bound with peerAccountId · posts a cart_order
+   *  peer message with the current shop's items · fires from the
+   *  detail sheet's Send-in-chat CTA. */
+  sendCartOrderAction?: (
+    formData: FormData,
+  ) => Promise<never> | void | Promise<void>;
   /** Bridge 11 · Server Action bound with peerAccountId · fires when
-   *  the user taps Ask about this / I want this on a product detail. */
+   *  the user taps Ask about this / I want this on a product detail
+   *  (legacy fallback · superseded by chat-native CTAs above). */
   productInquiryAction?: (
     formData: FormData,
   ) => Promise<never> | void | Promise<void>;
@@ -385,6 +405,7 @@ export function PortraitBloomShell({
   uploadAction,
   pendingAttachment,
   peerShop,
+  sendCartOrderAction,
   productInquiryAction,
   tradeAgreementSellerName,
   tradeAgreementActivated,
@@ -1283,15 +1304,27 @@ export function PortraitBloomShell({
           pendingInvites={pendingInvites ?? []}
         />
       )}
-      {peerShop && (
-        <ShopHeaderButton
-          shopName={peerShop.name}
-          shopHref={peerShop.href}
-          products={peerShop.products}
-          peerName={displayName}
-          inquiryAction={productInquiryAction}
-        />
-      )}
+      {/* Bridge 53 · standard chat header right-cluster · Home + Shop
+          /Menu (when peer has a business) + Cart · rendered on every
+          chat surface using this shell. Home + Cart ALWAYS render even
+          when the peer has no shop, so buyers can always exit to
+          home + reach their cart from within any conversation. */}
+      <HeaderRightCluster
+        peerName={displayName}
+        shop={
+          peerShop
+            ? {
+                name: peerShop.name,
+                href: peerShop.href,
+                products: peerShop.products,
+                isVenue: peerShop.isVenue ?? false,
+                context: peerShop.context,
+              }
+            : null
+        }
+        sendCartOrderAction={sendCartOrderAction}
+        inquiryAction={productInquiryAction}
+      />
     </>
   );
 }

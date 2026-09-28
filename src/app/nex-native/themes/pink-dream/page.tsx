@@ -8,8 +8,12 @@
 // long-press emoji reactions (Bridge 28 · preview interactivity).
 
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PinkDreamComposer } from "./_composer";
+import {
+  NEX_CART_STORAGE_KEY,
+  type NexCartItem,
+} from "@/lib/nex-native/cart-types";
 import {
   useMessageGestures,
   ReactionPicker,
@@ -405,25 +409,36 @@ export default function PinkDreamPreviewPage() {
             Illustrator
           </div>
         </div>
-        {/* Bridge 24am · right-side cluster · peer-Shop then Home
-           (Home is rightmost per Founder direction 2026-09-28) ·
-           overflow ⋮ retired · Call + Video already retired. */}
-        <a
-          href="/nex-native/bunny"
-          aria-label="Visit Bunny's shop"
-          title="Bunny's shop"
-          style={pinkCircleStyle()}
+        {/* Bridge 53 · standard chat header right-cluster · order
+           refined to [Home] [Cart] [Shop/Menu] · nested flex row
+           with a tighter gap so the profession subtitle has more
+           room without changing the outer header spacing. */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 4,
+            flexShrink: 0,
+          }}
         >
-          <ShopGlyph />
-        </a>
-        <a
-          href="/nex-native/chat"
-          aria-label="Home"
-          title="Home"
-          style={pinkCircleStyle()}
-        >
-          <HomeGlyph />
-        </a>
+          <a
+            href="/nex-native/home"
+            aria-label="Home"
+            title="Home"
+            style={pinkIconStyle()}
+          >
+            <HomeGlyph />
+          </a>
+          <PinkCartCircle />
+          <a
+            href="/nex-native/bunny"
+            aria-label="Visit Bunny's shop"
+            title="Bunny's shop"
+            style={pinkIconStyle()}
+          >
+            <ShopGlyph />
+          </a>
+        </div>
       </header>
 
       {/* ---------------- Conversation ----------------
@@ -721,7 +736,8 @@ function OutgoingRow({
 
 /* Bridge 24al · shared header pink-circle style · matches the
    composer's "+" button (Bridge 24af) so the header + composer
-   circular actions read as one visual family. */
+   circular actions read as one visual family. Retained for the
+   composer · header uses pinkIconStyle() (Bridge 53 direction). */
 function pinkCircleStyle(): React.CSSProperties {
   return {
     width: 30,
@@ -736,6 +752,29 @@ function pinkCircleStyle(): React.CSSProperties {
     justifyContent: "center",
     textDecoration: "none",
     flexShrink: 0,
+  };
+}
+
+/* Bridge 53 · header right-cluster icon style · Founder direction
+   2026-09-29: buttons removed, only icons remain. Icon carries the
+   theme's pink accent as stroke colour + soft drop-shadow so it
+   reads over any wallpaper without a background chip. */
+function pinkIconStyle(): React.CSSProperties {
+  return {
+    width: 30,
+    height: 30,
+    padding: 4,
+    borderRadius: 0,
+    background: "transparent",
+    border: "none",
+    boxShadow: "none",
+    color: "#FF8BC5",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    textDecoration: "none",
+    flexShrink: 0,
+    filter: "drop-shadow(0 2px 6px rgba(20,10,28,0.65))",
   };
 }
 function HomeGlyph() {
@@ -776,6 +815,104 @@ function ShopGlyph() {
       />
       <path d="M9 8V5m6 3V5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
+  );
+}
+
+function CartGlyph() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <circle cx="9" cy="21" r="1.5" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="18" cy="21" r="1.5" stroke="currentColor" strokeWidth="1.8" />
+      <path
+        d="M3 3h2l2.7 12.3a2 2 0 0 0 2 1.7h7.6a2 2 0 0 0 2-1.6L21 8H6"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/** Bridge 53 · Pink Dream cart button · pink circle to match the
+ *  theme + live badge that reads from NEX_CART_STORAGE_KEY and
+ *  refreshes on `nex-cart-changed`. Standard chat right-cluster
+ *  slot #3. */
+function PinkCartCircle() {
+  const [count, setCount] = useState(0);
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => {
+    function read(): number {
+      if (typeof window === "undefined") return 0;
+      try {
+        const raw = window.localStorage.getItem(NEX_CART_STORAGE_KEY);
+        if (!raw) return 0;
+        const arr = JSON.parse(raw);
+        if (!Array.isArray(arr)) return 0;
+        return arr.reduce(
+          (n, x) =>
+            n +
+            (x && typeof x === "object" && typeof (x as NexCartItem).quantity === "number"
+              ? Math.max(0, Math.floor((x as NexCartItem).quantity))
+              : 0),
+          0,
+        );
+      } catch {
+        return 0;
+      }
+    }
+    setCount(read());
+    setHydrated(true);
+    const onChange = () => setCount(read());
+    window.addEventListener("nex-cart-changed", onChange);
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === NEX_CART_STORAGE_KEY) setCount(read());
+    };
+    window.addEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener("nex-cart-changed", onChange);
+      window.removeEventListener("storage", onStorage);
+    };
+  }, []);
+  return (
+    <a
+      href="/nex-native/cart"
+      aria-label={
+        count > 0 ? `Open cart · ${count} item${count === 1 ? "" : "s"}` : "Open cart"
+      }
+      title="Cart"
+      style={{ ...pinkIconStyle(), position: "relative" }}
+    >
+      <CartGlyph />
+      {hydrated && count > 0 && (
+        <span
+          aria-hidden
+          style={{
+            position: "absolute",
+            top: -4,
+            right: -4,
+            minWidth: 16,
+            height: 16,
+            padding: "0 4px",
+            borderRadius: 999,
+            background: "#FF3F9F",
+            color: "#FFF5FA",
+            fontSize: 9,
+            fontWeight: 800,
+            lineHeight: 1,
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            border: "1.5px solid #17121F",
+            boxShadow: "0 3px 8px rgba(255,79,163,0.55)",
+            fontFamily:
+              "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+          }}
+        >
+          {count > 99 ? "99+" : count}
+        </span>
+      )}
+    </a>
   );
 }
 

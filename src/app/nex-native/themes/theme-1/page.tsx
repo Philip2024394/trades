@@ -6,8 +6,12 @@
 // Bridge 28 · client · adds swipe-to-reply + long-press reactions.
 
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Theme1Composer } from "./_composer";
+import {
+  NEX_CART_STORAGE_KEY,
+  type NexCartItem,
+} from "@/lib/nex-native/cart-types";
 import {
   useMessageGestures,
   ReactionPicker,
@@ -263,15 +267,26 @@ export default function Theme1PreviewPage() {
             Photographer
           </div>
         </div>
-        {/* Shared right cluster · Shop + Home · blue circles here
-           to signal Theme 1's identity while keeping the SHAPE
-           identical to Pink Dream. */}
-        <a href="/nex-native/maria" aria-label="Visit Maria's shop" style={blueCircleStyle()}>
-          <ShopGlyph />
-        </a>
-        <a href="/nex-native/chat" aria-label="Home" style={blueCircleStyle()}>
-          <HomeGlyph />
-        </a>
+        {/* Bridge 53 · standard chat header right-cluster · order
+           refined to [Home] [Cart] [Shop/Menu] · nested flex row
+           with a tighter gap so the profession subtitle has more
+           room without changing the outer header spacing. */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 4,
+            flexShrink: 0,
+          }}
+        >
+          <a href="/nex-native/home" aria-label="Home" style={blueIconStyle()}>
+            <HomeGlyph />
+          </a>
+          <BlueCartCircle />
+          <a href="/nex-native/maria" aria-label="Visit Maria's shop" style={blueIconStyle()}>
+            <ShopGlyph />
+          </a>
+        </div>
       </header>
 
       {/* ---------------- Conversation ---------------- */}
@@ -589,6 +604,29 @@ function blueCircleStyle(): React.CSSProperties {
   };
 }
 
+/* Bridge 53 · header right-cluster icon style · Founder direction
+   2026-09-29: buttons removed, only icons remain. Cyan/blue theme
+   accent as stroke colour + soft drop-shadow so the icon reads
+   over any wallpaper without a background chip. */
+function blueIconStyle(): React.CSSProperties {
+  return {
+    width: 30,
+    height: 30,
+    padding: 4,
+    borderRadius: 0,
+    background: "transparent",
+    border: "none",
+    boxShadow: "none",
+    color: "#7EB6FF",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    textDecoration: "none",
+    flexShrink: 0,
+    filter: "drop-shadow(0 2px 6px rgba(3,10,20,0.75))",
+  };
+}
+
 function BlueCamera({ size = 20 }: { size?: number }) {
   return (
     <svg
@@ -661,5 +699,102 @@ function ShopGlyph() {
       />
       <path d="M9 8V5m6 3V5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
+  );
+}
+
+function CartGlyph() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <circle cx="9" cy="21" r="1.5" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="18" cy="21" r="1.5" stroke="currentColor" strokeWidth="1.8" />
+      <path
+        d="M3 3h2l2.7 12.3a2 2 0 0 0 2 1.7h7.6a2 2 0 0 0 2-1.6L21 8H6"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/** Bridge 53 · Theme 1 cart button · blue circle matching the theme,
+ *  live badge that reads NEX_CART_STORAGE_KEY and refreshes on
+ *  `nex-cart-changed`. Standard chat right-cluster slot #3. */
+function BlueCartCircle() {
+  const [count, setCount] = useState(0);
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => {
+    function read(): number {
+      if (typeof window === "undefined") return 0;
+      try {
+        const raw = window.localStorage.getItem(NEX_CART_STORAGE_KEY);
+        if (!raw) return 0;
+        const arr = JSON.parse(raw);
+        if (!Array.isArray(arr)) return 0;
+        return arr.reduce(
+          (n, x) =>
+            n +
+            (x && typeof x === "object" && typeof (x as NexCartItem).quantity === "number"
+              ? Math.max(0, Math.floor((x as NexCartItem).quantity))
+              : 0),
+          0,
+        );
+      } catch {
+        return 0;
+      }
+    }
+    setCount(read());
+    setHydrated(true);
+    const onChange = () => setCount(read());
+    window.addEventListener("nex-cart-changed", onChange);
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === NEX_CART_STORAGE_KEY) setCount(read());
+    };
+    window.addEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener("nex-cart-changed", onChange);
+      window.removeEventListener("storage", onStorage);
+    };
+  }, []);
+  return (
+    <a
+      href="/nex-native/cart"
+      aria-label={
+        count > 0 ? `Open cart · ${count} item${count === 1 ? "" : "s"}` : "Open cart"
+      }
+      title="Cart"
+      style={{ ...blueIconStyle(), position: "relative" }}
+    >
+      <CartGlyph />
+      {hydrated && count > 0 && (
+        <span
+          aria-hidden
+          style={{
+            position: "absolute",
+            top: -4,
+            right: -4,
+            minWidth: 16,
+            height: 16,
+            padding: "0 4px",
+            borderRadius: 999,
+            background: "#009FEF",
+            color: "#FFFFFF",
+            fontSize: 9,
+            fontWeight: 800,
+            lineHeight: 1,
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            border: "1.5px solid #050B18",
+            boxShadow: "0 3px 8px rgba(0,159,239,0.55)",
+            fontFamily:
+              "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+          }}
+        >
+          {count > 99 ? "99+" : count}
+        </span>
+      )}
+    </a>
   );
 }

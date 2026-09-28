@@ -26,6 +26,7 @@ import {
   deletePeerMessageAction,
   uploadPeerAttachmentAction,
   sendProductInquiryAction,
+  sendCartOrderAction,
 } from "../../../_actions";
 import {
   PortraitBloomShell,
@@ -51,6 +52,8 @@ import {
 } from "../../../_actions";
 import { SafeTradeConsentModal } from "./_safe-trade-consent-modal";
 import * as productService from "@/lib/nex-native/product-service";
+import * as menuService from "@/lib/nex-native/menu-service";
+import { isVenueCategory } from "@/lib/nex-native/types";
 import { isNexOfficialAccount } from "@/lib/nex-native/nex-official";
 
 export const runtime = "nodejs";
@@ -145,6 +148,18 @@ export default async function PeerChatPage({
         .listProductsByBusiness(peerBusiness.id, "live")
         .catch(() => [] as Awaited<ReturnType<typeof productService.listProductsByBusiness>>)
     : [];
+  // Bridge 51 · food sellers (restaurant / cafe / bakery / bar / …)
+  // keep their SKUs in nex_menu_item, not nex_product. Load menu items
+  // when the peer's business is a venue category so the same slider
+  // populates for every seller · one unified "browse what they sell"
+  // grid regardless of whether they're a product seller or a food
+  // seller. Founder direction 2026-09-29.
+  const peerMenuItems =
+    peerBusiness && isVenueCategory(peerBusiness.business_category)
+      ? await menuService
+          .listMenuItemsByBusiness(peerBusiness.id, { status: "live" })
+          .catch(() => [] as Awaited<ReturnType<typeof menuService.listMenuItemsByBusiness>>)
+      : [];
   // Bridge 16b · JIT safe-trade consent gate. Fires only when the
   // peer owns a business (i.e. this is a commerce chat) AND the
   // viewer hasn't yet acknowledged the current terms version. The
@@ -163,22 +178,51 @@ export default async function PeerChatPage({
   // sellers of services may have zero SKUs at all). When there are
   // products the grid modal renders · otherwise the button just
   // navigates straight to the shop landing.
+  const peerIsVenue =
+    !!peerBusiness && isVenueCategory(peerBusiness.business_category);
   const peerShop = peerBusiness
     ? {
         name: peerBusiness.display_name,
         href: peerBusiness.slug
           ? `/nex-native/${peerBusiness.slug}`
           : null,
-        products: peerProducts.map((p) => ({
-          id: p.id,
-          name: p.name,
-          description: p.description ?? null,
-          price_pence: p.price_pence,
-          currency: p.currency,
-          image_url: p.image_url ?? null,
-          tags: p.tags ?? null,
-          stock_status: p.stock_status ?? null,
-        })),
+        isVenue: peerIsVenue,
+        // Bridge 52 · shopContext threads through to the in-chat
+        // detail sheet · Add-to-cart writes localStorage using these
+        // fields · Send-in-chat posts a cart_order to the seller.
+        context: {
+          shop_id: peerBusiness.id,
+          shop_slug: peerBusiness.slug ?? null,
+          shop_owner_account_id: peer.id,
+          shop_display_name: peerBusiness.display_name,
+        },
+        products: [
+          ...peerProducts.map((p) => ({
+            id: p.id,
+            kind: "product" as const,
+            name: p.name,
+            description: p.description ?? null,
+            price_pence: p.price_pence,
+            currency: p.currency,
+            image_url: p.image_url ?? null,
+            tags: p.tags ?? null,
+            stock_status: p.stock_status ?? null,
+          })),
+          // Bridge 51 · food-seller menu items ride the same slider ·
+          // dietary tags surface as the tag chips · availability
+          // becomes the stock-status heuristic ("in_stock" vs "sold").
+          ...peerMenuItems.map((m) => ({
+            id: m.id,
+            kind: "menu_item" as const,
+            name: m.name,
+            description: m.description ?? null,
+            price_pence: m.price_pence,
+            currency: m.currency,
+            image_url: m.image_url ?? null,
+            tags: m.dietary_tags.length > 0 ? m.dietary_tags : null,
+            stock_status: m.is_available ? "in_stock" : "sold",
+          })),
+        ],
       }
     : null;
 
@@ -411,6 +455,7 @@ export default async function PeerChatPage({
       uploadAction={bindUpload}
       pendingAttachment={pendingAttachment}
       peerShop={peerShop}
+      sendCartOrderAction={sendCartOrderAction}
       productInquiryAction={bindProductInquiry}
       tradeAgreementSellerName={
         peerBusiness

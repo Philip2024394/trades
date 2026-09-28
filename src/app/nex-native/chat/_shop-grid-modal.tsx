@@ -16,7 +16,6 @@
 
 import * as React from "react";
 import { createPortal } from "react-dom";
-import Link from "next/link";
 import { ProductDetailSheet } from "./_product-detail-sheet";
 
 const NEX = {
@@ -32,6 +31,10 @@ const NEX = {
 
 export interface ShopProduct {
   id: string;
+  /** Bridge 52 · discriminator so the in-chat cart send knows which
+   *  server-side lookup to run (products refresh authoritative price
+   *  from nex_product · menu items keep client-supplied price). */
+  kind: "product" | "menu_item";
   name: string;
   description: string | null;
   price_pence: number;
@@ -39,6 +42,13 @@ export interface ShopProduct {
   image_url: string | null;
   tags: string[] | null;
   stock_status: string | null;
+}
+
+export interface ShopContext {
+  shop_id: string;
+  shop_slug: string | null;
+  shop_owner_account_id: string;
+  shop_display_name: string;
 }
 
 interface Props {
@@ -49,8 +59,21 @@ interface Props {
   products: ShopProduct[];
   /** Peer's display name · used in the product detail sheet copy. */
   peerName: string;
+  /** True when the peer is a venue seller · swaps the eyebrow label
+   *  ("Menu" vs "Shop") + CTA ("Open menu →" vs "Open shop →") +
+   *  passes through to the detail sheet for consistent copy. */
+  isVenue?: boolean;
+  /** Shop identity fields for the in-chat cart send · required
+   *  alongside sendCartOrderAction for the Order-in-chat CTA. */
+  shopContext?: ShopContext;
   /** Server Action bound with peerAccountId · fired when user taps
-   *  Ask about this / I want this on a product detail. */
+   *  Send-in-chat on a product detail. */
+  sendCartOrderAction?: (
+    formData: FormData,
+  ) => Promise<never> | void | Promise<void>;
+  /** Server Action bound with peerAccountId · fired when user taps
+   *  Ask about this / I want this on a product detail. Kept for
+   *  backward compat · superseded by Add-to-cart + Send-in-chat. */
   inquiryAction?: (
     formData: FormData,
   ) => Promise<never> | void | Promise<void>;
@@ -63,6 +86,9 @@ export function ShopGridModal({
   shopHref,
   products,
   peerName,
+  isVenue = false,
+  shopContext,
+  sendCartOrderAction,
   inquiryAction,
 }: Props) {
   const [mounted, setMounted] = React.useState(false);
@@ -185,7 +211,7 @@ export function ShopGridModal({
                 marginBottom: 2,
               }}
             >
-              Shop
+              {isVenue ? "Menu" : "Shop"}
             </div>
             <div
               style={{
@@ -240,7 +266,9 @@ export function ShopGridModal({
                 lineHeight: 1.55,
               }}
             >
-              This shop has no live products yet.
+              {isVenue
+                ? "This kitchen has no live menu items yet."
+                : "This shop has no live products yet."}
             </div>
           ) : (
             <div
@@ -280,51 +308,57 @@ export function ShopGridModal({
               lineHeight: 1.4,
             }}
           >
-            Tap-to-chat coming with{" "}
-            <span style={{ color: NEX.cyan, fontWeight: 600 }}>Bridge 11</span>
+            Tap a {isVenue ? "dish" : "product"} to add it to your cart
+            and send the order right here in chat.
           </div>
-          {shopHref && (
-            <Link
-              href={shopHref}
-              onClick={onClose}
-              style={{
-                padding: "9px 12px",
-                borderRadius: 10,
-                background:
-                  "linear-gradient(180deg, rgba(0,159,239,0.35) 0%, rgba(0,159,239,0.22) 100%)",
-                border: `1px solid ${NEX.cyanSoft}`,
-                color: NEX.text,
-                fontSize: 11,
-                fontWeight: 700,
-                textDecoration: "none",
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-                whiteSpace: "nowrap",
-              }}
-            >
-              Open shop →
-            </Link>
-          )}
+          {/* Chat-native doctrine sealed 2026-09-29 · the slider stays
+              inside the conversation · footer Close returns the buyer
+              to the chat surface without leaving the peer's message
+              stream. The public landing page is reachable from NEX
+              Search, not from here. */}
+          <button
+            type="button"
+            onClick={onClose}
+            style={{
+              padding: "9px 14px",
+              borderRadius: 10,
+              background: "rgba(255,255,255,0.06)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              color: NEX.text,
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              whiteSpace: "nowrap",
+              cursor: "pointer",
+              fontFamily: "inherit",
+            }}
+          >
+            Close
+          </button>
         </div>
       </section>
 
       {/* Product detail sheet · stacks over the grid on card tap.
           Escape / backdrop tap closes to grid · close button on the
           detail also fires the parent onClose so the whole shop
-          collapses. */}
-      {inquiryAction && (
-        <ProductDetailSheet
-          open={!!selectedProduct}
-          onClose={() => {
-            setSelectedProductId(null);
-            onClose();
-          }}
-          onBack={() => setSelectedProductId(null)}
-          product={selectedProduct}
-          peerName={peerName}
-          inquiryAction={inquiryAction}
-        />
-      )}
+          collapses. Bridge 52 · always mount when we have a product
+          (Add-to-cart + Send-in-chat live inside · inquiryAction is
+          the legacy fallback only). */}
+      <ProductDetailSheet
+        open={!!selectedProduct}
+        onClose={() => {
+          setSelectedProductId(null);
+          onClose();
+        }}
+        onBack={() => setSelectedProductId(null)}
+        product={selectedProduct}
+        peerName={peerName}
+        isVenue={isVenue}
+        shopContext={shopContext}
+        sendCartOrderAction={sendCartOrderAction}
+        inquiryAction={inquiryAction}
+      />
     </>,
     document.body,
   );

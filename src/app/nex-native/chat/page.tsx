@@ -96,6 +96,19 @@ function accentForTheme(theme: NexChatTheme | string | null | undefined): string
 
 // Sample avatar URLs from Unsplash · public, no attribution required for
 // small previews. Only used by mock cards (dev-only) · never persisted.
+// Preview shop targets by kind · admin taps a mock friend and lands on
+// the flow that matches what they sell. Sealed with founder 2026-09-29.
+//   · restaurant → Story Reel (interactive multi-item swipe menu)
+//   · products   → Direct-Price gallery (single-product Direct Price)
+//   · null       → not a shop · card stays unclickable
+// Swap these hrefs for real seeded business URLs when live seed data
+// lands · both routes render the same visual flow already.
+type MockShopKind = "restaurant" | "products" | null;
+const MOCK_SHOP_HREF: Record<Exclude<MockShopKind, null>, string> = {
+  restaurant: "/nex-native/shop-prototypes/story-reel",
+  products: "/nex-native/shop-prototypes/direct-price",
+};
+
 const MOCK_FRIENDS: ReadonlyArray<{
   name: string;
   handle: string;
@@ -104,6 +117,9 @@ const MOCK_FRIENDS: ReadonlyArray<{
   presence: MockPresence;
   unread: number;
   hasShop: boolean;
+  /** null when hasShop is false · otherwise picks which prototype the
+   *  card routes to so admin can walk both flows end-to-end. */
+  shopKind: MockShopKind;
   avatarUrl: string;
   lastMessage: string | null;
   receiptState: MockReceiptState;
@@ -116,11 +132,12 @@ const MOCK_FRIENDS: ReadonlyArray<{
   {
     name: "Maria Santos",
     handle: "nex-27418",
-    profession: "Designer · leather shoes",
+    profession: "Product seller · leather shoes",
     location: "Bandung",
     presence: "green",
     unread: 0,
     hasShop: true,
+    shopKind: "products",
     avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
     lastMessage: "Yeah I'll be there — 2 pm works ✓",
     receiptState: "read",
@@ -130,11 +147,12 @@ const MOCK_FRIENDS: ReadonlyArray<{
   {
     name: "Aisha Rahman",
     handle: "nex-52091",
-    profession: "Reseller · vintage cameras",
+    profession: "Product seller · vintage cameras",
     location: "Jakarta",
     presence: "yellow",
     unread: 2,
     hasShop: true,
+    shopKind: "products",
     avatarUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop",
     lastMessage: "Just got a Leica M4 in — want photos?",
     receiptState: "inbound",
@@ -149,6 +167,7 @@ const MOCK_FRIENDS: ReadonlyArray<{
     presence: "clear",
     unread: 0,
     hasShop: false,
+    shopKind: null,
     avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
     lastMessage: null,
     receiptState: null,
@@ -163,6 +182,7 @@ const MOCK_FRIENDS: ReadonlyArray<{
     presence: "green",
     unread: 0,
     hasShop: false,
+    shopKind: null,
     avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop",
     lastMessage: "Thanks for the portfolio review!",
     receiptState: "sent",
@@ -172,16 +192,51 @@ const MOCK_FRIENDS: ReadonlyArray<{
   {
     name: "Priya Patel",
     handle: "nex-91280",
-    profession: "Baker · sourdough & croissants",
+    profession: "Restaurant · Priya's Mumbai Cafe",
     location: "Mumbai",
     presence: "clear",
     unread: 5,
     hasShop: true,
+    shopKind: "restaurant",
     avatarUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop",
     lastMessage: "Delivery is out for tomorrow morning 🚗",
     receiptState: "inbound",
     typing: false,
     chatTheme: "night",
+  },
+  // Founder direction 2026-09-29 · two DEMO cards so admin can walk the
+  // full flow: tap the card → the matching shop swipe surface opens →
+  // add to cart / order. Explicit role names make it obvious which
+  // flow each one demonstrates.
+  {
+    name: "Warung Sate Bunda",
+    handle: "nex-77321",
+    profession: "Restaurant · Indonesian sate & rice",
+    location: "Yogyakarta",
+    presence: "green",
+    unread: 1,
+    hasShop: true,
+    shopKind: "restaurant",
+    avatarUrl: "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=200&h=200&fit=crop",
+    lastMessage: "Fresh sate off the grill — order by 7pm",
+    receiptState: "inbound",
+    typing: false,
+    chatTheme: "titanium",
+  },
+  {
+    name: "Toko Kopi Nara",
+    handle: "nex-88450",
+    profession: "Product seller · single-origin coffee beans",
+    location: "Bali",
+    presence: "green",
+    unread: 0,
+    hasShop: true,
+    shopKind: "products",
+    avatarUrl: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=200&h=200&fit=crop",
+    lastMessage: "New harvest — Gayo 250g back in stock",
+    receiptState: "read",
+    typing: false,
+    chatTheme: "default",
   },
 ] as const;
 
@@ -764,7 +819,10 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
                   MOCK_BUSINESSES.map((c, i) => (
                     <BusinessCard
                       key={`mock-${i}`}
-                      href={null}
+                      // Preview business cards route to the Story Reel
+                      // prototype · the current interactive shop-swipe
+                      // surface · until real seeded businesses land.
+                      href={MOCK_SHOP_HREF}
                       name={c.name}
                       slug={c.slug}
                       sells={c.sells}
@@ -2044,7 +2102,11 @@ function FriendSection(props: {
         {props.preview.map((c, i) => (
           <PersonCard
             key={`preview-${props.label}-${i}`}
-            href={null}
+            // Preview cards route by shopKind so admin lands on the flow
+            // that matches what the friend sells · restaurant → Story
+            // Reel · products → Direct Price gallery. Non-shop mocks
+            // stay unclickable.
+            href={c.shopKind ? MOCK_SHOP_HREF[c.shopKind] : null}
             name={c.name}
             subtitle={c.lastMessage ?? `${c.location}`}
             profession={professionCaption(c.profession)}
