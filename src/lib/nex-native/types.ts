@@ -378,8 +378,68 @@ export interface NexProductRow {
    *  render on the product page. */
   dispatch_time: string | null;
   sample_request_time: string | null;
+  /** Bridge 20 · migration 075 · structured Specifications block ·
+   *  rendered as the buyer-facing Specifications section on the
+   *  product detail page. Open schema · every reader defensively
+   *  parses expected keys. */
+  spec: NexProductSpec;
   created_at: NexTimestamp;
   updated_at: NexTimestamp;
+}
+
+/** Bridge 20 · Structured Specifications block stored as JSONB on
+ *  nex_product.spec. Every field is optional · empty keys don't
+ *  render on the buyer detail page. Common across physical goods ·
+ *  vertical-specific keys documented in comments. */
+export interface NexProductSpec {
+  /* --- Universal (physical goods) ------------------------------- */
+  condition?: "new" | "used" | "refurbished" | "vintage" | "new_old_stock";
+  origin?: string; // "Yogyakarta, Indonesia" · "Germany"
+  brand?: string;
+  model?: string;
+  authenticity?:
+    | "verified_original"
+    | "authenticated_vintage"
+    | "reproduction"
+    | "unspecified";
+  materials?: string[];
+  dimensions?: {
+    w?: number;
+    h?: number;
+    d?: number;
+    unit?: "mm" | "cm" | "m" | "in";
+  };
+  weight?: {
+    value?: number;
+    unit?: "g" | "kg" | "oz" | "lb";
+  };
+  included?: string[]; // "camera body" · "leather case" · "manual"
+  warranty?: string; // "6 months manufacturer"
+  certifications?: string[]; // ["SNI-4523", "CE", "RoHS", "halal"]
+  age_rating?: string; // "3+ years" · "adult"
+  year_produced?: number;
+  care_instructions?: string;
+
+  /* --- Services (salon / beauty / fitness / consultant / agency) - */
+  duration?: string; // "1 hour" · "60-90 minutes"
+  service_location?:
+    | "at_home"
+    | "at_shop"
+    | "online"
+    | "outdoor"
+    | "custom";
+  advance_booking?: string; // "24 hours notice"
+  age_range?: string; // "any age" · "18+"
+
+  /* --- Manufacturers (product-brand / construction / staircase) - */
+  hs_code?: string; // Harmonized System customs code
+  export_markets?: string[]; // ISO country codes ["ID", "SG", "MY"]
+  factory_location?: string;
+  production_capacity?: string; // "500 units/month"
+  lead_time?: string; // "4-6 weeks"
+
+  /* --- Freeform extras · seller controls schema per shop --------- */
+  additional?: Record<string, string>;
 }
 
 export interface NexProductInsert {
@@ -408,15 +468,38 @@ export interface NexProductVariantRow {
   /** Nullable · when set, this variant sells at price_pence instead of parent product price. */
   price_pence: number | null;
   position: number;
+  /** Bridge 20 · migration 075 · typed variant axis. Groups the
+   *  variant so the buyer picker renders separate rows per attribute
+   *  instead of a flat list. NULL for legacy variants (flat fallback). */
+  attribute: NexVariantAttribute | null;
+  /** Bridge 20 · migration 075 · per-variant stock override. When
+   *  NULL the product-level stock_status applies. */
+  stock_status: NexProductStockStatus | null;
   created_at: NexTimestamp;
   updated_at: NexTimestamp;
 }
+
+export const NEX_VARIANT_ATTRIBUTES = [
+  "size",
+  "colour",
+  "material",
+  "package",
+  "duration",
+  "style",
+  "finish",
+  "fit",
+  "pack_size",
+  "other",
+] as const;
+export type NexVariantAttribute = (typeof NEX_VARIANT_ATTRIBUTES)[number];
 
 export interface NexProductVariantInsert {
   product_id: NexUuid;
   name: string;
   price_pence?: number | null;
   position?: number;
+  attribute?: NexVariantAttribute | null;
+  stock_status?: NexProductStockStatus | null;
 }
 
 // ---------------------------------------------------------------------------

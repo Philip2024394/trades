@@ -84,7 +84,15 @@ export async function updateProductSku(
 // ---------------------------------------------------------------------------
 // Slice 6c · Product variants MVP
 // ---------------------------------------------------------------------------
-import type { NexProductVariantInsert, NexProductVariantRow } from "./types";
+import type {
+  NexProductVariantInsert,
+  NexProductVariantRow,
+  NexProductRow,
+  NexProductSpec,
+  NexVariantAttribute,
+  NexProductStockStatus,
+} from "./types";
+import { NEX_VARIANT_ATTRIBUTES } from "./types";
 
 export const NEX_PRODUCT_VARIANT_NAME_MAX = 200 as const;
 export const NEX_PRODUCT_VARIANT_NAME_MIN = 1 as const;
@@ -105,6 +113,16 @@ export async function createVariant(input: NexProductVariantInsert): Promise<Nex
     pricePence = input.price_pence;
   }
   const position = input.position ?? 0;
+  // Bridge 20 · optional typed axis + per-variant stock override.
+  const attribute: NexVariantAttribute | null =
+    input.attribute && (NEX_VARIANT_ATTRIBUTES as readonly string[]).includes(input.attribute)
+      ? (input.attribute as NexVariantAttribute)
+      : null;
+  const stockStatus: NexProductStockStatus | null =
+    input.stock_status &&
+    (NEX_PRODUCT_STOCK_STATUSES as readonly string[]).includes(input.stock_status)
+      ? (input.stock_status as NexProductStockStatus)
+      : null;
   const { data, error } = await nexSupabaseAdmin
     .from("nex_product_variant")
     .insert({
@@ -112,6 +130,8 @@ export async function createVariant(input: NexProductVariantInsert): Promise<Nex
       name,
       price_pence: pricePence,
       position,
+      attribute,
+      stock_status: stockStatus,
     })
     .select("*")
     .single();
@@ -498,6 +518,67 @@ export async function updateProductDescription(
     );
   }
   return data as NexProductRow;
+}
+
+/** Bridge 20 · replace the Specifications block on a product.
+ *  Full replacement · caller merges old + new if partial-updating is
+ *  wanted (the seller form does read-modify-write). Normalises empty
+ *  strings and empty arrays to omissions so the JSONB stays lean. */
+export async function updateProductSpec(
+  id: NexUuid,
+  spec: NexProductSpec,
+): Promise<NexProductRow> {
+  const clean = normaliseSpec(spec);
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_product")
+    .update({ spec: clean })
+    .eq("id", id)
+    .select("*")
+    .single();
+  if (error || !data) {
+    throw new Error(
+      `product-service.updateProductSpec: ${error?.message ?? "no row returned"}`,
+    );
+  }
+  return data as NexProductRow;
+}
+
+/** Strip empty strings, empty arrays, and empty objects from the
+ *  spec so we don't persist noise. Preserves valid zero / false
+ *  values. Bridge 20. */
+function normaliseSpec(spec: NexProductSpec): NexProductSpec {
+  const out: Record<string, unknown> = {};
+  const src = spec as unknown as Record<string, unknown>;
+  for (const key of Object.keys(src)) {
+    const v = src[key];
+    if (v === null || v === undefined) continue;
+    if (typeof v === "string") {
+      const trimmed = v.trim();
+      if (trimmed.length > 0) out[key] = trimmed;
+      continue;
+    }
+    if (Array.isArray(v)) {
+      const cleaned = v
+        .map((x) => (typeof x === "string" ? x.trim() : x))
+        .filter((x) => (typeof x === "string" ? x.length > 0 : true));
+      if (cleaned.length > 0) out[key] = cleaned;
+      continue;
+    }
+    if (typeof v === "object") {
+      const inner = v as Record<string, unknown>;
+      const cleaned: Record<string, unknown> = {};
+      for (const k of Object.keys(inner)) {
+        const iv = inner[k];
+        if (iv === null || iv === undefined) continue;
+        if (typeof iv === "string" && iv.trim().length === 0) continue;
+        cleaned[k] = typeof iv === "string" ? iv.trim() : iv;
+      }
+      if (Object.keys(cleaned).length > 0) out[key] = cleaned;
+      continue;
+    }
+    out[key] = v;
+  }
+  return out as NexProductSpec;
 }
 
 /** Update product price (integer pence · never float). Callers must

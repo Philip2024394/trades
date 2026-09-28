@@ -1188,6 +1188,111 @@ export async function sendMenuItemInquiryAction(
   redirect(`/nex-native/chat/peer/${peerAccountId}`);
 }
 
+/** Bridge 20 · update the Specifications JSONB on a product. Owner-
+ *  only. Reads a curated set of fields from FormData, coerces to
+ *  the NexProductSpec shape, and calls the service. Empty strings
+ *  and empty arrays are dropped by the service normaliser so the
+ *  JSONB stays lean. */
+export async function updateProductSpecAction(
+  productId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const product = await productService.getProductById(productId);
+  if (!product) {
+    redirect(
+      "/nex-native/manage?e=product_not_found&m=" +
+        encodeURIComponent("Product not found"),
+    );
+  }
+  const business = await businessService.getBusinessById(product.business_id);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirect(
+      "/nex-native/manage?e=spec_forbidden&m=" +
+        encodeURIComponent("You don't own this product"),
+    );
+  }
+
+  const asStr = (key: string) => String(formData.get(key) ?? "").trim();
+  const asList = (key: string) =>
+    asStr(key)
+      .split(",")
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0);
+  const asNum = (key: string): number | undefined => {
+    const raw = asStr(key);
+    if (!raw) return undefined;
+    const n = Number.parseFloat(raw);
+    return Number.isFinite(n) ? n : undefined;
+  };
+
+  const spec: import("@/lib/nex-native/types").NexProductSpec = {
+    condition: (asStr("condition") ||
+      undefined) as import("@/lib/nex-native/types").NexProductSpec["condition"],
+    origin: asStr("origin") || undefined,
+    brand: asStr("brand") || undefined,
+    model: asStr("model") || undefined,
+    authenticity: (asStr("authenticity") ||
+      undefined) as import("@/lib/nex-native/types").NexProductSpec["authenticity"],
+    materials: asList("materials"),
+    dimensions: {
+      w: asNum("dim_w"),
+      h: asNum("dim_h"),
+      d: asNum("dim_d"),
+      unit: (asStr("dim_unit") ||
+        "mm") as NonNullable<
+        import("@/lib/nex-native/types").NexProductSpec["dimensions"]
+      >["unit"],
+    },
+    weight: {
+      value: asNum("weight_value"),
+      unit: (asStr("weight_unit") ||
+        "g") as NonNullable<
+        import("@/lib/nex-native/types").NexProductSpec["weight"]
+      >["unit"],
+    },
+    included: asList("included"),
+    warranty: asStr("warranty") || undefined,
+    certifications: asList("certifications"),
+    age_rating: asStr("age_rating") || undefined,
+    year_produced: asNum("year_produced"),
+    care_instructions: asStr("care_instructions") || undefined,
+    duration: asStr("duration") || undefined,
+    service_location: (asStr("service_location") ||
+      undefined) as import("@/lib/nex-native/types").NexProductSpec["service_location"],
+    advance_booking: asStr("advance_booking") || undefined,
+    age_range: asStr("age_range") || undefined,
+    hs_code: asStr("hs_code") || undefined,
+    export_markets: asList("export_markets"),
+    factory_location: asStr("factory_location") || undefined,
+    production_capacity: asStr("production_capacity") || undefined,
+    lead_time: asStr("lead_time") || undefined,
+  };
+
+  try {
+    await productService.updateProductSpec(productId, spec);
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      `/nex-native/manage/products/${productId}?e=spec_failed&m=` +
+        encodeURIComponent(msg),
+    );
+  }
+
+  revalidatePath(`/nex-native/manage/products/${productId}`);
+  revalidatePath(`/nex-native/${business.slug}/${productId}`);
+  revalidatePath(`/nex-native/${business.slug}`);
+  redirect(
+    `/nex-native/manage/products/${productId}?e=spec_ok&m=` +
+      encodeURIComponent("Specifications saved"),
+  );
+}
+
 /** Bridge 18 · toggle a like on a product. The hidden `intent`
  *  field tells us whether to add or remove · caller can also just
  *  omit it and the action flips whatever the current state is. */

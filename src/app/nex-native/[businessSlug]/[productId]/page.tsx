@@ -14,6 +14,7 @@
 //
 // Sealed 2026-09-27.
 
+import * as React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import * as businessService from "@/lib/nex-native/business-service";
@@ -361,6 +362,9 @@ export default async function Page({
           </section>
         )}
 
+        {/* --- SPECIFICATIONS (Bridge 20) -------------------------- */}
+        <SpecificationsSection spec={product.spec ?? {}} />
+
         {/* --- TURNAROUND ------------------------------------------ */}
         {(product.dispatch_time || product.sample_request_time) && (
           <section style={{ marginBottom: 28 }}>
@@ -501,6 +505,262 @@ export default async function Page({
       </div>
     </div>
   );
+}
+
+/* --------------------------------------------------------------------- *
+ * Bridge 20 · Specifications section                                     *
+ * --------------------------------------------------------------------- */
+
+const CONDITION_LABEL: Record<string, { label: string; color: string }> = {
+  new: { label: "New", color: "#16D66B" },
+  used: { label: "Used", color: "#F59E0B" },
+  refurbished: { label: "Refurbished", color: "#00AFFF" },
+  vintage: { label: "Vintage", color: "#A384FF" },
+  new_old_stock: { label: "New Old Stock", color: "#16D66B" },
+};
+
+const AUTHENTICITY_LABEL: Record<string, { label: string; color: string }> = {
+  verified_original: { label: "✓ Verified original", color: "#16D66B" },
+  authenticated_vintage: { label: "✓ Authenticated vintage", color: "#A384FF" },
+  reproduction: { label: "Reproduction", color: "#F59E0B" },
+  unspecified: { label: "Unspecified", color: "#8BA9D1" },
+};
+
+const SERVICE_LOCATION_LABEL: Record<string, string> = {
+  at_home: "🏠 At your home",
+  at_shop: "🏬 At the shop",
+  online: "💻 Online",
+  outdoor: "🌳 Outdoor",
+  custom: "📍 Custom location",
+};
+
+function SpecificationsSection({
+  spec,
+}: {
+  spec: import("@/lib/nex-native/types").NexProductSpec;
+}) {
+  if (!spec || Object.keys(spec).length === 0) return null;
+  const rows: Array<{ label: string; value: React.ReactNode }> = [];
+
+  if (spec.brand) rows.push({ label: "Brand", value: spec.brand });
+  if (spec.model) rows.push({ label: "Model", value: spec.model });
+  if (spec.condition) {
+    const c = CONDITION_LABEL[spec.condition];
+    rows.push({
+      label: "Condition",
+      value: c ? (
+        <SpecPill color={c.color}>{c.label}</SpecPill>
+      ) : (
+        spec.condition
+      ),
+    });
+  }
+  if (spec.authenticity) {
+    const a = AUTHENTICITY_LABEL[spec.authenticity];
+    rows.push({
+      label: "Authenticity",
+      value: a ? (
+        <SpecPill color={a.color}>{a.label}</SpecPill>
+      ) : (
+        spec.authenticity
+      ),
+    });
+  }
+  if (spec.origin) rows.push({ label: "Origin", value: `📍 ${spec.origin}` });
+  if (spec.year_produced)
+    rows.push({ label: "Year produced", value: String(spec.year_produced) });
+  if (spec.materials && spec.materials.length > 0) {
+    rows.push({
+      label: "Materials",
+      value: (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+          {spec.materials.map((m) => (
+            <SpecPill key={m} color={NEX.textDim}>
+              {m}
+            </SpecPill>
+          ))}
+        </div>
+      ),
+    });
+  }
+  if (spec.dimensions) {
+    const d = spec.dimensions;
+    const parts: string[] = [];
+    if (d.w) parts.push(String(d.w));
+    if (d.h) parts.push(String(d.h));
+    if (d.d) parts.push(String(d.d));
+    const unit = d.unit ?? "mm";
+    if (parts.length > 0) {
+      rows.push({
+        label: "Dimensions",
+        value: `${parts.join(" × ")} ${unit}`,
+      });
+    }
+  }
+  if (spec.weight && spec.weight.value) {
+    rows.push({
+      label: "Weight",
+      value: `${spec.weight.value} ${spec.weight.unit ?? "g"}`,
+    });
+  }
+  if (spec.included && spec.included.length > 0) {
+    rows.push({
+      label: "What's included",
+      value: (
+        <ul
+          style={{
+            margin: 0,
+            padding: "0 0 0 18px",
+            fontSize: 14,
+            lineHeight: 1.55,
+            color: NEX.text,
+          }}
+        >
+          {spec.included.map((i) => (
+            <li key={i}>{i}</li>
+          ))}
+        </ul>
+      ),
+    });
+  }
+  if (spec.warranty) rows.push({ label: "Warranty", value: spec.warranty });
+  if (spec.certifications && spec.certifications.length > 0) {
+    rows.push({
+      label: "Certifications",
+      value: (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+          {spec.certifications.map((c) => (
+            <SpecPill key={c} color="#16D66B">
+              🛡 {c}
+            </SpecPill>
+          ))}
+        </div>
+      ),
+    });
+  }
+  if (spec.age_rating)
+    rows.push({ label: "Age rating", value: spec.age_rating });
+  if (spec.care_instructions)
+    rows.push({ label: "Care", value: spec.care_instructions });
+
+  // Service-vertical keys
+  if (spec.duration) rows.push({ label: "Duration", value: `⏱ ${spec.duration}` });
+  if (spec.service_location) {
+    rows.push({
+      label: "Where",
+      value:
+        SERVICE_LOCATION_LABEL[spec.service_location] ?? spec.service_location,
+    });
+  }
+  if (spec.advance_booking)
+    rows.push({ label: "Book in advance", value: spec.advance_booking });
+  if (spec.age_range)
+    rows.push({ label: "Age range", value: spec.age_range });
+
+  // Manufacturer keys
+  if (spec.hs_code) rows.push({ label: "HS code", value: spec.hs_code });
+  if (spec.export_markets && spec.export_markets.length > 0) {
+    rows.push({
+      label: "Export markets",
+      value: (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+          {spec.export_markets.map((m) => (
+            <SpecPill key={m} color={NEX.cyan}>
+              🌏 {m}
+            </SpecPill>
+          ))}
+        </div>
+      ),
+    });
+  }
+  if (spec.factory_location)
+    rows.push({ label: "Factory", value: spec.factory_location });
+  if (spec.production_capacity)
+    rows.push({ label: "Capacity", value: spec.production_capacity });
+  if (spec.lead_time)
+    rows.push({ label: "Lead time", value: spec.lead_time });
+
+  if (spec.additional) {
+    for (const key of Object.keys(spec.additional)) {
+      const v = spec.additional[key];
+      if (typeof v === "string" && v.trim().length > 0) {
+        rows.push({ label: prettifyKey(key), value: v });
+      }
+    }
+  }
+
+  if (rows.length === 0) return null;
+
+  return (
+    <section style={{ marginBottom: 28 }}>
+      <SectionHeading eyebrow="Specifications" />
+      <dl
+        style={{
+          margin: 0,
+          padding: "6px 0 0",
+          display: "grid",
+          gridTemplateColumns: "minmax(120px, 30%) 1fr",
+          rowGap: 12,
+          columnGap: 18,
+          fontSize: 14,
+          lineHeight: 1.6,
+        }}
+      >
+        {rows.map((r, i) => (
+          <React.Fragment key={i}>
+            <dt
+              style={{
+                margin: 0,
+                fontSize: 11,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: NEX.textMute,
+                fontWeight: 700,
+                paddingTop: 3,
+              }}
+            >
+              {r.label}
+            </dt>
+            <dd style={{ margin: 0, color: NEX.text }}>{r.value}</dd>
+          </React.Fragment>
+        ))}
+      </dl>
+    </section>
+  );
+}
+
+function SpecPill({
+  color,
+  children,
+}: {
+  color: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        padding: "3px 10px",
+        borderRadius: 999,
+        background: `${color}18`,
+        border: `1px solid ${color}55`,
+        color,
+        fontSize: 11,
+        fontWeight: 700,
+        letterSpacing: "0.02em",
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
+function prettifyKey(key: string): string {
+  return key
+    .replace(/_/g, " ")
+    .split(" ")
+    .map((w) => (w.length > 0 ? w[0]!.toUpperCase() + w.slice(1) : w))
+    .join(" ");
 }
 
 function TurnaroundRow({

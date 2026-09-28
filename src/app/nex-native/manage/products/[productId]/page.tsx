@@ -1,0 +1,674 @@
+// src/app/nex-native/manage/products/[productId]/page.tsx
+//
+// Bridge 20 · Seller-facing Specifications editor for a product.
+// --------------------------------------------------------------
+// One page, one product, one big form. Every field in the
+// NexProductSpec schema is exposed as a labelled input. Empty
+// fields are dropped on save by product-service's normaliseSpec
+// so the JSONB stays lean.
+//
+// Owner-gated · non-owners get redirected. Dark-navy NEX identity
+// matching /manage/shop and /manage/menu.
+
+import type * as React from "react";
+import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
+import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
+import * as productService from "@/lib/nex-native/product-service";
+import * as businessService from "@/lib/nex-native/business-service";
+import type { NexProductSpec } from "@/lib/nex-native/types";
+import { updateProductSpecAction } from "../../../_actions";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+const NEX = {
+  bg: "#020914",
+  panel: "#050f1e",
+  panelSoft: "rgba(6, 15, 28, 0.72)",
+  border: "rgba(139, 169, 209, 0.14)",
+  borderStrong: "rgba(139, 169, 209, 0.24)",
+  text: "#F4F7FC",
+  textDim: "#8BA9D1",
+  textMute: "#526B89",
+  cyan: "#00AFFF",
+  cyanSoft: "rgba(0,175,255,0.5)",
+  orange: "#FF7200",
+  orangeSoft: "rgba(255,114,0,0.6)",
+  green: "#16D66B",
+  red: "#FF3355",
+};
+
+const SERIF =
+  "'Cormorant Garamond', 'EB Garamond', 'Playfair Display', Georgia, serif";
+const SANS =
+  "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
+
+export default async function ManageProductPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ productId: string }>;
+  searchParams: Promise<{ e?: string; m?: string }>;
+}) {
+  const { productId } = await params;
+  const sp = await searchParams;
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const product = await productService.getProductById(productId);
+  if (!product) notFound();
+  const business = await businessService.getBusinessById(product.business_id);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirect(
+      "/nex-native/manage?e=spec_forbidden&m=" +
+        encodeURIComponent("You don't own this product"),
+    );
+  }
+
+  const spec: NexProductSpec = product.spec ?? {};
+  const banner = sp.e && sp.m ? { code: sp.e, message: sp.m } : null;
+  const action = updateProductSpecAction.bind(null, productId);
+
+  return (
+    <div
+      style={{
+        minHeight: "100dvh",
+        background: NEX.bg,
+        color: NEX.text,
+        fontFamily: SANS,
+        paddingBottom: 80,
+      }}
+    >
+      <header
+        style={{
+          padding: "calc(env(safe-area-inset-top, 0) + 14px) 20px 12px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          borderBottom: `1px solid ${NEX.border}`,
+        }}
+      >
+        <Link
+          href="/nex-native/manage"
+          style={{
+            fontSize: 11,
+            color: NEX.textDim,
+            textDecoration: "none",
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            fontWeight: 700,
+          }}
+        >
+          ← Manage
+        </Link>
+        <Link
+          href={`/nex-native/${business.slug}/${product.id}`}
+          style={{
+            fontSize: 11,
+            color: NEX.cyan,
+            textDecoration: "none",
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            fontWeight: 700,
+          }}
+        >
+          View product ↗
+        </Link>
+      </header>
+
+      <main style={{ maxWidth: 720, margin: "0 auto", padding: "36px 20px" }}>
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.32em",
+            textTransform: "uppercase",
+            color: NEX.orange,
+            fontWeight: 700,
+            marginBottom: 10,
+          }}
+        >
+          Product specifications
+        </div>
+        <h1
+          style={{
+            margin: 0,
+            fontFamily: SERIF,
+            fontSize: 36,
+            lineHeight: 1.1,
+            letterSpacing: "-0.012em",
+            fontWeight: 500,
+            marginBottom: 6,
+          }}
+        >
+          {product.name}
+        </h1>
+        <p
+          style={{
+            margin: "0 0 24px",
+            fontSize: 13,
+            lineHeight: 1.6,
+            color: NEX.textDim,
+          }}
+        >
+          Everything below appears in the Specifications section on
+          your product page · empty fields are silent (nothing to
+          hide). Comma-separated lists for materials, included
+          items, certifications, export markets.
+        </p>
+
+        {banner && <Banner code={banner.code} message={banner.message} />}
+
+        <form
+          action={action}
+          style={{ display: "flex", flexDirection: "column", gap: 20 }}
+        >
+          {/* --- IDENTITY --------------------------------------------- */}
+          <FieldGroup title="Identity" eyebrow="Universal">
+            <TwoCol>
+              <FormRow label="Brand">
+                <input
+                  type="text"
+                  name="brand"
+                  defaultValue={spec.brand ?? ""}
+                  maxLength={80}
+                  placeholder="e.g. Leica, Nikon, Aisha Vintage"
+                  style={inputStyle}
+                />
+              </FormRow>
+              <FormRow label="Model">
+                <input
+                  type="text"
+                  name="model"
+                  defaultValue={spec.model ?? ""}
+                  maxLength={80}
+                  placeholder="e.g. M3, F2A, Custom"
+                  style={inputStyle}
+                />
+              </FormRow>
+            </TwoCol>
+            <TwoCol>
+              <FormRow label="Condition">
+                <select
+                  name="condition"
+                  defaultValue={spec.condition ?? ""}
+                  style={{ ...inputStyle, appearance: "auto" }}
+                >
+                  <option value="">— pick —</option>
+                  <option value="new">New</option>
+                  <option value="used">Used</option>
+                  <option value="refurbished">Refurbished</option>
+                  <option value="vintage">Vintage</option>
+                  <option value="new_old_stock">New Old Stock</option>
+                </select>
+              </FormRow>
+              <FormRow label="Authenticity">
+                <select
+                  name="authenticity"
+                  defaultValue={spec.authenticity ?? ""}
+                  style={{ ...inputStyle, appearance: "auto" }}
+                >
+                  <option value="">— pick —</option>
+                  <option value="verified_original">✓ Verified original</option>
+                  <option value="authenticated_vintage">
+                    ✓ Authenticated vintage
+                  </option>
+                  <option value="reproduction">Reproduction</option>
+                  <option value="unspecified">Unspecified</option>
+                </select>
+              </FormRow>
+            </TwoCol>
+            <TwoCol>
+              <FormRow label="Origin (city, country)">
+                <input
+                  type="text"
+                  name="origin"
+                  defaultValue={spec.origin ?? ""}
+                  maxLength={120}
+                  placeholder="e.g. Jakarta, Indonesia"
+                  style={inputStyle}
+                />
+              </FormRow>
+              <FormRow label="Year produced">
+                <input
+                  type="number"
+                  name="year_produced"
+                  defaultValue={spec.year_produced ?? ""}
+                  min={1800}
+                  max={new Date().getFullYear() + 1}
+                  placeholder="e.g. 1954"
+                  style={inputStyle}
+                />
+              </FormRow>
+            </TwoCol>
+          </FieldGroup>
+
+          {/* --- PHYSICAL --------------------------------------------- */}
+          <FieldGroup title="Physical" eyebrow="Materials + size">
+            <FormRow
+              label="Materials (comma-separated)"
+              hint="e.g. leather, brass, glass"
+            >
+              <input
+                type="text"
+                name="materials"
+                defaultValue={(spec.materials ?? []).join(", ")}
+                maxLength={400}
+                placeholder="leather, brass, glass"
+                style={inputStyle}
+              />
+            </FormRow>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 1fr 90px",
+                gap: 10,
+              }}
+            >
+              <FormRow label="Width">
+                <input
+                  type="number"
+                  name="dim_w"
+                  defaultValue={spec.dimensions?.w ?? ""}
+                  step="0.1"
+                  style={inputStyle}
+                />
+              </FormRow>
+              <FormRow label="Height">
+                <input
+                  type="number"
+                  name="dim_h"
+                  defaultValue={spec.dimensions?.h ?? ""}
+                  step="0.1"
+                  style={inputStyle}
+                />
+              </FormRow>
+              <FormRow label="Depth">
+                <input
+                  type="number"
+                  name="dim_d"
+                  defaultValue={spec.dimensions?.d ?? ""}
+                  step="0.1"
+                  style={inputStyle}
+                />
+              </FormRow>
+              <FormRow label="Unit">
+                <select
+                  name="dim_unit"
+                  defaultValue={spec.dimensions?.unit ?? "mm"}
+                  style={{ ...inputStyle, appearance: "auto" }}
+                >
+                  <option value="mm">mm</option>
+                  <option value="cm">cm</option>
+                  <option value="m">m</option>
+                  <option value="in">in</option>
+                </select>
+              </FormRow>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 90px", gap: 10 }}>
+              <FormRow label="Weight">
+                <input
+                  type="number"
+                  name="weight_value"
+                  defaultValue={spec.weight?.value ?? ""}
+                  step="0.1"
+                  style={inputStyle}
+                />
+              </FormRow>
+              <FormRow label="Unit">
+                <select
+                  name="weight_unit"
+                  defaultValue={spec.weight?.unit ?? "g"}
+                  style={{ ...inputStyle, appearance: "auto" }}
+                >
+                  <option value="g">g</option>
+                  <option value="kg">kg</option>
+                  <option value="oz">oz</option>
+                  <option value="lb">lb</option>
+                </select>
+              </FormRow>
+            </div>
+          </FieldGroup>
+
+          {/* --- INCLUDED + WARRANTY + SAFETY ------------------------ */}
+          <FieldGroup title="Inclusions & assurance" eyebrow="Trust">
+            <FormRow
+              label="What's in the box (comma-separated)"
+              hint="e.g. camera body, leather case, manual"
+            >
+              <input
+                type="text"
+                name="included"
+                defaultValue={(spec.included ?? []).join(", ")}
+                maxLength={800}
+                placeholder="camera body, leather case, manual"
+                style={inputStyle}
+              />
+            </FormRow>
+            <TwoCol>
+              <FormRow label="Warranty">
+                <input
+                  type="text"
+                  name="warranty"
+                  defaultValue={spec.warranty ?? ""}
+                  maxLength={140}
+                  placeholder="e.g. 6 months manufacturer"
+                  style={inputStyle}
+                />
+              </FormRow>
+              <FormRow label="Age rating">
+                <input
+                  type="text"
+                  name="age_rating"
+                  defaultValue={spec.age_rating ?? ""}
+                  maxLength={40}
+                  placeholder="e.g. 3+ years, adult"
+                  style={inputStyle}
+                />
+              </FormRow>
+            </TwoCol>
+            <FormRow
+              label="Certifications (comma-separated)"
+              hint="e.g. SNI-4523, CE, RoHS, halal"
+            >
+              <input
+                type="text"
+                name="certifications"
+                defaultValue={(spec.certifications ?? []).join(", ")}
+                maxLength={400}
+                placeholder="SNI-4523, CE, RoHS, halal"
+                style={inputStyle}
+              />
+            </FormRow>
+            <FormRow label="Care instructions">
+              <textarea
+                name="care_instructions"
+                defaultValue={spec.care_instructions ?? ""}
+                maxLength={600}
+                rows={2}
+                placeholder="e.g. Wipe with soft cloth · keep dry"
+                style={{
+                  ...inputStyle,
+                  fontFamily: "inherit",
+                  resize: "vertical",
+                }}
+              />
+            </FormRow>
+          </FieldGroup>
+
+          {/* --- SERVICE-SPECIFIC ----------------------------------- */}
+          <FieldGroup
+            title="Services (if applicable)"
+            eyebrow="Salon · beauty · consultancy · fitness"
+          >
+            <TwoCol>
+              <FormRow label="Duration">
+                <input
+                  type="text"
+                  name="duration"
+                  defaultValue={spec.duration ?? ""}
+                  maxLength={80}
+                  placeholder="e.g. 60-90 min"
+                  style={inputStyle}
+                />
+              </FormRow>
+              <FormRow label="Where">
+                <select
+                  name="service_location"
+                  defaultValue={spec.service_location ?? ""}
+                  style={{ ...inputStyle, appearance: "auto" }}
+                >
+                  <option value="">— pick —</option>
+                  <option value="at_home">🏠 At your home</option>
+                  <option value="at_shop">🏬 At the shop</option>
+                  <option value="online">💻 Online</option>
+                  <option value="outdoor">🌳 Outdoor</option>
+                  <option value="custom">📍 Custom</option>
+                </select>
+              </FormRow>
+            </TwoCol>
+            <TwoCol>
+              <FormRow label="Advance booking">
+                <input
+                  type="text"
+                  name="advance_booking"
+                  defaultValue={spec.advance_booking ?? ""}
+                  maxLength={80}
+                  placeholder="e.g. 24 hours notice"
+                  style={inputStyle}
+                />
+              </FormRow>
+              <FormRow label="Age range">
+                <input
+                  type="text"
+                  name="age_range"
+                  defaultValue={spec.age_range ?? ""}
+                  maxLength={40}
+                  placeholder="e.g. any age, 18+"
+                  style={inputStyle}
+                />
+              </FormRow>
+            </TwoCol>
+          </FieldGroup>
+
+          {/* --- MANUFACTURER-SPECIFIC ------------------------------ */}
+          <FieldGroup
+            title="Manufacturers (if applicable)"
+            eyebrow="Product-brand · construction · export"
+          >
+            <TwoCol>
+              <FormRow label="HS code (customs)">
+                <input
+                  type="text"
+                  name="hs_code"
+                  defaultValue={spec.hs_code ?? ""}
+                  maxLength={20}
+                  placeholder="e.g. 4202.11.00"
+                  style={inputStyle}
+                />
+              </FormRow>
+              <FormRow label="Factory location">
+                <input
+                  type="text"
+                  name="factory_location"
+                  defaultValue={spec.factory_location ?? ""}
+                  maxLength={120}
+                  placeholder="e.g. Tangerang, Indonesia"
+                  style={inputStyle}
+                />
+              </FormRow>
+            </TwoCol>
+            <FormRow
+              label="Export markets (ISO codes · comma-separated)"
+              hint="e.g. ID, SG, MY, AU"
+            >
+              <input
+                type="text"
+                name="export_markets"
+                defaultValue={(spec.export_markets ?? []).join(", ")}
+                maxLength={200}
+                placeholder="ID, SG, MY, AU"
+                style={inputStyle}
+              />
+            </FormRow>
+            <TwoCol>
+              <FormRow label="Production capacity">
+                <input
+                  type="text"
+                  name="production_capacity"
+                  defaultValue={spec.production_capacity ?? ""}
+                  maxLength={80}
+                  placeholder="e.g. 500 units/month"
+                  style={inputStyle}
+                />
+              </FormRow>
+              <FormRow label="Lead time">
+                <input
+                  type="text"
+                  name="lead_time"
+                  defaultValue={spec.lead_time ?? ""}
+                  maxLength={80}
+                  placeholder="e.g. 4-6 weeks"
+                  style={inputStyle}
+                />
+              </FormRow>
+            </TwoCol>
+          </FieldGroup>
+
+          <button type="submit" style={primaryButtonStyle}>
+            Save Specifications
+          </button>
+        </form>
+      </main>
+    </div>
+  );
+}
+
+/* --------------------------------------------------------------------- *
+ * Sub-components                                                        *
+ * --------------------------------------------------------------------- */
+
+function FieldGroup({
+  title,
+  eyebrow,
+  children,
+}: {
+  title: string;
+  eyebrow: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section
+      style={{
+        padding: "20px 22px",
+        borderRadius: 18,
+        background: NEX.panelSoft,
+        border: `1px solid ${NEX.border}`,
+        display: "flex",
+        flexDirection: "column",
+        gap: 12,
+      }}
+    >
+      <div>
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.24em",
+            textTransform: "uppercase",
+            color: NEX.cyan,
+            fontWeight: 700,
+            marginBottom: 4,
+          }}
+        >
+          {eyebrow}
+        </div>
+        <h2
+          style={{
+            margin: 0,
+            fontSize: 18,
+            fontWeight: 700,
+            letterSpacing: "-0.005em",
+          }}
+        >
+          {title}
+        </h2>
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function TwoCol({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function FormRow({
+  label,
+  hint,
+  children,
+}: {
+  label: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <label style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      <span
+        style={{
+          fontSize: 11,
+          letterSpacing: "0.08em",
+          textTransform: "uppercase",
+          color: NEX.textMute,
+          fontWeight: 700,
+        }}
+      >
+        {label}
+      </span>
+      {children}
+      {hint && (
+        <span style={{ fontSize: 11, color: NEX.textMute, lineHeight: 1.5 }}>
+          {hint}
+        </span>
+      )}
+    </label>
+  );
+}
+
+function Banner({ code, message }: { code: string; message: string }) {
+  const isError = !code.endsWith("_ok");
+  return (
+    <div
+      role="status"
+      style={{
+        padding: "12px 14px",
+        borderRadius: 12,
+        background: isError
+          ? "rgba(255,51,85,0.10)"
+          : "rgba(22,214,107,0.10)",
+        border: `1px solid ${
+          isError ? "rgba(255,51,85,0.35)" : "rgba(22,214,107,0.35)"
+        }`,
+        color: isError ? "#FFB4C0" : "#B8F1CC",
+        fontSize: 13,
+        marginBottom: 18,
+      }}
+    >
+      {message}
+    </div>
+  );
+}
+
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  minHeight: 44,
+  padding: "10px 12px",
+  borderRadius: 10,
+  background: "rgba(0,0,0,0.35)",
+  border: `1px solid ${NEX.borderStrong}`,
+  color: NEX.text,
+  fontSize: 13,
+  fontFamily: "inherit",
+  outline: "none",
+};
+
+const primaryButtonStyle: React.CSSProperties = {
+  padding: "14px 18px",
+  borderRadius: 14,
+  background: "linear-gradient(180deg, #FF9033 0%, #FF7200 100%)",
+  border: `1px solid ${NEX.orangeSoft}`,
+  color: "#0B0F1A",
+  fontSize: 13,
+  fontWeight: 800,
+  letterSpacing: "0.06em",
+  textTransform: "uppercase",
+  cursor: "pointer",
+  fontFamily: "inherit",
+  boxShadow:
+    "0 12px 30px rgba(255,114,0,0.35), inset 0 1px 0 rgba(255,255,255,0.28)",
+};
