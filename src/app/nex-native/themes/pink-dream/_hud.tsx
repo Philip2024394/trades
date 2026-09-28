@@ -65,7 +65,24 @@ export function PinkDreamHud() {
         </RailButton>
       </div>
 
-      {/* Lower-right 3-dot · opens center action sheet */}
+      {/* Lower-right 3-dot · button chrome removed · just three
+         dancing pink dots hugging the right edge. */}
+      <style>{`
+        @keyframes nex-pd-dance {
+          0%, 60%, 100% {
+            opacity: 0.35;
+            transform: translateY(0) scale(1);
+            box-shadow: 0 0 6px rgba(255, 79, 163, 0.35);
+          }
+          30% {
+            opacity: 1;
+            transform: translateY(-3px) scale(1.25);
+            box-shadow:
+              0 0 10px rgba(255, 139, 197, 0.95),
+              0 0 22px rgba(255, 79, 163, 0.65);
+          }
+        }
+      `}</style>
       <button
         type="button"
         aria-label="More"
@@ -73,25 +90,36 @@ export function PinkDreamHud() {
         onClick={() => setActionsOpen(true)}
         style={{
           position: "fixed",
-          right: 14,
+          right: 2,
           bottom: "calc(env(safe-area-inset-bottom, 0) + 84px)",
           zIndex: 7,
-          width: 44,
-          height: 44,
-          borderRadius: "50%",
-          background: "rgba(24,15,30,0.88)",
-          border: "1px solid rgba(255,139,197,0.55)",
-          boxShadow: "0 6px 16px rgba(255,79,163,0.28)",
-          color: "#FFD4E8",
-          display: "grid",
-          placeItems: "center",
+          width: 34,
+          padding: "6px 4px",
+          background: "transparent",
+          border: "none",
+          color: "#FFF5FA",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 6,
           cursor: "pointer",
-          padding: 0,
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
         }}
       >
-        <DotsIcon />
+        {[0, 1, 2].map((i) => (
+          <span
+            key={i}
+            aria-hidden
+            style={{
+              display: "block",
+              width: 9,
+              height: 9,
+              borderRadius: "50%",
+              background: PINK,
+              animation: `nex-pd-dance 1.2s ease-in-out ${i * 0.18}s infinite`,
+            }}
+          />
+        ))}
       </button>
 
       {contactsOpen && (
@@ -434,15 +462,6 @@ function ContactsIcon() {
       <circle cx="9" cy="7" r="4" />
       <path d="M23 21v-2a4 4 0 00-3-3.87" />
       <path d="M16 3.13a4 4 0 010 7.75" />
-    </svg>
-  );
-}
-function DotsIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <circle cx="12" cy="5" r="1.7" fill="currentColor" />
-      <circle cx="12" cy="12" r="1.7" fill="currentColor" />
-      <circle cx="12" cy="19" r="1.7" fill="currentColor" />
     </svg>
   );
 }
