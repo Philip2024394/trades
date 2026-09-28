@@ -265,6 +265,11 @@ export default function Theme1PreviewPage() {
           const prev = CONVO[i - 1];
           const speakerChanged = !prev || prev.side !== m.side;
           const gapTop = speakerChanged ? 6 : 0;
+          // Bridge 27d · both speakers on pure white frosted glass
+          // per Founder direction 2026-09-28 · identity carried
+          // only by the 3px rail (deep blue for Maria · pale silver
+          // for You). Reads as real frosted glass instead of tinted
+          // panels.
           if (m.side === "in") {
             return (
               <SkyCard
@@ -274,11 +279,11 @@ export default function Theme1PreviewPage() {
                 body={m.body}
                 time={m.time}
                 extraTop={gapTop}
-                fill="rgba(0, 159, 239, 0.28)"
-                border="rgba(126, 182, 255, 0.75)"
+                fill="rgba(255, 255, 255, 0.60)"
+                border="rgba(255, 255, 255, 0.55)"
                 accent={P.accentDeep}
-                textColor="#F4F7FC"
-                eyebrowColor="#B4DBFF"
+                textColor="#0A1830"
+                eyebrowColor={P.accentDeep}
                 driftDelay={`${i * 0.4}s`}
               />
             );
@@ -291,12 +296,8 @@ export default function Theme1PreviewPage() {
               body={m.body}
               time={m.time}
               extraTop={gapTop}
-              // Bridge 27c · You panels shifted to a true frosted
-              // mist tone per Founder direction 2026-09-28 · cooler
-              // silver-grey with more transparency + stronger blur
-              // so the wallpaper reads through as diffused fog.
-              fill="rgba(210, 224, 240, 0.48)"
-              border="rgba(230, 240, 252, 0.55)"
+              fill="rgba(255, 255, 255, 0.60)"
+              border="rgba(255, 255, 255, 0.55)"
               accent="#DDE9FA"
               textColor="#0A1830"
               eyebrowColor="#2A4670"
