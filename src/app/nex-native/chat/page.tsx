@@ -1786,46 +1786,32 @@ function ShopTag() {
  *  adding vertical space to the card. Absolute-positioned so it never
  *  grows the card · uniform row height regardless of hasShop.
  *
- *  Orange dot with a light-orange ring so it lifts off the panel and
- *  reads at a glance next to the presence-coloured avatar ring. */
+ *  Founder-supplied glossy 3D orange storefront button · sealed
+ *  2026-09-28. Replaces the earlier flat-orange SVG dot. Rendered at
+ *  22px so it lifts off the panel without dominating the 52px avatar. */
 function ShopBadge() {
   return (
-    <span
+    /* eslint-disable-next-line @next/next/no-img-element */
+    <img
+      src="/nex-native/friends/shop-badge.png"
+      alt=""
       aria-label="Has a NEX Shop"
       title="NEX Shop owner"
+      width={22}
+      height={22}
+      draggable={false}
       style={{
         position: "absolute",
-        bottom: -2,
-        right: -2,
-        width: 20,
-        height: 20,
-        borderRadius: "50%",
-        background: NEX.orange,
-        color: "#0B0F1A",
-        display: "grid",
-        placeItems: "center",
-        border: `2px solid ${NEX.panel}`,
-        boxShadow: "0 2px 6px rgba(0,0,0,0.4)",
-        lineHeight: 1,
+        bottom: -3,
+        right: -3,
+        width: 22,
+        height: 22,
+        // Drop-shadow matches the earlier badge lift so the image
+        // still reads as a distinct sticker over the avatar.
+        filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.55))",
+        pointerEvents: "none",
       }}
-    >
-      <svg
-        width="12"
-        height="12"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2.6}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden
-      >
-        {/* Storefront · awning + body + door · reads cleanly at 12px */}
-        <path d="M3 9l1.5-5h15L21 9" />
-        <path d="M4 9v11h16V9" />
-        <path d="M10 20v-6h4v6" />
-      </svg>
-    </span>
+    />
   );
 }
 
