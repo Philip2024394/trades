@@ -140,6 +140,34 @@ export default function PinkDreamPreviewPage() {
         [data-nex-pink-dream-preview] [data-portrait-ping-2] {
           animation-delay: 0.9s;
         }
+        /* Bridge 24i · top-fade mask on the message scroll · bubbles
+           dissolve into the header instead of cutting hard against
+           it. First ~72px of the scroll region fades to transparent
+           so nothing pops behind the portrait + name row. */
+        [data-nex-pink-dream-preview] [data-nex-pd-scroll] {
+          scrollbar-width: none;
+          mask-image: linear-gradient(
+            180deg,
+            transparent 0px,
+            rgba(0,0,0,0.15) 24px,
+            rgba(0,0,0,0.55) 48px,
+            #000 72px,
+            #000 100%
+          );
+          -webkit-mask-image: linear-gradient(
+            180deg,
+            transparent 0px,
+            rgba(0,0,0,0.15) 24px,
+            rgba(0,0,0,0.55) 48px,
+            #000 72px,
+            #000 100%
+          );
+        }
+        [data-nex-pink-dream-preview] [data-nex-pd-scroll]::-webkit-scrollbar {
+          display: none;
+          width: 0;
+          height: 0;
+        }
         /* Small soft speech corner rendered with a rotated square +
            overflow-hidden trick would need extra markup. Simpler:
            use CSS masks on a small trailing wedge coloured to match
@@ -250,6 +278,7 @@ export default function PinkDreamPreviewPage() {
          Bubbles now wrap cleanly instead of tucking under the
          rail. */}
       <main
+        data-nex-pd-scroll
         style={{
           position: "relative",
           zIndex: 1,
