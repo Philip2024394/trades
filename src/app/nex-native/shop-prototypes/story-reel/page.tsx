@@ -56,24 +56,25 @@ const SAMPLE_STACK = [
   },
   {
     id: "dark-choc-truffle",
-    name: "Dark Chocolate Truffle Cake",
+    name: "Chili Dark Chocolate Truffle",
     seller: "Priya's Bakery",
     sellerLocation: "Mumbai",
     priceLabel: "Rp 95,000",
     imageUrl:
       "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=900&h=1200&fit=crop",
     imageAlt: "Dark chocolate truffle cake with berries",
-    tagline: "72% single-origin cacao · dense fudgy centre",
+    tagline: "72% single-origin cacao · chili heat kick",
     description:
-      "A dense fudgy centre made with 72% single-origin Belgian cacao, wrapped in a smooth ganache. Fresh berries on top when in season.",
+      "A dense fudgy centre made with 72% single-origin Belgian cacao, wrapped in a smooth ganache with a soft chili heat that hits after the sweet.",
     variants: [
       { id: "s", label: `Small · 6"`, price: "Rp 95,000" },
       { id: "m", label: `Medium · 9"`, price: "Rp 165,000" },
     ],
-    ingredients: ["72% cacao", "Butter", "Eggs", "Sugar", "Fresh berries"],
+    ingredients: ["72% cacao", "Butter", "Eggs", "Sugar", "Chili powder", "Fresh berries"],
     allergens: ["Eggs", "Dairy", "May contain nuts"],
     deliveryNote: "Same-day pickup · order by 2pm for pickup by 6pm",
     stockNote: "In stock · 2 available today",
+    spiceLevel: 2,
   },
   {
     id: "croissant-six",

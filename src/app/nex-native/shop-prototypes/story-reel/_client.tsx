@@ -48,6 +48,11 @@ export interface SampleProduct {
   readonly allergens: readonly string[];
   readonly deliveryNote: string;
   readonly stockNote: string;
+  /** Bridge 45f · optional spice level · 0 = no display · 1-5 render
+   *  a small pill above the product name. Mirrors the nex_menu_item
+   *  spice scale (Bridge 23a): 1 mild · 2 medium · 3 hot · 4 very hot ·
+   *  5 volcano. */
+  readonly spiceLevel?: 0 | 1 | 2 | 3 | 4 | 5;
 }
 
 const NEX = {
@@ -65,10 +70,19 @@ const NEX = {
 
 // Footer button lives at the bottom edge · not a drawer, just a
 // button. When the drawer is closed, this is the only thing at the
-// bottom. Height + safe-area padding.
-const BUTTON_HEIGHT = 60;
-const BUTTON_BOTTOM = 20;
-const CLOSED_BOTTOM = BUTTON_HEIGHT + BUTTON_BOTTOM + 4; // room for the button
+// bottom. Founder tightening 2026-09-28 · button trimmed to 46px
+// so the hero + text overlay get more breathing room.
+const BUTTON_HEIGHT = 46;
+const BUTTON_BOTTOM = 18;
+const CLOSED_BOTTOM = BUTTON_HEIGHT + BUTTON_BOTTOM + 4;
+
+const SPICE_LABEL: Record<1 | 2 | 3 | 4 | 5, string> = {
+  1: "Mild",
+  2: "Medium",
+  3: "Hot",
+  4: "Very hot",
+  5: "Volcano",
+};
 
 // When open, the sheet fills the entire viewport · reads as a full
 // PAGE, not a bottom drawer. Founder tightening 2026-09-28.
@@ -380,6 +394,8 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
 
       {/* Product identity · text-overlay on hero · no panel.
           Founder direction 2026-09-28 (revised):
+            0. Spice-level pill on the LEFT above the name (only when
+               spiceLevel > 0) · Bridge 45f.
             1. Name · single line · truncates with ellipsis · no wrap.
             2. Small description directly under the name.
             3. Price sits under the description, RIGHT-aligned.
@@ -397,6 +413,9 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
           transition: "opacity 200ms ease",
         }}
       >
+        {current.spiceLevel && current.spiceLevel > 0 && (
+          <SpiceBadge level={current.spiceLevel} />
+        )}
         <h1
           style={{
             margin: 0,
@@ -887,6 +906,45 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+/** Bridge 45f · small spice-level pill rendered above the product
+ *  name in the hero overlay. Chili emojis scale with level, label
+ *  reads "Mild" / "Medium" / "Hot" / "Very hot" / "Volcano". Pill
+ *  sits inline on the left · no panel behind it, just a subtle
+ *  translucent capsule so it lifts off the hero photo. */
+function SpiceBadge({ level }: { level: 1 | 2 | 3 | 4 | 5 }) {
+  const chilies = "🌶".repeat(level);
+  const label = SPICE_LABEL[level];
+  return (
+    <div
+      aria-label={`Spice · ${label}`}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        marginBottom: 8,
+        padding: "3px 10px 3px 8px",
+        borderRadius: 999,
+        background: "rgba(0,0,0,0.42)",
+        border: "1px solid rgba(255,63,63,0.55)",
+        color: "#FFD8CF",
+        fontSize: 10,
+        fontWeight: 800,
+        letterSpacing: "0.14em",
+        textTransform: "uppercase",
+        lineHeight: 1,
+        backdropFilter: "blur(10px) saturate(1.4)",
+        WebkitBackdropFilter: "blur(10px) saturate(1.4)",
+        textShadow: "0 1px 4px rgba(0,0,0,0.55)",
+      }}
+    >
+      <span aria-hidden style={{ fontSize: 12, letterSpacing: 0 }}>
+        {chilies}
+      </span>
+      <span>{label}</span>
     </div>
   );
 }
