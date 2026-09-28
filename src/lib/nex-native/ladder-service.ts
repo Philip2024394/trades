@@ -431,6 +431,110 @@ export async function upsertLadder(
   return data as NexProductLadderRow;
 }
 
+// ---------------------------------------------------------------------
+// Bridge 49-analytics · seller-facing performance snapshot
+// ---------------------------------------------------------------------
+
+export interface LadderAnalyticsSnapshot {
+  /** How many buyers have ordered from this shop at all (order_count >= 1). */
+  totalBuyers: number;
+  /** Distribution across the seller's tier boundaries · returns
+   *  {tier_label, buyerCount} entries in tier order. Buyers with
+   *  order_count > highest_tier.order fall into the top bucket. */
+  tierBuckets: Array<{ tierLabel: string; tierOrder: number; buyerCount: number }>;
+  /** Grants sent in the last 30 days (viral loop volume). */
+  grantsSent30d: number;
+  /** Of those, how many were consumed (sharer or receiver placed an
+   *  order applying the grant). */
+  grantsConsumed30d: number;
+  /** Sum of the receiver_bonus_pct on grants consumed by the receiver ·
+   *  proxy for "% discount value handed out" · in whole percentage
+   *  points (e.g. 45 means 9 receivers each got −5%). */
+  receiverBonusHandedOut30dPct: number;
+  /** Buyers ordered from this shop at least once in the last 30 days ·
+   *  measured by last_order_at on nex_buyer_tier_progress. */
+  activeBuyers30d: number;
+}
+
+/** Snapshot of ladder performance for a business · used by the seller
+ *  metrics panel on /manage/ladder. Non-fatal per query · returns
+ *  zeros when a table is empty rather than throwing. */
+export async function getLadderAnalytics(
+  businessId: NexUuid,
+): Promise<LadderAnalyticsSnapshot> {
+  const ladder = await getLadderForBusiness(businessId);
+  const tiers = ladder?.tiers ?? [...NEX_DEFAULT_LADDER_TIERS];
+  const sorted = [...tiers].sort((a, b) => a.order - b.order);
+
+  const thirtyDaysAgoIso = new Date(
+    Date.now() - 30 * 24 * 60 * 60 * 1000,
+  ).toISOString();
+
+  // Fire all queries in parallel · one round-trip.
+  const [
+    progressRows,
+    grantsSentRes,
+    grantsConsumedRes,
+    activeBuyersRes,
+  ] = await Promise.all([
+    nexSupabaseAdmin
+      .from("nex_buyer_tier_progress")
+      .select("buyer_account_id, order_count")
+      .eq("business_id", businessId),
+    nexSupabaseAdmin
+      .from("nex_product_share_grant")
+      .select("id, receiver_bonus_pct", { count: "exact" })
+      .eq("business_id", businessId)
+      .gte("created_at", thirtyDaysAgoIso),
+    nexSupabaseAdmin
+      .from("nex_product_share_grant")
+      .select("id, receiver_bonus_pct, consumed_by_sharer_at, consumed_by_receiver_at")
+      .eq("business_id", businessId)
+      .gte("created_at", thirtyDaysAgoIso)
+      .or("consumed_by_sharer_at.not.is.null,consumed_by_receiver_at.not.is.null"),
+    nexSupabaseAdmin
+      .from("nex_buyer_tier_progress")
+      .select("buyer_account_id", { count: "exact", head: true })
+      .eq("business_id", businessId)
+      .gte("last_order_at", thirtyDaysAgoIso),
+  ]);
+
+  const progress = (progressRows.data as { order_count: number }[] | null) ?? [];
+  const buyers = progress.filter((p) => p.order_count >= 1);
+
+  // Bucketise buyers into tiers · tierN captures buyers whose next
+  // order would land at tier N (i.e. order_count in [tier.order - 1, next.order - 2]).
+  const buckets = sorted.map((t, i) => {
+    const next = sorted[i + 1];
+    const lowerBound = t.order - 1;
+    const upperBound = next ? next.order - 2 : Number.POSITIVE_INFINITY;
+    const buyerCount = buyers.filter(
+      (b) => b.order_count >= lowerBound && b.order_count <= upperBound,
+    ).length;
+    return {
+      tierLabel: t.label,
+      tierOrder: t.order,
+      buyerCount,
+    };
+  });
+
+  const grantsConsumedRows =
+    (grantsConsumedRes.data as { receiver_bonus_pct: number }[] | null) ?? [];
+  const receiverBonusHandedOut30dPct = grantsConsumedRows.reduce(
+    (sum, r) => sum + (r.receiver_bonus_pct ?? 0),
+    0,
+  );
+
+  return {
+    totalBuyers: buyers.length,
+    tierBuckets: buckets,
+    grantsSent30d: grantsSentRes.count ?? 0,
+    grantsConsumed30d: grantsConsumedRes.data?.length ?? 0,
+    receiverBonusHandedOut30dPct,
+    activeBuyers30d: activeBuyersRes.count ?? 0,
+  };
+}
+
 /** Increment the buyer's order count for a business. Called from the
  *  order-completion hook (Bridge 49b) after a real order is marked
  *  fulfilled.

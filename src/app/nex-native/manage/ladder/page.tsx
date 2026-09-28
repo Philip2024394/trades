@@ -56,9 +56,12 @@ export default async function LadderEditorPage({ searchParams }: PageProps) {
     ? businesses.find((b) => b.id === sp.business) ?? businesses[0]
     : businesses[0];
 
-  const ladder = selectedBusiness
-    ? await ladderService.getLadderForBusiness(selectedBusiness.id).catch(() => null)
-    : null;
+  const [ladder, analytics] = selectedBusiness
+    ? await Promise.all([
+        ladderService.getLadderForBusiness(selectedBusiness.id).catch(() => null),
+        ladderService.getLadderAnalytics(selectedBusiness.id).catch(() => null),
+      ])
+    : [null, null];
 
   return (
     <>
@@ -227,6 +230,10 @@ export default async function LadderEditorPage({ searchParams }: PageProps) {
                 </div>
               )}
 
+              {selectedBusiness && analytics && (
+                <LadderAnalyticsPanel analytics={analytics} />
+              )}
+
               {selectedBusiness && (
                 <NexDirectPriceEditor
                   businessId={selectedBusiness.id}
@@ -281,5 +288,247 @@ export default async function LadderEditorPage({ searchParams }: PageProps) {
         </div>
       </main>
     </>
+  );
+}
+
+// ---------------------------------------------------------------------
+// Bridge 49-analytics · seller performance panel · rendered above the
+// editor so sellers see how their ladder is actually converting.
+// Server component · no client state · re-fetches with the page.
+// ---------------------------------------------------------------------
+
+function LadderAnalyticsPanel({
+  analytics,
+}: {
+  analytics: ladderService.LadderAnalyticsSnapshot;
+}) {
+  const conversionPct =
+    analytics.grantsSent30d > 0
+      ? Math.round((analytics.grantsConsumed30d / analytics.grantsSent30d) * 100)
+      : 0;
+  return (
+    <section
+      data-nex-ladder-analytics
+      style={{
+        marginTop: 20,
+        padding: 16,
+        background: NEX.panel,
+        border: `1px solid ${NEX.orange}55`,
+        borderRadius: 14,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "baseline",
+          gap: 10,
+          paddingBottom: 8,
+          borderBottom: `1px solid ${NEX.cyanFaint}`,
+        }}
+      >
+        <div>
+          <div
+            style={{
+              fontSize: 10,
+              letterSpacing: "0.20em",
+              textTransform: "uppercase",
+              fontWeight: 800,
+              color: NEX.orange,
+            }}
+          >
+            Ladder performance
+          </div>
+          <div style={{ fontSize: 11, color: NEX.textSecondary, marginTop: 2 }}>
+            Last 30 days · live from your buyers
+          </div>
+        </div>
+      </div>
+
+      {/* Top-line stats · 4-card grid */}
+      <div
+        style={{
+          marginTop: 12,
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 8,
+        }}
+      >
+        <StatCard
+          label="Total buyers"
+          value={String(analytics.totalBuyers)}
+          hint="anyone who's ordered from you"
+        />
+        <StatCard
+          label="Active 30d"
+          value={String(analytics.activeBuyers30d)}
+          hint="ordered in the last month"
+        />
+        <StatCard
+          label="Shares sent"
+          value={String(analytics.grantsSent30d)}
+          hint="last 30 days · viral loop volume"
+        />
+        <StatCard
+          label="Shares that converted"
+          value={
+            analytics.grantsSent30d === 0
+              ? "—"
+              : `${analytics.grantsConsumed30d} · ${conversionPct}%`
+          }
+          hint="turned into a real order"
+        />
+      </div>
+
+      {/* Tier distribution */}
+      {analytics.tierBuckets.length > 0 && analytics.totalBuyers > 0 && (
+        <div style={{ marginTop: 14 }}>
+          <div
+            style={{
+              fontSize: 10,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              fontWeight: 800,
+              color: NEX.textSecondary,
+              marginBottom: 6,
+            }}
+          >
+            Where your buyers are on the ladder
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            {analytics.tierBuckets.map((b) => {
+              const pct =
+                analytics.totalBuyers > 0
+                  ? Math.round((b.buyerCount / analytics.totalBuyers) * 100)
+                  : 0;
+              return (
+                <div
+                  key={b.tierOrder}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "30px 1fr 44px",
+                    gap: 8,
+                    alignItems: "center",
+                    fontSize: 11,
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: 12,
+                      fontWeight: 900,
+                      color: NEX.orange,
+                      letterSpacing: "-0.02em",
+                    }}
+                  >
+                    {String(b.tierOrder).padStart(2, "0")}
+                  </span>
+                  <div
+                    style={{
+                      height: 6,
+                      background: "rgba(255,114,0,0.14)",
+                      borderRadius: 999,
+                      overflow: "hidden",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: `${pct}%`,
+                        height: "100%",
+                        background: `linear-gradient(90deg, ${NEX.orange}, #FF9033)`,
+                        borderRadius: 999,
+                      }}
+                    />
+                  </div>
+                  <span
+                    style={{
+                      textAlign: "right",
+                      color: NEX.textSecondary,
+                      fontSize: 10,
+                      fontWeight: 700,
+                      letterSpacing: "0.04em",
+                    }}
+                  >
+                    {b.buyerCount} · {pct}%
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {analytics.totalBuyers === 0 && (
+        <div
+          style={{
+            marginTop: 14,
+            padding: "10px 12px",
+            background: NEX.fieldBg,
+            border: `1px dashed ${NEX.cyanFaint}`,
+            borderRadius: 8,
+            fontSize: 11,
+            color: NEX.textSecondary,
+            lineHeight: 1.5,
+          }}
+        >
+          No buyer orders yet · your ladder will start showing performance
+          the first time a buyer completes an order.
+        </div>
+      )}
+    </section>
+  );
+}
+
+function StatCard({
+  label,
+  value,
+  hint,
+}: {
+  label: string;
+  value: string;
+  hint: string;
+}) {
+  return (
+    <div
+      style={{
+        padding: "10px 12px",
+        background: NEX.fieldBg,
+        border: `1px solid ${NEX.cyanFaint}`,
+        borderRadius: 10,
+      }}
+    >
+      <div
+        style={{
+          fontSize: 9,
+          letterSpacing: "0.14em",
+          textTransform: "uppercase",
+          fontWeight: 800,
+          color: NEX.textSecondary,
+        }}
+      >
+        {label}
+      </div>
+      <div
+        style={{
+          marginTop: 4,
+          fontSize: 20,
+          fontWeight: 900,
+          letterSpacing: "-0.02em",
+          color: NEX.orange,
+          lineHeight: 1,
+        }}
+      >
+        {value}
+      </div>
+      <div
+        style={{
+          marginTop: 3,
+          fontSize: 10,
+          color: NEX.textSecondary,
+          lineHeight: 1.35,
+        }}
+      >
+        {hint}
+      </div>
+    </div>
   );
 }
