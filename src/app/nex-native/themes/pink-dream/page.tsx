@@ -85,17 +85,21 @@ export default function PinkDreamPreviewPage() {
     <div
       data-nex-pink-dream-preview
       style={{
-        // Bridge 24b · lock shell to the mobile viewport · width + dvh
-        // so the wallpaper covers 100% of the visible area with no
-        // horizontal scroll / letterbox. overflow-x hidden defends
-        // against any child that tries to grow past the edge.
+        // Bridge 24c · pin to the viewport as a flex column so no
+        // ancestor layout padding can squeeze the wallpaper or the
+        // composer. Header + main + footer are direct flex children:
+        // header top, main flexes and scrolls internally, footer
+        // stays glued to the bottom edge · every element uses 100%
+        // of the phone's width.
+        position: "fixed",
+        inset: 0,
         width: "100vw",
-        minHeight: "100dvh",
-        maxWidth: "100vw",
-        position: "relative",
+        height: "100dvh",
+        display: "flex",
+        flexDirection: "column",
         color: P.white,
         fontFamily: SANS,
-        overflowX: "hidden",
+        overflow: "hidden",
         // Warm sunset bedroom wallpaper covers the entire viewport ·
         // every chat surface floats over it per the master prompt.
         backgroundImage: "url(/nex-themes/pink-dream.png)",
@@ -255,10 +259,12 @@ export default function PinkDreamPreviewPage() {
         style={{
           position: "relative",
           zIndex: 1,
+          flex: 1,
+          minHeight: 0,
           width: "100%",
-          maxWidth: 480,
-          margin: "0 auto",
-          padding: "12px 14px calc(env(safe-area-inset-bottom, 0) + 130px)",
+          overflowY: "auto",
+          WebkitOverflowScrolling: "touch",
+          padding: "12px 14px 18px",
           display: "flex",
           flexDirection: "column",
           gap: 10,
@@ -290,17 +296,21 @@ export default function PinkDreamPreviewPage() {
         })}
       </main>
 
-      {/* ---------------- Composer + Send ---------------- */}
+      {/* ---------------- Composer + Send ----------------
+         Bridge 24c · normal flow inside the flex column so the
+         composer always fills the phone width minus the 12px inset
+         and never suffers from position:fixed containing-block
+         quirks. */}
       <footer
         style={{
-          position: "fixed",
-          left: 14,
-          right: 14,
-          bottom: "calc(env(safe-area-inset-bottom, 0) + 14px)",
-          zIndex: 6,
+          position: "relative",
+          padding: "12px 12px calc(env(safe-area-inset-bottom, 0) + 12px)",
           display: "flex",
           alignItems: "center",
           gap: 10,
+          width: "100%",
+          boxSizing: "border-box",
+          zIndex: 6,
         }}
       >
         {/* Long pill-shaped composer */}
