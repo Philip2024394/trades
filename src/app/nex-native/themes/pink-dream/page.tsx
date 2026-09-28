@@ -485,7 +485,7 @@ function TimelineRow({
     <div
       style={{
         marginTop: extraTop + (isFirstOfCluster ? 6 : 0),
-        maxWidth: "78%",
+        maxWidth: "calc(78% + 30px)",
       }}
     >
       {/* Bridge 24x · panel still attached to the left window edge
