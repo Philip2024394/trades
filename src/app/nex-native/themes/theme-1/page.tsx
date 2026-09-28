@@ -291,11 +291,17 @@ export default function Theme1PreviewPage() {
               body={m.body}
               time={m.time}
               extraTop={gapTop}
-              fill="rgba(255, 120, 0, 0.32)"
-              border="rgba(255, 178, 100, 0.75)"
-              accent={P.orange}
-              textColor="#FFF5FA"
-              eyebrowColor="#FFD9A8"
+              // Bridge 27b · You panels pulled to a moonlit silvery
+              // frost per Founder direction 2026-09-28 · replaces the
+              // orange "brown" tone with a pale blue-white that
+              // reads as a fragment of the moon glow floating in
+              // the sky. Dark navy text keeps legibility on the
+              // near-opaque moon fill.
+              fill="rgba(225, 238, 255, 0.75)"
+              border="rgba(180, 214, 255, 0.90)"
+              accent="#B4D6FF"
+              textColor="#0A1830"
+              eyebrowColor="#1E4A7A"
               driftDelay={`${i * 0.4 + 0.2}s`}
             />
           );
