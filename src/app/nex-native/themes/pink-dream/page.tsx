@@ -149,17 +149,17 @@ export default function PinkDreamPreviewPage() {
           mask-image: linear-gradient(
             180deg,
             transparent 0px,
-            rgba(0,0,0,0.15) 24px,
-            rgba(0,0,0,0.55) 48px,
-            #000 72px,
+            rgba(0,0,0,0.20) 12px,
+            rgba(0,0,0,0.65) 28px,
+            #000 40px,
             #000 100%
           );
           -webkit-mask-image: linear-gradient(
             180deg,
             transparent 0px,
-            rgba(0,0,0,0.15) 24px,
-            rgba(0,0,0,0.55) 48px,
-            #000 72px,
+            rgba(0,0,0,0.20) 12px,
+            rgba(0,0,0,0.65) 28px,
+            #000 40px,
             #000 100%
           );
         }
@@ -221,11 +221,11 @@ export default function PinkDreamPreviewPage() {
           top: 0,
           zIndex: 5,
           padding:
-            "calc(env(safe-area-inset-top, 0) + 12px) 16px 12px",
+            "calc(env(safe-area-inset-top, 0) + 6px) 14px 6px",
           background: "transparent",
           display: "flex",
           alignItems: "center",
-          gap: 12,
+          gap: 10,
         }}
       >
         {/* Bridge 24h · portrait wrapped in relative box so the
@@ -287,16 +287,16 @@ export default function PinkDreamPreviewPage() {
           width: "100%",
           overflowY: "auto",
           WebkitOverflowScrolling: "touch",
-          padding: "12px 52px 18px 14px",
+          padding: "4px 52px 14px 14px",
           display: "flex",
           flexDirection: "column",
-          gap: 10,
+          gap: 6,
         }}
       >
         {CONVO.map((m, i) => {
           const prev = CONVO[i - 1];
           const speakerChanged = !prev || prev.side !== m.side;
-          const gapTop = speakerChanged ? 8 : 0;
+          const gapTop = speakerChanged ? 6 : 0;
           if (m.side === "in") {
             return (
               <IncomingRow
@@ -439,18 +439,18 @@ function IncomingRow({
       style={{
         display: "flex",
         alignItems: "flex-end",
-        gap: 8,
+        gap: 7,
         marginTop: extraTop,
       }}
     >
       <div
         style={{
-          width: 34,
-          height: 34,
+          width: 28,
+          height: 28,
           borderRadius: "50%",
           background: "url(/nex-themes/pink-dream.png) center/cover",
           border: "1.5px solid rgba(255,255,255,0.75)",
-          boxShadow: "0 0 8px rgba(255,79,163,0.55)",
+          boxShadow: "0 0 6px rgba(255,79,163,0.45)",
           flexShrink: 0,
         }}
         aria-hidden
@@ -458,27 +458,29 @@ function IncomingRow({
       <div
         style={{
           position: "relative",
-          maxWidth: "78%",
-          padding: "13px 18px 12px",
-          borderRadius: 22,
+          maxWidth: "72%",
+          padding: "8px 12px 6px",
+          borderRadius: 18,
           background: "linear-gradient(135deg, #2A1833, #17121F)",
           border: "1px solid rgba(255,139,197,0.55)",
-          boxShadow: "0 5px 18px rgba(0,0,0,0.28)",
+          boxShadow: "0 3px 12px rgba(0,0,0,0.24)",
           color: P.softWhite,
-          fontSize: 16,
+          fontSize: 14,
           fontWeight: 400,
-          lineHeight: 1.4,
+          lineHeight: 1.32,
           whiteSpace: "pre-wrap",
+          letterSpacing: "-0.005em",
         }}
       >
         {body}
         <div
           style={{
-            marginTop: 4,
-            fontSize: 11,
-            opacity: 0.72,
+            marginTop: 2,
+            fontSize: 9,
+            opacity: 0.68,
             textAlign: "right",
             color: P.mutedText,
+            letterSpacing: "0.02em",
           }}
         >
           {time}
@@ -511,32 +513,34 @@ function OutgoingRow({
       <div
         style={{
           position: "relative",
-          maxWidth: "78%",
-          padding: "13px 18px 12px",
-          borderRadius: 22,
+          maxWidth: "72%",
+          padding: "8px 12px 6px",
+          borderRadius: 18,
           background: "linear-gradient(135deg, #FF77BC, #FF3F9F)",
           border: "1px solid rgba(255,205,230,0.65)",
-          boxShadow: "0 6px 22px rgba(255,63,159,0.30)",
+          boxShadow: "0 4px 16px rgba(255,63,159,0.24)",
           color: P.white,
-          fontSize: 16,
+          fontSize: 14,
           fontWeight: 400,
-          lineHeight: 1.4,
+          lineHeight: 1.32,
           whiteSpace: "pre-wrap",
+          letterSpacing: "-0.005em",
         }}
       >
         {body}
         <div
           style={{
-            marginTop: 4,
-            fontSize: 11,
-            opacity: 0.82,
+            marginTop: 2,
+            fontSize: 9,
+            opacity: 0.85,
             textAlign: "right",
             color: P.softWhite,
             display: "inline-flex",
-            gap: 4,
+            gap: 3,
             alignItems: "center",
             justifyContent: "flex-end",
             width: "100%",
+            letterSpacing: "0.02em",
           }}
         >
           <span>{time}</span>
