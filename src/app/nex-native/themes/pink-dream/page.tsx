@@ -370,15 +370,18 @@ export default function PinkDreamPreviewPage() {
           width: "100%",
           overflowY: "auto",
           WebkitOverflowScrolling: "touch",
-          padding: "4px 52px 14px 34px",
+          // Bridge 24w · panels glued to the left window edge · zero
+          // padding-left so message slates run to x=0. Right padding
+          // still reserves room for the Home/Contacts rail.
+          padding: "4px 52px 14px 0",
           display: "flex",
           flexDirection: "column",
           gap: 6,
         }}
       >
-        {/* Bridge 24v · timeline spine retired per Founder direction
-           2026-09-28 · ticks alone read as speaker markers without
-           the connecting line. Cleaner, more editorial. */}
+        {/* Bridge 24w · timeline ticks retired · panels themselves
+           attach to the left window edge and read as message
+           slates running up the side of the phone. */}
         {CONVO.map((m, i) => {
           const prev = CONVO[i - 1];
           const speakerChanged = !prev || prev.side !== m.side;
@@ -424,12 +427,6 @@ export default function PinkDreamPreviewPage() {
 // each message has a coloured tick + eyebrow (speaker + time) + raw
 // text. No bubble containers. Peer chat reads like a shared journal
 // timeline.
-
-// Spine sits at main-left:20, main-padding-left is 34, so a row
-// starting at main's content edge (34) needs its tick at -14 to
-// centre on the spine · tick width 10 → left: -19 puts the centre
-// of the tick on the spine line.
-const TICK_LEFT = -19;
 
 function IncomingRow({
   body,
@@ -487,41 +484,27 @@ function TimelineRow({
   return (
     <div
       style={{
-        position: "relative",
-        paddingLeft: 26,
         marginTop: extraTop + (isFirstOfCluster ? 6 : 0),
+        maxWidth: "82%",
       }}
     >
-      <span
-        aria-hidden
-        style={{
-          position: "absolute",
-          left: TICK_LEFT,
-          top: 4,
-          width: 10,
-          height: 10,
-          borderRadius: "50%",
-          background: color,
-          boxShadow: `0 0 10px ${glow}, inset -1px -1px 2px rgba(0,0,0,0.35)`,
-          border: "1.5px solid rgba(255,255,255,0.85)",
-        }}
-      />
-      {/* Bridge 24s · speaker + time now lives INSIDE the frosted
-         panel at the top per Founder direction 2026-09-28. Panel
-         hue changes per speaker · pink-frosted for the theme owner
-         (Bunny), white-frosted for the messaging sender (You). */}
+      {/* Bridge 24w · panel attached to the left window edge · left
+         corners squared + border-left dropped so the slate reads
+         as fused to the wall. Right corners rounded 18. */}
       <div
         style={{
-          display: "inline-block",
-          maxWidth: "100%",
-          padding: "8px 12px",
-          borderRadius: 12,
+          display: "block",
+          padding: "8px 14px 8px 14px",
+          borderRadius: "0 18px 18px 0",
           background: panelFill,
-          border: `1px solid ${panelBorder}`,
+          borderTop: `1px solid ${panelBorder}`,
+          borderRight: `1px solid ${panelBorder}`,
+          borderBottom: `1px solid ${panelBorder}`,
+          borderLeft: `3px solid ${color}`,
           backdropFilter: "blur(12px) saturate(140%)",
           WebkitBackdropFilter: "blur(12px) saturate(140%)",
           boxShadow:
-            "0 4px 14px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.10)",
+            "6px 4px 14px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.10)",
         }}
       >
         <div
