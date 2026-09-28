@@ -802,47 +802,29 @@ function ProductSpread({
         )}
       </div>
 
-      {/* Meta · name + price on one row · optional description below ·
-          single "More info" CTA that opens the full product page.
-          Founder direction 2026-09-28 · no tag badges, no price
-          overlay badge, no dual CTA (chat lives on the product page). */}
+      {/* Meta · name on one line · description underneath · price
+          right-aligned below the description · single More info CTA.
+          Founder direction 2026-09-28. */}
       <div style={{ padding: "18px 22px 22px" }}>
-        <div
+        <h3
           style={{
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-            gap: 14,
-            marginBottom: description ? 12 : 16,
+            margin: 0,
+            fontFamily: SERIF,
+            fontWeight: 500,
+            fontSize: 24,
+            letterSpacing: "-0.008em",
+            lineHeight: 1.15,
+            marginBottom: description ? 10 : 14,
+            // One-line name · truncate with ellipsis if too long ·
+            // full name still available on the detail page.
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
+          title={name}
         >
-          <h3
-            style={{
-              margin: 0,
-              fontFamily: SERIF,
-              fontWeight: 500,
-              fontSize: 26,
-              letterSpacing: "-0.01em",
-              lineHeight: 1.1,
-              flex: 1,
-              minWidth: 0,
-            }}
-          >
-            {name}
-          </h3>
-          <span
-            style={{
-              flexShrink: 0,
-              fontFamily: SANS,
-              fontSize: 16,
-              fontWeight: 800,
-              color: NEX.orange,
-              letterSpacing: "0.01em",
-            }}
-          >
-            {price}
-          </span>
-        </div>
+          {name}
+        </h3>
         {description && (
           <p
             style={{
@@ -850,13 +832,26 @@ function ProductSpread({
               fontSize: 14,
               lineHeight: 1.6,
               color: "rgba(244,247,252,0.85)",
-              marginBottom: 18,
+              marginBottom: 10,
               whiteSpace: "pre-wrap",
             }}
           >
             {description}
           </p>
         )}
+        <div
+          style={{
+            fontFamily: SANS,
+            fontSize: 16,
+            fontWeight: 800,
+            color: NEX.orange,
+            letterSpacing: "0.01em",
+            textAlign: "right",
+            marginBottom: 14,
+          }}
+        >
+          {price}
+        </div>
         <Link
           href={detailHref}
           style={{
