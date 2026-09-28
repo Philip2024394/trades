@@ -358,9 +358,28 @@ export default function PinkDreamPreviewPage() {
               fontWeight: 700,
               letterSpacing: "-0.005em",
               color: P.softWhite,
+              lineHeight: 1.15,
             }}
           >
             Bunny
+          </div>
+          {/* Bridge 24ai · profession is a golden-rule NEX field ·
+             every account picks one at create-time · always shown
+             under the display name in the chat header. */}
+          <div
+            style={{
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              color: P.softBabyPink,
+              marginTop: 2,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            Illustrator
           </div>
         </div>
         {/* Bridge 24ab · header is now peer-scoped ONLY per messenger
