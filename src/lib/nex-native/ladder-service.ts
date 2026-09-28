@@ -137,6 +137,94 @@ export async function getBuyerProgress(
 // Tier resolution (pure)
 // ---------------------------------------------------------------------
 
+/** Bridge 49b-final · Applied Direct Price discount for a cart line
+ *  or a whole cart · what the buyer actually receives at checkout.
+ *  Both bonuses stack but the sum is capped by ladder.max_cap_pct. */
+export interface AppliedDirectPrice {
+  /** Discount % from the loyalty tier (buyer's current position). */
+  tierPct: number;
+  /** Best applicable share-grant bonus % for this buyer+business ·
+   *  0 when no grant applies. */
+  sharePct: number;
+  /** Final % applied · min(tierPct + sharePct, maxCapPct). */
+  appliedPct: number;
+  /** Whether the sum was clipped by the max-cap. */
+  cappedAtMax: boolean;
+  /** ID of the grant that contributed sharePct (if any) · used by the
+   *  server action to mark the grant consumed after the cart is sent. */
+  grantIdConsumed: string | null;
+}
+
+/** Pure helper · combine tier + best share bonus + cap. Callers pass
+ *  in ladder + grants + buyer id · we do the math. No DB access. */
+export function computeAppliedDiscount(input: {
+  tierPct: number;
+  bestShareBonusPct: number;
+  maxCapPct: number;
+  grantId: string | null;
+}): AppliedDirectPrice {
+  const sum = input.tierPct + input.bestShareBonusPct;
+  const capped = sum > input.maxCapPct;
+  const applied = capped ? input.maxCapPct : sum;
+  return {
+    tierPct: input.tierPct,
+    sharePct: input.bestShareBonusPct,
+    appliedPct: applied,
+    cappedAtMax: capped,
+    grantIdConsumed: input.bestShareBonusPct > 0 ? input.grantId : null,
+  };
+}
+
+/** Convenience helper · fetches ladder + progress + grants and
+ *  returns the resolved AppliedDirectPrice for a (buyer, business).
+ *  Callers use this at cart-send time to compute the final % applied
+ *  before writing the snapshot. Returns a zero-discount stub when
+ *  the shop has no ladder or the ladder is paused. */
+export async function resolveAppliedDiscountForBuyer(
+  buyerAccountId: NexUuid,
+  businessId: NexUuid,
+): Promise<AppliedDirectPrice> {
+  const [ladder, progress] = await Promise.all([
+    getLadderForBusiness(businessId),
+    getBuyerProgress(buyerAccountId, businessId),
+  ]);
+  if (!ladder || !ladder.active) {
+    return {
+      tierPct: 0,
+      sharePct: 0,
+      appliedPct: 0,
+      cappedAtMax: false,
+      grantIdConsumed: null,
+    };
+  }
+  const position = resolveTierPosition(progress?.order_count ?? 0, ladder.tiers);
+  const tierPct = position.currentTier.discount;
+
+  // Dynamic import · avoid a circular dep with share-service which
+  // imports back into ladder-service.
+  const shareSvc = await import("./share-service");
+  const grants = await shareSvc.listActiveGrantsFor(buyerAccountId, businessId);
+  const bestShare = shareSvc.pickBestBonusPct(
+    grants,
+    buyerAccountId,
+    ladder.max_cap_pct,
+  );
+  // Find the grant whose bonus matches bestShare so we know which id
+  // to mark consumed. First matching grant wins · deterministic order
+  // (most-recent-first from listActiveGrantsFor).
+  const contributingGrant = grants.find((g) => {
+    const isSharer = g.sharer_account_id === buyerAccountId;
+    const bonus = isSharer ? g.sharer_bonus_pct : g.receiver_bonus_pct;
+    return bonus === bestShare && bestShare > 0;
+  });
+  return computeAppliedDiscount({
+    tierPct,
+    bestShareBonusPct: bestShare,
+    maxCapPct: ladder.max_cap_pct,
+    grantId: contributingGrant?.id ?? null,
+  });
+}
+
 /** Given a buyer's order count and a ladder, resolve which tier they
  *  are currently on, and what the next unlock is. Pure function ·
  *  safe to call anywhere · no DB access. */

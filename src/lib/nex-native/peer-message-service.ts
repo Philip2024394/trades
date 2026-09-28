@@ -165,6 +165,19 @@ export interface NexPeerCartOrderSnapshot {
     eta_minutes?: number;
     free_reason?: string | null;
   } | null;
+  /** Bridge 49b-final · NEX Direct Price applied to this cart at
+   *  send time · buyer's tier + share bonuses combined and capped
+   *  by ladder.max_cap_pct. NULL for legacy carts or shops without
+   *  a Direct Price ladder. Seller sees the same discount the buyer
+   *  saw when they hit Send. */
+  direct_price?: {
+    tier_pct: number;
+    share_pct: number;
+    applied_pct: number;
+    capped_at_max: boolean;
+    saving_pence: number;
+    total_after_discount_pence: number;
+  } | null;
 }
 
 /** Product snapshot embedded in an attachment_meta when a peer

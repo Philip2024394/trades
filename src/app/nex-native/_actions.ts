@@ -1575,6 +1575,41 @@ export async function sendCartOrderAction(
     redirect("/nex-native/cart?send_error=" + encodeURIComponent("No valid items"));
   }
 
+  // Bridge 49b-final · NEX Direct Price · resolve buyer's tier +
+  // best-applicable share grant + max cap · write result into the
+  // cart snapshot so the seller sees the exact discount the buyer
+  // saw at send time. Non-fatal · discount resolution failure
+  // never blocks the send.
+  const ladderSvc = await import("@/lib/nex-native/ladder-service");
+  let directPrice: NonNullable<
+    import("@/lib/nex-native/peer-message-service").NexPeerCartOrderSnapshot["direct_price"]
+  > | null = null;
+  let grantIdToConsume: string | null = null;
+  try {
+    const applied = await ladderSvc.resolveAppliedDiscountForBuyer(
+      session.account.id,
+      shopId,
+    );
+    if (applied.appliedPct > 0) {
+      const savingPence = Math.round((subtotal * applied.appliedPct) / 100);
+      directPrice = {
+        tier_pct: applied.tierPct,
+        share_pct: applied.sharePct,
+        applied_pct: applied.appliedPct,
+        capped_at_max: applied.cappedAtMax,
+        saving_pence: savingPence,
+        total_after_discount_pence: subtotal - savingPence,
+      };
+      grantIdToConsume = applied.grantIdConsumed;
+    }
+  } catch (e) {
+    console.warn(
+      "[nex-direct-price] cart discount resolution failed for shop",
+      shopId.slice(0, 8),
+      e instanceof Error ? e.message : e,
+    );
+  }
+
   const snapshot: import("@/lib/nex-native/peer-message-service").NexPeerCartOrderSnapshot = {
     shop_id: shopId,
     shop_slug: shopSlug,
@@ -1586,6 +1621,7 @@ export async function sendCartOrderAction(
     item_count: items.reduce((n, it) => n + it.quantity, 0),
     delivery_address: addressComplete ? deliveryAddress : null,
     delivery_quote: deliveryQuote,
+    direct_price: directPrice,
   };
 
   // Body renders in plain-text clients that don't know cart_order.
@@ -1670,6 +1706,25 @@ export async function sendCartOrderAction(
       snapshot.item_count === 1 ? "" : "s"
     }`,
   );
+  // Bridge 49b-final · surface the applied Direct Price so the
+  // seller sees exactly what discount was granted to this buyer.
+  if (directPrice) {
+    const parts: string[] = [];
+    if (directPrice.tier_pct > 0) parts.push(`loyalty −${directPrice.tier_pct}%`);
+    if (directPrice.share_pct > 0) parts.push(`share −${directPrice.share_pct}%`);
+    const suffix = directPrice.capped_at_max ? ` · capped at max` : "";
+    bodyLines.push(
+      `🎯 NEX Direct · ${parts.join(" · ")}${suffix} = −${
+        directPrice.applied_pct
+      }% · saves ${formatCartPrice(directPrice.saving_pence, currency)}`,
+    );
+    bodyLines.push(
+      `Total after discount · ${formatCartPrice(
+        directPrice.total_after_discount_pence,
+        currency,
+      )}`,
+    );
+  }
   const body = bodyLines.join("\n");
 
   const conversation =
@@ -1690,6 +1745,23 @@ export async function sendCartOrderAction(
   // the DB CHECK · when no image, we fall back to text-only body.
   // The snapshot still lives on attachment_meta so if a client wants
   // to hydrate it via a separate mechanism it can.
+
+  // Bridge 49b-final · consume the applied grant · one-shot mark so
+  // it can't be re-applied on a follow-up cart send within the 48hr
+  // window. Non-fatal · if the mark fails, the grant will still lapse
+  // at expires_at.
+  if (grantIdToConsume) {
+    try {
+      const shareSvc = await import("@/lib/nex-native/share-service");
+      await shareSvc.markGrantConsumed(grantIdToConsume, session.account.id);
+    } catch (e) {
+      console.warn(
+        "[nex-direct-price] grant consume failed for",
+        grantIdToConsume.slice(0, 8),
+        e instanceof Error ? e.message : e,
+      );
+    }
+  }
 
   // Bridge 22c-3 · after a successful send, drop this shop's lines
   // from the server-side cart so the buyer's other devices don't
