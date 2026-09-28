@@ -30,6 +30,10 @@ import * as accountService from "@/lib/nex-native/account-service";
 import * as conversationService from "@/lib/nex-native/conversation-service";
 import type { NexChatTheme } from "@/lib/nex-native/types";
 import { NexPageHeader } from "../_page-header";
+import {
+  acceptFriendInviteAction,
+  declineFriendInviteAction,
+} from "../_actions";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -107,7 +111,7 @@ const MOCK_FRIENDS: ReadonlyArray<{
   {
     name: "Maria Santos",
     handle: "nex-27418",
-    profession: "Footwear designer",
+    profession: "Designer · leather shoes",
     location: "Bandung",
     presence: "green",
     unread: 0,
@@ -135,7 +139,7 @@ const MOCK_FRIENDS: ReadonlyArray<{
   {
     name: "Kenji Tanaka",
     handle: "nex-38754",
-    profession: "Photographer",
+    profession: "Photographer · portrait sessions",
     location: "Tokyo",
     presence: "clear",
     unread: 0,
@@ -163,7 +167,7 @@ const MOCK_FRIENDS: ReadonlyArray<{
   {
     name: "Priya Patel",
     handle: "nex-91280",
-    profession: "Bakery owner",
+    profession: "Baker · sourdough & croissants",
     location: "Mumbai",
     presence: "clear",
     unread: 5,
@@ -218,6 +222,39 @@ const MOCK_BUSINESSES: ReadonlyArray<{
   },
 ] as const;
 
+/** Preview-only pending incoming friend requests · shown behind
+ *  ?preview=1 so the Waiting-for-you bucket has content in demos even
+ *  when the real inbox is empty. Real data comes from
+ *  friendService.listPendingIncoming. */
+const MOCK_PENDING: ReadonlyArray<{
+  id: string;
+  name: string;
+  handle: string | null;
+  avatarUrl: string | null;
+  chatTheme: NexChatTheme | null;
+  profession: string | null;
+  location: string | null;
+}> = [
+  {
+    id: "mock-pending-rahmi",
+    name: "Rahmi Ayu",
+    handle: "nex-64821",
+    avatarUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop",
+    chatTheme: "pink",
+    profession: "Baker · pandan chiffon cakes",
+    location: "Yogyakarta",
+  },
+  {
+    id: "mock-pending-arif",
+    name: "Arif Hidayat",
+    handle: "nex-33009",
+    avatarUrl: null,
+    chatTheme: "default",
+    profession: "Photographer · pre-wedding shoots",
+    location: "Bali",
+  },
+] as const;
+
 const MOCK_GROUPS: ReadonlyArray<{
   name: string;
   members: number;
@@ -245,7 +282,7 @@ const MOCK_GROUPS: ReadonlyArray<{
 ] as const;
 
 interface PageProps {
-  searchParams: Promise<{ tab?: string }>;
+  searchParams: Promise<{ tab?: string; preview?: string }>;
 }
 
 const NEX = {
@@ -266,20 +303,31 @@ function initialsFromName(name: string): string {
   return (parts[0]![0]! + parts[parts.length - 1]![0]!).toUpperCase();
 }
 
-/** Reduce a full profession string to its single leading token so
- *  the caption fits inside a friend card at any viewport width.
- *  Splits on whitespace, middle-dot, hyphen, comma, and slash.
- *   "Reseller · vintage cameras"  → "Reseller"
- *   "Bakery owner"                → "Bakery"
- *   "Student · Design"            → "Student"
- *   "Barista/roaster"             → "Barista"
+/** Reduce a profession string to WHAT this person actually sells or
+ *  does · not their role label. When the string uses a "role · what"
+ *  pattern (middle-dot or pipe separator), we drop the role prefix and
+ *  keep the tail. Without a separator, the whole string reads fine.
+ *
+ *  Founder direction 2026-09-28 · friend cards should show what the
+ *  person sells (their trade), not the label "Reseller". So we ELIDE
+ *  the leading role token and prefer the descriptive tail.
+ *
+ *   "Reseller · vintage cameras"  → "vintage cameras"
+ *   "Baker · sourdough & croissants" → "sourdough & croissants"
+ *   "Photographer · portraits"    → "portraits"
+ *   "Student · Design"            → "Design"
+ *   "Bakery owner"                → "Bakery owner"  (no separator)
+ *   "Photographer"                → "Photographer"  (no separator)
  *  Null / empty stays null. */
-function firstProfessionWord(profession: string | null): string | null {
+function professionCaption(profession: string | null): string | null {
   if (!profession) return null;
   const trimmed = profession.trim();
   if (!trimmed) return null;
-  const first = trimmed.split(/[\s·,/-]+/).filter(Boolean)[0];
-  return first ?? null;
+  const parts = trimmed.split(/\s*[·|]\s*/).filter(Boolean);
+  if (parts.length >= 2) {
+    return parts.slice(1).join(" · ").trim() || parts[0]!;
+  }
+  return trimmed;
 }
 
 export default async function ChatHubPage({ searchParams }: PageProps) {
@@ -290,8 +338,10 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
   const activeTab: Tab = TABS.includes(sp.tab as Tab)
     ? (sp.tab as Tab)
     : "friends";
-  // Preview mocks · only in local development.
-  const showPreview = process.env.NEX_ALLOW_DEV_ADMIN === "1";
+  // Preview mocks now gate on the explicit ?preview=1 query param instead
+  // of a global env var · this stops fake cards competing with real
+  // friends in normal browsing. Founder direction 2026-09-28.
+  const showPreview = sp.preview === "1";
 
   // Load only the data for the active tab · keeps the page cheap.
   let friendCards: Array<{
@@ -311,6 +361,19 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
     /** Numeric sort key · lower = higher rank (online first). */
     presenceRank: number;
   }> = [];
+  /** Pending incoming friend requests · shown as a bucket ABOVE the
+   *  Online / Busy / Offline sections. These are the only cards on the
+   *  Friends tab that require an action (Accept / Decline). Founder
+   *  direction 2026-09-28. */
+  let pendingCards: Array<{
+    id: string;
+    name: string;
+    handle: string | null;
+    avatarUrl: string | null;
+    chatTheme: NexChatTheme | null;
+    profession: string | null;
+    location: string | null;
+  }> = [];
   let businessCards: Array<{
     conversationId: string;
     businessName: string;
@@ -326,7 +389,38 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
   }> = [];
 
   if (activeTab === "friends") {
-    const ids = await friendService.listFriends(session.account.id).catch(() => []);
+    const [ids, pendingRows] = await Promise.all([
+      friendService.listFriends(session.account.id).catch(() => []),
+      friendService.listPendingIncoming(session.account.id).catch(() => []),
+    ]);
+    // Hydrate pending senders · these are the accounts that requested us.
+    // listPendingIncoming already filters to incoming-only rows.
+    const pendingSenderIds = pendingRows.map((r) => r.requested_by);
+    const pendingProfileSvc = await import(
+      "@/lib/nex-native/account-profile-service"
+    );
+    const pendingHydrated = await Promise.all(
+      pendingSenderIds.map(async (id) => {
+        const [account, profile] = await Promise.all([
+          accountService.getAccountById(id),
+          pendingProfileSvc.getProfileByAccountId(id).catch(() => null),
+        ]);
+        if (!account) return null;
+        return { account, profile };
+      }),
+    );
+    pendingCards = pendingHydrated
+      .filter((r): r is NonNullable<typeof r> => !!r)
+      .map(({ account: r, profile }) => ({
+        id: r.id,
+        name: r.display_name,
+        handle: r.nex_handle,
+        avatarUrl: profile?.avatar_url ?? null,
+        chatTheme: r.chat_theme,
+        profession: professionCaption(profile?.profession ?? null),
+        location: profile?.location_label ?? null,
+      }));
+
     const rows = await Promise.all(ids.map((id) => accountService.getAccountById(id)));
     // Enrich with profile.avatar_url so real friend cards can show real images.
     const profiles = await Promise.all(
@@ -395,10 +489,11 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
           href: `/nex-native/chat/peer/${r.id}`,
           avatarUrl: profile?.avatar_url ?? null,
           chatTheme: r.chat_theme,
-          // Only the first token of the profession so the caption fits
-          // the card on narrow viewports · "Reseller · vintage cameras"
-          // becomes "Reseller", "Bakery owner" becomes "Bakery" etc.
-          profession: firstProfessionWord(profile?.profession ?? null),
+          // Show WHAT they sell (or do), not their role label ·
+          // "Reseller · vintage cameras" becomes "vintage cameras",
+          // "Photographer" stays "Photographer" (no separator). The
+          // caption still truncates with ellipsis on the card if needed.
+          profession: professionCaption(profile?.profession ?? null),
           location: profile?.location_label ?? null,
           hasShop,
           presence,
@@ -557,55 +652,11 @@ export default async function ChatHubPage({ searchParams }: PageProps) {
           {/* Panel · landscape cards for the active tab */}
           <section style={{ marginTop: 22 }}>
             {activeTab === "friends" && (
-              <div style={{ display: "grid", gap: 12 }}>
-                {/*
-                  Friend card destination · Bridge 3 (shipped 2026-09-27):
-                  /nex-native/chat/peer/[accountId] resolves the peer,
-                  gets-or-creates the peer conversation, and renders the
-                  message thread. Tapping anywhere on the card (fingerprint
-                  chip included) opens chat.
-                */}
-                {friendCards.map((c) => (
-                  <PersonCard
-                    key={c.id}
-                    href={c.href}
-                    name={c.name}
-                    subtitle={c.location ?? c.handle ?? `${c.id.slice(0, 8)}…`}
-                    profession={c.profession}
-                    presence={c.presence}
-                    hasShop={c.hasShop}
-                    avatarUrl={c.avatarUrl}
-                    chatTheme={c.chatTheme}
-                  />
-                ))}
-                {showPreview &&
-                  MOCK_FRIENDS.map((c, i) => (
-                    <PersonCard
-                      key={`mock-${i}`}
-                      href={null}
-                      name={c.name}
-                      subtitle={c.lastMessage ?? `${c.location}`}
-                      profession={c.profession}
-                      presence={c.presence}
-                      unread={c.unread}
-                      hasShop={c.hasShop}
-                      avatarUrl={c.avatarUrl}
-                      receiptState={c.receiptState}
-                      typing={c.typing}
-                      chatTheme={c.chatTheme}
-                      preview
-                    />
-                  ))}
-                {friendCards.length === 0 && !showPreview && (
-                  <EmptyState
-                    icon="👥"
-                    title="No friends yet"
-                    body="Send an invite from your friends surface · or someone can add you first."
-                    ctaHref="/nex-native/friends"
-                    ctaLabel="Manage friends"
-                  />
-                )}
-              </div>
+              <FriendsPanel
+                pendingCards={pendingCards}
+                friendCards={friendCards}
+                showPreview={showPreview}
+              />
             )}
 
             {activeTab === "business" && (
@@ -1689,6 +1740,442 @@ function EmptyState(props: {
           {props.ctaLabel}
         </Link>
       )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------
+// Bridge 29 · FriendsPanel + sub-components (sealed 2026-09-28)
+// ---------------------------------------------------------------------
+// The Friends tab is a stack of headed sections rather than a flat list:
+//
+//   ┌─ 📨 Waiting for you · N       (pending incoming friend requests)
+//   ├─ ● Online · N                  (green presence)
+//   ├─ ● Busy · N                    (yellow presence)
+//   └─ ○ Offline · N                 (gray presence)
+//
+// Empty sections drop out entirely. The Pending bucket sits at the top
+// because it's the only place on this tab that requires a decision.
+// Founder direction 2026-09-28.
+
+type PendingCard = {
+  id: string;
+  name: string;
+  handle: string | null;
+  avatarUrl: string | null;
+  chatTheme: NexChatTheme | null;
+  profession: string | null;
+  location: string | null;
+};
+
+type FriendCard = {
+  id: string;
+  name: string;
+  handle: string | null;
+  href: string;
+  avatarUrl: string | null;
+  chatTheme: NexChatTheme | null;
+  profession: string | null;
+  location: string | null;
+  hasShop: boolean;
+  presence: "green" | "yellow" | "clear";
+  presenceRank: number;
+};
+
+type MockFriend = (typeof MOCK_FRIENDS)[number];
+
+function FriendsPanel(props: {
+  pendingCards: PendingCard[];
+  friendCards: FriendCard[];
+  showPreview: boolean;
+}) {
+  const online = props.friendCards.filter((c) => c.presence === "green");
+  const busy = props.friendCards.filter((c) => c.presence === "yellow");
+  const offline = props.friendCards.filter((c) => c.presence === "clear");
+
+  const previewOnline = props.showPreview
+    ? MOCK_FRIENDS.filter((m) => m.presence === "green")
+    : [];
+  const previewBusy = props.showPreview
+    ? MOCK_FRIENDS.filter((m) => m.presence === "yellow")
+    : [];
+  const previewOffline = props.showPreview
+    ? MOCK_FRIENDS.filter((m) => m.presence === "clear")
+    : [];
+
+  const pendingCount =
+    props.pendingCards.length + (props.showPreview ? MOCK_PENDING.length : 0);
+  const onlineCount = online.length + previewOnline.length;
+  const busyCount = busy.length + previewBusy.length;
+  const offlineCount = offline.length + previewOffline.length;
+
+  const totalReal = props.pendingCards.length + props.friendCards.length;
+  if (totalReal === 0 && !props.showPreview) {
+    return (
+      <EmptyState
+        icon="👥"
+        title="No friends yet"
+        body="Send an invite from your friends surface · or someone can add you first."
+        ctaHref="/nex-native/friends"
+        ctaLabel="Manage friends"
+      />
+    );
+  }
+
+  return (
+    <div style={{ display: "grid", gap: 20 }}>
+      {pendingCount > 0 && (
+        <div>
+          <SectionHeader
+            icon="📨"
+            label="Waiting for you"
+            count={pendingCount}
+            accent={NEX.orange}
+          />
+          <div style={{ display: "grid", gap: 10, marginTop: 10 }}>
+            {props.pendingCards.map((c) => (
+              <PendingRequestCard key={c.id} card={c} />
+            ))}
+            {props.showPreview &&
+              MOCK_PENDING.map((c) => (
+                <PendingRequestCard key={c.id} card={c} preview />
+              ))}
+          </div>
+        </div>
+      )}
+      {onlineCount > 0 && (
+        <FriendSection
+          label="Online"
+          count={onlineCount}
+          dotColor={PRESENCE_GREEN}
+          real={online}
+          preview={previewOnline}
+        />
+      )}
+      {busyCount > 0 && (
+        <FriendSection
+          label="Busy"
+          count={busyCount}
+          dotColor={PRESENCE_YELLOW}
+          real={busy}
+          preview={previewBusy}
+        />
+      )}
+      {offlineCount > 0 && (
+        <FriendSection
+          label="Offline"
+          count={offlineCount}
+          dotColor={PRESENCE_GRAY}
+          real={offline}
+          preview={previewOffline}
+        />
+      )}
+    </div>
+  );
+}
+
+function FriendSection(props: {
+  label: string;
+  count: number;
+  dotColor: string;
+  real: FriendCard[];
+  preview: MockFriend[];
+}) {
+  return (
+    <div>
+      <SectionHeader dotColor={props.dotColor} label={props.label} count={props.count} />
+      <div style={{ display: "grid", gap: 10, marginTop: 10 }}>
+        {props.real.map((c) => (
+          <PersonCard
+            key={c.id}
+            href={c.href}
+            name={c.name}
+            subtitle={c.location ?? c.handle ?? `${c.id.slice(0, 8)}…`}
+            profession={c.profession}
+            presence={c.presence}
+            hasShop={c.hasShop}
+            avatarUrl={c.avatarUrl}
+            chatTheme={c.chatTheme}
+          />
+        ))}
+        {props.preview.map((c, i) => (
+          <PersonCard
+            key={`preview-${props.label}-${i}`}
+            href={null}
+            name={c.name}
+            subtitle={c.lastMessage ?? `${c.location}`}
+            profession={professionCaption(c.profession)}
+            presence={c.presence}
+            unread={c.unread}
+            hasShop={c.hasShop}
+            avatarUrl={c.avatarUrl}
+            receiptState={c.receiptState}
+            typing={c.typing}
+            chatTheme={c.chatTheme}
+            preview
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SectionHeader(props: {
+  label: string;
+  count: number;
+  icon?: string;
+  dotColor?: string;
+  accent?: string;
+}) {
+  const accentColor = props.accent ?? NEX.textSecondary;
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        padding: "0 4px 6px",
+        borderBottom: `1px solid ${NEX.cyanFaint}`,
+      }}
+    >
+      {props.dotColor && (
+        <span
+          aria-hidden
+          style={{
+            width: 8,
+            height: 8,
+            borderRadius: "50%",
+            background: props.dotColor,
+            boxShadow: `0 0 0 3px ${props.dotColor}22`,
+            flexShrink: 0,
+          }}
+        />
+      )}
+      {props.icon && (
+        <span aria-hidden style={{ fontSize: 14, lineHeight: 1 }}>
+          {props.icon}
+        </span>
+      )}
+      <span
+        style={{
+          fontSize: 11,
+          letterSpacing: "0.10em",
+          textTransform: "uppercase",
+          fontWeight: 600,
+          color: accentColor,
+        }}
+      >
+        {props.label}
+      </span>
+      <span
+        style={{
+          fontSize: 11,
+          fontWeight: 700,
+          color: NEX.textSecondary,
+          opacity: 0.7,
+        }}
+      >
+        · {props.count}
+      </span>
+    </div>
+  );
+}
+
+function PendingRequestCard(props: { card: PendingCard; preview?: boolean }) {
+  const { card } = props;
+  const avatarRing = "rgba(255,114,0,0.65)";
+  const returnTo = "/nex-native/chat?tab=friends";
+  return (
+    <div
+      data-nex-chat-card
+      data-nex-chat-card-kind="pending"
+      data-nex-chat-card-preview={props.preview ? "true" : undefined}
+      style={{
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+        padding: "12px 12px",
+        background: NEX.panel,
+        border: `1px solid ${props.preview ? "rgba(255,114,0,0.18)" : "rgba(255,114,0,0.40)"}`,
+        borderRadius: 14,
+        color: NEX.textPrimary,
+        minHeight: 76,
+        opacity: props.preview ? 0.75 : 1,
+        overflow: "hidden",
+      }}
+    >
+      <div
+        aria-hidden
+        style={{
+          flexShrink: 0,
+          position: "relative",
+          width: 52,
+          height: 52,
+          borderRadius: "50%",
+          border: `2px solid ${avatarRing}`,
+          boxShadow: "0 0 0 3px rgba(255,114,0,0.10), 0 2px 8px rgba(0,0,0,0.35)",
+          background: NEX.panel,
+          overflow: "visible",
+        }}
+      >
+        {card.avatarUrl ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={card.avatarUrl}
+            alt=""
+            style={{
+              width: "100%",
+              height: "100%",
+              borderRadius: "50%",
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              borderRadius: "50%",
+              background: "rgba(255,114,0,0.12)",
+              color: NEX.orange,
+              display: "grid",
+              placeItems: "center",
+              fontSize: 16,
+              fontWeight: 600,
+              letterSpacing: "0.05em",
+            }}
+          >
+            {initialsFromName(card.name)}
+          </div>
+        )}
+      </div>
+      <div style={{ minWidth: 0, flex: 1 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+            gap: 6,
+            minWidth: 0,
+          }}
+        >
+          <span
+            style={{
+              fontSize: 15,
+              fontWeight: 500,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              minWidth: 0,
+              flexShrink: 1,
+            }}
+          >
+            {card.name}
+          </span>
+        </div>
+        <div
+          style={{
+            marginTop: 2,
+            fontSize: 11,
+            color: NEX.orange,
+            lineHeight: 1.3,
+            letterSpacing: "0.02em",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          wants to be friends
+        </div>
+        {card.profession && (
+          <div
+            style={{
+              marginTop: 2,
+              fontSize: 10,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              color: NEX.cyan,
+              opacity: 0.75,
+              lineHeight: 1.2,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "flex",
+              alignItems: "center",
+              gap: 5,
+            }}
+          >
+            <ProfessionIcon />
+            <span
+              style={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                minWidth: 0,
+              }}
+            >
+              {card.profession}
+            </span>
+          </div>
+        )}
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 6, flexShrink: 0 }}>
+        <form action={acceptFriendInviteAction}>
+          <input type="hidden" name="other_account_id" value={card.id} />
+          <input type="hidden" name="return_to" value={returnTo} />
+          <button
+            type="submit"
+            disabled={props.preview}
+            aria-label={`Accept ${card.name}'s request`}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              minWidth: 70,
+              padding: "6px 12px",
+              borderRadius: 999,
+              border: "none",
+              background: NEX.orange,
+              color: "#0B0F1A",
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              cursor: props.preview ? "default" : "pointer",
+              opacity: props.preview ? 0.7 : 1,
+            }}
+          >
+            Accept
+          </button>
+        </form>
+        <form action={declineFriendInviteAction}>
+          <input type="hidden" name="other_account_id" value={card.id} />
+          <input type="hidden" name="return_to" value={returnTo} />
+          <button
+            type="submit"
+            disabled={props.preview}
+            aria-label={`Decline ${card.name}'s request`}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              minWidth: 70,
+              padding: "6px 12px",
+              borderRadius: 999,
+              background: "transparent",
+              color: NEX.textSecondary,
+              border: `1px solid ${NEX.cyanFaint}`,
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              cursor: props.preview ? "default" : "pointer",
+            }}
+          >
+            Decline
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

@@ -3944,8 +3944,17 @@ export async function sendFriendInviteAction(formData: FormData): Promise<never>
   redirectToFriendsWithBanner("invite_sent", handle);
 }
 
+/** Whitelist a `return_to` FormData value so callers can't open-redirect
+ *  us off /nex-native/*. Rejects anything without the correct prefix. */
+function sanitizeNexReturnTo(raw: unknown): string | null {
+  const s = typeof raw === "string" ? raw.trim() : "";
+  if (!s) return null;
+  return s.startsWith("/nex-native/") ? s : null;
+}
+
 export async function acceptFriendInviteAction(formData: FormData): Promise<never> {
   const otherId = String(formData.get("other_account_id") ?? "").trim();
+  const returnTo = sanitizeNexReturnTo(formData.get("return_to"));
   const session = await resolveNexAppSessionFromContext();
   if (!session) {
     redirectToInboxWithError("unauthenticated", "sign in to respond to invites");
@@ -3960,11 +3969,16 @@ export async function acceptFriendInviteAction(formData: FormData): Promise<neve
     redirectToFriendsWithBanner("accept_failed", msg);
   }
   revalidatePath("/nex-native/friends");
+  if (returnTo) {
+    revalidatePath(returnTo);
+    redirect(returnTo);
+  }
   redirectToFriendsWithBanner("accepted", otherId.slice(0, 8));
 }
 
 export async function declineFriendInviteAction(formData: FormData): Promise<never> {
   const otherId = String(formData.get("other_account_id") ?? "").trim();
+  const returnTo = sanitizeNexReturnTo(formData.get("return_to"));
   const session = await resolveNexAppSessionFromContext();
   if (!session) {
     redirectToInboxWithError("unauthenticated", "sign in to respond to invites");
@@ -3979,6 +3993,10 @@ export async function declineFriendInviteAction(formData: FormData): Promise<nev
     redirectToFriendsWithBanner("decline_failed", msg);
   }
   revalidatePath("/nex-native/friends");
+  if (returnTo) {
+    revalidatePath(returnTo);
+    redirect(returnTo);
+  }
   redirectToFriendsWithBanner("declined", otherId.slice(0, 8));
 }
 
