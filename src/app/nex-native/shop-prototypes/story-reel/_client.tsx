@@ -5,23 +5,24 @@
 // Story-reel shop card · interactive live prototype.
 // All state is client-local · no backend wiring.
 //
-// Gestures implemented:
-//   · Tap left third of hero  → previous product (rewind story)
-//   · Tap right two-thirds    → next product (advance story)
-//   · Swipe UP anywhere       → expand drawer to specs
-//   · Swipe DOWN on drawer    → collapse drawer to peek
-//   · Drag drawer handle      → snap to nearest state
-//   · Tap chat FAB            → alert (would open peer chat in prod)
+// Founder tightening 2026-09-28 (revision):
+//   · Footer is JUST a single swipe-up button · no panel · no
+//     overlay copy sitting on a card.
+//   · Product name + price + tagline are text-overlaid directly on
+//     the hero image (no panel behind them).
+//   · Swipe up on the button (or tap it) → the drawer expands to
+//     FULL-HEIGHT, covering the whole screen · reads as a full
+//     spec page, not a bottom sheet.
+//   · Drawer collapses back to just the button on drag-down or
+//     "Close" tap.
 //
-// Snap states for the drawer:
-//   · "peek"      · ~160px from bottom · shows title, price, primary
-//                    CTA · always available so ordering is one-tap.
-//   · "expanded"  · ~75vh · shows full spec block, description,
-//                    variants, ingredients, allergens, delivery,
-//                    seller info, secondary chat + spec buttons.
-//
-// Chat FAB migrates: floats at right-bottom when peek, moves to
-// drawer header when expanded.
+// Gestures:
+//   · Tap LEFT third of hero    → previous product
+//   · Tap RIGHT two-thirds      → next product
+//   · Tap the swipe-up button   → full-height spec page
+//   · Swipe UP anywhere on hero → full-height spec page
+//   · Drag drawer handle DOWN   → collapse back to closed
+//   · Tap × close in drawer     → collapse back to closed
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -56,25 +57,30 @@ const NEX = {
   textPrimary: "#F4F7FC",
   textDim: "rgba(255,255,255,0.75)",
   panel: "#0B0F1A",
-  panelSoft: "rgba(11,15,26,0.94)",
+  panelSoft: "rgba(11,15,26,0.96)",
   border: "rgba(255,255,255,0.18)",
   borderSoft: "rgba(255,255,255,0.08)",
   cyan: "#00AFFF",
 };
 
-// Snap targets in px from viewport bottom. The drawer's `top` is
-// `viewportH - snap`. On mobile-typical viewports (700-950px tall)
-// peek ≈ 160px, expanded ≈ 640px, so ordering + specs both feel
-// reachable.
-const SNAP_PEEK = 190;
-const SWIPE_TRIGGER = 60;
+// Footer button lives at the bottom edge · not a drawer, just a
+// button. When the drawer is closed, this is the only thing at the
+// bottom. Height + safe-area padding.
+const BUTTON_HEIGHT = 60;
+const BUTTON_BOTTOM = 20;
+const CLOSED_BOTTOM = BUTTON_HEIGHT + BUTTON_BOTTOM + 4; // room for the button
 
-type Snap = "peek" | "expanded";
+// When open, the drawer top offset · leaves room for the notch and
+// a small breathing gap so it reads as a full-height page, not
+// literally full-screen.
+const OPEN_TOP = 44;
+
+const SWIPE_TRIGGER = 60;
 
 export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
   const [productIndex, setProductIndex] = useState(0);
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
-  const [snap, setSnap] = useState<Snap>("peek");
+  const [open, setOpen] = useState(false);
   const [dragOffset, setDragOffset] = useState<number | null>(null);
   const [viewportH, setViewportH] = useState<number>(812);
   const startPointRef = useRef<{ x: number; y: number; onSheet: boolean } | null>(null);
@@ -85,12 +91,10 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
   const currentVariant =
     current.variants.find((v) => v.id === selectedVariantId) ?? current.variants[0]!;
 
-  // Reset variant selection whenever we advance to a new product.
   useEffect(() => {
     setSelectedVariantId(null);
   }, [productIndex]);
 
-  // Track viewport height for snap math · handles orientation change.
   useEffect(() => {
     const update = () => {
       const el = rootRef.current;
@@ -101,10 +105,9 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  const snapExpandedTop = Math.max(120, viewportH * 0.25);
-  const snapPeekTop = viewportH - SNAP_PEEK;
-  const sheetTop =
-    dragOffset != null ? dragOffset : snap === "expanded" ? snapExpandedTop : snapPeekTop;
+  const closedTop = viewportH; // drawer completely below viewport when closed
+  const openTop = OPEN_TOP;
+  const sheetTop = dragOffset != null ? dragOffset : open ? openTop : closedTop;
 
   const advance = useCallback(
     (delta: number) => {
@@ -118,11 +121,9 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
     [stack.length],
   );
 
-  const openSheet = useCallback(() => setSnap("expanded"), []);
-  const closeSheet = useCallback(() => setSnap("peek"), []);
+  const openDrawer = useCallback(() => setOpen(true), []);
+  const closeDrawer = useCallback(() => setOpen(false), []);
 
-  // Pointer handlers on the hero · handles both tap-advance and
-  // swipe-up-to-open-drawer.
   const onHeroPointerDown = (e: React.PointerEvent) => {
     startPointRef.current = { x: e.clientX, y: e.clientY, onSheet: false };
   };
@@ -132,25 +133,22 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
     if (!start) return;
     const dx = e.clientX - start.x;
     const dy = e.clientY - start.y;
-    // Swipe-up-to-open detection first · a fast upward drag opens
-    // the sheet, regardless of tap position.
     if (dy < -SWIPE_TRIGGER && Math.abs(dy) > Math.abs(dx)) {
-      openSheet();
+      openDrawer();
       return;
     }
-    // Ignore movements that look like intentional pans in other
-    // directions (not a tap).
     if (Math.abs(dx) > 16 || Math.abs(dy) > 16) return;
-    // Tap zones · left third = prev, right two-thirds = next.
     const width = (e.currentTarget as HTMLElement).clientWidth;
-    if (e.clientX - (e.currentTarget as HTMLElement).getBoundingClientRect().left < width / 3) {
+    if (
+      e.clientX - (e.currentTarget as HTMLElement).getBoundingClientRect().left <
+      width / 3
+    ) {
       advance(-1);
     } else {
       advance(+1);
     }
   };
 
-  // Sheet-handle drag · lets the user pull the drawer up or down.
   const onSheetPointerDown = (e: React.PointerEvent) => {
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
     startPointRef.current = { x: e.clientX, y: e.clientY, onSheet: true };
@@ -162,8 +160,8 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
     if (!start || !start.onSheet) return;
     const dy = e.clientY - start.y;
     const next = Math.min(
-      snapPeekTop + 40,
-      Math.max(snapExpandedTop - 40, dragStartOffsetRef.current + dy),
+      closedTop,
+      Math.max(openTop - 20, dragStartOffsetRef.current + dy),
     );
     setDragOffset(next);
   };
@@ -173,8 +171,8 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
     if (!start || !start.onSheet) return;
     const finalOffset = dragOffset ?? sheetTop;
     setDragOffset(null);
-    const midpoint = (snapExpandedTop + snapPeekTop) / 2;
-    setSnap(finalOffset < midpoint ? "expanded" : "peek");
+    const midpoint = (openTop + closedTop) / 2;
+    setOpen(finalOffset < midpoint);
   };
 
   return (
@@ -193,7 +191,7 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
       }}
       data-nex-story-reel-root
     >
-      {/* Hero image + gradient */}
+      {/* Hero image + gradient · full-viewport */}
       <div
         style={{
           position: "absolute",
@@ -203,7 +201,6 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
         onPointerDown={onHeroPointerDown}
         onPointerUp={onHeroPointerUp}
       >
-        {/* Preload the next image so switching is instant. */}
         {stack.map((p, i) => (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img
@@ -228,13 +225,13 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.75) 100%)",
+              "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.78) 100%)",
             pointerEvents: "none",
           }}
         />
       </div>
 
-      {/* Progress bars · one per product · IG-style. */}
+      {/* Progress bars · one per product · IG-style */}
       <div
         aria-hidden
         style={{
@@ -259,7 +256,7 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
                 i < productIndex
                   ? "#fff"
                   : i === productIndex
-                    ? "linear-gradient(90deg, #fff 100%, rgba(255,255,255,0.35) 0%)" as unknown as string
+                    ? "#fff"
                     : "rgba(255,255,255,0.30)",
               transition: "background 200ms ease",
             }}
@@ -267,7 +264,7 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
         ))}
       </div>
 
-      {/* Seller identity + close */}
+      {/* Seller identity + close · top row */}
       <div
         style={{
           position: "absolute",
@@ -334,9 +331,7 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
         </Link>
       </div>
 
-      {/* Left-third tap hint (only shown briefly at start of stack).
-          The tap zones themselves are on the hero div above; this is
-          purely visual guidance. */}
+      {/* First-time tap hint · fades after user advances */}
       {productIndex === 0 && (
         <div
           aria-hidden
@@ -361,39 +356,162 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
         </div>
       )}
 
-      {/* Tagline · sits mid-lower · gives the visitor one line
-          before they even see the drawer. */}
+      {/* Product identity · text-overlay on hero · no panel. Name +
+          price + tagline. Positioned above the swipe-up button.
+          Fades away as the drawer opens so it doesn't compete. */}
       <div
         style={{
           position: "absolute",
           left: 20,
           right: 20,
-          bottom: sheetTop + 18,
+          bottom: CLOSED_BOTTOM + 22,
           color: "#fff",
           zIndex: 20,
-          textAlign: "center",
+          textAlign: "left",
           pointerEvents: "none",
-          textShadow: "0 2px 12px rgba(0,0,0,0.75)",
-          transition: dragOffset == null ? "bottom 240ms cubic-bezier(.2,.7,.2,1)" : "none",
+          opacity: open ? 0 : 1,
+          transition: "opacity 200ms ease",
         }}
       >
+        <h1
+          style={{
+            margin: 0,
+            fontSize: 30,
+            fontWeight: 800,
+            lineHeight: 1.05,
+            letterSpacing: "-0.01em",
+            textShadow: "0 3px 16px rgba(0,0,0,0.85)",
+          }}
+        >
+          {current.name}
+        </h1>
         <div
           style={{
+            marginTop: 6,
+            fontSize: 24,
+            fontWeight: 800,
+            color: NEX.orange,
+            letterSpacing: "-0.01em",
+            textShadow: "0 2px 14px rgba(0,0,0,0.85)",
+          }}
+        >
+          {current.priceLabel}
+        </div>
+        <div
+          style={{
+            marginTop: 6,
             fontSize: 11,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
             fontWeight: 700,
-            opacity: 0.9,
+            color: "rgba(255,255,255,0.9)",
+            textShadow: "0 1px 8px rgba(0,0,0,0.75)",
           }}
         >
           {current.tagline}
         </div>
       </div>
 
-      {/* Drawer · always in the DOM · animates position via top. */}
+      {/* Swipe-up button · JUST a button · no panel around it · lives
+          on the bottom edge · fades out when the drawer opens. Also
+          works as a tap target. */}
+      <button
+        type="button"
+        onClick={openDrawer}
+        onPointerDown={(e) => {
+          startPointRef.current = { x: e.clientX, y: e.clientY, onSheet: false };
+        }}
+        onPointerUp={(e) => {
+          const start = startPointRef.current;
+          startPointRef.current = null;
+          if (!start) return;
+          const dy = e.clientY - start.y;
+          if (dy < -SWIPE_TRIGGER) openDrawer();
+        }}
+        aria-label="Open product details"
+        style={{
+          position: "absolute",
+          left: 12,
+          right: 12,
+          bottom: BUTTON_BOTTOM,
+          height: BUTTON_HEIGHT,
+          borderRadius: 999,
+          background: `linear-gradient(180deg, ${NEX.orangeStrong} 0%, ${NEX.orange} 100%)`,
+          color: "#0B0F1A",
+          border: "none",
+          fontSize: 14,
+          fontWeight: 800,
+          letterSpacing: "0.14em",
+          textTransform: "uppercase",
+          boxShadow:
+            "0 12px 30px rgba(255,114,0,0.55), inset 0 1px 0 rgba(255,255,255,0.35)",
+          cursor: "pointer",
+          zIndex: 22,
+          opacity: open ? 0 : 1,
+          transform: open ? "translateY(20px)" : "translateY(0)",
+          transition: "opacity 220ms ease, transform 220ms ease",
+          pointerEvents: open ? "none" : "auto",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 8,
+        }}
+      >
+        <span
+          aria-hidden
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 20,
+            height: 20,
+            fontSize: 14,
+          }}
+        >
+          ▲
+        </span>
+        <span>Swipe up · order + details</span>
+      </button>
+
+      {/* Chat FAB · floats above the button when drawer is closed ·
+          hidden when open (drawer has its own inline chat). */}
+      {!open && (
+        <button
+          type="button"
+          onClick={() =>
+            alert("Chat with " + current.seller + " (prototype · would open peer chat)")
+          }
+          aria-label="Chat with seller"
+          style={{
+            position: "absolute",
+            right: 16,
+            bottom: CLOSED_BOTTOM + 18,
+            width: 52,
+            height: 52,
+            borderRadius: "50%",
+            background: "rgba(0,0,0,0.55)",
+            color: "#fff",
+            border: "1px solid rgba(255,255,255,0.25)",
+            fontSize: 22,
+            display: "grid",
+            placeItems: "center",
+            boxShadow: "0 10px 24px rgba(0,0,0,0.45)",
+            backdropFilter: "blur(10px)",
+            WebkitBackdropFilter: "blur(10px)",
+            cursor: "pointer",
+            zIndex: 26,
+          }}
+        >
+          💬
+        </button>
+      )}
+
+      {/* Drawer · slides from below to full-height spec page. Only
+          hittable when open. */}
       <div
         role="dialog"
         aria-label="Product details"
+        aria-hidden={!open}
         style={{
           position: "absolute",
           top: sheetTop,
@@ -401,11 +519,11 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
           right: 0,
           bottom: 0,
           background: NEX.panelSoft,
-          borderTopLeftRadius: 24,
-          borderTopRightRadius: 24,
-          boxShadow: "0 -20px 40px rgba(0,0,0,0.55)",
+          borderTopLeftRadius: 26,
+          borderTopRightRadius: 26,
+          boxShadow: "0 -24px 60px rgba(0,0,0,0.65)",
           transition:
-            dragOffset == null ? "top 260ms cubic-bezier(.2,.7,.2,1)" : "none",
+            dragOffset == null ? "top 300ms cubic-bezier(.2,.7,.2,1)" : "none",
           zIndex: 30,
           overflow: "hidden",
           backdropFilter: "blur(20px) saturate(1.4)",
@@ -414,20 +532,26 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
           borderBottom: "none",
           display: "flex",
           flexDirection: "column",
+          pointerEvents: open || dragOffset != null ? "auto" : "none",
         }}
       >
-        {/* Draggable handle · captures pointer for pull-to-open / close */}
+        {/* Draggable handle · pull-to-close */}
         <div
           onPointerDown={onSheetPointerDown}
           onPointerMove={onSheetPointerMove}
           onPointerUp={onSheetPointerUp}
           onPointerCancel={onSheetPointerUp}
           style={{
-            padding: "10px 16px 12px",
+            padding: "12px 16px 8px",
             cursor: "grab",
             touchAction: "none",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 12,
           }}
         >
+          <div style={{ width: 36, height: 36 }} aria-hidden />
           <div
             aria-hidden
             style={{
@@ -435,129 +559,88 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
               height: 4,
               borderRadius: 999,
               background: "rgba(255,255,255,0.35)",
-              margin: "0 auto 10px",
             }}
           />
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              justifyContent: "space-between",
-              gap: 12,
-            }}
-          >
-            <div style={{ minWidth: 0, flex: 1 }}>
-              <div
-                style={{
-                  fontSize: 20,
-                  fontWeight: 700,
-                  lineHeight: 1.15,
-                  letterSpacing: "-0.005em",
-                }}
-              >
-                {current.name}
-              </div>
-              <div
-                style={{
-                  marginTop: 3,
-                  fontSize: 22,
-                  fontWeight: 800,
-                  color: NEX.orange,
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                {currentVariant.price}
-              </div>
-            </div>
-            {snap === "expanded" ? (
-              <button
-                type="button"
-                onClick={() => alert("Chat with " + current.seller + " (prototype · would open peer chat)")}
-                aria-label="Chat with seller"
-                style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: "50%",
-                  background: NEX.orange,
-                  color: "#0B0F1A",
-                  border: "none",
-                  fontSize: 20,
-                  display: "grid",
-                  placeItems: "center",
-                  cursor: "pointer",
-                  boxShadow: "0 6px 18px rgba(255,114,0,0.5)",
-                }}
-              >
-                💬
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={openSheet}
-                aria-label="Open spec details"
-                style={{
-                  padding: "6px 12px",
-                  borderRadius: 999,
-                  background: "rgba(255,255,255,0.10)",
-                  border: `1px solid ${NEX.border}`,
-                  color: "#fff",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: "0.10em",
-                  textTransform: "uppercase",
-                  cursor: "pointer",
-                }}
-              >
-                ▲ Spec
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Peek CTA · always visible below the header. */}
-        <div style={{ padding: "0 16px 14px" }}>
           <button
             type="button"
-            onClick={() =>
-              alert(`Add to cart · ${current.name} · ${currentVariant.label} · ${currentVariant.price}`)
-            }
+            onClick={closeDrawer}
+            aria-label="Close product details"
             style={{
-              width: "100%",
-              minHeight: 52,
-              borderRadius: 14,
-              background: `linear-gradient(180deg, ${NEX.orangeStrong} 0%, ${NEX.orange} 100%)`,
-              color: "#0B0F1A",
-              border: "none",
-              fontSize: 14,
-              fontWeight: 800,
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              boxShadow:
-                "0 10px 24px rgba(255,114,0,0.45), inset 0 1px 0 rgba(255,255,255,0.3)",
+              width: 36,
+              height: 36,
+              borderRadius: "50%",
+              background: "rgba(255,255,255,0.10)",
+              color: "#fff",
+              border: `1px solid ${NEX.border}`,
+              fontSize: 18,
               cursor: "pointer",
+              lineHeight: 1,
+              padding: 0,
             }}
           >
-            🛒 Add to cart · Let's go
+            ×
           </button>
         </div>
 
-        {/* Expanded body · specs + variants + ingredients + allergens.
-            Only meaningfully visible when snap === "expanded". */}
+        {/* Scrollable body · full-height spec page */}
         <div
           style={{
             flex: 1,
-            overflowY: snap === "expanded" ? "auto" : "hidden",
-            padding: "4px 20px 24px",
+            overflowY: "auto",
+            padding: "6px 22px 130px",
             color: NEX.textPrimary,
-            opacity: snap === "expanded" ? 1 : 0.35,
-            transition: "opacity 200ms ease",
           }}
         >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-end",
+              justifyContent: "space-between",
+              gap: 12,
+              marginBottom: 4,
+            }}
+          >
+            <h2
+              style={{
+                margin: 0,
+                fontSize: 26,
+                fontWeight: 700,
+                lineHeight: 1.1,
+                letterSpacing: "-0.005em",
+              }}
+            >
+              {current.name}
+            </h2>
+            <div
+              style={{
+                flexShrink: 0,
+                fontSize: 22,
+                fontWeight: 800,
+                color: NEX.orange,
+                letterSpacing: "-0.01em",
+              }}
+            >
+              {currentVariant.price}
+            </div>
+          </div>
+          <div
+            style={{
+              fontSize: 11,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              fontWeight: 700,
+              color: "rgba(255,255,255,0.55)",
+              marginBottom: 20,
+            }}
+          >
+            {current.seller} · {current.sellerLocation}
+          </div>
+
           <p
             style={{
-              margin: "10px 0 16px",
+              margin: "0 0 22px",
               fontSize: 14,
-              lineHeight: 1.5,
+              lineHeight: 1.55,
               color: NEX.textDim,
             }}
           >
@@ -707,68 +790,80 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
               </button>
             </div>
           </SpecGroup>
+        </div>
 
+        {/* Sticky bottom CTA + chat inside the full-height drawer.
+            Order + chat both reachable without scrolling to the top. */}
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            padding: "12px 16px 22px",
+            background:
+              "linear-gradient(180deg, rgba(11,15,26,0) 0%, rgba(11,15,26,0.90) 30%, rgba(11,15,26,0.96) 100%)",
+            display: "flex",
+            gap: 10,
+            alignItems: "center",
+          }}
+        >
           <button
             type="button"
-            onClick={closeSheet}
+            onClick={() =>
+              alert(
+                `Add to cart · ${current.name} · ${currentVariant.label} · ${currentVariant.price}`,
+              )
+            }
             style={{
-              width: "100%",
-              marginTop: 8,
-              padding: "10px 14px",
-              borderRadius: 12,
-              background: "transparent",
-              border: `1px solid ${NEX.borderSoft}`,
-              color: NEX.textDim,
-              fontSize: 11,
-              fontWeight: 600,
+              flex: 1,
+              minHeight: 54,
+              borderRadius: 14,
+              background: `linear-gradient(180deg, ${NEX.orangeStrong} 0%, ${NEX.orange} 100%)`,
+              color: "#0B0F1A",
+              border: "none",
+              fontSize: 14,
+              fontWeight: 800,
               letterSpacing: "0.10em",
               textTransform: "uppercase",
+              boxShadow:
+                "0 10px 24px rgba(255,114,0,0.45), inset 0 1px 0 rgba(255,255,255,0.3)",
               cursor: "pointer",
             }}
           >
-            ▼ Close details
+            🛒 Let's go · {currentVariant.price}
+          </button>
+          <button
+            type="button"
+            onClick={() =>
+              alert("Chat with " + current.seller + " (prototype)")
+            }
+            aria-label="Chat with seller"
+            style={{
+              width: 54,
+              height: 54,
+              borderRadius: "50%",
+              background: "rgba(255,255,255,0.10)",
+              border: `1px solid ${NEX.border}`,
+              color: "#fff",
+              fontSize: 22,
+              display: "grid",
+              placeItems: "center",
+              cursor: "pointer",
+              flexShrink: 0,
+            }}
+          >
+            💬
           </button>
         </div>
       </div>
-
-      {/* Floating chat FAB · shown only when the sheet is peek so it
-          doesn't overlap the sheet header's inline chat button. */}
-      {snap === "peek" && (
-        <button
-          type="button"
-          onClick={() =>
-            alert("Chat with " + current.seller + " (prototype · would open peer chat)")
-          }
-          aria-label="Chat with seller"
-          style={{
-            position: "absolute",
-            right: 16,
-            bottom: SNAP_PEEK + 16,
-            width: 56,
-            height: 56,
-            borderRadius: "50%",
-            background: NEX.orange,
-            color: "#0B0F1A",
-            border: "none",
-            fontSize: 24,
-            display: "grid",
-            placeItems: "center",
-            boxShadow:
-              "0 12px 26px rgba(255,114,0,0.5), 0 0 0 4px rgba(255,114,0,0.20)",
-            cursor: "pointer",
-            zIndex: 35,
-          }}
-        >
-          💬
-        </button>
-      )}
     </div>
   );
 }
 
 function SpecGroup({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div style={{ marginBottom: 18 }}>
+    <div style={{ marginBottom: 20 }}>
       <div
         style={{
           fontSize: 10,
