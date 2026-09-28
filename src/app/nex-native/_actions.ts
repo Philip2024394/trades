@@ -5103,3 +5103,127 @@ export async function deleteMenuItemAction(
   revalidatePath(`/nex-native/${owned.business.slug}/menu`);
   redirectToMenuWithBanner("item_ok", `${owned.item.name} deleted`);
 }
+
+// ---------------------------------------------------------------------
+// Bridge 49c · NEX Direct Price · seller ladder editor
+// ---------------------------------------------------------------------
+
+function redirectToLadderWithBanner(code: string, message: string): never {
+  const qs = new URLSearchParams({ e: code, m: message });
+  redirect(`/nex-native/manage/ladder?${qs.toString()}`);
+}
+
+/** Bridge 49c · Save the seller's NEX Direct Price ladder + share
+ *  bonuses + compare channel + compare markup %. FormData carries:
+ *    tiers_json   · stringified JSON array of {order,discount,label}
+ *    max_cap_pct
+ *    share_friend_bonus_pct
+ *    share_group_bonus_pct
+ *    share_expiry_hours
+ *    compare_channel
+ *    compare_markup_pct  (writes to nex_business, not ladder)
+ *    active              (checkbox "on" or absent)
+ *
+ *  Validation lives in ladder-service.upsertLadder (monotonic tiers,
+ *  competitor-name denylist on compare_channel, range checks) and
+ *  business-service.updateBusinessCompareMarkup.
+ */
+export async function upsertLadderAction(
+  businessId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const business = await businessService.getBusinessById(businessId);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirectToLadderWithBanner(
+      "ladder_forbidden",
+      "You don't own this shop",
+    );
+  }
+
+  // Parse tiers · fall through to sane default if malformed rather
+  // than blocking the whole save. Service layer rejects invalid shape.
+  let tiers: Array<{ order: number; discount: number; label: string }> | undefined;
+  const tiersRaw = String(formData.get("tiers_json") ?? "").trim();
+  if (tiersRaw.length > 0) {
+    try {
+      const parsed = JSON.parse(tiersRaw);
+      if (Array.isArray(parsed)) {
+        tiers = parsed
+          .filter((t) => t && typeof t === "object")
+          .map((t) => ({
+            order: Number(t.order),
+            discount: Number(t.discount),
+            label: String(t.label ?? "").trim(),
+          }))
+          .filter((t) => Number.isFinite(t.order) && Number.isFinite(t.discount) && t.label.length > 0);
+      }
+    } catch {
+      redirectToLadderWithBanner(
+        "ladder_json_bad",
+        "Tier list is malformed · reset to defaults and try again",
+      );
+    }
+  }
+
+  const parseInt10 = (v: unknown): number | undefined => {
+    const s = String(v ?? "").trim();
+    if (s.length === 0) return undefined;
+    const n = Number.parseInt(s, 10);
+    return Number.isFinite(n) ? n : undefined;
+  };
+
+  const maxCap = parseInt10(formData.get("max_cap_pct"));
+  const shareFriend = parseInt10(formData.get("share_friend_bonus_pct"));
+  const shareGroup = parseInt10(formData.get("share_group_bonus_pct"));
+  const shareExpiry = parseInt10(formData.get("share_expiry_hours"));
+  const compareChannel = String(formData.get("compare_channel") ?? "").trim();
+  const compareMarkup = parseInt10(formData.get("compare_markup_pct"));
+  const active = String(formData.get("active") ?? "") === "on";
+
+  const ladderSvc = await import("@/lib/nex-native/ladder-service");
+  try {
+    await ladderSvc.upsertLadder({
+      business_id: businessId,
+      ...(tiers !== undefined ? { tiers } : {}),
+      ...(maxCap !== undefined ? { max_cap_pct: maxCap } : {}),
+      ...(shareFriend !== undefined ? { share_friend_bonus_pct: shareFriend } : {}),
+      ...(shareGroup !== undefined ? { share_group_bonus_pct: shareGroup } : {}),
+      ...(shareExpiry !== undefined ? { share_expiry_hours: shareExpiry } : {}),
+      ...(compareChannel.length > 0 ? { compare_channel: compareChannel } : {}),
+      active,
+    });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirectToLadderWithBanner("ladder_save_failed", msg.slice(0, 200));
+  }
+
+  // compare_markup_pct lives on nex_business · separate update path.
+  if (compareMarkup !== undefined) {
+    if (compareMarkup < 0 || compareMarkup > 60) {
+      redirectToLadderWithBanner(
+        "ladder_markup_bad",
+        "Compare markup must be 0-60%",
+      );
+    }
+    const { error } = await nexSupabaseAdmin
+      .from("nex_business")
+      .update({ compare_markup_pct: compareMarkup })
+      .eq("id", businessId);
+    if (error) {
+      redirectToLadderWithBanner(
+        "ladder_markup_failed",
+        error.message.slice(0, 200),
+      );
+    }
+  }
+
+  revalidatePath("/nex-native/manage/ladder");
+  revalidatePath(`/nex-native/${business.slug}`);
+  redirectToLadderWithBanner(
+    "ladder_ok",
+    "Direct Price ladder saved",
+  );
+}
