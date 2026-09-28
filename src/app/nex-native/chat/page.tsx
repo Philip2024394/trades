@@ -34,6 +34,11 @@ import {
   acceptFriendInviteAction,
   declineFriendInviteAction,
 } from "../_actions";
+import {
+  NEX_OFFICIAL_CHAT_HREF,
+  NEX_OFFICIAL_DISPLAY_NAME,
+  NEX_OFFICIAL_HANDLE,
+} from "@/lib/nex-native/nex-official";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -1952,21 +1957,30 @@ function FriendsPanel(props: {
   const busyCount = busy.length + previewBusy.length;
   const offlineCount = offline.length + previewOffline.length;
 
-  const totalReal = props.pendingCards.length + props.friendCards.length;
-  if (totalReal === 0 && !props.showPreview) {
-    return (
-      <EmptyState
-        icon="👥"
-        title="No friends yet"
-        body="Send an invite from your friends surface · or someone can add you first."
-        ctaHref="/nex-native/friends"
-        ctaLabel="Manage friends"
-      />
-    );
-  }
-
   return (
     <div style={{ display: "grid", gap: 20 }}>
+      {/* NEX support · pinned to the top of the Friends tab · always
+          visible so users don't need to remember the URL. Bridge 32a. */}
+      <div>
+        <SectionHeader
+          icon="🤝"
+          label="NEX support"
+          count={1}
+          accent={NEX.cyan}
+        />
+        <div style={{ display: "grid", gap: 10, marginTop: 10 }}>
+          <NexOfficialCard />
+        </div>
+      </div>
+      {props.pendingCards.length + props.friendCards.length === 0 && !props.showPreview && (
+        <EmptyState
+          icon="👥"
+          title="No friends yet"
+          body="Send an invite from your friends surface · or someone can add you first."
+          ctaHref="/nex-native/friends"
+          ctaLabel="Manage friends"
+        />
+      )}
       {pendingCount > 0 && (
         <div>
           <SectionHeader
@@ -2121,6 +2135,109 @@ function SectionHeader(props: {
         · {props.count}
       </span>
     </div>
+  );
+}
+
+/** Pinned NEX support card · always visible at the top of the Friends
+ *  tab. Wraps the seeded NEX1 account (nex-official.ts constants) with
+ *  a cyan-forward treatment + verified tick so it reads as the one
+ *  official support surface. Sealed 2026-09-28 · Bridge 32a. */
+function NexOfficialCard() {
+  return (
+    <Link
+      href={NEX_OFFICIAL_CHAT_HREF}
+      data-nex-chat-card
+      data-nex-chat-card-kind="nex-official"
+      style={{
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+        padding: "12px 12px",
+        background: NEX.panel,
+        border: `1px solid ${NEX.cyan}`,
+        borderRadius: 14,
+        textDecoration: "none",
+        color: NEX.textPrimary,
+        minHeight: 76,
+        transition: "border-color 200ms ease, box-shadow 200ms ease",
+        overflow: "hidden",
+        boxShadow: "0 0 0 1px rgba(0,175,255,0.10) inset, 0 0 20px rgba(0,175,255,0.10)",
+      }}
+    >
+      <div
+        aria-hidden
+        style={{
+          flexShrink: 0,
+          position: "relative",
+          width: 52,
+          height: 52,
+          borderRadius: "50%",
+          border: `2px solid ${NEX.cyan}`,
+          boxShadow: `0 0 0 3px ${NEX.cyan}22, 0 2px 8px rgba(0,0,0,0.35)`,
+          background: NEX.cyanFaint,
+          color: NEX.cyan,
+          display: "grid",
+          placeItems: "center",
+          fontSize: 20,
+          fontWeight: 700,
+          letterSpacing: "0.05em",
+        }}
+      >
+        NEX
+      </div>
+      <div style={{ minWidth: 0, flex: 1 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            minWidth: 0,
+          }}
+        >
+          <span
+            style={{
+              fontSize: 15,
+              fontWeight: 500,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              minWidth: 0,
+              flexShrink: 1,
+            }}
+          >
+            {NEX_OFFICIAL_DISPLAY_NAME}
+          </span>
+          <VerifiedTick size={14} />
+        </div>
+        <div
+          style={{
+            marginTop: 2,
+            fontSize: 12,
+            color: NEX.textSecondary,
+            lineHeight: 1.3,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          Ask about upgrades · features · account help
+        </div>
+        <div
+          style={{
+            marginTop: 2,
+            fontSize: 10,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            color: NEX.cyan,
+            opacity: 0.75,
+            lineHeight: 1.2,
+          }}
+        >
+          {NEX_OFFICIAL_HANDLE}.nex · Official
+        </div>
+      </div>
+    </Link>
   );
 }
 

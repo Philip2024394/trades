@@ -13,6 +13,7 @@
 
 import type * as React from "react";
 import Link from "next/link";
+import { NEX_OFFICIAL_CHAT_HREF } from "@/lib/nex-native/nex-official";
 
 export const dynamic = "force-static";
 
@@ -213,6 +214,10 @@ export default function PackagesPage() {
             ctaHref="/nex-native/create-account?intent=bisnis"
             ctaLabel="Upgrade to Bisnis"
             ctaVariant="primary"
+            secondaryCta={{
+              href: NEX_OFFICIAL_CHAT_HREF,
+              label: "💬 Already have an account · chat with NEX",
+            }}
             highlight
             badge="Recommended for exporters"
           />
@@ -563,6 +568,7 @@ function PackageCard({
   ctaHref,
   ctaLabel,
   ctaVariant,
+  secondaryCta,
   highlight,
   badge,
 }: {
@@ -574,6 +580,10 @@ function PackageCard({
   ctaHref: string;
   ctaLabel: string;
   ctaVariant: "primary" | "secondary";
+  /** Optional secondary link rendered under the primary CTA · Bridge 32c
+   *  uses this to offer "chat with NEX" as an alternate upgrade path for
+   *  users who already have an account. */
+  secondaryCta?: { href: string; label: string };
   highlight: boolean;
   badge?: string;
 }) {
@@ -719,6 +729,28 @@ function PackageCard({
       >
         {ctaLabel}
       </Link>
+      {secondaryCta && (
+        <Link
+          href={secondaryCta.href}
+          style={{
+            display: "block",
+            marginTop: 8,
+            padding: "10px 14px",
+            borderRadius: 10,
+            background: "transparent",
+            border: `1px solid ${NEX.cyanSoft}`,
+            color: NEX.cyan,
+            fontSize: 11,
+            fontWeight: 600,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            textDecoration: "none",
+            textAlign: "center",
+          }}
+        >
+          {secondaryCta.label}
+        </Link>
+      )}
     </div>
   );
 }

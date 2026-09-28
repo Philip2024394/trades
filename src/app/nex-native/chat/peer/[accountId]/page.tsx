@@ -51,6 +51,7 @@ import {
 } from "../../../_actions";
 import { SafeTradeConsentModal } from "./_safe-trade-consent-modal";
 import * as productService from "@/lib/nex-native/product-service";
+import { isNexOfficialAccount } from "@/lib/nex-native/nex-official";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -378,6 +379,7 @@ export default async function PeerChatPage({
          Bisnis tier will get full-name rendering when tier gating
          lands (migration 046 pending). */
       displayName={peer.display_name.split(/\s+/)[0] ?? peer.display_name}
+      isOfficialPeer={isNexOfficialAccount(peer.id)}
       subtitle={profile?.profession ?? null}
       portraitUrl={profile?.avatar_url ?? null}
       presenceKind={presenceKind}

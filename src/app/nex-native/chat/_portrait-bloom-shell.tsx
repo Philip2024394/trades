@@ -196,6 +196,10 @@ export interface PortraitBloomContextChip {
 export interface PortraitBloomShellProps {
   /** Big name printed over the portrait fade zone. */
   displayName: string;
+  /** True when the peer is the NEX official support account (NEX1) ·
+   *  renders a compact "NEX · Official" chip next to the display name.
+   *  Bridge 32b · sealed 2026-09-28. */
+  isOfficialPeer?: boolean;
   /** Small caption under the name · profession for friends, business
    *  tagline for businesses, product name for a product-scoped chat.
    *  Null hides the row. */
@@ -323,6 +327,7 @@ export interface PortraitBloomShellProps {
 
 export function PortraitBloomShell({
   displayName,
+  isOfficialPeer,
   subtitle,
   portraitUrl,
   contextChip,
@@ -657,17 +662,63 @@ export function PortraitBloomShell({
             <div style={{ minWidth: 0, flex: 1 }}>
               <div
                 style={{
-                  fontSize: 22,
-                  fontWeight: 700,
-                  lineHeight: 1.1,
-                  letterSpacing: "-0.005em",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
                   minWidth: 0,
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
                 }}
               >
-                {displayName}
+                <div
+                  style={{
+                    fontSize: 22,
+                    fontWeight: 700,
+                    lineHeight: 1.1,
+                    letterSpacing: "-0.005em",
+                    minWidth: 0,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    flexShrink: 1,
+                  }}
+                >
+                  {displayName}
+                </div>
+                {isOfficialPeer && (
+                  <span
+                    aria-label="Official NEX support account"
+                    title="Official NEX · verified"
+                    style={{
+                      flexShrink: 0,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 4,
+                      padding: "3px 8px",
+                      borderRadius: 999,
+                      background: NEX.cyan,
+                      color: "#0B0F1A",
+                      fontSize: 9,
+                      fontWeight: 800,
+                      letterSpacing: "0.10em",
+                      textTransform: "uppercase",
+                      lineHeight: 1,
+                    }}
+                  >
+                    <svg
+                      width="9"
+                      height="9"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={3.4}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden
+                    >
+                      <path d="M5 12 L10 17 L20 6" />
+                    </svg>
+                    NEX
+                  </span>
+                )}
               </div>
               {subtitle && (
                 <div
