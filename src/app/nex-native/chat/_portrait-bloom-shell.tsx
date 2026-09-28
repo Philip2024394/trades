@@ -657,8 +657,12 @@ export function PortraitBloomShell({
             overscrollBehavior: "contain",
             display: "flex",
             flexDirection: "column",
+            // Right padding widened past the side-nav rail so
+            // outgoing bubbles never slip behind the home/friends
+            // icons pinned at right: 2px. Sealed 2026-09-28 · fix
+            // for bubbles running under the rail.
             padding:
-              "20px 20px calc(env(safe-area-inset-bottom, 0) + 118px)",
+              "20px 52px calc(env(safe-area-inset-bottom, 0) + 118px) 20px",
           }}
         >
           <div
@@ -732,15 +736,22 @@ export function PortraitBloomShell({
                       <div
                         style={{
                           alignSelf: "center",
-                          padding: "4px 14px",
+                          padding: "5px 14px",
                           margin: isFirst ? "0 0 8px" : "10px 0 6px",
                           borderRadius: 999,
-                          background: "rgba(8,39,68,0.55)",
-                          color: NEX.textDim,
+                          // Solid dark pill · stays crisp against the
+                          // top fade mask so Today / Yesterday remain
+                          // readable even as the pill enters the
+                          // fade-out zone at the top of the scroll.
+                          background: "rgba(2,9,20,0.94)",
+                          border: "1px solid rgba(139,169,209,0.28)",
+                          color: "#F4F7FC",
                           fontSize: 10,
-                          letterSpacing: "0.14em",
+                          letterSpacing: "0.16em",
                           textTransform: "uppercase",
-                          fontWeight: 600,
+                          fontWeight: 800,
+                          textShadow: "0 1px 3px rgba(0,0,0,0.6)",
+                          boxShadow: "0 4px 12px rgba(0,0,0,0.45)",
                         }}
                       >
                         {formatDayLabel(m.sent_at)}
@@ -1390,33 +1401,27 @@ function MessageProductCard({
         </div>
         <div
           style={{
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-            gap: 8,
+            fontSize: 14,
+            fontWeight: 800,
+            color: "#FF7800",
+            marginBottom: href ? 4 : 0,
           }}
         >
+          {price}
+        </div>
+        {href && (
           <div
             style={{
-              fontSize: 13,
+              fontSize: 10,
+              color: "rgba(139,169,209,0.85)",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
               fontWeight: 700,
-              color: "#FF7800",
             }}
           >
-            {price}
+            See in shop
           </div>
-          {href && (
-            <span
-              style={{
-                fontSize: 10,
-                color: "rgba(139,169,209,0.85)",
-                letterSpacing: "0.04em",
-              }}
-            >
-              See in shop →
-            </span>
-          )}
-        </div>
+        )}
       </div>
     </>
   );
