@@ -45,6 +45,55 @@ export const NEX_MENU_DIETARY_TAGS = [
   "spicy",
 ] as const;
 
+/** Bridge 23a · Spice level labels · 0 = none, 1-5 = mild → volcano.
+ *  Rendered as chilli-glyph badges on the buyer menu page + dish
+ *  bubble · sellers pick from the 5 chilli buttons in the editor. */
+export const NEX_MENU_SPICE_LEVEL_LABELS: Record<number, string> = {
+  0: "None",
+  1: "Mild",
+  2: "Medium",
+  3: "Hot",
+  4: "Very Hot",
+  5: "Volcano",
+};
+
+/** Bridge 23a · Fixed set of free-perk tokens the seller can attach
+ *  to a dish. free_delivery is the flagship and renders a prominent
+ *  🚚 pill on the buyer surfaces. `other` unlocks the perks_note
+ *  free-text field so sellers can describe custom perks. */
+export const NEX_MENU_PERKS = [
+  "bogo",
+  "free_drink",
+  "free_rice",
+  "free_fries",
+  "free_delivery",
+  "other",
+] as const;
+
+export type NexMenuPerk = (typeof NEX_MENU_PERKS)[number];
+
+/** Human labels for the perk chips · seller editor + buyer badges
+ *  both use these so the wording stays consistent. */
+export const NEX_MENU_PERK_LABELS: Record<NexMenuPerk, string> = {
+  bogo: "Buy 1 Get 1 Free",
+  free_drink: "Free Drink",
+  free_rice: "Free Rice",
+  free_fries: "Free Fries",
+  free_delivery: "Free Delivery",
+  other: "Other Perk",
+};
+
+/** Icon glyphs for the perk chips. Chosen so a mixed row still reads
+ *  fast at a glance · 🚚 gets the strongest colour treatment. */
+export const NEX_MENU_PERK_ICONS: Record<NexMenuPerk, string> = {
+  bogo: "🎁",
+  free_drink: "🥤",
+  free_rice: "🍚",
+  free_fries: "🍟",
+  free_delivery: "🚚",
+  other: "✨",
+};
+
 export const NEX_MENU_ALLERGENS = [
   "nuts",
   "peanuts",
@@ -87,11 +136,16 @@ export interface NexMenuItemRow {
   image_url: string | null;
   dietary_tags: string[];
   allergens: string[];
+  /** Bridge 23a · widened to 0-5 · 0 = none · 5 = volcano. */
   spice_level: number;
   is_available: boolean;
   is_featured: boolean;
   preparation_time: string | null;
   portion_note: string | null;
+  /** Bridge 23a · free-perk tokens · e.g. ["bogo","free_delivery"]. */
+  perks: NexMenuPerk[];
+  /** Bridge 23a · custom text used when perks contains 'other'. */
+  perks_note: string | null;
   sort_order: number;
   status: NexMenuItemStatus;
   created_at: NexTimestamp;
@@ -115,11 +169,16 @@ export interface NexMenuItemInsert {
   image_url?: string | null;
   dietary_tags?: string[];
   allergens?: string[];
+  /** Bridge 23a · 0-5 · clamped server-side. */
   spice_level?: number;
   is_available?: boolean;
   is_featured?: boolean;
   preparation_time?: string | null;
   portion_note?: string | null;
+  /** Bridge 23a · array of perk tokens · unknown values dropped. */
+  perks?: string[];
+  /** Bridge 23a · free-form note attached when perks includes 'other'. */
+  perks_note?: string | null;
   sort_order?: number;
   status?: NexMenuItemStatus;
 }
@@ -281,6 +340,8 @@ export async function createMenuItem(
       is_featured: input.is_featured ?? false,
       preparation_time: input.preparation_time?.trim() || null,
       portion_note: input.portion_note?.trim() || null,
+      perks: normalisePerks(input.perks),
+      perks_note: input.perks_note?.trim() || null,
       sort_order: input.sort_order ?? 0,
       status: input.status ?? "live",
     })
@@ -329,6 +390,13 @@ export async function updateMenuItem(
   if (patch.portion_note !== undefined) {
     const v = (patch.portion_note ?? "").trim();
     update.portion_note = v.length > 0 ? v : null;
+  }
+  if (patch.perks !== undefined) {
+    update.perks = normalisePerks(patch.perks);
+  }
+  if (patch.perks_note !== undefined) {
+    const v = (patch.perks_note ?? "").trim();
+    update.perks_note = v.length > 0 ? v : null;
   }
   if (patch.sort_order !== undefined) update.sort_order = patch.sort_order;
   if (patch.status !== undefined) update.status = patch.status;
@@ -418,5 +486,14 @@ function normaliseTagArray(input: string[] | undefined): string[] {
 
 function clampSpice(v: number | undefined): number {
   if (typeof v !== "number" || !Number.isFinite(v)) return 0;
-  return Math.max(0, Math.min(3, Math.round(v)));
+  return Math.max(0, Math.min(5, Math.round(v)));
+}
+
+function normalisePerks(input: string[] | undefined): NexMenuPerk[] {
+  if (!input || input.length === 0) return [];
+  const allowed = new Set<string>(NEX_MENU_PERKS);
+  const cleaned = input
+    .map((s) => (typeof s === "string" ? s.trim().toLowerCase() : ""))
+    .filter((s): s is NexMenuPerk => allowed.has(s));
+  return Array.from(new Set(cleaned)) as NexMenuPerk[];
 }

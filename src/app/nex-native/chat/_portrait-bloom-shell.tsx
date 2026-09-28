@@ -47,6 +47,27 @@ const NEX = {
   glassBorder: "rgba(139,169,209,0.55)",
 };
 
+/** Bridge 23a · Icon + label maps for menu-item perks · duplicated
+ *  here (client boundary) so this shell doesn't need to import from
+ *  the server-only menu-service. Keep in sync with
+ *  NEX_MENU_PERK_ICONS/LABELS in src/lib/nex-native/menu-service.ts. */
+const PERK_ICON_MAP: Record<string, string> = {
+  bogo: "🎁",
+  free_drink: "🥤",
+  free_rice: "🍚",
+  free_fries: "🍟",
+  free_delivery: "🚚",
+  other: "✨",
+};
+const PERK_LABEL_MAP: Record<string, string> = {
+  bogo: "Buy 1 Get 1 Free",
+  free_drink: "Free Drink",
+  free_rice: "Free Rice",
+  free_fries: "Free Fries",
+  free_delivery: "Free Delivery",
+  other: "Other Perk",
+};
+
 export type PortraitBloomPresenceKind = "online" | "offline" | "away";
 
 export interface PortraitBloomMessage {
@@ -111,6 +132,10 @@ export interface PortraitBloomMessage {
     spice_level: number;
     dietary_tags: string[];
     portion_note: string | null;
+    /** Bridge 23a · perk tokens · buyer bubble renders chips with
+     *  Free Delivery highlighted. */
+    perks?: string[];
+    perks_note?: string | null;
   } | null;
   /** Bridge 22 · when attachment_type='cart_order' this carries the
    *  full cart snapshot · list of items + qty + variants + notes +
@@ -127,6 +152,9 @@ export interface PortraitBloomMessage {
       currency: string;
       quantity: number;
       variants: string[];
+      /** Bridge 23c-3 · perks frozen at add-time on this line. */
+      perks?: string[];
+      perks_note?: string | null;
       note: string | null;
       image_url: string | null;
     }>;
@@ -134,6 +162,20 @@ export interface PortraitBloomMessage {
     subtotal_pence: number;
     currency: string;
     item_count: number;
+    /** Bridge 22c-2 · structured delivery address the buyer entered
+     *  on the /cart page · null for legacy carts / carts sent before
+     *  the field existed. */
+    delivery_address?: {
+      recipient_name: string;
+      phone: string;
+      street: string;
+      street_2: string;
+      city: string;
+      region: string;
+      postal_code: string;
+      country: string;
+      notes: string;
+    } | null;
   } | null;
 }
 
@@ -1333,16 +1375,12 @@ function MessageProductCard({
   const href = product.business_slug
     ? `/nex-native/${product.business_slug}`
     : null;
-  const shopDomain = product.business_slug
-    ? `${product.business_slug}.nex`
-    : "NEX";
-  // Bridge 19b · card structure changed to avoid nesting a <form>
-  // inside <a> (invalid HTML) and to keep the shell as a Server
-  // Component (no onClick handlers permitted on this side of the
-  // boundary). The anchor covers the whole card at z-index 1; the
-  // heart form sits above it at z-index 2 as a sibling. Clicking
-  // the heart submits the form only; clicking anywhere else follows
-  // the anchor to the shop landing.
+  // Bridge 22b · shop domain removed from the eyebrow per Founder
+  // direction · the card lives inside the bubble already, we don't
+  // need a second identity line.
+  // Bridge 19b · card structure kept · anchor covers, heart sits
+  // above, but Bridge 22b removes the outer background + border so
+  // the card blends into the bubble (no double-nested chrome).
   const shared: React.CSSProperties = {
     position: "relative",
     display: "block",
@@ -1351,8 +1389,8 @@ function MessageProductCard({
     marginBottom,
     borderRadius: 12,
     overflow: "hidden",
-    background: "rgba(0,0,0,0.42)",
-    border: `1px solid ${accent}55`,
+    background: "transparent",
+    border: "none",
     color: "inherit",
   };
   const cardBody = (
@@ -1379,32 +1417,10 @@ function MessageProductCard({
           />
         </div>
       )}
-      <div style={{ padding: "8px 10px 10px" }}>
-        <div
-          style={{
-            fontSize: 10,
-            letterSpacing: "0.14em",
-            textTransform: "uppercase",
-            color: accent,
-            fontWeight: 700,
-            marginBottom: 4,
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            flexWrap: "wrap",
-          }}
-        >
-          <span>Product</span>
-          <span style={{ color: "rgba(139,169,209,0.55)" }}>·</span>
-          <span
-            style={{
-              color: "rgba(139,169,209,0.85)",
-              fontWeight: 600,
-            }}
-          >
-            {shopDomain}
-          </span>
-        </div>
+      <div style={{ padding: "8px 2px 4px" }}>
+        {/* Bridge 22b · minimal eyebrow · no shop-domain clutter ·
+            the card is contained by the outer bubble already, we
+            don't need a second frame. */}
         <div
           style={{
             fontSize: 13,
@@ -1519,6 +1535,8 @@ function MessageMenuItemCard({
     spice_level: number;
     dietary_tags: string[];
     portion_note: string | null;
+    perks?: string[];
+    perks_note?: string | null;
   };
   hasBody: boolean;
   accent: string;
@@ -1576,7 +1594,31 @@ function MessageMenuItemCard({
         >
           {item.name}
         </div>
-        {(spiceChilies || item.dietary_tags.length > 0 || item.portion_note) && (
+        {item.perks?.includes("free_delivery") && (
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 4,
+              marginBottom: 6,
+              padding: "3px 9px",
+              borderRadius: 999,
+              background: "linear-gradient(180deg, #22c55e 0%, #16a34a 100%)",
+              color: "#08170D",
+              fontSize: 9,
+              fontWeight: 800,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              boxShadow: "0 4px 12px rgba(22,214,107,0.30)",
+            }}
+          >
+            🚚 Free Delivery
+          </div>
+        )}
+        {(spiceChilies ||
+          item.dietary_tags.length > 0 ||
+          item.portion_note ||
+          (item.perks?.length ?? 0) > 0) && (
           <div
             style={{
               display: "flex",
@@ -1614,6 +1656,27 @@ function MessageMenuItemCard({
                 {t}
               </span>
             ))}
+            {(item.perks ?? [])
+              .filter((p) => p !== "free_delivery")
+              .slice(0, 3)
+              .map((perk) => (
+                <span
+                  key={perk}
+                  style={{
+                    fontSize: 9,
+                    padding: "2px 6px",
+                    borderRadius: 999,
+                    background: "rgba(22,214,107,0.10)",
+                    color: "#B8F1CC",
+                    letterSpacing: "0.02em",
+                  }}
+                >
+                  {PERK_ICON_MAP[perk] ?? "✨"}{" "}
+                  {perk === "other" && item.perks_note
+                    ? item.perks_note
+                    : PERK_LABEL_MAP[perk] ?? perk}
+                </span>
+              ))}
             {item.portion_note && (
               <span
                 style={{
@@ -1804,6 +1867,40 @@ function MessageCartOrderCard({
                   {it.variants.join(" · ")}
                 </div>
               )}
+              {(it.perks ?? []).length > 0 && (
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: 4,
+                    marginTop: 3,
+                  }}
+                >
+                  {(it.perks ?? []).map((perk) => (
+                    <span
+                      key={perk}
+                      style={{
+                        fontSize: 9,
+                        padding: "1px 6px",
+                        borderRadius: 999,
+                        background:
+                          perk === "free_delivery"
+                            ? "linear-gradient(180deg, #22c55e 0%, #16a34a 100%)"
+                            : "rgba(22,214,107,0.12)",
+                        color:
+                          perk === "free_delivery" ? "#08170D" : "#B8F1CC",
+                        fontWeight: perk === "free_delivery" ? 800 : 700,
+                        letterSpacing: "0.03em",
+                      }}
+                    >
+                      {PERK_ICON_MAP[perk] ?? "✨"}{" "}
+                      {perk === "other" && it.perks_note
+                        ? it.perks_note
+                        : PERK_LABEL_MAP[perk] ?? perk}
+                    </span>
+                  ))}
+                </div>
+              )}
               {it.note && (
                 <div
                   style={{
@@ -1861,6 +1958,77 @@ function MessageCartOrderCard({
             Note
           </span>
           {cart.buyer_notes}
+        </div>
+      )}
+      {/* Bridge 22c-2 · structured delivery address block · rendered
+          as a copy-friendly panel so sellers can paste straight into a
+          courier booking screen. */}
+      {cart.delivery_address && (
+        <div
+          style={{
+            margin: "0 10px 8px",
+            padding: "8px 10px",
+            borderRadius: 10,
+            background: "rgba(0,175,255,0.08)",
+            border: `1px solid ${accent}44`,
+            fontSize: 11,
+            lineHeight: 1.55,
+            color: "#F4F7FC",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 9,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              fontWeight: 800,
+              color: accent,
+              marginBottom: 4,
+            }}
+          >
+            📦 Deliver to
+          </div>
+          <div style={{ fontWeight: 700 }}>
+            {cart.delivery_address.recipient_name}
+          </div>
+          {cart.delivery_address.phone && (
+            <div style={{ color: "rgba(244,247,252,0.85)" }}>
+              ☎ {cart.delivery_address.phone}
+            </div>
+          )}
+          <div style={{ color: "rgba(244,247,252,0.85)" }}>
+            {cart.delivery_address.street}
+          </div>
+          {cart.delivery_address.street_2 && (
+            <div style={{ color: "rgba(244,247,252,0.85)" }}>
+              {cart.delivery_address.street_2}
+            </div>
+          )}
+          <div style={{ color: "rgba(244,247,252,0.85)" }}>
+            {[
+              cart.delivery_address.city,
+              cart.delivery_address.region,
+              cart.delivery_address.postal_code,
+            ]
+              .filter(Boolean)
+              .join(", ")}
+          </div>
+          {cart.delivery_address.country && (
+            <div style={{ color: "rgba(244,247,252,0.85)" }}>
+              {cart.delivery_address.country}
+            </div>
+          )}
+          {cart.delivery_address.notes && (
+            <div
+              style={{
+                marginTop: 4,
+                color: "#FFE1A8",
+                fontStyle: "italic",
+              }}
+            >
+              &ldquo;{cart.delivery_address.notes}&rdquo;
+            </div>
+          )}
         </div>
       )}
       {/* Subtotal + shop link */}

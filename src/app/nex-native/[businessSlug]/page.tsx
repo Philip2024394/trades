@@ -342,6 +342,8 @@ export default async function Page({
             languages: business.languages ?? ["id"],
             additionalDetails: business.additional_details ?? null,
           }}
+          eventsProfile={business.events_profile ?? null}
+          venueGallery={business.venue_gallery ?? []}
         />
       </section>
 
@@ -713,6 +715,28 @@ function MenuDishAddRow({
         >
           {dish.name}
         </div>
+        {dish.perks?.includes("free_delivery") && (
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              marginBottom: 6,
+              padding: "4px 10px",
+              borderRadius: 999,
+              background: "linear-gradient(180deg, #22c55e 0%, #16a34a 100%)",
+              border: "1px solid rgba(22,214,107,0.60)",
+              color: "#08170D",
+              fontSize: 10,
+              fontWeight: 800,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              boxShadow: "0 4px 12px rgba(22,214,107,0.35)",
+            }}
+          >
+            🚚 Free Delivery
+          </div>
+        )}
         <div
           style={{
             display: "flex",
@@ -748,6 +772,33 @@ function MenuDishAddRow({
               {t}
             </span>
           ))}
+          {(dish.perks ?? [])
+            .filter((p) => p !== "free_delivery")
+            .slice(0, 3)
+            .map((perk) => (
+              <span
+                key={perk}
+                style={{
+                  fontSize: 10,
+                  padding: "2px 8px",
+                  borderRadius: 999,
+                  background: "rgba(22,214,107,0.10)",
+                  color: "#B8F1CC",
+                }}
+              >
+                {perk === "bogo"
+                  ? "🎁 Buy 1 Get 1 Free"
+                  : perk === "free_drink"
+                    ? "🥤 Free Drink"
+                    : perk === "free_rice"
+                      ? "🍚 Free Rice"
+                      : perk === "free_fries"
+                        ? "🍟 Free Fries"
+                        : perk === "other" && dish.perks_note
+                          ? `✨ ${dish.perks_note}`
+                          : `✨ ${perk}`}
+              </span>
+            ))}
           {dish.portion_note && (
             <span
               style={{
@@ -831,6 +882,8 @@ function MenuDishAddRow({
               currency: dish.currency,
               image_url: dish.image_url,
               variants: [],
+              perks: dish.perks ?? [],
+              perks_note: dish.perks_note ?? null,
             }}
             label="+ Add"
           />

@@ -11,7 +11,11 @@ import type * as React from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
-import { sendCartOrderAction } from "../_actions";
+import {
+  sendCartOrderAction,
+  saveServerCartAction,
+} from "../_actions";
+import * as cartService from "@/lib/nex-native/cart-service";
 import { CartClient } from "./_cart-client";
 
 export const runtime = "nodejs";
@@ -43,6 +47,11 @@ export default async function CartPage({
     redirect("/nex-native/sign-in?next=/nex-native/cart");
   }
   const sp = await searchParams;
+
+  // Bridge 22c-3 · hydrate the server-side cart on this device · the
+  // client merges it with localStorage on mount so the buyer sees
+  // items they added on other devices.
+  const serverCart = await cartService.getServerCart(session.account.id);
 
   return (
     <div
@@ -147,7 +156,15 @@ export default async function CartPage({
           </div>
         )}
 
-        <CartClient sendAction={sendCartOrderAction} />
+        <CartClient
+          sendAction={sendCartOrderAction}
+          saveAction={saveServerCartAction}
+          serverCart={{
+            items: serverCart.items,
+            delivery_address: serverCart.delivery_address,
+            updated_at: serverCart.updated_at,
+          }}
+        />
       </main>
     </div>
   );

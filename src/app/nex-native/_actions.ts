@@ -32,6 +32,12 @@ import * as reportService from "@/lib/nex-native/report-service";
 import * as likedProductService from "@/lib/nex-native/liked-product-service";
 import * as orderService from "@/lib/nex-native/order-service";
 import * as commerceService from "@/lib/nex-native/commerce-service";
+import * as cartService from "@/lib/nex-native/cart-service";
+import {
+  NEX_DELIVERY_ADDRESS_EMPTY,
+  type NexCartItem,
+  type NexDeliveryAddress,
+} from "@/lib/nex-native/cart-types";
 import * as accountService from "@/lib/nex-native/account-service";
 import * as accountProfileService from "@/lib/nex-native/account-profile-service";
 import * as friendService from "@/lib/nex-native/friend-service";
@@ -880,6 +886,147 @@ export async function updateBusinessCityAndHoursAction(
   );
 }
 
+/** Bridge 23b · update the seller's events profile jsonb. Every
+ *  checkbox / number / text field arrives on formData and the service
+ *  normalises + clamps before writing. Called from /manage/venue.
+ *  Non-venue businesses can still call this; the About surface just
+ *  won't render the section when nothing is set. */
+export async function updateBusinessEventsProfileAction(
+  businessId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const business = await businessService.getBusinessById(businessId);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirect(
+      "/nex-native/manage/venue?e=events_forbidden&m=" +
+        encodeURIComponent("You don't own this shop"),
+    );
+  }
+
+  const seatCapacityRaw = String(formData.get("seat_capacity") ?? "").trim();
+  const seatCapacity = seatCapacityRaw.length
+    ? Number.parseInt(seatCapacityRaw, 10)
+    : null;
+
+  try {
+    await businessService.updateBusinessEventsProfile(businessId, {
+      hosts_parties: formData.get("hosts_parties") === "on",
+      seat_capacity:
+        seatCapacity !== null && Number.isFinite(seatCapacity)
+          ? seatCapacity
+          : null,
+      outside_catering: formData.get("outside_catering") === "on",
+      has_live_music_or_dj: formData.get("has_live_music_or_dj") === "on",
+      can_book_private_party: formData.get("can_book_private_party") === "on",
+      has_sound_system_pa: formData.get("has_sound_system_pa") === "on",
+      other_event_info:
+        String(formData.get("other_event_info") ?? "").trim() || null,
+    });
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      "/nex-native/manage/venue?e=events_failed&m=" + encodeURIComponent(msg),
+    );
+  }
+
+  revalidatePath("/nex-native/manage/venue");
+  revalidatePath(`/nex-native/${business.slug}`);
+  redirect(
+    "/nex-native/manage/venue?e=events_ok&m=" +
+      encodeURIComponent("Event profile updated"),
+  );
+}
+
+/** Bridge 23c-1 · Upload a single venue photo from a phone / laptop
+ *  file picker. Owner-only. Returns the public URL as JSON so the
+ *  client can put it into the next empty gallery slot without a page
+ *  reload. Rejects non-image files. */
+export async function uploadVenuePhotoAction(
+  businessId: string,
+  formData: FormData,
+): Promise<
+  { ok: true; url: string } | { ok: false; error: string }
+> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) return { ok: false, error: "not_signed_in" };
+
+  const business = await businessService.getBusinessById(businessId);
+  if (!business || business.owner_account_id !== session.account.id) {
+    return { ok: false, error: "not_owner" };
+  }
+
+  const file = formData.get("photo");
+  if (!(file instanceof File) || file.size === 0) {
+    return { ok: false, error: "no_file" };
+  }
+
+  try {
+    const { url } = await businessService.uploadVenuePhoto(business.id, file);
+    return { ok: true, url };
+  } catch (e) {
+    return {
+      ok: false,
+      error: e instanceof Error ? e.message : "upload_failed",
+    };
+  }
+}
+
+/** Bridge 23b · replace the seller's venue_gallery text[] with the
+ *  ordered set of URLs the client just uploaded. Client owns the
+ *  upload flow (Bridge 8+9 attachments bucket already exists) · this
+ *  action just persists the final URL list. */
+export async function updateBusinessVenueGalleryAction(
+  businessId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const business = await businessService.getBusinessById(businessId);
+  if (!business || business.owner_account_id !== session.account.id) {
+    redirect(
+      "/nex-native/manage/venue?e=gallery_forbidden&m=" +
+        encodeURIComponent("You don't own this shop"),
+    );
+  }
+
+  const urlsRaw = String(formData.get("urls") ?? "").trim();
+  let urls: string[] = [];
+  try {
+    if (urlsRaw) {
+      const parsed = JSON.parse(urlsRaw);
+      if (Array.isArray(parsed)) urls = parsed.map((x) => String(x));
+    }
+  } catch {
+    redirect(
+      "/nex-native/manage/venue?e=gallery_failed&m=" +
+        encodeURIComponent("Invalid gallery payload"),
+    );
+  }
+
+  try {
+    await businessService.updateBusinessVenueGallery(businessId, urls);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirect(
+      "/nex-native/manage/venue?e=gallery_failed&m=" + encodeURIComponent(msg),
+    );
+  }
+
+  revalidatePath("/nex-native/manage/venue");
+  revalidatePath(`/nex-native/${business.slug}`);
+  redirect(
+    "/nex-native/manage/venue?e=gallery_ok&m=" +
+      encodeURIComponent("Gallery updated"),
+  );
+}
+
 /** Bridge 16b · record the buyer's/seller's acknowledgement of the
  *  NEX safe-trade doctrine + terms. Called by the JIT modal on
  *  first commerce chat entry. Stamps
@@ -1160,6 +1307,8 @@ export async function sendMenuItemInquiryAction(
     spice_level: item.spice_level,
     dietary_tags: item.dietary_tags,
     portion_note: item.portion_note,
+    perks: item.perks ?? [],
+    perks_note: item.perks_note ?? null,
   };
 
   const defaultBody =
@@ -1223,6 +1372,37 @@ export async function sendCartOrderAction(
     buyerNotesRaw.length > 0 ? buyerNotesRaw.slice(0, 2000) : null;
   const itemsRaw = Array.isArray(p.items) ? p.items : [];
 
+  // Bridge 22c-2 · structured delivery address. Clip each field so a
+  // bad client can't blow up the JSONB column · never trust client
+  // length limits alone.
+  const addressRaw =
+    p.delivery_address && typeof p.delivery_address === "object"
+      ? (p.delivery_address as Record<string, unknown>)
+      : null;
+  const deliveryAddress: import("@/lib/nex-native/peer-message-service").NexPeerCartOrderDeliveryAddress | null =
+    addressRaw
+      ? {
+          recipient_name: String(addressRaw.recipient_name ?? "")
+            .trim()
+            .slice(0, 200),
+          phone: String(addressRaw.phone ?? "").trim().slice(0, 40),
+          street: String(addressRaw.street ?? "").trim().slice(0, 300),
+          street_2: String(addressRaw.street_2 ?? "").trim().slice(0, 300),
+          city: String(addressRaw.city ?? "").trim().slice(0, 120),
+          region: String(addressRaw.region ?? "").trim().slice(0, 120),
+          postal_code: String(addressRaw.postal_code ?? "").trim().slice(0, 24),
+          country: String(addressRaw.country ?? "").trim().slice(0, 80),
+          notes: String(addressRaw.notes ?? "").trim().slice(0, 500),
+        }
+      : null;
+  const addressComplete = !!(
+    deliveryAddress &&
+    deliveryAddress.recipient_name &&
+    deliveryAddress.phone &&
+    deliveryAddress.street &&
+    deliveryAddress.city
+  );
+
   if (!peerAccountId || peerAccountId === session.account.id || !shopId) {
     redirect("/nex-native/cart?send_error=" + encodeURIComponent("Bad shop or peer"));
   }
@@ -1271,6 +1451,25 @@ export async function sendCartOrderAction(
       .map((v) => String(v).trim())
       .filter((v) => v.length > 0)
       .slice(0, 6);
+    // Bridge 23c-3 · perks flow onto the cart-line snapshot · known
+    // tokens only (bogo · free_drink · free_rice · free_fries ·
+    // free_delivery · other) · unknown values dropped for safety.
+    const allowedPerks = new Set([
+      "bogo",
+      "free_drink",
+      "free_rice",
+      "free_fries",
+      "free_delivery",
+      "other",
+    ]);
+    const perksRaw = Array.isArray(it.perks) ? it.perks : [];
+    const perks = perksRaw
+      .map((v) => String(v).trim().toLowerCase())
+      .filter((v) => allowedPerks.has(v))
+      .slice(0, 6);
+    const perksNoteRaw = String(it.perks_note ?? "").trim();
+    const perksNote =
+      perksNoteRaw.length > 0 ? perksNoteRaw.slice(0, 200) : null;
     const noteRaw = String(it.note ?? "").trim();
     const note = noteRaw.length > 0 ? noteRaw.slice(0, 400) : null;
     const imageUrl =
@@ -1287,6 +1486,8 @@ export async function sendCartOrderAction(
       currency,
       quantity,
       variants,
+      perks,
+      perks_note: perksNote,
       note,
       image_url: imageUrl,
     });
@@ -1305,21 +1506,54 @@ export async function sendCartOrderAction(
     subtotal_pence: subtotal,
     currency,
     item_count: items.reduce((n, it) => n + it.quantity, 0),
+    delivery_address: addressComplete ? deliveryAddress : null,
   };
 
   // Body renders in plain-text clients that don't know cart_order.
   const bodyLines: string[] = [
     `🛒 New order · ${shopDisplayName}`,
-    ...items.map(
-      (it) =>
-        `· ${it.quantity}× ${it.name}${
-          it.variants.length > 0 ? ` (${it.variants.join(" · ")})` : ""
-        }${it.note ? ` — ${it.note}` : ""}`,
-    ),
+    ...items.map((it) => {
+      const perkLabels: Record<string, string> = {
+        bogo: "🎁 BOGO",
+        free_drink: "🥤 Free drink",
+        free_rice: "🍚 Free rice",
+        free_fries: "🍟 Free fries",
+        free_delivery: "🚚 Free delivery",
+        other: "✨ Perk",
+      };
+      const perkText = (it.perks ?? [])
+        .map((p) =>
+          p === "other" && it.perks_note ? `✨ ${it.perks_note}` : perkLabels[p] ?? p,
+        )
+        .join(" · ");
+      return `· ${it.quantity}× ${it.name}${
+        it.variants.length > 0 ? ` (${it.variants.join(" · ")})` : ""
+      }${perkText ? ` [${perkText}]` : ""}${it.note ? ` — ${it.note}` : ""}`;
+    }),
   ];
   if (buyerNotes) {
     bodyLines.push("");
     bodyLines.push(`Note from buyer: ${buyerNotes}`);
+  }
+  if (addressComplete && deliveryAddress) {
+    bodyLines.push("");
+    bodyLines.push("📦 Deliver to:");
+    bodyLines.push(deliveryAddress.recipient_name);
+    if (deliveryAddress.phone) bodyLines.push(`☎ ${deliveryAddress.phone}`);
+    bodyLines.push(deliveryAddress.street);
+    if (deliveryAddress.street_2) bodyLines.push(deliveryAddress.street_2);
+    const cityLine = [
+      deliveryAddress.city,
+      deliveryAddress.region,
+      deliveryAddress.postal_code,
+    ]
+      .filter(Boolean)
+      .join(", ");
+    if (cityLine) bodyLines.push(cityLine);
+    if (deliveryAddress.country) bodyLines.push(deliveryAddress.country);
+    if (deliveryAddress.notes) {
+      bodyLines.push(`Delivery note: ${deliveryAddress.notes}`);
+    }
   }
   bodyLines.push("");
   bodyLines.push(
@@ -1348,8 +1582,89 @@ export async function sendCartOrderAction(
   // The snapshot still lives on attachment_meta so if a client wants
   // to hydrate it via a separate mechanism it can.
 
+  // Bridge 22c-3 · after a successful send, drop this shop's lines
+  // from the server-side cart so the buyer's other devices don't
+  // resurrect them. Delivery address stays saved for reuse.
+  try {
+    const existing = await cartService.getServerCart(session.account.id);
+    const remaining = existing.items.filter((x) => x.shop_id !== shopId);
+    await cartService.saveServerCart(
+      session.account.id,
+      remaining,
+      existing.delivery_address,
+    );
+  } catch {
+    // Non-blocking · the client's optimistic clear covers this device.
+  }
+
   revalidatePath(`/nex-native/chat/peer/${peerAccountId}`);
   redirect(`/nex-native/chat/peer/${peerAccountId}?cart_sent=1`);
+}
+
+/** Bridge 22c-3 · Sync the signed-in buyer's cart to the server so
+ *  it follows them across devices. Client calls this debounced on
+ *  every localStorage write · payload is the entire cart + address
+ *  snapshot. Signed-out buyers get a redirect to /sign-in (which the
+ *  client short-circuits by only calling this when signed-in). */
+export async function saveServerCartAction(
+  formData: FormData,
+): Promise<{ ok: true; updated_at: string } | { ok: false; error: string }> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) return { ok: false, error: "not_signed_in" };
+
+  const itemsRaw = String(formData.get("items") ?? "").trim();
+  const addressRaw = String(formData.get("delivery_address") ?? "").trim();
+
+  let items: NexCartItem[] = [];
+  let address: NexDeliveryAddress = NEX_DELIVERY_ADDRESS_EMPTY;
+  try {
+    if (itemsRaw) {
+      const parsed = JSON.parse(itemsRaw);
+      if (Array.isArray(parsed)) items = parsed;
+    }
+    if (addressRaw) {
+      const parsed = JSON.parse(addressRaw);
+      if (parsed && typeof parsed === "object") {
+        address = { ...NEX_DELIVERY_ADDRESS_EMPTY, ...parsed };
+      }
+    }
+  } catch {
+    return { ok: false, error: "invalid_payload" };
+  }
+
+  try {
+    const saved = await cartService.saveServerCart(
+      session.account.id,
+      items,
+      address,
+    );
+    return { ok: true, updated_at: saved.updated_at };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : "save_failed",
+    };
+  }
+}
+
+/** Bridge 22c-3 · Wipe the buyer's server-side cart. Called after a
+ *  successful cart send so remaining devices don't show phantom
+ *  items · client mirrors by clearing localStorage on receipt of
+ *  ok:true. */
+export async function clearServerCartAction(): Promise<
+  { ok: true } | { ok: false; error: string }
+> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) return { ok: false, error: "not_signed_in" };
+  try {
+    await cartService.clearServerCart(session.account.id);
+    return { ok: true };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : "clear_failed",
+    };
+  }
 }
 
 function formatCartPrice(pence: number, currency: string): string {
@@ -4358,6 +4673,13 @@ export async function createMenuItemAction(
     String(formData.get("preparation_time") ?? "").trim() || null;
   const portionNote =
     String(formData.get("portion_note") ?? "").trim() || null;
+  // Bridge 23a · free-perk chips · service normalises unknown values away.
+  const perks = formData
+    .getAll("perks")
+    .map((v) => String(v).trim())
+    .filter((v) => v.length > 0);
+  const perksNote =
+    String(formData.get("perks_note") ?? "").trim() || null;
 
   if (name.length < 1 || name.length > 120) {
     redirectToMenuWithBanner(
@@ -4385,6 +4707,8 @@ export async function createMenuItemAction(
       is_featured: isFeatured,
       preparation_time: preparationTime,
       portion_note: portionNote,
+      perks,
+      perks_note: perksNote,
       status: "live",
     });
     await sellerResponsivenessService
@@ -4489,6 +4813,93 @@ export async function toggleMenuItemFeaturedAction(
 }
 
 /** Bridge 15b · delete a menu item permanently. */
+/** Bridge 23c-2 · Update every editable field on an existing dish
+ *  · seller-only. Includes the fields the create form supports plus
+ *  spice + perks + perks_note so the edit form can adjust them
+ *  after launch. Redirects back to /manage/menu on success. */
+export async function updateMenuItemAction(
+  itemId: string,
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const owned = await resolveMenuItemOwnership(itemId, session.account.id);
+  if (!owned) {
+    redirectToMenuWithBanner("item_forbidden", "Dish not found");
+  }
+
+  const name = String(formData.get("name") ?? "").trim();
+  const description = String(formData.get("description") ?? "").trim() || null;
+  const sectionIdRaw = String(formData.get("section_id") ?? "").trim();
+  const sectionId = sectionIdRaw.length > 0 ? sectionIdRaw : null;
+  const priceRaw = String(formData.get("price_idr") ?? "").trim();
+  const priceIdr = Number.parseInt(priceRaw, 10);
+  const price = Number.isFinite(priceIdr) ? priceIdr * 100 : NaN;
+  const imageUrl = String(formData.get("image_url") ?? "").trim() || null;
+  const dietaryTags = formData
+    .getAll("dietary_tags")
+    .map((v) => String(v).trim())
+    .filter((v) => v.length > 0);
+  const allergens = formData
+    .getAll("allergens")
+    .map((v) => String(v).trim())
+    .filter((v) => v.length > 0);
+  const spiceRaw = String(formData.get("spice_level") ?? "0").trim();
+  const spice = Number.parseInt(spiceRaw, 10);
+  const isFeatured = String(formData.get("is_featured") ?? "") === "on";
+  const preparationTime =
+    String(formData.get("preparation_time") ?? "").trim() || null;
+  const portionNote =
+    String(formData.get("portion_note") ?? "").trim() || null;
+  const perks = formData
+    .getAll("perks")
+    .map((v) => String(v).trim())
+    .filter((v) => v.length > 0);
+  const perksNote =
+    String(formData.get("perks_note") ?? "").trim() || null;
+
+  if (name.length < 1 || name.length > 120) {
+    redirectToMenuWithBanner(
+      "item_failed",
+      "Dish name must be 1-120 characters",
+    );
+  }
+  if (!Number.isFinite(price) || price < 0) {
+    redirectToMenuWithBanner("item_failed", "Price must be a positive number");
+  }
+
+  try {
+    await menuService.updateMenuItem(itemId, {
+      section_id: sectionId,
+      name,
+      description,
+      price_pence: price,
+      image_url: imageUrl,
+      dietary_tags: dietaryTags,
+      allergens,
+      spice_level: Number.isFinite(spice) ? spice : 0,
+      is_featured: isFeatured,
+      preparation_time: preparationTime,
+      portion_note: portionNote,
+      perks,
+      perks_note: perksNote,
+    });
+    await sellerResponsivenessService
+      .markBusinessOwnerActive(session.account.id)
+      .catch(() => {});
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "unknown";
+    redirectToMenuWithBanner("item_failed", msg);
+  }
+
+  revalidatePath("/nex-native/manage/menu");
+  revalidatePath(`/nex-native/manage/menu/${itemId}`);
+  revalidatePath(`/nex-native/${owned.business.slug}`);
+  revalidatePath(`/nex-native/${owned.business.slug}/menu`);
+  redirectToMenuWithBanner("item_ok", `${name} updated`);
+}
+
 export async function deleteMenuItemAction(
   itemId: string,
 ): Promise<never> {

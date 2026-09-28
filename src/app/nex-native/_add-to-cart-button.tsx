@@ -29,6 +29,11 @@ export interface AddToCartItemInit {
   currency: string;
   image_url: string | null;
   variants?: string[];
+  /** Bridge 23c-3 · perk tokens attached to a menu-item line ·
+   *  frozen on the cart-line so the seller sees the same chips the
+   *  buyer saw at add-time even if the dish changes later. */
+  perks?: string[];
+  perks_note?: string | null;
   qty?: number;
 }
 
@@ -84,6 +89,8 @@ export function AddToCartButton({
           image_url: item.image_url,
           quantity: qtyToAdd,
           variants,
+          perks: item.perks ?? [],
+          perks_note: item.perks_note ?? null,
           note: null,
           added_at: Date.now(),
         });

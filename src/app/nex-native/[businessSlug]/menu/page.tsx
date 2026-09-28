@@ -16,6 +16,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as menuService from "@/lib/nex-native/menu-service";
+import {
+  NEX_MENU_PERK_LABELS,
+  NEX_MENU_PERK_ICONS,
+  type NexMenuPerk,
+} from "@/lib/nex-native/menu-service";
 import { sendMenuItemInquiryAction } from "../../_actions";
 import { AddToCartButton } from "../../_add-to-cart-button";
 import { FloatingCartPill } from "../../_floating-cart-pill";
@@ -294,6 +299,8 @@ export default async function Page({
                             currency: it.currency,
                             image_url: it.image_url,
                             variants: [],
+                            perks: it.perks ?? [],
+                            perks_note: it.perks_note ?? null,
                           }}
                         />
                       }
@@ -545,11 +552,37 @@ function MenuDishCard({
           </div>
         </div>
 
-        {/* Chip row · spice + dietary tags */}
+        {/* Chip row · spice + dietary + perks. Free Delivery gets
+            its own stand-alone bright badge above the chip row so
+            buyers see it even at a glance. */}
+        {item.perks?.includes("free_delivery") && (
+          <div
+            data-nex-free-delivery-badge
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              marginBottom: 10,
+              padding: "6px 12px",
+              borderRadius: 999,
+              background: "linear-gradient(180deg, #22c55e 0%, #16a34a 100%)",
+              border: "1px solid rgba(22,214,107,0.60)",
+              color: "#08170D",
+              fontSize: 11,
+              fontWeight: 800,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              boxShadow: "0 6px 14px rgba(22,214,107,0.35)",
+            }}
+          >
+            🚚 Free Delivery
+          </div>
+        )}
         {(item.spice_level > 0 ||
           item.dietary_tags.length > 0 ||
           item.portion_note ||
-          item.preparation_time) && (
+          item.preparation_time ||
+          (item.perks?.length ?? 0) > 0) && (
           <div
             style={{
               display: "flex",
@@ -564,6 +597,11 @@ function MenuDishCard({
             {item.dietary_tags.map((t) => (
               <DietaryPill key={t} tag={t} />
             ))}
+            {item.perks
+              ?.filter((p) => p !== "free_delivery")
+              .map((perk) => (
+                <PerkPill key={perk} perk={perk} note={item.perks_note} />
+              ))}
             {item.portion_note && <MetaPill icon="🍽️" text={item.portion_note} />}
             {item.preparation_time && (
               <MetaPill icon="⏱" text={item.preparation_time} />
@@ -672,8 +710,17 @@ function MenuDishCard({
 }
 
 function SpicePill({ level }: { level: number }) {
-  const chilies = "🌶".repeat(Math.max(1, Math.min(3, level)));
-  const label = level === 1 ? "Mild" : level === 2 ? "Medium" : "Hot";
+  const chilies = "🌶".repeat(Math.max(1, Math.min(5, level)));
+  const label =
+    level === 1
+      ? "Mild"
+      : level === 2
+        ? "Medium"
+        : level === 3
+          ? "Hot"
+          : level === 4
+            ? "Very Hot"
+            : "Volcano";
   return (
     <span
       style={{
@@ -724,6 +771,39 @@ function DietaryPill({ tag }: { tag: string }) {
       }}
     >
       {label}
+    </span>
+  );
+}
+
+function PerkPill({
+  perk,
+  note,
+}: {
+  perk: NexMenuPerk;
+  note: string | null;
+}) {
+  const label = NEX_MENU_PERK_LABELS[perk] ?? perk;
+  const icon = NEX_MENU_PERK_ICONS[perk] ?? "✨";
+  return (
+    <span
+      title={perk === "other" && note ? note : undefined}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 5,
+        padding: "3px 9px",
+        borderRadius: 999,
+        border: "1px solid rgba(22,214,107,0.35)",
+        background: "rgba(22,214,107,0.10)",
+        color: "#B8F1CC",
+        fontSize: 10,
+        fontWeight: 700,
+        letterSpacing: "0.06em",
+        textTransform: "uppercase",
+      }}
+    >
+      <span aria-hidden>{icon}</span>
+      {perk === "other" && note ? note : label}
     </span>
   );
 }

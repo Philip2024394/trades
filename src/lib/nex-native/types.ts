@@ -373,8 +373,56 @@ export interface NexBusinessRow {
   tiktok_handle: string | null;
   linkedin_handle: string | null;
   x_handle: string | null;
+  /** Bridge 23b · Restaurant / cafe / bar event-hosting profile ·
+   *  migration 080. Renders as a "Book this venue" panel under About
+   *  Us on the buyer page when any field is set. */
+  events_profile: NexBusinessEventsProfile;
+  /** Bridge 23b · Up to 6 photo URLs of the venue itself · dining
+   *  room · private space · sound stage · outdoor catering setup.
+   *  Empty array when the seller hasn't uploaded any. */
+  venue_gallery: string[];
   created_at: NexTimestamp;
   updated_at: NexTimestamp;
+}
+
+export interface NexBusinessEventsProfile {
+  hosts_parties?: boolean;
+  seat_capacity?: number | null;
+  outside_catering?: boolean;
+  has_live_music_or_dj?: boolean;
+  can_book_private_party?: boolean;
+  has_sound_system_pa?: boolean;
+  other_event_info?: string | null;
+}
+
+export const NEX_BUSINESS_EVENTS_EMPTY: NexBusinessEventsProfile = {
+  hosts_parties: false,
+  seat_capacity: null,
+  outside_catering: false,
+  has_live_music_or_dj: false,
+  can_book_private_party: false,
+  has_sound_system_pa: false,
+  other_event_info: null,
+};
+
+/** Bridge 23b · Categories that get the Events profile UI. Cafes and
+ *  bars also host parties · the concept isn't restaurant-exclusive. */
+export const NEX_VENUE_CATEGORIES = [
+  "restaurant",
+  "cafe",
+  "ice-cream",
+  "dessert-shop",
+  "drinks-shop",
+  "juice-bar",
+  "bar",
+  "nightclub",
+  "event-space",
+  "hotel",
+] as const;
+
+export function isVenueCategory(category: string | null | undefined): boolean {
+  if (!category) return false;
+  return (NEX_VENUE_CATEGORIES as readonly string[]).includes(category);
 }
 
 export interface NexBusinessInsert {

@@ -8,6 +8,57 @@
 
 export const NEX_CART_STORAGE_KEY = "nex_cart_v1";
 
+/** Bridge 22c-2 · structured delivery address · lives under its own
+ *  localStorage key so buyers only type it once across multiple cart
+ *  sends. Attached into cart_payload on Send so the seller receives
+ *  a clean copy-paste block (name / phone / street / city / postal). */
+export const NEX_DELIVERY_ADDRESS_STORAGE_KEY = "nex_delivery_address_v1";
+
+export interface NexDeliveryAddress {
+  /** Recipient full name (may differ from buyer's NEX display name). */
+  recipient_name: string;
+  /** Local phone in whichever format the buyer uses · seller will
+   *  paste it into their courier's booking screen so we don't
+   *  normalise. Empty string means "not provided". */
+  phone: string;
+  /** Street address · line 1 (house/building number + street). */
+  street: string;
+  /** Optional line 2 (apartment / unit / floor / landmark). */
+  street_2: string;
+  /** City / kabupaten / regency. */
+  city: string;
+  /** Province / state / region · optional. */
+  region: string;
+  /** Postal / ZIP code. */
+  postal_code: string;
+  /** Country · ISO name or free text. Defaults to buyer's country. */
+  country: string;
+  /** Extra delivery notes (which gate · guard's name · leave-with-
+   *  neighbour · etc.). */
+  notes: string;
+}
+
+export const NEX_DELIVERY_ADDRESS_EMPTY: NexDeliveryAddress = {
+  recipient_name: "",
+  phone: "",
+  street: "",
+  street_2: "",
+  city: "",
+  region: "",
+  postal_code: "",
+  country: "",
+  notes: "",
+};
+
+export function isDeliveryAddressComplete(a: NexDeliveryAddress): boolean {
+  return !!(
+    a.recipient_name.trim() &&
+    a.phone.trim() &&
+    a.street.trim() &&
+    a.city.trim()
+  );
+}
+
 export interface NexCartItem {
   /** Stable per-item key for React lists · UUID or slug + attribute
    *  hash. Client-generated at add-time. */
@@ -25,6 +76,12 @@ export interface NexCartItem {
   quantity: number;
   /** Human-readable variant labels e.g. ["Black paint", "Body + Summicron"]. */
   variants: string[];
+  /** Bridge 23c-3 · perk tokens attached to this line at add-time ·
+   *  frozen so the cart badge (🚚 Free Delivery etc.) survives even
+   *  if the seller edits the dish later. */
+  perks?: string[];
+  /** Bridge 23c-3 · custom text used when perks contains 'other'. */
+  perks_note?: string | null;
   /** Per-item buyer note · optional. */
   note?: string | null;
   added_at: number;
@@ -39,6 +96,10 @@ export interface NexCartSendPayload {
   shop_display_name: string;
   currency: string;
   buyer_notes: string | null;
+  /** Bridge 22c-2 · structured delivery block · null when the buyer
+   *  hasn't filled it in yet (falls back to buyer_notes for legacy
+   *  compat). */
+  delivery_address: NexDeliveryAddress | null;
   items: Array<{
     kind: "product" | "menu_item";
     id: string;
@@ -47,6 +108,10 @@ export interface NexCartSendPayload {
     currency: string;
     quantity: number;
     variants: string[];
+    /** Bridge 23c-3 · perks flow through so the seller sees the same
+     *  Free-Delivery / BOGO chips the buyer saw at add-time. */
+    perks?: string[];
+    perks_note?: string | null;
     note: string | null;
     image_url: string | null;
   }>;

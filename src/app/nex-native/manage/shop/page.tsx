@@ -36,6 +36,7 @@ import {
   NEX_RETURN_POLICY_DEFAULT,
 } from "@/lib/nex-native/types";
 import { NEX_BUSINESS_CATEGORIES } from "@/lib/nex-native/site-templates";
+import { isVenueCategory } from "@/lib/nex-native/types";
 import {
   NEX_PAYMENT_METHODS,
   NEX_PAYMENT_METHOD_META,
@@ -256,6 +257,61 @@ export default async function ShopSettingsPage({
         </h1>
 
         {banner && <Banner code={banner.code} message={banner.message} />}
+
+        {isVenueCategory(business.business_category) && (
+          <Link
+            href="/nex-native/manage/venue"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 12,
+              padding: "14px 16px",
+              borderRadius: 14,
+              background: "rgba(245,158,11,0.10)",
+              border: "1px solid rgba(245,158,11,0.35)",
+              textDecoration: "none",
+              color: NEX.text,
+              marginBottom: 12,
+              boxShadow: "0 8px 22px rgba(245,158,11,0.18)",
+            }}
+          >
+            <div style={{ minWidth: 0 }}>
+              <div
+                style={{
+                  fontSize: 10,
+                  letterSpacing: "0.24em",
+                  textTransform: "uppercase",
+                  color: "#F59E0B",
+                  fontWeight: 700,
+                  marginBottom: 4,
+                }}
+              >
+                🎉 Venue profile
+              </div>
+              <div style={{ fontSize: 14, fontWeight: 700 }}>
+                Events, capacity, live music, private hire
+              </div>
+              <div
+                style={{ fontSize: 12, color: NEX.textDim, marginTop: 2 }}
+              >
+                Add photos of the space · tell buyers what you can host.
+              </div>
+            </div>
+            <div
+              style={{
+                fontSize: 12,
+                color: "#F59E0B",
+                fontWeight: 700,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Open →
+            </div>
+          </Link>
+        )}
 
         {(business.business_category === "restaurant" ||
           business.business_category === "cafe") && (

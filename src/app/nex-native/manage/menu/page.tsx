@@ -23,6 +23,9 @@ import * as menuService from "@/lib/nex-native/menu-service";
 import {
   NEX_MENU_DIETARY_TAGS,
   NEX_MENU_ALLERGENS,
+  NEX_MENU_PERKS,
+  NEX_MENU_PERK_LABELS,
+  NEX_MENU_PERK_ICONS,
 } from "@/lib/nex-native/menu-service";
 import {
   createMenuSectionAction,
@@ -60,6 +63,8 @@ const SPICE_LABEL: Record<number, string> = {
   1: "Mild",
   2: "Medium",
   3: "Hot",
+  4: "Very Hot",
+  5: "Volcano",
 };
 
 export default async function ManageMenuPage({
@@ -624,8 +629,20 @@ function ItemRow({
           )}
         </div>
 
-        {/* action row · toggles + delete */}
+        {/* action row · edit / toggles / delete */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+          <Link
+            href={`/nex-native/manage/menu/${item.id}`}
+            style={{
+              ...pillButtonStyle,
+              color: NEX.cyan,
+              borderColor: NEX.cyanSoft,
+              background: "rgba(0,175,255,0.10)",
+              textDecoration: "none",
+            }}
+          >
+            Edit dish
+          </Link>
           <form action={toggleAvailBound}>
             <input
               type="hidden"
@@ -792,8 +809,8 @@ function ItemForm({
       </div>
 
       <FormRow label="Spice level">
-        <div style={{ display: "flex", gap: 6 }}>
-          {[0, 1, 2, 3].map((lvl) => (
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+          {[0, 1, 2, 3, 4, 5].map((lvl) => (
             <label
               key={lvl}
               style={{
@@ -890,6 +907,68 @@ function ItemForm({
             </label>
           ))}
         </div>
+      </FormRow>
+
+      <FormRow label="Free perks with this dish">
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+          {NEX_MENU_PERKS.map((perk) => (
+            <label
+              key={perk}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "6px 12px",
+                borderRadius: 999,
+                border: `1px solid ${
+                  perk === "free_delivery"
+                    ? "rgba(22,214,107,0.35)"
+                    : NEX.borderStrong
+                }`,
+                background:
+                  perk === "free_delivery"
+                    ? "rgba(22,214,107,0.10)"
+                    : "rgba(0,0,0,0.28)",
+                color:
+                  perk === "free_delivery" ? "#B8F1CC" : NEX.textDim,
+                fontSize: 11,
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              <input
+                type="checkbox"
+                name="perks"
+                value={perk}
+                style={{ accentColor: NEX.green }}
+              />
+              <span aria-hidden>{NEX_MENU_PERK_ICONS[perk]}</span>
+              {NEX_MENU_PERK_LABELS[perk]}
+            </label>
+          ))}
+        </div>
+        <div
+          style={{
+            marginTop: 8,
+            fontSize: 11,
+            color: NEX.textMute,
+            lineHeight: 1.4,
+          }}
+        >
+          Tick every perk that comes free with this dish · a{" "}
+          <span style={{ color: NEX.green, fontWeight: 700 }}>
+            🚚 Free Delivery
+          </span>{" "}
+          tick shows a bright green badge on the buyer&apos;s dish card so
+          they see it before they scroll.
+        </div>
+        <input
+          type="text"
+          name="perks_note"
+          maxLength={200}
+          placeholder='If you ticked "Other Perk", describe it here (optional)'
+          style={{ ...inputStyle, marginTop: 10 }}
+        />
       </FormRow>
 
       <label

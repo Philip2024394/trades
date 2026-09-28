@@ -550,6 +550,147 @@ export async function updateBusinessCityAndHours(
   return data as NexBusinessRow;
 }
 
+/** Bridge 23b · Update the seller's Events profile jsonb. Booleans
+ *  default false, seat_capacity clamps to a sane range, and the free-
+ *  text field caps at 1000 chars so it can never blow up an About
+ *  page render.
+ *
+ *  Called from the /manage/venue owner page. Non-venue businesses
+ *  can technically call this too · the About surface just won't
+ *  render the section if no fields are set. */
+export async function updateBusinessEventsProfile(
+  id: NexUuid,
+  input: {
+    hosts_parties?: boolean;
+    seat_capacity?: number | null;
+    outside_catering?: boolean;
+    has_live_music_or_dj?: boolean;
+    can_book_private_party?: boolean;
+    has_sound_system_pa?: boolean;
+    other_event_info?: string | null;
+  },
+): Promise<NexBusinessRow> {
+  const clean: Record<string, unknown> = {};
+  if (input.hosts_parties !== undefined) {
+    clean.hosts_parties = !!input.hosts_parties;
+  }
+  if (input.seat_capacity !== undefined) {
+    if (input.seat_capacity == null) {
+      clean.seat_capacity = null;
+    } else if (
+      Number.isFinite(input.seat_capacity) &&
+      input.seat_capacity >= 0
+    ) {
+      clean.seat_capacity = Math.min(Math.floor(input.seat_capacity), 5000);
+    }
+  }
+  if (input.outside_catering !== undefined) {
+    clean.outside_catering = !!input.outside_catering;
+  }
+  if (input.has_live_music_or_dj !== undefined) {
+    clean.has_live_music_or_dj = !!input.has_live_music_or_dj;
+  }
+  if (input.can_book_private_party !== undefined) {
+    clean.can_book_private_party = !!input.can_book_private_party;
+  }
+  if (input.has_sound_system_pa !== undefined) {
+    clean.has_sound_system_pa = !!input.has_sound_system_pa;
+  }
+  if (input.other_event_info !== undefined) {
+    const v = (input.other_event_info ?? "").trim();
+    clean.other_event_info = v.length > 0 ? v.slice(0, 1000) : null;
+  }
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_business")
+    .update({ events_profile: clean })
+    .eq("id", id)
+    .select("*")
+    .single();
+  if (error || !data) {
+    throw new Error(
+      `business-service.updateBusinessEventsProfile: ${error?.message ?? "no row"}`,
+    );
+  }
+  return data as NexBusinessRow;
+}
+
+/** Bridge 23c · Upload a venue photo to Supabase storage and return
+ *  the public URL. Reuses the existing nex-peer-chat-attachments
+ *  bucket (public read, image MIMEs allowed, 25MB cap). Path prefix
+ *  is `venue/<businessId>/…` so we can later run per-business
+ *  cleanup without touching chat uploads.
+ *
+ *  Only accepts images · videos / audio are rejected. Called from
+ *  the /manage/venue gallery editor's file-picker path. */
+export async function uploadVenuePhoto(
+  businessId: NexUuid,
+  file: File,
+): Promise<{ url: string }> {
+  const MAX = 25 * 1024 * 1024;
+  if (file.size > MAX) {
+    throw new Error(`Photo exceeds ${MAX / (1024 * 1024)}MB cap`);
+  }
+  const mime = (file.type || "").toLowerCase();
+  const IMAGE_MIMES: Record<string, string> = {
+    "image/png": "png",
+    "image/jpeg": "jpg",
+    "image/jpg": "jpg",
+    "image/webp": "webp",
+    "image/avif": "avif",
+    "image/gif": "gif",
+    "image/heic": "heic",
+    "image/heif": "heif",
+  };
+  const ext = IMAGE_MIMES[mime];
+  if (!ext) {
+    throw new Error(
+      `Only images allowed (png · jpg · webp · avif · gif · heic) · got ${
+        file.type || "unknown"
+      }`,
+    );
+  }
+  const objectPath = `venue/${businessId}/${Date.now()}-${Math.random()
+    .toString(36)
+    .slice(2, 8)}.${ext}`;
+  const bucket = nexSupabaseAdmin.storage.from("nex-peer-chat-attachments");
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  const { error } = await bucket.upload(objectPath, bytes, {
+    contentType: file.type,
+    upsert: false,
+  });
+  if (error) {
+    throw new Error(`business-service.uploadVenuePhoto: ${error.message}`);
+  }
+  const { data: pub } = bucket.getPublicUrl(objectPath);
+  return { url: pub.publicUrl };
+}
+
+/** Bridge 23b · Overwrite the seller's venue gallery. Client uploads
+ *  URLs one-at-a-time via the storage bucket · this action replaces
+ *  the whole array (order matters · the first URL is used as the
+ *  gallery cover). Caps at 6 URLs · empty array clears. */
+export async function updateBusinessVenueGallery(
+  id: NexUuid,
+  urls: string[],
+): Promise<NexBusinessRow> {
+  const cleaned = urls
+    .map((u) => (typeof u === "string" ? u.trim() : ""))
+    .filter((u) => u.length > 0 && u.length <= 800)
+    .slice(0, 6);
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_business")
+    .update({ venue_gallery: cleaned })
+    .eq("id", id)
+    .select("*")
+    .single();
+  if (error || !data) {
+    throw new Error(
+      `business-service.updateBusinessVenueGallery: ${error?.message ?? "no row"}`,
+    );
+  }
+  return data as NexBusinessRow;
+}
+
 /** Bridge 16a · update the seller's accepted payment methods.
  *  Validates every value against NEX_PAYMENT_METHODS and enforces
  *  at least one selection (cod fallback). */

@@ -45,6 +45,20 @@ interface Props {
   city?: string | null;
   /** Bridge 16e · free-text opening hours · migration 072. */
   hoursDisplay?: string | null;
+  /** Bridge 23b · Events profile · migration 080. Rendered as a
+   *  "Book this venue" panel under About Us when any field is set. */
+  eventsProfile?: {
+    hosts_parties?: boolean;
+    seat_capacity?: number | null;
+    outside_catering?: boolean;
+    has_live_music_or_dj?: boolean;
+    can_book_private_party?: boolean;
+    has_sound_system_pa?: boolean;
+    other_event_info?: string | null;
+  } | null;
+  /** Bridge 23b · Venue photo URLs · rendered as a small grid under
+   *  the events section. */
+  venueGallery?: string[];
 }
 
 export interface SellerDetails {
@@ -70,6 +84,8 @@ export function HeroSidePanel({
   sellerDetails,
   city,
   hoursDisplay,
+  eventsProfile,
+  venueGallery,
 }: Props) {
   const [open, setOpen] = React.useState<PanelKind | null>(null);
   const [mounted, setMounted] = React.useState(false);
@@ -165,6 +181,8 @@ export function HeroSidePanel({
                 sellerDetails={sellerDetails}
                 city={city ?? null}
                 hoursDisplay={hoursDisplay ?? null}
+                eventsProfile={eventsProfile ?? null}
+                venueGallery={venueGallery ?? []}
               />
             )}
             {open === "order" && (
@@ -569,6 +587,8 @@ function AboutContent({
   sellerDetails,
   city,
   hoursDisplay,
+  eventsProfile,
+  venueGallery,
 }: {
   businessName: string;
   businessDescription: string | null;
@@ -577,6 +597,16 @@ function AboutContent({
   sellerDetails: SellerDetails;
   city: string | null;
   hoursDisplay: string | null;
+  eventsProfile: {
+    hosts_parties?: boolean;
+    seat_capacity?: number | null;
+    outside_catering?: boolean;
+    has_live_music_or_dj?: boolean;
+    can_book_private_party?: boolean;
+    has_sound_system_pa?: boolean;
+    other_event_info?: string | null;
+  } | null;
+  venueGallery: string[];
 }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -662,6 +692,14 @@ function AboutContent({
           — every question is welcome.
         </p>
       )}
+
+      {/* Bridge 23b · Events profile · rendered only when at least one
+          venue field is populated so About Us stays clean for non-
+          venue businesses. */}
+      <EventsBlock profile={eventsProfile} />
+
+      {/* Bridge 23b · Venue gallery · 2-column grid of photos. */}
+      <VenueGalleryGrid urls={venueGallery} />
 
       <div
         style={{
@@ -1146,5 +1184,141 @@ function CloseIcon() {
       <line x1="18" y1="6" x2="6" y2="18" />
       <line x1="6" y1="6" x2="18" y2="18" />
     </svg>
+  );
+}
+
+/* Bridge 23b · About-Us events block · renders only when at least
+   one field is set. Each line uses a ✓/– glyph so the list reads
+   at a glance. */
+function EventsBlock({
+  profile,
+}: {
+  profile: {
+    hosts_parties?: boolean;
+    seat_capacity?: number | null;
+    outside_catering?: boolean;
+    has_live_music_or_dj?: boolean;
+    can_book_private_party?: boolean;
+    has_sound_system_pa?: boolean;
+    other_event_info?: string | null;
+  } | null;
+}) {
+  if (!profile) return null;
+  const rows: Array<{ label: string; value: React.ReactNode }> = [];
+  if (profile.hosts_parties)
+    rows.push({ label: "🎉 Parties", value: "Yes — welcome" });
+  if (typeof profile.seat_capacity === "number" && profile.seat_capacity > 0)
+    rows.push({
+      label: "🪑 Seat capacity",
+      value: `${profile.seat_capacity} people`,
+    });
+  if (profile.outside_catering)
+    rows.push({ label: "🚐 Outside catering", value: "Available" });
+  if (profile.has_live_music_or_dj)
+    rows.push({ label: "🎧 Live music / DJ", value: "Yes" });
+  if (profile.can_book_private_party)
+    rows.push({ label: "🔒 Private party bookings", value: "Yes" });
+  if (profile.has_sound_system_pa)
+    rows.push({ label: "🎙 Sound system / PA", value: "Available" });
+  if (rows.length === 0 && !profile.other_event_info?.trim()) return null;
+  return (
+    <div
+      style={{
+        padding: 16,
+        borderRadius: 14,
+        background: "rgba(245,158,11,0.08)",
+        border: "1px solid rgba(245,158,11,0.25)",
+      }}
+    >
+      <div
+        style={{
+          fontSize: 10,
+          letterSpacing: "0.22em",
+          textTransform: "uppercase",
+          color: "#F59E0B",
+          fontWeight: 700,
+          marginBottom: 10,
+        }}
+      >
+        🎉 Book us for an event
+      </div>
+      {rows.length > 0 && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          {rows.map((r) => (
+            <div
+              key={r.label}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr auto",
+                gap: 10,
+                alignItems: "baseline",
+                fontSize: 12,
+                color: "rgba(244,247,252,0.9)",
+              }}
+            >
+              <div>{r.label}</div>
+              <div style={{ color: "#FCD9A8", fontWeight: 700 }}>{r.value}</div>
+            </div>
+          ))}
+        </div>
+      )}
+      {profile.other_event_info?.trim() && (
+        <p
+          style={{
+            margin: rows.length > 0 ? "12px 0 0" : 0,
+            fontSize: 13,
+            lineHeight: 1.6,
+            color: "rgba(244,247,252,0.85)",
+            whiteSpace: "pre-wrap",
+          }}
+        >
+          {profile.other_event_info}
+        </p>
+      )}
+    </div>
+  );
+}
+
+/* Bridge 23b · Venue photo grid · 2-column on mobile, no images means
+   the block collapses. */
+function VenueGalleryGrid({ urls }: { urls: string[] }) {
+  const cleaned = (urls ?? []).filter((u) => !!u && u.trim().length > 0);
+  if (cleaned.length === 0) return null;
+  return (
+    <div>
+      <div
+        style={{
+          fontSize: 10,
+          letterSpacing: "0.22em",
+          textTransform: "uppercase",
+          color: NEX.cyan,
+          fontWeight: 700,
+          marginBottom: 8,
+        }}
+      >
+        📸 Inside the venue
+      </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 8,
+        }}
+      >
+        {cleaned.map((url, i) => (
+          <div
+            key={i}
+            style={{
+              width: "100%",
+              aspectRatio: "1 / 1",
+              borderRadius: 12,
+              background: `url(${url}) center/cover`,
+              border: "1px solid rgba(139,169,209,0.14)",
+            }}
+            aria-hidden
+          />
+        ))}
+      </div>
+    </div>
   );
 }

@@ -333,6 +333,15 @@ export default async function Page({
               currency={product.currency}
               basePricePence={product.price_pence}
               formatPrice={formatPrice}
+              cartInfo={{
+                productId: product.id,
+                productName: product.name,
+                imageUrl: product.image_url ?? galleryUrls[0] ?? null,
+                shopId: business.id,
+                shopSlug: business.slug,
+                shopOwnerAccountId: business.owner_account_id,
+                shopDisplayName: business.display_name,
+              }}
             />
           </section>
         )}

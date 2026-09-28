@@ -87,8 +87,25 @@ export interface NexPeerCartOrderItem {
   currency: string;
   quantity: number;
   variants: string[]; // human labels e.g. ["Black paint", "Body + Summicron"]
+  /** Bridge 23c-3 · frozen perk tokens on this line · seller bubble
+   *  renders the same 🚚 Free Delivery / 🎁 BOGO chips the buyer
+   *  saw at add-time. */
+  perks?: string[];
+  perks_note?: string | null;
   note: string | null;
   image_url: string | null;
+}
+
+export interface NexPeerCartOrderDeliveryAddress {
+  recipient_name: string;
+  phone: string;
+  street: string;
+  street_2: string;
+  city: string;
+  region: string;
+  postal_code: string;
+  country: string;
+  notes: string;
 }
 
 export interface NexPeerCartOrderSnapshot {
@@ -100,6 +117,9 @@ export interface NexPeerCartOrderSnapshot {
   subtotal_pence: number;
   currency: string;
   item_count: number;
+  /** Bridge 22c-2 · structured delivery address block. NULL means the
+   *  buyer sent from a device where it wasn't filled in (legacy carts). */
+  delivery_address?: NexPeerCartOrderDeliveryAddress | null;
 }
 
 /** Product snapshot embedded in an attachment_meta when a peer
@@ -133,6 +153,11 @@ export interface NexPeerMenuItemSnapshot {
   spice_level: number;
   dietary_tags: string[];
   portion_note: string | null;
+  /** Bridge 23a · free-perk tokens attached to the dish · buyer
+   *  bubble renders them as chips (Free Delivery is highlighted). */
+  perks?: string[];
+  /** Bridge 23a · custom note used when perks contains 'other'. */
+  perks_note?: string | null;
 }
 
 /** Window in which a sender can still retract a message. WhatsApp

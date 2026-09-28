@@ -8,13 +8,21 @@
 // button that serialises the shop's lines into cart_payload +
 // submits to sendCartOrderAction.
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
   NEX_CART_STORAGE_KEY,
+  NEX_DELIVERY_ADDRESS_STORAGE_KEY,
+  NEX_DELIVERY_ADDRESS_EMPTY,
+  isDeliveryAddressComplete,
   type NexCartItem,
   type NexCartSendPayload,
+  type NexDeliveryAddress,
 } from "@/lib/nex-native/cart-types";
+import {
+  DeliveryAddressForm,
+  useDeliveryAddress,
+} from "./_delivery-address-form";
 
 const NEX = {
   bg: "#020914",
@@ -66,22 +74,112 @@ function formatPrice(pence: number, currency: string): string {
   return `${currency} ${withCommas}`;
 }
 
+export interface CartClientServerHydration {
+  items: NexCartItem[];
+  delivery_address: NexDeliveryAddress;
+  updated_at: string;
+}
+
 export function CartClient({
   sendAction,
+  saveAction,
+  serverCart,
 }: {
   sendAction: (formData: FormData) => Promise<never> | void;
+  /** Bridge 22c-3 · debounced sync of {items, address} → nex_cart. */
+  saveAction?: (
+    formData: FormData,
+  ) => Promise<
+    { ok: true; updated_at: string } | { ok: false; error: string }
+  >;
+  /** Bridge 22c-3 · server-side snapshot passed from the page loader. */
+  serverCart?: CartClientServerHydration;
 }) {
   const [hydrated, setHydrated] = useState(false);
   const [items, setItems] = useState<NexCartItem[]>([]);
   const [notes, setNotes] = useState<Record<string, string>>({});
+  const { address: deliveryAddress } = useDeliveryAddress();
+  const addressComplete = isDeliveryAddressComplete(deliveryAddress);
+  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const skipNextSync = useRef(true); // don't sync on hydration write
+
+  // Debounced server sync · fires 500ms after the last local change.
+  const scheduleSync = useCallback(
+    (itemsToSync: NexCartItem[], addressToSync: NexDeliveryAddress) => {
+      if (!saveAction) return;
+      if (saveTimer.current) clearTimeout(saveTimer.current);
+      saveTimer.current = setTimeout(() => {
+        const fd = new FormData();
+        fd.set("items", JSON.stringify(itemsToSync));
+        fd.set("delivery_address", JSON.stringify(addressToSync));
+        void saveAction(fd).catch(() => {
+          // Silent failure · client stays optimistic · next mutation
+          // retries. The server is a mirror, not a source of truth
+          // during a session.
+        });
+      }, 500);
+    },
+    [saveAction],
+  );
 
   useEffect(() => {
-    setItems(readCart());
+    const localItems = readCart();
+    const localAddressRaw =
+      typeof window !== "undefined"
+        ? window.localStorage.getItem(NEX_DELIVERY_ADDRESS_STORAGE_KEY)
+        : null;
+
+    // Bridge 22c-3 · Merge server vs local on first mount.
+    // Rule: if server has items and local doesn't, hydrate from server.
+    // If both have items, prefer local (this device edited more recently).
+    // For the address, use whichever side is populated · local wins ties.
+    let seedItems = localItems;
+    let seedAddress: NexDeliveryAddress | null = null;
+    if (localAddressRaw) {
+      try {
+        seedAddress = {
+          ...NEX_DELIVERY_ADDRESS_EMPTY,
+          ...JSON.parse(localAddressRaw),
+        };
+      } catch {
+        seedAddress = null;
+      }
+    }
+    if (serverCart) {
+      if (localItems.length === 0 && serverCart.items.length > 0) {
+        seedItems = serverCart.items;
+        writeCart(serverCart.items);
+      }
+      if (
+        (!seedAddress || !isDeliveryAddressComplete(seedAddress)) &&
+        isDeliveryAddressComplete(serverCart.delivery_address)
+      ) {
+        seedAddress = serverCart.delivery_address;
+        if (typeof window !== "undefined") {
+          window.localStorage.setItem(
+            NEX_DELIVERY_ADDRESS_STORAGE_KEY,
+            JSON.stringify(seedAddress),
+          );
+          window.dispatchEvent(new CustomEvent("nex-delivery-address-changed"));
+        }
+      }
+    }
+    setItems(seedItems);
     setHydrated(true);
+    // Allow syncs from this point forward.
+    skipNextSync.current = false;
+
     const onChange = () => setItems(readCart());
     window.addEventListener("nex-cart-changed", onChange);
     return () => window.removeEventListener("nex-cart-changed", onChange);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Sync items + address to server whenever they change post-hydration.
+  useEffect(() => {
+    if (!hydrated || skipNextSync.current) return;
+    scheduleSync(items, deliveryAddress);
+  }, [items, deliveryAddress, hydrated, scheduleSync]);
 
   const byShop = useMemo(() => {
     const map = new Map<string, NexCartItem[]>();
@@ -138,6 +236,7 @@ export function CartClient({
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+      <DeliveryAddressForm />
       {byShop.map(([shopId, list]) => {
         const first = list[0]!;
         const subtotal = list.reduce(
@@ -154,6 +253,7 @@ export function CartClient({
           shop_display_name: first.shop_display_name,
           currency,
           buyer_notes: noteText.trim() || null,
+          delivery_address: addressComplete ? deliveryAddress : null,
           items: list.map((it) => ({
             kind: it.kind,
             id: it.id,
@@ -162,6 +262,8 @@ export function CartClient({
             currency: it.currency,
             quantity: it.quantity,
             variants: it.variants ?? [],
+            perks: it.perks ?? [],
+            perks_note: it.perks_note ?? null,
             note: it.note?.trim() || null,
             image_url: it.image_url,
           })),
@@ -328,7 +430,17 @@ export function CartClient({
               </div>
               <form
                 action={sendAction}
-                onSubmit={() => {
+                onSubmit={(e) => {
+                  if (!addressComplete) {
+                    e.preventDefault();
+                    document
+                      .querySelector<HTMLElement>("[data-nex-delivery-address]")
+                      ?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center",
+                      });
+                    return;
+                  }
                   // Optimistically clear this shop's items so the
                   // buyer isn't shown the same cart twice · the peer
                   // chat already has the order.
@@ -342,24 +454,27 @@ export function CartClient({
                 />
                 <button
                   type="submit"
+                  disabled={!addressComplete}
                   style={{
                     padding: "12px 18px",
                     borderRadius: 12,
-                    background:
-                      "linear-gradient(180deg, #FF9033 0%, #FF7200 100%)",
-                    border: `1px solid ${NEX.orangeSoft}`,
-                    color: "#0B0F1A",
+                    background: addressComplete
+                      ? "linear-gradient(180deg, #FF9033 0%, #FF7200 100%)"
+                      : "rgba(139,169,209,0.12)",
+                    border: `1px solid ${addressComplete ? NEX.orangeSoft : NEX.borderStrong}`,
+                    color: addressComplete ? "#0B0F1A" : NEX.textMute,
                     fontSize: 12,
                     fontWeight: 800,
                     letterSpacing: "0.08em",
                     textTransform: "uppercase",
-                    cursor: "pointer",
+                    cursor: addressComplete ? "pointer" : "not-allowed",
                     fontFamily: SANS,
-                    boxShadow:
-                      "0 10px 24px rgba(255,114,0,0.35), inset 0 1px 0 rgba(255,255,255,0.28)",
+                    boxShadow: addressComplete
+                      ? "0 10px 24px rgba(255,114,0,0.35), inset 0 1px 0 rgba(255,255,255,0.28)"
+                      : "none",
                   }}
                 >
-                  Send order →
+                  {addressComplete ? "Send order →" : "Add address first"}
                 </button>
               </form>
             </div>
@@ -457,6 +572,51 @@ function CartRow({
             }}
           >
             {item.variants.join(" · ")}
+          </div>
+        )}
+        {(item.perks ?? []).length > 0 && (
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 4,
+              marginBottom: 6,
+            }}
+          >
+            {(item.perks ?? []).map((perk) => {
+              const isFreeDelivery = perk === "free_delivery";
+              const labelMap: Record<string, string> = {
+                bogo: "🎁 BOGO",
+                free_drink: "🥤 Free Drink",
+                free_rice: "🍚 Free Rice",
+                free_fries: "🍟 Free Fries",
+                free_delivery: "🚚 Free Delivery",
+                other: "✨ Perk",
+              };
+              const label =
+                perk === "other" && item.perks_note
+                  ? `✨ ${item.perks_note}`
+                  : labelMap[perk] ?? perk;
+              return (
+                <span
+                  key={perk}
+                  style={{
+                    fontSize: 10,
+                    padding: "2px 8px",
+                    borderRadius: 999,
+                    background: isFreeDelivery
+                      ? "linear-gradient(180deg, #22c55e 0%, #16a34a 100%)"
+                      : "rgba(22,214,107,0.12)",
+                    color: isFreeDelivery ? "#08170D" : "#B8F1CC",
+                    fontWeight: isFreeDelivery ? 800 : 700,
+                    letterSpacing: "0.03em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {label}
+                </span>
+              );
+            })}
           </div>
         )}
         <div

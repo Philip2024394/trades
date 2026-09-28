@@ -14,6 +14,10 @@
 // message body so the seller sees exactly what was requested.
 
 import { useState } from "react";
+import {
+  NEX_CART_STORAGE_KEY,
+  type NexCartItem,
+} from "@/lib/nex-native/cart-types";
 
 const NEX = {
   text: "#F4F7FC",
@@ -37,16 +41,32 @@ export interface PickerVariant {
   stock_status: string | null;
 }
 
+export interface VariantPickerCartInfo {
+  productId: string;
+  productName: string;
+  imageUrl: string | null;
+  shopId: string;
+  shopSlug: string;
+  shopOwnerAccountId: string;
+  shopDisplayName: string;
+}
+
 export function VariantPicker({
   variants,
   currency,
   basePricePence,
   formatPrice,
+  cartInfo,
 }: {
   variants: PickerVariant[];
   currency: string;
   basePricePence: number;
   formatPrice: (pence: number, currency: string) => string;
+  /** Bridge 22d · when set, renders a variant-aware Add to Cart
+   *  button under the picker · picker's internal selection flows
+   *  into the cart line's variants array so the seller sees the
+   *  exact combination the buyer picked. */
+  cartInfo?: VariantPickerCartInfo;
 }) {
   const grouped: Record<string, PickerVariant[]> = {};
   for (const v of variants) {
@@ -55,6 +75,65 @@ export function VariantPicker({
   }
 
   const [selection, setSelection] = useState<Record<string, string>>({});
+  const [addedFlash, setAddedFlash] = useState(false);
+
+  function currentVariantLabels(): string[] {
+    return Object.entries(selection)
+      .map(([axis, variantId]) => {
+        const v = grouped[axis]?.find((x) => x.id === variantId);
+        return v?.name ?? null;
+      })
+      .filter((x): x is string => !!x);
+  }
+
+  function addToCart() {
+    if (!cartInfo) return;
+    try {
+      const raw = window.localStorage.getItem(NEX_CART_STORAGE_KEY);
+      const arr: NexCartItem[] = raw ? JSON.parse(raw) : [];
+      const variantLabels = currentVariantLabels();
+      const dedupeKey = `${cartInfo.shopId}::${cartInfo.productId}::${variantLabels
+        .slice()
+        .sort()
+        .join("|")}`;
+      const idx = arr.findIndex(
+        (x) =>
+          x &&
+          `${x.shop_id}::${x.id}::${(x.variants ?? []).slice().sort().join("|")}` ===
+            dedupeKey,
+      );
+      if (idx >= 0) {
+        arr[idx] = { ...arr[idx]!, quantity: (arr[idx]!.quantity || 1) + 1 };
+      } else {
+        arr.push({
+          key:
+            typeof crypto !== "undefined" && "randomUUID" in crypto
+              ? crypto.randomUUID()
+              : `${dedupeKey}::${Date.now()}`,
+          kind: "product",
+          id: cartInfo.productId,
+          shop_id: cartInfo.shopId,
+          shop_slug: cartInfo.shopSlug,
+          shop_owner_account_id: cartInfo.shopOwnerAccountId,
+          shop_display_name: cartInfo.shopDisplayName,
+          name: cartInfo.productName,
+          price_pence: effectivePence,
+          currency,
+          image_url: cartInfo.imageUrl,
+          quantity: 1,
+          variants: variantLabels,
+          note: null,
+          added_at: Date.now(),
+        });
+      }
+      window.localStorage.setItem(NEX_CART_STORAGE_KEY, JSON.stringify(arr));
+      window.dispatchEvent(new CustomEvent("nex-cart-changed"));
+      setAddedFlash(true);
+      setTimeout(() => setAddedFlash(false), 1400);
+    } catch {
+      // localStorage disabled · silent no-op
+    }
+  }
 
   // Compute effective price · sum of overrides where set, else base.
   const overrides = Object.entries(selection)
@@ -216,6 +295,47 @@ export function VariantPicker({
           {formatPrice(effectivePence, currency)}
         </div>
       </div>
+
+      {cartInfo && (
+        <button
+          type="button"
+          onClick={addToCart}
+          disabled={!!outSelection}
+          data-nex-variant-add-to-cart
+          style={{
+            marginTop: 4,
+            padding: "13px 18px",
+            borderRadius: 14,
+            background: outSelection
+              ? "rgba(139,169,209,0.10)"
+              : addedFlash
+                ? "linear-gradient(180deg, #22c55e 0%, #16a34a 100%)"
+                : "linear-gradient(180deg, #FF9033 0%, #FF7800 100%)",
+            border: outSelection
+              ? `1px solid ${NEX.borderStrong}`
+              : addedFlash
+                ? "1px solid rgba(34,197,94,0.6)"
+                : `1px solid ${NEX.orangeSoft}`,
+            color: outSelection ? NEX.textMute : "#0B0F1A",
+            fontSize: 13,
+            fontWeight: 800,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            cursor: outSelection ? "not-allowed" : "pointer",
+            fontFamily: "inherit",
+            boxShadow: outSelection
+              ? "none"
+              : "0 12px 28px rgba(255,120,0,0.35), inset 0 1px 0 rgba(255,255,255,0.28)",
+            transition: "background 200ms ease",
+          }}
+        >
+          {addedFlash
+            ? "Added ✓"
+            : Object.keys(selection).length > 0
+              ? `Add to Cart · ${currentVariantLabels().join(" · ")}`
+              : "Add to Cart"}
+        </button>
+      )}
     </div>
   );
 }
