@@ -338,7 +338,7 @@ export default function PinkDreamPreviewPage() {
               color: P.softWhite,
             }}
           >
-            Bunny <span aria-hidden>♡</span>
+            Bunny <span aria-hidden>💗</span>
           </div>
         </div>
         {/* Bridge 24m · standard header icons on every theme ·
@@ -447,7 +447,7 @@ function IncomingRow({
     <TimelineRow
       color="#FF4FA3" // hot pink rail = Bunny (theme owner)
       glow="rgba(255, 79, 163, 0.55)"
-      speaker="Bunny ♡"
+      speaker="Bunny 💗"
       body={body}
       time={time}
       extraTop={extraTop}
