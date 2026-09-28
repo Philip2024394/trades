@@ -49,7 +49,7 @@ import { DEFAULT_SITE_GEN_ADAPTER } from "@/lib/nex-native/site-gen-adapter";
 import type { NexBannerPalette, NexBannerStatus } from "@/lib/nex-native/banner-service";
 import { NEX_BANNER_PALETTES, NEX_BANNER_STATUSES } from "@/lib/nex-native/banner-service";
 import * as liveService from "@/lib/nex-native/live-service";
-import { NEX_ACCOUNT_KINDS, NEX_ACCOUNT_TIERS, NEX_CHAT_THEMES, NEX_PRODUCT_STOCK_STATUSES, type NexAccountKind, type NexAccountTier, type NexChatTheme, type NexProductStockStatus } from "@/lib/nex-native/types";
+import { NEX_ACCOUNT_KINDS, NEX_ACCOUNT_TIERS, NEX_CHAT_THEMES, NEX_PRODUCT_STOCK_STATUSES, type NexAccountKind, type NexAccountTier, type NexChatTheme, type NexDailyActivity, type NexProductStockStatus } from "@/lib/nex-native/types";
 import { enqueueNexReply } from "@/lib/nex-native/intelligence/enqueue-nex-reply";
 
 export type ActionResult =
@@ -4344,7 +4344,26 @@ export async function updateProfileAction(formData: FormData): Promise<never> {
   const locationLabel = String(formData.get("location_label") ?? "");
   const skillsRaw = String(formData.get("skills") ?? "");
   const lookingForRaw = String(formData.get("looking_for") ?? "");
-  const isPublic = String(formData.get("is_public") ?? "") === "on";
+  // Bridge 38 · personal profiles are never Directory-listed, so
+  // is_public arrives as a hidden "false" string from the form.
+  // Legacy "on" checkbox format still supported for safety.
+  const isPublicRaw = String(formData.get("is_public") ?? "");
+  const isPublic = isPublicRaw === "on" || isPublicRaw === "true";
+
+  // Bridge 39 · structured day-to-day activity + cascading follow-ups.
+  const dailyActivityRaw = String(formData.get("daily_activity") ?? "").trim();
+  const dailyActivityDetail = {
+    field_of_study: String(formData.get("da_field_of_study") ?? ""),
+    institution: String(formData.get("da_institution") ?? ""),
+    year: String(formData.get("da_year") ?? ""),
+    business: String(formData.get("da_business") ?? ""),
+    industry: String(formData.get("da_industry") ?? ""),
+    company: String(formData.get("da_company") ?? ""),
+    role: String(formData.get("da_role") ?? ""),
+    seeking: String(formData.get("da_seeking") ?? ""),
+    since_month: String(formData.get("da_since_month") ?? ""),
+    note: String(formData.get("da_note") ?? ""),
+  };
 
   let kind: NexAccountKind | null = null;
   if (kindRaw !== "" && kindRaw !== "unset") {
@@ -4364,6 +4383,11 @@ export async function updateProfileAction(formData: FormData): Promise<never> {
       skills: parseCsvList(skillsRaw),
       looking_for: parseCsvList(lookingForRaw),
       is_public: isPublic,
+      // Service layer runs assertDailyActivity (empty / "unset" → null)
+      // and sanitiseDailyActivityDetail (drops empty values). Passing
+      // the raw form strings through is safe.
+      daily_activity: dailyActivityRaw as NexDailyActivity,
+      daily_activity_detail: dailyActivityDetail,
     });
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);

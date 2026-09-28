@@ -145,6 +145,51 @@ export const NEX_ACCOUNT_KIND_LABEL: Record<NexAccountKind, string> = {
   other: "Something else",
 };
 
+/** Bridge 39 · structured day-to-day status · migration 086.
+ *  Cascading follow-up fields live in daily_activity_detail. */
+export type NexDailyActivity =
+  | "student"
+  | "self_employed"
+  | "company_employee"
+  | "unemployed"
+  | "other";
+
+export const NEX_DAILY_ACTIVITIES: readonly NexDailyActivity[] = [
+  "student",
+  "self_employed",
+  "company_employee",
+  "unemployed",
+  "other",
+] as const;
+
+export const NEX_DAILY_ACTIVITY_LABEL: Record<NexDailyActivity, string> = {
+  student: "Student",
+  self_employed: "Self-employed",
+  company_employee: "Company employee",
+  unemployed: "Unemployed",
+  other: "Other",
+};
+
+/** Per-activity follow-up shape · free-form so it can evolve without
+ *  migrations. Every field optional; empty string becomes undefined. */
+export interface NexDailyActivityDetail {
+  // student
+  field_of_study?: string;
+  institution?: string;
+  year?: string;
+  // self_employed
+  business?: string;
+  industry?: string;
+  // company_employee
+  company?: string;
+  role?: string;
+  // unemployed
+  seeking?: string;
+  since_month?: string;
+  // other
+  note?: string;
+}
+
 export interface NexAccountProfileRow {
   account_id: NexUuid;
   kind: NexAccountKind | null;
@@ -159,6 +204,17 @@ export interface NexAccountProfileRow {
    *  nex-avatars Supabase Storage bucket · nullable · UI falls back
    *  to initials when null. Migration 045. */
   avatar_url: string | null;
+  /** Bridge 39 · migration 086 · structured occupation. Null when
+   *  unset · one of NEX_DAILY_ACTIVITIES otherwise. */
+  daily_activity: NexDailyActivity | null;
+  /** Bridge 39 · migration 086 · cascading follow-up fields · shape
+   *  depends on daily_activity. Never null · defaults to {} on DB. */
+  daily_activity_detail: NexDailyActivityDetail;
+  /** Bridge 41 · migration 086 · true only when the current avatar
+   *  was captured through the live-camera + MediaPipe flow (Bridge
+   *  40, deferred). Combined with a completed daily_activity, drives
+   *  the Verified Personal ✓ tick. File-upload paths leave false. */
+  avatar_face_verified: boolean;
   created_at: NexTimestamp;
   updated_at: NexTimestamp;
 }
@@ -176,6 +232,9 @@ export interface NexAccountProfileInsert {
   looking_for?: string[];
   is_public?: boolean;
   avatar_url?: string | null;
+  daily_activity?: NexDailyActivity | null;
+  daily_activity_detail?: NexDailyActivityDetail;
+  avatar_face_verified?: boolean;
 }
 
 /** Patch shape · every field optional · empty string is normalised to null
@@ -190,6 +249,23 @@ export interface NexAccountProfilePatch {
   looking_for?: string[];
   is_public?: boolean;
   avatar_url?: string | null;
+  daily_activity?: NexDailyActivity | null;
+  daily_activity_detail?: NexDailyActivityDetail;
+  avatar_face_verified?: boolean;
+}
+
+/** Bridge 41 · derived predicate · pure function so any surface can
+ *  compute the "Verified Personal ✓" tick from a profile row without
+ *  duplicating the AND logic. Both conditions must hold:
+ *    1. Avatar was captured via the live-camera flow (Bridge 40)
+ *    2. daily_activity is set (Bridge 39)
+ *  Callers that need the tick should read this instead of hand-rolling
+ *  the check. */
+export function isPersonalVerified(
+  profile: Pick<NexAccountProfileRow, "avatar_face_verified" | "daily_activity"> | null,
+): boolean {
+  if (!profile) return false;
+  return profile.avatar_face_verified && profile.daily_activity !== null;
 }
 
 /** Length limits mirror the migration 042 CHECK constraints so the service

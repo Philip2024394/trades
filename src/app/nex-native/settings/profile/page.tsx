@@ -37,6 +37,7 @@ import * as businessService from "@/lib/nex-native/business-service";
 import { updateProfileAction } from "../../_actions";
 import { NexPageHeader } from "../../_page-header";
 import { NexAvatarUploader } from "./_avatar-uploader";
+import { DailyActivitySection } from "./_daily-activity-section";
 import {
   NEX_ACCOUNT_KINDS,
   NEX_ACCOUNT_KIND_LABEL,
@@ -44,6 +45,7 @@ import {
   NEX_PROFILE_HEADLINE_MAX,
   NEX_PROFILE_LOCATION_LABEL_MAX,
   NEX_PROFILE_PROFESSION_MAX,
+  isPersonalVerified,
 } from "@/lib/nex-native/types";
 
 export const runtime = "nodejs";
@@ -320,6 +322,12 @@ function PersonalTab(props: {
         </span>
       </div>
 
+      {/* Bridge 41 · Verified Personal ✓ status · shown always so
+          the user knows what's needed to earn the tick. Green + tick
+          when both conditions met · dashed cyan outline + checklist
+          when either is missing. */}
+      <VerifiedPersonalStatus profile={profile} />
+
       <NexAvatarUploader
         currentAvatarUrl={profile?.avatar_url ?? null}
         displayName={account.display_name}
@@ -339,6 +347,17 @@ function PersonalTab(props: {
         {/* Personal profiles are never in the Directory · force
             is_public=false on save regardless of legacy value. */}
         <input type="hidden" name="is_public" value="false" />
+
+        {/* Bridge 39 · structured day-to-day activity + cascading
+            follow-up fields. Rendered inside a JS-free client-only
+            details/summary tree so the follow-ups can toggle in the
+            browser without state · gracefully degrades to "everything
+            visible" if scripting is disabled. */}
+        <DailyActivitySection
+          initial={profile?.daily_activity ?? null}
+          detail={profile?.daily_activity_detail ?? {}}
+        />
+
         <FieldGroup legend="What best describes what you do?">
           <div style={{ display: "grid", gap: 6 }}>
             <RadioRow
@@ -832,6 +851,127 @@ function TextAreaField(props: {
         }}
       />
     </label>
+  );
+}
+
+/** Bridge 41 · shows the user their current Verified Personal ✓
+ *  status. Two states:
+ *    · verified · green banner + ✓ tick + "Verified Personal ·
+ *      shown on your friend cards".
+ *    · not yet · dashed cyan card + checklist showing the two
+ *      requirements (avatar_face_verified + daily_activity) so the
+ *      user knows exactly what to complete. */
+function VerifiedPersonalStatus(props: {
+  profile: Awaited<
+    ReturnType<typeof accountProfileService.getProfileByAccountId>
+  >;
+}) {
+  const { profile } = props;
+  const verified = isPersonalVerified(profile);
+  const hasFace = !!profile?.avatar_face_verified;
+  const hasActivity = !!profile?.daily_activity;
+
+  if (verified) {
+    return (
+      <div
+        role="status"
+        data-nex-personal-verified
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          padding: "10px 12px",
+          marginBottom: 14,
+          borderRadius: 10,
+          background: "rgba(0,175,255,0.10)",
+          border: `1px solid ${NEX.cyan}`,
+          color: NEX.textPrimary,
+          fontSize: 12,
+          lineHeight: 1.5,
+        }}
+      >
+        <VerifiedTick size={16} />
+        <span>
+          <strong style={{ color: NEX.cyan, fontWeight: 700 }}>
+            Verified Personal ·
+          </strong>{" "}
+          your friends see the ✓ tick on your card. Thanks for
+          confirming you're a real human on NEX.
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      role="note"
+      data-nex-personal-verified="pending"
+      style={{
+        padding: 12,
+        marginBottom: 14,
+        borderRadius: 10,
+        background: "rgba(0,175,255,0.04)",
+        border: `1px dashed ${NEX.cyan}88`,
+        fontSize: 12,
+        color: NEX.textPrimary,
+        lineHeight: 1.5,
+      }}
+    >
+      <div
+        style={{
+          fontSize: 11,
+          fontWeight: 700,
+          letterSpacing: "0.10em",
+          textTransform: "uppercase",
+          color: NEX.cyan,
+          marginBottom: 6,
+        }}
+      >
+        Earn the Verified Personal ✓
+      </div>
+      <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 4 }}>
+        <ChecklistRow done={hasFace} label="Live-camera profile photo (coming soon)" />
+        <ChecklistRow done={hasActivity} label="Fill in what you do day-to-day" />
+      </ul>
+      <p style={{ margin: "8px 0 0", fontSize: 11, color: NEX.textSecondary }}>
+        Both done → your friend cards + chat header pick up the tick
+        automatically.
+      </p>
+    </div>
+  );
+}
+
+function ChecklistRow(props: { done: boolean; label: string }) {
+  return (
+    <li style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <span
+        aria-hidden
+        style={{
+          flexShrink: 0,
+          width: 16,
+          height: 16,
+          borderRadius: "50%",
+          display: "grid",
+          placeItems: "center",
+          background: props.done ? NEX.cyan : "transparent",
+          border: props.done ? "none" : `1px solid ${NEX.cyanFaint}`,
+          color: props.done ? "#0B0F1A" : NEX.textSecondary,
+          fontSize: 10,
+        }}
+      >
+        {props.done ? "✓" : "○"}
+      </span>
+      <span
+        style={{
+          fontSize: 12,
+          color: props.done ? NEX.textSecondary : NEX.textPrimary,
+          textDecoration: props.done ? "line-through" : "none",
+          opacity: props.done ? 0.75 : 1,
+        }}
+      >
+        {props.label}
+      </span>
+    </li>
   );
 }
 
