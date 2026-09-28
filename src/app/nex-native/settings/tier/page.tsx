@@ -20,6 +20,7 @@ import { nexSupabaseAdmin } from "@/lib/nex-native/supabase-admin";
 import { NexPageHeader } from "../../_page-header";
 import type { NexAccountRow } from "@/lib/nex-native/types";
 import { NEX_ACCOUNT_TIER_LABEL } from "@/lib/nex-native/types";
+import { NEX_OFFICIAL_CHAT_HREF } from "@/lib/nex-native/nex-official";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -37,8 +38,9 @@ const NEX = {
   green: "#10b981",
 };
 
-const NEX_OPS_EMAIL = process.env.NEX_OPS_EMAIL ?? "ops@nex.example.com";
-const NEX_OPS_WHATSAPP = process.env.NEX_OPS_WHATSAPP ?? ""; // e.g. "+628123456789"
+// Bridge 31 · 2026-09-28 · retired NEX_OPS_EMAIL + NEX_OPS_WHATSAPP.
+// Upgrade path now runs through the in-app NEX support chat (NEX1)
+// instead of email / WhatsApp. See src/lib/nex-native/nex-official.ts.
 
 // Feature rows for the comparison table. Left string is Gratis · right
 // string is Bisnis. Order matches the sealed doctrine.
@@ -86,20 +88,9 @@ export default async function TierPage() {
       })
     : null;
 
-  // Compose the upgrade mailto so ops receive a clean intent
-  const mailtoSubject = encodeURIComponent(
-    `NEX Bisnis upgrade · ${account.display_name} (${account.nex_handle ?? session.account.id.slice(0, 8)})`,
-  );
-  const mailtoBody = encodeURIComponent(
-    `Hi NEX team,\n\nI'd like to upgrade my account to NEX Bisnis.\n\nAccount: ${account.display_name}\nNEX handle: ${account.nex_handle ?? "(unassigned)"}\nEmail: (my sign-in email)\n\nPlan: (please pick) monthly IDR 99,000 · annual IDR 990,000\n\nPayment: bank transfer receipt attached / to follow.\n\nThanks.`,
-  );
-  const mailtoHref = `mailto:${NEX_OPS_EMAIL}?subject=${mailtoSubject}&body=${mailtoBody}`;
-
-  const whatsappHref = NEX_OPS_WHATSAPP
-    ? `https://wa.me/${NEX_OPS_WHATSAPP.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-        `Halo NEX team, saya ingin upgrade ke NEX Bisnis. Akun: ${account.display_name} · handle: ${account.nex_handle ?? ""}.`,
-      )}`
-    : null;
+  // Bridge 31 · Chat with NEX takes over from mailto + WhatsApp · single
+  // CTA that opens the peer chat surface against the seeded NEX1 support
+  // account. Founder direction 2026-09-28.
 
   return (
     <>
@@ -345,58 +336,42 @@ export default async function TierPage() {
                 </div>
               </section>
 
-              <a
-                href={mailtoHref}
+              <Link
+                href={NEX_OFFICIAL_CHAT_HREF}
                 style={{
                   display: "inline-flex",
                   width: "100%",
-                  minHeight: 52,
+                  minHeight: 56,
+                  flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: 10,
-                  padding: "14px 18px",
+                  gap: 2,
+                  padding: "12px 18px",
                   background: NEX.orange,
                   color: NEX.textPrimary,
                   border: "none",
-                  borderRadius: 8,
+                  borderRadius: 10,
                   fontSize: 14,
                   fontWeight: 600,
-                  letterSpacing: "0.06em",
+                  letterSpacing: "0.04em",
                   textDecoration: "none",
                   marginBottom: 10,
                 }}
-                data-nex-tier-upgrade-email
+                data-nex-tier-upgrade-chat
               >
-                📧 EMAIL NEX TO UPGRADE
-              </a>
-
-              {whatsappHref && (
-                <a
-                  href={whatsappHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <span>💬 Chat with NEX and upgrade today</span>
+                <span
                   style={{
-                    display: "inline-flex",
-                    width: "100%",
-                    minHeight: 48,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 10,
-                    padding: "12px 18px",
-                    background: NEX.panel,
-                    color: NEX.green,
-                    border: `1px solid ${NEX.green}`,
-                    borderRadius: 8,
-                    fontSize: 13,
-                    fontWeight: 500,
+                    fontSize: 11,
+                    fontWeight: 400,
                     letterSpacing: "0.06em",
-                    textDecoration: "none",
+                    textTransform: "uppercase",
+                    opacity: 0.9,
                   }}
-                  data-nex-tier-upgrade-whatsapp
                 >
-                  💬 WHATSAPP NEX TO UPGRADE
-                </a>
-              )}
+                  the world is waiting
+                </span>
+              </Link>
             </>
           )}
 
