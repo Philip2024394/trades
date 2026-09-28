@@ -288,20 +288,20 @@ export default async function Page({
               maxWidth: 520,
             }}
           >
-            <ReachBullet
-              label="Ships to local buyers"
-              on={
-                business.market_reach === "both" ||
-                business.market_reach === "local_only"
-              }
-            />
-            <ReachBullet
-              label="Ships internationally (export)"
-              on={
-                business.market_reach === "both" ||
-                business.market_reach === "export_only"
-              }
-            />
+            {/* Only render the services the seller actually offers.
+                A missing "Ships internationally" is not a claim to
+                strike through · it's just absent. */}
+            {(business.market_reach === "both" ||
+              business.market_reach === "local_only") && (
+              <ReachBullet label="Ships to local buyers" on={true} />
+            )}
+            {(business.market_reach === "both" ||
+              business.market_reach === "export_only") && (
+              <ReachBullet
+                label="Ships internationally (export)"
+                on={true}
+              />
+            )}
           </ul>
           {/* Bridge 16a · buyer-safe payment chips + link to explainer.
               Every chip is a method NEX vouches for as buyer-safe. */}
@@ -1198,79 +1198,6 @@ const ACTIVITY_PALETTE: Record<
  *  explanation. */
 function SafeTradeChipStrip({ methods }: { methods: string[] }) {
   if (!methods || methods.length === 0) return null;
-  const displayable = methods.filter(
-    (m) =>
-      m === "cod" ||
-      m === "qris_delivery" ||
-      m === "courier_cod" ||
-      m === "meetup" ||
-      m === "escrow" ||
-      m === "paypal",
-  );
-  if (displayable.length === 0) return null;
-  return (
-    <div
-      style={{
-        marginTop: 18,
-        paddingTop: 16,
-        borderTop: "1px solid rgba(139,169,209,0.14)",
-        display: "flex",
-        flexDirection: "column",
-        gap: 10,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-          flexWrap: "wrap",
-        }}
-      >
-        <Link
-          href="/nex-native/safe-trade"
-          style={{
-            fontSize: 10,
-            letterSpacing: "0.24em",
-            textTransform: "uppercase",
-            color: "#16D66B",
-            fontWeight: 700,
-            textDecoration: "none",
-            padding: "4px 10px",
-            borderRadius: 999,
-            background: "rgba(22,214,107,0.10)",
-            border: "1px solid rgba(22,214,107,0.35)",
-            whiteSpace: "nowrap",
-          }}
-        >
-          🛡 Safe on NEX
-        </Link>
-        <span
-          style={{
-            fontSize: 12,
-            color: "rgba(139,169,209,0.85)",
-            textShadow: "0 1px 8px rgba(0,0,0,0.5)",
-          }}
-        >
-          Accepts:
-        </span>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 6,
-        }}
-      >
-        {displayable.map((m) => (
-          <SafeTradeChip key={m} slug={m} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function SafeTradeChip({ slug }: { slug: string }) {
   const EMOJI: Record<string, string> = {
     cod: "💵",
     qris_delivery: "📱",
@@ -1280,33 +1207,77 @@ function SafeTradeChip({ slug }: { slug: string }) {
     paypal: "🌏",
   };
   const LABEL: Record<string, string> = {
-    cod: "COD",
+    cod: "Cash on Delivery",
     qris_delivery: "QRIS on delivery",
     courier_cod: "Courier COD",
     meetup: "Meet in person",
-    escrow: "Escrow",
+    escrow: "Escrow (Rekber)",
     paypal: "PayPal G&S",
   };
+  const displayable = methods.filter((m) => EMOJI[m]);
+  if (displayable.length === 0) return null;
   return (
-    <span
+    <div
       style={{
-        display: "inline-flex",
+        marginTop: 18,
+        paddingTop: 16,
+        borderTop: "1px solid rgba(139,169,209,0.14)",
+        display: "flex",
         alignItems: "center",
-        gap: 5,
-        padding: "5px 10px",
-        borderRadius: 999,
-        background: "rgba(6,15,28,0.72)",
-        border: "1px solid rgba(139,169,209,0.24)",
-        fontSize: 11,
-        fontWeight: 600,
-        letterSpacing: "0.01em",
-        color: "rgba(244,247,252,0.9)",
-        textShadow: "0 1px 4px rgba(0,0,0,0.5)",
+        gap: 10,
+        flexWrap: "wrap",
       }}
     >
-      <span aria-hidden>{EMOJI[slug] ?? "•"}</span>
-      {LABEL[slug] ?? slug}
-    </span>
+      <Link
+        href="/nex-native/safe-trade"
+        style={{
+          fontSize: 10,
+          letterSpacing: "0.24em",
+          textTransform: "uppercase",
+          color: "#16D66B",
+          fontWeight: 700,
+          textDecoration: "none",
+          padding: "4px 10px",
+          borderRadius: 999,
+          background: "rgba(22,214,107,0.10)",
+          border: "1px solid rgba(22,214,107,0.35)",
+          whiteSpace: "nowrap",
+        }}
+      >
+        🛡 Safe on NEX
+      </Link>
+      <span
+        style={{
+          fontSize: 12,
+          color: "rgba(139,169,209,0.85)",
+          textShadow: "0 1px 8px rgba(0,0,0,0.5)",
+        }}
+      >
+        Accepts:
+      </span>
+      <div
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+        }}
+      >
+        {displayable.map((m) => (
+          <span
+            key={m}
+            aria-label={LABEL[m]}
+            title={LABEL[m]}
+            style={{
+              fontSize: 16,
+              lineHeight: 1,
+              textShadow: "0 1px 6px rgba(0,0,0,0.55)",
+            }}
+          >
+            {EMOJI[m]}
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -1349,31 +1320,26 @@ function ReachBullet({ label, on }: { label: string; on: boolean }) {
 function HeaderIconLink({
   href,
   ariaLabel,
-  title,
   children,
 }: {
   href: string;
   ariaLabel: string;
-  title: string;
+  /** Kept in the type so callers don't need to change · no longer
+   *  rendered as a browser tooltip so nothing but the icon shows. */
+  title?: string;
   children: React.ReactNode;
 }) {
   return (
     <Link
       href={href}
       aria-label={ariaLabel}
-      title={title}
       style={{
-        width: 32,
-        height: 32,
-        borderRadius: "50%",
-        background: "#0B0F1A",
-        border: "1px solid rgba(255,255,255,0.18)",
-        color: "#FFFFFF",
-        display: "grid",
+        display: "inline-grid",
         placeItems: "center",
+        padding: 6,
+        color: "#FFFFFF",
         textDecoration: "none",
-        boxShadow:
-          "0 4px 12px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08)",
+        filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.65))",
       }}
     >
       {children}
