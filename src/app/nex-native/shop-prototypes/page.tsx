@@ -57,10 +57,11 @@ const DESIGNS: ReadonlyArray<{
   title: string;
   tagline: string;
   render: () => React.JSX.Element;
+  liveHref?: string;
 }> = [
   { id: "01", title: "Classic Tinder", tagline: "Full-bleed image · content overlaid at bottom · orange CTA + chat FAB", render: () => <D01ClassicTinder /> },
   { id: "02", title: "Split Card", tagline: "60/40 image + card · clean typography · no overlay", render: () => <D02SplitCard /> },
-  { id: "03", title: "Story Reel", tagline: "Instagram Stories · progress bars top · story-timer feel", render: () => <D03StoryReel /> },
+  { id: "03", title: "Story Reel", tagline: "Instagram Stories · progress bars top · story-timer feel", render: () => <D03StoryReel />, liveHref: "/nex-native/shop-prototypes/story-reel" },
   { id: "04", title: "Cinemagraph", tagline: "Live pulse background · single centred CTA · maximum focus", render: () => <D04Cinemagraph /> },
   { id: "05", title: "Framed Print", tagline: "Bordered card floating over blurred backdrop · gallery feel", render: () => <D05FramedPrint /> },
   { id: "06", title: "Editorial", tagline: "Magazine layout · serif type · image is the accent, not the star", render: () => <D06Editorial /> },
@@ -183,6 +184,28 @@ export default function ShopPrototypesGallery() {
                 >
                   {d.tagline}
                 </div>
+                {d.liveHref && (
+                  <div style={{ marginTop: 6 }}>
+                    <Link
+                      href={d.liveHref}
+                      style={{
+                        display: "inline-flex",
+                        padding: "5px 12px",
+                        borderRadius: 999,
+                        background: "#FF7200",
+                        color: "#0B0F1A",
+                        fontSize: 10,
+                        fontWeight: 800,
+                        letterSpacing: "0.12em",
+                        textTransform: "uppercase",
+                        textDecoration: "none",
+                        boxShadow: "0 6px 18px rgba(255,114,0,0.4)",
+                      }}
+                    >
+                      ▶ Open live · try gestures
+                    </Link>
+                  </div>
+                )}
               </div>
               <PhoneFrame>{d.render()}</PhoneFrame>
             </section>
