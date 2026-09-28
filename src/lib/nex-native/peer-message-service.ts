@@ -56,7 +56,8 @@ export type NexPeerAttachmentKind =
   | "audio"
   | "product"
   | "menu_item"
-  | "cart_order";
+  | "cart_order"
+  | "product_share";
 
 export interface NexPeerAttachmentMeta {
   duration_ms?: number;
@@ -77,6 +78,38 @@ export interface NexPeerAttachmentMeta {
    *  the seller sees exactly what was ordered even if products are
    *  later edited or archived. */
   cart?: NexPeerCartOrderSnapshot;
+  /** Bridge 49b · when attachment_type='product_share', a snapshot of
+   *  the shared product + shop + the grant that lets the recipient
+   *  claim their discount. Rendered as B4 Swiss NEX Banner. Frozen
+   *  so the banner keeps working even if the product/ladder edits. */
+  product_share?: NexPeerProductShareSnapshot;
+}
+
+/** Bridge 49b · Snapshot embedded in an attachment_meta when a peer
+ *  shares a Direct Price product to a friend or group chat. */
+export interface NexPeerProductShareSnapshot {
+  /** The nex_product_share_grant row id · used at checkout to look
+   *  up whether the grant is still valid + apply the discount. */
+  grant_id: string;
+  business_id: string;
+  business_name: string;
+  business_slug: string;
+  business_location: string | null;
+  product_id: string;
+  product_name: string;
+  product_image_url: string | null;
+  price_pence: number;
+  currency: string;
+  /** +N% off for the RECIPIENT · same for sharer, stored on the grant
+   *  row · shown on the banner as their reward. */
+  receiver_bonus_pct: number;
+  /** ISO timestamp · matches grant.expires_at · banner shows the
+   *  countdown. */
+  expires_at: string;
+  /** Optional personal note from the sharer · 200 chars max. */
+  personal_note: string | null;
+  /** Deep link to the buyer-facing D6 view with grant hydrated. */
+  open_href: string;
 }
 
 export interface NexPeerCartOrderItem {
