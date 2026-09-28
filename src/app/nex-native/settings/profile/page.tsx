@@ -36,7 +36,7 @@ import * as accountProfileService from "@/lib/nex-native/account-profile-service
 import * as businessService from "@/lib/nex-native/business-service";
 import { updateProfileAction } from "../../_actions";
 import { NexPageHeader } from "../../_page-header";
-import { NexAvatarUploader } from "./_avatar-uploader";
+import { NexFaceCameraUploader } from "./_face-camera-uploader";
 import { DailyActivitySection } from "./_daily-activity-section";
 import {
   NEX_ACCOUNT_KINDS,
@@ -328,10 +328,11 @@ function PersonalTab(props: {
           when either is missing. */}
       <VerifiedPersonalStatus profile={profile} />
 
-      <NexAvatarUploader
+      <NexFaceCameraUploader
         currentAvatarUrl={profile?.avatar_url ?? null}
         displayName={account.display_name}
         handle={account.nex_handle}
+        faceVerified={profile?.avatar_face_verified ?? false}
       />
 
       <form
@@ -930,7 +931,7 @@ function VerifiedPersonalStatus(props: {
         Earn the Verified Personal ✓
       </div>
       <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 4 }}>
-        <ChecklistRow done={hasFace} label="Live-camera profile photo (coming soon)" />
+        <ChecklistRow done={hasFace} label="Live-camera profile photo" />
         <ChecklistRow done={hasActivity} label="Fill in what you do day-to-day" />
       </ul>
       <p style={{ margin: "8px 0 0", fontSize: 11, color: NEX.textSecondary }}>

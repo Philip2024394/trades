@@ -4304,9 +4304,18 @@ export async function uploadAvatarAction(formData: FormData): Promise<never> {
     redirectToProfileWithBanner("avatar_url_missing", "Upload succeeded but URL missing.");
   }
 
+  // Bridge 40 · when the file arrived via the live-camera flow with
+  // MediaPipe face detection, the client attaches face_verified=true.
+  // We flip the profile flag alongside the URL so the Verified
+  // Personal ✓ tick can compute correctly. File-upload paths (or
+  // camera-refused fallbacks) leave the flag false.
+  const faceVerifiedRaw = String(formData.get("face_verified") ?? "");
+  const faceVerified = faceVerifiedRaw === "true";
+
   try {
     await accountProfileService.upsertProfile(session.account.id, {
       avatar_url: publicUrl,
+      avatar_face_verified: faceVerified,
     });
   } catch (e) {
     redirectToProfileWithBanner(
