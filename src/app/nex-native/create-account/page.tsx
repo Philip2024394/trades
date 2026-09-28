@@ -239,51 +239,13 @@ export default async function CreateAccountPage({ searchParams }: PageProps) {
             </div>
           </form>
 
-          {/* 8 · OR DIVIDER */}
-          <div
-            style={{
-              marginTop: 22,
-              display: "grid",
-              gridTemplateColumns: "1fr auto 1fr",
-              alignItems: "center",
-              gap: 12,
-              color: NEX.cyan,
-              fontSize: 12,
-              letterSpacing: "0.14em",
-            }}
-          >
-            <span style={{ height: 1, background: NEX.cyanFaint }} />
-            <span>OR</span>
-            <span style={{ height: 1, background: NEX.cyanFaint }} />
-          </div>
+          {/* Bridge 42 · 2026-09-28 · retired "CREATE WITH FACE"
+              alternate signup path + its OR divider. Face-only auth
+              was confusing the primary flow · Founder cut it in
+              favour of a single email + password path. Sign-in from
+              other devices still lives on /nex-native/sign-in. */}
 
-          {/* 9 · CREATE WITH FACE */}
-          <Link
-            href="/nex-native/create-account/face"
-            style={{
-              marginTop: 18,
-              display: "inline-flex",
-              width: "100%",
-              minHeight: 48,
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 10,
-              padding: "12px 18px",
-              background: NEX.panel,
-              color: NEX.cyan,
-              border: `1px solid ${NEX.cyanSoft}`,
-              borderRadius: 8,
-              textDecoration: "none",
-              fontSize: 13,
-              fontWeight: 500,
-              letterSpacing: "0.16em",
-            }}
-          >
-            <FaceScanIcon />
-            CREATE WITH FACE
-          </Link>
-
-          {/* 10 · SIGN-IN AREA */}
+          {/* SIGN-IN AREA */}
           <p
             style={{
               marginTop: 24,
@@ -341,16 +303,3 @@ function Field(props: { label: string; children: React.ReactNode }) {
   );
 }
 
-function FaceScanIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M4 8V6a2 2 0 0 1 2-2h2" />
-      <path d="M16 4h2a2 2 0 0 1 2 2v2" />
-      <path d="M20 16v2a2 2 0 0 1-2 2h-2" />
-      <path d="M8 20H6a2 2 0 0 1-2-2v-2" />
-      <path d="M9 10h.01" />
-      <path d="M15 10h.01" />
-      <path d="M9.5 15c.5.5 1.5 1 2.5 1s2-.5 2.5-1" />
-    </svg>
-  );
-}

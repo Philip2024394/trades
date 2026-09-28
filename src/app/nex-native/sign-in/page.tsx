@@ -2,10 +2,11 @@
 //
 // NEX sign-in surface · dark-navy visual authority.
 // -------------------------------------------------------------------------
-// Same premium NEX brand as /nex-native/create-account and
-// /nex-native/create-account/face. Three ways in:
+// Same premium NEX brand as /nex-native/create-account. Two ways in:
 //   · Email + password (primary form → signInAction)
-//   · Sign in with face  (secondary button → /nex-native/create-account/face)
+//   · Sign in with face  (secondary button · rendered only when
+//     device previously enrolled · nex-has-face cookie · uses the
+//     WebAuthn API routes directly · no /create-account/face route)
 //   · Create account link (bottom → /nex-native/create-account)
 //
 // Signed-in visitors are redirected to their inbox so this page is

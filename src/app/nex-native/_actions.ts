@@ -148,11 +148,12 @@ export async function createNexAccountAction(formData: FormData): Promise<never>
       "Check your email for a confirmation link, then sign in.",
     );
   }
-  // Bridge 2 · after account creation, walk the "what best describes what
-  // you do?" step. The kind route checks for session itself and falls back
-  // to the inbox if the user reloads without one.
-  revalidatePath("/nex-native/create-account/kind");
-  redirect("/nex-native/create-account/kind");
+  // Bridge 42 · 2026-09-28 · after signup, land the user on the
+  // add-to-home-screen welcome. Session is already established by
+  // supabase.auth.signUp above so the welcome page loads for them.
+  // Whichever CTA they hit continues to /nex-native/chat (contacts).
+  revalidatePath("/nex-native/create-account/welcome");
+  redirect("/nex-native/create-account/welcome");
 }
 
 function redirectToOnboardingWithError(code: string, message: string): never {
@@ -4235,10 +4236,10 @@ export async function setProfileKindAction(formData: FormData): Promise<never> {
   }
   revalidatePath("/nex-native/conversations");
   revalidatePath("/nex-native/settings/profile");
-  // Post-signup chain: kind → face enrolment offer → inbox. The face
-  // page presents a deliberate two-button consent · users who don't
-  // want biometric enrolment can decline there and land on /conversations.
-  redirect("/nex-native/create-account/face");
+  // Bridge 42 · face enrolment step retired. Users who manually visit
+  // /kind (no longer part of the auto flow) now continue to the
+  // contacts hub after saving their kind.
+  redirect("/nex-native/chat");
 }
 
 // ---------------------------------------------------------------------------

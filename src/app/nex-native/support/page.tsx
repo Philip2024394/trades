@@ -517,7 +517,7 @@ function AccountHelp() {
       <div style={{ marginTop: 20, display: "grid", gap: 12 }}>
         <HelpCard
           title="Face sign-in isn't working"
-          body="Face sign-in uses WebAuthn tied to a specific device. Sign in with your email/password first, then re-enrol your face on the new device via /nex-native/create-account/face."
+          body="Face sign-in uses WebAuthn tied to a specific device. Sign in with your email and password first · new-device face enrolment is temporarily out of scope while we simplify the sign-in flow. Message NEX if you need us to reset something."
         />
         <HelpCard
           title="I forgot my password"

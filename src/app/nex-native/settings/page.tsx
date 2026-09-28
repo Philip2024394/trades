@@ -6,7 +6,6 @@
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { NexPageHeader } from "../_page-header";
 import { signOutAction } from "../_actions";
@@ -37,9 +36,6 @@ export default async function SettingsIndex() {
   const session = await resolveNexAppSessionFromContext();
   if (!session) redirect("/nex-native/sign-in");
 
-  const jar = await cookies();
-  const hasFace = jar.get("nex-has-face")?.value === "1";
-
   const rows: SettingRow[] = [
     {
       href: "/nex-native/settings/profile",
@@ -61,14 +57,12 @@ export default async function SettingsIndex() {
       title: "Chat theme",
       subtitle: "Pick the theme applied to your chat bubbles",
     },
-    {
-      href: "/nex-native/create-account/face",
-      emoji: "🔒",
-      title: hasFace ? "Face sign-in · enrolled" : "Face sign-in",
-      subtitle: hasFace
-        ? "Add another device or manage · re-scan to update"
-        : "Set up fast return sign-in with your device biometric",
-    },
+    // Bridge 42 · 2026-09-28 · face-sign-in enrolment surface retired.
+    // Previously-enrolled devices still see the "Sign in with face"
+    // button on /sign-in because that reads the nex-has-face cookie
+    // and calls the WebAuthn API directly. New enrolment is out of
+    // scope for now · Founder simplified the auth surface to one
+    // email + password path.
     {
       // Placeholder · sealed 2026-09-27. Deferred until the token ledger
       // + wallet backend exist as a bounded Bridge. Reserves the settings
