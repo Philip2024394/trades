@@ -1175,6 +1175,8 @@ export async function createBusinessAction(formData: FormData): Promise<never> {
   // Bridge 16e · optional profile fields collected during shop create.
   const cityInput = String(formData.get("city") ?? "").trim();
   const hoursDisplayInput = String(formData.get("hours_display") ?? "").trim();
+  // Bridge 16f · category dropdown from onboarding.
+  const categoryInput = String(formData.get("business_category") ?? "").trim();
 
   const session = await resolveNexAppSessionFromContext();
   if (!session) {
@@ -1252,6 +1254,21 @@ export async function createBusinessAction(formData: FormData): Promise<never> {
         console.warn(
           "createBusinessAction · city/hours soft-fail:",
           persistErr,
+        );
+      }
+    }
+    // Bridge 16f · category from onboarding dropdown · non-blocking.
+    if (categoryInput.length > 0) {
+      try {
+        await businessService.updateBusinessCategoryAndKeywords(
+          business.id,
+          { category: categoryInput },
+        );
+      } catch (catErr) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          "createBusinessAction · category soft-fail:",
+          catErr,
         );
       }
     }
