@@ -186,6 +186,16 @@ export interface PortraitBloomMessage {
       eta_minutes?: number;
       free_reason?: string | null;
     } | null;
+    /** Bridge 49b-final · NEX Direct Price discount applied at
+     *  cart-send time · seller sees exact tier + share breakdown. */
+    direct_price?: {
+      tier_pct: number;
+      share_pct: number;
+      applied_pct: number;
+      capped_at_max: boolean;
+      saving_pence: number;
+      total_after_discount_pence: number;
+    } | null;
   } | null;
   /** Bridge 49b · when attachment_type='product_share' this carries
    *  the frozen banner snapshot the sharer sent. Rendered as B4
@@ -2446,6 +2456,96 @@ function MessageCartOrderCard({
           )}
         </div>
       )}
+      {/* Bridge 49b-final · NEX Direct Price discount chip · shows
+          the tier + share breakdown + saving + total-after so the
+          seller sees exactly what the buyer paid vs listed price.
+          Only renders when the cart carries the direct_price block. */}
+      {cart.direct_price && cart.direct_price.applied_pct > 0 && (
+        <div
+          style={{
+            padding: "8px 12px",
+            borderTop: "1px solid rgba(255,114,0,0.30)",
+            background: "rgba(255,114,0,0.10)",
+            display: "flex",
+            flexDirection: "column",
+            gap: 4,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              justifyContent: "space-between",
+              gap: 8,
+            }}
+          >
+            <div
+              style={{
+                fontSize: 9,
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: "#FFB989",
+                fontWeight: 900,
+              }}
+            >
+              🎯 NEX Direct · −{cart.direct_price.applied_pct}%
+              {cart.direct_price.capped_at_max ? " · capped" : ""}
+            </div>
+            <div
+              style={{
+                fontSize: 12,
+                fontWeight: 800,
+                color: "#4CFF7A",
+                letterSpacing: "-0.005em",
+              }}
+            >
+              −{formatBubblePrice(cart.direct_price.saving_pence, cart.currency)}
+            </div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              gap: 6,
+              flexWrap: "wrap",
+            }}
+          >
+            {cart.direct_price.tier_pct > 0 && (
+              <span
+                style={{
+                  fontSize: 9,
+                  letterSpacing: "0.10em",
+                  textTransform: "uppercase",
+                  fontWeight: 700,
+                  color: "#FFB989",
+                  padding: "2px 8px",
+                  borderRadius: 4,
+                  background: "rgba(255,114,0,0.14)",
+                  border: "1px solid rgba(255,114,0,0.35)",
+                }}
+              >
+                Loyalty −{cart.direct_price.tier_pct}%
+              </span>
+            )}
+            {cart.direct_price.share_pct > 0 && (
+              <span
+                style={{
+                  fontSize: 9,
+                  letterSpacing: "0.10em",
+                  textTransform: "uppercase",
+                  fontWeight: 700,
+                  color: "#7DDCFF",
+                  padding: "2px 8px",
+                  borderRadius: 4,
+                  background: "rgba(0,175,255,0.14)",
+                  border: "1px solid rgba(0,175,255,0.35)",
+                }}
+              >
+                Share −{cart.direct_price.share_pct}%
+              </span>
+            )}
+          </div>
+        </div>
+      )}
       {/* Subtotal + shop link */}
       <div
         style={{
@@ -2467,18 +2567,47 @@ function MessageCartOrderCard({
               fontWeight: 800,
             }}
           >
-            Subtotal · {cart.item_count} item{cart.item_count === 1 ? "" : "s"}
+            {cart.direct_price && cart.direct_price.applied_pct > 0
+              ? `Total · ${cart.item_count} item${cart.item_count === 1 ? "" : "s"}`
+              : `Subtotal · ${cart.item_count} item${cart.item_count === 1 ? "" : "s"}`}
           </div>
-          <div
-            style={{
-              fontSize: 14,
-              fontWeight: 800,
-              color: "#FF7800",
-              marginTop: 1,
-            }}
-          >
-            {subtotal}
-          </div>
+          {cart.direct_price && cart.direct_price.applied_pct > 0 ? (
+            <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+              <span
+                style={{
+                  fontSize: 11,
+                  color: "rgba(139,169,209,0.75)",
+                  textDecoration: "line-through",
+                }}
+              >
+                {subtotal}
+              </span>
+              <span
+                style={{
+                  fontSize: 14,
+                  fontWeight: 800,
+                  color: "#FF7800",
+                  marginTop: 1,
+                }}
+              >
+                {formatBubblePrice(
+                  cart.direct_price.total_after_discount_pence,
+                  cart.currency,
+                )}
+              </span>
+            </div>
+          ) : (
+            <div
+              style={{
+                fontSize: 14,
+                fontWeight: 800,
+                color: "#FF7800",
+                marginTop: 1,
+              }}
+            >
+              {subtotal}
+            </div>
+          )}
         </div>
         {href && (
           <a

@@ -352,7 +352,13 @@ export default async function PeerChatPage({
         typeof m.attachment_meta === "object" &&
         "cart" in m.attachment_meta &&
         m.attachment_meta.cart
-          ? m.attachment_meta.cart
+          ? {
+              ...m.attachment_meta.cart,
+              // Bridge 49b-final · pass through direct_price so the
+              // cart-order card renders the discount chip.
+              direct_price:
+                m.attachment_meta.cart.direct_price ?? null,
+            }
           : null,
       attachment_product_share:
         m.attachment_type === "product_share" &&

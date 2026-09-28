@@ -82,10 +82,23 @@ export interface CartClientServerHydration {
   updated_at: string;
 }
 
+/** Bridge 49b-follow · Direct Price preview per shop · maps
+ *  shop_id → { tierPct, sharePct, appliedPct, cappedAtMax }.
+ *  Rendered as a green "You save Rp X" line under each shop's
+ *  subtotal so the buyer sees the discount BEFORE hitting Send.
+ *  Server-authoritative recompute still happens at cart-send time. */
+export interface CartDirectPricePreview {
+  tierPct: number;
+  sharePct: number;
+  appliedPct: number;
+  cappedAtMax: boolean;
+}
+
 export function CartClient({
   sendAction,
   saveAction,
   serverCart,
+  directPricePreviews,
 }: {
   sendAction: (formData: FormData) => Promise<never> | void;
   /** Bridge 22c-3 · debounced sync of {items, address} → nex_cart. */
@@ -96,6 +109,9 @@ export function CartClient({
   >;
   /** Bridge 22c-3 · server-side snapshot passed from the page loader. */
   serverCart?: CartClientServerHydration;
+  /** Bridge 49b-follow · per-shop discount preview from the page
+   *  loader. Empty object when no shops have ladders configured. */
+  directPricePreviews?: Record<string, CartDirectPricePreview>;
 }) {
   const [hydrated, setHydrated] = useState(false);
   const [items, setItems] = useState<NexCartItem[]>([]);
@@ -459,17 +475,100 @@ export function CartClient({
                     fontWeight: 700,
                   }}
                 >
-                  Subtotal · {itemCount} item{itemCount === 1 ? "" : "s"}
+                  {(() => {
+                    const preview = directPricePreviews?.[shopId];
+                    return preview && preview.appliedPct > 0
+                      ? `Total · ${itemCount} item${itemCount === 1 ? "" : "s"}`
+                      : `Subtotal · ${itemCount} item${itemCount === 1 ? "" : "s"}`;
+                  })()}
                 </div>
-                <div
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 800,
-                    color: NEX.orange,
-                  }}
-                >
-                  {formatPrice(subtotal, currency)}
-                </div>
+                {(() => {
+                  const preview = directPricePreviews?.[shopId];
+                  if (!preview || preview.appliedPct <= 0) {
+                    return (
+                      <div style={{ fontSize: 18, fontWeight: 800, color: NEX.orange }}>
+                        {formatPrice(subtotal, currency)}
+                      </div>
+                    );
+                  }
+                  const savingPence = Math.round(
+                    (subtotal * preview.appliedPct) / 100,
+                  );
+                  const totalAfter = subtotal - savingPence;
+                  return (
+                    <>
+                      <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+                        <span
+                          style={{
+                            fontSize: 13,
+                            color: NEX.textDim,
+                            textDecoration: "line-through",
+                          }}
+                        >
+                          {formatPrice(subtotal, currency)}
+                        </span>
+                        <span style={{ fontSize: 18, fontWeight: 800, color: NEX.orange }}>
+                          {formatPrice(totalAfter, currency)}
+                        </span>
+                      </div>
+                      <div
+                        style={{
+                          marginTop: 4,
+                          display: "flex",
+                          gap: 6,
+                          flexWrap: "wrap",
+                          alignItems: "center",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: 9,
+                            letterSpacing: "0.14em",
+                            textTransform: "uppercase",
+                            fontWeight: 900,
+                            color: "#4CFF7A",
+                          }}
+                        >
+                          🎯 NEX Direct · save {formatPrice(savingPence, currency)}
+                        </span>
+                        {preview.tierPct > 0 && (
+                          <span
+                            style={{
+                              fontSize: 9,
+                              letterSpacing: "0.10em",
+                              textTransform: "uppercase",
+                              fontWeight: 700,
+                              color: "#FFB989",
+                              padding: "1px 6px",
+                              borderRadius: 4,
+                              background: "rgba(255,114,0,0.14)",
+                              border: "1px solid rgba(255,114,0,0.35)",
+                            }}
+                          >
+                            Loyalty −{preview.tierPct}%
+                          </span>
+                        )}
+                        {preview.sharePct > 0 && (
+                          <span
+                            style={{
+                              fontSize: 9,
+                              letterSpacing: "0.10em",
+                              textTransform: "uppercase",
+                              fontWeight: 700,
+                              color: "#7DDCFF",
+                              padding: "1px 6px",
+                              borderRadius: 4,
+                              background: "rgba(0,175,255,0.14)",
+                              border: "1px solid rgba(0,175,255,0.35)",
+                            }}
+                          >
+                            Share −{preview.sharePct}%
+                          </span>
+                        )}
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
               <form
                 action={sendAction}

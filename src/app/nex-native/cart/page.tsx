@@ -53,6 +53,34 @@ export default async function CartPage({
   // items they added on other devices.
   const serverCart = await cartService.getServerCart(session.account.id);
 
+  // Bridge 49b-follow · preview the NEX Direct Price discount per
+  // shop in the cart so the client can render the saving line BEFORE
+  // the buyer hits Send. Best-effort · non-fatal per shop · server
+  // remains authoritative at send time.
+  const uniqueShopIds = Array.from(
+    new Set(serverCart.items.map((i) => i.shop_id).filter(Boolean)),
+  );
+  const ladderSvc = await import("@/lib/nex-native/ladder-service");
+  const directPricePreviews: Record<
+    string,
+    Awaited<ReturnType<typeof ladderSvc.resolveAppliedDiscountForBuyer>>
+  > = {};
+  await Promise.all(
+    uniqueShopIds.map(async (shopId) => {
+      try {
+        directPricePreviews[shopId] =
+          await ladderSvc.resolveAppliedDiscountForBuyer(
+            session.account.id,
+            shopId,
+          );
+      } catch {
+        // Shop with no ladder OR service error · client falls back to
+        // "no discount preview" for this shop and lets the send-time
+        // authoritative calc surprise-and-delight.
+      }
+    }),
+  );
+
   return (
     <div
       style={{
@@ -164,6 +192,7 @@ export default async function CartPage({
             delivery_address: serverCart.delivery_address,
             updated_at: serverCart.updated_at,
           }}
+          directPricePreviews={directPricePreviews}
         />
       </main>
     </div>
