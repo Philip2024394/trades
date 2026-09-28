@@ -148,16 +148,30 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
     }
   };
 
+  // Drag detection · only captures the pointer AFTER real movement
+  // (>6px vertical) so taps on inline buttons (Back arrow, ×) keep
+  // firing their onClick normally. Without this guard, setPointerCapture
+  // on pointerdown steals every click inside the header.
+  const DRAG_THRESHOLD = 6;
   const onSheetPointerDown = (e: React.PointerEvent) => {
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    // Don't record a drag if the user pressed a button inside the
+    // header · that press should be treated as a click, not a drag.
+    if ((e.target as HTMLElement).closest("button")) return;
     startPointRef.current = { x: e.clientX, y: e.clientY, onSheet: true };
     dragStartOffsetRef.current = sheetTop;
-    setDragOffset(sheetTop);
+    // NOTE: no setPointerCapture here · we wait until real movement.
   };
   const onSheetPointerMove = (e: React.PointerEvent) => {
     const start = startPointRef.current;
     if (!start || !start.onSheet) return;
     const dy = e.clientY - start.y;
+    // First real movement · capture pointer + freeze the drag offset.
+    if (dragOffset == null && Math.abs(dy) > DRAG_THRESHOLD) {
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+      setDragOffset(dragStartOffsetRef.current + dy);
+      return;
+    }
+    if (dragOffset == null) return;
     const next = Math.min(
       closedTop,
       Math.max(openTop - 20, dragStartOffsetRef.current + dy),
@@ -168,7 +182,10 @@ export function StoryReelLive({ stack }: { stack: readonly SampleProduct[] }) {
     const start = startPointRef.current;
     startPointRef.current = null;
     if (!start || !start.onSheet) return;
-    const finalOffset = dragOffset ?? sheetTop;
+    // If we never crossed the drag threshold, this was a tap · leave
+    // open state alone and let any button onClick take over.
+    if (dragOffset == null) return;
+    const finalOffset = dragOffset;
     setDragOffset(null);
     const midpoint = (openTop + closedTop) / 2;
     setOpen(finalOffset < midpoint);
