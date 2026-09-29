@@ -55,6 +55,44 @@ export interface NexPeerMessageRow {
   /** Bridge 66 · migration 091 · emoji → [account_id, ...] map.
    *  Default {} · toggled via toggleMessageReaction. Never NULL. */
   reactions: NexPeerMessageReactions;
+  /** Bridge 76 · when true, body is the sentinel '(encrypted)' and
+   *  the real content lives in ciphertext / nonce. */
+  encrypted?: boolean;
+  /** Bridge 76 · raw bytes from nacl.box.after · null on legacy plaintext rows. */
+  ciphertext?: string | null;
+  /** Bridge 76 · 24-byte nonce · null on legacy plaintext rows. */
+  nonce?: string | null;
+  /** Bridge 76 · sender's Curve25519 public key at send time,
+   *  base64-encoded · null on legacy plaintext rows. */
+  sender_public_key?: string | null;
+  /** Bridge 76 · sender's device id at send time · null on legacy. */
+  sender_device_id?: string | null;
+  /** Bridge 76 · which recipient device this ciphertext is addressed
+   *  to · null on legacy plaintext rows. */
+  recipient_device_id?: string | null;
+  /** Bridge 76 · groups every fan-out copy of the same logical send. */
+  message_group_id?: string | null;
+  /** Bridge 76/78 · timestamp recipient client set on successful
+   *  decrypt · purge candidate once this is set for encrypted rows. */
+  delivered_at?: string | null;
+}
+
+/** Payload for one row of a fan-out send · sender client generates
+ *  one of these per recipient device (+ one per own device so the
+ *  sender can decrypt their outbox on other devices). */
+export interface EncryptedPeerMessageInsert {
+  conversation_id: NexUuid;
+  sender_account_id: NexUuid;
+  ciphertext: Uint8Array;
+  nonce: Uint8Array;
+  sender_public_key: string;
+  sender_device_id: string;
+  recipient_device_id: string;
+  message_group_id: string;
+  reply_to_id?: NexUuid | null;
+  attachment_url?: string | null;
+  attachment_type?: NexPeerAttachmentKind | null;
+  attachment_meta?: NexPeerAttachmentMeta | null;
 }
 
 // Bridge 66 · re-export client-safe reactions constants + types so
@@ -503,6 +541,108 @@ export async function toggleMessageReaction(
     );
   }
   return next;
+}
+
+/**
+ * Bridge 76 · Insert N encrypted rows atomically as one fan-out send.
+ * ------------------------------------------------------------------
+ * Every payload in `rows` must share the same conversation_id +
+ * sender_account_id + message_group_id (the client is responsible for
+ * grouping them correctly). The sentinel body '(encrypted)' is set
+ * server-side so the existing shell + listing paths continue to work
+ * without decrypting.
+ *
+ * Returns the inserted row ids so the caller can display an optimistic
+ * bubble instantly, then flip it to "delivered" once ack broadcasts
+ * come back from the recipient devices.
+ */
+export async function sendEncryptedPeerMessages(
+  rows: EncryptedPeerMessageInsert[],
+): Promise<NexUuid[]> {
+  if (rows.length === 0) return [];
+
+  const groupIds = new Set(rows.map((r) => r.message_group_id));
+  if (groupIds.size !== 1) {
+    throw new Error("sendEncryptedPeerMessages: all rows must share message_group_id");
+  }
+  const convIds = new Set(rows.map((r) => r.conversation_id));
+  if (convIds.size !== 1) {
+    throw new Error("sendEncryptedPeerMessages: all rows must share conversation_id");
+  }
+  const senderIds = new Set(rows.map((r) => r.sender_account_id));
+  if (senderIds.size !== 1) {
+    throw new Error("sendEncryptedPeerMessages: all rows must share sender_account_id");
+  }
+
+  const conv = await getPeerConversationById(rows[0]!.conversation_id);
+  if (!conv) throw new Error("conversation not found");
+  const sender = rows[0]!.sender_account_id;
+  if (
+    sender !== conv.participant_a_id &&
+    sender !== conv.participant_b_id
+  ) {
+    throw new Error("only conversation participants can send messages");
+  }
+
+  // Postgres bytea is exchanged over PostgREST as base64-encoded text
+  // (the \x prefix hex form doesn't round-trip cleanly on insert). The
+  // Supabase client encodes Uint8Array → base64 automatically when the
+  // column type is bytea, but we prefer to encode explicitly here so
+  // the wire shape is predictable.
+  const encode = (b: Uint8Array): string => bufferToBase64(b);
+
+  const payload = rows.map((r) => ({
+    conversation_id: r.conversation_id,
+    sender_account_id: r.sender_account_id,
+    body: "(encrypted)",
+    encrypted: true,
+    ciphertext: encode(r.ciphertext),
+    nonce: encode(r.nonce),
+    sender_public_key: r.sender_public_key,
+    sender_device_id: r.sender_device_id,
+    recipient_device_id: r.recipient_device_id,
+    message_group_id: r.message_group_id,
+    reply_to_id: r.reply_to_id ?? null,
+    attachment_url: r.attachment_url ?? null,
+    attachment_type: r.attachment_type ?? null,
+    attachment_meta: r.attachment_meta ?? null,
+  }));
+
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_peer_message")
+    .insert(payload)
+    .select("id");
+  if (error) {
+    throw new Error(`sendEncryptedPeerMessages: ${error.message}`);
+  }
+
+  // Bump last_message_at so conversation lists sort correctly.
+  await touchPeerConversation(rows[0]!.conversation_id);
+
+  return (data as Array<{ id: NexUuid }>).map((r) => r.id);
+}
+
+/** Mark an encrypted row as delivered after the recipient's client
+ *  decrypts successfully · triggers Bridge 78 purge eligibility. */
+export async function markPeerMessageDelivered(
+  messageId: NexUuid,
+): Promise<void> {
+  const { error } = await nexSupabaseAdmin
+    .from("nex_peer_message")
+    .update({ delivered_at: new Date().toISOString() })
+    .eq("id", messageId)
+    .is("delivered_at", null);
+  if (error) {
+    // best-effort · never throw from an ack path
+    // eslint-disable-next-line no-console
+    console.warn(`markPeerMessageDelivered soft-fail: ${error.message}`);
+  }
+}
+
+/** Node-safe base64 encoder for Uint8Array · we can't rely on the
+ *  browser's btoa here (service is `server-only`). */
+function bufferToBase64(bytes: Uint8Array): string {
+  return Buffer.from(bytes).toString("base64");
 }
 
 /** Storage bucket that holds peer-chat attachments · created by

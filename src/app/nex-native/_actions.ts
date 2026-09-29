@@ -2408,6 +2408,46 @@ export async function deletePeerMessageAction(
  * client component that just wants to know "OK, registered." Wrapped
  * in the string-return shape existing peer actions use.
  */
+/**
+ * Bridge 76 · Read the active device keys for one account.
+ * --------------------------------------------------------
+ * Client calls this before every encrypted send so it knows which
+ * (device_id, public_key) tuples to fan-out to. Also fetches its own
+ * account's devices in the same call so the sender's other devices
+ * get an encrypted copy for outbox rendering.
+ *
+ * Returns arrays — an empty result is a valid answer meaning "peer
+ * hasn't opened NEX from any device since B74 landed"; the caller
+ * falls back to the plaintext path.
+ */
+export async function listAccountDeviceKeysAction(
+  targetAccountId: string,
+): Promise<{
+  ok: true;
+  devices: Array<{ device_id: string; public_key: string; last_seen_at: string }>;
+} | { ok: false; error: string }> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) return { ok: false, error: "not_signed_in" };
+  if (typeof targetAccountId !== "string" || targetAccountId.length < 8) {
+    return { ok: false, error: "invalid_account_id" };
+  }
+  try {
+    const svc = await import("@/lib/nex-native/device-key-service");
+    const rows = await svc.listDeviceKeys(targetAccountId);
+    return {
+      ok: true,
+      devices: rows.map((r) => ({
+        device_id: r.device_id,
+        public_key: r.public_key,
+        last_seen_at: r.last_seen_at,
+      })),
+    };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return { ok: false, error: msg };
+  }
+}
+
 export async function upsertDeviceKeyAction(
   formData: FormData,
 ): Promise<{ ok: true } | { ok: false; error: string }> {

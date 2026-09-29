@@ -38,6 +38,8 @@ import { PeerTypingClient } from "./_typing-client";
 import { PeerPresenceClient } from "./_presence-client";
 import { PeerMessageEventsClient } from "./_message-events-client";
 import { DeviceKeyHub } from "./_device-key-hub";
+import { E2eDecryptor } from "./_e2e-decryptor";
+import { E2eComposerIntercept } from "./_e2e-composer-intercept";
 import type {
   SideNavContact,
   PendingInvite,
@@ -422,6 +424,18 @@ export default async function PeerChatPage({
       // Bridge 66 · reactions map · defaults to {} when the column
       // is absent (older rows before migration 091 landed).
       reactions: m.reactions ?? {},
+      // Bridge 76 · encryption fields · null on legacy plaintext rows
+      // and on rows addressed to a different recipient device (the
+      // decryptor will drop those from the visible bubble list once
+      // Bridge 76b lands the dedupe).
+      encrypted: m.encrypted ?? false,
+      ciphertext_b64: m.ciphertext ?? null,
+      nonce_b64: m.nonce ?? null,
+      sender_public_key: m.sender_public_key ?? null,
+      sender_device_id: m.sender_device_id ?? null,
+      recipient_device_id: m.recipient_device_id ?? null,
+      sender_account_id: m.sender_account_id,
+      message_group_id: m.message_group_id ?? null,
     };
   });
 
@@ -541,6 +555,19 @@ export default async function PeerChatPage({
           + its public key is registered on the server. Foundation for
           E2E encryption (Bridges 75-78). Silent · no user-visible UI. */}
       <DeviceKeyHub />
+      {/* Bridge 76 · decrypt inbound E2E messages on hydration and
+          replace the '(encrypted)' sentinel with plaintext in the
+          bubble body · fires delivered-ack on success. */}
+      <E2eDecryptor />
+      {/* Bridge 76 · intercept composer submits · encrypt + POST when
+          both parties have device keys · silent plaintext fallback
+          when they don't. Disabled for NEX1 per doctrine. */}
+      <E2eComposerIntercept
+        conversationId={conversation.id}
+        peerAccountId={peer.id}
+        selfAccountId={session.account.id}
+        disabled={isNexOfficialAccount(peer.id)}
+      />
     </>
   );
 }

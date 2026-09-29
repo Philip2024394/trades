@@ -221,6 +221,17 @@ export interface PortraitBloomMessage {
   /** Bridge 66 · reactions map · emoji → [account_id, ...]. Empty
    *  object when there are no reactions on this message. */
   reactions?: Record<string, string[]>;
+  /** Bridge 76 · when true, `body` is the sentinel '(encrypted)' and
+   *  the encryption fields below carry the payload for client-side
+   *  decrypt. */
+  encrypted?: boolean;
+  ciphertext_b64?: string | null;
+  nonce_b64?: string | null;
+  sender_public_key?: string | null;
+  sender_device_id?: string | null;
+  recipient_device_id?: string | null;
+  sender_account_id?: string | null;
+  message_group_id?: string | null;
 }
 
 export interface PortraitBloomContextChip {
@@ -979,6 +990,16 @@ export function PortraitBloomShell({
                       }
                       data-nex-bloom-msg-layout={layoutStyle}
                       data-nex-msg-id={m.id}
+                      /* Bridge 76 · encryption payload for client-side
+                         decrypt. Read by _e2e-decryptor.tsx which
+                         replaces the body text on hydration. */
+                      data-nex-msg-encrypted={m.encrypted ? "true" : undefined}
+                      data-nex-msg-ct={m.ciphertext_b64 ?? undefined}
+                      data-nex-msg-nonce={m.nonce_b64 ?? undefined}
+                      data-nex-msg-sender-pub={m.sender_public_key ?? undefined}
+                      data-nex-msg-sender-dev={m.sender_device_id ?? undefined}
+                      data-nex-msg-sender-acc={m.sender_account_id ?? undefined}
+                      data-nex-msg-recipient-dev={m.recipient_device_id ?? undefined}
                       style={{
                         position: "relative",
                         padding: m.deleted_for_everyone
@@ -1212,6 +1233,10 @@ export function PortraitBloomShell({
                       ) : null}
                       {m.body && (
                         <div
+                          /* Bridge 76 · marker so the decryptor can
+                             replace the '(encrypted)' sentinel with
+                             the plaintext once decryption succeeds. */
+                          data-nex-msg-body={m.id}
                           style={{
                             // Free legibility insurance for edge cases
                             // (bright portrait zones + light text).
