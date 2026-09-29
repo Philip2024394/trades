@@ -221,6 +221,12 @@ export interface PortraitBloomMessage {
   /** Bridge 66 · reactions map · emoji → [account_id, ...]. Empty
    *  object when there are no reactions on this message. */
   reactions?: Record<string, string[]>;
+  /** Bridge 81 · when this row's attachment is E2E encrypted, the
+   *  envelope from attachment_meta.envelope is projected here so the
+   *  shell can render a placeholder + let _e2e-decryptor swap it for
+   *  a blob URL after client-side decryption. Base64-encoded JSON to
+   *  keep the DOM attribute compact + safe. */
+  attachment_envelope_b64?: string | null;
   /** Bridge 76 · when true, `body` is the sentinel '(encrypted)' and
    *  the encryption fields below carry the payload for client-side
    *  decrypt. */
@@ -1225,6 +1231,35 @@ export function PortraitBloomShell({
                           share={m.attachment_product_share}
                           hasBody={!!m.body}
                         />
+                      ) : m.attachment_envelope_b64 &&
+                        (m.attachment_type === "image" ||
+                          m.attachment_type === "video" ||
+                          m.attachment_type === "audio") ? (
+                        /* Bridge 81 · encrypted attachment placeholder ·
+                           _e2e-decryptor reads the envelope, decrypts
+                           the ciphertext, and swaps this placeholder for
+                           the actual media element with a blob URL. */
+                        <div
+                          data-nex-encrypted-attach={m.attachment_envelope_b64}
+                          data-nex-encrypted-attach-kind={m.attachment_type}
+                          data-nex-encrypted-attach-sender={m.sender_account_id ?? undefined}
+                          style={{
+                            width: "100%",
+                            aspectRatio: m.attachment_type === "audio" ? "5 / 1" : "3 / 2",
+                            borderRadius: 12,
+                            background: "linear-gradient(135deg, rgba(0,175,255,0.08), rgba(4,20,36,0.55))",
+                            border: "1px solid rgba(0,175,255,0.25)",
+                            display: "grid",
+                            placeItems: "center",
+                            marginBottom: m.body ? 6 : 0,
+                            fontSize: 12,
+                            color: "rgba(139,169,209,0.75)",
+                            letterSpacing: "0.06em",
+                            fontWeight: 600,
+                          }}
+                        >
+                          🔒 Decrypting…
+                        </div>
                       ) : m.attachment_url &&
                         (m.attachment_type === "image" ||
                           m.attachment_type === "video" ||

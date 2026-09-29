@@ -425,6 +425,21 @@ export default async function PeerChatPage({
       // Bridge 66 · reactions map · defaults to {} when the column
       // is absent (older rows before migration 091 landed).
       reactions: m.reactions ?? {},
+      // Bridge 81 · project the attachment envelope (if any) as
+      // base64-encoded JSON for the _e2e-decryptor to consume from
+      // a data attribute. Base64 keeps the DOM attribute compact
+      // and side-steps quoting issues.
+      attachment_envelope_b64: (() => {
+        const meta = m.attachment_meta;
+        if (!meta || typeof meta !== "object") return null;
+        const env = (meta as Record<string, unknown>).envelope;
+        if (!env || typeof env !== "object") return null;
+        try {
+          return Buffer.from(JSON.stringify(env), "utf-8").toString("base64");
+        } catch {
+          return null;
+        }
+      })(),
       // Bridge 76 · encryption fields · null on legacy plaintext rows
       // and on rows addressed to a different recipient device (the
       // decryptor will drop those from the visible bubble list once

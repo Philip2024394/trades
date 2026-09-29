@@ -29,6 +29,12 @@ import {
   getSharedSecret,
   sealWithSharedSecret,
 } from "./shared-secret";
+import {
+  buildEnvelope,
+  wrapContentKey,
+  type AttachmentEnvelope,
+} from "./attachment-envelope";
+import type { UploadedEncryptedAttachment } from "./encrypted-attachment-upload";
 import { listAccountDeviceKeysAction } from "@/app/nex-native/_actions";
 
 export interface EncryptedSendOptions {
@@ -43,6 +49,12 @@ export interface EncryptedSendOptions {
     | "product" | "menu_item" | "cart_order" | "product_share"
     | null;
   attachmentMeta?: unknown;
+  /** Bridge 81 · when set, the caller has pre-uploaded an encrypted
+   *  attachment via uploadEncryptedAttachment. This function wraps
+   *  the content key for every recipient device, builds the envelope,
+   *  and includes it in attachment_meta.envelope. Sets attachment_url
+   *  to the storage URL + attachment_type to the media kind. */
+  encryptedAttachment?: UploadedEncryptedAttachment | null;
 }
 
 export interface EncryptedSendResult {
@@ -126,6 +138,44 @@ export async function sendEncryptedPeerMessage(
     ...selfRes.devices.map((d) => ({ ...d, accountId: opts.selfAccountId })),
   ];
 
+  // 4a. Build the attachment envelope once (if any) · wraps the
+  // content key for every target device so each recipient can unwrap.
+  let attachmentUrl: string | null = opts.attachmentUrl ?? null;
+  let attachmentType = opts.attachmentType ?? null;
+  let attachmentMeta: unknown = opts.attachmentMeta ?? null;
+  let envelope: AttachmentEnvelope | null = null;
+  if (opts.encryptedAttachment) {
+    const enc = opts.encryptedAttachment;
+    const wrappedKeys = targets.map((t) =>
+      wrapContentKey(
+        enc.contentKey,
+        self,
+        t.accountId,
+        t.device_id,
+        t.public_key,
+      ),
+    );
+    envelope = buildEnvelope({
+      storageUrl: enc.storageUrl,
+      contentNonce: enc.contentNonce,
+      senderPublicKey: selfPubB64,
+      senderDeviceId: self.deviceId,
+      wrappedKeys,
+      contentType: enc.contentType,
+      sizeBytes: enc.sizeBytes,
+    });
+    attachmentUrl = enc.storageUrl;
+    attachmentType = enc.kind;
+    // Merge the envelope into any pre-existing attachment_meta so
+    // callers can still smuggle extra hints (e.g. dimensions) alongside.
+    const base =
+      opts.attachmentMeta && typeof opts.attachmentMeta === "object"
+        ? { ...(opts.attachmentMeta as Record<string, unknown>) }
+        : {};
+    base.envelope = envelope;
+    attachmentMeta = base;
+  }
+
   try {
     for (const t of targets) {
       const secret = getSharedSecret(
@@ -144,9 +194,9 @@ export async function sendEncryptedPeerMessage(
         sender_device_id: self.deviceId,
         recipient_device_id: t.device_id,
         reply_to_id: opts.replyToId ?? null,
-        attachment_url: opts.attachmentUrl ?? null,
-        attachment_type: opts.attachmentType ?? null,
-        attachment_meta: opts.attachmentMeta ?? null,
+        attachment_url: attachmentUrl,
+        attachment_type: attachmentType,
+        attachment_meta: attachmentMeta,
       });
     }
   } catch (e) {

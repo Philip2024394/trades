@@ -29,6 +29,11 @@ import {
 } from "@/lib/nex-native/crypto/encrypted-receive";
 import { ensureDeviceKey } from "@/lib/nex-native/crypto/device-key";
 import { putMessage } from "@/lib/nex-native/crypto/message-store";
+import {
+  fetchAndDecryptAttachment,
+  isAttachmentEnvelope,
+  type AttachmentEnvelope,
+} from "@/lib/nex-native/crypto/attachment-envelope";
 
 export interface E2eDecryptorProps {
   conversationId: string;
@@ -134,9 +139,51 @@ export function E2eDecryptor(props: E2eDecryptorProps): null {
       }
     };
 
+    // Also process encrypted attachments (Bridge 81) · these have a
+    // `[data-nex-encrypted-attach]` placeholder that we replace with
+    // the decrypted media element.
+    const decryptedAttachIds = new Set<string>();
+    const runAttachmentsOnce = async () => {
+      const dev = await ensureDeviceKey();
+      if (cancelled) return;
+      const nodes = document.querySelectorAll<HTMLElement>(
+        "[data-nex-encrypted-attach]",
+      );
+      for (const node of Array.from(nodes)) {
+        const raw = node.dataset.nexEncryptedAttach;
+        const kind = node.dataset.nexEncryptedAttachKind;
+        const senderId = node.dataset.nexEncryptedAttachSender;
+        if (!raw || !kind || !senderId) continue;
+        const nodeKey = `${senderId}:${raw.slice(0, 32)}`;
+        if (decryptedAttachIds.has(nodeKey)) continue;
+        decryptedAttachIds.add(nodeKey);
+        try {
+          const envelope = JSON.parse(atob(raw)) as AttachmentEnvelope;
+          if (!isAttachmentEnvelope(envelope)) continue;
+          const result = await fetchAndDecryptAttachment(envelope, dev, senderId);
+          if (cancelled) return;
+          if (!result) {
+            node.textContent = "🔒 Can't decrypt · wrong device or removed";
+            continue;
+          }
+          const blob = new Blob([new Uint8Array(result.bytes)], {
+            type: result.contentType,
+          });
+          const url = URL.createObjectURL(blob);
+          replaceAttachmentPlaceholder(node, kind, url);
+        } catch {
+          decryptedAttachIds.delete(nodeKey); // allow retry
+        }
+      }
+    };
+
     // Run once on mount, then on every DOM mutation that adds bubbles.
     void runOnce();
-    const obs = new MutationObserver(() => { void runOnce(); });
+    void runAttachmentsOnce();
+    const obs = new MutationObserver(() => {
+      void runOnce();
+      void runAttachmentsOnce();
+    });
     obs.observe(document.body, { childList: true, subtree: true });
 
     return () => {
@@ -157,4 +204,47 @@ function cssEscape(s: string): string {
     return CSS.escape(s);
   }
   return s.replace(/["\\]/g, "\\$&");
+}
+
+/** Replace the placeholder div with an img/video/audio element
+ *  pointing at the blob URL. Element choice matches the sender's
+ *  attachment kind. */
+function replaceAttachmentPlaceholder(
+  node: HTMLElement,
+  kind: string,
+  blobUrl: string,
+): void {
+  // Reuse the placeholder's parent slot · replace its inner content.
+  node.innerHTML = "";
+  node.removeAttribute("style");
+  node.style.borderRadius = "12px";
+  node.style.overflow = "hidden";
+  node.style.background = "#000";
+  let el: HTMLElement;
+  if (kind === "video") {
+    const v = document.createElement("video");
+    v.src = blobUrl;
+    v.controls = true;
+    v.playsInline = true;
+    v.style.width = "100%";
+    v.style.display = "block";
+    el = v;
+  } else if (kind === "audio") {
+    const a = document.createElement("audio");
+    a.src = blobUrl;
+    a.controls = true;
+    a.style.width = "100%";
+    a.style.display = "block";
+    el = a;
+  } else {
+    const img = document.createElement("img");
+    img.src = blobUrl;
+    img.alt = "";
+    img.style.width = "100%";
+    img.style.display = "block";
+    img.decoding = "async";
+    el = img;
+  }
+  node.appendChild(el);
+  node.setAttribute("data-nex-encrypted-attach-decrypted", "true");
 }
