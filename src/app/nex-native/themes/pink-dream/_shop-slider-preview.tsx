@@ -42,6 +42,12 @@ interface Item {
    *  counter when the list has more than 1. Cards show only the
    *  first image. Empty list falls back to the 🌸 emoji tile. */
   imageUrls: string[];
+  /** Bridge 60 · one-tap in-stock flag · defaults to true. Seller
+   *  toggles this off from their dashboard when a product runs out ·
+   *  buyer sees a red "Sold out" badge on the card + a warning in
+   *  the detail view. Cuts "kak, ada?" chat volume without adding
+   *  seller-side complexity. */
+  inStock?: boolean;
   /** Bridge 54k · MVP spec block · every field is optional so both
    *  products and menu items can populate whichever subset applies.
    *  Products typically set condition/colors/sizes/deliveryLabel.
@@ -127,6 +133,7 @@ const MOCK_PRODUCTS: Item[] = [
     imageUrls: [
       "https://images.unsplash.com/photo-1544441893-675973e31985?w=800&h=534&fit=crop",
     ],
+    inStock: false,
     condition: "new",
     variantCategory: "accessory",
     colors: [
@@ -276,6 +283,7 @@ const MOCK_MENU: Item[] = [
     imageUrls: [
       "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=800&h=534&fit=crop",
     ],
+    inStock: false,
     spiceLevel: 0,
     dietary: ["Vegetarian"],
     perks: ["Free drink with order"],
@@ -887,6 +895,43 @@ function PinkCard({ item, onView }: { item: Item; onView: () => void }) {
             🌸
           </div>
         )}
+        {/* Bridge 60 · Sold-out badge · top-right of the image ·
+           only renders when seller has toggled inStock=false from
+           their dashboard. Grey overlay dims the image so the whole
+           card reads as unavailable at a glance. */}
+        {item.inStock === false && (
+          <>
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "rgba(23,18,31,0.55)",
+                backdropFilter: "grayscale(0.35)",
+                WebkitBackdropFilter: "grayscale(0.35)",
+              }}
+            />
+            <span
+              aria-label="Sold out"
+              style={{
+                position: "absolute",
+                top: 8,
+                left: 8,
+                padding: "3px 8px",
+                borderRadius: 999,
+                background: "linear-gradient(135deg, #FF5A6C, #E11D48)",
+                color: "#FFF5FA",
+                fontSize: 9,
+                fontWeight: 900,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                boxShadow: "0 3px 10px rgba(225,29,72,0.5)",
+              }}
+            >
+              Sold out
+            </span>
+          </>
+        )}
         {/* Bridge 54e · pink View pill sits over the lower edge of
            the image · gradient scrim behind it keeps the text
            legible over bright photos. */}
@@ -1233,38 +1278,69 @@ function ItemDetailBody({ item }: { item: Item }) {
         {item.description}
       </p>
 
-      {/* Bridge 59 · founder direction 2026-09-29 · simplified slider ·
-         no variant pickers · no spec chips · every item just shows
-         image, name, price, description, and one universal delivery
-         line. Delivery cost is quoted in chat, not on the card. */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-          padding: "12px 14px",
-          marginBottom: 18,
-          borderRadius: 12,
-          background: "rgba(34,227,122,0.08)",
-          border: "1px solid rgba(34,227,122,0.35)",
-        }}
-      >
-        <span aria-hidden style={{ fontSize: 18 }}>🚚</span>
+      {/* Bridge 59/60 · single info line above the CTAs · either the
+         universal green "free collection · delivery in chat" pill or
+         a red sold-out warning when the seller has toggled the item
+         off. Both are one-liner status pills · no variant matrix. */}
+      {item.inStock === false ? (
         <div
           style={{
-            fontSize: 12,
-            color: "#FFF5FA",
-            lineHeight: 1.5,
-            fontWeight: 600,
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            padding: "12px 14px",
+            marginBottom: 18,
+            borderRadius: 12,
+            background: "rgba(225,29,72,0.10)",
+            border: "1px solid rgba(255,90,108,0.45)",
           }}
         >
-          <span style={{ color: "#22E37A", fontWeight: 800 }}>
-            Free collection
-          </span>
-          <span style={{ opacity: 0.7 }}> · </span>
-          <span>delivery quoted in chat</span>
+          <span aria-hidden style={{ fontSize: 18 }}>🚫</span>
+          <div
+            style={{
+              fontSize: 12,
+              color: "#FFF5FA",
+              lineHeight: 1.5,
+              fontWeight: 600,
+            }}
+          >
+            <span style={{ color: "#FF5A6C", fontWeight: 800 }}>
+              Sold out
+            </span>
+            <span style={{ opacity: 0.7 }}> · </span>
+            <span>message the seller to check when it&apos;s back</span>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            padding: "12px 14px",
+            marginBottom: 18,
+            borderRadius: 12,
+            background: "rgba(34,227,122,0.08)",
+            border: "1px solid rgba(34,227,122,0.35)",
+          }}
+        >
+          <span aria-hidden style={{ fontSize: 18 }}>🚚</span>
+          <div
+            style={{
+              fontSize: 12,
+              color: "#FFF5FA",
+              lineHeight: 1.5,
+              fontWeight: 600,
+            }}
+          >
+            <span style={{ color: "#22E37A", fontWeight: 800 }}>
+              Free collection
+            </span>
+            <span style={{ opacity: 0.7 }}> · </span>
+            <span>delivery quoted in chat</span>
+          </div>
+        </div>
+      )}
 
       <div
         style={{
