@@ -26,6 +26,9 @@
 
 import * as React from "react";
 import { createPortal } from "react-dom";
+import { useRouter, usePathname } from "next/navigation";
+import { uploadEncryptedAttachment } from "@/lib/nex-native/crypto/encrypted-attachment-upload";
+import { stashEncryptedAttachmentKey } from "@/lib/nex-native/crypto/encrypted-attachment-stash";
 
 export type CaptureKind = "camera" | "video" | "voice";
 
@@ -35,8 +38,14 @@ export interface MediaCaptureHandle {
 
 interface Props {
   /** Server Action bound with peerAccountId · takes a FormData with
-   *  a single "attachment_file" field. */
+   *  a single "attachment_file" field. Used for the PLAINTEXT
+   *  fallback path when encrypted upload is disabled or fails. */
   uploadAction: (formData: FormData) => Promise<never> | void | Promise<void>;
+  /** Bridge 88 · when true, route the file through the client-side
+   *  encrypted upload path (nacl.secretbox + POST ciphertext) instead
+   *  of the plaintext server action. Silent fallback to the plaintext
+   *  action on any failure. Disable for NEX1 (no E2E per doctrine). */
+  encryptedUploadEnabled?: boolean;
 }
 
 const KIND_COPY: Record<CaptureKind, { verb: string; icon: string }> = {
@@ -46,7 +55,7 @@ const KIND_COPY: Record<CaptureKind, { verb: string; icon: string }> = {
 };
 
 export const MediaCapture = React.forwardRef<MediaCaptureHandle, Props>(
-  function MediaCapture({ uploadAction }, ref) {
+  function MediaCapture({ uploadAction, encryptedUploadEnabled }, ref) {
     const cameraFormRef = React.useRef<HTMLFormElement | null>(null);
     const videoFormRef = React.useRef<HTMLFormElement | null>(null);
     const voiceFormRef = React.useRef<HTMLFormElement | null>(null);
@@ -57,6 +66,9 @@ export const MediaCapture = React.forwardRef<MediaCaptureHandle, Props>(
     const [uploading, setUploading] = React.useState<CaptureKind | null>(null);
     const [mounted, setMounted] = React.useState(false);
     React.useEffect(() => setMounted(true), []);
+
+    const router = useRouter();
+    const pathname = usePathname();
 
     React.useImperativeHandle(
       ref,
@@ -80,12 +92,45 @@ export const MediaCapture = React.forwardRef<MediaCaptureHandle, Props>(
         kind: CaptureKind,
       ) =>
       (e: React.ChangeEvent<HTMLInputElement>) => {
-        // Only trigger overlay + submit when a file was actually
-        // selected · user hitting Cancel returns an empty FileList.
-        if (!e.currentTarget.files || e.currentTarget.files.length === 0) {
+        const files = e.currentTarget.files;
+        if (!files || files.length === 0) return;
+        setUploading(kind);
+        const file = files[0]!;
+
+        // Bridge 88 · encrypted-upload path when enabled. Reads the
+        // file client-side, encrypts with nacl.secretbox + a random
+        // content key, POSTs ciphertext to the encrypted endpoint,
+        // stashes the content key in sessionStorage keyed by the
+        // returned URL, then router.replaces() so the composer picks
+        // up the attachment (with attachment_encrypted=1 flag).
+        //
+        // Silent fallback to the plaintext form action on any failure
+        // so a hiccup in the encrypted path doesn't block sending.
+        if (encryptedUploadEnabled) {
+          void (async () => {
+            try {
+              const enc = await uploadEncryptedAttachment({ file });
+              stashEncryptedAttachmentKey(enc.storageUrl, {
+                contentKey: Array.from(enc.contentKey),
+                contentNonce: Array.from(enc.contentNonce),
+                contentType: enc.contentType,
+                sizeBytes: enc.sizeBytes,
+                kind: enc.kind,
+              });
+              const qs = new URLSearchParams({
+                attachment_url: enc.storageUrl,
+                attachment_type: enc.kind,
+                attachment_encrypted: "1",
+              });
+              router.replace(`${pathname}?${qs.toString()}`, { scroll: false });
+              setUploading(null);
+            } catch {
+              // Fall back to the plaintext server action.
+              formRef.current?.requestSubmit();
+            }
+          })();
           return;
         }
-        setUploading(kind);
         formRef.current?.requestSubmit();
       };
 

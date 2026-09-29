@@ -84,6 +84,7 @@ export default async function PeerChatPage({
     delete_error?: string;
     attachment_url?: string;
     attachment_type?: string;
+    attachment_encrypted?: string;
     upload_error?: string;
     lang?: string;
   }>;
@@ -251,6 +252,10 @@ export default async function PeerChatPage({
           url: attachUrl,
           kind: attachKind,
           clearHref: `/nex-native/chat/peer/${peer.id}`,
+          // Bridge 88 · flag encrypted so the composer smuggles a
+          // hidden field and E2eComposerIntercept looks up the
+          // stashed content key in sessionStorage.
+          encrypted: sp.attachment_encrypted === "1",
         }
       : null;
 
@@ -494,6 +499,7 @@ export default async function PeerChatPage({
       deleteAction={bindDelete}
       uploadAction={bindUpload}
       pendingAttachment={pendingAttachment}
+      encryptedUploadEnabled={!isNexOfficialAccount(peer.id)}
       peerShop={peerShop}
       sendCartOrderAction={sendCartOrderAction}
       productInquiryAction={bindProductInquiry}

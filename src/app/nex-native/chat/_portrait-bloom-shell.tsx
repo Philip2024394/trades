@@ -336,7 +336,14 @@ export interface PortraitBloomShellProps {
     url: string;
     kind: "image" | "video" | "audio";
     clearHref: string;
+    /** Bridge 88 · true when this attachment came in through the
+     *  encrypted-upload path · composer smuggles the flag into the
+     *  send form so E2eComposerIntercept picks up the stashed key. */
+    encrypted?: boolean;
   } | null;
+  /** Bridge 88 · when true, media-capture routes files through the
+   *  client-side encrypted upload path. Skip for NEX1 (support). */
+  encryptedUploadEnabled?: boolean;
   /** When present, the header renders a shop icon top-right that
    *  opens the peer's product grid bottom sheet. Populated by the
    *  peer chat page after fetching the peer's live products +
@@ -437,6 +444,7 @@ export function PortraitBloomShell({
   wallpaperConfig,
   uploadAction,
   pendingAttachment,
+  encryptedUploadEnabled,
   peerShop,
   sendCartOrderAction,
   productInquiryAction,
@@ -1384,6 +1392,7 @@ export function PortraitBloomShell({
               replyTarget={replyTarget ?? null}
               uploadAction={uploadAction}
               pendingAttachment={pendingAttachment ?? null}
+              encryptedUploadEnabled={encryptedUploadEnabled}
             />
           </div>
         </div>

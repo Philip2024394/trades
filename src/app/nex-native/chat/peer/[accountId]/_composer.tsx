@@ -70,7 +70,16 @@ interface PeerComposerProps {
     url: string;
     kind: "image" | "video" | "audio";
     clearHref: string;
+    /** Bridge 88 · true when the pending attachment came in through
+     *  the encrypted-upload path · composer smuggles this into the
+     *  send form so E2eComposerIntercept knows to look up the content
+     *  key from sessionStorage. */
+    encrypted?: boolean;
   } | null;
+  /** Bridge 88 · when true, the media-capture flow routes files
+   *  through the client-side encrypted upload path. Disable for
+   *  NEX1 (support chat is not E2E per doctrine). */
+  encryptedUploadEnabled?: boolean;
 }
 
 export function PeerComposer({
@@ -80,6 +89,7 @@ export function PeerComposer({
   replyTarget,
   uploadAction,
   pendingAttachment,
+  encryptedUploadEnabled,
 }: PeerComposerProps) {
   const formRef = React.useRef<HTMLFormElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
@@ -235,7 +245,11 @@ export function PeerComposer({
         />
       )}
       {uploadAction && (
-        <MediaCapture ref={mediaCaptureRef} uploadAction={uploadAction} />
+        <MediaCapture
+          ref={mediaCaptureRef}
+          uploadAction={uploadAction}
+          encryptedUploadEnabled={encryptedUploadEnabled}
+        />
       )}
       {recorderKind && (
         <MediaRecorderModal
@@ -366,6 +380,17 @@ export function PeerComposer({
               name="attachment_type"
               value={pendingAttachment.kind}
             />
+            {/* Bridge 88 · flag the send form so E2eComposerIntercept
+                looks up the stashed content key in sessionStorage
+                instead of routing this attachment through the
+                plaintext server action. */}
+            {pendingAttachment.encrypted && (
+              <input
+                type="hidden"
+                name="attachment_encrypted"
+                value="1"
+              />
+            )}
             <div
               style={{
                 display: "flex",

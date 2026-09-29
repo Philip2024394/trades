@@ -25,6 +25,10 @@ import { useRouter } from "next/navigation";
 import {
   sendEncryptedPeerMessage,
 } from "@/lib/nex-native/crypto/encrypted-send";
+import {
+  readEncryptedAttachmentKey,
+  clearEncryptedAttachmentKey,
+} from "@/lib/nex-native/crypto/encrypted-attachment-stash";
 
 const ATTACH_MAX_ATTEMPTS = 5;
 const ATTACH_INTERVAL_MS = 200;
@@ -55,14 +59,46 @@ export function E2eComposerIntercept(
     const onSubmit = (evt: SubmitEvent) => {
       const form = evt.currentTarget as HTMLFormElement | null;
       if (!form) return;
-      // If the URL already carries an attachment, defer to the
-      // plaintext path — binary encryption isn't in v1 yet.
-      const url = new URL(window.location.href);
-      if (url.searchParams.get("attachment_url")) return;
 
       const fd = new FormData(form);
       const bodyText = String(fd.get("body") ?? "").trim();
-      if (!bodyText) return;
+      const attachmentUrl = String(fd.get("attachment_url") ?? "").trim() || null;
+      const attachmentType = String(fd.get("attachment_type") ?? "").trim() || null;
+      const attachmentEncrypted = String(fd.get("attachment_encrypted") ?? "") === "1";
+
+      // Bridge 88 · If the form has a plaintext attachment (no
+      // encrypted flag), we can't E2E-send it without re-uploading ·
+      // defer to the plaintext path so binary bytes still ship.
+      if (attachmentUrl && !attachmentEncrypted) return;
+
+      // Nothing to send · defer.
+      if (!bodyText && !attachmentUrl) return;
+
+      // Bridge 88 · pull the stashed content key if this is an
+      // encrypted attachment · falls back to plaintext form if the
+      // stash is missing (tab expired / user cleared sessionStorage).
+      let encryptedAttachment = null as null | {
+        storageUrl: string;
+        storagePath: string;
+        contentType: string;
+        sizeBytes: number;
+        contentKey: Uint8Array;
+        contentNonce: Uint8Array;
+        kind: "image" | "video" | "audio";
+      };
+      if (attachmentUrl && attachmentEncrypted) {
+        const stashed = readEncryptedAttachmentKey(attachmentUrl);
+        if (!stashed) return; // fall through to plaintext form (unlikely path)
+        encryptedAttachment = {
+          storageUrl: attachmentUrl,
+          storagePath: attachmentUrl, // not needed at send time
+          contentType: stashed.contentType,
+          sizeBytes: stashed.sizeBytes,
+          contentKey: new Uint8Array(stashed.contentKey),
+          contentNonce: new Uint8Array(stashed.contentNonce),
+          kind: stashed.kind,
+        };
+      }
 
       // Speculative: intercept, try encrypted send; on any signal that
       // E2E isn't available fall back to the plaintext path by
@@ -79,8 +115,9 @@ export function E2eComposerIntercept(
           conversationId: props.conversationId,
           peerAccountId: props.peerAccountId,
           selfAccountId: props.selfAccountId,
-          plaintext: bodyText,
+          plaintext: bodyText || (encryptedAttachment ? "" : bodyText),
           replyToId,
+          encryptedAttachment,
         });
         if (outcome.ok) {
           setStatus("idle");
@@ -94,6 +131,17 @@ export function E2eComposerIntercept(
             )?.set;
             setter?.call(textarea, "");
             textarea.dispatchEvent(new Event("input", { bubbles: true }));
+          }
+          // Bridge 88 · clear the sessionStorage stash for this
+          // attachment · the content key is no longer needed once
+          // the wrapped copies are on the wire, and holding it in
+          // sessionStorage past send is a small leak surface.
+          if (encryptedAttachment) {
+            clearEncryptedAttachmentKey(encryptedAttachment.storageUrl);
+            // Also clear the URL query state so a browser back doesn't
+            // re-attach the ciphertext.
+            const cleanUrl = window.location.pathname;
+            window.history.replaceState({}, "", cleanUrl);
           }
           // Bring the conversation back from the server so the new
           // (encrypted) row lands in the message list.
