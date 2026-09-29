@@ -4586,6 +4586,11 @@ export async function adminSetAccountTierAction(formData: FormData): Promise<nev
   const emailRaw = String(formData.get("email") ?? "").trim().toLowerCase();
   const tierRaw = String(formData.get("tier") ?? "").trim();
   const monthsRaw = String(formData.get("months") ?? "1").trim();
+  // Bridge 57c · subscription_plan on the same admin form so ops
+  // records WHICH package the buyer paid for (drives the tier-page
+  // label). "auto" means derive from tier + months (default rules
+  // below · keeps ops onboarding a Bisnis-only workflow quick).
+  const planRaw = String(formData.get("subscription_plan") ?? "auto").trim();
 
   if (!emailRaw) redirectToAdminTierWithBanner("missing_email", "enter an account email");
   if (!NEX_ACCOUNT_TIERS.includes(tierRaw as NexAccountTier)) {
@@ -4595,6 +4600,13 @@ export async function adminSetAccountTierAction(formData: FormData): Promise<nev
   const months = Number(monthsRaw);
   if (!Number.isFinite(months) || months < 0 || months > 120) {
     redirectToAdminTierWithBanner("invalid_months", "months must be a number 0-120");
+  }
+  const validPlans = new Set(["auto", "buy", "ringan", "bisnis", "custom", "none"]);
+  if (!validPlans.has(planRaw)) {
+    redirectToAdminTierWithBanner(
+      "invalid_plan",
+      `unknown subscription_plan '${planRaw}'`,
+    );
   }
 
   // Look up the target account by email → supabase auth → nex_account
@@ -4628,24 +4640,85 @@ export async function adminSetAccountTierAction(formData: FormData): Promise<nev
     }
   }
 
+  // Bridge 57c · resolve subscription_plan. "auto" picks a sensible
+  // default given the tier + months: bisnis subscription for paid
+  // tiers, null (gratis) for downgrades. Ops can override explicitly
+  // for ringan / buy / custom / none.
+  let subscriptionPlan: string | null;
+  if (planRaw === "none" || tier === "gratis") {
+    subscriptionPlan = null;
+  } else if (planRaw === "auto") {
+    subscriptionPlan = tier === "bisnis" || tier === "pro" ? "bisnis" : null;
+  } else {
+    subscriptionPlan = planRaw;
+  }
+
   const upd = await nexSupabaseAdmin
     .from("nex_account")
-    .update({ tier, bisnis_expires_at: bisnisExpiresAt })
+    .update({
+      tier,
+      bisnis_expires_at: bisnisExpiresAt,
+      subscription_plan: subscriptionPlan,
+    })
     .eq("id", target.id);
   if (upd.error) {
     redirectToAdminTierWithBanner("update_failed", upd.error.message);
   }
 
+  // Bridge 57c · drop a confirmation message from NEX1 into the
+  // buyer's peer chat so they see the activation land in-app. Best-
+  // effort · a failure here doesn't undo the tier update.
+  if (tier !== "gratis") {
+    try {
+      const { NEX_OFFICIAL_ACCOUNT_ID } = await import(
+        "@/lib/nex-native/nex-official"
+      );
+      const conv =
+        await peerConversationService.getOrCreatePeerConversation(
+          NEX_OFFICIAL_ACCOUNT_ID,
+          target.id,
+        );
+      const planLabel =
+        subscriptionPlan === "ringan"
+          ? "Themes Ringan"
+          : subscriptionPlan === "custom"
+            ? "Own Theme Request"
+            : subscriptionPlan === "buy"
+              ? "Buy a theme"
+              : "NEX Bisnis";
+      const expiresLine = bisnisExpiresAt
+        ? `Renews on ${bisnisExpiresAt.slice(0, 10)}.`
+        : "Lifetime access · no expiry.";
+      const body = `🎉 Your ${planLabel} plan is now active. ${expiresLine} Head to /settings/theme to pick your look. Any questions, message us right here.`;
+      await peerMessageService.sendPeerMessage({
+        conversation_id: conv.id,
+        sender_account_id: NEX_OFFICIAL_ACCOUNT_ID,
+        body,
+        attachment_url: null,
+        attachment_type: null,
+        attachment_meta: null,
+      });
+    } catch (e) {
+      console.warn(
+        "[admin-set-tier] activation confirmation message failed",
+        e instanceof Error ? e.message : e,
+      );
+    }
+  }
+
+  const planTag =
+    subscriptionPlan ? ` · plan=${subscriptionPlan}` : "";
   const successMsg =
     tier === "gratis"
-      ? `${target.display_name} (${emailRaw}) → gratis`
+      ? `${target.display_name} (${emailRaw}) → gratis${planTag}`
       : `${target.display_name} (${emailRaw}) → ${tier}${
           bisnisExpiresAt
             ? ` · expires ${bisnisExpiresAt.slice(0, 10)}`
             : " · indefinite"
-        }`;
+        }${planTag}`;
 
   revalidatePath("/nex-native/admin/tier");
+  revalidatePath("/nex-native/settings/tier");
   redirectToAdminTierWithBanner("tier_set", successMsg);
 }
 

@@ -22,6 +22,22 @@ import {
   NEX_ACCOUNT_TIER_LABEL,
 } from "@/lib/nex-native/types";
 
+// Bridge 57c · subscription_plan options for the admin form ·
+// mirror the pricing ladder + include "auto" and "none" for ops
+// speed. "auto" resolves to bisnis for paid tiers, null for gratis.
+const PLAN_OPTIONS: ReadonlyArray<{
+  value: string;
+  label: string;
+  hint: string;
+}> = [
+  { value: "auto", label: "Auto", hint: "derive from tier · Bisnis if paid, none if Gratis" },
+  { value: "bisnis", label: "Bisnis · Rp 39k/mo", hint: "full catalog + slider" },
+  { value: "ringan", label: "Ringan · Rp 15k/mo", hint: "rotating 5 themes" },
+  { value: "buy", label: "Buy a theme · Rp 25k", hint: "one-time purchase" },
+  { value: "custom", label: "Own Theme · Rp 1jt", hint: "bespoke brand theme" },
+  { value: "none", label: "None (gratis)", hint: "clears subscription_plan" },
+];
+
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -258,6 +274,24 @@ export default async function AdminTierPage({ searchParams }: PageProps) {
               style={inputStyle}
               data-nex-admin-tier-months
             />
+
+            {/* Bridge 57c · pick the paid package label separately
+               from the effective tier · drives the buyer-facing
+               "Themes Ringan" vs "NEX Bisnis" label on their
+               /settings/tier page. */}
+            <Label>Subscription plan (buyer-facing label)</Label>
+            <select
+              name="subscription_plan"
+              defaultValue="auto"
+              style={{ ...inputStyle, appearance: "auto" }}
+              data-nex-admin-tier-plan
+            >
+              {PLAN_OPTIONS.map((p) => (
+                <option key={p.value} value={p.value}>
+                  {p.label} · {p.hint}
+                </option>
+              ))}
+            </select>
 
             <button
               type="submit"
