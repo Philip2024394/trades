@@ -40,6 +40,7 @@ import { PeerMessageEventsClient } from "./_message-events-client";
 import { DeviceKeyHub } from "./_device-key-hub";
 import { E2eDecryptor } from "./_e2e-decryptor";
 import { E2eComposerIntercept } from "./_e2e-composer-intercept";
+import { ArchivePanel } from "./_archive-panel";
 import type {
   SideNavContact,
   PendingInvite,
@@ -566,6 +567,15 @@ export default async function PeerChatPage({
       <E2eComposerIntercept
         conversationId={conversation.id}
         peerAccountId={peer.id}
+        selfAccountId={session.account.id}
+        disabled={isNexOfficialAccount(peer.id)}
+      />
+      {/* Bridge 79 · surface IDB-only archived messages (Bridge 77
+          cached rows the server has since purged via Bridge 78) as a
+          floating pill + modal. Non-invasive · doesn't touch the shell. */}
+      <ArchivePanel
+        conversationId={conversation.id}
+        peerDisplayName={peer.display_name}
         selfAccountId={session.account.id}
         disabled={isNexOfficialAccount(peer.id)}
       />
