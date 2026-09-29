@@ -225,7 +225,7 @@ export default async function WelcomePage() {
               boxShadow: "0 12px 26px rgba(255,114,0,0.35)",
             }}
           >
-            Continue to your contacts →
+            Start chatting · pick your theme →
           </Link>
 
           <p

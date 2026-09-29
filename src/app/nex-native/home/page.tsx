@@ -23,6 +23,7 @@ import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as accountProfileService from "@/lib/nex-native/account-profile-service";
 import * as businessService from "@/lib/nex-native/business-service";
 import type { NexAccountKind } from "@/lib/nex-native/types";
+import { NEX_COMMERCE_ENABLED } from "@/lib/nex-native/launch-flags";
 import { NexPageHeader } from "../_page-header";
 
 export const runtime = "nodejs";
@@ -46,10 +47,20 @@ interface TileCopy {
   subtitle: string;
 }
 
-/** Doorway 2 (shop / work / journey) copy per account kind. Defaults to
- *  "My shop" when no kind has been chosen yet — that keeps the merchant
- *  path visible for the pilot's dominant use case. */
+/** Doorway 2 (shop / work / journey / themes) copy per account kind.
+ *  Bridge 58 · Phase 1 launch · when commerce is off, tile 2 always
+ *  points at the theme picker so first-run users go straight to the
+ *  actual paid product (themes). Commerce-on falls back to the
+ *  original merchant/professional/journey routing. */
 function shopTile(kind: NexAccountKind | null, hasBusiness: boolean): TileCopy {
+  if (!NEX_COMMERCE_ENABLED) {
+    return {
+      href: "/nex-native/settings/theme",
+      emoji: "🎨",
+      title: "Your look",
+      subtitle: "Pick a chat theme · mascots · effects · try premium free for 7 days",
+    };
+  }
   if (kind === "professional") {
     return {
       href: "/nex-native/settings/profile",
@@ -88,6 +99,17 @@ function shopTile(kind: NexAccountKind | null, hasBusiness: boolean): TileCopy {
 }
 
 function healthTile(kind: NexAccountKind | null): TileCopy {
+  // Bridge 58 · Phase 1 · when commerce is off, replace commerce-
+  // flavoured "orders · products · sales" subtitles with a clean
+  // profile-only line so no shop language leaks on the home hub.
+  if (!NEX_COMMERCE_ENABLED) {
+    return {
+      href: "/nex-native/settings/profile",
+      emoji: "👤",
+      title: "Your profile",
+      subtitle: "Photo · occupation · privacy · account",
+    };
+  }
   const subtitle =
     kind === "business_owner"
       ? "Orders · products · profile completeness"
