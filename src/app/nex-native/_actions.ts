@@ -112,6 +112,12 @@ export async function createNexAccountAction(formData: FormData): Promise<never>
     );
   }
 
+  // Bridge 82 (reworded 2026-09-29) · No explicit consent checkbox ·
+  // Founder direction: NEX leads industry standards, doesn't ask
+  // users to opt into risk. Legal terms in /nex-native/about/terms.
+  // The zero_knowledge_ack_at column is still stamped below at
+  // account creation to record the timestamp for provenance.
+
   const supabase = await nexAppSsrServerClient();
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -137,6 +143,18 @@ export async function createNexAccountAction(formData: FormData): Promise<never>
           phone_country_code: phoneCountryCode,
           phone_national_number: phoneNationalNumber,
         });
+      }
+      // Bridge 82 · stamp the zero-knowledge acknowledgment so the
+      // doctrine trail is legally clean · SQL-only column update
+      // (account-service.createAccount doesn't take this field yet).
+      if (acc?.id) {
+        try {
+          const { nexSupabaseAdmin } = await import("@/lib/nex-native/supabase-admin");
+          await nexSupabaseAdmin
+            .from("nex_account")
+            .update({ zero_knowledge_ack_at: new Date().toISOString() })
+            .eq("id", acc.id);
+        } catch { /* non-fatal · signup already succeeded */ }
       }
       // Bridge 62 · welcome message from NEX1 · sealed 2026-09-29.
       // Fires once per account · new signups land on /chat with NEX1

@@ -214,7 +214,10 @@ export default async function CreateAccountPage({ searchParams }: PageProps) {
                 />
               </Field>
 
-              {/* 6 · SECURITY MESSAGE */}
+              {/* 6 · SECURITY MESSAGE · Bridge 82 reworded 2026-09-29 ·
+                  Founder direction: no consent modal · position NEX as
+                  proactively industry-leading on privacy vs AI bots +
+                  fast-moving threats · legal detail lives in Terms of Use. */}
               <div
                 style={{
                   marginTop: 8,
@@ -229,7 +232,40 @@ export default async function CreateAccountPage({ searchParams }: PageProps) {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
                 </svg>
-                <span>Private. Secure. Only you.</span>
+                <span>
+                  Zero-knowledge messaging ·{" "}
+                  <Link
+                    href="/nex-native/about/privacy"
+                    style={{ color: NEX.orange, textDecoration: "none", fontWeight: 600 }}
+                  >
+                    How NEX protects you
+                  </Link>
+                </span>
+              </div>
+              <div
+                style={{
+                  marginTop: 10,
+                  textAlign: "center",
+                  fontSize: 11,
+                  color: NEX.textSecondary,
+                  lineHeight: 1.5,
+                }}
+              >
+                By creating an account you agree to our{" "}
+                <Link
+                  href="/nex-native/about/terms"
+                  style={{ color: NEX.orange, textDecoration: "none" }}
+                >
+                  Terms of Use
+                </Link>{" "}
+                and{" "}
+                <Link
+                  href="/nex-native/about/privacy"
+                  style={{ color: NEX.orange, textDecoration: "none" }}
+                >
+                  Privacy pledge
+                </Link>
+                .
               </div>
             </div>
 
