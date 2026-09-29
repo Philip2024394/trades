@@ -3329,6 +3329,43 @@ export async function updateChatThemeAction(formData: FormData): Promise<never> 
   redirect(`/nex-native/settings/theme?${qs.toString()}`);
 }
 
+/** Bridge 56g · start the one-shot 7-day premium-theme trial.
+ *  Called from the "Try 7 days free" pill on the tier page. Sets
+ *  themes_trial_used_at (server-side, atomic) then redirects to the
+ *  theme picker with a success banner so the buyer picks their trial
+ *  theme immediately. */
+export async function startThemesTrialAction(
+  formData: FormData,
+): Promise<never> {
+  const packageId = String(formData.get("package_id") ?? "").trim();
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) {
+    redirect("/nex-native/sign-in?next=/nex-native/settings/tier");
+  }
+  const validPackages = new Set(["buy", "ringan", "bisnis"]);
+  const cleanPackageId = validPackages.has(packageId) ? packageId : "bisnis";
+  const result = await accountService.startThemesTrial(
+    session.account.id,
+    cleanPackageId,
+  );
+  if (!result.ok) {
+    const qs = new URLSearchParams({
+      trial_error:
+        result.reason === "already_used"
+          ? "You've already used your free trial · one per account."
+          : "Something went wrong · please try again.",
+    });
+    redirect(`/nex-native/settings/tier?${qs.toString()}`);
+  }
+  revalidatePath("/nex-native/settings/tier");
+  revalidatePath("/nex-native/settings/theme");
+  const qs = new URLSearchParams({
+    trial_started: "1",
+    expires: result.trialExpiresAt,
+  });
+  redirect(`/nex-native/settings/theme?${qs.toString()}`);
+}
+
 // ---------------------------------------------------------------------------
 // Banner actions (Wave B Slice 12a · on top of banner-service)
 // ---------------------------------------------------------------------------

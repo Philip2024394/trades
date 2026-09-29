@@ -55,6 +55,15 @@ export interface NexAccountRow {
    * `now() < bisnis_expires_at` before granting Bisnis features.
    */
   bisnis_expires_at: NexTimestamp | null;
+  /** Bridge 56g · one-shot 7-day premium-theme trial · migration 089.
+   *  Set once when the buyer taps "Try 7 days free" on any package ·
+   *  never reset. Service layer adds 7 days to compute expiry (see
+   *  isThemesTrialActive in account-service.ts). One trial per account
+   *  lifetime — the anti-abuse gate. */
+  themes_trial_used_at: NexTimestamp | null;
+  /** Bridge 56g · which package the buyer picked as the on-ramp
+   *  (buy | ringan | bisnis) · migration 089 · informational only. */
+  themes_trial_package_id: string | null;
   /** Bridge 16b · when the user acknowledged the NEX safe-trade
    *  terms via the JIT modal · migration 069. NULL means they
    *  haven't seen the modal yet. Sets the legal basis for saying

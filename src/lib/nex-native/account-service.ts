@@ -221,9 +221,21 @@ export async function updateAccountLocale(
  *  `pro` accounts are also lapsable via the same field in phase 2 · for
  *  MVP `pro` is defined but unused.
  */
+/** Bridge 56g · the 7-day trial window length in milliseconds ·
+ *  used to compute expiry from themes_trial_used_at in JS. */
+const THEMES_TRIAL_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+
 export function effectiveTier(
-  account: Pick<NexAccountRow, "tier" | "bisnis_expires_at">,
+  account: Pick<
+    NexAccountRow,
+    "tier" | "bisnis_expires_at" | "themes_trial_used_at"
+  >,
 ): NexAccountTier {
+  // Bridge 56g · one-shot 7-day premium-theme trial grants full
+  // Bisnis-tier feature access while the window is active. Once the
+  // trial expires (used_at + 7 days <= now) the buyer lapses back
+  // to whatever their paid tier gate resolves to below.
+  if (isThemesTrialActive(account)) return "bisnis";
   if (account.tier === "gratis") return "gratis";
   const expires = account.bisnis_expires_at;
   if (!expires) return account.tier; // no expiry set · treat as current
@@ -233,8 +245,94 @@ export function effectiveTier(
 
 /** Convenience predicate for the common feature-gate case. */
 export function isBisnisOrPro(
-  account: Pick<NexAccountRow, "tier" | "bisnis_expires_at">,
+  account: Pick<
+    NexAccountRow,
+    "tier" | "bisnis_expires_at" | "themes_trial_used_at"
+  >,
 ): boolean {
   const t = effectiveTier(account);
   return t === "bisnis" || t === "pro";
+}
+
+/** Bridge 56g · has this account already consumed its lifetime
+ *  7-day premium-theme trial? True once themes_trial_used_at is
+ *  set · never resets. Used to hide "Try 7 days free" pills. */
+export function hasUsedThemesTrial(
+  account: Pick<NexAccountRow, "themes_trial_used_at">,
+): boolean {
+  return !!account.themes_trial_used_at;
+}
+
+/** Bridge 56g · is the account currently inside the 7-day trial
+ *  window? Computed = themes_trial_used_at + 7 days > now(). */
+export function isThemesTrialActive(
+  account: Pick<NexAccountRow, "themes_trial_used_at">,
+): boolean {
+  if (!account.themes_trial_used_at) return false;
+  const startMs = new Date(account.themes_trial_used_at).getTime();
+  if (!Number.isFinite(startMs)) return false;
+  return startMs + THEMES_TRIAL_WINDOW_MS > Date.now();
+}
+
+/** Bridge 56g · returns the trial expiry timestamp (ISO) when the
+ *  trial is currently active, or null otherwise. Used by callers
+ *  that want to show "N days left" to the buyer. */
+export function themesTrialExpiresAt(
+  account: Pick<NexAccountRow, "themes_trial_used_at">,
+): string | null {
+  if (!account.themes_trial_used_at) return null;
+  const startMs = new Date(account.themes_trial_used_at).getTime();
+  if (!Number.isFinite(startMs)) return null;
+  return new Date(startMs + THEMES_TRIAL_WINDOW_MS).toISOString();
+}
+
+/** Bridge 56g · start the one-shot 7-day premium-theme trial for
+ *  this account. Idempotent — returns { ok:false, reason:'already_used' }
+ *  if the account has ever activated a trial. On success, sets
+ *  themes_trial_used_at + themes_trial_package_id and returns the
+ *  computed expiry so callers can surface it to the user. */
+export async function startThemesTrial(
+  accountId: NexUuid,
+  packageId: string,
+): Promise<
+  | { ok: true; trialUsedAt: string; trialExpiresAt: string }
+  | { ok: false; reason: "already_used" | "not_found" }
+> {
+  const current = await nexSupabaseAdmin
+    .from("nex_account")
+    .select("themes_trial_used_at")
+    .eq("id", accountId)
+    .maybeSingle();
+  if (current.error) {
+    throw new Error(
+      `account-service.startThemesTrial(${accountId}): ${current.error.message}`,
+    );
+  }
+  if (!current.data) return { ok: false, reason: "not_found" };
+  if (current.data.themes_trial_used_at) {
+    return { ok: false, reason: "already_used" };
+  }
+  const nowIso = new Date().toISOString();
+  const cleanPackageId = packageId.trim().slice(0, 40);
+  const patch = await nexSupabaseAdmin
+    .from("nex_account")
+    .update({
+      themes_trial_used_at: nowIso,
+      themes_trial_package_id: cleanPackageId,
+    })
+    .eq("id", accountId)
+    .is("themes_trial_used_at", null)
+    .select("themes_trial_used_at")
+    .maybeSingle();
+  if (patch.error) {
+    throw new Error(
+      `account-service.startThemesTrial(${accountId}): ${patch.error.message}`,
+    );
+  }
+  if (!patch.data) return { ok: false, reason: "already_used" };
+  const usedAt = patch.data.themes_trial_used_at as string;
+  const expiresAt = new Date(
+    new Date(usedAt).getTime() + THEMES_TRIAL_WINDOW_MS,
+  ).toISOString();
+  return { ok: true, trialUsedAt: usedAt, trialExpiresAt: expiresAt };
 }
