@@ -21,6 +21,10 @@ import {
   touchPeerConversation,
 } from "./peer-conversation-service";
 import type { NexUuid } from "./types";
+import {
+  NEX_PEER_MESSAGE_QUICK_REACTIONS,
+  type NexPeerMessageReactions,
+} from "./peer-message-reactions";
 
 export interface NexPeerMessageRow {
   id: NexUuid;
@@ -48,7 +52,15 @@ export interface NexPeerMessageRow {
    *  width, height, size_bytes, mime · used for waveform, poster,
    *  progress indicators. */
   attachment_meta: NexPeerAttachmentMeta | null;
+  /** Bridge 66 · migration 091 · emoji → [account_id, ...] map.
+   *  Default {} · toggled via toggleMessageReaction. Never NULL. */
+  reactions: NexPeerMessageReactions;
 }
+
+// Bridge 66 · re-export client-safe reactions constants + types so
+// existing importers of this service (e.g. the shell + peer chat
+// page) continue to compile without knowing about the split.
+export { NEX_PEER_MESSAGE_QUICK_REACTIONS, type NexPeerMessageReactions };
 
 export type NexPeerAttachmentKind =
   | "image"
@@ -417,6 +429,80 @@ export async function deletePeerMessageForEveryone(
       `peer-message-service.deletePeerMessageForEveryone update: ${upd.error.message}`,
     );
   }
+}
+
+/**
+ * Bridge 66 · Toggle a reaction on a peer message.
+ * ------------------------------------------------
+ * Reads the current `reactions` JSONB, adds or removes the caller's
+ * account id from the emoji's array, writes back. Returns the resulting
+ * reactions map so the caller can echo it into the UI without a re-read.
+ *
+ * Idempotent · calling twice with the same emoji is a toggle (add then
+ * remove). Emojis outside the quick-reactions whitelist are rejected so
+ * an untrusted client can't stuff arbitrary strings into the JSONB.
+ */
+export async function toggleMessageReaction(
+  messageId: NexUuid,
+  callerAccountId: NexUuid,
+  emoji: string,
+): Promise<NexPeerMessageReactions> {
+  if (!NEX_PEER_MESSAGE_QUICK_REACTIONS.includes(emoji)) {
+    throw new Error(`reaction '${emoji}' is not on the whitelist`);
+  }
+
+  const cur = await nexSupabaseAdmin
+    .from("nex_peer_message")
+    .select("id, conversation_id, reactions")
+    .eq("id", messageId)
+    .maybeSingle();
+  if (cur.error) {
+    throw new Error(
+      `peer-message-service.toggleMessageReaction lookup: ${cur.error.message}`,
+    );
+  }
+  if (!cur.data) throw new Error("message not found");
+
+  const row = cur.data as {
+    id: NexUuid;
+    conversation_id: NexUuid;
+    reactions: NexPeerMessageReactions | null;
+  };
+  // Membership check · RLS also enforces this but a clear error is
+  // kinder than a silent 0-row update.
+  const conv = await getPeerConversationById(row.conversation_id);
+  if (!conv) throw new Error("conversation not found");
+  if (
+    callerAccountId !== conv.participant_a_id &&
+    callerAccountId !== conv.participant_b_id
+  ) {
+    throw new Error("only conversation participants can react");
+  }
+
+  const next: NexPeerMessageReactions = { ...(row.reactions ?? {}) };
+  const list = next[emoji] ? [...next[emoji]!] : [];
+  const idx = list.indexOf(callerAccountId);
+  if (idx >= 0) {
+    list.splice(idx, 1);
+  } else {
+    list.push(callerAccountId);
+  }
+  if (list.length === 0) {
+    delete next[emoji];
+  } else {
+    next[emoji] = list;
+  }
+
+  const upd = await nexSupabaseAdmin
+    .from("nex_peer_message")
+    .update({ reactions: next })
+    .eq("id", messageId);
+  if (upd.error) {
+    throw new Error(
+      `peer-message-service.toggleMessageReaction update: ${upd.error.message}`,
+    );
+  }
+  return next;
 }
 
 /** Storage bucket that holds peer-chat attachments · created by

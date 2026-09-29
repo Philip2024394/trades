@@ -27,11 +27,17 @@ import {
   uploadPeerAttachmentAction,
   sendProductInquiryAction,
   sendCartOrderAction,
+  toggleMessageReactionAction,
 } from "../../../_actions";
 import {
   PortraitBloomShell,
   type PortraitBloomPresenceKind,
 } from "../../_portrait-bloom-shell";
+import { PeerCallLauncher } from "./_call-launcher";
+import { PeerTypingClient } from "./_typing-client";
+import { PeerPresenceClient } from "./_presence-client";
+import { PeerMessageEventsClient } from "./_message-events-client";
+import { DeviceKeyHub } from "./_device-key-hub";
 import type {
   SideNavContact,
   PendingInvite,
@@ -134,6 +140,7 @@ export default async function PeerChatPage({
   const bindDelete = deletePeerMessageAction.bind(null, peer.id);
   const bindUpload = uploadPeerAttachmentAction.bind(null, peer.id);
   const bindProductInquiry = sendProductInquiryAction.bind(null, peer.id);
+  const bindReaction = toggleMessageReactionAction.bind(null, peer.id);
 
   // Bridge · shop icon in header · when the peer owns a business
   // with live products, the header renders a shop button that
@@ -412,6 +419,9 @@ export default async function PeerChatPage({
         m.attachment_meta.product_share
           ? m.attachment_meta.product_share
           : null,
+      // Bridge 66 · reactions map · defaults to {} when the column
+      // is absent (older rows before migration 091 landed).
+      reactions: m.reactions ?? {},
     };
   });
 
@@ -464,6 +474,8 @@ export default async function PeerChatPage({
       }
       tradeAgreementActivated={!!peerBusiness?.safe_trade_activated}
       likeProductAction={toggleLikeProductAction}
+      toggleReactionAction={bindReaction}
+      selfAccountId={session.account.id}
       composerPlaceholder={`Message ${peer.display_name}…`}
       headerTag="NEX Chat"
       contacts={contacts}
@@ -484,6 +496,51 @@ export default async function PeerChatPage({
         };
       })()}
       />
+      {/* Bridge 68 · voice-call launcher · disabled for NEX1 support so
+          ops isn't paged through WebRTC. Own signalling channel keyed on
+          conversation.id. */}
+      <PeerCallLauncher
+        conversationId={conversation.id}
+        selfAccountId={session.account.id}
+        selfDisplayName={session.account.display_name}
+        peerAccountId={peer.id}
+        peerDisplayName={peer.display_name}
+        peerAvatarUrl={profile?.avatar_url ?? null}
+        disabled={isNexOfficialAccount(peer.id)}
+      />
+      {/* Bridge 70 · typing indicator · disabled for NEX1 (support
+          agents typing is not a signal buyers need). Same conversation
+          channel keyed on conversation.id. */}
+      <PeerTypingClient
+        conversationId={conversation.id}
+        selfAccountId={session.account.id}
+        selfDisplayName={session.account.display_name}
+        peerDisplayName={peer.display_name}
+        disabled={isNexOfficialAccount(peer.id)}
+      />
+      {/* Bridge 71 · live presence · publishes self on global roster,
+          renders "Online now" pill when peer is active. Also fires
+          window CustomEvents ("nex-peer-presence") for future ring/dot
+          consumers. Disabled for NEX1 support. */}
+      <PeerPresenceClient
+        selfAccountId={session.account.id}
+        selfDisplayName={session.account.display_name}
+        peerAccountId={peer.id}
+        peerDisplayName={peer.display_name}
+        disabled={isNexOfficialAccount(peer.id)}
+      />
+      {/* Bridge 73 · live read-receipt propagation · broadcasts our
+          read cursor on mount so the peer's outgoing ticks flip to
+          double-blue instantly. Also enabled for NEX1 so support-
+          initiated messages get proper receipts. */}
+      <PeerMessageEventsClient
+        conversationId={conversation.id}
+        selfAccountId={session.account.id}
+      />
+      {/* Bridge 74 · ensure this browser has a Curve25519 device key
+          + its public key is registered on the server. Foundation for
+          E2E encryption (Bridges 75-78). Silent · no user-visible UI. */}
+      <DeviceKeyHub />
     </>
   );
 }

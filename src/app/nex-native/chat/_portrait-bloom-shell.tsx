@@ -21,6 +21,8 @@ import * as React from "react";
 import { PeerComposer } from "./peer/[accountId]/_composer";
 import { ScrollToBottomOnMount } from "./_scroll-to-bottom";
 import { MessageBubbleClient } from "./_message-bubble-client";
+import { ReadTick } from "./_read-tick";
+import { ReactionsChipRow } from "./_reactions";
 import {
   SideNavPanel,
   type SideNavContact,
@@ -216,6 +218,9 @@ export interface PortraitBloomMessage {
     personal_note: string | null;
     open_href: string;
   } | null;
+  /** Bridge 66 · reactions map · emoji → [account_id, ...]. Empty
+   *  object when there are no reactions on this message. */
+  reactions?: Record<string, string[]>;
 }
 
 export interface PortraitBloomContextChip {
@@ -360,6 +365,17 @@ export interface PortraitBloomShellProps {
     productId: string,
     formData: FormData,
   ) => Promise<never> | void;
+  /** Bridge 66 · Server Action bound with peerAccountId · takes a
+   *  form with `message_id` + `emoji` and toggles the caller's
+   *  reaction on that message. When omitted, the reactions chip row
+   *  + picker button are hidden (business/legacy chats). */
+  toggleReactionAction?: (
+    formData: FormData,
+  ) => Promise<never> | void | Promise<void>;
+  /** Self's nex_account.id · needed so the reactions chip row can
+   *  highlight the emoji the viewer picked. Omit to hide reactions
+   *  entirely (Bridge 66). */
+  selfAccountId?: string;
   /** Optional theme wallpaper · painted behind the message zone as
    *  a soft, dimmed layer so the theme picks up an atmosphere
    *  distinct from the peer's profile image. Sealed 2026-09-27 ·
@@ -410,6 +426,8 @@ export function PortraitBloomShell({
   tradeAgreementSellerName,
   tradeAgreementActivated,
   likeProductAction,
+  toggleReactionAction,
+  selfAccountId,
 }: PortraitBloomShellProps) {
   const isOffline = presenceKind !== "online";
   // Per-element theme colours · fall back to rippleColor (accent)
@@ -1217,16 +1235,11 @@ export function PortraitBloomShell({
                         >
                           {formatTime(m.sent_at)}
                           {m.mine && (
-                            <span
-                              style={{
-                                marginLeft: 5,
-                                color: m.read_at
-                                  ? "#C4E5FF"
-                                  : "rgba(255,255,255,0.6)",
-                              }}
-                            >
-                              {m.read_at ? "✓✓" : "✓"}
-                            </span>
+                            <ReadTick
+                              sentAtIso={m.sent_at}
+                              readAtIso={m.read_at ?? null}
+                              messageId={m.id}
+                            />
                           )}
                         </div>
                       )}
@@ -1234,6 +1247,20 @@ export function PortraitBloomShell({
                       )}
                     </div>
                     </MessageBubbleClient>
+                    {/* Bridge 66 · reactions chip row · one pill per
+                        emoji · tap to toggle · self's own picks get a
+                        cyan rim. Only renders when the shell was given
+                        the toggle action + selfAccountId (peer chats
+                        only, business chats keep the old rendering). */}
+                    {toggleReactionAction && selfAccountId && (
+                      <ReactionsChipRow
+                        messageId={m.id}
+                        selfAccountId={selfAccountId}
+                        reactions={m.reactions ?? {}}
+                        toggleAction={toggleReactionAction}
+                        mine={m.mine}
+                      />
+                    )}
                     {/* Bridge 16b · payment-request warning · fires
                         when a bubble body contains bank/account/wallet
                         keywords. Sits just below the offending bubble

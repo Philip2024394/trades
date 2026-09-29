@@ -492,6 +492,11 @@ export function PeerComposer({
               placeholder={placeholder}
               rows={1}
               value={text}
+              /* Bridge 70 · marker so PeerTypingClient can attach an
+                 input listener + broadcast typing pings without needing
+                 the composer to know the conversationId. Non-invasive
+                 (attribute-only) so business/NEX1 chats are unaffected. */
+              data-nex-composer-textarea
               onChange={(e) => setText(e.target.value)}
               onKeyDown={handleKeyDown}
               style={{

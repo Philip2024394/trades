@@ -2377,6 +2377,92 @@ export async function deletePeerMessageAction(
   redirect(`/nex-native/chat/peer/${peerAccountId}`);
 }
 
+/**
+ * Bridge 66 · Toggle an emoji reaction on a peer message.
+ * ------------------------------------------------------
+ * Bound with peerAccountId so the client can redirect back to the
+ * conversation on failure. Form fields:
+ *   · message_id · uuid of the message being reacted to
+ *   · emoji      · one of NEX_PEER_MESSAGE_QUICK_REACTIONS
+ *
+ * On success, revalidates the peer chat page so the reactions chip
+ * row picks up the new count. The live-update path (broadcast on the
+ * message-events channel so the peer sees it without a reload) can
+ * layer on later; server-truth already reflects the change on next
+ * fetch.
+ */
+/**
+ * Bridge 74 · Register (or heartbeat) this device's public key.
+ * -------------------------------------------------------------
+ * Called by _device-key-hub on every mount. The client generates the
+ * keypair once and stores the private half in IndexedDB · this action
+ * publishes the public half so senders can encrypt messages to the
+ * caller's account+device. Idempotent — repeat calls with the same
+ * (device_id, public_key) refresh last_seen_at only.
+ *
+ * Form fields:
+ *   · device_id   · opaque per-install token (uuid v4)
+ *   · public_key  · base64-encoded 32-byte Curve25519 public key
+ *
+ * Returns a small JSON blob (never a redirect) since the caller is a
+ * client component that just wants to know "OK, registered." Wrapped
+ * in the string-return shape existing peer actions use.
+ */
+export async function upsertDeviceKeyAction(
+  formData: FormData,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) return { ok: false, error: "not_signed_in" };
+
+  const deviceId = String(formData.get("device_id") ?? "").trim();
+  const publicKey = String(formData.get("public_key") ?? "").trim();
+  if (deviceId.length < 8 || deviceId.length > 128) {
+    return { ok: false, error: "invalid_device_id" };
+  }
+  // Base64 of a 32-byte key is 44 chars (with padding). Accept a small
+  // window either side in case the client swaps encoders later.
+  if (publicKey.length < 40 || publicKey.length > 64) {
+    return { ok: false, error: "invalid_public_key" };
+  }
+
+  try {
+    const svc = await import("@/lib/nex-native/device-key-service");
+    await svc.upsertDeviceKey(session.account.id, deviceId, publicKey);
+    return { ok: true };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return { ok: false, error: msg };
+  }
+}
+
+export async function toggleMessageReactionAction(
+  peerAccountId: string,
+  formData: FormData,
+): Promise<never> {
+  const messageId = String(formData.get("message_id") ?? "").trim();
+  const emoji = String(formData.get("emoji") ?? "");
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+  if (!messageId || !emoji) {
+    redirect(`/nex-native/chat/peer/${peerAccountId}`);
+  }
+
+  try {
+    await peerMessageService.toggleMessageReaction(
+      messageId,
+      session.account.id,
+      emoji,
+    );
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    const qs = new URLSearchParams({ reaction_error: msg });
+    redirect(`/nex-native/chat/peer/${peerAccountId}?${qs.toString()}`);
+  }
+
+  revalidatePath(`/nex-native/chat/peer/${peerAccountId}`);
+  redirect(`/nex-native/chat/peer/${peerAccountId}`);
+}
+
 // ---------------------------------------------------------------------------
 // Onboarding · create business + first product
 // ---------------------------------------------------------------------------
