@@ -14,11 +14,18 @@
 // URL + kind on the query string. The composer picks that up as a
 // pending attachment.
 //
+// Bridge 65 · sealed 2026-09-29 · progress overlay. Between "file
+// chosen" and the redirect landing, we render a full-screen
+// spinner + "Uploading…" overlay so the user knows something is
+// happening (was silent before · felt broken). The overlay unmounts
+// naturally when Next re-renders after the redirect.
+//
 // This component exposes an imperative handle so the media modal can
 // call `open("camera" | "video" | "voice")` without needing to know
 // about the file inputs directly.
 
 import * as React from "react";
+import { createPortal } from "react-dom";
 
 export type CaptureKind = "camera" | "video" | "voice";
 
@@ -32,6 +39,12 @@ interface Props {
   uploadAction: (formData: FormData) => Promise<never> | void | Promise<void>;
 }
 
+const KIND_COPY: Record<CaptureKind, { verb: string; icon: string }> = {
+  camera: { verb: "Uploading photo", icon: "📸" },
+  video: { verb: "Uploading video", icon: "🎥" },
+  voice: { verb: "Uploading voice note", icon: "🎙" },
+};
+
 export const MediaCapture = React.forwardRef<MediaCaptureHandle, Props>(
   function MediaCapture({ uploadAction }, ref) {
     const cameraFormRef = React.useRef<HTMLFormElement | null>(null);
@@ -40,6 +53,10 @@ export const MediaCapture = React.forwardRef<MediaCaptureHandle, Props>(
     const cameraInputRef = React.useRef<HTMLInputElement | null>(null);
     const videoInputRef = React.useRef<HTMLInputElement | null>(null);
     const voiceInputRef = React.useRef<HTMLInputElement | null>(null);
+
+    const [uploading, setUploading] = React.useState<CaptureKind | null>(null);
+    const [mounted, setMounted] = React.useState(false);
+    React.useEffect(() => setMounted(true), []);
 
     React.useImperativeHandle(
       ref,
@@ -57,54 +74,166 @@ export const MediaCapture = React.forwardRef<MediaCaptureHandle, Props>(
       [],
     );
 
-    const onFileChosen = (
-      formRef: React.RefObject<HTMLFormElement | null>,
-    ) => () => {
-      formRef.current?.requestSubmit();
-    };
+    const onFileChosen =
+      (
+        formRef: React.RefObject<HTMLFormElement | null>,
+        kind: CaptureKind,
+      ) =>
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        // Only trigger overlay + submit when a file was actually
+        // selected · user hitting Cancel returns an empty FileList.
+        if (!e.currentTarget.files || e.currentTarget.files.length === 0) {
+          return;
+        }
+        setUploading(kind);
+        formRef.current?.requestSubmit();
+      };
 
     return (
-      <div aria-hidden style={{ position: "absolute", width: 0, height: 0 }}>
-        {/* Camera · rear camera on iOS/Android · file picker on desktop */}
-        <form ref={cameraFormRef} action={uploadAction}>
-          <input
-            ref={cameraInputRef}
-            name="attachment_file"
-            type="file"
-            accept="image/*"
-            // The `capture` attribute is a hint · Chrome/Safari on
-            // Android/iOS open the camera; desktop shows the picker.
-            capture="environment"
-            onChange={onFileChosen(cameraFormRef)}
-            style={{ display: "none" }}
-          />
-        </form>
-        {/* Video · rear camera video recorder on mobile */}
-        <form ref={videoFormRef} action={uploadAction}>
-          <input
-            ref={videoInputRef}
-            name="attachment_file"
-            type="file"
-            accept="video/*"
-            capture="environment"
-            onChange={onFileChosen(videoFormRef)}
-            style={{ display: "none" }}
-          />
-        </form>
-        {/* Voice · mic capture on mobile · falls back to audio file
-            picker on desktop (users can drop a pre-recorded clip in). */}
-        <form ref={voiceFormRef} action={uploadAction}>
-          <input
-            ref={voiceInputRef}
-            name="attachment_file"
-            type="file"
-            accept="audio/*"
-            capture
-            onChange={onFileChosen(voiceFormRef)}
-            style={{ display: "none" }}
-          />
-        </form>
-      </div>
+      <>
+        <div aria-hidden style={{ position: "absolute", width: 0, height: 0 }}>
+          {/* Camera · rear camera on iOS/Android · file picker on desktop */}
+          <form ref={cameraFormRef} action={uploadAction}>
+            <input
+              ref={cameraInputRef}
+              name="attachment_file"
+              type="file"
+              accept="image/*"
+              // The `capture` attribute is a hint · Chrome/Safari on
+              // Android/iOS open the camera; desktop shows the picker.
+              capture="environment"
+              onChange={onFileChosen(cameraFormRef, "camera")}
+              style={{ display: "none" }}
+            />
+          </form>
+          {/* Video · rear camera video recorder on mobile */}
+          <form ref={videoFormRef} action={uploadAction}>
+            <input
+              ref={videoInputRef}
+              name="attachment_file"
+              type="file"
+              accept="video/*"
+              capture="environment"
+              onChange={onFileChosen(videoFormRef, "video")}
+              style={{ display: "none" }}
+            />
+          </form>
+          {/* Voice · mic capture on mobile · falls back to audio file
+              picker on desktop (users can drop a pre-recorded clip in). */}
+          <form ref={voiceFormRef} action={uploadAction}>
+            <input
+              ref={voiceInputRef}
+              name="attachment_file"
+              type="file"
+              accept="audio/*"
+              capture
+              onChange={onFileChosen(voiceFormRef, "voice")}
+              style={{ display: "none" }}
+            />
+          </form>
+        </div>
+
+        {/* Bridge 65 · full-screen upload overlay · appears the moment
+           a file is picked · unmounts when Next re-renders after the
+           server action's redirect. Portal so it always sits above
+           the chat layout regardless of stacking context. */}
+        {mounted &&
+          uploading &&
+          createPortal(
+            <UploadOverlay kind={uploading} />,
+            document.body,
+          )}
+      </>
     );
   },
 );
+
+function UploadOverlay({ kind }: { kind: CaptureKind }) {
+  const { verb, icon } = KIND_COPY[kind];
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 9999,
+        background: "rgba(2,9,20,0.72)",
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
+        display: "grid",
+        placeItems: "center",
+        animation: "nex-upload-fade 180ms ease-out both",
+      }}
+    >
+      <style>{`
+        @keyframes nex-upload-fade { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes nex-upload-spin { to { transform: rotate(360deg); } }
+        @keyframes nex-upload-bob {
+          0%, 100% { transform: translateY(0); }
+          50%      { transform: translateY(-6px); }
+        }
+      `}</style>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 18,
+          padding: "28px 36px",
+          borderRadius: 20,
+          background:
+            "linear-gradient(180deg, rgba(6,15,28,0.92) 0%, rgba(3,10,20,0.98) 100%)",
+          border: "1px solid rgba(0,175,255,0.35)",
+          boxShadow:
+            "0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(0,175,255,0.18)",
+          minWidth: 220,
+        }}
+      >
+        <div
+          aria-hidden
+          style={{
+            fontSize: 40,
+            lineHeight: 1,
+            animation: "nex-upload-bob 1400ms ease-in-out infinite",
+          }}
+        >
+          {icon}
+        </div>
+        <div
+          aria-hidden
+          style={{
+            width: 32,
+            height: 32,
+            borderRadius: "50%",
+            border: "3px solid rgba(0,175,255,0.25)",
+            borderTopColor: "#00AFFF",
+            animation: "nex-upload-spin 700ms linear infinite",
+          }}
+        />
+        <div
+          style={{
+            fontSize: 14,
+            fontWeight: 700,
+            color: "#F4F7FC",
+            letterSpacing: "0.02em",
+            textAlign: "center",
+          }}
+        >
+          {verb}…
+        </div>
+        <div
+          style={{
+            fontSize: 11,
+            color: "#8BA9D1",
+            textAlign: "center",
+            maxWidth: 240,
+            lineHeight: 1.5,
+          }}
+        >
+          Please don&apos;t close the app · this only takes a few seconds
+        </div>
+      </div>
+    </div>
+  );
+}
