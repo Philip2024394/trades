@@ -48,7 +48,10 @@ import {
   retrieveBusinessEvidence,
   bundleWhitelistTokens,
   type EvidenceBundle,
+  type EvidenceItem,
 } from "./business-evidence-retriever";
+import { retrieveProductKnowledge } from "./product-knowledge-retriever";
+import { retrieveAccountContext } from "./account-context-retriever";
 import {
   formatEvidenceForPrompt,
   evidenceSummary,
@@ -151,14 +154,48 @@ export async function nexIntelligenceAnswer(
   }
   const product = conv.about_product_id ? await productService.getProductById(conv.about_product_id) : null;
 
-  // 4 · Retrieve business-owned evidence
-  const bundle: EvidenceBundle = await retrieveBusinessEvidence({
-    conversationId: req.conversationId,
-    businessId: conv.business_id,
-    productId: conv.about_product_id ?? null,
-    lastCustomerMessage: lastMsg.body,
-    maxItems: req.maxEvidenceItems ?? 8,
-  });
+  // 4 · Retrieve evidence from THREE authoritative sources:
+  //     · business-owned data (nex_business + nex_product + nex_menu_item)
+  //     · NEX product knowledge (Bridge 92 · features/plans/workflows)
+  //     · authorised account context (customer's real tier/plan/expiry)
+  // The three merge into ONE evidence bundle the model sees.
+  const [businessBundle, productHits, accountCtx] = await Promise.all([
+    retrieveBusinessEvidence({
+      conversationId: req.conversationId,
+      businessId: conv.business_id,
+      productId: conv.about_product_id ?? null,
+      lastCustomerMessage: lastMsg.body,
+      maxItems: req.maxEvidenceItems ?? 8,
+    }),
+    Promise.resolve(retrieveProductKnowledge({
+      question: lastMsg.body,
+      maxItems: 4,
+    })),
+    retrieveAccountContext({ accountId: lastMsg.sender_account_id as NexUuid }),
+  ]);
+
+  // Merge · business + product + account · keep provenance
+  // discipline so the formatter labels each item correctly.
+  const mergedItems: EvidenceItem[] = [
+    ...businessBundle.items,
+    ...productHits.items,
+    ...accountCtx.items,
+  ];
+  const bundle: EvidenceBundle = {
+    items: mergedItems,
+    empty: mergedItems.filter((it) => it.score > 0).length === 0,
+    sources_consulted: [
+      ...businessBundle.sources_consulted,
+      ...(productHits.items.length > 0 ? ["product" as const] : []),
+      ...(accountCtx.items.length > 0 ? ["business" as const] : []), // account emits with 'business' provenance
+    ],
+    total_candidates:
+      businessBundle.total_candidates +
+      productHits.total_candidates +
+      accountCtx.items.length,
+    business_id: businessBundle.business_id,
+    product_id: businessBundle.product_id,
+  };
 
   // 5 · Model runtime probe (§2 of brief · local only, no hosted, no daemon)
   const probe = await probeInProcessRuntime();
