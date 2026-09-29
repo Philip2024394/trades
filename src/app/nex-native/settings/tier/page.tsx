@@ -30,10 +30,12 @@ import { effectiveTier } from "@/lib/nex-native/account-service";
 import { nexSupabaseAdmin } from "@/lib/nex-native/supabase-admin";
 import { NexPageHeader } from "../../_page-header";
 import type { NexAccountRow } from "@/lib/nex-native/types";
+import { NEX_SUBSCRIPTION_PLAN_LABEL } from "@/lib/nex-native/types";
 import { NEX_OFFICIAL_CHAT_HREF } from "@/lib/nex-native/nex-official";
 import {
   hasUsedThemesTrial,
   isThemesTrialActive,
+  themesTrialExpiresAt,
 } from "@/lib/nex-native/account-service";
 import { startThemesTrialAction } from "../../_actions";
 import { SubscriptionSection } from "./_subscription-section";
@@ -222,7 +224,7 @@ export default async function TierPage() {
   const row = await nexSupabaseAdmin
     .from("nex_account")
     .select(
-      "tier, bisnis_expires_at, display_name, nex_handle, themes_trial_used_at",
+      "tier, bisnis_expires_at, display_name, nex_handle, themes_trial_used_at, subscription_plan",
     )
     .eq("id", session.account.id)
     .maybeSingle();
@@ -234,10 +236,20 @@ export default async function TierPage() {
     | "display_name"
     | "nex_handle"
     | "themes_trial_used_at"
+    | "subscription_plan"
   >;
   const effective = effectiveTier(account);
   const trialUsed = hasUsedThemesTrial(account);
   const trialActive = isThemesTrialActive(account);
+  const trialExpiresIso = themesTrialExpiresAt(account);
+  // Bridge 57 · compute days-remaining on active trial · ceils to
+  // whole days so "6 days left" reads on day 1, "1 day left" on day 6.
+  const trialDaysLeft = (() => {
+    if (!trialActive || !trialExpiresIso) return null;
+    const ms = new Date(trialExpiresIso).getTime() - Date.now();
+    if (ms <= 0) return null;
+    return Math.max(1, Math.ceil(ms / (24 * 60 * 60 * 1000)));
+  })();
   const isBisnis = effective === "bisnis" || effective === "pro";
   const expiresLabel =
     isBisnis && account.bisnis_expires_at
@@ -267,6 +279,9 @@ export default async function TierPage() {
           effective={effective}
           expiresLabel={expiresLabel}
           displayName={account.display_name}
+          subscriptionPlan={account.subscription_plan}
+          trialActive={trialActive}
+          trialDaysLeft={trialDaysLeft}
         />
 
         {/* Hero copy */}
@@ -493,18 +508,49 @@ function CurrentPlanCard({
   effective,
   expiresLabel,
   displayName,
+  subscriptionPlan,
+  trialActive,
+  trialDaysLeft,
 }: {
   effective: "gratis" | "bisnis" | "pro";
   expiresLabel: string | null;
   displayName: string;
+  subscriptionPlan: string | null;
+  trialActive: boolean;
+  trialDaysLeft: number | null;
 }) {
-  const label =
-    effective === "bisnis"
-      ? "Bisnis"
+  // Bridge 57 · surface the actual subscription_plan when set so
+  // Ringan buyers don't just see "Bisnis" (that's the tier gate,
+  // not what they bought). Falls back to tier label otherwise.
+  const planLabel = (() => {
+    if (subscriptionPlan && subscriptionPlan in NEX_SUBSCRIPTION_PLAN_LABEL) {
+      return NEX_SUBSCRIPTION_PLAN_LABEL[
+        subscriptionPlan as keyof typeof NEX_SUBSCRIPTION_PLAN_LABEL
+      ];
+    }
+    return effective === "bisnis"
+      ? "NEX Bisnis"
       : effective === "pro"
-        ? "Pro"
-        : "Gratis";
-  const isPaid = effective !== "gratis";
+        ? "NEX Pro"
+        : "NEX Gratis";
+  })();
+  const isPaid = effective !== "gratis" && !trialActive;
+  const isTrial = trialActive;
+  const bgGradient = isTrial
+    ? "linear-gradient(135deg, rgba(34,227,122,0.14) 0%, rgba(0,175,255,0.10) 100%)"
+    : isPaid
+      ? "linear-gradient(135deg, rgba(255,210,119,0.14) 0%, rgba(255,120,0,0.10) 100%)"
+      : NEX.panelSoft;
+  const cardBorder = isTrial
+    ? "rgba(34,227,122,0.4)"
+    : isPaid
+      ? NEX.orangeSoft
+      : NEX.border;
+  const eyebrowColor = isTrial
+    ? NEX.green
+    : isPaid
+      ? NEX.gold
+      : NEX.textMute;
   return (
     <section
       style={{
@@ -515,10 +561,8 @@ function CurrentPlanCard({
         gap: 12,
         padding: "14px 18px",
         borderRadius: 14,
-        background: isPaid
-          ? "linear-gradient(135deg, rgba(255,210,119,0.14) 0%, rgba(255,120,0,0.10) 100%)"
-          : NEX.panelSoft,
-        border: `1px solid ${isPaid ? NEX.orangeSoft : NEX.border}`,
+        background: bgGradient,
+        border: `1px solid ${cardBorder}`,
       }}
     >
       <div style={{ minWidth: 0 }}>
@@ -527,14 +571,14 @@ function CurrentPlanCard({
             fontSize: 10,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
-            color: isPaid ? NEX.gold : NEX.textMute,
+            color: eyebrowColor,
             fontWeight: 700,
             marginBottom: 4,
           }}
         >
           {displayName} · your current plan
         </div>
-        <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
           <span
             style={{
               fontFamily: SERIF,
@@ -543,16 +587,43 @@ function CurrentPlanCard({
               color: NEX.text,
             }}
           >
-            {label}
+            {isTrial ? "Trial · full Bisnis unlocked" : planLabel}
           </span>
-          {expiresLabel && (
+          {isTrial && trialDaysLeft && (
+            <span
+              style={{
+                fontSize: 12,
+                color: NEX.green,
+                fontWeight: 700,
+              }}
+            >
+              {trialDaysLeft} day{trialDaysLeft === 1 ? "" : "s"} left
+            </span>
+          )}
+          {!isTrial && expiresLabel && (
             <span style={{ fontSize: 12, color: NEX.textDim }}>
               renews {expiresLabel}
             </span>
           )}
         </div>
       </div>
-      {isPaid ? (
+      {isTrial ? (
+        <span
+          style={{
+            padding: "6px 12px",
+            borderRadius: 999,
+            background: NEX.greenFaint,
+            border: "1px solid rgba(34,227,122,0.4)",
+            color: NEX.green,
+            fontSize: 11,
+            fontWeight: 800,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+          }}
+        >
+          ✓ Trial
+        </span>
+      ) : isPaid ? (
         <span
           style={{
             padding: "6px 12px",

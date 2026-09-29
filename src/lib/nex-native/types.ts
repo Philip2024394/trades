@@ -64,6 +64,13 @@ export interface NexAccountRow {
   /** Bridge 56g · which package the buyer picked as the on-ramp
    *  (buy | ringan | bisnis) · migration 089 · informational only. */
   themes_trial_package_id: string | null;
+  /** Bridge 57 · which paid package the buyer holds · migration
+   *  090. NULL = gratis default. Distinct from `tier` (which is
+   *  the effective feature gate). Set by admin when payment is
+   *  confirmed via the NEX1 support flow. Allowed values are
+   *  enforced by nex_account_subscription_plan_known check
+   *  constraint. */
+  subscription_plan: NexSubscriptionPlan | null;
   /** Bridge 16b · when the user acknowledged the NEX safe-trade
    *  terms via the JIT modal · migration 069. NULL means they
    *  haven't seen the modal yet. Sets the legal basis for saying
@@ -101,6 +108,22 @@ export const NEX_ACCOUNT_TIER_LABEL: Record<NexAccountTier, string> = {
   gratis: "NEX Gratis",
   bisnis: "NEX Bisnis",
   pro: "NEX Pro",
+};
+
+/** Bridge 57 · which paid package a buyer holds · matches CHECK
+ *  constraint on nex_account.subscription_plan (migration 090).
+ *  Distinct from NexAccountTier (feature gate). Values map 1:1
+ *  to the pricing ladder on /nex-native/settings/tier. */
+export type NexSubscriptionPlan = "buy" | "ringan" | "bisnis" | "custom";
+
+export const NEX_SUBSCRIPTION_PLAN_LABEL: Record<
+  NexSubscriptionPlan,
+  string
+> = {
+  buy: "Buy a theme",
+  ringan: "Themes Ringan",
+  bisnis: "NEX Bisnis",
+  custom: "Own Theme Request",
 };
 
 /** Known chat theme identifiers · matches migration 021 CHECK. */
