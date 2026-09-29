@@ -2479,6 +2479,102 @@ export async function updateDisplayNameAction(
 }
 
 /**
+ * Bridge 89b · Register (or heartbeat) this browser's Web Push
+ * subscription so calls / urgent messages can wake a closed tab.
+ * Form fields: endpoint · p256dh · auth · user_agent.
+ * Idempotent · repeat calls refresh last_seen_at.
+ */
+export async function upsertPushSubscriptionAction(
+  formData: FormData,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) return { ok: false, error: "not_signed_in" };
+
+  const endpoint = String(formData.get("endpoint") ?? "").trim();
+  const p256dh = String(formData.get("p256dh") ?? "").trim();
+  const auth = String(formData.get("auth") ?? "").trim();
+  const userAgent = String(formData.get("user_agent") ?? "").trim() || null;
+  if (!endpoint || !p256dh || !auth) {
+    return { ok: false, error: "invalid_subscription" };
+  }
+  try {
+    const svc = await import("@/lib/nex-native/push-subscription-service");
+    await svc.upsertPushSubscription(session.account.id, {
+      endpoint, p256dh, auth, user_agent: userAgent,
+    });
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: (e as Error).message };
+  }
+}
+
+/**
+ * Bridge 89b · Fire a Web Push wakeup to every subscription registered
+ * for the target account. Used by the calling flow to wake up a peer's
+ * closed tab / locked phone alongside the Realtime inbox ring.
+ * Best-effort · returns delivered counts + prunes dead endpoints.
+ */
+export async function sendCallPushAction(
+  peerAccountId: string,
+  payload: {
+    callId: string;
+    conversationId: string;
+    callerName: string;
+    media: "audio" | "video";
+  },
+): Promise<{ ok: true; delivered: number } | { ok: false; error: string }> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) return { ok: false, error: "not_signed_in" };
+  try {
+    const [svc, push] = await Promise.all([
+      import("@/lib/nex-native/push-subscription-service"),
+      import("@/lib/nex/push/server"),
+    ]);
+    if (!push.isVapidConfigured()) {
+      return { ok: false, error: "vapid_not_configured" };
+    }
+    const subs = await svc.listPushSubscriptions(peerAccountId);
+    if (subs.length === 0) return { ok: true, delivered: 0 };
+
+    const acceptUrl =
+      `/nex-native/chat/peer/${session.account.id}` +
+      `?accept_call=${encodeURIComponent(payload.callId)}` +
+      `&call_media=${payload.media}`;
+    const wire: push.PushPayload = {
+      title: `${payload.callerName} is calling…`,
+      body: payload.media === "video" ? "Incoming NEX video call" : "Incoming NEX voice call",
+      tag: `nex-call-${payload.callId}`,
+      requireInteraction: true,
+      data: {
+        url: acceptUrl,
+        kind: "incoming_call",
+        callId: payload.callId,
+      },
+    };
+    let delivered = 0;
+    await Promise.all(
+      subs.map(async (row) => {
+        const res = await push.sendPushNow(
+          { endpoint: row.endpoint, keys: { p256dh: row.p256dh, auth: row.auth } },
+          wire,
+        );
+        if (res.ok) {
+          delivered += 1;
+          return;
+        }
+        // 404 / 410 → prune dead endpoint · silently swallow other errors.
+        if (res.statusCode === 404 || res.statusCode === 410) {
+          await svc.prunePushSubscription(row.endpoint);
+        }
+      }),
+    );
+    return { ok: true, delivered };
+  } catch (e) {
+    return { ok: false, error: (e as Error).message };
+  }
+}
+
+/**
  * Bridge 76 · Read the active device keys for one account.
  * --------------------------------------------------------
  * Client calls this before every encrypted send so it knows which

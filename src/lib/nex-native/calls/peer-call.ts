@@ -214,6 +214,26 @@ export class PeerCall {
       }
     })();
 
+    // Bridge 89b · fire a Web Push wakeup alongside the Realtime ring
+    // so the call reaches the peer even when their tab is closed /
+    // phone is locked. The push service worker on the peer's device
+    // shows a system notification with Accept + Decline actions.
+    // Fire-and-forget · Realtime is still authoritative when the peer
+    // has an open tab.
+    void (async () => {
+      try {
+        const { sendCallPushAction } = await import("@/app/nex-native/_actions");
+        await sendCallPushAction(this.opts.peerAccountId, {
+          callId: this.currentCallId!,
+          conversationId: this.opts.conversationId,
+          callerName: this.opts.selfDisplayName,
+          media,
+        });
+      } catch {
+        /* push is best-effort · Realtime inbox already fired */
+      }
+    })();
+
     const offer = await this.pc.createOffer({
       offerToReceiveAudio: true,
       offerToReceiveVideo: media === "video",

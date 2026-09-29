@@ -22,6 +22,7 @@
 import type { Metadata, Viewport } from "next";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { IncomingCallHub } from "./_incoming-call-hub";
+import { PushSubscribeHub } from "./_push-subscribe-hub";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -91,14 +92,23 @@ export default async function NexNativeLayout({
     }
   } catch { /* unauthenticated · hub stays disabled */ }
 
+  // Bridge 89b · VAPID public key is safe to expose (that's its
+  // purpose · clients need it to subscribe). Reads from env at
+  // request time so a key rotation doesn't require a rebuild.
+  const vapidPublicKey =
+    process.env.NEXT_PUBLIC_XRATED_VAPID_PUBLIC_KEY ?? null;
+
   return (
     <>
       {children}
       {selfAccountId && selfDisplayName && (
-        <IncomingCallHub
-          selfAccountId={selfAccountId}
-          selfDisplayName={selfDisplayName}
-        />
+        <>
+          <IncomingCallHub
+            selfAccountId={selfAccountId}
+            selfDisplayName={selfDisplayName}
+          />
+          <PushSubscribeHub vapidPublicKey={vapidPublicKey} />
+        </>
       )}
     </>
   );
