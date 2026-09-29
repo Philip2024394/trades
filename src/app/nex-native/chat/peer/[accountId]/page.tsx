@@ -557,8 +557,9 @@ export default async function PeerChatPage({
       <DeviceKeyHub />
       {/* Bridge 76 · decrypt inbound E2E messages on hydration and
           replace the '(encrypted)' sentinel with plaintext in the
-          bubble body · fires delivered-ack on success. */}
-      <E2eDecryptor />
+          bubble body · fires delivered-ack on success · Bridge 77
+          caches the plaintext to IndexedDB for post-purge survival. */}
+      <E2eDecryptor conversationId={conversation.id} />
       {/* Bridge 76 · intercept composer submits · encrypt + POST when
           both parties have device keys · silent plaintext fallback
           when they don't. Disabled for NEX1 per doctrine. */}

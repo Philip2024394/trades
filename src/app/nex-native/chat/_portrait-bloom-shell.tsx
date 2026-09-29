@@ -1000,6 +1000,10 @@ export function PortraitBloomShell({
                       data-nex-msg-sender-dev={m.sender_device_id ?? undefined}
                       data-nex-msg-sender-acc={m.sender_account_id ?? undefined}
                       data-nex-msg-recipient-dev={m.recipient_device_id ?? undefined}
+                      /* Bridge 77 · sent_at so the decryptor can persist
+                         the plaintext into IndexedDB with the right
+                         timestamp (survives Bridge 78 server purge). */
+                      data-nex-msg-sent-at={m.sent_at}
                       style={{
                         position: "relative",
                         padding: m.deleted_for_everyone

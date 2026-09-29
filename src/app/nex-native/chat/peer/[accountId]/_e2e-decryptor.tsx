@@ -28,8 +28,10 @@ import {
   type EncryptedRowInput,
 } from "@/lib/nex-native/crypto/encrypted-receive";
 import { ensureDeviceKey } from "@/lib/nex-native/crypto/device-key";
+import { putMessage } from "@/lib/nex-native/crypto/message-store";
 
 export interface E2eDecryptorProps {
+  conversationId: string;
   disabled?: boolean;
 }
 
@@ -113,6 +115,17 @@ export function E2eDecryptor(props: E2eDecryptorProps): null {
             headers: { "content-type": "application/json" },
             body: JSON.stringify({ id: r.id }),
           }).catch(() => { /* silent · purge is best-effort */ });
+          // Bridge 77 · cache decrypted plaintext to IDB so the message
+          // survives the Bridge 78 server purge · fire-and-forget.
+          const sentAt = match.node.getAttribute("data-nex-msg-sent-at") ?? "";
+          void putMessage({
+            id: r.id,
+            conversation_id: props.conversationId,
+            sender_account_id: match.senderAccountId,
+            body: r.plaintext,
+            sent_at: sentAt || new Date().toISOString(),
+            from_encrypted: true,
+          }).catch(() => { /* silent · cache is best-effort */ });
         } else if (r.error === "tamper") {
           bodyEl.textContent = "🔒 Could not verify this message";
           bodyEl.style.opacity = "0.55";
@@ -130,7 +143,7 @@ export function E2eDecryptor(props: E2eDecryptorProps): null {
       cancelled = true;
       obs.disconnect();
     };
-  }, [props.disabled]);
+  }, [props.disabled, props.conversationId]);
 
   return null;
 }
