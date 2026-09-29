@@ -56,7 +56,20 @@ const STATE_TONE: Record<NexOrderState, { color: string; label: string }> = {
 
 export const metadata = { title: "NEX · Your orders" };
 
-export default async function OrdersPage() {
+export default async function OrdersPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ commerce?: string }>;
+}) {
+  // Bridge 55 · Phase 1 launch gate · orders history hidden by
+  // default. Admins can reach it with ?commerce=1.
+  const sp = searchParams ? await searchParams : {};
+  const { commerceEnabledForRequest } = await import(
+    "@/lib/nex-native/launch-flags"
+  );
+  if (!commerceEnabledForRequest(sp)) {
+    redirect("/nex-native/home");
+  }
   const session = await resolveNexAppSessionFromContext();
   if (!session) {
     redirect("/nex-native/sign-in?next=/nex-native/orders");

@@ -40,13 +40,21 @@ export const metadata = { title: "NEX · Your cart" };
 export default async function CartPage({
   searchParams,
 }: {
-  searchParams: Promise<{ send_error?: string }>;
+  searchParams: Promise<{ send_error?: string; commerce?: string }>;
 }) {
+  const sp = await searchParams;
+  // Bridge 55 · Phase 1 launch gate · commerce hidden by default.
+  // Admins can still reach /cart with ?commerce=1.
+  const { commerceEnabledForRequest } = await import(
+    "@/lib/nex-native/launch-flags"
+  );
+  if (!commerceEnabledForRequest(sp)) {
+    redirect("/nex-native/home");
+  }
   const session = await resolveNexAppSessionFromContext();
   if (!session) {
     redirect("/nex-native/sign-in?next=/nex-native/cart");
   }
-  const sp = await searchParams;
 
   // Bridge 22c-3 · hydrate the server-side cart on this device · the
   // client merges it with localStorage on mount so the buyer sees

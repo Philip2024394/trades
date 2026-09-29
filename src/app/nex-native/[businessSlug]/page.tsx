@@ -22,7 +22,7 @@
 
 import type * as React from "react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as productService from "@/lib/nex-native/product-service";
 import * as menuService from "@/lib/nex-native/menu-service";
@@ -67,9 +67,20 @@ const SANS =
 
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: Promise<{ businessSlug: string }>;
+  searchParams?: Promise<{ commerce?: string }>;
 }) {
+  // Bridge 55 · Phase 1 launch gate · shop landings hidden by default.
+  // Admins can still reach with ?commerce=1.
+  const sp = searchParams ? await searchParams : {};
+  const { commerceEnabledForRequest } = await import(
+    "@/lib/nex-native/launch-flags"
+  );
+  if (!commerceEnabledForRequest(sp)) {
+    redirect("/nex-native/home");
+  }
   const { businessSlug } = await params;
   const business = await businessService.getBusinessBySlug(businessSlug);
   if (!business) notFound();

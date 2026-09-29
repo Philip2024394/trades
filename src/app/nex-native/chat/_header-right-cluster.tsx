@@ -31,6 +31,7 @@ import {
   NEX_CART_STORAGE_KEY,
   type NexCartItem,
 } from "@/lib/nex-native/cart-types";
+import { NEX_COMMERCE_ENABLED } from "@/lib/nex-native/launch-flags";
 
 const NEX = {
   text: "#F4F7FC",
@@ -117,7 +118,10 @@ export function HeaderRightCluster({
     };
   }, []);
 
-  const showShop = !!shop;
+  // Bridge 55 · Phase 1 launch · commerce hidden by default.
+  // Cart + Shop icons only render when NEX_COMMERCE_ENABLED is on.
+  const showCart = NEX_COMMERCE_ENABLED;
+  const showShop = NEX_COMMERCE_ENABLED && !!shop;
   const hasShopProducts = !!shop && shop.products.length > 0;
   const shopAriaLabel = shop
     ? shop.isVenue
@@ -148,6 +152,7 @@ export function HeaderRightCluster({
           <HomeIcon />
         </ClusterLinkButton>
 
+        {showCart && (
         <ClusterLinkButton
           href="/nex-native/cart"
           ariaLabel={
@@ -187,6 +192,7 @@ export function HeaderRightCluster({
             </span>
           )}
         </ClusterLinkButton>
+        )}
 
         {showShop && (
           hasShopProducts ? (

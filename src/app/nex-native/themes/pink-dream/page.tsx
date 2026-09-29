@@ -14,6 +14,7 @@ import {
   NEX_CART_STORAGE_KEY,
   type NexCartItem,
 } from "@/lib/nex-native/cart-types";
+import { PinkDreamShopSliderPreview } from "./_shop-slider-preview";
 import {
   useMessageGestures,
   ReactionPicker,
@@ -93,6 +94,14 @@ export default function PinkDreamPreviewPage() {
   const [replyTarget, setReplyTarget] = useState<ReplyTarget | null>(null);
   const [pickerAnchor, setPickerAnchor] = useState<ReactionPickerAnchor | null>(null);
   const [pickerFor, setPickerFor] = useState<string | null>(null);
+  // Bridge 54 · slider preview state · shop icon in the header
+  // opens this so founder can see the Pink Dream-themed grid.
+  const [shopSliderOpen, setShopSliderOpen] = useState(false);
+  // Bridge 54c · dev-only preview mode picker · overlay on the hero
+  // lets founder pick which content variant the slider opens in.
+  const [previewMode, setPreviewMode] = useState<"products" | "menu">(
+    "products",
+  );
 
   const openPicker = (id: string, anchor: ReactionPickerAnchor) => {
     setPickerFor(id);
@@ -430,16 +439,84 @@ export default function PinkDreamPreviewPage() {
             <HomeGlyph />
           </a>
           <PinkCartCircle />
-          <a
-            href="/nex-native/bunny"
-            aria-label="Visit Bunny's shop"
+          <button
+            type="button"
+            onClick={() => setShopSliderOpen(true)}
+            aria-label="Open Bunny's shop"
             title="Bunny's shop"
-            style={pinkIconStyle()}
+            style={{ ...pinkIconStyle(), cursor: "pointer" }}
           >
             <ShopGlyph />
-          </a>
+          </button>
         </div>
       </header>
+
+      {/* Bridge 54c · dev-only preview mode picker · hovers over the
+         hero as a small floating chip so founder can flip between
+         Products and Menu variants before tapping the shop icon.
+         Not shipped to production surfaces — this whole page is a
+         preview. */}
+      <div
+        aria-label="Preview slider content (dev only)"
+        style={{
+          position: "absolute",
+          top: "calc(env(safe-area-inset-top, 0) + 74px)",
+          left: 14,
+          zIndex: 20,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          padding: "5px 8px",
+          borderRadius: 999,
+          background: "rgba(23,18,31,0.85)",
+          border: "1px solid rgba(255,138,197,0.45)",
+          boxShadow: "0 6px 18px rgba(0,0,0,0.5)",
+          backdropFilter: "blur(6px)",
+          WebkitBackdropFilter: "blur(6px)",
+        }}
+      >
+        <span
+          style={{
+            fontSize: 9,
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "#FF8BC5",
+            fontWeight: 700,
+            paddingLeft: 4,
+          }}
+        >
+          Dev
+        </span>
+        <div
+          role="tablist"
+          style={{
+            display: "inline-flex",
+            padding: 2,
+            borderRadius: 999,
+            background: "rgba(255,138,197,0.14)",
+          }}
+        >
+          <PreviewPill
+            active={previewMode === "products"}
+            onClick={() => setPreviewMode("products")}
+            label="🛍 Products"
+          />
+          <PreviewPill
+            active={previewMode === "menu"}
+            onClick={() => setPreviewMode("menu")}
+            label="🍽 Menu"
+          />
+        </div>
+      </div>
+
+      {/* Bridge 54 · themed slider preview · opens from the shop
+         icon above · mode is picked externally by the dev overlay
+         above so both variants can be inspected on this one page. */}
+      <PinkDreamShopSliderPreview
+        open={shopSliderOpen}
+        onClose={() => setShopSliderOpen(false)}
+        defaultMode={previewMode}
+      />
 
       {/* ---------------- Conversation ----------------
          Bridge 24g · right padding reserved for the floating rail
@@ -738,6 +815,46 @@ function OutgoingRow({
    composer's "+" button (Bridge 24af) so the header + composer
    circular actions read as one visual family. Retained for the
    composer · header uses pinkIconStyle() (Bridge 53 direction). */
+
+/** Bridge 54c · pill in the dev-only preview picker overlay on the
+ *  hero · picks whether the slider opens in Products or Menu mode. */
+function PreviewPill({
+  active,
+  onClick,
+  label,
+}: {
+  active: boolean;
+  onClick: () => void;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      role="tab"
+      aria-selected={active}
+      onClick={onClick}
+      style={{
+        padding: "5px 10px",
+        borderRadius: 999,
+        border: "none",
+        background: active
+          ? "linear-gradient(135deg, #FF8AC5, #FF3F9F)"
+          : "transparent",
+        color: active ? "#FFF5FA" : "#D8C6D3",
+        fontSize: 10,
+        fontWeight: 700,
+        letterSpacing: "0.02em",
+        cursor: "pointer",
+        fontFamily: "inherit",
+        boxShadow: active ? "0 3px 8px rgba(255,79,163,0.35)" : "none",
+        transition: "background 160ms ease, color 160ms ease",
+      }}
+    >
+      {label}
+    </button>
+  );
+}
+
 function pinkCircleStyle(): React.CSSProperties {
   return {
     width: 30,
