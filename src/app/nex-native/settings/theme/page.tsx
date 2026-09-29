@@ -40,15 +40,18 @@ export default async function ThemePickerPage({
   const session = await resolveNexAppSessionFromContext();
   if (!session) redirect("/nex-native/sign-in");
 
-  // Read tier + current theme from the latest DB row (session may be stale).
+  // Read tier + trial state + current theme from the latest DB row
+  // (session may be stale). Bridge 56g · themes_trial_used_at is
+  // required by effectiveTier so trial-active accounts unlock the
+  // premium catalogue automatically for the 7-day window.
   const row = await nexSupabaseAdmin
     .from("nex_account")
-    .select("tier, bisnis_expires_at, chat_theme")
+    .select("tier, bisnis_expires_at, chat_theme, themes_trial_used_at")
     .eq("id", session.account.id)
     .maybeSingle();
   const account = (row.data ?? {}) as Pick<
     NexAccountRow,
-    "tier" | "bisnis_expires_at" | "chat_theme"
+    "tier" | "bisnis_expires_at" | "chat_theme" | "themes_trial_used_at"
   >;
   const currentTier = effectiveTier(account);
   const currentThemeId = account.chat_theme ?? "default";

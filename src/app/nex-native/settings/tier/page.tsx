@@ -164,8 +164,8 @@ const OFFERS: TierOffer[] = [
     yearlyCtaLabel: "Subscribe · Rp 390k/yr",
     yearlyCtaIntent: "bisnis_yearly",
     tagline:
-      "Everything unlocked · themes, mascots, effects, shop slider, verified handle",
-    target: "Anyone who wants the full NEX",
+      "Everything unlocked · themes, mascots, effects, shop slider · for personal and business accounts",
+    target: "Any account · personal or business",
     features: [
       "ALL premium themes (20+ and growing)",
       "ALL mascots across every theme",
