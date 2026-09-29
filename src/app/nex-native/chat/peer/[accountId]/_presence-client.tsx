@@ -31,6 +31,10 @@ import {
 } from "@/lib/nex-native/realtime/presence";
 
 export interface PeerPresenceClientProps {
+  /** Bridge 83 · scope · presence channel is per-conversation so the
+   *  roster never grows beyond the two participants. Fixes the 100K-DAU
+   *  browser-crashing state-sync bug from the earlier global channel. */
+  conversationId: string;
   selfAccountId: string;
   selfDisplayName: string;
   peerAccountId: string;
@@ -49,6 +53,7 @@ export function PeerPresenceClient(props: PeerPresenceClientProps): React.JSX.El
     if (props.disabled) return;
 
     const channel = openPresenceChannel({
+      conversationId: props.conversationId,
       selfAccountId: props.selfAccountId,
       selfDisplayName: props.selfDisplayName,
       initialKind: "online",
@@ -79,6 +84,7 @@ export function PeerPresenceClient(props: PeerPresenceClientProps): React.JSX.El
       void channel.close();
     };
   }, [
+    props.conversationId,
     props.selfAccountId,
     props.selfDisplayName,
     props.peerAccountId,

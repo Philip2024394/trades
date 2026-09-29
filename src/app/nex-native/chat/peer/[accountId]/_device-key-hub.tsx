@@ -23,6 +23,7 @@ import {
   ensureDeviceKey,
   publicKeyBase64,
 } from "@/lib/nex-native/crypto/device-key";
+import { clearDeviceKeyCache } from "@/lib/nex-native/crypto/device-key-cache";
 import { upsertDeviceKeyAction } from "../../../_actions";
 
 export interface DeviceKeyHubProps {
@@ -50,6 +51,11 @@ export function DeviceKeyHub(props: DeviceKeyHubProps): null {
           // "secure chat unavailable" banner when this fails.
           // eslint-disable-next-line no-console
           console.warn("[nex device-key]", res.error);
+        } else {
+          // Bridge 84 · a fresh key was just written to the server.
+          // Wipe the client cache so the next encrypted send picks
+          // it up immediately instead of waiting for the 60s TTL.
+          clearDeviceKeyCache();
         }
       } catch (e) {
         // eslint-disable-next-line no-console

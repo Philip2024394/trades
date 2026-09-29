@@ -35,7 +35,7 @@ import {
   type AttachmentEnvelope,
 } from "./attachment-envelope";
 import type { UploadedEncryptedAttachment } from "./encrypted-attachment-upload";
-import { listAccountDeviceKeysAction } from "@/app/nex-native/_actions";
+import { cachedListDeviceKeys } from "./device-key-cache";
 
 export interface EncryptedSendOptions {
   conversationId: string;
@@ -89,10 +89,11 @@ export type EncryptedSendOutcome = EncryptedSendResult | EncryptedSendFailure;
 export async function sendEncryptedPeerMessage(
   opts: EncryptedSendOptions,
 ): Promise<EncryptedSendOutcome> {
-  // 1. Peer + self device lists.
+  // 1. Peer + self device lists (Bridge 84 · 60s TTL client cache
+  // so repeat sends in one conversation don't re-hit the DB).
   const [peerRes, selfRes] = await Promise.all([
-    listAccountDeviceKeysAction(opts.peerAccountId),
-    listAccountDeviceKeysAction(opts.selfAccountId),
+    cachedListDeviceKeys(opts.peerAccountId),
+    cachedListDeviceKeys(opts.selfAccountId),
   ]);
   if (!peerRes.ok) {
     return { ok: false, error: "unknown", message: peerRes.error };

@@ -553,6 +553,7 @@ export default async function PeerChatPage({
           window CustomEvents ("nex-peer-presence") for future ring/dot
           consumers. Disabled for NEX1 support. */}
       <PeerPresenceClient
+        conversationId={conversation.id}
         selfAccountId={session.account.id}
         selfDisplayName={session.account.display_name}
         peerAccountId={peer.id}
