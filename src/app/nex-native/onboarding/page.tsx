@@ -51,10 +51,17 @@ interface PageProps {
 }
 
 export default async function Page({ searchParams }: PageProps) {
+  const sp = await searchParams;
+  // Bridge 55 · Phase 1 launch gate · seller onboarding hidden by
+  // default. Admins can reach it with ?commerce=1.
+  const { commerceEnabledForRequest } = await import(
+    "@/lib/nex-native/launch-flags"
+  );
+  if (!commerceEnabledForRequest(sp)) {
+    redirect("/nex-native/home");
+  }
   const session = await resolveNexAppSessionFromContext();
   if (!session) redirect("/nex-native/sign-in");
-
-  const sp = await searchParams;
   const banner =
     sp.e && sp.m ? { code: sp.e, message: sp.m } : null;
 

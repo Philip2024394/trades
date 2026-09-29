@@ -117,6 +117,14 @@ const PAGE_SIZE = 20;
 
 export default async function Page({ searchParams }: PageProps) {
   const sp = await searchParams;
+  // Bridge 55 · Phase 1 launch gate · marketplace search hidden.
+  const { commerceEnabledForRequest } = await import(
+    "@/lib/nex-native/launch-flags"
+  );
+  if (!commerceEnabledForRequest(sp)) {
+    const { redirect } = await import("next/navigation");
+    redirect("/nex-native/home");
+  }
   const rawQuery = sp.q ?? "";
   const query = rawQuery.trim();
   // Bridge 14 · category facet · query-only search still works,

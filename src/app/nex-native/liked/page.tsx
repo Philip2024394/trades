@@ -49,8 +49,17 @@ export default async function LikedPage({
     bulk_ok?: string;
     bulk_error?: string;
     like_error?: string;
+    commerce?: string;
   }>;
 }) {
+  const sp = await searchParams;
+  // Bridge 55 · Phase 1 launch gate · liked products hidden by default.
+  const { commerceEnabledForRequest } = await import(
+    "@/lib/nex-native/launch-flags"
+  );
+  if (!commerceEnabledForRequest(sp)) {
+    redirect("/nex-native/home");
+  }
   const session = await resolveNexAppSessionFromContext();
   if (!session) {
     redirect("/nex-native/sign-in?next=/nex-native/liked");

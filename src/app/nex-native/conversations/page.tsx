@@ -28,8 +28,17 @@ interface PageProps {
 }
 
 export default async function Page({ searchParams }: PageProps) {
-  const session = await resolveNexAppSessionFromContext();
   const params = await searchParams;
+  // Bridge 55 · Phase 1 launch gate · business-conversation inbox
+  // hidden by default (this surface is commerce-only). Admins can
+  // reach it with ?commerce=1.
+  const { commerceEnabledForRequest } = await import(
+    "@/lib/nex-native/launch-flags"
+  );
+  if (!commerceEnabledForRequest(params)) {
+    redirect("/nex-native/home");
+  }
+  const session = await resolveNexAppSessionFromContext();
   const authError = params.e && params.m
     ? { code: params.e, message: params.m }
     : null;

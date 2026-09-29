@@ -28,6 +28,7 @@ import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as friendService from "@/lib/nex-native/friend-service";
 import * as accountService from "@/lib/nex-native/account-service";
 import * as conversationService from "@/lib/nex-native/conversation-service";
+import { NEX_COMMERCE_ENABLED } from "@/lib/nex-native/launch-flags";
 import type { NexBusinessRow, NexChatTheme } from "@/lib/nex-native/types";
 import { NexPageHeader } from "../_page-header";
 import {
@@ -44,7 +45,12 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 type Tab = "friends" | "business" | "groups";
-const TABS: readonly Tab[] = ["friends", "business", "groups"] as const;
+// Bridge 55 · Phase 1 launch · Business tab is a commerce surface
+// (shows buyer↔seller conversations) so it drops out when commerce
+// is off. Friends + Groups remain always.
+const TABS: readonly Tab[] = NEX_COMMERCE_ENABLED
+  ? (["friends", "business", "groups"] as const)
+  : (["friends", "groups"] as const);
 const TAB_LABEL: Record<Tab, string> = {
   friends: "Friends",
   business: "Business",
@@ -2102,17 +2108,21 @@ function FriendSection(props: {
         {props.preview.map((c, i) => (
           <PersonCard
             key={`preview-${props.label}-${i}`}
-            // Preview cards route by shopKind so admin lands on the flow
-            // that matches what the friend sells · restaurant → Story
-            // Reel · products → Direct Price gallery. Non-shop mocks
-            // stay unclickable.
-            href={c.shopKind ? MOCK_SHOP_HREF[c.shopKind] : null}
+            // Bridge 55 · Phase 1 launch · commerce hidden ·
+            // shop-routing + shop badge on mock preview cards
+            // suppressed. Commerce-on returns to the routed
+            // Story-Reel / Direct-Price previews.
+            href={
+              NEX_COMMERCE_ENABLED && c.shopKind
+                ? MOCK_SHOP_HREF[c.shopKind]
+                : null
+            }
             name={c.name}
             subtitle={c.lastMessage ?? `${c.location}`}
             profession={professionCaption(c.profession)}
             presence={c.presence}
             unread={c.unread}
-            hasShop={c.hasShop}
+            hasShop={NEX_COMMERCE_ENABLED && c.hasShop}
             avatarUrl={c.avatarUrl}
             receiptState={c.receiptState}
             typing={c.typing}
