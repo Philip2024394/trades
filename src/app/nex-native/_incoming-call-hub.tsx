@@ -22,6 +22,7 @@ import {
   type IncomingCallInbox,
   type IncomingCallRing,
 } from "@/lib/nex-native/realtime/incoming-calls";
+import { createRingtone, type Ringtone } from "@/lib/nex-native/calls/ringtone";
 
 const RING_TIMEOUT_MS = 45_000;
 
@@ -49,6 +50,7 @@ export function IncomingCallHub(props: IncomingCallHubProps): React.JSX.Element 
   const [active, setActive] = React.useState<IncomingCallRing | null>(null);
   const inboxRef = React.useRef<IncomingCallInbox | null>(null);
   const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const ringtoneRef = React.useRef<Ringtone | null>(null);
 
   React.useEffect(() => {
     if (props.disabled) return;
@@ -83,6 +85,21 @@ export function IncomingCallHub(props: IncomingCallHubProps): React.JSX.Element 
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, [active]);
+
+  // Bridge 89a · play/stop the synthesized ringtone alongside the
+  // visual overlay. Handle survives across ring cycles so multiple
+  // consecutive calls don't leak AudioContexts.
+  React.useEffect(() => {
+    if (!ringtoneRef.current) ringtoneRef.current = createRingtone();
+    if (active) {
+      ringtoneRef.current.start();
+    } else {
+      ringtoneRef.current.stop();
+    }
+  }, [active]);
+  React.useEffect(() => {
+    return () => { ringtoneRef.current?.stop(); };
+  }, []);
 
   if (props.disabled) return null;
   if (!active) return null;

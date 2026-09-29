@@ -22,6 +22,7 @@ import {
   type PeerCallMedia,
   type PeerCallState,
 } from "@/lib/nex-native/calls/peer-call";
+import { createRingtone, type Ringtone } from "@/lib/nex-native/calls/ringtone";
 
 export interface PeerCallLauncherProps {
   conversationId: string;
@@ -75,6 +76,7 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
   const remoteVideoRef = React.useRef<HTMLVideoElement | null>(null);
   const localVideoRef = React.useRef<HTMLVideoElement | null>(null);
   const connectedAtRef = React.useRef<number | null>(null);
+  const ringtoneRef = React.useRef<Ringtone | null>(null);
 
   // Instantiate PeerCall once per conversation.
   React.useEffect(() => {
@@ -183,6 +185,23 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
     }, 1000);
     return () => clearInterval(t);
   }, [state]);
+
+  // Bridge 89a · play the synthesized ringtone whenever we're in the
+  // "incoming" state · stops on any transition out (accept/decline/
+  // ended). Callers who are dialing get a subtle tone via the
+  // browser's own tab title update in a future bridge · we only ring
+  // for INCOMING here to match the classic phone metaphor.
+  React.useEffect(() => {
+    if (!ringtoneRef.current) ringtoneRef.current = createRingtone();
+    if (state === "incoming") {
+      ringtoneRef.current.start();
+    } else {
+      ringtoneRef.current.stop();
+    }
+  }, [state]);
+  React.useEffect(() => {
+    return () => { ringtoneRef.current?.stop(); };
+  }, []);
 
   if (props.disabled) return null;
 
