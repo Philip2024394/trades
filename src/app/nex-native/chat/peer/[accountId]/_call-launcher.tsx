@@ -15,6 +15,7 @@
 // The whole thing is self-contained — it doesn't reach into the shell.
 
 import * as React from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import {
   PeerCall,
   type PeerCallEndReason,
@@ -82,6 +83,7 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
       conversationId: props.conversationId,
       selfAccountId: props.selfAccountId,
       selfDisplayName: props.selfDisplayName,
+      peerAccountId: props.peerAccountId,
       handlers: {
         onStateChange: (s) => {
           setState(s);
@@ -124,6 +126,23 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
     props.selfDisplayName,
     props.disabled,
   ]);
+
+  // Bridge 86 · auto-accept when we arrived here via the global
+  // incoming-call hub's "Accept" deep-link. Fires once when the ring
+  // arrives on the per-conversation signalling channel and the URL
+  // still carries the accept_call marker. Also clears the marker so
+  // a back-navigation doesn't re-accept.
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const acceptCallId = searchParams.get("accept_call");
+  React.useEffect(() => {
+    if (!acceptCallId || props.disabled) return;
+    if (state !== "incoming") return;
+    void callRef.current?.acceptIncoming();
+    // Wipe the marker from the URL so it can't fire again.
+    router.replace(pathname, { scroll: false });
+  }, [acceptCallId, state, props.disabled, pathname, router]);
 
   // Attach remote stream to the audio element (voice) or video element
   // (video call — video element also plays audio, so the hidden audio

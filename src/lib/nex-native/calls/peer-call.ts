@@ -28,6 +28,7 @@ import {
   type SdpOfferSignal,
   type SignallingChannel,
 } from "../realtime/signalling";
+import { openIncomingCallInbox } from "../realtime/incoming-calls";
 
 export type PeerCallState =
   | "idle"
@@ -100,6 +101,10 @@ export class PeerCall {
       conversationId: string;
       selfAccountId: string;
       selfDisplayName: string;
+      /** Bridge 86 · peer's account id · used to also ring their
+       *  global inbox (nex:calls:in:{peer_id}) so calls land even
+       *  when they aren't viewing this specific chat. */
+      peerAccountId: string;
       handlers: PeerCallHandlers;
     },
   ) {
@@ -183,6 +188,31 @@ export class PeerCall {
       callerAccountId: this.opts.selfAccountId,
       callerDisplayName: this.opts.selfDisplayName,
     });
+
+    // Bridge 86 · also ring the peer's GLOBAL inbox so the call
+    // reaches them wherever they are in nex-native, not just when
+    // they happen to be viewing this peer chat. Fire-and-forget ·
+    // per-conversation ring is the authoritative signal · this is
+    // the discoverability layer on top. Uses a short-lived caller
+    // inbox handle that opens, broadcasts, closes.
+    void (async () => {
+      try {
+        const inbox = openIncomingCallInbox({
+          selfAccountId: this.opts.selfAccountId,
+          onRing: () => { /* caller doesn't consume its own rings */ },
+        });
+        await inbox.ring(this.opts.peerAccountId, {
+          callId: this.currentCallId!,
+          conversationId: this.opts.conversationId,
+          callerAccountId: this.opts.selfAccountId,
+          callerDisplayName: this.opts.selfDisplayName,
+          media,
+        });
+        await inbox.close();
+      } catch {
+        /* inbox ring is best-effort · per-conversation ring already fired */
+      }
+    })();
 
     const offer = await this.pc.createOffer({
       offerToReceiveAudio: true,

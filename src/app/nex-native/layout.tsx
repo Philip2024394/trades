@@ -20,6 +20,8 @@
 // other apps at /trade-off, /admin, /nexapp etc.
 
 import type { Metadata, Viewport } from "next";
+import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
+import { IncomingCallHub } from "./_incoming-call-hub";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -69,10 +71,35 @@ export const metadata: Metadata = {
   },
 };
 
-export default function NexNativeLayout({
+export default async function NexNativeLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  // Bridge 86 · resolve the session server-side so the global
+  // incoming-call hub knows which inbox channel to subscribe to.
+  // Non-blocking · unauthenticated visitors get a null session and
+  // the hub is skipped. Session lookup is a cookie read + one small
+  // supabase.auth.getUser() · cached at request scope.
+  let selfAccountId: string | null = null;
+  let selfDisplayName: string | null = null;
+  try {
+    const session = await resolveNexAppSessionFromContext();
+    if (session) {
+      selfAccountId = session.account.id;
+      selfDisplayName = session.account.display_name;
+    }
+  } catch { /* unauthenticated · hub stays disabled */ }
+
+  return (
+    <>
+      {children}
+      {selfAccountId && selfDisplayName && (
+        <IncomingCallHub
+          selfAccountId={selfAccountId}
+          selfDisplayName={selfDisplayName}
+        />
+      )}
+    </>
+  );
 }
