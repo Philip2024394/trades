@@ -1278,6 +1278,12 @@ function ItemDetailBody({ item }: { item: Item }) {
         {item.description}
       </p>
 
+      {/* Bridge 61 · variants block · sizes first, then colors · only
+         renders what the seller has stocked (Founder direction
+         2026-09-29 · display stocked-only, no sold-out state on this
+         row · sold-out is item-level via inStock flag). */}
+      <VariantsBlock item={item} />
+
       {/* Bridge 59/60 · single info line above the CTAs · either the
          universal green "free collection · delivery in chat" pill or
          a red sold-out warning when the seller has toggled the item
@@ -1409,6 +1415,161 @@ function ItemDetailBody({ item }: { item: Item }) {
   );
 }
 
+
+/** Bridge 61 · Variants block · sizes then colors · stocked-only ·
+ *  lightweight interactive picker. Sits between description and
+ *  the delivery pill on the detail view. Renders nothing when the
+ *  item has neither sizes nor colors (accessories, single-SKU
+ *  products, menu items). Selection carries into the Send-in-chat
+ *  message body so the seller sees exactly what the buyer picked. */
+function VariantsBlock({ item }: { item: Item }) {
+  const [size, setSize] = React.useState<string | null>(null);
+  const [color, setColor] = React.useState<string | null>(null);
+  React.useEffect(() => {
+    setSize(null);
+    setColor(null);
+  }, [item.id]);
+
+  const sizes = item.sizes ?? [];
+  const colors = item.colors ?? [];
+  if (sizes.length === 0 && colors.length === 0) return null;
+
+  const summary: string[] = [];
+  if (size) summary.push(size);
+  if (color) summary.push(color);
+
+  return (
+    <div style={{ marginBottom: 20 }}>
+      {sizes.length > 0 && (
+        <section style={{ marginBottom: colors.length > 0 ? 16 : 0 }}>
+          <div
+            style={{
+              fontSize: 10,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: "#FF8BC5",
+              fontWeight: 800,
+              marginBottom: 10,
+            }}
+          >
+            Sizes available
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {sizes.map((s) => {
+              const active = size === s.label;
+              return (
+                <button
+                  key={s.label}
+                  type="button"
+                  onClick={() => setSize(active ? null : s.label)}
+                  aria-pressed={active}
+                  style={{
+                    minWidth: 52,
+                    padding: "10px 14px",
+                    borderRadius: 10,
+                    background: active
+                      ? "linear-gradient(135deg, #FF8AC5, #FF3F9F)"
+                      : "rgba(255,138,197,0.06)",
+                    border: active
+                      ? "1px solid rgba(255,205,230,0.85)"
+                      : "1px solid rgba(255,138,197,0.28)",
+                    color: "#FFF5FA",
+                    fontSize: 13,
+                    fontWeight: active ? 800 : 700,
+                    letterSpacing: "0.02em",
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                    boxShadow: active
+                      ? "0 6px 14px rgba(255,79,163,0.45), inset 0 1px 0 rgba(255,255,255,0.25)"
+                      : "inset 0 1px 0 rgba(255,255,255,0.03)",
+                    transition:
+                      "background 160ms ease, box-shadow 160ms ease",
+                  }}
+                >
+                  {s.label}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {colors.length > 0 && (
+        <section>
+          <div
+            style={{
+              fontSize: 10,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: "#FF8BC5",
+              fontWeight: 800,
+              marginBottom: 10,
+            }}
+          >
+            Colours
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+            {colors.map((c) => {
+              const active = color === c.name;
+              return (
+                <button
+                  key={c.name}
+                  type="button"
+                  onClick={() => setColor(active ? null : c.name)}
+                  aria-pressed={active}
+                  title={c.name}
+                  style={{
+                    width: 34,
+                    height: 34,
+                    borderRadius: "50%",
+                    background: c.hex,
+                    border: active
+                      ? "2px solid #FFF5FA"
+                      : "1.5px solid rgba(255,255,255,0.3)",
+                    boxShadow: active
+                      ? "0 0 0 3px #FF3F9F, 0 6px 14px rgba(255,79,163,0.5)"
+                      : "0 2px 6px rgba(0,0,0,0.4)",
+                    cursor: "pointer",
+                    padding: 0,
+                    transition: "box-shadow 160ms ease",
+                  }}
+                />
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {summary.length > 0 && (
+        <div
+          style={{
+            marginTop: 14,
+            paddingTop: 10,
+            borderTop: "1px solid rgba(255,138,197,0.18)",
+            fontSize: 12,
+            color: "#FFF5FA",
+            fontWeight: 700,
+            letterSpacing: "0.02em",
+          }}
+        >
+          <span
+            style={{
+              color: "#FF8BC5",
+              marginRight: 6,
+              fontSize: 10,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              fontWeight: 800,
+            }}
+          >
+            Your pick
+          </span>
+          {summary.join(" · ")}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function ChatBubbleIcon() {
   return (
