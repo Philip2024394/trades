@@ -2409,6 +2409,58 @@ export async function deletePeerMessageAction(
  * in the string-return shape existing peer actions use.
  */
 /**
+ * Bridge 80 · Update the caller's display_name (the freely-chosen
+ * username shown on chat bubbles, identity headers, and friend
+ * cards). Emoji are allowed · only length is bounded (2..40 Unicode
+ * code points per migration 095).
+ *
+ * Form fields:
+ *   · display_name · new value, will be trimmed
+ *
+ * Returns a small JSON result rather than redirecting so the client
+ * editor can render inline success + error banners without a
+ * page-level reload.
+ */
+export async function updateDisplayNameAction(
+  formData: FormData,
+): Promise<{ ok: true; displayName: string } | { ok: false; error: string }> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) return { ok: false, error: "not_signed_in" };
+
+  const raw = String(formData.get("display_name") ?? "");
+  const trimmed = raw.trim();
+  const len = [...trimmed].length; // count code points, not UTF-16 code units
+  const { NEX_DISPLAY_NAME_MIN, NEX_DISPLAY_NAME_MAX } = await import(
+    "@/lib/nex-native/types"
+  );
+  if (len < NEX_DISPLAY_NAME_MIN) {
+    return { ok: false, error: `too_short_min_${NEX_DISPLAY_NAME_MIN}` };
+  }
+  if (len > NEX_DISPLAY_NAME_MAX) {
+    return { ok: false, error: `too_long_max_${NEX_DISPLAY_NAME_MAX}` };
+  }
+
+  try {
+    const { nexSupabaseAdmin } = await import("@/lib/nex-native/supabase-admin");
+    const { error } = await nexSupabaseAdmin
+      .from("nex_account")
+      .update({ display_name: trimmed })
+      .eq("id", session.account.id);
+    if (error) throw error;
+    // Revalidate the profile page + the chat surfaces where the name
+    // renders (every peer chat + the friends list). Path-scoped is
+    // cheap; a "layout" flush would be over-eager here.
+    revalidatePath("/nex-native/settings/profile");
+    revalidatePath("/nex-native/chat");
+    revalidatePath("/nex-native/friends");
+    return { ok: true, displayName: trimmed };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return { ok: false, error: msg };
+  }
+}
+
+/**
  * Bridge 76 · Read the active device keys for one account.
  * --------------------------------------------------------
  * Client calls this before every encrypted send so it knows which

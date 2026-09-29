@@ -312,6 +312,14 @@ export const NEX_PROFILE_LOOKING_FOR_MAX = 10;
  *  (DB does not enforce per-element length). */
 export const NEX_PROFILE_ARRAY_ELEMENT_MAX = 40;
 
+/** Bridge 80 · migration 095 · display_name bounds. Emoji allowed
+ *  (Unicode code points via char_length) · only length is enforced
+ *  so bubbles + identity headers render predictably. Mirror this
+ *  range on the client so the character counter matches the DB
+ *  reality. */
+export const NEX_DISPLAY_NAME_MIN = 2;
+export const NEX_DISPLAY_NAME_MAX = 40;
+
 // ---------------------------------------------------------------------------
 // nex_business
 // ---------------------------------------------------------------------------

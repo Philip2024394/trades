@@ -38,6 +38,8 @@ import { updateProfileAction } from "../../_actions";
 import { NexPageHeader } from "../../_page-header";
 import { NexFaceCameraUploader } from "./_face-camera-uploader";
 import { DailyActivitySection } from "./_daily-activity-section";
+import { DisplayNameEditor } from "./_display-name-editor";
+import { NexIdShare } from "./_nex-id-share";
 import {
   NEX_ACCOUNT_KINDS,
   NEX_ACCOUNT_KIND_LABEL,
@@ -309,6 +311,20 @@ function PersonalTab(props: {
         handle={account.nex_handle}
         faceVerified={profile?.avatar_face_verified ?? false}
       />
+
+      {/* Bridge 80 · Founder direction 2026-09-29 · nex-XXXX id is
+          the friend-connect handle · phone stays private. Prominent
+          share affordance on the identity panel. */}
+      <NexIdShare
+        handle={account.nex_handle}
+        displayName={account.display_name}
+      />
+
+      {/* Bridge 80 · freely editable username with emoji support +
+          live character counter. Separate from the profile form so
+          it saves independently without re-validating the rest of
+          the profile fields. */}
+      <DisplayNameEditor initialName={account.display_name} />
 
       <form
         action={updateProfileAction}
