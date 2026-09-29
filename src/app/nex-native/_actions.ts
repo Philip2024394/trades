@@ -129,13 +129,51 @@ export async function createNexAccountAction(formData: FormData): Promise<never>
   if (data.user?.id) {
     try {
       const existing = await accountService.getAccountBySupabaseUserId(data.user.id);
+      let acc = existing;
       if (!existing) {
-        await accountService.createAccount({
+        acc = await accountService.createAccount({
           supabase_user_id: data.user.id,
           display_name: fullName,
           phone_country_code: phoneCountryCode,
           phone_national_number: phoneNationalNumber,
         });
+      }
+      // Bridge 62 · welcome message from NEX1 · sealed 2026-09-29.
+      // Fires once per account · new signups land on /chat with NEX1
+      // already sitting in their friends list AND a real message
+      // waiting. Zero friction to reply for support. Best-effort:
+      // any failure here doesn't block signup.
+      if (acc?.id) {
+        try {
+          const { NEX_OFFICIAL_ACCOUNT_ID } = await import(
+            "@/lib/nex-native/nex-official"
+          );
+          if (acc.id !== NEX_OFFICIAL_ACCOUNT_ID) {
+            const conv =
+              await peerConversationService.getOrCreatePeerConversation(
+                NEX_OFFICIAL_ACCOUNT_ID,
+                acc.id,
+              );
+            const firstName = fullName.split(/\s+/)[0] || "there";
+            const body =
+              `🎉 Welcome to NEX, ${firstName}!\n\n` +
+              `I'm NEX · your support account. Everything about your NEX chat lives here — tap /settings/theme to try any premium theme free for 7 days, or reply to this message any time you have a question.\n\n` +
+              `Enjoy your first look 💜`;
+            await peerMessageService.sendPeerMessage({
+              conversation_id: conv.id,
+              sender_account_id: NEX_OFFICIAL_ACCOUNT_ID,
+              body,
+              attachment_url: null,
+              attachment_type: null,
+              attachment_meta: null,
+            });
+          }
+        } catch (e) {
+          console.warn(
+            "[nex-signup] welcome message failed",
+            e instanceof Error ? e.message : e,
+          );
+        }
       }
     } catch {
       /* non-fatal · resolveFromUser will create + backfill on first sign-in */
