@@ -77,6 +77,7 @@ export default async function Page({ params, searchParams }: PageProps) {
         )}
 
         {editable ? (
+          <>
           <form action={updateCampaignAction} className="rounded border border-neutral-300 bg-white p-4">
             <input type="hidden" name="campaign_id" value={campaign.id} />
             <label className="mb-3 block text-xs text-neutral-600">
@@ -117,6 +118,7 @@ export default async function Page({ params, searchParams }: PageProps) {
             Dispatch marks the campaign sent, records one log row per subscriber (sent/skipped),
             and freezes the campaign for audit.
           </p>
+          </>
         ) : (
           <section className="rounded border border-neutral-200 bg-neutral-50 p-4">
             <div className="mb-2 text-xs uppercase tracking-wide text-neutral-500">Preview (read-only)</div>

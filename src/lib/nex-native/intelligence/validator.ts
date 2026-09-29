@@ -25,6 +25,16 @@ export interface ValidatorInput {
   systemPrompt: string;
   userMessage: string;
   output: string;
+  /** Bridge 91 · optional evidence whitelist. When present, figures +
+   *  URLs that appear in this whitelist are treated as authoritative
+   *  and are NOT flagged as fabricated, even if they don't appear in
+   *  systemPrompt or userMessage. This lets the intelligence gateway
+   *  pass retrieved evidence tokens without having to inline the raw
+   *  content into the prompt again. */
+  evidenceWhitelist?: {
+    figures?: string[];
+    urls?: string[];
+  };
 }
 
 export type ValidatorFinding =
@@ -76,7 +86,12 @@ const PLACEHOLDER_FRAGMENTS: readonly string[] = [
 ];
 
 function extractUrls(text: string): string[] {
-  return text.match(/https?:\/\/[^\s)>\]]+/gi) ?? [];
+  const raw = text.match(/https?:\/\/[^\s)>\]]+/gi) ?? [];
+  // Bridge 91 · strip trailing sentence-final punctuation. Without
+  // this, "…menu at https://ex.com/menu." would extract the URL WITH
+  // the period and fail to match the same URL in the evidence
+  // whitelist. Applied to . , ; : ) ] ! ? — all common sentence endings.
+  return raw.map((u) => u.replace(/[.,;:)\]!?]+$/, ""));
 }
 
 function extractMoneyFigures(text: string): string[] {
@@ -85,9 +100,14 @@ function extractMoneyFigures(text: string): string[] {
   // prevents "GBP 24.50." from grabbing the sentence-ending period,
   // which caused legitimate context-figure reuse to be flagged as
   // fabrication when the same figure appeared mid-sentence in output.
+  //
+  // Bridge 91 · added Rp / IDR for the Indonesian launch market so
+  // the intelligence gateway's evidence whitelist can pass local
+  // currency figures without them being flagged as fabricated.
   const numeric = String.raw`\d[\d,]*(?:\.\d+)?`;
   const explicit = text.match(new RegExp(`[£$€¥]\\s?${numeric}`, "gi")) ?? [];
-  const currencyPrefixed = text.match(new RegExp(`\\b(?:GBP|USD|EUR|JPY)\\s?${numeric}`, "gi")) ?? [];
+  const currencyPrefixed =
+    text.match(new RegExp(`\\b(?:GBP|USD|EUR|JPY|IDR|Rp)\\s?${numeric}`, "gi")) ?? [];
   return [...explicit, ...currencyPrefixed].map((s) => s.trim());
 }
 
@@ -165,20 +185,25 @@ export function validateOutput(input: ValidatorInput): ValidatorResult {
   // Degenerate loop
   if (hasDegenerateLoop(trimmed)) findings.push("degenerate_loop");
 
-  // Fabricated URLs · anything in output that is NOT in system or user is invented
+  // Fabricated URLs · anything in output that is NOT in system, user,
+  // or evidence whitelist is invented. Bridge 91 · evidence whitelist
+  // lets retrieved authoritative URLs pass without being inlined into
+  // the prompt again.
   const outputUrls = extractUrls(trimmed);
   const inputUrls = new Set([
     ...extractUrls(input.systemPrompt),
     ...extractUrls(input.userMessage),
+    ...(input.evidenceWhitelist?.urls ?? []),
   ]);
   const inventedUrls = outputUrls.filter((u) => !inputUrls.has(u));
   if (inventedUrls.length > 0) findings.push("fabricated_url");
 
-  // Fabricated figures · same test on money figures
+  // Fabricated figures · same test on money figures · same whitelist rule.
   const outputFigures = extractMoneyFigures(trimmed);
   const inputFigures = new Set([
     ...extractMoneyFigures(input.systemPrompt),
     ...extractMoneyFigures(input.userMessage),
+    ...(input.evidenceWhitelist?.figures ?? []).map((f) => f.trim()),
   ]);
   const inventedFigures = outputFigures.filter((f) => !inputFigures.has(f.trim()));
   if (inventedFigures.length > 0) findings.push("fabricated_figure");

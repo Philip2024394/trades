@@ -12,8 +12,14 @@
 //     prevent the default Server-Action submit, encrypt client-side,
 //     POST to /api/nex-native/peer-message/encrypted, then reload the
 //     chat via router.refresh().
-//   · If E2E is NOT ready, let the plaintext form submit through
-//     unchanged — the existing sendPeerMessageAction path handles it.
+//   · If the peer or self has no device key, the encrypted path is
+//     impossible. Bridge 90 · SHOW A CONFIRMATION MODAL before
+//     downgrading to plaintext. Previously we silently fell back to
+//     the plaintext server action, which contradicted the privacy
+//     pledge (users believed their message was encrypted when it
+//     wasn't). Now the user gets an explicit prompt: Cancel keeps
+//     the message in the composer, Send anyway ships plaintext with
+//     eyes open.
 //
 // Attachments (image / video / voice) still route through the
 // plaintext path in v1 — encrypting binary payloads through the same
@@ -50,6 +56,16 @@ export function E2eComposerIntercept(
   >("idle");
   const [errorMsg, setErrorMsg] = React.useState<string | null>(null);
   const [e2eReady, setE2eReady] = React.useState<boolean | null>(null);
+  // Bridge 90 · when the encrypted path is unavailable, we hold the
+  // form here and prompt the user to confirm before downgrading to
+  // plaintext. Cancel clears it (message stays in composer) · Confirm
+  // triggers the plaintext server action (see fallbackFormRef below).
+  const [fallbackPrompt, setFallbackPrompt] = React.useState<
+    | null
+    | { reason: "no_peer_devices" | "no_self_devices" }
+  >(null);
+  const fallbackFormRef = React.useRef<HTMLFormElement | null>(null);
+  const onSubmitRef = React.useRef<((e: SubmitEvent) => void) | null>(null);
 
   React.useEffect(() => {
     if (props.disabled) return;
@@ -149,19 +165,22 @@ export function E2eComposerIntercept(
           return;
         }
         if (outcome.error === "no_peer_devices" || outcome.error === "no_self_devices") {
-          // Silent fallback · resubmit form (without our capture listener
-          // preventing) to let the Server Action send plaintext.
-          setStatus("fallback");
+          // Bridge 90 · NO silent fallback. Stash the form ref and
+          // show a confirmation modal · user chooses Cancel (message
+          // stays in composer) or Send anyway (plaintext ships with
+          // explicit user consent).
+          setStatus("idle");
           setE2eReady(false);
-          form.removeEventListener("submit", onSubmit, true);
-          form.requestSubmit();
-          form.addEventListener("submit", onSubmit, true);
+          fallbackFormRef.current = form;
+          setFallbackPrompt({ reason: outcome.error });
           return;
         }
         setStatus("error");
         setErrorMsg(outcome.message ?? String(outcome.error));
       })();
     };
+
+    onSubmitRef.current = onSubmit;
 
     const tryAttach = () => {
       const textarea = document.querySelector<HTMLTextAreaElement>(
@@ -192,24 +211,211 @@ export function E2eComposerIntercept(
   ]);
 
   if (props.disabled) return null;
-  // Status chip · surfaces sending / error / E2E-active states. Tucked
-  // above the composer, small footprint, dismissable by user via time.
-  if (status === "sending" || status === "error" || e2eReady === true) {
-    return (
-      <StatusChip
-        state={status === "error" ? "error" : status === "sending" ? "sending" : "on"}
-        errorMsg={errorMsg}
+
+  const cancelFallback = () => {
+    fallbackFormRef.current = null;
+    setFallbackPrompt(null);
+  };
+  const confirmFallback = () => {
+    const form = fallbackFormRef.current;
+    const onSubmit = onSubmitRef.current;
+    setFallbackPrompt(null);
+    fallbackFormRef.current = null;
+    if (!form) return;
+    // Temporarily detach our capture listener so the user's confirmed
+    // plaintext submit actually reaches the Server Action.
+    if (onSubmit) form.removeEventListener("submit", onSubmit, true);
+    setStatus("fallback");
+    try {
+      form.requestSubmit();
+    } finally {
+      if (onSubmit) form.addEventListener("submit", onSubmit, true);
+    }
+  };
+
+  return (
+    <>
+      {/* Status chip · surfaces sending / error / E2E-active / fallback
+          states. Tucked above the composer, small footprint. Bridge
+          90 · "fallback" chip briefly flashes "⚠ Standard message"
+          when the user confirmed a plaintext send, so the state
+          transition is visible even though the page will re-render
+          after the server-action redirect. */}
+      {(status === "sending" || status === "error" || status === "fallback" || e2eReady === true) && (
+        <StatusChip
+          state={
+            status === "error" ? "error"
+            : status === "sending" ? "sending"
+            : status === "fallback" ? "standard"
+            : "on"
+          }
+          errorMsg={errorMsg}
+        />
+      )}
+      {/* Bridge 90 · plaintext-fallback confirmation modal. Replaces
+          the silent downgrade that used to fire when either party had
+          no device key. Users now know when they're leaving E2E. */}
+      {fallbackPrompt && (
+        <FallbackConfirmModal
+          reason={fallbackPrompt.reason}
+          onCancel={cancelFallback}
+          onConfirm={confirmFallback}
+        />
+      )}
+    </>
+  );
+}
+
+function FallbackConfirmModal({
+  reason,
+  onCancel,
+  onConfirm,
+}: {
+  reason: "no_peer_devices" | "no_self_devices";
+  onCancel: () => void;
+  onConfirm: () => void;
+}): React.JSX.Element {
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onCancel();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onCancel]);
+
+  const headline =
+    reason === "no_peer_devices"
+      ? "Secure chat isn't available yet"
+      : "This device isn't ready for secure chat";
+  const body =
+    reason === "no_peer_devices"
+      ? "This contact hasn't opened NEX on any device yet, so we can't encrypt for them. If you send now, this message goes as a standard message · not end-to-end encrypted."
+      : "This browser hasn't finished setting up your encryption key yet. If you send now, this message goes as a standard message · not end-to-end encrypted.";
+
+  return (
+    <>
+      <div
+        onClick={onCancel}
+        aria-label="Cancel"
+        role="button"
+        style={{
+          position: "fixed",
+          inset: 0,
+          background: "rgba(2,9,20,0.72)",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+          zIndex: 1099,
+        }}
       />
-    );
-  }
-  return null;
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={headline}
+        style={{
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "min(340px, calc(100vw - 24px))",
+          padding: "22px 22px 18px",
+          background: "#050f1e",
+          border: "1px solid rgba(255,180,0,0.55)",
+          borderRadius: 20,
+          zIndex: 1100,
+          boxShadow: "0 24px 60px rgba(0,0,0,0.7), 0 0 40px rgba(255,180,0,0.18)",
+          color: "#F4F7FC",
+          fontFamily:
+            "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            marginBottom: 10,
+          }}
+        >
+          <span
+            aria-hidden
+            style={{
+              display: "inline-grid",
+              placeItems: "center",
+              width: 32,
+              height: 32,
+              borderRadius: "50%",
+              background: "rgba(255,180,0,0.14)",
+              border: "1px solid rgba(255,180,0,0.45)",
+              fontSize: 16,
+            }}
+          >
+            ⚠
+          </span>
+          <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: "-0.01em" }}>
+            {headline}
+          </div>
+        </div>
+        <div
+          style={{
+            fontSize: 13,
+            color: "#DDE9FA",
+            lineHeight: 1.5,
+            marginBottom: 18,
+          }}
+        >
+          {body}
+        </div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <button
+            type="button"
+            onClick={onCancel}
+            autoFocus
+            style={{
+              flex: 1,
+              minHeight: 44,
+              padding: "10px 14px",
+              borderRadius: 10,
+              background: "rgba(0,0,0,0.35)",
+              border: "1px solid rgba(139,169,209,0.30)",
+              color: "#F4F7FC",
+              fontSize: 13,
+              fontWeight: 700,
+              letterSpacing: "0.02em",
+              cursor: "pointer",
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            style={{
+              flex: 1,
+              minHeight: 44,
+              padding: "10px 14px",
+              borderRadius: 10,
+              background: "#FFB400",
+              border: "1px solid #FFB400",
+              color: "#160F00",
+              fontSize: 13,
+              fontWeight: 800,
+              letterSpacing: "0.02em",
+              cursor: "pointer",
+            }}
+          >
+            Send anyway
+          </button>
+        </div>
+      </div>
+    </>
+  );
 }
 
 function StatusChip({
   state,
   errorMsg,
 }: {
-  state: "on" | "sending" | "error";
+  state: "on" | "sending" | "error" | "standard";
   errorMsg: string | null;
 }): React.JSX.Element {
   const label =
@@ -217,18 +423,23 @@ function StatusChip({
       ? "🔒 Encrypting…"
       : state === "error"
         ? `🔒 Encrypt failed · ${errorMsg ?? "unknown"}`
-        : "🔒 End-to-end encrypted";
+        : state === "standard"
+          ? "⚠ Standard message · not encrypted"
+          : "🔒 End-to-end encrypted";
   const color =
     state === "error" ? "#FFB4C0"
     : state === "sending" ? "#DDE9FA"
+    : state === "standard" ? "#FFD277"
     : "#16D66B";
   const bg =
     state === "error" ? "rgba(255,51,85,0.10)"
     : state === "sending" ? "rgba(4,20,36,0.85)"
+    : state === "standard" ? "rgba(255,180,0,0.14)"
     : "rgba(22,214,107,0.10)";
   const border =
     state === "error" ? "rgba(255,51,85,0.35)"
     : state === "sending" ? "rgba(139,169,209,0.30)"
+    : state === "standard" ? "rgba(255,180,0,0.45)"
     : "rgba(22,214,107,0.35)";
 
   return (
