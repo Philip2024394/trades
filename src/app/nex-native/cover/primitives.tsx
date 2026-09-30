@@ -193,7 +193,12 @@ export function CoverIdentityBadge(
   props: CoverIdentityBadgeProps,
 ): React.JSX.Element {
   const isHero = props.size !== "compact";
-  const portraitSize = isHero ? 88 : 44;
+  // Founder direction 2026-09-30 · shrunk the portrait (hero 88→64,
+  // compact 44→36) so long business names have room to breathe. Flag
+  // badge + charm scale automatically via the isHero branch. Combined
+  // with the 2-line-clamp on the name below, "Maria's Fabulous Café
+  // & Vintage Ceramics" reads without overflow.
+  const portraitSize = isHero ? 64 : 36;
   return (
     <>
       <style>{`
@@ -299,18 +304,20 @@ export function CoverIdentityBadge(
           <div
             style={{
               fontFamily: "var(--nex-font-display)",
-              fontSize: isHero ? 26 : 15,
+              fontSize: isHero ? 24 : 14,
               fontWeight: 700,
               letterSpacing: "-0.015em",
-              lineHeight: 1.1,
+              lineHeight: 1.15,
               textShadow: "0 2px 8px rgba(0,0,0,0.55)",
-              // Founder direction 2026-09-30 · business name must stay
-              // on one line even on the narrowest phone. Overflow the
-              // rest with an ellipsis rather than wrap and push the
-              // subtitle down.
-              whiteSpace: "nowrap",
+              // Founder direction 2026-09-30 (revised) · fit the whole
+              // business name. One line ideally · wraps to a SECOND
+              // line for extra-long names · never a third (clamped
+              // with an ellipsis after two lines).
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
               overflow: "hidden",
-              textOverflow: "ellipsis",
+              wordBreak: "break-word",
             }}
           >
             {props.name}
