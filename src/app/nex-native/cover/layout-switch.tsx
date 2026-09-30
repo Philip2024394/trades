@@ -10,6 +10,7 @@
 import * as React from "react";
 import {
   LayoutCafe,
+  LayoutCafeLandscape,
   LayoutRestaurant,
   LayoutProduct,
   LayoutProductLandscape,
@@ -56,6 +57,8 @@ export function CoverLayoutSwitch({
       return <LayoutPersonalBrand content={content} themeId={themeId} />;
     case "product_landscape":
       return <LayoutProductLandscape content={content} themeId={themeId} />;
+    case "cafe_landscape":
+      return <LayoutCafeLandscape content={content} themeId={themeId} />;
     default:
       return null;
   }

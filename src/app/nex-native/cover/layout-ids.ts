@@ -22,6 +22,7 @@ export const COVER_LAYOUT_IDS = [
   "premium_business",
   "personal_brand",
   "product_landscape",
+  "cafe_landscape",
 ] as const;
 
 export type CoverLayoutId = (typeof COVER_LAYOUT_IDS)[number];
@@ -38,6 +39,7 @@ export const COVER_LAYOUT_LABELS: Record<CoverLayoutId, string> = {
   premium_business: "Premium Business",
   personal_brand: "Personal Brand",
   product_landscape: "Product Seller · Landscape",
+  cafe_landscape: "Café · Landscape",
 };
 
 export function isValidCoverLayoutId(id: string | undefined): id is CoverLayoutId {
