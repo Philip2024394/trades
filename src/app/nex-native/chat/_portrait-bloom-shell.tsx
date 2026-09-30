@@ -348,6 +348,13 @@ export interface PortraitBloomShellProps {
   /** Bridge 88 · when true, media-capture routes files through the
    *  client-side encrypted upload path. Skip for NEX1 (support). */
   encryptedUploadEnabled?: boolean;
+  /** Bridge ThemeEmoji-B · sealed 2026-10-01 · per-theme emoji set
+   *  from nex_theme_emoji (Migration 116). Threaded straight through
+   *  to PeerComposer so its EmojiModal swaps to image tiles when the
+   *  current theme has a custom set. */
+  themeEmojis?:
+    | { slug: string; imageUrl: string; label: string }[]
+    | null;
   /** When present, the header renders a shop icon top-right that
    *  opens the peer's product grid bottom sheet. Populated by the
    *  peer chat page after fetching the peer's live products +
@@ -498,6 +505,7 @@ export function PortraitBloomShell({
   uploadAction,
   pendingAttachment,
   encryptedUploadEnabled,
+  themeEmojis,
   peerShop,
   sendCartOrderAction,
   productInquiryAction,
@@ -1448,6 +1456,7 @@ export function PortraitBloomShell({
               uploadAction={uploadAction}
               pendingAttachment={pendingAttachment ?? null}
               encryptedUploadEnabled={encryptedUploadEnabled}
+              themeEmojis={themeEmojis}
             />
           </div>
         </div>

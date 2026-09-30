@@ -80,6 +80,14 @@ interface PeerComposerProps {
    *  through the client-side encrypted upload path. Disable for
    *  NEX1 (support chat is not E2E per doctrine). */
   encryptedUploadEnabled?: boolean;
+  /** Bridge ThemeEmoji-B · sealed 2026-10-01 · per-theme emoji set
+   *  loaded from nex_theme_emoji (Migration 116). When non-empty,
+   *  the composer's emoji picker renders these image tiles instead
+   *  of the default 40-emoji hardcoded array. Click inserts ":slug:"
+   *  · a future message renderer expands that back to the image. */
+  themeEmojis?:
+    | { slug: string; imageUrl: string; label: string }[]
+    | null;
 }
 
 export function PeerComposer({
@@ -90,6 +98,7 @@ export function PeerComposer({
   uploadAction,
   pendingAttachment,
   encryptedUploadEnabled,
+  themeEmojis,
 }: PeerComposerProps) {
   const formRef = React.useRef<HTMLFormElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
@@ -265,6 +274,7 @@ export function PeerComposer({
       )}
       {emojiOpen && (
         <EmojiModal
+          themeEmojis={themeEmojis ?? null}
           onClose={() => setEmojiOpen(false)}
           onPick={(e) => {
             insertEmoji(e);
@@ -824,10 +834,18 @@ const EMOJI_SET: readonly string[] = [
 function EmojiModal({
   onClose,
   onPick,
+  themeEmojis,
 }: {
   onClose: () => void;
   onPick: (emoji: string) => void;
+  /** Bridge ThemeEmoji-B · when non-empty, the picker renders these
+   *  image tiles instead of the default EMOJI_SET. Click inserts
+   *  ":slug:" text into the composer. */
+  themeEmojis?:
+    | { slug: string; imageUrl: string; label: string }[]
+    | null;
 }) {
+  const useTheme = !!themeEmojis && themeEmojis.length > 0;
   const [tab, setTab] = React.useState<"emoji" | "mascot">("emoji");
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -941,47 +959,103 @@ function EmojiModal({
         </div>
 
         {tab === "emoji" ? (
-          <div
-            data-nex-emoji-scroll
-            style={{
-              flex: 1,
-              overflowY: "auto",
-              display: "grid",
-              gridTemplateColumns: "repeat(8, 1fr)",
-              gap: 4,
-              paddingRight: 4,
-            }}
-          >
-            {EMOJI_SET.map((emoji) => (
-              <button
-                key={emoji}
-                type="button"
-                onClick={() => onPick(emoji)}
-                style={{
-                  width: "100%",
-                  aspectRatio: "1 / 1",
-                  background: "transparent",
-                  border: "none",
-                  borderRadius: 10,
-                  fontSize: 22,
-                  cursor: "pointer",
-                  padding: 0,
-                  lineHeight: 1,
-                  display: "grid",
-                  placeItems: "center",
-                  transition: "background 120ms ease, transform 100ms ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "rgba(0,159,239,0.14)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "transparent";
-                }}
-              >
-                {emoji}
-              </button>
-            ))}
-          </div>
+          useTheme ? (
+            <div
+              data-nex-emoji-scroll
+              style={{
+                flex: 1,
+                overflowY: "auto",
+                display: "grid",
+                gridTemplateColumns: "repeat(6, 1fr)",
+                gap: 6,
+                paddingRight: 4,
+              }}
+            >
+              {themeEmojis!.map((em) => (
+                <button
+                  key={em.slug}
+                  type="button"
+                  title={em.label || em.slug}
+                  aria-label={em.label || em.slug}
+                  onClick={() => onPick(`:${em.slug}:`)}
+                  style={{
+                    width: "100%",
+                    aspectRatio: "1 / 1",
+                    background: "transparent",
+                    border: "none",
+                    borderRadius: 10,
+                    cursor: "pointer",
+                    padding: 4,
+                    display: "grid",
+                    placeItems: "center",
+                    transition:
+                      "background 120ms ease, transform 100ms ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "rgba(0,159,239,0.14)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "transparent";
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={em.imageUrl}
+                    alt={em.label || em.slug}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain",
+                      display: "block",
+                    }}
+                  />
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div
+              data-nex-emoji-scroll
+              style={{
+                flex: 1,
+                overflowY: "auto",
+                display: "grid",
+                gridTemplateColumns: "repeat(8, 1fr)",
+                gap: 4,
+                paddingRight: 4,
+              }}
+            >
+              {EMOJI_SET.map((emoji) => (
+                <button
+                  key={emoji}
+                  type="button"
+                  onClick={() => onPick(emoji)}
+                  style={{
+                    width: "100%",
+                    aspectRatio: "1 / 1",
+                    background: "transparent",
+                    border: "none",
+                    borderRadius: 10,
+                    fontSize: 22,
+                    cursor: "pointer",
+                    padding: 0,
+                    lineHeight: 1,
+                    display: "grid",
+                    placeItems: "center",
+                    transition:
+                      "background 120ms ease, transform 100ms ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "rgba(0,159,239,0.14)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "transparent";
+                  }}
+                >
+                  {emoji}
+                </button>
+              ))}
+            </div>
+          )
         ) : (
           <MascotEmpty />
         )}

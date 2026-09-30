@@ -51,6 +51,11 @@ interface ThemeViewerClientProps {
   /** ?mode=menu flips the shop slider into venue mode · cutlery icon
    *  in the header + "Menu" eyebrow inside the modal. */
   isVenueMode: boolean;
+  /** Bridge ThemeEmoji-B · this theme's emoji set from
+   *  nex_theme_emoji. Threaded through PortraitBloomShell into
+   *  PeerComposer's EmojiModal so the picker shows image tiles when
+   *  the theme has a custom set. */
+  themeEmojis?: { slug: string; imageUrl: string; label: string }[];
 }
 
 // Mock catalogue for the preview shop slider · 3 products + 2 menu
@@ -204,7 +209,13 @@ export default function ThemeViewerClient(
 
       <PortraitBloomShell
         scope="theme-preview"
-        displayName="Maria"
+        /* Founder direction 2026-10-01 · the peer display name in the
+           theme deep-dive uses the THEME's name (Joker · Pink Dream ·
+           Night Sky etc.) so each preview reads as its own persona.
+           Falls back to "Maria" for older themes without a persona
+           mapping (kept for continuity with the earlier photographer
+           preview). */
+        displayName={props.themeName || "Maria"}
         subtitle="Photographer"
         portraitUrl={MARIA_PORTRAIT}
         presenceKind="online"
@@ -234,6 +245,7 @@ export default function ThemeViewerClient(
         productInquiryAction={noopAction}
         uploadAction={noopAction}
         toggleReactionAction={noopAction}
+        themeEmojis={props.themeEmojis}
         /* Bridge 97h · force Cart button visible in previews even
            while NEX_COMMERCE_ENABLED is false during the Indonesia
            launch. Preview shows the full [Home] [Shop] [Cart]
