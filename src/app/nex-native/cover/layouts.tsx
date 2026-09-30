@@ -28,7 +28,6 @@
 import * as React from "react";
 import {
   CoverIdentityBadge,
-  CoverChatCTA,
   CoverSecondaryCTA,
   CoverSectionHeading,
   CoverProductGrid,
@@ -62,11 +61,6 @@ export function LayoutCafe({ content, themeId }: LayoutProps): React.JSX.Element
           themeId={themeId}
           presenceOnline={content.presenceOnline}
         />
-        <div style={{ marginTop: 18 }}>
-          <CoverChatCTA href={chatHref(content.ownerAccountId)}>
-            💬 Chat & pre-order
-          </CoverChatCTA>
-        </div>
         <div style={{ marginTop: 26 }}>
           <CoverSectionHeading eyebrow="Today" title="Featured today" />
           <CoverProductGrid
@@ -207,9 +201,6 @@ export function LayoutRestaurant({ content, themeId }: LayoutProps): React.JSX.E
             {content.tagline}
           </div>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-            <CoverChatCTA href={chatHref(content.ownerAccountId)}>
-              💬 Chat & reserve
-            </CoverChatCTA>
             <CoverSecondaryCTA href="#menu">🍽 See menu</CoverSecondaryCTA>
           </div>
         </div>
@@ -266,11 +257,6 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
             peerAccountId={content.ownerAccountId}
             eyebrow="Featured"
           />
-        </div>
-        <div style={{ marginTop: 12 }}>
-          <CoverChatCTA href={chatHref(content.ownerAccountId)}>
-            🛒 Chat about this
-          </CoverChatCTA>
         </div>
         <div
           style={{
@@ -335,11 +321,6 @@ export function LayoutTradesperson({ content, themeId }: LayoutProps): React.JSX
           <TradeBadge label="12 yrs" />
           <TradeBadge label="6-mo warranty" />
           <TradeBadge label="SNI certified" />
-        </div>
-        <div style={{ marginTop: 18 }}>
-          <CoverChatCTA href={chatHref(content.ownerAccountId)}>
-            💬 Get an instant quote
-          </CoverChatCTA>
         </div>
         <div style={{ marginTop: 26 }}>
           <CoverSectionHeading eyebrow="Services" title="What I do" />
@@ -415,11 +396,6 @@ export function LayoutSalon({ content, themeId }: LayoutProps): React.JSX.Elemen
             presenceOnline={content.presenceOnline}
             size="compact"
           />
-          <div style={{ marginTop: 14 }}>
-            <CoverChatCTA href={chatHref(content.ownerAccountId)}>
-              💗 Book via chat
-            </CoverChatCTA>
-          </div>
         </div>
       </div>
       <CoverPage>
@@ -482,11 +458,6 @@ export function LayoutCreator({ content, themeId }: LayoutProps): React.JSX.Elem
             <TradeBadge label="42k" small />
             <TradeBadge label="illustration" small />
             <TradeBadge label="commissions open" small />
-          </div>
-          <div style={{ marginTop: 18 }}>
-            <CoverChatCTA href={chatHref(content.ownerAccountId)}>
-              💬 DM me on NEX
-            </CoverChatCTA>
           </div>
         </div>
         <div style={{ marginTop: 24 }}>
@@ -583,9 +554,6 @@ export function LayoutFashion({ content, themeId }: LayoutProps): React.JSX.Elem
               {content.businessName}
             </div>
           </div>
-          <CoverChatCTA href={chatHref(content.ownerAccountId)}>
-            💬 Chat & shop
-          </CoverChatCTA>
         </div>
       </div>
       <CoverPage>
@@ -693,11 +661,6 @@ export function LayoutPremiumBusiness({ content, themeId }: LayoutProps): React.
           <div style={{ marginTop: 10, fontSize: 15, color: "var(--nex-text-dim)", maxWidth: 480 }}>
             {content.tagline}
           </div>
-          <div style={{ marginTop: 20 }}>
-            <CoverChatCTA href={chatHref(content.ownerAccountId)}>
-              📅 Book a discovery call
-            </CoverChatCTA>
-          </div>
           <div style={{ marginTop: 22, display: "grid", gridTemplateColumns: "repeat(3, minmax(0,1fr))", gap: 10 }}>
             <KpiTile label="Clients" value="120+" />
             <KpiTile label="Years" value="15" />
@@ -761,11 +724,6 @@ export function LayoutPersonalBrand({ content, themeId }: LayoutProps): React.JS
             </div>
             <div style={{ marginTop: 6, fontSize: 13, color: "var(--nex-text-dim)", lineHeight: 1.4 }}>
               {content.tagline}
-            </div>
-            <div style={{ marginTop: 12 }}>
-              <CoverChatCTA href={chatHref(content.ownerAccountId)}>
-                💬 Say hello
-              </CoverChatCTA>
             </div>
           </div>
         </div>
