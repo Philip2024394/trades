@@ -1656,13 +1656,7 @@ function PersonalBrandTabs({
           columns={2}
         />
       )}
-      {tab === "images" && (
-        <ImageGallerySix
-          images={products
-            .map((p) => p.image_url)
-            .filter((u): u is string => !!u)}
-        />
-      )}
+      {tab === "images" && <ImagePlaceholderGallery totalTiles={12} />}
       {tab === "sizes" && <SizesPanel />}
       {tab === "ordering" && <OrderingPanel body={orderingCopy} />}
     </div>
@@ -1670,34 +1664,24 @@ function PersonalBrandTabs({
 }
 
 /**
- * ImageGallerySix · 6-per-page gallery with ‹ prev · next › arrows.
- * Founder direction 2026-09-30 · buyers on the Personal Brand cover
- * flip through product photography one page at a time so the visual
- * story is discoverable without leaving the cover.
+ * ImagePlaceholderGallery · Founder direction 2026-09-30 · Personal
+ * Brand Images tab shows plain placeholder tiles with the label
+ * "IMAGE HERE" instead of pulling real product photos. Buyers still
+ * see the 6-per-page layout with ‹ prev · next › arrows so the shape
+ * of the surface reads clearly · sellers will drop real photos in
+ * later via a future editor.
  */
-function ImageGallerySix({ images }: { images: string[] }): React.JSX.Element {
+function ImagePlaceholderGallery({
+  totalTiles,
+}: {
+  totalTiles: number;
+}): React.JSX.Element {
   const PAGE = 6;
   const [page, setPage] = React.useState(0);
-  if (images.length === 0) {
-    return (
-      <div
-        style={{
-          padding: "18px 12px",
-          textAlign: "center",
-          color: "var(--nex-text-dim)",
-          fontSize: 12,
-          border: "1px dashed var(--nex-accent-soft)",
-          borderRadius: 12,
-        }}
-      >
-        No images to show yet.
-      </div>
-    );
-  }
-  const totalPages = Math.max(1, Math.ceil(images.length / PAGE));
+  const totalPages = Math.max(1, Math.ceil(totalTiles / PAGE));
   const safePage = Math.min(page, totalPages - 1);
   const start = safePage * PAGE;
-  const visible = images.slice(start, start + PAGE);
+  const visibleCount = Math.min(PAGE, totalTiles - start);
   const canPrev = safePage > 0;
   const canNext = safePage < totalPages - 1;
   return (
@@ -1709,24 +1693,76 @@ function ImageGallerySix({ images }: { images: string[] }): React.JSX.Element {
           gap: 8,
         }}
       >
-        {visible.map((url, i) => (
+        {Array.from({ length: visibleCount }).map((_, i) => (
           <div
-            key={`${start + i}-${url}`}
-            aria-hidden
+            key={`placeholder-${start + i}`}
+            role="img"
+            aria-label="Image placeholder"
             style={{
               aspectRatio: "1 / 1",
-              backgroundImage: `url(${url})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
               borderRadius: 10,
               border: "1px solid var(--nex-accent-soft)",
+              background:
+                "linear-gradient(135deg, var(--nex-accent-faint), rgba(3,8,20,0.55))",
+              display: "grid",
+              placeItems: "center",
               boxShadow: "0 4px 12px rgba(0,0,0,0.35)",
+              position: "relative",
+              overflow: "hidden",
             }}
-          />
+          >
+            {/* Diagonal cross-through so the placeholder reads as an
+                empty image slot rather than a filled tile. */}
+            <svg
+              aria-hidden
+              width="100%"
+              height="100%"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              style={{
+                position: "absolute",
+                inset: 0,
+                opacity: 0.22,
+              }}
+            >
+              <line
+                x1="0"
+                y1="0"
+                x2="100"
+                y2="100"
+                stroke="currentColor"
+                strokeWidth="0.6"
+                vectorEffect="non-scaling-stroke"
+              />
+              <line
+                x1="100"
+                y1="0"
+                x2="0"
+                y2="100"
+                stroke="currentColor"
+                strokeWidth="0.6"
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+            <span
+              style={{
+                position: "relative",
+                fontSize: 10,
+                fontWeight: 800,
+                letterSpacing: "0.16em",
+                color: "var(--nex-text-dim)",
+                textAlign: "center",
+                padding: "2px 6px",
+                background: "rgba(3,8,20,0.55)",
+                borderRadius: 4,
+              }}
+            >
+              IMAGE HERE
+            </span>
+          </div>
         ))}
-        {/* Fill empty grid cells on the last page so the last row
-            stays visually balanced. */}
-        {Array.from({ length: PAGE - visible.length }).map((_, i) => (
+        {/* Balance the last row when the final page is short. */}
+        {Array.from({ length: PAGE - visibleCount }).map((_, i) => (
           <div
             key={`empty-${i}`}
             aria-hidden
@@ -1734,7 +1770,7 @@ function ImageGallerySix({ images }: { images: string[] }): React.JSX.Element {
               aspectRatio: "1 / 1",
               borderRadius: 10,
               border: "1px dashed var(--nex-accent-soft)",
-              opacity: 0.35,
+              opacity: 0.25,
             }}
           />
         ))}
