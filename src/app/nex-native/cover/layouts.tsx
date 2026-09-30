@@ -1274,36 +1274,20 @@ export function LayoutPersonalBrand({ content, themeId }: LayoutProps): React.JS
   return (
     <>
       <CoverPage>
-        <div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
-          <div
-            style={{
-              width: 108,
-              height: 132,
-              borderRadius: 12,
-              backgroundImage: `url(${content.portraitUrl})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center 20%",
-              border: "1px solid var(--nex-accent)",
-              boxShadow: "0 12px 32px rgba(0,0,0,0.5), 0 0 20px var(--nex-accent-glow)",
-              flexShrink: 0,
-            }}
-          />
-          <div style={{ minWidth: 0, flex: 1 }}>
-            <div
-              style={{
-                fontFamily: "var(--nex-font-display)",
-                fontSize: 22,
-                fontWeight: 700,
-                lineHeight: 1.1,
-              }}
-            >
-              {content.businessName}
-            </div>
-            <div style={{ marginTop: 6, fontSize: 13, color: "var(--nex-text-dim)", lineHeight: 1.4 }}>
-              {content.tagline}
-            </div>
-          </div>
-        </div>
+        {/* Founder direction 2026-09-30 · replaced the custom rectangular
+            portrait + inline text with the shared CoverIdentityBadge so
+            Personal Brand carries the same round portrait, green ping
+            ring, green ONLINE NOW marker, and country flag as Templates
+            01 (Café) and 03 (Product Seller). ONE NEX IDENTITY doctrine
+            · every template presents the same identity signature. */}
+        <CoverIdentityBadge
+          portraitUrl={content.portraitUrl}
+          name={content.businessName}
+          subtitle={content.tagline}
+          themeId={themeId}
+          presenceOnline={content.presenceOnline}
+          countryCode={content.countryCode ?? null}
+        />
         <div style={{ marginTop: 20, display: "grid", gridTemplateColumns: "repeat(4, minmax(0,1fr))", gap: 8 }}>
           <QuickPill label="Products" />
           <QuickPill label="Services" />
