@@ -2806,6 +2806,24 @@ export async function createBusinessAction(formData: FormData): Promise<never> {
         );
       }
     }
+
+    // Layout-A · sealed 2026-09-30 · auto-suggest cover_layout_id from
+    // business_category so every new business starts with the sealed
+    // cover template that matches its vertical (no legacy fall-through
+    // for new sellers). Seller can override on /manage/shop.
+    try {
+      const { suggestCoverLayoutId } = await import(
+        "@/lib/nex-native/cover-layout-suggest"
+      );
+      const suggested = suggestCoverLayoutId(categoryInput || null);
+      await businessService.updateCoverLayoutId(business.id, suggested);
+    } catch (layoutErr) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        "createBusinessAction · cover layout soft-fail:",
+        layoutErr,
+      );
+    }
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     const looksLikeSlugCollision =

@@ -50,6 +50,11 @@ import {
   uploadBusinessQrCodeAction,
   clearBusinessQrCodeAction,
 } from "./_qr-code-action";
+import { updateBusinessCoverLayoutAction } from "./_cover-layout-action";
+import {
+  COVER_LAYOUT_IDS,
+  COVER_LAYOUT_LABELS,
+} from "../../cover/layout-ids";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -180,6 +185,17 @@ export default async function ShopSettingsPage({
   const acceptsQrisDelivery = (
     business.accepted_payment_methods ?? []
   ).includes("qris_delivery");
+  const coverLayoutBound = updateBusinessCoverLayoutAction.bind(
+    null,
+    business.id,
+  );
+  const currentCoverLayout = business.cover_layout_id ?? null;
+  // The seller's chat theme flows into every cover preview so the picker
+  // shows all 10 layouts painted in the seller's own visual identity
+  // (accent, wallpaper, charm) rather than a generic Pink Dream.
+  const previewThemeParam = session.account.chat_theme
+    ? `?theme=${encodeURIComponent(session.account.chat_theme)}`
+    : "";
   const cityHoursBound = updateBusinessCityAndHoursAction.bind(
     null,
     business.id,
@@ -781,6 +797,143 @@ export default async function ShopSettingsPage({
               }
               tone={business.safe_trade_activated ? "ghost" : "primary"}
             />
+          </form>
+        </SectionCard>
+
+        {/* --- Cover template (Layout-B · Bridge 98 · Migration 100) --- */}
+        <SectionCard>
+          <SectionEyebrow color={NEX.cyan}>Cover</SectionEyebrow>
+          <h2
+            style={{
+              margin: "6px 0 6px",
+              fontSize: 18,
+              fontWeight: 700,
+              letterSpacing: "-0.005em",
+            }}
+          >
+            Cover template
+          </h2>
+          <p
+            style={{
+              margin: "0 0 6px",
+              fontSize: 13,
+              lineHeight: 1.55,
+              color: NEX.textDim,
+            }}
+          >
+            Pick the information architecture buyers see when they land on
+            your NEX. Ten sealed layouts · all painted in{" "}
+            <strong style={{ color: NEX.text }}>your chat theme</strong> (
+            accent, wallpaper, charm are locked to your identity — you only
+            choose how the content is organised).
+          </p>
+          <p
+            style={{
+              margin: "0 0 14px",
+              fontSize: 12,
+              lineHeight: 1.55,
+              color: NEX.textMute,
+            }}
+          >
+            Change your chat theme on{" "}
+            <Link
+              href="/nex-native/settings/theme"
+              style={{ color: NEX.cyan, textDecoration: "none" }}
+            >
+              /settings/theme
+            </Link>{" "}
+            · every cover preview below repaints when you do.
+          </p>
+          <form
+            action={coverLayoutBound}
+            style={{ display: "grid", gap: 10 }}
+          >
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+                gap: 10,
+              }}
+            >
+              {COVER_LAYOUT_IDS.map((id, i) => {
+                const num = String(i + 1).padStart(2, "0");
+                const isChecked = currentCoverLayout === id;
+                return (
+                  <label
+                    key={id}
+                    style={{
+                      position: "relative",
+                      display: "grid",
+                      gap: 6,
+                      padding: "12px 12px 40px",
+                      borderRadius: 12,
+                      background: isChecked
+                        ? "rgba(0,175,255,0.10)"
+                        : "rgba(0,0,0,0.28)",
+                      border: isChecked
+                        ? `1px solid ${NEX.cyanSoft}`
+                        : `1px solid ${NEX.border}`,
+                      cursor: "pointer",
+                    }}
+                  >
+                    <input
+                      type="radio"
+                      name="cover_layout_id"
+                      value={id}
+                      defaultChecked={isChecked}
+                      style={{
+                        position: "absolute",
+                        top: 12,
+                        right: 12,
+                        accentColor: NEX.cyan,
+                        width: 16,
+                        height: 16,
+                      }}
+                    />
+                    <div
+                      style={{
+                        fontSize: 10,
+                        letterSpacing: "0.14em",
+                        textTransform: "uppercase",
+                        color: NEX.cyan,
+                        fontWeight: 700,
+                      }}
+                    >
+                      Template {num}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 700,
+                        letterSpacing: "-0.005em",
+                        paddingRight: 24,
+                      }}
+                    >
+                      {COVER_LAYOUT_LABELS[id]}
+                    </div>
+                    <Link
+                      href={`/nex-native/cover/preview/${id}${previewThemeParam}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        position: "absolute",
+                        left: 12,
+                        bottom: 10,
+                        fontSize: 10,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        color: NEX.cyan,
+                        fontWeight: 700,
+                        textDecoration: "none",
+                      }}
+                    >
+                      Preview ↗
+                    </Link>
+                  </label>
+                );
+              })}
+            </div>
+            <SubmitButton label="Save cover template" tone="primary" />
           </form>
         </SectionCard>
 

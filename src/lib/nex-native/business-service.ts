@@ -404,6 +404,44 @@ import {
   type NexShippingScope,
 } from "./shipping-scope";
 
+/** Migration 100 · Bridge 98 · set the business's cover layout · one
+ *  of the 10 sealed CoverLayoutId values. Pass null to clear (falls
+ *  back to legacy /[businessSlug] shop landing). */
+export async function updateCoverLayoutId(
+  businessId: NexUuid,
+  layoutId: string | null,
+): Promise<void> {
+  const VALID = [
+    "cafe",
+    "restaurant",
+    "product",
+    "tradesperson",
+    "salon",
+    "creator",
+    "fashion",
+    "street_food",
+    "premium_business",
+    "personal_brand",
+  ] as const;
+  if (
+    layoutId !== null &&
+    !(VALID as readonly string[]).includes(layoutId)
+  ) {
+    throw new Error(
+      `business-service.updateCoverLayoutId: invalid layoutId "${layoutId}"`,
+    );
+  }
+  const { error } = await nexSupabaseAdmin
+    .from("nex_business")
+    .update({ cover_layout_id: layoutId })
+    .eq("id", businessId);
+  if (error) {
+    throw new Error(
+      `business-service.updateCoverLayoutId(${businessId}): ${error.message}`,
+    );
+  }
+}
+
 /** Update the shop's shipping scope. Pass null to clear. */
 export async function updateShippingScope(
   businessId: NexUuid,
