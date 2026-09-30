@@ -1288,6 +1288,17 @@ export function LayoutPersonalBrand({ content, themeId }: LayoutProps): React.JS
           presenceOnline={content.presenceOnline}
           countryCode={content.countryCode ?? null}
         />
+        {/* Founder direction 2026-09-30 · "Our Journey" · 7-line story
+            block · reuses the WhoWeAreCollapsible primitive with a
+            custom eyebrow. Body pulls from content.aboutUs (falls back
+            to tagline). Buyers who want the full story tap the +
+            button to open the About Us panel in the info tray. */}
+        <div style={{ marginTop: 20 }}>
+          <WhoWeAreCollapsible
+            title="Our Journey"
+            body={content.aboutUs ?? content.tagline ?? ""}
+          />
+        </div>
         <div style={{ marginTop: 20, display: "grid", gridTemplateColumns: "repeat(4, minmax(0,1fr))", gap: 8 }}>
           <QuickPill label="Products" />
           <QuickPill label="Services" />
@@ -1410,9 +1421,15 @@ function formatTodayHoursLabel(
 function WhoWeAreCollapsible({
   body,
   hoursLabel,
+  title = "Who We Are",
 }: {
   body: string;
   hoursLabel?: string | null;
+  /** Founder direction 2026-09-30 · optional header override. Default
+   *  "Who We Are" (used by Templates 03 + 11 for Product Sellers) ·
+   *  Template 10 Personal Brand overrides to "Our Journey". Same
+   *  visual · same 7-line clip · only the eyebrow text differs. */
+  title?: string;
 }): React.JSX.Element | null {
   const trimmed = body.trim();
   if (trimmed.length === 0) return null;
@@ -1441,7 +1458,7 @@ function WhoWeAreCollapsible({
             fontWeight: 700,
           }}
         >
-          Who We Are
+          {title}
         </div>
         {hoursLabel && (
           <div
