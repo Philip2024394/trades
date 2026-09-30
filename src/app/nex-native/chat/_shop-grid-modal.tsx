@@ -42,7 +42,22 @@ export interface ShopProduct {
   image_url: string | null;
   tags: string[] | null;
   stock_status: string | null;
+  /** Category Tabs sealed 2026-09-30 · FK to nex_product_section (for
+   *  kind='product') or nex_menu_section (for kind='menu_item'). NULL =
+   *  uncategorised · visible only under the "All" tab. */
+  section_id?: string | null;
 }
+
+/** Category Tabs · sealed 2026-09-30. Passed through from the peer's
+ *  nex_product_section (or nex_menu_section for venue shops). Hard cap
+ *  of 3 enforced at the seller UX layer; this list may be empty. */
+export interface ShopSection {
+  id: string;
+  name: string;
+  sort_order?: number;
+}
+
+const SHOP_ALL_TAB_ID = "__all__";
 
 export interface ShopContext {
   shop_id: string;
@@ -57,6 +72,12 @@ interface Props {
   shopName: string;
   shopHref: string | null;
   products: ShopProduct[];
+  /** Category Tabs sealed 2026-09-30 · optional list of the peer's
+   *  one-word sections. Doctrine: 0-1 sections hides the tab bar
+   *  entirely; 2-3 shows tabs + "All" first; 4+ shows first 3 by
+   *  sort_order. Callers that haven't wired sections yet pass nothing
+   *  and the modal behaves exactly as before. */
+  sections?: ShopSection[];
   /** Peer's display name · used in the product detail sheet copy. */
   peerName: string;
   /** True when the peer is a venue seller · swaps the eyebrow label
@@ -85,6 +106,7 @@ export function ShopGridModal({
   shopName,
   shopHref,
   products,
+  sections = [],
   peerName,
   isVenue = false,
   shopContext,
@@ -95,6 +117,8 @@ export function ShopGridModal({
   const [selectedProductId, setSelectedProductId] = React.useState<
     string | null
   >(null);
+  const [activeSectionId, setActiveSectionId] =
+    React.useState<string>(SHOP_ALL_TAB_ID);
   React.useEffect(() => setMounted(true), []);
 
   React.useEffect(() => {
@@ -112,6 +136,14 @@ export function ShopGridModal({
   const selectedProduct = selectedProductId
     ? products.find((p) => p.id === selectedProductId) ?? null
     : null;
+
+  // Category Tabs · sealed 2026-09-30. Filter products by the active tab
+  // when it's not the sentinel "All". Uncategorised (section_id === null)
+  // remain visible only under All.
+  const visibleProducts =
+    activeSectionId === SHOP_ALL_TAB_ID
+      ? products
+      : products.filter((p) => p.section_id === activeSectionId);
 
   if (!open || !mounted) return null;
 
@@ -247,6 +279,14 @@ export function ShopGridModal({
           </button>
         </div>
 
+        {/* Category Tabs · sealed 2026-09-30 · appears above the grid
+            when the seller has 2+ sections. */}
+        <ShopCategoryTabs
+          sections={sections}
+          activeId={activeSectionId}
+          onSelect={setActiveSectionId}
+        />
+
         {/* Product grid */}
         <div
           data-nex-shop-scroll
@@ -256,7 +296,7 @@ export function ShopGridModal({
             padding: 14,
           }}
         >
-          {products.length === 0 ? (
+          {visibleProducts.length === 0 ? (
             <div
               style={{
                 padding: "40px 20px",
@@ -278,7 +318,7 @@ export function ShopGridModal({
                 gap: 10,
               }}
             >
-              {products.map((p) => (
+              {visibleProducts.map((p) => (
                 <ProductCard
                   key={p.id}
                   product={p}
@@ -495,5 +535,80 @@ function CloseIcon() {
       <line x1="18" y1="6" x2="6" y2="18" />
       <line x1="6" y1="6" x2="18" y2="18" />
     </svg>
+  );
+}
+
+/** Category Tabs · sealed 2026-09-30. Chat-flavored equivalent of
+ *  <CoverCategoryTabs> using the NEX palette rather than CSS vars.
+ *  Same doctrine: 0-1 sections hidden · 2-3 shown · 4+ shows first 3
+ *  by sort_order preceded by an "All" tab that clears the filter. */
+function ShopCategoryTabs({
+  sections,
+  activeId,
+  onSelect,
+}: {
+  sections: ShopSection[];
+  activeId: string;
+  onSelect: (id: string) => void;
+}) {
+  if (sections.length <= 1) return null;
+
+  const ordered = [...sections].sort(
+    (a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0),
+  );
+  const visible = ordered.slice(0, 3);
+
+  const tabs: { id: string; label: string }[] = [
+    { id: SHOP_ALL_TAB_ID, label: "All" },
+    ...visible.map((s) => ({ id: s.id, label: s.name })),
+  ];
+
+  return (
+    <div
+      role="tablist"
+      aria-label="Shop category tabs"
+      style={{
+        display: "flex",
+        gap: 4,
+        padding: "0 14px",
+        overflow: "hidden",
+        borderBottom: `1px solid ${NEX.cyanBorder}`,
+      }}
+    >
+      {tabs.map((tab) => {
+        const isActive = tab.id === activeId;
+        return (
+          <button
+            key={tab.id}
+            role="tab"
+            aria-selected={isActive}
+            onClick={() => onSelect(tab.id)}
+            type="button"
+            style={{
+              appearance: "none",
+              background: "transparent",
+              border: "none",
+              padding: "10px 12px 12px",
+              margin: 0,
+              cursor: "pointer",
+              fontFamily: "inherit",
+              fontSize: 12,
+              fontWeight: isActive ? 700 : 500,
+              letterSpacing: "0.02em",
+              color: isActive ? NEX.cyan : NEX.textDim,
+              borderBottom: isActive
+                ? `2px solid ${NEX.cyan}`
+                : "2px solid transparent",
+              marginBottom: -1,
+              transition: "color 160ms ease, border-color 160ms ease",
+              whiteSpace: "nowrap",
+              textTransform: "capitalize",
+            }}
+          >
+            {tab.label}
+          </button>
+        );
+      })}
+    </div>
   );
 }
