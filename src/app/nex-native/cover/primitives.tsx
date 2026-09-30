@@ -725,7 +725,7 @@ export function CoverProductCard({
               : undefined,
             background: product.image_url
               ? undefined
-              : "#0a1120",
+              : `linear-gradient(135deg, var(--nex-accent-faint), var(--nex-panel))`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             position: "relative",
