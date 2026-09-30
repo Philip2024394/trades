@@ -711,21 +711,18 @@ function buildTrayItems(content: CoverInfoTrayContent): TrayItem[] {
       content.acceptsQrisDelivery && content.qrCodeImageUrl
         ? content.qrCodeImageUrl
         : null;
-    // Founder direction 2026-09-30 · replace the badge chips with a
-    // single "We also accept …" sentence that lists every non-QRIS
-    // method the seller has ticked. QRIS is represented by the QR
-    // image above so we drop it from this sentence to avoid a double
-    // mention.
-    const alsoAccepts = humaniseOtherPaymentMethods(
-      content.paymentMethodLabels,
-    );
+    // Founder direction 2026-09-30 (revised) · Payment panel footer
+    // is a fixed system-authored line rather than a derivation from
+    // the seller's ticked methods. Keeps the copy predictable and
+    // covers both the local-cash + off-platform card paths NEX
+    // sellers commonly offer.
     items.push({
       id: "payment",
       icon: NEX_INFO_PAGE_META.payment.icon,
       label: NEX_INFO_PAGE_META.payment.label,
       body: "Payment Methods we Accept",
       qrImageUrl: qr,
-      footerNote: alsoAccepts,
+      footerNote: "We also accept cash on delivery and all major cards.",
     });
   }
 
@@ -1025,37 +1022,6 @@ function OwnerBlock({
       )}
     </div>
   );
-}
-
-// ─── Payment methods humaniser ───────────────────────────────────────
-// Turns the seller's paymentMethodLabels (like "💵 COD",
-// "📱 QRIS on Delivery", "🤝 Meetup") into the "We also accept …"
-// sentence rendered below the QR image on the Payment panel. QRIS is
-// dropped because the QR image above already represents it.
-
-function humaniseOtherPaymentMethods(labels: string[]): string {
-  const stripped = labels
-    .filter((l) => !/QRIS/i.test(l))
-    // remove the leading emoji + whitespace
-    .map((l) => l.replace(/^\S+\s+/, "").trim())
-    .filter((l) => l.length > 0);
-  if (stripped.length === 0) return "";
-  const humanised = stripped.map((l) => {
-    const lower = l.toLowerCase();
-    if (lower === "cod" || lower === "c.o.d") return "cash on delivery";
-    if (lower === "courier c.o.d") return "courier COD";
-    if (lower === "meetup") return "meetup";
-    if (lower === "escrow") return "escrow";
-    if (lower === "paypal") return "PayPal";
-    if (lower === "bank transfer") return "bank transfer";
-    return l;
-  });
-  if (humanised.length === 1) return `We also accept ${humanised[0]}.`;
-  if (humanised.length === 2)
-    return `We also accept ${humanised[0]} and ${humanised[1]}.`;
-  const head = humanised.slice(0, -1).join(", ");
-  const tail = humanised[humanised.length - 1];
-  return `We also accept ${head}, and ${tail}.`;
 }
 
 // ─── Stroke-based NEX icons ──────────────────────────────────────────
