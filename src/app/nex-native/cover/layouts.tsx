@@ -1299,28 +1299,20 @@ export function LayoutPersonalBrand({ content, themeId }: LayoutProps): React.JS
             body={content.aboutUs ?? content.tagline ?? ""}
           />
         </div>
-        <div style={{ marginTop: 20, display: "grid", gridTemplateColumns: "repeat(4, minmax(0,1fr))", gap: 8 }}>
-          <QuickPill label="Products" />
-          <QuickPill label="Services" />
-          <QuickPill label="Reviews" />
-          <QuickPill label="Blog" />
-        </div>
-        <div style={{ marginTop: 24 }}>
-          <CoverSectionHeading eyebrow="Shop" title="Products" />
-          <CoverCatalog
-            sections={content.sections}
+        {/* Founder direction 2026-09-30 · Personal Brand tab system.
+            Replaces the standalone Shop/Products/Services/Testimonials
+            sections + static QuickPill row. Four top-level tabs govern
+            the middle of the page. Products tab exposes four sub-tabs
+            (Products / Images / Sizes / Ordering) so buyers can browse
+            the shop from multiple angles without leaving the cover. */}
+        <div style={{ marginTop: 22 }}>
+          <PersonalBrandTabs
             products={content.products}
+            services={content.services}
+            reviews={content.reviews}
             peerAccountId={content.ownerAccountId}
-            columns={2}
+            orderingCopy={content.infoPages?.delivery_details ?? null}
           />
-        </div>
-        <div style={{ marginTop: 26 }}>
-          <CoverSectionHeading eyebrow="Work with me" title="Services" />
-          <ServiceList services={content.services} />
-        </div>
-        <div style={{ marginTop: 26 }}>
-          <CoverSectionHeading eyebrow="Words" title="Testimonials" />
-          <ReviewList reviews={content.reviews} />
         </div>
         <CoverIdentityRail
           handle={content.handle}
@@ -1582,6 +1574,515 @@ function QuickPill({ label }: { label: string }): React.JSX.Element {
       }}
     >
       {label}
+    </div>
+  );
+}
+
+// ─── Personal Brand · tabbed content ─────────────────────────────────
+// Founder direction 2026-09-30 · Template 10 organises its middle
+// content into four top-level tabs (Products · Services · Reviews ·
+// Blog). Products tab further exposes four sub-tabs (Products ·
+// Images · Sizes · Ordering) so buyers can look at the shop from
+// multiple angles without leaving the cover.
+
+type PersonalBrandTab = "products" | "services" | "reviews" | "blog";
+type ProductSubTab = "products" | "images" | "sizes" | "ordering";
+
+function PersonalBrandTabs({
+  products,
+  services,
+  reviews,
+  peerAccountId,
+  orderingCopy,
+}: {
+  products: MockCoverContent["products"];
+  services: MockCoverContent["services"];
+  reviews: MockCoverContent["reviews"];
+  peerAccountId: string;
+  orderingCopy: string | null;
+}): React.JSX.Element {
+  const [tab, setTab] = React.useState<PersonalBrandTab>("products");
+  const [productSub, setProductSub] =
+    React.useState<ProductSubTab>("products");
+
+  const topTabs: { id: PersonalBrandTab; label: string }[] = [
+    { id: "products", label: "Products" },
+    { id: "services", label: "Services" },
+    { id: "reviews", label: "Reviews" },
+    { id: "blog", label: "Blog" },
+  ];
+  const productSubTabs: { id: ProductSubTab; label: string }[] = [
+    { id: "products", label: "Products" },
+    { id: "images", label: "Images" },
+    { id: "sizes", label: "Sizes" },
+    { id: "ordering", label: "Ordering" },
+  ];
+
+  return (
+    <div>
+      {/* Top tabs · Products / Services / Reviews / Blog */}
+      <div
+        role="tablist"
+        aria-label="Personal brand sections"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+          gap: 6,
+          marginBottom: 16,
+        }}
+      >
+        {topTabs.map((t) => {
+          const isActive = t.id === tab;
+          return (
+            <button
+              key={t.id}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              onClick={() => setTab(t.id)}
+              style={{
+                appearance: "none",
+                padding: "9px 6px",
+                borderRadius: 10,
+                border: isActive
+                  ? "1px solid var(--nex-accent)"
+                  : "1px solid var(--nex-accent-soft)",
+                background: isActive
+                  ? "var(--nex-accent)"
+                  : "var(--nex-accent-faint)",
+                color: isActive ? "#03101D" : "var(--nex-text)",
+                fontFamily: "var(--nex-font-body, inherit)",
+                fontSize: 12,
+                fontWeight: 700,
+                letterSpacing: "0.02em",
+                cursor: "pointer",
+                textAlign: "center",
+              }}
+            >
+              {t.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {tab === "products" && (
+        <div>
+          {/* Sub-tabs · Products / Images / Sizes / Ordering */}
+          <div
+            role="tablist"
+            aria-label="Product view"
+            style={{
+              display: "flex",
+              gap: 4,
+              marginBottom: 14,
+              flexWrap: "wrap",
+            }}
+          >
+            {productSubTabs.map((s) => {
+              const isActive = s.id === productSub;
+              return (
+                <button
+                  key={s.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => setProductSub(s.id)}
+                  style={{
+                    appearance: "none",
+                    background: "transparent",
+                    border: "none",
+                    padding: "8px 12px 10px",
+                    margin: 0,
+                    cursor: "pointer",
+                    fontFamily: "var(--nex-font-body)",
+                    fontSize: 12,
+                    fontWeight: isActive ? 700 : 500,
+                    letterSpacing: "0.02em",
+                    color: isActive
+                      ? "var(--nex-accent)"
+                      : "var(--nex-text-dim)",
+                    borderBottom: isActive
+                      ? "2px solid var(--nex-accent)"
+                      : "2px solid transparent",
+                    transition: "color 160ms ease, border-color 160ms ease",
+                  }}
+                >
+                  {s.label}
+                </button>
+              );
+            })}
+          </div>
+          {productSub === "products" && (
+            <CoverProductGrid
+              products={products.slice(0, 6)}
+              peerAccountId={peerAccountId}
+              columns={2}
+            />
+          )}
+          {productSub === "images" && (
+            <ImageGallerySix
+              images={products
+                .map((p) => p.image_url)
+                .filter((u): u is string => !!u)}
+            />
+          )}
+          {productSub === "sizes" && <SizesPanel />}
+          {productSub === "ordering" && (
+            <OrderingPanel body={orderingCopy} />
+          )}
+        </div>
+      )}
+
+      {tab === "services" && <ServiceList services={services} />}
+
+      {tab === "reviews" && <ReviewList reviews={reviews} />}
+
+      {tab === "blog" && <BlogPlaceholder />}
+    </div>
+  );
+}
+
+/**
+ * ImageGallerySix · 6-per-page gallery with ‹ prev · next › arrows.
+ * Founder direction 2026-09-30 · buyers on the Personal Brand cover
+ * flip through product photography one page at a time so the visual
+ * story is discoverable without leaving the cover.
+ */
+function ImageGallerySix({ images }: { images: string[] }): React.JSX.Element {
+  const PAGE = 6;
+  const [page, setPage] = React.useState(0);
+  if (images.length === 0) {
+    return (
+      <div
+        style={{
+          padding: "18px 12px",
+          textAlign: "center",
+          color: "var(--nex-text-dim)",
+          fontSize: 12,
+          border: "1px dashed var(--nex-accent-soft)",
+          borderRadius: 12,
+        }}
+      >
+        No images to show yet.
+      </div>
+    );
+  }
+  const totalPages = Math.max(1, Math.ceil(images.length / PAGE));
+  const safePage = Math.min(page, totalPages - 1);
+  const start = safePage * PAGE;
+  const visible = images.slice(start, start + PAGE);
+  const canPrev = safePage > 0;
+  const canNext = safePage < totalPages - 1;
+  return (
+    <div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+          gap: 8,
+        }}
+      >
+        {visible.map((url, i) => (
+          <div
+            key={`${start + i}-${url}`}
+            aria-hidden
+            style={{
+              aspectRatio: "1 / 1",
+              backgroundImage: `url(${url})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              borderRadius: 10,
+              border: "1px solid var(--nex-accent-soft)",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.35)",
+            }}
+          />
+        ))}
+        {/* Fill empty grid cells on the last page so the last row
+            stays visually balanced. */}
+        {Array.from({ length: PAGE - visible.length }).map((_, i) => (
+          <div
+            key={`empty-${i}`}
+            aria-hidden
+            style={{
+              aspectRatio: "1 / 1",
+              borderRadius: 10,
+              border: "1px dashed var(--nex-accent-soft)",
+              opacity: 0.35,
+            }}
+          />
+        ))}
+      </div>
+      {totalPages > 1 && (
+        <div
+          style={{
+            marginTop: 14,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 10,
+          }}
+        >
+          <GalleryArrow
+            direction="prev"
+            disabled={!canPrev}
+            onClick={() => canPrev && setPage(safePage - 1)}
+          />
+          <div
+            style={{
+              fontSize: 12,
+              fontWeight: 700,
+              color: "var(--nex-text-dim)",
+              fontVariantNumeric: "tabular-nums",
+              minWidth: 40,
+              textAlign: "center",
+            }}
+          >
+            {safePage + 1} / {totalPages}
+          </div>
+          <GalleryArrow
+            direction="next"
+            disabled={!canNext}
+            onClick={() => canNext && setPage(safePage + 1)}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function GalleryArrow({
+  direction,
+  disabled,
+  onClick,
+}: {
+  direction: "prev" | "next";
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={direction === "prev" ? "Previous images" : "Next images"}
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        appearance: "none",
+        width: 34,
+        height: 34,
+        borderRadius: "50%",
+        border: "none",
+        background: "#000000",
+        color: "var(--nex-accent, #FF3F9F)",
+        fontFamily: "var(--nex-font-body, inherit)",
+        fontSize: 18,
+        fontWeight: 800,
+        cursor: disabled ? "not-allowed" : "pointer",
+        opacity: disabled ? 0.35 : 1,
+        display: "grid",
+        placeItems: "center",
+        boxShadow:
+          "0 2px 6px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,0,0,0.6)",
+      }}
+    >
+      {direction === "prev" ? "‹" : "›"}
+    </button>
+  );
+}
+
+/**
+ * SizesPanel · Founder direction 2026-09-30 · placeholder list of
+ * available sizes. Real sellers configure this via a future
+ * /manage/sizes editor (queued). For now shows the common apparel
+ * ladder so the Personal Brand demo reads meaningfully.
+ */
+function SizesPanel(): React.JSX.Element {
+  const sizes = [
+    { label: "XS", available: true },
+    { label: "S", available: true },
+    { label: "M", available: true },
+    { label: "L", available: true },
+    { label: "XL", available: true },
+    { label: "XXL", available: false },
+  ];
+  return (
+    <div>
+      <div
+        style={{
+          fontSize: 13,
+          color: "var(--nex-text-dim)",
+          lineHeight: 1.5,
+          marginBottom: 12,
+        }}
+      >
+        Available sizes · tap any product for a size-specific chat.
+      </div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+        {sizes.map((s) => (
+          <span
+            key={s.label}
+            style={{
+              padding: "8px 14px",
+              borderRadius: 999,
+              border: s.available
+                ? "1px solid var(--nex-accent-soft)"
+                : "1px solid rgba(148,163,184,0.25)",
+              background: s.available
+                ? "var(--nex-accent-faint)"
+                : "transparent",
+              color: s.available
+                ? "var(--nex-text)"
+                : "var(--nex-text-dim)",
+              fontSize: 13,
+              fontWeight: 700,
+              letterSpacing: "0.02em",
+              textDecoration: s.available ? "none" : "line-through",
+            }}
+          >
+            {s.label}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * OrderingPanel · Founder direction 2026-09-30 · describes the order-
+ * to-delivery flow. Body pulls from info_pages.delivery_details when
+ * the seller has authored it · falls back to the default four-step
+ * NEX flow so every buyer sees a clear path.
+ */
+function OrderingPanel({ body }: { body: string | null }): React.JSX.Element {
+  const trimmed = body?.trim();
+  if (trimmed && trimmed.length > 0) {
+    return (
+      <div
+        style={{
+          fontSize: 14,
+          lineHeight: 1.55,
+          color: "var(--nex-text)",
+          whiteSpace: "pre-wrap",
+        }}
+      >
+        {trimmed}
+      </div>
+    );
+  }
+  const steps = [
+    {
+      no: "01",
+      label: "Send a message",
+      body: "Ask us anything about the product · we reply in-chat.",
+    },
+    {
+      no: "02",
+      label: "Confirm details",
+      body: "Size, quantity, delivery address · all agreed in-chat.",
+    },
+    {
+      no: "03",
+      label: "Ships in 24 hrs",
+      body: "Packed the same day where possible · courier assigned.",
+    },
+    {
+      no: "04",
+      label: "Track delivery",
+      body: "Courier tracking + arrival window sent in-chat.",
+    },
+  ];
+  return (
+    <div style={{ display: "grid", gap: 10 }}>
+      {steps.map((s) => (
+        <div
+          key={s.no}
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            gap: 12,
+            padding: "12px 14px",
+            borderRadius: 12,
+            border: "1px solid var(--nex-accent-soft)",
+            background: "var(--nex-accent-faint)",
+          }}
+        >
+          <div
+            style={{
+              flex: "0 0 auto",
+              width: 32,
+              height: 32,
+              borderRadius: 8,
+              background: "var(--nex-accent)",
+              color: "#03101D",
+              display: "grid",
+              placeItems: "center",
+              fontFamily: "var(--nex-font-display)",
+              fontSize: 12,
+              fontWeight: 800,
+              fontVariantNumeric: "tabular-nums",
+            }}
+          >
+            {s.no}
+          </div>
+          <div style={{ minWidth: 0, flex: 1 }}>
+            <div
+              style={{
+                fontFamily: "var(--nex-font-display)",
+                fontSize: 14,
+                fontWeight: 700,
+                lineHeight: 1.25,
+              }}
+            >
+              {s.label}
+            </div>
+            <div
+              style={{
+                marginTop: 3,
+                fontSize: 12,
+                color: "var(--nex-text-dim)",
+                lineHeight: 1.4,
+              }}
+            >
+              {s.body}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function BlogPlaceholder(): React.JSX.Element {
+  return (
+    <div
+      style={{
+        padding: "20px 16px",
+        textAlign: "center",
+        borderRadius: 12,
+        border: "1px dashed var(--nex-accent-soft)",
+        background: "var(--nex-accent-faint)",
+      }}
+    >
+      <div
+        style={{
+          fontSize: 10,
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+          color: "var(--nex-accent)",
+          fontWeight: 700,
+          marginBottom: 6,
+        }}
+      >
+        Blog
+      </div>
+      <div
+        style={{
+          fontSize: 13,
+          color: "var(--nex-text-dim)",
+          lineHeight: 1.55,
+        }}
+      >
+        Posts, journal entries, and updates land here soon.
+      </div>
     </div>
   );
 }
