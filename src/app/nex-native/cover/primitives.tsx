@@ -713,129 +713,146 @@ export function CoverProductCard({
             opacity: soldOut ? 0.7 : 1,
           }}
         >
+          {/* Founder direction 2026-09-30 (revised) · outer rim-anchor
+              wrapper is position:relative WITHOUT overflow:hidden so
+              the magnifier button can protrude past the circle rim.
+              Circle image sits absolutely inset:0 inside it, keeping
+              its own overflow:hidden for the placeholder cross clip. */}
           <div
-            data-nex-cover-round-image
-            aria-hidden={!!product.image_url}
-            role={product.image_url ? undefined : "img"}
-            aria-label={product.image_url ? undefined : "Image placeholder"}
             style={{
               position: "relative",
               width: "100%",
               aspectRatio: "1 / 1",
-              borderRadius: "50%",
-              border: "1px solid var(--nex-accent-soft)",
-              boxShadow: "0 6px 18px rgba(0,0,0,0.4)",
-              overflow: "hidden",
-              backgroundImage: product.image_url
-                ? `url(${product.image_url})`
-                : undefined,
-              background: product.image_url
-                ? undefined
-                : `linear-gradient(135deg, var(--nex-accent-faint), var(--nex-panel))`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              display: !product.image_url ? "grid" : undefined,
-              placeItems: !product.image_url ? "center" : undefined,
-              transition: "box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1)",
             }}
           >
-            {!product.image_url && (
-              <>
-                <svg
-                  aria-hidden
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 100 100"
-                  preserveAspectRatio="none"
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    opacity: 0.22,
-                    color: "var(--nex-accent, #FF3F9F)",
-                  }}
-                >
-                  <line
-                    x1="0"
-                    y1="0"
-                    x2="100"
-                    y2="100"
-                    stroke="currentColor"
-                    strokeWidth="0.6"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                  <line
-                    x1="100"
-                    y1="0"
-                    x2="0"
-                    y2="100"
-                    stroke="currentColor"
-                    strokeWidth="0.6"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                </svg>
+            <div
+              data-nex-cover-round-image
+              aria-hidden={!!product.image_url}
+              role={product.image_url ? undefined : "img"}
+              aria-label={product.image_url ? undefined : "Image placeholder"}
+              style={{
+                position: "absolute",
+                inset: 0,
+                borderRadius: "50%",
+                border: "1px solid var(--nex-accent-soft)",
+                boxShadow: "0 6px 18px rgba(0,0,0,0.4)",
+                overflow: "hidden",
+                backgroundImage: product.image_url
+                  ? `url(${product.image_url})`
+                  : undefined,
+                // Founder direction 2026-09-30 · SOLID navy fill for
+                // the round placeholder · matches the Images tab tile
+                // treatment · no accent gradient bleed.
+                background: product.image_url ? undefined : "#0a1120",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                display: !product.image_url ? "grid" : undefined,
+                placeItems: !product.image_url ? "center" : undefined,
+                transition: "box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1)",
+              }}
+            >
+              {!product.image_url && (
+                <>
+                  <svg
+                    aria-hidden
+                    width="100%"
+                    height="100%"
+                    viewBox="0 0 100 100"
+                    preserveAspectRatio="none"
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      opacity: 0.22,
+                      color: "var(--nex-accent, #FF3F9F)",
+                    }}
+                  >
+                    <line
+                      x1="0"
+                      y1="0"
+                      x2="100"
+                      y2="100"
+                      stroke="currentColor"
+                      strokeWidth="0.6"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                    <line
+                      x1="100"
+                      y1="0"
+                      x2="0"
+                      y2="100"
+                      stroke="currentColor"
+                      strokeWidth="0.6"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                  </svg>
+                  <span
+                    style={{
+                      position: "relative",
+                      fontSize: 8,
+                      fontWeight: 800,
+                      letterSpacing: "0.14em",
+                      color: "var(--nex-text-dim)",
+                      textAlign: "center",
+                      padding: "1px 5px",
+                      background: "#03101D",
+                      borderRadius: 4,
+                    }}
+                  >
+                    IMAGE HERE
+                  </span>
+                </>
+              )}
+              {soldOut && (
                 <span
                   style={{
-                    position: "relative",
-                    fontSize: 8,
+                    position: "absolute",
+                    top: "50%",
+                    left: 0,
+                    right: 0,
+                    transform: "translateY(-50%)",
+                    padding: "3px 0",
+                    fontSize: 9,
                     fontWeight: 800,
                     letterSpacing: "0.14em",
-                    color: "var(--nex-text-dim)",
+                    textTransform: "uppercase",
+                    color: "#fff",
+                    background: "rgba(180,40,40,0.9)",
                     textAlign: "center",
-                    padding: "1px 5px",
-                    background: "#03101D",
-                    borderRadius: 4,
                   }}
                 >
-                  IMAGE HERE
+                  Sold out
                 </span>
-              </>
-            )}
-            {soldOut && (
-              <span
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: 0,
-                  right: 0,
-                  transform: "translateY(-50%)",
-                  padding: "3px 0",
-                  fontSize: 9,
-                  fontWeight: 800,
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  color: "#fff",
-                  background: "rgba(180,40,40,0.9)",
-                  textAlign: "center",
-                }}
-              >
-                Sold out
-              </span>
-            )}
-            {/* Founder direction 2026-09-30 · magnifier button sits on
-                the rim of the circle · half inside, half outside · so
-                it reads as an affordance attached to the image rather
-                than a badge. Whole card is still the <Link>; this is
-                the visible tap-to-open glyph. */}
+              )}
+            </div>
+            {/* Founder direction 2026-09-30 (revised) · magnifier button
+                centred ON the rim at 45° · 50% inside the circle, 50%
+                outside · positioned at 85%/85% of the container so the
+                button's centre lands exactly on the circle boundary
+                (rim at 45° = ~85.4% from top-left for a 100% circle).
+                Whole card is still the <Link>; this is the visible
+                affordance. */}
             <span
               aria-hidden
               style={{
                 position: "absolute",
-                right: "6%",
-                bottom: "6%",
-                width: 28,
-                height: 28,
+                left: "85%",
+                top: "85%",
+                transform: "translate(-50%, -50%)",
+                width: 32,
+                height: 32,
                 borderRadius: "50%",
                 background: "var(--nex-accent)",
                 color: "#03101D",
                 display: "grid",
                 placeItems: "center",
-                boxShadow: "0 4px 10px rgba(0,0,0,0.45)",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
                 border: "2px solid var(--nex-panel, #0a1120)",
+                zIndex: 2,
               }}
             >
               <svg
-                width={14}
-                height={14}
+                width={16}
+                height={16}
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
