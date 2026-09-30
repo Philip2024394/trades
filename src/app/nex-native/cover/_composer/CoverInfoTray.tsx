@@ -173,39 +173,56 @@ export function CoverInfoTray({
           overflow: "hidden",
         }}
       >
-        {/* Back arrow · only when a panel is active. Sits inside the
-            info-view area, not on top of the cover header. */}
-        {activeItem && (
-          <div
+        {/* Back arrow + text · always visible on both views. On the
+            LIST view it closes the tray and returns to the cover. On
+            a PANEL view it returns to the list. Founder direction
+            2026-09-30 (revised) · one consistent affordance so the
+            buyer always knows how to step back. */}
+        <div
+          style={{
+            padding: "6px 16px 6px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            gap: 10,
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => (activeItem ? setPanelKey(null) : onClose())}
+            aria-label={activeItem ? "Back to info list" : "Back to cover"}
             style={{
-              padding: "6px 16px 6px",
-              display: "flex",
+              border: "none",
+              background: "transparent",
+              color: "var(--nex-accent)",
+              fontFamily: "inherit",
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              cursor: "pointer",
+              padding: "4px 6px",
+              display: "inline-flex",
               alignItems: "center",
-              justifyContent: "flex-end",
-              gap: 10,
+              gap: 6,
             }}
           >
-            <button
-              type="button"
-              onClick={() => setPanelKey(null)}
-              aria-label="Back to info list"
-              style={{
-                border: "none",
-                background: "transparent",
-                color: "var(--nex-accent)",
-                fontFamily: "inherit",
-                fontSize: 12,
-                fontWeight: 700,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-                cursor: "pointer",
-                padding: "4px 6px",
-              }}
+            <svg
+              width={14}
+              height={14}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2.2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
             >
-              ‹ Back
-            </button>
-          </div>
-        )}
+              <polyline points="15 6 9 12 15 18" />
+            </svg>
+            Back
+          </button>
+        </div>
 
         {/* Scrollable body · either the landscape button LIST or the
             selected panel's content. Both render at the same phone-
