@@ -16,7 +16,7 @@ import {
   COVER_LAYOUT_LABELS,
   isValidCoverLayoutId,
 } from "../../layout-ids";
-import { MARIA_MOCK } from "../../mock-data";
+import { MARIA_MOCK, PRODUCT_SELLER_MOCK } from "../../mock-data";
 import { PhoneFrame } from "../_phone-frame";
 
 export const runtime = "nodejs";
@@ -218,7 +218,13 @@ export default async function CoverLayoutPreview({
         >
           <CoverLayoutSwitch
             layoutId={layoutId}
-            content={MARIA_MOCK}
+            content={
+              // Founder direction 2026-09-30 · product-vertical mock
+              // for Template 03 so the sections tabs read Electronics /
+              // Mens Wear / Watches with matching products. Every
+              // other template still gets MARIA_MOCK.
+              layoutId === "product" ? PRODUCT_SELLER_MOCK : MARIA_MOCK
+            }
             themeId={theme.id}
           />
         </CoverThemeSkin>

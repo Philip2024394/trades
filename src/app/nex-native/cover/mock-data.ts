@@ -390,3 +390,112 @@ export const MARIA_MOCK: MockCoverContent = {
     },
   ],
 };
+
+/**
+ * Template 03 (Product Seller) preview mock. Spreads MARIA_MOCK so
+ * every non-catalog field stays consistent (identity, theme, hours,
+ * info pages, QR, etc.) · overrides sections + products with content
+ * that fits a product-seller vertical.
+ *
+ * Founder direction 2026-09-30 · sealed categories for the product
+ * template preview:  Electronics · Mens Wear · Watches
+ */
+export const PRODUCT_SELLER_MOCK: MockCoverContent = {
+  ...MARIA_MOCK,
+  businessName: "Corner Store",
+  tagline: "Shop of products",
+  isVenue: false,
+  aboutUs:
+    "Corner Store is your neighbourhood shop for curated electronics, menswear, and watches. Every piece is inspected, cleaned, and photographed by us before it goes live · nothing arrives from a warehouse untouched.\n\nWe've been trading since 2019 out of a small workshop in Ubud. What started as a vintage-camera hobby is now a three-vertical shop with a growing catalogue of quality-checked stock.\n\nOur promise: honest condition notes, fair prices, and every item backed by a full refund window if it doesn't match how we described it.",
+  sections: [
+    { id: "sec-electronics", name: "Electronics", sort_order: 0 },
+    { id: "sec-menswear", name: "Mens Wear", sort_order: 1 },
+    { id: "sec-watches", name: "Watches", sort_order: 2 },
+  ],
+  products: [
+    {
+      id: "prod-camera",
+      slug: "vintage-leica-m3",
+      name: "Vintage Leica M3 · CLA'd",
+      price_pence: 4200000000,
+      currency: "IDR",
+      image_url: null,
+      stock_status: "in_stock",
+      section_id: "sec-electronics",
+      description:
+        "1957 Leica M3 rangefinder · fully serviced, calibrated shutter, lens board polished.",
+    },
+    {
+      id: "prod-headphones",
+      slug: "sony-mdr-cd900st",
+      name: "Sony MDR-CD900ST",
+      price_pence: 285000000,
+      currency: "IDR",
+      image_url: null,
+      stock_status: "in_stock",
+      section_id: "sec-electronics",
+      description:
+        "Legendary Japanese studio-monitor headphones · flat response, replaceable pads.",
+    },
+    {
+      id: "prod-linen-shirt",
+      slug: "italian-linen-shirt",
+      name: "Italian Linen Shirt",
+      price_pence: 78000000,
+      currency: "IDR",
+      image_url: null,
+      stock_status: "in_stock",
+      section_id: "sec-menswear",
+      description:
+        "Unstructured linen shirt · natural stone-wash · S / M / L / XL · one-piece cuff.",
+    },
+    {
+      id: "prod-selvedge-jean",
+      slug: "japanese-selvedge-jean",
+      name: "Japanese Selvedge Jean · 14oz",
+      price_pence: 195000000,
+      currency: "IDR",
+      image_url: null,
+      stock_status: "low_stock",
+      section_id: "sec-menswear",
+      description:
+        "Kaihara 14oz raw selvedge · tapered fit · natural indigo · size chart in About.",
+    },
+    {
+      id: "prod-omega",
+      slug: "omega-seamaster-1966",
+      name: "Omega Seamaster · 1966",
+      price_pence: 3450000000,
+      currency: "IDR",
+      image_url: null,
+      stock_status: "in_stock",
+      section_id: "sec-watches",
+      description:
+        "Cal. 565 automatic · original silver dial · service history since 2018 · box + papers.",
+    },
+    {
+      id: "prod-seiko",
+      slug: "seiko-skx007",
+      name: "Seiko SKX007 · Diver",
+      price_pence: 425000000,
+      currency: "IDR",
+      image_url: null,
+      stock_status: "in_stock",
+      section_id: "sec-watches",
+      description:
+        "200m automatic diver · original hardlex crystal · Jubilee bracelet · well-loved condition.",
+    },
+    {
+      id: "prod-casio",
+      slug: "casio-fx-oceanus",
+      name: "Casio Oceanus · Titanium",
+      price_pence: 1650000000,
+      currency: "IDR",
+      image_url: null,
+      stock_status: "sold_out",
+      section_id: "sec-watches",
+      description:
+        "Titanium bracelet · atomic sync · sapphire crystal · full accessories, sealed.",
+    },
+  ],
+};
