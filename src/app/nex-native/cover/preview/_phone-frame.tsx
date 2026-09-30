@@ -26,24 +26,35 @@ import * as React from "react";
 
 const PHONE_WIDTH = 390;
 const PHONE_HEIGHT = 844;
-// Founder direction 2026-09-30 · phone chassis pure black + stage
-// backdrop pure black so the device silhouette reads as a real black
-// phone on a black stage.
-const NEX_STAGE_BG = "#000000";
+// Founder direction 2026-09-30 (revised twice) · phone chassis stays
+// pure black, but the stage returns to a slightly-lighter dark shade
+// so the black phone silhouette is visible against it. Pure-black on
+// pure-black hid the frame entirely.
+const NEX_STAGE_BG = "#101318";
 const PHONE_CHASSIS = "#000000";
 
 export function PhoneFrame({ children }: { children: React.ReactNode }): React.JSX.Element {
   return (
     <>
       <style>{`
-        @keyframes phone-glow {
-          0%, 100% { box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 0 42px rgba(255,255,255,0.06); }
-          50%      { box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 0 68px rgba(255,255,255,0.1); }
-        }
         /* Hide the cover's inner scrollbar on every layout · scroll
            still works (touch + wheel + keyboard), just no visible rail. */
         [data-nex-phone-scroll] { scrollbar-width: none; -ms-overflow-style: none; }
         [data-nex-phone-scroll]::-webkit-scrollbar { width: 0; height: 0; display: none; }
+        /* Founder direction 2026-09-30 · on desktop the CoverComposer
+           uses position:fixed which stretches it to the whole browser
+           width. Inside the phone-frame preview we clamp it to the
+           phone-screen width (~370px inside the 10px chassis border)
+           so it visually sits inside the phone. */
+        @media (min-width: 768px) {
+          [data-nex-phone-frame] [data-nex-cover-composer] {
+            left: 50% !important;
+            right: auto !important;
+            transform: translateX(-50%);
+            width: 370px !important;
+            max-width: 370px !important;
+          }
+        }
         /* Mobile · frame collapses entirely, cover fills viewport */
         @media (max-width: 767px) {
           [data-nex-phone-frame] {
@@ -89,11 +100,15 @@ export function PhoneFrame({ children }: { children: React.ReactNode }): React.J
             maxWidth: PHONE_WIDTH,
             borderRadius: 46,
             border: `10px solid ${PHONE_CHASSIS}`,
-            outline: "1px solid rgba(255,255,255,0.08)",
+            // Founder direction 2026-09-30 · phone chassis reads as
+            // solid black · dropped the white hairline outline + the
+            // 6-8% white glow + the phone-glow animation that were
+            // giving the frame a "misty" halo. Kept only a dark drop
+            // shadow so it still lifts off the stage without adding
+            // any white light.
             overflow: "hidden",
             background: "#000",
-            boxShadow: "0 24px 60px rgba(0,0,0,0.7), 0 0 42px rgba(255,255,255,0.06)",
-            animation: "phone-glow 6s ease-in-out infinite",
+            boxShadow: "0 24px 60px rgba(0,0,0,0.8)",
           }}
         >
           <div
