@@ -442,6 +442,17 @@ export interface PortraitBloomShellProps {
       size?: number;
       twinkleSeconds?: number;
     };
+    /** Bridge Theme-0 · sealed 2026-09-30 · fog blobs that rise from
+     *  below the composer up past the top of the chat. Matches the
+     *  cover-side MistDrift so chat + cover render identically per
+     *  the ONE NEX IDENTITY doctrine. */
+    mistDrift?: {
+      color?: string;
+      count?: number;
+      size?: number;
+      blur?: number;
+      speedSeconds?: number;
+    };
     /** Bridge 97f · bubble-shape preset · classic (default), pill,
      *  square, outlined, gradient. See BubbleShape helper for the
      *  exact CSS per preset. */
@@ -662,6 +673,9 @@ export function PortraitBloomShell({
             )}
             {wallpaperConfig?.sparkle && (
               <SparkleField config={wallpaperConfig.sparkle} />
+            )}
+            {wallpaperConfig?.mistDrift && (
+              <MistDrift config={wallpaperConfig.mistDrift} />
             )}
           </>
         )}
@@ -3181,6 +3195,94 @@ function SparkleField({ config }: { config: SparkleConfig }): React.JSX.Element 
             }}
           />
         ))}
+      </div>
+    </>
+  );
+}
+
+// ─── MistDrift · Bridge Theme-0 · sealed 2026-09-30 ──────────────────
+// Fog blobs rise from below the composer up past the top of the chat.
+// Byte-identical to the cover-side MistDrift in theme-skin.tsx so the
+// two surfaces render the same environmental overlay per the ONE NEX
+// IDENTITY doctrine.
+
+interface MistDriftConfig {
+  color?: string;
+  count?: number;
+  size?: number;
+  blur?: number;
+  speedSeconds?: number;
+}
+
+function MistDrift({ config }: { config: MistDriftConfig }): React.JSX.Element {
+  const color = config.color ?? "rgba(220,235,225,0.45)";
+  const count = Math.max(4, Math.min(14, config.count ?? 8));
+  const baseSize = Math.max(80, Math.min(260, config.size ?? 160));
+  const blur = Math.max(16, Math.min(80, config.blur ?? 44));
+  const speed = Math.max(10, Math.min(60, config.speedSeconds ?? 22));
+
+  const blobs = React.useMemo(() => {
+    let seed = 733333;
+    const rand = () => {
+      seed = (seed * 9301 + 49297) % 233280;
+      return seed / 233280;
+    };
+    return Array.from({ length: count }, () => ({
+      left: rand() * 100,
+      scale: 0.7 + rand() * 0.7,
+      xShift: (rand() - 0.5) * 20,
+      delay: rand() * speed,
+      dur: speed * (0.75 + rand() * 0.5),
+      opacity: 0.35 + rand() * 0.45,
+    }));
+  }, [count, speed]);
+
+  const anim = `nex-chat-mist-${Math.round(speed)}`;
+  return (
+    <>
+      <style>{`
+        @keyframes ${anim} {
+          0%   { transform: translate3d(0, 30%, 0) scale(0.9);  opacity: 0; }
+          20%  { opacity: 1; }
+          75%  { opacity: 0.6; }
+          100% { transform: translate3d(var(--nx-x, 0px), -140%, 0) scale(1.25); opacity: 0; }
+        }
+      `}</style>
+      <div
+        aria-hidden
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: "none",
+          overflow: "hidden",
+        }}
+      >
+        {blobs.map((b, i) => {
+          const w = baseSize * b.scale;
+          return (
+            <span
+              key={i}
+              style={
+                {
+                  position: "absolute",
+                  left: `${b.left}%`,
+                  bottom: -w * 0.4,
+                  width: w,
+                  height: w,
+                  borderRadius: "50%",
+                  background: `radial-gradient(circle, ${color} 0%, transparent 70%)`,
+                  filter: `blur(${blur}px)`,
+                  opacity: b.opacity,
+                  animation: `${anim} ${b.dur}s linear infinite`,
+                  animationDelay: `-${b.delay}s`,
+                  willChange: "transform, opacity",
+                  "--nx-x": `${b.xShift}vw`,
+                } as React.CSSProperties
+              }
+            />
+          );
+        })}
       </div>
     </>
   );
