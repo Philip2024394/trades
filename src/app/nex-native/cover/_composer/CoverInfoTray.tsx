@@ -128,9 +128,10 @@ export function CoverInfoTray({
 
   return (
     <>
-      {/* Transparent full-phone catcher · tap outside the buttons to
-          close · no dim backdrop (founder direction 2026-09-30 · info
-          should feel like a phone-screen VIEW not an overlay modal). */}
+      {/* Blurred backdrop · tap outside the button column to close.
+          Founder direction 2026-09-30 (revised) · blurs the cover
+          content behind so the landscape buttons pop forward · dim
+          added to strengthen the focus without hiding shop context. */}
       <div
         role="button"
         aria-label="Close info"
@@ -138,7 +139,9 @@ export function CoverInfoTray({
         style={{
           position: "fixed",
           inset: 0,
-          background: "transparent",
+          background: "rgba(3,8,20,0.35)",
+          backdropFilter: "blur(10px) saturate(1.05)",
+          WebkitBackdropFilter: "blur(10px) saturate(1.05)",
           zIndex: 40,
         }}
       />
@@ -206,13 +209,22 @@ export function CoverInfoTray({
 
         {/* Scrollable body · either the landscape button LIST or the
             selected panel's content. Both render at the same phone-
-            screen slot below the cover header. */}
+            screen slot below the cover header.
+
+            Founder direction 2026-09-30 (revised) · the LIST view is
+            vertically centered in the available height so the button
+            column feels balanced against the cover header above and
+            the composer footer below. Panels revert to top-anchored
+            because their long content should read from the top. */}
         <div
           data-nex-cover-scroll="thin"
           style={{
             flex: "1 1 auto",
             overflowY: "auto",
             padding: "6px 16px 16px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: activeItem ? "flex-start" : "center",
           }}
         >
           {activeItem ? (
