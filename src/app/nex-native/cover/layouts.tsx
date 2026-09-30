@@ -1100,15 +1100,13 @@ function WhoWeAreCollapsible({
   body: string;
   hoursLabel?: string | null;
 }): React.JSX.Element | null {
-  const [expanded, setExpanded] = React.useState(false);
   const trimmed = body.trim();
   if (trimmed.length === 0) return null;
-  // Founder direction 2026-09-30 (revised) · clamp at 6 lines · when
-  // the body has more, render a slide-down arrow UNDER the paragraph
-  // that the visitor taps to reveal the rest. Heuristic: 6 lines ×
-  // ~50 chars = ~300, plus explicit paragraph breaks.
-  const canExpand = trimmed.length > 300 || trimmed.split(/\n/).length > 6;
-  const showFull = expanded || !canExpand;
+  // Founder direction 2026-09-30 (final) · 7-line hard clip, no
+  // chevron. The cover is a SCAN surface · the Info Tray About Us
+  // panel is the READ-the-full-story surface. Buyers who want the
+  // whole thing tap the + button. Sellers writing longer stories
+  // get clipped with an ellipsis · that's the intended discipline.
   return (
     <section>
       <div
@@ -1167,68 +1165,15 @@ function WhoWeAreCollapsible({
           fontSize: 14,
           lineHeight: 1.5,
           color: "var(--nex-text, #F2F5F8)",
-          // Founder direction 2026-09-30 · flow as one continuous
-          // paragraph · CSS collapses \n and \n\n into a single space
-          // so seller-authored paragraph breaks in aboutUs stop
-          // producing visible gaps in this cover block.
           whiteSpace: "normal",
-          display: showFull ? "block" : "-webkit-box",
-          WebkitLineClamp: showFull ? undefined : 6,
+          display: "-webkit-box",
+          WebkitLineClamp: 7,
           WebkitBoxOrient: "vertical",
           overflow: "hidden",
-          transition: "max-height 260ms ease",
         }}
       >
         {trimmed}
       </div>
-      {canExpand && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: 8,
-          }}
-        >
-          <button
-            type="button"
-            onClick={() => setExpanded((v) => !v)}
-            aria-expanded={expanded}
-            aria-label={expanded ? "Show less" : "Read more"}
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: "50%",
-              border: "none",
-              background:
-                "var(--nex-accent-faint, rgba(0,175,255,0.10))",
-              color: "var(--nex-accent)",
-              cursor: "pointer",
-              display: "grid",
-              placeItems: "center",
-              padding: 0,
-              transition: "background 160ms ease",
-            }}
-          >
-            <svg
-              width={16}
-              height={16}
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden
-              style={{
-                transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
-                transition: "transform 220ms ease",
-              }}
-            >
-              <polyline points="6 9 12 15 18 9" />
-            </svg>
-          </button>
-        </div>
-      )}
     </section>
   );
 }
