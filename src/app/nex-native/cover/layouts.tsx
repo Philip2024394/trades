@@ -220,6 +220,219 @@ export function LayoutCafe({ content, themeId }: LayoutProps): React.JSX.Element
   );
 }
 
+// ─── 15 · Café · Round Products ──────────────────────────────────────
+// Founder direction 2026-09-30 · exact clone of Template 01 (Café)
+// with one deliberate difference · product cards render as ROUND
+// circles with the product name centred below and a magnifier button
+// on the rim (50% in / 50% out). Every other block identical.
+
+export function LayoutCafeRound({ content, themeId }: LayoutProps): React.JSX.Element {
+  return (
+    <>
+      <CoverPage>
+        <CoverIdentityBadge
+          portraitUrl={content.portraitUrl}
+          name={content.businessName}
+          subtitle={content.tagline}
+          themeId={themeId}
+          presenceOnline={content.presenceOnline}
+          countryCode={content.countryCode ?? null}
+        />
+        <div style={{ marginTop: 26 }}>
+          <CoverSectionHeading
+            eyebrow={content.sectionEyebrow ?? "Services"}
+            title={
+              content.sectionTitle ??
+              (content.shippingScope
+                ? NEX_SHIPPING_SCOPE_META[content.shippingScope].label
+                : "Local Delivery")
+            }
+          />
+          <CoverCatalog
+            sections={content.sections}
+            products={content.products}
+            peerAccountId={content.ownerAccountId}
+            variant="round"
+          />
+        </div>
+        <a
+          href={
+            content.locationLat != null && content.locationLng != null
+              ? `https://www.google.com/maps/dir/?api=1&destination=${content.locationLat},${content.locationLng}`
+              : `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                  content.address,
+                )}`
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "block",
+            marginTop: 20,
+            padding: "16px 18px",
+            borderRadius: 14,
+            border: "1px dashed var(--nex-accent-soft)",
+            background:
+              "linear-gradient(180deg, var(--nex-accent-faint), rgba(3,8,20,0.35))",
+            textDecoration: "none",
+            color: "inherit",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, marginBottom: 6 }}>
+            <div style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--nex-accent)", fontWeight: 700 }}>Visit Us</div>
+            <div aria-hidden style={{ fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--nex-accent)", fontWeight: 700 }}>Directions ↗</div>
+          </div>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontFamily: "var(--nex-font-display)", fontSize: 15, lineHeight: 1.35, fontWeight: 600, color: "var(--nex-text)" }}>
+            <span aria-hidden style={{ flex: "0 0 auto" }}>📍</span>
+            <span style={{ flex: 1 }}>{content.address}</span>
+          </div>
+          <div style={{ marginTop: 8, display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "var(--nex-text-dim)" }}>
+            <span aria-hidden>🕐</span>
+            <span>{content.hours}</span>
+          </div>
+        </a>
+        <CoverIdentityRail
+          handle={content.handle}
+          location={content.location}
+          social={content.social}
+          themeId={themeId}
+        />
+      </CoverPage>
+      <CoverComposer
+        ownerAccountId={content.ownerAccountId}
+        ownerBusinessId={null}
+        ownerDisplayName={content.businessName}
+        infoTrayContent={{
+          pages: content.infoPages ?? null,
+          aboutUs: content.aboutUs ?? null,
+          yearEstablished: content.yearEstablished ?? null,
+          ownerName: content.ownerName ?? null,
+          ownerPosition: content.ownerPosition ?? null,
+          ownerAvatarUrl: content.ownerAvatarUrl ?? null,
+          hours: content.hours,
+          hoursByDay: content.hoursByDay ?? null,
+          address: content.address,
+          paymentMethodLabels: content.paymentMethodLabels ?? [],
+          qrCodeImageUrl: content.qrCodeImageUrl ?? null,
+          acceptsQrisDelivery: content.acceptsQrisDelivery ?? false,
+          returnPolicyBody: content.returnPolicyBody ?? null,
+          eventsBody: content.eventsBody ?? null,
+          galleryUrls: content.galleryUrls ?? [],
+          isVenue: content.isVenue ?? false,
+        }}
+      />
+    </>
+  );
+}
+
+// ─── 16 · Product Seller · Round Products ────────────────────────────
+// Founder direction 2026-09-30 · exact clone of Template 03 (Product
+// Seller) with one deliberate difference · product cards render as
+// ROUND circles. Everything else identical.
+
+export function LayoutProductRound({ content, themeId }: LayoutProps): React.JSX.Element {
+  return (
+    <>
+      <CoverPage>
+        <CoverIdentityBadge
+          portraitUrl={content.portraitUrl}
+          name={content.businessName}
+          subtitle={content.tagline}
+          themeId={themeId}
+          size="compact"
+          presenceOnline={content.presenceOnline}
+          countryCode={content.countryCode ?? null}
+        />
+        <div style={{ marginTop: 20 }}>
+          <WhoWeAreCollapsible
+            body={content.aboutUs ?? content.tagline ?? ""}
+            hoursLabel={formatTodayHoursLabel(
+              content.hoursByDay,
+              content.hours,
+            )}
+          />
+        </div>
+        <div style={{ marginTop: 20 }}>
+          <CoverSectionHeading
+            eyebrow="Shop"
+            title="All products"
+            rightSlot={
+              <div
+                aria-label={`${content.products.length} products live`}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  fontSize: 12,
+                  fontWeight: 700,
+                  color: "var(--nex-accent)",
+                  fontVariantNumeric: "tabular-nums",
+                }}
+              >
+                <span aria-hidden style={{ fontSize: 16, lineHeight: 1 }}>📦</span>
+                <span>{content.products.length} products live</span>
+              </div>
+            }
+          />
+          <CoverCatalog
+            sections={content.sections}
+            products={content.products}
+            peerAccountId={content.ownerAccountId}
+            variant="round"
+          />
+        </div>
+        {content.infoPages?.delivery_details && (
+          <section style={{ marginTop: 20 }}>
+            <div style={{ fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--nex-accent)", fontWeight: 700, marginBottom: 4 }}>Dispatch Times</div>
+            <div style={{ fontSize: 14, lineHeight: 1.5, color: "var(--nex-text, #F2F5F8)", whiteSpace: "normal" }}>{content.infoPages.delivery_details}</div>
+          </section>
+        )}
+        <CoverIdentityRail
+          handle={content.handle}
+          location={content.location}
+          social={content.social}
+          themeId={themeId}
+        />
+      </CoverPage>
+      <CoverComposer
+        ownerAccountId={content.ownerAccountId}
+        ownerBusinessId={null}
+        ownerDisplayName={content.businessName}
+        infoTrayContent={{
+          pages: content.infoPages ?? null,
+          aboutUs: content.aboutUs ?? null,
+          yearEstablished: content.yearEstablished ?? null,
+          ownerName: content.ownerName ?? null,
+          ownerPosition: content.ownerPosition ?? null,
+          ownerAvatarUrl: content.ownerAvatarUrl ?? null,
+          hours: content.hours,
+          hoursByDay: content.hoursByDay ?? null,
+          address: content.address,
+          paymentMethodLabels: content.paymentMethodLabels ?? [],
+          qrCodeImageUrl: content.qrCodeImageUrl ?? null,
+          acceptsQrisDelivery: content.acceptsQrisDelivery ?? false,
+          returnPolicyBody: content.returnPolicyBody ?? null,
+          eventsBody: content.eventsBody ?? null,
+          galleryUrls: content.galleryUrls ?? [],
+          isVenue: content.isVenue ?? false,
+        }}
+      />
+    </>
+  );
+}
+
+// ─── 17 · Product Seller Landscape · Round Products ──────────────────
+// Founder direction 2026-09-30 · exact clone of Template 11 (Product
+// Seller · Landscape) with the CoverCatalog variant flipped to
+// "round". Note · because Template 11 differs from Template 03 only
+// in the variant flag, this template renders identically to
+// Template 16 when both are set to variant="round". Kept as a
+// separate entry per founder request so admins can pick either
+// clone lineage on /manage/shop.
+
+export function LayoutProductLandscapeRound({ content, themeId }: LayoutProps): React.JSX.Element {
+  return <LayoutProductRound content={content} themeId={themeId} />;
+}
+
 // ─── 12 · Café · Landscape ───────────────────────────────────────────
 // Founder direction 2026-09-30 · exact clone of Template 01 (Café) with
 // a single deliberate difference · products render as landscape rows

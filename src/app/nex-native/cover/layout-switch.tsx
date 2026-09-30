@@ -23,6 +23,9 @@ import {
   LayoutPersonalBrand,
   LayoutPersonalBrandLandscape,
   LayoutPersonalBrandRound,
+  LayoutCafeRound,
+  LayoutProductRound,
+  LayoutProductLandscapeRound,
 } from "./layouts";
 import type { CoverLayoutId } from "./layout-ids";
 import type { MockCoverContent } from "./mock-data";
@@ -67,6 +70,14 @@ export function CoverLayoutSwitch({
       );
     case "personal_brand_round":
       return <LayoutPersonalBrandRound content={content} themeId={themeId} />;
+    case "cafe_round":
+      return <LayoutCafeRound content={content} themeId={themeId} />;
+    case "product_round":
+      return <LayoutProductRound content={content} themeId={themeId} />;
+    case "product_landscape_round":
+      return (
+        <LayoutProductLandscapeRound content={content} themeId={themeId} />
+      );
     default:
       return null;
   }
