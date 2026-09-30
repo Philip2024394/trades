@@ -1050,22 +1050,18 @@ function WhoWeAreCollapsible({ body }: { body: string }): React.JSX.Element | nu
   // plain block.
   const canExpand = trimmed.length > 350 || trimmed.split(/\n/).length > 7;
   const showFull = expanded || !canExpand;
+  // Founder direction 2026-09-30 · no container · text sits flush on
+  // the cover background · tight vertical rhythm · body at 14px (the
+  // standard NEX app body size elsewhere on the cover).
   return (
-    <section
-      style={{
-        padding: "14px 16px",
-        borderRadius: 14,
-        background: "var(--nex-accent-faint, rgba(0,175,255,0.10))",
-        border: "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
-      }}
-    >
+    <section>
       <div
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           gap: 12,
-          marginBottom: 10,
+          marginBottom: 4,
         }}
       >
         <div
@@ -1086,10 +1082,10 @@ function WhoWeAreCollapsible({ body }: { body: string }): React.JSX.Element | nu
             aria-expanded={expanded}
             aria-label={expanded ? "Show less" : "Read more"}
             style={{
-              width: 28,
-              height: 28,
+              width: 24,
+              height: 24,
               borderRadius: "50%",
-              border: "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
+              border: "none",
               background: "transparent",
               color: "var(--nex-accent)",
               cursor: "pointer",
@@ -1120,7 +1116,7 @@ function WhoWeAreCollapsible({ body }: { body: string }): React.JSX.Element | nu
       </div>
       <div
         style={{
-          fontSize: 13,
+          fontSize: 14,
           lineHeight: 1.5,
           color: "var(--nex-text, #F2F5F8)",
           whiteSpace: "pre-wrap",
