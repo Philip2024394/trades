@@ -206,12 +206,18 @@ function PageArrow({
       disabled={disabled}
       style={{
         appearance: "none",
-        width: 32,
-        height: 32,
-        borderRadius: 10,
+        width: 34,
+        height: 34,
+        borderRadius: "50%",
         border: "none",
-        background: "transparent",
-        color: "#000000",
+        // Founder direction 2026-09-30 · black-filled arrow button
+        // with the theme accent painting the chevron itself. Under
+        // Pink Dream that's pink arrows on a black circle · under
+        // any other theme the arrow adopts that theme's accent (ONE
+        // NEX IDENTITY doctrine · single visual language flows
+        // through every cover surface).
+        background: "#000000",
+        color: "var(--nex-accent, #FF3F9F)",
         fontFamily: "var(--nex-font-body, inherit)",
         fontSize: 18,
         fontWeight: 800,
@@ -220,6 +226,8 @@ function PageArrow({
         display: "grid",
         placeItems: "center",
         transition: "opacity 140ms ease",
+        boxShadow:
+          "0 2px 6px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,0,0,0.6)",
       }}
     >
       {direction === "prev" ? "‹" : "›"}
