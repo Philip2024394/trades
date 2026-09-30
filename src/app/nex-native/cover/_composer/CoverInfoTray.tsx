@@ -191,6 +191,7 @@ export function CoverInfoTray({
               padding: "10px 14px 4px",
               display: "flex",
               alignItems: "center",
+              justifyContent: "flex-end",
               gap: 10,
             }}
           >
