@@ -308,8 +308,13 @@ interface TrayItem {
    *  seller has both uploaded a QR AND accepts qris_delivery. */
   qrImageUrl?: string | null;
   /** Free-text paragraph rendered at the bottom of the panel.
-   *  Used by the Payment item for the "We also accept …" line. */
+   *  Used by the Payment item for the "We also accept …" line and
+   *  the Catering item for the "please contact to discuss …" prompt. */
   footerNote?: string | null;
+  /** Bullet list rendered between body and any other blocks. Used by
+   *  the Catering panel for the default event types (Birthdays ·
+   *  Anniversaries · Graduations · Weddings). */
+  bullets?: string[];
 }
 
 function PanelBody({ item }: { item: TrayItem }) {
@@ -375,6 +380,30 @@ function PanelBody({ item }: { item: TrayItem }) {
         >
           {item.body}
         </p>
+      )}
+
+      {item.bullets && item.bullets.length > 0 && (
+        <ul
+          style={{
+            margin: 0,
+            paddingLeft: 20,
+            display: "grid",
+            gap: 4,
+          }}
+        >
+          {item.bullets.map((b) => (
+            <li
+              key={b}
+              style={{
+                fontSize: 14,
+                lineHeight: 1.5,
+                color: "var(--nex-text, #F2F5F8)",
+              }}
+            >
+              {b}
+            </li>
+          ))}
+        </ul>
       )}
 
       {item.qrImageUrl && (
@@ -598,6 +627,18 @@ function buildTrayItems(content: CoverInfoTrayContent): TrayItem[] {
       icon: NEX_INFO_PAGE_META.catering.icon,
       label: NEX_INFO_PAGE_META.catering.label,
       body: content.eventsBody,
+      // Founder direction 2026-09-30 · default event-type list for
+      // every venue seller · lets buyers see at a glance what the
+      // venue can host. Followed by the contact-to-discuss prompt as
+      // the footer note.
+      bullets: [
+        "Birthdays",
+        "Anniversaries",
+        "Graduations",
+        "Weddings",
+      ],
+      footerNote:
+        "Please contact to discuss your requirements in detail.",
     });
   }
 
