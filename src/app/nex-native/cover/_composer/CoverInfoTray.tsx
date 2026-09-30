@@ -98,8 +98,9 @@ export function CoverInfoTray({
       />
 
       {/* Bottom sheet · slides above the composer footer · founder
-          direction 2026-09-30 · tall (86dvh) · no divider line at the
-          header · small × close button top-right. */}
+          direction 2026-09-30 · tall (86dvh) · uniform 1px border on
+          all 4 sides · no close button in the header (tap the + or
+          the backdrop to close · Escape also closes). */}
       <section
         role="dialog"
         aria-modal="true"
@@ -116,7 +117,16 @@ export function CoverInfoTray({
           borderRadius: 20,
           background:
             "linear-gradient(180deg, rgba(3,8,20,0.98), rgba(3,8,20,0.94))",
-          border:
+          // Founder direction 2026-09-30 (revised) · every side gets
+          // the same accent-soft border · spelt out per-edge so no
+          // shadow or gradient washes any side out visually.
+          borderTop:
+            "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
+          borderRight:
+            "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
+          borderBottom:
+            "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
+          borderLeft:
             "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
           boxShadow:
             "0 -20px 60px rgba(0,0,0,0.7), 0 0 40px var(--nex-accent-glow, rgba(0,175,255,0.2))",
@@ -127,19 +137,19 @@ export function CoverInfoTray({
           overflow: "hidden",
         }}
       >
-        {/* Header · NO borderBottom · just enough padding to seat the
-            × close button top-right (and Back arrow on the left when
-            a panel is open). */}
-        <div
-          style={{
-            padding: "12px 14px 6px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 10,
-          }}
-        >
-          {activeItem ? (
+        {/* Header · NO borderBottom · NO close button · just seats the
+            Back arrow when a panel is open. Close paths: tap the +
+            button on the composer again (toggle), tap the backdrop,
+            or press Escape. */}
+        {activeItem && (
+          <div
+            style={{
+              padding: "10px 14px 4px",
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+            }}
+          >
             <button
               type="button"
               onClick={() => setPanelKey(null)}
@@ -159,32 +169,14 @@ export function CoverInfoTray({
             >
               ‹ Back
             </button>
-          ) : (
-            <span aria-hidden style={{ flex: 1 }} />
-          )}
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            style={{
-              width: 24,
-              height: 24,
-              borderRadius: "50%",
-              border: "none",
-              background: "rgba(255,255,255,0.08)",
-              color: "var(--nex-text-dim, rgba(255,255,255,0.65))",
-              cursor: "pointer",
-              display: "grid",
-              placeItems: "center",
-              padding: 0,
-            }}
-          >
-            <IconClose />
-          </button>
-        </div>
+          </div>
+        )}
 
-        {/* Body · grid or panel */}
+        {/* Body · grid or panel · opts in to the thin scrollbar rule
+            declared in CoverThemeSkin so the tray gets a compact
+            accent-tinted vertical thumb IF the content overflows. */}
         <div
+          data-nex-cover-scroll="thin"
           style={{
             flex: "1 1 auto",
             overflowY: "auto",
@@ -614,15 +606,6 @@ function iconProps(size: number) {
     strokeLinejoin: "round" as const,
     "aria-hidden": true as const,
   };
-}
-
-function IconClose() {
-  return (
-    <svg {...iconProps(14)}>
-      <line x1="6" y1="6" x2="18" y2="18" />
-      <line x1="18" y1="6" x2="6" y2="18" />
-    </svg>
-  );
 }
 
 function IconAboutUs({ size }: { size: number }) {
