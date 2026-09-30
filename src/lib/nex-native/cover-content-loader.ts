@@ -16,6 +16,7 @@ import * as productService from "./product-service";
 import * as menuService from "./menu-service";
 import * as productSectionService from "./product-section-service";
 import { listGalleryImages } from "./gallery-image-service";
+import { listServices } from "./service-list-service";
 import type { NexBusinessRow, NexUuid } from "./types";
 import { isVenueCategory } from "./types";
 import {
@@ -64,7 +65,8 @@ export async function loadCoverContent(
   const themeId = "pink-dream"; // default until nex_business.chat_theme
                                 // or owner.chat_theme wiring is added
 
-  // Parallel fetch: owner + products + menu items + sections + gallery.
+  // Parallel fetch: owner + products + menu items + sections +
+  // gallery + services.
   const [
     owner,
     products,
@@ -72,6 +74,7 @@ export async function loadCoverContent(
     productSectionsRaw,
     menuSectionsRaw,
     galleryRaw,
+    servicesRaw,
   ] = await Promise.all([
     accountService.getAccountById(business.owner_account_id).catch(() => null),
     productService
@@ -89,6 +92,7 @@ export async function loadCoverContent(
       ? menuService.listSectionsByBusiness(business.id).catch(() => [])
       : Promise.resolve([]),
     listGalleryImages(business.id).catch(() => []),
+    listServices(business.id).catch(() => []),
   ]);
 
   const sections = isVenue
@@ -197,7 +201,12 @@ export async function loadCoverContent(
     infoPages:
       (business.info_pages as NexInfoPagesJson | null | undefined) ?? null,
     products: productList,
-    services: [],
+    services: servicesRaw.map((row) => ({
+      id: row.id,
+      name: row.name,
+      fromPrice: row.from_price,
+      description: row.description,
+    })),
     reviews: [],
     galleryImages: galleryRaw.map((row) => ({
       id: row.id,
