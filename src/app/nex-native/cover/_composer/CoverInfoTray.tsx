@@ -128,24 +128,18 @@ export function CoverInfoTray({
 
   return (
     <>
-      {/* Blurred backdrop · founder direction 2026-09-30 (revised
-          again) · backdrop now ALIGNS with the tray (top:170) so the
-          cover identity header stays CRYSTAL CLEAR above the blur
-          line. Previous version blurred the whole phone including the
-          header, which created a visible "cut" the buyer noticed.
-          Blur + dim now only affects the area behind the button
-          column, giving one clean visual split. Tap here to close. */}
+      {/* Blurred backdrop · founder direction 2026-09-30 (revised) ·
+          covers the WHOLE phone screen uniformly · no visible edge or
+          split line. Cover header behind is softly blurred (still
+          recognisable as the shop's identity, just not competing with
+          the buttons for focus). Tap here to close. */}
       <div
         role="button"
         aria-label="Close info"
         onClick={onClose}
         style={{
           position: "fixed",
-          top: "calc(env(safe-area-inset-top, 0) + 170px)",
-          left: 0,
-          right: 0,
-          bottom:
-            "calc(env(safe-area-inset-bottom, 0) + 76px)",
+          inset: 0,
           background: "rgba(3,8,20,0.35)",
           backdropFilter: "blur(10px) saturate(1.05)",
           WebkitBackdropFilter: "blur(10px) saturate(1.05)",
@@ -153,11 +147,11 @@ export function CoverInfoTray({
         }}
       />
 
-      {/* In-place phone-screen panel · founder direction 2026-09-30 ·
-          no rounded container · no border · no shadow. Sits under the
-          cover's identity header (top offset clears the hero block)
-          and above the composer footer. Header of the cover remains
-          visible so the buyer never loses shop context. */}
+      {/* In-place phone-screen panel · fills the WHOLE phone screen
+          (above the composer footer) so there is no empty "space at
+          hero" between the cover and the buttons. Founder direction
+          2026-09-30 (revised) · one clean uniform blurred layer with
+          the button column vertically centred inside it. */}
       <section
         role="dialog"
         aria-modal="true"
@@ -166,7 +160,7 @@ export function CoverInfoTray({
         onClick={(e) => e.stopPropagation()}
         style={{
           position: "fixed",
-          top: "calc(env(safe-area-inset-top, 0) + 170px)",
+          top: 0,
           left: 0,
           right: 0,
           bottom:
@@ -178,6 +172,7 @@ export function CoverInfoTray({
           display: "flex",
           flexDirection: "column",
           overflow: "hidden",
+          paddingTop: "calc(env(safe-area-inset-top, 0) + 12px)",
         }}
       >
         {/* Back arrow + text · always visible on both views. On the
@@ -241,14 +236,19 @@ export function CoverInfoTray({
             the composer footer below. Panels revert to top-anchored
             because their long content should read from the top. */}
         <div
-          data-nex-cover-scroll="thin"
           style={{
             flex: "1 1 auto",
             overflowY: "auto",
+            overflowX: "hidden",
             padding: "6px 16px 16px",
             display: "flex",
             flexDirection: "column",
             justifyContent: activeItem ? "flex-start" : "center",
+            // Founder direction 2026-09-30 · hide the scrollbar even
+            // when content overflows · matches the rest of the cover
+            // (calm, clean, no visible scroll rails).
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
           }}
         >
           {activeItem ? (
