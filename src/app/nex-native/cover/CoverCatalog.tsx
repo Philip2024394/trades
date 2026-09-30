@@ -42,8 +42,9 @@ export function CoverCatalog({
   peerAccountId: string;
   columns?: 1 | 2 | 3;
   /** Cards per page in the paginated grid. Default 4 for grid variant
-   *  · 6 for landscape variant · 9 for round variant (founder
-   *  direction 2026-09-30 · 3x3 fills a phone screen cleanly). */
+   *  · 6 for landscape variant · 6 for round variant (founder
+   *  direction 2026-09-30 · 3x2 · reads calmer than a 3x3 wall on a
+   *  phone screen). */
   pageSize?: number;
   /** Founder direction 2026-09-30 · "landscape" forces single-column
    *  horizontal cards (Template 11) · "round" forces 3-column circle
@@ -52,7 +53,7 @@ export function CoverCatalog({
 }): React.JSX.Element {
   const effectivePageSize =
     pageSize ??
-    (variant === "landscape" ? 6 : variant === "round" ? 9 : 4);
+    (variant === "landscape" ? 6 : variant === "round" ? 6 : 4);
   // Founder direction 2026-09-30 · FIRST tab active on arrival · not
   // empty. Buyer lands filtered to the seller's first category, sees
   // its underline, taps it again (toggle) if they want to see all.
