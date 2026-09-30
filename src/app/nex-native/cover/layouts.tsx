@@ -1160,20 +1160,13 @@ function WhoWeAreCollapsible({
               fontVariantNumeric: "tabular-nums",
             }}
           >
-            <svg
-              width={14}
-              height={14}
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden
-            >
-              <circle cx="12" cy="12" r="9" />
-              <polyline points="12 7 12 12 16 14" />
-            </svg>
+            {/* Founder direction 2026-09-30 · 3D emoji clock (renders
+                as a dimensional colour icon on iOS / Android / modern
+                browsers) instead of the flat stroke SVG. Matches the
+                📦 badge pattern in the All products heading. */}
+            <span aria-hidden style={{ fontSize: 16, lineHeight: 1 }}>
+              🕐
+            </span>
             <span>{hoursLabel}</span>
           </div>
         )}
